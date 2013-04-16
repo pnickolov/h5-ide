@@ -1,0 +1,14 @@
+{
+	"name"         : "madeira_cloud_ide",
+	"version"      : "1.0.3",
+	"dependencies" : {},
+	"devDependencies": {
+		"jquery"     : "*",
+		"underscore" : "*",
+		"backbone"   : "*",
+		"handlebars" : "*",
+		"requirejs"  : "*",
+		"requirejs-text"      : "*",
+		"requirejs-domready"  : "*"
+	}
+}

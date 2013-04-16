@@ -1,0 +1,22 @@
+{
+	"name"            : "madeira_cloud_ide",
+	"version"         : "1.0.3",
+	"devDependencies" : {
+		"bower"                 : "*",
+		"grunt"                 : "*",
+		"grunt-contrib-copy"    : "*",
+		"grunt-contrib-coffee"  : "*",
+		"grunt-coffeelint"      : "*",
+		"grunt-contrib-jshint"  : "*",
+		"grunt-contrib-csslint" : "*",
+		"grunt-contrib-htmlmin" : "*",
+		"grunt-contrib-cssmin"  : "*",
+		"grunt-contrib-uglify"  : "*",
+		"grunt-contrib-connect" : "*",
+		"grunt-contrib-livereload" : "*",
+		"grunt-contrib-clean"   : "*",
+		"grunt-regarde"         : "*",
+		"grunt-open"            : "*",
+		"matchdep"              : "*"
+	}
+}

@@ -53,14 +53,18 @@ define [ 'MC', 'service', 'vo' ,'jquery' ], ( MC, session, vo, $ ) ->
 			if ( status is vo.STATUS.E_OK )
 				$.cookie 'user_name',  result.usercode,   { expires: 3600 }
 				$.cookie 'session_id', result.session_id, { expires: 3600 }
+				
+				#alert 'login success, result.usercode = ' + result.usercode + ' ,result.session_id = ' + result.session_id
 
-				alert 'login success, result.usercode = ' + result.usercode + ' ,result.session_id = ' + result.session_id
+				window.location.href = 'ide.html'
+
+				true
 			else
 				$( '#login_form' )[0].reset()
 
 				alert 'login unsucess, error is ' + result
 
-		return false
+		false
 
 	ready : () ->
 		$( '#login_form' ).submit( MC.login )

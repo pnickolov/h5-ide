@@ -24,12 +24,14 @@ module.exports = function( grunt ) {
 		jsfiles    : [
 			'<%= sourcedir[0] %>/**/*.js',
 			'<%= sourcedir[1] %>/**/*.js',
-			'!<%= src %>/vender/*'
+			'!<%= src %>/vender/*',
+			'!<%= sourcedir[0] %>/ide/ide.js'
 		],
 
 		cssfiles   : [
 			'<%= src %>/**/*.css',
-			'!<%= src %>/assets/**/*.css'
+			'!<%= src %>/assets/**/*.css',
+			'!<%= src %>/ui/css/*.css'
 		],
 
 		coffeefiles : [

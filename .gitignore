@@ -7,13 +7,15 @@ components
 #ignore release
 release
 
-#ignore src/vender
+#ignore vender
 src/vender
 
-#ignore src/js/*.js src/js/**/*.js src/service/**/*.js
+#ignore page
 src/js/*.js
 src/js/**/*.js
+
+#ignore service
 src/service/**/*.js
 
-#ignore src/module/**/*.js
+#ignore module
 src/module/**/*.js

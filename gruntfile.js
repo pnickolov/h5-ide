@@ -3,6 +3,7 @@ module.exports = function( grunt ) {
 	var config = {
 
 		pkg        : grunt.file.readJSON( 'package.json' ),
+		comp       : grunt.file.readJSON( 'component.json' ),
 
 		src        : 'src',
 		libs       : 'vender',
@@ -80,7 +81,7 @@ module.exports = function( grunt ) {
 		var done = this.async();
 		
 		//install dependent js libs by bower
-		config.bower.run( function( err ) {
+		config.bower.run( grunt, function( err ) {
 
 			if( err ) {
 				console.log( 'bower install error, please re-install again.' );

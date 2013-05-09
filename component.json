@@ -3,12 +3,12 @@
 	"version"      : "1.0.3",
 	"dependencies" : {},
 	"devDependencies": {
-		"jquery"     : "*",
-		"underscore" : "*",
-		"backbone"   : "*",
-		"handlebars" : "*",
-		"requirejs"  : "*",
-		"requirejs-text"      : "*",
-		"requirejs-domready"  : "*"
+		"jquery"     : "2.0.0",
+		"underscore" : "1.4.4",
+		"backbone"   : "1.0.0",
+		"handlebars" : "1.0.0-rc.3",
+		"requirejs"  : "2.1.5",
+		"requirejs-text"      : "2.0.6",
+		"requirejs-domready"  : "2.0.1"
 	}
 }

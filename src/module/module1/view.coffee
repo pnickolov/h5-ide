@@ -50,14 +50,18 @@ define [ 'backbone', 'jquery', 'handlebars' ], ( Backbone, $, Handlebars ) ->
             'change .itemPrice' : 'changePrice'
 
         changeTitle : () ->
-            console.log 'title before change:' + this.model.get( 'title' )
-            this.model.set 'title', $(this.el).find( '.itemTitle' ).first().val()
-            console.log 'title after change:'  + this.model.get( 'title' )
+            #console.log 'title before change:' + this.model.get( 'title' )
+            #this.model.set 'title', $(this.el).find( '.itemTitle' ).first().val()
+            #console.log 'title after change:'  + this.model.get( 'title' )
+
+            this.trigger 'titleChange', $( this.el ).find( '.itemTitle' ).first().val()
 
         changePrice : () ->
-            console.log 'price before change:' + this.model.get( 'price' )
-            this.model.set 'price', $(this.el).find( '.itemPrice' ).first().val()
-            console.log 'price after change:'  + this.model.get( 'price' )
+            #console.log 'price before change:' + this.model.get( 'price' )
+            #this.model.set 'price', $(this.el).find( '.itemPrice' ).first().val()
+            #console.log 'price after change:'  + this.model.get( 'price' )
+
+            this.trigger 'priceChange', $( this.el ).find( '.itemPrice' ).first().val()
 
         render      : () ->
             console.log 'render'

@@ -40,8 +40,19 @@ define [ 'jquery', 'model', 'text!./template.html', 'text!./style.css' ], ( $, i
 
         #load remote module1.js
         require [ './module/module1/view.js' ], ( ItemView ) ->
+
+            #view
             itemView       = new ItemView()
             itemView.model = item
             itemView.render()
+
+            #model listener event handler
+            itemView.on 'titleChange', ( event ) ->
+                console.log 'titleChange = ' + event
+                item.set 'title', event
+
+            itemView.on 'priceChange', ( event ) ->
+                console.log 'priceChange = ' + event
+                item.set 'price', event
 
     loadModule : loadModule

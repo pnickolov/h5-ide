@@ -1,6 +1,6 @@
 {
 	"name"            : "madeira_cloud_ide",
-	"version"         : "1.0.3",
+	"version"         : "1.0.4",
 	"devDependencies" : {
 		"bower"                 : "*",
 		"grunt"                 : "*",

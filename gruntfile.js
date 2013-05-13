@@ -28,7 +28,8 @@ module.exports = function( grunt ) {
 		],
 
 		cssfiles   : [
-			'<%= src %>/**/*.css'
+			'<%= src %>/**/*.css',
+			'!<%= src %>/assets/**/*.css'
 		],
 
 		coffeefiles : [

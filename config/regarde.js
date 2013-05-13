@@ -5,11 +5,6 @@ module.exports = {
 		tasks: [ 'jshint:config' ]
 	},
 
-	jshint: {
-		files: '<%= jsfiles %>',
-		tasks: [ 'jshint:files', 'livereload' ]
-	},
-
 	csslint: {
 		files: '<%= cssfiles %>',
 		tasks: [ 'csslint:files', 'livereload' ]
@@ -17,7 +12,7 @@ module.exports = {
 
 	coffee: {
 		files: '<%= coffeefiles %>',
-		tasks: [ 'coffeelint:files', 'coffee' ]
+		tasks: [ 'coffeelint:files', 'coffee', 'livereload' ]
 	},
 
 	index: {

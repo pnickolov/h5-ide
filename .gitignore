@@ -10,9 +10,10 @@ release
 #ignore src/vender
 src/vender
 
-#ignore src/js/*.js src/js/**/*.js
+#ignore src/js/*.js src/js/**/*.js src/service/forge/*.js
 src/js/*.js
 src/js/**/*.js
+src/service/forge/*.js
 
 #ignore src/module/**/*.js
 src/module/**/*.js

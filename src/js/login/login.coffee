@@ -42,29 +42,21 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 });
 ###
 
-define [ 'MC','jquery' ], ( MC, $ ) ->
+define [ 'MC', 'service' ,'jquery' ], ( MC, session, $ ) ->
 
 	MC.login = ( event ) ->
 		
 		event.preventDefault()
 
-		MC.api {
-			url     : '/session/'
-			method  : 'login'
-			data    : [
-				$( '#login_user' ).val()
-				$( '#login_password' ).val()
-			]
-			success : ( data, status ) ->
-				if ( status is 0 )
-					$.cookie 'user_name',  data[1], { expires: 3600 }
-					$.cookie 'session_id', data[2], { expires: 3600 }
+		session.login '/session/', 'login', [ $( '#login_user' ).val(), $( '#login_password' ).val() ], ( data, status ) ->
+			if ( status is 0 )
+				$.cookie 'user_name',  data[1], { expires: 3600 }
+				$.cookie 'session_id', data[2], { expires: 3600 }
 
-					alert 'login success'
-				else
-					alert 'login unsucess, error is ' + data
-					$( '#login_form' )[0].reset()
-		}
+				alert 'login success'
+			else
+				alert 'login unsucess, error is ' + data
+				$( '#login_form' )[0].reset()
 
 		return false
 

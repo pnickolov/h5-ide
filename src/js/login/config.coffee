@@ -39,10 +39,16 @@ require.config {
 	deps            : [ 'js/login/main' ]
 
 	paths           :
+
 		#vender
 		'jquery'    : 'vender/jquery/jquery'
+
 		#cor lib
 		'MC'        : 'lib/MC.core'
+
+		#cor lib
+		'service'   : 'service/forge/session'
+
 		#login
 		'login'     : 'js/login/login'
 

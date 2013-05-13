@@ -48,14 +48,14 @@ define [ 'MC', 'service' ,'jquery' ], ( MC, session, $ ) ->
 		
 		event.preventDefault()
 
-		session.login '/session/', 'login', [ $( '#login_user' ).val(), $( '#login_password' ).val() ], ( data, status ) ->
+		session.login '/session/', 'login', [ $( '#login_user' ).val(), $( '#login_password' ).val() ], ( result, status ) ->
 			if ( status is 0 )
-				$.cookie 'user_name',  data[1], { expires: 3600 }
-				$.cookie 'session_id', data[2], { expires: 3600 }
+				$.cookie 'user_name',  result[1], { expires: 3600 }
+				$.cookie 'session_id', result[2], { expires: 3600 }
 
 				alert 'login success'
 			else
-				alert 'login unsucess, error is ' + data
+				alert 'login unsucess, error is ' + result
 				$( '#login_form' )[0].reset()
 
 		return false

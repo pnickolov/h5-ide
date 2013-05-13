@@ -1,14 +1,14 @@
 
-define [ 'MC','jquery' ], ( MC, $ ) ->
+define [ 'MC' ], ( MC ) ->
 
-	login = ( url, method, data, callback ) ->
+	login = ( url, method, param, callback ) ->
 		
 		MC.api {
 			url     : url
 			method  : method
-			data    : data
-			success : ( data, status ) ->
-				callback data, status
+			data    : param
+			success : ( result, status ) ->
+				callback result, status
 		}
 
 	logout = () ->

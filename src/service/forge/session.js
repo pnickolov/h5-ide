@@ -1,5 +1,5 @@
 (function() {
-  define(['MC', 'jquery'], function(MC, $) {
+  define(['MC'], function(MC) {
     var guest, login, logout, set_credential;
 
     login = function(url, method, data, callback) {

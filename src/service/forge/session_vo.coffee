@@ -8,12 +8,12 @@ define [], () ->
 
 	#user vo
 	user_vo = {
-		userid      : ''
-		usercode    : ''
-		session_id  : ''
-		region_name : ''
-		email       : ''
-		has_cred    : ''
+		userid      : null
+		usercode    : null
+		session_id  : null
+		region_name : null
+		email       : null
+		has_cred    : null
 	}
 
 	#public

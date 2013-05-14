@@ -1,5 +1,5 @@
 
-define [ 'MC' ], ( MC ) ->
+define [ 'MC', 'vo', 'parser' ], ( MC, vo, parser ) ->
 
 	login = ( url, method, param, callback ) ->
 		
@@ -8,7 +8,10 @@ define [ 'MC' ], ( MC ) ->
 			method  : method
 			data    : param
 			success : ( result, status ) ->
-				callback result, status
+
+				vo.user_vo = parser.parser_user_vo( result )
+				
+				callback vo.user_vo, status, param
 		}
 
 	logout = () ->
@@ -20,6 +23,7 @@ define [ 'MC' ], ( MC ) ->
 	guest = () ->
 		alert 'guest'
 
+	#public
 	login          : login
 	logout         : logout
 	set_credential : set_credential

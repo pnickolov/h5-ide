@@ -48,6 +48,8 @@ require.config {
 
 		#cor lib
 		'service'   : 'service/forge/session'
+		'vo'        : 'service/forge/session_vo'
+		'parser'    : 'service/forge/session_parser'
 
 		#login
 		'login'     : 'js/login/login'

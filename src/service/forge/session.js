@@ -1,14 +1,15 @@
 (function() {
-  define(['MC'], function(MC) {
+  define(['MC', 'vo', 'parser'], function(MC, vo, parser) {
     var guest, login, logout, set_credential;
 
-    login = function(url, method, data, callback) {
+    login = function(url, method, param, callback) {
       return MC.api({
         url: url,
         method: method,
-        data: data,
-        success: function(data, status) {
-          return callback(data, status);
+        data: param,
+        success: function(result, status) {
+          vo.user_vo = parser.parser_user_vo(result);
+          return callback(vo.user_vo, status, param);
         }
       });
     };

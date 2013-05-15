@@ -6,5 +6,5 @@ require( [ 'login' ], function( login ) {
 });
 ###
 
-require [ 'login' ], ( login ) ->
-	login.ready()
+require [ 'login' ], ( Login ) ->
+	Login.ready()

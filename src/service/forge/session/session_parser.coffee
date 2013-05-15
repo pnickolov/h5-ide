@@ -1,14 +1,17 @@
 
-define [ 'vo' ], ( vo ) ->
+define [ 'vo' ], ( VO ) ->
 
-	parser_user_vo = ( arr ) ->
-		vo.user_vo.userid      = arr[0]
-		vo.user_vo.usercode    = arr[1]
-		vo.user_vo.session_id  = arr[2]
-		vo.user_vo.region_name = arr[3]
-		vo.user_vo.email       = arr[4]
-		vo.user_vo.has_cred    = arr[5]
-		vo.user_vo
+	parserUserVO = ( arr ) ->
+		#set vo
+		VO.user_vo.userid      = arr[0]
+		VO.user_vo.usercode    = arr[1]
+		VO.user_vo.session_id  = arr[2]
+		VO.user_vo.region_name = arr[3]
+		VO.user_vo.email       = arr[4]
+		VO.user_vo.has_cred    = arr[5]
+
+		#return vo
+		VO.user_vo
 
 	#public
-	parser_user_vo : parser_user_vo
+	parserUserVO : parserUserVO

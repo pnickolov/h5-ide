@@ -13,7 +13,7 @@ components
 release
 
 #ignore vender
-src/vender
+src/vender/**/*.*
 !src/vender/canvon/canvon.js
 
 #ignore page

@@ -1,14 +1,14 @@
 
 
-define [ 'backbone', 'jquery', 'handlebars', 'UI.tooltip', 'UI.scrollbar' ], () ->
+define [ 'backbone', 'jquery', 'handlebars', 'UI.tooltip' ], () ->
 
     LeftPanelView = Backbone.View.extend {
 
         #element
-        el          : $( '#siderbar' )
+        el       : $( '#siderbar' )
 
         #template
-        template    : Handlebars.compile $( '#leftpanel-tmpl' ).html()
+        template : Handlebars.compile $( '#leftpanel-tmpl' ).html()
 
         #event handler
         events   :
@@ -25,7 +25,7 @@ define [ 'backbone', 'jquery', 'handlebars', 'UI.tooltip', 'UI.scrollbar' ], () 
 
             $('#main_body').animate { 'margin-left': 60 }, 300
 
-            $('#siderbar').animate { 'width': 60 }      , 300
+            $('#siderbar').animate { 'width': 60 }       , 300
 
             $('#show_siderbar_btn').fadeIn()
 
@@ -35,7 +35,7 @@ define [ 'backbone', 'jquery', 'handlebars', 'UI.tooltip', 'UI.scrollbar' ], () 
 
             $('#main_body').animate { 'margin-left': 279 }, 300
 
-            $('#siderbar').animate { 'width': 279 }, 300, () ->
+            $('#siderbar').animate { 'width': 279 }       , 300, () ->
                 $('#siderbar_body_main').show()
                 $('#show_siderbar_btn').fadeOut()
 
@@ -51,11 +51,10 @@ define [ 'backbone', 'jquery', 'handlebars', 'UI.tooltip', 'UI.scrollbar' ], () 
                 list.slideDown 200
             return
 
-        render      : () ->
-            console.log 'render'
+        render : () ->
+            console.log '-- lefet panel render --'
 
             $( this.el ).html this.template()
-            this
     }
 
     return LeftPanelView

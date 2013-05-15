@@ -27,10 +27,10 @@ require.config {
 		'UI.tooltip'   : 'ui/common/UI.tooltip'
 		'UI.scrollbar' : 'ui/common/UI.scrollbar'
 
-		#ide
-		'ide'          : 'js/ide/ide'
+		#ide(leftpanel canvas)
 		'router'       : 'js/ide/router'
 		'leftpanel'    : 'module/leftpanel/main'
+		'canvas'       : 'module/canvas/main'
 
 	shim               :
 

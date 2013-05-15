@@ -46,10 +46,10 @@ require.config {
 		#cor lib
 		'MC'        : 'lib/MC.core'
 
-		#cor lib
-		'service'   : 'service/forge/session'
-		'vo'        : 'service/forge/session_vo'
-		'parser'    : 'service/forge/session_parser'
+		#service
+		'service'   : 'service/forge/session/session'
+		'vo'        : 'service/forge/session/session_vo'
+		'parser'    : 'service/forge/session/session_parser'
 
 		#login
 		'login'     : 'js/login/login'

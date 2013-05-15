@@ -61,10 +61,10 @@ require.config {
 		'domReady'     : 'vender/requirejs/domReady'
 		'text'         : 'vender/requirejs/text'
 
-		'main'         : 'js/main'
-		'router'       : 'js/router'
-		'model'        : 'js/model/model'
-		'view'         : 'js/view/view'
+		'main'         : 'js/demo/main'
+		'router'       : 'js/demo/router'
+		'model'        : 'js/demo/model/model'
+		'view'         : 'js/demo/view/view'
 	shim   :
 		'backbone'     :
 			deps       : [ 'underscore', 'jquery' ]

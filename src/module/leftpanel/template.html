@@ -1,94 +1,92 @@
-<script type="text/x-handlebars-template" id="leftpanel-tmpl">
-			<div id="siderbar_header">
-				<a href="javascript:void(0)" id="hide_siderbar_btn"></a>
-			</div>
+<div id="siderbar_header">
+	<a href="javascript:void(0)" id="hide_siderbar_btn"></a>
+</div>
 
-			<div id="siderbar_top_btn_container" class="top_btn_container">
-				<a href="javascript:void(0)" id="show_siderbar_btn"></a>
-			</div>
+<div id="siderbar_top_btn_container" class="top_btn_container">
+	<a href="javascript:void(0)" id="show_siderbar_btn"></a>
+</div>
 
-			<div id="siderbar_body">
-				<div id="siderbar_nav">
-					<ul>
-						<li>
-							<a id="siderbar_nav_apps" class="siderbar_nav_item on" href="#">
-								<div class="siderbar_nav_item_container">
-									<div id="siderbar_nav_body_apps" class="siderbar_nav_item_body">Apps</div>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a id="siderbar_nav_apps" class="siderbar_nav_item" href="#">
-								<div class="siderbar_nav_item_container">
-									<div id="siderbar_nav_body_stacks" class="siderbar_nav_item_body">Stacks</div>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a id="siderbar_nav_apps" class="siderbar_nav_item" href="#">
-								<div class="siderbar_nav_item_container">
-									<div id="siderbar_nav_body_nodes" class="siderbar_nav_item_body">Nodes</div>
-								</div>
-							</a>
-						</li>
-					</ul>
-				</div>
-
-				<div id="siderbar_body_main">
-					<div class="siderbar_tab">
-						<div id="siderbar_tab_title_compute" class="siderbar_tab_title">Compute</div>
-						<ol style="display: block;">
-							<li class="siderbar_tab_item">
-								<div class="siderbar_tab_sub_title">EC2 AMIs</div>
-
-								<div class="siderbar_component_wrap scroll-wrap">
-									<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-									<ul class="siderbar_component_list scroll-content clearfix">
-										<li><div class="siderbar_component_item component_instance dragComponent tooltip status_running" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 32-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
-										<li><div class="siderbar_component_item component_instance dragComponent tooltip status_stopped" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 64-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
-										<li><div class="siderbar_component_item component_instance dragComponent tooltip status_pause" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="CentOS 6 base install, EBS boot, 32-bit architecture."><i class="node_status"></i></div></li>
-										<li><div class="siderbar_component_item component_instance dragComponent tooltip status_running" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 32-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
-										<li><div class="siderbar_component_item component_instance dragComponent tooltip status_stopped" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 64-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
-										<li><div class="siderbar_component_item component_instance dragComponent tooltip status_pause" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="CentOS 6 base install, EBS boot, 32-bit architecture."><i class="node_status"></i></div></li>
-										<li><div class="siderbar_component_item component_instance dragComponent tooltip status_running" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 32-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
-										<li><div class="siderbar_component_item component_instance dragComponent tooltip status_stopped" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 64-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
-										<li><div class="siderbar_component_item component_instance dragComponent tooltip status_pause" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="CentOS 6 base install, EBS boot, 32-bit architecture."><i class="node_status"></i></div></li>
-									</ul>
-
-								</div>
-							</li>
-						</ol>
-						<div id="siderbar_tab_title_storage" class="siderbar_tab_title">Storage</div>
-						<ol>
-							<li class="siderbar_tab_item">
-								<div class="siderbar_tab_sub_title">EBS Volume</div>
-								<ul class="siderbar_component_list clearfix">
-									<li><a class="siderbar_component_item component_volume dragComponent tooltip" data-option='{"type": "volume","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Create a new volume from scratch." href=""></a></li>
-								</ul>
-							</li>
-						</ol>
-						<div id="siderbar_tab_title_network" class="siderbar_tab_title">Network & Security</div>
-						<ol>
-							<li class="siderbar_tab_item">
-								<div class="siderbar_tab_sub_title">ELB</div>
-								<ul class="siderbar_component_list clearfix">
-									<li><a class="siderbar_component_item component_elb dragComponent tooltip" data-option='{"type": "elb","class": "node","size": [1, 1],"placement": "canvas"}' data-tooltip="Create a new ELB from scratch." href=""></a></li>
-								</ul>
-							</li>
-							<li class="siderbar_tab_item">
-								<div class="siderbar_tab_sub_title">Elastic IPs</div>
-								<ul class="siderbar_component_list clearfix">
-									<li><a class="siderbar_component_item component_eip dragComponent tooltip" data-option='{"type": "eip","class": "attachment","size": [1, 1],"placement": "node"}' data-tooltip="Create a new EIP from scratch." href=""></a></li>
-								</ul>
-							</li>
-							<li class="siderbar_tab_item">
-								<div class="siderbar_tab_sub_title">KeyPairs</div>
-								<ul class="siderbar_component_list clearfix">
-									<li><a class="siderbar_component_item component_keyPairs dragComponent tooltip" data-option='{"type": "keyPairs","class": "attachment","size": [1, 1],"placement": "node"}' data-tooltip="Create a new KeyPairs from scratch." href=""></a></li>
-								</ul>
-							</li>
-						</ol>
+<div id="siderbar_body">
+	<div id="siderbar_nav">
+		<ul>
+			<li>
+				<a id="siderbar_nav_apps" class="siderbar_nav_item on" href="#">
+					<div class="siderbar_nav_item_container">
+						<div id="siderbar_nav_body_apps" class="siderbar_nav_item_body">Apps</div>
 					</div>
-				</div>
-			</div>
-</script>
+				</a>
+			</li>
+			<li>
+				<a id="siderbar_nav_apps" class="siderbar_nav_item" href="#">
+					<div class="siderbar_nav_item_container">
+						<div id="siderbar_nav_body_stacks" class="siderbar_nav_item_body">Stacks</div>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a id="siderbar_nav_apps" class="siderbar_nav_item" href="#">
+					<div class="siderbar_nav_item_container">
+						<div id="siderbar_nav_body_nodes" class="siderbar_nav_item_body">Nodes</div>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div id="siderbar_body_main">
+		<div class="siderbar_tab">
+			<div id="siderbar_tab_title_compute" class="siderbar_tab_title">Compute</div>
+			<ol style="display: block;">
+				<li class="siderbar_tab_item">
+					<div class="siderbar_tab_sub_title">EC2 AMIs</div>
+
+					<div class="siderbar_component_wrap scroll-wrap">
+						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+						<ul class="siderbar_component_list scroll-content clearfix">
+							<li><div class="siderbar_component_item component_instance dragComponent tooltip status_running" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 32-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
+							<li><div class="siderbar_component_item component_instance dragComponent tooltip status_stopped" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 64-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
+							<li><div class="siderbar_component_item component_instance dragComponent tooltip status_pause" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="CentOS 6 base install, EBS boot, 32-bit architecture."><i class="node_status"></i></div></li>
+							<li><div class="siderbar_component_item component_instance dragComponent tooltip status_running" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 32-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
+							<li><div class="siderbar_component_item component_instance dragComponent tooltip status_stopped" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 64-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
+							<li><div class="siderbar_component_item component_instance dragComponent tooltip status_pause" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="CentOS 6 base install, EBS boot, 32-bit architecture."><i class="node_status"></i></div></li>
+							<li><div class="siderbar_component_item component_instance dragComponent tooltip status_running" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 32-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
+							<li><div class="siderbar_component_item component_instance dragComponent tooltip status_stopped" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Amazon Liunx AMI 2012.09, EBS boot, 64-bit architecture with Amazon AMI tools."><i class="node_status"></i></div></li>
+							<li><div class="siderbar_component_item component_instance dragComponent tooltip status_pause" data-option='{"type": "instance","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="CentOS 6 base install, EBS boot, 32-bit architecture."><i class="node_status"></i></div></li>
+						</ul>
+
+					</div>
+				</li>
+			</ol>
+			<div id="siderbar_tab_title_storage" class="siderbar_tab_title">Storage</div>
+			<ol>
+				<li class="siderbar_tab_item">
+					<div class="siderbar_tab_sub_title">EBS Volume</div>
+					<ul class="siderbar_component_list clearfix">
+						<li><a class="siderbar_component_item component_volume dragComponent tooltip" data-option='{"type": "volume","class": "node","size": [1, 1],"placement": "zone"}' data-tooltip="Create a new volume from scratch." href=""></a></li>
+					</ul>
+				</li>
+			</ol>
+			<div id="siderbar_tab_title_network" class="siderbar_tab_title">Network & Security</div>
+			<ol>
+				<li class="siderbar_tab_item">
+					<div class="siderbar_tab_sub_title">ELB</div>
+					<ul class="siderbar_component_list clearfix">
+						<li><a class="siderbar_component_item component_elb dragComponent tooltip" data-option='{"type": "elb","class": "node","size": [1, 1],"placement": "canvas"}' data-tooltip="Create a new ELB from scratch." href=""></a></li>
+					</ul>
+				</li>
+				<li class="siderbar_tab_item">
+					<div class="siderbar_tab_sub_title">Elastic IPs</div>
+					<ul class="siderbar_component_list clearfix">
+						<li><a class="siderbar_component_item component_eip dragComponent tooltip" data-option='{"type": "eip","class": "attachment","size": [1, 1],"placement": "node"}' data-tooltip="Create a new EIP from scratch." href=""></a></li>
+					</ul>
+				</li>
+				<li class="siderbar_tab_item">
+					<div class="siderbar_tab_sub_title">KeyPairs</div>
+					<ul class="siderbar_component_list clearfix">
+						<li><a class="siderbar_component_item component_keyPairs dragComponent tooltip" data-option='{"type": "keyPairs","class": "attachment","size": [1, 1],"placement": "node"}' data-tooltip="Create a new KeyPairs from scratch." href=""></a></li>
+					</ul>
+				</li>
+			</ol>
+		</div>
+	</div>
+</div>

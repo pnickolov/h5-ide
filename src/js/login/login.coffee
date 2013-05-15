@@ -50,7 +50,7 @@ define [ 'MC', 'service', 'vo' ,'jquery' ], ( MC, session, vo, $ ) ->
 
 		session.login '/session/', 'login', [ $( '#login_user' ).val(), $( '#login_password' ).val() ], ( result, status ) ->
 
-			if ( status is vo.STATUS.E_OK )
+			if ( status is vo.STATIC.E_OK )
 				$.cookie 'user_name',  result.usercode,   { expires: 3600 }
 				$.cookie 'session_id', result.session_id, { expires: 3600 }
 				

@@ -1,6 +1,7 @@
 
 define [ 'jquery', 'text!./module/leftpanel/template.html' ], ( $, template ) ->
     
+    #private
     loadModule = () ->
 
         #add handlebars script
@@ -16,4 +17,5 @@ define [ 'jquery', 'text!./module/leftpanel/template.html' ], ( $, template ) ->
             view       = new View()
             view.render()
 
+    #public
     loadModule : loadModule

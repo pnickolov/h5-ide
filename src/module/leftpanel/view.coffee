@@ -12,14 +12,14 @@ define [ 'backbone', 'jquery', 'handlebars', 'UI.tooltip' ], () ->
 
         #event handler
         events   :
-            'click #hide_siderbar_btn'  : 'hide_siderbar'
-            'click #show_siderbar_btn'  : 'show_siderbar'
-            'click .siderbar_tab_title' : 'siderbar_tab_click'
+            'click #hide_siderbar_btn'  : 'hideSiderbarEventHandler'
+            'click #show_siderbar_btn'  : 'showSiderbarEventHandler'
+            'click .siderbar_tab_title' : 'siderbarTabEventHandler'
 
         #method
-        hide_siderbar : () ->
+        hideSiderbarEventHandler : () ->
 
-            console.log 'hide_siderbar'
+            console.log 'hideSiderbarEventHandler'
 
             $('#siderbar_body_main').hide()
 
@@ -29,9 +29,9 @@ define [ 'backbone', 'jquery', 'handlebars', 'UI.tooltip' ], () ->
 
             $('#show_siderbar_btn').fadeIn()
 
-        show_siderbar : () ->
+        showSiderbarEventHandler : () ->
 
-            console.log 'show_siderbar'
+            console.log 'showSiderbarEventHandler'
 
             $('#main_body').animate { 'margin-left': 279 }, 300
 
@@ -39,14 +39,14 @@ define [ 'backbone', 'jquery', 'handlebars', 'UI.tooltip' ], () ->
                 $('#siderbar_body_main').show()
                 $('#show_siderbar_btn').fadeOut()
 
-        siderbar_tab_click : ( event ) ->
+        siderbarTabEventHandler : ( event ) ->
 
-            console.log 'siderbar_tab_click'
+            console.log 'siderbarTabEventHandler'
 
             target =  $( event.target )
             list   = target.next()
 
-            if list.css('display') != 'block'
+            if list.css( 'display' ) isnt 'block'
                 $('.siderbar_tab ol').slideUp()
                 list.slideDown 200
             return

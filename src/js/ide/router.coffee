@@ -14,14 +14,14 @@ define [ 'backbone' ], ( Backbone ) ->
 
 		router.on 'route:defaultRouter', () ->
 
-			require [ 'leftpanel' ], ( leftpanel ) ->
+			require [ 'leftpanel' ], ( LeftPanel ) ->
 
 				#first load left panel
-				leftpanel.loadModule()
+				LeftPanel.loadModule()
 
 				#second lod canvas
-				require [ 'canvas' ], ( canvas ) ->
-					canvas.loadModule()
+				require [ 'canvas' ], ( CanvasPanel ) ->
+					CanvasPanel.loadModule()
 
 		Backbone.history.start()
 

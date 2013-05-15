@@ -13,11 +13,12 @@ define [ 'jquery', 'text!./module/canvas/template.html' ], ( $, template ) ->
         require [ './module/canvas/view' ], ( View ) ->
 
             #view
-            view       = new View()
+            view = new View()
             view.render()
 
-            # temp -------load ide.js(logic)-------
-            require [ './module/canvas/canvas' ], ( canvas ) ->
-                canvas.ready()
+            # temp -------load ide.js(logic)------- begin
+            require [ './module/canvas/canvas' ], ( Canvas ) ->
+                Canvas.ready()
+            # temp -------load ide.js(logic)------- end
 
     loadModule : loadModule

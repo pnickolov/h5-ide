@@ -24,3 +24,4 @@ src/service/**/**/*.js
 
 #ignore module
 src/module/**/*.js
+!src/module/canvas/canvas.js

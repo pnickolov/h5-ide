@@ -1,7 +1,7 @@
 module.exports = {
 
 	server: {
-		path: 'http://localhost:<%= connect.options.port %>/ide.html'
+		path: 'http://localhost:<%= connect.options.port %>/login.html'
 	}
 
 };

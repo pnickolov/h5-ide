@@ -22,7 +22,7 @@ require.config({
 		'jquery'    : {
 			exports : '$'
 		},
-		
+
 		'MC'        : {
 			deps    : [ 'jquery' ],
 			exports : 'MC'
@@ -42,25 +42,41 @@ require.config {
 
 		#vender
 		'jquery'    : 'vender/jquery/jquery'
+		'underscore'   : 'vender/underscore/underscore'
+		'backbone'     : 'vender/backbone/backbone'
 
-		#cor lib
+		#core lib
 		'MC'        : 'lib/MC.core'
 
+		#common lib
+		'constant'  : 'lib/constant'
+
+		#result_vo
+		'result_vo'         : 'service/result_vo'
+
 		#service
-		'service'   : 'service/forge/session/session'
-		'vo'        : 'service/forge/session/session_vo'
-		'parser'    : 'service/forge/session/session_parser'
+		'session_vo'        : 'service/forge/session/session_vo'
+		'session_parser'    : 'service/forge/session/session_parser'
+		'session_service'   : 'service/forge/session/session_service'
+		'session_model'     : 'service/forge/session/session_model'
 
 		#login
-		'login'     : 'js/login/login'
+		'login'             : 'js/login/login'
 
 	shim            :
 
 		'jquery'    :
 			exports : '$'
 
+		'underscore'   :
+			exports    : '_'
+
+		'backbone'     :
+			deps       : [ 'underscore', 'jquery' ]
+			exports    : 'Backbone'
+
 		'MC'        :
-			deps    : [ 'jquery' ]
+			deps    : [ 'jquery','constant' ]
 			exports : 'MC'
 
 }

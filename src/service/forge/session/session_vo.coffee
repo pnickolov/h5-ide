@@ -1,11 +1,6 @@
 
 define [], () ->
 
-	#static
-	STATIC = {
-		E_OK : 0
-	}
-
 	#user vo
 	user_vo = {
 		userid      : null
@@ -17,5 +12,4 @@ define [], () ->
 	}
 
 	#public
-	STATIC  : STATIC
 	user_vo : user_vo

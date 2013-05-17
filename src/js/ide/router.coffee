@@ -18,10 +18,14 @@ define [ 'backbone' ], ( Backbone ) ->
 
 				#first load left panel
 				LeftPanel.loadModule()
-
-				#second lod canvas
+				
 				require [ 'canvas' ], ( CanvasPanel ) ->
+					#second lod canvas
 					CanvasPanel.loadModule()
+
+					true
+
+			true
 
 		Backbone.history.start()
 

@@ -42,31 +42,41 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 });
 ###
 
-define [ 'MC', 'service', 'vo' ,'jquery' ], ( MC, session, VO, $ ) ->
+define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 
-	#private
 	MC.login = ( event ) ->
-		
+
 		event.preventDefault()
 
-		session.login '/session/', 'login', [ $( '#login_user' ).val(), $( '#login_password' ).val() ], ( result, status ) ->
+		username = $( '#login_user' ).val()
+		password = $( '#login_password' ).val()
 
-			if status is VO.STATIC.E_OK
+		#invoke session.login api
+		session_model.login(username, password)
+
+		#login return handler (dispatch from service/forge/session/session_model)
+		session_model.on 'login_return', ( forge_result_vo ) ->
+
+			if !forge_result_vo.is_error
+			#login succeed
+
+				result = forge_result_vo.resolved_data
+
 				$.cookie 'user_name',  result.usercode,   { expires: 3600 }
 				$.cookie 'session_id', result.session_id, { expires: 3600 }
-				
-				#alert 'login success, result.usercode = ' + result.usercode + ' ,result.session_id = ' + result.session_id
 
+				#redirect to page ide.html
 				window.location.href = 'ide.html'
 
 				true
+
 			else
-				$( '#login_form' )[0].reset()
+			#login failed
+				alert forge_result_vo.resolved_message
 
-				alert 'login unsucess, error is ' + result
+				false
 
-		false
+		true
 
-	#public
 	ready : () ->
 		$( '#login_form' ).submit( MC.login )

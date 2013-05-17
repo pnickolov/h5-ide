@@ -18,7 +18,7 @@ define [ 'MC', 'vo', 'parser' ], ( MC, VO, Parser ) ->
 		alert 'logout'
 
 	setCredential = () ->
-		alert 'set_credential'
+		alert 'setCredential'
 
 	guest = () ->
 		alert 'guest'

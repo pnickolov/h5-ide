@@ -53,6 +53,8 @@ require.config {
 	deps    : [ 'main' ]
 	baseUrl : './'
 	paths   :
+
+		#vender
 		'backbone'     : 'vender/backbone/backbone'
 		'underscore'   : 'vender/underscore/underscore'
 		'jquery'       : 'vender/jquery/jquery'
@@ -61,18 +63,36 @@ require.config {
 		'domReady'     : 'vender/requirejs/domReady'
 		'text'         : 'vender/requirejs/text'
 
+		#mvc
 		'main'         : 'js/demo/main'
 		'router'       : 'js/demo/router'
 		'model'        : 'js/demo/model/model'
 		'view'         : 'js/demo/view/view'
+
+		#core lib
+		'MC'        : 'lib/MC.core'
+
+		#service
+		'service'   : 'service/forge/session/session'
+		'vo'        : 'service/forge/session/session_vo'
+		'parser'    : 'service/forge/session/session_parser'
+
 	shim   :
+
+		'jquery'       :
+			exports    : '$'
+
+		'underscore'   :
+			exports    : '_'
+
 		'backbone'     :
 			deps       : [ 'underscore', 'jquery' ]
 			exports    : 'Backbone'
-		'underscore'   :
-			exports    : '_'
-		'jquery'       :
-			exports    : '$'
+
 		'handlebars'   :
 			exports    : 'Handlebars'
+
+		'MC'        :
+			deps    : [ 'jquery' ]
+			exports : 'MC'
 }

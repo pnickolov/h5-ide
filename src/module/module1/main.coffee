@@ -29,6 +29,7 @@ define( [ 'jquery', 'model', 'text!./template.html', 'text!./style.css' ], funct
 
 define [ 'jquery', 'model', 'text!./template.html', 'text!./style.css' ], ( $, item, template, style ) ->
     
+    #private
     loadModule = () ->
 
         #load remote html template
@@ -55,4 +56,11 @@ define [ 'jquery', 'model', 'text!./template.html', 'text!./style.css' ], ( $, i
                 console.log 'priceChange = ' + event
                 item.set 'price', event
 
+            item.login()
+
+            item.on 'login_succcess', ( result ) ->
+                alert 'login success, result.usercode = ' + result.usercode + ' ,result.session_id = ' + result.session_id
+
+
+    #public
     loadModule : loadModule

@@ -33,6 +33,7 @@ define( [ 'jquery', 'model', 'text!./template.html' ], function( $, item, templa
 
 define [ 'jquery', 'model', 'text!./template.html' ], ( $, item, template ) ->
 
+    #private
     loadModule = () ->
 
         #load remote html template
@@ -49,4 +50,5 @@ define [ 'jquery', 'model', 'text!./template.html' ], ( $, item, template ) ->
                 console.log 'change'
                 itemShowView.render()
 
+    #public
     loadModule : loadModule

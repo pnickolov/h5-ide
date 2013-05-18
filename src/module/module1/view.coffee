@@ -66,7 +66,6 @@ define [ 'backbone', 'jquery', 'handlebars' ], ( Backbone, $, Handlebars ) ->
         render      : () ->
             console.log 'render'
             $( this.el ).html this.template( this.model )
-            return this
     }
 
     return ItemView

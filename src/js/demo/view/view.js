@@ -57,8 +57,7 @@ define( [ 'backbone', 'jquery', 'handlebars' ], function( Backbone, $, Handlebar
         return $('#itemShowContent').html('loading...');
       },
       render: function() {
-        $(this.el).html(this.template(this.model));
-        return this;
+        return $(this.el).html(this.template());
       }
     });
     return MainView;

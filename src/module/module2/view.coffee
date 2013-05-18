@@ -26,11 +26,12 @@ define [ 'backbone', 'jquery', 'handlebars' ], ( Backbone, $, Handlebars ) ->
     ItemShowView = Backbone.View.extend {
 
         el       : $( '#itemShowContent' )
+
         template : Handlebars.compile $( '#item-show-tmpl' ).html()
 
         render   : () ->
             $( this.el ).html this.template( this.model )
-            return this
+            
     }
 
     return ItemShowView

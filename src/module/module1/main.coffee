@@ -61,6 +61,5 @@ define [ 'jquery', 'model', 'text!./template.html', 'text!./style.css' ], ( $, i
             item.on 'login_succcess', ( result ) ->
                 alert 'login success, result.usercode = ' + result.usercode + ' ,result.session_id = ' + result.session_id
 
-
     #public
     loadModule : loadModule

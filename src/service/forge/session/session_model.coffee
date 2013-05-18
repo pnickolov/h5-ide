@@ -48,7 +48,7 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service) ->
     }
 
     #private (instantiation)
-    sessionModel = new SessionModel()
+    session_model = new SessionModel()
 
     #public (exposes methods)
-    sessionModel
+    session_model

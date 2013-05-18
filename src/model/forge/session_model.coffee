@@ -35,10 +35,10 @@ define [ 'backbone', 'session_service', 'session_vo'], ( Backbone, session_servi
                 else
                 #login failed
 
-                    console.log 'login failed, error is ' + forge_result.resolved_message
+                    console.log 'login failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch to js/login/login whenever login succeed or failed)
-                me.trigger 'login_return', forge_result
+                me.trigger 'SESSION_LOGIN_RETURN', forge_result
 
     }
 

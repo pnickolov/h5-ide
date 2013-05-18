@@ -10,21 +10,24 @@ define [], () ->
 
         #resolved
         resolved_data    : null
-        resolved_message : ""
         is_error         : true
+        error_message    : ""
+
     }
 
     #private
     aws_result = {
 
         #orial
+        return_code     : -1
         param           : null
 
         #resolved
-        resolved_data   : null
-        is_error        : true
-        error_code      : null
-        error_message   : null
+        resolved_data       : null
+        is_error            : true
+        error_message       : ""
+        aws_error_code      : -1
+        aws_error_message   : ""
     }
 
     #public

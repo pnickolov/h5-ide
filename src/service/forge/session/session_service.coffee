@@ -38,7 +38,7 @@ define [ 'MC', 'session_parser', 'result_vo' ], ( MC, session_parser, result_vo 
 
 					result_vo.forge_result.return_code      = return_code
 					result_vo.forge_result.is_error         = true
-					result_vo.forge_result.resolved_message = result.toString()
+					result_vo.forge_result.error_message    = result.toString()
 
 					callback result_vo.forge_result
 			}

@@ -4,7 +4,7 @@ a {
 
 #body {
 	overflow: hidden;
-	background: #393939 url('../../images/default/ide/background.jpg');
+	background: #393939 url('../images/ide/background.jpg');
 }
 
 #container {
@@ -20,7 +20,7 @@ a {
 
 #siderbar_header {
 	border-top: 1px solid #741860;
-	background: url('../../images/default/ide/siderbar_header.png') no-repeat;
+	background: url('../images/ide/siderbar_header.png') no-repeat;
 	height: 30px;
 }
 
@@ -40,7 +40,7 @@ a {
 	width: 22px;
 	height: 22px;
 	left: 4px;
-	background: url('../../images/default/ide/siderbar_show.png') center no-repeat;
+	background: url('../images/ide/siderbar_show.png') center no-repeat;
 }
 
 .top_btn_container {
@@ -92,15 +92,15 @@ a {
 }
 
 #siderbar_nav_body_apps {
-	background-image: url('../../images/default/ide/nav_apps.png');
+	background-image: url('../images/ide/nav_apps.png');
 }
 
 #siderbar_nav_body_stacks {
-	background-image: url('../../images/default/ide/nav_stacks.png');
+	background-image: url('../images/ide/nav_stacks.png');
 }
 
 #siderbar_nav_body_nodes {
-	background-image: url('../../images/default/ide/nav_nodes.png');
+	background-image: url('../images/ide/nav_nodes.png');
 }
 
 .siderbar_tab ol {
@@ -129,15 +129,15 @@ a {
 }
 
 #siderbar_tab_title_compute {
-	background-image: url('../../images/default/ide/ec2_instance_small.png');
+	background-image: url('../images/ide/ec2_instance_small.png');
 }
 
 #siderbar_tab_title_storage {
-	background-image: url('../../images/default/ide/ebs_volume_small.png');
+	background-image: url('../images/ide/ebs_volume_small.png');
 }
 
 #siderbar_tab_title_network {
-	background-image: url('../../images/default/ide/elb_loadbalancer_small.png');
+	background-image: url('../images/ide/elb_loadbalancer_small.png');
 }
 
 .siderbar_tab_sub_title {
@@ -172,23 +172,23 @@ a {
 }
 
 .component_instance {
-	background-image: url('../../images/default/ide/ec2-ami.png');
+	background-image: url('../images/ide/ec2-ami.png');
 }
 
 .component_volume {
-	background-image: url('../../images/default/ide/ebs-snapshot.png?v=3');
+	background-image: url('../images/ide/ebs-snapshot.png?v=3');
 }
 
 .component_elb {
-	background-image: url('../../images/default/ide/elb-loadbalancer.png');
+	background-image: url('../images/ide/elb-loadbalancer.png');
 }
 
 .component_eip {
-	background-image: url('../../images/default/ide/ec2_eip_small.png');
+	background-image: url('../images/ide/ec2_eip_small.png');
 }
 
 .component_keyPairs {
-	background-image: url('../../images/default/ide/ec2_keypair_small.png');
+	background-image: url('../images/ide/ec2_keypair_small.png');
 }
 
 .siderbar_component_item:hover {
@@ -223,7 +223,7 @@ a {
 	border-color: #3b3b3c #202020 #202020 #3b3b3c;
 	background-color: #2e2e2f;
 	background-repeat: no-repeat;
-	background-image: url('../../images/default/ide/actions.png?v=8');
+	background-image: url('../images/ide/actions.png?v=8');
 }
 
 .top_btn_item:hover {
@@ -307,8 +307,8 @@ a {
 #canvas_body {
 	margin: 20px;
 	border: 1px solid #ccc;
-	background-image: url('../../images/default/ide/canvas_background.jpg');
-/*	-webkit-transition: all .3s; 
+	background-image: url('../images/ide/canvas_background.jpg');
+/*	-webkit-transition: all .3s;
 	-moz-transition: all .3s;
 	-o-transition: all .3s;
 	transition: all .3s;*/
@@ -316,7 +316,7 @@ a {
 
 #canvas_body.zoomed {
 	pointer-events: none;
-	background-image: url('../../images/default/ide/canvas_background_zoom.jpg');
+	background-image: url('../images/ide/canvas_background_zoom.jpg');
 /*	-webkit-transform: scale(0.5) translate(-50%, -50%);
 	-moz-transform: scale(0.5) translate(-50%, -50%);
 	-o-transform: scale(0.5) translate(-50%, -50%);
@@ -339,20 +339,20 @@ a {
 .instance {
 	width: 115px;
 	height: 115px;
-	background: url('../../images/default/ide/ec2.png') 9px 2px no-repeat;
+	background: url('../images/ide/ec2.png') 9px 2px no-repeat;
 }
 
 .elb {
 	width: 110px;
 	height: 80px;
-	background: url('../../images/default/ide/elb.png?v=2') 0px 2px no-repeat;
+	background: url('../images/ide/elb.png?v=2') 0px 2px no-repeat;
 }
 
 .volume {
 	position: absolute;
 	width: 100px;
 	height: 115px;
-	background: url('../../images/default/ide/ebs.png?v=5') 4px -2px no-repeat;
+	background: url('../images/ide/ebs.png?v=5') 4px -2px no-repeat;
 }
 
 .component_body {
@@ -364,7 +364,7 @@ a {
 	height: 14px;
 	position: absolute;
 	cursor: pointer;
-	background-image: url('../../images/default/ide/port.png?v=4');
+	background-image: url('../images/ide/port.png?v=4');
 	background-repeat:  no-repeat;
 }
 
@@ -532,7 +532,7 @@ a {
 	top: 30px;
 	width: 39px;
 	height: 27px;
-	background: url('../../images/default/ide/ami/ubuntu.64.ebs.png') no-repeat;
+	background: url('../images/ide/ami/ubuntu.64.ebs.png') no-repeat;
 	position: absolute;
 }
 
@@ -541,7 +541,7 @@ a {
 	width: 16px;
 	height: 16px;
 	position: absolute;
-	background-image: url('../../images/default/ide/instance-attchment.png?v=3');
+	background-image: url('../images/ide/instance-attchment.png?v=3');
 	background-repeat: no-repeat;
 }
 

@@ -18,7 +18,7 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
 	parseLoginResult = ( result, return_code, param ) ->
 
 		is_error         = true # only E_OK is false
-		resolved_message = ""
+		error_message    = ""
 		resolved_data    = null
 
 		try
@@ -27,10 +27,10 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
 				when constant.RETURN_CODE.E_OK
 					resolved_data   = resolveVO result
 					is_error       = false
-				when constant.RETURN_CODE.E_NONE    then resolved_message = result.toString() #"Invalid username or password"
-				when constant.RETURN_CODE.E_INVALID then resolved_message = result.toString() #"Invalid username or password"
-				when constant.RETURN_CODE.E_EXPIRED then resolved_message = result.toString() #"Your subscription expired"
-				when constant.RETURN_CODE.E_UNKNOWN then resolved_message = constant.MESSAGE_E.E_UNKNOWN #"Invalid username or password"
+				when constant.RETURN_CODE.E_NONE    then error_message = result.toString() #"Invalid username or password"
+				when constant.RETURN_CODE.E_INVALID then error_message = result.toString() #"Invalid username or password"
+				when constant.RETURN_CODE.E_EXPIRED then error_message = result.toString() #"Your subscription expired"
+				when constant.RETURN_CODE.E_UNKNOWN then error_message = constant.MESSAGE_E.E_UNKNOWN #"Invalid username or password"
 				else console.log result.toString()
 
 		catch error
@@ -47,7 +47,7 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
 			#resolved
 			result_vo.forge_result.is_error         = is_error
 			result_vo.forge_result.resolved_data    = resolved_data
-			result_vo.forge_result.resolved_message = resolved_message
+			result_vo.forge_result.error_message    = error_message
 
 		#return vo
 		result_vo.forge_result

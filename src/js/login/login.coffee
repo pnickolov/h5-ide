@@ -55,7 +55,7 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 		session_model.login( username, password )
 
 		#login return handler (dispatch from service/forge/session/session_model)
-		session_model.on 'login_return', ( forge_result ) ->
+		session_model.on 'SESSION_LOGIN_RETURN', ( forge_result ) ->
 
 			if !forge_result.is_error
 			#login succeed
@@ -72,7 +72,7 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 
 			else
 			#login failed
-				alert forge_result.resolved_message
+				alert forge_result.error_message
 
 				false
 

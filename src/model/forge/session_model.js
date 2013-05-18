@@ -28,9 +28,9 @@ Action:
             me.set('vo.usercode', session_info.usercode);
             me.set('vo.region_name', session_info.region_name);
           } else {
-            console.log('login failed, error is ' + forge_result.resolved_message);
+            console.log('login failed, error is ' + forge_result.error_message);
           }
-          return me.trigger('login_return', forge_result);
+          return me.trigger('SESSION_LOGIN_RETURN', forge_result);
         });
       }
     });

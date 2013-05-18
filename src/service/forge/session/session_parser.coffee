@@ -1,5 +1,5 @@
 
-define [ 'session_vo', 'result_vo', 'constant' ], ( SessionVO, result_vo, constant ) ->
+define [ 'session_vo', 'result_vo', 'constant' ], ( SessionVO, resultVO, constant ) ->
 
 	#private (resolve result to user_vo )
 	resolveVO = ( result ) ->
@@ -41,16 +41,16 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( SessionVO, result_vo, consta
 		finally
 
 			#orial
-			result_vo.forge_result_vo.return_code      = return_code
-			result_vo.forge_result_vo.param            = param
+			resultVO.forge_result.return_code      = return_code
+			resultVO.forge_result.param            = param
 
 			#resolved
-			result_vo.forge_result_vo.is_error         = is_error
-			result_vo.forge_result_vo.resolved_data    = resolved_data
-			result_vo.forge_result_vo.resolved_message = resolved_message
+			resultVO.forge_result.is_error         = is_error
+			resultVO.forge_result.resolved_data    = resolved_data
+			resultVO.forge_result.resolved_message = resolved_message
 
 		#return vo
-		result_vo.forge_result_vo
+		resultVO.forge_result
 	# end of parseLoginResult
 
 

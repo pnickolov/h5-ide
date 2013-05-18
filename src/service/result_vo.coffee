@@ -2,7 +2,7 @@
 define [], () ->
 
     #private
-    forge_result_vo = {
+    forge_result = {
 
         #orial
         return_code      : -1
@@ -15,7 +15,7 @@ define [], () ->
     }
 
     #private
-    aws_result_vo = {
+    aws_result = {
 
         #orial
         param           : null
@@ -28,5 +28,5 @@ define [], () ->
     }
 
     #public
-    forge_result_vo : forge_result_vo
-    aws_result_vo   : aws_result_vo
+    forge_result : forge_result
+    aws_result   : aws_result

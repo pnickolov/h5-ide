@@ -7,7 +7,7 @@ Action:
 	3.invoke callback
 ###
 
-define [ 'MC', 'session_parser', 'result_vo' ], ( MC, session_parser, result_vo ) ->
+define [ 'MC', 'session_parser', 'result_vo' ], ( MC, sessionParser, resultVO ) ->
 
 	URL = '/session/'
 
@@ -30,9 +30,9 @@ define [ 'MC', 'session_parser', 'result_vo' ], ( MC, session_parser, result_vo 
 				success : ( result, return_code ) ->
 
 					#resolve result
-					result_vo.forge_result_vo = session_parser.parseLoginResult result, return_code, param
+					resultVO.forge_result_vo = sessionParser.parseLoginResult result, return_code, param
 
-					callback result_vo.forge_result_vo
+					callback resultVO.forge_result_vo
 
 				error : ( result, return_code ) ->
 

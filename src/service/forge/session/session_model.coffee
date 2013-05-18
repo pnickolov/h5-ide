@@ -11,7 +11,7 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service) ->
 
     SessionModel = Backbone.Model.extend {
 
-        #vo
+        #vo (declare variable)
         defaults : {
             userid      : ""
             usercode    : ""
@@ -21,17 +21,17 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service) ->
             has_cred    : ""
         }
 
-        #login api
+        #login api (define function)
         login : (username, password) ->
 
             me = this
 
-            session_service.login username, password, ( forge_result_vo ) ->
+            session_service.login username, password, ( forge_result ) ->
 
-                if !forge_result_vo.is_error
+                if !forge_result.is_error
                 #login succeed
 
-                    user_vo = forge_result_vo.resolved_data
+                    user_vo = forge_result.resolved_data
 
                     #set vo
                     me.set 'usercode', user_vo.usercode
@@ -40,15 +40,15 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service) ->
                 else
                 #login failed
 
-                    console.log 'login failed, error is ' + forge_result_vo.resolved_message
+                    console.log 'login failed, error is ' + forge_result.resolved_message
 
                 #dispatch event (dispatch to js/login/login whenever login succeed or failed)
-                me.trigger 'login_return', forge_result_vo
+                me.trigger 'login_return', forge_result
 
     }
 
-    #private
+    #private (instantiation)
     sessionModel = new SessionModel()
 
-    #public
+    #public (exposes methods)
     sessionModel

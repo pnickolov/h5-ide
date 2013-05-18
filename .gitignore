@@ -22,6 +22,7 @@ src/js/**/*.js
 
 #ignore service
 src/service/**/**/*.js
+src/service/*.js
 
 #ignore module
 src/module/**/*.js

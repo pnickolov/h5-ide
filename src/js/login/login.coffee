@@ -42,7 +42,7 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 });
 ###
 
-define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
+define [ 'MC', 'session_model' ,'jquery'], ( MC, sessionModel, $ ) ->
 
 	MC.login = ( event ) ->
 
@@ -52,15 +52,15 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 		password = $( '#login_password' ).val()
 
 		#invoke session.login api
-		session_model.login(username, password)
+		sessionModel.login(username, password)
 
 		#login return handler (dispatch from service/forge/session/session_model)
-		session_model.on 'login_return', ( forge_result_vo ) ->
+		sessionModel.on 'login_return', ( forge_result ) ->
 
-			if !forge_result_vo.is_error
+			if !forge_result.is_error
 			#login succeed
 
-				result = forge_result_vo.resolved_data
+				result = forge_result.resolved_data
 
 				$.cookie 'user_name',  result.usercode,   { expires: 3600 }
 				$.cookie 'session_id', result.session_id, { expires: 3600 }
@@ -72,7 +72,7 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 
 			else
 			#login failed
-				alert forge_result_vo.resolved_message
+				alert forge_result.resolved_message
 
 				false
 

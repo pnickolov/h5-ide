@@ -7,7 +7,7 @@ Action:
 	3.invoke callback
 ###
 
-define [ 'MC', 'session_parser', 'result_vo' ], ( MC, sessionParser, resultVO ) ->
+define [ 'MC', 'session_parser', 'result_vo' ], ( MC, session_parser, result_vo ) ->
 
 	URL = '/session/'
 
@@ -30,17 +30,17 @@ define [ 'MC', 'session_parser', 'result_vo' ], ( MC, sessionParser, resultVO ) 
 				success : ( result, return_code ) ->
 
 					#resolve result
-					resultVO.forge_result_vo = sessionParser.parseLoginResult result, return_code, param
+					result_vo.forge_result = session_parser.parseLoginResult result, return_code, param
 
-					callback resultVO.forge_result_vo
+					callback result_vo.forge_result
 
 				error : ( result, return_code ) ->
 
-					result_vo.forge_result_vo.return_code      = return_code
-					result_vo.forge_result_vo.is_error         = true
-					result_vo.forge_result_vo.resolved_message = result.toString()
+					result_vo.forge_result.return_code      = return_code
+					result_vo.forge_result.is_error         = true
+					result_vo.forge_result.resolved_message = result.toString()
 
-					callback result_vo.forge_result_vo
+					callback result_vo.forge_result
 			}
 
 		catch error

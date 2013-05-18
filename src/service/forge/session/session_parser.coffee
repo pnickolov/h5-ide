@@ -1,18 +1,18 @@
 
-define [ 'session_vo', 'result_vo', 'constant' ], ( SessionVO, resultVO, constant ) ->
+define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, constant ) ->
 
-	#private (resolve result to user_vo )
+	#private (resolve result to session_info )
 	resolveVO = ( result ) ->
 		#resolve result
-		SessionVO.user_vo.userid      = result[0]
-		SessionVO.user_vo.usercode    = result[1]
-		SessionVO.user_vo.session_id  = result[2]
-		SessionVO.user_vo.region_name = result[3]
-		SessionVO.user_vo.email       = result[4]
-		SessionVO.user_vo.has_cred    = result[5]
+		session_vo.session_info.userid      = result[0]
+		session_vo.session_info.usercode    = result[1]
+		session_vo.session_info.session_id  = result[2]
+		session_vo.session_info.region_name = result[3]
+		session_vo.session_info.email       = result[4]
+		session_vo.session_info.has_cred    = result[5]
 
-		#return user_vo
-		SessionVO.user_vo
+		#return session_info
+		session_vo.session_info
 
 	#private (parser login return)
 	parseLoginResult = ( result, return_code, param ) ->
@@ -41,16 +41,16 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( SessionVO, resultVO, constan
 		finally
 
 			#orial
-			resultVO.forge_result.return_code      = return_code
-			resultVO.forge_result.param            = param
+			result_vo.forge_result.return_code      = return_code
+			result_vo.forge_result.param            = param
 
 			#resolved
-			resultVO.forge_result.is_error         = is_error
-			resultVO.forge_result.resolved_data    = resolved_data
-			resultVO.forge_result.resolved_message = resolved_message
+			result_vo.forge_result.is_error         = is_error
+			result_vo.forge_result.resolved_data    = resolved_data
+			result_vo.forge_result.resolved_message = resolved_message
 
 		#return vo
-		resultVO.forge_result
+		result_vo.forge_result
 	# end of parseLoginResult
 
 

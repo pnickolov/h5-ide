@@ -58,7 +58,9 @@ require.config {
 		'session_vo'        : 'service/forge/session/session_vo'
 		'session_parser'    : 'service/forge/session/session_parser'
 		'session_service'   : 'service/forge/session/session_service'
-		'session_model'     : 'service/forge/session/session_model'
+
+		#model
+		'session_model'     : 'model/forge/session_model'
 
 		#login
 		'login'             : 'js/login/login'

@@ -7,18 +7,13 @@ Action:
 	3.dispatch event to controller
 ###
 
-define [ 'backbone', 'session_service'], ( Backbone, session_service) ->
+define [ 'backbone', 'session_service', 'session_vo'], ( Backbone, session_service, session_vo ) ->
 
     SessionModel = Backbone.Model.extend {
 
         #vo (declare variable)
         defaults : {
-            userid      : ""
-            usercode    : ""
-            session_id  : ""
-            region_name : ""
-            email       : ""
-            has_cred    : ""
+            vo : session_vo.session_info
         }
 
         #login api (define function)
@@ -31,11 +26,11 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service) ->
                 if !forge_result.is_error
                 #login succeed
 
-                    user_vo = forge_result.resolved_data
+                    session_info = forge_result.resolved_data
 
                     #set vo
-                    me.set 'usercode', user_vo.usercode
-                    me.set 'region_name', user_vo.region_name
+                    me.set 'vo.usercode'   , session_info.usercode
+                    me.set 'vo.region_name', session_info.region_name
 
                 else
                 #login failed

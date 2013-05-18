@@ -2,7 +2,7 @@
 define [], () ->
 
 	#user vo
-	user_vo = {
+	session_info = {
 		userid      : null
 		usercode    : null
 		session_id  : null
@@ -12,4 +12,4 @@ define [], () ->
 	}
 
 	#public
-	user_vo : user_vo
+	session_info : session_info

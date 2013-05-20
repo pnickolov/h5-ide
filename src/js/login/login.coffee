@@ -54,7 +54,7 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 		#invoke session.login api
 		session_model.login( username, password )
 
-		#login return handler (dispatch from service/forge/session/session_model)
+		#login return handler (dispatch from service/handler/session/session_model)
 		session_model.on 'SESSION_LOGIN_RETURN', ( forge_result ) ->
 
 			if !forge_result.is_error

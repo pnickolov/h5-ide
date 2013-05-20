@@ -21,7 +21,7 @@ require.config({
 		'router'       : 'js/router',
 		'model'        : 'js/model/model',
 		'view'         : 'js/view/view'
-		
+
 	},
 
 	shim: {
@@ -44,7 +44,7 @@ require.config({
 		}
 
 	}
-	
+
 });
 ###
 
@@ -73,9 +73,9 @@ require.config {
 		'MC'        : 'lib/MC.core'
 
 		#service
-		'service'   : 'service/forge/session/session'
-		'vo'        : 'service/forge/session/session_vo'
-		'parser'    : 'service/forge/session/session_parser'
+		'service'   : 'service/handler/session/session'
+		'vo'        : 'service/handler/session/session_vo'
+		'parser'    : 'service/handler/session/session_parser'
 
 	shim   :
 

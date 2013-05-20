@@ -9,6 +9,7 @@
 		"handlebars" : "1.0.0-rc.3",
 		"requirejs"  : "2.1.5",
 		"requirejs-text"      : "2.0.6",
-		"requirejs-domready"  : "2.0.1"
+		"requirejs-domready"  : "2.0.1",
+		"qunit"      : "1.11.0"
 	}
 }

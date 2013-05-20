@@ -31,7 +31,8 @@ module.exports = function( grunt ) {
 		cssfiles   : [
 			'<%= src %>/**/*.css',
 			'!<%= src %>/assets/**/*.css',
-			'!<%= src %>/ui/common/css/*.css'
+			'!<%= src %>/ui/common/css/*.css',
+			'!<%= src %>/vender/qunit/*.css'
 		],
 
 		coffeefiles : [
@@ -82,7 +83,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'init', function() {
 
 		var done = this.async();
-		
+
 		//install dependent js libs by bower
 		config.bower.run( grunt, function( err ) {
 
@@ -105,9 +106,9 @@ module.exports = function( grunt ) {
 
 	/* task of use as develop */
 	grunt.registerTask( 'develop', ['make',
-									'livereload-start', 
-									'connect:develop', 
-									'open', 
+									'livereload-start',
+									'connect:develop',
+									'open',
 									'watch'
 	]);
 

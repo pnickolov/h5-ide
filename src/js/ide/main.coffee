@@ -1,3 +1,3 @@
 
-require [ 'router' ], ( AppRouter ) ->
-	AppRouter.initialize()
+require [ 'router' ], ( router ) ->
+	router.initialize()

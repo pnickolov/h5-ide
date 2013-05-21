@@ -14,14 +14,14 @@ define [ 'backbone' ], ( Backbone ) ->
 
 		router.on 'route:defaultRouter', () ->
 
-			require [ 'leftpanel' ], ( LeftPanel ) ->
+			require [ 'leftpanel' ], ( left_panel ) ->
 
 				#first load left panel
-				LeftPanel.loadModule()
+				left_panel.loadModule()
 				
-				require [ 'canvas' ], ( CanvasPanel ) ->
+				require [ 'canvas' ], ( canvas_panel ) ->
 					#second lod canvas
-					CanvasPanel.loadModule()
+					canvas_panel.loadModule()
 
 					true
 

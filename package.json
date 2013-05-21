@@ -17,6 +17,7 @@
 		"grunt-contrib-clean"   : "*",
 		"grunt-regarde"         : "*",
 		"grunt-open"            : "*",
+		"grunt-replace"         : "*",
 		"matchdep"              : "*"
 	}
 }

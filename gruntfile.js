@@ -58,6 +58,8 @@ module.exports = function( grunt ) {
 		open       : require( './config/open.js'    ),
 		clean      : require( './config/clean.js'   ),
 
+		replace    : require( './config/replace.js'   ),
+
 		cssmin     : require( './config/cssmin.js'  ),
 		htmlmin    : require( './config/htmlmin.js' ),
 		uglify     : require( './config/uglify.js'  ),
@@ -125,6 +127,7 @@ module.exports = function( grunt ) {
 									'clean',
 									'copy:publish',
 									'htmlmin',
+									'replace',/*add by xjimmy*/
 									'cssmin',
 									'uglify',
 									'open:publish',/*modify by xjimmy*/

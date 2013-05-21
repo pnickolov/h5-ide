@@ -33,7 +33,7 @@
 
 * Install: <http://nodejs.org/download/>
 
-* Validation: 
+* Validation:
 <pre>
 windows command shell or use sudo (for OSX, *nix, BSD etc)
 node --version
@@ -42,13 +42,13 @@ npm --version
 
 ### Grunt & Bower
 
-* Install£º
+* Install:
 <pre>
 windows command shell or use sudo (for OSX, *nix, BSD etc)
 npm install grunt-cli bower -g
 </pre>
 
-* Validation: 
+* Validation:
 <pre>
 windows command shell or use sudo (for OSX, *nix, BSD etc)
 grunt --version
@@ -68,3 +68,9 @@ grunt         //watch and validation this project's source change
 grunt develop //run server on brower( Chrome or Firfox )
 grunt publish //publish and run this's project on brower( Chrome or Firfox )
 </pre>
+
+### Comment
+<pre>
+When change package.json, please run "npm install" in project dir
+When change compnent.json, please run "grunt init" in project dir
+</pre>pre>

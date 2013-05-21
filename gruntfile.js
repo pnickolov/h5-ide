@@ -108,7 +108,15 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'develop', ['make',
 									'livereload-start',
 									'connect:develop',
-									'open',
+									'open:develop',/*modify by xjimmy*/
+									'watch'
+	]);
+
+	/* task of use as unit unittest (add by xjimmy) */
+	grunt.registerTask( 'unittest', ['make',
+									'livereload-start',
+									'connect:unittest',
+									'open:unittest',
 									'watch'
 	]);
 
@@ -119,7 +127,7 @@ module.exports = function( grunt ) {
 									'htmlmin',
 									'cssmin',
 									'uglify',
-									'open',
+									'open:publish',/*modify by xjimmy*/
 									'connect:publish'
 	]);
 

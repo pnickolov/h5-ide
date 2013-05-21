@@ -1,7 +1,15 @@
 module.exports = {
 
-	server: {
-		path: 'http://localhost:<%= connect.options.port %>/login.html'
-	}
+    /*modify by xjimmy*/
+
+    unittest: {
+        url : 'http://localhost:<%= connect.options.port %>/test/index.html'
+    },
+    develop: {
+        url: 'http://localhost:<%= connect.options.port %>/login.html'
+    },
+    publish: {
+        url: 'http://localhost:<%= connect.options.port %>/login.html'
+    }
 
 };

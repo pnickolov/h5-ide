@@ -52,7 +52,7 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 		password = $( '#login_password' ).val()
 
 		#invoke session.login api
-		session_model.login( username, password )
+		session_model.login username, password
 
 		#login return handler (dispatch from service/session/session_model)
 		session_model.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->

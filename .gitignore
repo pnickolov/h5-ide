@@ -20,10 +20,15 @@ src/vender/**/*.*
 src/js/*.js
 src/js/**/*.js
 
+#ignore model
+src/model/**/*.js
+src/model/*.js
+
 #ignore service
-src/service/**/**/*.js
+src/service/**/*.js
 src/service/*.js
 
 #ignore module
 src/module/**/*.js
 !src/module/canvas/canvas.js
+

@@ -18,6 +18,7 @@
 		"grunt-regarde"         : "*",
 		"grunt-open"            : "*",
 		"grunt-replace"         : "*",
+		"grunt-string-replace"  : "*",
 		"matchdep"              : "*"
 	}
 }

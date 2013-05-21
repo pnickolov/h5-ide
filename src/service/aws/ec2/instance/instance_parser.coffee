@@ -34,7 +34,7 @@ define [ 'MC', 'jquery', 'instance_vo', 'result_vo', 'constant' ], ( MC, $, inst
 
         catch error
 
-            is_error = true;
+            is_error = true
             console.log error.toString()
 
         finally

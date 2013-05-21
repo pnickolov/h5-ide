@@ -35,7 +35,7 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
 
 		catch error
 
-			is_error = true;
+			is_error = true
 			console.log error.toString()
 
 		finally

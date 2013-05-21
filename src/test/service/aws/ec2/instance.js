@@ -10,6 +10,8 @@
     test("Check test user", function() {
       if (username === "" || password === "") {
         return ok(false, "please set the username and password first");
+      } else {
+        return ok(true, "passwd");
       }
     });
     module("Module Session");

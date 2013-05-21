@@ -12,6 +12,8 @@ require [ 'MC', 'jquery', 'session_service', 'instance_service'], ( MC, $, sessi
     test "Check test user", () ->
         if username == "" or password == ""
             ok false, "please set the username and password first"
+        else
+            ok true, "passwd"
 
 
     ################################################

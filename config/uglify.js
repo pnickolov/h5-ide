@@ -3,7 +3,7 @@ module.exports = {
 	publish: {
 		expand: true,
 		cwd: '<%= src %>/',
-		src: [ '**/*.js', '!lib/*.js', '!ui/common/*.js' ],
+		src: [ '**/*.js', '!lib/*.js', '!ui/common/*.js', '!test/**/*.js' ],
 		dest: '<%= release %>/',
 		ext: '.js'
 	},

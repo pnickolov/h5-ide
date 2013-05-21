@@ -14,7 +14,7 @@ module.exports = {
 	publish: {
 		expand: true,
 		cwd: '<%= src %>/',
-		src: [ '**/*.html' ],
+		src: [ '**/*.html', '!test/**/*.html' ],
 		dest: '<%= release %>/',
 		ext: '.html'
 	}

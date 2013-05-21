@@ -12,7 +12,7 @@ module.exports = {
             prefix: '@@'
         },
         files: [
-            {src: ['release/login.html'], dest: 'release/login.html'}
+            {src: ['<%= release %>/login.html'], dest: '<%= release %>/login.html'}
         ]
     }
 

@@ -19,9 +19,14 @@ module.exports = {
 		files: [{
 			expand : true,
 			cwd    : '<%= src %>/',
-			src    : '**',
+			src    : [ '**' ] ,
 			filter : function( filepath ) {
-				return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
+				if ( filepath.indexOf( 'test' ) == -1 ) {
+					return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
+				}
+				else {
+					return false;
+				}
 			},
 			dest   : '<%= release %>/'
 		}]

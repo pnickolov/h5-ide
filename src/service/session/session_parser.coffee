@@ -31,12 +31,12 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
 				when constant.RETURN_CODE.E_INVALID then error_message = result.toString() #"Invalid username or password"
 				when constant.RETURN_CODE.E_EXPIRED then error_message = result.toString() #"Your subscription expired"
 				when constant.RETURN_CODE.E_UNKNOWN then error_message = constant.MESSAGE_E.E_UNKNOWN #"Invalid username or password"
-				else console.log result.toString()
+				else
+					error_message  =  result.toString()
 
 		catch error
-
+			error_message = error.toString()
 			is_error = true
-			console.log error.toString()
 
 		finally
 

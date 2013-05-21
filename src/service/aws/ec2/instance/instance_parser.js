@@ -24,12 +24,12 @@
             is_error = false;
             break;
           default:
-            console.log(result.toString());
+            error_message = result.toString();
         }
       } catch (_error) {
         error = _error;
+        error_message = error.toString();
         is_error = true;
-        console.log(error.toString());
       } finally {
         result_vo.aws_result.return_code = return_code;
         result_vo.aws_result.param = param;

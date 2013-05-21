@@ -73,9 +73,9 @@ require.config {
 		'MC'        : 'lib/MC.core'
 
 		#service
-		'service'   : 'service/handler/session/session'
-		'vo'        : 'service/handler/session/session_vo'
-		'parser'    : 'service/handler/session/session_parser'
+		'service'   : 'service/session/session'
+		'vo'        : 'service/session/session_vo'
+		'parser'    : 'service/session/session_parser'
 
 	shim   :
 

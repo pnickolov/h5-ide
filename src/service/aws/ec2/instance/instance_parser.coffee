@@ -28,14 +28,14 @@ define [ 'MC', 'jquery', 'instance_vo', 'result_vo', 'constant' ], ( MC, $, inst
 
             switch return_code
                 when constant.RETURN_CODE.E_OK
-                    resolved_data   = resolveVO result[1]
-                    is_error        = false
-                else console.log result.toString()
+                    resolved_data  = resolveVO result[1]
+                    is_error       = false
+                else
+                    error_message  = result.toString()
 
         catch error
-
-            is_error = true
-            console.log error.toString()
+            error_message = error.toString()
+            is_error      = true
 
         finally
 

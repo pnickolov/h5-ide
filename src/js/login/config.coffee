@@ -55,12 +55,12 @@ require.config {
 		'result_vo'         : 'service/result_vo'
 
 		#service
-		'session_vo'        : 'service/handler/session/session_vo'
-		'session_parser'    : 'service/handler/session/session_parser'
-		'session_service'   : 'service/handler/session/session_service'
+		'session_vo'        : 'service/session/session_vo'
+		'session_parser'    : 'service/session/session_parser'
+		'session_service'   : 'service/session/session_service'
 
 		#model
-		'session_model'     : 'model/handler/session_model'
+		'session_model'     : 'model/session_model'
 
 		#login
 		'login'             : 'js/login/login'

@@ -18,10 +18,11 @@ var MC = {
 			return v.toString(16);
    		}).toUpperCase();
 	},
+
 	/**
 	 * Determine the string is JSON or not
 	 * @param  {string}  string the string will be determined
-	 * @return {Boolean}        if the string is JSON, return true, otherwise return false
+	 * @return {Boolean} if the string is JSON, return true, otherwise return false
 	 */
 	isJSON: function (string)
 	{
@@ -42,7 +43,7 @@ var MC = {
 	/**
 	 * JSON-RPC API request
 	 * @param  {object} option the configuration of API request
-	 * @return {[type]}        [description]
+	 * @return {[type]} [description]
 	 *
 	 * example:
 	 * MC.api({
@@ -110,12 +111,27 @@ var MC = {
 		}
 	},
 
-	/*
-	For realtime CSS edit
-	 */
-	realtimeCSS: function ()
+	browserDetect: function ()
 	{
-		setInterval(function ()
+		var rbrowser = /(webkit|firefox|opera|msie|ipad|iphone|android)/ig;
+
+		rbrowser.exec(navigator.userAgent.toLowerCase());
+
+		$(document.body).addClass(RegExp.$1);
+	},
+
+	/*
+		For realtime CSS edit
+	 */
+	realtimeCSS: function (option)
+	{
+		if (option === false)
+		{
+			clearInterval(MC.realtimeCSS_timer);
+
+			return true;
+		}
+		MC.realtimeCSS_timer = setInterval(function ()
 		{
 			var date = new Date(),
 				date_query = date.getTime(),
@@ -140,7 +156,7 @@ var MC = {
 	 *
 	 * 3123131 -> 3,123,131
 	 */
-	number_format: function (number)
+	numberFormat: function (number)
 	{
 		number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
 
@@ -165,7 +181,19 @@ var MC = {
 			string[1] = string[1] || '';
 			string[1] += [precision - string[1].length + 1].join('0');
 		}
+
 		return string.join(decimal);
+	},
+
+	/**
+	 * Generate random number
+	 * @param  {number} min min number
+	 * @param  {number} max max number
+	 * @return {number} The randomized number
+	 */
+	rand: function (min, max)
+	{
+		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 };
 
@@ -284,6 +312,14 @@ MC.WebSocket.prototype = {
 // For event handler
 var returnTrue = function () {return true},
 	returnFalse = function () {return false};
+
+// Global initialization
+$(document).ready(function ()
+{
+	// Detecting browser and add the class name on body, so that we can use specific CSS style
+	// or for specific usage.
+	MC.browserDetect();
+});
 
 /**
  * jQuery plugin to convert a given $.ajax response xml object to json.

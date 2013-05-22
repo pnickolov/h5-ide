@@ -1,4 +1,6 @@
-
+#############################
+#  View(UI logic) for leftpanel
+#############################
 
 define [ 'backbone', 'jquery', 'handlebars', 'UI.tooltip' ], () ->
 

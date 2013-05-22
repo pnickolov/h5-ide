@@ -1,3 +1,6 @@
+#############################
+#  router for ide
+#############################
 
 define [ 'backbone' ], ( Backbone ) ->
 
@@ -18,7 +21,7 @@ define [ 'backbone' ], ( Backbone ) ->
 
 				#first load left panel
 				left_panel.loadModule()
-				
+
 				require [ 'canvas' ], ( canvas_panel ) ->
 					#second lod canvas
 					canvas_panel.loadModule()

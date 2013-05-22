@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>MadeiraCloud - Console</title>
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0"/>
+	<link rel="stylesheet" href="./css/core.css" media="all"/>
+	<link rel="stylesheet" href="./css/UI.component.css"/>
+	<link id="css_style" rel="stylesheet" href="./css/MC.page.console.css" media="all"/>
+	<link href="./prettify/prettify.css" type="text/css" rel="stylesheet" />
+
+	<script type="text/javascript" data-main="/test/console/js/login/config" src="/vender/requirejs/require.js"></script>
+	<script type="text/javascript" src="./prettify/prettify.js"></script>
+	<script type="text/javascript" src="./apiList.js"></script>
+	<script type="text/javascript">
+
+		function init(){
+
+
+			//Enable Send btn
+			$( "#btn_send" ).attr( "enabled", true )
+			$( "#btn_send" ).attr( "class", "btn btn-blue" )
+
+			var service_list = $('#service_list'),
+				resource_list = $('#resource_list'),
+				api_list = $('#api_list'),
+				param_list = $('#param_list');
+
+			service_list.empty();
+			$.each(API_DATA_LIST, function (service_name, service)
+			{
+				service_list.append('<option value="' + service_name + '">' + service_name + '</option>');
+			});
+			service_list.prop("selectedIndex", -1);
+
+			service_list.on('change', function ()
+			{
+				resource_list.empty();
+				api_list.empty();
+				param_list.empty();
+
+				$.each(API_DATA_LIST[ this.value ], function (resource_name, resource)
+				{
+					resource_list.append('<option value="' + resource_name + '">' + resource_name + '</option>');
+				});
+				resource_list.prop("selectedIndex", -1);
+			});
+
+			resource_list.on('change', function ()
+			{
+				api_list.empty();
+				param_list.empty();
+
+				$.each(API_DATA_LIST[ service_list.val() ][ resource_list.val() ], function (api_name, api_data)
+				{
+					api_list.append('<option value="' + api_name + '">' + api_name + '</option>');
+				});
+				api_list.prop("selectedIndex", -1);
+			});
+
+			api_list.on('change', function ()
+			{
+				var data = API_DATA_LIST[ service_list.val() ][ resource_list.val() ][ this.value ];
+
+				$('#method_name').text('Method - ' + data.method);
+				param_list.empty();
+				$.each(data.param, function (param_name, item)
+				{
+					param_list.append('<li><label>' + param_name + ' - [' + item.type + ']</label><input class="input" type="text" id="' + param_name + '" value="' + item.value + '" /></li>');
+				});
+			});
+
+			prettyPrint();
+			//MC.realtimeCSS();
+		}
+
+	</script>
+</head>
+<body id="body">
+	<header>
+		<a id="logo_link" href="http://www.madeiracloud.com/"></a>
+	</header>
+	<div id="container">
+		<h2>MadeiraCloud Console</h2>
+		<div id="login_wrap">
+			<h4>Login</h4>
+			<form id="login_form">
+				<input class="input" id="login_user" type="input" placeholder="Username" />
+				<input class="input" id="login_password" type="password" placeholder="Password" />
+				<input class="btn" type="submit" value="login" />
+			</form>
+			<div id="label_login_result"/>
+		</div>
+
+		<div id="api_wrap">
+			<h4>API</h4>
+			<select class="select" id="region_list" style="width:200px" >
+				<option value='us-east-1'>US East 1(Virginia)</option>
+				<option value='us-west-1'>US West 1(N. California)</option>
+				<option value='us-west-2'>US West 2(Oregon)</option>
+				<option value='eu-west-1'>EU West 1(Ireland)</option>
+				<option value='ap-southeast-1'>Asia Pacific 1(Singapore)</option>
+				<option value='ap-southeast-2'>Asia Pacific 2(Sydney)</option>
+				<option value='ap-northeast-1'>Asia Pacific 1(Tokyo)</option>
+				<option value='sa-east-1'>South America 1(Sao Paulo)</option>
+			</select>
+			<select class="select" id="service_list"></select>
+			<select class="select" id="resource_list"></select>
+			<select class="select" id="api_list" style="width:250px" ></select>
+		</div>
+
+		<div id="param_wrap">
+			<h4 id="method_name">Method</h4>
+			<ul id="param_list"></ul>
+		</div>
+
+		<div id="btn_wrap">
+			<form id="request_form">
+				<button id="btn_send" style="disabled:true" class="btn btn-grey">Send</button>
+			</form>
+		</div>
+
+		<div id="request_wrap">
+			<div id="label_request_result"/>
+			<h4>Request</h4>
+			<div id="resquest_data"></div>
+		</div>
+
+		<div id="response_wrap">
+			<h4>Response</h4>
+			<pre id="response_data" class="prettyprint linenums"></pre>
+		</div>
+	</div>
+</body>
+</html>

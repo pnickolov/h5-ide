@@ -32,7 +32,9 @@ module.exports = function( grunt ) {
 			'<%= src %>/**/*.css',
 			'!<%= src %>/assets/**/*.css',
 			'!<%= src %>/ui/common/css/*.css',
-			'!<%= src %>/vender/qunit/*.css'
+			'!<%= src %>/vender/qunit/*.css',
+			'!<%= src %>/test/console/css/*.css',
+			'!<%= src %>/test/console/prettify/*.css'
 		],
 
 		coffeefiles : [

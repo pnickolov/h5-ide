@@ -1,6 +1,9 @@
+####################################
+#  Controller for leftpanel module
+####################################
 
 define [ 'jquery', 'text!./module/leftpanel/template.html' ], ( $, template ) ->
-    
+
     #private
     loadModule = () ->
 

@@ -44,6 +44,7 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 
 define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 
+	#private method
 	MC.login = ( event ) ->
 
 		event.preventDefault()
@@ -78,5 +79,6 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 
 		true
 
+	#public object
 	ready : () ->
 		$( '#login_form' ).submit( MC.login )

@@ -1,0 +1,201 @@
+/* Fonts */
+@font-face
+{
+	font-family: Nunito-Light;
+	src: url('../fonts/Nunito-Light.ttf') format('truetype');
+}
+
+@font-face
+{
+	font-family: Nunito-Regular;
+	src: url('../fonts/Nunito-Regular.ttf') format('truetype');
+}
+
+@font-face
+{
+	font-family: VeraMono;
+	src: url('../fonts/VeraMono.ttf') format('truetype');
+}
+
+@font-face
+{
+	font-family: 'Ubuntu';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Ubuntu'), url('../fonts/ubuntu.woff') format('woff');
+}
+/* CSS reset */
+article,
+footer,
+header,
+nav {
+	display: block;
+}
+
+html {
+	font-size: 100%;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+}
+
+a {
+	text-decoration: none;
+	outline: none;
+	border: 0;
+}
+
+a:hover,
+a:active {
+	outline: 0;
+}
+
+img {
+	max-width: 100%;
+	vertical-align: middle;
+	border: 0;
+	-ms-interpolation-mode: bicubic;
+}
+
+button,
+input,
+select,
+textarea {
+	margin: 0;
+	font-size: 100%;
+	vertical-align: middle;
+}
+
+button,
+input {
+	*overflow: visible;
+	line-height: normal;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}
+
+textarea {
+	overflow: auto;
+	vertical-align: top;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	font-weight: 500;
+	text-rendering: optimizelegibility;
+}
+
+h1,
+h2,
+h3 {
+	line-height: 40px;
+}
+
+h1 {
+	font-size: 38.5px;
+}
+
+h2 {
+	font-size: 31.5px;
+}
+
+h3 {
+	font-size: 24.5px;
+}
+
+h4 {
+	font-size: 17.5px;
+}
+
+h5 {
+	font-size: 14px;
+}
+
+h6 {
+	font-size: 11.9px;
+}
+
+ul, 
+ol, 
+li {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	outline: none;
+}
+
+p {
+	margin: 0 0 10px;
+	padding: 2px;
+}
+
+.clearfix {
+	*zoom: 1;
+}
+
+.clearfix:before,
+.clearfix:after {
+	display: table;
+	line-height: 0;
+	content: "";
+}
+
+.clearfix:after {
+	clear: both;
+}
+
+.hide {
+	display: none;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-center {
+	text-align: center;
+}
+
+pre {
+	word-break: break-all;
+	word-wrap: break-word;
+	display: block;
+	padding: 9.5px;
+	margin: 10px 0;
+	font-size: 12px;
+	line-height: 20px;
+}
+
+abbr {
+	cursor: help;
+	border-bottom: 1px dotted #999;
+}
+
+body {
+	margin: 0;
+	font-size: 12px;
+	font-family: Arial, sans-serif;
+}
+
+/* Hack custom fonts loading */
+@media (min-width: 1px) {
+	body {
+		font-family: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;
+	}
+}
+
+a {
+	color: #528036;
+}

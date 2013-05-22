@@ -91,21 +91,63 @@
 			<div id="label_login_result"></div>
 		</div>
 
+		<table id="api_table" class="table table-light">
+			<thead>
+				<tr>
+				<th style="width:100px">Request time</th>
+				<th style="width:100px">Response time</th>
+				<th style="width:80px">Service</th>
+				<th style="width:80px">Resource</th>
+				<th style="width:120px">API name</th>
+				<th style="width:40px">JSON_OK</th>
+				<th style="width:40px">E_OK</th>
+				</tr>
+			</thead>
+			<tbody id="api_table_body">
+				<tr>
+					<td>2013-05-22 13:32:52</td>
+					<td>2013-05-22 13:32:52</td>
+					<td>VPC</td>
+					<td>VPN</td>
+					<td>DescribeVpnConnections</td>
+					<td><i class="status status-green"></i></td>
+					<td><i class="status status-green"></i></td>
+				</tr>
+				<tr>
+					<td>2013-05-22 13:32:52</td>
+					<td>2013-05-22 13:32:52</td>
+					<td>VPC</td>
+					<td>VPN</td>
+					<td>DescribeVpnConnections</td>
+					<td><i class="status status-green"></i></td>
+					<td><i class="status status-green"></i></td>
+				</tr>
+			</tbody>
+		</table>
+
 		<div id="api_wrap">
 			<h4>API</h4>
-			<select class="select" id="region_list" style="width:200px" >
-				<option value='us-east-1'>US East 1(Virginia)</option>
-				<option value='us-west-1'>US West 1(N. California)</option>
-				<option value='us-west-2'>US West 2(Oregon)</option>
-				<option value='eu-west-1'>EU West 1(Ireland)</option>
-				<option value='ap-southeast-1'>Asia Pacific 1(Singapore)</option>
-				<option value='ap-southeast-2'>Asia Pacific 2(Sydney)</option>
-				<option value='ap-northeast-1'>Asia Pacific 1(Tokyo)</option>
-				<option value='sa-east-1'>South America 1(Sao Paulo)</option>
-			</select>
-			<select class="select" id="service_list"></select>
-			<select class="select" id="resource_list"></select>
-			<select class="select" id="api_list" style="width:250px" ></select>
+			<div class="select">
+				<select id="region_list" style="width:200px" >
+					<option value='us-east-1'>US East 1(Virginia)</option>
+					<option value='us-west-1'>US West 1(N. California)</option>
+					<option value='us-west-2'>US West 2(Oregon)</option>
+					<option value='eu-west-1'>EU West 1(Ireland)</option>
+					<option value='ap-southeast-1'>Asia Pacific 1(Singapore)</option>
+					<option value='ap-southeast-2'>Asia Pacific 2(Sydney)</option>
+					<option value='ap-northeast-1'>Asia Pacific 1(Tokyo)</option>
+					<option value='sa-east-1'>South America 1(Sao Paulo)</option>
+				</select>
+			</div>
+			<div class="select">
+				<select id="service_list"></select>
+			</div>
+			<div class="select">
+				<select id="resource_list"></select>
+			</div>
+			<div class="select">
+				<select id="api_list"></select>
+			</div>
 		</div>
 
 		<div id="param_wrap">

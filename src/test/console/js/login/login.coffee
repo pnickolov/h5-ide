@@ -119,8 +119,8 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'instance_service'], ( MC, 
 				prettyPrint()
 
 				log_data = {
-					request_time   : request_time,
-					response_time  : new Date(),
+					request_time   : MC.dateFormat(request_time, "yyyy-MM-dd hh:mm:ss"),
+					response_time  : MC.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"),
 					service_name   : current_service,
 					resource_name  : current_resource,
 					api_name       : current_api,

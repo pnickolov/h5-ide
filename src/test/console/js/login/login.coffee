@@ -109,7 +109,12 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'instance_service'], ( MC, 
 				instanceList = aws_result.resolved_data
 
 				$( "#label_request_result" ).text data.method + " succeed!"
-				$( "#response_data" ).text  "aaa"
+
+				#Object to JSON, pretty print
+				$( "#response_data" ).removeClass("prettyprinted").text JSON.stringify(instanceList,null,"\t"  )
+				prettyPrint()
+
+				#window.syntaxHighlight instanceList
 
 			else
 			#DescribeInstances failed

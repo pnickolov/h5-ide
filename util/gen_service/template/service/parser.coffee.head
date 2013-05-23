@@ -1,16 +1,11 @@
 #*************************************************************************************
-#* Filename     : @@service-name_vo.coffee
+#* Filename     : @@service-name_parser.coffee
 #* Creator      : gen_service.sh
 #* Create date  : @@create-date
-#* Description  : vo define for @@service-name
+#* Description  : parser return data of @@service-name
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [], () ->
+define [ '@@service-name_vo', 'result_vo', 'constant' ], ( @@service-name_vo, result_vo, constant ) ->
 
-	#vo declaration
-	#to-do
-
-	#public
-	#to-do

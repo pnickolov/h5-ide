@@ -1,0 +1,53 @@
+#*************************************************************************************
+#* Filename     : @@service-name_service.coffee
+#* Creator      : gen_service.sh
+#* Create date  : @@create-date
+#* Description  : service know back-end api
+#* Action       : 1.invoke MC.api (send url, method, data)
+#*                2.invoke parser
+#*                3.invoke callback
+# ************************************************************************************
+# (c)Copyright 2012 Madeiracloud  All Rights Reserved
+# ************************************************************************************
+
+define [ 'MC', '@@service-name_parser', 'result_vo' ], ( MC, @@service-name_parser, result_vo ) ->
+
+    URL = '/@@service-url/'
+
+    #private
+    send_request =  ( api_name, param_ary, parser, callback ) ->
+
+        #check callback
+        if callback is null
+            console.log "@@service-name." + api_name + " callback is null"
+            return false
+
+        try
+
+            MC.api {
+                url     : URL
+                method  : api_name
+                data    : param_ary
+                success : ( result, return_code ) ->
+
+                    #resolve result
+                    result_vo.@@api-type_result = parser result, return_code, param_ary
+
+                    callback result_vo.@@api-type_result
+
+                error : ( result, return_code ) ->
+
+                    result_vo.@@api-type_result.return_code      = return_code
+                    result_vo.@@api-type_result.is_error         = true
+                    result_vo.@@api-type_result.error_message    = result.toString()
+
+                    callback result_vo.@@api-type_result
+            }
+
+        catch error
+            console.log "@@service-name." + method + " error:" + error.toString()
+
+
+        true
+    # end of send_request
+

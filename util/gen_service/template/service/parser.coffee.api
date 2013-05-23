@@ -1,0 +1,13 @@
+
+    #///////////////// Parser for @@api-name return  /////////////////
+    #private (parser @@api-name return)
+    @@parser-func = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.@@api-type_result = result_vo.process@@API-TYPEReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.@@api-type_result
+
+    # end of @@parser-func
+

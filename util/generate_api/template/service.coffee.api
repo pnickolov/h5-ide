@@ -1,5 +1,0 @@
-	#@@origin
-	@@api-name = ( @@param-list, callback ) ->
-		send_request "@@api-name", [ @@param-list ], @@service-name_parser.@@parser-func , callback
-		true
-

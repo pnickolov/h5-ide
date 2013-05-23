@@ -34,7 +34,8 @@ module.exports = function( grunt ) {
 			'!<%= src %>/ui/common/css/*.css',
 			'!<%= src %>/vender/qunit/*.css',
 			'!<%= src %>/test/console/css/*.css',
-			'!<%= src %>/test/console/prettify/*.css'
+			'!<%= src %>/test/console/prettify/*.css',
+			'!<%= src %>/bootstrap/**/*.css'
 		],
 
 		coffeefiles : [
@@ -60,8 +61,8 @@ module.exports = function( grunt ) {
 		open       : require( './config/open.js'    ),
 		clean      : require( './config/clean.js'   ),
 
-		replace          : require( './config/replace.js'   ),
-		"string-replace" : require( './config/string-replace.js'   ),
+		replace          : require( './config/replace.js'        ),
+		"string-replace" : require( './config/string-replace.js' ),
 
 		cssmin     : require( './config/cssmin.js'  ),
 		htmlmin    : require( './config/htmlmin.js' ),

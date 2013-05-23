@@ -63,6 +63,9 @@ require.config {
 		'domReady'     : 'vender/requirejs/domReady'
 		'text'         : 'vender/requirejs/text'
 
+		#bootstrap
+		'bootstrap-modal' : 'bootstrap/js/bootstrap-modal'
+
 		#mvc
 		'main'         : 'js/demo/main'
 		'router'       : 'js/demo/router'
@@ -70,12 +73,12 @@ require.config {
 		'view'         : 'js/demo/view/view'
 
 		#core lib
-		'MC'        : 'lib/MC.core'
+		'MC'           : 'lib/MC.core'
 
 		#service
-		'service'   : 'service/session/session'
-		'vo'        : 'service/session/session_vo'
-		'parser'    : 'service/session/session_parser'
+		'service'      : 'service/session/session'
+		'vo'           : 'service/session/session_vo'
+		'parser'       : 'service/session/session_parser'
 
 	shim   :
 
@@ -92,7 +95,10 @@ require.config {
 		'handlebars'   :
 			exports    : 'Handlebars'
 
-		'MC'        :
-			deps    : [ 'jquery' ]
-			exports : 'MC'
+		'MC'           :
+			deps       : [ 'jquery' ]
+			exports    : 'MC'
+
+		'bootstrap-modal' :
+			deps       : [ 'jquery' ]
 }

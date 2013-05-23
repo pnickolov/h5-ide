@@ -1,0 +1,49 @@
+#*************************************************************************************
+#* Filename     : @@service-name_parser.coffee
+#* Creator      : gen_service.sh
+#* Create date  : @@create-date
+#* Description  : parser return data of @@service-name
+# ************************************************************************************
+# (c)Copyright 2012 Madeiracloud  All Rights Reserved
+# ************************************************************************************
+
+define [ '@@service-name_vo', 'result_vo', 'constant' ], ( @@service-name_vo, result_vo, constant ) ->
+
+
+   #private (parser return code)
+    processReturnHandler = ( result, return_code, param ) ->
+
+        is_error      = true # only E_OK is false
+        error_message = ""
+
+        try
+
+            switch return_code
+                when constant.RETURN_CODE.E_OK      then is_error      = false
+                when constant.RETURN_CODE.E_NONE    then error_message = result.toString() #"Invalid username or password"
+                when constant.RETURN_CODE.E_INVALID then error_message = result.toString() #"Invalid username or password"
+                when constant.RETURN_CODE.E_EXPIRED then error_message = result.toString() #"Your subscription expired"
+                when constant.RETURN_CODE.E_UNKNOWN then error_message = constant.MESSAGE_E.E_UNKNOWN #"Invalid username or password"
+                else
+                    error_message  =  result.toString()
+
+        catch error
+            error_message = error.toString()
+            is_error = true
+
+        finally
+
+            #orial
+            result_vo.forge_result.return_code      = return_code
+            result_vo.forge_result.param            = param
+
+            #resolved
+            result_vo.forge_result.is_error         = is_error
+            result_vo.forge_result.resolved_data    = resolved_data
+            result_vo.forge_result.error_message    = error_message
+
+        #return vo
+        result_vo.forge_result
+
+    # end of parserLoginReturn
+

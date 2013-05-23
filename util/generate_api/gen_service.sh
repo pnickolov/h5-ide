@@ -29,79 +29,9 @@ TMPL_BASE_DIR=${SH_BASE_DIR}/"template"
 ###########################################################
 
 #===================================================================
-# Generate ?_service.coffee
+# 1.Resolve api and param in python file, 2.generate coffee file
 #===================================================================
-function fn_genereate_coffee() {
-
-    _SRC_FILE=$1
-    _TGT_DIR=$2
-    _FILE=$3
-    _ORIGIN=$4
-    _API=$5
-    #_PARAM=$4
-
-    #resolve param
-    idx=0
-    m=1
-    while [ $# -gt 0 ]
-    do
-        if [ $idx -ge 3 ]
-        then
-            _PARAM[$m]="$1"
-            m=`expr $m + 1`
-        fi
-        shift
-        idx=`expr ${idx} + 1`
-    done
-
-    echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    echo "SRC_FILE: ${_SRC_FILE}"
-    echo -e "FILE  : ${_FILE} \nORIGIN: ${_ORIGIN} \nAPI   : ${_API} \nPARAM : ${#_PARAM[@]}"
-
-    _TGT_FILE=${_FILE/Handler/}
-    _TGT_FILE=${_TGT_FILE/.py/}
-    _TGT_FILE=${_TGT_FILE,,}
-    echo -e "TGT_DIR: ${_TGT_DIR} \nTGT_FILE: ${_TGT_FILE}"
-
-    #------------------------------------------------------------------------
-    #1.generate service.coffee
-    sed -e ":a;N;$ s/@@service_name/${_TGT_FILE}_service>/g;ba" ${TMPL_BASE_DIR}/service.coffee.tmpl \
-    | sed -e ":a;N;$ s/@@api_name/${_TGT_FILE}_service>/g;ba" \
-    | sed -e ":a;N;$ s/@@vo_name/${_TGT_FILE}_vo/g;ba" \
-    | sed -e ":a;N;$ s/@@parser_name/${_TGT_FILE}_parser>/g;ba" \
-    | sed -e ":a;N;$ s/@@parser_fn/$parser{_TGT_FILE}Result>/g;ba" \
-    > ${_TGT_DIR}/${_TGT_FILE}_service.coffee
-
-    #2.generate parser.coffee
-    sed -e ":a;N;$ s/@@service_name/${_TGT_FILE}_service>/g;ba" ${TMPL_BASE_DIR}/parser.coffee.tmpl \
-    | sed -e ":a;N;$ s/@@api_name/${_TGT_FILE}_service>/g;ba" \
-    | sed -e ":a;N;$ s/@@vo_name/${_TGT_FILE}_vo/g;ba" \
-    | sed -e ":a;N;$ s/@@parser_name/${_TGT_FILE}_parser>/g;ba" \
-    | sed -e ":a;N;$ s/@@parser_fn/$parser{_TGT_FILE}Result>/g;ba" \
-    > ${_TGT_DIR}/${_TGT_FILE}_parser.coffee
-
-    #3.generate vo.coffee
-    sed -e ":a;N;$ s/@@service_name/${_TGT_FILE}_service>/g;ba" ${TMPL_BASE_DIR}/vo.coffee.tmpl \
-    | sed -e ":a;N;$ s/@@api_name/${_TGT_FILE}_service>/g;ba" \
-    | sed -e ":a;N;$ s/@@vo_name/${_TGT_FILE}_vo/g;ba" \
-    | sed -e ":a;N;$ s/@@parser_name/${_TGT_FILE}_parser>/g;ba" \
-    | sed -e ":a;N;$ s/@@parser_fn/$parser{_TGT_FILE}Result>/g;ba" \
-    > ${_TGT_DIR}/${_TGT_FILE}_vo.coffee
-
-    for (( n = 1 ; n <= ${#_PARAM[@]} ; n++ ))
-    do
-        echo "   param  : "${_PARAM[$n]}
-    done
-    echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-}
-
-
-#===================================================================
-# Resolve api and param in python file [ invoke by fn_scan_handler_forge() and fn_scan_aws() ]
-#===================================================================
-function fn_resolve_api() {
-#common function
+function fn_generate_coffee() {
 
     CUR_DIR=$1
     CUR_FILE=$2
@@ -122,16 +52,44 @@ function fn_resolve_api() {
     #Generate API_NAME and API_PARAM
     eval ${CMD}
 
+    ## generate coffee file ####################################################
+
+    TMP=${CUR_FILE/Handler/}    #remove Handler
+    _SERVICE_u=${TMP/.py/}      #remove .py -> eg: Session
+    _SERVICE_l=${_SERVICE_u,,}     #tolower    -> eg: session
+
+    echo "1.generate service.coffee (head)"
+    sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/service.coffee.head \
+    | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+    > ${TGT_DIR}/${_SERVICE_l}_service.coffee
+
+    echo "2.generate parser.coffee (head)"
+    sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/parser.coffee.head \
+    | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+    > ${TGT_DIR}/${_SERVICE_l}_parser.coffee
+
+    echo "3.generate vo.coffee"
+    sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/vo.coffee.tmpl \
+    | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+    > ${TGT_DIR}/${_SERVICE_l}_vo.coffee
+
+    echo "4.append api handler to service and parser"
+    _PUBLIC_API_LIST=""
     #loop by API_NAME
     for (( j = 1 ; j <= ${#API_NAME[@]} ; j++ ))
     do
-        echo
 
-        CUR_ORIGIN=${ORIGIN[$j]}
-        #echo "origin:"${CUR_ORIGIN}
+        _CUR_ORIGIN=${ORIGIN[$j]}
+        #echo "origin:"${_CUR_ORIGIN}
 
-        CUR_API=${API_NAME[$j]}
-        #echo "api   : "${CUR_API}
+        _CUR_API=${API_NAME[$j]}
+        #echo "api   : "${_CUR_API}
+
+        #set_aaa => SetAaa
+        _FUNC=`echo "${_CUR_API}" | awk '{len=split($0,a,"_");for (i=1;i<=len;i++){printf "%s%s",toupper(substr(a[i],0,1)),substr(a[i],2) } }'`
+
+
+        _PARAM_LIST=""
 
         P_NUM='echo ${#API_PARAM_'${j}'[@]}'
         P_NUM=`eval ${P_NUM}`
@@ -140,17 +98,43 @@ function fn_resolve_api() {
         for (( k = 1 ; k <= ${P_NUM} ; k++ ))
         do
             TMP='${API_PARAM_'${j}'[$k]}'
-            CUR_PARAM[$k]=`eval "echo $TMP"`
+            CUR_PARAM[$k]=`eval "echo $TMP" | awk 'BEGIN{FS="[=]"}{printf $1}' `
             #echo "    param> "${CUR_PARAM[$k]}
+            if [ $k -eq 1 ]
+            then
+                _PARAM_LIST=${CUR_PARAM[$k]}
+            else
+                _PARAM_LIST=${_PARAM_LIST}", "${CUR_PARAM[$k]}
+            fi
         done
 
         #echo "CUR_PARAM: "${#CUR_PARAM[@]}
 
-        fn_genereate_coffee "${CUR_DIR}/${CUR_FILE}" "${TGT_DIR}" "${CUR_FILE}" "${CUR_ORIGIN}" "${CUR_API}" ${CUR_PARAM[*]}
+        echo " > ${_CUR_API} "
+        #1.append api ( ${_CUR_API} ) to ${_SERVICE_l}_service.coffee
+        sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/service.coffee.api \
+        | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
+        | sed -e ":a;N;$ s/@@origin/${_CUR_ORIGIN}/g;ba" \
+        | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
+        | sed -e ":a;N;$ s/@@parser-func/parser${_FUNC}Return/g;ba" \
+        >> ${TGT_DIR}/${_SERVICE_l}_service.coffee
+
+        _PUBLIC_API_LIST="\tparser${_FUNC}Return \t: parser${_FUNC}Return\n"${_PUBLIC_API_LIST}
+
+        #2.append api ( ${_CUR_API} ) to ${_SERVICE_l}_parser.coffee
+        sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/parser.coffee.api \
+        | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
+        | sed -e ":a;N;$ s/@@parser-func/parser${_FUNC}Return/g;ba" \
+        | sed -e ":a;N;$ s/@@resolve-func/resolve${_FUNC}VO/g;ba" \
+        >> ${TGT_DIR}/${_SERVICE_l}_parser.coffee
 
     done
 
+        echo "5.append public api list to ${_SERVICE_l}_service.coffee"
+        echo -e "${_PUBLIC_API_LIST}" >> ${TGT_DIR}/${_SERVICE_l}_service.coffee
+
     return
+
 
 }
 
@@ -178,7 +162,7 @@ function fn_scan_handler_forge() {
     #create subdir in out.tmp
     mkdir -p ${TGT_DIR}
 
-    fn_resolve_api "${CUR_DIR}" "${CUR_FILE}" "${TGT_DIR}"
+    fn_generate_coffee "${CUR_DIR}" "${CUR_FILE}" "${TGT_DIR}"
 
     return
 
@@ -218,7 +202,7 @@ function fn_scan_aws() {
         #create subdir in out.tmp
         mkdir -p ${TGT_DIR}
 
-        fn_resolve_api "${CUR_DIR}" "${CUR_FILE}" "${TGT_DIR}"
+        fn_generate_coffee "${CUR_DIR}" "${CUR_FILE}" "${TGT_DIR}"
 
     else
     #Except AWSUtil###################

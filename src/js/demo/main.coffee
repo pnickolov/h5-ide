@@ -8,5 +8,5 @@ require( [ 'domReady!', 'router' ], function( dom, AppRouter ) {
 ###
 
 #app initialize
-require [ 'domReady!', 'router' ], ( dom, AppRouter ) ->
-	AppRouter.initialize()
+require [ 'domReady!', 'router' ], ( dom, router ) ->
+	router.initialize()

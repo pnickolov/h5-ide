@@ -48,13 +48,17 @@ define( [ 'backbone', 'jquery', 'handlebars' ], function( Backbone, $, Handlebar
       template: Handlebars.compile($("#control-tmpl").html()),
       events: {
         'click .addModule1': 'loadModule1',
-        'click .addModule2': 'loadModule2'
+        'click .addModule2': 'loadModule2',
+        'click .addDialog': 'addDialog'
       },
       loadModule1: function() {
         return $('#itemContent').html('loading...');
       },
       loadModule2: function() {
         return $('#itemShowContent').html('loading...');
+      },
+      addDialog: function() {
+        return $('#dialogGroup').html('loading...');
       },
       render: function() {
         return $(this.el).html(this.template());

@@ -63,11 +63,14 @@ define [ 'backbone', 'view' ], ( Backbone, MainView ) ->
 	AppRouter = Backbone.Router.extend {
 		routes :
 			#load remote module
-			'module1' : 'loadModule1'
-			'module2' : 'loadModule2'
+			'module1'      : 'loadModule1'
+			'module2'      : 'loadModule2'
+
+			'addDialog'    : 'addDialog'
+			'removeDialog' : 'removeDialog'
 
 			#必须要放在最后
-			'*actions': 'defaultRouter'
+			'*actions'     : 'defaultRouter'
 
 	}
 
@@ -85,6 +88,16 @@ define [ 'backbone', 'view' ], ( Backbone, MainView ) ->
 		router.on 'route:loadModule2', () ->
 			require [ './module/module2/main.js' ], ( module2 ) ->
 				module2.loadModule()
+
+		router.on 'route:addDialog', () ->
+			console.log 'route:addDialog'
+			require [ './module/dialog/main.js' ], ( dialog ) ->
+				dialog.loadModule()
+
+		router.on 'route:removeDialog', () ->
+			console.log 'route:removeDialog'
+			require [ './module/dialog/main.js' ], ( dialog ) ->
+				dialog.unLoadModule()
 
 		Backbone.history.start()
 

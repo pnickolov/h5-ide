@@ -50,6 +50,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], ( Backbone, $, Handlebars ) ->
         events   :
             'click .addModule1' : 'loadModule1'
             'click .addModule2' : 'loadModule2'
+            'click .addDialog'  : 'addDialog'
 
         loadModule1 : () ->
             #loading bar
@@ -58,6 +59,10 @@ define [ 'backbone', 'jquery', 'handlebars' ], ( Backbone, $, Handlebars ) ->
         loadModule2 : () ->
             #loading bar
             $( '#itemShowContent' ).html 'loading...'
+
+        addDialog   : () ->
+            #loading bar
+            $( '#dialogGroup' ).html 'loading...'
 
         render      : () ->
              $( this.el ).html this.template()

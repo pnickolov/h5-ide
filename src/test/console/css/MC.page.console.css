@@ -99,6 +99,15 @@ header {
 	font-size: 16px;
 }
 
+#api_table {
+	margin-top: 20px;
+}
+
+#api_table .status {
+	display: block;
+	margin: 5px auto;
+}
+
 #resquest_data {
 	height: 180px;
 	border: 1px solid #aaa;
@@ -107,8 +116,8 @@ header {
 }
 
 #response_data {
-	height: 250px;
+	min-height: 100px;
 	border: 1px solid #aaa;
 	border-radius: 5px;
-	box-shadow: 1px 1px 1px rgba(0, 0, ,0 ,0.2);	
+	box-shadow: 1px 1px 1px rgba(0, 0, ,0 ,0.2);
 }

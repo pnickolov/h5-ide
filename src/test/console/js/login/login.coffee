@@ -103,13 +103,32 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'instance_service'], ( MC, 
 		current_resource = $( "#resource_list" ).val()
 		data             = window.API_DATA_LIST[ current_service ][ current_resource ][ current_api ]
 
+		request_time     = new Date()
+		response_time    = null
+
+
 		instance_service.DescribeInstances usercode, session_id, region_name, null, null, ( aws_result ) ->
 			if !aws_result.is_error
 			#DescribeInstances succeed
 				instanceList = aws_result.resolved_data
 
 				$( "#label_request_result" ).text data.method + " succeed!"
-				$( "#response_data" ).text  "aaa"
+
+				#Object to JSON, pretty print
+				$( "#response_data" ).removeClass("prettyprinted").text JSON.stringify(instanceList,null,4  )
+				prettyPrint()
+
+				log_data = {
+					request_time   : MC.dateFormat(request_time, "yyyy-MM-dd hh:mm:ss"),
+					response_time  : MC.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"),
+					service_name   : current_service,
+					resource_name  : current_resource,
+					api_name       : current_api,
+					json_ok        : "status-green",
+					e_ok           : "status-green"
+				}
+
+				window.add_request_log log_data
 
 			else
 			#DescribeInstances failed

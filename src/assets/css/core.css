@@ -16,6 +16,14 @@
 	font-family: VeraMono;
 	src: url('../fonts/VeraMono.ttf') format('truetype');
 }
+
+@font-face
+{
+	font-family: 'Ubuntu';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Ubuntu'), url('../fonts/ubuntu.woff') format('woff');
+}
 /* CSS reset */
 article,
 footer,
@@ -115,8 +123,8 @@ h6 {
 	font-size: 11.9px;
 }
 
-ul,
-ol,
+ul, 
+ol, 
 li {
 	margin: 0;
 	padding: 0;
@@ -125,8 +133,8 @@ li {
 }
 
 p {
-	margin: 0;
-	padding: 0;
+	margin: 0 0 10px;
+	padding: 2px;
 }
 
 .clearfix {
@@ -161,22 +169,35 @@ p {
 }
 
 pre {
+	white-space: pre-wrap;
 	word-break: break-all;
 	word-wrap: break-word;
 	display: block;
 	padding: 9.5px;
 	margin: 10px 0;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 20px;
+	font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+}
+
+abbr {
+	cursor: help;
+	border-bottom: 1px dotted #999;
 }
 
 body {
 	margin: 0;
 	font-size: 12px;
-	font-family: 'Titillium Web','Helvetica Neue', arial, sans-serif;
+	font-family: Arial, sans-serif;
+}
+
+/* Hack custom fonts loading */
+@media (min-width: 1px) {
+	body {
+		font-family: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;
+	}
 }
 
 a {
 	color: #528036;
 }
-

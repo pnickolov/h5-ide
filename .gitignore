@@ -32,3 +32,5 @@ src/service/*.js
 src/module/**/*.js
 !src/module/canvas/canvas.js
 
+#ignore test
+src/test/console/js/login/*.js

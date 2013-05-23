@@ -1,19 +1,25 @@
 require [ 'MC', 'jquery', 'session_service', 'instance_service'], ( MC, $, session_service, instance_service ) ->
 
     #test user
-    username    = ""
-    password    = ""
+    username    = "xjimmy"
+    password    = "aaa123aa"
 
     #session info
     session_id  = ""
     usercode    = ""
     region_name = ""
 
+    can_test    = false
+
     test "Check test user", () ->
         if username == "" or password == ""
-            ok false, "please set the username and password first"
+            ok false, "please set the username and password first, then try again"
         else
             ok true, "passwd"
+            can_test = true
+
+    if !can_test
+        return false
 
 
     ################################################

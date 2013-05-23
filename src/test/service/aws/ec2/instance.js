@@ -1,19 +1,24 @@
 (function() {
   require(['MC', 'jquery', 'session_service', 'instance_service'], function(MC, $, session_service, instance_service) {
-    var password, region_name, session_id, usercode, username;
+    var can_test, password, region_name, session_id, usercode, username;
 
-    username = "";
-    password = "";
+    username = "xjimmy";
+    password = "aaa123aa";
     session_id = "";
     usercode = "";
     region_name = "";
+    can_test = false;
     test("Check test user", function() {
       if (username === "" || password === "") {
-        return ok(false, "please set the username and password first");
+        return ok(false, "please set the username and password first, then try again");
       } else {
-        return ok(true, "passwd");
+        ok(true, "passwd");
+        return can_test = true;
       }
     });
+    if (!can_test) {
+      return false;
+    }
     module("Module Session");
     asyncTest("session.login", function() {
       return session_service.login(username, password, function(forge_result) {

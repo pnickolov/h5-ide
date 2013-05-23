@@ -50,15 +50,16 @@ function fn_generate_coffee() {
 
     #Resolve all api and params in ${__CUR_DIR}/${__CUR_FILE}
     __CMD=`cat ${__CUR_DIR}/${__CUR_FILE} | grep "def " | grep "self" | grep -v "def _" | grep -v "def test" | grep -v "#def" | grep -v "params_" | \
-        awk 'BEGIN{FS="[ (:)]"}{printf "ORIGIN[%d]=\"%s\";API_NAME[%d]=\"%s\";",NR,$0,NR,$2; for ( x=4; x<=NF-2; x++){ gsub(",","",$x); printf "API_PARAM_%s[%s]=\"%s\";",NR,x-3,$x};printf "\n" }' `
+        awk 'BEGIN{FS="[ (:)]"}{sub("    ","\t",$0); printf "ORIGIN[%d]=\"%s\";API_NAME[%d]=\"%s\";",NR,$0,NR,$2; for ( x=4; x<=NF-2; x++){ gsub(",","",$x); printf "API_PARAM_%s[%s]=\"%s\";",NR,x-3,$x};printf "\n" }' `
     #Generate API_NAME and API_PARAM
     eval ${__CMD}
 
     ## generate coffee file ####################################################
 
-    TMP=${__CUR_FILE/Handler/}    #remove Handler
+    TMP=${__CUR_FILE/Handler/}  #remove Handler
+    TMP=${TMP/Util/}            #remove Util
     _SERVICE_u=${TMP/.py/}      #remove .py -> eg: Session
-    _SERVICE_l=${_SERVICE_u,,}     #tolower    -> eg: session
+    _SERVICE_l=${_SERVICE_u,,}  #tolower    -> eg: session
 
     SERVICE_URL=""
     API_TYPE=""
@@ -194,6 +195,8 @@ function fn_generate_coffee() {
     echo -e "\n    #############################################################\n\
     #public ${_PUBLIC_PARSER_LIST}" >> ${__TGT_DIR}/${_SERVICE_l}_parser.coffee
 
+    echo
+
     return
 
 
@@ -225,6 +228,7 @@ function fn_scan_handler_forge() {
     TGT_DIR=${TGT_DIR/.py/}                                     #remove .py
     TGT_DIR=${TGT_DIR,,}                                        #tolower
 
+
     #create subdir in out.tmp
     mkdir -p ${TGT_DIR}
 
@@ -244,7 +248,7 @@ function fn_scan_aws() {
     #echo $CUR_DIR
 
     #for tmp test
-    #if [ "${SERVICE}" != "EC2" ]
+    #if [ "${SERVICE}" != "OpsWorks" ]
     #then
     #    return
     #fi
@@ -266,7 +270,8 @@ function fn_scan_aws() {
         echo "#Processing AWS - "${CUR_FILE}
         echo "########################################################"
 
-        TGT_DIR=${TGT_BASE_DIR}/"service"/aws/${SERVICE,,}
+        _RESOURCE=${SERVICE/Util/}
+        TGT_DIR=${TGT_BASE_DIR}/"service"/aws/${_RESOURCE,,}  #lower
         #create subdir in out.tmp
         mkdir -p ${TGT_DIR}
 
@@ -290,7 +295,9 @@ function fn_scan_aws() {
             echo "#   RESOURCE: ${RESOURCE}"
             echo "#-------------------------------------------------------"
 
-            TGT_DIR=${TGT_BASE_DIR}/"service"/aws/${SERVICE,,}/${RESOURCE,,}
+            _RESOURCE=${RESOURCE/Util/}                                          #remove util
+            TGT_DIR=${TGT_BASE_DIR}/"service"/aws/${SERVICE,,}/${_RESOURCE,,}    #lower
+
             #create subdir in out.tmp
             mkdir -p ${TGT_DIR}
 

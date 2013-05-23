@@ -34,3 +34,6 @@ src/module/**/*.js
 
 #ignore test
 src/test/console/js/login/*.js
+
+#ignore util
+util/generate_api/out.tmp/**/*.js

@@ -110,12 +110,11 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'instance_service'], ( MC, 
 		instance_service.DescribeInstances usercode, session_id, region_name, null, null, ( aws_result ) ->
 			if !aws_result.is_error
 			#DescribeInstances succeed
-				instanceList = aws_result.resolved_data
 
 				$( "#label_request_result" ).text data.method + " succeed!"
 
 				#Object to JSON, pretty print
-				$( "#response_data" ).removeClass("prettyprinted").text JSON.stringify(instanceList,null,4  )
+				$( "#response_data" ).removeClass("prettyprinted").text JSON.stringify(aws_result.resolved_data ,null,4  )
 				prettyPrint()
 
 				log_data = {

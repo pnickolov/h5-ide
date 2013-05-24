@@ -308,11 +308,11 @@ function fn_generate_coffee() {
 
     echo "9.append public api list to ${_RESOURCE_l}_service.coffee"
     echo -e "\n    #############################################################\n\
-    #public ${_PUBLIC_API_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
+    #public${_PUBLIC_API_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
 
     echo "10.append public parser list to ${_RESOURCE_l}_parser.coffee"
     echo -e "\n    #############################################################\n\
-    #public ${_PUBLIC_PARSER_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
+    #public${_PUBLIC_PARSER_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
 
 
     echo "11.replace model list to ${__TGT_DIR_TEST}/testsuite.coffee"

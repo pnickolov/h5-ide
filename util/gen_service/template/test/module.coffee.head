@@ -54,4 +54,11 @@ require [ 'MC', 'jquery', 'session_service', '@@resource-name_service'], ( MC, $
     #login failed then top test
     if session_id == ""
         return false
+    else
+        username = usercode
 
+
+    ################################################
+    #@@service-url test
+    ################################################
+    module "Module @@service-url - @@resource-name"

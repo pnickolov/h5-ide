@@ -172,17 +172,18 @@ function fn_generate_coffee() {
     echo "8.generate test/test_module.coffee.head (head)"
     sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.head \
     | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
-    | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+    | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
     > ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
 
     #// loop by API_NAME ////////////////////////////////////////////////////////////////////
     for (( j = 1 ; j <= ${#API_NAME[@]} ; j++ ))
     do
 
-        if [ $j -ge 2 ]
-        then
-            break
-        fi
+        #for tmp test
+        #if [ $j -ge 2 ]
+        #then
+        #    break
+        #fi
 
         _CUR_ORIGIN=${ORIGIN[$j]}
         #echo "origin:"${_CUR_ORIGIN}
@@ -264,6 +265,19 @@ function fn_generate_coffee() {
         | sed -e ":a;N;$ s/@@API-TYPE/${API_TYPE}/g;ba" \
         >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
 
+
+        #3.appent qunit test for  ( ${_CUR_API} )  to ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
+        if [ "${NEED_RESOLVE}" != "" ]
+        then
+        #Describe/List/Get
+            sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.api \
+            | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+            | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
+            | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
+            | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+            >> ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
+        fi
+
     done
 
     echo "9.append public api list to ${_RESOURCE_l}_service.coffee"
@@ -296,7 +310,6 @@ function fn_generate_coffee() {
 function fn_scan_handler_forge() {
 #process single file
 
-    return
 
     CUR_DIR=$1
     CUR_FILE=$2

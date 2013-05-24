@@ -45,6 +45,7 @@ require [ 'MC', 'jquery', 'session_service', '@@resource-name_service'], ( MC, $
                 usercode     = session_info.usercode
                 region_name  = session_info.region_name
                 ok true, "login succeed" + "( usercode : " + usercode + " , region_name : " + region_name + " , session_id : " + session_id + ")"
+                username = usercode
                 start()
             else
             #login failed

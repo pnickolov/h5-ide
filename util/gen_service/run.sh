@@ -260,13 +260,10 @@ function fn_generate_coffee() {
             echo " > ${_CUR_API} (need resolve)"
         fi
 
-        echo "CUR_PARAM: "${CUR_PARAM[*]}
-        echo "_PARAM_DEF:"${_PARAM_DEF}
-        echo "_PARAM_LIST:"${_PARAM_LIST}
-<<<<<<< HEAD
-=======
+        #echo "CUR_PARAM: "${CUR_PARAM[*]}
+        #echo "_PARAM_DEF:"${_PARAM_DEF}
+        #echo "_PARAM_LIST:"${_PARAM_LIST}
 
->>>>>>> origin/feature/gen_unittest_for_service
         #1.append api ( ${_CUR_API} ) to ${_RESOURCE_l}_service.coffee
         sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.api \
         | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
@@ -310,19 +307,11 @@ function fn_generate_coffee() {
 
     echo "9.append public api list to ${_RESOURCE_l}_service.coffee"
     echo -e "\n    #############################################################\n\
-<<<<<<< HEAD
-    #public ${_PUBLIC_API_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
-
-    echo "10.append public parser list to ${_RESOURCE_l}_parser.coffee"
-    echo -e "\n    #############################################################\n\
-    #public ${_PUBLIC_PARSER_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
-=======
     #public${_PUBLIC_API_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
 
     echo "10.append public parser list to ${_RESOURCE_l}_parser.coffee"
     echo -e "\n    #############################################################\n\
     #public${_PUBLIC_PARSER_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
->>>>>>> origin/feature/gen_unittest_for_service
 
 
     echo "11.replace model list to ${__TGT_DIR_TEST}/testsuite.coffee"
@@ -383,11 +372,7 @@ function fn_scan_aws() {
     #echo $CUR_DIR
 
     #for tmp test
-<<<<<<< HEAD
-    if [ "${SERVICE}" != "VPC" ]
-=======
     if [ "${SERVICE}" == "SNS" ]
->>>>>>> origin/feature/gen_unittest_for_service
     then
         return
     fi

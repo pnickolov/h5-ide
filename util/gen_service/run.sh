@@ -191,11 +191,17 @@ function fn_generate_coffee() {
         _CUR_API=${API_NAME[$j]}
         #echo "api   : "${_CUR_API}
 
+        #special process api named "public"
+        if [ "${_CUR_API}" == "public"  ]
+        then
+            _CUR_API="Public"
+        fi
+
         #set_aaa => SetAaa
         _FUNC=`echo "${_CUR_API}" | awk '{len=split($0,a,"_");for (i=1;i<=len;i++){printf "%s%s",toupper(substr(a[i],0,1)),substr(a[i],2) } }'`
 
-        _PARAM_LIST_DEF=""  #in define
-        _PARAM_LIST=""      #in invoke
+        _PARAM_DEF=""  #in define
+        _PARAM_LIST="" #in invoke
 
         P_NUM='echo ${#API_PARAM_'${j}'[@]}'
         P_NUM=`eval ${P_NUM}`
@@ -211,14 +217,14 @@ function fn_generate_coffee() {
             if [ $k -eq 1 ]
             then
                 _PARAM_LIST=${CUR_PARAM[$k]}
-                _PARAM_LIST_DEF=${CUR_PARAM_DEF[$k]}
+                _PARAM_DEF=${CUR_PARAM_DEF[$k]}
             else
                 _PARAM_LIST=${_PARAM_LIST}", "${CUR_PARAM[$k]}
-                _PARAM_LIST_DEF=${_PARAM_LIST_DEF}", "${CUR_PARAM_DEF[$k]}
+                _PARAM_DEF=${_PARAM_DEF}", "${CUR_PARAM_DEF[$k]}
             fi
         done
 
-        #echo "CUR_PARAM: "${#CUR_PARAM[@]}
+        #continue
 
         NEED_RESOLVE=""
         if [ "${__TYPE}" == "aws"  ]
@@ -239,11 +245,14 @@ function fn_generate_coffee() {
             echo " > ${_CUR_API} (need resolve)"
         fi
 
+        echo "CUR_PARAM: "${CUR_PARAM[*]}
+        echo "_PARAM_DEF:"${_PARAM_DEF}
+        echo "_PARAM_LIST:"${_PARAM_LIST}
         #1.append api ( ${_CUR_API} ) to ${_RESOURCE_l}_service.coffee
         sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.api \
         | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
         | sed -e ":a;N;$ s/@@origin/${_CUR_ORIGIN}/g;ba" \
-        | sed -e ":a;N;$ s/@@param-list-def/${_PARAM_LIST_DEF}/g;ba" \
+        | sed -e ":a;N;$ s/@@param-def/${_PARAM_DEF}/g;ba" \
         | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
         | sed -e ":a;N;$ s/@@parser-func/parser${_FUNC}Return/g;ba" \
         >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
@@ -282,11 +291,11 @@ function fn_generate_coffee() {
 
     echo "9.append public api list to ${_RESOURCE_l}_service.coffee"
     echo -e "\n    #############################################################\n\
-    #public ${_PUBLIC_API_LIST}" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
+    #public ${_PUBLIC_API_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
 
     echo "10.append public parser list to ${_RESOURCE_l}_parser.coffee"
     echo -e "\n    #############################################################\n\
-    #public ${_PUBLIC_PARSER_LIST}" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
+    #public ${_PUBLIC_PARSER_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
 
 
     echo "11.replace model list to ${__TGT_DIR_TEST}/testsuite.coffee"
@@ -315,10 +324,10 @@ function fn_scan_handler_forge() {
     CUR_FILE=$2
 
     #for tmp test
-    if [ "${CUR_FILE}" != "SessionHandler.py" ]
-    then
-        return
-    fi
+    #if [ "${CUR_FILE}" != "SessionHandler.py" ]
+    #then
+    #    return
+    #fi
 
     echo "########################################################"
     echo "#Processing "`echo ${CUR_DIR} | awk 'BEGIN{FS="[/]"}{print $(NF) }' `" - "${CUR_FILE}
@@ -347,7 +356,7 @@ function fn_scan_aws() {
     #echo $CUR_DIR
 
     #for tmp test
-    if [ "${SERVICE}" != "EC2" ]
+    if [ "${SERVICE}" != "VPC" ]
     then
         return
     fi

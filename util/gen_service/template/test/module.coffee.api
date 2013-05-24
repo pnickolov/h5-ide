@@ -3,10 +3,10 @@
     #-----------------------------------------------
     asyncTest "/@@service-url @@resource-name.@@api-name()", () ->
 
-        instance_service.@@api-name @@param-list, ( @@api-type_result ) ->
+        @@resource-name_service.@@api-name @@param-list, ( @@api-type_result ) ->
             if !@@api-type_result.is_error
             #@@api-name succeed
-                instanceList = @@api-type_result.resolved_data
+                data = @@api-type_result.resolved_data
                 ok true, "@@api-name() succeed"
                 start()
             else

@@ -46,7 +46,5 @@ require.config {
         'session_parser'    : 'service/session/session_parser'
         'session_service'   : 'service/session/session_service'
 
-        #service to test
-        @@service-paths
 
-    }
+}#end

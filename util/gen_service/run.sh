@@ -21,6 +21,9 @@ SRC_DIR=( "Handler" "Forge" "AWS")
 #TGT_BASE_DIR=${SH_BASE_DIR}/"../../src/service"
 TGT_BASE_DIR=${SH_BASE_DIR}/"out.tmp"
 
+#delete old file
+rm ${TGT_BASE_DIR} -rf
+
 #template file dir
 TMPL_BASE_DIR=${SH_BASE_DIR}/"template"
 
@@ -134,6 +137,20 @@ function fn_generate_coffee() {
         > ${__TGT_DIR_TEST}/config.coffee
     fi
 
+    if [ "${_RESOURCE_l}" != "session" ]
+    then
+        #remove "}"
+        sed '$d' ${__TGT_DIR_TEST}/config.coffee > ${__TGT_DIR_TEST}/config.coffee.tmp
+        mv -f ${__TGT_DIR_TEST}/config.coffee.tmp ${__TGT_DIR_TEST}/config.coffee
+
+        echo -e "\n        #${_RESOURCE_l} service\n\
+        '${_RESOURCE_l}_vo'        : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}/${_RESOURCE_l}_vo'\n\
+        '${_RESOURCE_l}_parser'    : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}/${_RESOURCE_l}_parser'\n\
+        '${_RESOURCE_l}_service'   : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}/${_RESOURCE_l}_service'\n\
+}#end">> ${__TGT_DIR_TEST}/config.coffee
+
+    fi
+
     echo "6.generate test/testsuite.html"
     if [ ! -f ${__TGT_DIR_TEST}/testsuite.html ]
     then
@@ -143,6 +160,7 @@ function fn_generate_coffee() {
     fi
 
     echo "7.generate test/testsuite.coffee.head (head)"
+    _MODULE_LIST="'\/test\/service\/${SERVICE_URL}\/module_${_RESOURCE_l}.js'"
     if [ ! -f ${__TGT_DIR_TEST}/testsuite.coffee ]
     then
         sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.coffee.head \
@@ -157,12 +175,14 @@ function fn_generate_coffee() {
     | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
     > ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
 
-
-    return
-
     #// loop by API_NAME ////////////////////////////////////////////////////////////////////
     for (( j = 1 ; j <= ${#API_NAME[@]} ; j++ ))
     do
+
+        if [ $j -ge 2 ]
+        then
+            break
+        fi
 
         _CUR_ORIGIN=${ORIGIN[$j]}
         #echo "origin:"${_CUR_ORIGIN}
@@ -246,13 +266,20 @@ function fn_generate_coffee() {
 
     done
 
-    echo "5.append public api list to ${_RESOURCE_l}_service.coffee"
+    echo "9.append public api list to ${_RESOURCE_l}_service.coffee"
     echo -e "\n    #############################################################\n\
     #public ${_PUBLIC_API_LIST}" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
 
-    echo "6.append public parser list to ${_RESOURCE_l}_parser.coffee"
+    echo "10.append public parser list to ${_RESOURCE_l}_parser.coffee"
     echo -e "\n    #############################################################\n\
     #public ${_PUBLIC_PARSER_LIST}" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
+
+
+    echo "11.replace model list to ${__TGT_DIR_TEST}/testsuite.coffee"
+    echo "_MODULE_LIST:"${_MODULE_LIST}
+    sed -e ":a;N;$ s/##@@module-list/${_MODULE_LIST},\n\t##@@module-list/g;ba" ${__TGT_DIR_TEST}/testsuite.coffee \
+     >  ${__TGT_DIR_TEST}/testsuite.coffee.tmp
+    mv -f ${__TGT_DIR_TEST}/testsuite.coffee.tmp ${__TGT_DIR_TEST}/testsuite.coffee
 
     echo
 
@@ -268,6 +295,8 @@ function fn_generate_coffee() {
 #===================================================================
 function fn_scan_handler_forge() {
 #process single file
+
+    return
 
     CUR_DIR=$1
     CUR_FILE=$2

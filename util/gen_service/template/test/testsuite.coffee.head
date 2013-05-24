@@ -15,7 +15,7 @@ QUnit.config.autostart = false
 # extension so RequireJS resolves them as relative paths rather than using
 # the `baseUrl` value supplied above.
 testModules = [
-	@@test-modules
+	##@@module-list
 ]
 
 # Resolve all testModules and then start the Test Runner.

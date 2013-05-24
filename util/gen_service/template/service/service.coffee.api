@@ -1,5 +1,5 @@
     #@@origin
     @@api-name = ( @@param-list-def, callback ) ->
-        send_request "@@api-name", [ @@param-list ], @@service-name_parser.@@parser-func, callback
+        send_request "@@api-name", [ @@param-list ], @@resource-name_parser.@@parser-func, callback
         true
 

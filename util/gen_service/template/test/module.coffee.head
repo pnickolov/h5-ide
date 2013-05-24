@@ -1,0 +1,57 @@
+#*************************************************************************************
+#* Filename     : @@resource-name_service.coffee
+#* Creator      : gen_service.sh
+#* Create date  : @@create-date
+#* Description  : qunit test module for @@resource-name_service
+# ************************************************************************************
+# (c)Copyright 2012 Madeiracloud  All Rights Reserved
+# ************************************************************************************
+
+require [ 'MC', 'jquery', 'session_service', '@@resource-name_service'], ( MC, $, session_service, @@resource-name_service ) ->
+
+    #test user
+    username    = ""
+    password    = ""
+
+    #session info
+    session_id  = ""
+    usercode    = ""
+    region_name = ""
+
+    can_test    = false
+
+    test "Check test user", () ->
+        if username == "" or password == ""
+            ok false, "please set the username and password first, then try again"
+        else
+            ok true, "passwd"
+            can_test = true
+
+    if !can_test
+        return false
+
+
+    ################################################
+    #session login
+    ################################################
+    module "Module Session"
+
+    asyncTest "session.login", () ->
+        session_service.login username, password, ( forge_result ) ->
+            if !forge_result.is_error
+            #login succeed
+                session_info = forge_result.resolved_data
+                session_id   = session_info.session_id
+                usercode     = session_info.usercode
+                region_name  = session_info.region_name
+                ok true, "login succeed" + "( usercode : " + usercode + " , region_name : " + region_name + " , session_id : " + session_id + ")"
+                start()
+            else
+            #login failed
+                ok false, "login failed, error is " + forge_result.error_message + ", cancel the follow-up test!"
+                start()
+
+    #login failed then top test
+    if session_id == ""
+        return false
+

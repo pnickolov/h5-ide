@@ -1,11 +1,11 @@
 #*************************************************************************************
-#* Filename     : @@service-name_parser.coffee
+#* Filename     : @@resource-name_parser.coffee
 #* Creator      : gen_service.sh
 #* Create date  : @@create-date
-#* Description  : parser return data of @@service-name
+#* Description  : parser return data of @@resource-name
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ '@@service-name_vo', 'result_vo', 'constant' ], ( @@service-name_vo, result_vo, constant ) ->
+define [ '@@resource-name_vo', 'result_vo', 'constant' ], ( @@resource-name_vo, result_vo, constant ) ->
 

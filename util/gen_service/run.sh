@@ -53,28 +53,31 @@ function fn_generate_coffee() {
 
     TMP=${__CUR_FILE/Handler/}  #remove Handler
     TMP=${TMP/Util/}            #remove Util
-    _SERVICE_u=${TMP/.py/}      #remove .py -> eg: Session
-    _SERVICE_l=${_SERVICE_u,,}  #tolower    -> eg: session
+    _RESOURCE_u=${TMP/.py/}      #remove .py -> eg: Session
+    _RESOURCE_l=${_RESOURCE_u,,}  #tolower    -> eg: session
 
 
     SERVICE_URL=""
     API_TYPE=""
     api_type=""
+    SERVICE_NAME=`echo ${__TGT_DIR_SERVICE} | awk 'BEGIN{FS="[/]"}{printf "%s",$(NF-1)}'`
+
+
     if [ "${__TYPE}" == "aws"  ]
     then
-        SERVICE_URL="aws\/"${_SERVICE_l}
+        SERVICE_URL="aws\/"${SERVICE_NAME}
         API_TYPE="AWS"
         api_type="aws"
-
-        __TGT_DIR_TEST=${__TGT_DIR_TEST/\/${_SERVICE_l}/} #remove last field
+        __TGT_DIR_TEST=${__TGT_DIR_TEST/\/${_RESOURCE_l}/} #remove last field
 
     elif [ "${__TYPE}" == "awsutil"  ]
     then
         SERVICE_URL="aws"
         API_TYPE="AWS"
         api_type="aws"
+        SERVICE_NAME="aws"
     else
-        SERVICE_URL=${_SERVICE_l}
+        SERVICE_URL=${_RESOURCE_l}
         API_TYPE="Forge"
         api_type="forge"
     fi
@@ -84,6 +87,8 @@ function fn_generate_coffee() {
     echo "# SRC_FILE: "${__CUR_DIR}/${__CUR_FILE}
     echo "# TGT_DIR_SERVICE : "${__TGT_DIR_SERVICE}
     echo "# TGT_DIR_TEST    : "${__TGT_DIR_TEST}
+    echo "# SERVICE_URL     : "${SERVICE_URL}
+    echo "# SERVICE_NAME    : "${SERVICE_NAME}
     echo "#......................................................."
 
     if [ ! -d ${__TGT_DIR_SERVICE} ]
@@ -99,21 +104,21 @@ function fn_generate_coffee() {
 
     #// Generate service head ////////////////////////////////////////////////////////////
     echo "1.generate service/service.coffee (head)"
-    sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.head \
+    sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.head \
     | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
     | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
     | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
-    > ${__TGT_DIR_SERVICE}/${_SERVICE_l}_service.coffee
+    > ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
 
     echo "2.generate service/parser.coffee (head)"
-    sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/service/parser.coffee.head \
+    sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/parser.coffee.head \
     | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
-    > ${__TGT_DIR_SERVICE}/${_SERVICE_l}_parser.coffee
+    > ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
 
     echo "3.generate service/vo.coffee"
-    sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/service/vo.coffee.tmpl \
+    sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/vo.coffee.tmpl \
     | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
-    > ${__TGT_DIR_SERVICE}/${_SERVICE_l}_vo.coffee
+    > ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_vo.coffee
 
     echo "4.append api handler to service and parser"
     _PUBLIC_API_LIST=""
@@ -123,35 +128,34 @@ function fn_generate_coffee() {
     echo "5.generate test/config.coffee (head)"
     if [ ! -f ${__TGT_DIR_TEST}/config.coffee ]
     then
-        sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/test/config.coffee.head \
+        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/config.coffee.head \
         | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
         | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
         > ${__TGT_DIR_TEST}/config.coffee
     fi
 
     echo "6.generate test/testsuite.html"
-    if [ -f ${__TGT_DIR_TEST}/testsuite.html ]
+    if [ ! -f ${__TGT_DIR_TEST}/testsuite.html ]
     then
-        sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.html \
-        | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
-        | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.html \
+        | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
         > ${__TGT_DIR_TEST}/testsuite.html
     fi
 
     echo "7.generate test/testsuite.coffee.head (head)"
-    if [ -f ${__TGT_DIR_TEST}/testsuite.coffee ]
+    if [ ! -f ${__TGT_DIR_TEST}/testsuite.coffee ]
     then
-        sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.coffee.head \
+        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.coffee.head \
         | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
         | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
         > ${__TGT_DIR_TEST}/testsuite.coffee
     fi
 
     echo "8.generate test/test_module.coffee.head (head)"
-    sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.head \
+    sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.head \
     | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
     | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
-    > ${__TGT_DIR_TEST}/module_${_SERVICE_l}.coffee
+    > ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
 
 
     return
@@ -214,14 +218,14 @@ function fn_generate_coffee() {
             echo " > ${_CUR_API} (need resolve)"
         fi
 
-        #1.append api ( ${_CUR_API} ) to ${_SERVICE_l}_service.coffee
-        sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.api \
+        #1.append api ( ${_CUR_API} ) to ${_RESOURCE_l}_service.coffee
+        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.api \
         | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
         | sed -e ":a;N;$ s/@@origin/${_CUR_ORIGIN}/g;ba" \
         | sed -e ":a;N;$ s/@@param-list-def/${_PARAM_LIST_DEF}/g;ba" \
         | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
         | sed -e ":a;N;$ s/@@parser-func/parser${_FUNC}Return/g;ba" \
-        >> ${__TGT_DIR_SERVICE}/${_SERVICE_l}_service.coffee
+        >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
 
         #public parser func
         _TMP=`echo "parser${_FUNC}Return" | awk '{printf "    %-40s : %s\n",$0,$0}'`
@@ -231,24 +235,24 @@ function fn_generate_coffee() {
         _TMP=`echo "${_CUR_API}" | awk '{printf "    %-28s : %s\n",$0,$0}'`
         _PUBLIC_API_LIST=${_PUBLIC_API_LIST}"\n"${_TMP}
 
-        #2.append api ( ${_CUR_API} ) to ${_SERVICE_l}_parser.coffee
-        sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/service/parser.coffee.api${NEED_RESOLVE} \
+        #2.append api ( ${_CUR_API} ) to ${_RESOURCE_l}_parser.coffee
+        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/parser.coffee.api${NEED_RESOLVE} \
         | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
         | sed -e ":a;N;$ s/@@parser-func/parser${_FUNC}Return/g;ba" \
         | sed -e ":a;N;$ s/@@resolve-func/resolve${_FUNC}Result/g;ba" \
         | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
         | sed -e ":a;N;$ s/@@API-TYPE/${API_TYPE}/g;ba" \
-        >> ${__TGT_DIR_SERVICE}/${_SERVICE_l}_parser.coffee
+        >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
 
     done
 
-    echo "5.append public api list to ${_SERVICE_l}_service.coffee"
+    echo "5.append public api list to ${_RESOURCE_l}_service.coffee"
     echo -e "\n    #############################################################\n\
-    #public ${_PUBLIC_API_LIST}" >> ${__TGT_DIR_SERVICE}/${_SERVICE_l}_service.coffee
+    #public ${_PUBLIC_API_LIST}" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
 
-    echo "6.append public parser list to ${_SERVICE_l}_parser.coffee"
+    echo "6.append public parser list to ${_RESOURCE_l}_parser.coffee"
     echo -e "\n    #############################################################\n\
-    #public ${_PUBLIC_PARSER_LIST}" >> ${__TGT_DIR_SERVICE}/${_SERVICE_l}_parser.coffee
+    #public ${_PUBLIC_PARSER_LIST}" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
 
     echo
 

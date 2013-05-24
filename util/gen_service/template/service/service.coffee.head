@@ -1,5 +1,5 @@
 #*************************************************************************************
-#* Filename     : @@service-name_service.coffee
+#* Filename     : @@resource-name_service.coffee
 #* Creator      : gen_service.sh
 #* Create date  : @@create-date
 #* Description  : service know back-end api
@@ -10,7 +10,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'MC', '@@service-name_parser', 'result_vo' ], ( MC, @@service-name_parser, result_vo ) ->
+define [ 'MC', '@@resource-name_parser', 'result_vo' ], ( MC, @@resource-name_parser, result_vo ) ->
 
     URL = '/@@service-url/'
 
@@ -19,7 +19,7 @@ define [ 'MC', '@@service-name_parser', 'result_vo' ], ( MC, @@service-name_pars
 
         #check callback
         if callback is null
-            console.log "@@service-name." + api_name + " callback is null"
+            console.log "@@resource-name." + api_name + " callback is null"
             return false
 
         try
@@ -45,7 +45,7 @@ define [ 'MC', '@@service-name_parser', 'result_vo' ], ( MC, @@service-name_pars
             }
 
         catch error
-            console.log "@@service-name." + method + " error:" + error.toString()
+            console.log "@@resource-name." + method + " error:" + error.toString()
 
 
         true

@@ -170,10 +170,21 @@ function fn_generate_coffee() {
     fi
 
     echo "8.generate test/test_module.coffee.head (head)"
-    sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.head \
-    | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
-    | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
-    > ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
+    if [ "${_RESOURCE_l}" != "session" ]
+    then
+        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.head \
+        | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+        | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+        > ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
+    else
+    #special process session
+        sed -e ":a;N;$ s/session_service, //g;ba" ${TMPL_BASE_DIR}/test/module.coffee.head \
+        | sed -e ":a;N;$ s/'session_service', //g;ba" \
+        | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+        | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+        | sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" \
+        > ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
+    fi
 
     #// loop by API_NAME ////////////////////////////////////////////////////////////////////
     for (( j = 1 ; j <= ${#API_NAME[@]} ; j++ ))
@@ -195,6 +206,9 @@ function fn_generate_coffee() {
         if [ "${_CUR_API}" == "public"  ]
         then
             _CUR_API="Public"
+        elif [ "${_CUR_API}" == "login"  ]
+        then
+            continue
         fi
 
         #set_aaa => SetAaa
@@ -207,6 +221,7 @@ function fn_generate_coffee() {
         P_NUM=`eval ${P_NUM}`
 
         CUR_PARAM=()
+        CUR_PARAM_DEF=()
         for (( k = 1 ; k <= ${P_NUM} ; k++ ))
         do
             TMP='${API_PARAM_'${j}'[$k]}'
@@ -223,8 +238,8 @@ function fn_generate_coffee() {
                 _PARAM_DEF=${_PARAM_DEF}", "${CUR_PARAM_DEF[$k]}
             fi
         done
+        eval "API_PARAM_${j}=()" #clear
 
-        #continue
 
         NEED_RESOLVE=""
         if [ "${__TYPE}" == "aws"  ]
@@ -248,6 +263,10 @@ function fn_generate_coffee() {
         echo "CUR_PARAM: "${CUR_PARAM[*]}
         echo "_PARAM_DEF:"${_PARAM_DEF}
         echo "_PARAM_LIST:"${_PARAM_LIST}
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/feature/gen_unittest_for_service
         #1.append api ( ${_CUR_API} ) to ${_RESOURCE_l}_service.coffee
         sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.api \
         | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
@@ -291,11 +310,19 @@ function fn_generate_coffee() {
 
     echo "9.append public api list to ${_RESOURCE_l}_service.coffee"
     echo -e "\n    #############################################################\n\
+<<<<<<< HEAD
     #public ${_PUBLIC_API_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
 
     echo "10.append public parser list to ${_RESOURCE_l}_parser.coffee"
     echo -e "\n    #############################################################\n\
     #public ${_PUBLIC_PARSER_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
+=======
+    #public${_PUBLIC_API_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
+
+    echo "10.append public parser list to ${_RESOURCE_l}_parser.coffee"
+    echo -e "\n    #############################################################\n\
+    #public${_PUBLIC_PARSER_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
+>>>>>>> origin/feature/gen_unittest_for_service
 
 
     echo "11.replace model list to ${__TGT_DIR_TEST}/testsuite.coffee"
@@ -356,7 +383,11 @@ function fn_scan_aws() {
     #echo $CUR_DIR
 
     #for tmp test
+<<<<<<< HEAD
     if [ "${SERVICE}" != "VPC" ]
+=======
+    if [ "${SERVICE}" == "SNS" ]
+>>>>>>> origin/feature/gen_unittest_for_service
     then
         return
     fi

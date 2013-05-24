@@ -46,5 +46,8 @@ require.config {
         'session_parser'    : 'service/session/session_parser'
         'session_service'   : 'service/session/session_service'
 
+        #test_util(for qunit test)
+        'test_util'         : 'test/service/test_util'
+
 
 }#end

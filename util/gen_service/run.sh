@@ -196,7 +196,7 @@ function fn_generate_coffee() {
         #    break
         #fi
 
-        _CUR_ORIGIN=${ORIGIN[$j]}
+        _CUR_ORIGIN=`echo ${ORIGIN[$j]} | sed 's/ *$//' ` #delete tail space
         #echo "origin:"${_CUR_ORIGIN}
 
         _CUR_API=${API_NAME[$j]}
@@ -206,9 +206,6 @@ function fn_generate_coffee() {
         if [ "${_CUR_API}" == "public"  ]
         then
             _CUR_API="Public"
-        elif [ "${_CUR_API}" == "login"  ]
-        then
-            continue
         fi
 
         #set_aaa => SetAaa
@@ -292,7 +289,7 @@ function fn_generate_coffee() {
 
 
         #3.appent qunit test for  ( ${_CUR_API} )  to ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
-        if [ "${NEED_RESOLVE}" != "" ]
+        if [ "${NEED_RESOLVE}" != "" -a "${_CUR_API}" != "login"  ]
         then
         #Describe/List/Get
             sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.api \
@@ -452,4 +449,14 @@ do
         fi
     done
 done
+
+echo -e "define [], () ->\n\
+    username    = ''\n\
+    password    = ''\n\
+\n\
+    #public\n\
+    username    : username,\n\
+    password    : password\n\
+\n\
+" > ${TGT_BASE_DIR}/test/test_util.coffee
 

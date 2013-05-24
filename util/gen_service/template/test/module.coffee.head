@@ -7,11 +7,11 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-require [ 'MC', 'jquery', 'session_service', '@@resource-name_service'], ( MC, $, session_service, @@resource-name_service ) ->
+require [ 'MC', 'jquery', 'test_util', 'session_service', '@@resource-name_service'], ( MC, $, test_util, session_service, @@resource-name_service ) ->
 
     #test user
-    username    = ""
-    password    = ""
+    username    = test_util.username
+    password    = test_util.password
 
     #session info
     session_id  = ""
@@ -40,7 +40,7 @@ require [ 'MC', 'jquery', 'session_service', '@@resource-name_service'], ( MC, $
         session_service.login username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
-                session_info = forge_result.resolved_data
+                session_info = forge_result.resolved_data.session_info
                 session_id   = session_info.session_id
                 usercode     = session_info.usercode
                 region_name  = session_info.region_name
@@ -52,11 +52,6 @@ require [ 'MC', 'jquery', 'session_service', '@@resource-name_service'], ( MC, $
                 ok false, "login failed, error is " + forge_result.error_message + ", cancel the follow-up test!"
                 start()
 
-    #login failed then top test
-    if session_id == ""
-        return false
-    else
-        username = usercode
 
 
     ################################################

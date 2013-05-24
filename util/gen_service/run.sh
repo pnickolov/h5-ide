@@ -36,13 +36,8 @@ function fn_generate_coffee() {
     __TYPE=$1
     __CUR_DIR=$2
     __CUR_FILE=$3
-    __TGT_DIR=$4
-
-    echo
-    echo "#......................................................."
-    echo "# SRC_FILE: "${__CUR_DIR}/${__CUR_FILE}
-    echo "# TGT_DIR : "${__TGT_DIR}
-    echo "#......................................................."
+    __TGT_DIR_SERVICE=$4
+    __TGT_DIR_TEST=${__TGT_DIR_SERVICE/\/service\//\/test\/} #replace /service/ with /test/
 
 
     API_NAME=()
@@ -61,6 +56,7 @@ function fn_generate_coffee() {
     _SERVICE_u=${TMP/.py/}      #remove .py -> eg: Session
     _SERVICE_l=${_SERVICE_u,,}  #tolower    -> eg: session
 
+
     SERVICE_URL=""
     API_TYPE=""
     api_type=""
@@ -69,6 +65,9 @@ function fn_generate_coffee() {
         SERVICE_URL="aws\/"${_SERVICE_l}
         API_TYPE="AWS"
         api_type="aws"
+
+        __TGT_DIR_TEST=${__TGT_DIR_TEST/\/${_SERVICE_l}/} #remove last field
+
     elif [ "${__TYPE}" == "awsutil"  ]
     then
         SERVICE_URL="aws"
@@ -80,27 +79,84 @@ function fn_generate_coffee() {
         api_type="forge"
     fi
 
-    echo "1.generate service.coffee (head)"
+    echo
+    echo "#......................................................."
+    echo "# SRC_FILE: "${__CUR_DIR}/${__CUR_FILE}
+    echo "# TGT_DIR_SERVICE : "${__TGT_DIR_SERVICE}
+    echo "# TGT_DIR_TEST    : "${__TGT_DIR_TEST}
+    echo "#......................................................."
+
+    if [ ! -d ${__TGT_DIR_SERVICE} ]
+    then
+        mkdir -p ${__TGT_DIR_SERVICE}
+    fi
+
+    if [ ! -d ${__TGT_DIR_TEST} ]
+    then
+        mkdir -p ${__TGT_DIR_TEST}
+    fi
+
+
+    #// Generate service head ////////////////////////////////////////////////////////////
+    echo "1.generate service/service.coffee (head)"
     sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.head \
     | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
     | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
     | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
-    > ${__TGT_DIR}/${_SERVICE_l}_service.coffee
+    > ${__TGT_DIR_SERVICE}/${_SERVICE_l}_service.coffee
 
-    echo "2.generate parser.coffee (head)"
+    echo "2.generate service/parser.coffee (head)"
     sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/service/parser.coffee.head \
     | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
-    > ${__TGT_DIR}/${_SERVICE_l}_parser.coffee
+    > ${__TGT_DIR_SERVICE}/${_SERVICE_l}_parser.coffee
 
-    echo "3.generate vo.coffee"
+    echo "3.generate service/vo.coffee"
     sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/service/vo.coffee.tmpl \
     | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
-    > ${__TGT_DIR}/${_SERVICE_l}_vo.coffee
+    > ${__TGT_DIR_SERVICE}/${_SERVICE_l}_vo.coffee
 
     echo "4.append api handler to service and parser"
     _PUBLIC_API_LIST=""
     _PUBLIC_PARSER_LIST=""
-    #loop by API_NAME
+
+    #// Generate qunit test head ////////////////////////////////////////////////////////////
+    echo "5.generate test/config.coffee (head)"
+    if [ ! -f ${__TGT_DIR_TEST}/config.coffee ]
+    then
+        sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/test/config.coffee.head \
+        | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+        | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+        > ${__TGT_DIR_TEST}/config.coffee
+    fi
+
+    echo "6.generate test/testsuite.html"
+    if [ -f ${__TGT_DIR_TEST}/testsuite.html ]
+    then
+        sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.html \
+        | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+        | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+        > ${__TGT_DIR_TEST}/testsuite.html
+    fi
+
+    echo "7.generate test/testsuite.coffee.head (head)"
+    if [ -f ${__TGT_DIR_TEST}/testsuite.coffee ]
+    then
+        sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.coffee.head \
+        | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+        | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+        > ${__TGT_DIR_TEST}/testsuite.coffee
+    fi
+
+    echo "8.generate test/test_module.coffee.head (head)"
+    sed -e ":a;N;$ s/@@service-name/${_SERVICE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.head \
+    | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+    | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+    > ${__TGT_DIR_TEST}/module_${_SERVICE_l}.coffee
+
+
+    return
+
+    #// loop by API_NAME ////////////////////////////////////////////////////////////////////
     for (( j = 1 ; j <= ${#API_NAME[@]} ; j++ ))
     do
 
@@ -112,7 +168,6 @@ function fn_generate_coffee() {
 
         #set_aaa => SetAaa
         _FUNC=`echo "${_CUR_API}" | awk '{len=split($0,a,"_");for (i=1;i<=len;i++){printf "%s%s",toupper(substr(a[i],0,1)),substr(a[i],2) } }'`
-
 
         _PARAM_LIST_DEF=""  #in define
         _PARAM_LIST=""      #in invoke
@@ -166,7 +221,7 @@ function fn_generate_coffee() {
         | sed -e ":a;N;$ s/@@param-list-def/${_PARAM_LIST_DEF}/g;ba" \
         | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
         | sed -e ":a;N;$ s/@@parser-func/parser${_FUNC}Return/g;ba" \
-        >> ${__TGT_DIR}/${_SERVICE_l}_service.coffee
+        >> ${__TGT_DIR_SERVICE}/${_SERVICE_l}_service.coffee
 
         #public parser func
         _TMP=`echo "parser${_FUNC}Return" | awk '{printf "    %-40s : %s\n",$0,$0}'`
@@ -183,17 +238,17 @@ function fn_generate_coffee() {
         | sed -e ":a;N;$ s/@@resolve-func/resolve${_FUNC}Result/g;ba" \
         | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
         | sed -e ":a;N;$ s/@@API-TYPE/${API_TYPE}/g;ba" \
-        >> ${__TGT_DIR}/${_SERVICE_l}_parser.coffee
+        >> ${__TGT_DIR_SERVICE}/${_SERVICE_l}_parser.coffee
 
     done
 
     echo "5.append public api list to ${_SERVICE_l}_service.coffee"
     echo -e "\n    #############################################################\n\
-    #public ${_PUBLIC_API_LIST}" >> ${__TGT_DIR}/${_SERVICE_l}_service.coffee
+    #public ${_PUBLIC_API_LIST}" >> ${__TGT_DIR_SERVICE}/${_SERVICE_l}_service.coffee
 
     echo "6.append public parser list to ${_SERVICE_l}_parser.coffee"
     echo -e "\n    #############################################################\n\
-    #public ${_PUBLIC_PARSER_LIST}" >> ${__TGT_DIR}/${_SERVICE_l}_parser.coffee
+    #public ${_PUBLIC_PARSER_LIST}" >> ${__TGT_DIR_SERVICE}/${_SERVICE_l}_parser.coffee
 
     echo
 
@@ -214,23 +269,21 @@ function fn_scan_handler_forge() {
     CUR_FILE=$2
 
     #for tmp test
-    #if [ "${CUR_FILE}" != "SessionHandler.py" ]
-    #then
-    #    return
-    #fi
+    if [ "${CUR_FILE}" != "SessionHandler.py" ]
+    then
+        return
+    fi
 
     echo "########################################################"
     echo "#Processing "`echo ${CUR_DIR} | awk 'BEGIN{FS="[/]"}{print $(NF) }' `" - "${CUR_FILE}
     echo "########################################################"
 
-
     TGT_DIR=${TGT_BASE_DIR}/"service"/${CUR_FILE/Handler/}      #remove Handler
     TGT_DIR=${TGT_DIR/.py/}                                     #remove .py
     TGT_DIR=${TGT_DIR,,}                                        #tolower
 
-
     #create subdir in out.tmp
-    mkdir -p ${TGT_DIR}
+    mkdir -p ${TGT_DIR}                             #create out.tmp/service/
 
     fn_generate_coffee "forge" "${CUR_DIR}" "${CUR_FILE}" "${TGT_DIR}"
 
@@ -248,10 +301,10 @@ function fn_scan_aws() {
     #echo $CUR_DIR
 
     #for tmp test
-    #if [ "${SERVICE}" != "OpsWorks" ]
-    #then
-    #    return
-    #fi
+    if [ "${SERVICE}" != "EC2" ]
+    then
+        return
+    fi
 
     #service
     echo
@@ -273,7 +326,7 @@ function fn_scan_aws() {
         _RESOURCE=${SERVICE/Util/}
         TGT_DIR=${TGT_BASE_DIR}/"service"/aws/${_RESOURCE,,}  #lower
         #create subdir in out.tmp
-        mkdir -p ${TGT_DIR}
+        mkdir -p ${TGT_DIR}                             #create out.tmp/service/
 
         fn_generate_coffee "awsutil" "${CUR_DIR}" "${CUR_FILE}" "${TGT_DIR}"
 
@@ -299,7 +352,7 @@ function fn_scan_aws() {
             TGT_DIR=${TGT_BASE_DIR}/"service"/aws/${SERVICE,,}/${_RESOURCE,,}    #lower
 
             #create subdir in out.tmp
-            mkdir -p ${TGT_DIR}
+            mkdir -p ${TGT_DIR}                             #create out.tmp/service/
 
             fn_generate_coffee "aws" "${CUR_DIR}/${SERVICE}" "${CUR_FILE}" "${TGT_DIR}"
         done

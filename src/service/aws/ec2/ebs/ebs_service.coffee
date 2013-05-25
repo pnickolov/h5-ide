@@ -12,7 +12,7 @@
 
 define [ 'MC', 'ebs_parser', 'result_vo' ], ( MC, ebs_parser, result_vo ) ->
 
-    URL = '/aws/ec2/ebs/'
+    BASE_URL = '/aws/ec2/ebs/'
 
     #private
     send_request =  ( api_name, param_ary, parser, callback ) ->
@@ -23,6 +23,11 @@ define [ 'MC', 'ebs_parser', 'result_vo' ], ( MC, ebs_parser, result_vo ) ->
             return false
 
         try
+
+            if ( api_name.indexOf "Volume" ) != -1
+                URL =  BASE_URL + "volume/"
+            else if ( api_name.indexOf "Snapshot" ) != -1
+                URL =  BASE_URL + "snapshot/"
 
             MC.api {
                 url     : URL

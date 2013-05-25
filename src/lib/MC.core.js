@@ -4,11 +4,11 @@
 #* Creator: Angel
 #* Description: The core of the whole system 
 # **********************************************************
-# (c)Copyright 2013 Madeiracloud  All Rights Reserved
+# (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var MC = {
-	version: '0.1',
+	version: '0.1.2',
 
 	// Global Variable 
 	API_URL: 'http://api.madeiracloud.com/',
@@ -159,6 +159,27 @@ var MC = {
 	},
 
 	/**
+	 * Display and update notification number on title
+	 * @param  {number} number the notification number
+	 * @return {boolean} true
+	 */
+	titleNotification: function (number)
+	{
+		var rnumber = /\([0-9]*\)/ig;
+
+		if (number > 0)
+		{
+			document.title = (document.title.match(rnumber)) ? document.title.replace(rnumber, '(' + number + ')') : '(' + number + ') ' + document.title;
+		}
+		else
+		{
+			document.title = document.title.replace(rnumber, '');
+		}
+
+		return true;
+	},
+
+	/**
 	 * Format a number with grouped thousands
 	 * @param  {number} number The target number
 	 * @return {string}
@@ -195,7 +216,7 @@ var MC = {
 	},
 
 	/**
-	 * Format date string
+	 * Returns a formatted string according to the given format string with date object
 	 * @param  {Date object} date   The date object
 	 * @param  {String} format the string of format
 	 * @return {String} The formatted date string
@@ -246,19 +267,21 @@ var MC = {
 	}
 };
 
-// Storage
-// Author: Angel
-// 
-// Save data into local computer via HTML5 localStorage, up to 10MB storage capacity.
-// 
-// Saving data
-// MC.storage.set(name, value)
-// 
-// Getting data
-// MC.storage.get(name)
-// 
-// Remove data
-// MC.storage.remove(name)
+/*
+* Storage
+* Author: Angel
+* 
+* Save data into local computer via HTML5 localStorage, up to 10MB storage capacity.
+* 
+* Saving data
+* MC.storage.set(name, value)
+* 
+* Getting data
+* MC.storage.get(name)
+* 
+* Remove data
+* MC.storage.remove(name)
+*/
 MC.storage = {
 	set: function (name, value)
 	{

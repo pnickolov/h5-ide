@@ -24,6 +24,16 @@
 	font-weight: 400;
 	src: local('Ubuntu'), url('../fonts/ubuntu.woff') format('woff');
 }
+
+@font-face
+{
+	font-family: 'Titillium Web';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Titillium'), url('../fonts/TitilliumWeb-Regular.ttf') format('truetype');
+}
+
+
 /* CSS reset */
 article,
 footer,
@@ -187,14 +197,15 @@ abbr {
 
 body {
 	margin: 0;
-	font-size: 12px;
+	font-size: 14px;
 	font-family: Arial, sans-serif;
 }
 
 /* Hack custom fonts loading */
 @media (min-width: 1px) {
 	body {
-		font-family: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;
+		/*font-family: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;*/
+		font-family: 'Titillium Web','Ubuntu', 'Helvetica Neue', Arial, sans-serif;
 	}
 }
 

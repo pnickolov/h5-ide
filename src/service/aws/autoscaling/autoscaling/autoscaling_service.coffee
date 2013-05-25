@@ -1,0 +1,129 @@
+#*************************************************************************************
+#* Filename     : autoscaling_service.coffee
+#* Creator      : gen_service.sh
+#* Create date  : 2013-05-25 14:06:03
+#* Description  : service know back-end api
+#* Action       : 1.invoke MC.api (send url, method, data)
+#*                2.invoke parser
+#*                3.invoke callback
+# ************************************************************************************
+# (c)Copyright 2012 Madeiracloud  All Rights Reserved
+# ************************************************************************************
+
+define [ 'MC', 'autoscaling_parser', 'result_vo' ], ( MC, autoscaling_parser, result_vo ) ->
+
+    URL = '/aws/autoscaling/autoscaling/'
+
+    #private
+    send_request =  ( api_name, param_ary, parser, callback ) ->
+
+        #check callback
+        if callback is null
+            console.log "autoscaling." + api_name + " callback is null"
+            return false
+
+        try
+
+            MC.api {
+                url     : URL
+                method  : api_name
+                data    : param_ary
+                success : ( result, return_code ) ->
+
+                    #resolve result
+                    result_vo.aws_result = parser result, return_code, param_ary
+
+                    callback result_vo.aws_result
+
+                error : ( result, return_code ) ->
+
+                    result_vo.aws_result.return_code      = return_code
+                    result_vo.aws_result.is_error         = true
+                    result_vo.aws_result.error_message    = result.toString()
+
+                    callback result_vo.aws_result
+            }
+
+        catch error
+            console.log "autoscaling." + method + " error:" + error.toString()
+
+
+        true
+    # end of send_request
+
+    #def DescribeAdjustmentTypes(self, username, session_id, region_name):
+    DescribeAdjustmentTypes = ( username, session_id, region_name, callback ) ->
+        send_request "DescribeAdjustmentTypes", [ username, session_id, region_name ], autoscaling_parser.parserDescribeAdjustmentTypesReturn, callback
+        true
+
+    #def DescribeAutoScalingGroups(self, username, session_id, region_name, group_names=None, max_records=None, next_token=None):
+    DescribeAutoScalingGroups = ( username, session_id, region_name, group_names=null, max_records=null, next_token=null, callback ) ->
+        send_request "DescribeAutoScalingGroups", [ username, session_id, region_name, group_names, max_records, next_token ], autoscaling_parser.parserDescribeAutoScalingGroupsReturn, callback
+        true
+
+    #def DescribeAutoScalingInstances(self, username, session_id, region_name, instance_ids=None, max_records=None, next_token=None):
+    DescribeAutoScalingInstances = ( username, session_id, region_name, instance_ids=null, max_records=null, next_token=null, callback ) ->
+        send_request "DescribeAutoScalingInstances", [ username, session_id, region_name, instance_ids, max_records, next_token ], autoscaling_parser.parserDescribeAutoScalingInstancesReturn, callback
+        true
+
+    #def DescribeAutoScalingNotificationTypes(self, username, session_id, region_name):
+    DescribeAutoScalingNotificationTypes = ( username, session_id, region_name, callback ) ->
+        send_request "DescribeAutoScalingNotificationTypes", [ username, session_id, region_name ], autoscaling_parser.parserDescribeAutoScalingNotificationTypesReturn, callback
+        true
+
+    #def DescribeLaunchConfigurations(self, username, session_id, region_name, config_names=None, max_records=None, next_token=None):
+    DescribeLaunchConfigurations = ( username, session_id, region_name, config_names=null, max_records=null, next_token=null, callback ) ->
+        send_request "DescribeLaunchConfigurations", [ username, session_id, region_name, config_names, max_records, next_token ], autoscaling_parser.parserDescribeLaunchConfigurationsReturn, callback
+        true
+
+    #def DescribeMetricCollectionTypes(self, username, session_id, region_name):
+    DescribeMetricCollectionTypes = ( username, session_id, region_name, callback ) ->
+        send_request "DescribeMetricCollectionTypes", [ username, session_id, region_name ], autoscaling_parser.parserDescribeMetricCollectionTypesReturn, callback
+        true
+
+    #def DescribeNotificationConfigurations(self, username, session_id, region_name, group_names=None, max_records=None, next_token=None):
+    DescribeNotificationConfigurations = ( username, session_id, region_name, group_names=null, max_records=null, next_token=null, callback ) ->
+        send_request "DescribeNotificationConfigurations", [ username, session_id, region_name, group_names, max_records, next_token ], autoscaling_parser.parserDescribeNotificationConfigurationsReturn, callback
+        true
+
+    #def DescribePolicies(self, username, session_id, region_name, group_name=None, policy_names=None, max_records=None, next_token=None):
+    DescribePolicies = ( username, session_id, region_name, group_name=null, policy_names=null, max_records=null, next_token=null, callback ) ->
+        send_request "DescribePolicies", [ username, session_id, region_name, group_name, policy_names, max_records, next_token ], autoscaling_parser.parserDescribePoliciesReturn, callback
+        true
+
+    #def DescribeScalingActivities(self, username, session_id, region_name,
+    DescribeScalingActivities = ( username, session_id, callback ) ->
+        send_request "DescribeScalingActivities", [ username, session_id ], autoscaling_parser.parserDescribeScalingActivitiesReturn, callback
+        true
+
+    #def DescribeScalingProcessTypes(self, username, session_id, region_name):
+    DescribeScalingProcessTypes = ( username, session_id, region_name, callback ) ->
+        send_request "DescribeScalingProcessTypes", [ username, session_id, region_name ], autoscaling_parser.parserDescribeScalingProcessTypesReturn, callback
+        true
+
+    #def DescribeScheduledActions(self, username, session_id, region_name,
+    DescribeScheduledActions = ( username, session_id, callback ) ->
+        send_request "DescribeScheduledActions", [ username, session_id ], autoscaling_parser.parserDescribeScheduledActionsReturn, callback
+        true
+
+    #def DescribeTags(self, username, session_id, region_name, filters=None, max_records=None, next_token=None):
+    DescribeTags = ( username, session_id, region_name, filters=null, max_records=null, next_token=null, callback ) ->
+        send_request "DescribeTags", [ username, session_id, region_name, filters, max_records, next_token ], autoscaling_parser.parserDescribeTagsReturn, callback
+        true
+
+
+    #############################################################
+    #public
+    DescribeAdjustmentTypes      : DescribeAdjustmentTypes
+    DescribeAutoScalingGroups    : DescribeAutoScalingGroups
+    DescribeAutoScalingInstances : DescribeAutoScalingInstances
+    DescribeAutoScalingNotificationTypes : DescribeAutoScalingNotificationTypes
+    DescribeLaunchConfigurations : DescribeLaunchConfigurations
+    DescribeMetricCollectionTypes : DescribeMetricCollectionTypes
+    DescribeNotificationConfigurations : DescribeNotificationConfigurations
+    DescribePolicies             : DescribePolicies
+    DescribeScalingActivities    : DescribeScalingActivities
+    DescribeScalingProcessTypes  : DescribeScalingProcessTypes
+    DescribeScheduledActions     : DescribeScheduledActions
+    DescribeTags                 : DescribeTags
+

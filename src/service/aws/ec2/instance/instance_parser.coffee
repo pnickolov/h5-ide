@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'instance_vo', 'result_vo', 'constant' ], ( instance_vo, result_vo, constant ) ->
+define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, result_vo, constant, $ ) ->
 
 
     #///////////////// Parser for RunInstances return  /////////////////
@@ -169,11 +169,12 @@ define [ 'instance_vo', 'result_vo', 'constant' ], ( instance_vo, result_vo, con
     #///////////////// Parser for DescribeInstances return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeInstancesResult = ( result ) ->
-        #resolve result
-        #TO-DO
+        #resolve instance
+        xml = $.parseXML result[1]
+        instance_vo.instance = $.xml2json xml
 
-        #return vo
-        #TO-DO
+        #return instance
+        instance_vo.instance
 
     #private (parser DescribeInstances return)
     parserDescribeInstancesReturn = ( result, return_code, param ) ->

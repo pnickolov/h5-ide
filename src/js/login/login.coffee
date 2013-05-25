@@ -49,8 +49,17 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 
 		event.preventDefault()
 
-		username = $( '#login_user' ).val()
-		password = $( '#login_password' ).val()
+		username = $( '#login-user' ).val()
+		password = $( '#login-password' ).val()
+
+		#Email is empty
+		if username is ''
+			event.preventDefault()
+			$( '.error-msg'     ).removeClass 'show'
+			$( '.control-group' ).first().removeClass 'error'
+			$( '#error-msg-2'   ).addClass 'show'
+			$( '.control-group' ).first().addClass 'error'
+			return false
 
 		#invoke session.login api
 		session_model.login username, password
@@ -59,7 +68,7 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 		session_model.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->
 
 			if !forge_result.is_error
-			#login succeed
+				#login succeed
 
 				result = forge_result.resolved_data
 
@@ -69,16 +78,18 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 				#redirect to page ide.html
 				window.location.href = 'ide.html'
 
-				true
+				return true
 
 			else
-			#login failed
-				alert forge_result.error_message
+				#login failed
+				#alert forge_result.error_message
+				event.preventDefault()
+				$( '.error-msg'     ).removeClass 'show'
+				$( '.control-group' ).first().removeClass 'error'
+				$( '#error-msg-1'   ).addClass 'show'
 
-				false
-
-		true
+				return false
 
 	#public object
 	ready : () ->
-		$( '#login_form' ).submit( MC.login )
+		$( '#login-form' ).submit( MC.login )

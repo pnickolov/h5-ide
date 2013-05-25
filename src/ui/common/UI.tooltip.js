@@ -1,6 +1,6 @@
 // Tooltip
 // Author: Angel
-MC.tooltip = {
+var tooltip = {
 	show: function (event)
 	{
 		var target = $(event.target),
@@ -28,6 +28,6 @@ MC.tooltip = {
 
 $(document).ready(function ()
 {
-	$(document).on('mouseenter', '.tooltip', MC.tooltip.show);
-	$(document).on('mouseleave', '.tooltip', MC.tooltip.hide);
+	$(document).on('mouseenter', '.tooltip', tooltip.show);
+	$(document).on('mouseleave', '.tooltip', tooltip.hide);
 });

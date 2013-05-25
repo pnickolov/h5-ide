@@ -1,8 +1,17 @@
-require [ 'MC', 'jquery', 'session_service', 'instance_service'], ( MC, $, session_service, instance_service ) ->
+#*************************************************************************************
+#* Filename     : @@resource-name_service.coffee
+#* Creator      : gen_service.sh
+#* Create date  : @@create-date
+#* Description  : qunit test module for @@resource-name_service
+# ************************************************************************************
+# (c)Copyright 2012 Madeiracloud  All Rights Reserved
+# ************************************************************************************
+
+require [ 'MC', 'jquery', 'test_util', 'session_service', '@@resource-name_service'], ( MC, $, test_util, session_service, @@resource-name_service ) ->
 
     #test user
-    username    = "xjimmy"
-    password    = "aaa123aa"
+    username    = test_util.username
+    password    = test_util.password
 
     #session info
     session_id  = ""
@@ -13,7 +22,7 @@ require [ 'MC', 'jquery', 'session_service', 'instance_service'], ( MC, $, sessi
 
     test "Check test user", () ->
         if username == "" or password == ""
-            ok false, "please set the username and password first, then try again"
+            ok false, "please set the username and password first(/test/service/test_util), then try again"
         else
             ok true, "passwd"
             can_test = true
@@ -36,36 +45,16 @@ require [ 'MC', 'jquery', 'session_service', 'instance_service'], ( MC, $, sessi
                 usercode     = session_info.usercode
                 region_name  = session_info.region_name
                 ok true, "login succeed" + "( usercode : " + usercode + " , region_name : " + region_name + " , session_id : " + session_id + ")"
+                username = usercode
                 start()
             else
             #login failed
                 ok false, "login failed, error is " + forge_result.error_message + ", cancel the follow-up test!"
                 start()
 
-    #login failed then top test
-    #if session_id == ""
-        #to-do
 
 
     ################################################
-    #AWS.EC2.Instance test
+    #@@service-url test
     ################################################
-    module "Module AWS.EC2.Instance"
-
-    #-----------------------------------------------
-    #Test DescribeInstances()
-    #-----------------------------------------------
-    asyncTest "aws.ec2.instance.DescribeInstances", () ->
-        console.log "DescribeInstances(" + usercode + "," + session_id + "," + region_name + ")"
-        instance_service.DescribeInstances usercode, session_id, region_name, null, null, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeInstances succeed
-                instanceList = aws_result.resolved_data
-                ok true, "aws.ec2.instance.DescribeInstances() succeed"
-                start()
-            else
-            #DescribeInstances failed
-                ok false, "aws.ec2.instance.DescribeInstances() failed" + aws_result.error_message
-                start()
-
-
+    module "Module @@service-url - @@resource-name"

@@ -1,48 +1,140 @@
 (function() {
-  define(['MC', 'jquery', 'instance_vo', 'result_vo', 'constant'], function(MC, $, instance_vo, result_vo, constant) {
-    var parseDescribeInstancesResponse, resolveVO;
+  define(['instance_vo', 'result_vo', 'constant'], function(instance_vo, result_vo, constant) {
+    var parserBundleInstanceReturn, parserCancelBundleTaskReturn, parserConfirmProductInstanceReturn, parserDescribeBundleTasksReturn, parserDescribeInstanceAttributeReturn, parserDescribeInstanceStatusReturn, parserDescribeInstancesReturn, parserGetConsoleOutputReturn, parserGetPasswordDataReturn, parserModifyInstanceAttributeReturn, parserMonitorInstancesReturn, parserRebootInstancesReturn, parserResetInstanceAttributeReturn, parserRunInstancesReturn, parserStartInstancesReturn, parserStopInstancesReturn, parserTerminateInstancesReturn, parserUnmonitorInstancesReturn, resolveDescribeBundleTasksResult, resolveDescribeInstanceAttributeResult, resolveDescribeInstanceStatusResult, resolveDescribeInstancesResult, resolveGetConsoleOutputResult, resolveGetPasswordDataResult;
 
-    resolveVO = function(result) {
-      var xml;
-
-      xml = $.parseXML(result);
-      instance_vo.instance = $.xml2json(xml);
-      return instance_vo.instance;
+    parserRunInstancesReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
     };
-    parseDescribeInstancesResponse = function(result, return_code, param) {
-      var aws_error_code, aws_error_message, error, error_message, is_error, resolved_data;
+    parserStartInstancesReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    parserStopInstancesReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    parserRebootInstancesReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    parserTerminateInstancesReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    parserMonitorInstancesReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    parserUnmonitorInstancesReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    parserBundleInstanceReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    parserCancelBundleTaskReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    parserModifyInstanceAttributeReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    parserResetInstanceAttributeReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    parserConfirmProductInstanceReturn = function(result, return_code, param) {
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      return result_vo.aws_result;
+    };
+    resolveDescribeInstancesResult = function(result) {};
+    parserDescribeInstancesReturn = function(result, return_code, param) {
+      var resolved_data;
 
-      is_error = true;
-      error_message = "";
-      resolved_data = null;
-      aws_error_code = -1;
-      aws_error_message = "";
-      try {
-        switch (return_code) {
-          case constant.RETURN_CODE.E_OK:
-            resolved_data = resolveVO(result[1]);
-            is_error = false;
-            break;
-          default:
-            error_message = result.toString();
-        }
-      } catch (_error) {
-        error = _error;
-        error_message = error.toString();
-        is_error = true;
-      } finally {
-        result_vo.aws_result.return_code = return_code;
-        result_vo.aws_result.param = param;
-        result_vo.aws_result.is_error = is_error;
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      if (return_code === constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error) {
+        resolved_data = resolveDescribeInstancesResult(result);
         result_vo.aws_result.resolved_data = resolved_data;
-        result_vo.aws_result.error_message = error_message;
-        result_vo.aws_result.aws_error_code = aws_error_code;
-        result_vo.aws_result.aws_error_message = aws_error_message;
+      }
+      return result_vo.aws_result;
+    };
+    resolveDescribeInstanceStatusResult = function(result) {};
+    parserDescribeInstanceStatusReturn = function(result, return_code, param) {
+      var resolved_data;
+
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      if (return_code === constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error) {
+        resolved_data = resolveDescribeInstanceStatusResult(result);
+        result_vo.aws_result.resolved_data = resolved_data;
+      }
+      return result_vo.aws_result;
+    };
+    resolveDescribeBundleTasksResult = function(result) {};
+    parserDescribeBundleTasksReturn = function(result, return_code, param) {
+      var resolved_data;
+
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      if (return_code === constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error) {
+        resolved_data = resolveDescribeBundleTasksResult(result);
+        result_vo.aws_result.resolved_data = resolved_data;
+      }
+      return result_vo.aws_result;
+    };
+    resolveDescribeInstanceAttributeResult = function(result) {};
+    parserDescribeInstanceAttributeReturn = function(result, return_code, param) {
+      var resolved_data;
+
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      if (return_code === constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error) {
+        resolved_data = resolveDescribeInstanceAttributeResult(result);
+        result_vo.aws_result.resolved_data = resolved_data;
+      }
+      return result_vo.aws_result;
+    };
+    resolveGetConsoleOutputResult = function(result) {};
+    parserGetConsoleOutputReturn = function(result, return_code, param) {
+      var resolved_data;
+
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      if (return_code === constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error) {
+        resolved_data = resolveGetConsoleOutputResult(result);
+        result_vo.aws_result.resolved_data = resolved_data;
+      }
+      return result_vo.aws_result;
+    };
+    resolveGetPasswordDataResult = function(result) {};
+    parserGetPasswordDataReturn = function(result, return_code, param) {
+      var resolved_data;
+
+      result_vo.aws_result = result_vo.processAWSReturnHandler(result, return_code, param);
+      if (return_code === constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error) {
+        resolved_data = resolveGetPasswordDataResult(result);
+        result_vo.aws_result.resolved_data = resolved_data;
       }
       return result_vo.aws_result;
     };
     return {
-      parseDescribeInstancesResponse: parseDescribeInstancesResponse
+      parserRunInstancesReturn: parserRunInstancesReturn,
+      parserStartInstancesReturn: parserStartInstancesReturn,
+      parserStopInstancesReturn: parserStopInstancesReturn,
+      parserRebootInstancesReturn: parserRebootInstancesReturn,
+      parserTerminateInstancesReturn: parserTerminateInstancesReturn,
+      parserMonitorInstancesReturn: parserMonitorInstancesReturn,
+      parserUnmonitorInstancesReturn: parserUnmonitorInstancesReturn,
+      parserBundleInstanceReturn: parserBundleInstanceReturn,
+      parserCancelBundleTaskReturn: parserCancelBundleTaskReturn,
+      parserModifyInstanceAttributeReturn: parserModifyInstanceAttributeReturn,
+      parserResetInstanceAttributeReturn: parserResetInstanceAttributeReturn,
+      parserConfirmProductInstanceReturn: parserConfirmProductInstanceReturn,
+      parserDescribeInstancesReturn: parserDescribeInstancesReturn,
+      parserDescribeInstanceStatusReturn: parserDescribeInstanceStatusReturn,
+      parserDescribeBundleTasksReturn: parserDescribeBundleTasksReturn,
+      parserDescribeInstanceAttributeReturn: parserDescribeInstanceAttributeReturn,
+      parserGetConsoleOutputReturn: parserGetConsoleOutputReturn,
+      parserGetPasswordDataReturn: parserGetPasswordDataReturn
     };
   });
 

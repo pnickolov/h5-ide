@@ -12,7 +12,7 @@ require.config {
 
     baseUrl         : '/'
 
-    deps            : [ '/test/service/aws/testsuite.js' ]
+    deps            : [ '/test/service/aws/aws/testsuite.js' ]
 
     shim            :
 

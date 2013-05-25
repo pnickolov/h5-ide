@@ -62,7 +62,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
     #Test quickstart()
     #-----------------------------------------------
     asyncTest "/aws aws.quickstart()", () ->
-        
+
 
         aws_service.quickstart username, session_id, region_name, ( aws_result ) ->
             if !aws_result.is_error
@@ -78,8 +78,8 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
     #-----------------------------------------------
     #Test Public()
     #-----------------------------------------------
-    asyncTest "/aws aws.Public()", () ->
-        
+    asyncTest "/aws aws.public()", () ->
+
 
         aws_service.Public username, session_id, region_name, ( aws_result ) ->
             if !aws_result.is_error
@@ -96,7 +96,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
     #Test info()
     #-----------------------------------------------
     asyncTest "/aws aws.info()", () ->
-        
+
 
         aws_service.info username, session_id, region_name, ( aws_result ) ->
             if !aws_result.is_error
@@ -113,7 +113,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
     #Test resource()
     #-----------------------------------------------
     asyncTest "/aws aws.resource()", () ->
-        
+
         resources = null
 
         aws_service.resource username, session_id, region_name, resources, ( aws_result ) ->
@@ -127,11 +127,12 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
                 ok false, "resource() failed" + aws_result.error_message
                 start()
 
+    ###
     #-----------------------------------------------
     #Test price()
     #-----------------------------------------------
     asyncTest "/aws aws.price()", () ->
-        
+
 
         aws_service.price username, session_id, ( aws_result ) ->
             if !aws_result.is_error
@@ -143,12 +144,13 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
             #price failed
                 ok false, "price() failed" + aws_result.error_message
                 start()
+    ###
 
     #-----------------------------------------------
     #Test status()
     #-----------------------------------------------
     asyncTest "/aws aws.status()", () ->
-        
+
 
         aws_service.status username, session_id, ( aws_result ) ->
             if !aws_result.is_error

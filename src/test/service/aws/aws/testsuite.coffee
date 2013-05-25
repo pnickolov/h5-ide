@@ -15,7 +15,7 @@ QUnit.config.autostart = false
 # extension so RequireJS resolves them as relative paths rather than using
 # the `baseUrl` value supplied above.
 testModules = [
-	'/test/service/aws/module_aws.js',
+	'/test/service/aws/aws/module_aws.js',
 	##@@module-list
 ]
 

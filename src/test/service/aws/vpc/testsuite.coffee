@@ -15,16 +15,16 @@ QUnit.config.autostart = false
 # extension so RequireJS resolves them as relative paths rather than using
 # the `baseUrl` value supplied above.
 testModules = [
-	'/test/service/aws/vpc/module_acl.js',
-	'/test/service/aws/vpc/module_customergateway.js',
-	'/test/service/aws/vpc/module_dhcp.js',
-	'/test/service/aws/vpc/module_eni.js',
-	'/test/service/aws/vpc/module_internetgateway.js',
-	'/test/service/aws/vpc/module_routetable.js',
-	'/test/service/aws/vpc/module_subnet.js',
+	# '/test/service/aws/vpc/module_acl.js',
+	# '/test/service/aws/vpc/module_customergateway.js',
+	# '/test/service/aws/vpc/module_dhcp.js',
+	# '/test/service/aws/vpc/module_eni.js',
+	# '/test/service/aws/vpc/module_internetgateway.js',
+	# '/test/service/aws/vpc/module_routetable.js',
+	# '/test/service/aws/vpc/module_subnet.js',
 	'/test/service/aws/vpc/module_vpc.js',
-	'/test/service/aws/vpc/module_vpngateway.js',
-	'/test/service/aws/vpc/module_vpn.js',
+	# '/test/service/aws/vpc/module_vpngateway.js',
+	# '/test/service/aws/vpc/module_vpn.js',
 	##@@module-list
 ]
 

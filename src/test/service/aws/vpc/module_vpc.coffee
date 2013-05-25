@@ -62,7 +62,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'vpc_service'], ( MC, 
     #Test DescribeVpcs()
     #-----------------------------------------------
     asyncTest "/aws/vpc vpc.DescribeVpcs()", () ->
-        
+
         vpc_ids = null
         filters = null
 
@@ -81,8 +81,8 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'vpc_service'], ( MC, 
     #Test DescribeAccountAttributes()
     #-----------------------------------------------
     asyncTest "/aws/vpc vpc.DescribeAccountAttributes()", () ->
-        
-        attribute_name = null
+
+        attribute_name = ["supported-platforms"]
 
         vpc_service.DescribeAccountAttributes username, session_id, region_name, attribute_name, ( aws_result ) ->
             if !aws_result.is_error
@@ -99,7 +99,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'vpc_service'], ( MC, 
     #Test DescribeVpcAttribute()
     #-----------------------------------------------
     asyncTest "/aws/vpc vpc.DescribeVpcAttribute()", () ->
-        
+
         vpc_id = null
         attribute = null
 

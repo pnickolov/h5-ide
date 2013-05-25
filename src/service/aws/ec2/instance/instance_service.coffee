@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : instance_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 10:35:09
+#* Create date  : 2013-05-25 13:33:47
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -12,7 +12,7 @@
 
 define [ 'MC', 'instance_parser', 'result_vo' ], ( MC, instance_parser, result_vo ) ->
 
-    URL = '/aws/ec2/'
+    URL = '/aws/ec2/instance/'
 
     #private
     send_request =  ( api_name, param_ary, parser, callback ) ->
@@ -62,7 +62,7 @@ define [ 'MC', 'instance_parser', 'result_vo' ], ( MC, instance_parser, result_v
         true
 
     #def StopInstances(self, username, session_id, region_name, instance_ids=None, force=False):
-    StopInstances = ( username, session_id, region_name, instance_ids=null, force=False, callback ) ->
+    StopInstances = ( username, session_id, region_name, instance_ids=null, force=false, callback ) ->
         send_request "StopInstances", [ username, session_id, region_name, instance_ids, force ], instance_parser.parserStopInstancesReturn, callback
         true
 
@@ -117,7 +117,7 @@ define [ 'MC', 'instance_parser', 'result_vo' ], ( MC, instance_parser, result_v
         true
 
     #def DescribeInstanceStatus(self, username, session_id, region_name, instance_ids=None, include_all_instances=False, max_results=1000, next_token=None):
-    DescribeInstanceStatus = ( username, session_id, region_name, instance_ids=null, include_all_instances=False, max_results=1000, next_token=null, callback ) ->
+    DescribeInstanceStatus = ( username, session_id, region_name, instance_ids=null, include_all_instances=false, max_results=1000, next_token=null, callback ) ->
         send_request "DescribeInstanceStatus", [ username, session_id, region_name, instance_ids, include_all_instances, max_results, next_token ], instance_parser.parserDescribeInstanceStatusReturn, callback
         true
 

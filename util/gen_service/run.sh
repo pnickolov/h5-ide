@@ -366,8 +366,6 @@ function fn_generate_coffee() {
 function fn_scan_handler_forge() {
 #process single file
 
-    return
-
     CUR_DIR=$1
     CUR_FILE=$2
 

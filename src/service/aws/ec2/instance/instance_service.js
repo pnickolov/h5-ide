@@ -2,7 +2,7 @@
   define(['MC', 'instance_parser', 'result_vo'], function(MC, instance_parser, result_vo) {
     var BundleInstance, CancelBundleTask, ConfirmProductInstance, DescribeBundleTasks, DescribeInstanceAttribute, DescribeInstanceStatus, DescribeInstances, GetConsoleOutput, GetPasswordData, ModifyInstanceAttribute, MonitorInstances, RebootInstances, ResetInstanceAttribute, RunInstances, StartInstances, StopInstances, TerminateInstances, URL, UnmonitorInstances, send_request;
 
-    URL = '/aws/ec2/';
+    URL = '/aws/ec2/instance/';
     send_request = function(api_name, param_ary, parser, callback) {
       var error;
 
@@ -48,7 +48,7 @@
         instance_ids = null;
       }
       if (force == null) {
-        force = False;
+        force = false;
       }
       send_request("StopInstances", [username, session_id, region_name, instance_ids, force], instance_parser.parserStopInstancesReturn, callback);
       return true;
@@ -110,7 +110,7 @@
         instance_ids = null;
       }
       if (include_all_instances == null) {
-        include_all_instances = False;
+        include_all_instances = false;
       }
       if (max_results == null) {
         max_results = 1000;

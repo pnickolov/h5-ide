@@ -22,7 +22,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', '@@resource-name_servi
 
     test "Check test user", () ->
         if username == "" or password == ""
-            ok false, "please set the username and password first, then try again"
+            ok false, "please set the username and password first(/test/service/test_util), then try again"
         else
             ok true, "passwd"
             can_test = true
@@ -40,7 +40,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', '@@resource-name_servi
         session_service.login username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
-                session_info = forge_result.resolved_data.session_info
+                session_info = forge_result.resolved_data
                 session_id   = session_info.session_id
                 usercode     = session_info.usercode
                 region_name  = session_info.region_name

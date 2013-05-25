@@ -12,7 +12,7 @@
 
 define [ 'MC', '@@resource-name_parser', 'result_vo' ], ( MC, @@resource-name_parser, result_vo ) ->
 
-    URL = '/@@service-url/'
+    URL = '/@@resource-url/'
 
     #private
     send_request =  ( api_name, param_ary, parser, callback ) ->

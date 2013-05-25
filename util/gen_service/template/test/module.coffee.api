@@ -2,6 +2,7 @@
     #Test @@api-name()
     #-----------------------------------------------
     asyncTest "/@@service-url @@resource-name.@@api-name()", () ->
+        @@param-default
 
         @@resource-name_service.@@api-name @@param-list, ( @@api-type_result ) ->
             if !@@api-type_result.is_error

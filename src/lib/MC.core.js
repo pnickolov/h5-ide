@@ -78,7 +78,7 @@ var MC = {
 				}
 				if (data.call === 'error' && option.error)
 				{
-					option.error(data.result[1], data.result[0]);
+					option.error(data.result.message, data.result.code);
 				}
 				delete MC.api_queue[data.id];
 			},

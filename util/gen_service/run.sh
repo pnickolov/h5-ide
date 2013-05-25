@@ -61,17 +61,35 @@ function fn_generate_coffee() {
 
 
     SERVICE_URL=""
+    RESOURCE_URL=""
     API_TYPE=""
     api_type=""
     SERVICE_NAME=`echo ${__TGT_DIR_SERVICE} | awk 'BEGIN{FS="[/]"}{printf "%s",$(NF-1)}'`
 
 
+
     if [ "${__TYPE}" == "aws"  ]
     then
         SERVICE_URL="aws\/"${SERVICE_NAME}
+        RESOURCE_URL="aws\/"${SERVICE_NAME}"\/"${_RESOURCE_l}
         API_TYPE="AWS"
         api_type="aws"
         __TGT_DIR_TEST=${__TGT_DIR_TEST/\/${_RESOURCE_l}/} #remove last field
+
+        #special process RESOURCE_URL
+        if [ "${_RESOURCE_l}" == "ec2" -o "${_RESOURCE_l}" == "elb" -o "${_RESOURCE_l}" == "iam" -o "${_RESOURCE_l}" == "vpc" ]
+        then
+            RESOURCE_URL="aws\/"${SERVICE_NAME}
+        elif [ "${_RESOURCE_l}" == "vpngateway" ]
+        then
+            RESOURCE_URL="aws\/"${SERVICE_NAME}"\/vgw"
+        elif [ "${_RESOURCE_l}" == "customergateway" ]
+        then
+            RESOURCE_URL="aws\/"${SERVICE_NAME}"\/cgw"
+        elif [ "${_RESOURCE_l}" == "internetgateway" ]
+        then
+            RESOURCE_URL="aws\/"${SERVICE_NAME}"\/igw"
+        fi
 
     elif [ "${__TYPE}" == "awsutil"  ]
     then
@@ -91,7 +109,9 @@ function fn_generate_coffee() {
     echo "# TGT_DIR_SERVICE : "${__TGT_DIR_SERVICE}
     echo "# TGT_DIR_TEST    : "${__TGT_DIR_TEST}
     echo "# SERVICE_URL     : "${SERVICE_URL}
+    echo "# RESOURCE_URL    : "${RESOURCE_URL}
     echo "# SERVICE_NAME    : "${SERVICE_NAME}
+    echo "# RESOURCE_NAME   : "${_RESOURCE_l}
     echo "#......................................................."
 
     if [ ! -d ${__TGT_DIR_SERVICE} ]
@@ -109,7 +129,7 @@ function fn_generate_coffee() {
     echo "1.generate service/service.coffee (head)"
     sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.head \
     | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
-    | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+    | sed -e ":a;N;$ s/@@resource-url/${RESOURCE_URL}/g;ba" \
     | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
     > ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
 
@@ -213,6 +233,7 @@ function fn_generate_coffee() {
 
         _PARAM_DEF=""  #in define
         _PARAM_LIST="" #in invoke
+        _PARAM_DEFAULT="" #default param (not include username,region_name,session_id)
 
         P_NUM='echo ${#API_PARAM_'${j}'[@]}'
         P_NUM=`eval ${P_NUM}`
@@ -224,15 +245,27 @@ function fn_generate_coffee() {
             TMP='${API_PARAM_'${j}'[$k]}'
 
             CUR_PARAM[$k]=`eval "echo $TMP" | awk 'BEGIN{FS="[=]"}{printf $1}' `
-            CUR_PARAM_DEF[$k]=`eval "echo $TMP" | sed "s/None/null/g" `
+            #process python constant to javascript
+            CUR_PARAM_DEF[$k]=`eval "echo $TMP" | sed "s/None/null/g" | sed "s/False/false/g" | sed "s/True/true/g" `
+            
+            CUR_PARAM_DEFAULT=`echo "${CUR_PARAM[$k]}" | awk  'BEGIN{FS="[=]"}{if (NF==1){printf "        %s = null",$0}else{printf "        %s = %s",$1,$2}}'`
+
             #echo "    param> "${CUR_PARAM[$k]}
             if [ $k -eq 1 ]
             then
                 _PARAM_LIST=${CUR_PARAM[$k]}
                 _PARAM_DEF=${CUR_PARAM_DEF[$k]}
+                if [ "${CUR_PARAM[$k]}" != "username" -a "${CUR_PARAM[$k]}" != "session_id" -a "${CUR_PARAM[$k]}" != "region_name" ]
+                then
+                    _PARAM_DEFAULT=${CUR_PARAM_DEFAULT}
+                fi
             else
                 _PARAM_LIST=${_PARAM_LIST}", "${CUR_PARAM[$k]}
                 _PARAM_DEF=${_PARAM_DEF}", "${CUR_PARAM_DEF[$k]}
+                if [ "${CUR_PARAM[$k]}" != "username" -a "${CUR_PARAM[$k]}" != "session_id" -a "${CUR_PARAM[$k]}" != "region_name" ]
+                then
+                    _PARAM_DEFAULT=${_PARAM_DEFAULT}"\n"${CUR_PARAM_DEFAULT}
+                fi
             fi
         done
         eval "API_PARAM_${j}=()" #clear
@@ -294,6 +327,7 @@ function fn_generate_coffee() {
         #Describe/List/Get
             sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.api \
             | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+            | sed -e ":a;N;$ s/@@param-default/${_PARAM_DEFAULT}/g;ba" \
             | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
             | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
             | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
@@ -332,6 +366,7 @@ function fn_generate_coffee() {
 function fn_scan_handler_forge() {
 #process single file
 
+    return
 
     CUR_DIR=$1
     CUR_FILE=$2
@@ -368,11 +403,18 @@ function fn_scan_aws() {
     SERVICE=$2
     #echo $CUR_DIR
 
-    #for tmp test
+
     if [ "${SERVICE}" == "SNS" ]
     then
         return
     fi
+
+    #for tmp test
+
+    #if [ "${SERVICE}" != "EC2" ]
+    #then
+    #    return
+    #fi
 
     #service
     echo

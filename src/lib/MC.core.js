@@ -3,16 +3,17 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system 
+#* Date: 20130525
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var MC = {
-	version: '0.1.2',
+	version: '0.1.3',
 
 	// Global Variable 
-	API_URL: 'http://api.madeiracloud.com/',
-	IMG_URL: 'http://img.madeiracloud.com/',
+	API_URL: 'https://api.madeiracloud.com/',
+	IMG_URL: 'https://img.madeiracloud.com/',
 
 	/**
 	 * Generate GUID
@@ -224,13 +225,13 @@ var MC = {
 	dateFormat: function (date, format)
 	{
 		var date_format = {
-			"M+" : date.getMonth() + 1,
-			"d+" : date.getDate(),
-			"h+" : date.getHours(),
-			"m+" : date.getMinutes(),
-			"s+" : date.getSeconds(),
-			"q+" : Math.floor((date.getMonth() + 3) / 3),
-			"S" : date.getMilliseconds()
+				"M+" : date.getMonth() + 1,
+				"d+" : date.getDate(),
+				"h+" : date.getHours(),
+				"m+" : date.getMinutes(),
+				"s+" : date.getSeconds(),
+				"q+" : Math.floor((date.getMonth() + 3) / 3),
+				"S" : date.getMilliseconds()
 			},
 			key;
 
@@ -247,7 +248,7 @@ var MC = {
 			{
 				format = format.replace(
 					RegExp.$1,
-					RegExp.$1.length==1 ? date_format[key] : ("00"+ date_format[key]).substr((""+ date_format[key]).length)
+					RegExp.$1.length === 1 ? date_format[key] : ("00"+ date_format[key]).substr((""+ date_format[key]).length)
 				);
 			}
 		}
@@ -381,18 +382,6 @@ MC.WebSocket.prototype = {
 	}
 };
 
-// For event handler
-var returnTrue = function () {return true},
-	returnFalse = function () {return false};
-
-// Global initialization
-$(document).ready(function ()
-{
-	// Detecting browser and add the class name on body, so that we can use specific CSS style
-	// or for specific usage.
-	MC.browserDetect();
-});
-
 /**
  * jQuery plugin to convert a given $.ajax response xml object to json.
  *
@@ -409,9 +398,16 @@ $(document).ready(function ()
  */
 (function(e){function m(a){return a}function n(a){return decodeURIComponent(a.replace(j," "))}function k(a){0===a.indexOf('"')&&(a=a.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\"));try{return d.json?JSON.parse(a):a}catch(c){}}var j=/\+/g,d=e.cookie=function(a,c,b){if(void 0!==c){b=e.extend({},d.defaults,b);if("number"===typeof b.expires){var g=b.expires,f=b.expires=new Date;f.setDate(f.getDate()+g)}c=d.json?JSON.stringify(c):String(c);return document.cookie=[d.raw?a:encodeURIComponent(a),"=",d.raw?c:encodeURIComponent(c),b.expires?"; expires="+b.expires.toUTCString():"",b.path?"; path="+b.path:"",b.domain?"; domain="+b.domain:"",b.secure?"; secure":""].join("")}c=d.raw?m:n;b=document.cookie.split("; ");for(var g=a?void 0:{},f=0,j=b.length;f<j;f++){var h=b[f].split("="),l=c(h.shift()),h=c(h.join("="));if(a&&a===l){g=k(h);break}a||(g[l]=k(h))}return g};d.defaults={};e.removeCookie=function(a,c){return void 0!==e.cookie(a)?(e.cookie(a,"",e.extend({},c,{expires:-1})),!0):!1}})(jQuery);
 
-/*
-	Define as MC module
- */
+
+/* Global initialization */
+$(document).ready(function ()
+{
+	// Detecting browser and add the class name on body, so that we can use specific CSS style
+	// or for specific usage.
+	MC.browserDetect();
+});
+
+/* Define as MC module */
 if (typeof define === "function")
 {
 	define( "MC", [], function () { return MC; } );

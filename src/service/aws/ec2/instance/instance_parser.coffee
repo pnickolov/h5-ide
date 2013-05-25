@@ -1,61 +1,363 @@
+#*************************************************************************************
+#* Filename     : instance_parser.coffee
+#* Creator      : gen_service.sh
+#* Create date  : 2013-05-25 10:35:09
+#* Description  : parser return data of instance
+# ************************************************************************************
+# (c)Copyright 2012 Madeiracloud  All Rights Reserved
+# ************************************************************************************
 
-define [ 'MC', 'jquery', 'instance_vo', 'result_vo', 'constant' ], ( MC, $, instance_vo, result_vo, constant ) ->
+define [ 'instance_vo', 'result_vo', 'constant' ], ( instance_vo, result_vo, constant ) ->
 
-    #private (resolve result to instance_vo.instance )
-    resolveVO = ( result ) ->
+
+    #///////////////// Parser for RunInstances return  /////////////////
+    #private (parser RunInstances return)
+    parserRunInstancesReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserRunInstancesReturn
+
+
+    #///////////////// Parser for StartInstances return  /////////////////
+    #private (parser StartInstances return)
+    parserStartInstancesReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserStartInstancesReturn
+
+
+    #///////////////// Parser for StopInstances return  /////////////////
+    #private (parser StopInstances return)
+    parserStopInstancesReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserStopInstancesReturn
+
+
+    #///////////////// Parser for RebootInstances return  /////////////////
+    #private (parser RebootInstances return)
+    parserRebootInstancesReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserRebootInstancesReturn
+
+
+    #///////////////// Parser for TerminateInstances return  /////////////////
+    #private (parser TerminateInstances return)
+    parserTerminateInstancesReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserTerminateInstancesReturn
+
+
+    #///////////////// Parser for MonitorInstances return  /////////////////
+    #private (parser MonitorInstances return)
+    parserMonitorInstancesReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserMonitorInstancesReturn
+
+
+    #///////////////// Parser for UnmonitorInstances return  /////////////////
+    #private (parser UnmonitorInstances return)
+    parserUnmonitorInstancesReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserUnmonitorInstancesReturn
+
+
+    #///////////////// Parser for BundleInstance return  /////////////////
+    #private (parser BundleInstance return)
+    parserBundleInstanceReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserBundleInstanceReturn
+
+
+    #///////////////// Parser for CancelBundleTask return  /////////////////
+    #private (parser CancelBundleTask return)
+    parserCancelBundleTaskReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserCancelBundleTaskReturn
+
+
+    #///////////////// Parser for ModifyInstanceAttribute return  /////////////////
+    #private (parser ModifyInstanceAttribute return)
+    parserModifyInstanceAttributeReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserModifyInstanceAttributeReturn
+
+
+    #///////////////// Parser for ResetInstanceAttribute return  /////////////////
+    #private (parser ResetInstanceAttribute return)
+    parserResetInstanceAttributeReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserResetInstanceAttributeReturn
+
+
+    #///////////////// Parser for ConfirmProductInstance return  /////////////////
+    #private (parser ConfirmProductInstance return)
+    parserConfirmProductInstanceReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.return vo
+        result_vo.aws_result
+
+    # end of parserConfirmProductInstanceReturn
+
+
+    #///////////////// Parser for DescribeInstances return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveDescribeInstancesResult = ( result ) ->
         #resolve result
-
-        xml = $.parseXML result
-        instance_vo.instance = $.xml2json xml
-
-        #for debug
-        #console.info instance_vo.instance
-
-        #return instance
-        instance_vo.instance
-
-    #private (parser login return)
-    parseDescribeInstancesResponse = ( result, return_code, param ) ->
-
-        is_error          = true # only E_OK is false
-        error_message     = ""
-        resolved_data     = null
-
-        aws_error_code    = -1
-        aws_error_message = ""
-
-        try
-
-            switch return_code
-                when constant.RETURN_CODE.E_OK
-                    resolved_data  = resolveVO result[1]
-                    is_error       = false
-                else
-                    error_message  = result.toString()
-
-        catch error
-            error_message = error.toString()
-            is_error      = true
-
-        finally
-
-            #orial
-            result_vo.aws_result.return_code       = return_code
-            result_vo.aws_result.param             = param
-
-            #resolved
-            result_vo.aws_result.is_error          = is_error
-            result_vo.aws_result.resolved_data     = resolved_data
-            result_vo.aws_result.error_message     = error_message
-
-            result_vo.aws_result.aws_error_code    = aws_error_code
-            result_vo.aws_result.aws_error_message = aws_error_message
-
+        #TO-DO
 
         #return vo
+        #TO-DO
+
+    #private (parser DescribeInstances return)
+    parserDescribeInstancesReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+
+            resolved_data = resolveDescribeInstancesResult result
+
+            result_vo.aws_result.resolved_data = resolved_data
+
+
+        #3.return vo
         result_vo.aws_result
-    # end of parseLoginResult
+
+    # end of parserDescribeInstancesReturn
 
 
+    #///////////////// Parser for DescribeInstanceStatus return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveDescribeInstanceStatusResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser DescribeInstanceStatus return)
+    parserDescribeInstanceStatusReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+
+            resolved_data = resolveDescribeInstanceStatusResult result
+
+            result_vo.aws_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        result_vo.aws_result
+
+    # end of parserDescribeInstanceStatusReturn
+
+
+    #///////////////// Parser for DescribeBundleTasks return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveDescribeBundleTasksResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser DescribeBundleTasks return)
+    parserDescribeBundleTasksReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+
+            resolved_data = resolveDescribeBundleTasksResult result
+
+            result_vo.aws_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        result_vo.aws_result
+
+    # end of parserDescribeBundleTasksReturn
+
+
+    #///////////////// Parser for DescribeInstanceAttribute return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveDescribeInstanceAttributeResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser DescribeInstanceAttribute return)
+    parserDescribeInstanceAttributeReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+
+            resolved_data = resolveDescribeInstanceAttributeResult result
+
+            result_vo.aws_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        result_vo.aws_result
+
+    # end of parserDescribeInstanceAttributeReturn
+
+
+    #///////////////// Parser for GetConsoleOutput return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveGetConsoleOutputResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser GetConsoleOutput return)
+    parserGetConsoleOutputReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+
+            resolved_data = resolveGetConsoleOutputResult result
+
+            result_vo.aws_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        result_vo.aws_result
+
+    # end of parserGetConsoleOutputReturn
+
+
+    #///////////////// Parser for GetPasswordData return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveGetPasswordDataResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser GetPasswordData return)
+    parserGetPasswordDataReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+
+            resolved_data = resolveGetPasswordDataResult result
+
+            result_vo.aws_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        result_vo.aws_result
+
+    # end of parserGetPasswordDataReturn
+
+
+    #############################################################
     #public
-    parseDescribeInstancesResponse : parseDescribeInstancesResponse
+    parserRunInstancesReturn                 : parserRunInstancesReturn
+    parserStartInstancesReturn               : parserStartInstancesReturn
+    parserStopInstancesReturn                : parserStopInstancesReturn
+    parserRebootInstancesReturn              : parserRebootInstancesReturn
+    parserTerminateInstancesReturn           : parserTerminateInstancesReturn
+    parserMonitorInstancesReturn             : parserMonitorInstancesReturn
+    parserUnmonitorInstancesReturn           : parserUnmonitorInstancesReturn
+    parserBundleInstanceReturn               : parserBundleInstanceReturn
+    parserCancelBundleTaskReturn             : parserCancelBundleTaskReturn
+    parserModifyInstanceAttributeReturn      : parserModifyInstanceAttributeReturn
+    parserResetInstanceAttributeReturn       : parserResetInstanceAttributeReturn
+    parserConfirmProductInstanceReturn       : parserConfirmProductInstanceReturn
+    parserDescribeInstancesReturn            : parserDescribeInstancesReturn
+    parserDescribeInstanceStatusReturn       : parserDescribeInstanceStatusReturn
+    parserDescribeBundleTasksReturn          : parserDescribeBundleTasksReturn
+    parserDescribeInstanceAttributeReturn    : parserDescribeInstanceAttributeReturn
+    parserGetConsoleOutputReturn             : parserGetConsoleOutputReturn
+    parserGetPasswordDataReturn              : parserGetPasswordDataReturn
+

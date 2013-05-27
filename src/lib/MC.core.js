@@ -382,6 +382,10 @@ MC.WebSocket.prototype = {
 	}
 };
 
+// For event handler
+var returnTrue = function () {return true},
+	returnFalse = function () {return false};
+
 /**
  * jQuery plugin to convert a given $.ajax response xml object to json.
  *

@@ -10,8 +10,22 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    request_info = {
+    	time	: null
+    	data	: null
+    }
+
+    resource = {
+    	userid		: null
+    	code		: null
+    	submit_time	: null
+    	begin_time	: null
+    	end_time	: null
+    	brief		: null
+    	data		: null
+    }
 
     #public
-    #TO-DO
+    request_info : request_info
+    resource	 : resource
 

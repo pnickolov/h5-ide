@@ -9,15 +9,29 @@
 
 define [ 'request_vo', 'result_vo', 'constant' ], ( request_vo, result_vo, constant ) ->
 
+    # parse each resource
+    parseResource = (resource) ->
+        request_vo.resource.userid      = resource[0]
+        request_vo.resource.code        = resource[1]
+        request_vo.resource.submit_time = resource[2]
+        request_vo.resource.begin_time  = resource[3]
+        request_vo.resource.end_time    = resource[4]
+        request_vo.resource.brief       = resource[5]
+        request_vo.resource.data        = resource[6]
+
+        request_vo.request_info.data.push request_vo.resource
 
     #///////////////// Parser for init return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveInitResult = ( result ) ->
         #resolve result
-        #TO-DO
+        request_vo.request_info.time = result[0]
+        request_vo.request_info.data = []
+
+        parseResource resource for resource in result[1]
 
         #return vo
-        #TO-DO
+        request_vo.request_info
 
     #private (parser init return)
     parserInitReturn = ( result, return_code, param ) ->
@@ -32,7 +46,6 @@ define [ 'request_vo', 'result_vo', 'constant' ], ( request_vo, result_vo, const
 
             result_vo.forge_result.resolved_data = resolved_data
 
-
         #3.return vo
         result_vo.forge_result
 
@@ -43,10 +56,13 @@ define [ 'request_vo', 'result_vo', 'constant' ], ( request_vo, result_vo, const
     #private (resolve result to vo )
     resolveUpdateResult = ( result ) ->
         #resolve result
-        #TO-DO
+        request_vo.request_info.time = result[0]
+        request_vo.request_info.data = []
+
+        parseResource resource for resource in result[1]
 
         #return vo
-        #TO-DO
+        request_vo.request_info
 
     #private (parser update return)
     parserUpdateReturn = ( result, return_code, param ) ->

@@ -60,14 +60,6 @@ define [ 'MC', 'session_parser', 'result_vo' ], ( MC, session_parser, result_vo 
 	logout = ( callback, username, session_id ) ->
         send_request "logout", [ username, session_id ], session_parser.parserLogoutReturn, callback
         true
-        # check callback
-		if callback is null
-			console.log "session_service.login callback is null"
-			return false
-
-		# parse callback
-
-		alert 'logout'
 
     #def set_credential(self, username, session_id, access_key, secret_key, account_id=None):
     set_credential = ( username, session_id, access_key, secret_key, account_id=null, callback ) ->

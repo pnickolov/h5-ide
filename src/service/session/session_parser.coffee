@@ -50,7 +50,7 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
         #resolve result
         #TO-DO
 
-        #return vo
+        #return session_info
         #TO-DO
 
     #private (parser logout return)
@@ -106,10 +106,13 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
     #private (resolve result to vo )
     resolveGuestResult = ( result ) ->
         #resolve result
-        #TO-DO
+        session_vo.session_info.userid 		= result[0]
+        session_vo.session_info.usercode 	= result[1]
+        session_vo.session_info.session_id 	= result[2]
+        session_vo.session_info.region_name = result[3]
 
         #return vo
-        #TO-DO
+        session_vo.session_info
 
     #private (parser guest return)
     parserGuestReturn = ( result, return_code, param ) ->

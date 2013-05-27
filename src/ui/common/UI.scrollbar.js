@@ -1,5 +1,13 @@
-// Scrollbar
-// Author: Angel
+/*
+#**********************************************************
+#* Filename: UI.scrollbar
+#* Creator: Angel
+#* Description: UI.scrollbar
+#* Date: 20130525
+# **********************************************************
+# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# **********************************************************
+*/
 var scrollbar = {
 	init: function ()
 	{

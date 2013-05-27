@@ -2,9 +2,10 @@
 #**********************************************************
 #* Filename: UI.button
 #* Creator: Angel
-#* Description: UI.button 
+#* Description: UI.button
+#* Date: 20130525
 # **********************************************************
-# (c)Copyright 2013 Madeiracloud  All Rights Reserved
+# (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var button = {

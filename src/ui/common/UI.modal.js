@@ -2,9 +2,10 @@
 #**********************************************************
 #* Filename: UI.modal
 #* Creator: Angel
-#* Description: UI.modal 
+#* Description: UI.modal
+#* Date: 20130525
 # **********************************************************
-# (c)Copyright 2013 Madeiracloud  All Rights Reserved
+# (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var modal = function (template, callback)

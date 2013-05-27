@@ -171,6 +171,8 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
     resolveDescribeInstancesResult = ( result ) ->
         #resolve instance
         xml = $.parseXML result[1]
+        rootNodeName = xml.documentElement.localName
+
         instance_vo.instance = $.xml2json xml
 
         #return instance

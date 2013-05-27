@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<script src="./jquery.js"></script>
+
+<script type="text/javascript">
+	//extend jquery rpc
+	(function($){
+		$.jsonrpc = $.jsonrpc || function(option){
+			(function(reqId){
+				$.ajax({
+					url: option.url,
+					contentType: 'application/json',
+					dataType: 'json',
+					type: 'POST',
+					timeout: option.timeout,
+					data: JSON.stringify({
+						jsonrpc: '2.0',
+						id: option.id,
+						method: option.method || '',
+						params: option.params || {}
+					}),
+					success: function(res){
+						option.success(res.id, res);
+					},
+					error: function(xhr, status, error){
+						option.error(reqId, xhr, status, error);
+					}
+				});
+			})(option.id);
+		};
+		return $;
+	}(jQuery));
+</script>
+
+<script type="text/javascript">
+	var clientWindow = window.parent;
+	//recieve deal
+	var receiveMessage = function(event){
+		if(event.origin != 'https://ide.madeiracloud.com/'){
+			//return;
+		}
+		var requestOption = event.data;
+		requestOption.success = function(reqId, res){
+			var responseObj = {};
+			responseObj.id = reqId;
+			responseObj.result = res.result;
+			responseObj.call = 'success';
+			clientWindow.postMessage(responseObj, '*');
+		};
+		requestOption.error = function(reqId, xhr, status, error){
+			var responseObj = {};
+			responseObj.id = reqId;
+			responseObj.result = status;
+			responseObj.status =  xhr.status;
+			responseObj.call = 'error';
+			clientWindow.postMessage(responseObj, '*');
+		};
+		$.jsonrpc(requestOption);
+	};
+	window.addEventListener ? window.addEventListener('message', receiveMessage) :
+		window.attachEvent('onmessage', receiveMessage);
+</script>

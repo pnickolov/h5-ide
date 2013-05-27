@@ -12,7 +12,7 @@
 
 define [ 'MC', 'log_parser', 'result_vo' ], ( MC, log_parser, result_vo ) ->
 
-    URL = '//'
+    URL = '/log/'
 
     #private
     send_request =  ( api_name, param_ary, parser, callback ) ->

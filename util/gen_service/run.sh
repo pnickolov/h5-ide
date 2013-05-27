@@ -247,7 +247,7 @@ function fn_generate_coffee() {
             CUR_PARAM[$k]=`eval "echo $TMP" | awk 'BEGIN{FS="[=]"}{printf $1}' `
             #process python constant to javascript
             CUR_PARAM_DEF[$k]=`eval "echo $TMP" | sed "s/None/null/g" | sed "s/False/false/g" | sed "s/True/true/g" `
-            
+
             CUR_PARAM_DEFAULT=`echo "${CUR_PARAM[$k]}" | awk  'BEGIN{FS="[=]"}{if (NF==1){printf "        %s = null",$0}else{printf "        %s = %s",$1,$2}}'`
 
             #echo "    param> "${CUR_PARAM[$k]}
@@ -344,8 +344,10 @@ function fn_generate_coffee() {
     echo -e "\n    #############################################################\n\
     #public${_PUBLIC_PARSER_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
 
+    echo "11.append null to module_${_RESOURCE_l}.coffee"
+    echo -e "\n    null\n" >> ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
 
-    echo "11.replace model list to ${__TGT_DIR_TEST}/testsuite.coffee"
+    echo "12.replace model list to ${__TGT_DIR_TEST}/testsuite.coffee"
     echo "_MODULE_LIST:"${_MODULE_LIST}
     sed -e ":a;N;$ s/##@@module-list/${_MODULE_LIST},\n\t##@@module-list/g;ba" ${__TGT_DIR_TEST}/testsuite.coffee \
      >  ${__TGT_DIR_TEST}/testsuite.coffee.tmp

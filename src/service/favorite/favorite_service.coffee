@@ -12,7 +12,7 @@
 
 define [ 'MC', 'favorite_parser', 'result_vo' ], ( MC, favorite_parser, result_vo ) ->
 
-    URL = '//'
+    URL = '/favorite/'
 
     #private
     send_request =  ( api_name, param_ary, parser, callback ) ->

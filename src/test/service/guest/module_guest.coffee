@@ -62,7 +62,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
     #Test invite()
     #-----------------------------------------------
     asyncTest "/guest guest.invite()", () ->
-        
+
 
         guest_service.invite username, session_id, region_name, ( forge_result ) ->
             if !forge_result.is_error
@@ -79,7 +79,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
     #Test cancel()
     #-----------------------------------------------
     asyncTest "/guest guest.cancel()", () ->
-        
+
         guest_id = null
 
         guest_service.cancel username, session_id, region_name, guest_id, ( forge_result ) ->
@@ -97,7 +97,8 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
     #Test access()
     #-----------------------------------------------
     asyncTest "/guest guest.access()", () ->
-                guestname = null
+
+        guestname = null
         guest_id = null
 
         guest_service.access guestname, session_id, region_name, guest_id, ( forge_result ) ->
@@ -115,7 +116,8 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
     #Test end()
     #-----------------------------------------------
     asyncTest "/guest guest.end()", () ->
-                guestname = null
+
+        guestname = null
         guest_id = null
 
         guest_service.end guestname, session_id, region_name, guest_id, ( forge_result ) ->
@@ -133,7 +135,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
     #Test info()
     #-----------------------------------------------
     asyncTest "/guest guest.info()", () ->
-        
+
         guest_id = null
 
         guest_service.info username, session_id, region_name, guest_id, ( forge_result ) ->

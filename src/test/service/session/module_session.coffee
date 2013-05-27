@@ -62,7 +62,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
     #Test logout()
     #-----------------------------------------------
     asyncTest "/session session.logout()", () ->
-        
+
 
         session_service.logout username, session_id, ( forge_result ) ->
             if !forge_result.is_error
@@ -79,7 +79,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
     #Test set_credential()
     #-----------------------------------------------
     asyncTest "/session session.set_credential()", () ->
-        
+
         access_key = null
         secret_key = null
         account_id = null
@@ -99,7 +99,8 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
     #Test guest()
     #-----------------------------------------------
     asyncTest "/session session.guest()", () ->
-                guest_id = null
+
+        guest_id = null
         guestname = null
 
         session_service.guest guest_id, guestname, ( forge_result ) ->

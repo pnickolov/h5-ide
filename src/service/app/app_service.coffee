@@ -12,7 +12,7 @@
 
 define [ 'MC', 'app_parser', 'result_vo' ], ( MC, app_parser, result_vo ) ->
 
-    URL = '//'
+    URL = '/app/'
 
     #private
     send_request =  ( api_name, param_ary, parser, callback ) ->

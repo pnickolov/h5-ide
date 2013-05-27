@@ -52,6 +52,13 @@ define [ 'MC', 'session_parser', 'result_vo' ], ( MC, session_parser, result_vo 
 
 	#def logout(self, username, session_id):
 	logout = ( callback, username, session_id ) ->
+		# check callback
+		if callback is null
+			console.log "session_service.login callback is null"
+			return false
+
+		# parse callback
+
 		alert 'logout'
 
 	#def set_credential(self, username, session_id, access_key, secret_key, account_id=None):

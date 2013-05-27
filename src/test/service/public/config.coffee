@@ -52,7 +52,7 @@ require.config {
 
 
         #public service
-        'public_vo'        : 'service/public/public/public_vo'
-        'public_parser'    : 'service/public/public/public_parser'
-        'public_service'   : 'service/public/public/public_service'
+        'public_vo'        : 'service/public/public_vo'
+        'public_parser'    : 'service/public/public_parser'
+        'public_service'   : 'service/public/public_service'
 }#end

@@ -16,13 +16,13 @@ QUnit.config.autostart = false
 # the `baseUrl` value supplied above.
 testModules = [
 	'/test/service/aws/rds/module_instance.js',
-	'/test/service/aws/rds/module_optiongroup.js',
-	'/test/service/aws/rds/module_parametergroup.js',
-	'/test/service/aws/rds/module_rds.js',
-	'/test/service/aws/rds/module_reservedinstance.js',
-	'/test/service/aws/rds/module_securitygroup.js',
-	'/test/service/aws/rds/module_snapshot.js',
-	'/test/service/aws/rds/module_subnetgroup.js',
+	# '/test/service/aws/rds/module_optiongroup.js',
+	# '/test/service/aws/rds/module_parametergroup.js',
+	# '/test/service/aws/rds/module_rds.js',
+	# '/test/service/aws/rds/module_reservedinstance.js',
+	# '/test/service/aws/rds/module_securitygroup.js',
+	# '/test/service/aws/rds/module_snapshot.js',
+	# '/test/service/aws/rds/module_subnetgroup.js',
 	##@@module-list
 ]
 

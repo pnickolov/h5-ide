@@ -52,7 +52,7 @@ require.config {
 
 
         #favorite service
-        'favorite_vo'        : 'service/favorite/favorite/favorite_vo'
-        'favorite_parser'    : 'service/favorite/favorite/favorite_parser'
-        'favorite_service'   : 'service/favorite/favorite/favorite_service'
+        'favorite_vo'        : 'service/favorite/favorite_vo'
+        'favorite_parser'    : 'service/favorite/favorite_parser'
+        'favorite_service'   : 'service/favorite/favorite_service'
 }#end

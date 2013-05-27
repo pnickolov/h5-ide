@@ -52,7 +52,7 @@ require.config {
 
 
         #app service
-        'app_vo'        : 'service/app/app/app_vo'
-        'app_parser'    : 'service/app/app/app_parser'
-        'app_service'   : 'service/app/app/app_service'
+        'app_vo'        : 'service/app/app_vo'
+        'app_parser'    : 'service/app/app_parser'
+        'app_service'   : 'service/app/app_service'
 }#end

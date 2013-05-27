@@ -94,11 +94,13 @@ function fn_generate_coffee() {
     elif [ "${__TYPE}" == "awsutil"  ]
     then
         SERVICE_URL="aws"
+        RESOURCE_URL=${SERVICE_URL}
         API_TYPE="AWS"
         api_type="aws"
         SERVICE_NAME="aws"
     else
         SERVICE_URL=${_RESOURCE_l}
+        RESOURCE_URL=${SERVICE_URL}
         API_TYPE="Forge"
         api_type="forge"
     fi
@@ -164,9 +166,9 @@ function fn_generate_coffee() {
         mv -f ${__TGT_DIR_TEST}/config.coffee.tmp ${__TGT_DIR_TEST}/config.coffee
 
         echo -e "\n        #${_RESOURCE_l} service\n\
-        '${_RESOURCE_l}_vo'        : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}/${_RESOURCE_l}_vo'\n\
-        '${_RESOURCE_l}_parser'    : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}/${_RESOURCE_l}_parser'\n\
-        '${_RESOURCE_l}_service'   : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}/${_RESOURCE_l}_service'\n\
+        '${_RESOURCE_l}_vo'        : 'service/${RESOURCE_URL/\\/}/${_RESOURCE_l}_vo'\n\
+        '${_RESOURCE_l}_parser'    : 'service/${RESOURCE_URL/\\/}/${_RESOURCE_l}_parser'\n\
+        '${_RESOURCE_l}_service'   : 'service/${RESOURCE_URL/\\/}/${_RESOURCE_l}_service'\n\
 }#end">> ${__TGT_DIR_TEST}/config.coffee
 
     fi
@@ -372,10 +374,10 @@ function fn_scan_handler_forge() {
     CUR_FILE=$2
 
     #for tmp test
-    #if [ "${CUR_FILE}" != "SessionHandler.py" ]
-    #then
-    #    return
-    #fi
+    if [ "${CUR_FILE}" != "Stack.py" ]
+    then
+        return
+    fi
 
     echo "########################################################"
     echo "#Processing "`echo ${CUR_DIR} | awk 'BEGIN{FS="[/]"}{print $(NF) }' `" - "${CUR_FILE}
@@ -398,6 +400,8 @@ function fn_scan_handler_forge() {
 # Scan python file for aws
 #===================================================================
 function fn_scan_aws() {
+
+    return
 
     CUR_DIR=$1
     SERVICE=$2

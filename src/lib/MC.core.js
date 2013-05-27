@@ -3,7 +3,7 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system 
-#* Date: 20130525
+#* Date: 20130527
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -79,7 +79,7 @@ var MC = {
 				}
 				if (data.call === 'error' && option.error)
 				{
-					option.error(data.result.message, data.result.code);
+					option.error(data.status, -1);
 				}
 				delete MC.api_queue[data.id];
 			},

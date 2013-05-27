@@ -52,7 +52,7 @@ require.config {
 
 
         #request service
-        'request_vo'        : 'service/request/request/request_vo'
-        'request_parser'    : 'service/request/request/request_parser'
-        'request_service'   : 'service/request/request/request_service'
+        'request_vo'        : 'service/request/request_vo'
+        'request_parser'    : 'service/request/request_parser'
+        'request_service'   : 'service/request/request_service'
 }#end

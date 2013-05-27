@@ -52,7 +52,7 @@ require.config {
 
 
         #stack service
-        'stack_vo'        : 'service/stack/stack/stack_vo'
-        'stack_parser'    : 'service/stack/stack/stack_parser'
-        'stack_service'   : 'service/stack/stack/stack_service'
+        'stack_vo'        : 'service/stack/stack_vo'
+        'stack_parser'    : 'service/stack/stack_parser'
+        'stack_service'   : 'service/stack/stack_service'
 }#end

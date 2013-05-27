@@ -52,7 +52,7 @@ require.config {
 
 
         #log service
-        'log_vo'        : 'service/log/log/log_vo'
-        'log_parser'    : 'service/log/log/log_parser'
-        'log_service'   : 'service/log/log/log_service'
+        'log_vo'        : 'service/log/log_vo'
+        'log_parser'    : 'service/log/log_parser'
+        'log_service'   : 'service/log/log_service'
 }#end

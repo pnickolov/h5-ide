@@ -52,7 +52,7 @@ require.config {
 
 
         #guest service
-        'guest_vo'        : 'service/guest/guest/guest_vo'
-        'guest_parser'    : 'service/guest/guest/guest_parser'
-        'guest_service'   : 'service/guest/guest/guest_service'
+        'guest_vo'        : 'service/guest/guest_vo'
+        'guest_parser'    : 'service/guest/guest_parser'
+        'guest_service'   : 'service/guest/guest_service'
 }#end

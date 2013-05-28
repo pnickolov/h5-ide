@@ -56,8 +56,8 @@ define [ 'MC', 'session_parser', 'result_vo' ], ( MC, session_parser, result_vo 
         send_request "login", [ username, password ], session_parser.parserLoginReturn, callback
         true
 
-	#def logout(self, username, session_id):
-	logout = ( callback, username, session_id ) ->
+    #def logout(self, username, session_id):
+    logout = ( username, session_id, callback ) ->
         send_request "logout", [ username, session_id ], session_parser.parserLogoutReturn, callback
         true
 

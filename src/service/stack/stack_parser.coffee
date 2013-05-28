@@ -17,7 +17,7 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
         #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser create return)
     parserCreateReturn = ( result, return_code, param ) ->
@@ -46,7 +46,7 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
         #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser remove return)
     parserRemoveReturn = ( result, return_code, param ) ->
@@ -75,7 +75,7 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
         #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser save return)
     parserSaveReturn = ( result, return_code, param ) ->
@@ -104,7 +104,7 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
         #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser rename return)
     parserRenameReturn = ( result, return_code, param ) ->
@@ -130,10 +130,14 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
     #private (resolve result to vo )
     resolveRunResult = ( result ) ->
         #resolve result
-        #TO-DO
+        stack_vo.stack_run.id              =   result[0]
+        stack_vo.stack_run.state           =   result[1]
+        stack_vo.stack_run.brief           =   result[2]
+        stack_vo.stack_run.time_submit     =   result[3]
+        stack_vo.stack_run.rid             =   result[4]
 
         #return vo
-        #TO-DO
+        stack_vo.stack_run
 
     #private (parser run return)
     parserRunReturn = ( result, return_code, param ) ->
@@ -162,7 +166,7 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
         #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser save_as return)
     parserSaveAsReturn = ( result, return_code, param ) ->
@@ -188,10 +192,9 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
     #private (resolve result to vo )
     resolveInfoResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser info return)
     parserInfoReturn = ( result, return_code, param ) ->

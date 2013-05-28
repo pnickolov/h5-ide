@@ -13,11 +13,8 @@ define [ 'routetable_vo', 'result_vo', 'constant' ], ( routetable_vo, result_vo,
     #///////////////// Parser for DescribeRouteTables return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeRouteTablesResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        #return
+        ($.xml2json ($.parseXML result[1])).DescribeRouteTablesResponse.routeTableSet
 
     #private (parser DescribeRouteTables return)
     parserDescribeRouteTablesReturn = ( result, return_code, param ) ->

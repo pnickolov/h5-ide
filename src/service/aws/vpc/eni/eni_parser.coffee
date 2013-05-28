@@ -13,11 +13,8 @@ define [ 'eni_vo', 'result_vo', 'constant' ], ( eni_vo, result_vo, constant ) ->
     #///////////////// Parser for DescribeNetworkInterfaces return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeNetworkInterfacesResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        #return
+        ($.xml2json ($.parseXML result[1])).DescribeNetworkInterfacesResponse.networkInterfaceSet
 
     #private (parser DescribeNetworkInterfaces return)
     parserDescribeNetworkInterfacesReturn = ( result, return_code, param ) ->
@@ -42,11 +39,8 @@ define [ 'eni_vo', 'result_vo', 'constant' ], ( eni_vo, result_vo, constant ) ->
     #///////////////// Parser for DescribeNetworkInterfaceAttribute return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeNetworkInterfaceAttributeResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        #return
+        ($.xml2json ($.parseXML result[1])).DescribeNetworkInterfaceAttributeResponse
 
     #private (parser DescribeNetworkInterfaceAttribute return)
     parserDescribeNetworkInterfaceAttributeReturn = ( result, return_code, param ) ->

@@ -13,11 +13,8 @@ define [ 'subnet_vo', 'result_vo', 'constant' ], ( subnet_vo, result_vo, constan
     #///////////////// Parser for DescribeSubnets return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeSubnetsResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        #return
+        ($.xml2json ($.parseXML result[1])).DescribeSubnetsResponse.subnetSet
 
     #private (parser DescribeSubnets return)
     parserDescribeSubnetsReturn = ( result, return_code, param ) ->

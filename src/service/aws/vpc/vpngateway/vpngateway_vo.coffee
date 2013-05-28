@@ -10,8 +10,33 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    vpn_gateway = {
+        'vpnGatewayId'          :   ''
+        'state'                 :   ''
+        'type'                  :   ''
+        'availabilityZone'      :   ''
+        'attachments'           :   []
+        'tagSet'                :   []
+    }
+
+    component       =   {
+        'type'  :   'AWS.VPC.VPNGateway',
+        'name'  :   '',
+        'uid'   :   '',
+        'resource'  :   {
+            'VpnGatewayId'  :   '',
+            'State'         :   '',
+            'Type'          :   '',
+            'AvailabilityZone'  :   '',
+            'Attachments'   :   [
+                {
+                    'VpcId'     :   '',
+                    'State'     :   ''
+                }
+            ]
+        }
+    }
 
     #public
-    #TO-DO
+    vpn_gateway : vpn_gateway
 

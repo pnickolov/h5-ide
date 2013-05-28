@@ -9,9 +9,32 @@
 
 define [], () ->
 
-    #vo declaration
-    #TO-DO
+	#vo declaration
+	#TO-DO
+	stack_info 	= 	{
+		"version"				:	""
+		"id"					:	""
+		"name"					:	""
+		"owner"					:	""
+		"description"			:	""
+		"property"				:	{}
+		"component"				:	{}
+		"layout"				:	""
+		"history"				:	[]
+		"region"				:	""
+		"state"					:	""
+		"username"				:	""
+	}
 
-    #public
-    #TO-DO
+	stack_run	= 	{
+		"id"					: 	""
+		"state"					: 	""
+		"brief" 				: 	""
+		"time_submit"			: 	""
+		"rid"					: 	""
+	}
+
+	#public
+	stack_info 	: 	stack_info
+	stack_run 	: 	stack_run
 

@@ -10,8 +10,30 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    dhcp = {
+        'dhcpOptionsId'             :   ''
+        'dhcpConfigurationSet'      :   []
+        'tagSet'                    :   []
+    }
 
+    component   =   {
+        'type'  :   'AWS.VPC.DhcpOptions',
+        'name'  :   '',
+        'uid'   :   '',
+        'resource'  :   {
+            'DhcpOptionsId' :   '',
+            'VpcId'         :   '',
+            'DhcpConfigurationSet'  :   [
+                {
+                    'Key'   :   '',
+                    'ValueSet'  :   [
+                        {
+                            'Value' :   ''
+                        }
+                    ]
+                }
+            ]
+        }
+    }
     #public
-    #TO-DO
-
+    dhcp : dhcp

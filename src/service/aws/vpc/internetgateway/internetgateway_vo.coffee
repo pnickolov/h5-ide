@@ -10,8 +10,29 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    igw = {
+        'internetGatewayId'             :   ''
+        'attachmentSet'                 :   []
+        'tagSet'                        :   []
+    }
+
+    component   =   {
+        'UID'   :   {
+            'type'  :   'AWS.VPC.InternetGateway',
+            'name'  :   '',
+            'uid'   :   '',
+            'resource'  :   {
+                'InternetGatewayId'     :   '',
+                'AttachmentSet'         :   [
+                    {
+                        'VpcId'     :   '',
+                        'State'     :   ''
+                    }
+                ]
+            }
+        }
+    }
 
     #public
-    #TO-DO
 
+    igw : igw

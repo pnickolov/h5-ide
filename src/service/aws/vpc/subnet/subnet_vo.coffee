@@ -10,8 +10,31 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    subnet = {
+        'subnetId'              :   ''
+        'state'                 :   ''
+        'vpcId'                 :   ''
+        'cidrBlock'             :   ''
+        'availableIpAddressCount'           :   ''
+        'availabilityZone'      :   ''
+        'defaultForAz'          :   ''
+        'mapPublicIpOnLaunch'   :   ''
+        'tagSet'                :   []
+    }
+
+    'component'     :   {
+        'type'  :   'AWS.VPC.Subnet',
+        'name'  :   '',
+        'uid'   :   '',
+        'resource'  :   {
+            'SubnetId'  :   '',
+            'State'     :   '',
+            'VpcId'     :   '',
+            'CidrBlock' :   '',
+            'AvailableIpAddressCount'   :   '',
+            'AvailabilityZone'      :   ''
+        }
+    }
 
     #public
-    #TO-DO
-
+    subnet : subnet

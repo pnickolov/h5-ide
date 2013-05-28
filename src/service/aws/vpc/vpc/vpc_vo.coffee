@@ -10,8 +10,32 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    vpc = {
+        'vpcId'             :   ''
+        'state'             :   ''
+        'cidrBlock'         :   ''
+        'dhcpOptionsId'     :   ''
+        'tagSet'            :   []
+        'instanceTenancy'   :   ''
+        'isDefault'         :   ''
+    }
 
+    component   =   {
+        'type'  :   'AWS.VPC.VPC',
+        'name'  :   '',
+        'uid'   :   '',
+        'resource'  :   {
+            'VpcId'         :   '',
+            'State'         :   '',
+            'CidrBlock'     :   '',
+            'DhcpOptionsId' :   '',
+            'InstanceTenancy'   :   '',
+            'IsDefault'     :   '',
+            'EnableDnsSupport'  :   '',
+            'EnableDnsHostnames':   ''
+        }
+    }
+    
     #public
-    #TO-DO
+    vpc : vpc
 

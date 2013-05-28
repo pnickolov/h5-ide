@@ -7,17 +7,33 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'app_vo', 'result_vo', 'constant' ], ( app_vo, result_vo, constant ) ->
+define [ 'app_vo', 'result_vo', 'constant' , 'ebs_parser', 'eip_parser', 'instance_parser'
+         'keypair_parser', 'securitygroup_parser', 'elb_parser', 'iam_parser', 'acl_parser'
+         'customergateway_parser', 'dhcp_parser', 'eni_parser', 'internetgateway_parser', 'routetable_parser'
+         'subnet_parser', 'vpc_parser', 'vpn_parser', 'vpngateway_parser', 'stack_parser'], ( app_vo, result_vo, constant, ebs_parser, eip_parser, instance_parser
+         keypair_parser, securitygroup_parser, elb_parser, iam_parser, acl_parser
+         customergateway_parser, dhcp_parser, eni_parser, internetgateway_parser, routetable_parser
+         subnet_parser, vpc_parser, vpn_parser, vpngateway_parser, stack_parser) ->
 
+    resolveAppRequest = (result) ->
+        #resolve result
+        app_vo.app_request.id               =   result[0]
+        app_vo.app_request.state            =   result[1]
+        app_vo.app_request.brief            =   result[2]
+        app_vo.app_request.time_submit      =   result[3]
+        app_vo.app_request.rid              =   result[4]
+
+        #return vo
+        app_vo.app_request
 
     #///////////////// Parser for create return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveCreateResult = ( result ) ->
         #resolve result
-        #TO-DO
+        
 
         #return vo
-        #TO-DO
+        resolveAppRequest result
 
     #private (parser create return)
     parserCreateReturn = ( result, return_code, param ) ->
@@ -46,7 +62,7 @@ define [ 'app_vo', 'result_vo', 'constant' ], ( app_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        resolveAppRequest result
 
     #private (parser update return)
     parserUpdateReturn = ( result, return_code, param ) ->
@@ -75,7 +91,7 @@ define [ 'app_vo', 'result_vo', 'constant' ], ( app_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser rename return)
     parserRenameReturn = ( result, return_code, param ) ->
@@ -101,10 +117,10 @@ define [ 'app_vo', 'result_vo', 'constant' ], ( app_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveTerminateResult = ( result ) ->
         #resolve result
-        #TO-DO
+        
 
         #return vo
-        #TO-DO
+        resolveAppRequest result
 
     #private (parser terminate return)
     parserTerminateReturn = ( result, return_code, param ) ->
@@ -130,10 +146,10 @@ define [ 'app_vo', 'result_vo', 'constant' ], ( app_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveStartResult = ( result ) ->
         #resolve result
-        #TO-DO
+
 
         #return vo
-        #TO-DO
+        resolveAppRequest result
 
     #private (parser start return)
     parserStartReturn = ( result, return_code, param ) ->
@@ -159,10 +175,9 @@ define [ 'app_vo', 'result_vo', 'constant' ], ( app_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveStopResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        resolveAppRequest result
 
     #private (parser stop return)
     parserStopReturn = ( result, return_code, param ) ->
@@ -188,10 +203,10 @@ define [ 'app_vo', 'result_vo', 'constant' ], ( app_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveRebootResult = ( result ) ->
         #resolve result
-        #TO-DO
+        
 
         #return vo
-        #TO-DO
+        resolveAppRequest result
 
     #private (parser reboot return)
     parserRebootReturn = ( result, return_code, param ) ->
@@ -217,10 +232,10 @@ define [ 'app_vo', 'result_vo', 'constant' ], ( app_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveInfoResult = ( result ) ->
         #resolve result
-        #TO-DO
+        #app_list = (resolveApp app_json for app_json in result)
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser info return)
     parserInfoReturn = ( result, return_code, param ) ->
@@ -243,13 +258,36 @@ define [ 'app_vo', 'result_vo', 'constant' ], ( app_vo, result_vo, constant ) ->
 
 
     #///////////////// Parser for resource return (need resolve) /////////////////
+    resourceMap = ( result ) ->
+        responses = {
+             "DescribeVolumesResponse"              :   ebs_parser.resolveDescribeVolumesResult
+             "DescribeSnapshotsResponse"            :   ebs_parser.resolveDescribeSnapshotsResult
+             "DescribeAddressesResponse"            :   eip_parser.resolveDescribeAddressesResult
+             "DescribeInstancesResponse"            :   instance_parser.resolveDescribeInstancesResult
+             "DescribeKeyPairsResponse"             :   keypair_parser.resolveDescribeKeyPairsResult
+             "DescribeSecurityGroupsResponse"       :   securitygroup_parser.resolveDescribeSecurityGroupsResult
+             "DescribeLoadBalancersResponse"        :   elb_parser.resolveDescribeLoadBalancersResult
+             "DescribeNetworkAclsResponse"          :   acl_parser.resolveDescribeNetworkAclsResult
+             "DescribeCustomerGatewaysResponse"     :   customergateway_parser.resolveDescribeCustomerGatewaysResult
+             "DescribeDhcpOptionsResponse"          :   dhcp_parser.resolveDescribeDhcpOptionsResult
+             "DescribeNetworkInterfacesResponse"    :   eni_parser.resolveDescribeNetworkInterfacesResult
+             "DescribeInternetGatewaysResponse"     :   internetgateway_parser.resolveDescribeInternetGatewaysResult
+             "DescribeRouteTablesResponse"          :   routetable_parser.resolveDescribeRouteTablesResult
+             "DescribeSubnetsResponse"              :   subnet_parser.resolveDescribeSubnetsResult
+             "DescribeVpcsResponse"                 :   vpc_parser.resolveDescribeVpcsResult
+             "DescribeVpnConnectionsResponse"       :   vpn_parser.resolveDescribeVpnConnectionsResult
+             "DescribeVpnGatewaysResponse"          :   vpngateway_parser.resolveDescribeVpnGatewaysResult
+        }
+
+        (responses[($.parseXML node[1]).documentElement.localName] node for node in result)
+
     #private (resolve result to vo )
     resolveResourceResult = ( result ) ->
         #resolve result
-        #TO-DO
+        
 
         #return vo
-        #TO-DO
+        resourceMap result
 
     #private (parser resource return)
     parserResourceReturn = ( result, return_code, param ) ->
@@ -275,10 +313,12 @@ define [ 'app_vo', 'result_vo', 'constant' ], ( app_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveSummaryResult = ( result ) ->
         #resolve result
-        #TO-DO
+        #summary_list = {}
 
+        #summary_list[region] = {"stack" : (stack_parser.resolveInfoResult data['stack']), "app" : (resolveInfoResult data['app'])} for region, data in result
+        
         #return vo
-        #TO-DO
+        result
 
     #private (parser summary return)
     parserSummaryReturn = ( result, return_code, param ) ->

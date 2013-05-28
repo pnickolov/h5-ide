@@ -13,11 +13,8 @@ define [ 'dhcp_vo', 'result_vo', 'constant' ], ( dhcp_vo, result_vo, constant ) 
     #///////////////// Parser for DescribeDhcpOptions return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeDhcpOptionsResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        #return
+        ($.xml2json ($.parseXML result[1])).DescribeDhcpOptionsResponse.dhcpOptionsSet
 
     #private (parser DescribeDhcpOptions return)
     parserDescribeDhcpOptionsReturn = ( result, return_code, param ) ->

@@ -10,8 +10,49 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    vpn = {
+        'vpnConnectionId'           :   ''
+        'state'                     :   ''
+        'customerGatewayConfiguration'  :   ''
+        'type'                      :   ''
+        'customerGatewayId'         :   ''
+        'vpnGatewayId'              :   ''
+        'tagSet'                    :   []
+        'vgwTelemetry'              :   []
+        'options'                   :   []
+        'routes'                    :   []
+    }
+
+    component       =   {
+        'type'  :   'AWS.VPC.VPNConnection',
+        'name'  :   '',
+        'uid'   :   '',
+        'resource'  :   {
+            'VpnConnectionId'   :   '',
+            'State'             :   '',
+            'CustomerGatewayConfiguration'  :   '',
+            'Type'              :   '',
+            'CustomerGatewayId' :   '',
+            'VpnGatewayId'      :   '',
+            'VgwTelemetry'      :   {
+                'OutsideIpAddress'  :   '',
+                'Status'        :   '',
+                'LastStatusChange'  :   '',
+                'StatusMessage' :   '',
+                'AcceptRouteCount'  :   ''
+            },
+            'Options'   :   {
+                'StaticRoutesOnly'  :   ''
+            },
+            'Routes'    :   [
+                {
+                    'DestinationCidrBlock'  :   '',
+                    'Source'    :   '',
+                    'State'     :   ''
+                }
+            ]
+        }
+    }
 
     #public
-    #TO-DO
-
+    vpn : vpn

@@ -165,11 +165,20 @@ function fn_generate_coffee() {
         sed '$d' ${__TGT_DIR_TEST}/config.coffee > ${__TGT_DIR_TEST}/config.coffee.tmp
         mv -f ${__TGT_DIR_TEST}/config.coffee.tmp ${__TGT_DIR_TEST}/config.coffee
 
-        echo -e "\n        #${_RESOURCE_l} service\n\
-        '${_RESOURCE_l}_vo'        : 'service/${RESOURCE_URL/\\/}/${_RESOURCE_l}_vo'\n\
-        '${_RESOURCE_l}_parser'    : 'service/${RESOURCE_URL/\\/}/${_RESOURCE_l}_parser'\n\
-        '${_RESOURCE_l}_service'   : 'service/${RESOURCE_URL/\\/}/${_RESOURCE_l}_service'\n\
+        if [ "${__TYPE}" == "aws"  ]
+        then
+            echo -e "\n        #${_RESOURCE_l} service\n\
+        '${_RESOURCE_l}_vo'        : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}/${_RESOURCE_l}_vo'\n\
+        '${_RESOURCE_l}_parser'    : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}/${_RESOURCE_l}_parser'\n\
+        '${_RESOURCE_l}_service'   : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}/${_RESOURCE_l}_service'\n\
 }#end">> ${__TGT_DIR_TEST}/config.coffee
+        else
+            echo -e "\n        #${_RESOURCE_l} service\n\
+        '${_RESOURCE_l}_vo'        : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}_vo'\n\
+        '${_RESOURCE_l}_parser'    : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}_parser'\n\
+        '${_RESOURCE_l}_service'   : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}_service'\n\
+}#end">> ${__TGT_DIR_TEST}/config.coffee
+        fi
 
     fi
 
@@ -400,7 +409,7 @@ function fn_scan_handler_forge() {
     CUR_FILE=$2
 
     #for tmp test
-    #if [ "${CUR_FILE}" != "Guest.py" ]
+    #if [ "${CUR_FILE}" != "SessionHandler.py" ]
     #then
     #    return
     #fi
@@ -439,7 +448,7 @@ function fn_scan_aws() {
 
     #for tmp test
 
-    #if [ "${SERVICE}" != "EC2" ]
+    #if [ "${SERVICE}" != "VPC" ]
     #then
     #    return
     #fi

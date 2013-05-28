@@ -13,11 +13,8 @@ define [ 'vpc_vo', 'result_vo', 'constant' ], ( vpc_vo, result_vo, constant ) ->
     #///////////////// Parser for DescribeVpcs return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeVpcsResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        #return
+        ($.xml2json ($.parseXML result[1])).DescribeVpcsResponse.vpcSet
 
     #private (parser DescribeVpcs return)
     parserDescribeVpcsReturn = ( result, return_code, param ) ->
@@ -46,7 +43,7 @@ define [ 'vpc_vo', 'result_vo', 'constant' ], ( vpc_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeAccountAttributesResponse
 
     #private (parser DescribeAccountAttributes return)
     parserDescribeAccountAttributesReturn = ( result, return_code, param ) ->
@@ -75,7 +72,7 @@ define [ 'vpc_vo', 'result_vo', 'constant' ], ( vpc_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeVpcAttributeResponse
 
     #private (parser DescribeVpcAttribute return)
     parserDescribeVpcAttributeReturn = ( result, return_code, param ) ->

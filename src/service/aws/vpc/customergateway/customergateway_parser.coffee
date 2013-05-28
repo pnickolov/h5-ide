@@ -13,11 +13,8 @@ define [ 'customergateway_vo', 'result_vo', 'constant' ], ( customergateway_vo, 
     #///////////////// Parser for DescribeCustomerGateways return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeCustomerGatewaysResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        #return
+        ($.xml2json ($.parseXML result[1])).DescribeCustomerGatewaysResponse.customerGatewaySet
 
     #private (parser DescribeCustomerGateways return)
     parserDescribeCustomerGatewaysReturn = ( result, return_code, param ) ->

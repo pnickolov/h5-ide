@@ -10,8 +10,49 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    routetable = {
+        'routeTableId'          :   ''
+        'vpcId'                 :   ''
+        'routeSet'              :   []
+        'associationSet'        :   []
+        'propagatingVgwSet'     :   []
+        'tagSet'                :   []
+    }
 
+    component       =   {
+        'type'  :   'AWS.VPC.RouteTable',
+        'name'  :   '',
+        'uid'   :   '',
+        'resource'  :   {
+            'RouteTableId'      :   '',
+            'VpcId'             :   '',
+            'RouteSet'          :   [
+                {
+                    'DestinationCidrBlock'      :   '',
+                    'GatewayId'                 :   '',
+                    'InstanceId'                :   '',
+                    'InstanceOwnerId'           :   '',
+                    'NetworkInterfaceId'        :   '',
+                    'State'                     :   '',
+                    'Origin'                    :   ''
+                }
+            ],
+            'AssociationSet'    :   [
+                {
+                    'RouteTableAssociationId'       :   '',
+                    'RouteTableId'                  :   '',
+                    'SubnetId'                      :   '',
+                    'Main'                          :   ''
+                }
+            ],
+            'PropagatingVgwSet' :   [
+                {
+                    'GatewayId' :   ''
+                }
+            ]
+        }
+    }
+    
     #public
-    #TO-DO
+    routetable : routetable
 

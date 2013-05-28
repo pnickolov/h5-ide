@@ -13,11 +13,9 @@ define [ 'acl_vo', 'result_vo', 'constant' ], ( acl_vo, result_vo, constant ) ->
     #///////////////// Parser for DescribeNetworkAcls return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeNetworkAclsResult = ( result ) ->
-        #resolve result
-        #TO-DO
 
-        #return vo
-        #TO-DO
+        #return acl
+        ($.xml2json ($.parseXML result[1])).DescribeNetworkAclsResponse.networkAclSet
 
     #private (parser DescribeNetworkAcls return)
     parserDescribeNetworkAclsReturn = ( result, return_code, param ) ->

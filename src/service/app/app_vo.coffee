@@ -10,8 +10,30 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    app_request =   {
+        "id"                    :   ""
+        "state"                 :   ""
+        "brief"                 :   ""
+        "time_submit"           :   ""
+        "rid"                   :   ""
+    }
 
+    app_info    =   {
+        "version"               :   ""
+        "id"                    :   ""
+        "stack_id"              :   ""
+        "name"                  :   ""
+        "owner"                 :   ""
+        "description"           :   ""
+        "property"              :   {}
+        "component"             :   {}
+        "layout"                :   ""
+        "history"               :   []
+        "region"                :   ""
+        "state"                 :   ""
+        "username"              :   ""
+    }
     #public
-    #TO-DO
+    app_request :   app_request
+    app_info    :   app_info
 

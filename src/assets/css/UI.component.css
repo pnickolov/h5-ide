@@ -46,14 +46,17 @@
 	background: #1F1F1F;
 }
 
-.table_resizer {
-	position: absolute;
-	right: 0;
-	top: 0;
-	width: 4px;
-	height: 100%;
-	cursor: e-resize;
-	z-index: 5;
+.table td.editable {
+	cursor: text;
+}
+
+.table-input {
+	border: none;
+	background: none;
+	outline: none;
+	resize: none;
+	padding: 0;
+	box-shadow: none;
 }
 
 /* Light Style Table */
@@ -88,7 +91,6 @@
 
 /* Button */
 .btn {
-	font-family: 'Titillium Web', Ubunto, Arial, sans-serif;
 	display: inline-block;
 	padding: 8px 0;
 	width: 115px;
@@ -369,7 +371,6 @@ textarea {
 
 .select select {
 	text-align: left;
-	font-family: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;
 	width: 160px;
 	font-size: 13px;
 	padding: 5px 0;
@@ -581,7 +582,7 @@ textarea {
 }
 
 .modal-header h3 {
-	font-size: 18px;
+	font-size: 16px;
 }
 
 .modal-body {

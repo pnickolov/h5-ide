@@ -13,11 +13,8 @@ define [ 'vpn_vo', 'result_vo', 'constant' ], ( vpn_vo, result_vo, constant ) ->
     #///////////////// Parser for DescribeVpnConnections return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeVpnConnectionsResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        #return
+        ($.xml2json ($.parseXML result[1])).DescribeVpnConnectionsResponse.vpnConnectionSet
 
     #private (parser DescribeVpnConnections return)
     parserDescribeVpnConnectionsReturn = ( result, return_code, param ) ->

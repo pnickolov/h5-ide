@@ -10,8 +10,27 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    cgw = {
+        'customerGatewayId'     :   ''
+        'state'                 :   ''
+        'type'                  :   ''
+        'ipAddress'             :   ''
+        'bgpAsn'                :   ''
+        'tagSet'                :   []
+    }
+
+    component   =   {
+        'type'  :   'AWS.VPC.CustomerGateway',
+        'name'  :   '',
+        'uid'   :   '',
+        'resource'  :   {
+            'CustomerGatewayId' :   '',
+            'State'             :   '',
+            'Type'              :   '',
+            'IpAddress'         :   '',
+            'BgpAsn'            :   '',
+        }
+    }
 
     #public
-    #TO-DO
-
+    cgw : cgw

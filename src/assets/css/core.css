@@ -33,6 +33,13 @@
 	src: local('Titillium'), url('../fonts/TitilliumWeb-Regular.ttf') format('truetype');
 }
 
+@font-face
+{
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Lato'), url('../fonts/Lato-regular.ttf') format('truetype');
+}
 
 /* CSS reset */
 article,
@@ -190,6 +197,16 @@ pre {
 	font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
 }
 
+code {
+	padding: 3px 4px;
+	color: #D14;
+	background-color: #F7F7F9;
+	border: 1px solid #E1E1E8;
+	font-family: Menlo,Monaco,"Courier New",monospace;
+	font-size: 12px;
+	border-radius: 3px;
+}
+
 abbr {
 	cursor: help;
 	border-bottom: 1px dotted #999;
@@ -205,7 +222,7 @@ body {
 @media (min-width: 1px) {
 	body {
 		/*font-family: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;*/
-		font-family: 'Titillium Web','Ubuntu', 'Helvetica Neue', Arial, sans-serif;
+		font-family: 'Lato','Titillium Web','Ubuntu', 'Helvetica Neue', Arial, sans-serif;
 	}
 }
 

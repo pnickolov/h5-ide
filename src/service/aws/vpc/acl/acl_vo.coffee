@@ -10,8 +10,49 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    acl = {
+        "networkAclId"  :   ""
+        "vpcId"         :   ""
+        "default"       :   ""
+        "entrySet"      :   []
+        "associationSet":   []
+        "tagSet"        :   []
+    }
 
+    component       =   {
+        'type'                  :   'AWS.VPC.NetworkAcl',
+        'name'                  :   '',
+        'uid'                   :   '',
+        'resource'              :   {
+            'NetworkAclId'      :   '',
+            'VpcId'             :   '',
+            'Default'           :   '',
+            'EntrySet'          :   [
+                {
+                    'RuleNumber'    :   '',
+                    'Protocol'      :   '',
+                    'RuleAction'    :   '',
+                    'Egress'        :   '',
+                    'CidrBlock'     :   '',
+                    'IcmpTypeCode'  :   {
+                        'Code'      :   '',
+                        'Type'      :   ''
+                    },
+                    'PortRange'     :   {
+                        'From'      :   '',
+                        'To'        :   ''
+                    }
+                }
+            ],
+            'AssociationSet'        :   [
+                {
+                    'NetworkAclAssociationId'   :   '',
+                    'NetworkAclId'              :   '',
+                    'SubnetId'                  :   ''
+                }
+            ]
+        }
+    }
+    
     #public
-    #TO-DO
-
+    acl : acl

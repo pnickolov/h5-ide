@@ -13,11 +13,8 @@ define [ 'internetgateway_vo', 'result_vo', 'constant' ], ( internetgateway_vo, 
     #///////////////// Parser for DescribeInternetGateways return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeInternetGatewaysResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        #return
+        ($.xml2json ($.parseXML result[1])).DescribeInternetGatewaysResponse.internetGatewaySet
 
     #private (parser DescribeInternetGateways return)
     parserDescribeInternetGatewaysReturn = ( result, return_code, param ) ->

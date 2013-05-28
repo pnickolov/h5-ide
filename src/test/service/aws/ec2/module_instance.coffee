@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : instance_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:11
+#* Create date  : 2013-05-28 11:35:46
 #* Description  : qunit test module for instance_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,115 +61,124 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'instance_service'], (
     #-----------------------------------------------
     #Test DescribeInstances()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 instance.DescribeInstances()", () ->
-        
-        instance_ids = null
-        filters = null
+    test_DescribeInstances = () ->
+        asyncTest "/aws/ec2 instance.DescribeInstances()", () ->
+            instance_ids = null
+            filters = null
 
-        instance_service.DescribeInstances username, session_id, region_name, instance_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeInstances succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeInstances() succeed"
+            instance_service.DescribeInstances username, session_id, region_name, instance_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeInstances succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeInstances() succeed"
+                else
+                #DescribeInstances failed
+                    ok false, "DescribeInstances() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeInstances failed
-                ok false, "DescribeInstances() failed" + aws_result.error_message
-                start()
+                test_ConfirmProductInstance()
 
     #-----------------------------------------------
     #Test DescribeInstanceStatus()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 instance.DescribeInstanceStatus()", () ->
-        
-        instance_ids = null
-        include_all_instances = null
-        max_results = null
-        next_token = null
+    test_DescribeInstanceStatus = () ->
+        asyncTest "/aws/ec2 instance.DescribeInstanceStatus()", () ->
+            instance_ids = null
+            include_all_instances = null
+            max_results = null
+            next_token = null
 
-        instance_service.DescribeInstanceStatus username, session_id, region_name, instance_ids, include_all_instances, max_results, next_token, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeInstanceStatus succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeInstanceStatus() succeed"
+            instance_service.DescribeInstanceStatus username, session_id, region_name, instance_ids, include_all_instances, max_results, next_token, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeInstanceStatus succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeInstanceStatus() succeed"
+                else
+                #DescribeInstanceStatus failed
+                    ok false, "DescribeInstanceStatus() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeInstanceStatus failed
-                ok false, "DescribeInstanceStatus() failed" + aws_result.error_message
-                start()
+                test_DescribeInstances()
 
     #-----------------------------------------------
     #Test DescribeBundleTasks()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 instance.DescribeBundleTasks()", () ->
-        
-        bundle_ids = null
-        filters = null
+    test_DescribeBundleTasks = () ->
+        asyncTest "/aws/ec2 instance.DescribeBundleTasks()", () ->
+            bundle_ids = null
+            filters = null
 
-        instance_service.DescribeBundleTasks username, session_id, region_name, bundle_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeBundleTasks succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeBundleTasks() succeed"
+            instance_service.DescribeBundleTasks username, session_id, region_name, bundle_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeBundleTasks succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeBundleTasks() succeed"
+                else
+                #DescribeBundleTasks failed
+                    ok false, "DescribeBundleTasks() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeBundleTasks failed
-                ok false, "DescribeBundleTasks() failed" + aws_result.error_message
-                start()
+                test_DescribeInstanceStatus()
 
     #-----------------------------------------------
     #Test DescribeInstanceAttribute()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 instance.DescribeInstanceAttribute()", () ->
-        
-        instance_id = null
-        attribute_name = null
+    test_DescribeInstanceAttribute = () ->
+        asyncTest "/aws/ec2 instance.DescribeInstanceAttribute()", () ->
+            instance_id = null
+            attribute_name = null
 
-        instance_service.DescribeInstanceAttribute username, session_id, region_name, instance_id, attribute_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeInstanceAttribute succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeInstanceAttribute() succeed"
+            instance_service.DescribeInstanceAttribute username, session_id, region_name, instance_id, attribute_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeInstanceAttribute succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeInstanceAttribute() succeed"
+                else
+                #DescribeInstanceAttribute failed
+                    ok false, "DescribeInstanceAttribute() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeInstanceAttribute failed
-                ok false, "DescribeInstanceAttribute() failed" + aws_result.error_message
-                start()
+                test_DescribeBundleTasks()
 
     #-----------------------------------------------
     #Test GetConsoleOutput()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 instance.GetConsoleOutput()", () ->
-        
-        instance_id = null
+    test_GetConsoleOutput = () ->
+        asyncTest "/aws/ec2 instance.GetConsoleOutput()", () ->
+            instance_id = null
 
-        instance_service.GetConsoleOutput username, session_id, region_name, instance_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #GetConsoleOutput succeed
-                data = aws_result.resolved_data
-                ok true, "GetConsoleOutput() succeed"
+            instance_service.GetConsoleOutput username, session_id, region_name, instance_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #GetConsoleOutput succeed
+                    data = aws_result.resolved_data
+                    ok true, "GetConsoleOutput() succeed"
+                else
+                #GetConsoleOutput failed
+                    ok false, "GetConsoleOutput() failed" + aws_result.error_message
+            
                 start()
-            else
-            #GetConsoleOutput failed
-                ok false, "GetConsoleOutput() failed" + aws_result.error_message
-                start()
+                test_DescribeInstanceAttribute()
 
     #-----------------------------------------------
     #Test GetPasswordData()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 instance.GetPasswordData()", () ->
-        
-        instance_id = null
-        key_data = null
+    test_GetPasswordData = () ->
+        asyncTest "/aws/ec2 instance.GetPasswordData()", () ->
+            instance_id = null
+            key_data = null
 
-        instance_service.GetPasswordData username, session_id, region_name, instance_id, key_data, ( aws_result ) ->
-            if !aws_result.is_error
-            #GetPasswordData succeed
-                data = aws_result.resolved_data
-                ok true, "GetPasswordData() succeed"
+            instance_service.GetPasswordData username, session_id, region_name, instance_id, key_data, ( aws_result ) ->
+                if !aws_result.is_error
+                #GetPasswordData succeed
+                    data = aws_result.resolved_data
+                    ok true, "GetPasswordData() succeed"
+                else
+                #GetPasswordData failed
+                    ok false, "GetPasswordData() failed" + aws_result.error_message
+            
                 start()
-            else
-            #GetPasswordData failed
-                ok false, "GetPasswordData() failed" + aws_result.error_message
-                start()
+                test_GetConsoleOutput()
+
+
+    test_GetPasswordData()
 

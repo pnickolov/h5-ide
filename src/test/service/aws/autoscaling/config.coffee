@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : autoscaling_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:03
+#* Create date  : 2013-05-28 11:35:40
 #* Description  : qunit test config for autoscaling_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -52,7 +52,7 @@ require.config {
 
 
         #autoscaling service
-        'autoscaling_vo'        : 'service/aws/autoscaling/autoscaling/autoscaling_vo'
-        'autoscaling_parser'    : 'service/aws/autoscaling/autoscaling/autoscaling_parser'
-        'autoscaling_service'   : 'service/aws/autoscaling/autoscaling/autoscaling_service'
+        'autoscaling_vo'        : 'service/aws/autoscaling\/autoscaling/autoscaling_vo'
+        'autoscaling_parser'    : 'service/aws/autoscaling\/autoscaling/autoscaling_parser'
+        'autoscaling_service'   : 'service/aws/autoscaling\/autoscaling/autoscaling_service'
 }#end

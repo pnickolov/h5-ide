@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : vpngateway_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:24
+#* Create date  : 2013-05-28 11:35:56
 #* Description  : qunit test module for vpngateway_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,19 +61,23 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'vpngateway_service'],
     #-----------------------------------------------
     #Test DescribeVpnGateways()
     #-----------------------------------------------
-    asyncTest "/aws/vpc vpngateway.DescribeVpnGateways()", () ->
-        
-        gw_ids = null
-        filters = null
+    test_DescribeVpnGateways = () ->
+        asyncTest "/aws/vpc vpngateway.DescribeVpnGateways()", () ->
+            gw_ids = null
+            filters = null
 
-        vpngateway_service.DescribeVpnGateways username, session_id, region_name, gw_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeVpnGateways succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeVpnGateways() succeed"
+            vpngateway_service.DescribeVpnGateways username, session_id, region_name, gw_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeVpnGateways succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeVpnGateways() succeed"
+                else
+                #DescribeVpnGateways failed
+                    ok false, "DescribeVpnGateways() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeVpnGateways failed
-                ok false, "DescribeVpnGateways() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeVpnGateways()
 

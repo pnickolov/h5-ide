@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : acl_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:21
+#* Create date  : 2013-05-28 11:35:54
 #* Description  : qunit test config for acl_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -52,52 +52,52 @@ require.config {
 
 
         #acl service
-        'acl_vo'        : 'service/aws/vpc/acl/acl_vo'
-        'acl_parser'    : 'service/aws/vpc/acl/acl_parser'
-        'acl_service'   : 'service/aws/vpc/acl/acl_service'
+        'acl_vo'        : 'service/aws/vpc\/acl/acl_vo'
+        'acl_parser'    : 'service/aws/vpc\/acl/acl_parser'
+        'acl_service'   : 'service/aws/vpc\/acl/acl_service'
 
         #customergateway service
-        'customergateway_vo'        : 'service/aws/vpc/customergateway/customergateway_vo'
-        'customergateway_parser'    : 'service/aws/vpc/customergateway/customergateway_parser'
-        'customergateway_service'   : 'service/aws/vpc/customergateway/customergateway_service'
+        'customergateway_vo'        : 'service/aws/vpc\/cgw/customergateway_vo'
+        'customergateway_parser'    : 'service/aws/vpc\/cgw/customergateway_parser'
+        'customergateway_service'   : 'service/aws/vpc\/cgw/customergateway_service'
 
         #dhcp service
-        'dhcp_vo'        : 'service/aws/vpc/dhcp/dhcp_vo'
-        'dhcp_parser'    : 'service/aws/vpc/dhcp/dhcp_parser'
-        'dhcp_service'   : 'service/aws/vpc/dhcp/dhcp_service'
+        'dhcp_vo'        : 'service/aws/vpc\/dhcp/dhcp_vo'
+        'dhcp_parser'    : 'service/aws/vpc\/dhcp/dhcp_parser'
+        'dhcp_service'   : 'service/aws/vpc\/dhcp/dhcp_service'
 
         #eni service
-        'eni_vo'        : 'service/aws/vpc/eni/eni_vo'
-        'eni_parser'    : 'service/aws/vpc/eni/eni_parser'
-        'eni_service'   : 'service/aws/vpc/eni/eni_service'
+        'eni_vo'        : 'service/aws/vpc\/eni/eni_vo'
+        'eni_parser'    : 'service/aws/vpc\/eni/eni_parser'
+        'eni_service'   : 'service/aws/vpc\/eni/eni_service'
 
         #internetgateway service
-        'internetgateway_vo'        : 'service/aws/vpc/internetgateway/internetgateway_vo'
-        'internetgateway_parser'    : 'service/aws/vpc/internetgateway/internetgateway_parser'
-        'internetgateway_service'   : 'service/aws/vpc/internetgateway/internetgateway_service'
+        'internetgateway_vo'        : 'service/aws/vpc\/igw/internetgateway_vo'
+        'internetgateway_parser'    : 'service/aws/vpc\/igw/internetgateway_parser'
+        'internetgateway_service'   : 'service/aws/vpc\/igw/internetgateway_service'
 
         #routetable service
-        'routetable_vo'        : 'service/aws/vpc/routetable/routetable_vo'
-        'routetable_parser'    : 'service/aws/vpc/routetable/routetable_parser'
-        'routetable_service'   : 'service/aws/vpc/routetable/routetable_service'
+        'routetable_vo'        : 'service/aws/vpc\/routetable/routetable_vo'
+        'routetable_parser'    : 'service/aws/vpc\/routetable/routetable_parser'
+        'routetable_service'   : 'service/aws/vpc\/routetable/routetable_service'
 
         #subnet service
-        'subnet_vo'        : 'service/aws/vpc/subnet/subnet_vo'
-        'subnet_parser'    : 'service/aws/vpc/subnet/subnet_parser'
-        'subnet_service'   : 'service/aws/vpc/subnet/subnet_service'
+        'subnet_vo'        : 'service/aws/vpc\/subnet/subnet_vo'
+        'subnet_parser'    : 'service/aws/vpc\/subnet/subnet_parser'
+        'subnet_service'   : 'service/aws/vpc\/subnet/subnet_service'
 
         #vpc service
-        'vpc_vo'        : 'service/aws/vpc/vpc/vpc_vo'
-        'vpc_parser'    : 'service/aws/vpc/vpc/vpc_parser'
-        'vpc_service'   : 'service/aws/vpc/vpc/vpc_service'
+        'vpc_vo'        : 'service/aws/vpc/vpc_vo'
+        'vpc_parser'    : 'service/aws/vpc/vpc_parser'
+        'vpc_service'   : 'service/aws/vpc/vpc_service'
 
         #vpngateway service
-        'vpngateway_vo'        : 'service/aws/vpc/vpngateway/vpngateway_vo'
-        'vpngateway_parser'    : 'service/aws/vpc/vpngateway/vpngateway_parser'
-        'vpngateway_service'   : 'service/aws/vpc/vpngateway/vpngateway_service'
+        'vpngateway_vo'        : 'service/aws/vpc\/vgw/vpngateway_vo'
+        'vpngateway_parser'    : 'service/aws/vpc\/vgw/vpngateway_parser'
+        'vpngateway_service'   : 'service/aws/vpc\/vgw/vpngateway_service'
 
         #vpn service
-        'vpn_vo'        : 'service/aws/vpc/vpn/vpn_vo'
-        'vpn_parser'    : 'service/aws/vpc/vpn/vpn_parser'
-        'vpn_service'   : 'service/aws/vpc/vpn/vpn_service'
+        'vpn_vo'        : 'service/aws/vpc\/vpn/vpn_vo'
+        'vpn_parser'    : 'service/aws/vpc\/vpn/vpn_parser'
+        'vpn_service'   : 'service/aws/vpc\/vpn/vpn_service'
 }#end

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : aws_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:05
+#* Create date  : 2013-05-28 11:35:41
 #* Description  : qunit test config for aws_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -12,7 +12,7 @@ require.config {
 
     baseUrl         : '/'
 
-    deps            : [ '/test/service/aws/aws/testsuite.js' ]
+    deps            : [ '/test/service/aws/testsuite.js' ]
 
     shim            :
 
@@ -52,7 +52,7 @@ require.config {
 
 
         #aws service
-        'aws_vo'        : 'service/aws/aws/aws_vo'
-        'aws_parser'    : 'service/aws/aws/aws_parser'
-        'aws_service'   : 'service/aws/aws/aws_service'
+        'aws_vo'        : 'service/aws/aws_vo'
+        'aws_parser'    : 'service/aws/aws_parser'
+        'aws_service'   : 'service/aws/aws_service'
 }#end

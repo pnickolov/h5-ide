@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : eni_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:22
+#* Create date  : 2013-05-28 11:35:54
 #* Description  : qunit test module for eni_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,38 +61,43 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'eni_service'], ( MC, 
     #-----------------------------------------------
     #Test DescribeNetworkInterfaces()
     #-----------------------------------------------
-    asyncTest "/aws/vpc eni.DescribeNetworkInterfaces()", () ->
-        
-        eni_ids = null
-        filters = null
+    test_DescribeNetworkInterfaces = () ->
+        asyncTest "/aws/vpc eni.DescribeNetworkInterfaces()", () ->
+            eni_ids = null
+            filters = null
 
-        eni_service.DescribeNetworkInterfaces username, session_id, region_name, eni_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeNetworkInterfaces succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeNetworkInterfaces() succeed"
+            eni_service.DescribeNetworkInterfaces username, session_id, region_name, eni_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeNetworkInterfaces succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeNetworkInterfaces() succeed"
+                else
+                #DescribeNetworkInterfaces failed
+                    ok false, "DescribeNetworkInterfaces() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeNetworkInterfaces failed
-                ok false, "DescribeNetworkInterfaces() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test DescribeNetworkInterfaceAttribute()
     #-----------------------------------------------
-    asyncTest "/aws/vpc eni.DescribeNetworkInterfaceAttribute()", () ->
-        
-        eni_id = null
-        attribute = null
+    test_DescribeNetworkInterfaceAttribute = () ->
+        asyncTest "/aws/vpc eni.DescribeNetworkInterfaceAttribute()", () ->
+            eni_id = null
+            attribute = null
 
-        eni_service.DescribeNetworkInterfaceAttribute username, session_id, region_name, eni_id, attribute, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeNetworkInterfaceAttribute succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeNetworkInterfaceAttribute() succeed"
+            eni_service.DescribeNetworkInterfaceAttribute username, session_id, region_name, eni_id, attribute, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeNetworkInterfaceAttribute succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeNetworkInterfaceAttribute() succeed"
+                else
+                #DescribeNetworkInterfaceAttribute failed
+                    ok false, "DescribeNetworkInterfaceAttribute() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeNetworkInterfaceAttribute failed
-                ok false, "DescribeNetworkInterfaceAttribute() failed" + aws_result.error_message
-                start()
+                test_DescribeNetworkInterfaces()
+
+
+    test_DescribeNetworkInterfaceAttribute()
 

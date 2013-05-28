@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : log_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:05:57
+#* Create date  : 2013-05-28 11:35:36
 #* Description  : qunit test module for log_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,18 +61,22 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'log_service'], ( MC, 
     #-----------------------------------------------
     #Test put_user_log()
     #-----------------------------------------------
-    asyncTest "/log log.put_user_log()", () ->
-        
-        user_logs = null
+    test_put_user_log = () ->
+        asyncTest "/log log.put_user_log()", () ->
+            user_logs = null
 
-        log_service.put_user_log username, session_id, user_logs, ( forge_result ) ->
-            if !forge_result.is_error
-            #put_user_log succeed
-                data = forge_result.resolved_data
-                ok true, "put_user_log() succeed"
+            log_service.put_user_log username, session_id, user_logs, ( forge_result ) ->
+                if !forge_result.is_error
+                #put_user_log succeed
+                    data = forge_result.resolved_data
+                    ok true, "put_user_log() succeed"
+                else
+                #put_user_log failed
+                    ok false, "put_user_log() failed" + forge_result.error_message
+            
                 start()
-            else
-            #put_user_log failed
-                ok false, "put_user_log() failed" + forge_result.error_message
-                start()
+                
+
+
+    test_put_user_log()
 

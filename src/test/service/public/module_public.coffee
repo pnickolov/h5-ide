@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : public_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:05:58
+#* Create date  : 2013-05-28 11:35:37
 #* Description  : qunit test module for public_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,35 +61,41 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'public_service'], ( M
     #-----------------------------------------------
     #Test get_hostname()
     #-----------------------------------------------
-    asyncTest "/public public.get_hostname()", () ->
-        
-        instance_id = null
+    test_get_hostname = () ->
+        asyncTest "/public public.get_hostname()", () ->
+            instance_id = null
 
-        public_service.get_hostname region_name, instance_id, ( forge_result ) ->
-            if !forge_result.is_error
-            #get_hostname succeed
-                data = forge_result.resolved_data
-                ok true, "get_hostname() succeed"
+            public_service.get_hostname region_name, instance_id, ( forge_result ) ->
+                if !forge_result.is_error
+                #get_hostname succeed
+                    data = forge_result.resolved_data
+                    ok true, "get_hostname() succeed"
+                else
+                #get_hostname failed
+                    ok false, "get_hostname() failed" + forge_result.error_message
+            
                 start()
-            else
-            #get_hostname failed
-                ok false, "get_hostname() failed" + forge_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test get_dns_ip()
     #-----------------------------------------------
-    asyncTest "/public public.get_dns_ip()", () ->
-        
+    test_get_dns_ip = () ->
+        asyncTest "/public public.get_dns_ip()", () ->
 
-        public_service.get_dns_ip region_name, ( forge_result ) ->
-            if !forge_result.is_error
-            #get_dns_ip succeed
-                data = forge_result.resolved_data
-                ok true, "get_dns_ip() succeed"
+
+            public_service.get_dns_ip region_name, ( forge_result ) ->
+                if !forge_result.is_error
+                #get_dns_ip succeed
+                    data = forge_result.resolved_data
+                    ok true, "get_dns_ip() succeed"
+                else
+                #get_dns_ip failed
+                    ok false, "get_dns_ip() failed" + forge_result.error_message
+            
                 start()
-            else
-            #get_dns_ip failed
-                ok false, "get_dns_ip() failed" + forge_result.error_message
-                start()
+                test_get_hostname()
+
+
+    test_get_dns_ip()
 

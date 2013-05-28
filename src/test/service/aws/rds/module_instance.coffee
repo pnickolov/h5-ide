@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : instance_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:18
+#* Create date  : 2013-05-28 11:35:52
 #* Description  : qunit test module for instance_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,20 +61,24 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'instance_service'], (
     #-----------------------------------------------
     #Test DescribeDBInstances()
     #-----------------------------------------------
-    asyncTest "/aws/rds instance.DescribeDBInstances()", () ->
-        
-        instance_id = null
-        marker = null
-        max_records = null
+    test_DescribeDBInstances = () ->
+        asyncTest "/aws/rds instance.DescribeDBInstances()", () ->
+            instance_id = null
+            marker = null
+            max_records = null
 
-        instance_service.DescribeDBInstances username, session_id, region_name, instance_id, marker, max_records, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeDBInstances succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeDBInstances() succeed"
+            instance_service.DescribeDBInstances username, session_id, region_name, instance_id, marker, max_records, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeDBInstances succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeDBInstances() succeed"
+                else
+                #DescribeDBInstances failed
+                    ok false, "DescribeDBInstances() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeDBInstances failed
-                ok false, "DescribeDBInstances() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeDBInstances()
 

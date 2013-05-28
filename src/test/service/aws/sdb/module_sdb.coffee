@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : sdb_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:21
+#* Create date  : 2013-05-28 11:35:54
 #* Description  : qunit test module for sdb_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,40 +61,45 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'sdb_service'], ( MC, 
     #-----------------------------------------------
     #Test GetAttributes()
     #-----------------------------------------------
-    asyncTest "/aws/sdb sdb.GetAttributes()", () ->
-        
-        domain_name = null
-        item_name = null
-        attribute_name = null
-        consistent_read = null
+    test_GetAttributes = () ->
+        asyncTest "/aws/sdb sdb.GetAttributes()", () ->
+            domain_name = null
+            item_name = null
+            attribute_name = null
+            consistent_read = null
 
-        sdb_service.GetAttributes username, session_id, region_name, domain_name, item_name, attribute_name, consistent_read, ( aws_result ) ->
-            if !aws_result.is_error
-            #GetAttributes succeed
-                data = aws_result.resolved_data
-                ok true, "GetAttributes() succeed"
+            sdb_service.GetAttributes username, session_id, region_name, domain_name, item_name, attribute_name, consistent_read, ( aws_result ) ->
+                if !aws_result.is_error
+                #GetAttributes succeed
+                    data = aws_result.resolved_data
+                    ok true, "GetAttributes() succeed"
+                else
+                #GetAttributes failed
+                    ok false, "GetAttributes() failed" + aws_result.error_message
+            
                 start()
-            else
-            #GetAttributes failed
-                ok false, "GetAttributes() failed" + aws_result.error_message
-                start()
+                test_DomainMetadata()
 
     #-----------------------------------------------
     #Test ListDomains()
     #-----------------------------------------------
-    asyncTest "/aws/sdb sdb.ListDomains()", () ->
-        
-        max_domains = null
-        next_token = null
+    test_ListDomains = () ->
+        asyncTest "/aws/sdb sdb.ListDomains()", () ->
+            max_domains = null
+            next_token = null
 
-        sdb_service.ListDomains username, session_id, region_name, max_domains, next_token, ( aws_result ) ->
-            if !aws_result.is_error
-            #ListDomains succeed
-                data = aws_result.resolved_data
-                ok true, "ListDomains() succeed"
+            sdb_service.ListDomains username, session_id, region_name, max_domains, next_token, ( aws_result ) ->
+                if !aws_result.is_error
+                #ListDomains succeed
+                    data = aws_result.resolved_data
+                    ok true, "ListDomains() succeed"
+                else
+                #ListDomains failed
+                    ok false, "ListDomains() failed" + aws_result.error_message
+            
                 start()
-            else
-            #ListDomains failed
-                ok false, "ListDomains() failed" + aws_result.error_message
-                start()
+                test_GetAttributes()
+
+
+    test_ListDomains()
 

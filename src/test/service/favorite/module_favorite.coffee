@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : favorite_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:01
+#* Create date  : 2013-05-28 11:35:39
 #* Description  : qunit test module for favorite_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,56 +61,62 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'favorite_service'], (
     #-----------------------------------------------
     #Test add()
     #-----------------------------------------------
-    asyncTest "/favorite favorite.add()", () ->
-        
-        resource = null
+    test_add = () ->
+        asyncTest "/favorite favorite.add()", () ->
+            resource = null
 
-        favorite_service.add username, session_id, region_name, resource, ( forge_result ) ->
-            if !forge_result.is_error
-            #add succeed
-                data = forge_result.resolved_data
-                ok true, "add() succeed"
+            favorite_service.add username, session_id, region_name, resource, ( forge_result ) ->
+                if !forge_result.is_error
+                #add succeed
+                    data = forge_result.resolved_data
+                    ok true, "add() succeed"
+                else
+                #add failed
+                    ok false, "add() failed" + forge_result.error_message
+            
                 start()
-            else
-            #add failed
-                ok false, "add() failed" + forge_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test remove()
     #-----------------------------------------------
-    asyncTest "/favorite favorite.remove()", () ->
-        
-        resource_ids = null
+    test_remove = () ->
+        asyncTest "/favorite favorite.remove()", () ->
+            resource_ids = null
 
-        favorite_service.remove username, session_id, region_name, resource_ids, ( forge_result ) ->
-            if !forge_result.is_error
-            #remove succeed
-                data = forge_result.resolved_data
-                ok true, "remove() succeed"
+            favorite_service.remove username, session_id, region_name, resource_ids, ( forge_result ) ->
+                if !forge_result.is_error
+                #remove succeed
+                    data = forge_result.resolved_data
+                    ok true, "remove() succeed"
+                else
+                #remove failed
+                    ok false, "remove() failed" + forge_result.error_message
+            
                 start()
-            else
-            #remove failed
-                ok false, "remove() failed" + forge_result.error_message
-                start()
+                test_add()
 
     #-----------------------------------------------
     #Test info()
     #-----------------------------------------------
-    asyncTest "/favorite favorite.info()", () ->
-        
-        provider = null
-        service = null
-        resource = null
+    test_info = () ->
+        asyncTest "/favorite favorite.info()", () ->
+            provider = null
+            service = null
+            resource = null
 
-        favorite_service.info username, session_id, region_name, provider, service, resource, ( forge_result ) ->
-            if !forge_result.is_error
-            #info succeed
-                data = forge_result.resolved_data
-                ok true, "info() succeed"
+            favorite_service.info username, session_id, region_name, provider, service, resource, ( forge_result ) ->
+                if !forge_result.is_error
+                #info succeed
+                    data = forge_result.resolved_data
+                    ok true, "info() succeed"
+                else
+                #info failed
+                    ok false, "info() failed" + forge_result.error_message
+            
                 start()
-            else
-            #info failed
-                ok false, "info() failed" + forge_result.error_message
-                start()
+                test_remove()
+
+
+    test_info()
 

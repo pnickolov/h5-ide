@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : placementgroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:14
+#* Create date  : 2013-05-28 11:35:48
 #* Description  : qunit test module for placementgroup_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,19 +61,23 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'placementgroup_servic
     #-----------------------------------------------
     #Test DescribePlacementGroups()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 placementgroup.DescribePlacementGroups()", () ->
-        
-        group_names = null
-        filters = null
+    test_DescribePlacementGroups = () ->
+        asyncTest "/aws/ec2 placementgroup.DescribePlacementGroups()", () ->
+            group_names = null
+            filters = null
 
-        placementgroup_service.DescribePlacementGroups username, session_id, region_name, group_names, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribePlacementGroups succeed
-                data = aws_result.resolved_data
-                ok true, "DescribePlacementGroups() succeed"
+            placementgroup_service.DescribePlacementGroups username, session_id, region_name, group_names, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribePlacementGroups succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribePlacementGroups() succeed"
+                else
+                #DescribePlacementGroups failed
+                    ok false, "DescribePlacementGroups() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribePlacementGroups failed
-                ok false, "DescribePlacementGroups() failed" + aws_result.error_message
-                start()
+                test_DeletePlacementGroup()
+
+
+    test_DescribePlacementGroups()
 

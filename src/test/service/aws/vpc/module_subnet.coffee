@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : subnet_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:23
+#* Create date  : 2013-05-28 11:35:55
 #* Description  : qunit test module for subnet_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,19 +61,23 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'subnet_service'], ( M
     #-----------------------------------------------
     #Test DescribeSubnets()
     #-----------------------------------------------
-    asyncTest "/aws/vpc subnet.DescribeSubnets()", () ->
-        
-        subnet_ids = null
-        filters = null
+    test_DescribeSubnets = () ->
+        asyncTest "/aws/vpc subnet.DescribeSubnets()", () ->
+            subnet_ids = null
+            filters = null
 
-        subnet_service.DescribeSubnets username, session_id, region_name, subnet_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeSubnets succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeSubnets() succeed"
+            subnet_service.DescribeSubnets username, session_id, region_name, subnet_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeSubnets succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeSubnets() succeed"
+                else
+                #DescribeSubnets failed
+                    ok false, "DescribeSubnets() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeSubnets failed
-                ok false, "DescribeSubnets() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeSubnets()
 

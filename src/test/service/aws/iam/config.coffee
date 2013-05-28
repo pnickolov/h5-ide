@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : iam_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:16
+#* Create date  : 2013-05-28 11:35:50
 #* Description  : qunit test config for iam_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -52,7 +52,7 @@ require.config {
 
 
         #iam service
-        'iam_vo'        : 'service/aws/iam/iam/iam_vo'
-        'iam_parser'    : 'service/aws/iam/iam/iam_parser'
-        'iam_service'   : 'service/aws/iam/iam/iam_service'
+        'iam_vo'        : 'service/aws/iam/iam_vo'
+        'iam_parser'    : 'service/aws/iam/iam_parser'
+        'iam_service'   : 'service/aws/iam/iam_service'
 }#end

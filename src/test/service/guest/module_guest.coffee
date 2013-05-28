@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : guest_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:01
+#* Create date  : 2013-05-28 11:35:39
 #* Description  : qunit test module for guest_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,91 +61,100 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
     #-----------------------------------------------
     #Test invite()
     #-----------------------------------------------
-    asyncTest "/guest guest.invite()", () ->
+    test_invite = () ->
+        asyncTest "/guest guest.invite()", () ->
 
 
-        guest_service.invite username, session_id, region_name, ( forge_result ) ->
-            if !forge_result.is_error
-            #invite succeed
-                data = forge_result.resolved_data
-                ok true, "invite() succeed"
+            guest_service.invite username, session_id, region_name, ( forge_result ) ->
+                if !forge_result.is_error
+                #invite succeed
+                    data = forge_result.resolved_data
+                    ok true, "invite() succeed"
+                else
+                #invite failed
+                    ok false, "invite() failed" + forge_result.error_message
+            
                 start()
-            else
-            #invite failed
-                ok false, "invite() failed" + forge_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test cancel()
     #-----------------------------------------------
-    asyncTest "/guest guest.cancel()", () ->
+    test_cancel = () ->
+        asyncTest "/guest guest.cancel()", () ->
+            guest_id = null
 
-        guest_id = null
-
-        guest_service.cancel username, session_id, region_name, guest_id, ( forge_result ) ->
-            if !forge_result.is_error
-            #cancel succeed
-                data = forge_result.resolved_data
-                ok true, "cancel() succeed"
+            guest_service.cancel username, session_id, region_name, guest_id, ( forge_result ) ->
+                if !forge_result.is_error
+                #cancel succeed
+                    data = forge_result.resolved_data
+                    ok true, "cancel() succeed"
+                else
+                #cancel failed
+                    ok false, "cancel() failed" + forge_result.error_message
+            
                 start()
-            else
-            #cancel failed
-                ok false, "cancel() failed" + forge_result.error_message
-                start()
+                test_invite()
 
     #-----------------------------------------------
     #Test access()
     #-----------------------------------------------
-    asyncTest "/guest guest.access()", () ->
+    test_access = () ->
+        asyncTest "/guest guest.access()", () ->
+            guestname = null
+            guest_id = null
 
-        guestname = null
-        guest_id = null
-
-        guest_service.access guestname, session_id, region_name, guest_id, ( forge_result ) ->
-            if !forge_result.is_error
-            #access succeed
-                data = forge_result.resolved_data
-                ok true, "access() succeed"
+            guest_service.access guestname, session_id, region_name, guest_id, ( forge_result ) ->
+                if !forge_result.is_error
+                #access succeed
+                    data = forge_result.resolved_data
+                    ok true, "access() succeed"
+                else
+                #access failed
+                    ok false, "access() failed" + forge_result.error_message
+            
                 start()
-            else
-            #access failed
-                ok false, "access() failed" + forge_result.error_message
-                start()
+                test_cancel()
 
     #-----------------------------------------------
     #Test end()
     #-----------------------------------------------
-    asyncTest "/guest guest.end()", () ->
+    test_end = () ->
+        asyncTest "/guest guest.end()", () ->
+            guestname = null
+            guest_id = null
 
-        guestname = null
-        guest_id = null
-
-        guest_service.end guestname, session_id, region_name, guest_id, ( forge_result ) ->
-            if !forge_result.is_error
-            #end succeed
-                data = forge_result.resolved_data
-                ok true, "end() succeed"
+            guest_service.end guestname, session_id, region_name, guest_id, ( forge_result ) ->
+                if !forge_result.is_error
+                #end succeed
+                    data = forge_result.resolved_data
+                    ok true, "end() succeed"
+                else
+                #end failed
+                    ok false, "end() failed" + forge_result.error_message
+            
                 start()
-            else
-            #end failed
-                ok false, "end() failed" + forge_result.error_message
-                start()
+                test_access()
 
     #-----------------------------------------------
     #Test info()
     #-----------------------------------------------
-    asyncTest "/guest guest.info()", () ->
+    test_info = () ->
+        asyncTest "/guest guest.info()", () ->
+            guest_id = null
 
-        guest_id = null
+            guest_service.info username, session_id, region_name, guest_id, ( forge_result ) ->
+                if !forge_result.is_error
+                #info succeed
+                    data = forge_result.resolved_data
+                    ok true, "info() succeed"
+                else
+                #info failed
+                    ok false, "info() failed" + forge_result.error_message
+            
+                start()
+                test_end()
 
-        guest_service.info username, session_id, region_name, guest_id, ( forge_result ) ->
-            if !forge_result.is_error
-            #info succeed
-                data = forge_result.resolved_data
-                ok true, "info() succeed"
-                start()
-            else
-            #info failed
-                ok false, "info() failed" + forge_result.error_message
-                start()
+
+    test_info()
 

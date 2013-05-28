@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : instance_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:18
+#* Create date  : 2013-05-28 11:35:52
 #* Description  : qunit testsuite for instance_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -16,13 +16,13 @@ QUnit.config.autostart = false
 # the `baseUrl` value supplied above.
 testModules = [
 	'/test/service/aws/rds/module_instance.js',
-	# '/test/service/aws/rds/module_optiongroup.js',
-	# '/test/service/aws/rds/module_parametergroup.js',
-	# '/test/service/aws/rds/module_rds.js',
-	# '/test/service/aws/rds/module_reservedinstance.js',
-	# '/test/service/aws/rds/module_securitygroup.js',
-	# '/test/service/aws/rds/module_snapshot.js',
-	# '/test/service/aws/rds/module_subnetgroup.js',
+	'/test/service/aws/rds/module_optiongroup.js',
+	'/test/service/aws/rds/module_parametergroup.js',
+	'/test/service/aws/rds/module_rds.js',
+	'/test/service/aws/rds/module_reservedinstance.js',
+	'/test/service/aws/rds/module_securitygroup.js',
+	'/test/service/aws/rds/module_snapshot.js',
+	'/test/service/aws/rds/module_subnetgroup.js',
 	##@@module-list
 ]
 

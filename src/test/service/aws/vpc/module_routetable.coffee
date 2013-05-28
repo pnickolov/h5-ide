@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : routetable_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:23
+#* Create date  : 2013-05-28 11:35:55
 #* Description  : qunit test module for routetable_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,19 +61,23 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'routetable_service'],
     #-----------------------------------------------
     #Test DescribeRouteTables()
     #-----------------------------------------------
-    asyncTest "/aws/vpc routetable.DescribeRouteTables()", () ->
-        
-        rt_ids = null
-        filters = null
+    test_DescribeRouteTables = () ->
+        asyncTest "/aws/vpc routetable.DescribeRouteTables()", () ->
+            rt_ids = null
+            filters = null
 
-        routetable_service.DescribeRouteTables username, session_id, region_name, rt_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeRouteTables succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeRouteTables() succeed"
+            routetable_service.DescribeRouteTables username, session_id, region_name, rt_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeRouteTables succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeRouteTables() succeed"
+                else
+                #DescribeRouteTables failed
+                    ok false, "DescribeRouteTables() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeRouteTables failed
-                ok false, "DescribeRouteTables() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeRouteTables()
 

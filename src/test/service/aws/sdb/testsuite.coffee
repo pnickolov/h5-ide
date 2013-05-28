@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : sdb_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:21
+#* Create date  : 2013-05-28 11:35:54
 #* Description  : qunit testsuite for sdb_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved

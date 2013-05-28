@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : vpc_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:23
+#* Create date  : 2013-05-28 11:35:55
 #* Description  : qunit test module for vpc_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,56 +61,62 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'vpc_service'], ( MC, 
     #-----------------------------------------------
     #Test DescribeVpcs()
     #-----------------------------------------------
-    asyncTest "/aws/vpc vpc.DescribeVpcs()", () ->
+    test_DescribeVpcs = () ->
+        asyncTest "/aws/vpc vpc.DescribeVpcs()", () ->
+            vpc_ids = null
+            filters = null
 
-        vpc_ids = null
-        filters = null
-
-        vpc_service.DescribeVpcs username, session_id, region_name, vpc_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeVpcs succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeVpcs() succeed"
+            vpc_service.DescribeVpcs username, session_id, region_name, vpc_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeVpcs succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeVpcs() succeed"
+                else
+                #DescribeVpcs failed
+                    ok false, "DescribeVpcs() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeVpcs failed
-                ok false, "DescribeVpcs() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test DescribeAccountAttributes()
     #-----------------------------------------------
-    asyncTest "/aws/vpc vpc.DescribeAccountAttributes()", () ->
+    test_DescribeAccountAttributes = () ->
+        asyncTest "/aws/vpc vpc.DescribeAccountAttributes()", () ->
+            attribute_name = null
 
-        attribute_name = ["supported-platforms"]
-
-        vpc_service.DescribeAccountAttributes username, session_id, region_name, attribute_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeAccountAttributes succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeAccountAttributes() succeed"
+            vpc_service.DescribeAccountAttributes username, session_id, region_name, attribute_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeAccountAttributes succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeAccountAttributes() succeed"
+                else
+                #DescribeAccountAttributes failed
+                    ok false, "DescribeAccountAttributes() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeAccountAttributes failed
-                ok false, "DescribeAccountAttributes() failed" + aws_result.error_message
-                start()
+                test_DescribeVpcs()
 
     #-----------------------------------------------
     #Test DescribeVpcAttribute()
     #-----------------------------------------------
-    asyncTest "/aws/vpc vpc.DescribeVpcAttribute()", () ->
+    test_DescribeVpcAttribute = () ->
+        asyncTest "/aws/vpc vpc.DescribeVpcAttribute()", () ->
+            vpc_id = null
+            attribute = null
 
-        vpc_id = null
-        attribute = null
+            vpc_service.DescribeVpcAttribute username, session_id, region_name, vpc_id, attribute, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeVpcAttribute succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeVpcAttribute() succeed"
+                else
+                #DescribeVpcAttribute failed
+                    ok false, "DescribeVpcAttribute() failed" + aws_result.error_message
+            
+                start()
+                test_DescribeAccountAttributes()
 
-        vpc_service.DescribeVpcAttribute username, session_id, region_name, vpc_id, attribute, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeVpcAttribute succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeVpcAttribute() succeed"
-                start()
-            else
-            #DescribeVpcAttribute failed
-                ok false, "DescribeVpcAttribute() failed" + aws_result.error_message
-                start()
+
+    test_DescribeVpcAttribute()
 

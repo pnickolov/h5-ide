@@ -1,17 +1,19 @@
     #-----------------------------------------------
     #Test @@api-name()
     #-----------------------------------------------
-    asyncTest "/@@service-url @@resource-name.@@api-name()", () ->
-        @@param-default
+    test_@@api-name = () ->
+        asyncTest "/@@service-url @@resource-name.@@api-name()", () ->
+@@param-default
 
-        @@resource-name_service.@@api-name @@param-list, ( @@api-type_result ) ->
-            if !@@api-type_result.is_error
-            #@@api-name succeed
-                data = @@api-type_result.resolved_data
-                ok true, "@@api-name() succeed"
+            @@resource-name_service.@@api-name @@param-list, ( @@api-type_result ) ->
+                if !@@api-type_result.is_error
+                #@@api-name succeed
+                    data = @@api-type_result.resolved_data
+                    ok true, "@@api-name() succeed"
+                else
+                #@@api-name failed
+                    ok false, "@@api-name() failed" + @@api-type_result.error_message
+            
                 start()
-            else
-            #@@api-name failed
-                ok false, "@@api-name() failed" + @@api-type_result.error_message
-                start()
+                #@@last-api()
 

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : aws_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:05
+#* Create date  : 2013-05-28 11:35:41
 #* Description  : qunit test module for aws_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,105 +61,117 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
     #-----------------------------------------------
     #Test quickstart()
     #-----------------------------------------------
-    asyncTest "/aws aws.quickstart()", () ->
+    test_quickstart = () ->
+        asyncTest "/aws aws.quickstart()", () ->
 
 
-        aws_service.quickstart username, session_id, region_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #quickstart succeed
-                data = aws_result.resolved_data
-                ok true, "quickstart() succeed"
+            aws_service.quickstart username, session_id, region_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #quickstart succeed
+                    data = aws_result.resolved_data
+                    ok true, "quickstart() succeed"
+                else
+                #quickstart failed
+                    ok false, "quickstart() failed" + aws_result.error_message
+            
                 start()
-            else
-            #quickstart failed
-                ok false, "quickstart() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test Public()
     #-----------------------------------------------
-    asyncTest "/aws aws.public()", () ->
+    test_Public = () ->
+        asyncTest "/aws aws.Public()", () ->
 
 
-        aws_service.Public username, session_id, region_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #Public succeed
-                data = aws_result.resolved_data
-                ok true, "Public() succeed"
+            aws_service.Public username, session_id, region_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #Public succeed
+                    data = aws_result.resolved_data
+                    ok true, "Public() succeed"
+                else
+                #Public failed
+                    ok false, "Public() failed" + aws_result.error_message
+            
                 start()
-            else
-            #Public failed
-                ok false, "Public() failed" + aws_result.error_message
-                start()
+                test_quickstart()
 
     #-----------------------------------------------
     #Test info()
     #-----------------------------------------------
-    asyncTest "/aws aws.info()", () ->
+    test_info = () ->
+        asyncTest "/aws aws.info()", () ->
 
 
-        aws_service.info username, session_id, region_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #info succeed
-                data = aws_result.resolved_data
-                ok true, "info() succeed"
+            aws_service.info username, session_id, region_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #info succeed
+                    data = aws_result.resolved_data
+                    ok true, "info() succeed"
+                else
+                #info failed
+                    ok false, "info() failed" + aws_result.error_message
+            
                 start()
-            else
-            #info failed
-                ok false, "info() failed" + aws_result.error_message
-                start()
+                test_Public()
 
     #-----------------------------------------------
     #Test resource()
     #-----------------------------------------------
-    asyncTest "/aws aws.resource()", () ->
+    test_resource = () ->
+        asyncTest "/aws aws.resource()", () ->
+            resources = null
 
-        resources = null
-
-        aws_service.resource username, session_id, region_name, resources, ( aws_result ) ->
-            if !aws_result.is_error
-            #resource succeed
-                data = aws_result.resolved_data
-                ok true, "resource() succeed"
+            aws_service.resource username, session_id, region_name, resources, ( aws_result ) ->
+                if !aws_result.is_error
+                #resource succeed
+                    data = aws_result.resolved_data
+                    ok true, "resource() succeed"
+                else
+                #resource failed
+                    ok false, "resource() failed" + aws_result.error_message
+            
                 start()
-            else
-            #resource failed
-                ok false, "resource() failed" + aws_result.error_message
-                start()
+                test_info()
 
-    ###
     #-----------------------------------------------
     #Test price()
     #-----------------------------------------------
-    asyncTest "/aws aws.price()", () ->
+    test_price = () ->
+        asyncTest "/aws aws.price()", () ->
 
 
-        aws_service.price username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #price succeed
-                data = aws_result.resolved_data
-                ok true, "price() succeed"
+            aws_service.price username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #price succeed
+                    data = aws_result.resolved_data
+                    ok true, "price() succeed"
+                else
+                #price failed
+                    ok false, "price() failed" + aws_result.error_message
+            
                 start()
-            else
-            #price failed
-                ok false, "price() failed" + aws_result.error_message
-                start()
-    ###
+                test_resource()
 
     #-----------------------------------------------
     #Test status()
     #-----------------------------------------------
-    asyncTest "/aws aws.status()", () ->
+    test_status = () ->
+        asyncTest "/aws aws.status()", () ->
 
 
-        aws_service.status username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #status succeed
-                data = aws_result.resolved_data
-                ok true, "status() succeed"
+            aws_service.status username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #status succeed
+                    data = aws_result.resolved_data
+                    ok true, "status() succeed"
+                else
+                #status failed
+                    ok false, "status() failed" + aws_result.error_message
+            
                 start()
-            else
-            #status failed
-                ok false, "status() failed" + aws_result.error_message
-                start()
+                test_price()
+
+
+    test_status()
 

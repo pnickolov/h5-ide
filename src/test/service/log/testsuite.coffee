@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : log_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:05:57
+#* Create date  : 2013-05-28 11:35:36
 #* Description  : qunit testsuite for log_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved

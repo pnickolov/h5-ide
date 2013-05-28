@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ami_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:06
+#* Create date  : 2013-05-28 11:35:42
 #* Description  : qunit test module for ami_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,40 +61,45 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ami_service'], ( MC, 
     #-----------------------------------------------
     #Test DescribeImageAttribute()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 ami.DescribeImageAttribute()", () ->
-        
-        ami_id = null
-        attribute_name = null
+    test_DescribeImageAttribute = () ->
+        asyncTest "/aws/ec2 ami.DescribeImageAttribute()", () ->
+            ami_id = null
+            attribute_name = null
 
-        ami_service.DescribeImageAttribute username, session_id, region_name, ami_id, attribute_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeImageAttribute succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeImageAttribute() succeed"
+            ami_service.DescribeImageAttribute username, session_id, region_name, ami_id, attribute_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeImageAttribute succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeImageAttribute() succeed"
+                else
+                #DescribeImageAttribute failed
+                    ok false, "DescribeImageAttribute() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeImageAttribute failed
-                ok false, "DescribeImageAttribute() failed" + aws_result.error_message
-                start()
+                test_ResetImageAttribute()
 
     #-----------------------------------------------
     #Test DescribeImages()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 ami.DescribeImages()", () ->
-        
-        ami_ids = null
-        owners = null
-        executable_by = null
-        filters = null
+    test_DescribeImages = () ->
+        asyncTest "/aws/ec2 ami.DescribeImages()", () ->
+            ami_ids = null
+            owners = null
+            executable_by = null
+            filters = null
 
-        ami_service.DescribeImages username, session_id, region_name, ami_ids, owners, executable_by, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeImages succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeImages() succeed"
+            ami_service.DescribeImages username, session_id, region_name, ami_ids, owners, executable_by, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeImages succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeImages() succeed"
+                else
+                #DescribeImages failed
+                    ok false, "DescribeImages() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeImages failed
-                ok false, "DescribeImages() failed" + aws_result.error_message
-                start()
+                test_DescribeImageAttribute()
+
+
+    test_DescribeImages()
 

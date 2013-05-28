@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : reservedinstance_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:20
+#* Create date  : 2013-05-28 11:35:53
 #* Description  : qunit test module for reservedinstance_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,34 +61,41 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'reservedinstance_serv
     #-----------------------------------------------
     #Test DescribeReservedDBInstances()
     #-----------------------------------------------
-    asyncTest "/aws/rds reservedinstance.DescribeReservedDBInstances()", () ->
-        
+    test_DescribeReservedDBInstances = () ->
+        asyncTest "/aws/rds reservedinstance.DescribeReservedDBInstances()", () ->
 
-        reservedinstance_service.DescribeReservedDBInstances username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeReservedDBInstances succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeReservedDBInstances() succeed"
+
+            reservedinstance_service.DescribeReservedDBInstances username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeReservedDBInstances succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeReservedDBInstances() succeed"
+                else
+                #DescribeReservedDBInstances failed
+                    ok false, "DescribeReservedDBInstances() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeReservedDBInstances failed
-                ok false, "DescribeReservedDBInstances() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test DescribeReservedDBInstancesOfferings()
     #-----------------------------------------------
-    asyncTest "/aws/rds reservedinstance.DescribeReservedDBInstancesOfferings()", () ->
-        
+    test_DescribeReservedDBInstancesOfferings = () ->
+        asyncTest "/aws/rds reservedinstance.DescribeReservedDBInstancesOfferings()", () ->
 
-        reservedinstance_service.DescribeReservedDBInstancesOfferings username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeReservedDBInstancesOfferings succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeReservedDBInstancesOfferings() succeed"
+
+            reservedinstance_service.DescribeReservedDBInstancesOfferings username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeReservedDBInstancesOfferings succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeReservedDBInstancesOfferings() succeed"
+                else
+                #DescribeReservedDBInstancesOfferings failed
+                    ok false, "DescribeReservedDBInstancesOfferings() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeReservedDBInstancesOfferings failed
-                ok false, "DescribeReservedDBInstancesOfferings() failed" + aws_result.error_message
-                start()
+                test_DescribeReservedDBInstances()
+
+
+    test_DescribeReservedDBInstancesOfferings()
 

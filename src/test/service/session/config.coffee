@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : session_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:05:58
+#* Create date  : 2013-05-28 11:35:37
 #* Description  : qunit test config for session_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved

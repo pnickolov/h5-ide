@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : opsworks_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:16
+#* Create date  : 2013-05-28 11:35:50
 #* Description  : qunit test config for opsworks_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -52,7 +52,7 @@ require.config {
 
 
         #opsworks service
-        'opsworks_vo'        : 'service/aws/opsworks/opsworks/opsworks_vo'
-        'opsworks_parser'    : 'service/aws/opsworks/opsworks/opsworks_parser'
-        'opsworks_service'   : 'service/aws/opsworks/opsworks/opsworks_service'
+        'opsworks_vo'        : 'service/aws/opsworks\/opsworks/opsworks_vo'
+        'opsworks_parser'    : 'service/aws/opsworks\/opsworks/opsworks_parser'
+        'opsworks_service'   : 'service/aws/opsworks\/opsworks/opsworks_service'
 }#end

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : cloudwatch_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:06
+#* Create date  : 2013-05-28 11:35:42
 #* Description  : qunit test module for cloudwatch_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,85 +61,98 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
     #-----------------------------------------------
     #Test GetMetricStatistics()
     #-----------------------------------------------
-    asyncTest "/aws/cloudwatch cloudwatch.GetMetricStatistics()", () ->
-        
+    test_GetMetricStatistics = () ->
+        asyncTest "/aws/cloudwatch cloudwatch.GetMetricStatistics()", () ->
 
-        cloudwatch_service.GetMetricStatistics username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #GetMetricStatistics succeed
-                data = aws_result.resolved_data
-                ok true, "GetMetricStatistics() succeed"
+
+            cloudwatch_service.GetMetricStatistics username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #GetMetricStatistics succeed
+                    data = aws_result.resolved_data
+                    ok true, "GetMetricStatistics() succeed"
+                else
+                #GetMetricStatistics failed
+                    ok false, "GetMetricStatistics() failed" + aws_result.error_message
+            
                 start()
-            else
-            #GetMetricStatistics failed
-                ok false, "GetMetricStatistics() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test ListMetrics()
     #-----------------------------------------------
-    asyncTest "/aws/cloudwatch cloudwatch.ListMetrics()", () ->
-        
+    test_ListMetrics = () ->
+        asyncTest "/aws/cloudwatch cloudwatch.ListMetrics()", () ->
 
-        cloudwatch_service.ListMetrics username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #ListMetrics succeed
-                data = aws_result.resolved_data
-                ok true, "ListMetrics() succeed"
+
+            cloudwatch_service.ListMetrics username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #ListMetrics succeed
+                    data = aws_result.resolved_data
+                    ok true, "ListMetrics() succeed"
+                else
+                #ListMetrics failed
+                    ok false, "ListMetrics() failed" + aws_result.error_message
+            
                 start()
-            else
-            #ListMetrics failed
-                ok false, "ListMetrics() failed" + aws_result.error_message
-                start()
+                test_GetMetricStatistics()
 
     #-----------------------------------------------
     #Test DescribeAlarmHistory()
     #-----------------------------------------------
-    asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarmHistory()", () ->
-        
+    test_DescribeAlarmHistory = () ->
+        asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarmHistory()", () ->
 
-        cloudwatch_service.DescribeAlarmHistory username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeAlarmHistory succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeAlarmHistory() succeed"
+
+            cloudwatch_service.DescribeAlarmHistory username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeAlarmHistory succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeAlarmHistory() succeed"
+                else
+                #DescribeAlarmHistory failed
+                    ok false, "DescribeAlarmHistory() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeAlarmHistory failed
-                ok false, "DescribeAlarmHistory() failed" + aws_result.error_message
-                start()
+                test_ListMetrics()
 
     #-----------------------------------------------
     #Test DescribeAlarms()
     #-----------------------------------------------
-    asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarms()", () ->
-        
+    test_DescribeAlarms = () ->
+        asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarms()", () ->
 
-        cloudwatch_service.DescribeAlarms username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeAlarms succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeAlarms() succeed"
+
+            cloudwatch_service.DescribeAlarms username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeAlarms succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeAlarms() succeed"
+                else
+                #DescribeAlarms failed
+                    ok false, "DescribeAlarms() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeAlarms failed
-                ok false, "DescribeAlarms() failed" + aws_result.error_message
-                start()
+                test_DescribeAlarmHistory()
 
     #-----------------------------------------------
     #Test DescribeAlarmsForMetric()
     #-----------------------------------------------
-    asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarmsForMetric()", () ->
-        
+    test_DescribeAlarmsForMetric = () ->
+        asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarmsForMetric()", () ->
 
-        cloudwatch_service.DescribeAlarmsForMetric username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeAlarmsForMetric succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeAlarmsForMetric() succeed"
+
+            cloudwatch_service.DescribeAlarmsForMetric username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeAlarmsForMetric succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeAlarmsForMetric() succeed"
+                else
+                #DescribeAlarmsForMetric failed
+                    ok false, "DescribeAlarmsForMetric() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeAlarmsForMetric failed
-                ok false, "DescribeAlarmsForMetric() failed" + aws_result.error_message
-                start()
+                test_DescribeAlarms()
+
+
+    test_DescribeAlarmsForMetric()
 

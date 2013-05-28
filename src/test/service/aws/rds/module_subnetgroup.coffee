@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : subnetgroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:21
+#* Create date  : 2013-05-28 11:35:53
 #* Description  : qunit test module for subnetgroup_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,20 +61,24 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'subnetgroup_service']
     #-----------------------------------------------
     #Test DescribeDBSubnetGroups()
     #-----------------------------------------------
-    asyncTest "/aws/rds subnetgroup.DescribeDBSubnetGroups()", () ->
-        
-        sg_name = null
-        marker = null
-        max_records = null
+    test_DescribeDBSubnetGroups = () ->
+        asyncTest "/aws/rds subnetgroup.DescribeDBSubnetGroups()", () ->
+            sg_name = null
+            marker = null
+            max_records = null
 
-        subnetgroup_service.DescribeDBSubnetGroups username, session_id, region_name, sg_name, marker, max_records, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeDBSubnetGroups succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeDBSubnetGroups() succeed"
+            subnetgroup_service.DescribeDBSubnetGroups username, session_id, region_name, sg_name, marker, max_records, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeDBSubnetGroups succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeDBSubnetGroups() succeed"
+                else
+                #DescribeDBSubnetGroups failed
+                    ok false, "DescribeDBSubnetGroups() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeDBSubnetGroups failed
-                ok false, "DescribeDBSubnetGroups() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeDBSubnetGroups()
 

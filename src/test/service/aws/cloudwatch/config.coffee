@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : cloudwatch_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:05
+#* Create date  : 2013-05-28 11:35:42
 #* Description  : qunit test config for cloudwatch_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -52,7 +52,7 @@ require.config {
 
 
         #cloudwatch service
-        'cloudwatch_vo'        : 'service/aws/cloudwatch/cloudwatch/cloudwatch_vo'
-        'cloudwatch_parser'    : 'service/aws/cloudwatch/cloudwatch/cloudwatch_parser'
-        'cloudwatch_service'   : 'service/aws/cloudwatch/cloudwatch/cloudwatch_service'
+        'cloudwatch_vo'        : 'service/aws/cloudwatch\/cloudwatch/cloudwatch_vo'
+        'cloudwatch_parser'    : 'service/aws/cloudwatch\/cloudwatch/cloudwatch_parser'
+        'cloudwatch_service'   : 'service/aws/cloudwatch\/cloudwatch/cloudwatch_service'
 }#end

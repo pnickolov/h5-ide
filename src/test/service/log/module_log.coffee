@@ -63,7 +63,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'log_service'], ( MC, 
     #-----------------------------------------------
     test_put_user_log = () ->
         asyncTest "/log log.put_user_log()", () ->
-            user_logs = null
+            user_logs = [["test1", "test2", "1369735844", "###test msg###"]]
 
             log_service.put_user_log username, session_id, user_logs, ( forge_result ) ->
                 if !forge_result.is_error

@@ -17,6 +17,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
     session_id  = ""
     usercode    = ""
     region_name = ""
+    thetime     = 0
 
     can_test    = false
 
@@ -64,17 +65,19 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
     test_init = () ->
         asyncTest "/request request.init()", () ->
 
-
+            region_name = "ap-southeast-1"
             request_service.init username, session_id, region_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #init succeed
                     data = forge_result.resolved_data
+                    thetime = data["time"]
                     ok true, "init() succeed"
                 else
                 #init failed
                     ok false, "init() failed" + forge_result.error_message
             
                 start()
+                test_update()
                 
 
     #-----------------------------------------------
@@ -82,8 +85,8 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
     #-----------------------------------------------
     test_update = () ->
         asyncTest "/request request.update()", () ->
-            timestamp = null
-
+            timestamp = thetime
+            region_name = "ap-southeast-1"
             request_service.update username, session_id, region_name, timestamp, ( forge_result ) ->
                 if !forge_result.is_error
                 #update succeed
@@ -94,8 +97,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
                     ok false, "update() failed" + forge_result.error_message
             
                 start()
-                test_init()
 
 
-    test_update()
+    test_init()
 

@@ -11,13 +11,13 @@ define [ 'request_vo', 'result_vo', 'constant' ], ( request_vo, result_vo, const
 
     # parse each resource
     parseResource = (resource) ->
-        request_vo.resource.userid      = resource[0]
-        request_vo.resource.code        = resource[1]
-        request_vo.resource.submit_time = resource[2]
-        request_vo.resource.begin_time  = resource[3]
-        request_vo.resource.end_time    = resource[4]
-        request_vo.resource.brief       = resource[5]
-        request_vo.resource.data        = resource[6]
+        request_vo.resource.userid      = resource["id"]
+        request_vo.resource.code        = resource["code"]
+        request_vo.resource.submit_time = resource["time_submit"]
+        request_vo.resource.begin_time  = resource["time_begin"]
+        request_vo.resource.end_time    = resource["time_end"]
+        request_vo.resource.brief       = resource["brief"]
+        request_vo.resource.data        = resource["data"]
 
         request_vo.request_info.data.push request_vo.resource
 

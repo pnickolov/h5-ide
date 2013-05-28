@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : securitygroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:14
+#* Create date  : 2013-05-28 11:35:49
 #* Description  : qunit test module for securitygroup_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,20 +61,24 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'securitygroup_service
     #-----------------------------------------------
     #Test DescribeSecurityGroups()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 securitygroup.DescribeSecurityGroups()", () ->
-        
-        group_names = null
-        group_ids = null
-        filters = null
+    test_DescribeSecurityGroups = () ->
+        asyncTest "/aws/ec2 securitygroup.DescribeSecurityGroups()", () ->
+            group_names = null
+            group_ids = null
+            filters = null
 
-        securitygroup_service.DescribeSecurityGroups username, session_id, region_name, group_names, group_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeSecurityGroups succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeSecurityGroups() succeed"
+            securitygroup_service.DescribeSecurityGroups username, session_id, region_name, group_names, group_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeSecurityGroups succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeSecurityGroups() succeed"
+                else
+                #DescribeSecurityGroups failed
+                    ok false, "DescribeSecurityGroups() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeSecurityGroups failed
-                ok false, "DescribeSecurityGroups() failed" + aws_result.error_message
-                start()
+                test_RevokeSecurityGroupIngress()
+
+
+    test_DescribeSecurityGroups()
 

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : autoscaling_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:03
+#* Create date  : 2013-05-28 11:35:40
 #* Description  : qunit test module for autoscaling_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,223 +61,244 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
     #-----------------------------------------------
     #Test DescribeAdjustmentTypes()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeAdjustmentTypes()", () ->
-        
+    test_DescribeAdjustmentTypes = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeAdjustmentTypes()", () ->
 
-        autoscaling_service.DescribeAdjustmentTypes username, session_id, region_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeAdjustmentTypes succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeAdjustmentTypes() succeed"
+
+            autoscaling_service.DescribeAdjustmentTypes username, session_id, region_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeAdjustmentTypes succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeAdjustmentTypes() succeed"
+                else
+                #DescribeAdjustmentTypes failed
+                    ok false, "DescribeAdjustmentTypes() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeAdjustmentTypes failed
-                ok false, "DescribeAdjustmentTypes() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test DescribeAutoScalingGroups()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeAutoScalingGroups()", () ->
-        
-        group_names = null
-        max_records = null
-        next_token = null
+    test_DescribeAutoScalingGroups = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeAutoScalingGroups()", () ->
+            group_names = null
+            max_records = null
+            next_token = null
 
-        autoscaling_service.DescribeAutoScalingGroups username, session_id, region_name, group_names, max_records, next_token, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeAutoScalingGroups succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeAutoScalingGroups() succeed"
+            autoscaling_service.DescribeAutoScalingGroups username, session_id, region_name, group_names, max_records, next_token, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeAutoScalingGroups succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeAutoScalingGroups() succeed"
+                else
+                #DescribeAutoScalingGroups failed
+                    ok false, "DescribeAutoScalingGroups() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeAutoScalingGroups failed
-                ok false, "DescribeAutoScalingGroups() failed" + aws_result.error_message
-                start()
+                test_DescribeAdjustmentTypes()
 
     #-----------------------------------------------
     #Test DescribeAutoScalingInstances()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeAutoScalingInstances()", () ->
-        
-        instance_ids = null
-        max_records = null
-        next_token = null
+    test_DescribeAutoScalingInstances = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeAutoScalingInstances()", () ->
+            instance_ids = null
+            max_records = null
+            next_token = null
 
-        autoscaling_service.DescribeAutoScalingInstances username, session_id, region_name, instance_ids, max_records, next_token, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeAutoScalingInstances succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeAutoScalingInstances() succeed"
+            autoscaling_service.DescribeAutoScalingInstances username, session_id, region_name, instance_ids, max_records, next_token, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeAutoScalingInstances succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeAutoScalingInstances() succeed"
+                else
+                #DescribeAutoScalingInstances failed
+                    ok false, "DescribeAutoScalingInstances() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeAutoScalingInstances failed
-                ok false, "DescribeAutoScalingInstances() failed" + aws_result.error_message
-                start()
+                test_DescribeAutoScalingGroups()
 
     #-----------------------------------------------
     #Test DescribeAutoScalingNotificationTypes()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeAutoScalingNotificationTypes()", () ->
-        
+    test_DescribeAutoScalingNotificationTypes = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeAutoScalingNotificationTypes()", () ->
 
-        autoscaling_service.DescribeAutoScalingNotificationTypes username, session_id, region_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeAutoScalingNotificationTypes succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeAutoScalingNotificationTypes() succeed"
+
+            autoscaling_service.DescribeAutoScalingNotificationTypes username, session_id, region_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeAutoScalingNotificationTypes succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeAutoScalingNotificationTypes() succeed"
+                else
+                #DescribeAutoScalingNotificationTypes failed
+                    ok false, "DescribeAutoScalingNotificationTypes() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeAutoScalingNotificationTypes failed
-                ok false, "DescribeAutoScalingNotificationTypes() failed" + aws_result.error_message
-                start()
+                test_DescribeAutoScalingInstances()
 
     #-----------------------------------------------
     #Test DescribeLaunchConfigurations()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeLaunchConfigurations()", () ->
-        
-        config_names = null
-        max_records = null
-        next_token = null
+    test_DescribeLaunchConfigurations = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeLaunchConfigurations()", () ->
+            config_names = null
+            max_records = null
+            next_token = null
 
-        autoscaling_service.DescribeLaunchConfigurations username, session_id, region_name, config_names, max_records, next_token, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeLaunchConfigurations succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeLaunchConfigurations() succeed"
+            autoscaling_service.DescribeLaunchConfigurations username, session_id, region_name, config_names, max_records, next_token, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeLaunchConfigurations succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeLaunchConfigurations() succeed"
+                else
+                #DescribeLaunchConfigurations failed
+                    ok false, "DescribeLaunchConfigurations() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeLaunchConfigurations failed
-                ok false, "DescribeLaunchConfigurations() failed" + aws_result.error_message
-                start()
+                test_DescribeAutoScalingNotificationTypes()
 
     #-----------------------------------------------
     #Test DescribeMetricCollectionTypes()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeMetricCollectionTypes()", () ->
-        
+    test_DescribeMetricCollectionTypes = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeMetricCollectionTypes()", () ->
 
-        autoscaling_service.DescribeMetricCollectionTypes username, session_id, region_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeMetricCollectionTypes succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeMetricCollectionTypes() succeed"
+
+            autoscaling_service.DescribeMetricCollectionTypes username, session_id, region_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeMetricCollectionTypes succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeMetricCollectionTypes() succeed"
+                else
+                #DescribeMetricCollectionTypes failed
+                    ok false, "DescribeMetricCollectionTypes() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeMetricCollectionTypes failed
-                ok false, "DescribeMetricCollectionTypes() failed" + aws_result.error_message
-                start()
+                test_DescribeLaunchConfigurations()
 
     #-----------------------------------------------
     #Test DescribeNotificationConfigurations()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeNotificationConfigurations()", () ->
-        
-        group_names = null
-        max_records = null
-        next_token = null
+    test_DescribeNotificationConfigurations = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeNotificationConfigurations()", () ->
+            group_names = null
+            max_records = null
+            next_token = null
 
-        autoscaling_service.DescribeNotificationConfigurations username, session_id, region_name, group_names, max_records, next_token, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeNotificationConfigurations succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeNotificationConfigurations() succeed"
+            autoscaling_service.DescribeNotificationConfigurations username, session_id, region_name, group_names, max_records, next_token, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeNotificationConfigurations succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeNotificationConfigurations() succeed"
+                else
+                #DescribeNotificationConfigurations failed
+                    ok false, "DescribeNotificationConfigurations() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeNotificationConfigurations failed
-                ok false, "DescribeNotificationConfigurations() failed" + aws_result.error_message
-                start()
+                test_DescribeMetricCollectionTypes()
 
     #-----------------------------------------------
     #Test DescribePolicies()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribePolicies()", () ->
-        
-        group_name = null
-        policy_names = null
-        max_records = null
-        next_token = null
+    test_DescribePolicies = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribePolicies()", () ->
+            group_name = null
+            policy_names = null
+            max_records = null
+            next_token = null
 
-        autoscaling_service.DescribePolicies username, session_id, region_name, group_name, policy_names, max_records, next_token, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribePolicies succeed
-                data = aws_result.resolved_data
-                ok true, "DescribePolicies() succeed"
+            autoscaling_service.DescribePolicies username, session_id, region_name, group_name, policy_names, max_records, next_token, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribePolicies succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribePolicies() succeed"
+                else
+                #DescribePolicies failed
+                    ok false, "DescribePolicies() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribePolicies failed
-                ok false, "DescribePolicies() failed" + aws_result.error_message
-                start()
+                test_DescribeNotificationConfigurations()
 
     #-----------------------------------------------
     #Test DescribeScalingActivities()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeScalingActivities()", () ->
-        
+    test_DescribeScalingActivities = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeScalingActivities()", () ->
 
-        autoscaling_service.DescribeScalingActivities username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeScalingActivities succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeScalingActivities() succeed"
+
+            autoscaling_service.DescribeScalingActivities username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeScalingActivities succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeScalingActivities() succeed"
+                else
+                #DescribeScalingActivities failed
+                    ok false, "DescribeScalingActivities() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeScalingActivities failed
-                ok false, "DescribeScalingActivities() failed" + aws_result.error_message
-                start()
+                test_DescribePolicies()
 
     #-----------------------------------------------
     #Test DescribeScalingProcessTypes()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeScalingProcessTypes()", () ->
-        
+    test_DescribeScalingProcessTypes = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeScalingProcessTypes()", () ->
 
-        autoscaling_service.DescribeScalingProcessTypes username, session_id, region_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeScalingProcessTypes succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeScalingProcessTypes() succeed"
+
+            autoscaling_service.DescribeScalingProcessTypes username, session_id, region_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeScalingProcessTypes succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeScalingProcessTypes() succeed"
+                else
+                #DescribeScalingProcessTypes failed
+                    ok false, "DescribeScalingProcessTypes() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeScalingProcessTypes failed
-                ok false, "DescribeScalingProcessTypes() failed" + aws_result.error_message
-                start()
+                test_DescribeScalingActivities()
 
     #-----------------------------------------------
     #Test DescribeScheduledActions()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeScheduledActions()", () ->
-        
+    test_DescribeScheduledActions = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeScheduledActions()", () ->
 
-        autoscaling_service.DescribeScheduledActions username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeScheduledActions succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeScheduledActions() succeed"
+
+            autoscaling_service.DescribeScheduledActions username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeScheduledActions succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeScheduledActions() succeed"
+                else
+                #DescribeScheduledActions failed
+                    ok false, "DescribeScheduledActions() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeScheduledActions failed
-                ok false, "DescribeScheduledActions() failed" + aws_result.error_message
-                start()
+                test_DescribeScalingProcessTypes()
 
     #-----------------------------------------------
     #Test DescribeTags()
     #-----------------------------------------------
-    asyncTest "/aws/autoscaling autoscaling.DescribeTags()", () ->
-        
-        filters = null
-        max_records = null
-        next_token = null
+    test_DescribeTags = () ->
+        asyncTest "/aws/autoscaling autoscaling.DescribeTags()", () ->
+            filters = null
+            max_records = null
+            next_token = null
 
-        autoscaling_service.DescribeTags username, session_id, region_name, filters, max_records, next_token, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeTags succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeTags() succeed"
+            autoscaling_service.DescribeTags username, session_id, region_name, filters, max_records, next_token, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeTags succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeTags() succeed"
+                else
+                #DescribeTags failed
+                    ok false, "DescribeTags() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeTags failed
-                ok false, "DescribeTags() failed" + aws_result.error_message
-                start()
+                test_DescribeScheduledActions()
+
+
+    test_DescribeTags()
 

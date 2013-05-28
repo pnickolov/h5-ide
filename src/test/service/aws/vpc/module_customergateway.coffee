@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : customergateway_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:22
+#* Create date  : 2013-05-28 11:35:54
 #* Description  : qunit test module for customergateway_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,19 +61,23 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'customergateway_servi
     #-----------------------------------------------
     #Test DescribeCustomerGateways()
     #-----------------------------------------------
-    asyncTest "/aws/vpc customergateway.DescribeCustomerGateways()", () ->
-        
-        gw_ids = null
-        filters = null
+    test_DescribeCustomerGateways = () ->
+        asyncTest "/aws/vpc customergateway.DescribeCustomerGateways()", () ->
+            gw_ids = null
+            filters = null
 
-        customergateway_service.DescribeCustomerGateways username, session_id, region_name, gw_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeCustomerGateways succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeCustomerGateways() succeed"
+            customergateway_service.DescribeCustomerGateways username, session_id, region_name, gw_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeCustomerGateways succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeCustomerGateways() succeed"
+                else
+                #DescribeCustomerGateways failed
+                    ok false, "DescribeCustomerGateways() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeCustomerGateways failed
-                ok false, "DescribeCustomerGateways() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeCustomerGateways()
 

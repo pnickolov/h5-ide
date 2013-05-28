@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : acl_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:22
+#* Create date  : 2013-05-28 11:35:54
 #* Description  : qunit test module for acl_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,19 +61,23 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'acl_service'], ( MC, 
     #-----------------------------------------------
     #Test DescribeNetworkAcls()
     #-----------------------------------------------
-    asyncTest "/aws/vpc acl.DescribeNetworkAcls()", () ->
-        
-        acl_ids = null
-        filters = null
+    test_DescribeNetworkAcls = () ->
+        asyncTest "/aws/vpc acl.DescribeNetworkAcls()", () ->
+            acl_ids = null
+            filters = null
 
-        acl_service.DescribeNetworkAcls username, session_id, region_name, acl_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeNetworkAcls succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeNetworkAcls() succeed"
+            acl_service.DescribeNetworkAcls username, session_id, region_name, acl_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeNetworkAcls succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeNetworkAcls() succeed"
+                else
+                #DescribeNetworkAcls failed
+                    ok false, "DescribeNetworkAcls() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeNetworkAcls failed
-                ok false, "DescribeNetworkAcls() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeNetworkAcls()
 

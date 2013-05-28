@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : keypair_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:13
+#* Create date  : 2013-05-28 11:35:48
 #* Description  : qunit test module for keypair_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,19 +61,23 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'keypair_service'], ( 
     #-----------------------------------------------
     #Test DescribeKeyPairs()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 keypair.DescribeKeyPairs()", () ->
-        
-        key_names = null
-        filters = null
+    test_DescribeKeyPairs = () ->
+        asyncTest "/aws/ec2 keypair.DescribeKeyPairs()", () ->
+            key_names = null
+            filters = null
 
-        keypair_service.DescribeKeyPairs username, session_id, region_name, key_names, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeKeyPairs succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeKeyPairs() succeed"
+            keypair_service.DescribeKeyPairs username, session_id, region_name, key_names, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeKeyPairs succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeKeyPairs() succeed"
+                else
+                #DescribeKeyPairs failed
+                    ok false, "DescribeKeyPairs() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeKeyPairs failed
-                ok false, "DescribeKeyPairs() failed" + aws_result.error_message
-                start()
+                test_ImportKeyPair()
+
+
+    test_list()
 

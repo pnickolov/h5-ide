@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : app_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:05:59
+#* Create date  : 2013-05-28 11:35:38
 #* Description  : qunit test module for app_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,186 +61,200 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
     #-----------------------------------------------
     #Test create()
     #-----------------------------------------------
-    asyncTest "/app app.create()", () ->
-        
-        spec = null
+    test_create = () ->
+        asyncTest "/app app.create()", () ->
+            spec = null
 
-        app_service.create username, session_id, region_name, spec, ( forge_result ) ->
-            if !forge_result.is_error
-            #create succeed
-                data = forge_result.resolved_data
-                ok true, "create() succeed"
+            app_service.create username, session_id, region_name, spec, ( forge_result ) ->
+                if !forge_result.is_error
+                #create succeed
+                    data = forge_result.resolved_data
+                    ok true, "create() succeed"
+                else
+                #create failed
+                    ok false, "create() failed" + forge_result.error_message
+            
                 start()
-            else
-            #create failed
-                ok false, "create() failed" + forge_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test update()
     #-----------------------------------------------
-    asyncTest "/app app.update()", () ->
-        
-        spec = null
-        app_id = null
+    test_update = () ->
+        asyncTest "/app app.update()", () ->
+            spec = null
+            app_id = null
 
-        app_service.update username, session_id, region_name, spec, app_id, ( forge_result ) ->
-            if !forge_result.is_error
-            #update succeed
-                data = forge_result.resolved_data
-                ok true, "update() succeed"
+            app_service.update username, session_id, region_name, spec, app_id, ( forge_result ) ->
+                if !forge_result.is_error
+                #update succeed
+                    data = forge_result.resolved_data
+                    ok true, "update() succeed"
+                else
+                #update failed
+                    ok false, "update() failed" + forge_result.error_message
+            
                 start()
-            else
-            #update failed
-                ok false, "update() failed" + forge_result.error_message
-                start()
+                test_create()
 
     #-----------------------------------------------
     #Test rename()
     #-----------------------------------------------
-    asyncTest "/app app.rename()", () ->
-        
-        app_id = null
-        new_name = null
-        app_name = null
+    test_rename = () ->
+        asyncTest "/app app.rename()", () ->
+            app_id = null
+            new_name = null
+            app_name = null
 
-        app_service.rename username, session_id, region_name, app_id, new_name, app_name, ( forge_result ) ->
-            if !forge_result.is_error
-            #rename succeed
-                data = forge_result.resolved_data
-                ok true, "rename() succeed"
+            app_service.rename username, session_id, region_name, app_id, new_name, app_name, ( forge_result ) ->
+                if !forge_result.is_error
+                #rename succeed
+                    data = forge_result.resolved_data
+                    ok true, "rename() succeed"
+                else
+                #rename failed
+                    ok false, "rename() failed" + forge_result.error_message
+            
                 start()
-            else
-            #rename failed
-                ok false, "rename() failed" + forge_result.error_message
-                start()
+                test_update()
 
     #-----------------------------------------------
     #Test terminate()
     #-----------------------------------------------
-    asyncTest "/app app.terminate()", () ->
-        
-        app_id = null
-        app_name = null
+    test_terminate = () ->
+        asyncTest "/app app.terminate()", () ->
+            app_id = null
+            app_name = null
 
-        app_service.terminate username, session_id, region_name, app_id, app_name, ( forge_result ) ->
-            if !forge_result.is_error
-            #terminate succeed
-                data = forge_result.resolved_data
-                ok true, "terminate() succeed"
+            app_service.terminate username, session_id, region_name, app_id, app_name, ( forge_result ) ->
+                if !forge_result.is_error
+                #terminate succeed
+                    data = forge_result.resolved_data
+                    ok true, "terminate() succeed"
+                else
+                #terminate failed
+                    ok false, "terminate() failed" + forge_result.error_message
+            
                 start()
-            else
-            #terminate failed
-                ok false, "terminate() failed" + forge_result.error_message
-                start()
+                test_rename()
 
     #-----------------------------------------------
     #Test start()
     #-----------------------------------------------
-    asyncTest "/app app.start()", () ->
-        
-        app_id = null
-        app_name = null
+    test_start = () ->
+        asyncTest "/app app.start()", () ->
+            app_id = null
+            app_name = null
 
-        app_service.start username, session_id, region_name, app_id, app_name, ( forge_result ) ->
-            if !forge_result.is_error
-            #start succeed
-                data = forge_result.resolved_data
-                ok true, "start() succeed"
+            app_service.start username, session_id, region_name, app_id, app_name, ( forge_result ) ->
+                if !forge_result.is_error
+                #start succeed
+                    data = forge_result.resolved_data
+                    ok true, "start() succeed"
+                else
+                #start failed
+                    ok false, "start() failed" + forge_result.error_message
+            
                 start()
-            else
-            #start failed
-                ok false, "start() failed" + forge_result.error_message
-                start()
+                test_terminate()
 
     #-----------------------------------------------
     #Test stop()
     #-----------------------------------------------
-    asyncTest "/app app.stop()", () ->
-        
-        app_id = null
-        app_name = null
+    test_stop = () ->
+        asyncTest "/app app.stop()", () ->
+            app_id = null
+            app_name = null
 
-        app_service.stop username, session_id, region_name, app_id, app_name, ( forge_result ) ->
-            if !forge_result.is_error
-            #stop succeed
-                data = forge_result.resolved_data
-                ok true, "stop() succeed"
+            app_service.stop username, session_id, region_name, app_id, app_name, ( forge_result ) ->
+                if !forge_result.is_error
+                #stop succeed
+                    data = forge_result.resolved_data
+                    ok true, "stop() succeed"
+                else
+                #stop failed
+                    ok false, "stop() failed" + forge_result.error_message
+            
                 start()
-            else
-            #stop failed
-                ok false, "stop() failed" + forge_result.error_message
-                start()
+                test_start()
 
     #-----------------------------------------------
     #Test reboot()
     #-----------------------------------------------
-    asyncTest "/app app.reboot()", () ->
-        
-        app_id = null
-        app_name = null
+    test_reboot = () ->
+        asyncTest "/app app.reboot()", () ->
+            app_id = null
+            app_name = null
 
-        app_service.reboot username, session_id, region_name, app_id, app_name, ( forge_result ) ->
-            if !forge_result.is_error
-            #reboot succeed
-                data = forge_result.resolved_data
-                ok true, "reboot() succeed"
+            app_service.reboot username, session_id, region_name, app_id, app_name, ( forge_result ) ->
+                if !forge_result.is_error
+                #reboot succeed
+                    data = forge_result.resolved_data
+                    ok true, "reboot() succeed"
+                else
+                #reboot failed
+                    ok false, "reboot() failed" + forge_result.error_message
+            
                 start()
-            else
-            #reboot failed
-                ok false, "reboot() failed" + forge_result.error_message
-                start()
+                test_stop()
 
     #-----------------------------------------------
     #Test info()
     #-----------------------------------------------
-    asyncTest "/app app.info()", () ->
-        
-        app_ids = null
+    test_info = () ->
+        asyncTest "/app app.info()", () ->
+            app_ids = null
 
-        app_service.info username, session_id, region_name, app_ids, ( forge_result ) ->
-            if !forge_result.is_error
-            #info succeed
-                data = forge_result.resolved_data
-                ok true, "info() succeed"
+            app_service.info username, session_id, region_name, app_ids, ( forge_result ) ->
+                if !forge_result.is_error
+                #info succeed
+                    data = forge_result.resolved_data
+                    ok true, "info() succeed"
+                else
+                #info failed
+                    ok false, "info() failed" + forge_result.error_message
+            
                 start()
-            else
-            #info failed
-                ok false, "info() failed" + forge_result.error_message
-                start()
+                test_reboot()
 
     #-----------------------------------------------
     #Test resource()
     #-----------------------------------------------
-    asyncTest "/app app.resource()", () ->
-        
-        app_id = null
+    test_resource = () ->
+        asyncTest "/app app.resource()", () ->
+            app_id = null
 
-        app_service.resource username, session_id, region_name, app_id, ( forge_result ) ->
-            if !forge_result.is_error
-            #resource succeed
-                data = forge_result.resolved_data
-                ok true, "resource() succeed"
+            app_service.resource username, session_id, region_name, app_id, ( forge_result ) ->
+                if !forge_result.is_error
+                #resource succeed
+                    data = forge_result.resolved_data
+                    ok true, "resource() succeed"
+                else
+                #resource failed
+                    ok false, "resource() failed" + forge_result.error_message
+            
                 start()
-            else
-            #resource failed
-                ok false, "resource() failed" + forge_result.error_message
-                start()
+                test_info()
 
     #-----------------------------------------------
     #Test summary()
     #-----------------------------------------------
-    asyncTest "/app app.summary()", () ->
-        
+    test_summary = () ->
+        asyncTest "/app app.summary()", () ->
 
-        app_service.summary username, session_id, region_name, ( forge_result ) ->
-            if !forge_result.is_error
-            #summary succeed
-                data = forge_result.resolved_data
-                ok true, "summary() succeed"
+
+            app_service.summary username, session_id, region_name, ( forge_result ) ->
+                if !forge_result.is_error
+                #summary succeed
+                    data = forge_result.resolved_data
+                    ok true, "summary() succeed"
+                else
+                #summary failed
+                    ok false, "summary() failed" + forge_result.error_message
+            
                 start()
-            else
-            #summary failed
-                ok false, "summary() failed" + forge_result.error_message
-                start()
+                test_resource()
+
+
+    test_summary()
 

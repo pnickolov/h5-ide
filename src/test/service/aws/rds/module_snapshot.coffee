@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : snapshot_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:20
+#* Create date  : 2013-05-28 11:35:53
 #* Description  : qunit test module for snapshot_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,17 +61,22 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'snapshot_service'], (
     #-----------------------------------------------
     #Test DescribeDBSnapshots()
     #-----------------------------------------------
-    asyncTest "/aws/rds snapshot.DescribeDBSnapshots()", () ->
-        
+    test_DescribeDBSnapshots = () ->
+        asyncTest "/aws/rds snapshot.DescribeDBSnapshots()", () ->
 
-        snapshot_service.DescribeDBSnapshots username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeDBSnapshots succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeDBSnapshots() succeed"
+
+            snapshot_service.DescribeDBSnapshots username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeDBSnapshots succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeDBSnapshots() succeed"
+                else
+                #DescribeDBSnapshots failed
+                    ok false, "DescribeDBSnapshots() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeDBSnapshots failed
-                ok false, "DescribeDBSnapshots() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeDBSnapshots()
 

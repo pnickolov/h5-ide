@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : parametergroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:19
+#* Create date  : 2013-05-28 11:35:52
 #* Description  : qunit test module for parametergroup_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,41 +61,46 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'parametergroup_servic
     #-----------------------------------------------
     #Test DescribeDBParameterGroups()
     #-----------------------------------------------
-    asyncTest "/aws/rds parametergroup.DescribeDBParameterGroups()", () ->
-        
-        pg_name = null
-        marker = null
-        max_records = null
+    test_DescribeDBParameterGroups = () ->
+        asyncTest "/aws/rds parametergroup.DescribeDBParameterGroups()", () ->
+            pg_name = null
+            marker = null
+            max_records = null
 
-        parametergroup_service.DescribeDBParameterGroups username, session_id, region_name, pg_name, marker, max_records, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeDBParameterGroups succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeDBParameterGroups() succeed"
+            parametergroup_service.DescribeDBParameterGroups username, session_id, region_name, pg_name, marker, max_records, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeDBParameterGroups succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeDBParameterGroups() succeed"
+                else
+                #DescribeDBParameterGroups failed
+                    ok false, "DescribeDBParameterGroups() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeDBParameterGroups failed
-                ok false, "DescribeDBParameterGroups() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test DescribeDBParameters()
     #-----------------------------------------------
-    asyncTest "/aws/rds parametergroup.DescribeDBParameters()", () ->
-        
-        pg_name = null
-        source = null
-        marker = null
-        max_records = null
+    test_DescribeDBParameters = () ->
+        asyncTest "/aws/rds parametergroup.DescribeDBParameters()", () ->
+            pg_name = null
+            source = null
+            marker = null
+            max_records = null
 
-        parametergroup_service.DescribeDBParameters username, session_id, region_name, pg_name, source, marker, max_records, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeDBParameters succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeDBParameters() succeed"
+            parametergroup_service.DescribeDBParameters username, session_id, region_name, pg_name, source, marker, max_records, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeDBParameters succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeDBParameters() succeed"
+                else
+                #DescribeDBParameters failed
+                    ok false, "DescribeDBParameters() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeDBParameters failed
-                ok false, "DescribeDBParameters() failed" + aws_result.error_message
-                start()
+                test_DescribeDBParameterGroups()
+
+
+    test_DescribeDBParameters()
 

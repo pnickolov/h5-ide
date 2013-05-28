@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : iam_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:16
+#* Create date  : 2013-05-28 11:35:50
 #* Description  : qunit test module for iam_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,38 +61,43 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'iam_service'], ( MC, 
     #-----------------------------------------------
     #Test GetServerCertificate()
     #-----------------------------------------------
-    asyncTest "/aws/iam iam.GetServerCertificate()", () ->
-        
-        servercer_name = null
+    test_GetServerCertificate = () ->
+        asyncTest "/aws/iam iam.GetServerCertificate()", () ->
+            servercer_name = null
 
-        iam_service.GetServerCertificate username, session_id, region_name, servercer_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #GetServerCertificate succeed
-                data = aws_result.resolved_data
-                ok true, "GetServerCertificate() succeed"
+            iam_service.GetServerCertificate username, session_id, region_name, servercer_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #GetServerCertificate succeed
+                    data = aws_result.resolved_data
+                    ok true, "GetServerCertificate() succeed"
+                else
+                #GetServerCertificate failed
+                    ok false, "GetServerCertificate() failed" + aws_result.error_message
+            
                 start()
-            else
-            #GetServerCertificate failed
-                ok false, "GetServerCertificate() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test ListServerCertificates()
     #-----------------------------------------------
-    asyncTest "/aws/iam iam.ListServerCertificates()", () ->
-        
-        marker = null
-        max_items = null
-        path_prefix = null
+    test_ListServerCertificates = () ->
+        asyncTest "/aws/iam iam.ListServerCertificates()", () ->
+            marker = null
+            max_items = null
+            path_prefix = null
 
-        iam_service.ListServerCertificates username, session_id, region_name, marker, max_items, path_prefix, ( aws_result ) ->
-            if !aws_result.is_error
-            #ListServerCertificates succeed
-                data = aws_result.resolved_data
-                ok true, "ListServerCertificates() succeed"
+            iam_service.ListServerCertificates username, session_id, region_name, marker, max_items, path_prefix, ( aws_result ) ->
+                if !aws_result.is_error
+                #ListServerCertificates succeed
+                    data = aws_result.resolved_data
+                    ok true, "ListServerCertificates() succeed"
+                else
+                #ListServerCertificates failed
+                    ok false, "ListServerCertificates() failed" + aws_result.error_message
+            
                 start()
-            else
-            #ListServerCertificates failed
-                ok false, "ListServerCertificates() failed" + aws_result.error_message
-                start()
+                test_GetServerCertificate()
+
+
+    test_ListServerCertificates()
 

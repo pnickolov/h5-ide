@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : internetgateway_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:23
+#* Create date  : 2013-05-28 11:35:55
 #* Description  : qunit test module for internetgateway_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,19 +61,23 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'internetgateway_servi
     #-----------------------------------------------
     #Test DescribeInternetGateways()
     #-----------------------------------------------
-    asyncTest "/aws/vpc internetgateway.DescribeInternetGateways()", () ->
-        
-        gw_ids = null
-        filters = null
+    test_DescribeInternetGateways = () ->
+        asyncTest "/aws/vpc internetgateway.DescribeInternetGateways()", () ->
+            gw_ids = null
+            filters = null
 
-        internetgateway_service.DescribeInternetGateways username, session_id, region_name, gw_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeInternetGateways succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeInternetGateways() succeed"
+            internetgateway_service.DescribeInternetGateways username, session_id, region_name, gw_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeInternetGateways succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeInternetGateways() succeed"
+                else
+                #DescribeInternetGateways failed
+                    ok false, "DescribeInternetGateways() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeInternetGateways failed
-                ok false, "DescribeInternetGateways() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeInternetGateways()
 

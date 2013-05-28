@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : dhcp_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:22
+#* Create date  : 2013-05-28 11:35:54
 #* Description  : qunit test module for dhcp_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,19 +61,23 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'dhcp_service'], ( MC,
     #-----------------------------------------------
     #Test DescribeDhcpOptions()
     #-----------------------------------------------
-    asyncTest "/aws/vpc dhcp.DescribeDhcpOptions()", () ->
-        
-        dhcp_ids = null
-        filters = null
+    test_DescribeDhcpOptions = () ->
+        asyncTest "/aws/vpc dhcp.DescribeDhcpOptions()", () ->
+            dhcp_ids = null
+            filters = null
 
-        dhcp_service.DescribeDhcpOptions username, session_id, region_name, dhcp_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeDhcpOptions succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeDhcpOptions() succeed"
+            dhcp_service.DescribeDhcpOptions username, session_id, region_name, dhcp_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeDhcpOptions succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeDhcpOptions() succeed"
+                else
+                #DescribeDhcpOptions failed
+                    ok false, "DescribeDhcpOptions() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeDhcpOptions failed
-                ok false, "DescribeDhcpOptions() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeDhcpOptions()
 

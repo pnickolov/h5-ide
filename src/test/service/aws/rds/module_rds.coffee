@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : rds_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:19
+#* Create date  : 2013-05-28 11:35:52
 #* Description  : qunit test module for rds_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,71 +61,81 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'rds_service'], ( MC, 
     #-----------------------------------------------
     #Test DescribeDBEngineVersions()
     #-----------------------------------------------
-    asyncTest "/aws/rds rds.DescribeDBEngineVersions()", () ->
-        
+    test_DescribeDBEngineVersions = () ->
+        asyncTest "/aws/rds rds.DescribeDBEngineVersions()", () ->
 
-        rds_service.DescribeDBEngineVersions username, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeDBEngineVersions succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeDBEngineVersions() succeed"
+
+            rds_service.DescribeDBEngineVersions username, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeDBEngineVersions succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeDBEngineVersions() succeed"
+                else
+                #DescribeDBEngineVersions failed
+                    ok false, "DescribeDBEngineVersions() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeDBEngineVersions failed
-                ok false, "DescribeDBEngineVersions() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test DescribeOrderableDBInstanceOptions()
     #-----------------------------------------------
-    asyncTest "/aws/rds rds.DescribeOrderableDBInstanceOptions()", () ->
-        
+    test_DescribeOrderableDBInstanceOptions = () ->
+        asyncTest "/aws/rds rds.DescribeOrderableDBInstanceOptions()", () ->
 
-        rds_service.DescribeOrderableDBInstanceOptions username, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeOrderableDBInstanceOptions succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeOrderableDBInstanceOptions() succeed"
+
+            rds_service.DescribeOrderableDBInstanceOptions username, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeOrderableDBInstanceOptions succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeOrderableDBInstanceOptions() succeed"
+                else
+                #DescribeOrderableDBInstanceOptions failed
+                    ok false, "DescribeOrderableDBInstanceOptions() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeOrderableDBInstanceOptions failed
-                ok false, "DescribeOrderableDBInstanceOptions() failed" + aws_result.error_message
-                start()
+                test_DescribeDBEngineVersions()
 
     #-----------------------------------------------
     #Test DescribeEngineDefaultParameters()
     #-----------------------------------------------
-    asyncTest "/aws/rds rds.DescribeEngineDefaultParameters()", () ->
-        
-        pg_family = null
-        marker = null
-        max_records = null
+    test_DescribeEngineDefaultParameters = () ->
+        asyncTest "/aws/rds rds.DescribeEngineDefaultParameters()", () ->
+            pg_family = null
+            marker = null
+            max_records = null
 
-        rds_service.DescribeEngineDefaultParameters username, session_id, region_name, pg_family, marker, max_records, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeEngineDefaultParameters succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeEngineDefaultParameters() succeed"
+            rds_service.DescribeEngineDefaultParameters username, session_id, region_name, pg_family, marker, max_records, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeEngineDefaultParameters succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeEngineDefaultParameters() succeed"
+                else
+                #DescribeEngineDefaultParameters failed
+                    ok false, "DescribeEngineDefaultParameters() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeEngineDefaultParameters failed
-                ok false, "DescribeEngineDefaultParameters() failed" + aws_result.error_message
-                start()
+                test_DescribeOrderableDBInstanceOptions()
 
     #-----------------------------------------------
     #Test DescribeEvents()
     #-----------------------------------------------
-    asyncTest "/aws/rds rds.DescribeEvents()", () ->
-        
+    test_DescribeEvents = () ->
+        asyncTest "/aws/rds rds.DescribeEvents()", () ->
 
-        rds_service.DescribeEvents username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeEvents succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeEvents() succeed"
+
+            rds_service.DescribeEvents username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeEvents succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeEvents() succeed"
+                else
+                #DescribeEvents failed
+                    ok false, "DescribeEvents() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeEvents failed
-                ok false, "DescribeEvents() failed" + aws_result.error_message
-                start()
+                test_DescribeEngineDefaultParameters()
+
+
+    test_DescribeEvents()
 

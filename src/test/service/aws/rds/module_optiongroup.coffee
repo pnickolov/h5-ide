@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : optiongroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:19
+#* Create date  : 2013-05-28 11:35:52
 #* Description  : qunit test module for optiongroup_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,34 +61,41 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'optiongroup_service']
     #-----------------------------------------------
     #Test DescribeOptionGroupOptions()
     #-----------------------------------------------
-    asyncTest "/aws/rds optiongroup.DescribeOptionGroupOptions()", () ->
-        
+    test_DescribeOptionGroupOptions = () ->
+        asyncTest "/aws/rds optiongroup.DescribeOptionGroupOptions()", () ->
 
-        optiongroup_service.DescribeOptionGroupOptions username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeOptionGroupOptions succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeOptionGroupOptions() succeed"
+
+            optiongroup_service.DescribeOptionGroupOptions username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeOptionGroupOptions succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeOptionGroupOptions() succeed"
+                else
+                #DescribeOptionGroupOptions failed
+                    ok false, "DescribeOptionGroupOptions() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeOptionGroupOptions failed
-                ok false, "DescribeOptionGroupOptions() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test DescribeOptionGroups()
     #-----------------------------------------------
-    asyncTest "/aws/rds optiongroup.DescribeOptionGroups()", () ->
-        
+    test_DescribeOptionGroups = () ->
+        asyncTest "/aws/rds optiongroup.DescribeOptionGroups()", () ->
 
-        optiongroup_service.DescribeOptionGroups username, session_id, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeOptionGroups succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeOptionGroups() succeed"
+
+            optiongroup_service.DescribeOptionGroups username, session_id, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeOptionGroups succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeOptionGroups() succeed"
+                else
+                #DescribeOptionGroups failed
+                    ok false, "DescribeOptionGroups() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeOptionGroups failed
-                ok false, "DescribeOptionGroups() failed" + aws_result.error_message
-                start()
+                test_DescribeOptionGroupOptions()
+
+
+    test_DescribeOptionGroups()
 

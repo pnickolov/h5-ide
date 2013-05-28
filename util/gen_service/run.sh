@@ -208,6 +208,7 @@ function fn_generate_coffee() {
         > ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
     fi
 
+    _LAST_API=""
     #// loop by API_NAME ////////////////////////////////////////////////////////////////////
     for (( j = 1 ; j <= ${#API_NAME[@]} ; j++ ))
     do
@@ -250,7 +251,7 @@ function fn_generate_coffee() {
             #process python constant to javascript
             CUR_PARAM_DEF[$k]=`eval "echo $TMP" | sed "s/None/null/g" | sed "s/False/false/g" | sed "s/True/true/g" `
 
-            CUR_PARAM_DEFAULT=`echo "${CUR_PARAM[$k]}" | awk  'BEGIN{FS="[=]"}{if (NF==1){printf "        %s = null",$0}else{printf "        %s = %s",$1,$2}}'`
+            CUR_PARAM_DEFAULT=`echo "${CUR_PARAM[$k]}" | awk '{printf $1}' | awk  'BEGIN{FS="[=]"}{if (NF==1){printf "            %s = null",$0}else{printf "            %s = %s",$1,$2}}'`
 
             #echo "    param> "${CUR_PARAM[$k]}
             if [ $k -eq 1 ]
@@ -259,14 +260,24 @@ function fn_generate_coffee() {
                 _PARAM_DEF=${CUR_PARAM_DEF[$k]}
                 if [ "${CUR_PARAM[$k]}" != "username" -a "${CUR_PARAM[$k]}" != "session_id" -a "${CUR_PARAM[$k]}" != "region_name" ]
                 then
-                    _PARAM_DEFAULT=${CUR_PARAM_DEFAULT}
+                    if [ "${_PARAM_DEFAULT}" == "" ]
+                    then
+                        _PARAM_DEFAULT=${CUR_PARAM_DEFAULT}
+                    else
+                        _PARAM_DEFAULT=${_PARAM_DEFAULT}"\n"${CUR_PARAM_DEFAULT}
+                    fi
                 fi
             else
                 _PARAM_LIST=${_PARAM_LIST}", "${CUR_PARAM[$k]}
                 _PARAM_DEF=${_PARAM_DEF}", "${CUR_PARAM_DEF[$k]}
                 if [ "${CUR_PARAM[$k]}" != "username" -a "${CUR_PARAM[$k]}" != "session_id" -a "${CUR_PARAM[$k]}" != "region_name" ]
                 then
-                    _PARAM_DEFAULT=${_PARAM_DEFAULT}"\n"${CUR_PARAM_DEFAULT}
+                    if [ "${_PARAM_DEFAULT}" == "" ]
+                    then
+                        _PARAM_DEFAULT=${CUR_PARAM_DEFAULT}
+                    else
+                        _PARAM_DEFAULT=${_PARAM_DEFAULT}"\n"${CUR_PARAM_DEFAULT}
+                    fi
                 fi
             fi
         done
@@ -327,14 +338,29 @@ function fn_generate_coffee() {
         if [ "${NEED_RESOLVE}" != "" -a "${_CUR_API}" != "login"  ]
         then
         #Describe/List/Get
-            sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.api \
-            | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
-            | sed -e ":a;N;$ s/@@param-default/${_PARAM_DEFAULT}/g;ba" \
-            | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
-            | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
-            | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
-            >> ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
+            if [ "${_LAST_API}" == "" ]
+            then
+                sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.api \
+                | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+                | sed -e ":a;N;$ s/@@param-default/${_PARAM_DEFAULT}/g;ba" \
+                | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
+                | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
+                | sed -e ":a;N;$ s/#@@last-api()//g;ba" \
+                | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+                >> ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
+            else
+                sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.api \
+                | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+                | sed -e ":a;N;$ s/@@param-default/${_PARAM_DEFAULT}/g;ba" \
+                | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
+                | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
+                | sed -e ":a;N;$ s/#@@last-api/test_${_LAST_API}/g;ba" \
+                | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+                >> ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
+            fi
         fi
+
+        _LAST_API=${_CUR_API}
 
     done
 
@@ -347,7 +373,7 @@ function fn_generate_coffee() {
     #public${_PUBLIC_PARSER_LIST}\n" >> ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_parser.coffee
 
     echo "11.append null to module_${_RESOURCE_l}.coffee"
-    echo -e "\n    null\n" >> ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
+    echo -e "\n    test_${_LAST_API}()\n" >> ${__TGT_DIR_TEST}/module_${_RESOURCE_l}.coffee
 
     echo "12.replace model list to ${__TGT_DIR_TEST}/testsuite.coffee"
     echo "_MODULE_LIST:"${_MODULE_LIST}
@@ -374,10 +400,10 @@ function fn_scan_handler_forge() {
     CUR_FILE=$2
 
     #for tmp test
-    if [ "${CUR_FILE}" != "Stack.py" ]
-    then
-        return
-    fi
+    #if [ "${CUR_FILE}" != "Guest.py" ]
+    #then
+    #    return
+    #fi
 
     echo "########################################################"
     echo "#Processing "`echo ${CUR_DIR} | awk 'BEGIN{FS="[/]"}{print $(NF) }' `" - "${CUR_FILE}
@@ -400,8 +426,6 @@ function fn_scan_handler_forge() {
 # Scan python file for aws
 #===================================================================
 function fn_scan_aws() {
-
-    return
 
     CUR_DIR=$1
     SERVICE=$2

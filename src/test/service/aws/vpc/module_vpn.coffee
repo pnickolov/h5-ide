@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : vpn_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:24
+#* Create date  : 2013-05-28 11:35:56
 #* Description  : qunit test module for vpn_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,19 +61,23 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'vpn_service'], ( MC, 
     #-----------------------------------------------
     #Test DescribeVpnConnections()
     #-----------------------------------------------
-    asyncTest "/aws/vpc vpn.DescribeVpnConnections()", () ->
-        
-        vpn_ids = null
-        filters = null
+    test_DescribeVpnConnections = () ->
+        asyncTest "/aws/vpc vpn.DescribeVpnConnections()", () ->
+            vpn_ids = null
+            filters = null
 
-        vpn_service.DescribeVpnConnections username, session_id, region_name, vpn_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeVpnConnections succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeVpnConnections() succeed"
+            vpn_service.DescribeVpnConnections username, session_id, region_name, vpn_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeVpnConnections succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeVpnConnections() succeed"
+                else
+                #DescribeVpnConnections failed
+                    ok false, "DescribeVpnConnections() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeVpnConnections failed
-                ok false, "DescribeVpnConnections() failed" + aws_result.error_message
-                start()
+                
+
+
+    test_DescribeVpnConnections()
 

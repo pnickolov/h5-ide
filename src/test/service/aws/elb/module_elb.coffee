@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : elb_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:15
+#* Create date  : 2013-05-28 11:35:49
 #* Description  : qunit test module for elb_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,75 +61,82 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'elb_service'], ( MC, 
     #-----------------------------------------------
     #Test DescribeInstanceHealth()
     #-----------------------------------------------
-    asyncTest "/aws/elb elb.DescribeInstanceHealth()", () ->
-        
-        elb_name = null
-        instance_ids = null
+    test_DescribeInstanceHealth = () ->
+        asyncTest "/aws/elb elb.DescribeInstanceHealth()", () ->
+            elb_name = null
+            instance_ids = null
 
-        elb_service.DescribeInstanceHealth username, session_id, region_name, elb_name, instance_ids, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeInstanceHealth succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeInstanceHealth() succeed"
+            elb_service.DescribeInstanceHealth username, session_id, region_name, elb_name, instance_ids, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeInstanceHealth succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeInstanceHealth() succeed"
+                else
+                #DescribeInstanceHealth failed
+                    ok false, "DescribeInstanceHealth() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeInstanceHealth failed
-                ok false, "DescribeInstanceHealth() failed" + aws_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test DescribeLoadBalancerPolicies()
     #-----------------------------------------------
-    asyncTest "/aws/elb elb.DescribeLoadBalancerPolicies()", () ->
-        
-        elb_name = null
-        policy_names = null
+    test_DescribeLoadBalancerPolicies = () ->
+        asyncTest "/aws/elb elb.DescribeLoadBalancerPolicies()", () ->
+            elb_name = null
+            policy_names = null
 
-        elb_service.DescribeLoadBalancerPolicies username, session_id, region_name, elb_name, policy_names, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeLoadBalancerPolicies succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeLoadBalancerPolicies() succeed"
+            elb_service.DescribeLoadBalancerPolicies username, session_id, region_name, elb_name, policy_names, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeLoadBalancerPolicies succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeLoadBalancerPolicies() succeed"
+                else
+                #DescribeLoadBalancerPolicies failed
+                    ok false, "DescribeLoadBalancerPolicies() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeLoadBalancerPolicies failed
-                ok false, "DescribeLoadBalancerPolicies() failed" + aws_result.error_message
-                start()
+                test_DescribeInstanceHealth()
 
     #-----------------------------------------------
     #Test DescribeLoadBalancerPolicyTypes()
     #-----------------------------------------------
-    asyncTest "/aws/elb elb.DescribeLoadBalancerPolicyTypes()", () ->
-        
-        policy_type_names = null
+    test_DescribeLoadBalancerPolicyTypes = () ->
+        asyncTest "/aws/elb elb.DescribeLoadBalancerPolicyTypes()", () ->
+            policy_type_names = null
 
-        elb_service.DescribeLoadBalancerPolicyTypes username, session_id, region_name, policy_type_names, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeLoadBalancerPolicyTypes succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeLoadBalancerPolicyTypes() succeed"
+            elb_service.DescribeLoadBalancerPolicyTypes username, session_id, region_name, policy_type_names, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeLoadBalancerPolicyTypes succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeLoadBalancerPolicyTypes() succeed"
+                else
+                #DescribeLoadBalancerPolicyTypes failed
+                    ok false, "DescribeLoadBalancerPolicyTypes() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeLoadBalancerPolicyTypes failed
-                ok false, "DescribeLoadBalancerPolicyTypes() failed" + aws_result.error_message
-                start()
+                test_DescribeLoadBalancerPolicies()
 
     #-----------------------------------------------
     #Test DescribeLoadBalancers()
     #-----------------------------------------------
-    asyncTest "/aws/elb elb.DescribeLoadBalancers()", () ->
-        
-        elb_names = null
-        marker = null
+    test_DescribeLoadBalancers = () ->
+        asyncTest "/aws/elb elb.DescribeLoadBalancers()", () ->
+            elb_names = null
+            marker = null
 
-        elb_service.DescribeLoadBalancers username, session_id, region_name, elb_names, marker, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeLoadBalancers succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeLoadBalancers() succeed"
+            elb_service.DescribeLoadBalancers username, session_id, region_name, elb_names, marker, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeLoadBalancers succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeLoadBalancers() succeed"
+                else
+                #DescribeLoadBalancers failed
+                    ok false, "DescribeLoadBalancers() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeLoadBalancers failed
-                ok false, "DescribeLoadBalancers() failed" + aws_result.error_message
-                start()
+                test_DescribeLoadBalancerPolicyTypes()
+
+
+    test_DescribeLoadBalancers()
 

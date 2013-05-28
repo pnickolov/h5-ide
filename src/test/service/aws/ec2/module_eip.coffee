@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : eip_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:10
+#* Create date  : 2013-05-28 11:35:45
 #* Description  : qunit test module for eip_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,20 +61,24 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'eip_service'], ( MC, 
     #-----------------------------------------------
     #Test DescribeAddresses()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 eip.DescribeAddresses()", () ->
-        
-        ips = null
-        allocation_ids = null
-        filters = null
+    test_DescribeAddresses = () ->
+        asyncTest "/aws/ec2 eip.DescribeAddresses()", () ->
+            ips = null
+            allocation_ids = null
+            filters = null
 
-        eip_service.DescribeAddresses username, session_id, region_name, ips, allocation_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeAddresses succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeAddresses() succeed"
+            eip_service.DescribeAddresses username, session_id, region_name, ips, allocation_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeAddresses succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeAddresses() succeed"
+                else
+                #DescribeAddresses failed
+                    ok false, "DescribeAddresses() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeAddresses failed
-                ok false, "DescribeAddresses() failed" + aws_result.error_message
-                start()
+                test_DisassociateAddress()
+
+
+    test_DescribeAddresses()
 

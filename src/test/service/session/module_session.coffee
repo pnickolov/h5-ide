@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : session_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:05:58
+#* Create date  : 2013-05-28 11:35:37
 #* Description  : qunit test module for session_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,56 +61,62 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
     #-----------------------------------------------
     #Test logout()
     #-----------------------------------------------
-    asyncTest "/session session.logout()", () ->
+    test_logout = () ->
+        asyncTest "/session session.logout()", () ->
 
 
-        session_service.logout username, session_id, ( forge_result ) ->
-            if !forge_result.is_error
-            #logout succeed
-                data = forge_result.resolved_data
-                ok true, "logout() succeed"
+            session_service.logout username, session_id, ( forge_result ) ->
+                if !forge_result.is_error
+                #logout succeed
+                    data = forge_result.resolved_data
+                    ok true, "logout() succeed"
+                else
+                #logout failed
+                    ok false, "logout() failed" + forge_result.error_message
+            
                 start()
-            else
-            #logout failed
-                ok false, "logout() failed" + forge_result.error_message
-                start()
+                test_guest()
 
     #-----------------------------------------------
     #Test set_credential()
     #-----------------------------------------------
-    asyncTest "/session session.set_credential()", () ->
+    test_set_credential = () ->
+        asyncTest "/session session.set_credential()", () ->
+            access_key = "null"
+            secret_key = "null"
+            account_id = "null"
 
-        access_key = null
-        secret_key = null
-        account_id = null
-
-        session_service.set_credential username, session_id, access_key, secret_key, account_id, ( forge_result ) ->
-            if !forge_result.is_error
-            #set_credential succeed
-                data = forge_result.resolved_data
-                ok true, "set_credential() succeed"
+            session_service.set_credential username, session_id, access_key, secret_key, account_id, ( forge_result ) ->
+                if !forge_result.is_error
+                #set_credential succeed
+                    data = forge_result.resolved_data
+                    ok true, "set_credential() succeed"
+                else
+                #set_credential failed
+                    ok false, "set_credential() failed" + forge_result.error_message
+            
                 start()
-            else
-            #set_credential failed
-                ok false, "set_credential() failed" + forge_result.error_message
-                start()
+                test_logout()
 
     #-----------------------------------------------
     #Test guest()
     #-----------------------------------------------
-    asyncTest "/session session.guest()", () ->
+    test_guest = () ->
+        asyncTest "/session session.guest()", () ->
+            guest_id = null
+            guestname = null
 
-        guest_id = null
-        guestname = null
+            session_service.guest guest_id, guestname, ( forge_result ) ->
+                if !forge_result.is_error
+                #guest succeed
+                    data = forge_result.resolved_data
+                    ok true, "guest() succeed"
+                else
+                #guest failed
+                    ok false, "guest() failed" + forge_result.error_message
+            
+                start()
 
-        session_service.guest guest_id, guestname, ( forge_result ) ->
-            if !forge_result.is_error
-            #guest succeed
-                data = forge_result.resolved_data
-                ok true, "guest() succeed"
-                start()
-            else
-            #guest failed
-                ok false, "guest() failed" + forge_result.error_message
-                start()
+
+    test_set_credential()
 

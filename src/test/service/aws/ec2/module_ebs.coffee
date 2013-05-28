@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ebs_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:07
+#* Create date  : 2013-05-28 11:35:43
 #* Description  : qunit test module for ebs_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,99 +61,107 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ebs_service'], ( MC, 
     #-----------------------------------------------
     #Test DescribeVolumes()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 ebs.DescribeVolumes()", () ->
-        
-        volume_ids = null
-        filters = null
+    test_DescribeVolumes = () ->
+        asyncTest "/aws/ec2 ebs.DescribeVolumes()", () ->
+            volume_ids = null
+            filters = null
 
-        ebs_service.DescribeVolumes username, session_id, region_name, volume_ids, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeVolumes succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeVolumes() succeed"
+            ebs_service.DescribeVolumes username, session_id, region_name, volume_ids, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeVolumes succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeVolumes() succeed"
+                else
+                #DescribeVolumes failed
+                    ok false, "DescribeVolumes() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeVolumes failed
-                ok false, "DescribeVolumes() failed" + aws_result.error_message
-                start()
+                test_DetachVolume()
 
     #-----------------------------------------------
     #Test DescribeVolumeAttribute()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 ebs.DescribeVolumeAttribute()", () ->
-        
-        volume_id = null
-        attribute_name = null
+    test_DescribeVolumeAttribute = () ->
+        asyncTest "/aws/ec2 ebs.DescribeVolumeAttribute()", () ->
+            volume_id = null
+            attribute_name = null
 
-        ebs_service.DescribeVolumeAttribute username, session_id, region_name, volume_id, attribute_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeVolumeAttribute succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeVolumeAttribute() succeed"
+            ebs_service.DescribeVolumeAttribute username, session_id, region_name, volume_id, attribute_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeVolumeAttribute succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeVolumeAttribute() succeed"
+                else
+                #DescribeVolumeAttribute failed
+                    ok false, "DescribeVolumeAttribute() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeVolumeAttribute failed
-                ok false, "DescribeVolumeAttribute() failed" + aws_result.error_message
-                start()
+                test_DescribeVolumes()
 
     #-----------------------------------------------
     #Test DescribeVolumeStatus()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 ebs.DescribeVolumeStatus()", () ->
-        
-        volume_ids = null
-        filters = null
-        max_result = null
-        next_token = null
+    test_DescribeVolumeStatus = () ->
+        asyncTest "/aws/ec2 ebs.DescribeVolumeStatus()", () ->
+            volume_ids = null
+            filters = null
+            max_result = null
+            next_token = null
 
-        ebs_service.DescribeVolumeStatus username, session_id, region_name, volume_ids, filters, max_result, next_token, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeVolumeStatus succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeVolumeStatus() succeed"
+            ebs_service.DescribeVolumeStatus username, session_id, region_name, volume_ids, filters, max_result, next_token, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeVolumeStatus succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeVolumeStatus() succeed"
+                else
+                #DescribeVolumeStatus failed
+                    ok false, "DescribeVolumeStatus() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeVolumeStatus failed
-                ok false, "DescribeVolumeStatus() failed" + aws_result.error_message
-                start()
+                test_DescribeVolumeAttribute()
 
     #-----------------------------------------------
     #Test DescribeSnapshots()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 ebs.DescribeSnapshots()", () ->
-        
-        snapshot_ids = null
-        owners = null
-        restorable_by = null
-        filters = null
+    test_DescribeSnapshots = () ->
+        asyncTest "/aws/ec2 ebs.DescribeSnapshots()", () ->
+            snapshot_ids = null
+            owners = null
+            restorable_by = null
+            filters = null
 
-        ebs_service.DescribeSnapshots username, session_id, region_name, snapshot_ids, owners, restorable_by, filters, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeSnapshots succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeSnapshots() succeed"
+            ebs_service.DescribeSnapshots username, session_id, region_name, snapshot_ids, owners, restorable_by, filters, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeSnapshots succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeSnapshots() succeed"
+                else
+                #DescribeSnapshots failed
+                    ok false, "DescribeSnapshots() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeSnapshots failed
-                ok false, "DescribeSnapshots() failed" + aws_result.error_message
-                start()
+                test_ResetSnapshotAttribute()
 
     #-----------------------------------------------
     #Test DescribeSnapshotAttribute()
     #-----------------------------------------------
-    asyncTest "/aws/ec2 ebs.DescribeSnapshotAttribute()", () ->
-        
-        snapshot_id = null
-        attribute_name = null
+    test_DescribeSnapshotAttribute = () ->
+        asyncTest "/aws/ec2 ebs.DescribeSnapshotAttribute()", () ->
+            snapshot_id = null
+            attribute_name = null
 
-        ebs_service.DescribeSnapshotAttribute username, session_id, region_name, snapshot_id, attribute_name, ( aws_result ) ->
-            if !aws_result.is_error
-            #DescribeSnapshotAttribute succeed
-                data = aws_result.resolved_data
-                ok true, "DescribeSnapshotAttribute() succeed"
+            ebs_service.DescribeSnapshotAttribute username, session_id, region_name, snapshot_id, attribute_name, ( aws_result ) ->
+                if !aws_result.is_error
+                #DescribeSnapshotAttribute succeed
+                    data = aws_result.resolved_data
+                    ok true, "DescribeSnapshotAttribute() succeed"
+                else
+                #DescribeSnapshotAttribute failed
+                    ok false, "DescribeSnapshotAttribute() failed" + aws_result.error_message
+            
                 start()
-            else
-            #DescribeSnapshotAttribute failed
-                ok false, "DescribeSnapshotAttribute() failed" + aws_result.error_message
-                start()
+                test_DescribeSnapshots()
+
+
+    test_DescribeSnapshotAttribute()
 

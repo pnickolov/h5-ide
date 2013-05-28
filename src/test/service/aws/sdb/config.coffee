@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : sdb_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:21
+#* Create date  : 2013-05-28 11:35:54
 #* Description  : qunit test config for sdb_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -52,7 +52,7 @@ require.config {
 
 
         #sdb service
-        'sdb_vo'        : 'service/aws/sdb/sdb/sdb_vo'
-        'sdb_parser'    : 'service/aws/sdb/sdb/sdb_parser'
-        'sdb_service'   : 'service/aws/sdb/sdb/sdb_service'
+        'sdb_vo'        : 'service/aws/sdb\/sdb/sdb_vo'
+        'sdb_parser'    : 'service/aws/sdb\/sdb/sdb_parser'
+        'sdb_service'   : 'service/aws/sdb\/sdb/sdb_service'
 }#end

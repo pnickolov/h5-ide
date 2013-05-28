@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : request_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:05:58
+#* Create date  : 2013-05-28 11:35:37
 #* Description  : qunit test module for request_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -61,35 +61,41 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
     #-----------------------------------------------
     #Test init()
     #-----------------------------------------------
-    asyncTest "/request request.init()", () ->
-        
+    test_init = () ->
+        asyncTest "/request request.init()", () ->
 
-        request_service.init username, session_id, region_name, ( forge_result ) ->
-            if !forge_result.is_error
-            #init succeed
-                data = forge_result.resolved_data
-                ok true, "init() succeed"
+
+            request_service.init username, session_id, region_name, ( forge_result ) ->
+                if !forge_result.is_error
+                #init succeed
+                    data = forge_result.resolved_data
+                    ok true, "init() succeed"
+                else
+                #init failed
+                    ok false, "init() failed" + forge_result.error_message
+            
                 start()
-            else
-            #init failed
-                ok false, "init() failed" + forge_result.error_message
-                start()
+                
 
     #-----------------------------------------------
     #Test update()
     #-----------------------------------------------
-    asyncTest "/request request.update()", () ->
-        
-        timestamp = null
+    test_update = () ->
+        asyncTest "/request request.update()", () ->
+            timestamp = null
 
-        request_service.update username, session_id, region_name, timestamp, ( forge_result ) ->
-            if !forge_result.is_error
-            #update succeed
-                data = forge_result.resolved_data
-                ok true, "update() succeed"
+            request_service.update username, session_id, region_name, timestamp, ( forge_result ) ->
+                if !forge_result.is_error
+                #update succeed
+                    data = forge_result.resolved_data
+                    ok true, "update() succeed"
+                else
+                #update failed
+                    ok false, "update() failed" + forge_result.error_message
+            
                 start()
-            else
-            #update failed
-                ok false, "update() failed" + forge_result.error_message
-                start()
+                test_init()
+
+
+    test_update()
 

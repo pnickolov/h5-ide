@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ami_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:06
+#* Create date  : 2013-05-28 11:35:42
 #* Description  : qunit testsuite for ami_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -15,14 +15,14 @@ QUnit.config.autostart = false
 # extension so RequireJS resolves them as relative paths rather than using
 # the `baseUrl` value supplied above.
 testModules = [
-	# '/test/service/aws/ec2/module_ami.js',
-	# /test/service/aws/ec2/module_ebs.js',
-	# '/test/service/aws/ec2/module_ec2.js',
-	# '/test/service/aws/ec2/module_eip.js',
+	'/test/service/aws/ec2/module_ami.js',
+	'/test/service/aws/ec2/module_ebs.js',
+	'/test/service/aws/ec2/module_ec2.js',
+	'/test/service/aws/ec2/module_eip.js',
 	'/test/service/aws/ec2/module_instance.js',
-	# '/test/service/aws/ec2/module_keypair.js',
-	# '/test/service/aws/ec2/module_placementgroup.js',
-	# '/test/service/aws/ec2/module_securitygroup.js',
+	'/test/service/aws/ec2/module_keypair.js',
+	'/test/service/aws/ec2/module_placementgroup.js',
+	'/test/service/aws/ec2/module_securitygroup.js',
 	##@@module-list
 ]
 

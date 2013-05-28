@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : session_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-28 11:35:37
+#* Create date  : 2013-05-28 15:59:02
 #* Description  : qunit test module for session_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -116,6 +116,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
                     ok false, "guest() failed" + forge_result.error_message
             
                 start()
+
 
 
     test_set_credential()

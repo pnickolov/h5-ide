@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : elb_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-28 11:35:49
+#* Create date  : 2013-05-28 15:59:16
 #* Description  : qunit test config for elb_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -52,7 +52,7 @@ require.config {
 
 
         #elb service
-        'elb_vo'        : 'service/aws/elb/elb_vo'
-        'elb_parser'    : 'service/aws/elb/elb_parser'
-        'elb_service'   : 'service/aws/elb/elb_service'
+        'elb_vo'        : 'service/aws/elb/elb/elb_vo'
+        'elb_parser'    : 'service/aws/elb/elb/elb_parser'
+        'elb_service'   : 'service/aws/elb/elb/elb_service'
 }#end

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : acl_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-28 11:35:54
+#* Create date  : 2013-05-28 15:59:20
 #* Description  : qunit testsuite for acl_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -16,15 +16,15 @@ QUnit.config.autostart = false
 # the `baseUrl` value supplied above.
 testModules = [
 	'/test/service/aws/vpc/module_acl.js',
-	'/test/service/aws/vpc/module_customergateway.js',
-	'/test/service/aws/vpc/module_dhcp.js',
-	'/test/service/aws/vpc/module_eni.js',
-	'/test/service/aws/vpc/module_internetgateway.js',
-	'/test/service/aws/vpc/module_routetable.js',
-	'/test/service/aws/vpc/module_subnet.js',
-	'/test/service/aws/vpc/module_vpc.js',
-	'/test/service/aws/vpc/module_vpngateway.js',
-	'/test/service/aws/vpc/module_vpn.js',
+	# '/test/service/aws/vpc/module_customergateway.js',
+	# '/test/service/aws/vpc/module_dhcp.js',
+	# '/test/service/aws/vpc/module_eni.js',
+	# '/test/service/aws/vpc/module_internetgateway.js',
+	# '/test/service/aws/vpc/module_routetable.js',
+	# '/test/service/aws/vpc/module_subnet.js',
+	# '/test/service/aws/vpc/module_vpc.js',
+	# '/test/service/aws/vpc/module_vpngateway.js',
+	# '/test/service/aws/vpc/module_vpn.js',
 	##@@module-list
 ]
 

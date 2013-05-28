@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ami_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-28 11:35:42
+#* Create date  : 2013-05-28 15:59:08
 #* Description  : qunit test config for ami_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -52,42 +52,42 @@ require.config {
 
 
         #ami service
-        'ami_vo'        : 'service/aws/ec2\/ami/ami_vo'
-        'ami_parser'    : 'service/aws/ec2\/ami/ami_parser'
-        'ami_service'   : 'service/aws/ec2\/ami/ami_service'
+        'ami_vo'        : 'service/aws/ec2/ami/ami_vo'
+        'ami_parser'    : 'service/aws/ec2/ami/ami_parser'
+        'ami_service'   : 'service/aws/ec2/ami/ami_service'
 
         #ebs service
-        'ebs_vo'        : 'service/aws/ec2\/ebs/ebs_vo'
-        'ebs_parser'    : 'service/aws/ec2\/ebs/ebs_parser'
-        'ebs_service'   : 'service/aws/ec2\/ebs/ebs_service'
+        'ebs_vo'        : 'service/aws/ec2/ebs/ebs_vo'
+        'ebs_parser'    : 'service/aws/ec2/ebs/ebs_parser'
+        'ebs_service'   : 'service/aws/ec2/ebs/ebs_service'
 
         #ec2 service
-        'ec2_vo'        : 'service/aws/ec2/ec2_vo'
-        'ec2_parser'    : 'service/aws/ec2/ec2_parser'
-        'ec2_service'   : 'service/aws/ec2/ec2_service'
+        'ec2_vo'        : 'service/aws/ec2/ec2/ec2_vo'
+        'ec2_parser'    : 'service/aws/ec2/ec2/ec2_parser'
+        'ec2_service'   : 'service/aws/ec2/ec2/ec2_service'
 
         #eip service
-        'eip_vo'        : 'service/aws/ec2\/eip/eip_vo'
-        'eip_parser'    : 'service/aws/ec2\/eip/eip_parser'
-        'eip_service'   : 'service/aws/ec2\/eip/eip_service'
+        'eip_vo'        : 'service/aws/ec2/eip/eip_vo'
+        'eip_parser'    : 'service/aws/ec2/eip/eip_parser'
+        'eip_service'   : 'service/aws/ec2/eip/eip_service'
 
         #instance service
-        'instance_vo'        : 'service/aws/ec2\/instance/instance_vo'
-        'instance_parser'    : 'service/aws/ec2\/instance/instance_parser'
-        'instance_service'   : 'service/aws/ec2\/instance/instance_service'
+        'instance_vo'        : 'service/aws/ec2/instance/instance_vo'
+        'instance_parser'    : 'service/aws/ec2/instance/instance_parser'
+        'instance_service'   : 'service/aws/ec2/instance/instance_service'
 
         #keypair service
-        'keypair_vo'        : 'service/aws/ec2\/keypair/keypair_vo'
-        'keypair_parser'    : 'service/aws/ec2\/keypair/keypair_parser'
-        'keypair_service'   : 'service/aws/ec2\/keypair/keypair_service'
+        'keypair_vo'        : 'service/aws/ec2/keypair/keypair_vo'
+        'keypair_parser'    : 'service/aws/ec2/keypair/keypair_parser'
+        'keypair_service'   : 'service/aws/ec2/keypair/keypair_service'
 
         #placementgroup service
-        'placementgroup_vo'        : 'service/aws/ec2\/placementgroup/placementgroup_vo'
-        'placementgroup_parser'    : 'service/aws/ec2\/placementgroup/placementgroup_parser'
-        'placementgroup_service'   : 'service/aws/ec2\/placementgroup/placementgroup_service'
+        'placementgroup_vo'        : 'service/aws/ec2/placementgroup/placementgroup_vo'
+        'placementgroup_parser'    : 'service/aws/ec2/placementgroup/placementgroup_parser'
+        'placementgroup_service'   : 'service/aws/ec2/placementgroup/placementgroup_service'
 
         #securitygroup service
-        'securitygroup_vo'        : 'service/aws/ec2\/securitygroup/securitygroup_vo'
-        'securitygroup_parser'    : 'service/aws/ec2\/securitygroup/securitygroup_parser'
-        'securitygroup_service'   : 'service/aws/ec2\/securitygroup/securitygroup_service'
+        'securitygroup_vo'        : 'service/aws/ec2/securitygroup/securitygroup_vo'
+        'securitygroup_parser'    : 'service/aws/ec2/securitygroup/securitygroup_parser'
+        'securitygroup_service'   : 'service/aws/ec2/securitygroup/securitygroup_service'
 }#end

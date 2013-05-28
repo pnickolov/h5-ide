@@ -10,8 +10,21 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    favorite_info = {
+        resources       : null
+    }
+
+    resource_info = {
+        usercode        : null
+        region          : null
+        provider        : null
+        service         : null
+        resource_type   : null
+        resource_id     : null
+        resource        : null
+    }
 
     #public
-    #TO-DO
+    favorite_info : favorite_info
+    resource_info : resource_info
 

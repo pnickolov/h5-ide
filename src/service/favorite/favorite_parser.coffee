@@ -72,10 +72,21 @@ define [ 'favorite_vo', 'result_vo', 'constant' ], ( favorite_vo, result_vo, con
     #private (resolve result to vo )
     resolveInfoResult = ( result ) ->
         #resolve result
-        #TO-DO
+        favorite_vo.favorite_info.resources = []
+
+        for res in result
+            favorite_vo.resource_info.usercode      = res['username']
+            favorite_vo.resource_info.region        = res['region']
+            favorite_vo.resource_info.provider      = res['provider']
+            favorite_vo.resource_info.service       = res['service']
+            favorite_vo.resource_info.resource_type = res['resource']
+            favorite_vo.resource_info.resource_id   = res['id']
+            favorite_vo.resource_info.resource_info = res['amiVO']
+
+            favorite_vo.favorite_info.resources.push favorite_vo.resource_info
 
         #return vo
-        #TO-DO
+        favorite_vo.favorite_info
 
     #private (parser info return)
     parserInfoReturn = ( result, return_code, param ) ->

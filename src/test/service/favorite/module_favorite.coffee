@@ -63,7 +63,13 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'favorite_service'], (
     #-----------------------------------------------
     test_add = () ->
         asyncTest "/favorite favorite.add()", () ->
-            resource = null
+            resource = {
+                "resource": "AMI",
+                "service": "EC2",
+                "amiVO": "{\"isPublic\":true,\"productCodes\":[],\"imageType\":\"\",\"osType\":\"redhat\",\"ramdiskId\":\"\",\"kernelId\":\"\",\"stateReason_code\":\"\",\"stateReason_message\":\"\",\"description\":\"\",\"platform\":\"\",\"rootDeviceName\":\"\",\"imageOwnerAlias\":\"\",\"url\":\"\",\"tagSet\":[],\"virtualizationType\":\"paravirtual\",\"hypervisor\":\"\",\"favourite\":false,\"lastDeviceName\":\"\",\"deviceNum\":0,\"rootDeviceType\":\"ebs\",\"usedDeviceName\":[],\"architecture\":\"x86_64\",\"blockDeviceMapping\":[],\"imageSize\":\"7\",\"imageId\":\"ami-7d0c6314\",\"name\":\"RHEL-6.4_GA-x86_64-7-Hourly2\",\"imageLocation\":\"\",\"imageOwnerId\":\"\",\"imageState\":\"\"}",
+                "provider": "AWS",
+                "id": "ami-7d0c6315"
+            }
 
             favorite_service.add username, session_id, region_name, resource, ( forge_result ) ->
                 if !forge_result.is_error
@@ -75,6 +81,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'favorite_service'], (
                     ok false, "add() failed" + forge_result.error_message
             
                 start()
+                test_remove()
                 
 
     #-----------------------------------------------
@@ -82,7 +89,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'favorite_service'], (
     #-----------------------------------------------
     test_remove = () ->
         asyncTest "/favorite favorite.remove()", () ->
-            resource_ids = null
+            resource_ids = ["ami-7d0c6315"]
 
             favorite_service.remove username, session_id, region_name, resource_ids, ( forge_result ) ->
                 if !forge_result.is_error
@@ -94,16 +101,15 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'favorite_service'], (
                     ok false, "remove() failed" + forge_result.error_message
             
                 start()
-                test_add()
 
     #-----------------------------------------------
     #Test info()
     #-----------------------------------------------
     test_info = () ->
         asyncTest "/favorite favorite.info()", () ->
-            provider = null
-            service = null
-            resource = null
+            provider = "AWS"
+            service = "EC2"
+            resource = "AMI"
 
             favorite_service.info username, session_id, region_name, provider, service, resource, ( forge_result ) ->
                 if !forge_result.is_error
@@ -115,7 +121,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'favorite_service'], (
                     ok false, "info() failed" + forge_result.error_message
             
                 start()
-                test_remove()
+                test_add()
 
 
     test_info()

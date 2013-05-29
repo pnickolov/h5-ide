@@ -13,7 +13,7 @@ define [ 'jquery', 'text!./template.html', 'bootstrap-modal' ], ( $, template, b
         template = '<script type="text/x-handlebars-template" id="dialog-tmpl">' + template + '</script>'
 
         #load remote html template
-        $( template ).appendTo 'head'
+        $( template ).appendTo '#dialogGroup'
 
         #load remote module1.js
         require [ './module/dialog/view' ], ( View ) ->

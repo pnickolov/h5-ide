@@ -20,7 +20,7 @@ define( [ 'backbone' ], function( Backbone ) {
 ###
 
 #model
-define [ 'backbone', 'service', 'vo' ], ( Backbone, Session, VO ) ->
+define [ 'backbone' ], ( Backbone ) ->
 
     #private
     Item = Backbone.Model.extend {
@@ -30,6 +30,7 @@ define [ 'backbone', 'service', 'vo' ], ( Backbone, Session, VO ) ->
             'title' : 'stabilo彩色铅笔'
             'price' : 12.4
 
+        ###
         #login api
         login       : () ->
 
@@ -47,6 +48,7 @@ define [ 'backbone', 'service', 'vo' ], ( Backbone, Session, VO ) ->
                     me.trigger 'login_succcess', result
                 else
                     alert 'login unsucess, error is ' + result
+        ###
     }
 
     item = new Item()

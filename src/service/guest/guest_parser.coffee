@@ -14,10 +14,14 @@ define [ 'guest_vo', 'result_vo', 'constant' ], ( guest_vo, result_vo, constant 
     #private (resolve result to vo )
     resolveInviteResult = ( result ) ->
         #resolve result
-        #TO-DO
+        guest_vo.invite_info.request_id     = result[0]
+        guest_vo.invite_info.state          = result[1]
+        guest_vo.invite_info.request_brief  = result[2]
+        guest_vo.invite_info.submit_time    = result[3]
+        guest_vo.invite_info.request_rid    = result[4]
 
         #return vo
-        #TO-DO
+        guest_vo.invite_info
 
     #private (parser invite return)
     parserInviteReturn = ( result, return_code, param ) ->
@@ -130,7 +134,7 @@ define [ 'guest_vo', 'result_vo', 'constant' ], ( guest_vo, result_vo, constant 
     #private (resolve result to vo )
     resolveInfoResult = ( result ) ->
         #resolve result
-        #TO-DO
+        
 
         #return vo
         #TO-DO

@@ -10,8 +10,30 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    guest_info = {
+        id          : null
+        state       : null
+        name        : null
+        owner       : null
+        region      : null
+        stack_id    : null
+        stack_name  : null
+        information : null
+        property    : null
+        request_id  : null
+        app_id      : null
+        history     : null
+    }
+
+    invite_info = {
+        request_id      : null
+        state           : null
+        request_brief   : null
+        submit_time     : null
+        request_rid     : null
+    }
 
     #public
-    #TO-DO
+    guest_info  : guest_info
+    invite_info : invite_info
 

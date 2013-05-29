@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : request_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-28 15:59:02
+#* Create date  : 2013-05-29 13:27:31
 #* Description  : qunit test module for request_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -17,7 +17,6 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
     session_id  = ""
     usercode    = ""
     region_name = ""
-    thetime     = 0
 
     can_test    = false
 
@@ -65,19 +64,17 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
     test_init = () ->
         asyncTest "/request request.init()", () ->
 
-            region_name = "ap-southeast-1"
+
             request_service.init username, session_id, region_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #init succeed
                     data = forge_result.resolved_data
-                    thetime = data["time"]
                     ok true, "init() succeed"
                 else
                 #init failed
                     ok false, "init() failed" + forge_result.error_message
             
                 start()
-                test_update()
                 
 
     #-----------------------------------------------
@@ -85,8 +82,8 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
     #-----------------------------------------------
     test_update = () ->
         asyncTest "/request request.update()", () ->
-            timestamp = thetime
-            region_name = "ap-southeast-1"
+            timestamp = null
+
             request_service.update username, session_id, region_name, timestamp, ( forge_result ) ->
                 if !forge_result.is_error
                 #update succeed
@@ -97,7 +94,8 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
                     ok false, "update() failed" + forge_result.error_message
             
                 start()
+                test_init()
 
 
-    test_init()
+    test_update()
 

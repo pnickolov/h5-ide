@@ -12,7 +12,7 @@
 
 define [ 'MC', 'eip_parser', 'result_vo' ], ( MC, eip_parser, result_vo ) ->
 
-    URL = '/aws/ec2/eip/'
+    URL = '/aws/ec2/elasticip/'
 
     #private
     send_request =  ( api_name, param_ary, parser, callback ) ->

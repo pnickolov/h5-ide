@@ -129,11 +129,20 @@ function fn_generate_coffee() {
 
     #// Generate service head ////////////////////////////////////////////////////////////
     echo "1.generate service/service.coffee (head)"
-    sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.head \
-    | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
-    | sed -e ":a;N;$ s/@@resource-url/${RESOURCE_URL}/g;ba" \
-    | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
-    > ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
+    if [ "${_RESOURCE_l}" == "eip" ]
+    then
+        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.head \
+        | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+        | sed -e ":a;N;$ s/@@resource-url/aws\/ec2\/elasticip/g;ba" \
+        | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+        > ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
+    else
+        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/service.coffee.head \
+        | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+        | sed -e ":a;N;$ s/@@resource-url/${RESOURCE_URL}/g;ba" \
+        | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+        > ${__TGT_DIR_SERVICE}/${_RESOURCE_l}_service.coffee
+    fi
 
     echo "2.generate service/parser.coffee (head)"
     sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/service/parser.coffee.head \
@@ -239,9 +248,12 @@ function fn_generate_coffee() {
     fi
 
     _LAST_API=""
+    _NUM_API=""
     #// loop by API_NAME ////////////////////////////////////////////////////////////////////
     for (( j = 1 ; j <= ${#API_NAME[@]} ; j++ ))
     do
+
+        _NUM_API=${#API_NAME[@]}
 
         #for tmp test
         #if [ $j -ge 2 ]
@@ -368,7 +380,7 @@ function fn_generate_coffee() {
         if [ "${NEED_RESOLVE}" != "" -a "${_CUR_API}" != "login"  ]
         then
         #Describe/List/Get
-            if [ "${_LAST_API}" == "" ]
+            if [ "${_LAST_API}" == "" -o ${_NUM_API} -eq 1 ]
             then
                 sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/module.coffee.api \
                 | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \

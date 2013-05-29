@@ -66,10 +66,9 @@ define [ 'securitygroup_vo', 'result_vo', 'constant' ], ( securitygroup_vo, resu
     #private (resolve result to vo )
     resolveDescribeSecurityGroupsResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeSecurityGroupsResponse.securityGroupInfo
 
     #private (parser DescribeSecurityGroups return)
     parserDescribeSecurityGroupsReturn = ( result, return_code, param ) ->
@@ -98,4 +97,4 @@ define [ 'securitygroup_vo', 'result_vo', 'constant' ], ( securitygroup_vo, resu
     parserAuthorizeSecurityGroupIngressReturn : parserAuthorizeSecurityGroupIngressReturn
     parserRevokeSecurityGroupIngressReturn   : parserRevokeSecurityGroupIngressReturn
     parserDescribeSecurityGroupsReturn       : parserDescribeSecurityGroupsReturn
-
+    resolveDescribeSecurityGroupsResult      : resolveDescribeSecurityGroupsResult

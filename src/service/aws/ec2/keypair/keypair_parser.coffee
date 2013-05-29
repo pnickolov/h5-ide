@@ -53,10 +53,9 @@ define [ 'keypair_vo', 'result_vo', 'constant' ], ( keypair_vo, result_vo, const
     #private (resolve result to vo )
     resolveDescribeKeyPairsResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeKeyPairsResponse.keySet
 
     #private (parser DescribeKeyPairs return)
     parserDescribeKeyPairsReturn = ( result, return_code, param ) ->
@@ -140,4 +139,4 @@ define [ 'keypair_vo', 'result_vo', 'constant' ], ( keypair_vo, result_vo, const
     parserDownloadReturn                     : parserDownloadReturn
     parserRemoveReturn                       : parserRemoveReturn
     parserListReturn                         : parserListReturn
-
+    resolveDescribeKeyPairsResult            : resolveDescribeKeyPairsResult

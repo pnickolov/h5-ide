@@ -39,4 +39,4 @@ define [ 'subnet_vo', 'result_vo', 'constant' ], ( subnet_vo, result_vo, constan
     #############################################################
     #public
     parserDescribeSubnetsReturn              : parserDescribeSubnetsReturn
-
+    resolveDescribeSubnetsResult             : resolveDescribeSubnetsResult

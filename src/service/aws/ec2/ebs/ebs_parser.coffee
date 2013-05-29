@@ -66,10 +66,9 @@ define [ 'ebs_vo', 'result_vo', 'constant' ], ( ebs_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeVolumesResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeVolumesResponse.volumeSet
 
     #private (parser DescribeVolumes return)
     parserDescribeVolumesReturn = ( result, return_code, param ) ->
@@ -98,7 +97,7 @@ define [ 'ebs_vo', 'result_vo', 'constant' ], ( ebs_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeVolumeAttributeResponse
 
     #private (parser DescribeVolumeAttribute return)
     parserDescribeVolumeAttributeReturn = ( result, return_code, param ) ->
@@ -127,7 +126,7 @@ define [ 'ebs_vo', 'result_vo', 'constant' ], ( ebs_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeVolumeStatusResponse
 
     #private (parser DescribeVolumeStatus return)
     parserDescribeVolumeStatusReturn = ( result, return_code, param ) ->
@@ -231,10 +230,9 @@ define [ 'ebs_vo', 'result_vo', 'constant' ], ( ebs_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeSnapshotsResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeSnapshotsResponse.snapshotSet
 
     #private (parser DescribeSnapshots return)
     parserDescribeSnapshotsReturn = ( result, return_code, param ) ->
@@ -260,10 +258,9 @@ define [ 'ebs_vo', 'result_vo', 'constant' ], ( ebs_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeSnapshotAttributeResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeSnapshotAttributeResponse
 
     #private (parser DescribeSnapshotAttribute return)
     parserDescribeSnapshotAttributeReturn = ( result, return_code, param ) ->
@@ -287,19 +284,22 @@ define [ 'ebs_vo', 'result_vo', 'constant' ], ( ebs_vo, result_vo, constant ) ->
 
     #############################################################
     #public
-    parserCreateVolumeReturn                 : parserCreateVolumeReturn
-    parserDeleteVolumeReturn                 : parserDeleteVolumeReturn
-    parserAttachVolumeReturn                 : parserAttachVolumeReturn
-    parserDetachVolumeReturn                 : parserDetachVolumeReturn
-    parserDescribeVolumesReturn              : parserDescribeVolumesReturn
-    parserDescribeVolumeAttributeReturn      : parserDescribeVolumeAttributeReturn
-    parserDescribeVolumeStatusReturn         : parserDescribeVolumeStatusReturn
-    parserModifyVolumeAttributeReturn        : parserModifyVolumeAttributeReturn
-    parserEnableVolumeIOReturn               : parserEnableVolumeIOReturn
-    parserCreateSnapshotReturn               : parserCreateSnapshotReturn
-    parserDeleteSnapshotReturn               : parserDeleteSnapshotReturn
-    parserModifySnapshotAttributeReturn      : parserModifySnapshotAttributeReturn
-    parserResetSnapshotAttributeReturn       : parserResetSnapshotAttributeReturn
-    parserDescribeSnapshotsReturn            : parserDescribeSnapshotsReturn
-    parserDescribeSnapshotAttributeReturn    : parserDescribeSnapshotAttributeReturn
-
+    {
+        parserCreateVolumeReturn                 : parserCreateVolumeReturn
+        parserDeleteVolumeReturn                 : parserDeleteVolumeReturn
+        parserAttachVolumeReturn                 : parserAttachVolumeReturn
+        parserDetachVolumeReturn                 : parserDetachVolumeReturn
+        parserDescribeVolumesReturn              : parserDescribeVolumesReturn
+        parserDescribeVolumeAttributeReturn      : parserDescribeVolumeAttributeReturn
+        parserDescribeVolumeStatusReturn         : parserDescribeVolumeStatusReturn
+        parserModifyVolumeAttributeReturn        : parserModifyVolumeAttributeReturn
+        parserEnableVolumeIOReturn               : parserEnableVolumeIOReturn
+        parserCreateSnapshotReturn               : parserCreateSnapshotReturn
+        parserDeleteSnapshotReturn               : parserDeleteSnapshotReturn
+        parserModifySnapshotAttributeReturn      : parserModifySnapshotAttributeReturn
+        parserResetSnapshotAttributeReturn       : parserResetSnapshotAttributeReturn
+        parserDescribeSnapshotsReturn            : parserDescribeSnapshotsReturn
+        parserDescribeSnapshotAttributeReturn    : parserDescribeSnapshotAttributeReturn
+        resolveDescribeVolumesResult             : resolveDescribeVolumesResult
+        resolveDescribeSnapshotsResult           : resolveDescribeSnapshotsResult
+    }

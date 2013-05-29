@@ -10,7 +10,22 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    keypair = {
+        'keyName'           :   ''
+        'keyFingerprint'    :   ''
+    }
+
+    component   =   {
+        'UID'   :   {
+            'type'  :   'AWS.EC2.KeyPair',
+            'name'  :   '',
+            'uid'   :   '',
+            'resource'  :   {
+                'KeyName'   :   '',
+                'KeyFingerprint'    :   ''
+            }
+        }
+    }
 
     #public
     #TO-DO

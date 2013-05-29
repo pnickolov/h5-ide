@@ -66,4 +66,4 @@ define [ 'eni_vo', 'result_vo', 'constant' ], ( eni_vo, result_vo, constant ) ->
     #public
     parserDescribeNetworkInterfacesReturn    : parserDescribeNetworkInterfacesReturn
     parserDescribeNetworkInterfaceAttributeReturn : parserDescribeNetworkInterfaceAttributeReturn
-
+    resolveDescribeNetworkInterfacesResult   : resolveDescribeNetworkInterfacesResult

@@ -10,8 +10,24 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    tag = {
+    	'resourceId'				:	''
+    	'resourceType'				:	''
+    	'key'						:	''
+    	'value'						:	''
+    }
 
+    region = {
+    	'regionName'				:	''
+    	'regionEndpoint'			:	''
+    }
+
+    zone = {
+    	'zoneName'					:	''
+    	'zoneState'					:	''
+    	'regionName'				:	''
+    	'messageSet'				:	''
+    }
     #public
     #TO-DO
 

@@ -39,4 +39,4 @@ define [ 'routetable_vo', 'result_vo', 'constant' ], ( routetable_vo, result_vo,
     #############################################################
     #public
     parserDescribeRouteTablesReturn          : parserDescribeRouteTablesReturn
-
+    resolveDescribeRouteTablesResult         : resolveDescribeRouteTablesResult

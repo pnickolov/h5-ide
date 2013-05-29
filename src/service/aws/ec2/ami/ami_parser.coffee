@@ -79,10 +79,9 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeImageAttributeResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeImageAttributeResponse
 
     #private (parser DescribeImageAttribute return)
     parserDescribeImageAttributeReturn = ( result, return_code, param ) ->
@@ -108,10 +107,9 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeImagesResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeImagesResponse.imagesSet
 
     #private (parser DescribeImages return)
     parserDescribeImagesReturn = ( result, return_code, param ) ->
@@ -142,4 +140,5 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     parserResetImageAttributeReturn          : parserResetImageAttributeReturn
     parserDescribeImageAttributeReturn       : parserDescribeImageAttributeReturn
     parserDescribeImagesReturn               : parserDescribeImagesReturn
+    resolveDescribeImagesResult              : resolveDescribeImagesResult
 

@@ -39,4 +39,4 @@ define [ 'dhcp_vo', 'result_vo', 'constant' ], ( dhcp_vo, result_vo, constant ) 
     #############################################################
     #public
     parserDescribeDhcpOptionsReturn          : parserDescribeDhcpOptionsReturn
-
+    resolveDescribeDhcpOptionsResult         : resolveDescribeDhcpOptionsResult

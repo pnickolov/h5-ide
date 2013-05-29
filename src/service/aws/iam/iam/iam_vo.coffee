@@ -10,8 +10,30 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    server_certificate = {
+        'IsTruncated'           :   ''
+        'Marker'                :   ''
+        'ServerCertificateMetadataList' :   []
+    }
+
+    component   =   {
+        'type'  :   'AWS.IAM.ServerCertificate',
+        'name'  :   '',
+        'uid'   :   '',
+        'resource'  :   {
+            'CertificateBody'       :   '',
+            'CertificateChain'      :   '',
+            'PrivateKey'            :   '',
+            'ServerCertificateMetadata' :   {
+                'Arn'   :   '',
+                'Path'  :   '',
+                'ServerCertificateId'   :   '',
+                'ServerCertificateName' :   '',
+                'UploadDate'            :   ''
+            }
+        }
+    }
 
     #public
-    #TO-DO
+    server_certificate : server_certificate
 

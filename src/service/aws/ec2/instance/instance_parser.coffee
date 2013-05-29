@@ -202,10 +202,9 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
     #private (resolve result to vo )
     resolveDescribeInstanceStatusResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeInstanceStatusResponse.instanceStatusSet
 
     #private (parser DescribeInstanceStatus return)
     parserDescribeInstanceStatusReturn = ( result, return_code, param ) ->
@@ -231,10 +230,9 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
     #private (resolve result to vo )
     resolveDescribeBundleTasksResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeBundleTasksResponse.bundleInstanceTasksSet
 
     #private (parser DescribeBundleTasks return)
     parserDescribeBundleTasksReturn = ( result, return_code, param ) ->
@@ -260,10 +258,9 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
     #private (resolve result to vo )
     resolveDescribeInstanceAttributeResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeInstanceAttributeResponse
 
     #private (parser DescribeInstanceAttribute return)
     parserDescribeInstanceAttributeReturn = ( result, return_code, param ) ->
@@ -289,10 +286,9 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
     #private (resolve result to vo )
     resolveGetConsoleOutputResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).GetConsoleOutputResponse
 
     #private (parser GetConsoleOutput return)
     parserGetConsoleOutputReturn = ( result, return_code, param ) ->
@@ -318,10 +314,9 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
     #private (resolve result to vo )
     resolveGetPasswordDataResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).GetPasswordDataResponse
 
     #private (parser GetPasswordData return)
     parserGetPasswordDataReturn = ( result, return_code, param ) ->
@@ -363,4 +358,4 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
     parserDescribeInstanceAttributeReturn    : parserDescribeInstanceAttributeReturn
     parserGetConsoleOutputReturn             : parserGetConsoleOutputReturn
     parserGetPasswordDataReturn              : parserGetPasswordDataReturn
-
+    resolveDescribeInstancesResult           : resolveDescribeInstancesResult

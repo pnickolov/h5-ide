@@ -10,7 +10,29 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    ami = {
+        'imageId'           :   ''
+        'imageLocation'     :   ''
+        'imageState'        :   ''
+        'imageOwnerId'      :   ''
+        'isPublic'          :   ''
+        'productCodes'      :   []
+        'architecture'      :   ''
+        'imageType'         :   ''
+        'kernelId'          :   ''
+        'ramdiskId'         :   ''
+        'platform'          :   ''
+        'stateReason'       :   ''
+        'imageOwnerAlias'   :   ''
+        'name'              :   ''
+        'description'       :   ''
+        'rootDeviceType'    :   ''
+        'rootDeviceName'    :   ''
+        'blockDeviceMapping':   []
+        'virtualizationType':   ''
+        'tagSet'            :   []
+        'hypervisor'        :   ''
+    }
 
     #public
     #TO-DO

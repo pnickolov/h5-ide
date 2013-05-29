@@ -222,7 +222,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
     #-----------------------------------------------
     test_resource = () ->
         asyncTest "/app app.resource()", () ->
-            app_id = null
+            app_id = "app-dab96805"
 
             app_service.resource username, session_id, region_name, app_id, ( forge_result ) ->
                 if !forge_result.is_error

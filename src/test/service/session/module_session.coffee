@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : session_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-28 15:59:02
+#* Create date  : 2013-05-29 13:27:31
 #* Description  : qunit test module for session_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -75,16 +75,16 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
                     ok false, "logout() failed" + forge_result.error_message
             
                 start()
-                test_guest()
+                test_login()
 
     #-----------------------------------------------
     #Test set_credential()
     #-----------------------------------------------
     test_set_credential = () ->
         asyncTest "/session session.set_credential()", () ->
-            access_key = "null"
-            secret_key = "null"
-            account_id = "null"
+            access_key = null
+            secret_key = null
+            account_id = null
 
             session_service.set_credential username, session_id, access_key, secret_key, account_id, ( forge_result ) ->
                 if !forge_result.is_error
@@ -116,8 +116,8 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
                     ok false, "guest() failed" + forge_result.error_message
             
                 start()
+                test_set_credential()
 
 
-
-    test_set_credential()
+    test_guest()
 

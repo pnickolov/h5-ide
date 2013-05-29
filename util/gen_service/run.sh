@@ -153,10 +153,18 @@ function fn_generate_coffee() {
     echo "5.generate test/config.coffee (head)"
     if [ ! -f ${__TGT_DIR_TEST}/config.coffee ]
     then
-        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/config.coffee.head \
-        | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
-        | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
-        > ${__TGT_DIR_TEST}/config.coffee
+        if [ "${__TYPE}" == "awsutil"  ]
+        then
+            sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/config.coffee.head \
+            | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+            | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}\/aws/g;ba" \
+            > ${__TGT_DIR_TEST}/config.coffee
+        else
+            sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/config.coffee.head \
+            | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
+            | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+            > ${__TGT_DIR_TEST}/config.coffee            
+        fi
     fi
 
     if [ "${_RESOURCE_l}" != "session" ]
@@ -165,7 +173,7 @@ function fn_generate_coffee() {
         sed '$d' ${__TGT_DIR_TEST}/config.coffee > ${__TGT_DIR_TEST}/config.coffee.tmp
         mv -f ${__TGT_DIR_TEST}/config.coffee.tmp ${__TGT_DIR_TEST}/config.coffee
 
-        if [ "${__TYPE}" == "aws"  ]
+        if [ "${__TYPE}" == "aws" -o "${__TYPE}" == "awsutil"  ]
         then
             echo -e "\n        #${_RESOURCE_l} service\n\
         '${_RESOURCE_l}_vo'        : 'service/${SERVICE_URL/\\/}/${_RESOURCE_l}/${_RESOURCE_l}_vo'\n\
@@ -185,13 +193,26 @@ function fn_generate_coffee() {
     echo "6.generate test/testsuite.html"
     if [ ! -f ${__TGT_DIR_TEST}/testsuite.html ]
     then
-        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.html \
-        | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
-        > ${__TGT_DIR_TEST}/testsuite.html
+        if [ "${__TYPE}" == "awsutil"  ]
+        then
+            sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.html \
+            | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}\/aws/g;ba" \
+            > ${__TGT_DIR_TEST}/testsuite.html
+        else
+            sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.html \
+            | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+            > ${__TGT_DIR_TEST}/testsuite.html
+        fi
     fi
 
     echo "7.generate test/testsuite.coffee.head (head)"
-    _MODULE_LIST="'\/test\/service\/${SERVICE_URL}\/module_${_RESOURCE_l}.js'"
+    if [ "${__TYPE}" == "awsutil"  ]
+    then
+        _MODULE_LIST="'\/test\/service\/${SERVICE_URL}\/aws\/module_${_RESOURCE_l}.js'"
+    else
+        _MODULE_LIST="'\/test\/service\/${SERVICE_URL}\/module_${_RESOURCE_l}.js'"
+    fi
+
     if [ ! -f ${__TGT_DIR_TEST}/testsuite.coffee ]
     then
         sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/testsuite.coffee.head \

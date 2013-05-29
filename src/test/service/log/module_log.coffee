@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : log_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-28 15:59:01
+#* Create date  : 2013-05-29 13:27:31
 #* Description  : qunit test module for log_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -63,7 +63,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'log_service'], ( MC, 
     #-----------------------------------------------
     test_put_user_log = () ->
         asyncTest "/log log.put_user_log()", () ->
-            user_logs = [["test1", "test2", "1369735844", "###test msg###"]]
+            user_logs = null
 
             log_service.put_user_log username, session_id, user_logs, ( forge_result ) ->
                 if !forge_result.is_error

@@ -3,7 +3,7 @@
 #* Filename: UI.tooltip
 #* Creator: Angel
 #* Description: UI.tooltip
-#* Date: 20130527
+#* Date: 20130530
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************

@@ -1,0 +1,414 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>MadeiraCloud</title>
+	<meta charset="UTF-8" />
+	<!-- <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,600,400italic' rel='stylesheet' type='text/css'> -->
+	<link rel="stylesheet" href="./assets/css/icon-font.css"/>
+	<link rel="stylesheet" href="./assets/css/core.css"/>
+	<link rel="stylesheet" href="./assets/css/ide.css"/>
+	<link id="css_style" rel="stylesheet" href="./assets/css/layout.css"/>
+	<link rel="stylesheet" href="./assets/css/UI.component.css"/>
+	<script type="text/javascript" data-main="./js/MC.core.js" src="./js/require-jquery.js"></script>
+	<script type="text/javascript">
+	require([
+		// Until
+		//'canvon',
+
+		// Core
+		'MC.canvas',
+		// 'MC.topo',
+
+		// UI
+		'UI.tooltip',
+		'UI.scrollbar',
+		// 'jquery.tabify',
+		'bootstrap-tab',
+		'bootstrap-dropdown',
+
+		// Page
+		// 'MC.page.ide',
+		'MC.page.ide.layout',
+	], function ()
+	{
+		// ready();
+		//MC.realtimeCSS();
+	});
+	</script>
+</head>
+<body id="body">
+	<!-- Top Navigation -->
+	<nav id="top-nav">
+		<div id="view-toggle-left-nav" class="active"><a href="javascrip:void(0)"><i class="icon-list-3"></i></a></div>
+		<img src="./assets/images/ide/logo-t.png" alt="" class="logo">
+		<ul class="top-nav--menu">
+			<li class="dropdown">
+				<a href="#" id="top-nav--alert" class="dropdown-toggle" data-toggle="dropdown" role="button">
+					<i class="icon-flag icon-label"></i><span class="notification-counter">32</span>
+				</a>
+				<div id="alert-panel-wrapper" class="dropdown-menu" role="menu">
+					<table class="table table-light">
+						<thead>
+							<tr>
+							<th style="width:50px">Status</th>
+							<th style="width:100px">Request ID</th>
+							<th style="width:100px">Start Time</th>
+							<th style="width:100px">End Time</th>
+							<th style="width:100px">Details</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><i class="status status-green"></i></td>
+								<td>#121212</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td>blahblahblah</td>
+							</tr>
+							<tr>
+								<td><i class="status status-yellow"></i></td>
+								<td>#121212</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td>blahblahblah</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</li>
+			<li class="dropdown">
+				<a href="#" id="top-nav--notification" class="dropdown-toggle" data-toggle="dropdown" role="button">
+					<i class="icon-bell icon-label"></i><span class="notification-counter">32</span>
+				</a>
+				<div id="notification-panel-wrapper" class="dropdown-menu" role="menu">
+					<table class="table table-light">
+						<thead>
+							<tr>
+							<th style="width:50px">Status</th>
+							<th style="width:100px">Request ID</th>
+							<th style="width:100px">Start Time</th>
+							<th style="width:100px">End Time</th>
+							<th style="width:100px">Details</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><i class="status status-green"></i></td>
+								<td>#121212</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td>blahblahblah</td>
+							</tr>
+							<tr>
+								<td><i class="status status-yellow"></i></td>
+								<td>#121212</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td>blahblahblah</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</li>
+			<li class="dropdown">
+				<a href="#" id="top-nav--user" class="dropdown-toggle" data-toggle="dropdown" role="button">
+					<img src="./assets/images/ide/dummy/face-30x30.jpg" alt="" class="avatar" width="30" height="30">Paula Meng <i class="icon-caret-down"></i>
+				</a>
+				<div id="user-dropdown-wrapper" class="dropdown-menu" role="menu">
+					<ul>
+						<li>
+							<a href="javascript:void(0)"><i class="icon-settings icon-label"></i>Account Settings</a>
+						</li>
+						<li>
+							<a href="javascript:void(0)"><i class="icon-question-sign icon-label"></i>Documetation</a>
+						</li>
+						<li>
+							<a href="javascript:void(0)"><i class="icon-user-2 icon-label"></i>Logout</a>
+						</li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</nav>
+	<div id="wrapper">
+		<!-- Left Navigation -->
+		<nav id="left-nav">
+			<ul class="left-nav--tab clearfix">
+				<li class="active"><a href="#dashboard" data-toggle="tab"><i class="icon-gauge"></i><p>Dashboard</p></a></li>
+				<li><a href="#app" data-toggle="tab"><i class="icon-browser"></i><p>App</p></a></li>
+				<li><a href="#stack" data-toggle="tab"><i class="icon-layers"></i><p>Stack</p></a></li>
+			</ul>
+			<div class="left-nav--tab-content">
+				<ul class="left-nav--tab-pane active" id="dashboard">
+					<li class="selected">
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-globe icon-label"></i>Global Overview <p class="left-nav-region">3 regions in use</p></div>
+							<i class="status status-green status-left-nav"></i>
+						</a>
+					</li>
+		
+					<li>
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. Virginia <p class="left-nav-region">US West</p></div>
+							<i class="status status-green status-left-nav tooltip" data-tooltip="Status Message"> </i>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. California <p class="left-nav-region">US West</p></div>
+							<i class="status status-green status-left-nav"></i>
+						</a>
+					</li>
+		
+					<li>
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. Virginia <p class="left-nav-region">US West</p></div>
+							<i class="status status-yellow status-left-nav"></i>
+						</a>
+					</li>
+		
+					<li class="hide">
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>S. Tokyo<p class="left-nav-region">ASIA East</p></div>
+							<i class="status status-green status-left-nav"></i>
+						</a>
+					</li>
+		
+					<li class="hide">
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>S. Tokyo<p class="left-nav-region">ASIA East</p></div>
+							<i class="status status-green status-left-nav"></i>
+						</a>
+					</li>
+		
+					<li class="hide">
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>S. Tokyo<p class="left-nav-region">ASIA East</p></div>
+							<i class="status status-green status-left-nav"></i>
+						</a>
+					</li>
+		
+					<li class="show-unused-region"><a href="javascript:void(0)" onclick="show_item(this)">Show Unused Regions</a></li>
+				</ul>
+		
+				<ul class="left-nav--tab-pane accordion" id="app">
+					<li class="app-region" id="region01">
+						<a href="#" class="app-region-a">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. Virgina<p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App01</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-stop icon-label"></i>App-with-super-long-name</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App03</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App04</a></li>
+						</ul>
+					</li>
+		
+					<li class="app-region" id="region02">
+						<a href="#" class="app-region-a">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. afdfsa <p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App05</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-stop icon-label"></i>App06</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App07</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App08</a></li>
+						</ul>
+					</li>
+					<li class="app-region" id="region03">
+						<a href="#" class="app-region-a">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. California <p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App09</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-stop icon-label"></i>App10</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App11</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App12</a></li>
+						</ul>
+					</li>
+		
+					<li class="app-region" id="region04">
+						<a href="#" class="app-region-a">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. Virginia <p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App13</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-stop icon-label"></i>App14</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App15</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App16</a></li>
+						</ul>
+					</li>
+		
+					<li class="hide app-region" id="region05">
+						<a href="#" class="app-region-a">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. Virginia <p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App17</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-stop icon-label"></i>App18</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App19</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App20</a></li>
+						</ul>
+					</li>
+		
+					<li class="hide app-region" id="region06">
+						<a href="#" class="app-region-a">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. Virginia <p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App21</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-stop icon-label"></i>App22</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App23</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-play icon-label"></i>App24</a></li>
+						</ul>
+					</li>
+					<li class="show-unused-region"><a href="javascript:void(0)" onclick="show_item(this)">Show Unused Regions</a></li>
+				</ul>
+		
+				<ul class="left-nav--tab-pane accordion" id="stack">
+					<li class="active">
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. Virgina<p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack01</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack-with-super-long-name</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack03</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack04</a></li>
+						</ul>
+					</li>
+		
+					<li>
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. afdfsa <p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack05</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack06</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack07</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack08</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. California <p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack09</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack10</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack11</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack12</a></li>
+						</ul>
+					</li>
+		
+					<li>
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. Virginia <p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack13</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack14</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack15</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack16</a></li>
+						</ul>
+					</li>
+		
+					<li class="hide">
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. Virginia <p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack17</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack18</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack19</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack20</a></li>
+						</ul>
+					</li>
+		
+					<li class="hide">
+						<a href="#">
+							<div class="left-nav-truncate truncate"><i class="icon-cloud icon-label"></i>N. Virginia <p class="left-nav-region">US West</p></div>
+							<span class="icon-angle-left left-nav-dropdown-arrow">&nbsp;</span>
+						</a>
+						<ul class="left-nav-sub-menu sub-menu">
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack21</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack22</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack23</a></li>
+							<li><a href="javascript:void(0)"><i class="icon-layers icon-label"></i>Stack24</a></li>
+						</ul>
+					</li>
+					<li class="show-unused-region"><a href="javascript:void(0)" onclick="show_item(this)">Show Unused Regions</a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- Main -->
+		<div id="main">
+			<!-- Tab Bar -->
+			<div id="tab-bar">
+				<ul>
+					<li id="tab-bar-dashboard" class="active"><a href="#tab-content-dashboard" data-toggle="tab"  class="truncate tab-bar-truncate"><i class="icon-gauge icon-label"></i>Global Overview</a></li>
+					<!-- <li class="" id="tab-bar-app01"><a href="#tab-content-app01" data-toggle="tab" class="truncate tab-bar-truncate"><i class="icon-browser icon-label"></i>app01</a><a href="javascript:void(0)" class="close-tab">x</a></li> -->
+					<li id="tab-bar-stack01"><a href="#tab-content-stack01" data-toggle="tab" class="truncate tab-bar-truncate"><i class="icon-layers icon-label"></i>stack01</a><a href="javascript:void(0)" class="close-tab">x</a></li>
+				</ul>
+			</div>
+			<!-- Dasboard Tab -->
+			<div id="tab-content-dashboard" class="main-content active">
+				<h1 class="main-title">Global Overview</h1>
+			</div>
+			<!-- Stack/App Tab -->
+			<div id="tab-content-stack01" class="main-content">
+				<!-- Resource Panel -->
+				<div id="resource-panel" class="sidebar">
+					<a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip="Hide Resource Panel"><i class="icon-double-angle-left"></i></a>
+					<div class="sidebar-title">
+						<span class="sidebar-title-text">Resource Panel</span>
+						<a href="javascript:void(0)" id="resource-search"><i class="icon-search"></i></a>
+					</div>			
+						<!-- <ul class="resource-type-tab">
+							<li class="active"><a href="#new" data-toggle="tab">New</a></li>
+							<li><a href="#existing" data-toggle="tab">Existing</a></li>
+						</ul> -->
+				</div>
+				<!-- Property Panel -->
+				<div id="property-panel" class="sidebar">
+						<a href="javascript:void(0)" id="hide-property-panel" class="tooltip sidebar-hider" data-tooltip="Hide Property Panel"><i class="icon-double-angle-right"></i></a>
+						<div class="sidebar-title">
+							<span class="sidebar-title-text">Property Panel</span>
+							<a href="javascript:void(0)" id="property-help"><i class="icon-help"></i></a>
+						</div>
+						
+				</div>
+				<div id="main-content-middle-wrapper">
+					<!-- Toolbar -->
+					<div id="main-toolbar">
+						<div class="toolbar-btn-left">
+							
+							<a href="#" class="btn-toolbar"><i class="icon-file-add"></i></a>
+							<a href="#" class="btn-toolbar"><i class="icon-sitemap"></i></a>
+						</div>
+						<div class="toolbar-btn-right">
+							
+						</div>
+					</div>
+					<!-- Canvas -->
+					<div id="canvas">
+						Canvas
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

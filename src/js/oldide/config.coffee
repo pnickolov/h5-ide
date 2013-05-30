@@ -3,7 +3,7 @@ require.config {
 
 	baseUrl            : './'
 
-	deps               : [ 'js/ide/main' ]
+	deps               : [ 'js/oldide/main' ]
 
 	paths              :
 
@@ -28,7 +28,7 @@ require.config {
 		'UI.scrollbar' : 'ui/common/UI.scrollbar'
 
 		#ide(leftpanel canvas)
-		'router'       : 'js/ide/router'
+		'router'       : 'js/oldide/router'
 		'leftpanel'    : 'module/leftpanel/main'
 		'canvas'       : 'module/canvas/main'
 

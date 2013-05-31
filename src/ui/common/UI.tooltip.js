@@ -3,7 +3,7 @@
 #* Filename: UI.tooltip
 #* Creator: Angel
 #* Description: UI.tooltip
-#* Date: 20130527
+#* Date: 201305301
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -32,8 +32,8 @@ var tooltip = {
 			width = tooltip_box.width();
 			height = tooltip_box.height();
 
-			coordinate.left =  target_offset.left + width > window.innerWidth ? target_offset.left - width :  target_offset.left + 5;
-			coordinate.top = target_offset.top + height > window.innerHeight ? target_offset.top - height + 10 : target_offset.top + target.height() + 15;
+			coordinate.left =  target_offset.left + width - document.body.scrollLeft > window.innerWidth ? target_offset.left - width :  target_offset.left + 5;
+			coordinate.top = target_offset.top + height - document.body.scrollTop + 45 > window.innerHeight ? target_offset.top - height - 15 : target_offset.top + target.height() + 15;
 
 			tooltip_box.css(coordinate).show();
 		}

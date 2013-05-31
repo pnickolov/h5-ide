@@ -3,38 +3,38 @@
 #* Filename: UI.table
 #* Creator: Angel
 #* Description: UI.table
-#* Date: 20130528
+#* Date: 20130529
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-var table = {};
-
-table.edit = function (event)
-{
-	if (event.target.tagName.toLowerCase() === 'input')
+var table = {
+	edit: function (event)
 	{
-		return false;
-	}
-	else
-	{
-		var row = $(this),
-			row_height = row.css('height'),
-			input = row.html('<input class="table-input" type="text" value="' + row.text() + '"/>').children(':first');
+		if (event.target.tagName.toLowerCase() === 'input')
+		{
+			return false;
+		}
+		else
+		{
+			var row = $(this),
+				row_height = row.css('height'),
+				input = row.html('<input class="table-input" type="text" value="' + row.text() + '"/>').children(':first');
 
-		$(input).css({
-			'color': row.css('color'),
-			'font-size': row.css('font-size')
-		}).focus();
+			$(input).css({
+				'color': row.css('color'),
+				'font-size': row.css('font-size')
+			}).focus();
+		}
+	},
+
+	update: function (event)
+	{
+		var target = event.target;
+
+		$(target).parent().text(target.value);
 	}
 };
-
-table.update = function (event)
-{
-	var target = event.target;
-
-	$(target).parent().text(target.value);
-}
 
 $(document).ready(function ()
 {

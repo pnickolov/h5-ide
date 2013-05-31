@@ -144,8 +144,6 @@ var ready = function ()
 define([ 'canvon', 'MC.canvas' ], function() {
 
 	return {
-		ready : function() {
-			ready();
-		}
+		ready : ready
 	}
 });

@@ -26,8 +26,7 @@ module.exports = function( grunt ) {
 			'<%= sourcedir[1] %>/**/*.js',
 			'!<%= src %>/vender/*',
 			'!<%= sourcedir[1] %>/canvas/canvas.js',
-			'!<%= src %>/service/*',
-			'!<%= src %>/test/*'
+			'!<%= sourcedir[0] %>/ide/layout.js'
 		],
 
 		cssfiles   : [
@@ -41,9 +40,7 @@ module.exports = function( grunt ) {
 		],
 
 		coffeefiles : [
-			'<%= src %>/**/*.coffee',
-			'!<%= src %>/service/**/*.coffee',
-			'!<%= src %>/test/**/**/**/*.coffee'
+			'<%= src %>/**/*.coffee'
 		],
 
 		htmlfiles   : [

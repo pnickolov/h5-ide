@@ -19,7 +19,7 @@ src/vender/**/*.*
 #ignore page
 src/js/*.js
 src/js/**/*.js
-!src/ide/layout.js
+!src/js/ide/layout.js
 
 #ignore model
 src/model/**/*.js

@@ -400,7 +400,12 @@ textarea {
 /* Scrollbar */
 .scrollbar-veritical-wrap,
 .scrollbar-horizontal-wrap {
-	display: block;
+	-webkit-transition: opacity .25s;
+	-moz-transition: opacity .25s;
+	-ms-transition: opacity .25s;
+	-o-transition: opacity .25s;
+	transition: opacity .25s;
+	opacity: 0;
 	position: absolute;
 	z-index: 99;
 	background: rgba(0, 0, 0, 0.2);
@@ -409,36 +414,56 @@ textarea {
 .scrollbar-veritical-wrap {
 	right: 0;
 	top: 0;
-	width: 10px;
+	width: 8px;
 	height: 100%;
 }
 
 .scrollbar-horizontal-wrap {
 	left: 0;
 	bottom: 0;
-	height: 10px;
+	height: 8px;
 	width: 100%;
+}
+
+.scrolling {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+.scrolling .scrollbar-veritical-wrap,
+.scrolling .scrollbar-horizontal-wrap,
+.scroll-wrap:hover .scrollbar-veritical-wrap,
+.scroll-wrap:hover .scrollbar-horizontal-wrap {
+	opacity: 1;
 }
 
 .scrollbar-veritical-thumb,
 .scrollbar-horizontal-thumb {
 	position: relative;
 	background-color: #903977;
-	-webkit-transition: width 0.2s, height 0.2s;
-	-moz-transition: width 0.2s, height 0.2s;
-	-o-transition: width 0.2s, height 0.2s;
-	transition: width 0.2s, height 0.2s;
 	border-radius: 3px;
 }
 
 .scrollbar-veritical-thumb {
 	width: 10px;
 	border-left: 1px solid #a0558a;
+	-webkit-transition: height 0.2s;
+	-moz-transition: height 0.2s;
+	-o-transition: height 0.2s;
+	transition: height 0.2s;
 }
 
 .scrollbar-horizontal-thumb {
 	height: 10px;
 	border-top: 1px solid #a0558a;
+	-webkit-transition: width 0.2s;
+	-moz-transition: width 0.2s;
+	-o-transition: width 0.2s;
+	transition: width 0.2s;
 }
 
 .scroll-wrap {
@@ -456,7 +481,6 @@ textarea {
 	background: rgba(0, 0, 0, 0.8);
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 	color: #ccc;
-	font-family: Nunito-Light;
 	font-size: 14px;
 	position: absolute;
 	padding: 5px 10px;
@@ -603,4 +627,36 @@ textarea {
 	left: 0;
 	z-index: 9999;
 	background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Accordion */
+.accordion-body {
+	display: none;
+	overflow: hidden;
+}
+
+.accordion-body.expanded {
+	display: block;
+}
+
+.accordion-head {
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+/* Accordion default style */
+.accordion-default .accordion-head {
+	border: 1px solid #ccc;
+	padding: 10px;
+	font-weight: 700;
+	color: #333;
+}
+
+.accordion-default .accordion-body {
+	padding: 10px;
+	color: #666;
 }

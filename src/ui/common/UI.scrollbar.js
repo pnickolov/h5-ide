@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130525
+#* Date: 20130601
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -96,6 +96,8 @@ var scrollbar = {
 			target = target.parent();
 		}
 
+		target.addClass('scrolling');
+
 		if (direction === 'veritical')
 		{
 			veritical_thumb = target.find('.scrollbar-veritical-thumb');
@@ -146,9 +148,12 @@ var scrollbar = {
 		{
 			scrollbar.scroll_to_left(target, scrollbar.isTouch ? thumbPos - event.clientX : event.clientX - scrollbar_wrap.offset().left - thumbPos);
 		}
+
+		return false;
 	},
-	mouseup: function ()
+	mouseup: function (event)
 	{
+		event.data.scroll_target.removeClass('scrolling');
 		$(document).off(scrollbar.isTouch ? {
 			'touchmove': scrollbar.mousemove,
 			'touchend': scrollbar.mouseup
@@ -161,8 +166,9 @@ var scrollbar = {
 	{
 		var scroll_content = target.find('.scroll-content'),
 			horizontal_thumb = target.find('.scrollbar-horizontal-thumb'),
-			max_scroll = scroll_content[0].scrollWidth - scroll_content.parent().width(),
-			scale = scroll_content[0].scrollWidth / scroll_content.parent().width(),
+			scroll_wrap_width = scroll_content.parent().width(),
+			max_scroll = scroll_content[0].scrollWidth - scroll_wrap_width,
+			scale = scroll_content[0].scrollWidth / scroll_wrap_width,
 			thumb_max = max_scroll / scale,
 			scroll_value;
 
@@ -199,8 +205,9 @@ var scrollbar = {
 	{
 		var scroll_content = target.find('.scroll-content'),
 			thumb = target.find('.scrollbar-veritical-thumb'),
-			max_scroll = scroll_content[0].scrollHeight - scroll_content.parent().height(),
-			scale = scroll_content[0].scrollHeight / scroll_content.parent().height(),
+			scroll_wrap_height = scroll_content.parent().height(),
+			max_scroll = scroll_content[0].scrollHeight - scroll_wrap_height,
+			scale = scroll_content[0].scrollHeight / scroll_wrap_height,
 			thumb_max = max_scroll / scale,
 			scroll_value;
 

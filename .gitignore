@@ -1,18 +1,2 @@
-#ignore node_modules
-node_modules
 
-#ignore components
-components
-
-#ignore release
-release
-
-#ignore src/vender
-src/vender
-
-#ignore src/js/*.js src/js/**/*.js
-src/js/*.js
-src/js/**/*.js
-
-#ignore src/module/**/*.js
-src/module/**/*.js
+.DS_Store

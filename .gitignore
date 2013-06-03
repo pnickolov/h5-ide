@@ -41,3 +41,5 @@ src/test/**/*.js
 util/genservice/out.tmp
 util/gen_service/**/*.js
 
+
+.DS_Store

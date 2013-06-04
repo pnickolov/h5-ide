@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : optiongroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:45
+#* Create date  : 2013-06-04 17:15:13
 #* Description  : qunit test module for optiongroup_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'optiongroup_service']
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'optiongroup_service']
         asyncTest "/aws/rds optiongroup.DescribeOptionGroupOptions()", () ->
 
 
-            optiongroup_service.DescribeOptionGroupOptions username, session_id, ( aws_result ) ->
+            optiongroup_service.DescribeOptionGroupOptions {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeOptionGroupOptions succeed
                     data = aws_result.resolved_data
@@ -84,7 +84,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'optiongroup_service']
         asyncTest "/aws/rds optiongroup.DescribeOptionGroups()", () ->
 
 
-            optiongroup_service.DescribeOptionGroups username, session_id, ( aws_result ) ->
+            optiongroup_service.DescribeOptionGroups {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeOptionGroups succeed
                     data = aws_result.resolved_data

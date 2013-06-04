@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : placementgroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:41
+#* Create date  : 2013-06-04 17:15:10
 #* Description  : qunit test module for placementgroup_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'placementgroup_servic
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -66,7 +66,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'placementgroup_servic
             group_names = null
             filters = null
 
-            placementgroup_service.DescribePlacementGroups username, session_id, region_name, group_names, filters, ( aws_result ) ->
+            placementgroup_service.DescribePlacementGroups {sender:this}, username, session_id, region_name, group_names, filters, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribePlacementGroups succeed
                     data = aws_result.resolved_data

@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', '@@resource-name_servi
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data

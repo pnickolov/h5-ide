@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : opsworks_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:43
+#* Create date  : 2013-06-04 17:15:11
 #* Description  : qunit test module for opsworks_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -66,7 +66,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
             app_ids = null
             stack_id = null
 
-            opsworks_service.DescribeApps username, session_id, region_name, app_ids, stack_id, ( aws_result ) ->
+            opsworks_service.DescribeApps {sender:this}, username, session_id, region_name, app_ids, stack_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeApps succeed
                     data = aws_result.resolved_data
@@ -85,7 +85,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
         asyncTest "/aws/opsworks opsworks.DescribeStacks()", () ->
             stack_ids = null
 
-            opsworks_service.DescribeStacks username, session_id, region_name, stack_ids, ( aws_result ) ->
+            opsworks_service.DescribeStacks {sender:this}, username, session_id, region_name, stack_ids, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeStacks succeed
                     data = aws_result.resolved_data
@@ -106,7 +106,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
             deployment_id = null
             instance_id = null
 
-            opsworks_service.DescribeCommands username, session_id, region_name, command_ids, deployment_id, instance_id, ( aws_result ) ->
+            opsworks_service.DescribeCommands {sender:this}, username, session_id, region_name, command_ids, deployment_id, instance_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeCommands succeed
                     data = aws_result.resolved_data
@@ -127,7 +127,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
             deployment_ids = null
             stack_id = null
 
-            opsworks_service.DescribeDeployments username, session_id, region_name, app_id, deployment_ids, stack_id, ( aws_result ) ->
+            opsworks_service.DescribeDeployments {sender:this}, username, session_id, region_name, app_id, deployment_ids, stack_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeDeployments succeed
                     data = aws_result.resolved_data
@@ -147,7 +147,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
             instance_id = null
             ips = null
 
-            opsworks_service.DescribeElasticIps username, session_id, region_name, instance_id, ips, ( aws_result ) ->
+            opsworks_service.DescribeElasticIps {sender:this}, username, session_id, region_name, instance_id, ips, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeElasticIps succeed
                     data = aws_result.resolved_data
@@ -169,7 +169,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
             layer_id = null
             stack_id = null
 
-            opsworks_service.DescribeInstances username, session_id, region_name, app_id, instance_ids, layer_id, stack_id, ( aws_result ) ->
+            opsworks_service.DescribeInstances {sender:this}, username, session_id, region_name, app_id, instance_ids, layer_id, stack_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeInstances succeed
                     data = aws_result.resolved_data
@@ -189,7 +189,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
             stack_id = null
             layer_ids = null
 
-            opsworks_service.DescribeLayers username, session_id, region_name, stack_id, layer_ids, ( aws_result ) ->
+            opsworks_service.DescribeLayers {sender:this}, username, session_id, region_name, stack_id, layer_ids, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeLayers succeed
                     data = aws_result.resolved_data
@@ -208,7 +208,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
         asyncTest "/aws/opsworks opsworks.DescribeLoadBasedAutoScaling()", () ->
             layer_ids = null
 
-            opsworks_service.DescribeLoadBasedAutoScaling username, session_id, region_name, layer_ids, ( aws_result ) ->
+            opsworks_service.DescribeLoadBasedAutoScaling {sender:this}, username, session_id, region_name, layer_ids, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeLoadBasedAutoScaling succeed
                     data = aws_result.resolved_data
@@ -228,7 +228,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
             iam_user_arn = null
             stack_id = null
 
-            opsworks_service.DescribePermissions username, session_id, region_name, iam_user_arn, stack_id, ( aws_result ) ->
+            opsworks_service.DescribePermissions {sender:this}, username, session_id, region_name, iam_user_arn, stack_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribePermissions succeed
                     data = aws_result.resolved_data
@@ -248,7 +248,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
             instance_id = null
             raid_array_ids = null
 
-            opsworks_service.DescribeRaidArrays username, session_id, region_name, instance_id, raid_array_ids, ( aws_result ) ->
+            opsworks_service.DescribeRaidArrays {sender:this}, username, session_id, region_name, instance_id, raid_array_ids, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeRaidArrays succeed
                     data = aws_result.resolved_data
@@ -269,7 +269,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
             service_error_ids = null
             stack_id = null
 
-            opsworks_service.DescribeServiceErrors username, session_id, region_name, instance_id, service_error_ids, stack_id, ( aws_result ) ->
+            opsworks_service.DescribeServiceErrors {sender:this}, username, session_id, region_name, instance_id, service_error_ids, stack_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeServiceErrors succeed
                     data = aws_result.resolved_data
@@ -288,7 +288,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
         asyncTest "/aws/opsworks opsworks.DescribeTimeBasedAutoScaling()", () ->
             instance_ids = null
 
-            opsworks_service.DescribeTimeBasedAutoScaling username, session_id, region_name, instance_ids, ( aws_result ) ->
+            opsworks_service.DescribeTimeBasedAutoScaling {sender:this}, username, session_id, region_name, instance_ids, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeTimeBasedAutoScaling succeed
                     data = aws_result.resolved_data
@@ -307,7 +307,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
         asyncTest "/aws/opsworks opsworks.DescribeUserProfiles()", () ->
             iam_user_arns = null
 
-            opsworks_service.DescribeUserProfiles username, session_id, region_name, iam_user_arns, ( aws_result ) ->
+            opsworks_service.DescribeUserProfiles {sender:this}, username, session_id, region_name, iam_user_arns, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeUserProfiles succeed
                     data = aws_result.resolved_data
@@ -328,7 +328,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'opsworks_service'], (
             raid_array_id = null
             volume_ids = null
 
-            opsworks_service.DescribeVolumes username, session_id, region_name, instance_id, raid_array_id, volume_ids, ( aws_result ) ->
+            opsworks_service.DescribeVolumes {sender:this}, username, session_id, region_name, instance_id, raid_array_id, volume_ids, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeVolumes succeed
                     data = aws_result.resolved_data

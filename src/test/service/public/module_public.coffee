@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : public_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:28
+#* Create date  : 2013-06-04 17:14:57
 #* Description  : qunit test module for public_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'public_service'], ( M
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'public_service'], ( M
         asyncTest "/public public.get_hostname()", () ->
             instance_id = null
 
-            public_service.get_hostname region_name, instance_id, ( forge_result ) ->
+            public_service.get_hostname {sender:this}, region_name, instance_id, ( forge_result ) ->
                 if !forge_result.is_error
                 #get_hostname succeed
                     data = forge_result.resolved_data
@@ -84,7 +84,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'public_service'], ( M
         asyncTest "/public public.get_dns_ip()", () ->
 
 
-            public_service.get_dns_ip region_name, ( forge_result ) ->
+            public_service.get_dns_ip {sender:this}, region_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #get_dns_ip succeed
                     data = forge_result.resolved_data

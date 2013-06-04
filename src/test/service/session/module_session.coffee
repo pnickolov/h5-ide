@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : session_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:29
+#* Create date  : 2013-06-04 17:14:58
 #* Description  : qunit test module for session_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
         asyncTest "/session session.logout()", () ->
 
 
-            session_service.logout username, session_id, ( forge_result ) ->
+            session_service.logout {sender:this}, username, session_id, ( forge_result ) ->
                 if !forge_result.is_error
                 #logout succeed
                     data = forge_result.resolved_data
@@ -86,7 +86,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
             secret_key = null
             account_id = null
 
-            session_service.set_credential username, session_id, access_key, secret_key, account_id, ( forge_result ) ->
+            session_service.set_credential {sender:this}, username, session_id, access_key, secret_key, account_id, ( forge_result ) ->
                 if !forge_result.is_error
                 #set_credential succeed
                     data = forge_result.resolved_data
@@ -106,7 +106,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service'], ( MC, $, test_util, s
             guest_id = null
             guestname = null
 
-            session_service.guest guest_id, guestname, ( forge_result ) ->
+            session_service.guest {sender:this}, guest_id, guestname, ( forge_result ) ->
                 if !forge_result.is_error
                 #guest succeed
                     data = forge_result.resolved_data

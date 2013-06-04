@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : autoscaling_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:32
+#* Create date  : 2013-06-04 17:15:01
 #* Description  : qunit test module for autoscaling_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
         asyncTest "/aws/autoscaling autoscaling.DescribeAdjustmentTypes()", () ->
 
 
-            autoscaling_service.DescribeAdjustmentTypes username, session_id, region_name, ( aws_result ) ->
+            autoscaling_service.DescribeAdjustmentTypes {sender:this}, username, session_id, region_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeAdjustmentTypes succeed
                     data = aws_result.resolved_data
@@ -86,7 +86,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
             max_records = null
             next_token = null
 
-            autoscaling_service.DescribeAutoScalingGroups username, session_id, region_name, group_names, max_records, next_token, ( aws_result ) ->
+            autoscaling_service.DescribeAutoScalingGroups {sender:this}, username, session_id, region_name, group_names, max_records, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeAutoScalingGroups succeed
                     data = aws_result.resolved_data
@@ -107,7 +107,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
             max_records = null
             next_token = null
 
-            autoscaling_service.DescribeAutoScalingInstances username, session_id, region_name, instance_ids, max_records, next_token, ( aws_result ) ->
+            autoscaling_service.DescribeAutoScalingInstances {sender:this}, username, session_id, region_name, instance_ids, max_records, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeAutoScalingInstances succeed
                     data = aws_result.resolved_data
@@ -126,7 +126,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
         asyncTest "/aws/autoscaling autoscaling.DescribeAutoScalingNotificationTypes()", () ->
 
 
-            autoscaling_service.DescribeAutoScalingNotificationTypes username, session_id, region_name, ( aws_result ) ->
+            autoscaling_service.DescribeAutoScalingNotificationTypes {sender:this}, username, session_id, region_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeAutoScalingNotificationTypes succeed
                     data = aws_result.resolved_data
@@ -147,7 +147,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
             max_records = null
             next_token = null
 
-            autoscaling_service.DescribeLaunchConfigurations username, session_id, region_name, config_names, max_records, next_token, ( aws_result ) ->
+            autoscaling_service.DescribeLaunchConfigurations {sender:this}, username, session_id, region_name, config_names, max_records, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeLaunchConfigurations succeed
                     data = aws_result.resolved_data
@@ -166,7 +166,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
         asyncTest "/aws/autoscaling autoscaling.DescribeMetricCollectionTypes()", () ->
 
 
-            autoscaling_service.DescribeMetricCollectionTypes username, session_id, region_name, ( aws_result ) ->
+            autoscaling_service.DescribeMetricCollectionTypes {sender:this}, username, session_id, region_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeMetricCollectionTypes succeed
                     data = aws_result.resolved_data
@@ -187,7 +187,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
             max_records = null
             next_token = null
 
-            autoscaling_service.DescribeNotificationConfigurations username, session_id, region_name, group_names, max_records, next_token, ( aws_result ) ->
+            autoscaling_service.DescribeNotificationConfigurations {sender:this}, username, session_id, region_name, group_names, max_records, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeNotificationConfigurations succeed
                     data = aws_result.resolved_data
@@ -209,7 +209,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
             max_records = null
             next_token = null
 
-            autoscaling_service.DescribePolicies username, session_id, region_name, group_name, policy_names, max_records, next_token, ( aws_result ) ->
+            autoscaling_service.DescribePolicies {sender:this}, username, session_id, region_name, group_name, policy_names, max_records, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribePolicies succeed
                     data = aws_result.resolved_data
@@ -228,7 +228,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
         asyncTest "/aws/autoscaling autoscaling.DescribeScalingActivities()", () ->
 
 
-            autoscaling_service.DescribeScalingActivities username, session_id, ( aws_result ) ->
+            autoscaling_service.DescribeScalingActivities {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeScalingActivities succeed
                     data = aws_result.resolved_data
@@ -247,7 +247,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
         asyncTest "/aws/autoscaling autoscaling.DescribeScalingProcessTypes()", () ->
 
 
-            autoscaling_service.DescribeScalingProcessTypes username, session_id, region_name, ( aws_result ) ->
+            autoscaling_service.DescribeScalingProcessTypes {sender:this}, username, session_id, region_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeScalingProcessTypes succeed
                     data = aws_result.resolved_data
@@ -266,7 +266,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
         asyncTest "/aws/autoscaling autoscaling.DescribeScheduledActions()", () ->
 
 
-            autoscaling_service.DescribeScheduledActions username, session_id, ( aws_result ) ->
+            autoscaling_service.DescribeScheduledActions {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeScheduledActions succeed
                     data = aws_result.resolved_data
@@ -287,7 +287,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
             max_records = null
             next_token = null
 
-            autoscaling_service.DescribeTags username, session_id, region_name, filters, max_records, next_token, ( aws_result ) ->
+            autoscaling_service.DescribeTags {sender:this}, username, session_id, region_name, filters, max_records, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeTags succeed
                     data = aws_result.resolved_data

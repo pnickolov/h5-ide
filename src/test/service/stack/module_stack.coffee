@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : stack_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-06-04 12:17:37
+#* Create date  : 2013-06-04 17:15:00
 #* Description  : qunit test module for stack_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
         asyncTest "/stack stack.create()", () ->
             spec = null
 
-            stack_service.create username, session_id, region_name, spec, ( forge_result ) ->
+            stack_service.create {sender:this}, username, session_id, region_name, spec, ( forge_result ) ->
                 if !forge_result.is_error
                 #create succeed
                     data = forge_result.resolved_data
@@ -85,7 +85,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
             stack_id = null
             stack_name = null
 
-            stack_service.remove username, session_id, region_name, stack_id, stack_name, ( forge_result ) ->
+            stack_service.remove {sender:this}, username, session_id, region_name, stack_id, stack_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #remove succeed
                     data = forge_result.resolved_data
@@ -104,7 +104,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
         asyncTest "/stack stack.save()", () ->
             spec = null
 
-            stack_service.save username, session_id, region_name, spec, ( forge_result ) ->
+            stack_service.save {sender:this}, username, session_id, region_name, spec, ( forge_result ) ->
                 if !forge_result.is_error
                 #save succeed
                     data = forge_result.resolved_data
@@ -125,7 +125,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
             new_name = null
             stack_name = null
 
-            stack_service.rename username, session_id, region_name, stack_id, new_name, stack_name, ( forge_result ) ->
+            stack_service.rename {sender:this}, username, session_id, region_name, stack_id, new_name, stack_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #rename succeed
                     data = forge_result.resolved_data
@@ -150,7 +150,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
             app_layout = null
             stack_name = null
 
-            stack_service.run username, session_id, region_name, stack_id, app_name, app_desc, app_component, app_property, app_layout, stack_name, ( forge_result ) ->
+            stack_service.run {sender:this}, username, session_id, region_name, stack_id, app_name, app_desc, app_component, app_property, app_layout, stack_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #run succeed
                     data = forge_result.resolved_data
@@ -171,7 +171,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
             new_name = null
             stack_name = null
 
-            stack_service.save_as username, session_id, region_name, stack_id, new_name, stack_name, ( forge_result ) ->
+            stack_service.save_as {sender:this}, username, session_id, region_name, stack_id, new_name, stack_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #save_as succeed
                     data = forge_result.resolved_data
@@ -190,7 +190,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
         asyncTest "/stack stack.info()", () ->
             stack_ids = null
 
-            stack_service.info username, session_id, region_name, stack_ids, ( forge_result ) ->
+            stack_service.info {sender:this}, username, session_id, region_name, stack_ids, ( forge_result ) ->
                 if !forge_result.is_error
                 #info succeed
                     data = forge_result.resolved_data
@@ -209,7 +209,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
         asyncTest "/stack stack.list()", () ->
             stack_ids = null
 
-            stack_service.list username, session_id, region_name, stack_ids, ( forge_result ) ->
+            stack_service.list {sender:this}, username, session_id, region_name, stack_ids, ( forge_result ) ->
                 if !forge_result.is_error
                 #list succeed
                     data = forge_result.resolved_data

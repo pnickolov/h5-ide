@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : iam_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:43
+#* Create date  : 2013-06-04 17:15:11
 #* Description  : qunit test module for iam_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'iam_service'], ( MC, 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'iam_service'], ( MC, 
         asyncTest "/aws/iam iam.GetServerCertificate()", () ->
             servercer_name = null
 
-            iam_service.GetServerCertificate username, session_id, region_name, servercer_name, ( aws_result ) ->
+            iam_service.GetServerCertificate {sender:this}, username, session_id, region_name, servercer_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #GetServerCertificate succeed
                     data = aws_result.resolved_data
@@ -86,7 +86,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'iam_service'], ( MC, 
             max_items = null
             path_prefix = null
 
-            iam_service.ListServerCertificates username, session_id, region_name, marker, max_items, path_prefix, ( aws_result ) ->
+            iam_service.ListServerCertificates {sender:this}, username, session_id, region_name, marker, max_items, path_prefix, ( aws_result ) ->
                 if !aws_result.is_error
                 #ListServerCertificates succeed
                     data = aws_result.resolved_data

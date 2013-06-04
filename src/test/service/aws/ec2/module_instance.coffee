@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : instance_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:38
+#* Create date  : 2013-06-04 17:15:07
 #* Description  : qunit test module for instance_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'instance_service'], (
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -66,7 +66,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'instance_service'], (
             instance_ids = null
             filters = null
 
-            instance_service.DescribeInstances username, session_id, region_name, instance_ids, filters, ( aws_result ) ->
+            instance_service.DescribeInstances {sender:this}, username, session_id, region_name, instance_ids, filters, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeInstances succeed
                     data = aws_result.resolved_data
@@ -88,7 +88,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'instance_service'], (
             max_results = null
             next_token = null
 
-            instance_service.DescribeInstanceStatus username, session_id, region_name, instance_ids, include_all_instances, max_results, next_token, ( aws_result ) ->
+            instance_service.DescribeInstanceStatus {sender:this}, username, session_id, region_name, instance_ids, include_all_instances, max_results, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeInstanceStatus succeed
                     data = aws_result.resolved_data
@@ -108,7 +108,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'instance_service'], (
             bundle_ids = null
             filters = null
 
-            instance_service.DescribeBundleTasks username, session_id, region_name, bundle_ids, filters, ( aws_result ) ->
+            instance_service.DescribeBundleTasks {sender:this}, username, session_id, region_name, bundle_ids, filters, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeBundleTasks succeed
                     data = aws_result.resolved_data
@@ -128,7 +128,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'instance_service'], (
             instance_id = null
             attribute_name = null
 
-            instance_service.DescribeInstanceAttribute username, session_id, region_name, instance_id, attribute_name, ( aws_result ) ->
+            instance_service.DescribeInstanceAttribute {sender:this}, username, session_id, region_name, instance_id, attribute_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeInstanceAttribute succeed
                     data = aws_result.resolved_data
@@ -147,7 +147,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'instance_service'], (
         asyncTest "/aws/ec2 instance.GetConsoleOutput()", () ->
             instance_id = null
 
-            instance_service.GetConsoleOutput username, session_id, region_name, instance_id, ( aws_result ) ->
+            instance_service.GetConsoleOutput {sender:this}, username, session_id, region_name, instance_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #GetConsoleOutput succeed
                     data = aws_result.resolved_data
@@ -167,7 +167,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'instance_service'], (
             instance_id = null
             key_data = null
 
-            instance_service.GetPasswordData username, session_id, region_name, instance_id, key_data, ( aws_result ) ->
+            instance_service.GetPasswordData {sender:this}, username, session_id, region_name, instance_id, key_data, ( aws_result ) ->
                 if !aws_result.is_error
                 #GetPasswordData succeed
                     data = aws_result.resolved_data

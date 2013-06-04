@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : vpn_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:50
+#* Create date  : 2013-06-04 17:15:17
 #* Description  : qunit test module for vpn_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'vpn_service'], ( MC, 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -66,7 +66,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'vpn_service'], ( MC, 
             vpn_ids = null
             filters = null
 
-            vpn_service.DescribeVpnConnections username, session_id, region_name, vpn_ids, filters, ( aws_result ) ->
+            vpn_service.DescribeVpnConnections {sender:this}, username, session_id, region_name, vpn_ids, filters, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeVpnConnections succeed
                     data = aws_result.resolved_data

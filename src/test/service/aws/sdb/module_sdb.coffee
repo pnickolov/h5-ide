@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : sdb_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:47
+#* Create date  : 2013-06-04 17:15:15
 #* Description  : qunit test module for sdb_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'sdb_service'], ( MC, 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -68,7 +68,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'sdb_service'], ( MC, 
             attribute_name = null
             consistent_read = null
 
-            sdb_service.GetAttributes username, session_id, region_name, domain_name, item_name, attribute_name, consistent_read, ( aws_result ) ->
+            sdb_service.GetAttributes {sender:this}, username, session_id, region_name, domain_name, item_name, attribute_name, consistent_read, ( aws_result ) ->
                 if !aws_result.is_error
                 #GetAttributes succeed
                     data = aws_result.resolved_data
@@ -88,7 +88,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'sdb_service'], ( MC, 
             max_domains = null
             next_token = null
 
-            sdb_service.ListDomains username, session_id, region_name, max_domains, next_token, ( aws_result ) ->
+            sdb_service.ListDomains {sender:this}, username, session_id, region_name, max_domains, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #ListDomains succeed
                     data = aws_result.resolved_data

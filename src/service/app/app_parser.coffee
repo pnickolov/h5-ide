@@ -342,6 +342,7 @@ define [ 'app_vo', 'result_vo', 'constant', 'aws_parser'], ( app_vo, result_vo, 
 
         #return vo
         #TO-DO
+        result
 
     #private (parser list return)
     parserListReturn = ( result, return_code, param ) ->

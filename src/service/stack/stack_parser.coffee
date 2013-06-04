@@ -224,6 +224,7 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
 
         #return vo
         #TO-DO
+        result
 
     #private (parser list return)
     parserListReturn = ( result, return_code, param ) ->

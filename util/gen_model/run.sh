@@ -333,7 +333,7 @@ function fn_generate_coffee() {
             #echo "format_event '' ${_RESOURCE_l} ${_CUR_API}"
             format_event "" ${_RESOURCE_l} ${_CUR_API}
         fi
-        EVENT=${G_EVENT}
+        EVENT=${G_EVENT}"_RETURN"
         echo ${EVENT}
         #continue
 

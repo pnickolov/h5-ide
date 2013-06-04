@@ -72,8 +72,13 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 
 				result = forge_result.resolved_data
 
-				$.cookie 'user_name',  result.usercode,   { expires: 3600 }
-				$.cookie 'session_id', result.session_id, { expires: 3600 }
+				#set cookies
+				$.cookie 'userid',      result.userid,      { expires: 3600 }
+				$.cookie 'usercode',    result.usercode,    { expires: 3600 }
+				$.cookie 'session_id',  result.session_id,  { expires: 3600 }
+				$.cookie 'region_name', result.region_name, { expires: 3600 }
+				$.cookie 'email',       result.email,       { expires: 3600 }
+				$.cookie 'has_cred',    result.has_cred,    { expires: 3600 }
 
 				#redirect to page ide.html
 				window.location.href = 'ide.html'

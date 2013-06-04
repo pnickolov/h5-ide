@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : app_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 13:50:53
+#* Create date  : 2013-06-04 15:26:54
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -21,11 +21,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
         ###### api ######
         #create api (define function)
-        create : ( username, session_id, region_name, spec ) ->
+        create : ( src, username, session_id, region_name, spec ) ->
 
             me = this
 
-            app_service.create username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.create src, username, session_id, region_name, spec, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #create succeed
@@ -45,11 +47,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
 
         #update api (define function)
-        update : ( username, session_id, region_name, spec, app_id ) ->
+        update : ( src, username, session_id, region_name, spec, app_id ) ->
 
             me = this
 
-            app_service.update username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.update src, username, session_id, region_name, spec, app_id, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #update succeed
@@ -69,11 +73,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
 
         #rename api (define function)
-        rename : ( username, session_id, region_name, app_id, new_name, app_name=null ) ->
+        rename : ( src, username, session_id, region_name, app_id, new_name, app_name=null ) ->
 
             me = this
 
-            app_service.rename username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.rename src, username, session_id, region_name, app_id, new_name, app_name=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #rename succeed
@@ -93,11 +99,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
 
         #terminate api (define function)
-        terminate : ( username, session_id, region_name, app_id, app_name=null ) ->
+        terminate : ( src, username, session_id, region_name, app_id, app_name=null ) ->
 
             me = this
 
-            app_service.terminate username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.terminate src, username, session_id, region_name, app_id, app_name=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #terminate succeed
@@ -117,11 +125,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
 
         #start api (define function)
-        start : ( username, session_id, region_name, app_id, app_name=null ) ->
+        start : ( src, username, session_id, region_name, app_id, app_name=null ) ->
 
             me = this
 
-            app_service.start username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.start src, username, session_id, region_name, app_id, app_name=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #start succeed
@@ -141,11 +151,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
 
         #stop api (define function)
-        stop : ( username, session_id, region_name, app_id, app_name=null ) ->
+        stop : ( src, username, session_id, region_name, app_id, app_name=null ) ->
 
             me = this
 
-            app_service.stop username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.stop src, username, session_id, region_name, app_id, app_name=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #stop succeed
@@ -165,11 +177,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
 
         #reboot api (define function)
-        reboot : ( username, session_id, region_name, app_id, app_name=null ) ->
+        reboot : ( src, username, session_id, region_name, app_id, app_name=null ) ->
 
             me = this
 
-            app_service.reboot username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.reboot src, username, session_id, region_name, app_id, app_name=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #reboot succeed
@@ -189,11 +203,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
 
         #info api (define function)
-        info : ( username, session_id, region_name, app_ids=null ) ->
+        info : ( src, username, session_id, region_name, app_ids=null ) ->
 
             me = this
 
-            app_service.info username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.info src, username, session_id, region_name, app_ids=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #info succeed
@@ -213,11 +229,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
 
         #list api (define function)
-        list : ( username, session_id, region_name, app_ids=null ) ->
+        list : ( src, username, session_id, region_name, app_ids=null ) ->
 
             me = this
 
-            app_service.list username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.list src, username, session_id, region_name, app_ids=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #list succeed
@@ -237,11 +255,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
 
         #resource api (define function)
-        resource : ( username, session_id, region_name, app_id ) ->
+        resource : ( src, username, session_id, region_name, app_id ) ->
 
             me = this
 
-            app_service.resource username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.resource src, username, session_id, region_name, app_id, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #resource succeed
@@ -261,11 +281,13 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
 
         #summary api (define function)
-        summary : ( username, session_id, region_name=null ) ->
+        summary : ( src, username, session_id, region_name=null ) ->
 
             me = this
 
-            app_service.summary username, password, ( forge_result ) ->
+            src.model = me
+
+            app_service.summary src, username, session_id, region_name=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #summary succeed

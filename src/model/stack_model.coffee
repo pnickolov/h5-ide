@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : stack_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 13:50:55
+#* Create date  : 2013-06-04 15:26:56
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -21,11 +21,13 @@ define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, st
 
         ###### api ######
         #create api (define function)
-        create : ( username, session_id, region_name, spec ) ->
+        create : ( src, username, session_id, region_name, spec ) ->
 
             me = this
 
-            stack_service.create username, password, ( forge_result ) ->
+            src.model = me
+
+            stack_service.create src, username, session_id, region_name, spec, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #create succeed
@@ -45,11 +47,13 @@ define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, st
 
 
         #remove api (define function)
-        remove : ( username, session_id, region_name, stack_id, stack_name=null ) ->
+        remove : ( src, username, session_id, region_name, stack_id, stack_name=null ) ->
 
             me = this
 
-            stack_service.remove username, password, ( forge_result ) ->
+            src.model = me
+
+            stack_service.remove src, username, session_id, region_name, stack_id, stack_name=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #remove succeed
@@ -69,11 +73,13 @@ define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, st
 
 
         #save api (define function)
-        save : ( username, session_id, region_name, spec ) ->
+        save : ( src, username, session_id, region_name, spec ) ->
 
             me = this
 
-            stack_service.save username, password, ( forge_result ) ->
+            src.model = me
+
+            stack_service.save src, username, session_id, region_name, spec, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #save succeed
@@ -93,11 +99,13 @@ define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, st
 
 
         #rename api (define function)
-        rename : ( username, session_id, region_name, stack_id, new_name, stack_name=null ) ->
+        rename : ( src, username, session_id, region_name, stack_id, new_name, stack_name=null ) ->
 
             me = this
 
-            stack_service.rename username, password, ( forge_result ) ->
+            src.model = me
+
+            stack_service.rename src, username, session_id, region_name, stack_id, new_name, stack_name=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #rename succeed
@@ -117,11 +125,13 @@ define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, st
 
 
         #run api (define function)
-        run : ( username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null ) ->
+        run : ( src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null ) ->
 
             me = this
 
-            stack_service.run username, password, ( forge_result ) ->
+            src.model = me
+
+            stack_service.run src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #run succeed
@@ -141,11 +151,13 @@ define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, st
 
 
         #save_as api (define function)
-        save_as : ( username, session_id, region_name, stack_id, new_name, stack_name=null ) ->
+        save_as : ( src, username, session_id, region_name, stack_id, new_name, stack_name=null ) ->
 
             me = this
 
-            stack_service.save_as username, password, ( forge_result ) ->
+            src.model = me
+
+            stack_service.save_as src, username, session_id, region_name, stack_id, new_name, stack_name=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #save_as succeed
@@ -165,11 +177,13 @@ define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, st
 
 
         #info api (define function)
-        info : ( username, session_id, region_name, stack_ids=null ) ->
+        info : ( src, username, session_id, region_name, stack_ids=null ) ->
 
             me = this
 
-            stack_service.info username, password, ( forge_result ) ->
+            src.model = me
+
+            stack_service.info src, username, session_id, region_name, stack_ids=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #info succeed
@@ -189,11 +203,13 @@ define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, st
 
 
         #list api (define function)
-        list : ( username, session_id, region_name, stack_ids=null ) ->
+        list : ( src, username, session_id, region_name, stack_ids=null ) ->
 
             me = this
 
-            stack_service.list username, password, ( forge_result ) ->
+            src.model = me
+
+            stack_service.list src, username, session_id, region_name, stack_ids=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #list succeed

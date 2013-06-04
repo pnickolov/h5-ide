@@ -43,12 +43,15 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 ###
 
 
-define [ 'MC', 'session_model' ,'jquery', 'apiList', 'instance_service'], ( MC, session_model, $, apiList, instance_service ) ->
+define [ 'MC', 'session_model' ,'jquery', 'apiList', 'instance_model'], ( MC, session_model, $, apiList, instance_model ) ->
 	#session info
 
-	session_id 	= ""
-	usercode	= ""
-	region_name	= ""
+	session_id 	 = ""
+	usercode	 = ""
+	region_name	 = ""
+
+	dict_request = {}
+	me           = this
 
 
 	#private method
@@ -60,7 +63,7 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'instance_service'], ( MC, 
 		password = $( '#login_password' ).val()
 
 		#invoke session.login api
-		session_model.login username, password
+		session_model.login {sender: this}, username, password
 
 		#login return handler (dispatch from service/session/session_model)
 		session_model.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->
@@ -89,6 +92,38 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'instance_service'], ( MC, 
 
 
 	#private
+	resolveResult = ( request_time, service, resource, api, result ) ->
+
+		data = window.API_DATA_LIST[ service ][ resource ][ api ]
+		if !result.is_error
+		#DescribeInstances succeed
+
+			$( "#label_request_result" ).text data.method + " succeed!"
+
+			#Object to JSON, pretty print
+			$( "#response_data" ).removeClass("prettyprinted").text JSON.stringify(result.resolved_data ,null,4  )
+			prettyPrint()
+
+			log_data = {
+				request_time   : MC.dateFormat(request_time, "yyyy-MM-dd hh:mm:ss"),
+				response_time  : MC.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"),
+				service_name   : service,
+				resource_name  : resource,
+				api_name       : api,
+				json_ok        : "status-green",
+				e_ok           : "status-green"
+			}
+
+			window.add_request_log log_data
+
+		else
+		#DescribeInstances failed
+
+			$( "#label_request_result" ).text data.method + " failed!"
+			$( "#response_data" ).text aws_result.error_message
+		
+
+	#private
 	request = ( event ) ->
 
 		event.preventDefault()
@@ -101,40 +136,20 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'instance_service'], ( MC, 
 
 		current_service  = $( "#service_list" ).val()
 		current_resource = $( "#resource_list" ).val()
-		data             = window.API_DATA_LIST[ current_service ][ current_resource ][ current_api ]
 
 		request_time     = new Date()
 		response_time    = null
 
+		key              = current_service + "-" + current_resource + "-" + current_api
+		dict_request[key]= event
+		
 
-		instance_service.DescribeInstances usercode, session_id, region_name, null, null, ( aws_result ) ->
-			if !aws_result.is_error
-			#DescribeInstances succeed
+		#instance
+		instance_model.DescribeInstances {sender: me}, usercode, session_id, region_name, null, null
+		instance_model.once "EC2_INS_DESC_INSTANCES_RETURN", ( aws_result ) ->
+			resolveResult request_time, current_service, current_resource, current_api, aws_result
 
-				$( "#label_request_result" ).text data.method + " succeed!"
-
-				#Object to JSON, pretty print
-				$( "#response_data" ).removeClass("prettyprinted").text JSON.stringify(aws_result.resolved_data ,null,4  )
-				prettyPrint()
-
-				log_data = {
-					request_time   : MC.dateFormat(request_time, "yyyy-MM-dd hh:mm:ss"),
-					response_time  : MC.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"),
-					service_name   : current_service,
-					resource_name  : current_resource,
-					api_name       : current_api,
-					json_ok        : "status-green",
-					e_ok           : "status-green"
-				}
-
-				window.add_request_log log_data
-
-			else
-			#DescribeInstances failed
-
-				$( "#label_request_result" ).text data.method + " failed!"
-				$( "#response_data" ).text aws_result.error_message
-
+		null
 
 	#public object
 	ready : () ->

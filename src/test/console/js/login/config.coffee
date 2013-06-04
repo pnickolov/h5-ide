@@ -60,6 +60,7 @@ require.config {
 		'session_service'   : 'service/session/session_service'
 
 		'session_model'     : 'model/session_model'
+		'instance_model'    : 'model/aws/ec2/instance_model'
 
 		 #service
 		'instance_vo'        : 'service/aws/ec2/instance/instance_vo'

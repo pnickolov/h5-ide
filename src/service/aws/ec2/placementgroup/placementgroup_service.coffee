@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : placementgroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:14
+#* Create date  : 2013-06-04 15:13:19
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'placementgroup_parser', 'result_vo' ], ( MC, placementgroup_pars
     URL = '/aws/ec2/placementgroup/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'placementgroup_parser', 'result_vo' ], ( MC, placementgroup_pars
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.aws_result = parser result, return_code, param_ary
 
                     callback result_vo.aws_result
@@ -52,18 +53,18 @@ define [ 'MC', 'placementgroup_parser', 'result_vo' ], ( MC, placementgroup_pars
     # end of send_request
 
     #def CreatePlacementGroup(self, username, session_id, region_name, group_name, strategy='cluster'):
-    CreatePlacementGroup = ( username, session_id, region_name, group_name, strategy='cluster', callback ) ->
-        send_request "CreatePlacementGroup", [ username, session_id, region_name, group_name, strategy ], placementgroup_parser.parserCreatePlacementGroupReturn, callback
+    CreatePlacementGroup = ( src, username, session_id, region_name, group_name, strategy='cluster', callback ) ->
+        send_request "CreatePlacementGroup", src, [ username, session_id, region_name, group_name, strategy ], placementgroup_parser.parserCreatePlacementGroupReturn, callback
         true
 
     #def DeletePlacementGroup(self, username, session_id, region_name, group_name):
-    DeletePlacementGroup = ( username, session_id, region_name, group_name, callback ) ->
-        send_request "DeletePlacementGroup", [ username, session_id, region_name, group_name ], placementgroup_parser.parserDeletePlacementGroupReturn, callback
+    DeletePlacementGroup = ( src, username, session_id, region_name, group_name, callback ) ->
+        send_request "DeletePlacementGroup", src, [ username, session_id, region_name, group_name ], placementgroup_parser.parserDeletePlacementGroupReturn, callback
         true
 
     #def DescribePlacementGroups(self, username, session_id, region_name, group_names=None, filters=None):
-    DescribePlacementGroups = ( username, session_id, region_name, group_names=null, filters=null, callback ) ->
-        send_request "DescribePlacementGroups", [ username, session_id, region_name, group_names, filters ], placementgroup_parser.parserDescribePlacementGroupsReturn, callback
+    DescribePlacementGroups = ( src, username, session_id, region_name, group_names=null, filters=null, callback ) ->
+        send_request "DescribePlacementGroups", src, [ username, session_id, region_name, group_names, filters ], placementgroup_parser.parserDescribePlacementGroupsReturn, callback
         true
 
 

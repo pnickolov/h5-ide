@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : session_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 09:43:35
+#* Create date  : 2013-06-04 15:26:53
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -16,16 +16,18 @@ define [ 'backbone', 'session_service', 'session_vo'], ( Backbone, session_servi
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : session_vo.session_info
+            vo : session_vo.session
         }
 
         ###### api ######
         #login api (define function)
-        login : ( username, password ) ->
+        login : ( src, username, password ) ->
 
             me = this
 
-            session_service.login username, password, ( forge_result ) ->
+            src.model = me
+
+            session_service.login src, username, password, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #login succeed
@@ -33,8 +35,7 @@ define [ 'backbone', 'session_service', 'session_vo'], ( Backbone, session_servi
                     session_info = forge_result.resolved_data
 
                     #set vo
-                    me.set 'vo.usercode'   , session_vo.session_info.usercode
-                    me.set 'vo.region_name', session_vo.session_info.region_name
+
 
                 else
                 #login failed
@@ -46,11 +47,13 @@ define [ 'backbone', 'session_service', 'session_vo'], ( Backbone, session_servi
 
 
         #logout api (define function)
-        logout : ( username, session_id ) ->
+        logout : ( src, username, session_id ) ->
 
             me = this
 
-            session_service.logout username, password, ( forge_result ) ->
+            src.model = me
+
+            session_service.logout src, username, session_id, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #logout succeed
@@ -70,11 +73,13 @@ define [ 'backbone', 'session_service', 'session_vo'], ( Backbone, session_servi
 
 
         #set_credential api (define function)
-        set_credential : ( username, session_id, access_key, secret_key, account_id=null ) ->
+        set_credential : ( src, username, session_id, access_key, secret_key, account_id=null ) ->
 
             me = this
 
-            session_service.set_credential username, password, ( forge_result ) ->
+            src.model = me
+
+            session_service.set_credential src, username, session_id, access_key, secret_key, account_id=null, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #set_credential succeed
@@ -94,11 +99,13 @@ define [ 'backbone', 'session_service', 'session_vo'], ( Backbone, session_servi
 
 
         #guest api (define function)
-        guest : ( guest_id, guestname ) ->
+        guest : ( src, guest_id, guestname ) ->
 
             me = this
 
-            session_service.guest username, password, ( forge_result ) ->
+            src.model = me
+
+            session_service.guest src, guest_id, guestname, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #guest succeed

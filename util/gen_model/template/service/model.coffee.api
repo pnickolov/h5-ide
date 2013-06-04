@@ -1,9 +1,11 @@
         #@@api-name api (define function)
-        @@api-name : ( @@param-def ) ->
+        @@api-name : ( src, @@param-def ) ->
 
             me = this
 
-            @@resource-name_service.@@api-name username, password, ( @@api-type_result ) ->
+            src.model = me
+
+            @@resource-name_service.@@api-name src, @@param-def, ( @@api-type_result ) ->
 
                 if !@@api-type_result.is_error
                 #@@api-name succeed

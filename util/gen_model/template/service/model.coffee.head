@@ -1,0 +1,22 @@
+#*************************************************************************************
+#* Filename     : @@resource-name_model.coffee
+#* Creator      : gen_model.sh
+#* Create date  : @@create-date
+#* Description  : model know service
+#* Action       : 1.define vo
+#*                2.invoke api by service
+#*                3.dispatch event to controller
+# ************************************************************************************
+# (c)Copyright 2012 Madeiracloud  All Rights Reserved
+# ************************************************************************************
+
+define [ 'backbone', '@@resource-name_service', '@@resource-name_vo'], ( Backbone, @@resource-name_service, @@resource-name_vo ) ->
+
+    @@RESOURCE-NAMEModel = Backbone.Model.extend {
+
+        ###### vo (declare variable) ######
+        defaults : {
+            vo : @@resource-name_vo.@@resource-name
+        }
+
+        ###### api ######

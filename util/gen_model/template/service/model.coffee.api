@@ -1,0 +1,24 @@
+        #@@api-name api (define function)
+        @@api-name : ( @@param-def ) ->
+
+            me = this
+
+            @@resource-name_service.@@api-name username, password, ( @@api-type_result ) ->
+
+                if !@@api-type_result.is_error
+                #@@api-name succeed
+
+                    @@resource-name_info = @@api-type_result.resolved_data
+
+                    #set vo
+
+
+                else
+                #@@api-name failed
+
+                    console.log '@@resource-name.@@api-name failed, error is ' + @@api-type_result.error_message
+
+                #dispatch event (dispatch event whenever login succeed or failed)
+                me.trigger '@@EVENT-NAME', @@api-type_result
+
+

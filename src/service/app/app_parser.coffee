@@ -334,6 +334,35 @@ define [ 'app_vo', 'result_vo', 'constant', 'aws_parser'], ( app_vo, result_vo, 
     # end of parserSummaryReturn
 
 
+    #///////////////// Parser for list return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveListResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser list return)
+    parserListReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+
+            resolved_data = resolveListResult result
+
+            result_vo.forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        result_vo.forge_result
+
+    # end of parserListReturn
+
+
     #############################################################
     #public
     parserCreateReturn                       : parserCreateReturn
@@ -346,4 +375,5 @@ define [ 'app_vo', 'result_vo', 'constant', 'aws_parser'], ( app_vo, result_vo, 
     parserInfoReturn                         : parserInfoReturn
     parserResourceReturn                     : parserResourceReturn
     parserSummaryReturn                      : parserSummaryReturn
+    parserListReturn                         : parserListReturn
 

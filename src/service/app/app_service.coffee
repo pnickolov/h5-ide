@@ -101,6 +101,10 @@ define [ 'MC', 'app_parser', 'result_vo' ], ( MC, app_parser, result_vo ) ->
         send_request "summary", [ username, session_id, region_name ], app_parser.parserSummaryReturn, callback
         true
 
+    #def list(self, username, session_id, region_name, app_ids=None):
+    list = ( username, session_id, region_name, app_ids=null, callback ) ->
+        send_request "list", [ username, session_id, region_name, app_ids ], app_parser.parserListReturn, callback
+        true
 
     #############################################################
     #public
@@ -114,4 +118,5 @@ define [ 'MC', 'app_parser', 'result_vo' ], ( MC, app_parser, result_vo ) ->
     info                         : info
     resource                     : resource
     summary                      : summary
+    list                         : list
 

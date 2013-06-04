@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : app_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:29
+#* Create date  : 2013-06-04 12:17:35
 #* Description  : qunit test module for app_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -218,11 +218,30 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
                 test_reboot()
 
     #-----------------------------------------------
+    #Test list()
+    #-----------------------------------------------
+    test_list = () ->
+        asyncTest "/app app.list()", () ->
+            app_ids = null
+
+            app_service.list username, session_id, region_name, app_ids, ( forge_result ) ->
+                if !forge_result.is_error
+                #list succeed
+                    data = forge_result.resolved_data
+                    ok true, "list() succeed"
+                else
+                #list failed
+                    ok false, "list() failed" + forge_result.error_message
+            
+                start()
+                test_info()
+
+    #-----------------------------------------------
     #Test resource()
     #-----------------------------------------------
     test_resource = () ->
         asyncTest "/app app.resource()", () ->
-            app_id = "app-dab96805"
+            app_id = null
 
             app_service.resource username, session_id, region_name, app_id, ( forge_result ) ->
                 if !forge_result.is_error
@@ -234,7 +253,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
                     ok false, "resource() failed" + forge_result.error_message
             
                 start()
-                test_info()
+                test_list()
 
     #-----------------------------------------------
     #Test summary()

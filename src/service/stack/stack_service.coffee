@@ -86,6 +86,11 @@ define [ 'MC', 'stack_parser', 'result_vo' ], ( MC, stack_parser, result_vo ) ->
         send_request "info", [ username, session_id, region_name, stack_ids ], stack_parser.parserInfoReturn, callback
         true
 
+    #def list(self, username, session_id, region_name, stack_ids=None):
+    list = ( username, session_id, region_name, stack_ids=null, callback ) ->
+        send_request "list", [ username, session_id, region_name, stack_ids ], stack_parser.parserListReturn, callback
+        true
+
 
     #############################################################
     #public
@@ -96,4 +101,5 @@ define [ 'MC', 'stack_parser', 'result_vo' ], ( MC, stack_parser, result_vo ) ->
     run                          : run
     save_as                      : save_as
     info                         : info
+    list                         : list
 

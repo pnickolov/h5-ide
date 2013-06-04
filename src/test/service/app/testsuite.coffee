@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : app_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:29
+#* Create date  : 2013-06-04 12:17:35
 #* Description  : qunit testsuite for app_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved

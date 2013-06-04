@@ -216,6 +216,35 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
     # end of parserInfoReturn
 
 
+    #///////////////// Parser for list return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveListResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser list return)
+    parserListReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+
+            resolved_data = resolveListResult result
+
+            result_vo.forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        result_vo.forge_result
+
+    # end of parserListReturn
+
+
     #############################################################
     #public
     parserCreateReturn                       : parserCreateReturn
@@ -225,4 +254,5 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
     parserRunReturn                          : parserRunReturn
     parserSaveAsReturn                       : parserSaveAsReturn
     parserInfoReturn                         : parserInfoReturn
+    parserListReturn                         : parserListReturn
 

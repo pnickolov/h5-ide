@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : stack_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:31
+#* Create date  : 2013-06-04 12:17:37
 #* Description  : qunit test module for stack_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -202,6 +202,25 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
                 start()
                 test_save_as()
 
+    #-----------------------------------------------
+    #Test list()
+    #-----------------------------------------------
+    test_list = () ->
+        asyncTest "/stack stack.list()", () ->
+            stack_ids = null
 
-    test_info()
+            stack_service.list username, session_id, region_name, stack_ids, ( forge_result ) ->
+                if !forge_result.is_error
+                #list succeed
+                    data = forge_result.resolved_data
+                    ok true, "list() succeed"
+                else
+                #list failed
+                    ok false, "list() failed" + forge_result.error_message
+            
+                start()
+                test_info()
+
+
+    test_list()
 

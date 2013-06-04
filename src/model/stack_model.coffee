@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : stack_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 09:43:37
+#* Create date  : 2013-06-04 13:50:55
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -186,6 +186,30 @@ define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, st
 
                 #dispatch event (dispatch event whenever login succeed or failed)
                 me.trigger 'STACK_INFO_RETURN', forge_result
+
+
+        #list api (define function)
+        list : ( username, session_id, region_name, stack_ids=null ) ->
+
+            me = this
+
+            stack_service.list username, password, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #list succeed
+
+                    stack_info = forge_result.resolved_data
+
+                    #set vo
+
+
+                else
+                #list failed
+
+                    console.log 'stack.list failed, error is ' + forge_result.error_message
+
+                #dispatch event (dispatch event whenever login succeed or failed)
+                me.trigger 'STACK_LST_RETURN', forge_result
 
 
 

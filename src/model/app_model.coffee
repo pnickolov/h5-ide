@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : app_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 09:43:35
+#* Create date  : 2013-06-04 13:50:53
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -210,6 +210,30 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
                 #dispatch event (dispatch event whenever login succeed or failed)
                 me.trigger 'APP_INFO_RETURN', forge_result
+
+
+        #list api (define function)
+        list : ( username, session_id, region_name, app_ids=null ) ->
+
+            me = this
+
+            app_service.list username, password, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #list succeed
+
+                    app_info = forge_result.resolved_data
+
+                    #set vo
+
+
+                else
+                #list failed
+
+                    console.log 'app.list failed, error is ' + forge_result.error_message
+
+                #dispatch event (dispatch event whenever login succeed or failed)
+                me.trigger 'APP_LST_RETURN', forge_result
 
 
         #resource api (define function)

@@ -2,11 +2,7 @@
 #  Controller for navigation module
 ####################################
 
-define [ 'jquery',
-         'text!/module/navigation/template.html',
-         'app_model',
-         'UI.tooltip', 'UI.scrollbar', 'UI.accordion', 'hoverIntent'
-], ( $, template, app_model ) ->
+define [ 'jquery', 'text!/module/navigation/template.html', 'app_model' ], ( $, template, app_model ) ->
 
     #private
     loadModule = () ->
@@ -18,17 +14,18 @@ define [ 'jquery',
         $( template ).appendTo 'head'
 
         #get service(model)
-        app_model.list $.cookie( 'usercode' ), $.cookie( 'session_id' ), $.cookie( 'region_name' ), null
-        app_model.on 'APP_LST_RETURN', ( event ) ->
-            console.log 'APP_LST_RETURN'
+        console.log 'fefwewerqwrqwerqwersdfd'
+        app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), $.cookie( 'region_name' ), null
+        app_model.on 'APP_INFO_RETURN', ( event ) ->
+            console.log 'APP_INFO_RETURN'
             console.log event
 
-        #load remote module1.js
-        require [ './module/navigation/view' ], ( View ) ->
+            #load remote module1.js
+            require [ './module/navigation/view', 'UI.tooltip', 'UI.scrollbar', 'UI.accordion', 'hoverIntent' ], ( View ) ->
 
-            #view
-            view       = new View()
-            view.render()
+                #view
+                view       = new View()
+                view.render()
 
     unLoadModule = () ->
         #view.remove()

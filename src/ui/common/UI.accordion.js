@@ -3,7 +3,7 @@
 #* Filename: UI.accordion
 #* Creator: Angel
 #* Description: UI.accordion
-#* Date: 20130601
+#* Date: 201306032
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -14,20 +14,23 @@ var accordion = {
 		var accordion_head = $(this),
 			accordion_group = accordion_head.parent(),
 			accordion_body = accordion_group.find('.accordion-body'),
-			is_collapsed = accordion_body.hasClass('expanded'),
+			is_expanded = accordion_group.hasClass('expanded'),
 			is_exclusive = accordion_group.parent().data('accordion-option') === 'exclusive';
 
 		if (is_exclusive)
 		{
-			accordion_group.parent().find('.expanded').slideUp(300, function ()
+			accordion_group.parent().find('.expanded .accordion-body').slideUp(300, function ()
 			{
-				$(this).removeClass('expanded');
+				$(this).parent().removeClass('expanded');
 			});
 		}
 
-		if (!is_collapsed)
+		if (!is_expanded)
 		{
-			accordion_body.slideDown(300).addClass('expanded');
+			accordion_body.slideDown(300, function ()
+			{
+				accordion_group.addClass('expanded');
+			});
 		}
 		else
 		{
@@ -35,7 +38,7 @@ var accordion = {
 			{
 				accordion_body.slideUp(300, function ()
 				{
-					$(this).removeClass('expanded');
+					accordion_group.removeClass('expanded');
 				});
 			}
 		}

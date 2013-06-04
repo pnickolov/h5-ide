@@ -2,7 +2,7 @@
 #  Controller for navigation module
 ####################################
 
-define [ 'jquery', 'text!/module/navigation/template.html' ], ( $, template ) ->
+define [ 'jquery', 'text!/module/navigation/template.html', 'app_model' ], ( $, template, app_model ) ->
 
     #private
     loadModule = () ->
@@ -11,14 +11,21 @@ define [ 'jquery', 'text!/module/navigation/template.html' ], ( $, template ) ->
         template = '<script type="text/x-handlebars-template" id="navigation-tmpl">' + template + '</script>'
 
         #load remote html template
-        $( template ).appendTo '#navigation'
+        $( template ).appendTo 'head'
 
-        #load remote module1.js
-        require [ './module/navigation/view' ], ( View ) ->
+        #get service(model)
+        console.log 'fefwewerqwrqwerqwersdfd'
+        app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), $.cookie( 'region_name' ), null
+        app_model.on 'APP_INFO_RETURN', ( event ) ->
+            console.log 'APP_INFO_RETURN'
+            console.log event
 
-            #view
-            view       = new View()
-            view.render()
+            #load remote module1.js
+            require [ './module/navigation/view', 'UI.tooltip', 'UI.scrollbar', 'UI.accordion', 'hoverIntent' ], ( View ) ->
+
+                #view
+                view       = new View()
+                view.render()
 
     unLoadModule = () ->
         #view.remove()

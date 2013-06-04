@@ -15,7 +15,7 @@ define [ 'MC', '@@resource-name_parser', 'result_vo' ], ( MC, @@resource-name_pa
     URL = '/@@resource-url/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', '@@resource-name_parser', 'result_vo' ], ( MC, @@resource-name_pa
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.@@api-type_result = parser result, return_code, param_ary
 
                     callback result_vo.@@api-type_result

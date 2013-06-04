@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : eip_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:10
+#* Create date  : 2013-06-04 15:13:16
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'eip_parser', 'result_vo' ], ( MC, eip_parser, result_vo ) ->
     URL = '/aws/ec2/elasticip/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'eip_parser', 'result_vo' ], ( MC, eip_parser, result_vo ) ->
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.aws_result = parser result, return_code, param_ary
 
                     callback result_vo.aws_result
@@ -52,28 +53,28 @@ define [ 'MC', 'eip_parser', 'result_vo' ], ( MC, eip_parser, result_vo ) ->
     # end of send_request
 
     #def AllocateAddress(self, username, session_id, region_name, domain=None):
-    AllocateAddress = ( username, session_id, region_name, domain=null, callback ) ->
-        send_request "AllocateAddress", [ username, session_id, region_name, domain ], eip_parser.parserAllocateAddressReturn, callback
+    AllocateAddress = ( src, username, session_id, region_name, domain=null, callback ) ->
+        send_request "AllocateAddress", src, [ username, session_id, region_name, domain ], eip_parser.parserAllocateAddressReturn, callback
         true
 
     #def ReleaseAddress(self, username, session_id, region_name, ip=None, allocation_id=None):
-    ReleaseAddress = ( username, session_id, region_name, ip=null, allocation_id=null, callback ) ->
-        send_request "ReleaseAddress", [ username, session_id, region_name, ip, allocation_id ], eip_parser.parserReleaseAddressReturn, callback
+    ReleaseAddress = ( src, username, session_id, region_name, ip=null, allocation_id=null, callback ) ->
+        send_request "ReleaseAddress", src, [ username, session_id, region_name, ip, allocation_id ], eip_parser.parserReleaseAddressReturn, callback
         true
 
     #def AssociateAddress(self, username, session_id, region_name,
-    AssociateAddress = ( username, callback ) ->
-        send_request "AssociateAddress", [ username ], eip_parser.parserAssociateAddressReturn, callback
+    AssociateAddress = ( src, username, callback ) ->
+        send_request "AssociateAddress", src, [ username ], eip_parser.parserAssociateAddressReturn, callback
         true
 
     #def DisassociateAddress(self, username, session_id, region_name, ip=None, association_id=None):
-    DisassociateAddress = ( username, session_id, region_name, ip=null, association_id=null, callback ) ->
-        send_request "DisassociateAddress", [ username, session_id, region_name, ip, association_id ], eip_parser.parserDisassociateAddressReturn, callback
+    DisassociateAddress = ( src, username, session_id, region_name, ip=null, association_id=null, callback ) ->
+        send_request "DisassociateAddress", src, [ username, session_id, region_name, ip, association_id ], eip_parser.parserDisassociateAddressReturn, callback
         true
 
     #def DescribeAddresses(self, username, session_id, region_name, ips=None, allocation_ids=None, filters=None):
-    DescribeAddresses = ( username, session_id, region_name, ips=null, allocation_ids=null, filters=null, callback ) ->
-        send_request "DescribeAddresses", [ username, session_id, region_name, ips, allocation_ids, filters ], eip_parser.parserDescribeAddressesReturn, callback
+    DescribeAddresses = ( src, username, session_id, region_name, ips=null, allocation_ids=null, filters=null, callback ) ->
+        send_request "DescribeAddresses", src, [ username, session_id, region_name, ips, allocation_ids, filters ], eip_parser.parserDescribeAddressesReturn, callback
         true
 
 

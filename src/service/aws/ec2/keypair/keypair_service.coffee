@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : keypair_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:13
+#* Create date  : 2013-06-04 15:13:18
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'keypair_parser', 'result_vo' ], ( MC, keypair_parser, result_vo 
     URL = '/aws/ec2/keypair/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'keypair_parser', 'result_vo' ], ( MC, keypair_parser, result_vo 
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.aws_result = parser result, return_code, param_ary
 
                     callback result_vo.aws_result
@@ -52,43 +53,43 @@ define [ 'MC', 'keypair_parser', 'result_vo' ], ( MC, keypair_parser, result_vo 
     # end of send_request
 
     #def CreateKeyPair(self, username, session_id, region_name, key_name):
-    CreateKeyPair = ( username, session_id, region_name, key_name, callback ) ->
-        send_request "CreateKeyPair", [ username, session_id, region_name, key_name ], keypair_parser.parserCreateKeyPairReturn, callback
+    CreateKeyPair = ( src, username, session_id, region_name, key_name, callback ) ->
+        send_request "CreateKeyPair", src, [ username, session_id, region_name, key_name ], keypair_parser.parserCreateKeyPairReturn, callback
         true
 
     #def DeleteKeyPair(self, username, session_id, region_name, key_name):
-    DeleteKeyPair = ( username, session_id, region_name, key_name, callback ) ->
-        send_request "DeleteKeyPair", [ username, session_id, region_name, key_name ], keypair_parser.parserDeleteKeyPairReturn, callback
+    DeleteKeyPair = ( src, username, session_id, region_name, key_name, callback ) ->
+        send_request "DeleteKeyPair", src, [ username, session_id, region_name, key_name ], keypair_parser.parserDeleteKeyPairReturn, callback
         true
 
     #def ImportKeyPair(self, username, session_id, region_name, key_name, key_data):
-    ImportKeyPair = ( username, session_id, region_name, key_name, key_data, callback ) ->
-        send_request "ImportKeyPair", [ username, session_id, region_name, key_name, key_data ], keypair_parser.parserImportKeyPairReturn, callback
+    ImportKeyPair = ( src, username, session_id, region_name, key_name, key_data, callback ) ->
+        send_request "ImportKeyPair", src, [ username, session_id, region_name, key_name, key_data ], keypair_parser.parserImportKeyPairReturn, callback
         true
 
     #def DescribeKeyPairs(self, username, session_id, region_name, key_names=None, filters=None):
-    DescribeKeyPairs = ( username, session_id, region_name, key_names=null, filters=null, callback ) ->
-        send_request "DescribeKeyPairs", [ username, session_id, region_name, key_names, filters ], keypair_parser.parserDescribeKeyPairsReturn, callback
+    DescribeKeyPairs = ( src, username, session_id, region_name, key_names=null, filters=null, callback ) ->
+        send_request "DescribeKeyPairs", src, [ username, session_id, region_name, key_names, filters ], keypair_parser.parserDescribeKeyPairsReturn, callback
         true
 
     #def upload(self, username, session_id, region_name, key_name, key_data):
-    upload = ( username, session_id, region_name, key_name, key_data, callback ) ->
-        send_request "upload", [ username, session_id, region_name, key_name, key_data ], keypair_parser.parserUploadReturn, callback
+    upload = ( src, username, session_id, region_name, key_name, key_data, callback ) ->
+        send_request "upload", src, [ username, session_id, region_name, key_name, key_data ], keypair_parser.parserUploadReturn, callback
         true
 
     #def download(self, username, session_id, region_name, key_name):
-    download = ( username, session_id, region_name, key_name, callback ) ->
-        send_request "download", [ username, session_id, region_name, key_name ], keypair_parser.parserDownloadReturn, callback
+    download = ( src, username, session_id, region_name, key_name, callback ) ->
+        send_request "download", src, [ username, session_id, region_name, key_name ], keypair_parser.parserDownloadReturn, callback
         true
 
     #def remove(self, username, session_id, region_name, key_name):
-    remove = ( username, session_id, region_name, key_name, callback ) ->
-        send_request "remove", [ username, session_id, region_name, key_name ], keypair_parser.parserRemoveReturn, callback
+    remove = ( src, username, session_id, region_name, key_name, callback ) ->
+        send_request "remove", src, [ username, session_id, region_name, key_name ], keypair_parser.parserRemoveReturn, callback
         true
 
     #def list(self, username, session_id, region_name):
-    list = ( username, session_id, region_name, callback ) ->
-        send_request "list", [ username, session_id, region_name ], keypair_parser.parserListReturn, callback
+    list = ( src, username, session_id, region_name, callback ) ->
+        send_request "list", src, [ username, session_id, region_name ], keypair_parser.parserListReturn, callback
         true
 
 

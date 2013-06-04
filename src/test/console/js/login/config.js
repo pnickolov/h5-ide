@@ -47,6 +47,7 @@ require.config({
       'session_parser': 'service/session/session_parser',
       'session_service': 'service/session/session_service',
       'session_model': 'model/session_model',
+      'instance_model': 'model/aws/ec2/instance_model',
       'instance_vo': 'service/aws/ec2/instance/instance_vo',
       'instance_parser': 'service/aws/ec2/instance/instance_parser',
       'instance_service': 'service/aws/ec2/instance/instance_service',

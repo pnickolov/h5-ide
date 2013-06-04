@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : favorite_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:01
+#* Create date  : 2013-06-04 15:13:09
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'favorite_parser', 'result_vo' ], ( MC, favorite_parser, result_v
     URL = '/favorite/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'favorite_parser', 'result_vo' ], ( MC, favorite_parser, result_v
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.forge_result = parser result, return_code, param_ary
 
                     callback result_vo.forge_result
@@ -52,18 +53,18 @@ define [ 'MC', 'favorite_parser', 'result_vo' ], ( MC, favorite_parser, result_v
     # end of send_request
 
     #def add(self, username, session_id, region_name, resource):
-    add = ( username, session_id, region_name, resource, callback ) ->
-        send_request "add", [ username, session_id, region_name, resource ], favorite_parser.parserAddReturn, callback
+    add = ( src, username, session_id, region_name, resource, callback ) ->
+        send_request "add", src, [ username, session_id, region_name, resource ], favorite_parser.parserAddReturn, callback
         true
 
     #def remove(self, username, session_id, region_name, resource_ids):
-    remove = ( username, session_id, region_name, resource_ids, callback ) ->
-        send_request "remove", [ username, session_id, region_name, resource_ids ], favorite_parser.parserRemoveReturn, callback
+    remove = ( src, username, session_id, region_name, resource_ids, callback ) ->
+        send_request "remove", src, [ username, session_id, region_name, resource_ids ], favorite_parser.parserRemoveReturn, callback
         true
 
     #def info(self, username, session_id, region_name, provider='AWS', service='EC2', resource='AMI'):
-    info = ( username, session_id, region_name, provider='AWS', service='EC2', resource='AMI', callback ) ->
-        send_request "info", [ username, session_id, region_name, provider, service, resource ], favorite_parser.parserInfoReturn, callback
+    info = ( src, username, session_id, region_name, provider='AWS', service='EC2', resource='AMI', callback ) ->
+        send_request "info", src, [ username, session_id, region_name, provider, service, resource ], favorite_parser.parserInfoReturn, callback
         true
 
 

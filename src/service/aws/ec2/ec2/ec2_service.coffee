@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ec2_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:09
+#* Create date  : 2013-06-04 15:13:15
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'ec2_parser', 'result_vo' ], ( MC, ec2_parser, result_vo ) ->
     URL = '/aws/ec2/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'ec2_parser', 'result_vo' ], ( MC, ec2_parser, result_vo ) ->
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.aws_result = parser result, return_code, param_ary
 
                     callback result_vo.aws_result
@@ -52,28 +53,28 @@ define [ 'MC', 'ec2_parser', 'result_vo' ], ( MC, ec2_parser, result_vo ) ->
     # end of send_request
 
     #def CreateTags(self, username, session_id, region_name, resource_ids, tags):
-    CreateTags = ( username, session_id, region_name, resource_ids, tags, callback ) ->
-        send_request "CreateTags", [ username, session_id, region_name, resource_ids, tags ], ec2_parser.parserCreateTagsReturn, callback
+    CreateTags = ( src, username, session_id, region_name, resource_ids, tags, callback ) ->
+        send_request "CreateTags", src, [ username, session_id, region_name, resource_ids, tags ], ec2_parser.parserCreateTagsReturn, callback
         true
 
     #def DeleteTags(self, username, session_id, region_name, resource_ids, tags):
-    DeleteTags = ( username, session_id, region_name, resource_ids, tags, callback ) ->
-        send_request "DeleteTags", [ username, session_id, region_name, resource_ids, tags ], ec2_parser.parserDeleteTagsReturn, callback
+    DeleteTags = ( src, username, session_id, region_name, resource_ids, tags, callback ) ->
+        send_request "DeleteTags", src, [ username, session_id, region_name, resource_ids, tags ], ec2_parser.parserDeleteTagsReturn, callback
         true
 
     #def DescribeTags(self, username, session_id, region_name, filters=None):
-    DescribeTags = ( username, session_id, region_name, filters=null, callback ) ->
-        send_request "DescribeTags", [ username, session_id, region_name, filters ], ec2_parser.parserDescribeTagsReturn, callback
+    DescribeTags = ( src, username, session_id, region_name, filters=null, callback ) ->
+        send_request "DescribeTags", src, [ username, session_id, region_name, filters ], ec2_parser.parserDescribeTagsReturn, callback
         true
 
     #def DescribeRegions(self, username, session_id, region_names=None, filters=None):
-    DescribeRegions = ( username, session_id, region_names=null, filters=null, callback ) ->
-        send_request "DescribeRegions", [ username, session_id, region_names, filters ], ec2_parser.parserDescribeRegionsReturn, callback
+    DescribeRegions = ( src, username, session_id, region_names=null, filters=null, callback ) ->
+        send_request "DescribeRegions", src, [ username, session_id, region_names, filters ], ec2_parser.parserDescribeRegionsReturn, callback
         true
 
     #def DescribeAvailabilityZones(self, username, session_id, region_name, zone_names=None, filters=None):
-    DescribeAvailabilityZones = ( username, session_id, region_name, zone_names=null, filters=null, callback ) ->
-        send_request "DescribeAvailabilityZones", [ username, session_id, region_name, zone_names, filters ], ec2_parser.parserDescribeAvailabilityZonesReturn, callback
+    DescribeAvailabilityZones = ( src, username, session_id, region_name, zone_names=null, filters=null, callback ) ->
+        send_request "DescribeAvailabilityZones", src, [ username, session_id, region_name, zone_names, filters ], ec2_parser.parserDescribeAvailabilityZonesReturn, callback
         true
 
 

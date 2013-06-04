@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : request_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:05:58
+#* Create date  : 2013-06-04 15:13:07
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'request_parser', 'result_vo' ], ( MC, request_parser, result_vo 
     URL = '/request/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'request_parser', 'result_vo' ], ( MC, request_parser, result_vo 
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.forge_result = parser result, return_code, param_ary
 
                     callback result_vo.forge_result
@@ -52,13 +53,13 @@ define [ 'MC', 'request_parser', 'result_vo' ], ( MC, request_parser, result_vo 
     # end of send_request
 
     #def init(self, username, session_id, region_name):
-    init = ( username, session_id, region_name, callback ) ->
-        send_request "init", [ username, session_id, region_name ], request_parser.parserInitReturn, callback
+    init = ( src, username, session_id, region_name, callback ) ->
+        send_request "init", src, [ username, session_id, region_name ], request_parser.parserInitReturn, callback
         true
 
     #def update(self, username, session_id, region_name, timestamp=None):
-    update = ( username, session_id, region_name, timestamp=null, callback ) ->
-        send_request "update", [ username, session_id, region_name, timestamp ], request_parser.parserUpdateReturn, callback
+    update = ( src, username, session_id, region_name, timestamp=null, callback ) ->
+        send_request "update", src, [ username, session_id, region_name, timestamp ], request_parser.parserUpdateReturn, callback
         true
 
 

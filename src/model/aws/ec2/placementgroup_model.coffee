@@ -16,7 +16,7 @@ define [ 'backbone', 'placementgroup_service', 'placementgroup_vo'], ( Backbone,
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : placementgroup_vo.placementgroup
+            vo : placementgroup_vo.data
         }
 
         ###### api ######
@@ -27,7 +27,7 @@ define [ 'backbone', 'placementgroup_service', 'placementgroup_vo'], ( Backbone,
 
             src.model = me
 
-            placementgroup_service.CreatePlacementGroup src, username, session_id, region_name, group_name, strategy='cluster', ( aws_result ) ->
+            placementgroup_service.CreatePlacementGroup src, username, session_id, region_name, group_name, strategy, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #CreatePlacementGroup succeed

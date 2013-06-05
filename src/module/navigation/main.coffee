@@ -29,9 +29,14 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
                 console.log 'change:stack_list'
                 view.render()
 
+            model.on 'change:region_list', ( event ) ->
+                console.log 'change:region_list'
+                view.render()
+
             #model
             model.appListService()
             model.stackListService()
+            model.describeRegionsService()
 
     unLoadModule = () ->
         #view.remove()

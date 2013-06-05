@@ -59,6 +59,7 @@ require.config {
 		#model
 		'app_model'    : 'model/app_model'
 		'stack_model'  : 'model/stack_model'
+		'ec2_model'    : 'model/aws/ec2/ec2_model'
 
 		#result_vo
 		'result_vo'    : 'service/result_vo'

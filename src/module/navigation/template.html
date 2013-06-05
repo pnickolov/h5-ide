@@ -9,10 +9,22 @@
 
 		<div class="sub-menu-wrapper accordion-body">
 			<ul class="sub-menu" id="nav-dashboard-region">
+
 				<li>
 					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-globe icon-nav-label"></i>Global Overview
-					<span class="nav-head-note">3 Regions in Use</span></a>
+					<span class="nav-head-note">{{ attributes.region_list.length }} Regions in Use</span></a>
 				</li>
+
+				{{#each attributes.region_list }}
+				<li>
+					<a href="javascript:void(0)" class="truncate nav-truncate">
+						<i class="status status-grey icon-nav-status"></i>{{ region_city }}
+						<span class="nav-head-note">{{ region_area }}</span>
+					</a>
+				</li>
+				{{/each}}
+
+				<!--
 				<li>
 					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-grey icon-nav-status"></i>N. Virginia
 					<span class="nav-head-note">US East</span></a>
@@ -25,6 +37,8 @@
 					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-blue icon-nav-status"></i>Singapore
 					<span class="nav-head-note">Asia Pacific</span></a>
 				</li>
+				-->
+
 			</ul>
 		</div>
 

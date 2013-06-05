@@ -209,7 +209,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'stack_service'], ( MC
         asyncTest "/stack stack.list()", () ->
             stack_ids = null
 
-            stack_service.list {sender:this}, username, session_id, region_name, stack_ids, ( forge_result ) ->
+            stack_service.list {sender:this}, username, session_id, null, stack_ids, ( forge_result ) ->
                 if !forge_result.is_error
                 #list succeed
                     data = forge_result.resolved_data

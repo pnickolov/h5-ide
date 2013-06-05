@@ -220,11 +220,16 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
     #private (resolve result to vo )
     resolveListResult = ( result ) ->
         #resolve result
-        #TO-DO
+        stack_list = {}
+        for vo in result
+            if stack_list[vo.region] == undefined
+                stack_list[vo.region]=[]
+
+            stack_list[vo.region].push vo
 
         #return vo
-        #TO-DO
-        result
+        stack_vo.stack_list = stack_list
+        stack_list
 
     #private (parser list return)
     parserListReturn = ( result, return_code, param ) ->

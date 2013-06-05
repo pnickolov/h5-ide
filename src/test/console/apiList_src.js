@@ -1,4 +1,804 @@
 var API_DATA_LIST = {
+
+    Forge : {
+        Log : {
+            put_user_log : {
+                method  : '/log:put_user_log',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    user_logs : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            }
+        },
+        Public : {
+            get_hostname : {
+                method  : '/public:get_hostname',
+                param   : {
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    instance_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            get_dns_ip : {
+                method  : '/public:get_dns_ip',
+                param   : {
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            }
+        },
+        Request : {
+            init : {
+                method  : '/request:init',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            update : {
+                method  : '/request:update',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    timestamp : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            }
+        },
+        Session : {
+            login : {
+                method  : '/session:login',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    password : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            logout : {
+                method  : '/session:logout',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            set_credential : {
+                method  : '/session:set_credential',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    access_key : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    secret_key : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    account_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            guest : {
+                method  : '/session:guest',
+                param   : {
+                    guest_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    guestname : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            }
+        },
+        App : {
+            create : {
+                method  : '/app:create',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    spec : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            update : {
+                method  : '/app:update',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    spec : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            rename : {
+                method  : '/app:rename',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    new_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            terminate : {
+                method  : '/app:terminate',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            start : {
+                method  : '/app:start',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            stop : {
+                method  : '/app:stop',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            reboot : {
+                method  : '/app:reboot',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            info : {
+                method  : '/app:info',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_ids : {
+                        type   : 'Array',
+                        value  : 'null'
+                    }
+                }
+            },
+            list : {
+                method  : '/app:list',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_ids : {
+                        type   : 'Array',
+                        value  : 'null'
+                    }
+                }
+            },
+            resource : {
+                method  : '/app:resource',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            summary : {
+                method  : '/app:summary',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            }
+        },
+        Favorite : {
+            add : {
+                method  : '/favorite:add',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    resource : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            remove : {
+                method  : '/favorite:remove',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    resource_ids : {
+                        type   : 'Array',
+                        value  : 'null'
+                    }
+                }
+            },
+            info : {
+                method  : '/favorite:info',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    provider : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    service : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    resource : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            }
+        },
+        Guest : {
+            invite : {
+                method  : '/guest:invite',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            cancel : {
+                method  : '/guest:cancel',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    guest_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            access : {
+                method  : '/guest:access',
+                param   : {
+                    guestname : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    guest_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            end : {
+                method  : '/guest:end',
+                param   : {
+                    guestname : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    guest_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            info : {
+                method  : '/guest:info',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    guest_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            }
+        },
+        Stack : {
+            create : {
+                method  : '/stack:create',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    spec : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            remove : {
+                method  : '/stack:remove',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    stack_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    stack_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            save : {
+                method  : '/stack:save',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    spec : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            rename : {
+                method  : '/stack:rename',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    stack_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    new_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    stack_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            run : {
+                method  : '/stack:run',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    stack_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_desc : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_component : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_property : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    app_layout : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    stack_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            save_as : {
+                method  : '/stack:save_as',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    stack_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    new_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    stack_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            info : {
+                method  : '/stack:info',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    stack_ids : {
+                        type   : 'Array',
+                        value  : 'null'
+                    }
+                }
+            },
+            list : {
+                method  : '/stack:list',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    stack_ids : {
+                        type   : 'Array',
+                        value  : 'null'
+                    }
+                }
+            }
+        }
+    },
+
 	AutoScaling : {
 		AutoScaling : {
 			DescribeAdjustmentTypes : {

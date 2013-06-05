@@ -16,7 +16,7 @@ define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, st
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : stack_vo.stack
+            vo : stack_vo.stack_list
         }
 
         ###### api ######

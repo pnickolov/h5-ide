@@ -16,7 +16,7 @@ define [ 'backbone', 'public_service', 'public_vo'], ( Backbone, public_service,
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : public_vo.public
+            vo : public_vo.data
         }
 
         ###### api ######

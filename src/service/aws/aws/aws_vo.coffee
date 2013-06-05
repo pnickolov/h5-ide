@@ -11,7 +11,8 @@ define [], () ->
 
     #vo declaration
     #TO-DO
+    data = {}
 
     #public
     #TO-DO
-
+    data

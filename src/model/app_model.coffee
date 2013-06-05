@@ -16,7 +16,7 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : app_vo.app
+            vo : app_vo.app_list
         }
 
         ###### api ######

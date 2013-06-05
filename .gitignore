@@ -34,7 +34,7 @@ src/module/**/*.js
 !src/module/canvas/canvas.js
 
 #ignore test
-src/test/console/js/login/*.js
+src/test/console/js/*.js
 src/test/**/*.js
 
 #ignore util
@@ -42,5 +42,7 @@ util/gen_service/out.tmp
 util/gen_service/**/*.js
 util/gen_model/out.tmp
 util/gen_model/**/*.js
+util/gen_apilist/out.tmp
+util/gen_apilist/**/*.js
 
 .DS_Store

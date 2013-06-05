@@ -1,36 +1,16 @@
-#*************************************************************************************
-#* Filename     : aws_service.coffee
-#* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 14:09:34
-#* Description  : qunit test config for aws_service
-# ************************************************************************************
-# (c)Copyright 2012 Madeiracloud  All Rights Reserved
-# ************************************************************************************
 
 require.config {
 
-
     baseUrl         : '/'
 
-    deps            : [ '/test/service/aws/aws/testsuite.js' ]
-
-    shim            :
-
-        'jquery'    :
-            exports : '$'
-
-        'MC'        :
-            deps    : [ 'jquery','constant' ]
-            exports : 'MC'
-
-        'underscore':
-            exports : '_'
+    deps            : [ '/test/console/js/main.js' ]
 
     paths           :
 
         #vender
         'jquery'    : 'vender/jquery/jquery'
-        'underscore': 'vender/underscore/underscore'
+        'underscore'   : 'vender/underscore/underscore'
+        'backbone'     : 'vender/backbone/backbone'
 
         #core lib
         'MC'        : 'lib/MC.core'
@@ -39,15 +19,55 @@ require.config {
         'constant'  : 'lib/constant'
 
         #result_vo
-        'result_vo'          : 'service/result_vo'
+        'result_vo'         : 'service/result_vo'
 
-        #session_service
+        #service
         'session_vo'        : 'service/session/session_vo'
         'session_parser'    : 'service/session/session_parser'
         'session_service'   : 'service/session/session_service'
 
-        #test_util(for qunit test)
-        'test_util'         : 'test/service/test_util'
+        'session_model'     : 'model/session_model'
+
+
+        #log service
+        'log_vo'        : 'service/log/log_vo'
+        'log_parser'    : 'service/log/log_parser'
+        'log_service'   : 'service/log/log_service'
+
+
+        #favorite service
+        'favorite_vo'        : 'service/favorite/favorite_vo'
+        'favorite_parser'    : 'service/favorite/favorite_parser'
+        'favorite_service'   : 'service/favorite/favorite_service'
+
+
+        #guest service
+        'guest_vo'        : 'service/guest/guest_vo'
+        'guest_parser'    : 'service/guest/guest_parser'
+        'guest_service'   : 'service/guest/guest_service'
+
+
+
+        #public service
+        'public_vo'        : 'service/public/public_vo'
+        'public_parser'    : 'service/public/public_parser'
+        'public_service'   : 'service/public/public_service'
+
+
+        #request service
+        'request_vo'        : 'service/request/request_vo'
+        'request_parser'    : 'service/request/request_parser'
+        'request_service'   : 'service/request/request_service'
+
+        #stack service
+        'stack_vo'        : 'service/stack/stack_vo'
+        'stack_parser'    : 'service/stack/stack_parser'
+        'stack_service'   : 'service/stack/stack_service'
+
+        #app service
+        'app_vo'        : 'service/app/app_vo'
+        'app_parser'    : 'service/app/app_parser'
+        'app_service'   : 'service/app/app_service'
 
 
 
@@ -155,4 +175,97 @@ require.config {
         'iam_vo'        : 'service/aws/iam/iam/iam_vo'
         'iam_parser'    : 'service/aws/iam/iam/iam_parser'
         'iam_service'   : 'service/aws/iam/iam/iam_service'
-}#end
+
+
+
+        ########## model ##########
+
+        #####forge#####
+        'log_model'         : 'model/log_model'
+        'public_model'      : 'model/public_model'
+        'request_model'     : 'model/request_model'
+        'app_model'         : 'model/app_model'
+        'favorite_model'    : 'model/favorite_model'
+        'guest_model'       : 'model/guest_model'
+        'stack_model'       : 'model/stack_model'
+
+
+        'aws_model'             : 'model/aws/aws_model'
+
+        #####ec2#####
+        'ami_model'             : 'model/aws/ec2/ami_model'
+        'ebs_model'             : 'model/aws/ec2/ebs_model'
+        'ec2_model'             : 'model/aws/ec2/ec2_model'
+        'eip_model'             : 'model/aws/ec2/eip_model'
+        'instance_model'        : 'model/aws/ec2/instance_model'
+        'keypair_model'         : 'model/aws/ec2/keypair_model'
+        'placementgroup_model'  : 'model/aws/ec2/placementgroup_model'
+        'securitygroup_model'   : 'model/aws/ec2/securitygroup_model'
+        
+        #####elb#####
+        'elb_model'             : 'model/aws/elb/elb_model'
+
+        #####iam#####
+        'iam_model'             : 'model/aws/iam/iam_model'
+
+        #####vpc#####
+        'acl_model'             : 'model/aws/vpc/acl_model'
+        'customergateway_model' : 'model/aws/vpc/customergateway_model'
+        'dhcp_model'            : 'model/aws/vpc/dhcp_model'
+        'eni_model'             : 'model/aws/vpc/eni_model'
+        'internetgateway_model' : 'model/aws/vpc/internetgateway_model'
+        'routetable_model'      : 'model/aws/vpc/routetable_model'
+        'subnet_model'          : 'model/aws/vpc/subnet_model'
+        'vpc_model'             : 'model/aws/vpc/vpc_model'
+        'vpngateway_model'      : 'model/aws/vpc/vpngateway_model'
+        'vpn_model'             : 'model/aws/vpc/vpn_model'
+
+
+        #####autoscaling#####
+        #'autoscaling_model'    : 'model/aws/autoscaling/autoscaling_model'
+        
+        #####cloudwatch#####
+        #'cloudwatch_model'    : 'model/aws/cloudwatch/cloudwatch_model'
+        
+        #####opsworks#####
+        #'opsworks_model'    : 'model/aws/opsworks/opsworks_model'
+
+        #####rds#####
+        # 'rds_instance_model'    : 'model/aws/rds/instance_model'
+        # 'optiongroup_model'    : 'model/aws/rds/optiongroup_model'
+        # 'parametergroup_model'    : 'model/aws/rds/parametergroup_model'
+        # 'rds_model'    : 'model/aws/rds/rds_model'
+        # 'reservedinstance_model'    : 'model/aws/rds/reservedinstance_model'
+        # 'rds_securitygroup_model'    : 'model/aws/rds/securitygroup_model'
+        # 'snapshot_model'    : 'model/aws/rds/snapshot_model'
+        # 'subnetgroup_model'    : 'model/aws/rds/subnetgroup_model'
+
+        #####sdb#####
+        #'sdb_model'    : 'model/aws/sdb/sdb_model'
+
+
+        
+        #testsuite
+        'testsuite'             : '/test/console/js/testsuite'
+
+        'apiList'           : '/test/console/apiList'
+
+    shim            :
+
+        'jquery'    :
+            exports : '$'
+
+        'underscore'   :
+            exports    : '_'
+
+        'backbone'     :
+            deps       : [ 'underscore', 'jquery' ]
+            exports    : 'Backbone'
+
+        'MC'        :
+            deps    : [ 'jquery','constant' ]
+            exports : 'MC'
+
+        'testsuite'     :
+            deps      : [ 'apiList' ]
+}

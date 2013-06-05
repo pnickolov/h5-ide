@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : elb_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:07
+#* Create date  : 2013-06-05 10:35:13
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'elb_service', 'elb_vo'], ( Backbone, elb_service, elb_vo )
 
             src.model = me
 
-            elb_service.DescribeInstanceHealth src, username, session_id, region_name, elb_name, instance_ids=null, ( aws_result ) ->
+            elb_service.DescribeInstanceHealth src, username, session_id, region_name, elb_name, instance_ids, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeInstanceHealth succeed
@@ -53,7 +53,7 @@ define [ 'backbone', 'elb_service', 'elb_vo'], ( Backbone, elb_service, elb_vo )
 
             src.model = me
 
-            elb_service.DescribeLoadBalancerPolicies src, username, session_id, region_name, elb_name=null, policy_names=null, ( aws_result ) ->
+            elb_service.DescribeLoadBalancerPolicies src, username, session_id, region_name, elb_name, policy_names, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeLoadBalancerPolicies succeed
@@ -79,7 +79,7 @@ define [ 'backbone', 'elb_service', 'elb_vo'], ( Backbone, elb_service, elb_vo )
 
             src.model = me
 
-            elb_service.DescribeLoadBalancerPolicyTypes src, username, session_id, region_name, policy_type_names=null, ( aws_result ) ->
+            elb_service.DescribeLoadBalancerPolicyTypes src, username, session_id, region_name, policy_type_names, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeLoadBalancerPolicyTypes succeed
@@ -105,7 +105,7 @@ define [ 'backbone', 'elb_service', 'elb_vo'], ( Backbone, elb_service, elb_vo )
 
             src.model = me
 
-            elb_service.DescribeLoadBalancers src, username, session_id, region_name, elb_names=null, marker=null, ( aws_result ) ->
+            elb_service.DescribeLoadBalancers src, username, session_id, region_name, elb_names, marker, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeLoadBalancers succeed

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : eni_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:11
+#* Create date  : 2013-06-05 10:35:17
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'eni_service', 'eni_vo'], ( Backbone, eni_service, eni_vo )
 
             src.model = me
 
-            eni_service.DescribeNetworkInterfaces src, username, session_id, region_name, eni_ids=null, filters=null, ( aws_result ) ->
+            eni_service.DescribeNetworkInterfaces src, username, session_id, region_name, eni_ids, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeNetworkInterfaces succeed

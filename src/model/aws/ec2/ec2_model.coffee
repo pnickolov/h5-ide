@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ec2_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:02
+#* Create date  : 2013-06-05 10:35:09
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -79,7 +79,7 @@ define [ 'backbone', 'ec2_service', 'ec2_vo'], ( Backbone, ec2_service, ec2_vo )
 
             src.model = me
 
-            ec2_service.DescribeTags src, username, session_id, region_name, filters=null, ( aws_result ) ->
+            ec2_service.DescribeTags src, username, session_id, region_name, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeTags succeed
@@ -105,7 +105,7 @@ define [ 'backbone', 'ec2_service', 'ec2_vo'], ( Backbone, ec2_service, ec2_vo )
 
             src.model = me
 
-            ec2_service.DescribeRegions src, username, session_id, region_names=null, filters=null, ( aws_result ) ->
+            ec2_service.DescribeRegions src, username, session_id, region_names, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeRegions succeed
@@ -131,7 +131,7 @@ define [ 'backbone', 'ec2_service', 'ec2_vo'], ( Backbone, ec2_service, ec2_vo )
 
             src.model = me
 
-            ec2_service.DescribeAvailabilityZones src, username, session_id, region_name, zone_names=null, filters=null, ( aws_result ) ->
+            ec2_service.DescribeAvailabilityZones src, username, session_id, region_name, zone_names, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeAvailabilityZones succeed

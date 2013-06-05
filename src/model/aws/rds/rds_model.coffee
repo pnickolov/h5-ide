@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : rds_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:10
+#* Create date  : 2013-06-05 10:35:16
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -79,7 +79,7 @@ define [ 'backbone', 'rds_service', 'rds_vo'], ( Backbone, rds_service, rds_vo )
 
             src.model = me
 
-            rds_service.DescribeEngineDefaultParameters src, username, session_id, region_name, pg_family, marker=null, max_records=null, ( aws_result ) ->
+            rds_service.DescribeEngineDefaultParameters src, username, session_id, region_name, pg_family, marker, max_records, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeEngineDefaultParameters succeed

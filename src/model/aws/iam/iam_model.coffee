@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : iam_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:07
+#* Create date  : 2013-06-05 10:35:14
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -53,7 +53,7 @@ define [ 'backbone', 'iam_service', 'iam_vo'], ( Backbone, iam_service, iam_vo )
 
             src.model = me
 
-            iam_service.ListServerCertificates src, username, session_id, region_name, marker=null, max_items=null, path_prefix=null, ( aws_result ) ->
+            iam_service.ListServerCertificates src, username, session_id, region_name, marker, max_items, path_prefix, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #ListServerCertificates succeed

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : sdb_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:11
+#* Create date  : 2013-06-05 10:35:17
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -53,7 +53,7 @@ define [ 'backbone', 'sdb_service', 'sdb_vo'], ( Backbone, sdb_service, sdb_vo )
 
             src.model = me
 
-            sdb_service.GetAttributes src, username, session_id, region_name, domain_name, item_name, attribute_name=null, consistent_read=null, ( aws_result ) ->
+            sdb_service.GetAttributes src, username, session_id, region_name, domain_name, item_name, attribute_name, consistent_read, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #GetAttributes succeed
@@ -79,7 +79,7 @@ define [ 'backbone', 'sdb_service', 'sdb_vo'], ( Backbone, sdb_service, sdb_vo )
 
             src.model = me
 
-            sdb_service.ListDomains src, username, session_id, region_name, max_domains=null, next_token=null, ( aws_result ) ->
+            sdb_service.ListDomains src, username, session_id, region_name, max_domains, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #ListDomains succeed

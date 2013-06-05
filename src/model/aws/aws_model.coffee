@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : aws_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:26:58
+#* Create date  : 2013-06-05 10:35:07
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -105,7 +105,7 @@ define [ 'backbone', 'aws_service', 'aws_vo'], ( Backbone, aws_service, aws_vo )
 
             src.model = me
 
-            aws_service.resource src, username, session_id, region_name=null, resources=null, ( aws_result ) ->
+            aws_service.resource src, username, session_id, region_name, resources, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #resource succeed

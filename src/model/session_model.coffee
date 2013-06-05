@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : session_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:26:53
+#* Create date  : 2013-06-05 10:35:03
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -16,7 +16,7 @@ define [ 'backbone', 'session_service', 'session_vo'], ( Backbone, session_servi
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : session_vo.session
+            vo : session_vo.session_info
         }
 
         ###### api ######
@@ -79,7 +79,7 @@ define [ 'backbone', 'session_service', 'session_vo'], ( Backbone, session_servi
 
             src.model = me
 
-            session_service.set_credential src, username, session_id, access_key, secret_key, account_id=null, ( forge_result ) ->
+            session_service.set_credential src, username, session_id, access_key, secret_key, account_id, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #set_credential succeed

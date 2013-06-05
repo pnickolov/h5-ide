@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : securitygroup_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:10
+#* Create date  : 2013-06-05 10:35:16
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'securitygroup_service', 'securitygroup_vo'], ( Backbone, s
 
             src.model = me
 
-            securitygroup_service.DescribeDBSecurityGroups src, username, session_id, region_name, sg_name=null, marker=null, max_records=null, ( aws_result ) ->
+            securitygroup_service.DescribeDBSecurityGroups src, username, session_id, region_name, sg_name, marker, max_records, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeDBSecurityGroups succeed

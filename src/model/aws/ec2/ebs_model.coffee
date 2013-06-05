@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ebs_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:00
+#* Create date  : 2013-06-05 10:35:08
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo )
 
             src.model = me
 
-            ebs_service.CreateVolume src, username, session_id, region_name, zone_name, snapshot_id=null, volume_size=null, volume_type=null, iops=null, ( aws_result ) ->
+            ebs_service.CreateVolume src, username, session_id, region_name, zone_name, snapshot_id, volume_size, volume_type, iops, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #CreateVolume succeed
@@ -105,7 +105,7 @@ define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo )
 
             src.model = me
 
-            ebs_service.DetachVolume src, username, session_id, region_name, volume_id, instance_id=null, device=null, force=false, ( aws_result ) ->
+            ebs_service.DetachVolume src, username, session_id, region_name, volume_id, instance_id, device, force, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DetachVolume succeed
@@ -131,7 +131,7 @@ define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo )
 
             src.model = me
 
-            ebs_service.DescribeVolumes src, username, session_id, region_name, volume_ids=null, filters=null, ( aws_result ) ->
+            ebs_service.DescribeVolumes src, username, session_id, region_name, volume_ids, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeVolumes succeed
@@ -157,7 +157,7 @@ define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo )
 
             src.model = me
 
-            ebs_service.DescribeVolumeAttribute src, username, session_id, region_name, volume_id, attribute_name='autoEnableIO', ( aws_result ) ->
+            ebs_service.DescribeVolumeAttribute src, username, session_id, region_name, volume_id, attribute_name, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeVolumeAttribute succeed
@@ -183,7 +183,7 @@ define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo )
 
             src.model = me
 
-            ebs_service.DescribeVolumeStatus src, username, session_id, region_name, volume_ids, filters=null, max_result=null, next_token=null, ( aws_result ) ->
+            ebs_service.DescribeVolumeStatus src, username, session_id, region_name, volume_ids, filters, max_result, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeVolumeStatus succeed
@@ -209,7 +209,7 @@ define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo )
 
             src.model = me
 
-            ebs_service.ModifyVolumeAttribute src, username, session_id, region_name, volume_id, auto_enable_IO=false, ( aws_result ) ->
+            ebs_service.ModifyVolumeAttribute src, username, session_id, region_name, volume_id, auto_enable_IO, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #ModifyVolumeAttribute succeed
@@ -261,7 +261,7 @@ define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo )
 
             src.model = me
 
-            ebs_service.CreateSnapshot src, username, session_id, region_name, volume_id, description=null, ( aws_result ) ->
+            ebs_service.CreateSnapshot src, username, session_id, region_name, volume_id, description, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #CreateSnapshot succeed
@@ -339,7 +339,7 @@ define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo )
 
             src.model = me
 
-            ebs_service.ResetSnapshotAttribute src, username, session_id, region_name, snapshot_id, attribute_name='createVolumePermission', ( aws_result ) ->
+            ebs_service.ResetSnapshotAttribute src, username, session_id, region_name, snapshot_id, attribute_name, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #ResetSnapshotAttribute succeed
@@ -365,7 +365,7 @@ define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo )
 
             src.model = me
 
-            ebs_service.DescribeSnapshots src, username, session_id, region_name, snapshot_ids=null, owners=null, restorable_by=null, filters=null, ( aws_result ) ->
+            ebs_service.DescribeSnapshots src, username, session_id, region_name, snapshot_ids, owners, restorable_by, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeSnapshots succeed
@@ -391,7 +391,7 @@ define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo )
 
             src.model = me
 
-            ebs_service.DescribeSnapshotAttribute src, username, session_id, region_name, snapshot_id, attribute_name='createVolumePermission', ( aws_result ) ->
+            ebs_service.DescribeSnapshotAttribute src, username, session_id, region_name, snapshot_id, attribute_name, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeSnapshotAttribute succeed

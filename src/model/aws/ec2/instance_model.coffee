@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : instance_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:03
+#* Create date  : 2013-06-05 10:35:10
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -53,7 +53,7 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
 
             src.model = me
 
-            instance_service.StartInstances src, username, session_id, region_name, instance_ids=null, ( aws_result ) ->
+            instance_service.StartInstances src, username, session_id, region_name, instance_ids, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #StartInstances succeed
@@ -79,7 +79,7 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
 
             src.model = me
 
-            instance_service.StopInstances src, username, session_id, region_name, instance_ids=null, force=false, ( aws_result ) ->
+            instance_service.StopInstances src, username, session_id, region_name, instance_ids, force, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #StopInstances succeed
@@ -105,7 +105,7 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
 
             src.model = me
 
-            instance_service.RebootInstances src, username, session_id, region_name, instance_ids=null, ( aws_result ) ->
+            instance_service.RebootInstances src, username, session_id, region_name, instance_ids, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #RebootInstances succeed
@@ -131,7 +131,7 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
 
             src.model = me
 
-            instance_service.TerminateInstances src, username, session_id, region_name, instance_ids=null, ( aws_result ) ->
+            instance_service.TerminateInstances src, username, session_id, region_name, instance_ids, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #TerminateInstances succeed
@@ -339,7 +339,7 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
 
             src.model = me
 
-            instance_service.DescribeInstances src, username, session_id, region_name, instance_ids=null, filters=null, ( aws_result ) ->
+            instance_service.DescribeInstances src, username, session_id, region_name, instance_ids, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeInstances succeed
@@ -365,7 +365,7 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
 
             src.model = me
 
-            instance_service.DescribeInstanceStatus src, username, session_id, region_name, instance_ids=null, include_all_instances=false, max_results=1000, next_token=null, ( aws_result ) ->
+            instance_service.DescribeInstanceStatus src, username, session_id, region_name, instance_ids, include_all_instances, max_results, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeInstanceStatus succeed
@@ -391,7 +391,7 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
 
             src.model = me
 
-            instance_service.DescribeBundleTasks src, username, session_id, region_name, bundle_ids=null, filters=null, ( aws_result ) ->
+            instance_service.DescribeBundleTasks src, username, session_id, region_name, bundle_ids, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeBundleTasks succeed
@@ -469,7 +469,7 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
 
             src.model = me
 
-            instance_service.GetPasswordData src, username, session_id, region_name, instance_id, key_data=null, ( aws_result ) ->
+            instance_service.GetPasswordData src, username, session_id, region_name, instance_id, key_data, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #GetPasswordData succeed

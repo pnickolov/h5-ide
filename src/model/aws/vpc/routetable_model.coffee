@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : routetable_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:12
+#* Create date  : 2013-06-05 10:35:18
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'routetable_service', 'routetable_vo'], ( Backbone, routeta
 
             src.model = me
 
-            routetable_service.DescribeRouteTables src, username, session_id, region_name, rt_ids=null, filters=null, ( aws_result ) ->
+            routetable_service.DescribeRouteTables src, username, session_id, region_name, rt_ids, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeRouteTables succeed

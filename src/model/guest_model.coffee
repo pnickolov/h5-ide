@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : guest_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:26:55
+#* Create date  : 2013-06-05 10:35:04
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -131,7 +131,7 @@ define [ 'backbone', 'guest_service', 'guest_vo'], ( Backbone, guest_service, gu
 
             src.model = me
 
-            guest_service.info src, username, session_id, region_name, guest_id=null, ( forge_result ) ->
+            guest_service.info src, username, session_id, region_name, guest_id, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #info succeed

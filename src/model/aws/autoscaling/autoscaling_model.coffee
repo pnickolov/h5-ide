@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : autoscaling_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:26:56
+#* Create date  : 2013-06-05 10:35:06
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -53,7 +53,7 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
 
             src.model = me
 
-            autoscaling_service.DescribeAutoScalingGroups src, username, session_id, region_name, group_names=null, max_records=null, next_token=null, ( aws_result ) ->
+            autoscaling_service.DescribeAutoScalingGroups src, username, session_id, region_name, group_names, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeAutoScalingGroups succeed
@@ -79,7 +79,7 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
 
             src.model = me
 
-            autoscaling_service.DescribeAutoScalingInstances src, username, session_id, region_name, instance_ids=null, max_records=null, next_token=null, ( aws_result ) ->
+            autoscaling_service.DescribeAutoScalingInstances src, username, session_id, region_name, instance_ids, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeAutoScalingInstances succeed
@@ -131,7 +131,7 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
 
             src.model = me
 
-            autoscaling_service.DescribeLaunchConfigurations src, username, session_id, region_name, config_names=null, max_records=null, next_token=null, ( aws_result ) ->
+            autoscaling_service.DescribeLaunchConfigurations src, username, session_id, region_name, config_names, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeLaunchConfigurations succeed
@@ -183,7 +183,7 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
 
             src.model = me
 
-            autoscaling_service.DescribeNotificationConfigurations src, username, session_id, region_name, group_names=null, max_records=null, next_token=null, ( aws_result ) ->
+            autoscaling_service.DescribeNotificationConfigurations src, username, session_id, region_name, group_names, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeNotificationConfigurations succeed
@@ -209,7 +209,7 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
 
             src.model = me
 
-            autoscaling_service.DescribePolicies src, username, session_id, region_name, group_name=null, policy_names=null, max_records=null, next_token=null, ( aws_result ) ->
+            autoscaling_service.DescribePolicies src, username, session_id, region_name, group_name, policy_names, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribePolicies succeed
@@ -313,7 +313,7 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
 
             src.model = me
 
-            autoscaling_service.DescribeTags src, username, session_id, region_name, filters=null, max_records=null, next_token=null, ( aws_result ) ->
+            autoscaling_service.DescribeTags src, username, session_id, region_name, filters, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeTags succeed

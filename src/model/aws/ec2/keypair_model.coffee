@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : keypair_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:05
+#* Create date  : 2013-06-05 10:35:12
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -105,7 +105,7 @@ define [ 'backbone', 'keypair_service', 'keypair_vo'], ( Backbone, keypair_servi
 
             src.model = me
 
-            keypair_service.DescribeKeyPairs src, username, session_id, region_name, key_names=null, filters=null, ( aws_result ) ->
+            keypair_service.DescribeKeyPairs src, username, session_id, region_name, key_names, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeKeyPairs succeed

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ami_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:26:59
+#* Create date  : 2013-06-05 10:35:07
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'ami_service', 'ami_vo'], ( Backbone, ami_service, ami_vo )
 
             src.model = me
 
-            ami_service.CreateImage src, username, session_id, region_name, instance_id, ami_name, ami_desc=null, no_reboot=false, bd_mappings=null, ( aws_result ) ->
+            ami_service.CreateImage src, username, session_id, region_name, instance_id, ami_name, ami_desc, no_reboot, bd_mappings, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #CreateImage succeed
@@ -53,7 +53,7 @@ define [ 'backbone', 'ami_service', 'ami_vo'], ( Backbone, ami_service, ami_vo )
 
             src.model = me
 
-            ami_service.RegisterImage src, username, session_id, region_name, ami_name=null, ami_desc=null, ( aws_result ) ->
+            ami_service.RegisterImage src, username, session_id, region_name, ami_name, ami_desc, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #RegisterImage succeed
@@ -131,7 +131,7 @@ define [ 'backbone', 'ami_service', 'ami_vo'], ( Backbone, ami_service, ami_vo )
 
             src.model = me
 
-            ami_service.ResetImageAttribute src, username, session_id, region_name, ami_id, attribute_name='launchPermission', ( aws_result ) ->
+            ami_service.ResetImageAttribute src, username, session_id, region_name, ami_id, attribute_name, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #ResetImageAttribute succeed
@@ -183,7 +183,7 @@ define [ 'backbone', 'ami_service', 'ami_vo'], ( Backbone, ami_service, ami_vo )
 
             src.model = me
 
-            ami_service.DescribeImages src, username, session_id, region_name, ami_ids=null, owners=null, executable_by=null, filters=null, ( aws_result ) ->
+            ami_service.DescribeImages src, username, session_id, region_name, ami_ids, owners, executable_by, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeImages succeed

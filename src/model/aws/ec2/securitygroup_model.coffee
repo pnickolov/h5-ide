@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : securitygroup_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:06
+#* Create date  : 2013-06-05 10:35:13
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'securitygroup_service', 'securitygroup_vo'], ( Backbone, s
 
             src.model = me
 
-            securitygroup_service.CreateSecurityGroup src, username, session_id, region_name, group_name, group_desc, vpc_id=null, ( aws_result ) ->
+            securitygroup_service.CreateSecurityGroup src, username, session_id, region_name, group_name, group_desc, vpc_id, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #CreateSecurityGroup succeed
@@ -53,7 +53,7 @@ define [ 'backbone', 'securitygroup_service', 'securitygroup_vo'], ( Backbone, s
 
             src.model = me
 
-            securitygroup_service.DeleteSecurityGroup src, username, session_id, region_name, group_name=null, group_id=null, ( aws_result ) ->
+            securitygroup_service.DeleteSecurityGroup src, username, session_id, region_name, group_name, group_id, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DeleteSecurityGroup succeed
@@ -131,7 +131,7 @@ define [ 'backbone', 'securitygroup_service', 'securitygroup_vo'], ( Backbone, s
 
             src.model = me
 
-            securitygroup_service.DescribeSecurityGroups src, username, session_id, region_name, group_names=null, group_ids=null, filters=null, ( aws_result ) ->
+            securitygroup_service.DescribeSecurityGroups src, username, session_id, region_name, group_names, group_ids, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeSecurityGroups succeed

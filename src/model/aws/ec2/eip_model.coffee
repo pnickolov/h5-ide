@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : eip_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:02
+#* Create date  : 2013-06-05 10:35:10
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'eip_service', 'eip_vo'], ( Backbone, eip_service, eip_vo )
 
             src.model = me
 
-            eip_service.AllocateAddress src, username, session_id, region_name, domain=null, ( aws_result ) ->
+            eip_service.AllocateAddress src, username, session_id, region_name, domain, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #AllocateAddress succeed
@@ -53,7 +53,7 @@ define [ 'backbone', 'eip_service', 'eip_vo'], ( Backbone, eip_service, eip_vo )
 
             src.model = me
 
-            eip_service.ReleaseAddress src, username, session_id, region_name, ip=null, allocation_id=null, ( aws_result ) ->
+            eip_service.ReleaseAddress src, username, session_id, region_name, ip, allocation_id, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #ReleaseAddress succeed
@@ -105,7 +105,7 @@ define [ 'backbone', 'eip_service', 'eip_vo'], ( Backbone, eip_service, eip_vo )
 
             src.model = me
 
-            eip_service.DisassociateAddress src, username, session_id, region_name, ip=null, association_id=null, ( aws_result ) ->
+            eip_service.DisassociateAddress src, username, session_id, region_name, ip, association_id, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DisassociateAddress succeed
@@ -131,7 +131,7 @@ define [ 'backbone', 'eip_service', 'eip_vo'], ( Backbone, eip_service, eip_vo )
 
             src.model = me
 
-            eip_service.DescribeAddresses src, username, session_id, region_name, ips=null, allocation_ids=null, filters=null, ( aws_result ) ->
+            eip_service.DescribeAddresses src, username, session_id, region_name, ips, allocation_ids, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeAddresses succeed

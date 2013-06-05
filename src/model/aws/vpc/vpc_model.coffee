@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : vpc_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:12
+#* Create date  : 2013-06-05 10:35:18
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'vpc_service', 'vpc_vo'], ( Backbone, vpc_service, vpc_vo )
 
             src.model = me
 
-            vpc_service.DescribeVpcs src, username, session_id, region_name, vpc_ids=null, filters=null, ( aws_result ) ->
+            vpc_service.DescribeVpcs src, username, session_id, region_name, vpc_ids, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeVpcs succeed

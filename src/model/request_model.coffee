@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : request_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:26:53
+#* Create date  : 2013-06-05 10:35:03
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -53,7 +53,7 @@ define [ 'backbone', 'request_service', 'request_vo'], ( Backbone, request_servi
 
             src.model = me
 
-            request_service.update src, username, session_id, region_name, timestamp=null, ( forge_result ) ->
+            request_service.update src, username, session_id, region_name, timestamp, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #update succeed

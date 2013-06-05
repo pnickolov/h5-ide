@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : cloudwatch_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:26:58
+#* Create date  : 2013-06-05 10:35:07
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service

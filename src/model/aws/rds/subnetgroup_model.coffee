@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : subnetgroup_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:10
+#* Create date  : 2013-06-05 10:35:16
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'subnetgroup_service', 'subnetgroup_vo'], ( Backbone, subne
 
             src.model = me
 
-            subnetgroup_service.DescribeDBSubnetGroups src, username, session_id, region_name, sg_name=null, marker=null, max_records=null, ( aws_result ) ->
+            subnetgroup_service.DescribeDBSubnetGroups src, username, session_id, region_name, sg_name, marker, max_records, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeDBSubnetGroups succeed

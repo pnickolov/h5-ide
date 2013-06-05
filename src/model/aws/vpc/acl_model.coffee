@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : acl_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:11
+#* Create date  : 2013-06-05 10:35:17
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'acl_service', 'acl_vo'], ( Backbone, acl_service, acl_vo )
 
             src.model = me
 
-            acl_service.DescribeNetworkAcls src, username, session_id, region_name, acl_ids=null, filters=null, ( aws_result ) ->
+            acl_service.DescribeNetworkAcls src, username, session_id, region_name, acl_ids, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeNetworkAcls succeed

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : opsworks_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:07
+#* Create date  : 2013-06-05 10:35:14
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_se
 
             src.model = me
 
-            opsworks_service.DescribeApps src, username, session_id, region_name, app_ids=null, stack_id=null, ( aws_result ) ->
+            opsworks_service.DescribeApps src, username, session_id, region_name, app_ids, stack_id, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeApps succeed
@@ -53,7 +53,7 @@ define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_se
 
             src.model = me
 
-            opsworks_service.DescribeStacks src, username, session_id, region_name, stack_ids=null, ( aws_result ) ->
+            opsworks_service.DescribeStacks src, username, session_id, region_name, stack_ids, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeStacks succeed
@@ -79,7 +79,7 @@ define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_se
 
             src.model = me
 
-            opsworks_service.DescribeCommands src, username, session_id, region_name, command_ids=null, deployment_id=null, instance_id=null, ( aws_result ) ->
+            opsworks_service.DescribeCommands src, username, session_id, region_name, command_ids, deployment_id, instance_id, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeCommands succeed
@@ -105,7 +105,7 @@ define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_se
 
             src.model = me
 
-            opsworks_service.DescribeDeployments src, username, session_id, region_name, app_id=null, deployment_ids=null, stack_id=null, ( aws_result ) ->
+            opsworks_service.DescribeDeployments src, username, session_id, region_name, app_id, deployment_ids, stack_id, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeDeployments succeed
@@ -131,7 +131,7 @@ define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_se
 
             src.model = me
 
-            opsworks_service.DescribeElasticIps src, username, session_id, region_name, instance_id=null, ips=null, ( aws_result ) ->
+            opsworks_service.DescribeElasticIps src, username, session_id, region_name, instance_id, ips, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeElasticIps succeed
@@ -157,7 +157,7 @@ define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_se
 
             src.model = me
 
-            opsworks_service.DescribeInstances src, username, session_id, region_name, app_id=null, instance_ids=null, layer_id=null, stack_id=null, ( aws_result ) ->
+            opsworks_service.DescribeInstances src, username, session_id, region_name, app_id, instance_ids, layer_id, stack_id, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeInstances succeed
@@ -183,7 +183,7 @@ define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_se
 
             src.model = me
 
-            opsworks_service.DescribeLayers src, username, session_id, region_name, stack_id, layer_ids=null, ( aws_result ) ->
+            opsworks_service.DescribeLayers src, username, session_id, region_name, stack_id, layer_ids, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeLayers succeed
@@ -261,7 +261,7 @@ define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_se
 
             src.model = me
 
-            opsworks_service.DescribeRaidArrays src, username, session_id, region_name, instance_id=null, raid_array_ids=null, ( aws_result ) ->
+            opsworks_service.DescribeRaidArrays src, username, session_id, region_name, instance_id, raid_array_ids, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeRaidArrays succeed
@@ -287,7 +287,7 @@ define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_se
 
             src.model = me
 
-            opsworks_service.DescribeServiceErrors src, username, session_id, region_name, instance_id=null, service_error_ids=null, stack_id=null, ( aws_result ) ->
+            opsworks_service.DescribeServiceErrors src, username, session_id, region_name, instance_id, service_error_ids, stack_id, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeServiceErrors succeed
@@ -365,7 +365,7 @@ define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_se
 
             src.model = me
 
-            opsworks_service.DescribeVolumes src, username, session_id, region_name, instance_id=null, raid_array_id=null, volume_ids=null, ( aws_result ) ->
+            opsworks_service.DescribeVolumes src, username, session_id, region_name, instance_id, raid_array_id, volume_ids, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeVolumes succeed

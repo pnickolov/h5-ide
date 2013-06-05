@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : instance_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:27:09
+#* Create date  : 2013-06-05 10:35:15
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -27,7 +27,7 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
 
             src.model = me
 
-            instance_service.DescribeDBInstances src, username, session_id, region_name, instance_id=null, marker=null, max_records=null, ( aws_result ) ->
+            instance_service.DescribeDBInstances src, username, session_id, region_name, instance_id, marker, max_records, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeDBInstances succeed

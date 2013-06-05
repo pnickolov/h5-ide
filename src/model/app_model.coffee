@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : app_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-04 15:26:54
+#* Create date  : 2013-06-05 10:35:03
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -79,7 +79,7 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
             src.model = me
 
-            app_service.rename src, username, session_id, region_name, app_id, new_name, app_name=null, ( forge_result ) ->
+            app_service.rename src, username, session_id, region_name, app_id, new_name, app_name, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #rename succeed
@@ -105,7 +105,7 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
             src.model = me
 
-            app_service.terminate src, username, session_id, region_name, app_id, app_name=null, ( forge_result ) ->
+            app_service.terminate src, username, session_id, region_name, app_id, app_name, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #terminate succeed
@@ -131,7 +131,7 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
             src.model = me
 
-            app_service.start src, username, session_id, region_name, app_id, app_name=null, ( forge_result ) ->
+            app_service.start src, username, session_id, region_name, app_id, app_name, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #start succeed
@@ -157,7 +157,7 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
             src.model = me
 
-            app_service.stop src, username, session_id, region_name, app_id, app_name=null, ( forge_result ) ->
+            app_service.stop src, username, session_id, region_name, app_id, app_name, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #stop succeed
@@ -183,7 +183,7 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
             src.model = me
 
-            app_service.reboot src, username, session_id, region_name, app_id, app_name=null, ( forge_result ) ->
+            app_service.reboot src, username, session_id, region_name, app_id, app_name, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #reboot succeed
@@ -209,7 +209,7 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
             src.model = me
 
-            app_service.info src, username, session_id, region_name, app_ids=null, ( forge_result ) ->
+            app_service.info src, username, session_id, region_name, app_ids, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #info succeed
@@ -235,7 +235,7 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
             src.model = me
 
-            app_service.list src, username, session_id, region_name, app_ids=null, ( forge_result ) ->
+            app_service.list src, username, session_id, region_name, app_ids, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #list succeed
@@ -287,7 +287,7 @@ define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo )
 
             src.model = me
 
-            app_service.summary src, username, session_id, region_name=null, ( forge_result ) ->
+            app_service.summary src, username, session_id, region_name, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #summary succeed

@@ -46,7 +46,7 @@ define [ 'MC', 'public_parser', 'result_vo' ], ( MC, public_parser, result_vo ) 
             }
 
         catch error
-            console.log "public." + method + " error:" + error.toString()
+            console.log "public." + api_name + " error:" + error.toString()
 
 
         true

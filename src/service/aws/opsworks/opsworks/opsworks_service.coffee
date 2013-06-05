@@ -46,7 +46,7 @@ define [ 'MC', 'opsworks_parser', 'result_vo' ], ( MC, opsworks_parser, result_v
             }
 
         catch error
-            console.log "opsworks." + method + " error:" + error.toString()
+            console.log "opsworks." + api_name + " error:" + error.toString()
 
 
         true

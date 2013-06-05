@@ -46,7 +46,7 @@ define [ 'MC', 'customergateway_parser', 'result_vo' ], ( MC, customergateway_pa
             }
 
         catch error
-            console.log "customergateway." + method + " error:" + error.toString()
+            console.log "customergateway." + api_name + " error:" + error.toString()
 
 
         true

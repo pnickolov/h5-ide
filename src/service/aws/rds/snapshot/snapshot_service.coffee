@@ -46,7 +46,7 @@ define [ 'MC', 'snapshot_parser', 'result_vo' ], ( MC, snapshot_parser, result_v
             }
 
         catch error
-            console.log "snapshot." + method + " error:" + error.toString()
+            console.log "snapshot." + api_name + " error:" + error.toString()
 
 
         true

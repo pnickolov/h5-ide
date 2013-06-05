@@ -46,7 +46,7 @@ define [ 'MC', 'ec2_parser', 'result_vo' ], ( MC, ec2_parser, result_vo ) ->
             }
 
         catch error
-            console.log "ec2." + method + " error:" + error.toString()
+            console.log "ec2." + api_name + " error:" + error.toString()
 
 
         true

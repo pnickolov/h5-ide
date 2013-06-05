@@ -46,7 +46,7 @@ define [ 'MC', 'placementgroup_parser', 'result_vo' ], ( MC, placementgroup_pars
             }
 
         catch error
-            console.log "placementgroup." + method + " error:" + error.toString()
+            console.log "placementgroup." + api_name + " error:" + error.toString()
 
 
         true

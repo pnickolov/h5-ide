@@ -46,7 +46,7 @@ define [ 'MC', 'cloudwatch_parser', 'result_vo' ], ( MC, cloudwatch_parser, resu
             }
 
         catch error
-            console.log "cloudwatch." + method + " error:" + error.toString()
+            console.log "cloudwatch." + api_name + " error:" + error.toString()
 
 
         true

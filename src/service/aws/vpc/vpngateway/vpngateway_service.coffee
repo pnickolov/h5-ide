@@ -46,7 +46,7 @@ define [ 'MC', 'vpngateway_parser', 'result_vo' ], ( MC, vpngateway_parser, resu
             }
 
         catch error
-            console.log "vpngateway." + method + " error:" + error.toString()
+            console.log "vpngateway." + api_name + " error:" + error.toString()
 
 
         true

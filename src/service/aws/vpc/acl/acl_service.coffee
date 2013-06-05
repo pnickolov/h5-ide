@@ -46,7 +46,7 @@ define [ 'MC', 'acl_parser', 'result_vo' ], ( MC, acl_parser, result_vo ) ->
             }
 
         catch error
-            console.log "acl." + method + " error:" + error.toString()
+            console.log "acl." + api_name + " error:" + error.toString()
 
 
         true

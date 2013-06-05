@@ -46,7 +46,7 @@ define [ 'MC', 'securitygroup_parser', 'result_vo' ], ( MC, securitygroup_parser
             }
 
         catch error
-            console.log "securitygroup." + method + " error:" + error.toString()
+            console.log "securitygroup." + api_name + " error:" + error.toString()
 
 
         true

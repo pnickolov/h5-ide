@@ -46,7 +46,7 @@ define [ 'MC', 'routetable_parser', 'result_vo' ], ( MC, routetable_parser, resu
             }
 
         catch error
-            console.log "routetable." + method + " error:" + error.toString()
+            console.log "routetable." + api_name + " error:" + error.toString()
 
 
         true

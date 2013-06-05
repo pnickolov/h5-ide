@@ -46,7 +46,7 @@ define [ 'MC', 'dhcp_parser', 'result_vo' ], ( MC, dhcp_parser, result_vo ) ->
             }
 
         catch error
-            console.log "dhcp." + method + " error:" + error.toString()
+            console.log "dhcp." + api_name + " error:" + error.toString()
 
 
         true

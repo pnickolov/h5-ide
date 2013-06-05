@@ -46,7 +46,7 @@ define [ 'MC', 'keypair_parser', 'result_vo' ], ( MC, keypair_parser, result_vo 
             }
 
         catch error
-            console.log "keypair." + method + " error:" + error.toString()
+            console.log "keypair." + api_name + " error:" + error.toString()
 
 
         true

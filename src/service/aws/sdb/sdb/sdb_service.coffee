@@ -46,7 +46,7 @@ define [ 'MC', 'sdb_parser', 'result_vo' ], ( MC, sdb_parser, result_vo ) ->
             }
 
         catch error
-            console.log "sdb." + method + " error:" + error.toString()
+            console.log "sdb." + api_name + " error:" + error.toString()
 
 
         true

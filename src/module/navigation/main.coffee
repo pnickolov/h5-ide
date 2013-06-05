@@ -2,7 +2,7 @@
 #  Controller for navigation module
 ####################################
 
-define [ 'jquery', 'text!/module/navigation/template.html', 'app_model' ], ( $, template, app_model ) ->
+define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/model.js' ], ( $, template, model ) ->
 
     #private
     loadModule = () ->
@@ -13,12 +13,9 @@ define [ 'jquery', 'text!/module/navigation/template.html', 'app_model' ], ( $, 
         #load remote html template
         $( template ).appendTo 'head'
 
-        #get service(model)
-        console.log 'fefwewerqwrqwerqwersdfd'
-        app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), $.cookie( 'region_name' ), null
-        app_model.on 'APP_INFO_RETURN', ( event ) ->
-            console.log 'APP_INFO_RETURN'
-            console.log event
+        #model
+        model.on 'APP_LST_RETURN', ( result ) ->
+            console.log 'sdfasdfadf = ' + result
 
             #load remote module1.js
             require [ './module/navigation/view', 'UI.tooltip', 'UI.scrollbar', 'UI.accordion', 'hoverIntent' ], ( View ) ->

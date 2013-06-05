@@ -20,13 +20,13 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
         render     : ->
         	#render html
             console.log 'navigation render'
-            $( this.el ).html this.template()
-
-            #push event
-            event.trigger event.NAVIGATION_COMPLETE
+            $( this.el ).html this.template this.model
 
             #Collapsed Navigation Mouse Interaction
             this.hoverIntent()
+
+            #push event
+            event.trigger event.NAVIGATION_COMPLETE
 
         dashboardRegionClick : ( event ) ->
             if event.target.parentNode.className isnt 'show-unused-region'

@@ -14,14 +14,14 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
         $( template ).appendTo 'head'
 
         #model
-        model.on 'APP_LST_RETURN', ( result ) ->
-            console.log 'sdfasdfadf = ' + result
-
-            #load remote module1.js
+        model.appListService()
+        model.on 'complete', () ->
+            #load remote /module/navigation/view.js
             require [ './module/navigation/view', 'UI.tooltip', 'UI.scrollbar', 'UI.accordion', 'hoverIntent' ], ( View ) ->
 
                 #view
                 view       = new View()
+                view.model = model
                 view.render()
 
     unLoadModule = () ->

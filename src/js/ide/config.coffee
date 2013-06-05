@@ -58,6 +58,7 @@ require.config {
 
 		#model
 		'app_model'    : 'model/app_model'
+		'stack_model'  : 'model/stack_model'
 
 		#result_vo
 		'result_vo'    : 'service/result_vo'

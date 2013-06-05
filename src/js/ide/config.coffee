@@ -79,6 +79,11 @@ require.config {
 		'app_parser'    : 'service/app/app_parser'
 		'app_service'   : 'service/app/app_service'
 
+		#stack service
+		'stack_vo'      : 'service/stack/stack_vo'
+		'stack_parser'  : 'service/stack/stack_parser'
+		'stack_service' : 'service/stack/stack_service'
+
 		'aws_vo'        : 'service/aws/aws/aws_vo'
 		'aws_parser'    : 'service/aws/aws/aws_parser'
 		'aws_service'   : 'service/aws/aws/aws_service'
@@ -109,9 +114,9 @@ require.config {
 		'instance_service'   : 'service/aws/ec2/instance/instance_service'
 
 		#keypair service
-		'keypair_vo'        : 'service/aws/ec2/keypair/keypair_vo'
-		'keypair_parser'    : 'service/aws/ec2/keypair/keypair_parser'
-		'keypair_service'   : 'service/aws/ec2/keypair/keypair_service'
+		'keypair_vo'         : 'service/aws/ec2/keypair/keypair_vo'
+		'keypair_parser'     : 'service/aws/ec2/keypair/keypair_parser'
+		'keypair_service'    : 'service/aws/ec2/keypair/keypair_service'
 
 		#placementgroup service
 		'placementgroup_vo'        : 'service/aws/ec2/placementgroup/placementgroup_vo'
@@ -119,9 +124,9 @@ require.config {
 		'placementgroup_service'   : 'service/aws/ec2/placementgroup/placementgroup_service'
 
 		#securitygroup service
-		'securitygroup_vo'        : 'service/aws/ec2/securitygroup/securitygroup_vo'
-		'securitygroup_parser'    : 'service/aws/ec2/securitygroup/securitygroup_parser'
-		'securitygroup_service'   : 'service/aws/ec2/securitygroup/securitygroup_service'
+		'securitygroup_vo'         : 'service/aws/ec2/securitygroup/securitygroup_vo'
+		'securitygroup_parser'     : 'service/aws/ec2/securitygroup/securitygroup_parser'
+		'securitygroup_service'    : 'service/aws/ec2/securitygroup/securitygroup_service'
 
 		#acl service
 		'acl_vo'        : 'service/aws/vpc/acl/acl_vo'
@@ -139,9 +144,9 @@ require.config {
 		'dhcp_service'   : 'service/aws/vpc/dhcp/dhcp_service'
 
 		#eni service
-		'eni_vo'        : 'service/aws/vpc/eni/eni_vo'
-		'eni_parser'    : 'service/aws/vpc/eni/eni_parser'
-		'eni_service'   : 'service/aws/vpc/eni/eni_service'
+		'eni_vo'         : 'service/aws/vpc/eni/eni_vo'
+		'eni_parser'     : 'service/aws/vpc/eni/eni_parser'
+		'eni_service'    : 'service/aws/vpc/eni/eni_service'
 
 		#internetgateway service
 		'internetgateway_vo'        : 'service/aws/vpc/internetgateway/internetgateway_vo'

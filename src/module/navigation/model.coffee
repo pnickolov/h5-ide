@@ -7,6 +7,7 @@ define [ 'event', 'app_model', 'stack_model' , 'backbone', 'jquery', 'underscore
     ###
     regions = [{
         region_group: "Band"
+        region_count: 3
         region_name_group: [
             { name : "Generic Name"         },
             { name : "Something Else!!"     },
@@ -14,6 +15,7 @@ define [ 'event', 'app_model', 'stack_model' , 'backbone', 'jquery', 'underscore
         ]
         },{
         region_group: "Band2"
+        region_count: 2
         region_name_group: [
             { name : "Generic Name444"     },
             { name : "Something Else!!555" }
@@ -27,9 +29,12 @@ define [ 'event', 'app_model', 'stack_model' , 'backbone', 'jquery', 'underscore
     NavigationModel = Backbone.Model.extend {
 
         defaults :
-            'app_list' : null
+            'app_list'   : null
+            'stack_list' : null
 
         regionLabels : () ->
+
+            if region_labels.length isnt 0 then return null
 
             region_labels[ 'us-east-1' ]      = 'US East  (Virginia)'
             region_labels[ 'us-west-1' ]      = 'US West (N. California)'
@@ -42,6 +47,7 @@ define [ 'event', 'app_model', 'stack_model' , 'backbone', 'jquery', 'underscore
 
             null
 
+        #app list
         appListService : ->
 
             me = this
@@ -56,22 +62,38 @@ define [ 'event', 'app_model', 'stack_model' , 'backbone', 'jquery', 'underscore
                 console.log result
 
                 #
-                app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : region_labels[ key ], 'region_name_group' : value }
+                app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : region_labels[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
                 console.log app_list
 
                 #set vo
                 me.set 'app_list', app_list
-                
-                #push event
-                me.trigger 'complete'
 
                 null
 
+        #stack list
         stackListService : ->
 
-            null
- 
+            me = this
+
+            this.regionLabels()
+
+            #get service(model)
+            stack_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+            stack_model.on 'STACK_LST_RETURN', ( result ) ->
+                
+                console.log 'STACK_LST_RETURN'
+                console.log result
+
+                #
+                stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : region_labels[ key ], 'region_count' : value.length, 'region_name_group' : value }
+
+                console.log stack_list
+
+                #set vo
+                me.set 'stack_list', stack_list
+
+                null
     }
 
     model = new NavigationModel()

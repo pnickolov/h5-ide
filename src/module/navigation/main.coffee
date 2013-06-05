@@ -13,16 +13,25 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
         #load remote html template
         $( template ).appendTo 'head'
 
-        #model
-        model.appListService()
-        model.on 'complete', () ->
-            #load remote /module/navigation/view.js
-            require [ './module/navigation/view', 'UI.tooltip', 'UI.scrollbar', 'UI.accordion', 'hoverIntent' ], ( View ) ->
+        #load remote /module/navigation/view.js
+        require [ './module/navigation/view', 'UI.tooltip', 'UI.scrollbar', 'UI.accordion', 'hoverIntent' ], ( View ) ->
 
-                #view
-                view       = new View()
-                view.model = model
+            #view
+            view       = new View()
+            view.model = model
+            
+            #listen vo set change event
+            model.on 'change:app_list', ( event ) ->
+                console.log 'change:app_list'
                 view.render()
+
+            model.on 'change:stack_list', ( event ) ->
+                console.log 'change:stack_list'
+                view.render()
+
+            #model
+            model.appListService()
+            model.stackListService()
 
     unLoadModule = () ->
         #view.remove()

@@ -1,7 +1,6 @@
 (function() {
   define(['event', 'backbone', 'jquery', 'handlebars'], function(event) {
     var CanvasView;
-
     CanvasView = Backbone.View.extend({
       el: $('#canvas'),
       template: Handlebars.compile($('#canvas-tmpl').html()),

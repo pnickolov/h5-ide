@@ -42,7 +42,6 @@ define( [ 'backbone', 'jquery', 'handlebars' ], function( Backbone, $, Handlebar
 (function() {
   define(['backbone', 'jquery', 'handlebars'], function(Backbone, $, Handlebars) {
     var MainView;
-
     MainView = Backbone.View.extend({
       el: $('#controlContent'),
       template: Handlebars.compile($("#control-tmpl").html()),

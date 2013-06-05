@@ -1,7 +1,6 @@
 (function() {
   define([], function() {
     var APP_STATE, MESSAGE_E, OPS_STATE, RETURN_CODE;
-
     MESSAGE_E = {
       MESSAGE_E_SESSION: "This session has expired, please log in again",
       MESSAGE_E_EXTERNAL: "Sorry, there seems to be a problem with AWS",

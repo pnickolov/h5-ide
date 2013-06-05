@@ -13,6 +13,10 @@
 	<script type="text/javascript" src="./apiList.js"></script>
 	<script type="text/javascript">
 
+		var username = ""
+		var session_id = ""
+		var region_name = ""
+
 		function init(){
 
 			//Enable Send btn
@@ -66,6 +70,11 @@
 				{
 					param_list.append('<li><label>' + param_name + ' - [' + item.type + ']</label><input class="input" type="text" id="' + param_name + '" value="' + item.value + '" /></li>');
 				});
+
+		        $("#username").val( username )
+		        $("#region_name").val( region_name )
+		        $("#session_id").val( session_id )
+
 			});
 
 			prettyPrint();
@@ -201,7 +210,7 @@
 		<div id="request_wrap">
 			<div id="label_request_result"></div>
 			<h4>Request</h4>
-			<div id="resquest_data"></div>
+			<pre id="resquest_data" class="prettyprint linenums"></pre>
 		</div>
 
 		<div id="response_wrap">

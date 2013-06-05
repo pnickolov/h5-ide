@@ -338,11 +338,16 @@ define [ 'app_vo', 'result_vo', 'constant', 'aws_parser'], ( app_vo, result_vo, 
     #private (resolve result to vo )
     resolveListResult = ( result ) ->
         #resolve result
-        #TO-DO
+        app_list = {}
+        for vo in result
+            if app_list[vo.region] == undefined
+                app_list[vo.region]=[]
+
+            app_list[vo.region].push vo
 
         #return vo
-        #TO-DO
-        result
+        app_vo.app_list = app_list
+        app_list
 
     #private (parser list return)
     parserListReturn = ( result, return_code, param ) ->

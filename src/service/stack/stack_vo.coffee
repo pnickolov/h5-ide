@@ -34,7 +34,10 @@ define [], () ->
 		"rid"					: 	""
 	}
 
+	stack_list = []
+
 	#public
 	stack_info 	: 	stack_info
 	stack_run 	: 	stack_run
+	stack_list  :   stack_list
 

@@ -33,7 +33,11 @@ define [], () ->
         "state"                 :   ""
         "username"              :   ""
     }
+
+    app_list    =   []
+
     #public
     app_request :   app_request
     app_info    :   app_info
+    app_list    :   app_list
 

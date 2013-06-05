@@ -3,7 +3,7 @@
 #* Filename: UI.sortableTab
 #* Creator: Angel
 #* Description: UI.sortableTab
-#* Date: 20130530
+#* Date: 20130603
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -77,8 +77,10 @@ var sortableTab = {
 	{
 		event.data.target.css('visibility', 'visible');
 		event.data.dragging_tab.remove();
-		$(document).off('mousemove', sortableTab.mousemove);
-		$(document).off('mouseup', sortableTab.mouseup);
+		$(document).off({
+			'mousemove': sortableTab.mousemove,
+			'mouseup': sortableTab.mouseup
+		});
 	}
 };
 

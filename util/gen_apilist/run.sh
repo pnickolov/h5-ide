@@ -150,7 +150,7 @@ function fn_generate_coffee() {
     RESOURCE_URL=""
     API_TYPE=""
     api_type=""
-    SERVICE_NAME=`echo ${__TGT_DIR_SERVICE} | awk 'BEGIN{FS="[/]"}{printf "%s",$(NF-1)}'`
+    SERVICE_NAME=`echo ${__CUR_DIR} | awk 'BEGIN{FS="[/]"}{printf "%s",tolower($NF)}'`
 
 
 
@@ -196,21 +196,21 @@ function fn_generate_coffee() {
     # echo "# SRC_FILE: "${__CUR_DIR}/${__CUR_FILE}
     # echo "# TGT_DIR_SERVICE : "${__TGT_DIR_SERVICE}
     # echo "# TGT_DIR_TEST    : "${__TGT_DIR_TEST}
-    # echo "# SERVICE_URL     : "${SERVICE_URL}
-    # echo "# RESOURCE_URL    : "${RESOURCE_URL}
-    # echo "# SERVICE_NAME    : "${SERVICE_NAME}
+    echo "# SERVICE_URL     : "${SERVICE_URL}
+    echo "# RESOURCE_URL    : "${RESOURCE_URL}
+    echo "# SERVICE_NAME    : "${SERVICE_NAME}
     # echo "# RESOURCE_NAME   : "${_RESOURCE_l}
     # echo "#......................................................."
 
-    if [ ! -d ${__TGT_DIR_SERVICE} ]
-    then
-        mkdir -p ${__TGT_DIR_SERVICE}
-    fi
+    # if [ ! -d ${__TGT_DIR_SERVICE} ]
+    # then
+    #     mkdir -p ${__TGT_DIR_SERVICE}
+    # fi
 
-    if [ ! -d ${__TGT_DIR_TEST} ]
-    then
-        mkdir -p ${__TGT_DIR_TEST}
-    fi
+    # if [ ! -d ${__TGT_DIR_TEST} ]
+    # then
+    #     mkdir -p ${__TGT_DIR_TEST}
+    # fi
 
 
     _PUBLIC_API_LIST=""
@@ -218,7 +218,9 @@ function fn_generate_coffee() {
 
 
     echo "resource ${_RESOURCE_u} begin"
-    echo "        ${_RESOURCE_u} : {"  >> ${SH_BASE_DIR}/apiList_src.json
+    echo "        ${_RESOURCE_u} : {"  >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+
+    echo "        ########## ${_RESOURCE_u} ##########" >> ${SH_BASE_DIR}/out.tmp/testsuite.coffee
 
     _LAST_API=""
     _NUM_API=""
@@ -240,11 +242,21 @@ function fn_generate_coffee() {
         _CUR_API=${API_NAME[$j]}
         #echo "api   : "${_CUR_API}
 
-        #####################################3
+        #####################################
+        _RESOURCE_URL=${RESOURCE_URL/\\/}
+        VOL=`echo ${_CUR_API} | grep "Volume" | wc -l`
+        SNAP=`echo ${_CUR_API} | grep "Snapshot" | wc -l`
+        if [ $VOL -eq 1 ]
+        then
+            _RESOURCE_URL="aws/ebs/volume"
+        elif [ $SNAP -eq 1 ]
+        then
+            _RESOURCE_URL="aws/ebs/snapshot"
+        fi
         echo "api ${_CUR_API} begin"
-        echo "            ${_CUR_API} : {"    >> ${SH_BASE_DIR}/apiList_src.json
-        echo "                method  : '/${RESOURCE_URL/\\\/aws\\/}:${_CUR_API}',"    >> ${SH_BASE_DIR}/apiList_src.json
-        echo "                param   : {"    >> ${SH_BASE_DIR}/apiList_src.json
+        echo "            ${_CUR_API} : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+        echo "                method  : '/${_RESOURCE_URL/\\/}:${_CUR_API}',"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+        echo "                param   : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
         
 
         #special process api named "public"
@@ -321,15 +333,15 @@ function fn_generate_coffee() {
 
             _DEFAULT=`echo "${CUR_PARAM[$k]}" | awk '{printf $1}' | awk  'BEGIN{FS="[=]"}{if (NF==1){printf "null"}else{printf "%s",$2}}'`
 
-            echo "                    ${CUR_PARAM[$k]} : {"    >> ${SH_BASE_DIR}/apiList_src.json
-            echo "                        type   : '${_TYPE}',"    >> ${SH_BASE_DIR}/apiList_src.json
-            echo "                        value  : '${_DEFAULT}'"    >> ${SH_BASE_DIR}/apiList_src.json
+            echo "                    ${CUR_PARAM[$k]} : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+            echo "                        type   : '${_TYPE}',"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+            echo "                        value  : '${_DEFAULT}'"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
 
             if [ $k -eq ${P_NUM} ]
             then
-                echo "                    }"    >> ${SH_BASE_DIR}/apiList_src.json
+                echo "                    }"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
             else
-                echo "                    },"    >> ${SH_BASE_DIR}/apiList_src.json
+                echo "                    },"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
             fi
             
 
@@ -356,17 +368,16 @@ function fn_generate_coffee() {
             echo " > ${_CUR_API} (need resolve)"
         fi
 
-        # if [ "${__TYPE}" == "aws"  ]
-        # then
-        #     #echo "format_event ${SERVICE} ${_RESOURCE} ${_CUR_API}"
-        #     format_event ${SERVICE} ${_RESOURCE} ${_CUR_API}
-        # else
-        #     #echo "format_event '' ${_RESOURCE_l} ${_CUR_API}"
-        #     format_event "" ${_RESOURCE_l} ${_CUR_API}
-        # fi
-        # EVENT=${G_EVENT}"_RETURN"
-        # echo ${EVENT}
-        #continue
+        if [ "${__TYPE}" == "aws"  ]
+        then
+            #echo "format_event ${SERVICE} ${_RESOURCE} ${_CUR_API}"
+            format_event ${SERVICE} ${_RESOURCE} ${_CUR_API}
+        else
+            #echo "format_event '' ${_RESOURCE_l} ${_CUR_API}"
+            format_event "" ${_RESOURCE_l} ${_CUR_API}
+        fi
+        EVENT=${G_EVENT}"_RETURN"
+        #echo ${EVENT}
 
         #echo "CUR_PARAM: "${CUR_PARAM[*]}
         #echo "_PARAM_DEF:"${_PARAM_DEF}
@@ -389,24 +400,37 @@ function fn_generate_coffee() {
         #####################################3
 
         echo "api ${_CUR_API} end"
-        echo "                }"    >> ${SH_BASE_DIR}/apiList_src.json
+        echo "                }"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
         if [ $j -eq ${#API_NAME[@]} ]
         then
-            echo "            }"    >> ${SH_BASE_DIR}/apiList_src.json    
+            echo "            }"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json    
         else
-            echo "            },"    >> ${SH_BASE_DIR}/apiList_src.json
+            echo "            },"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
         fi
         
+
+        sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${SH_BASE_DIR}/template/template.api \
+        | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
+        | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
+        | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
+        | sed -e ":a;N;$ s/@@EVENT-NAME/${EVENT}/g;ba" \
+        >> ${SH_BASE_DIR}/out.tmp/testsuite.coffee
 
     done
 
     echo "resource ${_RESOURCE_u} end"
     if [ "${_RESOURCE_u}" == "Session" ]
     then
-        echo "        }"   >> ${SH_BASE_DIR}/apiList_src.json
+        echo "        }"   >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
     else
-        echo "        },"   >> ${SH_BASE_DIR}/apiList_src.json
+        echo "        },"   >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
     fi
+
+    echo -e "'${_RESOURCE_l}_model'," >> ${SH_BASE_DIR}/out.tmp/testsuite.coffee.head
+
+    sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${SH_BASE_DIR}/template/template.config \
+    | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
+    >> ${SH_BASE_DIR}/out.tmp/config.coffee
 
     return
 
@@ -535,13 +559,15 @@ function fn_scan_aws() {
 ###########################################################
 
 #// Generate service head ////////////////////////////////////////////////////////////
-echo "re-create apiList_src.json"
-if [ -f ${SH_BASE_DIR}/apiList_src.json ]
-then
-    rm ${SH_BASE_DIR}/apiList_src.json -rf
+echo "delete old data"
+if [ -d ${SH_BASE_DIR}/out.tmp ]
+then    
+    rm ${SH_BASE_DIR}/out.tmp -rf
 fi
+mkdir -p ${SH_BASE_DIR}/out.tmp
+
 echo "file begin"
-echo "var API_DATA_LIST = {" > ${SH_BASE_DIR}/apiList_src.json
+echo "var API_DATA_LIST = {" > ${SH_BASE_DIR}/out.tmp/apiList_src.json
 
 
 for (( i = 0 ; i < ${#SRC_DIR[@]} ; i++ ))
@@ -552,7 +578,7 @@ do
     if [ "${SRC_DIR[$i]}" == "Handler" -o "${SRC_DIR[$i]}" == "Forge" ]
     then
         echo "service Forge start"
-        echo "    Forge : {"       >> ${SH_BASE_DIR}/apiList_src.json
+        echo "    Forge : {"       >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
     fi
 
 
@@ -563,17 +589,17 @@ do
             fn_scan_handler_forge "${CUR_SRC_DIR}" "${LINE}"
         elif [ "${SRC_DIR[$i]}" == "AWS" ]
         then
-            SERVICE=${LINE/.py/} #remove .py
-            echo "service ${SERVICE} start"
-            echo "    ${SERVICE} : {"       >> ${SH_BASE_DIR}/apiList_src.json
+            SRV=${LINE/.py/} #remove .py
+            echo "service ${SRV} start"
+            echo "    ${SRV} : {"       >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
             fn_scan_aws "${CUR_SRC_DIR}" "${LINE}"
         fi
     done
 
-    echo "    },"      >> ${SH_BASE_DIR}/apiList_src.json
+    echo "    },"      >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
 
 done
 
 
 echo "file end"
-echo "}" >> ${SH_BASE_DIR}/apiList_src.json   
+echo "}" >> ${SH_BASE_DIR}/out.tmp/apiList_src.json   

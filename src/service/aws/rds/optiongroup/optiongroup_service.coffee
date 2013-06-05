@@ -46,7 +46,7 @@ define [ 'MC', 'optiongroup_parser', 'result_vo' ], ( MC, optiongroup_parser, re
             }
 
         catch error
-            console.log "optiongroup." + method + " error:" + error.toString()
+            console.log "optiongroup." + api_name + " error:" + error.toString()
 
 
         true

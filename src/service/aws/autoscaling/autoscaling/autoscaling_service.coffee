@@ -46,7 +46,7 @@ define [ 'MC', 'autoscaling_parser', 'result_vo' ], ( MC, autoscaling_parser, re
             }
 
         catch error
-            console.log "autoscaling." + method + " error:" + error.toString()
+            console.log "autoscaling." + api_name + " error:" + error.toString()
 
 
         true

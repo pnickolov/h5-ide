@@ -46,7 +46,7 @@ define [ 'MC', 'session_parser', 'result_vo' ], ( MC, session_parser, result_vo 
             }
 
         catch error
-            console.log "session." + method + " error:" + error.toString()
+            console.log "session." + api_name + " error:" + error.toString()
 
 
         true

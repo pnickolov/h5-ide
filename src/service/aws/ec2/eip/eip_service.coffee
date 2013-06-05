@@ -46,7 +46,7 @@ define [ 'MC', 'eip_parser', 'result_vo' ], ( MC, eip_parser, result_vo ) ->
             }
 
         catch error
-            console.log "eip." + method + " error:" + error.toString()
+            console.log "eip." + api_name + " error:" + error.toString()
 
 
         true

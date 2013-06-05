@@ -46,7 +46,7 @@ define [ 'MC', 'vpc_parser', 'result_vo' ], ( MC, vpc_parser, result_vo ) ->
             }
 
         catch error
-            console.log "vpc." + method + " error:" + error.toString()
+            console.log "vpc." + api_name + " error:" + error.toString()
 
 
         true

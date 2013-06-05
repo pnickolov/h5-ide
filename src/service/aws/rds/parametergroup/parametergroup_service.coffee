@@ -46,7 +46,7 @@ define [ 'MC', 'parametergroup_parser', 'result_vo' ], ( MC, parametergroup_pars
             }
 
         catch error
-            console.log "parametergroup." + method + " error:" + error.toString()
+            console.log "parametergroup." + api_name + " error:" + error.toString()
 
 
         true

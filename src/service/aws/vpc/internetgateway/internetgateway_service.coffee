@@ -46,7 +46,7 @@ define [ 'MC', 'internetgateway_parser', 'result_vo' ], ( MC, internetgateway_pa
             }
 
         catch error
-            console.log "internetgateway." + method + " error:" + error.toString()
+            console.log "internetgateway." + api_name + " error:" + error.toString()
 
 
         true

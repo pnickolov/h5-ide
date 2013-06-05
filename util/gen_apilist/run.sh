@@ -410,10 +410,12 @@ function fn_generate_coffee() {
         
 
         sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${SH_BASE_DIR}/template/template.api \
+        | sed -e ":a;N;$ s/@@service-name/${SERVICE,,}/g;ba" \
         | sed -e ":a;N;$ s/@@api-name/${_CUR_API}/g;ba" \
         | sed -e ":a;N;$ s/@@param-list/${_PARAM_LIST}/g;ba" \
         | sed -e ":a;N;$ s/@@api-type/${api_type}/g;ba" \
         | sed -e ":a;N;$ s/@@EVENT-NAME/${EVENT}/g;ba" \
+        | sed -e ":a;N;$ s/@@param-default/${_PARAM_DEFAULT}/g;ba" \
         >> ${SH_BASE_DIR}/out.tmp/testsuite.coffee
 
     done

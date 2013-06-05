@@ -46,7 +46,7 @@ define [ 'MC', 'reservedinstance_parser', 'result_vo' ], ( MC, reservedinstance_
             }
 
         catch error
-            console.log "reservedinstance." + method + " error:" + error.toString()
+            console.log "reservedinstance." + api_name + " error:" + error.toString()
 
 
         true

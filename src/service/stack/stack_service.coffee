@@ -46,7 +46,7 @@ define [ 'MC', 'stack_parser', 'result_vo' ], ( MC, stack_parser, result_vo ) ->
             }
 
         catch error
-            console.log "stack." + method + " error:" + error.toString()
+            console.log "stack." + api_name + " error:" + error.toString()
 
 
         true

@@ -46,7 +46,7 @@ define [ 'MC', 'elb_parser', 'result_vo' ], ( MC, elb_parser, result_vo ) ->
             }
 
         catch error
-            console.log "elb." + method + " error:" + error.toString()
+            console.log "elb." + api_name + " error:" + error.toString()
 
 
         true

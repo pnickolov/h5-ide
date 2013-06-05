@@ -46,7 +46,7 @@ define [ 'MC', 'favorite_parser', 'result_vo' ], ( MC, favorite_parser, result_v
             }
 
         catch error
-            console.log "favorite." + method + " error:" + error.toString()
+            console.log "favorite." + api_name + " error:" + error.toString()
 
 
         true

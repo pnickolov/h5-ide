@@ -46,7 +46,7 @@ define [ 'MC', 'app_parser', 'result_vo' ], ( MC, app_parser, result_vo ) ->
             }
 
         catch error
-            console.log "app." + method + " error:" + error.toString()
+            console.log "app." + api_name + " error:" + error.toString()
 
 
         true

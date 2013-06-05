@@ -46,7 +46,7 @@ define [ 'MC', 'ami_parser', 'result_vo' ], ( MC, ami_parser, result_vo ) ->
             }
 
         catch error
-            console.log "ami." + method + " error:" + error.toString()
+            console.log "ami." + api_name + " error:" + error.toString()
 
 
         true

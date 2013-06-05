@@ -46,7 +46,7 @@ define [ 'MC', 'eni_parser', 'result_vo' ], ( MC, eni_parser, result_vo ) ->
             }
 
         catch error
-            console.log "eni." + method + " error:" + error.toString()
+            console.log "eni." + api_name + " error:" + error.toString()
 
 
         true

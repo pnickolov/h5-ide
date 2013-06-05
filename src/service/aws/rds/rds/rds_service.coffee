@@ -46,7 +46,7 @@ define [ 'MC', 'rds_parser', 'result_vo' ], ( MC, rds_parser, result_vo ) ->
             }
 
         catch error
-            console.log "rds." + method + " error:" + error.toString()
+            console.log "rds." + api_name + " error:" + error.toString()
 
 
         true

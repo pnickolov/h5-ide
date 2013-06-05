@@ -46,7 +46,7 @@ define [ 'MC', 'instance_parser', 'result_vo' ], ( MC, instance_parser, result_v
             }
 
         catch error
-            console.log "instance." + method + " error:" + error.toString()
+            console.log "instance." + api_name + " error:" + error.toString()
 
 
         true

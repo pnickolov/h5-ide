@@ -46,7 +46,7 @@ define [ 'MC', 'subnetgroup_parser', 'result_vo' ], ( MC, subnetgroup_parser, re
             }
 
         catch error
-            console.log "subnetgroup." + method + " error:" + error.toString()
+            console.log "subnetgroup." + api_name + " error:" + error.toString()
 
 
         true

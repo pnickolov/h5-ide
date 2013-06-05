@@ -46,7 +46,7 @@ define [ 'MC', 'subnet_parser', 'result_vo' ], ( MC, subnet_parser, result_vo ) 
             }
 
         catch error
-            console.log "subnet." + method + " error:" + error.toString()
+            console.log "subnet." + api_name + " error:" + error.toString()
 
 
         true

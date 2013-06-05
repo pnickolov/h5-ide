@@ -46,7 +46,7 @@ define [ 'MC', 'aws_parser', 'result_vo' ], ( MC, aws_parser, result_vo ) ->
             }
 
         catch error
-            console.log "aws." + method + " error:" + error.toString()
+            console.log "aws." + api_name + " error:" + error.toString()
 
 
         true

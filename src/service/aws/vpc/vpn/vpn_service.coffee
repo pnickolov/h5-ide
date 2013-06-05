@@ -46,7 +46,7 @@ define [ 'MC', 'vpn_parser', 'result_vo' ], ( MC, vpn_parser, result_vo ) ->
             }
 
         catch error
-            console.log "vpn." + method + " error:" + error.toString()
+            console.log "vpn." + api_name + " error:" + error.toString()
 
 
         true

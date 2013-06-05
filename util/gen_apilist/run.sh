@@ -285,7 +285,10 @@ function fn_generate_coffee() {
             #process python constant to javascript
             CUR_PARAM_DEF[$k]=`eval "echo $TMP" | sed "s/None/null/g" | sed "s/False/false/g" | sed "s/True/true/g" `
 
-            CUR_PARAM_DEFAULT=`echo "${CUR_PARAM[$k]}" | awk '{printf $1}' | awk  'BEGIN{FS="[=]"}{if (NF==1){printf "            %s = null",$0}else{printf "            %s = %s",$1,$2}}'`
+            CUR_PARAM_DEFAULT1=`echo "${CUR_PARAM[$k]}" | awk '{printf $1}' | awk  'BEGIN{FS="[=]"}{if (NF==1){printf "            %s = if $(\"#%s\").val() != \"null\" then $(\"#%s\").val() else null",$1,$1,$1}else{printf "            %s = if $(\"#%s\").val() != \"null\" then $(\"#%s\").val() else %s",$1,$1,$1,$2}}'`
+            CUR_PARAM_DEFAULT=${CUR_PARAM_DEFAULT1}"\n"`echo "${CUR_PARAM[$k]}" | awk '{printf $1}' | awk  'BEGIN{FS="[=]"}{printf "            %s = if %s != null and %s.indexOf(\"[\") != -1 then JSON.parse %s else %s",$1,$1,$1,$1,$1}'`
+
+
 
             #echo "    param> "${CUR_PARAM[$k]}
             if [ $k -eq 1 ]

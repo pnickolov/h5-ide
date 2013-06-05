@@ -1,5 +1,5 @@
 #############################
-#  View(UI logic) for navigation
+#  View Mode for navigation
 #############################
 
 define [ 'event', 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'underscore' ], ( event, app_model, stack_model, ec2_model ) ->
@@ -115,9 +115,7 @@ define [ 'event', 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery'
                 #set vo
                 me.set 'region_list', region_list
 
-                #console.log me.get 'region_list'
-
-
+                null
     }
 
     model = new NavigationModel()

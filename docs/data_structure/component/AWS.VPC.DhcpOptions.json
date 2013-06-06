@@ -1,0 +1,37 @@
+{
+    "074AAA89-A67F-8F17-1268-14DB3ADEFAB7": {
+      "uid": "074AAA89-A67F-8F17-1268-14DB3ADEFAB7",
+      "name": "default",
+      "resource": {
+        "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
+        "DhcpOptionsId": "",
+        "DhcpConfigurationSet": [
+          {
+            "Key": "domain-name",
+            "ValueSet": [
+              {
+                "Value": "test"
+              }
+            ]
+          },
+          {
+            "Key": "domain-name-servers",
+            "ValueSet": [
+              {
+                "Value": "192.168.2.2"
+              }
+            ]
+          },
+          {
+            "Key": "netbios-node-type",
+            "ValueSet": [
+              {
+                "Value": "1"
+              }
+            ]
+          }
+        ]
+      },
+      "type": "AWS.VPC.DhcpOptions"
+    }
+}

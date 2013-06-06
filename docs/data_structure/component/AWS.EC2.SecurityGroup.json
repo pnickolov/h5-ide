@@ -1,0 +1,45 @@
+{
+    "B70030F1-0107-B526-8022-14C0BBD50CC1": {
+      "uid": "B70030F1-0107-B526-8022-14C0BBD50CC1",
+      "name": "DefaultSG",
+      "resource": {
+        "IpPermissions": [
+          {
+            "IpProtocol": "tcp",
+            "IpRanges": "0.0.0.0/0",
+            "FromPort": "22",
+            "ToPort": "22",
+            "Groups": [
+              {
+                "GroupId": "",
+                "UserId": "",
+                "GroupName": ""
+              }
+            ]
+          }
+        ],
+        "IpPermissionsEgress": [
+          {
+            "IpProtocol": "tcp",
+            "IpRanges": "0.0.0.0/0",
+            "FromPort": "22",
+            "ToPort": "22",
+            "Groups": [
+              {
+                "GroupId": "",
+                "UserId": "",
+                "GroupName": ""
+              }
+            ]
+          }
+        ],
+        "GroupId": "",
+        "Default": "true",
+        "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
+        "GroupName": "DefaultSG",
+        "OwnerId": "",
+        "GroupDescription": "vpc default security group"
+      },
+      "type": "AWS.EC2.SecurityGroup"
+    }
+}

@@ -1,0 +1,85 @@
+{
+   "D7A34116-A4C5-905C-B56C-14D68596CB13": {
+      "uid": "D7A34116-A4C5-905C-B56C-14D68596CB13",
+      "name": "elb1",
+      "resource": {
+        "HealthCheck": {
+          "Timeout": "5",
+          "Target": "HTTP:80/index.html",
+          "HealthyThreshold": "9",
+          "UnhealthyThreshold": "4",
+          "Interval": "30"
+        },
+        "Policies": {
+          "AppCookieStickinessPolicies": [
+            {
+              "CookieName": "",
+              "PolicyName": ""
+            }
+          ],
+          "OtherPolicies": [],
+          "LBCookieStickinessPolicies": [
+            {
+              "CookieExpirationPeriod": "",
+              "PolicyName": ""
+            }
+          ]
+        },
+        "BackendServerDescriptions": [
+          {
+            "InstantPort": "",
+            "PoliciyNames": ""
+          }
+        ],
+        "SecurityGroups": [
+          "@B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupId"
+        ],
+        "CreatedTime": "",
+        "CanonicalHostedZoneNameID": "",
+        "ListenerDescriptions": [
+          {
+            "PolicyNames": "",
+            "Listener": {
+              "LoadBalancerPort": "80",
+              "InstanceProtocol": "HTTP",
+              "Protocol": "HTTP",
+              "SSLCertificateId": "",
+              "InstancePort": "80"
+            }
+          },
+          {
+            "PolicyNames": "",
+            "Listener": {
+              "LoadBalancerPort": "443",
+              "InstanceProtocol": "HTTP",
+              "Protocol": "HTTPS",
+              "SSLCertificateId": "@D0CB1D6A-EAD5-8814-255F-14DC1FAADB49.resource.ServerCertificateMetadata.Arn",
+              "InstancePort": "80"
+            }
+          }
+        ],
+        "DNSName": "",
+        "Scheme": "internal",
+        "CanonicalHostedZoneName": "",
+        "Instances": [
+          {
+            "InstanceId": "@D673A590-1897-12F8-D1F3-14C116707F9A.resource.InstanceId"
+          }
+        ],
+        "SourceSecurityGroup": {
+          "OwnerAlias": "",
+          "GroupName": ""
+        },
+        "Subnets": [
+          "@E2236992-27D1-97CA-4B03-14C0C485E033.resource.SubnetId"
+        ],
+        "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
+        "LoadBalancerName": "elb1",
+        "AvailabilityZones": [
+          "ap-northeast-1a",
+          "ap-northeast-1b"
+        ]
+      },
+      "type": "AWS.ELB"
+    }
+}

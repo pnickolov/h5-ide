@@ -1,0 +1,14 @@
+{
+    "395BC5F6-3489-E660-C5DF-14CFE4690335": {
+      "uid": "395BC5F6-3489-E660-C5DF-14CFE4690335",
+      "name": "CustomerNetwork1",
+      "resource": {
+        "Type": "ipsec.1",
+        "BgpAsn": "",
+        "CustomerGatewayId": "",
+        "State": "available",
+        "IpAddress": "1.1.1.1"
+      },
+      "type": "AWS.VPC.CustomerGateway"
+    }
+}

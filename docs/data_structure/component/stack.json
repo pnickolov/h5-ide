@@ -1,0 +1,42 @@
+{
+  "version": "4.0",
+  "component": {
+  },
+  "description": "",
+  "state": "Enabled",
+  "id": "",
+  "property": {
+    "schedule": {
+      "stop": {
+        "run": null,
+        "when": null,
+        "during": null
+      },
+      "backup": {
+        "day": null,
+        "when": null
+      },
+      "start": {
+        "when": null
+      }
+    },
+    "policy": {
+      "ha": ""
+    },
+    "lease": {
+      "length": null,
+      "action": "",
+      "due": null
+    }
+  },
+  "name": "untitled0 - stack",
+  "owner": "xjimmy",
+  "history": {
+    "time": {
+      "launched": "",
+      "run": "",
+      "terminated": ""
+    },
+    "event": {}
+  }
+}

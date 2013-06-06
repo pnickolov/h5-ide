@@ -1,0 +1,76 @@
+{
+    "904246B3-529E-5BBE-952B-14C0BBD66EF0": {
+      "uid": "904246B3-529E-5BBE-952B-14C0BBD66EF0",
+      "name": "DefaultACL",
+      "resource": {
+        "RouteTableId": "",
+        "NetworkAclId": "",
+        "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
+        "Default": "true",
+        "EntrySet": [
+          {
+            "RuleAction": "allow",
+            "Protocol": "-1",
+            "CidrBlock": "0.0.0.0/0",
+            "Egress": "true",
+            "IcmpTypeCode": {
+              "Type": "",
+              "Code": ""
+            },
+            "PortRange": {
+              "To": "",
+              "From": ""
+            },
+            "RuleNumber": "100"
+          },
+          {
+            "RuleAction": "deny",
+            "Protocol": "-1",
+            "CidrBlock": "0.0.0.0/0",
+            "Egress": "true",
+            "IcmpTypeCode": {
+              "Type": "",
+              "Code": ""
+            },
+            "PortRange": {
+              "To": "",
+              "From": ""
+            },
+            "RuleNumber": "32767"
+          },
+          {
+            "RuleAction": "allow",
+            "Protocol": "-1",
+            "CidrBlock": "0.0.0.0/0",
+            "Egress": "false",
+            "IcmpTypeCode": {
+              "Type": "",
+              "Code": ""
+            },
+            "PortRange": {
+              "To": "",
+              "From": ""
+            },
+            "RuleNumber": "100"
+          },
+          {
+            "RuleAction": "deny",
+            "Protocol": "-1",
+            "CidrBlock": "0.0.0.0/0",
+            "Egress": "false",
+            "IcmpTypeCode": {
+              "Type": "",
+              "Code": ""
+            },
+            "PortRange": {
+              "To": "",
+              "From": ""
+            },
+            "RuleNumber": "32767"
+          }
+        ],
+        "AssociationSet": []
+      },
+      "type": "AWS.VPC.NetworkAcl"
+    }
+}

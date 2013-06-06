@@ -22,6 +22,7 @@ define( [ 'backbone' ], function( Backbone ) {
 (function() {
   define(['backbone'], function(Backbone) {
     var Item, item;
+
     Item = Backbone.Model.extend({
       defaults: {
         'title': 'stabilo彩色铅笔',

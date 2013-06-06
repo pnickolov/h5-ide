@@ -1,6 +1,7 @@
 (function() {
   define(['event', 'backbone', 'jquery', 'handlebars'], function(event) {
     var ToolbarView;
+
     ToolbarView = Backbone.View.extend({
       el: $('#main-toolbar'),
       template: Handlebars.compile($('#toolbar-tmpl').html()),

@@ -13,6 +13,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
         events   :
             'click #nav-dashboard-region a'  : 'dashboardRegionClick'
             'click .nav-region-list-items a' : 'regionListItemsClick'
+            'click .show-unused-region a'    : 'showEmptyRegionClick'
 
         initialize : ->
             #
@@ -34,6 +35,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
 
         regionListItemsClick : ( event ) ->
             alert 'add tab click event'
+
+        showEmptyRegionClick : ( event ) ->
+            $( event.target ).parent().prev().find('.hide').show()
+            $( event.target ).hide()
 
         hoverIntent          : ->
             $('.nav-head').hoverIntent {

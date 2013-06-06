@@ -171,20 +171,46 @@
 						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-long-name-2</a></li>
 					</ul>
 				</li>
+				-->
+			</ul>
+
+			{{#if attributes.region_empty_list }}
+
+			<ul class="sub-menu nav-region-list accordion-bod">
+				{{#each attributes.region_empty_list }}
+
 				<li class="hide">
-					<a href="javascript:void(0)" class="nav-stack-region-title">Tokyo (0) <span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span></a>
+					<a href="javascript:void(0)" class="nav-stack-region-title">
+						{{ this }} (0) 
+						<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
+					</a>
+				</li>
+
+				{{/each}}
+
+				<!--
+				<li class="hide">
+					<a href="javascript:void(0)" class="nav-stack-region-title">
+						Tokyo (0) 
+						<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
+					</a>
 				</li>
 				<li class="hide">
-					<a href="javascript:void(0)" class="nav-stack-region-title">Ireland (0) <span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span></a>
+					<a href="javascript:void(0)" class="nav-stack-region-title">
+						Ireland (0) 
+						<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
+					</a>
 				</li>
 				-->
 			</ul>
 
 			<div class="show-unused-region">
-				<a href="javascript:void(0)" onclick="show_item(this)" class="tooltip" data-tooltip="Show unused regions">
+				<a href="javascript:void(0)" class="tooltip" data-tooltip="Show unused regions">
 					<i class="icon-double-angle-down"></i>
 				</a>
 			</div>
+
+			{{/if}}
 
 		</div>
 

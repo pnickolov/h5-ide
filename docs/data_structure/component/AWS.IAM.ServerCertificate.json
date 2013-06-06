@@ -1,0 +1,19 @@
+{
+    "D0CB1D6A-EAD5-8814-255F-14DC1FAADB49": {
+      "uid": "D0CB1D6A-EAD5-8814-255F-14DC1FAADB49",
+      "name": "iam-name",
+      "resource": {
+        "PrivateKey": "private-key",
+        "ServerCertificateMetadata": {
+          "UploadDate": "",
+          "ServerCertificateName": "iam-name",
+          "ServerCertificateId": "",
+          "Arn": "",
+          "Path": ""
+        },
+        "CertificateBody": "public-key",
+        "CertificateChain": ""
+      },
+      "type": "AWS.IAM.ServerCertificate"
+    }
+}

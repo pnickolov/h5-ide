@@ -1,0 +1,25 @@
+{
+    "785ABCF2-5226-82AC-A564-14C4618E8737": {
+      "uid": "785ABCF2-5226-82AC-A564-14C4618E8737",
+      "name": "/dev/sdf",
+      "resource": {
+        "VolumeId": "",
+        "CreateTime": "",
+        "AvailabilityZone": "ap-northeast-1b",
+        "Size": "1",
+        "Status": "",
+        "SnapshotId": "",
+        "Iops": "",
+        "AttachmentSet": {
+          "VolumeId": "@785ABCF2-5226-82AC-A564-14C4618E8737.resource.VolumeId",
+          "Status": "",
+          "AttachTime": "",
+          "InstanceId": "@D673A590-1897-12F8-D1F3-14C116707F9A.resource.InstanceId",
+          "DeleteOnTermination": "true",
+          "Device": "/dev/sdf"
+        },
+        "VolumeType": "standard"
+      },
+      "type": "AWS.EC2.EBS.Volume"
+    }
+}

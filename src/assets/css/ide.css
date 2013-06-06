@@ -41,7 +41,6 @@ a {
 	text-align: center;
 	float: left;
 	border-right: 1px solid #252225;
-	/*margin-right: 0;*/
 }
 
 #view-toggle-navigation a {
@@ -412,19 +411,6 @@ a {
 	display: none;
 	overflow: visible;
 }
-/*
-#navigation.collapsed #region-selector .dropdown-toggle {
-	width: 19px;
-	height: 25px;
-	overflow: hidden;
-}
-
-#navigation.collapsed #region-selector .dropdown-menu {
-	position: absolute;
-	width: 180px;
-	top: 0;
-	left: 44px;
-}*/
 
 #navigation.collapsed #first-level-nav > li:hover {
 	background-color: #0066C3;

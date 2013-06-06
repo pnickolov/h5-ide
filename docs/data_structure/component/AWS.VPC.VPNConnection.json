@@ -1,0 +1,32 @@
+{
+    "7804105D-4878-D814-EF21-14D04C98F32F": {
+      "uid": "7804105D-4878-D814-EF21-14D04C98F32F",
+      "name": "VPN",
+      "resource": {
+        "CustomerGatewayConfiguration": "",
+        "Routes": [
+          {
+            "DestinationCidrBlock": "2.2.2.2/24",
+            "State": "",
+            "Source": ""
+          }
+        ],
+        "State": "",
+        "VgwTelemetry": {
+          "StatusMessage": "",
+          "LastStatusChange": "",
+          "OutsideIpAddress": "",
+          "Status": "",
+          "AcceptRouteCount": ""
+        },
+        "Type": "ipsec.1",
+        "VpnGatewayId": "@93F63A85-E522-123A-444F-14CFDD991C77.resource.VpnGatewayId",
+        "Options": {
+          "StaticRoutesOnly": "true"
+        },
+        "CustomerGatewayId": "@395BC5F6-3489-E660-C5DF-14CFE4690335.resource.CustomerGatewayId",
+        "VpnConnectionId": ""
+      },
+      "type": "AWS.VPC.VPNConnection"
+    }
+}

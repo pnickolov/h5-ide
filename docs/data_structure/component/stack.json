@@ -1,10 +1,20 @@
 {
-  "version": "4.0",
-  "component": {
-  },
+  "id": "stack-5df3c9f9",
+  "name": "MyTestStack",
   "description": "",
+  "region": "us-east-1",
   "state": "Enabled",
-  "id": "",
+  "username": "eGppbW15",
+  "owner": "xjimmy",
+  "component": {
+
+  },
+  "layout": {
+
+  },
+  "history": {
+
+  },
   "property": {
     "schedule": {
       "stop": {
@@ -28,15 +38,5 @@
       "action": "",
       "due": null
     }
-  },
-  "name": "untitled0 - stack",
-  "owner": "xjimmy",
-  "history": {
-    "time": {
-      "launched": "",
-      "run": "",
-      "terminated": ""
-    },
-    "event": {}
   }
 }

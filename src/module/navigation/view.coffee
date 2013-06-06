@@ -13,6 +13,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
         events   :
             'click #nav-dashboard-region a'  : 'dashboardRegionClick'
             'click .nav-region-list-items a' : 'regionListItemsClick'
+            'click .show-unused-region a'    : 'showEmptyRegionClick'
 
         initialize : ->
             #
@@ -20,7 +21,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
         render     : ->
         	#render html
             console.log 'navigation render'
-            $( this.el ).html this.template this.model
+            $( this.el ).html this.template this.model.attributes
 
             #Collapsed Navigation Mouse Interaction
             this.hoverIntent()
@@ -34,6 +35,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
 
         regionListItemsClick : ( event ) ->
             alert 'add tab click event'
+
+        showEmptyRegionClick : ( event ) ->
+            $( event.target ).parent().prev().find('.hide').show()
+            $( event.target ).hide()
 
         hoverIntent          : ->
             $('.nav-head').hoverIntent {

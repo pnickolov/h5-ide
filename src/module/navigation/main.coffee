@@ -21,22 +21,27 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
             view.model = model
             
             #listen vo set change event
-            model.on 'change:app_list', ( event ) ->
+            model.on 'change:app_list', () ->
                 console.log 'change:app_list'
                 view.render()
 
-            model.on 'change:stack_list', ( event ) ->
+            model.on 'change:stack_list', () ->
                 console.log 'change:stack_list'
                 view.render()
 
-            model.on 'change:region_list', ( event ) ->
+            model.on 'change:region_list', () ->
                 console.log 'change:region_list'
+                view.render()
+
+            model.on 'change:region_empty_list', () ->
+                console.log 'change:region_empty_list'
                 view.render()
 
             #model
             model.appListService()
             model.stackListService()
             model.describeRegionsService()
+            model.regionEmptyList()
 
     unLoadModule = () ->
         #view.remove()

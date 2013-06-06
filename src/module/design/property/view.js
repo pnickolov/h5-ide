@@ -1,6 +1,7 @@
 (function() {
   define(['event', 'backbone', 'jquery', 'handlebars'], function(event) {
     var PropertyView;
+
     PropertyView = Backbone.View.extend({
       el: $('#property-panel'),
       template: Handlebars.compile($('#property-tmpl').html()),

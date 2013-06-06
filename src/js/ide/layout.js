@@ -1,9 +1,9 @@
 var 
-	show_item = function (target)
+	/*show_item = function (target)
 	{
 		$(target).parent().prev().find('.hide').show();
 		$(target).hide();
-	},
+	},*/
 
 	tab_resize = function (tabbar_width)
 	{

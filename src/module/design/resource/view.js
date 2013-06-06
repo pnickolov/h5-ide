@@ -1,6 +1,7 @@
 (function() {
   define(['event', 'backbone', 'jquery', 'handlebars'], function(event) {
     var ResourceView;
+
     ResourceView = Backbone.View.extend({
       el: $('#resource-panel'),
       template: Handlebars.compile($('#resource-tmpl').html()),

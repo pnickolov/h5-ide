@@ -21,7 +21,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
         render     : ->
         	#render html
             console.log 'navigation render'
-            $( this.el ).html this.template this.model
+            $( this.el ).html this.template this.model.attributes
 
             #Collapsed Navigation Mouse Interaction
             this.hoverIntent()

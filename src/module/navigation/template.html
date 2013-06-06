@@ -11,11 +11,13 @@
 			<ul class="sub-menu" id="nav-dashboard-region">
 
 				<li>
-					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-globe icon-nav-label"></i>Global Overview
-					<!-- <span class="nav-head-note">{{ attributes.region_list.length }} Regions in Use</span></a> -->
+					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-globe icon-nav-label"></i>
+						Global Overview
+						<!-- <span class="nav-head-note">{{ attributes.region_list.length }} Regions in Use</span> -->
+					</a>
 				</li>
 
-				{{#each attributes.region_list }}
+				{{#each region_list }}
 				<li>
 					<a href="javascript:void(0)" class="truncate nav-truncate">
 						<i class="status status-grey icon-nav-status"></i>{{ region_city }}
@@ -51,7 +53,7 @@
 		<div class="sub-menu-wrapper accordion-body">
 			<ul class="sub-menu nav-region-list" id="nav-app-region">
 
-				{{#each attributes.app_list }}
+				{{#each app_list }}
 				<li>
 					<a href="javascript:void(0)">{{ region_group }} ({{ region_count }})</a>
 					<ul class="nav-region-list-items">
@@ -127,7 +129,7 @@
 
 			<ul class="sub-menu nav-region-list accordion-bod" id="nav-stack-region">
 
-				{{#each attributes.stack_list }}
+				{{#each stack_list }}
 				<li>
 					<a href="javascript:void(0)" class="nav-stack-region-title">{{ region_group }} ({{ region_count }})<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
 					</a>
@@ -174,10 +176,10 @@
 				-->
 			</ul>
 
-			{{#if attributes.region_empty_list }}
+			{{#if region_empty_list }}
 
 			<ul class="sub-menu nav-region-list accordion-bod">
-				{{#each attributes.region_empty_list }}
+				{{#each region_empty_list }}
 
 				<li class="hide">
 					<a href="javascript:void(0)" class="nav-stack-region-title">

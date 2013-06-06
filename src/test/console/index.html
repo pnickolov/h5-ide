@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>MadeiraCloud - API Test Console</title>
+	<title>MadeiraCloud - Model Test Console</title>
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0"/>
 	<link rel="stylesheet" href="./css/core.css" media="all"/>
 	<link rel="stylesheet" href="./css/UI.component.css"/>
@@ -85,10 +85,10 @@
 		//add log to table
 		function add_request_log( data ){
 
-			if ( $( "#tr_"+data.api_name ).length>0 )
+			if ( $( "#tr_" + data.resource_name + "_" +data.api_name ).length>0 )
 			{
 				//exist, update
-				$( "#tr_" + data.api_name ).html(
+				$( "#tr_" + data.resource_name + "_" +  data.api_name ).html(
 					'<td>' + data.request_time + '</td>\
 					<td>' + data.response_time + '</td>\
 					<td>' + data.service_name + '</td>\
@@ -102,7 +102,7 @@
 			{
 				//not exist, insert
 				$( "#api_table_body" ).prepend(
-					'<tr id="tr_'+data.api_name+'" >\
+					'<tr id="tr_'+ data.resource_name + "_" + data.api_name+'" >\
 					<td>' + data.request_time + '</td>\
 					<td>' + data.response_time + '</td>\
 					<td>' + data.service_name + '</td>\
@@ -123,7 +123,7 @@
 		<a id="logo_link" href="http://www.madeiracloud.com/"></a>
 	</header>
 	<div id="container">
-		<h2>MadeiraCloud - API Test Console</h2>
+		<h2>MadeiraCloud - Model Test Console</h2>
 		<div id="login_wrap">
 			<h4>Login</h4>
 			<form id="login_form">
@@ -158,6 +158,16 @@
 				<select id="api_list"></select>
 			</div>
 
+			<div id="btn_wrap">
+				<form id="request_form">
+					<button id="btn_send" style="disabled:true" class="btn btn-grey">Send</button>
+				</form>
+			</div>
+
+			<div id="param_wrap">
+				<h4 id="method_name">Method</h4>
+				<ul id="param_list"></ul>
+			</div>
 
 			<table id="api_table" class="table table-light">
 				<thead>
@@ -196,16 +206,7 @@
 			</table>
 		</div>
 
-		<div id="param_wrap">
-			<h4 id="method_name">Method</h4>
-			<ul id="param_list"></ul>
-		</div>
 
-		<div id="btn_wrap">
-			<form id="request_form">
-				<button id="btn_send" style="disabled:true" class="btn btn-grey">Send</button>
-			</form>
-		</div>
 
 		<div id="request_wrap">
 			<div id="label_request_result"></div>

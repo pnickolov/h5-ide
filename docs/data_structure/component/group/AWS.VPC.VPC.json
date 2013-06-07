@@ -2,6 +2,12 @@
     "3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A": {
       "uid": "3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A",
       "name": "vpc1",
+      "layout": {
+        "type": "group",
+        "coordinate": [x, y],
+        "size": [width, height]
+        }
+      },
       "resource": {
         "EnableDnsHostnames": "false",
         "DhcpOptionsId": "",

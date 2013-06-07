@@ -6,7 +6,6 @@
     "layout": {
       "type": "node",
       "coordinate": [x, y],
-      "size": [width, height],
       "port": {
         "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
           "id": "in_network-flow",

@@ -12,29 +12,8 @@
 
   },
   "layout": {
-
-  },
-  "history": {
-    "event": {
-      "1368004626": {
-        "input": "",
-        "code": "Action:AWS.EC2.Instance.Terminate(Run)",
-        "brief": "Terminate Instance Success",
-        "output": ""
-      },
-      "1368003271": {
-        "input": "stack-8935caa4",
-        "code": "Forge.Stack.Run",
-        "brief": "app-d456e48b has been launched from stack-8935caa4",
-        "output": "app-d456e48b"
-      }
-    },
-    "time": {
-      "terminated": "",
-      "run": 23,
-      "last": "",
-      "created": 1368003271
-    }
+    "type": "canvas",
+    "size": [width, height]
   },
   "property": {
     "policy": {
@@ -58,6 +37,28 @@
       "start": {
         "when": null
       }
+    }
+  },
+  "history": {
+    "event": {
+      "1368004626": {
+        "input": "",
+        "code": "Action:AWS.EC2.Instance.Terminate(Run)",
+        "brief": "Terminate Instance Success",
+        "output": ""
+      },
+      "1368003271": {
+        "input": "stack-8935caa4",
+        "code": "Forge.Stack.Run",
+        "brief": "app-d456e48b has been launched from stack-8935caa4",
+        "output": "app-d456e48b"
+      }
+    },
+    "time": {
+      "terminated": "",
+      "run": 23,
+      "last": "",
+      "created": 1368003271
     }
   }
 }

@@ -10,7 +10,8 @@
 
   },
   "layout": {
-
+    "type": "canvas",
+    "size": [width, height]
   },
   "history": {
 

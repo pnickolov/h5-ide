@@ -1,43 +1,71 @@
 {
-    "D673A590-1897-12F8-D1F3-14C116707F9A": {
-      "uid": "D673A590-1897-12F8-D1F3-14C116707F9A",
-      "name": "host1",
-      "resource": {
-        "RamdiskId": "",
-        "InstanceId": "",
-        "DisableApiTermination": "false",
-        "ShutdownBehavior": "terminate",
-        "SecurityGroupId": [
-          "@B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupId"
-        ],
-        "UserData": {
-          "Base64Encoded": "false",
-          "Data": ""
+  "D673A590-1897-12F8-D1F3-14C116707F9A": {
+    "uid": "D673A590-1897-12F8-D1F3-14C116707F9A",
+    "name": "host1",
+    "type": "AWS.EC2.Instance",
+    "layout": {
+      "type": "node",
+      "coordinate": [x, y],
+      "size": [width, height],
+      "port": {
+        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
+          "id": "in_network-flow",
+          "connectedPorts": [
+            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          ]
         },
-        "ImageId": "ami-12d86d13",
-        "SecurityGroup": [
-          "@B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupName"
-        ],
-        "Placement": {
-          "Tenancy": "",
-          "AvailabilityZone": "ap-northeast-1b",
-          "GroupName": ""
+        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
+          "id": "out_network-flow",
+          "connectedPorts": [
+            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          ]
         },
-        "PrivateIpAddress": "10.0.0.4",
-        "BlockDeviceMapping": [
-          "#785ABCF2-5226-82AC-A564-14C4618E8737"
-        ],
-        "KernelId": "",
-        "SubnetId": "@E2236992-27D1-97CA-4B03-14C0C485E033.resource.SubnetId",
-        "KeyName": "@5BC26143-0BBD-D00B-1540-14C0AF95294A.resource.KeyName",
-        "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
-        "InstanceType": "t1.micro",
-        "Monitoring": "disabled",
-        "EbsOptimized": "false"
+        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
+          "id": "attachment",
+          "connectedPorts": [
+            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          ]
+        }
+      }
+    },
+    "resource": {
+      "RamdiskId": "",
+      "InstanceId": "",
+      "DisableApiTermination": "false",
+      "ShutdownBehavior": "terminate",
+      "SecurityGroupId": [
+        "@B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupId"
+      ],
+      "UserData": {
+        "Base64Encoded": "false",
+        "Data": ""
       },
-      "state": "",
-      "software": {},
-      "platform": "32",
-      "type": "AWS.EC2.Instance"
-    }
+      "ImageId": "ami-12d86d13",
+      "SecurityGroup": [
+        "@B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupName"
+      ],
+      "Placement": {
+        "Tenancy": "",
+        "AvailabilityZone": "ap-northeast-1b",
+        "GroupName": ""
+      },
+      "PrivateIpAddress": "10.0.0.4",
+      "BlockDeviceMapping": [
+        "#785ABCF2-5226-82AC-A564-14C4618E8737"
+      ],
+      "KernelId": "",
+      "SubnetId": "@E2236992-27D1-97CA-4B03-14C0C485E033.resource.SubnetId",
+      "KeyName": "@5BC26143-0BBD-D00B-1540-14C0AF95294A.resource.KeyName",
+      "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
+      "InstanceType": "t1.micro",
+      "Monitoring": "disabled",
+      "EbsOptimized": "false"
+    },
+    "state": "",
+    "software": {
+
+    },
+    "platform": "32"
+  }
 }

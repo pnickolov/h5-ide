@@ -2,25 +2,10 @@
     "E2236992-27D1-97CA-4B03-14C0C485E033": {
       "uid": "E2236992-27D1-97CA-4B03-14C0C485E033",
       "name": "subnet",
-      "layout": {
-        "type": "group",
-        "coordinate": [x, y],
-        "size": [width, height],
-        "port": {
-          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
-            "id": "subnet_elb",
-            "connectedPorts": [
-              "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-              "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            ]
-          },
-          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
-            "id": "subnet_routetable",
-            "connectedPorts": [
-              "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            ]
-          }
-        }
+      "layout" : {
+        "parent" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "coordinate": ["$x", "$y"],
+        "size": ["$width", "$height"]
       },
       "resource": {
         "AvailabilityZone": "ap-northeast-1b",

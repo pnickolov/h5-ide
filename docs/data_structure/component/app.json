@@ -12,8 +12,59 @@
 
   },
   "layout": {
-    "type": "canvas",
-    "size": [width, height]
+      "size": ["width", "height"],
+      "connection": {
+        //componnotsavetomongo"component": {
+          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
+            "port_in_firewall": [
+              {
+                "uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "name": "port_out_firewall",
+                "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              },
+              {
+                "uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "name": "volume",
+                "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              }
+            ],
+            "port_out_firewall": [
+              {
+                "uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "name": "port_out_firewall",
+                "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              },
+              {
+                "uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "name": "elb",
+                "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              }
+            ]
+          },
+
+        },
+        "line": {
+          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
+            "connection": [
+              {
+                "comp_uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "port_name": "port_in_firewall"
+              },
+              {
+                "comp_uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "port_name": "port_in_firewall"
+              }
+            ],
+            "autoGenerate": true,
+            "controlPoints": [ ["$x","$y"], ["$x","$y"] ],
+            //SVGnotsavetomongo
+            "SVG": {
+
+            }
+          }
+        }
+      }
+    }
   },
   "property": {
     "policy": {

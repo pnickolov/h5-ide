@@ -3,30 +3,9 @@
     "uid": "D673A590-1897-12F8-D1F3-14C116707F9A",
     "name": "host1",
     "type": "AWS.EC2.Instance",
-    "layout": {
-      "type": "node",
-      "coordinate": [x, y],
-      "port": {
-        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
-          "id": "in_network-flow",
-          "connectedPorts": [
-            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          ]
-        },
-        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
-          "id": "out_network-flow",
-          "connectedPorts": [
-            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          ]
-        },
-        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
-          "id": "attachment",
-          "connectedPorts": [
-            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          ]
-        }
-      }
+    "layout" : {
+      "parent" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "coordinate": ["$x", "$y"],
     },
     "resource": {
       "RamdiskId": "",

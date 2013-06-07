@@ -69,6 +69,8 @@ module.exports = function( grunt ) {
 		htmlmin    : require( './config/htmlmin.js' ),
 		uglify     : require( './config/uglify.js'  ),
 
+		concat     : require( './config/concat.js'  ),
+
 		sweep      : require( './config/sweep.js'   )
 
 	};

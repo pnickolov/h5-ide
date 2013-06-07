@@ -15,6 +15,7 @@
 		"grunt-contrib-connect" : "*",
 		"grunt-contrib-livereload" : "*",
 		"grunt-contrib-clean"   : "*",
+		"grunt-contrib-concat"  : "*",
 		"grunt-regarde"         : "*",
 		"grunt-open"            : "*",
 		"grunt-replace"         : "*",

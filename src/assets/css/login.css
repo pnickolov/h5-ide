@@ -1,3 +1,9 @@
+html,
+body {
+	height: 100%;
+	min-width: 960px;
+}
+
 #body {
 	background: #2b2b2b;
 	/*background-image: url('http://farm6.staticflickr.com/5027/5597694660_b212c49604_o.jpg');*/
@@ -40,13 +46,15 @@ header {
 
 #container {
 	min-height: 100%;
-	height: auto !important;
-	height: 100%;
-	margin: 0;
-	margin-bottom: -80px;
+}
+
+#main-body {
+	overflow: auto;
+	padding-bottom: 150px;
 }
 
 #login-box {
+	position: relative;
 	margin: 300px auto 0;
 	width: 370px;
 	padding: 20px;
@@ -125,11 +133,11 @@ header {
 }
 
 #login-user {
-	/*background-image: url('../images/login/login_user.png');*/
+	/*background-image: url('../images/login_user.png');*/
 }
 
 #login-password {
-	/*background-image: url('../images/login/login_password.png');*/
+	/*background-image: url('../images/login_password.png');*/
 }
 
 .login-label {
@@ -161,10 +169,11 @@ header {
 
 footer {
 	position: relative;
-	margin: 40px 0 0 0;
 	text-align: center;
 	color:#ccc;
 	font-size: 12px;
+	margin-top: -150px;
+	height: 150px;
 }
 
 .demo-only {

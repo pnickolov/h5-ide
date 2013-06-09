@@ -65,28 +65,43 @@
 }
 
 .table-light thead {
-	background: #eee;
-	color: #333;
+	background: #82BFF5;
+	color: #fff;
+	line-height: 24px;
+	font-size: 16px;
 }
 
 .table-light thead th:hover {
-	background: #E6F5FC;
+	background: #5A9DDA;
 }
 
 .table-light th,
 .table-light td {
-	border: 1px solid #ccc;
+	border: 1px solid #5A9DDA;
+}
+
+.table-light tbody {
+	border: 1px solid #D9E4EE;
 }
 
 .table-light tbody tr:hover th,
 .table-light tbody tr:hover td {
 	background: #E6F5FC;
-	color: #052A4C;
+	/*color: #052A4C;*/
 }
 
 .table-light tbody th,
 .table-light tbody td {
 	background: #fefefe;
+	border: none;
+}
+
+.table-light tbody tr:nth-child(2n+1) td {
+	background: #F6F5F5;
+}
+
+.table-light tbody tr:nth-child(2n+1):hover td {
+	background: #E6F5FC;
 }
 
 /* Button */
@@ -400,15 +415,19 @@ textarea {
 /* Scrollbar */
 .scrollbar-veritical-wrap,
 .scrollbar-horizontal-wrap {
+	position: absolute;
+	z-index: 99;
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.scrollbar-auto-hide > .scrollbar-veritical-wrap,
+.scrollbar-auto-hide > .scrollbar-horizontal-wrap {
 	-webkit-transition: opacity .25s;
 	-moz-transition: opacity .25s;
 	-ms-transition: opacity .25s;
 	-o-transition: opacity .25s;
 	transition: opacity .25s;
 	opacity: 0;
-	position: absolute;
-	z-index: 99;
-	background: rgba(0, 0, 0, 0.2);
 }
 
 .scrollbar-veritical-wrap {
@@ -434,10 +453,10 @@ textarea {
 	cursor: default;
 }
 
-.scrolling .scrollbar-veritical-wrap,
-.scrolling .scrollbar-horizontal-wrap,
-.scroll-wrap:hover .scrollbar-veritical-wrap,
-.scroll-wrap:hover .scrollbar-horizontal-wrap {
+.scrolling.scrollbar-auto-hide > .scrollbar-veritical-wrap,
+.scrolling.scrollbar-auto-hide > .scrollbar-horizontal-wrap,
+.scrollbar-auto-hide.scroll-wrap:hover > .scrollbar-veritical-wrap,
+.scrollbar-auto-hide.scroll-wrap:hover > .scrollbar-horizontal-wrap {
 	opacity: 1;
 }
 
@@ -492,6 +511,29 @@ textarea {
 	border-radius: 3px;
 	z-index: 99;
 	max-width: 250px;
+}
+
+.arrow-up {
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid rgba(0, 0, 0, 0.8);
+}
+
+.arrow-down {
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid rgba(0, 0, 0, 0.8);
+}
+
+.tooltip-pointer {
+	position: absolute;
+	top: -5px;
+	left: 50%;
+	margin-left: -3px;
 }
 
 /* Status icons */

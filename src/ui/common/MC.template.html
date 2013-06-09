@@ -1,0 +1,25 @@
+<!-- tab.item -->
+<li id="tab-bar-{{tab_id}}">
+	<a href="#tab-content-{{tab_id}}" title="{{tab_name}}" data-tab-id="{{tab_id}}" class="truncate tab-bar-truncate">
+		<i class="icon-layers icon-label"></i>
+		{{tab_name}}
+	</a>
+	<a href="javascript:void(0)" class="close-tab">x</a>
+</li>
+
+<!-- tab.dashboard -->
+<li id="tab-bar-{{target_id}}">
+	<a href="#tab-content-{{target_id}}" data-toggle="tab" class="truncate tab-bar-truncate" title="{{target_id}}">
+		<i class="icon-layers icon-label"></i>
+		{{target_id}}
+	</a>
+	<a href="javascript:void(0)" class="close-tab">x</a>
+</li>
+
+<!-- notification.item -->
+<div class="notification_item {{type}}_item">
+	{{template}}
+	{{#if should_stay}}
+    	<i class="notification_close">&times;</i>
+  	{{/if}}
+</div>

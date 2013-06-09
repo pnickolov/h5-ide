@@ -5,14 +5,14 @@ var
 		$(target).hide();
 	},*/
 
-	tab_resize = function (tabbar_width)
-	{
-		var tabs = $('#tab-bar li'),
-			tab_item_width = (tabbar_width - (tabs.length * 5)) / tabs.length;
+	// tab_resize = function (tabbar_width)
+	// {
+	// 	var tabs = $('#tab-bar li'),
+	// 		tab_item_width = (tabbar_width - (tabs.length * 5)) / tabs.length;
 
-		tab_item_width = tab_item_width > 180 ? 180 : tab_item_width;
-		tabs.css('width', tab_item_width);
-	},
+	// 	tab_item_width = tab_item_width > 180 ? 180 : tab_item_width;
+	// 	tabs.css('width', tab_item_width);
+	// },
 
 	canvasPanelResize = function () 
 	{	
@@ -31,6 +31,11 @@ var
 		main_middle.width(win_width - nav_width - nav_left - panel_width * 2 - resource_panel_marginLeft - property_panel_marginRight);
 		main_middle.height(main.height() - $('#tab-bar').height());
 		nav.height(window.innerHeight - 50);
+	},
+
+	mainContentResize = function()
+	{
+		$('.main-content').height(window.innerHeight - 95);
 	}
 ;
 
@@ -53,19 +58,19 @@ var ready = function () {
 	});
 	*/
 
-	$('#tab-bar').on('mousedown', '.close-tab', function (event)
-	{
-		event.preventDefault();
-		event.stopPropagation();
+	// $('#tab-bar').on('mousedown', '.close-tab', function (event)
+	// {
+	// 	event.preventDefault();
+	// 	event.stopPropagation();
 
-		var target = $(event.target).parent(),
-			page_id = target.attr('id').replace('tab-bar-', '');
+	// 	var target = $(event.target).parent(),
+	// 		page_id = target.attr('id').replace('tab-bar-', '');
 
-		$('#tab-content-' + page_id).remove();
-		target.remove();
+	// 	$('#tab-content-' + page_id).remove();
+	// 	target.remove();
 
-		$('#tab-bar li:last .tab-bar-truncate').tab('show');
-	});
+	// 	$('#tab-bar li:last .tab-bar-truncate').tab('show');
+	// });
 
 	/*
 	$('.nav-region-list-items').on('click', 'a', function (event)
@@ -141,7 +146,7 @@ var ready = function () {
 		$(this).toggleClass('active');
 		main.toggleClass('wide');
 		canvasPanelResize();
-		tab_resize(nav.hasClass('collapsed') ? $('#tab-bar').width() + 180 : $('#tab-bar').width() - 180);
+		Tabbar.resize(nav.hasClass('collapsed') ? $('#tab-bar').width() + 180 : $('#tab-bar').width() - 180);
 		nav.toggleClass('scroll-wrap');
 
 		first_level_nav[0].style.cssText = '';
@@ -185,17 +190,40 @@ var ready = function () {
 	});
 
 	canvasPanelResize();
+	mainContentResize(); 
 
 	$(window).resize(function ()
 	{
-		tab_resize($('#tab-bar').width());
+		//tab_resize($('#tab-bar').width());
 		canvasPanelResize();
+		mainContentResize();
+	});
+
+	// Global Overview World Map Hover Sync 
+	$('#map-region-spot-list').on('mouseenter', 'li', function()
+	{
+		$('#stat-' + this.id).addClass('hover');
+	});
+
+	$('#map-region-spot-list').on('mouseleave', 'li', function()
+	{
+		$('#stat-' + this.id).removeClass('hover');
+	});
+
+	$('#dashboard-widget-regions').on('mouseenter', 'a', function()
+	{
+		$('#' + this.id.replace('stat-','')).addClass('hover');
+	});
+
+	$('#dashboard-widget-regions').on('mouseleave', 'a', function()
+	{
+		$('#' + this.id.replace('stat-','')).removeClass('hover');
 	});
 
 //});
 }
 
-define( [ 'jquery', 'bootstrap-tab', 'bootstrap-dropdown', 'UI.tooltip', 'UI.scrollbar' ], function() {
+define( [ 'jquery', 'UI.scrollbar', 'bootstrap-dropdown', 'UI.tooltip', 'UI.tabbar' ], function() {
 
 	return {
 		ready : ready

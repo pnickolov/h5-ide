@@ -20,6 +20,7 @@ require.config {
 
 		#core lib
 		'MC'           : 'lib/MC.core'
+		'MC.template'  : 'lib/MC.template'
 		#'MC.topo'     : 'lib/MC.topo'
 		#'MC.canvas'   : 'lib/MC.canvas'
 
@@ -27,17 +28,19 @@ require.config {
 		'UI.tooltip'   : 'ui/common/UI.tooltip'
 		'UI.scrollbar' : 'ui/common/UI.scrollbar'
 		'UI.accordion' : 'ui/common/UI.accordion'
+		'UI.tabbar'    : 'ui/common/UI.tabbar'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
 
 		#bootstrap
-		'bootstrap-tab'      : 'ui/common/bootstrap-tab'
+		#'bootstrap-tab'     : 'ui/common/bootstrap-tab'
 		'bootstrap-dropdown' : 'ui/common/bootstrap-dropdown'
 
 		#ide
 		'router'       : 'js/ide/router'
 		'ide'          : 'js/ide/ide'
+		#temp
 		'layout'       : 'js/ide/layout'
 
 		#module
@@ -211,6 +214,13 @@ require.config {
 		'MC'           :
 			deps       : [ 'jquery' ]
 			exports    : 'MC'
+
+		'MC.template'  :
+			deps       : [ 'handlebars', 'MC' ]
+			exports    : 'MC.template'
+
+		'UI.tabbar'    :
+			deps       : [ 'MC.template' ]
 
 		#'MC.topo'     :
 		#	deps       : [ 'MC' ]

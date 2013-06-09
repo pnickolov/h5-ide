@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 201306032
+#* Date: 20130608
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -152,10 +152,13 @@ var scrollbar = {
 	},
 	mousemove: function (event)
 	{
+		event.preventDefault();
+		event.stopPropagation();
+
 		var target = $(event.data.scroll_target),
 			direction = event.data.direction,
 			thumbPos = event.data.thumbPos,
-			scrollbar_wrap = target.find('.scrollbar-' + direction + '-wrap');
+			scrollbar_wrap = target.find('.scrollbar-' + direction + '-wrap').first();
 
 		event = scrollbar.isTouch ? event.touches.originalEvent[0] : event;
 
@@ -183,8 +186,8 @@ var scrollbar = {
 	},
 	scroll_to_left: function (target, scroll_left)
 	{
-		var scroll_content = target.find('.scroll-content'),
-			horizontal_thumb = target.find('.scrollbar-horizontal-thumb'),
+		var scroll_content = target.find('.scroll-content').first(),
+			horizontal_thumb = target.find('.scrollbar-horizontal-thumb').first(),
 			scroll_wrap_width = scroll_content.parent().width(),
 			max_scroll = scroll_content[0].scrollWidth - scroll_wrap_width,
 			scale = scroll_content[0].scrollWidth / scroll_wrap_width,
@@ -223,8 +226,8 @@ var scrollbar = {
 	},
 	scroll_to_top: function (target, scroll_top)
 	{
-		var scroll_content = target.find('.scroll-content'),
-			thumb = target.find('.scrollbar-veritical-thumb'),
+		var scroll_content = target.find('.scroll-content').first(),
+			thumb = target.find('.scrollbar-veritical-thumb').first(),
 			scroll_wrap_height = scroll_content.parent().height(),
 			max_scroll = scroll_content[0].scrollHeight - scroll_wrap_height,
 			scale = scroll_content[0].scrollHeight / scroll_wrap_height,
@@ -263,11 +266,14 @@ var scrollbar = {
 	},
 	wheel: function (event, delta)
 	{
+		event.preventDefault();
+		event.stopPropagation();
+
 		var target = $(this),
 			delta = event.originalEvent.wheelDelta ? event.originalEvent.wheelDelta / 120 : event.originalEvent.wheelDeltaY ? event.originalEvent.wheelDeltaY / 120 : -event.originalEvent.detail / 3,
-			thumb = target.find('.scrollbar-veritical-thumb'),
-			thumb_wrap = target.find('.scrollbar-veritical-wrap'),
-			scroll_content = target.find('.scroll-content'),
+			thumb = target.find('.scrollbar-veritical-thumb').first(),
+			thumb_wrap = target.find('.scrollbar-veritical-wrap').first(),
+			scroll_content = target.find('.scroll-content').first(),
 			scrollTop,
 			max_scroll,
 			scale,

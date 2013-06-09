@@ -26,12 +26,20 @@
 
       Event.prototype.DESIGN_COMPLETE = 'DESIGN_COMPLETE';
 
+      Event.prototype.OPEN_DASHBOARD = 'OPEN_DASHBOARD';
+
+      Event.prototype.OPEN_STACK_TAB = 'OPEN_STACK_TAB';
+
       function Event() {
         _.extend(this, Backbone.Events);
       }
 
       Event.prototype.onListen = function(type, callback) {
         return this.once(type, callback);
+      };
+
+      Event.prototype.onLongListen = function(type, callback) {
+        return this.on(type, callback);
       };
 
       return Event;

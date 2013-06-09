@@ -799,6 +799,108 @@ var API_DATA_LIST = {
         }
     },
 
+    AWSUtil : {
+        AWS : {
+            quickstart : {
+                method  : '/aws:quickstart',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            public : {
+                method  : '/aws:public',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            info : {
+                method  : '/aws:info',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            resource : {
+                method  : '/aws:resource',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    region_name : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    resources : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            price : {
+                method  : '/aws:price',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            },
+            status : {
+                method  : '/aws:status',
+                param   : {
+                    username : {
+                        type   : 'String',
+                        value  : 'null'
+                    },
+                    session_id : {
+                        type   : 'String',
+                        value  : 'null'
+                    }
+                }
+            }
+        }
+    },
 	AutoScaling : {
 		AutoScaling : {
 			DescribeAdjustmentTypes : {

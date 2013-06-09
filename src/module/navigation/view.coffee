@@ -2,7 +2,7 @@
 #  View(UI logic) for navigation
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
+define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     NavigationView = Backbone.View.extend {
 
@@ -27,14 +27,34 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
             this.hoverIntent()
 
             #push event
-            event.trigger event.NAVIGATION_COMPLETE
+            ide_event.trigger ide_event.NAVIGATION_COMPLETE
 
         dashboardRegionClick : ( event ) ->
             if event.target.parentNode.className isnt 'show-unused-region'
-                alert 'add dashboard region'
+                console.log 'add dashboard region'
+                ide_event.trigger ide_event.OPEN_DASHBOARD, 'dashboard'
 
         regionListItemsClick : ( event ) ->
-            alert 'add tab click event'
+            console.log 'add tab click event'
+            target   = event.target
+            nav      = $ '#navigation'
+            main     = $ '#main'
+            tab_name = $( target ).text()
+
+            ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name
+
+            nav.addClass 'collapsed'
+            nav.removeClass 'scroll-wrap'
+            main.addClass 'wide'
+
+            $( '#first-level-nav' ).removeClass 'accordion'
+            $( '.nav-head').removeClass 'accordion-group'
+            $( '.sub-menu-wrapper').removeClass 'accordion-body'
+
+            if nav.hasClass( 'collapsed' )
+                $( '.sub-menu-wrapper' ).each () ->
+                    this.style.cssText = ''
+                    null
 
         showEmptyRegionClick : ( event ) ->
             $( event.target ).parent().prev().find('.hide').show()

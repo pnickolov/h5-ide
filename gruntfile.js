@@ -26,7 +26,9 @@ module.exports = function( grunt ) {
 			'<%= sourcedir[1] %>/**/*.js',
 			'!<%= src %>/vender/*',
 			'!<%= sourcedir[1] %>/canvas/canvas.js',
-			'!<%= sourcedir[0] %>/ide/layout.js'
+			'!<%= sourcedir[0] %>/ide/layout.js',
+			'!<%= src %>/service/*',
+			'!<%= src %>/test/*',
 		],
 
 		cssfiles   : [

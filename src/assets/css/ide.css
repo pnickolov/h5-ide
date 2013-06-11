@@ -52,7 +52,7 @@ a {
 }
 
 #view-toggle-navigation:hover, #view-toggle-navigation.active {
-	background-color: #171517; 
+	background-color: #171517;
 	color: #fff;
 }
 
@@ -106,7 +106,7 @@ a {
 	margin: 0;
 }
 
-.header-menu .dropdown {	
+.header-menu .dropdown {
 	position: relative;
 	float: left;
 	line-height: 50px;
@@ -118,14 +118,14 @@ a {
 	transition: background-color 0.2s;
 }
 
-.header-menu .dropdown a {
+#header .header-menu .dropdown a {
 	display: block;
 	padding: 0 20px;
 }
 
-.dropdown:hover,
-.dropdown.open {
-	background-color: #171517; 
+#header .dropdown:hover,
+#header .dropdown.open {
+	background-color: #171517;
 	color: fff;
 }
 
@@ -179,7 +179,7 @@ a {
 }
 
 #header .dropdown-menu li:hover {
-	background-color: #171517; 
+	background-color: #171517;
 }
 
 #notification-panel-wrapper {
@@ -296,8 +296,8 @@ a {
 	position: absolute;
 	right: 10px;
 	transition: all .1s ease-in-out;
-    -webkit-transition: all .1s ease-in-out; 
-    -moz-transition: all .1s ease-in-out; 
+    -webkit-transition: all .1s ease-in-out;
+    -moz-transition: all .1s ease-in-out;
     -o-transition: all .1s ease-in-out;
 }
 
@@ -566,36 +566,39 @@ a {
 
 
 #dashboard-create-stack {
-	display: inline-block;
-	position: absolute;
-	right: 0;
+	position: relative;
+	width: 400px;
+	height: 55px;
+	margin: 0px auto;
 }
 
-.btn.btn-dashboard-header {
+.btn.btn-dashboard-feature {
+	font-size: 18px;
 	box-shadow: none;
 	border: none;
-	width: 140px;
+	width: 180px;
+	height: 16px;
 	padding: 14px 12px;
-	/*background: #BF3FB1;*/
 	text-shadow: none;
-	float: right;
-	color: #BF3FB1;
-	line-height: 14px;
-	border-radius: 0px;
-	border-left: 1px solid #ddd;
+	line-height: 16px;
+	position: absolute;
+	left: 50%;
+	margin-left: -102px;
+	color: #f0f0f0;
 }
 
-.btn.btn-dashboard-header:hover {
-	/*background: #D266C6;*/
-	color: #E70FD0;
+.btn.btn-dashboard-feature:hover {
+	box-shadow: none;
+	border: none;
+	color: #fff;
 }
 
 .create-new-stack-dropdown {
 	position: absolute;
 	text-shadow: none;
-	right: 0;
+	right: 98px;
 	background: #fff;
-	top: 45px;
+	top: 50px;
 	z-index: 99;
 	border-radius: 2px;
 	padding: 5px 10px;
@@ -610,6 +613,7 @@ a {
 }
 
 .create-new-stack-dropdown a {
+	color: #666;
 	display: block;
 	padding: 8px 0;
 	line-height: 14px;
@@ -644,13 +648,12 @@ a {
 
 
 .dashboard-content-wrap {
-	padding: 10px;
+	padding: 15px;
 }
 
 .dashboard-widget {
 	border-radius: 4px;
 	border: 1px solid #D4D4D4;
-	margin-bottom: 10px;
 	background: #fff;
 }
 
@@ -694,7 +697,7 @@ a {
 	padding: 10px 10px 10px 10px;
 }
 
-#dashboard-map-text-wrap {
+#dashboard-feature-wrap {
 	min-width: 1034px;
 	height: 360px;
 	overflow: hidden;
@@ -710,22 +713,26 @@ a {
 }
 
 #map-region-spot-list {
-	width: 620px;
+	width: 660px;
 	height: 350px;
 	margin: 0 auto;
 	position: relative;
 }
 
-#map-region-spot-list li {
+#map-region-spot-list > li {
+	display: block;
 	position: absolute;
-	width: 20px;
-	height: 20px;
+	/*width: auto;*/
+	/*height: 20px;*/
 }
 
-#map-region-spot-list li a {
-	width: 100%;
-	height: 100%;
+#map-region-spot-list > li > a {
+	/*width: 100%;*/
+	/*height: 100%;*/
 	display: block;
+	color: #666;
+	font-size: 12px;
+	/*position: relative;*/
 }
 
 .icon-map-spot {
@@ -733,7 +740,18 @@ a {
 	width: 10px;
 	height: 10px;
 	background: #FF8B00;
-	display: block;
+	display: inline-block;
+	margin-right: 5px;
+}
+
+#map-region-spot-list li:hover .icon-map-spot, #map-region-spot-list li.hover .icon-map-spot {
+	background: #FFBF72;
+	box-shadow: 0 0 6px #FFBF72;
+}
+
+#map-region-spot-list > li.unused i.icon-map-spot {
+	background: #ccc;
+	box-shadow: none;
 }
 
 .map-tooltip {
@@ -743,20 +761,24 @@ a {
 	color: #ccc;
 	font-size: 12px;
 	position: absolute;
-	padding: 5px 10px;
+	padding: 5px;
 	border-radius: 3px;
-	z-index: 99;
+	/*z-index: 99;*/
 	/*width: 100px;*/
-	opacity: 0.4;
-	cursor: default;
-
+	opacity: 0.6;
+	cursor: pointer;
+	/*margin-left: 50%;*/
 }
 
 #map-region-spot-list li:hover .map-tooltip, #map-region-spot-list li.hover .map-tooltip {
 	opacity: 1;
 }
 
-.map-tooltip .status {
+.map-tooltip .status, .map-tooltip .icon-info-sign {
+	margin-right: 3px;
+}
+
+.map-aws-status {
 	margin-right: 5px;
 }
 
@@ -768,7 +790,7 @@ a {
 	margin-left: -3px;
 }
 
-.map-tooltip-pointer-reverse {
+.map-tooltip-pointer-up {
 	/*background: #fff;*/
 	position: absolute;
 	top: -5px;
@@ -776,151 +798,143 @@ a {
 	margin-left: -3px;
 }
 
-
-.map-tooltip-body {
-	/*padding: 0 5px;*/
-	max-width: 80px;
+.map-tooltip-pointer-left {
+	position: absolute;
+	top: 50%;
+	left: -5px;
+	margin-top: -4px;
 }
 
-#map-region-spot-list li:hover .icon-map-spot, #map-region-spot-list li.hover .icon-map-spot {
-	background: #FFBF72;
-	box-shadow: 0 0 6px #FFBF72;
+.map-tooltip-body {
+	width: auto;
 }
 
 #map-region-spot-list li .map-tooltip {
-	-webkit-transition: margin-top 0.2s;
+/*	-webkit-transition: margin-top 0.2s;
 	-moz-transition: margin-top 0.2s;
 	-ms-transition: margin-top 0.2s;
 	-o-transition: margin-top 0.2s;
-	transition: margin-top 0.2s;
+	transition: margin-top 0.2s;*/
+/*	left: -75px;
+	top: -45px;*/
 }
 
-#map-region-spot-list li:hover .map-tooltip, #map-region-spot-list li.hover .map-tooltip {
+/*#map-region-spot-list li:hover .map-tooltip, #map-region-spot-list li.hover .map-tooltip {
 	margin-top: -2px;
-}
-
-li .map-tooltip {
-	left: -47px;
-}
+}*/
 
 #us-east-1 {
-	top: 144px;
-	left: 132px;
+	top: 155px;
+	left: 161px;
 }
 
 #us-east-1 .map-tooltip {
-	top: -36px;
+	left: 90px;
+	top: -10px;
 }
 
 #us-west-1 {
-	top: 122px;
-	left: 47px;
+	top: 131px;
+	left: 74px;
 }
 
 #us-west-1 .map-tooltip {
-	top: -40px;
+	top: -42px;
+	left: -71px;
 }
 
 #us-west-2 {
-	top: 135px;
-	left: 51px;
+	top: 145px;
+	left: 81px;
 }
 
 #us-west-2 .map-tooltip {
-	top: 22px;
+	top: 20px;
+	left: -71px;
 }
 
 #eu-west-1 {
-	top: 94px;
-	left: 270px;
+	top: 103px;
+	left: 299px;
 }
 
 #eu-west-1 .map-tooltip {
-	top: -36px;
+	top: -42px;
+	left: -71px;
 }
 
 #sa-east-1 {
-	top: 265px;
-	left: 185px;
+	top: 273px;
+	left: 218px;
 }
 
 #sa-east-1 .map-tooltip {
-	top: -36px;
+	top: -41px;
+	left: -71px;
 }
 
 #ap-southeast-1 {
 	top: 214px;
-	left: 485px;
-}
-
-#ap-southeast-1 .map-tooltip {
-	top: -36px;
+	left: 505px;
 }
 
 #ap-southeast-2 {
-	top: 285px;
-	left: 575px;
-}
-
-#ap-southeast-2 .map-tooltip {
-	top: -36px;
+	top: 294px;
+	left: 604px;
 }
 
 #ap-northeast-1 {
-	top: 143px;
-	left: 555px;
+	top: 150px;
+	left: 588px;
 }
 
-#ap-northeast-1 .map-tooltip {
-	top: -36px;
-}
-
-#dashboard-map-text {
-	min-height: 350px;
+#dashboard-feature-text {
+	height: 350px;
 	/*padding: 10px;*/
 }
 
-#dashboard-widget-regions {
-	margin-left: -5px;
-}
-
-#dashboard-widget-regions > li {
-	display: inline-block;
-}
-
-#dashboard-widget-regions > li a {
-	color: #666;
-	display: block;
-	padding: 13px 5px 18px 10px;
-	border-radius: 4px;
-	background: #F2FAFF;
-	margin: 0 0 5px 5px;
-	height: 40px;
-}
-
-#dashboard-widget-regions > li.unused-region a {
-	color: #ccc;
+.dashboard-global-stat-wrap {
 	background: #fafafa;
+	height: 245px;
+	padding: 20px;
+	font-size: 18px;
+	color: #9b9b9b;
 }
 
-#dashboard-widget-regions > li a:hover, #dashboard-widget-regions > li a.hover {
-	background: #E1F0FB;
-	color: #3892E3;
+.dashboard-global-stat-wrap p {
+	margin-top: 20px;
 }
 
-#dashboard-widget-regions > li.unused-region a:hover, #dashboard-widget-regions > li.unused-region a.hover  {
-	background: #f3f3f3;
+.dashboard-global-stat {
+	color: #ccc;
 }
 
-.dashboard-widget-regions-stat {
-	margin-top: 5px;
+.global-stat-counter {
+	font-size: 64px;
+	margin-right: 10px;
+}
+
+.dashboard-global-stat-app {
+	margin-right: 20%;
+}
+
+.dashboard-global-stat-app .global-stat-counter {
+	color: #2E9BFC;
+}
+
+.dashboard-global-stat-stack .global-stat-counter {
+	color: #CF8CDD;
+}
+
+.dashboard-global-stat-region-counter {
+	color: #FBA617;
 }
 
 .dashboard-widget-regions-stat li {
 	display: inline-block;
-	margin-left: 15px;
+	margin-left: 5px;
 	font-size: 16px;
-	width: 45px;
+	/*width: 45px;*/
 }
 
 .dashboard-widget-regions-stat li:first-child {
@@ -936,27 +950,13 @@ li .map-tooltip {
 	color: #D08CDD;
 }
 
-#dashboard-widget-regions > li.unused-region .dashboard-widget-regions-stat li {
-	color: #ccc;
-}
-
 .dashboard-widget-regions-stat li i {
 	font-size: 25px;
 	margin-right: 4px;
 }
 
-.widget-small {
-	margin-left: 20px;
-	/*width: 98%;*/
-}
-
-.widget-small-first {
-	margin-left: 0;
-}
-
 .widget-small .dashboard-widget-body {
 	height: 200px;
-	/*overflow: auto;*/
 }
 
 .dashboard-recent-list li {
@@ -985,7 +985,7 @@ li .map-tooltip {
 }
 
 #dashboard-scheduled-action .dashboard-widget-body {
-	padding: 0;
+	padding: 0 0 20px 0;
 }
 
 #dashboard-scheduled-action-table .past.error {
@@ -1017,6 +1017,67 @@ li .map-tooltip {
 	margin-left: 4px;
 }
 
+/*.grid-wrap.region-stat-tab-wrap {
+	overflow: visible;
+}*/
+
+.region-stat-tab-wrap li {
+	display: inline-block;
+	height: 140px;
+	width: 50%;
+	font-size: 48px;
+	position: relative;
+}
+
+.region-stat-tab-wrap li a {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	background: #f0f0f0;
+	border-left: 1px solid #eee;
+}
+
+.region-stat-tab-wrap li:first-child a {
+	border: none;
+}
+
+.region-stat-tab-wrap li.active a {
+	background: #fff;
+}
+
+.region-stat-tab-label {
+	margin: 35px auto;
+	width: 50%;
+	text-align: center;
+	color: #666;
+}
+
+.region-stat-tab-label i {
+	/*color: #666*/
+}
+
+.region-stat-caption {
+	font-size: 12px;
+}
+
+.arrow-active-tab {
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid #fff;
+	position: absolute;
+	left: 50%;
+	margin-left: -5px;
+	top: 140px;
+	z-index: 100;
+	display: none;
+}
+
+.active > .arrow-active-tab {
+	display: inline-block;
+}
+
 /* App/Stack Toolbar */
 #main-toolbar {
 	position: relative;
@@ -1040,7 +1101,7 @@ li .map-tooltip {
 }
 
 .btn-toolbar:hover {
-	background-color:#aaa; 
+	background-color:#aaa;
 	color:#fff;
 }
 
@@ -1183,4 +1244,34 @@ a.sidebar-hider {
 	width: 100%;
 	height: 100%;
 	position: relative;
+}
+
+/* Intercom Style */
+
+#IntercomDefaultWidget {
+ left:0px !important;
+ bottom:0px !important;
+ height:59px !important;
+ width:59px !important;
+}
+
+#IntercomDefaultWidget span,
+#IntercomDefaultWidget span:hover {
+ background: transparent url(https://s3-ap-northeast-1.amazonaws.com/madeiraassets/ide/feedback.png) no-repeat 0 0 !important;
+ background-size: auto !important;
+ height: 58px !important;
+ width: 59px !important;
+}
+
+#IntercomDefaultWidget em {
+ right: -8px;
+ top: -8px;
+ height: 17px;
+ width: 17px;
+}
+
+#IntercomDefaultWidget em span,
+#IntercomDefaultWidget:hover em span {
+ height: 100% !important;
+ width: 100% !important;
 }

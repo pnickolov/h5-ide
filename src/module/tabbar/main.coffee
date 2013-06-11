@@ -26,8 +26,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 #tabbar api
                 Tabbar.open target
                 #show dashboard and hide stack tab
-                $( '#tab-content-dashboard' ).addClass 'active'
-                $( '#tab-content' ).removeClass        'active'
+                $( '#tab-content-dashboard' ).addClass  'active'
+                $( '#tab-content-stack01' ).removeClass 'active'
 
             #listen stack tab
             ide_event.onLongListen ide_event.OPEN_STACK_TAB, ( target ) ->
@@ -36,7 +36,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 Tabbar.open target.toLowerCase(), target
                 #hide dashboard and show stack tab
                 $( '#tab-content-dashboard' ).removeClass 'active'
-                $( '#tab-content' ).addClass              'active'
+                $( '#tab-content-stack01' ).addClass      'active'
 
     unLoadModule = () ->
         #view.remove()

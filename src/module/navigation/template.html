@@ -56,7 +56,7 @@
 				{{#each app_list }}
 				<li>
 					<a href="javascript:void(0)">{{ region_group }} ({{ region_count }})</a>
-					<ul class="nav-region-list-items">
+					<ul class="nav-region-list-items app-list">
 						{{#each region_name_group }}
 						<li>
 							<a href="javascript:void(0)" class="truncate nav-truncate" title="{{ name }}-[{{ state }}]">
@@ -134,7 +134,7 @@
 					<a href="javascript:void(0)" class="nav-stack-region-title">{{ region_group }} ({{ region_count }})<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
 					</a>
 
-					<ul class="nav-region-list-items">
+					<ul class="nav-region-list-items stack-list">
 
 						{{#each region_name_group }}
 

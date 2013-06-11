@@ -548,6 +548,14 @@ textarea {
 	border-top: 5px solid rgba(0, 0, 0, 0.8);
 }
 
+.arrow-left {
+	width: 0;
+	height: 0;
+	border-right: 5px solid rgba(0, 0, 0, 0.8);
+	border-bottom: 5px solid transparent;
+	border-top: 5px solid transparent;
+}
+
 .tooltip-pointer {
 	position: absolute;
 	top: -5px;

@@ -28,6 +28,16 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_DASHBOARD      : 'OPEN_DASHBOARD'
         OPEN_STACK_TAB      : 'OPEN_STACK_TAB'
 
+        #result app stack region empty_region list
+        RESULT_APP_LIST     : 'RESULT_APP_LIST'
+        RESULT_STACK_LIST   : 'RESULT_STACK_LIST'
+        RESULT_REGION_LIST  : 'RESULT_REGION_LIST'
+        RESULT_EMPTY_REGION_LIST  : 'RESULT_EMPTY_REGION_LIST'
+
+        #return overview region tab
+        RETURN_OVERVIEW_TAB : 'RETURN_OVERVIEW_TAB'
+        RETURN_REGION_TAB : 'RETURN_REGION_TAB'
+
         constructor : ->
             _.extend this, Backbone.Events
 

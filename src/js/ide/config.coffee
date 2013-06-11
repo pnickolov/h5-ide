@@ -40,6 +40,7 @@ require.config {
 		#ide
 		'router'       : 'js/ide/router'
 		'ide'          : 'js/ide/ide'
+		'view'         : 'js/ide/view'
 		#temp
 		'layout'       : 'js/ide/layout'
 

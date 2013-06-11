@@ -22,6 +22,14 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             #view
             view       = new View()
             view.model = model
+
+            model.on 'change:app_list', () ->
+                console.log 'dashboard_change:app_list'
+                #push event
+                ide_event.onListen ide_event.RESULT_APP_LIST, model.get 'app_list'
+                #refresh view
+                view.render()
+
             #listen
             view.on 'RETURN_REGION_TAB', () ->
                 #push event

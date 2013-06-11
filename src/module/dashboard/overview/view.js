@@ -1,7 +1,6 @@
 (function() {
   define(['event', 'backbone', 'jquery', 'handlebars'], function(event) {
     var OverviewView;
-
     OverviewView = Backbone.View.extend({
       el: $('#tab-content-dashboard'),
       template: Handlebars.compile($('#overview-tmpl').html()),

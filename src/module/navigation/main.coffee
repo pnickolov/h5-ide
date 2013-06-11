@@ -19,10 +19,10 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
             #view
             view       = new View()
             view.model = model
-            
+
             #listen vo set change event
             model.on 'change:app_list', () ->
-                console.log 'change:app_list'
+                console.log 'nav_change:app_list'
                 #push event
                 ide_event.onListen ide_event.RESULT_APP_LIST, model.get 'app_list'
                 #refresh view

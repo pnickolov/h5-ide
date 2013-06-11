@@ -18,7 +18,6 @@
     */
 
     var Event, event;
-
     Event = (function() {
       Event.prototype.NAVIGATION_COMPLETE = 'NAVIGATION_COMPLETE';
 

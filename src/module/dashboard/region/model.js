@@ -1,7 +1,6 @@
 (function() {
   define(['backbone', 'jquery', 'underscore'], function() {
     var RegionModel, model;
-
     RegionModel = Backbone.Model.extend({
       defaults: {
         temp: null
@@ -11,7 +10,6 @@
       },
       temp: function() {
         var me;
-
         me = this;
         return null;
       }

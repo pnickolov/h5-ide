@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : eni_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:48
+#* Create date  : 2013-06-04 17:15:16
 #* Description  : qunit test module for eni_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'eni_service'], ( MC, 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -66,7 +66,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'eni_service'], ( MC, 
             eni_ids = null
             filters = null
 
-            eni_service.DescribeNetworkInterfaces username, session_id, region_name, eni_ids, filters, ( aws_result ) ->
+            eni_service.DescribeNetworkInterfaces {sender:this}, username, session_id, region_name, eni_ids, filters, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeNetworkInterfaces succeed
                     data = aws_result.resolved_data
@@ -86,7 +86,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'eni_service'], ( MC, 
             eni_id = null
             attribute = null
 
-            eni_service.DescribeNetworkInterfaceAttribute username, session_id, region_name, eni_id, attribute, ( aws_result ) ->
+            eni_service.DescribeNetworkInterfaceAttribute {sender:this}, username, session_id, region_name, eni_id, attribute, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeNetworkInterfaceAttribute succeed
                     data = aws_result.resolved_data

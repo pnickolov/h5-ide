@@ -1,0 +1,7 @@
+		if current_service.toLowerCase() == "@@service-name" && current_resource.toLowerCase() == "@@resource-name" && current_api == "@@api-name"
+@@param-default
+			#@@resource-name.@@api-name
+			@@resource-name_model.@@api-name {sender: me}, @@param-list
+			@@resource-name_model.once "@@EVENT-NAME", ( @@api-type_result ) ->
+				resolveResult request_time, current_service, current_resource, current_api, @@api-type_result
+

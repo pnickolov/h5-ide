@@ -25,7 +25,10 @@ module.exports = function( grunt ) {
 			'<%= sourcedir[0] %>/**/*.js',
 			'<%= sourcedir[1] %>/**/*.js',
 			'!<%= src %>/vender/*',
-			'!<%= sourcedir[1] %>/canvas/canvas.js'
+			'!<%= sourcedir[1] %>/canvas/canvas.js',
+			'!<%= sourcedir[0] %>/ide/layout.js',
+			'!<%= src %>/service/*',
+			'!<%= src %>/test/*',
 		],
 
 		cssfiles   : [
@@ -67,6 +70,8 @@ module.exports = function( grunt ) {
 		cssmin     : require( './config/cssmin.js'  ),
 		htmlmin    : require( './config/htmlmin.js' ),
 		uglify     : require( './config/uglify.js'  ),
+
+		concat     : require( './config/concat.js'  ),
 
 		sweep      : require( './config/sweep.js'   )
 

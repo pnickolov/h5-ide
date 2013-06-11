@@ -39,4 +39,4 @@ define [ 'vpn_vo', 'result_vo', 'constant' ], ( vpn_vo, result_vo, constant ) ->
     #############################################################
     #public
     parserDescribeVpnConnectionsReturn       : parserDescribeVpnConnectionsReturn
-
+    resolveDescribeVpnConnectionsResult      : resolveDescribeVpnConnectionsResult

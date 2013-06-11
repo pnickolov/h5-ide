@@ -39,4 +39,4 @@ define [ 'vpngateway_vo', 'result_vo', 'constant' ], ( vpngateway_vo, result_vo,
     #############################################################
     #public
     parserDescribeVpnGatewaysReturn          : parserDescribeVpnGatewaysReturn
-
+    resolveDescribeVpnGatewaysResult         : resolveDescribeVpnGatewaysResult

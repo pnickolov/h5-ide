@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : reservedinstance_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:20
+#* Create date  : 2013-06-04 15:13:23
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'reservedinstance_parser', 'result_vo' ], ( MC, reservedinstance_
     URL = '/aws/rds/reservedinstance/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'reservedinstance_parser', 'result_vo' ], ( MC, reservedinstance_
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.aws_result = parser result, return_code, param_ary
 
                     callback result_vo.aws_result
@@ -45,20 +46,20 @@ define [ 'MC', 'reservedinstance_parser', 'result_vo' ], ( MC, reservedinstance_
             }
 
         catch error
-            console.log "reservedinstance." + method + " error:" + error.toString()
+            console.log "reservedinstance." + api_name + " error:" + error.toString()
 
 
         true
     # end of send_request
 
     #def DescribeReservedDBInstances(self, username, session_id, region_name,
-    DescribeReservedDBInstances = ( username, session_id, callback ) ->
-        send_request "DescribeReservedDBInstances", [ username, session_id ], reservedinstance_parser.parserDescribeReservedDBInstancesReturn, callback
+    DescribeReservedDBInstances = ( src, username, session_id, callback ) ->
+        send_request "DescribeReservedDBInstances", src, [ username, session_id ], reservedinstance_parser.parserDescribeReservedDBInstancesReturn, callback
         true
 
     #def DescribeReservedDBInstancesOfferings(self, username, session_id, region_name,
-    DescribeReservedDBInstancesOfferings = ( username, session_id, callback ) ->
-        send_request "DescribeReservedDBInstancesOfferings", [ username, session_id ], reservedinstance_parser.parserDescribeReservedDBInstancesOfferingsReturn, callback
+    DescribeReservedDBInstancesOfferings = ( src, username, session_id, callback ) ->
+        send_request "DescribeReservedDBInstancesOfferings", src, [ username, session_id ], reservedinstance_parser.parserDescribeReservedDBInstancesOfferingsReturn, callback
         true
 
 

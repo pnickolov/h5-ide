@@ -8,7 +8,7 @@ module.exports = {
 			'<%= src %>/<%= libs %>/backbone/backbone.js'     : '<%= components %>/backbone/backbone.js',
 			'<%= src %>/<%= libs %>/handlebars/handlebars.js' : '<%= components %>/handlebars.js/handlebars.js',
 			'<%= src %>/<%= libs %>/requirejs/require.js'     : '<%= components %>/requirejs/require.js',
-			'<%= src %>/<%= libs %>/requirejs/domready.js'    : '<%= components %>/requirejs-domready/domready.js',
+			'<%= src %>/<%= libs %>/requirejs/domReady.js'    : '<%= components %>/requirejs-domready/domReady.js',
 			'<%= src %>/<%= libs %>/requirejs/text.js'        : '<%= components %>/requirejs-text/text.js',
 			'<%= src %>/<%= libs %>/qunit/qunit.js'           : '<%= components %>/qunit/qunit.js',
 			'<%= src %>/<%= libs %>/qunit/qunit.css'          : '<%= components %>/qunit/qunit.css'

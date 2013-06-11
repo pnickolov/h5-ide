@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : favorite_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:33
+#* Create date  : 2013-06-04 17:14:59
 #* Description  : qunit test module for favorite_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'favorite_service'], (
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'favorite_service'], (
         asyncTest "/favorite favorite.add()", () ->
             resource = null
 
-            favorite_service.add username, session_id, region_name, resource, ( forge_result ) ->
+            favorite_service.add {sender:this}, username, session_id, region_name, resource, ( forge_result ) ->
                 if !forge_result.is_error
                 #add succeed
                     data = forge_result.resolved_data
@@ -84,7 +84,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'favorite_service'], (
         asyncTest "/favorite favorite.remove()", () ->
             resource_ids = null
 
-            favorite_service.remove username, session_id, region_name, resource_ids, ( forge_result ) ->
+            favorite_service.remove {sender:this}, username, session_id, region_name, resource_ids, ( forge_result ) ->
                 if !forge_result.is_error
                 #remove succeed
                     data = forge_result.resolved_data
@@ -105,7 +105,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'favorite_service'], (
             service = null
             resource = null
 
-            favorite_service.info username, session_id, region_name, provider, service, resource, ( forge_result ) ->
+            favorite_service.info {sender:this}, username, session_id, region_name, provider, service, resource, ( forge_result ) ->
                 if !forge_result.is_error
                 #info succeed
                     data = forge_result.resolved_data

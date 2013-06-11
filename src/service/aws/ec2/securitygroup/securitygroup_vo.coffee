@@ -10,8 +10,66 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    sg = {
+        'ownerId'                   :   ''
+        'groupId'                   :   ''
+        'groupName'                 :   ''
+        'groupDescription'          :   ''
+        'vpcId'                     :   ''
+        'ipPermissions'             :   []
+        'ipPermissionsEgress'       :   []
+        'tagSet'                    :   []
+    }
 
+
+    component   =   {
+        'UID'   :   {
+            'type'  :   'AWS.EC2.SecurityGroup',
+            'name'  :   '',
+            'uid'   :   '',
+            'resource'  :{
+                'OwnerId'   :   '',
+                'GroupId'   :   '',
+                'GroupName' :   '',
+                'GroupDescription'  :   '',
+                'VpcId'     :   '',
+                'IpPermissions' :
+                    [
+                        {
+                            'IpProtocol':   '',
+                            'FromPort'  :   '',
+                            'ToPort'    :   '',
+                            'Groups'    :   [{
+                                'UserId'    :   '',
+                                'GroupId'   :   '',
+                                'GroupName' :   ''
+                                
+                            }],
+                            'IpRanges'  :   ''
+                        }
+                    ]
+                'IpPermissionsEgress'   :
+                    [
+                        {
+                            'IpProtocol':   '',
+                            'FromPort'  :   '',
+                            'ToPort'    :   '',
+                            'Groups'    :   [{
+                                'UserId'    :   '',
+                                'GroupId'   :   '',
+                                'GroupName' :   ''
+                                
+                            }],
+                            'IpRanges'  :   ''
+                        }
+                    ]
+                
+                
+            }
+        
+        }
+
+    }
     #public
     #TO-DO
 

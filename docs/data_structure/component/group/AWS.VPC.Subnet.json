@@ -1,0 +1,20 @@
+{
+    "E2236992-27D1-97CA-4B03-14C0C485E033": {
+      "uid": "E2236992-27D1-97CA-4B03-14C0C485E033",
+      "name": "subnet",
+      "layout" : {
+        "parent" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "coordinate": ["$x", "$y"],
+        "size": ["$width", "$height"]
+      },
+      "resource": {
+        "AvailabilityZone": "ap-northeast-1b",
+        "CidrBlock": "10.0.0.0/24",
+        "SubnetId": "",
+        "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
+        "AvailableIpAddressCount": "",
+        "State": ""
+      },
+      "type": "AWS.VPC.Subnet"
+    }
+}

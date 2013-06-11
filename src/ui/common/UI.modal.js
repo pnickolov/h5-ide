@@ -3,7 +3,7 @@
 #* Filename: UI.modal
 #* Creator: Angel
 #* Description: UI.modal
-#* Date: 20130525
+#* Date: 20130609
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -26,6 +26,9 @@ var modal = function (template, callback)
 
 	$(window).on('resize', modal.position);
 
+	$(document).on('click', '.modal-close', modal.close);
+	$(document).on('mousedown', '.modal-header', modal.drag.mousedown);
+
 	if (callback)
 	{
 		callback();
@@ -43,6 +46,10 @@ modal.open = function (event)
 modal.close = function ()
 {
 	$(window).off('resize', modal.position);
+
+	$(document).off('click', '.modal-close', modal.close);
+	$(document).off('mousedown', '.modal-header', modal.drag.mousedown);
+
 	$('#modal-wrap').remove();
 };
 
@@ -131,6 +138,4 @@ modal.position = function ()
 $(document).ready(function ()
 {
 	$(document).on('click', '.modal', modal.open);
-	$(document).on('click', '.modal-close', modal.close);
-	$(document).on('mousedown', '.modal-header', modal.drag.mousedown);
 });

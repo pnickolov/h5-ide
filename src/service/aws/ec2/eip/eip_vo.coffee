@@ -10,8 +10,35 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    eip = {
+        'publicIp'              :   ''
+        'allocationId'          :   ''
+        'domain'                :   ''
+        'instanceId'            :   ''
+        'associationId'         :   ''
+        'networkInterfaceId'    :   ''
+        'networkInterfaceOwnerId':  ''
+    }
 
+    component   =   {
+        'UID'   :   {
+            'type'  :   'AWS.EC2.EIP',
+            'name'  :   '',
+            'uid'   :   '',
+            'resource'  :   {
+                'PublicIp'      :   '',
+                'AllocationId'  :   '',
+                'Domain'        :   '',
+                'InstanceId'    :   '',
+                'AssociationId' :   '',
+                'NetworkInterfaceId'    :   '',
+                'NetworkInterfaceOwnerId'  : '',
+                'AllowReassociation'    :   '',
+                'PrivateIpAddress'  :   '',
+                
+            }
+        }
+    }
     #public
     #TO-DO
 

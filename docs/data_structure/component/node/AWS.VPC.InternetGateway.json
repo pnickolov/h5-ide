@@ -1,0 +1,16 @@
+{
+    "B8B8C5C2-D138-E147-F35A-14CFD463D47E": {
+      "uid": "B8B8C5C2-D138-E147-F35A-14CFD463D47E",
+      "name": "IGW",
+      "resource": {
+        "InternetGatewayId": "",
+        "AttachmentSet": [
+          {
+            "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
+            "State": "available"
+          }
+        ]
+      },
+      "type": "AWS.VPC.InternetGateway"
+    }
+}

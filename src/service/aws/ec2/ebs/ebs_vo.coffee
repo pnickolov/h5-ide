@@ -10,8 +10,62 @@
 define [], () ->
 
     #vo declaration
-    #TO-DO
+    volume = {
+        'volumeId'                  :   ''
+        'size'                      :   ''
+        'snapshotId'                :   ''
+        'availabilityZone'          :   ''
+        'status'                    :   ''
+        'createTime'                :   ''
+        'attachmentSet'             :   []
+        'tagSet'                    :   []
+        'volumeType'                :   ''
+        'iops'                      :   ''
+    }
 
+    snapshot = {
+        'snapshotId'                :   ''
+        'volumeId'                  :   ''
+        'status'                    :   ''
+        'startTime'                 :   ''
+        'progress'                  :   ''
+        'ownerId'                   :   ''
+        'volumeSize'                :   ''
+        'description'               :   ''
+        'ownerAlias'                :   ''
+        'tagSet'                    :   ''
+    }
+
+    component = {
+
+        'UID'   :   {
+            'type'  :   'AWS.EC2.EBS.Volume',
+            'name'  :   '',
+            'uid'   :   '',
+            'resource': {
+                'VolumeId'  :   '',
+                'Size'      :   '',
+                'SnapshotId':   '',
+                'AvailabilityZone'  :   '',
+                'Status'    :   '',
+                'CreateTime':   '',
+                'VolumeType':   '',
+                'Iops'      :   '',
+                'AttachmentSet' :   {
+                    'VolumeId'  :   '',
+                    'InstanceId':   '',
+                    'Device'    :   '',
+                    'Status'    :   '',
+                    'AttachTime':   '',
+                    'DeleteOnTermination'   :   '',
+                },
+                'TagSet'    :["UID1","UID2"]
+            
+            }
+        
+        }
+
+    }
     #public
     #TO-DO
 

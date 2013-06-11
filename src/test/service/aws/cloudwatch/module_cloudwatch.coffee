@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : cloudwatch_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:36
+#* Create date  : 2013-06-04 17:15:03
 #* Description  : qunit test module for cloudwatch_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
         asyncTest "/aws/cloudwatch cloudwatch.GetMetricStatistics()", () ->
 
 
-            cloudwatch_service.GetMetricStatistics username, session_id, ( aws_result ) ->
+            cloudwatch_service.GetMetricStatistics {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #GetMetricStatistics succeed
                     data = aws_result.resolved_data
@@ -84,7 +84,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
         asyncTest "/aws/cloudwatch cloudwatch.ListMetrics()", () ->
 
 
-            cloudwatch_service.ListMetrics username, session_id, ( aws_result ) ->
+            cloudwatch_service.ListMetrics {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #ListMetrics succeed
                     data = aws_result.resolved_data
@@ -103,7 +103,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
         asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarmHistory()", () ->
 
 
-            cloudwatch_service.DescribeAlarmHistory username, session_id, ( aws_result ) ->
+            cloudwatch_service.DescribeAlarmHistory {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeAlarmHistory succeed
                     data = aws_result.resolved_data
@@ -122,7 +122,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
         asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarms()", () ->
 
 
-            cloudwatch_service.DescribeAlarms username, session_id, ( aws_result ) ->
+            cloudwatch_service.DescribeAlarms {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeAlarms succeed
                     data = aws_result.resolved_data
@@ -141,7 +141,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
         asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarmsForMetric()", () ->
 
 
-            cloudwatch_service.DescribeAlarmsForMetric username, session_id, ( aws_result ) ->
+            cloudwatch_service.DescribeAlarmsForMetric {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeAlarmsForMetric succeed
                     data = aws_result.resolved_data

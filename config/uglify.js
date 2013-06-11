@@ -16,6 +16,12 @@ module.exports = {
 			'<%= release %>/ui/common/UI.scrollbar.js' : [ '<%= src %>/ui/common/UI.scrollbar.js' ],
 			'<%= release %>/ui/common/UI.tooltip.js'   : [ '<%= src %>/ui/common/UI.tooltip.js' ]
 		}
+	},
+
+	meteor: {
+		files: {
+			'./meteor/meteor.min.js'                   : [ './meteor/meteor.js' ]
+		}
 	}
 
 };

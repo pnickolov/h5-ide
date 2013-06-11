@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : keypair_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:42
+#* Create date  : 2013-06-04 17:15:09
 #* Description  : qunit test module for keypair_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'keypair_service'], ( 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -66,7 +66,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'keypair_service'], ( 
             key_names = null
             filters = null
 
-            keypair_service.DescribeKeyPairs username, session_id, region_name, key_names, filters, ( aws_result ) ->
+            keypair_service.DescribeKeyPairs {sender:this}, username, session_id, region_name, key_names, filters, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeKeyPairs succeed
                     data = aws_result.resolved_data

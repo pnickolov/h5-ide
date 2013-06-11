@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : parametergroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:46
+#* Create date  : 2013-06-04 17:15:13
 #* Description  : qunit test module for parametergroup_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'parametergroup_servic
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -67,7 +67,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'parametergroup_servic
             marker = null
             max_records = null
 
-            parametergroup_service.DescribeDBParameterGroups username, session_id, region_name, pg_name, marker, max_records, ( aws_result ) ->
+            parametergroup_service.DescribeDBParameterGroups {sender:this}, username, session_id, region_name, pg_name, marker, max_records, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeDBParameterGroups succeed
                     data = aws_result.resolved_data
@@ -89,7 +89,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'parametergroup_servic
             marker = null
             max_records = null
 
-            parametergroup_service.DescribeDBParameters username, session_id, region_name, pg_name, source, marker, max_records, ( aws_result ) ->
+            parametergroup_service.DescribeDBParameters {sender:this}, username, session_id, region_name, pg_name, source, marker, max_records, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeDBParameters succeed
                     data = aws_result.resolved_data

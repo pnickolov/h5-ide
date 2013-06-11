@@ -1,0 +1,115 @@
+{
+  "id"          : "app-d456e48b",
+  "name"        : "ami2",
+  "description" : "",
+  "username"    : "a2Vu",
+  "owner"       : "a2Vu",
+  "region"      : "us-east-1",
+  "stack_id"    : "stack-8935caa4",
+  "state"       : "Terminated",
+  "version"     : "4.0",
+  "component"   : {
+
+  },
+  "layout"     : {
+    "size"      : [ "width", "height" ],
+    //component not save into mongodb
+    "component" : {
+      "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
+        "port_in_firewall": [
+          {
+            "uid" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "name": "port_out_firewall",
+            "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          {
+            "uid" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "name": "volume",
+            "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+        ],
+        "port_out_firewall": [
+          {
+            "uid" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "name": "port_out_firewall",
+            "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          {
+            "uid" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "name": "elb",
+            "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+        ]
+      }
+    },
+    "line"  : {
+      "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
+        "connection"  : [
+          {
+            "comp_uid"  : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "port_name" : "port_in_firewall"
+          },
+          {
+            "comp_uid"  : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "port_name" : "port_in_firewall"
+          }
+        ],
+        "autoGenerate"  : true,
+        "controlPoints" : [
+          ["$x", "$y" ],
+          ["$x", "$y" ]
+        ],
+        //SVG not save into mongodb
+        "SVG": {
+
+        }
+      }
+    }
+  },
+  "property": {
+    "policy": {
+      "ha": ""
+    },
+    "lease": {
+      "action": "",
+      "length": null,
+      "due": null
+    },
+    "schedule": {
+      "backup": {
+        "when": null,
+        "day": null
+      },
+      "stop": {
+        "run": null,
+        "when": null,
+        "during": null
+      },
+      "start": {
+        "when": null
+      }
+    }
+  },
+  "history": {
+    "event": {
+      "1368004626": {
+        "input": "",
+        "code": "Action:AWS.EC2.Instance.Terminate(Run)",
+        "brief": "Terminate Instance Success",
+        "output": ""
+      },
+      "1368003271": {
+        "input": "stack-8935caa4",
+        "code": "Forge.Stack.Run",
+        "brief": "app-d456e48b has been launched from stack-8935caa4",
+        "output": "app-d456e48b"
+      }
+    },
+    "time": {
+      "terminated": "",
+      "run": 23,
+      "last": "",
+      "created": 1368003271
+    }
+  }
+}

@@ -7,13 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'app_vo', 'result_vo', 'constant' , 'ebs_parser', 'eip_parser', 'instance_parser'
-         'keypair_parser', 'securitygroup_parser', 'elb_parser', 'iam_parser', 'acl_parser'
-         'customergateway_parser', 'dhcp_parser', 'eni_parser', 'internetgateway_parser', 'routetable_parser'
-         'subnet_parser', 'vpc_parser', 'vpn_parser', 'vpngateway_parser', 'stack_parser'], ( app_vo, result_vo, constant, ebs_parser, eip_parser, instance_parser
-         keypair_parser, securitygroup_parser, elb_parser, iam_parser, acl_parser
-         customergateway_parser, dhcp_parser, eni_parser, internetgateway_parser, routetable_parser
-         subnet_parser, vpc_parser, vpn_parser, vpngateway_parser, stack_parser) ->
+define [ 'app_vo', 'result_vo', 'constant', 'aws_parser'], ( app_vo, result_vo, constant, aws_parser) ->
 
     resolveAppRequest = (result) ->
         #resolve result
@@ -258,28 +252,28 @@ define [ 'app_vo', 'result_vo', 'constant' , 'ebs_parser', 'eip_parser', 'instan
 
 
     #///////////////// Parser for resource return (need resolve) /////////////////
-    resourceMap = ( result ) ->
-        responses = {
-             "DescribeVolumesResponse"              :   ebs_parser.resolveDescribeVolumesResult
-             "DescribeSnapshotsResponse"            :   ebs_parser.resolveDescribeSnapshotsResult
-             "DescribeAddressesResponse"            :   eip_parser.resolveDescribeAddressesResult
-             "DescribeInstancesResponse"            :   instance_parser.resolveDescribeInstancesResult
-             "DescribeKeyPairsResponse"             :   keypair_parser.resolveDescribeKeyPairsResult
-             "DescribeSecurityGroupsResponse"       :   securitygroup_parser.resolveDescribeSecurityGroupsResult
-             "DescribeLoadBalancersResponse"        :   elb_parser.resolveDescribeLoadBalancersResult
-             "DescribeNetworkAclsResponse"          :   acl_parser.resolveDescribeNetworkAclsResult
-             "DescribeCustomerGatewaysResponse"     :   customergateway_parser.resolveDescribeCustomerGatewaysResult
-             "DescribeDhcpOptionsResponse"          :   dhcp_parser.resolveDescribeDhcpOptionsResult
-             "DescribeNetworkInterfacesResponse"    :   eni_parser.resolveDescribeNetworkInterfacesResult
-             "DescribeInternetGatewaysResponse"     :   internetgateway_parser.resolveDescribeInternetGatewaysResult
-             "DescribeRouteTablesResponse"          :   routetable_parser.resolveDescribeRouteTablesResult
-             "DescribeSubnetsResponse"              :   subnet_parser.resolveDescribeSubnetsResult
-             "DescribeVpcsResponse"                 :   vpc_parser.resolveDescribeVpcsResult
-             "DescribeVpnConnectionsResponse"       :   vpn_parser.resolveDescribeVpnConnectionsResult
-             "DescribeVpnGatewaysResponse"          :   vpngateway_parser.resolveDescribeVpnGatewaysResult
-        }
+    #resourceMap = ( result ) ->
+    #    responses = {
+    #         "DescribeVolumesResponse"              :   ebs_parser.resolveDescribeVolumesResult
+    #         "DescribeSnapshotsResponse"            :   ebs_parser.resolveDescribeSnapshotsResult
+    #         "DescribeAddressesResponse"            :   eip_parser.resolveDescribeAddressesResult
+    #         "DescribeInstancesResponse"            :   instance_parser.resolveDescribeInstancesResult
+    #         "DescribeKeyPairsResponse"             :   keypair_parser.resolveDescribeKeyPairsResult
+    #         "DescribeSecurityGroupsResponse"       :   securitygroup_parser.resolveDescribeSecurityGroupsResult
+    #         "DescribeLoadBalancersResponse"        :   elb_parser.resolveDescribeLoadBalancersResult
+    #         "DescribeNetworkAclsResponse"          :   acl_parser.resolveDescribeNetworkAclsResult
+    #         "DescribeCustomerGatewaysResponse"     :   customergateway_parser.resolveDescribeCustomerGatewaysResult
+    #         "DescribeDhcpOptionsResponse"          :   dhcp_parser.resolveDescribeDhcpOptionsResult
+    #         "DescribeNetworkInterfacesResponse"    :   eni_parser.resolveDescribeNetworkInterfacesResult
+    #         "DescribeInternetGatewaysResponse"     :   internetgateway_parser.resolveDescribeInternetGatewaysResult
+    #         "DescribeRouteTablesResponse"          :   routetable_parser.resolveDescribeRouteTablesResult
+    #         "DescribeSubnetsResponse"              :   subnet_parser.resolveDescribeSubnetsResult
+    #         "DescribeVpcsResponse"                 :   vpc_parser.resolveDescribeVpcsResult
+    #         "DescribeVpnConnectionsResponse"       :   vpn_parser.resolveDescribeVpnConnectionsResult
+    #         "DescribeVpnGatewaysResponse"          :   vpngateway_parser.resolveDescribeVpnGatewaysResult
+    #    }
 
-        (responses[($.parseXML node[1]).documentElement.localName] node for node in result)
+    #    (responses[($.parseXML node[1]).documentElement.localName] node for node in result)
 
     #private (resolve result to vo )
     resolveResourceResult = ( result ) ->
@@ -287,7 +281,7 @@ define [ 'app_vo', 'result_vo', 'constant' , 'ebs_parser', 'eip_parser', 'instan
         
 
         #return vo
-        resourceMap result
+        aws_parser.resourceMap result
 
     #private (parser resource return)
     parserResourceReturn = ( result, return_code, param ) ->
@@ -340,6 +334,41 @@ define [ 'app_vo', 'result_vo', 'constant' , 'ebs_parser', 'eip_parser', 'instan
     # end of parserSummaryReturn
 
 
+    #///////////////// Parser for list return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveListResult = ( result ) ->
+        #resolve result
+        app_list = {}
+        for vo in result
+            if app_list[vo.region] == undefined
+                app_list[vo.region]=[]
+
+            app_list[vo.region].push vo
+
+        #return vo
+        app_vo.app_list = app_list
+        app_list
+
+    #private (parser list return)
+    parserListReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+
+            resolved_data = resolveListResult result
+
+            result_vo.forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        result_vo.forge_result
+
+    # end of parserListReturn
+
+
     #############################################################
     #public
     parserCreateReturn                       : parserCreateReturn
@@ -352,4 +381,5 @@ define [ 'app_vo', 'result_vo', 'constant' , 'ebs_parser', 'eip_parser', 'instan
     parserInfoReturn                         : parserInfoReturn
     parserResourceReturn                     : parserResourceReturn
     parserSummaryReturn                      : parserSummaryReturn
+    parserListReturn                         : parserListReturn
 

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : elb_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:44
+#* Create date  : 2013-06-04 17:15:11
 #* Description  : qunit test module for elb_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'elb_service'], ( MC, 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -66,7 +66,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'elb_service'], ( MC, 
             elb_name = null
             instance_ids = null
 
-            elb_service.DescribeInstanceHealth username, session_id, region_name, elb_name, instance_ids, ( aws_result ) ->
+            elb_service.DescribeInstanceHealth {sender:this}, username, session_id, region_name, elb_name, instance_ids, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeInstanceHealth succeed
                     data = aws_result.resolved_data
@@ -86,7 +86,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'elb_service'], ( MC, 
             elb_name = null
             policy_names = null
 
-            elb_service.DescribeLoadBalancerPolicies username, session_id, region_name, elb_name, policy_names, ( aws_result ) ->
+            elb_service.DescribeLoadBalancerPolicies {sender:this}, username, session_id, region_name, elb_name, policy_names, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeLoadBalancerPolicies succeed
                     data = aws_result.resolved_data
@@ -105,7 +105,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'elb_service'], ( MC, 
         asyncTest "/aws/elb elb.DescribeLoadBalancerPolicyTypes()", () ->
             policy_type_names = null
 
-            elb_service.DescribeLoadBalancerPolicyTypes username, session_id, region_name, policy_type_names, ( aws_result ) ->
+            elb_service.DescribeLoadBalancerPolicyTypes {sender:this}, username, session_id, region_name, policy_type_names, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeLoadBalancerPolicyTypes succeed
                     data = aws_result.resolved_data
@@ -125,7 +125,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'elb_service'], ( MC, 
             elb_names = null
             marker = null
 
-            elb_service.DescribeLoadBalancers username, session_id, region_name, elb_names, marker, ( aws_result ) ->
+            elb_service.DescribeLoadBalancers {sender:this}, username, session_id, region_name, elb_names, marker, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeLoadBalancers succeed
                     data = aws_result.resolved_data

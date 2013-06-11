@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : app_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:32
+#* Create date  : 2013-06-04 17:14:58
 #* Description  : qunit test module for app_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
         asyncTest "/app app.create()", () ->
             spec = null
 
-            app_service.create username, session_id, region_name, spec, ( forge_result ) ->
+            app_service.create {sender:this}, username, session_id, region_name, spec, ( forge_result ) ->
                 if !forge_result.is_error
                 #create succeed
                     data = forge_result.resolved_data
@@ -85,7 +85,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
             spec = null
             app_id = null
 
-            app_service.update username, session_id, region_name, spec, app_id, ( forge_result ) ->
+            app_service.update {sender:this}, username, session_id, region_name, spec, app_id, ( forge_result ) ->
                 if !forge_result.is_error
                 #update succeed
                     data = forge_result.resolved_data
@@ -106,7 +106,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
             new_name = null
             app_name = null
 
-            app_service.rename username, session_id, region_name, app_id, new_name, app_name, ( forge_result ) ->
+            app_service.rename {sender:this}, username, session_id, region_name, app_id, new_name, app_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #rename succeed
                     data = forge_result.resolved_data
@@ -126,7 +126,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
             app_id = null
             app_name = null
 
-            app_service.terminate username, session_id, region_name, app_id, app_name, ( forge_result ) ->
+            app_service.terminate {sender:this}, username, session_id, region_name, app_id, app_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #terminate succeed
                     data = forge_result.resolved_data
@@ -146,7 +146,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
             app_id = null
             app_name = null
 
-            app_service.start username, session_id, region_name, app_id, app_name, ( forge_result ) ->
+            app_service.start {sender:this}, username, session_id, region_name, app_id, app_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #start succeed
                     data = forge_result.resolved_data
@@ -166,7 +166,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
             app_id = null
             app_name = null
 
-            app_service.stop username, session_id, region_name, app_id, app_name, ( forge_result ) ->
+            app_service.stop {sender:this}, username, session_id, region_name, app_id, app_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #stop succeed
                     data = forge_result.resolved_data
@@ -186,7 +186,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
             app_id = null
             app_name = null
 
-            app_service.reboot username, session_id, region_name, app_id, app_name, ( forge_result ) ->
+            app_service.reboot {sender:this}, username, session_id, region_name, app_id, app_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #reboot succeed
                     data = forge_result.resolved_data
@@ -205,7 +205,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
         asyncTest "/app app.info()", () ->
             app_ids = null
 
-            app_service.info username, session_id, region_name, app_ids, ( forge_result ) ->
+            app_service.info {sender:this}, username, session_id, region_name, app_ids, ( forge_result ) ->
                 if !forge_result.is_error
                 #info succeed
                     data = forge_result.resolved_data
@@ -218,13 +218,32 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
                 test_reboot()
 
     #-----------------------------------------------
+    #Test list()
+    #-----------------------------------------------
+    test_list = () ->
+        asyncTest "/app app.list()", () ->
+            app_ids = null
+
+            app_service.list {sender:this}, username, session_id, region_name, app_ids, ( forge_result ) ->
+                if !forge_result.is_error
+                #list succeed
+                    data = forge_result.resolved_data
+                    ok true, "list() succeed"
+                else
+                #list failed
+                    ok false, "list() failed" + forge_result.error_message
+            
+                start()
+                test_info()
+
+    #-----------------------------------------------
     #Test resource()
     #-----------------------------------------------
     test_resource = () ->
         asyncTest "/app app.resource()", () ->
             app_id = null
 
-            app_service.resource username, session_id, region_name, app_id, ( forge_result ) ->
+            app_service.resource {sender:this}, username, session_id, region_name, app_id, ( forge_result ) ->
                 if !forge_result.is_error
                 #resource succeed
                     data = forge_result.resolved_data
@@ -234,7 +253,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
                     ok false, "resource() failed" + forge_result.error_message
             
                 start()
-                test_info()
+                test_list()
 
     #-----------------------------------------------
     #Test summary()
@@ -243,7 +262,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'app_service'], ( MC, 
         asyncTest "/app app.summary()", () ->
 
 
-            app_service.summary username, session_id, region_name, ( forge_result ) ->
+            app_service.summary {sender:this}, username, session_id, region_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #summary succeed
                     data = forge_result.resolved_data

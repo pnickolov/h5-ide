@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : autoscaling_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:34
+#* Create date  : 2013-06-04 17:15:01
 #* Description  : qunit test config for autoscaling_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved

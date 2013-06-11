@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : securitygroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:47
+#* Create date  : 2013-06-04 17:15:14
 #* Description  : qunit test module for securitygroup_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'securitygroup_service
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -67,7 +67,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'securitygroup_service
             marker = null
             max_records = null
 
-            securitygroup_service.DescribeDBSecurityGroups username, session_id, region_name, sg_name, marker, max_records, ( aws_result ) ->
+            securitygroup_service.DescribeDBSecurityGroups {sender:this}, username, session_id, region_name, sg_name, marker, max_records, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeDBSecurityGroups succeed
                     data = aws_result.resolved_data

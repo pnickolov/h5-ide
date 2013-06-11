@@ -1,0 +1,19 @@
+{
+    "93F63A85-E522-123A-444F-14CFDD991C77": {
+      "uid": "93F63A85-E522-123A-444F-14CFDD991C77",
+      "name": "VGW",
+      "resource": {
+        "Attachments": [
+          {
+            "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
+            "State": "attached"
+          }
+        ],
+        "Type": "ipsec.1",
+        "AvailabilityZone": "",
+        "VpnGatewayId": "",
+        "State": "available"
+      },
+      "type": "AWS.VPC.VPNGateway"
+    }
+}

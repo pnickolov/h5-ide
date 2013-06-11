@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : eni_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:22
+#* Create date  : 2013-06-04 15:13:24
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'eni_parser', 'result_vo' ], ( MC, eni_parser, result_vo ) ->
     URL = '/aws/vpc/eni/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'eni_parser', 'result_vo' ], ( MC, eni_parser, result_vo ) ->
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.aws_result = parser result, return_code, param_ary
 
                     callback result_vo.aws_result
@@ -45,20 +46,20 @@ define [ 'MC', 'eni_parser', 'result_vo' ], ( MC, eni_parser, result_vo ) ->
             }
 
         catch error
-            console.log "eni." + method + " error:" + error.toString()
+            console.log "eni." + api_name + " error:" + error.toString()
 
 
         true
     # end of send_request
 
     #def DescribeNetworkInterfaces(self, username, session_id, region_name, eni_ids=None, filters=None):
-    DescribeNetworkInterfaces = ( username, session_id, region_name, eni_ids=null, filters=null, callback ) ->
-        send_request "DescribeNetworkInterfaces", [ username, session_id, region_name, eni_ids, filters ], eni_parser.parserDescribeNetworkInterfacesReturn, callback
+    DescribeNetworkInterfaces = ( src, username, session_id, region_name, eni_ids=null, filters=null, callback ) ->
+        send_request "DescribeNetworkInterfaces", src, [ username, session_id, region_name, eni_ids, filters ], eni_parser.parserDescribeNetworkInterfacesReturn, callback
         true
 
     #def DescribeNetworkInterfaceAttribute(self, username, session_id, region_name, eni_id, attribute):
-    DescribeNetworkInterfaceAttribute = ( username, session_id, region_name, eni_id, attribute, callback ) ->
-        send_request "DescribeNetworkInterfaceAttribute", [ username, session_id, region_name, eni_id, attribute ], eni_parser.parserDescribeNetworkInterfaceAttributeReturn, callback
+    DescribeNetworkInterfaceAttribute = ( src, username, session_id, region_name, eni_id, attribute, callback ) ->
+        send_request "DescribeNetworkInterfaceAttribute", src, [ username, session_id, region_name, eni_id, attribute ], eni_parser.parserDescribeNetworkInterfaceAttributeReturn, callback
         true
 
 

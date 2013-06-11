@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : aws_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:36
+#* Create date  : 2013-06-04 17:15:02
 #* Description  : qunit test module for aws_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
         asyncTest "/aws aws.quickstart()", () ->
 
 
-            aws_service.quickstart username, session_id, region_name, ( aws_result ) ->
+            aws_service.quickstart {sender:this}, username, session_id, region_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #quickstart succeed
                     data = aws_result.resolved_data
@@ -84,7 +84,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
         asyncTest "/aws aws.Public()", () ->
 
 
-            aws_service.Public username, session_id, region_name, ( aws_result ) ->
+            aws_service.Public {sender:this}, username, session_id, region_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #Public succeed
                     data = aws_result.resolved_data
@@ -103,7 +103,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
         asyncTest "/aws aws.info()", () ->
 
 
-            aws_service.info username, session_id, region_name, ( aws_result ) ->
+            aws_service.info {sender:this}, username, session_id, region_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #info succeed
                     data = aws_result.resolved_data
@@ -122,7 +122,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
         asyncTest "/aws aws.resource()", () ->
             resources = null
 
-            aws_service.resource username, session_id, region_name, resources, ( aws_result ) ->
+            aws_service.resource {sender:this}, username, session_id, region_name, resources, ( aws_result ) ->
                 if !aws_result.is_error
                 #resource succeed
                     data = aws_result.resolved_data
@@ -141,7 +141,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
         asyncTest "/aws aws.price()", () ->
 
 
-            aws_service.price username, session_id, ( aws_result ) ->
+            aws_service.price {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #price succeed
                     data = aws_result.resolved_data
@@ -160,7 +160,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'aws_service'], ( MC, 
         asyncTest "/aws aws.status()", () ->
 
 
-            aws_service.status username, session_id, ( aws_result ) ->
+            aws_service.status {sender:this}, username, session_id, ( aws_result ) ->
                 if !aws_result.is_error
                 #status succeed
                     data = aws_result.resolved_data

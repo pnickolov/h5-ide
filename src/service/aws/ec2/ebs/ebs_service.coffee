@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ebs_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:07
+#* Create date  : 2013-06-04 15:13:14
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -12,10 +12,10 @@
 
 define [ 'MC', 'ebs_parser', 'result_vo' ], ( MC, ebs_parser, result_vo ) ->
 
-    BASE_URL = '/aws/ec2/ebs/'
+    URL = '/aws/ec2/ebs/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -24,11 +24,6 @@ define [ 'MC', 'ebs_parser', 'result_vo' ], ( MC, ebs_parser, result_vo ) ->
 
         try
 
-            if ( api_name.indexOf "Volume" ) != -1
-                URL =  BASE_URL + "volume/"
-            else if ( api_name.indexOf "Snapshot" ) != -1
-                URL =  BASE_URL + "snapshot/"
-
             MC.api {
                 url     : URL
                 method  : api_name
@@ -36,6 +31,7 @@ define [ 'MC', 'ebs_parser', 'result_vo' ], ( MC, ebs_parser, result_vo ) ->
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.aws_result = parser result, return_code, param_ary
 
                     callback result_vo.aws_result
@@ -50,85 +46,85 @@ define [ 'MC', 'ebs_parser', 'result_vo' ], ( MC, ebs_parser, result_vo ) ->
             }
 
         catch error
-            console.log "ebs." + method + " error:" + error.toString()
+            console.log "ebs." + api_name + " error:" + error.toString()
 
 
         true
     # end of send_request
 
     #def CreateVolume(self, username, session_id, region_name, zone_name, snapshot_id=None, volume_size=None, volume_type=None, iops=None):
-    CreateVolume = ( username, session_id, region_name, zone_name, snapshot_id=null, volume_size=null, volume_type=null, iops=null, callback ) ->
-        send_request "CreateVolume", [ username, session_id, region_name, zone_name, snapshot_id, volume_size, volume_type, iops ], ebs_parser.parserCreateVolumeReturn, callback
+    CreateVolume = ( src, username, session_id, region_name, zone_name, snapshot_id=null, volume_size=null, volume_type=null, iops=null, callback ) ->
+        send_request "CreateVolume", src, [ username, session_id, region_name, zone_name, snapshot_id, volume_size, volume_type, iops ], ebs_parser.parserCreateVolumeReturn, callback
         true
 
     #def DeleteVolume(self, username, session_id, region_name, volume_id):
-    DeleteVolume = ( username, session_id, region_name, volume_id, callback ) ->
-        send_request "DeleteVolume", [ username, session_id, region_name, volume_id ], ebs_parser.parserDeleteVolumeReturn, callback
+    DeleteVolume = ( src, username, session_id, region_name, volume_id, callback ) ->
+        send_request "DeleteVolume", src, [ username, session_id, region_name, volume_id ], ebs_parser.parserDeleteVolumeReturn, callback
         true
 
     #def AttachVolume(self, username, session_id, region_name, volume_id, instance_id, device):
-    AttachVolume = ( username, session_id, region_name, volume_id, instance_id, device, callback ) ->
-        send_request "AttachVolume", [ username, session_id, region_name, volume_id, instance_id, device ], ebs_parser.parserAttachVolumeReturn, callback
+    AttachVolume = ( src, username, session_id, region_name, volume_id, instance_id, device, callback ) ->
+        send_request "AttachVolume", src, [ username, session_id, region_name, volume_id, instance_id, device ], ebs_parser.parserAttachVolumeReturn, callback
         true
 
     #def DetachVolume(self, username, session_id, region_name, volume_id, instance_id=None, device=None, force=False):
-    DetachVolume = ( username, session_id, region_name, volume_id, instance_id=null, device=null, force=false, callback ) ->
-        send_request "DetachVolume", [ username, session_id, region_name, volume_id, instance_id, device, force ], ebs_parser.parserDetachVolumeReturn, callback
+    DetachVolume = ( src, username, session_id, region_name, volume_id, instance_id=null, device=null, force=false, callback ) ->
+        send_request "DetachVolume", src, [ username, session_id, region_name, volume_id, instance_id, device, force ], ebs_parser.parserDetachVolumeReturn, callback
         true
 
     #def DescribeVolumes(self, username, session_id, region_name, volume_ids=None, filters=None):
-    DescribeVolumes = ( username, session_id, region_name, volume_ids=null, filters=null, callback ) ->
-        send_request "DescribeVolumes", [ username, session_id, region_name, volume_ids, filters ], ebs_parser.parserDescribeVolumesReturn, callback
+    DescribeVolumes = ( src, username, session_id, region_name, volume_ids=null, filters=null, callback ) ->
+        send_request "DescribeVolumes", src, [ username, session_id, region_name, volume_ids, filters ], ebs_parser.parserDescribeVolumesReturn, callback
         true
 
     #def DescribeVolumeAttribute(self, username, session_id, region_name, volume_id, attribute_name='autoEnableIO'):
-    DescribeVolumeAttribute = ( username, session_id, region_name, volume_id, attribute_name='autoEnableIO', callback ) ->
-        send_request "DescribeVolumeAttribute", [ username, session_id, region_name, volume_id, attribute_name ], ebs_parser.parserDescribeVolumeAttributeReturn, callback
+    DescribeVolumeAttribute = ( src, username, session_id, region_name, volume_id, attribute_name='autoEnableIO', callback ) ->
+        send_request "DescribeVolumeAttribute", src, [ username, session_id, region_name, volume_id, attribute_name ], ebs_parser.parserDescribeVolumeAttributeReturn, callback
         true
 
     #def DescribeVolumeStatus(self, username, session_id, region_name, volume_ids, filters=None, max_result=None, next_token=None):
-    DescribeVolumeStatus = ( username, session_id, region_name, volume_ids, filters=null, max_result=null, next_token=null, callback ) ->
-        send_request "DescribeVolumeStatus", [ username, session_id, region_name, volume_ids, filters, max_result, next_token ], ebs_parser.parserDescribeVolumeStatusReturn, callback
+    DescribeVolumeStatus = ( src, username, session_id, region_name, volume_ids, filters=null, max_result=null, next_token=null, callback ) ->
+        send_request "DescribeVolumeStatus", src, [ username, session_id, region_name, volume_ids, filters, max_result, next_token ], ebs_parser.parserDescribeVolumeStatusReturn, callback
         true
 
     #def ModifyVolumeAttribute(self, username, session_id, region_name, volume_id, auto_enable_IO=False):
-    ModifyVolumeAttribute = ( username, session_id, region_name, volume_id, auto_enable_IO=false, callback ) ->
-        send_request "ModifyVolumeAttribute", [ username, session_id, region_name, volume_id, auto_enable_IO ], ebs_parser.parserModifyVolumeAttributeReturn, callback
+    ModifyVolumeAttribute = ( src, username, session_id, region_name, volume_id, auto_enable_IO=false, callback ) ->
+        send_request "ModifyVolumeAttribute", src, [ username, session_id, region_name, volume_id, auto_enable_IO ], ebs_parser.parserModifyVolumeAttributeReturn, callback
         true
 
     #def EnableVolumeIO(self, username, session_id, region_name, volume_id):
-    EnableVolumeIO = ( username, session_id, region_name, volume_id, callback ) ->
-        send_request "EnableVolumeIO", [ username, session_id, region_name, volume_id ], ebs_parser.parserEnableVolumeIOReturn, callback
+    EnableVolumeIO = ( src, username, session_id, region_name, volume_id, callback ) ->
+        send_request "EnableVolumeIO", src, [ username, session_id, region_name, volume_id ], ebs_parser.parserEnableVolumeIOReturn, callback
         true
 
     #def CreateSnapshot(self, username, session_id, region_name, volume_id, description=None):
-    CreateSnapshot = ( username, session_id, region_name, volume_id, description=null, callback ) ->
-        send_request "CreateSnapshot", [ username, session_id, region_name, volume_id, description ], ebs_parser.parserCreateSnapshotReturn, callback
+    CreateSnapshot = ( src, username, session_id, region_name, volume_id, description=null, callback ) ->
+        send_request "CreateSnapshot", src, [ username, session_id, region_name, volume_id, description ], ebs_parser.parserCreateSnapshotReturn, callback
         true
 
     #def DeleteSnapshot(self, username, session_id, region_name, snapshot_id):
-    DeleteSnapshot = ( username, session_id, region_name, snapshot_id, callback ) ->
-        send_request "DeleteSnapshot", [ username, session_id, region_name, snapshot_id ], ebs_parser.parserDeleteSnapshotReturn, callback
+    DeleteSnapshot = ( src, username, session_id, region_name, snapshot_id, callback ) ->
+        send_request "DeleteSnapshot", src, [ username, session_id, region_name, snapshot_id ], ebs_parser.parserDeleteSnapshotReturn, callback
         true
 
     #def ModifySnapshotAttribute(self, username, session_id, region_name, snapshot_id, user_ids, group_names):
-    ModifySnapshotAttribute = ( username, session_id, region_name, snapshot_id, user_ids, group_names, callback ) ->
-        send_request "ModifySnapshotAttribute", [ username, session_id, region_name, snapshot_id, user_ids, group_names ], ebs_parser.parserModifySnapshotAttributeReturn, callback
+    ModifySnapshotAttribute = ( src, username, session_id, region_name, snapshot_id, user_ids, group_names, callback ) ->
+        send_request "ModifySnapshotAttribute", src, [ username, session_id, region_name, snapshot_id, user_ids, group_names ], ebs_parser.parserModifySnapshotAttributeReturn, callback
         true
 
     #def ResetSnapshotAttribute(self, username, session_id, region_name, snapshot_id, attribute_name='createVolumePermission'):
-    ResetSnapshotAttribute = ( username, session_id, region_name, snapshot_id, attribute_name='createVolumePermission', callback ) ->
-        send_request "ResetSnapshotAttribute", [ username, session_id, region_name, snapshot_id, attribute_name ], ebs_parser.parserResetSnapshotAttributeReturn, callback
+    ResetSnapshotAttribute = ( src, username, session_id, region_name, snapshot_id, attribute_name='createVolumePermission', callback ) ->
+        send_request "ResetSnapshotAttribute", src, [ username, session_id, region_name, snapshot_id, attribute_name ], ebs_parser.parserResetSnapshotAttributeReturn, callback
         true
 
     #def DescribeSnapshots(self, username, session_id, region_name, snapshot_ids=None, owners=None, restorable_by=None, filters=None):
-    DescribeSnapshots = ( username, session_id, region_name, snapshot_ids=null, owners=null, restorable_by=null, filters=null, callback ) ->
-        send_request "DescribeSnapshots", [ username, session_id, region_name, snapshot_ids, owners, restorable_by, filters ], ebs_parser.parserDescribeSnapshotsReturn, callback
+    DescribeSnapshots = ( src, username, session_id, region_name, snapshot_ids=null, owners=null, restorable_by=null, filters=null, callback ) ->
+        send_request "DescribeSnapshots", src, [ username, session_id, region_name, snapshot_ids, owners, restorable_by, filters ], ebs_parser.parserDescribeSnapshotsReturn, callback
         true
 
     #def DescribeSnapshotAttribute(self, username, session_id, region_name, snapshot_id, attribute_name='createVolumePermission'):
-    DescribeSnapshotAttribute = ( username, session_id, region_name, snapshot_id, attribute_name='createVolumePermission', callback ) ->
-        send_request "DescribeSnapshotAttribute", [ username, session_id, region_name, snapshot_id, attribute_name ], ebs_parser.parserDescribeSnapshotAttributeReturn, callback
+    DescribeSnapshotAttribute = ( src, username, session_id, region_name, snapshot_id, attribute_name='createVolumePermission', callback ) ->
+        send_request "DescribeSnapshotAttribute", src, [ username, session_id, region_name, snapshot_id, attribute_name ], ebs_parser.parserDescribeSnapshotAttributeReturn, callback
         true
 
 

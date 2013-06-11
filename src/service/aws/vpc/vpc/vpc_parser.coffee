@@ -99,4 +99,4 @@ define [ 'vpc_vo', 'result_vo', 'constant' ], ( vpc_vo, result_vo, constant ) ->
     parserDescribeVpcsReturn                 : parserDescribeVpcsReturn
     parserDescribeAccountAttributesReturn    : parserDescribeAccountAttributesReturn
     parserDescribeVpcAttributeReturn         : parserDescribeVpcAttributeReturn
-
+    resolveDescribeVpcsResult                : resolveDescribeVpcsResult

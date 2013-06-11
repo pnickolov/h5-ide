@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : request_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:31
+#* Create date  : 2013-06-04 17:14:57
 #* Description  : qunit test module for request_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
         asyncTest "/request request.init()", () ->
 
 
-            request_service.init username, session_id, region_name, ( forge_result ) ->
+            request_service.init {sender:this}, username, session_id, region_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #init succeed
                     data = forge_result.resolved_data
@@ -84,7 +84,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'request_service'], ( 
         asyncTest "/request request.update()", () ->
             timestamp = null
 
-            request_service.update username, session_id, region_name, timestamp, ( forge_result ) ->
+            request_service.update {sender:this}, username, session_id, region_name, timestamp, ( forge_result ) ->
                 if !forge_result.is_error
                 #update succeed
                     data = forge_result.resolved_data

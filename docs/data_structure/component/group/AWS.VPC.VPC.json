@@ -1,0 +1,22 @@
+{
+    "3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A": {
+      "uid": "3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A",
+      "name": "vpc1",
+      "layout" : {
+        "parent" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "coordinate": ["$x", "$y"],
+        "size": ["$width", "$height"]
+      },
+      "resource": {
+        "EnableDnsHostnames": "false",
+        "DhcpOptionsId": "",
+        "CidrBlock": "10.0.0.0/16",
+        "State": "",
+        "InstanceTenancy": "default",
+        "VpcId": "",
+        "IsDefault": "false",
+        "EnableDnsSupport": "true"
+      },
+      "type": "AWS.VPC.VPC"
+    }
+}

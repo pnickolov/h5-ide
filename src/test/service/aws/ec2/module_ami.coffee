@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ami_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:37
+#* Create date  : 2013-06-04 17:15:03
 #* Description  : qunit test module for ami_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ami_service'], ( MC, 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -66,7 +66,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ami_service'], ( MC, 
             ami_id = null
             attribute_name = null
 
-            ami_service.DescribeImageAttribute username, session_id, region_name, ami_id, attribute_name, ( aws_result ) ->
+            ami_service.DescribeImageAttribute {sender:this}, username, session_id, region_name, ami_id, attribute_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeImageAttribute succeed
                     data = aws_result.resolved_data
@@ -88,7 +88,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ami_service'], ( MC, 
             executable_by = null
             filters = null
 
-            ami_service.DescribeImages username, session_id, region_name, ami_ids, owners, executable_by, filters, ( aws_result ) ->
+            ami_service.DescribeImages {sender:this}, username, session_id, region_name, ami_ids, owners, executable_by, filters, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeImages succeed
                     data = aws_result.resolved_data

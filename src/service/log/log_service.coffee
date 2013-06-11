@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : log_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:05:57
+#* Create date  : 2013-06-04 15:13:07
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'log_parser', 'result_vo' ], ( MC, log_parser, result_vo ) ->
     URL = '/log/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'log_parser', 'result_vo' ], ( MC, log_parser, result_vo ) ->
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.forge_result = parser result, return_code, param_ary
 
                     callback result_vo.forge_result
@@ -45,15 +46,15 @@ define [ 'MC', 'log_parser', 'result_vo' ], ( MC, log_parser, result_vo ) ->
             }
 
         catch error
-            console.log "log." + method + " error:" + error.toString()
+            console.log "log." + api_name + " error:" + error.toString()
 
 
         true
     # end of send_request
 
     #def put_user_log(self, username, session_id, user_logs):
-    put_user_log = ( username, session_id, user_logs, callback ) ->
-        send_request "put_user_log", [ username, session_id, user_logs ], log_parser.parserPutUserLogReturn, callback
+    put_user_log = ( src, username, session_id, user_logs, callback ) ->
+        send_request "put_user_log", src, [ username, session_id, user_logs ], log_parser.parserPutUserLogReturn, callback
         true
 
 

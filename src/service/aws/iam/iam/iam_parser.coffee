@@ -14,10 +14,9 @@ define [ 'iam_vo', 'result_vo', 'constant' ], ( iam_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveGetServerCertificateResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).GetServerCertificateResponse.GetServerCertificateResult
 
     #private (parser GetServerCertificate return)
     parserGetServerCertificateReturn = ( result, return_code, param ) ->
@@ -43,10 +42,9 @@ define [ 'iam_vo', 'result_vo', 'constant' ], ( iam_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveListServerCertificatesResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).ListServerCertificatesResponse.ListServerCertificatesResult
 
     #private (parser ListServerCertificates return)
     parserListServerCertificatesReturn = ( result, return_code, param ) ->
@@ -72,4 +70,4 @@ define [ 'iam_vo', 'result_vo', 'constant' ], ( iam_vo, result_vo, constant ) ->
     #public
     parserGetServerCertificateReturn         : parserGetServerCertificateReturn
     parserListServerCertificatesReturn       : parserListServerCertificatesReturn
-
+    resolveGetServerCertificateResult        : resolveGetServerCertificateResult

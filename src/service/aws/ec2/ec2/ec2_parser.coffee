@@ -40,10 +40,9 @@ define [ 'ec2_vo', 'result_vo', 'constant' ], ( ec2_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeTagsResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeTagsResponse.tagSet
 
     #private (parser DescribeTags return)
     parserDescribeTagsReturn = ( result, return_code, param ) ->
@@ -69,10 +68,9 @@ define [ 'ec2_vo', 'result_vo', 'constant' ], ( ec2_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeRegionsResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeRegionsResponse.regionInfo
 
     #private (parser DescribeRegions return)
     parserDescribeRegionsReturn = ( result, return_code, param ) ->
@@ -98,10 +96,9 @@ define [ 'ec2_vo', 'result_vo', 'constant' ], ( ec2_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeAvailabilityZonesResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeAvailabilityZonesResponse.availabilityZoneInfo
 
     #private (parser DescribeAvailabilityZones return)
     parserDescribeAvailabilityZonesReturn = ( result, return_code, param ) ->
@@ -130,4 +127,5 @@ define [ 'ec2_vo', 'result_vo', 'constant' ], ( ec2_vo, result_vo, constant ) ->
     parserDescribeTagsReturn                 : parserDescribeTagsReturn
     parserDescribeRegionsReturn              : parserDescribeRegionsReturn
     parserDescribeAvailabilityZonesReturn    : parserDescribeAvailabilityZonesReturn
-
+    resolveDescribeAvailabilityZonesResult   : resolveDescribeAvailabilityZonesResult
+    resolveDescribeRegionsResult             : resolveDescribeRegionsResult

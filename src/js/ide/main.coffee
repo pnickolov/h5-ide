@@ -1,6 +1,8 @@
 #############################
-#  controller for ide
+#  main for ide
 #############################
 
-require [ 'router' ], ( router ) ->
-	router.initialize()
+require [ 'domReady', 'router' ], ( domReady, router ) ->
+
+	domReady () ->
+		router.initialize()

@@ -1,0 +1,31 @@
+{
+    "59B22BC5-32D5-F49E-5FC1-14C0BCF5CC39": {
+      "uid": "59B22BC5-32D5-F49E-5FC1-14C0BCF5CC39",
+      "name": "RT1",
+      "resource": {
+        "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
+        "PropagatingVgwSet": [],
+        "RouteSet": [
+          {
+            "DestinationCidrBlock": "10.0.0.0/16",
+            "Origin": "CreateRouteTable",
+            "GatewayId": "local",
+            "InstanceId": "",
+            "InstanceOwnerId": "",
+            "State": "active",
+            "NetworkInterfaceId": ""
+          }
+        ],
+        "RouteTableId": "",
+        "AssociationSet": [
+          {
+            "Main": "true",
+            "RouteTableId": "@59B22BC5-32D5-F49E-5FC1-14C0BCF5CC39.resource.RouteTableId",
+            "SubnetId": "",
+            "RouteTableAssociationId": ""
+          }
+        ]
+      },
+      "type": "AWS.VPC.RouteTable"
+    }
+}

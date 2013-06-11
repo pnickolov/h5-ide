@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : vpc_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:23
+#* Create date  : 2013-06-04 15:13:25
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'vpc_parser', 'result_vo' ], ( MC, vpc_parser, result_vo ) ->
     URL = '/aws/vpc/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'vpc_parser', 'result_vo' ], ( MC, vpc_parser, result_vo ) ->
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.aws_result = parser result, return_code, param_ary
 
                     callback result_vo.aws_result
@@ -45,25 +46,25 @@ define [ 'MC', 'vpc_parser', 'result_vo' ], ( MC, vpc_parser, result_vo ) ->
             }
 
         catch error
-            console.log "vpc." + method + " error:" + error.toString()
+            console.log "vpc." + api_name + " error:" + error.toString()
 
 
         true
     # end of send_request
 
     #def DescribeVpcs(self, username, session_id, region_name, vpc_ids=None, filters=None):
-    DescribeVpcs = ( username, session_id, region_name, vpc_ids=null, filters=null, callback ) ->
-        send_request "DescribeVpcs", [ username, session_id, region_name, vpc_ids, filters ], vpc_parser.parserDescribeVpcsReturn, callback
+    DescribeVpcs = ( src, username, session_id, region_name, vpc_ids=null, filters=null, callback ) ->
+        send_request "DescribeVpcs", src, [ username, session_id, region_name, vpc_ids, filters ], vpc_parser.parserDescribeVpcsReturn, callback
         true
 
     #def DescribeAccountAttributes(self, username, session_id, region_name, attribute_name):
-    DescribeAccountAttributes = ( username, session_id, region_name, attribute_name, callback ) ->
-        send_request "DescribeAccountAttributes", [ username, session_id, region_name, attribute_name ], vpc_parser.parserDescribeAccountAttributesReturn, callback
+    DescribeAccountAttributes = ( src, username, session_id, region_name, attribute_name, callback ) ->
+        send_request "DescribeAccountAttributes", src, [ username, session_id, region_name, attribute_name ], vpc_parser.parserDescribeAccountAttributesReturn, callback
         true
 
     #def DescribeVpcAttribute(self, username, session_id, region_name, vpc_id, attribute):
-    DescribeVpcAttribute = ( username, session_id, region_name, vpc_id, attribute, callback ) ->
-        send_request "DescribeVpcAttribute", [ username, session_id, region_name, vpc_id, attribute ], vpc_parser.parserDescribeVpcAttributeReturn, callback
+    DescribeVpcAttribute = ( src, username, session_id, region_name, vpc_id, attribute, callback ) ->
+        send_request "DescribeVpcAttribute", src, [ username, session_id, region_name, vpc_id, attribute ], vpc_parser.parserDescribeVpcAttributeReturn, callback
         true
 
 

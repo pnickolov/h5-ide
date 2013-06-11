@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ebs_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:38
+#* Create date  : 2013-06-04 17:15:04
 #* Description  : qunit test module for ebs_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ebs_service'], ( MC, 
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -66,7 +66,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ebs_service'], ( MC, 
             volume_ids = null
             filters = null
 
-            ebs_service.DescribeVolumes username, session_id, region_name, volume_ids, filters, ( aws_result ) ->
+            ebs_service.DescribeVolumes {sender:this}, username, session_id, region_name, volume_ids, filters, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeVolumes succeed
                     data = aws_result.resolved_data
@@ -86,7 +86,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ebs_service'], ( MC, 
             volume_id = null
             attribute_name = null
 
-            ebs_service.DescribeVolumeAttribute username, session_id, region_name, volume_id, attribute_name, ( aws_result ) ->
+            ebs_service.DescribeVolumeAttribute {sender:this}, username, session_id, region_name, volume_id, attribute_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeVolumeAttribute succeed
                     data = aws_result.resolved_data
@@ -108,7 +108,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ebs_service'], ( MC, 
             max_result = null
             next_token = null
 
-            ebs_service.DescribeVolumeStatus username, session_id, region_name, volume_ids, filters, max_result, next_token, ( aws_result ) ->
+            ebs_service.DescribeVolumeStatus {sender:this}, username, session_id, region_name, volume_ids, filters, max_result, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeVolumeStatus succeed
                     data = aws_result.resolved_data
@@ -130,7 +130,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ebs_service'], ( MC, 
             restorable_by = null
             filters = null
 
-            ebs_service.DescribeSnapshots username, session_id, region_name, snapshot_ids, owners, restorable_by, filters, ( aws_result ) ->
+            ebs_service.DescribeSnapshots {sender:this}, username, session_id, region_name, snapshot_ids, owners, restorable_by, filters, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeSnapshots succeed
                     data = aws_result.resolved_data
@@ -150,7 +150,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'ebs_service'], ( MC, 
             snapshot_id = null
             attribute_name = null
 
-            ebs_service.DescribeSnapshotAttribute username, session_id, region_name, snapshot_id, attribute_name, ( aws_result ) ->
+            ebs_service.DescribeSnapshotAttribute {sender:this}, username, session_id, region_name, snapshot_id, attribute_name, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeSnapshotAttribute succeed
                     data = aws_result.resolved_data

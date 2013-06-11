@@ -39,4 +39,4 @@ define [ 'internetgateway_vo', 'result_vo', 'constant' ], ( internetgateway_vo, 
     #############################################################
     #public
     parserDescribeInternetGatewaysReturn     : parserDescribeInternetGatewaysReturn
-
+    resolveDescribeInternetGatewaysResult    : resolveDescribeInternetGatewaysResult

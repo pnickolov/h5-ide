@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : securitygroup_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-25 14:06:14
+#* Create date  : 2013-06-04 15:13:19
 #* Description  : service know back-end api
 #* Action       : 1.invoke MC.api (send url, method, data)
 #*                2.invoke parser
@@ -15,7 +15,7 @@ define [ 'MC', 'securitygroup_parser', 'result_vo' ], ( MC, securitygroup_parser
     URL = '/aws/ec2/securitygroup/'
 
     #private
-    send_request =  ( api_name, param_ary, parser, callback ) ->
+    send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
         #check callback
         if callback is null
@@ -31,6 +31,7 @@ define [ 'MC', 'securitygroup_parser', 'result_vo' ], ( MC, securitygroup_parser
                 success : ( result, return_code ) ->
 
                     #resolve result
+                    param_ary.splice 0, 0, src
                     result_vo.aws_result = parser result, return_code, param_ary
 
                     callback result_vo.aws_result
@@ -45,35 +46,35 @@ define [ 'MC', 'securitygroup_parser', 'result_vo' ], ( MC, securitygroup_parser
             }
 
         catch error
-            console.log "securitygroup." + method + " error:" + error.toString()
+            console.log "securitygroup." + api_name + " error:" + error.toString()
 
 
         true
     # end of send_request
 
     #def CreateSecurityGroup(self, username, session_id, region_name, group_name, group_desc, vpc_id=None):
-    CreateSecurityGroup = ( username, session_id, region_name, group_name, group_desc, vpc_id=null, callback ) ->
-        send_request "CreateSecurityGroup", [ username, session_id, region_name, group_name, group_desc, vpc_id ], securitygroup_parser.parserCreateSecurityGroupReturn, callback
+    CreateSecurityGroup = ( src, username, session_id, region_name, group_name, group_desc, vpc_id=null, callback ) ->
+        send_request "CreateSecurityGroup", src, [ username, session_id, region_name, group_name, group_desc, vpc_id ], securitygroup_parser.parserCreateSecurityGroupReturn, callback
         true
 
     #def DeleteSecurityGroup(self, username, session_id, region_name, group_name=None, group_id=None):
-    DeleteSecurityGroup = ( username, session_id, region_name, group_name=null, group_id=null, callback ) ->
-        send_request "DeleteSecurityGroup", [ username, session_id, region_name, group_name, group_id ], securitygroup_parser.parserDeleteSecurityGroupReturn, callback
+    DeleteSecurityGroup = ( src, username, session_id, region_name, group_name=null, group_id=null, callback ) ->
+        send_request "DeleteSecurityGroup", src, [ username, session_id, region_name, group_name, group_id ], securitygroup_parser.parserDeleteSecurityGroupReturn, callback
         true
 
     #def AuthorizeSecurityGroupIngress(self, username, session_id, region_name,
-    AuthorizeSecurityGroupIngress = ( username, session_id, callback ) ->
-        send_request "AuthorizeSecurityGroupIngress", [ username, session_id ], securitygroup_parser.parserAuthorizeSecurityGroupIngressReturn, callback
+    AuthorizeSecurityGroupIngress = ( src, username, session_id, callback ) ->
+        send_request "AuthorizeSecurityGroupIngress", src, [ username, session_id ], securitygroup_parser.parserAuthorizeSecurityGroupIngressReturn, callback
         true
 
     #def RevokeSecurityGroupIngress(self, username, session_id, region_name,
-    RevokeSecurityGroupIngress = ( username, session_id, callback ) ->
-        send_request "RevokeSecurityGroupIngress", [ username, session_id ], securitygroup_parser.parserRevokeSecurityGroupIngressReturn, callback
+    RevokeSecurityGroupIngress = ( src, username, session_id, callback ) ->
+        send_request "RevokeSecurityGroupIngress", src, [ username, session_id ], securitygroup_parser.parserRevokeSecurityGroupIngressReturn, callback
         true
 
     #def DescribeSecurityGroups(self, username, session_id, region_name, group_names=None, group_ids=None, filters=None):
-    DescribeSecurityGroups = ( username, session_id, region_name, group_names=null, group_ids=null, filters=null, callback ) ->
-        send_request "DescribeSecurityGroups", [ username, session_id, region_name, group_names, group_ids, filters ], securitygroup_parser.parserDescribeSecurityGroupsReturn, callback
+    DescribeSecurityGroups = ( src, username, session_id, region_name, group_names=null, group_ids=null, filters=null, callback ) ->
+        send_request "DescribeSecurityGroups", src, [ username, session_id, region_name, group_names, group_ids, filters ], securitygroup_parser.parserDescribeSecurityGroupsReturn, callback
         true
 
 

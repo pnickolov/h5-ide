@@ -40,4 +40,4 @@ define [ 'acl_vo', 'result_vo', 'constant' ], ( acl_vo, result_vo, constant ) ->
     #############################################################
     #public
     parserDescribeNetworkAclsReturn          : parserDescribeNetworkAclsReturn
-
+    resolveDescribeNetworkAclsResult         : resolveDescribeNetworkAclsResult

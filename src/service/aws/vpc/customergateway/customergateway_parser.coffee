@@ -39,4 +39,4 @@ define [ 'customergateway_vo', 'result_vo', 'constant' ], ( customergateway_vo, 
     #############################################################
     #public
     parserDescribeCustomerGatewaysReturn     : parserDescribeCustomerGatewaysReturn
-
+    resolveDescribeCustomerGatewaysResult    : resolveDescribeCustomerGatewaysResult

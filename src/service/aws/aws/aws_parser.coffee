@@ -7,7 +7,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'aws_vo', 'result_vo', 'constant' ], ( aws_vo, result_vo, constant ) ->
+define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instance_parser'
+         'keypair_parser', 'securitygroup_parser', 'elb_parser', 'iam_parser', 'acl_parser'
+         'customergateway_parser', 'dhcp_parser', 'eni_parser', 'internetgateway_parser', 'routetable_parser'
+         'subnet_parser', 'vpc_parser', 'vpn_parser', 'vpngateway_parser', 'ec2_parser', 'ami_parser' ], ( aws_vo, result_vo, constant, ebs_parser, eip_parser, instance_parser
+         keypair_parser, securitygroup_parser, elb_parser, iam_parser, acl_parser
+         customergateway_parser, dhcp_parser, eni_parser, internetgateway_parser, routetable_parser
+         subnet_parser, vpc_parser, vpn_parser, vpngateway_parser, ec2_parser, ami_parser) ->
 
 
     #///////////////// Parser for quickstart return (need resolve) /////////////////
@@ -17,7 +23,7 @@ define [ 'aws_vo', 'result_vo', 'constant' ], ( aws_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser quickstart return)
     parserQuickstartReturn = ( result, return_code, param ) ->
@@ -46,7 +52,7 @@ define [ 'aws_vo', 'result_vo', 'constant' ], ( aws_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser Public return)
     parserPublicReturn = ( result, return_code, param ) ->
@@ -75,7 +81,7 @@ define [ 'aws_vo', 'result_vo', 'constant' ], ( aws_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser info return)
     parserInfoReturn = ( result, return_code, param ) ->
@@ -98,13 +104,44 @@ define [ 'aws_vo', 'result_vo', 'constant' ], ( aws_vo, result_vo, constant ) ->
 
 
     #///////////////// Parser for resource return (need resolve) /////////////////
+    resourceMap = ( result ) ->
+        responses = {
+            "DescribeImagesResponse"               :   ami_parser.resolveDescribeImagesResult
+            "DescribeAvailabilityZonesResponse"    :   ec2_parser.resolveDescribeAvailabilityZonesResult
+            "DescribeVolumesResponse"              :   ebs_parser.resolveDescribeVolumesResult
+            "DescribeSnapshotsResponse"            :   ebs_parser.resolveDescribeSnapshotsResult
+            "DescribeAddressesResponse"            :   eip_parser.resolveDescribeAddressesResult
+            "DescribeInstancesResponse"            :   instance_parser.resolveDescribeInstancesResult
+            "DescribeKeyPairsResponse"             :   keypair_parser.resolveDescribeKeyPairsResult
+            "DescribeSecurityGroupsResponse"       :   securitygroup_parser.resolveDescribeSecurityGroupsResult
+            "DescribeLoadBalancersResponse"        :   elb_parser.resolveDescribeLoadBalancersResult
+            "DescribeNetworkAclsResponse"          :   acl_parser.resolveDescribeNetworkAclsResult
+            "DescribeCustomerGatewaysResponse"     :   customergateway_parser.resolveDescribeCustomerGatewaysResult
+            "DescribeDhcpOptionsResponse"          :   dhcp_parser.resolveDescribeDhcpOptionsResult
+            "DescribeNetworkInterfacesResponse"    :   eni_parser.resolveDescribeNetworkInterfacesResult
+            "DescribeInternetGatewaysResponse"     :   internetgateway_parser.resolveDescribeInternetGatewaysResult
+            "DescribeRouteTablesResponse"          :   routetable_parser.resolveDescribeRouteTablesResult
+            "DescribeSubnetsResponse"              :   subnet_parser.resolveDescribeSubnetsResult
+            "DescribeVpcsResponse"                 :   vpc_parser.resolveDescribeVpcsResult
+            "DescribeVpnConnectionsResponse"       :   vpn_parser.resolveDescribeVpnConnectionsResult
+            "DescribeVpnGatewaysResponse"          :   vpngateway_parser.resolveDescribeVpnGatewaysResult
+        }
+
+        #for node in result
+            #console.log node
+        #    console.log ($.parseXML node).documentElement.localName
+        #    console.log responses[($.parseXML node).documentElement.localName] [null, node]
+        (responses[($.parseXML node).documentElement.localName] [null, node] for node in result)
+
     #private (resolve result to vo )
     resolveResourceResult = ( result ) ->
         #resolve result
-        #TO-DO
-
         #return vo
-        #TO-DO
+        res = []
+        res[region] = resourceMap nodes for region, nodes of result
+            
+
+        res
 
     #private (parser resource return)
     parserResourceReturn = ( result, return_code, param ) ->
@@ -133,7 +170,7 @@ define [ 'aws_vo', 'result_vo', 'constant' ], ( aws_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        result
 
     #private (parser price return)
     parserPriceReturn = ( result, return_code, param ) ->
@@ -162,7 +199,7 @@ define [ 'aws_vo', 'result_vo', 'constant' ], ( aws_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        $.parseJSON result[2]
 
     #private (parser status return)
     parserStatusReturn = ( result, return_code, param ) ->
@@ -192,4 +229,4 @@ define [ 'aws_vo', 'result_vo', 'constant' ], ( aws_vo, result_vo, constant ) ->
     parserResourceReturn                     : parserResourceReturn
     parserPriceReturn                        : parserPriceReturn
     parserStatusReturn                       : parserStatusReturn
-
+    resourceMap                              : resourceMap

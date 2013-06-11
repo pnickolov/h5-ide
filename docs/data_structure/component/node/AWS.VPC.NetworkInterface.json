@@ -1,0 +1,50 @@
+{
+    "BF2AC433-28FB-5960-F4FE-14C499E82FC3": {
+      "uid": "BF2AC433-28FB-5960-F4FE-14C499E82FC3",
+      "name": "eni1",
+      "resource": {
+        "PrivateIpAddressSet": [
+          {
+            "Association": {
+              "AssociationID": "",
+              "PublicDnsName": "",
+              "AllocationID": "",
+              "InstanceId": "",
+              "IpOwnerId": "",
+              "PublicIp": ""
+            },
+            "PrivateIpAddress": "10.0.0.5",
+            "AutoAssign": "true",
+            "Primary": "true"
+          }
+        ],
+        "Status": "",
+        "GroupSet": [
+          {
+            "GroupId": "@B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupId",
+            "GroupName": "@B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupName"
+          }
+        ],
+        "PrivateDnsName": "",
+        "SourceDestCheck": "true",
+        "RequestId": "",
+        "MacAddress": "",
+        "OwnerId": "",
+        "RequestManaged": "",
+        "SecondPriIpCount": "",
+        "Attachment": {
+          "InstanceId": "@D673A590-1897-12F8-D1F3-14C116707F9A.resource.InstanceId",
+          "AttachmentId": "",
+          "DeviceIndex": "1",
+          "AttachTime": ""
+        },
+        "AvailabilityZone": "ap-northeast-1b",
+        "SubnetId": "@E2236992-27D1-97CA-4B03-14C0C485E033.resource.SubnetId",
+        "Description": "",
+        "VpcId": "@3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId",
+        "PrivateIpAddress": "",
+        "NetworkInterfaceId": ""
+      },
+      "type": "AWS.VPC.NetworkInterface"
+    }
+}

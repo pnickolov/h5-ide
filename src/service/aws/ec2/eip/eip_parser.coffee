@@ -66,10 +66,9 @@ define [ 'eip_vo', 'result_vo', 'constant' ], ( eip_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeAddressesResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeAddressesResponse.addressesSet
 
     #private (parser DescribeAddresses return)
     parserDescribeAddressesReturn = ( result, return_code, param ) ->
@@ -93,9 +92,12 @@ define [ 'eip_vo', 'result_vo', 'constant' ], ( eip_vo, result_vo, constant ) ->
 
     #############################################################
     #public
-    parserAllocateAddressReturn              : parserAllocateAddressReturn
-    parserReleaseAddressReturn               : parserReleaseAddressReturn
-    parserAssociateAddressReturn             : parserAssociateAddressReturn
-    parserDisassociateAddressReturn          : parserDisassociateAddressReturn
-    parserDescribeAddressesReturn            : parserDescribeAddressesReturn
-
+    {
+        parserAllocateAddressReturn              : parserAllocateAddressReturn
+        parserReleaseAddressReturn               : parserReleaseAddressReturn
+        parserAssociateAddressReturn             : parserAssociateAddressReturn
+        parserDisassociateAddressReturn          : parserDisassociateAddressReturn
+        parserDescribeAddressesReturn            : parserDescribeAddressesReturn
+        resolveDescribeAddressesResult           : resolveDescribeAddressesResult
+    }
+    

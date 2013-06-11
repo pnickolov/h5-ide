@@ -14,10 +14,9 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeInstanceHealthResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeInstanceHealthResponse.DescribeInstanceHealthResult.InstanceStates
 
     #private (parser DescribeInstanceHealth return)
     parserDescribeInstanceHealthReturn = ( result, return_code, param ) ->
@@ -43,10 +42,9 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeLoadBalancerPoliciesResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeLoadBalancerPoliciesResponse.DescribeLoadBalancerPoliciesResult.PolicyDescriptions
 
     #private (parser DescribeLoadBalancerPolicies return)
     parserDescribeLoadBalancerPoliciesReturn = ( result, return_code, param ) ->
@@ -72,10 +70,9 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeLoadBalancerPolicyTypesResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeLoadBalancerPolicyTypesResponse.DescribeLoadBalancerPolicyTypesResult.PolicyTypeDescriptions
 
     #private (parser DescribeLoadBalancerPolicyTypes return)
     parserDescribeLoadBalancerPolicyTypesReturn = ( result, return_code, param ) ->
@@ -101,10 +98,9 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeLoadBalancersResult = ( result ) ->
         #resolve result
-        #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).DescribeLoadBalancersResponse.DescribeLoadBalancersResult
 
     #private (parser DescribeLoadBalancers return)
     parserDescribeLoadBalancersReturn = ( result, return_code, param ) ->
@@ -132,4 +128,4 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
     parserDescribeLoadBalancerPoliciesReturn : parserDescribeLoadBalancerPoliciesReturn
     parserDescribeLoadBalancerPolicyTypesReturn : parserDescribeLoadBalancerPolicyTypesReturn
     parserDescribeLoadBalancersReturn        : parserDescribeLoadBalancersReturn
-
+    resolveDescribeLoadBalancersResult       : resolveDescribeLoadBalancersResult

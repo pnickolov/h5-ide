@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : guest_service.coffee
 #* Creator      : gen_service.sh
-#* Create date  : 2013-05-29 13:27:33
+#* Create date  : 2013-06-04 17:15:00
 #* Description  : qunit test module for guest_service
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
@@ -37,7 +37,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
     module "Module Session"
 
     asyncTest "session.login", () ->
-        session_service.login username, password, ( forge_result ) ->
+        session_service.login {sender:this}, username, password, ( forge_result ) ->
             if !forge_result.is_error
             #login succeed
                 session_info = forge_result.resolved_data
@@ -65,7 +65,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
         asyncTest "/guest guest.invite()", () ->
 
 
-            guest_service.invite username, session_id, region_name, ( forge_result ) ->
+            guest_service.invite {sender:this}, username, session_id, region_name, ( forge_result ) ->
                 if !forge_result.is_error
                 #invite succeed
                     data = forge_result.resolved_data
@@ -84,7 +84,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
         asyncTest "/guest guest.cancel()", () ->
             guest_id = null
 
-            guest_service.cancel username, session_id, region_name, guest_id, ( forge_result ) ->
+            guest_service.cancel {sender:this}, username, session_id, region_name, guest_id, ( forge_result ) ->
                 if !forge_result.is_error
                 #cancel succeed
                     data = forge_result.resolved_data
@@ -104,7 +104,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
             guestname = null
             guest_id = null
 
-            guest_service.access guestname, session_id, region_name, guest_id, ( forge_result ) ->
+            guest_service.access {sender:this}, guestname, session_id, region_name, guest_id, ( forge_result ) ->
                 if !forge_result.is_error
                 #access succeed
                     data = forge_result.resolved_data
@@ -124,7 +124,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
             guestname = null
             guest_id = null
 
-            guest_service.end guestname, session_id, region_name, guest_id, ( forge_result ) ->
+            guest_service.end {sender:this}, guestname, session_id, region_name, guest_id, ( forge_result ) ->
                 if !forge_result.is_error
                 #end succeed
                     data = forge_result.resolved_data
@@ -143,7 +143,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'guest_service'], ( MC
         asyncTest "/guest guest.info()", () ->
             guest_id = null
 
-            guest_service.info username, session_id, region_name, guest_id, ( forge_result ) ->
+            guest_service.info {sender:this}, username, session_id, region_name, guest_id, ( forge_result ) ->
                 if !forge_result.is_error
                 #info succeed
                     data = forge_result.resolved_data

@@ -1,6 +1,6 @@
 define [], () ->
-    username    = 'xjimmy'
-    password    = 'aaa123aa'
+    username    = ''
+    password    = ''
 
     #public
     username    : username,

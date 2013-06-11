@@ -2,7 +2,7 @@
 #  View Mode for navigation
 #############################
 
-define [ 'event', 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'underscore' ], ( event, app_model, stack_model, ec2_model ) ->
+define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model ) ->
 
     ###
     regions = [{

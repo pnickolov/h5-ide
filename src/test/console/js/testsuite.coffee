@@ -423,11 +423,11 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             app_desc = if $("#app_desc").val() != "null" then $("#app_desc").val() else null
             app_desc = if app_desc != null and app_desc.indexOf("[") != -1 then JSON.parse app_desc else app_desc
             app_component = if $("#app_component").val() != "null" then $("#app_component").val() else null
-            app_component = if app_component != null and app_component.indexOf("[") != -1 then JSON.parse app_component else app_component
+            app_component = if app_component != null and ( app_component.indexOf("[") != -1 or app_component.indexOf("{") != -1 ) then JSON.parse app_component else app_component
             app_property = if $("#app_property").val() != "null" then $("#app_property").val() else null
-            app_property = if app_property != null and app_property.indexOf("[") != -1 then JSON.parse app_property else app_property
+            app_property = if app_property != null and ( app_property.indexOf("[") != -1 or app_property.indexOf("{") != -1 ) then JSON.parse app_property else app_property
             app_layout = if $("#app_layout").val() != "null" then $("#app_layout").val() else null
-            app_layout = if app_layout != null and app_layout.indexOf("[") != -1 then JSON.parse app_layout else app_layout
+            app_layout = if app_layout != null and ( app_layout.indexOf("[") != -1 or app_layout.indexOf("{") != -1 ) then JSON.parse app_layout else app_layout
             stack_name = if $("#stack_name").val() != "null" then $("#stack_name").val() else null
             stack_name = if stack_name != null and stack_name.indexOf("[") != -1 then JSON.parse stack_name else stack_name
             #stack.run

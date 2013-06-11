@@ -5,7 +5,7 @@
 define [ 'backbone', 'jquery', 'underscore' ], () ->
 
     #private
-    OverviewModel = Backbone.Model.extend {
+    RegionModel = Backbone.Model.extend {
 
         defaults :
             temp : null
@@ -21,6 +21,6 @@ define [ 'backbone', 'jquery', 'underscore' ], () ->
 
     }
 
-    model = new OverviewModel()
+    model = new RegionModel()
 
     return model

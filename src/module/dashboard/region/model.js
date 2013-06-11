@@ -1,8 +1,8 @@
 (function() {
   define(['backbone', 'jquery', 'underscore'], function() {
-    var OverviewModel, model;
+    var RegionModel, model;
 
-    OverviewModel = Backbone.Model.extend({
+    RegionModel = Backbone.Model.extend({
       defaults: {
         temp: null
       },
@@ -16,7 +16,7 @@
         return null;
       }
     });
-    model = new OverviewModel();
+    model = new RegionModel();
     return model;
   });
 

@@ -2,9 +2,13 @@
 #  main for ide
 #############################
 
-define [ 'event', 'layout', 'header', 'navigation', 'tabbar', 'dashboard', 'design' ], ( event, layout, header, navigation, tabbar, dashboard, design ) ->
+define [ 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'dashboard', 'design' ], ( ide_event, view, layout, header, navigation, tabbar, dashboard, design ) ->
 
 	initialize : () ->
+
+		#listen main view event
+		ide_event.onLongListen ide_event.RETURN_OVERVIEW_TAB, () -> view.showDashbaordTab()
+		ide_event.onLongListen ide_event.RETURN_REGION_TAB, ()   -> view.showRegionTab()
 
 		#load header
 		header.loadModule()
@@ -17,12 +21,12 @@ define [ 'event', 'layout', 'header', 'navigation', 'tabbar', 'dashboard', 'desi
 		#load navigation
 		navigation.loadModule()
 		#temp
-		event.onListen event.NAVIGATION_COMPLETE, () ->
+		ide_event.onListen ide_event.NAVIGATION_COMPLETE, () ->
 			console.log 'NAVIGATION_COMPLETE'
 
 			setTimeout () ->
 				#load layout
 				layout.ready()
 			,2000
-		#event.onListen event.DESIGN_COMPLETE, () ->
+		#ide_event.onListen ide_event.DESIGN_COMPLETE, () ->
 		#	console.log 'DESIGN_COMPLETE'

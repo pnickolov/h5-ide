@@ -11,9 +11,10 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         template : Handlebars.compile $( '#navigation-tmpl' ).html()
 
         events   :
-            'click #nav-dashboard-region a'  : 'dashboardRegionClick'
-            'click .nav-region-list-items a' : 'regionListItemsClick'
-            'click .show-unused-region a'    : 'showEmptyRegionClick'
+            'click #nav-dashboard-region a' : 'dashboardRegionClick'
+            'click .stack-list a'           : 'stackListItemsClick'
+            'click .app-list a'             : 'appListItemsClick'
+            'click .show-unused-region a'   : 'showEmptyRegionClick'
 
         initialize : ->
             #
@@ -34,14 +35,36 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 console.log 'add dashboard region'
                 ide_event.trigger ide_event.OPEN_DASHBOARD, 'dashboard'
 
-        regionListItemsClick : ( event ) ->
-            console.log 'add tab click event'
+        stackListItemsClick : ( event ) ->
+            console.log 'stack tab click event'
             target   = event.target
             nav      = $ '#navigation'
             main     = $ '#main'
             tab_name = $( target ).text()
 
             ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name
+
+            nav.addClass 'collapsed'
+            nav.removeClass 'scroll-wrap'
+            main.addClass 'wide'
+
+            $( '#first-level-nav' ).removeClass 'accordion'
+            $( '.nav-head').removeClass 'accordion-group'
+            $( '.sub-menu-wrapper').removeClass 'accordion-body'
+
+            if nav.hasClass( 'collapsed' )
+                $( '.sub-menu-wrapper' ).each () ->
+                    this.style.cssText = ''
+                    null
+
+        appListItemsClick : ( event ) ->
+            console.log 'app tab click event'
+            target   = event.target
+            nav      = $ '#navigation'
+            main     = $ '#main'
+            tab_name = $( target ).text()
+
+            ide_event.trigger ide_event.OPEN_APP_TAB, tab_name
 
             nav.addClass 'collapsed'
             nav.removeClass 'scroll-wrap'

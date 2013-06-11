@@ -17,10 +17,11 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
         $( overview_tmpl ).appendTo 'head'
 
         #load remote ./module/dashboard/overview/view.js
-        require [ './module/dashboard/overview/view', 'UI.tooltip', 'UI.scrollbar' ], ( View ) ->
+        require [ './module/dashboard/overview/view', './module/dashboard/overview/model', 'UI.tooltip', 'UI.scrollbar' ], ( View, model ) ->
 
             #view
             view       = new View()
+            view.model = model
             #listen
             view.on 'RETURN_REGION_TAB', () ->
                 #push event
@@ -29,10 +30,11 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             view.render()
 
         #load remote ./module/dashboard/region/view.js
-        require [ './module/dashboard/region/view', 'UI.tooltip', 'UI.scrollbar' ], ( View ) ->
+        require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.scrollbar' ], ( View, model ) ->
 
             #view
             view       = new View()
+            view.model = model
             #listen
             view.on 'RETURN_OVERVIEW_TAB', () ->
                 #push event

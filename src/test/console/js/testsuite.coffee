@@ -87,7 +87,7 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
 
             $( "#label_request_result" ).text data.method + " failed!"
             $( "#response_data" ).text aws_result.error_message
-        
+
 
     #private
     request = ( event ) ->
@@ -100,8 +100,14 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             alert "Please select an api first!"
             return false
 
+        region_name      = $("#region_list").val()
         current_service  = $( "#service_list" ).val()
         current_resource = $( "#resource_list" ).val()
+
+        $("#region_name").val region_name
+
+        $( "#resquest_data" ).val ""
+        $( "#response_data" ).val ""
 
         request_time     = new Date()
         response_time    = null
@@ -198,7 +204,7 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
         ########## App ##########
         if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "app" && current_api == "create"
             spec = if $("#spec").val() != "null" then $("#spec").val() else null
-            spec = if spec != null and spec.indexOf("[") != -1 then JSON.parse spec else spec
+            spec = if spec != null and ( spec.indexOf("[") != -1 or spec.indexOf("{") != -1 ) then JSON.parse spec else spec
             #app.create
             app_model.create {sender: me}, username, session_id, region_name, spec
             app_model.once "APP_CREATE_RETURN", ( forge_result ) ->
@@ -206,7 +212,7 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
 
         if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "app" && current_api == "update"
             spec = if $("#spec").val() != "null" then $("#spec").val() else null
-            spec = if spec != null and spec.indexOf("[") != -1 then JSON.parse spec else spec
+            spec = if spec != null and ( spec.indexOf("[") != -1 or spec.indexOf("{") != -1 ) then JSON.parse spec else spec
             app_id = if $("#app_id").val() != "null" then $("#app_id").val() else null
             app_id = if app_id != null and app_id.indexOf("[") != -1 then JSON.parse app_id else app_id
             #app.update
@@ -373,7 +379,7 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
         ########## Stack ##########
         if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "stack" && current_api == "create"
             spec = if $("#spec").val() != "null" then $("#spec").val() else null
-            spec = if spec != null and spec.indexOf("[") != -1 then JSON.parse spec else spec
+            spec = if spec != null and ( spec.indexOf("[") != -1 or spec.indexOf("{") != -1 ) then JSON.parse spec else spec
             #stack.create
             stack_model.create {sender: me}, username, session_id, region_name, spec
             stack_model.once "STACK_CREATE_RETURN", ( forge_result ) ->
@@ -391,7 +397,7 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
 
         if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "stack" && current_api == "save"
             spec = if $("#spec").val() != "null" then $("#spec").val() else null
-            spec = if spec != null and spec.indexOf("[") != -1 then JSON.parse spec else spec
+            spec = if spec != null and ( spec.indexOf("[") != -1 or spec.indexOf("{") != -1 ) then JSON.parse spec else spec
             #stack.save
             stack_model.save {sender: me}, username, session_id, region_name, spec
             stack_model.once "STACK_SAVE_RETURN", ( forge_result ) ->

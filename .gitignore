@@ -33,6 +33,10 @@ src/service/*.js
 src/module/**/*.js
 !src/module/canvas/canvas.js
 
+#ignore lib
+src/lib/websocket.js
+src/lib/constant.js
+
 #ignore test
 src/test/console/js/*.js
 src/test/**/*.js

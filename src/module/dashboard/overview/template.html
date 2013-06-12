@@ -5,29 +5,37 @@
 	<div class="dashboard-widget grid" id="dashboard-feature-wrap">
 		<div class="col-2-3" id="dashboard-map">
 			<ul id="map-region-spot-list">
-				<li id="us-east-1">
+				{{#each result_list.region_infos }}
+				<li id="{{ region_name }}">
 					<a href="javascript:void(0)">
 						<i class="icon-map-spot"></i>
-						<span>N. Virginia</span>
+						<span>{{ region_city }}</span>
 						<div class="map-tooltip">
 							<span class="arrow-left map-tooltip-pointer-left"></span>
-							<div class="map-tooltip-body truncate">	
+							<div class="map-tooltip-body truncate">
 								<ul class="dashboard-widget-regions-stat">
-									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>99</li>
-									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>2</li>
-									<li><i class="icon-layers tooltip" data-tooltip="Stack"></i>2</li>
+									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>{{ running_app }}</li>
+									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>{{ stopped_app }}</li>
+									<li><i class="icon-layers tooltip" data-tooltip="Stack"></i>{{ stack }}</li>
 								</ul>
 							</div>
 						</div>
 					</a>
 				</li>
+				{{/each}}
+				{{#each region_empty_list }}
+				<li id="{{ region_name }}" class="unused">
+					<a href="javascript:void(0)" title="Tokyo Dashboard"><i class="icon-map-spot"></i>{{ region_city }}</a>
+				</li>
+				{{/each}}
+				<!-- test_data
 				<li id="us-west-1">
 					<a href="javascript:void(0)">
 						<i class="icon-map-spot"></i>
 						<span>N. California</span>
 						<div class="map-tooltip">
 							<span class="arrow-down map-tooltip-pointer"></span>
-							<div class="map-tooltip-body truncate">	
+							<div class="map-tooltip-body truncate">
 								<ul class="dashboard-widget-regions-stat">
 									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>99</li>
 									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>2</li>
@@ -43,7 +51,7 @@
 						<span>Oregon</span>
 						<div class="map-tooltip">
 							<span class="arrow-up map-tooltip-pointer-up"></span>
-							<div class="map-tooltip-body truncate">	
+							<div class="map-tooltip-body truncate">
 								<ul class="dashboard-widget-regions-stat">
 									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>99</li>
 									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>2</li>
@@ -59,7 +67,7 @@
 						<span>Ireland</span>
 						<div class="map-tooltip">
 							<span class="arrow-down map-tooltip-pointer"></span>
-							<div class="map-tooltip-body truncate">	
+							<div class="map-tooltip-body truncate">
 								<ul class="dashboard-widget-regions-stat">
 									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>99</li>
 									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>2</li>
@@ -74,7 +82,7 @@
 						<span>Sao Paulo</span>
 						<div class="map-tooltip">
 							<span class="arrow-down map-tooltip-pointer"></span>
-							<div class="map-tooltip-body truncate">	
+							<div class="map-tooltip-body truncate">
 								<ul class="dashboard-widget-regions-stat">
 									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>99</li>
 									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>2</li>
@@ -84,15 +92,13 @@
 						</div>
 					</a>
 				</li>
-				<li id="ap-southeast-1" class="unused">
-					<a href="javascript:void(0)" title="Singapore Dashboard"><i class="icon-map-spot"></i>Singapore</a>
-				</li>
 				<li id="ap-southeast-2" class="unused">
 					<a href="javascript:void(0)" title="Sydney Dashboard"><i class="icon-map-spot"></i>Sydney</a>
 				</li>
 				<li id="ap-northeast-1" class="unused">
 					<a href="javascript:void(0)" title="Tokyo Dashboard"><i class="icon-map-spot"></i>Tokyo</a>
 				</li>
+			-->
 			</ul>
 		</div>
 		<div class="col-1-3" id="dashboard-feature-text">
@@ -170,11 +176,20 @@
 				<div class="dashboard-global-stat-wrap">
 					<p>You have managed</p>
 					<div class="dashboard-global-stat">
-						<span class="dashboard-global-stat-app"><span class="global-stat-counter">23</span>Apps</span>
-						<span class="dashboard-global-stat-stack"><span class="global-stat-counter">1</span>Stack</span>
+						{{#if result_list }}
+							<span class="dashboard-global-stat-app"><span class="global-stat-counter">{{ result_list.total_app }}</span>App{{ result_list.plural_app }}</span>
+							<span class="dashboard-global-stat-stack"><span class="global-stat-counter">{{ result_list.total_stack }}</span>Stack{{ result_list.plural_stack }}</span>
+						{{else}}
+							<span class="dashboard-global-stat-app"><span class="global-stat-counter">0</span>App</span>
+							<span class="dashboard-global-stat-stack"><span class="global-stat-counter">0</span>Stack</span>
+						{{/if}}
 					</div>
-					<p>over <span class="dashboard-global-stat-region-counter">5</span> AWS regions.</p>
-				</div>				
+					{{#if result_list }}
+					<p>over <span class="dashboard-global-stat-region-counter">{{ result_list.total_aws }} </span> AWS region{{ result_list.plural_aws }}.</p>
+  					{{else}}
+    				<p>over <span class="dashboard-global-stat-region-counter"> 0 </span> AWS region.</p>
+  					{{/if}}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -276,5 +291,5 @@
 			</div>
 	</div>
 	<!-- kenshin end -->
-	
+
 </div>

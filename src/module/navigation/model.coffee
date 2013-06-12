@@ -2,7 +2,7 @@
 #  View Mode for navigation
 #############################
 
-define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model ) ->
+define [ 'app_model', 'stack_model', 'ec2_model', 'stack_vo', 'app_vo', 'underscore' ], ( app_model, stack_model, ec2_model, stack_vo, app_vo ) ->
 
     ###
     regions = [{
@@ -59,7 +59,7 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
             #get service(model)
             app_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
             app_model.on 'APP_LST_RETURN', ( result ) ->
-                
+
                 console.log 'APP_LST_RETURN'
                 console.log result
 
@@ -67,6 +67,8 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
                 app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : region_labels[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
                 console.log app_list
+
+                app_vo.app_list = app_list
 
                 #set vo
                 me.set 'app_list', app_list
@@ -81,7 +83,7 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
             #get service(model)
             stack_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
             stack_model.on 'STACK_LST_RETURN', ( result ) ->
-                
+
                 console.log 'STACK_LST_RETURN'
                 console.log result
 
@@ -93,6 +95,8 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
                 #
                 #me.regionEmptyList _.keys result.resolved_data
                 stack_region_list = _.keys result.resolved_data
+
+                stack_vo.stack_list = stack_list
 
                 #set vo
                 me.set 'stack_list', stack_list
@@ -128,10 +132,10 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
 
                 #
                 region_list = _.map result.resolved_data.item, ( value, key ) ->
-                
+
                     region_city = region_labels[ value.regionName ].split( ' - ' )[1]
                     region_area = region_labels[ value.regionName ].split( ' - ' )[0]
-                
+
                     return { 'region_city' : region_city, 'region_area' : region_area }
 
                 console.log region_list

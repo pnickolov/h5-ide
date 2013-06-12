@@ -23,19 +23,31 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             view       = new View()
             view.model = model
 
-            model.on 'change:app_list', () ->
-                console.log 'dashboard_change:app_list'
+            model.on 'change:result_list', () ->
+                console.log 'dashboard_change:result_list'
                 #push event
-                ide_event.onListen ide_event.RESULT_APP_LIST, model.get 'app_list'
+                model.get 'result_list'
                 #refresh view
                 view.render()
+
+            model.on 'change:region_empty_list', () ->
+                console.log 'dashboard_change:region_empty'
+                #push event
+                model.get 'region_empty_list'
+                #refresh view
+                view.render()
+
+            #model
+            model.resultListListener()
+            model.emptyListListener()
+            model.describeAccountAttributesService()
 
             #listen
             view.on 'RETURN_REGION_TAB', () ->
                 #push event
                 ide_event.trigger ide_event.RETURN_REGION_TAB, null
-            #render
-            view.render()
+                #render
+                view.render()
 
         #load remote ./module/dashboard/region/view.js
         require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.scrollbar' ], ( View, model ) ->

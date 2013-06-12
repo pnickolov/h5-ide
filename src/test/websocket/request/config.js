@@ -2,26 +2,6 @@
   require.config({
     baseUrl: '/',
     deps: ['/test/websocket/request/test.js'],
-    shim: {
-      'jquery': {
-        exports: '$'
-      },
-      'MC': {
-        deps: ['jquery', 'constant'],
-        exports: 'MC'
-      },
-      'underscore': {
-        exports: '_'
-      },
-      'Meteor': {
-        deps: ['underscore'],
-        exports: 'Meteor'
-      },
-      'WS': {
-        deps: ['Meteor'],
-        exports: 'WS'
-      }
-    },
     paths: {
       'jquery': 'vender/jquery/jquery',
       'underscore': 'vender/underscore/underscore',
@@ -29,6 +9,25 @@
       'MC': 'lib/MC.core',
       'constant': 'lib/constant',
       'WS': 'lib/websocket'
+    },
+    shim: {
+      'jquery': {
+        exports: '$'
+      },
+      'MC': {
+        deps: ['jquery'],
+        exports: 'MC'
+      },
+      'underscore': {
+        exports: '_'
+      },
+      'Meteor': {
+        deps: ['underscore']
+      },
+      'WS': {
+        deps: ['Meteor', 'underscore'],
+        exports: 'WS'
+      }
     }
   });
 

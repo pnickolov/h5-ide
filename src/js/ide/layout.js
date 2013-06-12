@@ -223,7 +223,7 @@ var ready = function () {
 //});
 }
 
-define( [ 'jquery', 'UI.scrollbar', 'bootstrap-dropdown', 'UI.tooltip', 'UI.tabbar' ], function() {
+define( [ 'jquery', 'UI.scrollbar', 'bootstrap-dropdown' ], function() {
 
 	return {
 		ready : ready

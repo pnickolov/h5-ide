@@ -2,7 +2,7 @@
 #  View(UI logic) for tabbar
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
     TabBarView = Backbone.View.extend {
 
@@ -11,20 +11,17 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         template : Handlebars.compile $( '#tabbar-tmpl' ).html()
 
         events   :
-            'click #tab-bar-dashboard a' : 'openDashboardTabClick'
-            #'click .tab-bar-truncate'      : 'openStackClick'
+            'OPEN_TAB' : 'openTab'
 
         render   : () ->
             console.log 'tabbar render'
             $( this.el ).html this.template()
 
-        openDashboardTabClick : () ->
-            console.log 'openDashboardTabClick'
-            ide_event.trigger ide_event.OPEN_DASHBOARD, 'dashboard'
-
-        openStackClick : ( event ) ->
-            console.log 'openStackClick'
-            #ide_event.trigger ide_event.OPEN_STACK_TAB, event.target.title
+        openTab : ( event, original_tab_id, tab_id ) ->
+            console.log 'openTab'
+            #
+            if tab_id is 'dashboard' then this.trigger 'SWITCH_DASHBOARD', 'dashboard' else this.trigger 'SWITCH_STACK_TAB', original_tab_id, tab_id
+            null
     }
 
     return TabBarView

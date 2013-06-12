@@ -10,6 +10,7 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
     region_counts       = []
     region_aws_list     = []
     region_classic_vpc_list = []
+    region_classic_vpc_result = []
 
     result_list = { 'total_app' : 0, 'total_stack' : 0, 'total_aws' : 0, 'plural_app' : '', 'plural_stack' : '', 'plural_aws' : '', 'region_infos': [] }
 
@@ -17,7 +18,7 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
     total_app   = 0
     total_stack = 0
     total_aws   = 0
-    cur_result = []
+    classic_vpc_count = 0
 
     #keys
     KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
@@ -156,34 +157,43 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
 
             me = this
 
-            temp_keys = KEYS
-            me.getRegionAccountAttribute( temp_keys )
+            temp_keys = []
+            classic_vpc_count = 0
+            _.map KEYS, ( value ) ->
+                region_classic_vpc_list[ value ] = null
+                temp_keys.push value
+                null
 
-            console.log region_classic_vpc_list
+            me.getRegionAccountAttribute( temp_keys )
 
             null
 
         #get region account attribute
-        getRegionAccountAttribute : ( me )->
+        getRegionAccountAttribute : ( cur_keys )->
 
             temp = this
 
             #get service(model)
-            if me[ 0 ]
-                vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), me[ 0 ],  ["supported-platforms"]
-                vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
-
-                    cur_result = result
-                    regionAttrSet = cur_result.resolved_data.accountAttributeSet.item.attributeValueSet
-                    console.log regionAttrSet
-                    region_classic_vpc_list[ me[ 0 ] ] = if regionAttrSet[ 0 ] is 'VPC' then { 'vpc' : 'VPC', 'region_name' : region_labels[ me[ 0 ] ] } else { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : region_labels[ me[ 0 ] ] }
-                    temp.describeAccountAttributesService(me.splice( 0, 1 ))
-
-                    null
-            else
-                #set vo
-                temp.set 'region_classic_vpc_list', region_classic_vpc_list
-
+            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), cur_keys[ 0 ],  ["supported-platforms"]
+            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
+                if classic_vpc_count <= 7
+                    regionAttrSet = result.resolved_data.accountAttributeSet.item.attributeValueSet
+                    cur_key = cur_keys[ 0 ]
+                    if region_classic_vpc_list[ cur_key ] is null
+                        if regionAttrSet[ 0 ] is 'VPC'
+                            region_classic_vpc_list[ cur_key ] = { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ cur_keys[ 0 ] ] }
+                        else
+                            region_classic_vpc_list[ cur_key ] = { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ cur_keys[ 0 ] ] }
+                        classic_vpc_count += 1
+                        sub_keys = cur_keys.splice( 1 )
+                        if sub_keys[ 0 ]
+                            temp.getRegionAccountAttribute(sub_keys)
+                        else
+                            _.map KEYS, ( value ) ->
+                                region_classic_vpc_result.push region_classic_vpc_list[value]
+                                null
+                            temp.set 'region_classic_list', region_classic_vpc_result
+                null
             null
     }
 

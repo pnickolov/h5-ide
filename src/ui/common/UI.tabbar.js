@@ -97,12 +97,15 @@ var Tabbar = {
 
 		Tabbar.open(tab_id, tab_name);
 
+		$('#tab-bar').trigger('NEW_TAB', tab_id);
 		return tab_id;
 	},
 
 	open: function (tab_id, tab_name)
 	{
-		var tab_item = $('#tab-bar-' + tab_id);
+		var tab_bar = $('#tab-bar'),
+			tab_item = $('#tab-bar-' + tab_id),
+			original_tab_id = $('#tab-bar').find('.active')[0].id.replace('tab-bar-', '');
 
 		if (!tab_item[0])
 		{
@@ -113,6 +116,7 @@ var Tabbar = {
 		$('#tab-bar li').removeClass('active');
 		tab_item.addClass('active');
 
+		$('#tab-bar').trigger('OPEN_TAB', [original_tab_id, tab_id]);
 		return tab_id;
 	},
 
@@ -125,9 +129,9 @@ var Tabbar = {
 			tab_id = target.attr('id').replace('tab-bar-', '');
 
 		target.remove();
-
 		Tabbar.open($('#tab-bar li:last').attr('id').replace('tab-bar-', ''));
 
+		$('#tab-bar').trigger('CLOSE_TAB', tab_id);
 		return tab_id;
 	},
 

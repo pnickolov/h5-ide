@@ -25,8 +25,10 @@ define [ 'underscore', 'backbone' ], () ->
         DESIGN_COMPLETE     : 'DESIGN_COMPLETE'
 
         #true
-        OPEN_DASHBOARD      : 'OPEN_DASHBOARD'
         OPEN_STACK_TAB      : 'OPEN_STACK_TAB'
+        OPEN_APP_TAB        : 'OPEN_APP_TAB'
+        SWITCH_STACK_TAB    : 'SWITCH_STACK_TAB'
+        SWITCH_DASHBOARD    : 'SWITCH_DASHBOARD'
 
         #result app stack region empty_region list
         RESULT_APP_LIST     : 'RESULT_APP_LIST'
@@ -36,7 +38,7 @@ define [ 'underscore', 'backbone' ], () ->
 
         #return overview region tab
         RETURN_OVERVIEW_TAB : 'RETURN_OVERVIEW_TAB'
-        RETURN_REGION_TAB : 'RETURN_REGION_TAB'
+        RETURN_REGION_TAB   : 'RETURN_REGION_TAB'
 
         constructor : ->
             _.extend this, Backbone.Events

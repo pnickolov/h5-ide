@@ -26,7 +26,7 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
             model.on 'change:app_list', () ->
                 console.log 'change:app_list'
                 #push event
-                ide_event.trigger ide_event.RESULT_APP_LIST, null
+                ide_event.trigger ide_event.RESULT_APP_LIST, model.get 'app_list'
                 #refresh view
                 view.render()
                 #call
@@ -35,7 +35,7 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
             model.on 'change:stack_list', () ->
                 console.log 'change:stack_list'
                 #push event
-                ide_event.trigger ide_event.RESULT_STACK_LIST, null
+                ide_event.trigger ide_event.RESULT_STACK_LIST, model.get 'stack_list'
                 #refresh view
                 view.render()
                 #call
@@ -44,7 +44,7 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
             model.on 'change:region_empty_list', () ->
                 console.log 'change:region_empty_list'
                 #push event
-                ide_event.trigger ide_event.RESULT_EMPTY_REGION_LIST, null
+                ide_event.trigger ide_event.RESULT_EMPTY_REGION_LIST, model.get 'region_empty_list'
                 #refresh view
                 view.render()
                 #call
@@ -53,7 +53,7 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
             model.on 'change:region_list', () ->
                 console.log 'change:region_list'
                 #push event
-                ide_event.trigger ide_event.RESULT_REGION_LIST, null
+                ide_event.trigger ide_event.RESULT_REGION_LIST, model.get 'region_list'
                 #refresh view
                 view.render()
 

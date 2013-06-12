@@ -23,18 +23,18 @@ define [ 'guest_vo', 'result_vo', 'constant' ], ( guest_vo, result_vo, constant 
     parserInviteReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveInviteResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserInviteReturn
 
@@ -52,18 +52,18 @@ define [ 'guest_vo', 'result_vo', 'constant' ], ( guest_vo, result_vo, constant 
     parserCancelReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveCancelResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserCancelReturn
 
@@ -81,18 +81,18 @@ define [ 'guest_vo', 'result_vo', 'constant' ], ( guest_vo, result_vo, constant 
     parserAccessReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveAccessResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserAccessReturn
 
@@ -110,18 +110,18 @@ define [ 'guest_vo', 'result_vo', 'constant' ], ( guest_vo, result_vo, constant 
     parserEndReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveEndResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserEndReturn
 
@@ -139,18 +139,18 @@ define [ 'guest_vo', 'result_vo', 'constant' ], ( guest_vo, result_vo, constant 
     parserInfoReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveInfoResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserInfoReturn
 

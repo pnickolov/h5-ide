@@ -15,10 +15,10 @@ define [ 'placementgroup_vo', 'result_vo', 'constant' ], ( placementgroup_vo, re
     parserCreatePlacementGroupReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserCreatePlacementGroupReturn
 
@@ -28,10 +28,10 @@ define [ 'placementgroup_vo', 'result_vo', 'constant' ], ( placementgroup_vo, re
     parserDeletePlacementGroupReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDeletePlacementGroupReturn
 
@@ -49,18 +49,18 @@ define [ 'placementgroup_vo', 'result_vo', 'constant' ], ( placementgroup_vo, re
     parserDescribePlacementGroupsReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribePlacementGroupsResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribePlacementGroupsReturn
 

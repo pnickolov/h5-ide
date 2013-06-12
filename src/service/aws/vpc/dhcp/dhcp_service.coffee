@@ -32,17 +32,19 @@ define [ 'MC', 'dhcp_parser', 'result_vo' ], ( MC, dhcp_parser, result_vo ) ->
 
                     #resolve result
                     param_ary.splice 0, 0, src
-                    result_vo.aws_result = parser result, return_code, param_ary
+                    aws_result = {}
+                    aws_result = parser result, return_code, param_ary
 
-                    callback result_vo.aws_result
+                    callback aws_result
 
                 error : ( result, return_code ) ->
 
-                    result_vo.aws_result.return_code      = return_code
-                    result_vo.aws_result.is_error         = true
-                    result_vo.aws_result.error_message    = result.toString()
+                    aws_result = {}
+                    aws_result.return_code      = return_code
+                    aws_result.is_error         = true
+                    aws_result.error_message    = result.toString()
 
-                    callback result_vo.aws_result
+                    callback aws_result
             }
 
         catch error

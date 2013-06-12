@@ -1,37 +1,22 @@
 
 define [ 'constant'] , ( constant ) ->
 
-    #private
-    forge_result = {
-
-        #orial
-        return_code      : -1
-        param            : null
-
-        #resolved
-        resolved_data    : null
-        is_error         : true
-        error_message    : ""
-
-    }
-
-    #private
-    aws_result = {
-
-        #orial
-        return_code     : -1
-        param           : null
-
-        #resolved
-        resolved_data       : null
-        is_error            : true
-        error_message       : ""
-        aws_error_code      : -1
-        aws_error_message   : ""
-    }
 
     #private (resolve return_code for forge api)
     processForgeReturnHandler = ( result, return_code, param ) ->
+
+        forge_result = {
+
+            #orial
+            return_code      : -1
+            param            : null
+
+            #resolved
+            resolved_data    : null
+            is_error         : true
+            error_message    : ""
+
+        }
 
         is_error         = true # only E_OK is false
         error_message    = ""
@@ -70,6 +55,20 @@ define [ 'constant'] , ( constant ) ->
 
     #private (resolve return_code for forge api)
     processAWSReturnHandler = ( result, return_code, param ) ->
+
+        aws_result = {
+
+            #orial
+            return_code     : -1
+            param           : null
+
+            #resolved
+            resolved_data       : null
+            is_error            : true
+            error_message       : ""
+            aws_error_code      : -1
+            aws_error_message   : ""
+        }
 
         is_error          = true # only E_OK is false
         error_message     = ""
@@ -113,8 +112,6 @@ define [ 'constant'] , ( constant ) ->
     # end of processForgeReturnHandler
 
     #public
-    forge_result              : forge_result
-    aws_result                : aws_result
     processForgeReturnHandler : processForgeReturnHandler
     processAWSReturnHandler   : processAWSReturnHandler
 

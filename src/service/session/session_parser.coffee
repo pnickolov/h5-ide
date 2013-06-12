@@ -28,18 +28,18 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
     parserLoginReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveLoginResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserLoginReturn
 
@@ -57,18 +57,18 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
     parserLogoutReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveLogoutResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserLogoutReturn
 
@@ -86,18 +86,18 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
     parserSetCredentialReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveSetCredentialResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserSetCredentialReturn
 
@@ -118,18 +118,18 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
     parserGuestReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveGuestResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserGuestReturn
 

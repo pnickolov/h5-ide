@@ -17,6 +17,7 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
     total_app   = 0
     total_stack = 0
     total_aws   = 0
+    cur_result = []
 
     #keys
     KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
@@ -151,25 +152,37 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
             null
 
         #region list
-        describeAccountAttributesService : ->
+        describeAccountAttributesService : ()->
 
             me = this
 
+            temp_keys = KEYS
+            me.getRegionAccountAttribute( temp_keys )
+
+            console.log region_classic_vpc_list
+
+            null
+
+        #get region account attribute
+        getRegionAccountAttribute : ( me )->
+
+            temp = this
+
             #get service(model)
-            #_.map KEYS, ( value ) ->
+            if me[ 0 ]
+                vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), me[ 0 ],  ["supported-platforms"]
+                vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
-                #console.log value + 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
+                    cur_result = result
+                    regionAttrSet = cur_result.resolved_data.accountAttributeSet.item.attributeValueSet
+                    console.log regionAttrSet
+                    region_classic_vpc_list[ me[ 0 ] ] = if regionAttrSet[ 0 ] is 'VPC' then { 'vpc' : 'VPC', 'region_name' : region_labels[ me[ 0 ] ] } else { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : region_labels[ me[ 0 ] ] }
+                    temp.describeAccountAttributesService(me.splice( 0, 1 ))
 
-                #vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), value,  ["supported-platforms"]
-                #vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
-
-                    #cur_result = result
-
-                    #regionAttrSet = cur_result.resolved_data.accountAttributeSet.item.attributeValueSet
-                    #console.log regionAttrSet[0]
-                    #region_classic_vpc_list[value] = region_classic_vpc_list[value]
-
-                    #null
+                    null
+            else
+                #set vo
+                temp.set 'region_classic_vpc_list', region_classic_vpc_list
 
             null
     }

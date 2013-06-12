@@ -40,6 +40,13 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 #refresh view
                 view.render()
 
+            model.on 'change:region_classic_vpc_list', () ->
+                console.log 'dashboard_region_classic_vpc_list'
+                #push event
+                model.get 'region_classic_vpc_list'
+                #refresh view
+                view.render()
+
             #model
             model.resultListListener()
             model.emptyListListener()

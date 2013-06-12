@@ -108,14 +108,21 @@
 					<div class="dropdown-menu create-new-stack-dropdown">
 						<p>Select the region you want to create stack in:</p>
 						<ul>
+							{{#each region_empty_list }}
 							<li>
-								<a href="">US East - N. Virginia
+								<a href="">{{ region_name }}
 									<div class="region-platform-wrap">
-										<span class="region-platform-classic tooltip" data-tooltip="EC2-classic" data-tooltip="EC2-Classic">Classic</span>
-										<span class="region-platform-vpc tooltip" data-tooltip="EC2-vpc" data-tooltip="EC2-VPC">VPC</span>
+										{{#if classic}}
+										<span class="region-platform-classic tooltip" data-tooltip="EC2-classic" data-tooltip="EC2-Classic">{{classic}}</span>
+										{{/if}}
+										{{#if vpc}}
+										<span class="region-platform-vpc tooltip" data-tooltip="EC2-vpc" data-tooltip="EC2-VPC">{{vpc}}</span>
+										{{/if}}
 									</div>
 								</a>
 							</li>
+							{{/each}}
+							<!-- vpc_classic_list
 							<li>
 								<a href="">US West - Oregon
 									<div class="region-platform-wrap">
@@ -170,6 +177,7 @@
 									</div>
 								</a>
 							</li>
+						-->
 						</ul>
 					</div>
 				</div>

@@ -2,13 +2,21 @@
 #  main for ide
 #############################
 
-define [ 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'dashboard', 'design' ], ( ide_event, view, layout, header, navigation, tabbar, dashboard, design ) ->
+define [ 'MC', 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'dashboard', 'design' ], ( MC, ide_event, view, layout, header, navigation, tabbar, dashboard, design ) ->
 
 	initialize : () ->
 
+		#set Mc.data
+		MC.data = {}
+
 		#listen main view event
-		ide_event.onLongListen ide_event.RETURN_OVERVIEW_TAB, () -> view.showDashbaordTab()
-		ide_event.onLongListen ide_event.RETURN_REGION_TAB, ()   -> view.showRegionTab()
+		#listen RETURN_OVERVIEW_TAB and RETURN_REGION_TAB
+		ide_event.onLongListen ide_event.RETURN_OVERVIEW_TAB, () -> view.showOverviewTab()
+		ide_event.onLongListen ide_event.RETURN_REGION_TAB,   () -> view.showRegionTab()
+		#listen SWITCH_STACK_TAB and OPEN_STACK_TAB
+		ide_event.onLongListen ide_event.OPEN_STACK_TAB,      () -> view.showStackTab()
+		ide_event.onLongListen ide_event.SWITCH_STACK_TAB,    () -> view.showStackTab()
+		ide_event.onLongListen ide_event.SWITCH_DASHBOARD,    () -> view.showDashbaordTab()
 
 		#load header
 		header.loadModule()

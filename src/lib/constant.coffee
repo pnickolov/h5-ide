@@ -11,6 +11,19 @@ define [], () ->
 		MESSAGE_E_PARAM    : "Parameter error!"
 	}
 
+
+	#private
+	REGION_LABEL = []
+	REGION_LABEL[ 'us-east-1' ]      = 'US East - Virginia'
+	REGION_LABEL[ 'us-west-1' ]      = 'US West - N. California'
+	REGION_LABEL[ 'us-west-2' ]      = 'US West - Oregon'
+	REGION_LABEL[ 'eu-west-1' ]      = 'EU West - Ireland'
+	REGION_LABEL[ 'ap-southeast-1' ] = 'Asia Pacific - Singapore'
+	REGION_LABEL[ 'ap-southeast-2' ] = 'Asia Pacific - Sydney'
+	REGION_LABEL[ 'ap-northeast-1' ] = 'Asia Pacific - Tokyo'
+	REGION_LABEL[ 'sa-east-1' ]      = 'South America - Sao Paulo'
+
+
 	#private
 	RETURN_CODE = {
 		E_OK           : 0
@@ -63,6 +76,7 @@ define [], () ->
 
 
 	#public
+	REGION_LABEL: REGION_LABEL
 	RETURN_CODE : RETURN_CODE
 	MESSAGE_E   : MESSAGE_E
 	APP_STATE   : APP_STATE

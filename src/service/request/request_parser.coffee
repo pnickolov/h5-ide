@@ -37,17 +37,17 @@ define [ 'request_vo', 'result_vo', 'constant' ], ( request_vo, result_vo, const
     parserInitReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveInitResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserInitReturn
 
@@ -68,18 +68,18 @@ define [ 'request_vo', 'result_vo', 'constant' ], ( request_vo, result_vo, const
     parserUpdateReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.forge_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
             resolved_data = resolveUpdateResult result
 
-            result_vo.forge_result.resolved_data = resolved_data
+            forge_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.forge_result
+        forge_result
 
     # end of parserUpdateReturn
 

@@ -25,9 +25,13 @@
 
       Event.prototype.DESIGN_COMPLETE = 'DESIGN_COMPLETE';
 
-      Event.prototype.OPEN_DASHBOARD = 'OPEN_DASHBOARD';
-
       Event.prototype.OPEN_STACK_TAB = 'OPEN_STACK_TAB';
+
+      Event.prototype.OPEN_APP_TAB = 'OPEN_APP_TAB';
+
+      Event.prototype.SWITCH_STACK_TAB = 'SWITCH_STACK_TAB';
+
+      Event.prototype.SWITCH_DASHBOARD = 'SWITCH_DASHBOARD';
 
       Event.prototype.RESULT_APP_LIST = 'RESULT_APP_LIST';
 

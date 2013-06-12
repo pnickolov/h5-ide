@@ -32,8 +32,9 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         dashboardRegionClick : ( event ) ->
             if event.target.parentNode.className isnt 'show-unused-region'
-                console.log 'add dashboard region'
-                ide_event.trigger ide_event.OPEN_DASHBOARD, 'dashboard'
+                alert 'add dashboard region'
+                #open dashboard region
+                #ide_event.trigger ide_event.OPEN_DASHBOARD, 'dashboard'
 
         stackListItemsClick : ( event ) ->
             console.log 'stack tab click event'

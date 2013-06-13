@@ -83,7 +83,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 null
             null
 
-
         #result list
         updateMap : ( me, app_list ) ->
 
@@ -210,19 +209,18 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             resent_edited_stacks = []
 
             # parse all stacks
-            num = 0
-            while num < RESENT_THRESHOLD
-                _.map result, ( value ) ->
-                    region_group = value
+            num = 1
+            _.map result, ( value ) ->
+                region_group = value
 
-                    _.map region_group.region_name_group, ( value ) ->
-                        item = me.parseItem(value, flag)
-                        if item
-                            resent_edited_stacks.push item
-                            num = num + 1
-
-                        null
-                    null
+                _.map region_group.region_name_group, ( value ) ->
+                    item = me.parseItem(value, flag)
+                    if item
+                        resent_edited_stacks.push item
+                        num = num + 1
+                        if num == RESENT_THRESHOLD
+                            me.set 'resent_edited_stacks', resent_edited_stacks
+                            return
 
             me.set 'resent_edited_stacks', resent_edited_stacks
 
@@ -234,24 +232,25 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             resent_stoped_apps = []
 
             # parse all apps
-            num = 0
-            while num < RESENT_THRESHOLD
-                _.map result, (value) ->
-                    region_group = value
+            num = 1
+            _.map result, (value) ->
+                region_group = value
 
-                    _.map region_group.region_name_group, (value) ->
-                        item = me.parseItem(value, flag)
-                        if item
+                _.map region_group.region_name_group, (value) ->
+                    item = me.parseItem(value, flag)
+                    if item
+                        if flag == 'resent_launched_apps'
+                            resent_launched_apps.push item
+                        else if flag == 'resent_stoped_apps'
+                            resent_stoped_apps.push item
+                        num = num + 1
+
+                        if num == RESENT_THRESHOLD
                             if flag == 'resent_launched_apps'
-                                resent_launched_apps.push item
-                            else if flag == 'resent_stoped_apps'
-                                resent_stoped_apps.push item
-                            num = num + 1
-
-                            null
-                        null
-                    null
-                null
+                                me.set 'resent_launched_apps', resent_launched_apps
+                            if flag == 'resent_stoped_apps'
+                                me.set 'resent_stoped_apps', resent_stoped_apps
+                                null
 
             if flag == 'resent_launched_apps'
                 me.set 'resent_launched_apps', resent_launched_apps
@@ -268,14 +267,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 interval = value.time_update
             else if flag == 'resent_launched_apps'
                 interval = value.time_create
-            else if flag == 'resent_stoped_apps'
-                if value.state != 'Stopped' and value.state != 'Stopping'
-                    return
+            else if flag == 'resent_stoped_apps' and value.state in ['Stopping', 'Stopped']
                 interval = value.time_update
-            else
-                return
-
-            return { 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval' : MC.intervalDate(interval) }
+            
+            if interval
+                return { 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval' : MC.intervalDate(interval) }
 
             # days = interval/(24*60*60)
             # # check the interval

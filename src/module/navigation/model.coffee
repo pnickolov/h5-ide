@@ -2,7 +2,7 @@
 #  View Mode for navigation
 #############################
 
-define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model ) ->
+define [ 'app_model', 'stack_model', 'ec2_model', 'constant'  , 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model, Constant ) ->
 
     ###
     regions = [{
@@ -25,7 +25,7 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
 
     #private
     #region map
-    region_labels  = []
+    #region_labels  = []
     #stack region id
     stack_region_list = []
 
@@ -40,6 +40,7 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
 
         initialize : ->
 
+            ###
             region_labels[ 'us-east-1' ]      = 'US East - Virginia'
             region_labels[ 'us-west-1' ]      = 'US West - N. California'
             region_labels[ 'us-west-2' ]      = 'US West - Oregon'
@@ -48,6 +49,7 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
             region_labels[ 'ap-southeast-2' ] = 'Asia Pacific - Sydney'
             region_labels[ 'ap-northeast-1' ] = 'Asia Pacific - Tokyo'
             region_labels[ 'sa-east-1' ]      = 'South America - Sao Paulo'
+            ###
 
             null
 
@@ -64,7 +66,7 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
                 console.log result
 
                 #
-                app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : region_labels[ key ], 'region_count' : value.length, 'region_name_group' : value }
+                app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : Constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
                 console.log app_list
 
@@ -86,7 +88,7 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
                 console.log result
 
                 #
-                stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : region_labels[ key ], 'region_count' : value.length, 'region_name_group' : value }
+                stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : Constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
                 console.log stack_list
 
@@ -104,8 +106,8 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
 
             console.log 'regionEmptyList'
 
-            diff              = _.difference _.keys( region_labels ), stack_region_list
-            region_empty_list = _.map diff, ( val ) -> return region_labels[ val ]
+            diff              = _.difference _.keys( Constant.REGION_LABEL ), stack_region_list
+            region_empty_list = _.map diff, ( val ) -> return Constant.REGION_LABEL[ val ]
 
             console.log region_empty_list
 
@@ -129,8 +131,8 @@ define [ 'app_model', 'stack_model', 'ec2_model' , 'backbone', 'jquery', 'unders
                 #
                 region_list = _.map result.resolved_data.item, ( value, key ) ->
                 
-                    region_city = region_labels[ value.regionName ].split( ' - ' )[1]
-                    region_area = region_labels[ value.regionName ].split( ' - ' )[0]
+                    region_city = Constant.REGION_LABEL[ value.regionName ].split( ' - ' )[1]
+                    region_area = Constant.REGION_LABEL[ value.regionName ].split( ' - ' )[0]
                 
                     return { 'region_city' : region_city, 'region_area' : region_area }
 

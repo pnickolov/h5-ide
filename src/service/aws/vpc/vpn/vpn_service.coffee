@@ -31,7 +31,7 @@ define [ 'MC', 'vpn_parser', 'result_vo' ], ( MC, vpn_parser, result_vo ) ->
                 success : ( result, return_code ) ->
 
                     #resolve result
-                    param_ary.splice 0, 0, src
+                    param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
                     aws_result = {}
                     aws_result = parser result, return_code, param_ary
 

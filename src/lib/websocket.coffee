@@ -1,7 +1,7 @@
 
 #Author: Ken
 
-define ['vender/meteor/meteor', 'underscore'], ( Meteor, _ ) ->
+define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 
 	host = "211.98.26.7:3000"
 
@@ -15,14 +15,6 @@ define ['vender/meteor/meteor', 'underscore'], ( Meteor, _ ) ->
 						}
 
 		if Meteor.isClient
-
-			dd_url = '/'
-
-			if typeof __meteor_runtime_config__ != 'undefined'
-
-				if __meteor_runtime_config__.DDP_DEFAULT_CONNECTION_URL
-
-					dd_url = __meteor_runtime_config__.DDP_DEFAULT_CONNECTION_URL
 
 			Meteor.default_connection = Meteor.connect(host, true)
 
@@ -46,25 +38,32 @@ define ['vender/meteor/meteor', 'underscore'], ( Meteor, _ ) ->
 				'request_detail'	:	new Meteor.Collection "request_detail"
 			}
 
+		# add a callback to specific state, true or false and a callback or nothing just return websocket status
+		status : ( state = false, status_callback = null ) ->
+
+			if status_callback
+
+				Deps.autorun stFunc = () ->
+
+					if Meteor.status().connected is state
+
+						status_callback()
+
+			else
+
+				Meteor.status().connected
+
 		# subscribe to remote
-		sub = ( name, args..., sub_callback, callback ) ->
+		sub : ( name, args..., sub_callback ) ->
 
 			sub_instance = Meteor.subscribe name, args..., sub_callback
-
-			Deps.autorun checkReady = (c) ->
-
-				if sub_instance.ready()
-
-					callback() if callback
-
-					c.stop()
 
 			sub_instance
 
 
 		# unsubscribe
 		# sub_instance is the return from sub()
-		unsub = ( sub_instance ) ->
+		unsub : ( sub_instance ) ->
 
 			console.log "Stopping subscription"
 
@@ -76,9 +75,10 @@ define ['vender/meteor/meteor', 'underscore'], ( Meteor, _ ) ->
 
 				console.log "Stop subscription failed. #{error}"
 
-		get = ( name ) ->
+		# get collection
+		get : ( name ) ->
 
-			if @collection[name] is undefined
+			if @collection[name]?
 
 				console.log "No such collection"
 

@@ -31,18 +31,20 @@ define [ 'MC', 'app_parser', 'result_vo' ], ( MC, app_parser, result_vo ) ->
                 success : ( result, return_code ) ->
 
                     #resolve result
-                    param_ary.splice 0, 0, src
-                    result_vo.forge_result = parser result, return_code, param_ary
+                    param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
+                    forge_result = {}
+                    forge_result = parser result, return_code, param_ary
 
-                    callback result_vo.forge_result
+                    callback forge_result
 
                 error : ( result, return_code ) ->
 
-                    result_vo.forge_result.return_code      = return_code
-                    result_vo.forge_result.is_error         = true
-                    result_vo.forge_result.error_message    = result.toString()
+                    forge_result = {}
+                    forge_result.return_code      = return_code
+                    forge_result.is_error         = true
+                    forge_result.error_message    = result.toString()
 
-                    callback result_vo.forge_result
+                    callback forge_result
             }
 
         catch error

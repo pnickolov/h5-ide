@@ -3,7 +3,7 @@
 #* Filename: UI.table
 #* Creator: Angel
 #* Description: UI.table
-#* Date: 20130609
+#* Date: 20130611
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -45,14 +45,14 @@ var table = {
 			order = target.hasClass('desc-sort') ? 'DESC' : 'ASC';
 			stack = [];
 
-		target.parent().parent().find('.active').removeClass('active');
+		thead.find('.active').removeClass('active');
 		target.addClass('active');
 
 		rows.map(function ()
 		{
 			stack.push({
 				'item': this,
-				'value': $(this).find('td:nth-child(' + index + ')').text()
+				'value': $(this).find('td:nth-child(' + index + ')').text().toLowerCase()
 			});
 		});
 
@@ -67,7 +67,7 @@ var table = {
 
 				if (typeof a.value === 'string')
 				{
-					return a.value.toLowerCase().localeCompare(b.value.toLowerCase());
+					return a.value.localeCompare(b.value);
 				}
 			});
 			target.removeClass('desc-sort');
@@ -83,7 +83,7 @@ var table = {
 
 				if (typeof a.value === 'string')
 				{
-					return b.value.toLowerCase().localeCompare(a.value.toLowerCase());
+					return b.value.localeCompare(a.value);
 				}
 			});
 			target.addClass('desc-sort');

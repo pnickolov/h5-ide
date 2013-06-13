@@ -15,10 +15,10 @@ define [ 'eip_vo', 'result_vo', 'constant' ], ( eip_vo, result_vo, constant ) ->
     parserAllocateAddressReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserAllocateAddressReturn
 
@@ -28,10 +28,10 @@ define [ 'eip_vo', 'result_vo', 'constant' ], ( eip_vo, result_vo, constant ) ->
     parserReleaseAddressReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserReleaseAddressReturn
 
@@ -41,10 +41,10 @@ define [ 'eip_vo', 'result_vo', 'constant' ], ( eip_vo, result_vo, constant ) ->
     parserAssociateAddressReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserAssociateAddressReturn
 
@@ -54,10 +54,10 @@ define [ 'eip_vo', 'result_vo', 'constant' ], ( eip_vo, result_vo, constant ) ->
     parserDisassociateAddressReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDisassociateAddressReturn
 
@@ -74,18 +74,18 @@ define [ 'eip_vo', 'result_vo', 'constant' ], ( eip_vo, result_vo, constant ) ->
     parserDescribeAddressesReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeAddressesResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeAddressesReturn
 
@@ -100,4 +100,4 @@ define [ 'eip_vo', 'result_vo', 'constant' ], ( eip_vo, result_vo, constant ) ->
         parserDescribeAddressesReturn            : parserDescribeAddressesReturn
         resolveDescribeAddressesResult           : resolveDescribeAddressesResult
     }
-    
+

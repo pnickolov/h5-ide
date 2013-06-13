@@ -29,18 +29,18 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
     parserQuickstartReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveQuickstartResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserQuickstartReturn
 
@@ -58,18 +58,18 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
     parserPublicReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolvePublicResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserPublicReturn
 
@@ -87,18 +87,18 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
     parserInfoReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveInfoResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserInfoReturn
 
@@ -148,7 +148,7 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
         #return vo
         res = []
         res[region] = resourceMap nodes for region, nodes of result
-            
+
 
         res
 
@@ -156,18 +156,18 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
     parserResourceReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveResourceResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserResourceReturn
 
@@ -185,18 +185,18 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
     parserPriceReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolvePriceResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserPriceReturn
 
@@ -214,18 +214,18 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
     parserStatusReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveStatusResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserStatusReturn
 

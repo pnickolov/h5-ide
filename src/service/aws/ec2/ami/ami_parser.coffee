@@ -15,10 +15,10 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     parserCreateImageReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserCreateImageReturn
 
@@ -28,10 +28,10 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     parserRegisterImageReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserRegisterImageReturn
 
@@ -41,10 +41,10 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     parserDeregisterImageReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDeregisterImageReturn
 
@@ -54,10 +54,10 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     parserModifyImageAttributeReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserModifyImageAttributeReturn
 
@@ -67,10 +67,10 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     parserResetImageAttributeReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserResetImageAttributeReturn
 
@@ -87,18 +87,18 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     parserDescribeImageAttributeReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeImageAttributeResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeImageAttributeReturn
 
@@ -115,18 +115,18 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     parserDescribeImagesReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeImagesResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeImagesReturn
 

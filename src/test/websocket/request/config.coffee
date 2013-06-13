@@ -14,25 +14,6 @@ require.config {
 
     deps            : [ '/test/websocket/request/test.js' ]
 
-    shim            :
-
-        'jquery'    :
-            exports : '$'
-
-        'MC'        :
-            deps    : [ 'jquery','constant' ]
-            exports : 'MC'
-
-        'underscore':
-            exports : '_'
-
-        'Meteor'    :
-            deps    : ['underscore']
-            exports : 'Meteor'
-
-        'WS'		:
-        	deps	: ['Meteor']
-        	exports : 'WS'
     paths           :
 
         #vender
@@ -47,4 +28,24 @@ require.config {
         'constant'  : 'lib/constant'
 
         'WS'		: 'lib/websocket'
+
+    shim            :
+
+        'jquery'    :
+            exports : '$'
+
+        'MC'        :
+            deps    : [ 'jquery' ]
+            exports : 'MC'
+
+        'underscore':
+            exports : '_'
+
+        'Meteor'    :
+            deps    : ['underscore']
+
+        'WS'        :
+            deps    : ['Meteor','underscore']
+            exports : 'WS'
+
 }#end

@@ -13,7 +13,7 @@ SH_BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 cd ${SH_BASE_DIR}
 
 #python base dir
-SRC_BASE_DIR_=${SH_BASE_DIR}/"../../../api/Source/INiT/Instant/Forge/AppService"
+SRC_BASE_DIR_=${SH_BASE_DIR}/"../../../../api/Source/INiT/Instant/Forge/AppService"
 #python source subidr
 SRC_DIR=( "Handler" "Forge" "AWS")
 
@@ -172,7 +172,7 @@ function fn_generate_coffee() {
             sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${TMPL_BASE_DIR}/test/config.coffee.head \
             | sed -e ":a;N;$ s/@@create-date/`date "+%Y-%m-%d %H:%M:%S"`/g;ba" \
             | sed -e ":a;N;$ s/@@service-url/${SERVICE_URL}/g;ba" \
-            > ${__TGT_DIR_TEST}/config.coffee            
+            > ${__TGT_DIR_TEST}/config.coffee
         fi
     fi
 

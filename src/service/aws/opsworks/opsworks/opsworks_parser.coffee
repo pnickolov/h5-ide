@@ -23,18 +23,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeAppsReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeAppsResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeAppsReturn
 
@@ -52,18 +52,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeStacksReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeStacksResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeStacksReturn
 
@@ -81,18 +81,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeCommandsReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeCommandsResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeCommandsReturn
 
@@ -110,18 +110,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeDeploymentsReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeDeploymentsResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeDeploymentsReturn
 
@@ -139,18 +139,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeElasticIpsReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeElasticIpsResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeElasticIpsReturn
 
@@ -168,18 +168,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeInstancesReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeInstancesResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeInstancesReturn
 
@@ -197,18 +197,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeLayersReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeLayersResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeLayersReturn
 
@@ -226,18 +226,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeLoadBasedAutoScalingReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeLoadBasedAutoScalingResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeLoadBasedAutoScalingReturn
 
@@ -255,18 +255,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribePermissionsReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribePermissionsResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribePermissionsReturn
 
@@ -284,18 +284,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeRaidArraysReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeRaidArraysResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeRaidArraysReturn
 
@@ -313,18 +313,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeServiceErrorsReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeServiceErrorsResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeServiceErrorsReturn
 
@@ -342,18 +342,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeTimeBasedAutoScalingReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeTimeBasedAutoScalingResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeTimeBasedAutoScalingReturn
 
@@ -371,18 +371,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeUserProfilesReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeUserProfilesResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeUserProfilesReturn
 
@@ -400,18 +400,18 @@ define [ 'opsworks_vo', 'result_vo', 'constant' ], ( opsworks_vo, result_vo, con
     parserDescribeVolumesReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        result_vo.aws_result = result_vo.processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
-        if return_code == constant.RETURN_CODE.E_OK && !result_vo.aws_result.is_error
+        if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
             resolved_data = resolveDescribeVolumesResult result
 
-            result_vo.aws_result.resolved_data = resolved_data
+            aws_result.resolved_data = resolved_data
 
 
         #3.return vo
-        result_vo.aws_result
+        aws_result
 
     # end of parserDescribeVolumesReturn
 

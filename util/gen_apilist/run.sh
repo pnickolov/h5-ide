@@ -13,7 +13,7 @@ SH_BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 cd ${SH_BASE_DIR}
 
 #python base dir
-SRC_BASE_DIR_=${SH_BASE_DIR}/"../../../api/Source/INiT/Instant/Forge/AppService"
+SRC_BASE_DIR_=${SH_BASE_DIR}/"../../../../api/Source/INiT/Instant/Forge/AppService"
 #python source subidr
 SRC_DIR=( "Handler" "Forge" "AWS")
 
@@ -49,7 +49,7 @@ format_event () {
     then
         G_EVENT=`echo ${___API_NAME} | awk -v service=${___SERVICE} -v resource=${___RESOURCE} -F ""  'BEGIN{printf "%s_%s", toupper(service), toupper(resource)}{for ( x=1; x<=NF; x++){if ($x==toupper($x)){printf "_%s", toupper($x)}else{printf toupper($x)}}}END{printf "\n"}' `
     else
-        G_EVENT=`echo ${___API_NAME} | awk -v resource=${___RESOURCE} -F ""  'BEGIN{printf "%s_", toupper(resource)}{for ( x=1; x<=NF; x++){if ($x==toupper($x)){printf "_%s", toupper($x)}else{printf toupper($x)}}}END{printf "\n"}' `        
+        G_EVENT=`echo ${___API_NAME} | awk -v resource=${___RESOURCE} -F ""  'BEGIN{printf "%s_", toupper(resource)}{for ( x=1; x<=NF; x++){if ($x==toupper($x)){printf "_%s", toupper($x)}else{printf toupper($x)}}}END{printf "\n"}' `
     fi
 
     G_EVENT=${G_EVENT/DESCRIBE/DESC}
@@ -70,7 +70,7 @@ format_event () {
     G_EVENT=${G_EVENT/KEYPAIR/KP}
     G_EVENT=${G_EVENT/OPTIONGROUP/OG}
     G_EVENT=${G_EVENT/PARAMETERGROUP/PG}
-    G_EVENT=${G_EVENT/PLACEMENT/PLA}    
+    G_EVENT=${G_EVENT/PLACEMENT/PLA}
     G_EVENT=${G_EVENT/CUSTOMERGATEWAY/CGW}
     G_EVENT=${G_EVENT/INTERNETGATEWAY/IGW}
     G_EVENT=${G_EVENT/ROUTETABLE/RT}
@@ -94,10 +94,10 @@ format_event () {
     G_EVENT=${G_EVENT/TABLE/TBL}
     G_EVENT=${G_EVENT/CONNECTION/CONN}
     G_EVENT=${G_EVENT/METADATA/MDATA}
-    G_EVENT=${G_EVENT/ORDERABLE/ORD} 
-    G_EVENT=${G_EVENT/HEALTH/HLT} 
-    G_EVENT=${G_EVENT/TYPE/TYP} 
-    G_EVENT=${G_EVENT/ALARM/ALM} 
+    G_EVENT=${G_EVENT/ORDERABLE/ORD}
+    G_EVENT=${G_EVENT/HEALTH/HLT}
+    G_EVENT=${G_EVENT/TYPE/TYP}
+    G_EVENT=${G_EVENT/ALARM/ALM}
     G_EVENT=${G_EVENT/STATISTIC/STAT}
     G_EVENT=${G_EVENT/HISTORY/HIST}
     G_EVENT=${G_EVENT/NOTIFICATION/NTF}
@@ -109,11 +109,11 @@ format_event () {
     G_EVENT=${G_EVENT/ACTIVITIE/ACTI}
     G_EVENT=${G_EVENT/ACTION/ACT}
     G_EVENT=${G_EVENT/AUTHORIZE/AUTH}
-    G_EVENT=${G_EVENT/POLICY/PCY}    
-    G_EVENT=${G_EVENT/NETWORK/NET}    
-    G_EVENT=${G_EVENT/ADDRESS/ADDR}    
-    G_EVENT=${G_EVENT/PASSWORD/PWD}    
-    G_EVENT=${G_EVENT/POLICIES/PCYS}  
+    G_EVENT=${G_EVENT/POLICY/PCY}
+    G_EVENT=${G_EVENT/NETWORK/NET}
+    G_EVENT=${G_EVENT/ADDRESS/ADDR}
+    G_EVENT=${G_EVENT/PASSWORD/PWD}
+    G_EVENT=${G_EVENT/POLICIES/PCYS}
 }
 
 
@@ -257,7 +257,7 @@ function fn_generate_coffee() {
         echo "            ${_CUR_API} : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
         echo "                method  : '/${_RESOURCE_URL/\\/}:${_CUR_API}',"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
         echo "                param   : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
-        
+
 
         #special process api named "public"
         if [ "${_CUR_API}" == "public"  ]
@@ -286,7 +286,7 @@ function fn_generate_coffee() {
             CUR_PARAM_DEF[$k]=`eval "echo $TMP" | sed "s/None/null/g" | sed "s/False/false/g" | sed "s/True/true/g" `
 
             CUR_PARAM_DEFAULT1=`echo "${CUR_PARAM[$k]}" | awk '{printf $1}' | awk  'BEGIN{FS="[=]"}{if (NF==1){printf "            %s = if $(\"#%s\").val() != \"null\" then $(\"#%s\").val() else null",$1,$1,$1}else{printf "            %s = if $(\"#%s\").val() != \"null\" then $(\"#%s\").val() else %s",$1,$1,$1,$2}}'`
-            CUR_PARAM_DEFAULT=${CUR_PARAM_DEFAULT1}"\n"`echo "${CUR_PARAM[$k]}" | awk '{printf $1}' | awk  'BEGIN{FS="[=]"}{printf "            %s = if %s != null and %s.indexOf(\"[\") != -1 then JSON.parse %s else %s",$1,$1,$1,$1,$1}'`
+            CUR_PARAM_DEFAULT=${CUR_PARAM_DEFAULT1}"\n"`echo "${CUR_PARAM[$k]}" | awk '{printf $1}' | awk  'BEGIN{FS="[=]"}{printf "            %s = if %s != null and MC.isJSON(%s)==true then JSON.parse %s else %s",$1,$1,$1,$1,$1}'`
 
 
 
@@ -346,7 +346,7 @@ function fn_generate_coffee() {
             else
                 echo "                    },"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
             fi
-            
+
 
         done
         eval "API_PARAM_${j}=()" #clear
@@ -406,11 +406,11 @@ function fn_generate_coffee() {
         echo "                }"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
         if [ $j -eq ${#API_NAME[@]} ]
         then
-            echo "            }"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json    
+            echo "            }"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
         else
             echo "            },"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
         fi
-        
+
 
         sed -e ":a;N;$ s/@@resource-name/${_RESOURCE_l}/g;ba" ${SH_BASE_DIR}/template/template.api \
         | sed -e ":a;N;$ s/@@service-name/${SERVICE,,}/g;ba" \
@@ -566,7 +566,7 @@ function fn_scan_aws() {
 #// Generate service head ////////////////////////////////////////////////////////////
 echo "delete old data"
 if [ -d ${SH_BASE_DIR}/out.tmp ]
-then    
+then
     rm ${SH_BASE_DIR}/out.tmp -rf
 fi
 mkdir -p ${SH_BASE_DIR}/out.tmp
@@ -607,4 +607,4 @@ done
 
 
 echo "file end"
-echo "}" >> ${SH_BASE_DIR}/out.tmp/apiList_src.json   
+echo "}" >> ${SH_BASE_DIR}/out.tmp/apiList_src.json

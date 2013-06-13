@@ -49,4 +49,8 @@ util/gen_model/**/*.js
 util/gen_apilist/out.tmp
 util/gen_apilist/**/*.js
 
+#ignore overview
+src/module/dashboard/overview/*.js
+
+
 .DS_Store

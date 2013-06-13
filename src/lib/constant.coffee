@@ -11,6 +11,8 @@ define [], () ->
 		MESSAGE_E_PARAM    : "Parameter error!"
 	}
 
+	#private
+	REGION_KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
 
 	#private
 	REGION_LABEL = []
@@ -23,6 +25,16 @@ define [], () ->
 	REGION_LABEL[ 'ap-northeast-1' ] = 'Asia Pacific - Tokyo'
 	REGION_LABEL[ 'sa-east-1' ]      = 'South America - Sao Paulo'
 
+	#private
+	REGION_SHORT_LABEL = []
+	REGION_SHORT_LABEL[ 'us-east-1' ]      = 'Virginia'
+	REGION_SHORT_LABEL[ 'us-west-1' ]      = 'N. California'
+	REGION_SHORT_LABEL[ 'us-west-2' ]      = 'Oregon'
+	REGION_SHORT_LABEL[ 'eu-west-1' ]      = 'Ireland'
+	REGION_SHORT_LABEL[ 'ap-southeast-1' ] = 'Singapore'
+	REGION_SHORT_LABEL[ 'ap-southeast-2' ] = 'Sydney'
+	REGION_SHORT_LABEL[ 'ap-northeast-1' ] = 'Tokyo'
+	REGION_SHORT_LABEL[ 'sa-east-1' ]      = 'Sao Paulo'
 
 	#private
 	RETURN_CODE = {
@@ -76,9 +88,11 @@ define [], () ->
 
 
 	#public
-	REGION_LABEL: REGION_LABEL
-	RETURN_CODE : RETURN_CODE
-	MESSAGE_E   : MESSAGE_E
-	APP_STATE   : APP_STATE
-	OPS_STATE   : OPS_STATE
+	REGION_KEYS		   : REGION_KEYS
+	REGION_SHORT_LABEL : REGION_SHORT_LABEL
+	REGION_LABEL       : REGION_LABEL
+	RETURN_CODE        : RETURN_CODE
+	MESSAGE_E          : MESSAGE_E
+	APP_STATE          : APP_STATE
+	OPS_STATE          : OPS_STATE
 

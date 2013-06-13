@@ -2,7 +2,7 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     OverviewView = Backbone.View.extend {
 
@@ -17,9 +17,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
             console.log 'mapRegionClick'
             this.trigger 'RETURN_REGION_TAB', null
 
-        render   : () ->
+        render : () ->
             console.log 'dashboard overview render'
-            $( this.el ).html this.template()
+            $( this.el ).html this.template this.model.attributes
             #event.trigger event.NAVIGATION_COMPLETE
     }
 

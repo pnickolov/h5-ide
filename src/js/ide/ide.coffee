@@ -6,8 +6,10 @@ define [ 'MC', 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'das
 
 	initialize : () ->
 
-		#set Mc.data
+		#set MC.data
 		MC.data = {}
+		#set tab
+		MC.tab  = {}
 
 		#listen main view event
 		#listen RETURN_OVERVIEW_TAB and RETURN_REGION_TAB

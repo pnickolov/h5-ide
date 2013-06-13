@@ -1,15 +1,15 @@
 module.exports = {
 
-	compile: {
+    compile: {
 
-		files: [{
-			expand : true,
-			cwd    : '<%= src %>/',
-			src    : [ '**/*.coffee', '!service/**/**/*.coffee' ],
-			dest   : '<%= src %>/',
-			ext    : '.js'
-		}]
+        files: [{
+            expand : true,
+            cwd    : '<%= src %>/',
+            src    : [ '**/*.coffee', '!service/**/**/*.coffee', '!test/**/**/*.coffee' ],
+            dest   : '<%= src %>/',
+            ext    : '.js'
+        }]
 
-	}
+    }
 
 };

@@ -12,49 +12,26 @@
   },
   "layout": {
     "size": [ "width", "height" ],
-    //component not save into mongodb
-    "component": {
-      "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
-        "port_in_firewall": [
-          {
-            "uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "name": "port_out_firewall",
-            "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          },
-          {
-            "uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "name": "volume",
-            "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          }
-        ],
-        "port_out_firewall": [
-          {
-            "uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "name": "port_out_firewall",
-            "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          },
-          {
-            "uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "name": "elb",
-            "line": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          }
-        ]
-      }
+    "component" : {
+      "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": [
+        {
+          "target" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "line" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        },
+        {
+          "target" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "line" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        }
+      ]
     },
-    "line": {
+    "connection": {
       "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
-        "connection": [
-          {
-            "comp_uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "port_name": "port_in_firewall"
-          },
-          {
-            "comp_uid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "port_name": "port_in_firewall"
-          }
+        "target": [
+          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         ],
-        "autoGenerate": true,
-        "controlPoints": [
+        "auto": true,
+        "point": [
           ["$x", "$y" ],
           ["$x", "$y" ]
         ],

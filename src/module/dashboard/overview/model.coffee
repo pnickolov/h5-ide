@@ -2,11 +2,10 @@
 #  View Mode for dashboard(overview)
 #############################
 
-define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, stack_vo, app_vo, constant, vpc_model ) ->
+define [ 'event', 'constant', 'vpc_model' ], ( ide_event, constant, vpc_model ) ->
 
     #private
     #region map
-    region_labels       = []
     region_counts       = []
     region_aws_list     = []
     region_classic_vpc_list   = []
@@ -20,9 +19,6 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
     total_aws   = 0
     region_attr_count   = 0
 
-    #keys
-    KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
-
     OverviewModel = Backbone.Model.extend {
 
         defaults :
@@ -33,16 +29,6 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
         initialize : ->
 
             me = this
-
-            #
-            region_labels[ 'us-east-1' ]      = 'Virginia'
-            region_labels[ 'us-west-1' ]      = 'N. California'
-            region_labels[ 'us-west-2' ]      = 'Oregon'
-            region_labels[ 'eu-west-1' ]      = 'Ireland'
-            region_labels[ 'ap-southeast-1' ] = 'Singapore'
-            region_labels[ 'ap-southeast-2' ] = 'Sydney'
-            region_labels[ 'ap-northeast-1' ] = 'Tokyo'
-            region_labels[ 'sa-east-1' ]      = 'Sao Paulo'
 
             vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
@@ -57,10 +43,10 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
                     else
                         region_classic_vpc_list[ cur_key ] = { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ cur_key ] }
                     if region_attr_count < 8
-                        region_attr_key = KEYS[ region_attr_count ]
+                        region_attr_key = constant.REGION_KEYS[ region_attr_count ]
                         me.getRegionAccountAttribute( region_attr_key )
                     else
-                        _.map KEYS, ( value ) ->
+                        _.map constant.REGION_KEYS, ( value ) ->
                             region_classic_vpc_result.push region_classic_vpc_list[value]
                             null
                         me.set 'region_classic_list', region_classic_vpc_result
@@ -74,9 +60,9 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
             me = this
 
             #get service(model)
-            ide_event.onListen 'RESULT_STACK_LIST', () ->
+            ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
 
-                me.updateMap( me )
+                me.updateMap( me, result )
 
                 null
 
@@ -84,7 +70,7 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
 
 
         #result list
-        updateMap : (me) ->
+        updateMap : ( me, app_list ) ->
 
             #init
             total_app   = 0
@@ -93,64 +79,68 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
             result_list.region_infos = []
             region_aws_list          = []
 
-            _.map KEYS, ( value )  ->
+            _.map constant.REGION_KEYS, ( value )  ->
 
                 region_counts[value] = { 'running_app' : 0, 'stopped_app' : 0, 'stack' : 0 }
 
                 null
 
-            #onlisten app
-            _.map app_vo.app_list, ( value ) ->
+            ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
 
-                region_group_obj = value
+                #onlisten app
+                _.map app_list, ( value ) ->
 
-                _.map region_group_obj.region_name_group, ( value ) ->
+                    region_group_obj = value
 
-                    if value.state is constant.APP_STATE.APP_STATE_RUNNING
-                        region_counts[value.region].running_app += 1
-                    else if value.state is constant.APP_STATE.APP_STATE_STOPPED
-                        region_counts[value.region].stopped_app += 1
-                    total_app += 1
+                    _.map region_group_obj.region_name_group, ( value ) ->
 
-                    null
+                        if value.state is constant.APP_STATE.APP_STATE_RUNNING
+                            region_counts[value.region].running_app += 1
+                        else if value.state is constant.APP_STATE.APP_STATE_STOPPED
+                            region_counts[value.region].stopped_app += 1
+                        total_app += 1
 
-                null
-
-            #onlisten stack
-            _.map stack_vo.stack_list, ( value ) ->
-
-                region_group_obj = value
-
-                _.map region_group_obj.region_name_group, ( value ) ->
-
-                    region_counts[value.region].stack += 1
-                    total_stack += 1
+                        null
 
                     null
 
+                #onlisten stack
+                _.map result, ( value ) ->
+
+                    region_group_obj = value
+
+                    _.map region_group_obj.region_name_group, ( value ) ->
+
+                        region_counts[value.region].stack += 1
+                        total_stack += 1
+
+                        null
+
+                    null
+
+                #
+                _.map constant.REGION_KEYS, ( value ) ->
+
+                    if region_counts[ value ].running_app isnt 0 or region_counts[ value ].stopped_app isnt 0 or region_counts[ value ].stack isnt 0
+                        result_list.region_infos.push { 'region_name' : value, 'region_city' : constant.REGION_SHORT_LABEL[ value ], 'running_app' : region_counts[ value ].running_app, 'stopped_app' : region_counts[ value ].stopped_app, 'stack': region_counts[ value ].stack }
+                        region_aws_list.push value
+
+                    null
+
+                total_aws = region_aws_list.length
+
+                #set data for result_list
+                result_list.total_app    = total_app
+                result_list.total_stack  = total_stack
+                result_list.total_aws    = total_aws
+                result_list.plural_app   = if total_app > 1 then 's' else ''
+                result_list.plural_aws   = if total_aws > 1 then 's' else ''
+                result_list.plural_stack = if total_stack > 1 then 's' else ''
+
+                #set vo
+                me.set 'result_list', result_list
+
                 null
-
-            #
-            _.map KEYS, ( value ) ->
-
-                if region_counts[ value ].running_app isnt 0 or region_counts[ value ].stopped_app isnt 0 or region_counts[ value ].stack isnt 0
-                    result_list.region_infos.push { 'region_name' : value, 'region_city' : region_labels[ value ], 'running_app' : region_counts[ value ].running_app, 'stopped_app' : region_counts[ value ].stopped_app, 'stack': region_counts[ value ].stack }
-                    region_aws_list.push value
-
-                null
-
-            total_aws = region_aws_list.length
-
-            #set data for result_list
-            result_list.total_app    = total_app
-            result_list.total_stack  = total_stack
-            result_list.total_aws    = total_aws
-            result_list.plural_app   = if total_app > 1 then 's' else ''
-            result_list.plural_aws   = if total_aws > 1 then 's' else ''
-            result_list.plural_stack = if total_stack > 1 then 's' else ''
-
-            #set vo
-            me.set 'result_list', result_list
 
             null
 
@@ -164,9 +154,9 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
 
                 console.log 'RESULT_EMPTY_REGION_LIST'
 
-                diff       = _.difference _.keys( region_labels ), region_aws_list
+                diff       = _.difference _.keys( constant.REGION_SHORT_LABEL ), region_aws_list
                 empty_list = _.map diff, ( value ) ->
-                    return { 'region_name' : value, 'region_city' : region_labels[ value ] }
+                    return { 'region_name' : value, 'region_city' : constant.REGION_SHORT_LABEL[ value ] }
 
                 #set vo
                 me.set 'region_empty_list', empty_list
@@ -183,11 +173,11 @@ define [ 'event', 'stack_vo', 'app_vo', 'constant', 'vpc_model' ], ( ide_event, 
             region_attr_keys          = []
             region_classic_vpc_result = []
             region_attr_count         = 0
-            _.map KEYS, ( value ) ->
+            _.map constant.REGION_KEYS, ( value ) ->
                 region_classic_vpc_list[ value ] = null
                 null
 
-            me.getRegionAccountAttribute( KEYS[ region_attr_count ] )
+            me.getRegionAccountAttribute( constant.REGION_KEYS[ region_attr_count ] )
 
             null
 

@@ -2,7 +2,7 @@
 #  View Mode for navigation
 #############################
 
-define [ 'app_model', 'stack_model', 'ec2_model', 'stack_vo', 'app_vo', 'underscore' ], ( app_model, stack_model, ec2_model, stack_vo, app_vo ) ->
+define [ 'app_model', 'stack_model', 'ec2_model' ], ( app_model, stack_model, ec2_model ) ->
 
     ###
     regions = [{
@@ -68,8 +68,6 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'stack_vo', 'app_vo', 'undersc
 
                 console.log app_list
 
-                app_vo.app_list = app_list
-
                 #set vo
                 me.set 'app_list', app_list
 
@@ -95,8 +93,6 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'stack_vo', 'app_vo', 'undersc
                 #
                 #me.regionEmptyList _.keys result.resolved_data
                 stack_region_list = _.keys result.resolved_data
-
-                stack_vo.stack_list = stack_list
 
                 #set vo
                 me.set 'stack_list', stack_list

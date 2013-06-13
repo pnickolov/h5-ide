@@ -1,6 +1,7 @@
 (function() {
   define(['event', 'backbone', 'jquery', 'handlebars'], function(event) {
     var GegionView;
+
     GegionView = Backbone.View.extend({
       el: $('#tab-content-region'),
       template: Handlebars.compile($('#region-tmpl').html()),

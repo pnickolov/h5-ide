@@ -126,12 +126,21 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
             "DescribeVpnConnectionsResponse"       :   vpn_parser.resolveDescribeVpnConnectionsResult
             "DescribeVpnGatewaysResponse"          :   vpngateway_parser.resolveDescribeVpnGatewaysResult
         }
+        
+        dict = {}
 
-        #for node in result
-            #console.log node
-        #    console.log ($.parseXML node).documentElement.localName
-        #    console.log responses[($.parseXML node).documentElement.localName] [null, node]
-        (responses[($.parseXML node).documentElement.localName] [null, node] for node in result)
+        for node in result
+
+            action_name = ($.parseXML node).documentElement.localName
+
+            dict_name = action_name.replace /Response/i, ""
+
+            dict[dict_name] = [] if dict[dict_name]?
+
+            dict[dict_name].push responses[action_name] [null, node]
+
+        dict
+
 
     #private (resolve result to vo )
     resolveResourceResult = ( result ) ->

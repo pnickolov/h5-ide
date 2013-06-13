@@ -2,11 +2,7 @@
 #  View Mode for navigation
 #############################
 
-<<<<<<< HEAD
-define [ 'app_model', 'stack_model', 'ec2_model', 'constant'  , 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model, Constant ) ->
-=======
-define [ 'app_model', 'stack_model', 'ec2_model' ], ( app_model, stack_model, ec2_model ) ->
->>>>>>> feature/global_dashboard_map
+define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model, Constant ) ->
 
     ###
     regions = [{
@@ -134,17 +130,10 @@ define [ 'app_model', 'stack_model', 'ec2_model' ], ( app_model, stack_model, ec
 
                 #
                 region_list = _.map result.resolved_data.item, ( value, key ) ->
-<<<<<<< HEAD
                 
                     region_city = Constant.REGION_LABEL[ value.regionName ].split( ' - ' )[1]
                     region_area = Constant.REGION_LABEL[ value.regionName ].split( ' - ' )[0]
-                
-=======
 
-                    region_city = region_labels[ value.regionName ].split( ' - ' )[1]
-                    region_area = region_labels[ value.regionName ].split( ' - ' )[0]
-
->>>>>>> feature/global_dashboard_map
                     return { 'region_city' : region_city, 'region_area' : region_area }
 
                 console.log region_list

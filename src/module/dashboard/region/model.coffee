@@ -20,7 +20,9 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'constant' ], (Backbon
 
             aws_model.on 'AWS_RESOURCE_RETURN', ( result ) ->
 
-                resource_source =  result.resolved_data[current_region]
+                resource_source = result.resolved_data[current_region]
+
+                null
 
 
             null

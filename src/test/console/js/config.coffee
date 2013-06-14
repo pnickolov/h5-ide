@@ -201,7 +201,7 @@ require.config {
         'keypair_model'         : 'model/aws/ec2/keypair_model'
         'placementgroup_model'  : 'model/aws/ec2/placementgroup_model'
         'securitygroup_model'   : 'model/aws/ec2/securitygroup_model'
-        
+
         #####elb#####
         'elb_model'             : 'model/aws/elb/elb_model'
 
@@ -223,10 +223,10 @@ require.config {
 
         #####autoscaling#####
         #'autoscaling_model'    : 'model/aws/autoscaling/autoscaling_model'
-        
+
         #####cloudwatch#####
         #'cloudwatch_model'    : 'model/aws/cloudwatch/cloudwatch_model'
-        
+
         #####opsworks#####
         #'opsworks_model'    : 'model/aws/opsworks/opsworks_model'
 
@@ -244,7 +244,7 @@ require.config {
         #'sdb_model'    : 'model/aws/sdb/sdb_model'
 
 
-        
+
         #testsuite
         'testsuite'             : '/test/console/js/testsuite'
 

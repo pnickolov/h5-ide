@@ -126,7 +126,7 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
             "DescribeVpnConnectionsResponse"       :   vpn_parser.resolveDescribeVpnConnectionsResult
             "DescribeVpnGatewaysResponse"          :   vpngateway_parser.resolveDescribeVpnGatewaysResult
         }
-        
+
         dict = {}
 
         for node in result
@@ -137,7 +137,7 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
 
             dict[dict_name] = [] if dict[dict_name]?
 
-            dict[dict_name].push responses[action_name] [null, node]
+            dict[dict_name] = responses[action_name] [null, node]
 
         dict
 
@@ -146,7 +146,7 @@ define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instanc
     resolveResourceResult = ( result ) ->
         #resolve result
         #return vo
-        res = []
+        res = {}
         res[region] = resourceMap nodes for region, nodes of result
 
 

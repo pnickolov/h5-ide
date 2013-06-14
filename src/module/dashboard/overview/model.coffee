@@ -2,7 +2,7 @@
 #  View Mode for dashboard(overview)
 #############################
 
-define [ 'event', 'constant', 'vpc_model' ], ( ide_event, constant, vpc_model ) ->
+define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vpc_model ) ->
 
     #private
     #region map
@@ -19,12 +19,19 @@ define [ 'event', 'constant', 'vpc_model' ], ( ide_event, constant, vpc_model ) 
     total_aws   = 0
     region_attr_count   = 0
 
+    # resent items threshold
+    RESENT_THRESHOLD = 3
+
     OverviewModel = Backbone.Model.extend {
 
         defaults :
             'result_list'         : null
             'region_classic_list' : null
             'region_empty_list'   : null
+            # resent results
+            'resent_edited_stacks'  : null
+            'resent_launched_apps'  : null
+            'resent_stoped_apps'    : null
 
         initialize : ->
 
@@ -64,10 +71,17 @@ define [ 'event', 'constant', 'vpc_model' ], ( ide_event, constant, vpc_model ) 
 
                 me.updateMap( me, result )
 
+                me.updateResentApps( me, result, 'resent_launched_apps' )
+                me.updateResentApps( me, result, 'resent_stoped_apps' )
+
                 null
 
-            null
+            ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
 
+                me.updateResentStacks( me, result, 'resent_edited_stacks' )
+
+                null
+            null
 
         #result list
         updateMap : ( me, app_list ) ->
@@ -188,6 +202,81 @@ define [ 'event', 'constant', 'vpc_model' ], ( ide_event, constant, vpc_model ) 
             vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), cur_key,  ["supported-platforms"]
 
             null
+
+        # update resently edited stacks
+        updateResentStacks : (me, result, flag) ->
+
+            resent_edited_stacks = []
+
+            # parse all stacks
+            num = 1
+            _.map result, ( value ) ->
+                region_group = value
+
+                _.map region_group.region_name_group, ( value ) ->
+                    item = me.parseItem(value, flag)
+                    if item and num <= RESENT_THRESHOLD
+                        resent_edited_stacks.push item
+                        num = num + 1
+
+                        null
+
+            me.set 'resent_edited_stacks', resent_edited_stacks
+
+            null
+
+        # update resently launched apps/stopped apps
+        updateResentApps : (me, result, flag) ->
+            resent_launched_apps = []
+            resent_stoped_apps = []
+
+            # parse all apps
+            num = 1
+            _.map result, (value) ->
+                region_group = value
+
+                _.map region_group.region_name_group, (value) ->
+                    item = me.parseItem(value, flag)
+                    if item and num <= RESENT_THRESHOLD
+                        if flag == 'resent_launched_apps'
+                            resent_launched_apps.push item
+                        else if flag == 'resent_stoped_apps'
+                            resent_stoped_apps.push item
+                        num = num + 1
+
+                        null
+
+            if flag == 'resent_launched_apps'
+                me.set 'resent_launched_apps', resent_launched_apps
+            if flag == 'resent_stoped_apps'
+                me.set 'resent_stoped_apps', resent_stoped_apps
+
+            null
+
+        # parse items
+        parseItem : (value, flag) ->
+            # get time interval
+            interval = 0
+            if flag == 'resent_edited_stacks'
+                interval = value.time_update
+            else if flag == 'resent_launched_apps'
+                interval = value.time_create
+            else if flag == 'resent_stoped_apps' and value.state in ['Stopping', 'Stopped']
+                interval = value.time_update
+
+            if interval
+                return { 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval' : MC.intervalDate(interval) }
+
+            # days = interval/(24*60*60)
+            # # check the interval
+            # if days >= RESENT_THRESHOLD
+            #     return
+            # else if days < RESENT_THRESHOLD and days > 1
+            #     return { 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval' : days + ' days ago' }
+            # else if days == 1
+            #     return { 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval' : '1 day ago' }
+            # else
+            #     return { 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval' : Math.floor(interval/60) + ' min ago' }
     }
 
     model = new OverviewModel()

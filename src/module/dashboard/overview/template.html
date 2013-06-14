@@ -211,10 +211,18 @@
 					<h4 class="dashboard-widget-title">Recently Edited Stacks</h4>
 				</div>
 				<div class="dashboard-widget-body">
+					{{#if resent_edited_stacks}}
 					<ul class="dashboard-recent-list">
-						<li><a href="">Test-Payment-Server-East<p class="dashboard-recent-list-meta">US East - N. Virgina</p></a><span class="timestamp">23 min ago</span></li>
-						<li><a href="">Test-Voting-West<p class="dashboard-recent-list-meta">US West - N. California</p></a><span class="timestamp">1 day ago</span></li>
+
+						{{#each resent_edited_stacks }}
+						<li><a href="">{{name}}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval}}</span></li>
+						{{/each}}
+
 					</ul>
+
+					{{else}}
+					<div class="blank-widget">No recent edited stack in last 30 days.</div>
+					{{/if}}
 				</div>
 			</div>
 		</div>
@@ -224,11 +232,18 @@
 					<h4 class="dashboard-widget-title">Recently Launched Apps</h4>
 				</div>
 				<div class="dashboard-widget-body">
+					{{#if resent_launched_apps}}
 					<ul class="dashboard-recent-list">
-						<li><a href="">Test-Payment-Server-East<p class="dashboard-recent-list-meta">US East - N. Virgina</p></a><span class="timestamp">23 min ago</span></li>
-						<li><a href="">Test-Voting-West<p class="dashboard-recent-list-meta">US West - N. California</p></a><span class="timestamp">1 day ago</span></li>
-						<li><a href="">App-name-something<p class="dashboard-recent-list-meta">EU - Ireland</p></a><span class="timestamp">23 days ago</span></li>
+
+						{{#each resent_launched_apps}}
+						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval}}</span></li>
+						{{/each}}
+
 					</ul>
+
+					{{else}}
+					<div class="blank-widget">No recent launched app in last 30 days.</div>
+					{{/if}}
 				</div>
 			</div>
 		</div>
@@ -238,7 +253,18 @@
 					<h4 class="dashboard-widget-title">Recently Stopped Apps</h4>
 				</div>
 				<div class="dashboard-widget-body">
+					{{#if resent_stoped_apps}}
+					<ul class="dashboard-recent-list">
+
+						{{#each resent_stoped_apps}}
+						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval}}</span></li>
+						{{/each}}
+
+					</ul>
+
+					{{else}}
 					<div class="blank-widget">No recent stopped app in last 30 days.</div>
+					{{/if}}
 				</div>
 			</div>
 		</div>

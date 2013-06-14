@@ -3,12 +3,12 @@
 #* Filename: UI.modal
 #* Creator: Angel
 #* Description: UI.modal
-#* Date: 20130609
+#* Date: 20130613
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-var modal = function (template, callback)
+var modal = function (template, dismiss, callback)
 {
 	var modal_wrap = $('#modal-wrap');
 
@@ -24,8 +24,12 @@ var modal = function (template, callback)
 
 	modal.position();
 
-	$(window).on('resize', modal.position);
+	if (dismiss === true)
+	{
+		$(document).on('click', modal.dismiss);
+	}
 
+	$(window).on('resize', modal.position);
 	$(document).on('click', '.modal-close', modal.close);
 	$(document).on('mousedown', '.modal-header', modal.drag.mousedown);
 
@@ -37,10 +41,26 @@ var modal = function (template, callback)
 
 modal.open = function (event)
 {
-	var target = event.target,
-		template = $('#' + $(target).data('modal'))[0].outerHTML;
+	var target = $(this),
+		target_template = target.data('modal-template'),
+		target_data = target.data('modal-data');
 
-	modal(template);
+	if (target_template && target_data)
+	{
+		modal(
+			MC.template[ target_template ]( target_data ),
+			target.data('modal-dismiss')
+		);
+	}
+};
+
+modal.dismiss = function (event)
+{
+	if (event.target.id === 'modal-wrap')
+	{
+		modal.close();
+		$(document).off('click', modal.dismiss);
+	}
 };
 
 modal.close = function ()

@@ -1,2 +1,424 @@
-<h1>Dashboard - Region</h1>
-<a href="javascript:void(0)" class="return-overview">Return Dashboard overview</a>
+<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+<div class="scrollbar-horizontal-wrap"><div class="scrollbar-horizontal-thumb"></div></div>
+<div class="dashboard-content-wrap scroll-content">
+	<div class="dashboard-header clearfix">
+		<a href="javascript:void(0)" title="Back to Global Overview" class="return-overview">&lt; Global Overview</a>
+		<div class="dashboard-header-right">
+			<a href="http://status.aws.amazon.com/#NA_block" class="aws-region-status" target="_blank" title="AWS Service Health">
+				<span><i class="status status-red"></i>0</span>
+				<span><i class="status status-yellow"></i>0</span>
+				<span><i class="icon-info-sign"></i>0</span>
+			</a>
+			<div class="refresh"><a href="javascript:void(0)" title="Refresh"><i class="icon-refresh"></i> 23 min ago</a></div>
+		</div>
+	</div>
+	<div class="grid">
+
+		<!-- michael begin -->
+		<div class="col-1-2">
+			<div class="dashboard-widget widget-region-stat" id="dashboard-region-stat-overall">
+				<ul class="dashboard-region-stat-tab-head" class="grid">
+					<li class="col-1-2 active">
+						<a href="#region-stat-app"><i class="icon-browser icon-label"></i><span class="counter">34</span> Apps</a>
+					</li>
+					<li class="col-1-2">
+						<a href="#region-stat-stack"><i class="icon-layers icon-label"></i><span class="counter">3</span> Stacks</a>
+						<button href="javascript:void(0)" class="btn btn-primary btn-region-dashboard" title="Create New Stack">+</button>
+					</li>
+				</ul>
+				<div class="dashboard-widget-body scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<div class="thumbnail-container shown" id="region-stat-app">
+							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"play","title":"Resource Name","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
+								<div class="action-thumbnail">
+										<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
+										<!-- <a class="tooltip" data-tooltip="Stop App"><i class="icon-stop"></i></a> -->
+										<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
+									</div>
+								<a href="" class="thumbnail-body">
+									<div class="thumbnail-name truncate"><i class="icon-stop"></i>App-0000000001-name</div>
+								</a>
+							</div>
+							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"stop","title":"Resource Name","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
+								<div class="action-thumbnail">
+										<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
+										<!-- <a class="tooltip" data-tooltip="Stop App"><i class="icon-stop"></i></a> -->
+										<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
+									</div>
+								<a href="" class="thumbnail-body bubble">
+									<div class="thumbnail-name truncate"><i class="icon-stop"></i>App-0000000001-name</div>
+								</a>
+							</div>
+							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"play","title":"Resource Name","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
+								<div class="action-thumbnail">
+										<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
+										<!-- <a class="tooltip" data-tooltip="Stop App"><i class="icon-stop"></i></a> -->
+										<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
+									</div>
+								<a href="" class="thumbnail-body bubble">
+									<div class="thumbnail-name truncate"><i class="icon-stop"></i>App-0000000001-name</div>
+								</a>
+							</div>
+							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"play","title":"Resource Name","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
+								<div class="action-thumbnail">
+										<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
+										<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
+									</div>
+								<a href="" class="thumbnail-body bubble">
+									<div class="thumbnail-name truncate"><i class="icon-stop"></i>App-0000000001-name</div>
+								</a>
+							</div>
+						</div>
+						<div class="thumbnail-container" id="region-stat-stack">
+							<div class="item-thumbnail-wrap" style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
+								<div class="action-thumbnail">
+										<a class="tooltip" data-tooltip="Duplicate Stack"><i class="icon-redo"></i></a>
+										<a class="tooltip" data-tooltip="Delete Stack"><i class="icon-trashcan"></i></a>
+									</div>
+								<a href="" class="thumbnail-body">
+									<div class="thumbnail-name truncate">Stack-0000000001-name</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- michael end -->
+
+		<!-- cinde begin -->
+		<div class="col-1-2">
+			<div class="dashboard-widget" id="dashboard-region-stat-unmanaged">
+				<div class="dashboard-widget-title-wrap"><div class="dashboard-widget-title"><h4>Unmanaged Resource</h4></div><i class="icon-question-sign tooltip" data-tooltip="Resouces running in AWS but not managed by MadeiraCloud"></i></div>
+				<div class="dashboard-widget-body dashboard-widget-body-table scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:28%">Type</th>
+								<th class="sortable" style="width:20%">Name/ID</th>
+								<th class="sortable" style="width:20%">Status</th>
+								<th class="sortable" style="width:20%">Estimated Cost</th>
+								<th tyle="width:20%;">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="bubble" data-bubble-template="bubbleInstanceInfo" data-bubble-data='{"name":"Webserver1","id":"i-3413243","launch-time":"GMT 19:23 2013-5-1","ebs-optimized":"false","root-device-type":"EBS","Tenancy":"default"},"block-device":"/dev/sda1"'>
+								<td><i class="icon-server icon-label"></i>Instance</td>
+								<td>i-8493849384</td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>$0.060/h</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><i class="icon-hdd icon-label"></i>EBS</td>
+								<td>i-8493849384</td>
+								<td><i class="status status-green icon-label"></i>In Use</td>
+								<td>$0.10/GB-m</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><i class="icon-image icon-label"></i>EBS Snapshot</td>
+								<td>i-8493849384</td>
+								<td><i class="status status-green icon-label"></i>Completed</td>
+								<td>$0.10/GB-m</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><i class="icon-image icon-label"></i>EIP</td>
+								<td>v-8493849384</td>
+								<td><i class="status status-green icon-label"></i>Associated</td>
+								<td>$0.10/GB-m</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><i class="icon-image icon-label"></i>VPC</td>
+								<td>v-8493849384</td>
+								<td><i class="status status-green icon-label"></i>Availabe</td>
+								<td>$0.10/GB-m</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><i class="icon-image icon-label"></i>VPN</td>
+								<td>v-8493849384</td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>$0.10/GB-m</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><i class="icon-image icon-label"></i>ELB</td>
+								<td>v-8493849384</td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>$0.10/GB-m</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><i class="icon-image icon-label"></i>RDS</td>
+								<td>v-8493849384</td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>$0.10/GB-m</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><i class="icon-image icon-label"></i>RDS Snapshot</td>
+								<td>v-8493849384</td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>$0.10/GB-m</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+						</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- cinde end -->
+
+	</div>
+
+	<!-- ken begin -->
+	<div class="dashboard-widget">
+		<div class="grid grid-responsive grid-small-bottom row-counter">
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				<div class="widget-region-counter active">
+					<a href="#stat-table-instance">
+						<div class="region-stat-block-wrap">
+							<i class="icon-image icon-label"></i>13<span class="label">Instance</span> 
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				<div class="widget-region-counter">
+					<a href="#stat-table-eip">
+						<div class="region-stat-block-wrap">
+							<i class="icon-image icon-label"></i>4<span class="label">EIP</span> 
+							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 EIP not associated with instance.","description":"This would charge you extra expense."}'>1</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				<div class="widget-region-counter">
+					<a href="#stat-table-ebs">
+						<div class="region-stat-block-wrap">
+							<i class="icon-hdd icon-label"></i>22<span class="label">EBS</span> 
+							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"2 EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>2</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				<div class="widget-region-counter">
+					<a href="#stat-table-ebs-snap">
+						<div class="region-stat-block-wrap">
+							<i class="icon-image icon-label"></i>31<span class="label">EBS Snapshot</span> 
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				<div class="widget-region-counter">
+					<a href="#stat-table-vpc">
+						<div class="region-stat-block-wrap">
+							<i class="icon-hdd icon-label"></i>4<span class="label">VPC</span> 
+							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"You have reached limit of VPC in this region","description":"The max number of VPC in each region is 5."}'>!</span>
+						</div>
+					</a>
+				</div>
+				
+			</div>
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				<div class="widget-region-counter">
+					<a href="#stat-table-vpn">
+						<div class="region-stat-block-wrap">
+							<i class="icon-image icon-label"></i>3<span class="label">VPN</span> 
+							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 VPN not in use.","description":"VPN in stopped app is not in use but still charging money."}'>1</span>
+						</div>
+					</a>
+					
+				</div>
+				
+			</div>
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				<div class="widget-region-counter">
+					<a href="#stat-table-elb">
+						<div class="region-stat-block-wrap">
+							<i class="icon-image icon-label"></i>4<span class="label">ELB</span> 
+						</div>
+					</a>
+				</div>
+				
+			</div>
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				<div class="widget-region-counter">
+					<a href="#stat-table-asg">
+						<div class="region-stat-block-wrap">
+							<i class="icon-hdd icon-label"></i>2<span class="label">Auto Scaling Group</span> 
+							
+						</div>
+					</a>
+				</div>
+				
+			</div>
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				<div class="widget-region-counter">
+					<a href="#stat-table-rds">
+						<div class="region-stat-block-wrap">
+							<i class="icon-image icon-label"></i>3<span class="label">RDS</span> 
+						</div>
+					</a>
+					
+				</div>
+				
+			</div>
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				<div class="widget-region-counter">
+					<a href="#stat-table-rds-snap">
+						<div class="region-stat-block-wrap">
+							<i class="icon-image icon-label"></i>4<span class="label">RDS Snapshot</span> 
+							<!-- <span class="warning-counter">!</span> -->
+						</div>
+					</a>
+				</div>
+				
+			</div>
+		</div>
+		<div id="stat-table-instance" class="stat-table shown">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-{resource-name}">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:30%">Instance Name/ID</th>
+								<th class="sortable" style="width:10%">Status</th>
+								<th class="sortable" style="width:15%">Launch Time</th>
+								<th class="sortable" style="width:10%">AMI</th>
+								<th class="sortable" style="width:10%">Availability Zone</th>
+								<th class="sortable" style="width:12%">Estimated Cost</th>
+								<th style="width:5%">Detail</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
+								<td>us-east-1a</td>
+								<td>$0.014/h</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-long-name-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
+								<td>us-east-1a</td>
+								<td>$0.014/h</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class=" btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
+								<td>us-east-1a</td>
+								<td>$0.014/h</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-long-name-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
+								<td>us-east-1a</td>
+								<td>$0.014/h</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+						</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-eip" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-{resource-name}">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:40%">Instance Name/ID</th>
+								<th class="sortable" style="width:10%">Status</th>
+								<th class="sortable" style="width:20%">Launch Time</th>
+								<th class="sortable" style="width:10%">AMI</th>
+								<th class="sortable" style="width:10%">Availability Zone</th>
+								<th style="width:8%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
+								<td>us-east-1a</td>
+								<td>N/A</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-long-name-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
+								<td>us-east-1a</td>
+								<td>N/A</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
+								<td>us-east-1a</td>
+								<td>$0.005/h</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-long-name-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
+								<td>us-east-1a</td>
+								<td>N/A</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
+								<td>us-east-1a</td>
+								<td>N/A</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-long-name-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
+								<td><i class="status status-green icon-label"></i>Running</td>
+								<td>GMT 19:23 2013-4-30</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
+								<td>us-east-1a</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+						</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+	</div>
+	<!-- ken end -->
+</div>

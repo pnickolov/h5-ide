@@ -29,6 +29,7 @@ require.config {
 		'UI.scrollbar' : 'ui/common/UI.scrollbar'
 		'UI.accordion' : 'ui/common/UI.accordion'
 		'UI.tabbar'    : 'ui/common/UI.tabbar'
+		'UI.bubble'    : 'ui/common/UI.bubble'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
@@ -222,6 +223,9 @@ require.config {
 			exports    : 'MC.template'
 
 		'UI.tabbar'    :
+			deps       : [ 'MC.template' ]
+
+		'UI.bubble'    :
 			deps       : [ 'MC.template' ]
 
 		#'MC.topo'     :

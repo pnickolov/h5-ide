@@ -77,7 +77,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 view.render()
 
         #load remote ./module/dashboard/region/view.js
-        require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip' ], ( View, model ) ->
+        require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble' ], ( View, model ) ->
 
             #view
             view       = new View()

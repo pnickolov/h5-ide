@@ -136,6 +136,7 @@
 
 .table.table-region-stat thead {
 	background-color: #eaedef;
+	border-bottom: 1px solid #dfdfdf;
 }
 
 .table.table-region-stat thead th:hover {
@@ -144,8 +145,15 @@
 
 .table.table-region-stat th,
 .table.table-region-stat td {
-	border: none;
 	font-weight: 400;
+	border: none;
+	border-right: 1px solid #dfdfdf;
+	position: relative;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
 }
 
 .table.table-region-stat tbody tr:hover th,
@@ -157,7 +165,6 @@
 .table.table-region-stat tbody th,
 .table.table-region-stat tbody td {
 	background: #fefefe;
-	border: none;
 }
 
 .table.table-region-stat tbody tr td {
@@ -178,7 +185,7 @@
 	background: #eee;
 }
 
-a.table-app-link {
+a.table-link {
 	color: #3892E3;
 }
 
@@ -715,9 +722,9 @@ textarea {
 /* Modal */
 #modal-box {
 	position: absolute;
-	color: #eee;
-	border-radius: 2px;
-	background: #646464;
+	color: #999;
+	border-radius: 4px;
+	background: #f0f0f0;
 	-moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
 	-webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
@@ -735,12 +742,12 @@ textarea {
 .modal-header {
 	position: relative;
 	padding: 2px 10px;
-	border-radius: 2px 2px 0 0;
-	background-image: -o-linear-gradient(-90deg, #4B424C 0%, #332D34 100%);
-	background-image: -moz-linear-gradient(-90deg, #4B424C 0%, #332D34 100%);
-	background-image: -webkit-linear-gradient(-90deg, #4B424C 0%, #332D34 100%);
-	background-image: -ms-linear-gradient(-90deg, #4B424C 0%, #332D34 100%);
-	background-image: linear-gradient(-180deg, #4B424C 0%, #332D34 100%);
+	background: #f0f0f0;
+	box-shadow: inset 0 1px 0 #fff;
+	border-radius: 4px 4px 0 0;
+	border-bottom: 1px solid #cfcfcf;
+	color: #9b9b9b;
+	text-shadow: 0 1px 0 #fff;
 }
 
 .modal-header h3 {
@@ -748,8 +755,22 @@ textarea {
 }
 
 .modal-body {
-	padding: 15px;
-	background: rgba(0, 0, 0, .3);
+	padding: 5px 15px 10px 15px;
+	background: #fff;
+	border-bottom: 1px solid #cfcfcf;
+}
+
+.modal-body .dl-horizontal dt,
+.modal-body .dl-horizontal dd {
+	margin-top: 10px;
+}
+
+.modal-body .dl-horizontal dt {
+	width: 70px;
+}
+
+.modal-body .dl-horizontal dd {
+	margin-left: 80px;
 }
 
 .modal-footer {
@@ -889,7 +910,8 @@ textarea {
 	position: absolute;
 	border-radius: 4px;
 	z-index: 99;
-	min-width: 280px;
+	min-width: 250px;
+	max-width: 400px;
 }
 
 .bubble-head {
@@ -904,6 +926,12 @@ textarea {
 
 .bubble-head.alert {
 	color: #F74A48;
+	border: none;
+	padding-bottom: 0;
+}
+
+.bubble-head.suggest {
+	color: #3892E3;
 	border: none;
 	padding-bottom: 0;
 }

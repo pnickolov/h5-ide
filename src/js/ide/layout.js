@@ -219,6 +219,34 @@ var ready = function () {
 	{
 		$('#' + this.id.replace('stat-','')).removeClass('hover');
 	});
+	
+	$('.widget-region-counter').on('click', 'a', function(event) 
+	{	
+		event.preventDefault();
+
+		var id = $(this).attr('href'),
+			active = $('.row-counter .widget-region-counter.active'),
+			id_active = active.children('a').attr('href');
+
+		$(id).addClass('shown');
+		$(id_active).removeClass('shown')
+		active.removeClass('active');
+		$(this).parent().addClass('active');
+	});
+
+	$('.dashboard-region-stat-tab-head').on('click', 'a', function(event) 
+	{	
+		event.preventDefault();
+
+		var id = $(this).attr('href'),
+			active = $('.dashboard-region-stat-tab-head > li.active'),
+			id_active = active.children('a').attr('href');
+
+		$(id).addClass('shown');
+		$(id_active).removeClass('shown')
+		active.removeClass('active');
+		$(this).parent().addClass('active');
+	});
 
 //});
 }

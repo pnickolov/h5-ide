@@ -23,3 +23,106 @@
     	<i class="notification_close">&times;</i>
   	{{/if}}
 </div>
+
+<!-- modalSample -->
+<div style="width:420px">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt, id, neque, ipsam, minima aperiam accusamus quae quia voluptate eius velit voluptatibus nam et ipsa repellendus dolor ullam libero voluptas consequatur.
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-blue">OK</button>
+		<button class="btn modal-close">Close</button>
+	</div>
+</div>
+
+<!-- modalResourceDetail -->
+<div class="modal-resource-detail" style="width:420px">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<dl class="dl-horizontal">
+			<dt>Key</dt>
+			<dd>Vaule</dd>
+			<dt>Key</dt>
+			<dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt, id, neque, ipsam, minima aperiam accusamus quae quia voluptate eius velit voluptatibus nam et ipsa repellendus dolor ullam libero voluptas consequatur.</dd>
+			<dt>Key</dt>
+			<dd>Vaule</dd>
+			<dt>Key</dt>
+			<dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt, id, neque, ipsam, minima aperiam accusamus quae quia voluptate eius velit voluptatibus nam et ipsa repellendus dolor ullam libero voluptas consequatur.</dd>
+		</dl>
+	</div>
+	<div class="modal-footer">
+		<button class="btn modal-close btn-silver">Close</button>
+	</div>
+</div>
+
+<!-- bubbleTest -->
+<div class="bubble-head">{{title}}</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>Start Time:</dt>
+		<dd>{{start-time}}</dd>
+		<dt>Stop Time:</dt>
+		<dd>{{end-time}}</dd>
+		<dt>Estimated Cost:</dt>
+		<dd>{{cost}}</dd>
+	</dl>
+</div>
+
+<!-- bubbleAlert -->
+<div class="bubble-head alert">{{title}}</div>
+<div class="bubble-content">
+	{{description}}
+</div>
+
+<!-- bubbleSuggest -->
+<div class="bubble-head suggest">{{title}}</div>
+<div class="bubble-content">
+	{{description}}
+</div>
+
+<!-- bubbleAppInfo -->
+<div class="bubble-head"><i class="icon-{{status}} icon-label"></i>{{title}}</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>Start Time:</dt>
+		<dd>{{start-time}}</dd>
+		<dt>Stop Time:</dt>
+		<dd>{{end-time}}</dd>
+		<dt>Estimated Cost:</dt>
+		<dd>{{cost}}</dd>
+	</dl>
+</div>
+
+<!-- bubbleInstanceInfo -->
+<div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{name}}-({{id}})</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>Launch Time:</dt>
+		<dd>{{launch-time}}</dd>
+		<dt>Availability Zone:</dt>
+		<dd>{{az}}</dd>
+		<dt>Instance Type:</dt>
+		<dd>{{instance-type}}</dd>
+	</dl>
+</div>
+
+<!-- bubbleAMIInfo -->
+<div class="bubble-head"></i>{{id}}</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>Name</dt>
+		<dd>{{name}}</dd>
+		<dt>Description</dt>
+		<dd>{{description}}</dd>
+		<dt>AMI Property-1</dt>
+		<dd>{{property1}}</dd>
+	</dl>
+</div>
+

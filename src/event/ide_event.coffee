@@ -34,7 +34,6 @@ define [ 'underscore', 'backbone' ], () ->
         #result app stack region empty_region list
         RESULT_APP_LIST     : 'RESULT_APP_LIST'
         RESULT_STACK_LIST   : 'RESULT_STACK_LIST'
-        RESULT_REGION_LIST  : 'RESULT_REGION_LIST'
         RESULT_EMPTY_REGION_LIST  : 'RESULT_EMPTY_REGION_LIST'
 
         #return overview region tab

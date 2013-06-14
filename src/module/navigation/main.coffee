@@ -44,7 +44,7 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
             model.on 'change:region_empty_list', () ->
                 console.log 'change:region_empty_list'
                 #push event
-                ide_event.trigger ide_event.RESULT_EMPTY_REGION_LIST, model.get 'region_empty_list'
+                ide_event.trigger ide_event.RESULT_EMPTY_REGION_LIST, null
                 #refresh view
                 view.render()
                 #call
@@ -52,8 +52,6 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
 
             model.on 'change:region_list', () ->
                 console.log 'change:region_list'
-                #push event
-                ide_event.trigger ide_event.RESULT_REGION_LIST, model.get 'region_list'
                 #refresh view
                 view.render()
 

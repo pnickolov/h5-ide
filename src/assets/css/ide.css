@@ -440,12 +440,24 @@ a {
 }
 
 #navigation.collapsed li.nav-head.collapsed-show #nav-app .first-level-nav-label {
-	top: 46px;
+	top: 48px;
 }
 
 #navigation.collapsed li.nav-head.collapsed-show #nav-stack .first-level-nav-label {
-	top: 93px;
+	top: 95px;
 }
+
+/* firefox fix */
+
+.firefox #navigation.collapsed li.nav-head.collapsed-show #nav-app .first-level-nav-label {
+	top: 50px;
+}
+
+.firefox #navigation.collapsed li.nav-head.collapsed-show #nav-stack .first-level-nav-label {
+	top: 98px;
+}
+
+/* fix end */
 
 #navigation.collapsed li.nav-head.collapsed-show .first-level-nav-label .icon-nav-accordion {
 	display: none;
@@ -682,6 +694,12 @@ a {
 	display: inline-block;
 }
 
+.dashboard-header-right .region-platform-wrap {
+	margin-right: 10px;
+	float: left;
+	margin-top: 2px;
+}
+
 .aws-region-status {
 	margin-right: 10px;
 	display: inline-block;
@@ -699,7 +717,6 @@ a {
 
 .refresh {
 	font-size: 12px;
-	/*float: right;*/
 	display: inline-block;
 }
 

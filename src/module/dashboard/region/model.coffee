@@ -4,22 +4,24 @@
 
 define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'constant' ], (Backbone, $, _, aws_model, constant) ->
 
+    current_region = null
+    resource_source = null
+
     #private
     RegionModel = Backbone.Model.extend {
 
         defaults :
             temp : null
-            #'resourse_list'         : null
+            'resourse_list'         : null
 
 
         initialize : ->
             me = this
-            
-            console.error '1'
 
             aws_model.on 'AWS_RESOURCE_RETURN', ( result ) ->
-                console.error '123'
-                console.log result
+
+                resource_source =  result.resolved_data[current_region]
+
 
             null
             
@@ -32,6 +34,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'constant' ], (Backbon
         describeAWSResourcesService : ( region )->
 
             me = this
+
+            current_region = region
 
             resources = [
                 constant.AWS_RESOURCE.INSTANCE

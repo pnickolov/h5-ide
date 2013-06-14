@@ -173,10 +173,7 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
         xml = $.parseXML result[1]
         rootNodeName = xml.documentElement.localName
 
-        instance_vo.instance = $.xml2json xml
-
-        #return instance
-        instance_vo.instance
+        ($.xml2json xml).DescribeInstancesResponse.reservationSet
 
     #private (parser DescribeInstances return)
     parserDescribeInstancesReturn = ( result, return_code, param ) ->

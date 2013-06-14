@@ -89,9 +89,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     view       = new View()
                     view.model = model
                     #listen
-                   
-                    console.log "---------------------------------"
-                    model.describeAWSResourcesService('us-east-1')
+                    model.describeAWSResourcesService(region)
 
                     view.on 'RETURN_OVERVIEW_TAB', () ->
                         #set MC.data.dashboard_type

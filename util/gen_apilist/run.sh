@@ -126,6 +126,7 @@ function fn_generate_coffee() {
     __CUR_DIR=$2
     __CUR_FILE=$3
     __TGT_DIR_SERVICE=$4
+    ___LAST=$5
     __TGT_DIR_TEST=${__TGT_DIR_SERVICE/\/service\//\/test\/} #replace /service/ with /test/
 
 
@@ -424,7 +425,7 @@ function fn_generate_coffee() {
     done
 
     echo "resource ${_RESOURCE_u} end"
-    if [ "${_RESOURCE_u}" == "Session" ]
+    if [ "${_RESOURCE_u}" == "Stack" -o "${___LAST}" == "true" ]
     then
         echo "        }"   >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
     else
@@ -496,10 +497,11 @@ function fn_scan_aws() {
 
     #for tmp test
 
-    #if [ "${SERVICE}" != "VPC" ]
-    #then
-    #    return
-    #fi
+    # if [ "${SERVICE}" != "ELB" ]
+    # then
+    #     return
+    # fi
+
 
     #service
     echo
@@ -528,9 +530,19 @@ function fn_scan_aws() {
     else
     #Except AWSUtil###################
 
+        R_TOTAL=`ls ${CUR_DIR}/${SERVICE} | grep -v "__init__" | wc -l`
+        R_IDX=0
+        R_LAST="false"
         for RESOURCE in `ls ${CUR_DIR}/${SERVICE} | grep -v "__init__"`
         do
         #resource
+
+            R_IDX=`expr ${R_IDX} + 1`
+            if [ ${R_IDX} -eq ${R_TOTAL} ]
+            then
+                R_LAST="true"
+            fi
+
             CUR_FILE=${RESOURCE}
             RESOURCE=${RESOURCE/.py/}
 
@@ -549,7 +561,9 @@ function fn_scan_aws() {
             #create subdir in out.tmp
             #mkdir -p ${TGT_DIR}                             #create out.tmp/service/
 
-            fn_generate_coffee "aws" "${CUR_DIR}/${SERVICE}" "${CUR_FILE}" "${TGT_DIR}"
+
+
+            fn_generate_coffee "aws" "${CUR_DIR}/${SERVICE}" "${CUR_FILE}" "${TGT_DIR}" "${R_LAST}"
 
         done
 
@@ -598,10 +612,14 @@ do
             echo "service ${SRV} start"
             echo "    ${SRV} : {"       >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
             fn_scan_aws "${CUR_SRC_DIR}" "${LINE}"
+            echo "    },"      >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
         fi
     done
 
-    echo "    },"      >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+    if [ "${SRC_DIR[$i]}" == "Handler" -o "${SRC_DIR[$i]}" == "Forge" ]
+    then
+        echo "    },"      >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+    fi
 
 done
 

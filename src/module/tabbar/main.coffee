@@ -14,7 +14,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
         $( template ).appendTo '#tab-bar'
 
         #load remote module1.js
-        require [ './module/tabbar/view', './module/tabbar/model' ], ( View, model ) ->
+        require [ './module/tabbar/view', './module/tabbar/model', 'MC' ], ( View, model, MC ) ->
 
             #view
             view       = new View()
@@ -42,11 +42,20 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 #model
                 model.delete tab_id
 
-            #listen stack tab
+            #listen open stack tab
             ide_event.onLongListen ide_event.OPEN_STACK_TAB, ( target ) ->
                 console.log ide_event.OPEN_STACK_TAB + ' tab_name = ' + target
                 #tabbar api
                 Tabbar.open target.toLowerCase(), target
+
+            #listen add empty tab
+            ide_event.onLongListen ide_event.ADD_STACK_TAB, () ->
+                console.log 'ADD_STACK_TAB'
+                #tabbar api
+                Tabbar.add MC.data.untitled, 'untitled - ' + MC.data.untitled
+                #MC.data.untitled ++
+                MC.data.untitled = MC.data.untitled + 1
+                null
 
             #render
             view.render()

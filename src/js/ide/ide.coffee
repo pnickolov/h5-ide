@@ -8,6 +8,8 @@ define [ 'MC', 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'das
 
 		#set MC.data
 		MC.data = {}
+		#set untitled
+		MC.data.untitled = 0
 		#set tab
 		MC.tab  = {}
 

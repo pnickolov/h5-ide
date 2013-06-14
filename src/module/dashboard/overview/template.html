@@ -211,11 +211,11 @@
 					<h4 class="dashboard-widget-title">Recently Edited Stacks</h4>
 				</div>
 				<div class="dashboard-widget-body">
-					{{#if resent_edited_stacks}}
+					{{#if recent_edited_stacks}}
 					<ul class="dashboard-recent-list">
 
-						{{#each resent_edited_stacks }}
-						<li><a href="">{{name}}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval}}</span></li>
+						{{#each recent_edited_stacks }}
+						<li><a href="">{{name}}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
 						{{/each}}
 
 					</ul>
@@ -232,11 +232,11 @@
 					<h4 class="dashboard-widget-title">Recently Launched Apps</h4>
 				</div>
 				<div class="dashboard-widget-body">
-					{{#if resent_launched_apps}}
+					{{#if recent_launched_apps}}
 					<ul class="dashboard-recent-list">
 
-						{{#each resent_launched_apps}}
-						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval}}</span></li>
+						{{#each recent_launched_apps}}
+						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
 						{{/each}}
 
 					</ul>
@@ -253,11 +253,11 @@
 					<h4 class="dashboard-widget-title">Recently Stopped Apps</h4>
 				</div>
 				<div class="dashboard-widget-body">
-					{{#if resent_stoped_apps}}
+					{{#if recent_stoped_apps}}
 					<ul class="dashboard-recent-list">
 
-						{{#each resent_stoped_apps}}
-						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval}}</span></li>
+						{{#each recent_stoped_apps}}
+						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
 						{{/each}}
 
 					</ul>

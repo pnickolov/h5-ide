@@ -45,10 +45,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 cur_key = result.param[3]
                 if region_classic_vpc_list[ cur_key ] is null
                     region_attr_count += 1
-                    if regionAttrSet[ 0 ].attributeValue is 'VPC'
-                        region_classic_vpc_list[ cur_key ] = { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ cur_key ] }
-                    else
+                    if $.type(regionAttrSet) == "array"
                         region_classic_vpc_list[ cur_key ] = { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ cur_key ] }
+                    else
+                        region_classic_vpc_list[ cur_key ] = { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ cur_key ] }
+
                     if region_attr_count < 8
                         region_attr_key = constant.REGION_KEYS[ region_attr_count ]
                         me.getRegionAccountAttribute( region_attr_key )

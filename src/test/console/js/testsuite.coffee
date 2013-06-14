@@ -100,14 +100,17 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             alert "Please select an api first!"
             return false
 
-        region_name      = $("#region_list").val()
+        #region_name      = $("#region_list").val()
         current_service  = $( "#service_list" ).val()
         current_resource = $( "#resource_list" ).val()
 
-        $("#region_name").val region_name
+        #$("#region_name").val region_name
+        region_name      = $("#region_name").val()
 
         $( "#resquest_data" ).val ""
         $( "#response_data" ).val ""
+
+        $( "#label_request_result" ).text current_api + " start,please wait..."
 
         request_time     = new Date()
         response_time    = null

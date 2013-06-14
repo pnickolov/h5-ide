@@ -80,26 +80,26 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 #push event
                 ide_event.trigger ide_event.RETURN_REGION_TAB, null
                 #render
-                view.render()
+                #view.render()
 
-        #load remote ./module/dashboard/region/view.js
-        require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal' ], ( View, model ) ->
+                #load remote ./module/dashboard/region/view.js
+                require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble' ], ( View, model ) ->
 
-            #view
-            view       = new View()
-            view.model = model
-            #listen
-           
-            console.log "---------------------------------"
-            model.describeAWSResourcesService('us-east-1')
+                    #view
+                    view       = new View()
+                    view.model = model
+                    #listen
+                   
+                    console.log "---------------------------------"
+                    model.describeAWSResourcesService('us-east-1')
 
-            view.on 'RETURN_OVERVIEW_TAB', () ->
-                #set MC.data.dashboard_type
-                MC.data.dashboard_type = 'OVERVIEW_TAB'
-                #push event
-                ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
-            #render
-            view.render()
+                    view.on 'RETURN_OVERVIEW_TAB', () ->
+                        #set MC.data.dashboard_type
+                        MC.data.dashboard_type = 'OVERVIEW_TAB'
+                        #push event
+                        ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
+                    #render
+                    view.render()
 
     unLoadModule = () ->
         #view.remove()

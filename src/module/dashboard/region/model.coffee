@@ -14,6 +14,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'constant' ], (Backbon
 
         initialize : ->
             me = this
+            
+            console.error '1'
 
             aws_model.on 'AWS_RESOURCE_RETURN', ( result ) ->
                 console.error '123'
@@ -39,6 +41,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'constant' ], (Backbon
                 constant.AWS_RESOURCE.VPN
                 constant.AWS_RESOURCE.ELB
             ]
+
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 
     }

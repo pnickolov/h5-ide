@@ -74,7 +74,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 #push event
                 ide_event.trigger ide_event.RETURN_REGION_TAB, null
                 #render
-                view.render()
+                #view.render()
 
         #load remote ./module/dashboard/region/view.js
         require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal' ], ( View, model ) ->

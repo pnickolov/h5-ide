@@ -29,9 +29,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             'region_classic_list' : null
             'region_empty_list'   : null
             # resent results
-            'resent_edited_stacks'  : []
-            'resent_launched_apps'  : []
-            'resent_stoped_apps'    : []
+            'resent_edited_stacks'  : null
+            'resent_launched_apps'  : null
+            'resent_stoped_apps'    : null
 
         initialize : ->
 
@@ -215,12 +215,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                 _.map region_group.region_name_group, ( value ) ->
                     item = me.parseItem(value, flag)
-                    if item
+                    if item and num <= RESENT_THRESHOLD
                         resent_edited_stacks.push item
                         num = num + 1
-                        if num == RESENT_THRESHOLD
-                            me.set 'resent_edited_stacks', resent_edited_stacks
-                            return
+
+                        null
 
             me.set 'resent_edited_stacks', resent_edited_stacks
 
@@ -238,19 +237,14 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                 _.map region_group.region_name_group, (value) ->
                     item = me.parseItem(value, flag)
-                    if item
+                    if item and num <= RESENT_THRESHOLD
                         if flag == 'resent_launched_apps'
                             resent_launched_apps.push item
                         else if flag == 'resent_stoped_apps'
                             resent_stoped_apps.push item
                         num = num + 1
 
-                        if num == RESENT_THRESHOLD
-                            if flag == 'resent_launched_apps'
-                                me.set 'resent_launched_apps', resent_launched_apps
-                            if flag == 'resent_stoped_apps'
-                                me.set 'resent_stoped_apps', resent_stoped_apps
-                                null
+                        null
 
             if flag == 'resent_launched_apps'
                 me.set 'resent_launched_apps', resent_launched_apps
@@ -269,7 +263,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 interval = value.time_create
             else if flag == 'resent_stoped_apps' and value.state in ['Stopping', 'Stopped']
                 interval = value.time_update
-            
+
             if interval
                 return { 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval' : MC.intervalDate(interval) }
 

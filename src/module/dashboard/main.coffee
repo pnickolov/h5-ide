@@ -47,6 +47,21 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 #refresh view
                 view.render()
 
+            model.on 'change:resent_edited_stacks', () ->
+                console.log 'dashboard_change:resent_eidted_stacks'
+                model.get 'resent_edited_stacks'
+                view.render()
+
+            model.on 'change:resent_launched_apps', () ->
+                console.log 'dashboard_change:resent_launched_apps'
+                model.get 'resent_launched_apps'
+                view.render()
+
+            model.on 'change:resent_stoped_apps', () ->
+                console.log 'dashboard_change:resent_stoped_apps'
+                model.get 'resent_stoped_apps'
+                view.render()
+
             #model
             model.resultListListener()
             model.emptyListListener()

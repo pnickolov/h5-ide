@@ -4,6 +4,9 @@
 
 define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/module/dashboard/region/template.html', 'event', 'MC' ], ( $, overview_tmpl, region_tmpl, ide_event, MC ) ->
 
+
+    current_region = null
+
     #private
     loadModule = () ->
         #add handlebars script
@@ -68,8 +71,11 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             model.describeAccountAttributesService()
 
             #listen
-            view.on 'RETURN_REGION_TAB', () ->
+            view.on 'RETURN_REGION_TAB', ( region ) ->
                 #set MC.data.dashboard_type
+
+                current_region = region
+
                 MC.data.dashboard_type = 'REGION_TAB'
                 #push event
                 ide_event.trigger ide_event.RETURN_REGION_TAB, null
@@ -83,6 +89,10 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             view       = new View()
             view.model = model
             #listen
+           
+            console.log "---------------------------------"
+            model.describeAWSResourcesService('us-east-1')
+
             view.on 'RETURN_OVERVIEW_TAB', () ->
                 #set MC.data.dashboard_type
                 MC.data.dashboard_type = 'OVERVIEW_TAB'

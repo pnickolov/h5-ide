@@ -66,6 +66,7 @@ require.config {
 		'stack_model'  : 'model/stack_model'
 		'ec2_model'    : 'model/aws/ec2/ec2_model'
 		'vpc_model'    : 'model/aws/vpc/vpc_model'
+		'aws_model'    : 'model/aws/aws_model'
 
 		#result_vo
 		'result_vo'    : 'service/result_vo'

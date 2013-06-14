@@ -86,6 +86,14 @@ define [], () ->
 		OPS_STATE_FAILED		: "Failed"
 	}
 
+	AWS_RESOURCE = {
+		INSTANCE 		:	'EC2.Instance'
+		EIP				:	'EC2.EIP'
+		VOLUME			:	'EBS.Volume'
+		VPC				:	'VPC'
+		VPN				:	'VPC.VPN'
+		ELB				:	'ELB'
+	}
 
 	#public
 	REGION_KEYS		   : REGION_KEYS
@@ -95,4 +103,5 @@ define [], () ->
 	MESSAGE_E          : MESSAGE_E
 	APP_STATE          : APP_STATE
 	OPS_STATE          : OPS_STATE
+	AWS_RESOURCE	   : AWS_RESOURCE
 

@@ -30,6 +30,7 @@ require.config {
 		'UI.accordion' : 'ui/common/UI.accordion'
 		'UI.tabbar'    : 'ui/common/UI.tabbar'
 		'UI.bubble'    : 'ui/common/UI.bubble'
+		'UI.modal'     : 'ui/common/UI.modal'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
@@ -226,6 +227,9 @@ require.config {
 			deps       : [ 'MC.template' ]
 
 		'UI.bubble'    :
+			deps       : [ 'MC.template' ]
+
+		'UI.modal'    :
 			deps       : [ 'MC.template' ]
 
 		#'MC.topo'     :

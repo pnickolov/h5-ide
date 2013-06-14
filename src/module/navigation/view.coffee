@@ -15,6 +15,7 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click .stack-list a'           : 'stackListItemsClick'
             'click .app-list a'             : 'appListItemsClick'
             'click .show-unused-region a'   : 'showEmptyRegionClick'
+            'click .create-new-stack'       : 'createNewStackClick'
 
         initialize : ->
             #
@@ -83,6 +84,10 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         showEmptyRegionClick : ( event ) ->
             $( event.target ).parent().prev().find('.hide').show()
             $( event.target ).hide()
+
+        createNewStackClick : ( event ) ->
+            console.log 'createNewStackClick'
+            ide_event.trigger ide_event.ADD_STACK_TAB
 
         hoverIntent          : ->
             $('.nav-head').hoverIntent {

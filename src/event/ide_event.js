@@ -26,6 +26,8 @@
 
       Event.prototype.DESIGN_COMPLETE = 'DESIGN_COMPLETE';
 
+      Event.prototype.ADD_STACK_TAB = 'ADD_STACK_TAB';
+
       Event.prototype.OPEN_STACK_TAB = 'OPEN_STACK_TAB';
 
       Event.prototype.OPEN_APP_TAB = 'OPEN_APP_TAB';

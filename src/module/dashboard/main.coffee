@@ -83,7 +83,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 #view.render()
 
                 #load remote ./module/dashboard/region/view.js
-                require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble' ], ( View, model ) ->
+                require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal' ], ( View, model ) ->
 
                     #view
                     view       = new View()
@@ -100,6 +100,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
                     #render
                     view.render()
+
 
     unLoadModule = () ->
         #view.remove()

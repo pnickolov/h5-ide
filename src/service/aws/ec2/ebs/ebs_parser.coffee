@@ -67,8 +67,21 @@ define [ 'ebs_vo', 'result_vo', 'constant' ], ( ebs_vo, result_vo, constant ) ->
     resolveDescribeVolumesResult = ( result ) ->
         #resolve result
 
+        vol_list = []
+
         #return vo
-        ($.xml2json ($.parseXML result[1])).DescribeVolumesResponse.volumeSet
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeVolumesResponse.volumeSet
+
+        if not $.isEmptyObject result_set
+
+            if result_set.item.constructor == Array
+
+                vol_list = result_set.item
+
+            else
+                vol_list.push result_set.item
+
+        vol_list
 
     #private (parser DescribeVolumes return)
     parserDescribeVolumesReturn = ( result, return_code, param ) ->

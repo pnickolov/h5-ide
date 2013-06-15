@@ -14,7 +14,20 @@ define [ 'vpn_vo', 'result_vo', 'constant' ], ( vpn_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeVpnConnectionsResult = ( result ) ->
         #return
-        ($.xml2json ($.parseXML result[1])).DescribeVpnConnectionsResponse.vpnConnectionSet
+        vpn_list = []
+
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeVpnConnectionsResponse.vpnConnectionSet
+
+        if not $.isEmptyObject result_set
+
+            if result_set.item.constructor == Array
+
+                vpn_list = result_set.item
+
+            else
+                vpn_list.push result_set.item
+
+        vpn_list
 
     #private (parser DescribeVpnConnections return)
     parserDescribeVpnConnectionsReturn = ( result, return_code, param ) ->

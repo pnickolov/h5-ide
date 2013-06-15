@@ -14,7 +14,21 @@ define [ 'vpc_vo', 'result_vo', 'constant' ], ( vpc_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeVpcsResult = ( result ) ->
         #return
-        ($.xml2json ($.parseXML result[1])).DescribeVpcsResponse.vpcSet
+        vpc_list = []
+
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeVpcsResponse.vpcSet
+
+        if not $.isEmptyObject result_set
+
+            if result_set.item.constructor == Array
+
+                vpc_list = result_set.item
+
+            else
+                vpc_list.push result_set.item
+
+        vpc_list
+
 
     #private (parser DescribeVpcs return)
     parserDescribeVpcsReturn = ( result, return_code, param ) ->

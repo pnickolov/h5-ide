@@ -22,6 +22,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'constant' ], (Backbon
 
                 resource_source = result.resolved_data[current_region]
 
+                me.setResource resource_source
+                
                 null
 
 
@@ -32,6 +34,17 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'constant' ], (Backbon
             me = this
             null
 
+        setResource : ( resources ) ->
+
+            lists = {}
+
+            elb = resources.DescribeLoadBalancers.LoadBalancerDescriptions
+
+            if $.isEmptyObject elb then lists.ELB = 0 else if  elb.member.constructor == Array then lists.ELB = elb.member.length else lists.ELB = 1
+
+                
+            
+            console.error lists
 
         describeAWSResourcesService : ( region )->
 

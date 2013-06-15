@@ -178,17 +178,26 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
 
         instance_list.item = []
 
-        for item in ($.xml2json xml).DescribeInstancesResponse.reservationSet.item
-            if item.instancesSet.item.constructor == Array
+        reservationSet = ($.xml2json xml).DescribeInstancesResponse.reservationSet
 
-                for i in item.instancesSet.item
+        if not $.isEmptyObject reservationSet
 
-                    instance_list.item.push i
+            if reservationSet.item.constructor == Array
 
+                for item in reservationSet.item
+
+                    if item.instancesSet.item.constructor == Array
+
+                        for i in item.instancesSet.item
+
+                            instance_list.item.push i
+
+                    else
+
+                        instance_list.item.push item.instancesSet.item
             else
-
-                instance_list.item.push item.instancesSet.item
-
+            
+                instance_list.item.push reservationSet.item.instancesSet.item
 
         instance_list
 

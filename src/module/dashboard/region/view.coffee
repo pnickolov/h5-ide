@@ -19,7 +19,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
 
         render   : () ->
             console.log 'dashboard region render'
-            $( this.el ).html this.template()
+            $( this.el ).html this.template this.model.attributes
     }
 
     return GegionView

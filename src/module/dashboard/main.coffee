@@ -89,6 +89,23 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     view       = new View()
                     view.model = model
                     #listen
+
+
+                    model.on 'change:region_resource_list', () ->
+                        console.log 'dashboard_region_resource_list'
+                        #push event
+                        model.get 'region_resource_list'
+                        #refresh view
+                        view.render()
+
+                    model.on 'change:region_resource', () ->
+                        console.log 'dashboard_region_resources'
+                        #push event
+                        model.get 'region_resource'
+                        #refresh view
+                        view.render()
+
+
                     model.describeAWSResourcesService(region)
 
                     view.on 'RETURN_OVERVIEW_TAB', () ->

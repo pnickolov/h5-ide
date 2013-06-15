@@ -4,6 +4,9 @@
 
 define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/module/dashboard/region/template.html', 'event', 'MC' ], ( $, overview_tmpl, region_tmpl, ide_event, MC ) ->
 
+
+    current_region = null
+
     #private
     loadModule = () ->
         #add handlebars script
@@ -68,41 +71,35 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             model.describeAccountAttributesService()
 
             #listen
-            view.on 'RETURN_REGION_TAB', () ->
+            view.on 'RETURN_REGION_TAB', ( region ) ->
                 #set MC.data.dashboard_type
+
+                current_region = region
+
                 MC.data.dashboard_type = 'REGION_TAB'
                 #push event
                 ide_event.trigger ide_event.RETURN_REGION_TAB, null
                 #render
                 #view.render()
 
-        #load remote ./module/dashboard/region/view.js
-        require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal' ], ( View, model ) ->
+                #load remote ./module/dashboard/region/view.js
+                require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal' ], ( View, model ) ->
 
-            #view
-            view       = new View()
-            view.model = model
+                    #view
+                    view       = new View()
+                    view.model = model
+                    #listen
+                    model.resultListListener()
 
-            model.on 'change:cur_app_list', () ->
-                console.log 'dashboard_change:cur_app_list'
-                model.get 'cur_app_list'
-                view.render
-            model.on 'change:cur_stack_list', () ->
-                console.log 'dashboard_change:cur_stack_list'
-                model.get 'cur_app_list'
-                view.render
+                    model.describeAWSResourcesService(region)
 
-            # listen to navigation app_list and stack_list
-            model.resultListListener()
-
-            #listen
-            view.on 'RETURN_OVERVIEW_TAB', () ->
-                #set MC.data.dashboard_type
-                MC.data.dashboard_type = 'OVERVIEW_TAB'
-                #push event
-                ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
-            #render
-            view.render()
+                    view.on 'RETURN_OVERVIEW_TAB', () ->
+                        #set MC.data.dashboard_type
+                        MC.data.dashboard_type = 'OVERVIEW_TAB'
+                        #push event
+                        ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
+                    #render
+                    view.render()
 
     unLoadModule = () ->
         #view.remove()

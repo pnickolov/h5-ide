@@ -86,6 +86,16 @@ define [], () ->
 		OPS_STATE_FAILED		: "Failed"
 	}
 
+	AWS_RESOURCE = {
+		INSTANCE 		:	'EC2.Instance'
+		EIP				:	'EC2.EIP'
+		VOLUME			:	'EBS.Volume'
+		VPC				:	'VPC'
+		VPN				:	'VPC.VPN'
+		ELB				:	'ELB'
+	}
+
+
 	#private, recent items threshold
 	RECENT_NUM		= 4
 	RECENT_DAYS		= 30
@@ -100,5 +110,6 @@ define [], () ->
 	OPS_STATE			: OPS_STATE
 	RECENT_NUM			: RECENT_NUM
 	RECENT_DAYS			: RECENT_DAYS
+	AWS_RESOURCE	   : AWS_RESOURCE
 
 

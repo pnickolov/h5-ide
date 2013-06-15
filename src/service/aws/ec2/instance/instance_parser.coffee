@@ -177,7 +177,7 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
         instance_list = []
 
         reservationSet = ($.xml2json xml).DescribeInstancesResponse.reservationSet
-
+        
         if not $.isEmptyObject reservationSet
 
             if reservationSet.item.constructor == Array
@@ -201,7 +201,7 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
 
                 else
 
-                    instance_list.push it for it in reservationSet.item.instancesSet.item
+                    instance_list.push reservationSet.item.instancesSet.item
 
         instance_list
 

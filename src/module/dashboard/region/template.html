@@ -5,15 +5,15 @@
 		<a href="javascript:void(0)" title="Back to Global Overview" class="return-overview">&lt; Global Overview</a>
 		<div class="dashboard-header-right">
 			<div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 Classic and EC2 VPC.">
-				<span class="region-platform-classic" >Classic</span>
-				<span class="region-platform-vpc">VPC</span>
+				<span class="region-platform-classic" ></span>
+				<span class="region-platform-vpc"></span>
 			</div>
 			<a href="http://status.aws.amazon.com/#NA_block" class="aws-region-status" target="_blank" title="AWS Service Health">
 				<span><i class="status status-red"></i>0</span>
 				<span><i class="status status-yellow"></i>0</span>
 				<span><i class="icon-info-sign"></i>0</span>
 			</a>
-			<div class="refresh"><a href="javascript:void(0)" title="Refresh"><i class="icon-refresh"></i> 23 min ago</a></div>
+			<div class="refresh"><a href="javascript:void(0)" title="Refresh"><i class="icon-refresh"></i><span id="update-time">23 min ago</span></a></div>
 		</div>
 	</div>
 	<div class="grid">
@@ -189,7 +189,7 @@
 				<div class="widget-region-counter active">
 					<a href="#stat-table-instance">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>13<span class="label">Instance</span> 
+							<i class="icon-image icon-label"></i>13<span class="label">Instance</span>
 						</div>
 					</a>
 				</div>
@@ -198,7 +198,7 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-eip">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>4<span class="label">EIP</span> 
+							<i class="icon-image icon-label"></i>4<span class="label">EIP</span>
 							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 EIP not associated with instance.","description":"This would charge you extra expense."}'>1</span>
 						</div>
 					</a>
@@ -208,7 +208,7 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-ebs">
 						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>22<span class="label">EBS</span> 
+							<i class="icon-hdd icon-label"></i>22<span class="label">EBS</span>
 							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"2 EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>2</span>
 						</div>
 					</a>
@@ -218,7 +218,7 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-ebs-snap">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>31<span class="label">EBS Snapshot</span> 
+							<i class="icon-image icon-label"></i>31<span class="label">EBS Snapshot</span>
 						</div>
 					</a>
 				</div>
@@ -227,67 +227,67 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-vpc">
 						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>4<span class="label">VPC</span> 
+							<i class="icon-hdd icon-label"></i>4<span class="label">VPC</span>
 							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"You have reached limit of VPC in this region","description":"The max number of VPC in each region is 5."}'>!</span>
 						</div>
 					</a>
 				</div>
-				
+
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-vpn">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>3<span class="label">VPN</span> 
+							<i class="icon-image icon-label"></i>3<span class="label">VPN</span>
 							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 VPN not in use.","description":"VPN in stopped app is not in use but still charging money."}'>1</span>
 						</div>
 					</a>
-					
+
 				</div>
-				
+
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-elb">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>4<span class="label">ELB</span> 
+							<i class="icon-image icon-label"></i>4<span class="label">ELB</span>
 						</div>
 					</a>
 				</div>
-				
+
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-asg">
 						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>2<span class="label">Auto Scaling Group</span> 
-							
+							<i class="icon-hdd icon-label"></i>2<span class="label">Auto Scaling Group</span>
+
 						</div>
 					</a>
 				</div>
-				
+
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-rds">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>3<span class="label">RDS</span> 
+							<i class="icon-image icon-label"></i>3<span class="label">RDS</span>
 						</div>
 					</a>
-					
+
 				</div>
-				
+
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-rds-snap">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>4<span class="label">RDS Snapshot</span> 
+							<i class="icon-image icon-label"></i>4<span class="label">RDS Snapshot</span>
 							<!-- <span class="warning-counter">!</span> -->
 						</div>
 					</a>
 				</div>
-				
+
 			</div>
 		</div>
 		<div id="stat-table-instance" class="stat-table shown">
@@ -304,7 +304,7 @@
 								<th class="sortable" style="width:10%">Availability Zone</th>
 								<th class="sortable" style="width:12%">Estimated Cost</th>
 								<th style="width:5%">Detail</th>
-								
+
 							</tr>
 						</thead>
 						<tbody>

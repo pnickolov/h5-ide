@@ -2,23 +2,29 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'constant' ], (Backbone, $, _, aws_model, constant) ->
+define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constant' ], (Backbone, $, _, aws_model, vpc_model, constant) ->
 
-    current_region = null
+    current_region  = null
     resource_source = null
+    vpc_attrs_value = null
+    unmanaged_list  = null
+
+    update_timestamp = 0
 
     #private
     RegionModel = Backbone.Model.extend {
 
         defaults :
-            temp : null
             'resourse_list'         : null
-
+            'vpc_attrs'             : null
+            'unmanaged_list'        : null
 
         initialize : ->
             me = this
 
             aws_model.on 'AWS_RESOURCE_RETURN', ( result ) ->
+
+                console.log 'AWS_RESOURCE_RETURN'
 
                 resource_source = result.resolved_data[current_region]
 
@@ -26,12 +32,52 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'constant' ], (Backbon
 
 
             null
-            
+
         #temp
         temp : ->
             me = this
             null
 
+        #unmanaged_list
+        updateUnmanagedList : ()->
+
+
+            me = this
+
+            time_stamp = new Date().getTime() / 1000
+            unmanaged_list = {}
+            unmanaged_list.time_stamp = time_stamp
+
+            console.log 'unmanaged_list'
+
+            me.set 'unmanaged_list', unmanaged_list
+
+            null
+
+        #vpc_attrs
+        describeRegionAccountAttributesService : ( region )->
+
+            me = this
+
+            current_region = region
+
+            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ["supported-platforms"]
+
+            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
+
+                console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
+
+                regionAttrSet = result.resolved_data.accountAttributeSet.item.attributeValueSet.item
+                if $.type(regionAttrSet) == "array"
+                    vpc_attrs_value = { 'classic' : 'Classic', 'vpc' : 'VPC' }
+                else
+                    vpc_attrs_value = { 'vpc' : 'VPC' }
+
+                me.set 'vpc_attrs', vpc_attrs_value
+
+                null
+
+            null
 
         describeAWSResourcesService : ( region )->
 
@@ -49,6 +95,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'constant' ], (Backbon
             ]
 
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
+
+            me.updateUnmanagedList()
 
     }
 

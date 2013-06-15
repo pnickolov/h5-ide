@@ -174,9 +174,7 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
 
         rootNodeName = xml.documentElement.localName
 
-        instance_list = {}
-
-        instance_list.item = []
+        instance_list = []
 
         reservationSet = ($.xml2json xml).DescribeInstancesResponse.reservationSet
 
@@ -190,14 +188,20 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
 
                         for i in item.instancesSet.item
 
-                            instance_list.item.push i
+                            instance_list.push i
 
                     else
 
-                        instance_list.item.push item.instancesSet.item
+                        instance_list.push item.instancesSet.item
             else
-            
-                instance_list.item.push reservationSet.item.instancesSet.item
+
+                if reservationSet.item.instancesSet.item.constructor == Array
+
+                    instance_list = reservationSet.item.instancesSet.item
+
+                else
+
+                    instance_list.push it for it in reservationSet.item.instancesSet.item
 
         instance_list
 

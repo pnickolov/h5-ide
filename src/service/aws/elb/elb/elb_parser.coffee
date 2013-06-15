@@ -99,8 +99,20 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
     resolveDescribeLoadBalancersResult = ( result ) ->
         #resolve result
 
+        elb_list = []
         #return vo
-        ($.xml2json ($.parseXML result[1])).DescribeLoadBalancersResponse.DescribeLoadBalancersResult
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions.member
+
+        if not $.isEmptyObject result_set
+
+            if result_set.constructor == Array
+
+                elb_list = result_set
+
+            else
+                elb_list.push result_set
+
+        elb_list
 
     #private (parser DescribeLoadBalancers return)
     parserDescribeLoadBalancersReturn = ( result, return_code, param ) ->

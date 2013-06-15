@@ -8,16 +8,34 @@ define [ 'backbone', 'jquery', 'underscore' ], () ->
     RegionModel = Backbone.Model.extend {
 
         defaults :
-            temp : null
+            cur_app_list    : null
+            cur_stack_list  : null
 
         initialize : ->
             #
             null
 
-        #temp
-        temp : ->
+        resultListListener : ->
             me = this
+
+            #get service(model)
+            ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
+
+                # get current region's apps
+
+                null
+
+            ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
+
+                # get current region's stacks
+
+
+                null
             null
+
+        # get all app/stack
+
+        # parse a single app/stack
 
     }
 

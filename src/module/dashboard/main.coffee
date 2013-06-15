@@ -82,6 +82,19 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             #view
             view       = new View()
             view.model = model
+
+            model.on 'change:cur_app_list', () ->
+                console.log 'dashboard_change:cur_app_list'
+                model.get 'cur_app_list'
+                view.render
+            model.on 'change:cur_stack_list', () ->
+                console.log 'dashboard_change:cur_stack_list'
+                model.get 'cur_app_list'
+                view.render
+
+            # listen to navigation app_list and stack_list
+            model.resultListListener()
+
             #listen
             view.on 'RETURN_OVERVIEW_TAB', () ->
                 #set MC.data.dashboard_type

@@ -43,7 +43,14 @@ define [ 'vpc_vo', 'result_vo', 'constant' ], ( vpc_vo, result_vo, constant ) ->
         #TO-DO
 
         #return vo
-        ($.xml2json ($.parseXML result[1])).DescribeAccountAttributesResponse
+        res = {}
+
+        if (result[1] instanceof Object)
+            res[region] = ($.xml2json ($.parseXML node)).DescribeAccountAttributesResponse for region, node of result[1]
+        else
+            res = ($.xml2json ($.parseXML result[1])).DescribeAccountAttributesResponse
+
+        res
 
     #private (parser DescribeAccountAttributes return)
     parserDescribeAccountAttributesReturn = ( result, return_code, param ) ->
@@ -73,6 +80,7 @@ define [ 'vpc_vo', 'result_vo', 'constant' ], ( vpc_vo, result_vo, constant ) ->
 
         #return vo
         ($.xml2json ($.parseXML result[1])).DescribeVpcAttributeResponse
+
 
     #private (parser DescribeVpcAttribute return)
     parserDescribeVpcAttributeReturn = ( result, return_code, param ) ->

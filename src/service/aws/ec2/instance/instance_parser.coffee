@@ -171,9 +171,26 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
     resolveDescribeInstancesResult = ( result ) ->
         #resolve instance
         xml = $.parseXML result[1]
+
         rootNodeName = xml.documentElement.localName
 
-        ($.xml2json xml).DescribeInstancesResponse.reservationSet
+        instance_list = {}
+
+        instance_list.item = []
+
+        for item in ($.xml2json xml).DescribeInstancesResponse.reservationSet.item
+            if item.instancesSet.item.constructor == Array
+
+                for i in item.instancesSet.item
+
+                    instance_list.item.push i
+
+            else
+
+                instance_list.item.push item.instancesSet.item
+
+
+        instance_list
 
     #private (parser DescribeInstances return)
     parserDescribeInstancesReturn = ( result, return_code, param ) ->

@@ -4,9 +4,17 @@
 	<div class="dashboard-header clearfix">
 		<a href="javascript:void(0)" title="Back to Global Overview" class="return-overview">&lt; Global Overview</a>
 		<div class="dashboard-header-right">
-			<div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 Classic and EC2 VPC.">
-				<span class="region-platform-classic" ></span>
-				<span class="region-platform-vpc"></span>
+			{{#if vpc_attrs}}
+				{{#if vpc_attrs.classic}}
+				<div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 Classic and EC2 VPC.">
+				<span class="region-platform-classic" >{{ vpc_attrs.classic }}</span>
+				{{else}}
+				<div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 VPC.">
+				{{/if}}
+				<span class="region-platform-vpc">{{ vpc_attrs.vpc }}</span>
+			{{else}}
+			<div class="region-platform-wrap tooltip" data-tooltip="">
+			{{/if}}
 			</div>
 			<a href="http://status.aws.amazon.com/#NA_block" class="aws-region-status" target="_blank" title="AWS Service Health">
 				<span><i class="status status-red"></i>0</span>
@@ -109,6 +117,24 @@
 							</tr>
 						</thead>
 						<tbody>
+							{{#if unmanaged_list}}
+								{{#each unmanaged_list.items}}
+									{{#if data-bubble-data}}
+									<tr class="bubble" data-bubble-template="bubbleUnmanageSourceInfo" data-bubble-data='{{{data-bubble-data}}}'>
+									{{else}}
+									<tr>
+									{{/if}}
+									<td><i class="icon-{{type}}-mini icon-label"></i>{{type}}</td>
+									<td>{{name}}</td>
+									<td><i class="status status-{{status}} icon-label"></i>{{status}}</td>
+									<td>${{cost}}/h</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+							<tr rowspan="5"><td colspan="5">There is no unmanaged resource.</td></tr>
+							{{/if}}
+							<!-- unmanaged
 							<tr class="bubble" data-bubble-template="bubbleInstanceInfo" data-bubble-data='{"name":"Webserver1","id":"i-3413243","launch-time":"GMT 19:23 2013-5-1","ebs-optimized":"false","root-device-type":"EBS","Tenancy":"default"},"block-device":"/dev/sda1"'>
 								<td><i class="icon-server icon-label"></i>Instance</td>
 								<td>i-8493849384</td>
@@ -172,6 +198,7 @@
 								<td>$0.10/GB-m</td>
 								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 							</tr>
+							-->
 						</tbody>
 						</table>
 					</div>

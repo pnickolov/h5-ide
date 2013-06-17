@@ -9,6 +9,7 @@ define [ 'MC', 'stack_model', 'backbone' ], ( MC, stack_model ) ->
 
         defaults     :
             stack_region_name : null
+            app_region_name   : null
 
         refresh      : ( old, current ) ->
             console.log 'refresh'

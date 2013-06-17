@@ -59,7 +59,7 @@
 					<ul class="nav-region-list-items app-list">
 						{{#each region_name_group }}
 						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate" title="{{ name }}-[{{ state }}]">
+							<a href="javascript:void(0)" data-region-name="{{ region }}" class="truncate nav-truncate" title="{{ name }}-[{{ state }}]">
 								<i class="status status-{{ state }} icon-nav-status"></i>
 								{{ name }}
 							</a>
@@ -139,7 +139,7 @@
 						{{#each region_name_group }}
 
 						<li>
-							<a href="javascript:void(0)" data-region-name="{{ region }}"  class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>{{ name }}</a>
+							<a href="javascript:void(0)" data-region-name="{{ region }}" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>{{ name }}</a>
 						</li>
 
 						{{/each}}

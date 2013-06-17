@@ -20,8 +20,18 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
         openTab  : ( event, original_tab_id, tab_id ) ->
             console.log 'openTab'
-            #push event
-            if tab_id is 'dashboard' then this.trigger 'SWITCH_DASHBOARD', 'dashboard' else this.trigger 'SWITCH_STACK_TAB', original_tab_id, tab_id
+            console.log $( '#tab-bar-' + tab_id ).children().attr 'title'
+
+            if tab_id is 'dashboard'
+                this.trigger 'SWITCH_DASHBOARD', 'dashboard'
+                return
+
+            if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[1] is 'stack'
+                #push event
+                 this.trigger 'SWITCH_STACK_TAB', original_tab_id, tab_id
+            else
+                #push event
+                this.trigger 'SWITCH_APP_TAB', original_tab_id, tab_id
             null
 
         closeTab : ( event, tab_id ) ->

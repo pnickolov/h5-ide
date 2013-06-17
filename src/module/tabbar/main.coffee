@@ -43,10 +43,10 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 model.delete tab_id
 
             #listen open stack tab
-            ide_event.onLongListen ide_event.OPEN_STACK_TAB, ( target ) ->
-                console.log ide_event.OPEN_STACK_TAB + ' tab_name = ' + target
+            ide_event.onLongListen ide_event.OPEN_STACK_TAB, ( tab_name, region_name ) ->
+                console.log 'OPEN_STACK_TAB ' + ' tab_name = ' + tab_name + ' region_name = ' + region_name
                 #tabbar api
-                Tabbar.open target.toLowerCase(), target
+                Tabbar.open tab_name.toLowerCase(), tab_name
 
             #listen add empty tab
             ide_event.onLongListen ide_event.ADD_STACK_TAB, () ->

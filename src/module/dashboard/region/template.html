@@ -120,7 +120,7 @@
 							{{#if unmanaged_list}}
 								{{#each unmanaged_list.items}}
 									{{#if data-bubble-data}}
-									<tr class="bubble" data-bubble-template="bubbleUnmanageSourceInfo" data-bubble-data='{{{data-bubble-data}}}'>
+									<tr class="bubble" data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{data-bubble-data}}}'>
 									{{else}}
 									<tr>
 									{{/if}}
@@ -128,7 +128,7 @@
 									<td>{{name}}</td>
 									<td><i class="status status-{{status}} icon-label"></i>{{status}}</td>
 									<td>${{cost}}/h</td>
-									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
 							{{else}}

@@ -12,14 +12,14 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
     update_timestamp = 0
 
     popup_key_set = {
-        "bubble" : {
+        "unmanaged_bubble" : {
             "DescribeVolumes": {
                 "status": "status",
                 "title": "volumeId",
                 "sub_info":[
-                    { "key": [ "createTime" ], "show_key": "Create-Time"},
+                    { "key": [ "createTime" ], "show_key": "Create Time"},
                     { "key": [ "availabilityZone" ], "show_key": "AZ"},
-                    { "key": [ "attachmentSet", "item", "status" ], "show_key": "Attachment-Status"}
+                    { "key": [ "attachmentSet", "item", "status" ], "show_key": "Attachment Status"}
                 ]},
             "DescribeInstances": {},
             "DescribeCustomerGateways": {
@@ -38,7 +38,22 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             "DescribeVpcs": {}
         },
         "detail" : {
-            "DescribeVolumes": {},
+            "DescribeVolumes": {
+                "title": "volumeId",
+                "sub_info":[
+                    { "key": [ "volumeId" ], "show_key": "Volume ID"},
+                    { "key": [ "attachmentSet", "item", "device"  ], "show_key": "Device Name"},
+                    { "key": [ "snapshotId" ], "show_key": "Snapshot ID"},
+                    { "key": [ "createTime" ], "show_key": "Create Time"},
+                    { "key": [ "attachmentSet", "item", "attachTime"  ], "show_key": "Attach Name"},
+                    { "key": [ "attachmentSet", "item", "deleteOnTermination" ], "show_key": "Delete On Termination"},
+                    { "key": [ "attachmentSet", "item", "instanceId" ], "show_key": "Instance ID"},
+                    { "key": [ "status" ], "show_key": "status"},
+                    { "key": [ "attachmentSet", "item", "status" ], "show_key": "Attachment Status"},
+                    { "key": [ "availabilityZone" ], "show_key": "Availability Zone"},
+                    { "key": [ "volumeType" ], "show_key": "Volume Type"},
+                    { "key": [ "Iops" ], "show_key": "Iops"}
+                ]},
             "DescribeInstances": {},
             "DescribeVpnConnections": {},
             "DescribeVpcs": {}
@@ -232,7 +247,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                         name = if value.tagSet then value.tagSet.name else null
                         switch cur_tag
                             when "DescribeVolumes"
-                                unmanaged_list.items.push { 'type': "Volume", 'name': (if name then name else value.volumeId), 'status': value.status, 'cost': 0.00, 'data-bubble-data': ( me.parseSourceValue cur_tag, value, "bubble", name ), 'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail" ) }
+                                unmanaged_list.items.push { 'type': "Volume", 'name': (if name then name else value.volumeId), 'status': value.status, 'cost': 0.00, 'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ), 'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name) }
                             when "DescribeInstances"
                                 unmanaged_list.items.push { 'type': "Instance", 'name': (if name then name else value.instanceId), 'status': value.instanceState.name, 'cost': 0.00, 'data-modal-data': '' }
                             when "DescribeVpnConnections"
@@ -287,13 +302,18 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             parse_result   = ''
             parse_sub_info = ''
 
-            keys_to_parse = popup_key_set[keys][type]
+
+            keys_type = keys
+            if popup_key_set[keys]
+                keys_to_parse = popup_key_set[keys][type]
+            else
+                keys_to_parse = popup_key_set['unmanaged_bubble'][type]
 
             if keys_to_parse.status && value_to_parse[ keys_to_parse.status ]
                 parse_result += '"status":"' + value_to_parse[ keys_to_parse.status ] + '", '
 
             if keys_to_parse.title
-                if keys is 'bubble'
+                if keys is 'unmanaged_bubble' or 'bubble'
                     if name
                         parse_result += '"title":"' + name
                         if value_to_parse[ keys_to_parse.title ]
@@ -304,6 +324,18 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                             parse_result += '"title":"'
                             parse_result += value_to_parse[ keys_to_parse.title ]
                             parse_result += '", '
+                else if keys is 'detail'
+                    if name
+                        parse_result += '"title":"' + name
+                        if value_to_parse[ keys_to_parse.title ]
+                            parse_result += '(' + value_to_parse[ keys_to_parse.title ]
+                            parse_result += ')", '
+                    else
+                        if value_to_parse[ keys_to_parse.title ]
+                            parse_result += '"title":"'
+                            parse_result += value_to_parse[ keys_to_parse.title ]
+                            parse_result += '", '
+
 
             _.map keys_to_parse.sub_info, ( value ) ->
                 key_array = value.key
@@ -318,7 +350,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                             cur_value
 
                 if cur_value
-                    parse_sub_info += ( '"<dt>' + show_key + '</dt><dd>' + cur_value + '</dd>", ')
+                    parse_sub_info += ( '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ')
 
                 null
 

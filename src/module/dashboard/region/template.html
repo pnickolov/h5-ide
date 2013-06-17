@@ -313,10 +313,10 @@
 								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ host }}<span class="resource-id">( {{ instanceId }} )</span></td>
 								<td><i class="status status-green icon-label"></i>{{ instanceState.name }}</td>
 								<td>{{ launchTime }}</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","property1":"blahblahblah"}'>{{ imageId }}</a></td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
 								<td>{{ placement.availabilityZone}}</td>
 						<!--		<td>N/A</td> -->
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceInstanceDetail" data-modal-data='{"title":"{{instanceId}}","dnsName":"{{dnsName}}", "architecture":"{{architecture}}","ebsOptimized":"{{ebsOptimized}},"groupSet":"{{groupSet}},"hypervisor":"{{hypervisor}}","imageId":"{{imageId}}"},"instanceState":"instanceState.name","instanceType":"{{instanceType}},"ipAddress":"{{ipAddress}}","kernelId":"{{kernelId}}","keyName":"{{keyName}}","launchTime":"{{launchTime}}","monitoring":"{{monitoring.state}}","networkInterfaceSet":"{{networkInterfaceSet}}","availabilityZone":"{{placement.availabilityZone}}","privateDnsName":"{{privateDnsName}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}"' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 							</tr>
 							{{/each}}
 						</tbody>

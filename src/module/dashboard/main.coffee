@@ -105,6 +105,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         #refresh view
                         view.render()
 
+                    model.on 'REGION_RESOURCE_CHANGED', ()->
+
+                        view.render()
 
                     model.describeAWSResourcesService(region)
 

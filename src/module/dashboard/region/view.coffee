@@ -12,6 +12,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
 
         events   :
             'click .return-overview'          : 'returnOverviewClick'
+            'click .stat-table-instance'      : 'showInstanceTable'
+
+        showInstanceTable : ( target )->
+            console.log target
+            console.error 'click instance'
 
         returnOverviewClick : ( target ) ->
             console.log 'returnOverviewClick'

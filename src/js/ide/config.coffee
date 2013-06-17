@@ -70,6 +70,9 @@ require.config {
 		'aws_model'    : 'model/aws/aws_model'
 		'ami_model'    : 'model/aws/ec2/ami_model'
 		'elb_model'    : 'model/aws/elb/elb_model'
+		'dhcp_model'   : 'model/aws/vpc/dhcp_model'
+		'customergateway_model'    : 'model/aws/vpc/customergateway_model'
+		'vpngateway_model'    : 'model/aws/vpc/vpngateway_model'
 
 		#result_vo
 		'result_vo'    : 'service/result_vo'

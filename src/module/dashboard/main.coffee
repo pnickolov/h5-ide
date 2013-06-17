@@ -88,6 +88,22 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     #view
                     view       = new View()
                     view.model = model
+
+                    model.on 'change:vpc_attrs', () ->
+                        console.log 'dashboard_change:vpc_attrs'
+                        model.get 'vpc_attrs'
+                        view.render()
+
+                    model.on 'change:unmanaged_list', () ->
+                        console.log 'dashboard_change:unmanaged_list'
+                        unmanaged_list = model.get 'unmanaged_list'
+                        view.render( unmanaged_list.time_stamp )
+
+                    model.on 'change:status_list', () ->
+                        console.log 'dashboard_change:status_list'
+                        unmanaged_list = model.get 'status_list'
+                        view.render()
+
                     #listen
 
 
@@ -110,14 +126,20 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         view.render()
 
                     model.describeAWSResourcesService(region)
+                    model.describeRegionAccountAttributesService region
+                    model.describeAWSStatusService region
 
                     view.on 'RETURN_OVERVIEW_TAB', () ->
                         #set MC.data.dashboard_type
                         MC.data.dashboard_type = 'OVERVIEW_TAB'
                         #push event
                         ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
+
+                    view.on 'REFRESH_REGION_BTN', () ->
+                        model.describeAWSResourcesService region
+
                     #render
-                    view.render()
+                    #view.render()
 
 
     unLoadModule = () ->

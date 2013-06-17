@@ -8,7 +8,11 @@
       'Meteor': 'vender/meteor/meteor',
       'MC': 'lib/MC.core',
       'constant': 'lib/constant',
-      'WS': 'lib/websocket'
+      'WS': 'lib/websocket',
+      'session_vo': 'service/session/session_vo',
+      'session_parser': 'service/session/session_parser',
+      'session_service': 'service/session/session_service',
+      'result_vo': 'service/result_vo'
     },
     shim: {
       'jquery': {
@@ -22,7 +26,8 @@
         exports: '_'
       },
       'Meteor': {
-        deps: ['underscore']
+        deps: ['underscore'],
+        exports: 'Meteor'
       },
       'WS': {
         deps: ['Meteor', 'underscore'],

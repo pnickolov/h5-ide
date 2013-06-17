@@ -8,7 +8,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
     #region map
     region_counts       = []
     region_aws_list     = []
-    region_classic_vpc_list   = []
     region_classic_vpc_result = []
 
     result_list = { 'total_app' : 0, 'total_stack' : 0, 'total_aws' : 0, 'plural_app' : '', 'plural_stack' : '', 'plural_aws' : '', 'region_infos': [] }
@@ -17,7 +16,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
     total_app   = 0
     total_stack = 0
     total_aws   = 0
-    region_attr_count   = 0
 
     OverviewModel = Backbone.Model.extend {
 
@@ -33,28 +31,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
         initialize : ->
 
             me = this
-
-            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
-
-                console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
-
-                regionAttrSet = result.resolved_data.accountAttributeSet.item.attributeValueSet.item
-                cur_key = result.param[3]
-                if region_classic_vpc_list[ cur_key ] is null
-                    region_attr_count += 1
-                    if regionAttrSet[ 0 ].attributeValue is 'VPC'
-                        region_classic_vpc_list[ cur_key ] = { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ cur_key ] }
-                    else
-                        region_classic_vpc_list[ cur_key ] = { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ cur_key ] }
-                    if region_attr_count < 8
-                        region_attr_key = constant.REGION_KEYS[ region_attr_count ]
-                        me.getRegionAccountAttribute( region_attr_key )
-                    else
-                        _.map constant.REGION_KEYS, ( value ) ->
-                            region_classic_vpc_result.push region_classic_vpc_list[value]
-                            null
-                        me.set 'region_classic_list', region_classic_vpc_result
-                null
 
             null
 
@@ -181,22 +157,28 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             me = this
 
-            region_attr_keys          = []
             region_classic_vpc_result = []
-            region_attr_count         = 0
-            _.map constant.REGION_KEYS, ( value ) ->
-                region_classic_vpc_list[ value ] = null
-                null
-
-            me.getRegionAccountAttribute( constant.REGION_KEYS[ region_attr_count ] )
-
-            null
-
-        #get region account attribute
-        getRegionAccountAttribute : ( cur_key )->
 
             #get service(model)
-            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), cur_key,  ["supported-platforms"]
+            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
+
+            vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
+
+                console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
+
+                regionAttrSet = result.resolved_data
+
+                _.map constant.REGION_KEYS, ( value ) ->
+                    cur_attr = regionAttrSet[ value ].accountAttributeSet.item.attributeValueSet.item
+
+                    if $.type(cur_attr) == "array"
+                        region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ] }
+                    else
+                        region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ] }
+                    null
+
+                me.set 'region_classic_list', region_classic_vpc_result
+                null
 
             null
 

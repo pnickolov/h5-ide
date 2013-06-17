@@ -68,6 +68,8 @@ require.config {
 		'ec2_model'    : 'model/aws/ec2/ec2_model'
 		'vpc_model'    : 'model/aws/vpc/vpc_model'
 		'aws_model'    : 'model/aws/aws_model'
+		'ami_model'    : 'model/aws/ec2/ami_model'
+		'elb_model'    : 'model/aws/elb/elb_model'
 
 		#result_vo
 		'result_vo'    : 'service/result_vo'

@@ -2,7 +2,7 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'constant' ], (Backbone, $, _, aws_model, ami_model, constant) ->
+define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_model','constant' ], (Backbone, $, _, aws_model, ami_model, elb_model, constant) ->
 
     current_region = null
     resource_source = null
@@ -67,6 +67,23 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'constant
 
             # elb
             lists.ELB = resources.DescribeLoadBalancers.length
+
+            for elb, i in resources.DescribeLoadBalancers
+
+                me._set_app_property elb, resources, i, 'DescribeLoadBalancers'
+
+                if $.isEmptyObject elb.Instances
+
+                    elb.state = '0 of 0 instances in service'
+
+                else
+
+                    elb_model.DescribeInstanceHealth { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName
+
+ 
+
+
+
 
             # eip
             lists.EIP = resources.DescribeAddresses.length
@@ -149,15 +166,17 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'constant
                         resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item.instanceId]
                         
             # vpc
-            lists.VPC = resources.DescribeVpcs.length            
+            lists.VPC = resources.DescribeVpcs.length
 
             me._set_app_property vpc, resources, i, 'DescribeVpcs' for vpc, i in resources.DescribeVpcs
 
             # vpn
             lists.VPN = resources.DescribeVpnConnections.length
 
-            
+            me._set_app_property vpn, resources, i, 'DescribeVpnConnections' for vpn, i in resources.DescribeVpnConnections
 
+
+            # ami
             ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
 
             ami_model.on 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
@@ -174,11 +193,30 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'constant
 
                     ins.image = region_ami_list[ins.imageId]
 
-                console.error resources
                 me.set 'region_resource', resources
 
                 null
 
+            elb_model.on 'ELB__DESC_INS_HLT_RETURN', ( result ) ->
+
+                console.error result
+
+                total = result.resolved_data.length
+
+                health = 0
+
+                (health++ if instance.state == "InService") for instance in result.resolved_data
+
+                for elb, i in resources.DescribeLoadBalancers
+
+                    if elb.LoadBalancerName == result.param[4]
+
+                        resources.DescribeLoadBalancers[i].state = "#{health} of #{total} instances in service"
+
+                console.error resources
+                me.set 'region_resource', resources
+
+                null
             console.error resources
             me.set 'region_resource', resources
             me.set 'region_resource_list', lists

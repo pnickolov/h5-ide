@@ -294,7 +294,7 @@
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
-						<table class="table table-region-stat" id="region-stat-table-{resource-name}">
+						<table class="table table-region-stat" id="region-stat-table-instance">
 						<thead>
 							<tr>
 								<th class="sortable" style="width:30%">Instance Name/ID</th>
@@ -328,7 +328,7 @@
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
-						<table class="table table-region-stat" id="region-stat-table-{resource-name}">
+						<table class="table table-region-stat" id="region-stat-table-eip">
 						<thead>
 							<tr>
 								<th class="sortable" style="width:40%">IP</th>
@@ -353,7 +353,7 @@
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
-						<table class="table table-region-stat" id="region-stat-table-{resource-name}">
+						<table class="table table-region-stat" id="region-stat-table-ebs">
 						<thead>
 							<tr>
 								<th class="sortable" style="width:20%">Name/ID</th>
@@ -384,7 +384,7 @@
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
-						<table class="table table-region-stat" id="region-stat-table-{resource-name}">
+						<table class="table table-region-stat" id="region-stat-table-vpc">
 						<thead>
 							<tr>
 								<th class="sortable" style="width:25%">Name/ID</th>
@@ -401,6 +401,64 @@
 								<td><i class="status status-green icon-label"></i>{{ state }}</td>
 								<td>{{ cidrBlock }}</td>
 								<td>{{ dhcpOptionsId }}</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							{{/each}}
+						</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-vpn" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-vpn">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:20%">Status</th>
+								<th class="sortable" style="width:25%">Virtual Private Gateway</th>
+								<th class="sortable" style="width:20%">Customer Gateway</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+							{{#each region_resource.DescribeVpnConnections }}
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ vpnConnectionId }}</td>
+								<td><i class="status status-green icon-label"></i>{{ state }}</td>
+								<td>{{ vpnGatewayId }}</td>
+								<td>{{ customerGatewayId }}</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							{{/each}}
+						</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-elb" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-elb">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:20%">Create time</th>
+								<th class="sortable" style="width:25%">Availability Zone</th>
+								<th class="sortable" style="width:20%">Status</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+							{{#each region_resource.DescribeLoadBalancers }}
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ DNSName }}</td>
+								<td><i class="status status-green icon-label"></i>{{ CreatedTime }}</td>
+								<td>{{ AvailabilityZones.member }}</td>
+								<td>{{ state }}</td>
 								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 							</tr>
 							{{/each}}

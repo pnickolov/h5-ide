@@ -14,9 +14,21 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeInstanceHealthResult = ( result ) ->
         #resolve result
-
+        instance_list = []
         #return vo
-        ($.xml2json ($.parseXML result[1])).DescribeInstanceHealthResponse.DescribeInstanceHealthResult.InstanceStates
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeInstanceHealthResponse.DescribeInstanceHealthResult.InstanceStates.member
+
+
+        if result_set isnt undefined and not $.isEmptyObject result_set
+
+            if result_set.constructor == Array
+
+                instance_list = result_set
+
+            else
+                instance_list.push result_set
+
+        instance_list
 
     #private (parser DescribeInstanceHealth return)
     parserDescribeInstanceHealthReturn = ( result, return_code, param ) ->

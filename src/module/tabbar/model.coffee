@@ -21,8 +21,8 @@ define [ 'MC', 'stack_model', 'backbone' ], ( MC, stack_model ) ->
                 #call service
                 console.log 'call new stack'
                 console.log this.get 'stack_region_name'
-                #push new_stack event
-                this.trigger 'NEW_STACK', current
+                #push open_stack event
+                this.trigger 'OPEN_STACK', current
             else
                 #read from MC.tab[ current ]
                 console.log 'read old stack from MC.tab'

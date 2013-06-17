@@ -40,9 +40,9 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 #model
                 model.delete tab_id
 
-            #listen new_stack
-            model.on 'NEW_STACK', ( result ) ->
-                console.log 'NEW_STACK'
+            #listen open_stack
+            model.on 'OPEN_STACK', ( result ) ->
+                console.log 'OPEN_STACK'
                 #call getStackInfo
                 model.once 'GET_STACK_COMPLETE', ( result ) ->
                     console.log 'GET_STACK_COMPLETE'

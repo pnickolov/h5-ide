@@ -7,20 +7,20 @@
     unmanaged_list = null;
     update_timestamp = 0;
     popup_key_set = {
-      "bubble": {
+      "unmanaged_bubble": {
         "DescribeVolumes": {
           "status": "status",
           "title": "volumeId",
           "sub_info": [
             {
               "key": ["createTime"],
-              "show_key": "Create-Time"
+              "show_key": "Create Time"
             }, {
               "key": ["availabilityZone"],
               "show_key": "AZ"
             }, {
               "key": ["attachmentSet", "item", "status"],
-              "show_key": "Attachment-Status"
+              "show_key": "Attachment Status"
             }
           ]
         },
@@ -29,7 +29,48 @@
         "DescribeVpcs": {}
       },
       "detail": {
-        "DescribeVolumes": {},
+        "DescribeVolumes": {
+          "title": "volumeId",
+          "sub_info": [
+            {
+              "key": ["volumeId"],
+              "show_key": "Volume ID"
+            }, {
+              "key": ["attachmentSet", "item", "device"],
+              "show_key": "Device Name"
+            }, {
+              "key": ["snapshotId"],
+              "show_key": "Snapshot ID"
+            }, {
+              "key": ["createTime"],
+              "show_key": "Create Time"
+            }, {
+              "key": ["attachmentSet", "item", "attachTime"],
+              "show_key": "Attach Name"
+            }, {
+              "key": ["attachmentSet", "item", "deleteOnTermination"],
+              "show_key": "Delete On Termination"
+            }, {
+              "key": ["attachmentSet", "item", "instanceId"],
+              "show_key": "Instance ID"
+            }, {
+              "key": ["status"],
+              "show_key": "status"
+            }, {
+              "key": ["attachmentSet", "item", "status"],
+              "show_key": "Attachment Status"
+            }, {
+              "key": ["availabilityZone"],
+              "show_key": "Availability Zone"
+            }, {
+              "key": ["volumeType"],
+              "show_key": "Volume Type"
+            }, {
+              "key": ["Iops"],
+              "show_key": "Iops"
+            }
+          ]
+        },
         "DescribeInstances": {},
         "DescribeVpnConnections": {},
         "DescribeVpcs": {}
@@ -83,8 +124,8 @@
                     'name': (name ? name : value.volumeId),
                     'status': value.status,
                     'cost': 0.00,
-                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "bubble", name),
-                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail")
+                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
                   });
                   break;
                 case "DescribeInstances":
@@ -160,22 +201,41 @@
         return true;
       },
       parseSourceValue: function(type, value, keys, name) {
-        var keys_to_parse, parse_result, parse_sub_info, value_to_parse;
+        var keys_to_parse, keys_type, parse_result, parse_sub_info, value_to_parse;
         keys_to_parse = null;
         value_to_parse = value;
         parse_result = '';
         parse_sub_info = '';
-        keys_to_parse = popup_key_set[keys][type];
+        keys_type = keys;
+        if (popup_key_set[keys]) {
+          keys_to_parse = popup_key_set[keys][type];
+        } else {
+          keys_to_parse = popup_key_set['unmanaged_bubble'][type];
+        }
         if (keys_to_parse.status && value_to_parse[keys_to_parse.status]) {
           parse_result += '"status":"' + value_to_parse[keys_to_parse.status] + '", ';
         }
         if (keys_to_parse.title) {
-          if (keys === 'bubble') {
+          if (keys === 'unmanaged_bubble' || 'bubble') {
             if (name) {
               parse_result += '"title":"' + name;
               if (value_to_parse[keys_to_parse.title]) {
                 parse_result += '-' + value_to_parse[keys_to_parse.title];
                 parse_result += '", ';
+              }
+            } else {
+              if (value_to_parse[keys_to_parse.title]) {
+                parse_result += '"title":"';
+                parse_result += value_to_parse[keys_to_parse.title];
+                parse_result += '", ';
+              }
+            }
+          } else if (keys === 'detail') {
+            if (name) {
+              parse_result += '"title":"' + name;
+              if (value_to_parse[keys_to_parse.title]) {
+                parse_result += '(' + value_to_parse[keys_to_parse.title];
+                parse_result += ')", ';
               }
             } else {
               if (value_to_parse[keys_to_parse.title]) {
@@ -201,7 +261,7 @@
             }
           });
           if (cur_value) {
-            parse_sub_info += '"<dt>' + show_key + '</dt><dd>' + cur_value + '</dd>", ';
+            parse_sub_info += '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ';
           }
           return null;
         });

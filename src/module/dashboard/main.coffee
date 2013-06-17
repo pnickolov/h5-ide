@@ -7,6 +7,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
     current_region = null
 
+    app_list   = null
+    stack_list = null
+
     #private
     loadModule = () ->
         #add handlebars script
@@ -65,6 +68,16 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 model.get 'resent_stoped_apps'
                 view.render()
 
+            model.on 'change:app_list', () ->
+                console.log 'dashboard_change:app_list'
+                app_list = model.get 'app_list'
+                null
+
+            model.on 'change:stack_list', () ->
+                console.log 'dashboard_change:stack_list'
+                stack_list = model.get 'stack_list'
+                null
+
             #model
             model.resultListListener()
             model.emptyListListener()
@@ -79,8 +92,19 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 MC.data.dashboard_type = 'REGION_TAB'
                 #push event
                 ide_event.trigger ide_event.RETURN_REGION_TAB, null
-                #render
-                #view.render()
+
+                current_app = null
+                # get current region's apps/stacks
+                _.map app_list, (value) ->
+                    if region == value.region_name
+                        current_app = value.items
+                    null
+
+                current_stack = null
+                _.map stack_list, (value) ->
+                    if region == value.region_name
+                        current_stack = value.items
+                    null
 
                 #load remote ./module/dashboard/region/view.js
                 require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal' ], ( View, model ) ->
@@ -89,17 +113,27 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     view       = new View()
                     view.model = model
                     #listen
-                    model.resultListListener()
-
                     model.describeAWSResourcesService(region)
+
+                    model.on 'change:cur_app_list', () ->
+                        console.log 'dashboard_region_change:cur_app_list'
+                        model.get 'cur_app_list'
+                        view.render()
+
+                    model.on 'change:cur_stack_list', () ->
+                        console.log 'dashboard_region_change:cur_stack_list'
+                        model.get 'cur_stack_list'
+                        view.render()
 
                     view.on 'RETURN_OVERVIEW_TAB', () ->
                         #set MC.data.dashboard_type
                         MC.data.dashboard_type = 'OVERVIEW_TAB'
                         #push event
                         ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
-                    #render
-                    view.render()
+                        #render
+                        view.render()
+
+                    model.getItemList(current_app, current_stack)
 
     unLoadModule = () ->
         #view.remove()

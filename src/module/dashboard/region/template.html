@@ -23,57 +23,43 @@
 			<div class="dashboard-widget widget-region-stat" id="dashboard-region-stat-overall">
 				<ul class="dashboard-region-stat-tab-head" class="grid">
 					<li class="col-1-2 active">
-						<a href="#region-stat-app"><i class="icon-browser icon-label"></i><span class="counter">34</span> Apps</a>
+						<a href="#region-stat-app"><i class="icon-browser icon-label"></i><span class="counter">{{ cur_app_list.length }}</span> Apps</a>
 					</li>
 					<li class="col-1-2">
-						<a href="#region-stat-stack"><i class="icon-layers icon-label"></i><span class="counter">3</span> Stacks</a>
+						<a href="#region-stat-stack"><i class="icon-layers icon-label"></i><span class="counter">{{ cur_stack_list.length }}</span> Stacks</a>
 						<button href="javascript:void(0)" class="btn btn-primary btn-region-dashboard" title="Create New Stack">+</button>
 					</li>
 				</ul>
 				<div class="dashboard-widget-body scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
+						{{#if cur_app_list}}
 						<div class="thumbnail-container shown" id="region-stat-app">
+
+							{{#each cur_app_list}}
 							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"play","title":"Resource Name","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
 								<div class="action-thumbnail">
-										<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
-										<!-- <a class="tooltip" data-tooltip="Stop App"><i class="icon-stop"></i></a> -->
-										<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
-									</div>
+									{{#if state=="Stopped"}}
+									<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
+									{{#else if state=="Running"}}
+									<a class="tooltip" data-tooltip="Stop App"><i class="icon-stop"></i></a>
+									{{/if}}
+
+									<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
+								</div>
 								<a href="" class="thumbnail-body">
-									<div class="thumbnail-name truncate"><i class="icon-stop"></i>App-0000000001-name</div>
+									{{#if state=="Stopped"}}
+									<div class="thumbnail-name truncate"><i class="icon-stop"></i>{{name}}</div>
+									{{else if state=="Running"}}
+									<div class="thumbnail-name truncate"><i class="icon-play"></i>{{name}}</div>
+									{{/if}}
 								</a>
 							</div>
-							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"stop","title":"Resource Name","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
-								<div class="action-thumbnail">
-										<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
-										<!-- <a class="tooltip" data-tooltip="Stop App"><i class="icon-stop"></i></a> -->
-										<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
-									</div>
-								<a href="" class="thumbnail-body bubble">
-									<div class="thumbnail-name truncate"><i class="icon-stop"></i>App-0000000001-name</div>
-								</a>
-							</div>
-							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"play","title":"Resource Name","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
-								<div class="action-thumbnail">
-										<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
-										<!-- <a class="tooltip" data-tooltip="Stop App"><i class="icon-stop"></i></a> -->
-										<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
-									</div>
-								<a href="" class="thumbnail-body bubble">
-									<div class="thumbnail-name truncate"><i class="icon-stop"></i>App-0000000001-name</div>
-								</a>
-							</div>
-							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"play","title":"Resource Name","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
-								<div class="action-thumbnail">
-										<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
-										<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
-									</div>
-								<a href="" class="thumbnail-body bubble">
-									<div class="thumbnail-name truncate"><i class="icon-stop"></i>App-0000000001-name</div>
-								</a>
-							</div>
+							{{/each}}
+
 						</div>
+						{{/if}}
+
 						<div class="thumbnail-container" id="region-stat-stack">
 							<div class="item-thumbnail-wrap" style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
 								<div class="action-thumbnail">
@@ -189,7 +175,7 @@
 				<div class="widget-region-counter active">
 					<a href="#stat-table-instance">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>13<span class="label">Instance</span> 
+							<i class="icon-image icon-label"></i>13<span class="label">Instance</span>
 						</div>
 					</a>
 				</div>
@@ -198,7 +184,7 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-eip">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>4<span class="label">EIP</span> 
+							<i class="icon-image icon-label"></i>4<span class="label">EIP</span>
 							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 EIP not associated with instance.","description":"This would charge you extra expense."}'>1</span>
 						</div>
 					</a>
@@ -208,7 +194,7 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-ebs">
 						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>22<span class="label">EBS</span> 
+							<i class="icon-hdd icon-label"></i>22<span class="label">EBS</span>
 							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"2 EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>2</span>
 						</div>
 					</a>
@@ -218,7 +204,7 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-ebs-snap">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>31<span class="label">EBS Snapshot</span> 
+							<i class="icon-image icon-label"></i>31<span class="label">EBS Snapshot</span>
 						</div>
 					</a>
 				</div>
@@ -227,67 +213,67 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-vpc">
 						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>4<span class="label">VPC</span> 
+							<i class="icon-hdd icon-label"></i>4<span class="label">VPC</span>
 							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"You have reached limit of VPC in this region","description":"The max number of VPC in each region is 5."}'>!</span>
 						</div>
 					</a>
 				</div>
-				
+
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-vpn">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>3<span class="label">VPN</span> 
+							<i class="icon-image icon-label"></i>3<span class="label">VPN</span>
 							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 VPN not in use.","description":"VPN in stopped app is not in use but still charging money."}'>1</span>
 						</div>
 					</a>
-					
+
 				</div>
-				
+
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-elb">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>4<span class="label">ELB</span> 
+							<i class="icon-image icon-label"></i>4<span class="label">ELB</span>
 						</div>
 					</a>
 				</div>
-				
+
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-asg">
 						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>2<span class="label">Auto Scaling Group</span> 
-							
+							<i class="icon-hdd icon-label"></i>2<span class="label">Auto Scaling Group</span>
+
 						</div>
 					</a>
 				</div>
-				
+
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-rds">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>3<span class="label">RDS</span> 
+							<i class="icon-image icon-label"></i>3<span class="label">RDS</span>
 						</div>
 					</a>
-					
+
 				</div>
-				
+
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-rds-snap">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>4<span class="label">RDS Snapshot</span> 
+							<i class="icon-image icon-label"></i>4<span class="label">RDS Snapshot</span>
 							<!-- <span class="warning-counter">!</span> -->
 						</div>
 					</a>
 				</div>
-				
+
 			</div>
 		</div>
 		<div id="stat-table-instance" class="stat-table shown">
@@ -304,7 +290,7 @@
 								<th class="sortable" style="width:10%">Availability Zone</th>
 								<th class="sortable" style="width:12%">Estimated Cost</th>
 								<th style="width:5%">Detail</th>
-								
+
 							</tr>
 						</thead>
 						<tbody>

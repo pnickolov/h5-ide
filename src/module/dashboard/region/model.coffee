@@ -2,7 +2,7 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'constant' ], (Backbone, $, _, ide_event, aws_model, constant) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'constant' ], (MC, Backbone, $, _, ide_event, aws_model, constant) ->
 
     current_region = null
     resource_source = null
@@ -45,12 +45,48 @@ define [ 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'constant' ],
                 null
             null
 
-        # get all app/stack
-        getItemList : ( items ) ->
+        # get current region's app/stack list
+        getItemList : ( app_list, stack_list ) ->
+            me = this
 
-            items[current_region]
+            cur_app_list = []
+            _.map app_list, (value) ->
+                item = me.parseItem(value, 'app')
+                if item
+                    cur_app_list.push item
 
-        # parse a single app/stack
+                    null
+
+            cur_stack_list = []
+            _.map stack_list, (value) ->
+                item = me.parseItem(value, 'stack')
+                if item
+                    cur_stack_list.push item
+
+            if cur_app_list
+                me.set 'cur_app_list', cur_app_list
+            if cur_stack_list
+                me.set 'cur_stack_list', cur_stack_list
+
+        parseItem : (item, flag) ->
+            id          = item.id
+            name        = item.name
+            state       = item.state
+            create_time = item.time_create
+
+            end_time    = 0
+
+            if flag == 'app'
+                date = new Date()
+                date.setTime(item.time_create*1000)
+                start_time  = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
+                #if state == 'Stopped' or state == 'Stopping'
+                date.setTime(item.time_update*1000)
+                stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
+
+                return { 'id' : id, 'name' : name, 'start_time' : start_time, 'stop_time' : stop_time, 'state' : state }
+            else if flag == 'stack'
+                return { 'id' : id, 'name' : name, 'state' : state}
 
         setResource : ( resources ) ->
 

@@ -28,7 +28,7 @@ define [ 'MC', 'stack_model', 'backbone' ], ( MC, stack_model ) ->
                 console.log 'read old stack from MC.tab'
                 console.log MC.tab[ current ]
                 #push old_stack event
-                this.trigger 'OLD_STACK', null
+                this.trigger 'OLD_STACK', current
 
             console.log MC.tab
 

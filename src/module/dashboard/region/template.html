@@ -17,9 +17,15 @@
 			{{/if}}
 			</div>
 			<a href="http://status.aws.amazon.com/#NA_block" class="aws-region-status" target="_blank" title="AWS Service Health">
+				{{#if status_list}}
+				<span><i class="status status-red"></i>{{status_list.red}}</span>
+				<span><i class="status status-yellow"></i>{{status_list.yellow}}</span>
+				<span><i class="icon-info-sign"></i>{{status_list.info}}</span>
+				{{else}}
 				<span><i class="status status-red"></i>0</span>
 				<span><i class="status status-yellow"></i>0</span>
 				<span><i class="icon-info-sign"></i>0</span>
+				{{/if}}
 			</a>
 			<div class="refresh"><a href="javascript:void(0)" title="Refresh"><i class="icon-refresh"></i><span id="update-time">23 min ago</span></a></div>
 		</div>

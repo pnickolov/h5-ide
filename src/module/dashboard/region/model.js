@@ -1,15 +1,16 @@
 (function() {
   define(['backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model', 'constant'], function(Backbone, $, _, aws_model, vpc_model, constant) {
-    var RegionModel, current_region, model, popup_key_set, resource_source, unmanaged_list, update_timestamp, vpc_attrs_value;
+    var RegionModel, current_region, model, popup_key_set, resource_source, status_list, unmanaged_list, update_timestamp, vpc_attrs_value;
     current_region = null;
     resource_source = null;
     vpc_attrs_value = null;
     unmanaged_list = null;
+    status_list = null;
     update_timestamp = 0;
     popup_key_set = {
       "unmanaged_bubble": {
         "DescribeVolumes": {
-          "status": "status",
+          "status": ["status"],
           "title": "volumeId",
           "sub_info": [
             {
@@ -17,16 +18,58 @@
               "show_key": "Create Time"
             }, {
               "key": ["availabilityZone"],
-              "show_key": "AZ"
+              "show_key": "Availability Zone"
             }, {
               "key": ["attachmentSet", "item", "status"],
               "show_key": "Attachment Status"
             }
           ]
         },
-        "DescribeInstances": {},
-        "DescribeVpnConnections": {},
-        "DescribeVpcs": {}
+        "DescribeInstances": {
+          "status": ["instanceState", "name"],
+          "title": "instanceId",
+          "sub_info": [
+            {
+              "key": ["launchTime"],
+              "show_key": "Launch Time"
+            }, {
+              "key": ["placement", "availabilityZone"],
+              "show_key": "Availability Zone"
+            }
+          ]
+        },
+        "DescribeVpnConnections": {
+          "status": ["state"],
+          "title": "vpnConnectionId",
+          "sub_info": [
+            {
+              "key": ["vpnConnectionId"],
+              "show_key": "VPC"
+            }, {
+              "key": ["type"],
+              "show_key": "Type"
+            }, {
+              "key": ["routes", "item", "source"],
+              "show_key": "Routing"
+            }
+          ]
+        },
+        "DescribeVpcs": {
+          "status": ["state"],
+          "title": "vpcId",
+          "sub_info": [
+            {
+              "key": ["cidrBlock"],
+              "show_key": "CIDR"
+            }, {
+              "key": ["isDefault"],
+              "show_key": "Default VPC:"
+            }, {
+              "key": ["instanceTenancy"],
+              "show_key": "Tenacy"
+            }
+          ]
+        }
       },
       "detail": {
         "DescribeVolumes": {
@@ -71,9 +114,124 @@
             }
           ]
         },
-        "DescribeInstances": {},
-        "DescribeVpnConnections": {},
-        "DescribeVpcs": {}
+        "DescribeInstances": {
+          "title": "instanceId",
+          "sub_info": [
+            {
+              "key": ["instanceState", "name"],
+              "show_key": "Status"
+            }, {
+              "key": ["keyName"],
+              "show_key": "Key Pair Name"
+            }, {
+              "key": ["monitoring", "state"],
+              "show_key": "Monitoring"
+            }, {
+              "key": ["ipAddress"],
+              "show_key": "Primary Public IP"
+            }, {
+              "key": ["dnsName"],
+              "show_key": "Public DNS"
+            }, {
+              "key": ["privateIpAddress"],
+              "show_key": "Primary Private IP"
+            }, {
+              "key": ["privateDnsName"],
+              "show_key": "Private DNS"
+            }, {
+              "key": ["launchTime"],
+              "show_key": "Launch Time"
+            }, {
+              "key": ["placement", "availabilityZone"],
+              "show_key": "Zone"
+            }, {
+              "key": ["amiLaunchIndex"],
+              "show_key": "AMI Launch Index"
+            }, {
+              "key": ["blockDeviceMapping", "item", "deleteOnTermination"],
+              "show_key": "Termination Protection"
+            }, {
+              "key": ["blockDeviceMapping", "item", "status"],
+              "show_key": "Shutdown Behavior"
+            }, {
+              "key": ["instanceType"],
+              "show_key": "Instance Type"
+            }, {
+              "key": ["ebsOptimized"],
+              "show_key": "EBS Optimized"
+            }, {
+              "key": ["rootDeviceType"],
+              "show_key": "Root Device Type"
+            }, {
+              "key": ["placement", "tenancy"],
+              "show_key": "Tenancy"
+            }, {
+              "key": ["networkInterfaceSet"],
+              "show_key": "Network Interface"
+            }, {
+              "key": ["blockDeviceMapping", "item", "deviceName"],
+              "show_key": "Block Devices"
+            }, {
+              "key": ["groupSet", "item", "groupName"],
+              "show_key": "Security Groups"
+            }
+          ]
+        },
+        "DescribeVpnConnections": {
+          "title": "vpnConnectionId",
+          "sub_info": [
+            {
+              "key": ["state"],
+              "show_key": "State"
+            }, {
+              "key": ["vpnGatewayId"],
+              "show_key": "Virtual Private Gateway"
+            }, {
+              "key": ["customerGatewayId"],
+              "show_key": "Customer Gateway"
+            }, {
+              "key": ["type"],
+              "show_key": "Type"
+            }, {
+              "key": ["routes", "item", "source"],
+              "show_key": "Routing"
+            }
+          ],
+          "detail_table": [
+            {
+              "key": ["vgwTelemetry", "item"],
+              "show_key": "VPN Tunnel",
+              "count_name": "tunnel"
+            }, {
+              "key": ["outsideIpAddress"],
+              "show_key": "IP Address"
+            }, {
+              "key": ["status"],
+              "show_key": "Status"
+            }, {
+              "key": ["lastStatusChange"],
+              "show_key": "Last Changed"
+            }, {
+              "key": ["statusMessage"],
+              "show_key": "Detail"
+            }
+          ]
+        },
+        "DescribeVpcs": {
+          "title": "vpcId",
+          "sub_info": [
+            {
+              "key": ["state"],
+              "show_key": "SvpcId"
+            }, {
+              "key": ["cidrBlock"],
+              "show_key": "CIDR"
+            }, {
+              "key": ["instanceTenancy"],
+              "show_key": "Tenancy"
+            }
+          ]
+        }
       }
     };
     RegionModel = Backbone.Model.extend({
@@ -119,6 +277,13 @@
               name = value.tagSet ? value.tagSet.name : null;
               switch (cur_tag) {
                 case "DescribeVolumes":
+                  if (!name) {
+                    if (value.attachmentSet) {
+                      if (value.attachmentSet.item) {
+                        name = value.attachmentSet.item.device;
+                      }
+                    }
+                  }
                   unmanaged_list.items.push({
                     'type': "Volume",
                     'name': (name ? name : value.volumeId),
@@ -134,7 +299,8 @@
                     'name': (name ? name : value.instanceId),
                     'status': value.instanceState.name,
                     'cost': 0.00,
-                    'data-modal-data': ''
+                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
                   });
                   break;
                 case "DescribeVpnConnections":
@@ -143,7 +309,8 @@
                     'name': (name ? name : value.vpnConnectionId),
                     'status': value.state,
                     'cost': 0.00,
-                    'data-modal-data': ''
+                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
                   });
                   break;
                 case "DescribeVpcs":
@@ -152,7 +319,8 @@
                     'name': (name ? name : value.vpcId),
                     'status': value.state,
                     'cost': 0.00,
-                    'data-modal-data': ''
+                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
                   });
                   break;
               }
@@ -201,19 +369,33 @@
         return true;
       },
       parseSourceValue: function(type, value, keys, name) {
-        var keys_to_parse, keys_type, parse_result, parse_sub_info, value_to_parse;
+        var cur_state, keys_to_parse, keys_type, parse_result, parse_sub_info, state_key, status_keys, value_to_parse;
         keys_to_parse = null;
         value_to_parse = value;
         parse_result = '';
         parse_sub_info = '';
         keys_type = keys;
         if (popup_key_set[keys]) {
-          keys_to_parse = popup_key_set[keys][type];
+          keys_to_parse = popup_key_set[keys_type][type];
         } else {
-          keys_to_parse = popup_key_set['unmanaged_bubble'][type];
+          keys_type = 'unmanaged_bubble';
+          keys_to_parse = popup_key_set[keys_type][type];
         }
-        if (keys_to_parse.status && value_to_parse[keys_to_parse.status]) {
-          parse_result += '"status":"' + value_to_parse[keys_to_parse.status] + '", ';
+        status_keys = keys_to_parse.status;
+        if (status_keys) {
+          state_key = status_keys[0];
+          cur_state = value_to_parse[state_key];
+          _.map(status_keys, function(value, key) {
+            if (cur_state) {
+              if (key > 0) {
+                cur_state = cur_state.value;
+                return cur_state;
+              }
+            }
+          });
+          if (cur_state) {
+            parse_result += '"status":"' + cur_state + '", ';
+          }
         }
         if (keys_to_parse.title) {
           if (keys === 'unmanaged_bubble' || 'bubble') {
@@ -306,16 +488,37 @@
       },
       describeAWSStatusService: function(region) {
         var me;
-        console.log('AWS_STATUS_RETURN');
         me = this;
         current_region = region;
         aws_model.status({
           sender: this
         }, $.cookie('usercode'), $.cookie('session_id'), region, null);
         return aws_model.once('AWS_STATUS_RETURN', function(result) {
+          var result_list;
           console.log('AWS_STATUS_RETURN');
-          console.log(result);
-          me.set('status_list', '');
+          status_list = {
+            red: 0,
+            yellow: 0,
+            info: 0
+          };
+          console.log(result.resolved_data);
+          result_list = result.resolved_data.current;
+          _.map(result_list, function(value) {
+            switch (value.status) {
+              case '1':
+                status_list.red += 1;
+                return null;
+              case '2':
+                status_list.yellow += 1;
+                return null;
+              case '3':
+                status_list.info += 1;
+                return null;
+              default:
+                return null;
+            }
+          });
+          me.set('status_list', status_list);
           return null;
         });
       }

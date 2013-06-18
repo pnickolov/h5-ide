@@ -2,7 +2,7 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'constant' ], (MC, Backbone, $, _, ide_event, aws_model, constant) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'constant', 'stack_model' ], (MC, Backbone, $, _, ide_event, aws_model, constant, stack_model) ->
 
     current_region = null
     resource_source = null
@@ -99,6 +99,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
                 bubble_data += '","cost":"$0/month"}'
 
             return { 'id' : id, 'name' : name, 'create_time':create_time, 'isrunning' : isrunning, 'bubble_data' : bubble_data}
+
+        duplicateStack : (region, stack_id, new_name, stack_name) ->
+            me = this
+
+            # check duplicate stack name
+
+            # get service, ( src, username, session_id, region_name, stack_id, new_name, stack_name=null )
+            stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
 
         setResource : ( resources ) ->
 

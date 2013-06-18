@@ -31,6 +31,8 @@ define [ 'underscore', 'backbone' ], () ->
         SWITCH_STACK_TAB    : 'SWITCH_STACK_TAB'
         SWITCH_DASHBOARD    : 'SWITCH_DASHBOARD'
 
+        TERMINATE_APP_TAB   : 'TERMINATE_APP_TAB'
+
         #result app stack region empty_region list
         RESULT_APP_LIST     : 'RESULT_APP_LIST'
         RESULT_STACK_LIST   : 'RESULT_STACK_LIST'

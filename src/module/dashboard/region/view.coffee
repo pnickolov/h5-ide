@@ -22,12 +22,25 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $( this.el ).html this.template this.model.attributes
 
         runAppClick : ( event ) ->
-            console.log 'dashboard click to run app'
-            ide_event.trigger ide_event.CLICK_RUN_APP, 'app', event.currentTarget.id
+            console.log 'dashboard region run app'
+            #ide_event.trigger ide_event.OPEN_APP_TAB, app_name, region_name, app_id
 
-        addStackTab : ( ) ->
-            console.log 'dashboard click to add stack'
-            ide_event.trigger ide_event.ADD_STACK_TAB, region_name
+        stopAppClick : ( ) ->
+            console.log 'dashboard region stop app'
+
+        terminateAppClick : ( ) ->
+            console.log 'dashboard region terminal app'
+            #ide_event.trigger ide_event.TERMINATE_APP_TAB, app_name, region_name, app_id
+
+        duplicateStackClick : ( ) ->
+            console.log 'dashboard region duplicate stack'
+
+        deleteStackClick : ( ) ->
+            console.log 'dashboard region delete stack'
+
+        createStackClick : ( ) ->
+            console.log 'dashboard region create stack'
+            #ide_event.trigger ide_event.ADD_STACK_TAB, region_name
 
     }
 

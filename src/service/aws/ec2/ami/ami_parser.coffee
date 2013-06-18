@@ -107,7 +107,7 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeImagesResult = ( result ) ->
         #resolve result
-
+        console.error ($.xml2json ($.parseXML result[1]))
         #return vo
         ($.xml2json ($.parseXML result[1])).DescribeImagesResponse.imagesSet
 

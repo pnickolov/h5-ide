@@ -21,7 +21,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "availabilityZone" ], "show_key": "AZ"},
                     { "key": [ "attachmentSet", "item", "status" ], "show_key": "Attachment Status"}
                 ]},
-            "DescribeInstances": {},
             "DescribeCustomerGateways": {
                 "title"     :   "customerGatewayId"
                 "status"    :   "state"
@@ -35,6 +34,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     ]
                 },
+            "DescribeVpnGateways"   :   {
+                "title"     :   "vpnGatewayId"
+                "status"    :   "state"
+                "sub_info"  :   [
+
+                        { "key": [ "vpnGatewayId" ], "show_key": "VPNGatewayId"},
+                        { "key": [ "type"], "show_key": "Type"},
+                    ]                
+            }
             "DescribeVpcs": {}
         },
         "detail" : {
@@ -108,7 +116,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 null
 
             elb_model.on 'ELB__DESC_INS_HLT_RETURN', ( result ) ->
-
+                console.error result
                 total = result.resolved_data.length
 
                 health = 0
@@ -177,7 +185,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     if vgw_set.constructor == Object
 
-                        vpn.vgw = vgw_set
+                        vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw_set, "bubble", null
 
                     else
 
@@ -185,7 +193,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                             if vpn.vpnGatewayId == vgw.vpnGatewayId
 
-                                vpn.vgw = vgw
+                                vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw, "bubble", null
 
                 me.reRenderRegionResource()
 
@@ -511,15 +519,16 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 vgw_set.push vpn.vpnGatewayId
 
             # get cgw detail
-
-            customergateway_model.DescribeCustomerGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set
+            if cgw_set
+                customergateway_model.DescribeCustomerGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set
 
             # get vgw detail
-
-            vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
+            if vgw_set
+                vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
 
             # ami
-            ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
+            if ami_list
+                ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
 
            
             console.error resources

@@ -64,12 +64,12 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 console.log 'OLD_STACK'
 
             #listen open stack tab
-            ide_event.onLongListen ide_event.OPEN_STACK_TAB, ( tab_name, region_name ) ->
-                console.log 'OPEN_STACK_TAB ' + ' tab_name = ' + tab_name + ' region_name = ' + region_name
+            ide_event.onLongListen ide_event.OPEN_STACK_TAB, ( tab_name, region_name, stack_id ) ->
+                console.log 'OPEN_STACK_TAB ' + ' tab_name = ' + tab_name + ', region_name = ' + region_name + ', stack_id = ' + stack_id
                 #set vo
                 model.set 'stack_region_name', region_name
                 #tabbar api
-                Tabbar.open tab_name.toLowerCase(), tab_name + ' - stack'
+                Tabbar.open stack_id.toLowerCase(), tab_name + ' - stack'
                 null
 
             #listen add empty tab

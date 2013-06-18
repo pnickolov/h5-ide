@@ -3,15 +3,6 @@
 define [], () ->
 
 	#private
-	MESSAGE_E = {
-		MESSAGE_E_SESSION  : "This session has expired, please log in again"
-		MESSAGE_E_EXTERNAL : "Sorry, there seems to be a problem with AWS"
-		MESSAGE_E_ERROR    : "Sorry, we're experiencing techincal difficulty"
-		MESSAGE_E_UNKNOWN  : "Something is wrong. Please contact support@madeiracloud.com"
-		MESSAGE_E_PARAM    : "Parameter error!"
-	}
-
-	#private
 	AWS_RESOURCE_TYPE = {
 		AWS_EC2_AvailabilityZone  : "AWS.EC2.AvailabilityZone"
 		AWS_EC2_Instance          : "AWS.EC2.Instance"
@@ -58,6 +49,54 @@ define [], () ->
 		AWS_VPC_NetworkAcl        : "acl"
 		AWS_IAM_ServerCertificate : "iam"
 	}
+
+	#private
+	AWS_PORT_NAME = {
+		#AWS.EC2.Instance
+		INSTANCE_SG_IN   : "instance_sg_in"  #left
+		INSTANCE_SG_OUT  : "instance_sg_out" #right top
+		INSTANCE_ATTACH  : "instance_attach" #right bottom
+
+		#AWS.ELB
+		ELB_SG_OUT       : "elb_sg_out"     #top
+		ELB_ATTACH       : "elb_attach"     #bottom
+
+		#AWS.VPC.Subnet
+		SUBNET_ATTACH    : "subnet_attach"  #left
+		SUBNET_ACL       : "subnet_acl"     #right
+
+		#AWS.VPC.RouteTable
+		RTB_SRC_TOP      : "rtb_src_top"
+		RTB_SRC_BOTTOM   : "rtb_src_bottom"
+		RTB_TGT_LEFT     : "rtb_tgt_left"
+		RTB_TGT_RIGHT    : "rtb_tgt_right"
+
+		#AWS.VPC.InternetGateway
+		IGW_TGT          : "igw_tgt"  #right
+
+		#AWS.VPC.VPNGateway
+		VGW_TGT          : "vgw_tgt"  #left
+		VGW_VPN          : "vgw_vpn"  #right
+
+		#AWS.VPC.CustomGateway
+		CGW_VPN          : "cgw_vpn"
+
+		#AWS.VPC.NetworkInterface
+		ENI_ATTACH       : "eni_attach"
+		ENI_SG_IN        : "eni_sg_in"
+		ENI_SG_OUT       : "eni_sg_out"
+
+	}
+
+	#private
+	MESSAGE_E = {
+		MESSAGE_E_SESSION  : "This session has expired, please log in again"
+		MESSAGE_E_EXTERNAL : "Sorry, there seems to be a problem with AWS"
+		MESSAGE_E_ERROR    : "Sorry, we're experiencing techincal difficulty"
+		MESSAGE_E_UNKNOWN  : "Something is wrong. Please contact support@madeiracloud.com"
+		MESSAGE_E_PARAM    : "Parameter error!"
+	}
+
 
 	#private
 	REGION_KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
@@ -139,6 +178,9 @@ define [], () ->
 	RECENT_DAYS		= 30
 
 	#public
+	AWS_RESOURCE_TYPE       : AWS_RESOURCE_TYPE
+	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
+	AWS_PORT_NAME       : AWS_PORT_NAME
 	REGION_KEYS			: REGION_KEYS
 	REGION_SHORT_LABEL	: REGION_SHORT_LABEL
 	REGION_LABEL		: REGION_LABEL

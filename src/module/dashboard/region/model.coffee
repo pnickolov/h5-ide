@@ -41,7 +41,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                         { "key": [ "vpnGatewayId" ], "show_key": "VPNGatewayId"},
                         { "key": [ "type"], "show_key": "Type"},
-                    ]                
+                    ]
             }
             "DescribeVpcs": {}
         },
@@ -136,12 +136,14 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             dhcp_model.on 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', ( result ) ->
 
                 dhcp_set = result.resolved_data.item
-
+                console.error dhcp_set
                 for vpc in resource_source.DescribeVpcs
 
                     if dhcp_set.constructor == Object
 
-                        vpc.dhcp = dhcp_set
+                        if vpc.dhcpOptionsId == dhcp_set.dhcpOptionsId
+
+                            vpc.dhcp = me._genDhcp dhcp_set
 
                     else
 
@@ -149,7 +151,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                             if vpc.dhcpOptionsId == dhcp.dhcpOptionsId
 
-                                vpc.dhcp = dhcp
+                                vpc.dhcp = me._genDhcp dhcp
 
                 me.reRenderRegionResource()
 
@@ -203,6 +205,49 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
         temp : ->
             me = this
             null
+
+        _genDhcp: (dhcp) ->
+
+            me = this
+
+            popup_key_set.unmanaged_bubble.DescribeDhcpOptions = {}
+
+            popup_key_set.unmanaged_bubble.DescribeDhcpOptions.title = "dhcpOptionsId"
+
+            popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info = []
+
+            sub_info = popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info
+
+            if dhcp.dhcpConfigurationSet.item.constructor == Array
+
+                for item, i in dhcp.dhcpConfigurationSet.item
+
+                    if item.valueSet.item.constructor == Array
+
+                        for it, j in item.valueSet.item
+
+                            sub_info.push { "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', 'item', j, 'value'], "show_key": item.key }
+
+                    else
+
+                        sub_info.push { "key": [ 'dhcpConfigurationSet', 'item', i, 'valueSet', 'item', 'value'], "show_key": item.key }
+
+            else
+                item = dhcp.dhcpConfigurationSet.item
+
+                if item.valueSet.item.constructor == Array
+
+                    for it, i in item.valueSet.item
+
+                        sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', j, 'value'], "show_key": item.key }
+
+                else
+
+                    sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', 'value'], "show_key": item.key }
+
+            me.parseSourceValue 'DescribeDhcpOptions', dhcp, "bubble", null
+
+                #sub_info.push { "key": [ dhcp.dhcpConfigurationSet.item.value], "show_key": dhcp.dhcpConfigurationSet.item.key }
 
         reRenderRegionResource : () ->
 
@@ -354,7 +399,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 _.map key_array, ( value, key ) ->
                     if cur_value
                         if key > 0
-                            cur_value = cur_value.value
+                            cur_value = cur_value[value]
                             cur_value
 
                 if cur_value
@@ -501,7 +546,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 dhcp_set.push vpc.dhcpOptionsId if vpc.dhcpOptionsId not in dhcp_set
 
             # get dhcp detail
-            dhcp_model.DescribeDhcpOptions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set
+            if dhcp_set
+                dhcp_model.DescribeDhcpOptions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set
 
             # vpn
             lists.VPN = resources.DescribeVpnConnections.length

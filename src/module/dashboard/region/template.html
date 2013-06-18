@@ -430,7 +430,7 @@
 								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ vpcId }}</td>
 								<td><i class="status status-green icon-label"></i>{{ state }}</td>
 								<td>{{ cidrBlock }}</td>
-								<td>{{ dhcpOptionsId }}</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{dhcp}}}'>{{ dhcpOptionsId }}</a></td>
 								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 							</tr>
 							{{/each}}

@@ -2,7 +2,7 @@
 #  View Mode for navigation
 #############################
 
-define [ 'MC', 'stack_model', 'backbone' ], ( MC, stack_model ) ->
+define [ 'MC', 'stack_model', 'app_model', 'backbone' ], ( MC, stack_model, app_model ) ->
 
     #private
     TabbarModel = Backbone.Model.extend {
@@ -11,7 +11,7 @@ define [ 'MC', 'stack_model', 'backbone' ], ( MC, stack_model ) ->
             stack_region_name : null
             app_region_name   : null
 
-        refresh      : ( old, current ) ->
+        refresh      : ( old, current, type ) ->
             console.log 'refresh'
             #save
             #if old isnt 'dashboard' then MC.tab[ old ] = { snapshot : null, data : null }
@@ -21,15 +21,14 @@ define [ 'MC', 'stack_model', 'backbone' ], ( MC, stack_model ) ->
             if MC.tab[ current ] is undefined
                 #call service
                 console.log 'call new stack'
-                console.log this.get 'stack_region_name'
-                #push open_stack event
-                this.trigger 'OPEN_STACK', current
+                #push event
+                if type is 'stack' then this.trigger 'OPEN_STACK', current else this.trigger 'OPEN_APP', current
             else
                 #read from MC.tab[ current ]
                 console.log 'read old stack from MC.tab'
                 console.log MC.tab[ current ]
-                #push old_stack event
-                this.trigger 'OLD_STACK', current
+                #push event
+                if type is 'stack' then this.trigger 'OLD_STACK', current else this.trigger 'OLD_APP', current
 
             console.log MC.tab
 
@@ -47,6 +46,16 @@ define [ 'MC', 'stack_model', 'backbone' ], ( MC, stack_model ) ->
                 console.log result
                 me.trigger 'GET_STACK_COMPLETE', result
             stack_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'stack_region_name' ), [ stack_id ]
+
+        getAppInfo : ( app_id ) ->
+            console.log 'getAppInfo'
+            #get this
+            me = this
+            app_model.once 'APP_INFO_RETURN', ( result ) ->
+                console.log 'APP_INFO_RETURN'
+                console.log result
+                me.trigger 'GET_APP_COMPLETE', result
+            app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'app_region_name' ), [ app_id ]
 
     }
 

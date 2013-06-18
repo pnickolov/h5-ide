@@ -17,8 +17,8 @@ define [ 'MC', 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'das
 		#listen RETURN_OVERVIEW_TAB and RETURN_REGION_TAB
 		ide_event.onLongListen ide_event.RETURN_OVERVIEW_TAB, () -> view.showOverviewTab()
 		ide_event.onLongListen ide_event.RETURN_REGION_TAB,   () -> view.showRegionTab()
-		#listen SWITCH_STACK_TAB and SWITCH_DASHBOARD
-		ide_event.onLongListen ide_event.SWITCH_STACK_TAB,    () -> view.showStackTab()
+		#listen SWITCH_TAB and SWITCH_DASHBOARD
+		ide_event.onLongListen ide_event.SWITCH_TAB,          () -> view.showTab()
 		ide_event.onLongListen ide_event.SWITCH_DASHBOARD,    () -> view.showDashbaordTab()
 
 		#load header

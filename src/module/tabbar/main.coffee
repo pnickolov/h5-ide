@@ -31,7 +31,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 console.log 'original_tab_id = ' + original_tab_id
                 console.log 'tab_id          = ' + tab_id
                 #call refresh
-                model.refresh original_tab_id, tab_id
+                model.refresh original_tab_id, tab_id, 'stack'
 
             #listen
             view.on 'SWITCH_APP_TAB', ( original_tab_id, tab_id ) ->
@@ -39,7 +39,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 console.log 'original_tab_id = ' + original_tab_id
                 console.log 'tab_id          = ' + tab_id
                 #call refresh
-                #model.refresh original_tab_id, tab_id
+                model.refresh original_tab_id, tab_id, 'app'
 
             #listen
             view.on 'CLOSE_STACK_TAB', ( tab_id ) ->
@@ -55,13 +55,28 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 model.once 'GET_STACK_COMPLETE', ( result ) ->
                     console.log 'GET_STACK_COMPLETE'
                     #push event
-                    ide_event.trigger ide_event.SWITCH_STACK_TAB, null
+                    ide_event.trigger ide_event.SWITCH_TAB, null
                 #
                 model.getStackInfo result
 
             #listen old_stack
             model.on 'OLD_STACK', ( result ) ->
                 console.log 'OLD_STACK'
+
+            #listen open_app
+            model.on 'OPEN_APP', ( result ) ->
+                console.log 'OPEN_APP'
+                #call getAppInfo
+                model.once 'GET_APP_COMPLETE', ( result ) ->
+                    console.log 'GET_APP_COMPLETE'
+                    #push event
+                    ide_event.trigger ide_event.SWITCH_TAB, null
+                #
+                model.getAppInfo result
+
+            #listen old_stack
+            model.on 'OLD_APP', ( result ) ->
+                console.log 'OLD_APP'
 
             #listen open stack tab
             ide_event.onLongListen ide_event.OPEN_STACK_TAB, ( tab_name, region_name, stack_id ) ->
@@ -82,12 +97,12 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 null
 
             #listen add app tab
-            ide_event.onLongListen ide_event.OPEN_APP_TAB, ( tab_name, region_name ) ->
-                console.log 'OPEN_APP_TAB ' + ' tab_name = ' + tab_name + ' region_name = ' + region_name
+            ide_event.onLongListen ide_event.OPEN_APP_TAB, ( tab_name, region_name, app_id ) ->
+                console.log 'OPEN_APP_TAB ' + ' tab_name = ' + tab_name + ', region_name = ' + region_name + ', app_id = ' + app_id
                 #set vo
                 model.set 'app_region_name', region_name
                 #tabbar api
-                Tabbar.open tab_name.toLowerCase(), tab_name + ' - app'
+                Tabbar.open app_id.toLowerCase(), tab_name + ' - app'
                 null
 
             #render

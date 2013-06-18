@@ -44,7 +44,7 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             main     = $ '#main'
             tab_name = $( target ).text()
 
-            ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name
+            ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name, $( target ).attr 'data-region-name'
 
             nav.addClass 'collapsed'
             nav.removeClass 'scroll-wrap'

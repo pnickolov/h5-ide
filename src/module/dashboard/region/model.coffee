@@ -8,17 +8,18 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
     resource_source = null
     vpc_attrs_value = null
     unmanaged_list  = null
+    status_list     = null
 
     update_timestamp = 0
 
     popup_key_set = {
         "unmanaged_bubble" : {
             "DescribeVolumes": {
-                "status": "status",
+                "status": [ "status" ],
                 "title": "volumeId",
                 "sub_info":[
                     { "key": [ "createTime" ], "show_key": "Create Time"},
-                    { "key": [ "availabilityZone" ], "show_key": "AZ"},
+                    { "key": [ "availabilityZone" ], "show_key": "Availability Zone"},
                     { "key": [ "attachmentSet", "item", "status" ], "show_key": "Attachment Status"}
                 ]},
             "DescribeCustomerGateways": {
@@ -44,6 +45,31 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     ]
             }
             "DescribeVpcs": {}
+
+            "DescribeInstances": {
+                "status": [ "instanceState", "name" ],
+                "title": "instanceId",
+                "sub_info":[
+                    { "key": [ "launchTime" ], "show_key": "Launch Time"},
+                    { "key": [ "placement", "availabilityZone" ], "show_key": "Availability Zone"}
+                ]},
+            "DescribeVpnConnections": {
+                "status": [ "state" ],
+                "title": "vpnConnectionId",
+                "sub_info":[
+                    { "key": [ "vpnConnectionId" ], "show_key": "VPC"},
+                    { "key": [ "type" ], "show_key": "Type"},
+                    { "key": [ "routes", "item", "source" ], "show_key": "Routing"}
+                ]},
+            "DescribeVpcs": {
+                "status": [ "state" ],
+                "title": "vpcId",
+                "sub_info":[
+                    { "key": [ "cidrBlock" ], "show_key": "CIDR"},
+                    { "key": [ "isDefault" ], "show_key": "Default VPC:"},
+                    { "key": [ "instanceTenancy" ], "show_key": "Tenacy"}
+                ]}
+
         },
         "detail" : {
             "DescribeVolumes": {
@@ -62,9 +88,52 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "volumeType" ], "show_key": "Volume Type"},
                     { "key": [ "Iops" ], "show_key": "Iops"}
                 ]},
-            "DescribeInstances": {},
-            "DescribeVpnConnections": {},
-            "DescribeVpcs": {}
+            "DescribeInstances": {
+                "title": "instanceId",
+                "sub_info":[
+                    { "key": [ "instanceState", "name" ], "show_key": "Status"},
+                    { "key": [ "keyName" ], "show_key": "Key Pair Name"},
+                    { "key": [ "monitoring", "state" ], "show_key": "Monitoring"},
+                    { "key": [ "ipAddress" ], "show_key": "Primary Public IP"},
+                    { "key": [ "dnsName" ], "show_key": "Public DNS"},
+                    { "key": [ "privateIpAddress" ], "show_key": "Primary Private IP"},
+                    { "key": [ "privateDnsName" ], "show_key": "Private DNS"},
+                    { "key": [ "launchTime" ], "show_key": "Launch Time"},
+                    { "key": [ "placement", "availabilityZone" ], "show_key": "Zone"},
+                    { "key": [ "amiLaunchIndex" ], "show_key": "AMI Launch Index"},
+                    { "key": [ "blockDeviceMapping", "item", "deleteOnTermination"  ], "show_key": "Termination Protection"},
+                    { "key": [ "blockDeviceMapping", "item", "status" ], "show_key": "Shutdown Behavior"},
+                    { "key": [ "instanceType" ], "show_key": "Instance Type"},
+                    { "key": [ "ebsOptimized" ], "show_key": "EBS Optimized"},
+                    { "key": [ "rootDeviceType" ], "show_key": "Root Device Type"},
+                    { "key": [ "placement", "tenancy" ], "show_key": "Tenancy"},
+                    { "key": [ "networkInterfaceSet" ], "show_key": "Network Interface"},
+                    { "key": [ "blockDeviceMapping", "item", "deviceName" ], "show_key": "Block Devices"},
+                    { "key": [ "groupSet", "item", "groupName" ], "show_key": "Security Groups"}
+                ]},
+            "DescribeVpnConnections": {
+                "title": "vpnConnectionId",
+                "sub_info":[
+                    { "key": [ "state" ], "show_key": "State"},
+                    { "key": [ "vpnGatewayId" ], "show_key": "Virtual Private Gateway"},
+                    { "key": [ "customerGatewayId" ], "show_key": "Customer Gateway"},
+                    { "key": [ "type" ], "show_key": "Type"},
+                    { "key": [ "routes", "item", "source" ], "show_key": "Routing"}
+                ],
+                "detail_table": [
+                    { "key": [ "vgwTelemetry", "item" ], "show_key": "VPN Tunnel", "count_name": "tunnel"},
+                    { "key": [ "outsideIpAddress" ], "show_key": "IP Address"},
+                    { "key": [ "status" ], "show_key": "Status"},
+                    { "key": [ "lastStatusChange" ], "show_key": "Last Changed"},
+                    { "key": [ "statusMessage" ], "show_key": "Detail"},
+                ]},
+            "DescribeVpcs": {
+                "title": "vpcId",
+                "sub_info":[
+                    { "key": [ "state" ], "show_key": "SvpcId"},
+                    { "key": [ "cidrBlock" ], "show_key": "CIDR"},
+                    { "key": [ "instanceTenancy" ], "show_key": "Tenancy"}
+                ]}
         }
     }
 
@@ -279,7 +348,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
         #unmanaged_list
         updateUnmanagedList : ()->
 
-
             me = this
 
             time_stamp = new Date().getTime() / 1000
@@ -300,13 +368,45 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                         name = if value.tagSet then value.tagSet.name else null
                         switch cur_tag
                             when "DescribeVolumes"
-                                unmanaged_list.items.push { 'type': "Volume", 'name': (if name then name else value.volumeId), 'status': value.status, 'cost': 0.00, 'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ), 'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name) }
+                                if !name
+                                    if value.attachmentSet
+                                        if value.attachmentSet.item
+                                            name = value.attachmentSet.item.device
+                                unmanaged_list.items.push {
+                                    'type': "Volume",
+                                    'name': (if name then name else value.volumeId),
+                                    'status': value.status,
+                                    'cost': 0.00,
+                                    'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
+                                    'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
+                                }
                             when "DescribeInstances"
-                                unmanaged_list.items.push { 'type': "Instance", 'name': (if name then name else value.instanceId), 'status': value.instanceState.name, 'cost': 0.00, 'data-modal-data': '' }
+                                unmanaged_list.items.push {
+                                    'type': "Instance",
+                                    'name': (if name then name else value.instanceId),
+                                    'status': value.instanceState.name,
+                                    'cost': 0.00,
+                                    'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
+                                    'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
+                                }
                             when "DescribeVpnConnections"
-                                unmanaged_list.items.push { 'type': "VPN", 'name': (if name then name else value.vpnConnectionId), 'status': value.state, 'cost': 0.00, 'data-modal-data': '' }
+                                unmanaged_list.items.push {
+                                    'type': "VPN",
+                                    'name': (if name then name else value.vpnConnectionId),
+                                    'status': value.state,
+                                    'cost': 0.00,
+                                    'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
+                                    'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
+                                }
                             when "DescribeVpcs"
-                                unmanaged_list.items.push { 'type': "VPC", 'name': (if name then name else value.vpcId), 'status': value.state, 'cost': 0.00, 'data-modal-data': '' }
+                                unmanaged_list.items.push {
+                                    'type': "VPC",
+                                    'name': (if name then name else value.vpcId),
+                                    'status': value.state,
+                                    'cost': 0.00,
+                                    'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
+                                    'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
+                                }
                             else
                     null
                 null
@@ -358,12 +458,25 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             keys_type = keys
             if popup_key_set[keys]
-                keys_to_parse = popup_key_set[keys][type]
+                keys_to_parse = popup_key_set[keys_type][type]
             else
-                keys_to_parse = popup_key_set['unmanaged_bubble'][type]
+                keys_type = 'unmanaged_bubble'
+                keys_to_parse = popup_key_set[keys_type][type]
 
-            if keys_to_parse.status && value_to_parse[ keys_to_parse.status ]
-                parse_result += '"status":"' + value_to_parse[ keys_to_parse.status ] + '", '
+            #has bug, fix later
+            status_keys = keys_to_parse.status
+            if status_keys
+                state_key = status_keys[0]
+                cur_state = value_to_parse[ state_key ]
+
+                _.map status_keys, ( value, key ) ->
+                    if cur_state
+                        if key > 0
+                            cur_state = cur_state.value
+                            cur_state
+
+                if cur_state
+                    parse_result += '"status":"' + cur_state + '", '
 
             if keys_to_parse.title
                 if keys is 'unmanaged_bubble' or 'bubble'
@@ -389,6 +502,9 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                             parse_result += value_to_parse[ keys_to_parse.title ]
                             parse_result += '", '
 
+            #leave space to parse the table
+
+            #leave space to parse the btns
 
             _.map keys_to_parse.sub_info, ( value ) ->
                 key_array = value.key
@@ -601,7 +717,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 
         describeAWSStatusService : ( region )->
-            console.log 'AWS_STATUS_RETURN'
 
             me = this
 
@@ -612,9 +727,27 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 console.log 'AWS_STATUS_RETURN'
 
-                console.log result
+                status_list = { red: 0, yellow: 0, info: 0 }
 
-                me.set 'status_list', ''
+                console.log result.resolved_data
+
+                result_list = result.resolved_data.current
+
+                _.map result_list, ( value ) ->
+                    switch value.status
+                        when '1'
+                            status_list.red += 1
+                            null
+                        when '2'
+                            status_list.yellow += 1
+                            null
+                        when '3'
+                            status_list.info += 1
+                            null
+                        else
+                            null
+
+                me.set 'status_list', status_list
 
                 null
     }

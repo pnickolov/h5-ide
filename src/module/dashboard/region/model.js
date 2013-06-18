@@ -2,16 +2,17 @@
   var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   define(['backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant'], function(Backbone, $, _, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant) {
-    var RegionModel, current_region, model, popup_key_set, resource_source, unmanaged_list, update_timestamp, vpc_attrs_value;
+    var RegionModel, current_region, model, popup_key_set, resource_source, status_list, unmanaged_list, update_timestamp, vpc_attrs_value;
     current_region = null;
     resource_source = null;
     vpc_attrs_value = null;
     unmanaged_list = null;
+    status_list = null;
     update_timestamp = 0;
     popup_key_set = {
       "unmanaged_bubble": {
         "DescribeVolumes": {
-          "status": "status",
+          "status": ["status"],
           "title": "volumeId",
           "sub_info": [
             {
@@ -19,14 +20,13 @@
               "show_key": "Create Time"
             }, {
               "key": ["availabilityZone"],
-              "show_key": "AZ"
+              "show_key": "Availability Zone"
             }, {
               "key": ["attachmentSet", "item", "status"],
               "show_key": "Attachment Status"
             }
           ]
         },
-        "DescribeInstances": {},
         "DescribeCustomerGateways": {
           "title": "customerGatewayId",
           "status": "state",
@@ -46,7 +46,65 @@
             }
           ]
         },
-        "DescribeVpcs": {}
+        "DescribeVpnGateways": {
+          "title": "vpnGatewayId",
+          "status": "state",
+          "sub_info": [
+            {
+              "key": ["vpnGatewayId"],
+              "show_key": "VPNGatewayId"
+            }, {
+              "key": ["type"],
+              "show_key": "Type"
+            }
+          ]
+        },
+        "DescribeVpcs": {},
+        "DescribeInstances": {
+          "status": ["instanceState", "name"],
+          "title": "instanceId",
+          "sub_info": [
+            {
+              "key": ["launchTime"],
+              "show_key": "Launch Time"
+            }, {
+              "key": ["placement", "availabilityZone"],
+              "show_key": "Availability Zone"
+            }
+          ]
+        },
+        "DescribeVpnConnections": {
+          "status": ["state"],
+          "title": "vpnConnectionId",
+          "sub_info": [
+            {
+              "key": ["vpnConnectionId"],
+              "show_key": "VPC"
+            }, {
+              "key": ["type"],
+              "show_key": "Type"
+            }, {
+              "key": ["routes", "item", "source"],
+              "show_key": "Routing"
+            }
+          ]
+        },
+        "DescribeVpcs": {
+          "status": ["state"],
+          "title": "vpcId",
+          "sub_info": [
+            {
+              "key": ["cidrBlock"],
+              "show_key": "CIDR"
+            }, {
+              "key": ["isDefault"],
+              "show_key": "Default VPC:"
+            }, {
+              "key": ["instanceTenancy"],
+              "show_key": "Tenacy"
+            }
+          ]
+        }
       },
       "detail": {
         "DescribeVolumes": {
@@ -91,9 +149,124 @@
             }
           ]
         },
-        "DescribeInstances": {},
-        "DescribeVpnConnections": {},
-        "DescribeVpcs": {}
+        "DescribeInstances": {
+          "title": "instanceId",
+          "sub_info": [
+            {
+              "key": ["instanceState", "name"],
+              "show_key": "Status"
+            }, {
+              "key": ["keyName"],
+              "show_key": "Key Pair Name"
+            }, {
+              "key": ["monitoring", "state"],
+              "show_key": "Monitoring"
+            }, {
+              "key": ["ipAddress"],
+              "show_key": "Primary Public IP"
+            }, {
+              "key": ["dnsName"],
+              "show_key": "Public DNS"
+            }, {
+              "key": ["privateIpAddress"],
+              "show_key": "Primary Private IP"
+            }, {
+              "key": ["privateDnsName"],
+              "show_key": "Private DNS"
+            }, {
+              "key": ["launchTime"],
+              "show_key": "Launch Time"
+            }, {
+              "key": ["placement", "availabilityZone"],
+              "show_key": "Zone"
+            }, {
+              "key": ["amiLaunchIndex"],
+              "show_key": "AMI Launch Index"
+            }, {
+              "key": ["blockDeviceMapping", "item", "deleteOnTermination"],
+              "show_key": "Termination Protection"
+            }, {
+              "key": ["blockDeviceMapping", "item", "status"],
+              "show_key": "Shutdown Behavior"
+            }, {
+              "key": ["instanceType"],
+              "show_key": "Instance Type"
+            }, {
+              "key": ["ebsOptimized"],
+              "show_key": "EBS Optimized"
+            }, {
+              "key": ["rootDeviceType"],
+              "show_key": "Root Device Type"
+            }, {
+              "key": ["placement", "tenancy"],
+              "show_key": "Tenancy"
+            }, {
+              "key": ["networkInterfaceSet"],
+              "show_key": "Network Interface"
+            }, {
+              "key": ["blockDeviceMapping", "item", "deviceName"],
+              "show_key": "Block Devices"
+            }, {
+              "key": ["groupSet", "item", "groupName"],
+              "show_key": "Security Groups"
+            }
+          ]
+        },
+        "DescribeVpnConnections": {
+          "title": "vpnConnectionId",
+          "sub_info": [
+            {
+              "key": ["state"],
+              "show_key": "State"
+            }, {
+              "key": ["vpnGatewayId"],
+              "show_key": "Virtual Private Gateway"
+            }, {
+              "key": ["customerGatewayId"],
+              "show_key": "Customer Gateway"
+            }, {
+              "key": ["type"],
+              "show_key": "Type"
+            }, {
+              "key": ["routes", "item", "source"],
+              "show_key": "Routing"
+            }
+          ],
+          "detail_table": [
+            {
+              "key": ["vgwTelemetry", "item"],
+              "show_key": "VPN Tunnel",
+              "count_name": "tunnel"
+            }, {
+              "key": ["outsideIpAddress"],
+              "show_key": "IP Address"
+            }, {
+              "key": ["status"],
+              "show_key": "Status"
+            }, {
+              "key": ["lastStatusChange"],
+              "show_key": "Last Changed"
+            }, {
+              "key": ["statusMessage"],
+              "show_key": "Detail"
+            }
+          ]
+        },
+        "DescribeVpcs": {
+          "title": "vpcId",
+          "sub_info": [
+            {
+              "key": ["state"],
+              "show_key": "SvpcId"
+            }, {
+              "key": ["cidrBlock"],
+              "show_key": "CIDR"
+            }, {
+              "key": ["instanceTenancy"],
+              "show_key": "Tenancy"
+            }
+          ]
+        }
       }
     };
     RegionModel = Backbone.Model.extend({
@@ -136,6 +309,7 @@
         });
         elb_model.on('ELB__DESC_INS_HLT_RETURN', function(result) {
           var elb, health, i, instance, total, _i, _j, _len, _len1, _ref, _ref1;
+          console.error(result);
           total = result.resolved_data.length;
           health = 0;
           _ref = result.resolved_data;
@@ -158,16 +332,19 @@
         dhcp_model.on('VPC_DHCP_DESC_DHCP_OPTS_RETURN', function(result) {
           var dhcp, dhcp_set, vpc, _i, _j, _len, _len1, _ref;
           dhcp_set = result.resolved_data.item;
+          console.error(dhcp_set);
           _ref = resource_source.DescribeVpcs;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             vpc = _ref[_i];
             if (dhcp_set.constructor === Object) {
-              vpc.dhcp = dhcp_set;
+              if (vpc.dhcpOptionsId === dhcp_set.dhcpOptionsId) {
+                vpc.dhcp = me._genDhcp(dhcp_set);
+              }
             } else {
               for (_j = 0, _len1 = dhcp_set.length; _j < _len1; _j++) {
                 dhcp = dhcp_set[_j];
                 if (vpc.dhcpOptionsId === dhcp.dhcpOptionsId) {
-                  vpc.dhcp = dhcp;
+                  vpc.dhcp = me._genDhcp(dhcp);
                 }
               }
             }
@@ -201,12 +378,12 @@
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             vpn = _ref[_i];
             if (vgw_set.constructor === Object) {
-              vpn.vgw = vgw_set;
+              vpn.vgw = me.parseSourceValue('DescribeVpnGateways', vgw_set, "bubble", null);
             } else {
               for (_j = 0, _len1 = vgw_set.length; _j < _len1; _j++) {
                 vgw = vgw_set[_j];
                 if (vpn.vpnGatewayId === vgw.vpnGatewayId) {
-                  vpn.vgw = vgw;
+                  vpn.vgw = me.parseSourceValue('DescribeVpnGateways', vgw, "bubble", null);
                 }
               }
             }
@@ -219,6 +396,53 @@
         var me;
         me = this;
         return null;
+      },
+      _genDhcp: function(dhcp) {
+        var i, it, item, j, me, sub_info, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+        me = this;
+        popup_key_set.unmanaged_bubble.DescribeDhcpOptions = {};
+        popup_key_set.unmanaged_bubble.DescribeDhcpOptions.title = "dhcpOptionsId";
+        popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info = [];
+        sub_info = popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info;
+        if (dhcp.dhcpConfigurationSet.item.constructor === Array) {
+          _ref = dhcp.dhcpConfigurationSet.item;
+          for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+            item = _ref[i];
+            if (item.valueSet.item.constructor === Array) {
+              _ref1 = item.valueSet.item;
+              for (j = _j = 0, _len1 = _ref1.length; _j < _len1; j = ++_j) {
+                it = _ref1[j];
+                sub_info.push({
+                  "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', 'item', j, 'value'],
+                  "show_key": item.key
+                });
+              }
+            } else {
+              sub_info.push({
+                "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', 'item', 'value'],
+                "show_key": item.key
+              });
+            }
+          }
+        } else {
+          item = dhcp.dhcpConfigurationSet.item;
+          if (item.valueSet.item.constructor === Array) {
+            _ref2 = item.valueSet.item;
+            for (i = _k = 0, _len2 = _ref2.length; _k < _len2; i = ++_k) {
+              it = _ref2[i];
+              sub_info.push({
+                "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', j, 'value'],
+                "show_key": item.key
+              });
+            }
+          } else {
+            sub_info.push({
+              "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', 'value'],
+              "show_key": item.key
+            });
+          }
+        }
+        return me.parseSourceValue('DescribeDhcpOptions', dhcp, "bubble", null);
       },
       reRenderRegionResource: function() {
         var me;
@@ -262,6 +486,13 @@
               name = value.tagSet ? value.tagSet.name : null;
               switch (cur_tag) {
                 case "DescribeVolumes":
+                  if (!name) {
+                    if (value.attachmentSet) {
+                      if (value.attachmentSet.item) {
+                        name = value.attachmentSet.item.device;
+                      }
+                    }
+                  }
                   unmanaged_list.items.push({
                     'type': "Volume",
                     'name': (name ? name : value.volumeId),
@@ -277,7 +508,8 @@
                     'name': (name ? name : value.instanceId),
                     'status': value.instanceState.name,
                     'cost': 0.00,
-                    'data-modal-data': ''
+                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
                   });
                   break;
                 case "DescribeVpnConnections":
@@ -286,7 +518,8 @@
                     'name': (name ? name : value.vpnConnectionId),
                     'status': value.state,
                     'cost': 0.00,
-                    'data-modal-data': ''
+                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
                   });
                   break;
                 case "DescribeVpcs":
@@ -295,7 +528,8 @@
                     'name': (name ? name : value.vpcId),
                     'status': value.state,
                     'cost': 0.00,
-                    'data-modal-data': ''
+                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
                   });
                   break;
               }
@@ -344,19 +578,33 @@
         return true;
       },
       parseSourceValue: function(type, value, keys, name) {
-        var keys_to_parse, keys_type, parse_result, parse_sub_info, value_to_parse;
+        var cur_state, keys_to_parse, keys_type, parse_result, parse_sub_info, state_key, status_keys, value_to_parse;
         keys_to_parse = null;
         value_to_parse = value;
         parse_result = '';
         parse_sub_info = '';
         keys_type = keys;
         if (popup_key_set[keys]) {
-          keys_to_parse = popup_key_set[keys][type];
+          keys_to_parse = popup_key_set[keys_type][type];
         } else {
-          keys_to_parse = popup_key_set['unmanaged_bubble'][type];
+          keys_type = 'unmanaged_bubble';
+          keys_to_parse = popup_key_set[keys_type][type];
         }
-        if (keys_to_parse.status && value_to_parse[keys_to_parse.status]) {
-          parse_result += '"status":"' + value_to_parse[keys_to_parse.status] + '", ';
+        status_keys = keys_to_parse.status;
+        if (status_keys) {
+          state_key = status_keys[0];
+          cur_state = value_to_parse[state_key];
+          _.map(status_keys, function(value, key) {
+            if (cur_state) {
+              if (key > 0) {
+                cur_state = cur_state.value;
+                return cur_state;
+              }
+            }
+          });
+          if (cur_state) {
+            parse_result += '"status":"' + cur_state + '", ';
+          }
         }
         if (keys_to_parse.title) {
           if (keys === 'unmanaged_bubble' || 'bubble') {
@@ -398,7 +646,7 @@
           _.map(key_array, function(value, key) {
             if (cur_value) {
               if (key > 0) {
-                cur_value = cur_value.value;
+                cur_value = cur_value[value];
                 return cur_value;
               }
             }
@@ -531,9 +779,11 @@
             dhcp_set.push(vpc.dhcpOptionsId);
           }
         }
-        dhcp_model.DescribeDhcpOptions({
-          sender: this
-        }, $.cookie('usercode'), $.cookie('session_id'), current_region, dhcp_set);
+        if (dhcp_set) {
+          dhcp_model.DescribeDhcpOptions({
+            sender: this
+          }, $.cookie('usercode'), $.cookie('session_id'), current_region, dhcp_set);
+        }
         lists.VPN = resources.DescribeVpnConnections.length;
         _ref11 = resources.DescribeVpnConnections;
         for (i = _q = 0, _len8 = _ref11.length; _q < _len8; i = ++_q) {
@@ -548,15 +798,21 @@
           cgw_set.push(vpn.customerGatewayId);
           vgw_set.push(vpn.vpnGatewayId);
         }
-        customergateway_model.DescribeCustomerGateways({
-          sender: this
-        }, $.cookie('usercode'), $.cookie('session_id'), current_region, cgw_set);
-        vpngateway_model.DescribeVpnGateways({
-          sender: this
-        }, $.cookie('usercode'), $.cookie('session_id'), current_region, vgw_set);
-        ami_model.DescribeImages({
-          sender: this
-        }, $.cookie('usercode'), $.cookie('session_id'), current_region, ami_list);
+        if (cgw_set) {
+          customergateway_model.DescribeCustomerGateways({
+            sender: this
+          }, $.cookie('usercode'), $.cookie('session_id'), current_region, cgw_set);
+        }
+        if (vgw_set) {
+          vpngateway_model.DescribeVpnGateways({
+            sender: this
+          }, $.cookie('usercode'), $.cookie('session_id'), current_region, vgw_set);
+        }
+        if (ami_list) {
+          ami_model.DescribeImages({
+            sender: this
+          }, $.cookie('usercode'), $.cookie('session_id'), current_region, ami_list);
+        }
         console.error(resources);
         me.set('region_resource', resources);
         return me.set('region_resource_list', lists);
@@ -572,16 +828,37 @@
       },
       describeAWSStatusService: function(region) {
         var me;
-        console.log('AWS_STATUS_RETURN');
         me = this;
         current_region = region;
         aws_model.status({
           sender: this
         }, $.cookie('usercode'), $.cookie('session_id'), region, null);
         return aws_model.once('AWS_STATUS_RETURN', function(result) {
+          var result_list;
           console.log('AWS_STATUS_RETURN');
-          console.log(result);
-          me.set('status_list', '');
+          status_list = {
+            red: 0,
+            yellow: 0,
+            info: 0
+          };
+          console.log(result.resolved_data);
+          result_list = result.resolved_data.current;
+          _.map(result_list, function(value) {
+            switch (value.status) {
+              case '1':
+                status_list.red += 1;
+                return null;
+              case '2':
+                status_list.yellow += 1;
+                return null;
+              case '3':
+                status_list.info += 1;
+                return null;
+              default:
+                return null;
+            }
+          });
+          me.set('status_list', status_list);
           return null;
         });
       }

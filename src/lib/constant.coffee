@@ -12,10 +12,58 @@ define [], () ->
 	}
 
 	#private
+	AWS_RESOURCE_TYPE = {
+		AWS_EC2_AvailabilityZone  : "AWS.EC2.AvailabilityZone"
+		AWS_EC2_Instance          : "AWS.EC2.Instance"
+		AWS_EC2_KeyPair           : "AWS.EC2.KeyPair"
+		AWS_EC2_SecurityGroup     : "AWS.EC2.SecurityGroup"
+		AWS_EC2_EIP               : "AWS.EC2.EIP"
+		AWS_EC2_AMI               : "AWS.EC2.AMI"
+		AWS_EBS_Volume            : "AWS.EC2.EBS.Volume"
+		AWS_EBS_Snapshot          : "AWS.EC2.EBS.Snapshot"
+		AWS_ELB                   : "AWS.ELB"
+		AWS_VPC_VPC               : "AWS.VPC.VPC"
+		AWS_VPC_Subnet            : "AWS.VPC.Subnet"
+		AWS_VPC_InternetGateway   : "AWS.VPC.InternetGateway"
+		AWS_VPC_RouteTable        : "AWS.VPC.RouteTable"
+		AWS_VPC_VPNGateway        : "AWS.VPC.VPNGateway"
+		AWS_VPC_CustomerGateway   : "AWS.VPC.CustomerGateway"
+		AWS_VPC_NetworkInterface  : "AWS.VPC.NetworkInterface"
+		AWS_VPC_DhcpOptions       : "AWS.VPC.DhcpOptions"
+		AWS_VPC_VPNConnection     : "AWS.VPC.VPNConnection"
+		AWS_VPC_NetworkAcl        : "AWS.VPC.NetworkAcl"
+		AWS_IAM_ServerCertificate : "AWS.IAM.ServerCertificate"
+	}
+
+	#private
+	AWS_RESOURCE_SHORT_TYPE = {
+		AWS_EC2_AvailabilityZone  : "az"
+		AWS_EC2_Instance          : "instance"
+		AWS_EC2_KeyPair           : "kp"
+		AWS_EC2_SecurityGroup     : "sg"
+		AWS_EC2_EIP               : "eip"
+		AWS_EC2_AMI               : "ami"
+		AWS_EBS_Volume            : "vol"
+		AWS_EBS_Snapshot          : "snap"
+		AWS_ELB                   : "elb"
+		AWS_VPC_VPC               : "vpc"
+		AWS_VPC_Subnet            : "subnet"
+		AWS_VPC_InternetGateway   : "igw"
+		AWS_VPC_RouteTable        : "rtb"
+		AWS_VPC_VPNGateway        : "vgw"
+		AWS_VPC_CustomerGateway   : "cgw"
+		AWS_VPC_NetworkInterface  : "eni"
+		AWS_VPC_DhcpOptions       : "dhcp"
+		AWS_VPC_VPNConnection     : "vpn"
+		AWS_VPC_NetworkAcl        : "acl"
+		AWS_IAM_ServerCertificate : "iam"
+	}
+
+	#private
 	REGION_KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
 
 	#private
-	REGION_LABEL = []
+	REGION_LABEL = {}
 	REGION_LABEL[ 'us-east-1' ]      = 'US East - Virginia'
 	REGION_LABEL[ 'us-west-1' ]      = 'US West - N. California'
 	REGION_LABEL[ 'us-west-2' ]      = 'US West - Oregon'
@@ -26,7 +74,7 @@ define [], () ->
 	REGION_LABEL[ 'sa-east-1' ]      = 'South America - Sao Paulo'
 
 	#private
-	REGION_SHORT_LABEL = []
+	REGION_SHORT_LABEL = {}
 	REGION_SHORT_LABEL[ 'us-east-1' ]      = 'Virginia'
 	REGION_SHORT_LABEL[ 'us-west-1' ]      = 'N. California'
 	REGION_SHORT_LABEL[ 'us-west-2' ]      = 'Oregon'

@@ -2,7 +2,7 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     GegionView = Backbone.View.extend {
 
@@ -20,6 +20,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
         render   : () ->
             console.log 'dashboard region render'
             $( this.el ).html this.template this.model.attributes
+
+        runAppClick : ( event ) ->
+            console.log 'dashboard click to run app'
+            ide_event.trigger ide_event.CLICK_RUN_APP, 'app', event.currentTarget.id
+
+        addStackTab : ( ) ->
+            console.log 'dashboard click to add stack'
+            ide_event.trigger ide_event.ADD_STACK_TAB, region_name
+
     }
 
     return GegionView

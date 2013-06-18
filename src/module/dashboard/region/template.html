@@ -33,43 +33,50 @@
 				<div class="dashboard-widget-body scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
-						{{#if cur_app_list}}
 						<div class="thumbnail-container shown" id="region-stat-app">
 
 							{{#each cur_app_list}}
-							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"play","title":"Resource Name","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
+							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{{bubble_data}}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
 								<div class="action-thumbnail">
-									{{#if state=="Stopped"}}
-									<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
-									{{#else if state=="Running"}}
+									{{#if isrunning}}
 									<a class="tooltip" data-tooltip="Stop App"><i class="icon-stop"></i></a>
+									{{else}}
+									<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
 									{{/if}}
 
 									<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
 								</div>
 								<a href="" class="thumbnail-body">
-									{{#if state=="Stopped"}}
-									<div class="thumbnail-name truncate"><i class="icon-stop"></i>{{name}}</div>
-									{{else if state=="Running"}}
+									{{#if isrunning}}
 									<div class="thumbnail-name truncate"><i class="icon-play"></i>{{name}}</div>
+									{{else}}
+									<div class="thumbnail-name truncate"><i class="icon-stop"></i>{{name}}</div>
 									{{/if}}
 								</a>
 							</div>
+							{{else}}	<!--when list is empty-->
+								<div class="blank-widget">There is no app in this region.<br />You can run app from a stack.</div>
 							{{/each}}
 
 						</div>
-						{{/if}}
-
 						<div class="thumbnail-container" id="region-stat-stack">
+							{{#each cur_stack_list}}
 							<div class="item-thumbnail-wrap" style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
 								<div class="action-thumbnail">
 										<a class="tooltip" data-tooltip="Duplicate Stack"><i class="icon-redo"></i></a>
 										<a class="tooltip" data-tooltip="Delete Stack"><i class="icon-trashcan"></i></a>
 									</div>
 								<a href="" class="thumbnail-body">
-									<div class="thumbnail-name truncate">Stack-0000000001-name</div>
+									<div class="thumbnail-name truncate">{{name}}</div>
 								</a>
 							</div>
+							{{else}}
+								<div class="blank-widget">
+									There is no stack in this region yet.<br />Create a new stack from here.
+									<img src="assets/images/ide/action-guide.png" style="float:right">
+								</div>
+							{{/each}}
+
 						</div>
 					</div>
 				</div>

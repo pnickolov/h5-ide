@@ -71,22 +71,34 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
         parseItem : (item, flag) ->
             id          = item.id
             name        = item.name
-            state       = item.state
             create_time = item.time_create
+            isrunning   = true
+            ispending   = false
 
-            end_time    = 0
+            # check state
+            if item.state == 'Running'
+                isrunning = true
+            else if item.state == 'Stopped'
+                isrunning = false
+            else
+                ispending = true
 
             if flag == 'app'
                 date = new Date()
                 date.setTime(item.time_create*1000)
                 start_time  = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
-                #if state == 'Stopped' or state == 'Stopping'
-                date.setTime(item.time_update*1000)
-                stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
+                if not isrunning
+                    date.setTime(item.time_update*1000)
+                    stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
 
-                return { 'id' : id, 'name' : name, 'start_time' : start_time, 'stop_time' : stop_time, 'state' : state }
-            else if flag == 'stack'
-                return { 'id' : id, 'name' : name, 'state' : state}
+                # bubble data
+                bubble_data = '{"status":' + if ispending then '"pending"' else if isrunning then '"play"' else '"stop"'
+                bubble_data += ',"title":"' + name + '","start-time":"' + start_time + '","end-time":"'
+                if not isrunning
+                    bubble_data += if stop_time then stop_time
+                bubble_data += '","cost":"$0/month"}'
+
+            return { 'id' : id, 'name' : name, 'create_time':create_time, 'isrunning' : isrunning, 'bubble_data' : bubble_data}
 
         setResource : ( resources ) ->
 
@@ -95,8 +107,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
             elb = resources.DescribeLoadBalancers.LoadBalancerDescriptions
 
             if $.isEmptyObject elb then lists.ELB = 0 else if  elb.member.constructor == Array then lists.ELB = elb.member.length else lists.ELB = 1
-
-
 
             console.error lists
 

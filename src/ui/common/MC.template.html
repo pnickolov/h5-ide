@@ -93,8 +93,10 @@
 	<dl class="dl-horizontal">
 		<dt>Start Time:</dt>
 		<dd>{{start-time}}</dd>
-		<dt>Stop Time:</dt>
-		<dd>{{end-time}}</dd>
+		{{#if end-time}}
+			<dt>Stop Time:</dt>
+			<dd>{{end-time}}</dd>
+		{{/if}}
 		<dt>Estimated Cost:</dt>
 		<dd>{{cost}}</dd>
 	</dl>

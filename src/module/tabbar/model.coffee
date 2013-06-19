@@ -15,7 +15,7 @@ define [ 'MC', 'stack_model', 'backbone' ], ( MC, stack_model ) ->
             #save
             #if old isnt 'dashboard' then MC.tab[ old ] = { snapshot : null, data : null }
             #test
-            if old isnt 'dashboard' then MC.tab[ old ] = { snapshot : old, data : old }
+            if old isnt 'dashboard' and old isnt null then MC.tab[ old ] = { snapshot : old, data : old }
 
             if MC.tab[ current ] is undefined
                 #call service

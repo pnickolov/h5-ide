@@ -859,7 +859,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
 
 
-            console.error resources
+            console.log resources
             me.set 'region_resource', resources
             me.set 'region_resource_list', lists
 

@@ -130,9 +130,23 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             "DescribeVpcs": {
                 "title": "vpcId",
                 "sub_info":[
-                    { "key": [ "state" ], "show_key": "SvpcId"},
+                    { "key": [ "state" ], "show_key": "State"},
                     { "key": [ "cidrBlock" ], "show_key": "CIDR"},
                     { "key": [ "instanceTenancy" ], "show_key": "Tenancy"}
+                ]}
+            "DescribeLoadBalancers": {
+                "title": "LoadBalancerName",
+                "sub_info":[
+                    { "key": [ "state" ], "show_key": "State"},
+                    { "key": [ "AvailabilityZones", "member" ], "show_key": "AvailabilityZones"},
+                    { "key": [ "CreatedTime" ], "show_key": "CreatedTime"}
+                    { "key": [ "DNSName" ], "show_key": "DNSName"}
+                    { "key": [ "HealthCheck" ], "show_key": "HealthCheck"}
+                    { "key": [ "Instances", 'member' ], "show_key": "Instances"}
+                    { "key": [ "ListenerDescriptions", "member", "Listener" ], "show_key": "ListenerDescriptions"}
+                    { "key": [ "SecurityGroups"], "show_key": "SecurityGroups"}
+                    { "key": [ "Subnets" ], "show_key": "Subnets"}
+                    { "key": [ "Instances", 'member' ], "show_key": "Instances"}
                 ]}
         }
     }
@@ -185,7 +199,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 null
 
             elb_model.on 'ELB__DESC_INS_HLT_RETURN', ( result ) ->
-                console.error result
+
                 total = result.resolved_data.length
 
                 health = 0
@@ -205,8 +219,12 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             dhcp_model.on 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', ( result ) ->
 
                 dhcp_set = result.resolved_data.item
-                console.error dhcp_set
+
                 for vpc in resource_source.DescribeVpcs
+
+                    if vpc.dhcpOptionsId == 'default'
+
+                        vpc.dhcp = '{"title": "default", "sub_info" : ["<dt>DhcpOptionsId: </dt><dd>None</dd>"]}'
 
                     if dhcp_set.constructor == Object
 
@@ -450,6 +468,9 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
         #parse bubble value or detail value for unmanagedSource
         parseSourceValue : ( type, value, keys, name )->
+
+            me = this
+
             keys_to_parse  = null
             value_to_parse = value
             parse_result   = ''
@@ -519,6 +540,9 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                             cur_value
 
                 if cur_value
+                    if cur_value.constructor == Object
+                        console.error me._genBubble cur_value, show_key, true
+                        cur_value = me._genBubble cur_value, show_key, true
                     parse_sub_info += ( '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ')
 
                 null
@@ -540,110 +564,162 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             parse_result
 
+        _genBubble : ( source, title = null, entry = false ) ->
+
+            me = this
+
+            parse_sub_info = ""
+
+            if $.isEmptyObject source
+
+                return ""
+
+            if source.constructor == Object
+
+                for key, value of source
+
+                    if value.constructor == String
+
+                        parse_sub_info += ( '\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\", ')
+
+                    else
+                        parse_sub_info += me._genBubble( value, false)
+
+                if entry
+                    bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data='
+                    bubble_end = '>'+title+'</a>'
+                    parse_sub_info = " &apos;{\\\"title\\\":" +title + ', \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; "
+                    parse_sub_info = bubble_front + parse_sub_info + bubble_end
+            if source.constructor == Array
+
+                for value in source
+
+                    if value.constructor == String
+
+                        parse_sub_info += value + "\n"
+
+                    else
+                        parse_sub_info += me._genBubble( value, false)
+
+            parse_sub_info
+
 
         setResource : ( resources ) ->
 
             me = this
             
-            lists = {}
+            lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0}
 
             lists.Not_Used = { 'EIP' : 0, 'Volume' : 0 }
 
             # elb
-            lists.ELB = resources.DescribeLoadBalancers.length
+            if resources.DescribeLoadBalancers != null
 
-            reg = /app-\w{8}/
+                lists.ELB = resources.DescribeLoadBalancers.length
 
-            for elb, i in resources.DescribeLoadBalancers
+                reg = /app-\w{8}/
 
-                #me._set_app_property elb, resources, i, 'DescribeLoadBalancers'
+                for elb, i in resources.DescribeLoadBalancers
 
-                if $.isEmptyObject elb.Instances
+                    #me._set_app_property elb, resources, i, 'DescribeLoadBalancers'
 
-                    elb.state = '0 of 0 instances in service'
+                    elb.detail = me.parseSourceValue 'DescribeLoadBalancers', elb, "detail", null
 
-                else
+                    if not elb.Instances
 
-                    elb_model.DescribeInstanceHealth { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName
+                        elb.state = '0 of 0 instances in service'
 
-                reg_result = elb.LoadBalancerName.match reg
+                    else
 
-                if reg_result then elb.app = reg_result else elb.app = 'Unmanaged'
+                        elb_model.DescribeInstanceHealth { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName
+
+                    reg_result = elb.LoadBalancerName.match reg
+
+                    if reg_result then elb.app = reg_result else elb.app = 'Unmanaged'
 
             # eip
-            lists.EIP = resources.DescribeAddresses.length
+            if resources.DescribeAddresses != null
+
+                for eip, i in resources.DescribeAddresses
+
+                    if $.isEmptyObject eip.instanceId
+
+                        lists.Not_Used.EIP++
+
+                        resources.DescribeAddresses[i].instanceId = 'Not associated'
+
+                    me._set_app_property eip, resources, i, 'DescribeAddresses'
+                
+                lists.EIP = resources.DescribeAddresses.length
             
-            for eip, i in resources.DescribeAddresses
-
-                if $.isEmptyObject eip.instanceId
-
-                    lists.Not_Used.EIP++
-
-                    resources.DescribeAddresses[i].instanceId = 'Not associated'
-
-                me._set_app_property eip, resources, i, 'DescribeAddresses'
+            
 
             # instance
-            lists.Instance = resources.DescribeInstances.length
+            if resources.DescribeInstances != null
 
-            ami_list = []
+                lists.Instance = resources.DescribeInstances.length
 
-            for ins, i in resources.DescribeInstances
+                ami_list = []
 
-                ami_list.push ins.imageId
+                for ins, i in resources.DescribeInstances
 
-                is_managed = false
+                    ami_list.push ins.imageId
 
-                if ins.tagSet != undefined and ins.tagSet.item.constructor == Array
+                    ins.detail = me.parseSourceValue 'DescribeInstances', ins, "detail", null
 
-                    for tag in ins.tagSet.item
+                    is_managed = false
 
-                        if tag.key == 'app'
+                    if ins.tagSet != undefined and ins.tagSet.item.constructor == Array
 
-                            is_managed = true
+                        for tag in ins.tagSet.item
 
-                            resources.DescribeInstances[i].app = tag.value
+                            if tag.key == 'app'
 
-                        if tag.key == 'name'
+                                is_managed = true
 
-                            resources.DescribeInstances[i].host = tag.value
+                                resources.DescribeInstances[i].app = tag.value
 
-                if not is_managed
+                            if tag.key == 'name'
 
-                    resources.DescribeInstances[i].app = 'Unmanaged'
+                                resources.DescribeInstances[i].host = tag.value
 
-                if resources.DescribeInstances[i].host == undefined
+                    if not is_managed
 
-                    resources.DescribeInstances[i].host = 'Unmanaged'
+                        resources.DescribeInstances[i].app = 'Unmanaged'
 
-            # managed instanceid
-            manage_instances_id     =   []
-            manage_instances_app    =   {}
+                    if resources.DescribeInstances[i].host == undefined
 
-            for ins in resources.DescribeInstances
+                        resources.DescribeInstances[i].host = 'Unmanaged'
 
-                if ins.app isnt 'Unmanaged'
+                # managed instanceid
+                manage_instances_id     =   []
+                manage_instances_app    =   {}
 
-                    manage_instances_id.push ins.instanceId
+                for ins in resources.DescribeInstances
 
-                    manage_instances_app[ins.instanceId] = ins.app
+                    if ins.app isnt 'Unmanaged'
+
+                        manage_instances_id.push ins.instanceId
+
+                        manage_instances_app[ins.instanceId] = ins.app
 
             # volume
             lists.Volume = resources.DescribeVolumes.length
             
             for vol, i in resources.DescribeVolumes
 
+                vol.detail = me.parseSourceValue 'DescribeVolumes', vol, "detail", null
+
                 lists.Not_Used.Volume++ if vol.status == "available"
 
                 me._set_app_property vol, resources, i, 'DescribeVolumes'
 
-                if not vol.attachmentSet.item?.device?
+                if not vol.attachmentSet
+                    vol.attachmentSet = {item:[]}
 
-                    vol.attachmentSet.item = {}
+                    attachment = { device: 'Not-Attached', status: 'Not-Attached'}
 
-                    vol.attachmentSet.item.device = 'Not Attached'
-
-                    vol.attachmentSet.item.status = 'Not Attached'
+                    vol.attachmentSet.item[0] = attachment
                 else
 
                     if vol.attachmentSet.item.instanceId in manage_instances_id
@@ -651,34 +727,45 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                         resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item.instanceId]
                         
             # vpc
-            lists.VPC = resources.DescribeVpcs.length
+            if resources.DescribeVpcs != null
 
-            me._set_app_property vpc, resources, i, 'DescribeVpcs' for vpc, i in resources.DescribeVpcs
+                lists.VPC = resources.DescribeVpcs.length
 
-            dhcp_set = []
+                for vpc, i in resources.DescribeVpcs
 
-            for vpc in resources.DescribeVpcs
+                    me._set_app_property vpc, resources, i, 'DescribeVpcs'
 
-                dhcp_set.push vpc.dhcpOptionsId if vpc.dhcpOptionsId not in dhcp_set
+                    vpc.detail = me.parseSourceValue 'DescribeVpcs', vpc, "detail", null
 
-            # get dhcp detail
-            if dhcp_set
-                dhcp_model.DescribeDhcpOptions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set
+                dhcp_set = []
+
+                for vpc in resources.DescribeVpcs
+
+                    dhcp_set.push vpc.dhcpOptionsId if vpc.dhcpOptionsId not in dhcp_set and vpc.dhcpOptionsId != 'default'
+
+                # get dhcp detail
+                if dhcp_set
+                    dhcp_model.DescribeDhcpOptions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set
 
             # vpn
-            lists.VPN = resources.DescribeVpnConnections.length
+            if resources.DescribeVpnConnections != null
+                lists.VPN = resources.DescribeVpnConnections.length
 
-            me._set_app_property vpn, resources, i, 'DescribeVpnConnections' for vpn, i in resources.DescribeVpnConnections
+                for vpn, i in resources.DescribeVpnConnections
 
-            cgw_set = []
+                    me._set_app_property vpn, resources, i, 'DescribeVpnConnections'
 
-            vgw_set = []
+                    vpn.detail = me.parseSourceValue 'DescribeVpnConnections', vpn, "detail", null
 
-            for vpn in resources.DescribeVpnConnections
+                cgw_set = []
 
-                cgw_set.push vpn.customerGatewayId
+                vgw_set = []
 
-                vgw_set.push vpn.vpnGatewayId
+                for vpn in resources.DescribeVpnConnections
+
+                    cgw_set.push vpn.customerGatewayId
+
+                    vgw_set.push vpn.vpnGatewayId
 
             # get cgw detail
             if cgw_set

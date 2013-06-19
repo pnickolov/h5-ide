@@ -9,6 +9,35 @@
 
 define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
 
+    resolvedObjectToArray = ( objs ) ->
+
+        if objs.constructor == Array
+
+            for obj in objs
+
+                obj = resolvedObjectToArray obj
+
+        if objs.constructor == Object
+
+            if $.isEmptyObject objs
+
+                objs = null
+
+            for key, value of objs
+
+                if key == 'item'
+
+                    tmp = []
+
+                    tmp.push resolvedObjectToArray value
+
+                    objs[key] = tmp
+
+                else if value.constructor == Object or value.constructor == Array
+
+                    objs[key] = resolvedObjectToArray value
+
+        objs
 
     #///////////////// Parser for CreateImage return  /////////////////
     #private (parser CreateImage return)
@@ -107,9 +136,9 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeImagesResult = ( result ) ->
         #resolve result
-        console.error ($.xml2json ($.parseXML result[1]))
+
         #return vo
-        ($.xml2json ($.parseXML result[1])).DescribeImagesResponse.imagesSet
+        resolvedObjectToArray ($.xml2json ($.parseXML result[1])).DescribeImagesResponse.imagesSet
 
     #private (parser DescribeImages return)
     parserDescribeImagesReturn = ( result, return_code, param ) ->

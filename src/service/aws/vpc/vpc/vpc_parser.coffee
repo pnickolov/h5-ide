@@ -9,25 +9,52 @@
 
 define [ 'vpc_vo', 'result_vo', 'constant' ], ( vpc_vo, result_vo, constant ) ->
 
+    resolvedObjectToArray = ( objs ) ->
+
+        if objs.constructor == Array
+
+            for obj in objs
+
+                obj = resolvedObjectToArray obj
+
+        if objs.constructor == Object
+
+            if $.isEmptyObject objs
+
+                objs = null
+
+            for key, value of objs
+
+                if key == 'item' and value.constructor == Object
+
+                    tmp = []
+
+                    tmp.push resolvedObjectToArray value
+
+                    objs[key] = tmp
+
+                else if value.constructor == Object or value.constructor == Array
+
+                    objs[key] = resolvedObjectToArray value
+
+        objs
 
     #///////////////// Parser for DescribeVpcs return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeVpcsResult = ( result ) ->
         #return
-        vpc_list = []
 
         result_set = ($.xml2json ($.parseXML result[1])).DescribeVpcsResponse.vpcSet
 
-        if not $.isEmptyObject result_set
+        result = resolvedObjectToArray result_set
 
-            if result_set.item.constructor == Array
+        if result?.item?
 
-                vpc_list = result_set.item
+            return result.item
 
-            else
-                vpc_list.push result_set.item
-
-        vpc_list
+        else
+        
+            return null
 
 
     #private (parser DescribeVpcs return)

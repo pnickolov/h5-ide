@@ -9,26 +9,44 @@
 
 define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
 
+    resolvedObjectToArray = ( objs ) ->
+
+        if objs.constructor == Array
+
+            for obj in objs
+
+                obj = resolvedObjectToArray obj
+
+        if objs.constructor == Object
+
+            if $.isEmptyObject objs
+
+                objs = null
+
+            for key, value of objs
+
+                if key == 'item' and value.constructor == Object
+
+                    tmp = []
+
+                    tmp.push resolvedObjectToArray value
+
+                    objs[key] = tmp
+
+                else if value.constructor == Object or value.constructor == Array
+
+                    objs[key] = resolvedObjectToArray value
+
+        objs
 
     #///////////////// Parser for DescribeInstanceHealth return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeInstanceHealthResult = ( result ) ->
         #resolve result
-        instance_list = []
         #return vo
         result_set = ($.xml2json ($.parseXML result[1])).DescribeInstanceHealthResponse.DescribeInstanceHealthResult.InstanceStates.member
 
-
-        if result_set isnt undefined and not $.isEmptyObject result_set
-
-            if result_set.constructor == Array
-
-                instance_list = result_set
-
-            else
-                instance_list.push result_set
-
-        instance_list
+        resolvedObjectToArray result_set
 
     #private (parser DescribeInstanceHealth return)
     parserDescribeInstanceHealthReturn = ( result, return_code, param ) ->
@@ -110,21 +128,25 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeLoadBalancersResult = ( result ) ->
         #resolve result
-
-        elb_list = []
         #return vo
-        result_set = ($.xml2json ($.parseXML result[1])).DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions.member
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions
 
-        if not $.isEmptyObject result_set
+        result_set = resolvedObjectToArray result_set
 
-            if result_set.constructor == Array
+        if result_set
 
-                elb_list = result_set
+            if result_set.member.constructor == Object
+            
+                tmp = result_set.member
+
+                result_set = []
+
+                result_set.push tmp
 
             else
-                elb_list.push result_set
+                result_set = result_set.member
 
-        elb_list
+        result_set
 
     #private (parser DescribeLoadBalancers return)
     parserDescribeLoadBalancersReturn = ( result, return_code, param ) ->

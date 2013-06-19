@@ -12,17 +12,17 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
     update_timestamp = 0
 
-    popup_key_set = {
-        "unmanaged_bubble" : {
-            "DescribeVolumes": {
+    popup_key_set =
+        "unmanaged_bubble" :
+            "DescribeVolumes":
                 "status": [ "status" ],
                 "title": "volumeId",
                 "sub_info":[
                     { "key": [ "createTime" ], "show_key": "Create Time"},
                     { "key": [ "availabilityZone" ], "show_key": "Availability Zone"},
                     { "key": [ "attachmentSet", "item", "status" ], "show_key": "Attachment Status"}
-                ]},
-            "DescribeCustomerGateways": {
+                ]
+            "DescribeCustomerGateways":
                 "title"     :   "customerGatewayId"
                 "status"    :   "state"
                 "sub_info"  :   [
@@ -30,42 +30,39 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                         { "key": [ "type"], "show_key": "Type"},
                         { "key": [ "ipAddress"], "show_key": "IpAddress"},
                         { "key": [ "bgpAsn"], "show_key": "BgpAsn"},
-                    ]
-                },
-            "DescribeVpnGateways"   :   {
+                ]
+            "DescribeVpnGateways":
                 "title"     :   "vpnGatewayId"
                 "status"    :   "state"
                 "sub_info"  :   [
                         { "key": [ "vpnGatewayId" ], "show_key": "VPNGatewayId"},
                         { "key": [ "type"], "show_key": "Type"},
-                    ]
-                }
-            "DescribeInstances": {
+                ]
+            "DescribeInstances":
                 "status": [ "instanceState", "name" ],
                 "title": "instanceId",
                 "sub_info":[
                     { "key": [ "launchTime" ], "show_key": "Launch Time"},
                     { "key": [ "placement", "availabilityZone" ], "show_key": "Availability Zone"}
-                ]},
-            "DescribeVpnConnections": {
+                ]
+            "DescribeVpnConnections":
                 "status": [ "state" ],
                 "title": "vpnConnectionId",
                 "sub_info":[
                     { "key": [ "vpnConnectionId" ], "show_key": "VPC"},
                     { "key": [ "type" ], "show_key": "Type"},
                     { "key": [ "routes", "item", "source" ], "show_key": "Routing"}
-                ]},
-            "DescribeVpcs": {
+                ]
+            "DescribeVpcs":
                 "status": [ "state" ],
                 "title": "vpcId",
                 "sub_info":[
                     { "key": [ "cidrBlock" ], "show_key": "CIDR"},
                     { "key": [ "isDefault" ], "show_key": "Default VPC:"},
                     { "key": [ "instanceTenancy" ], "show_key": "Tenacy"}
-                ]}
-        },
-        "detail" : {
-            "DescribeVolumes": {
+                ]
+        "detail" :
+            "DescribeVolumes":
                 "title": "volumeId",
                 "sub_info":[
                     { "key": [ "volumeId" ], "show_key": "Volume ID"},
@@ -80,8 +77,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "availabilityZone" ], "show_key": "Availability Zone"},
                     { "key": [ "volumeType" ], "show_key": "Volume Type"},
                     { "key": [ "Iops" ], "show_key": "Iops"}
-                ]},
-            "DescribeInstances": {
+                ]
+            "DescribeInstances":
                 "title": "instanceId",
                 "sub_info": [
                     { "key": [ "instanceState", "name" ], "show_key": "Status"},
@@ -103,8 +100,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "networkInterfaceSet" ], "show_key": "Network Interface"},
                     { "key": [ "blockDeviceMapping", "item", "deviceName" ], "show_key": "Block Devices"},
                     { "key": [ "groupSet", "item", "groupName" ], "show_key": "Security Groups"}
-                ]},
-            "DescribeVpnConnections": {
+                ]
+            "DescribeVpnConnections":
                 "title": "vpnConnectionId",
                 "sub_info": [
                     { "key": [ "state" ], "show_key": "State"},
@@ -122,15 +119,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "status" ], "show_key": "Status"},
                     { "key": [ "lastStatusChange" ], "show_key": "Last Changed"},
                     { "key": [ "statusMessage" ], "show_key": "Detail"},
-                ]},
-            "DescribeVpcs": {
+                ]
+            "DescribeVpcs":
                 "title": "vpcId",
                 "sub_info": [
                     { "key": [ "state" ], "show_key": "State"},
                     { "key": [ "cidrBlock" ], "show_key": "CIDR"},
                     { "key": [ "instanceTenancy" ], "show_key": "Tenancy"}
-                ]}
-            "DescribeLoadBalancers": {
+                ]
+            "DescribeLoadBalancers":
                 "title": "LoadBalancerName",
                 "sub_info":[
                     { "key": [ "state" ], "show_key": "State"},
@@ -142,8 +139,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "ListenerDescriptions", "member", "Listener" ], "show_key": "ListenerDescriptions"}
                     { "key": [ "SecurityGroups"], "show_key": "SecurityGroups"}
                     { "key": [ "Subnets" ], "show_key": "Subnets"}
-                ]}
-            "DescribeAddresses": {
+                ]
+            "DescribeAddresses":
                 "title": "publicIp",
                 "sub_info":[
                     { "key": [ "domain" ], "show_key": "Domain"},
@@ -155,9 +152,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "privateIpAddress"], "show_key": "PrivateIpAddress"}
                     { "key": [ "SecurityGroups"], "show_key": "SecurityGroups"}
                     { "key": [ "Subnets" ], "show_key": "Subnets"}
-                ]}
-        }
-    }
+                ]
 
     #private
     RegionModel = Backbone.Model.extend {
@@ -448,13 +443,13 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             current_region = region
 
-            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ["supported-platforms"]
+            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
 
             vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
                 console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
-                regionAttrSet = result.resolved_data.accountAttributeSet.item.attributeValueSet.item
+                regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item.attributeValueSet.item
                 if $.type(regionAttrSet) == "array"
                     vpc_attrs_value = { 'classic' : 'Classic', 'vpc' : 'VPC' }
                 else
@@ -469,9 +464,10 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
         #if an array tagset has tagid
         hasnotTagId : ( tagset )->
             if tagset
-                 _.map tagset.item[0], ( value ) ->
-                    if value.key is "app-id" && value.value
-                        false
+                if tagset.item
+                    _.map tagset.item, ( value ) ->
+                        if value.key is "app-id" && value.value
+                            false
             true
 
         #parse bubble value or detail value for unmanagedSource
@@ -555,9 +551,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 parse_sub_info = parse_sub_info.substring 0, parse_sub_info.length - 2
                 parse_sub_info += ']'
 
-            #parse the table
             if keys_to_parse.detail_table
-                parse_table = me._parseTableValue keys_to_parse.detail, value_to_parse
+                parse_table = me._parseTableValue keys_to_parse.detail_table, value_to_parse
                 if parse_table
                     parse_table = '"detail_table":' + parse_table
                     if parse_sub_info
@@ -565,7 +560,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     else
                         parse_sub_info = parse_table
 
-            #parse the btns
             if keys_to_parse.btns
                 parse_btns  = me._parseBtnValue keys_to_parse.btns, value_to_parse
                 if parse_btns
@@ -582,8 +576,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 else
                     parse_result = parse_result.substring 0, parse_result.length - 2
                 parse_result += '}'
-
-            console.log parse_result
 
             parse_result
 
@@ -647,46 +639,134 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             parse_sub_info
 
         _parseTableValue : ( keyes_set, value_set )->
-            null
+            me                  = this
+            parse_table_result   = ''
+            table_date          = ''
+
+            detail_table =  [
+                    { "key": [ "vgwTelemetry", "item" ], "show_key": "VPN Tunnel", "count_name": "tunnel"},
+                    { "key": [ "outsideIpAddress" ], "show_key": "IP Address"},
+                    { "key": [ "status" ], "show_key": "Status"},
+                    { "key": [ "lastStatusChange" ], "show_key": "Last Changed"},
+                    { "key": [ "statusMessage" ], "show_key": "Detail"},
+                ]
+            table_set = value_set.vgwTelemetry
+            if table_set
+                table_set = table_set.item
+                if table_set
+                    parse_table_result = '{ "th_set":['
+                    _.map keyes_set, ( value, key ) ->
+                        if key isnt 0
+                            parse_table_result += ','
+                        parse_table_result += '"'
+                        parse_table_result += me._parseEmptyValue value.show_key
+                        parse_table_result += '"'
+                        null
+
+                    count_set = [1, 2]
+                    _.map count_set, ( value, key ) ->
+                        cur_key = key
+                        cur_value = value
+                        parse_table_result += '], "tr'
+                        parse_table_result += cur_value
+                        parse_table_result += '_set":['
+                        _.map keyes_set, ( value, key ) ->
+                            if key isnt 0
+                                parse_table_result += ','
+                                parse_table_result += '"'
+                                parse_table_result += me._parseEmptyValue table_set[cur_key][value.key]
+                                parse_table_result += '"'
+                            else
+                                parse_table_result += '"'
+                                parse_table_result += me._parseEmptyValue value.count_name
+                                parse_table_result += cur_value
+                                parse_table_result += '"'
+                            null
+                        null
+                    parse_table_result += ']}'
+            parse_table_result
 
         _parseEmptyValue : ( val )->
             result = if val then val else ''
-            val
+            result
 
         _parseBtnValue : ( keyes_set, value_set )->
             me                  = this
             parse_btns_result   = ''
-            btn_date            = ''
+            btn_data            = ''
 
             _.map keyes_set, ( value ) ->
-                btn_date = ''
+                btn_data = ''
                 if value.type is "download_configuration"
-                    dc_data = {
-                        vpnConnectionId                     : me._parseEmptyValue value_set.vpnConnectionId
-                        vpnGatewayId                        : me._parseEmptyValue value_set.vpnConnectionId
-                        customerGatewayId                   : me._parseEmptyValue value_set.customerGatewayId
-                        tunnel0_ike_protocol_method         : me._parseEmptyValue value_set.vgwTelemetry.item[0]
-                        tunnel0_ike_pre_shared_key          : me._parseEmptyValue value_set.
-                        tunnel0_ike_encryption_protocol     : me._parseEmptyValue value_set.
-                        tunnel0_ike_lifetime                : me._parseEmptyValue value_set.
-                        tunnel0_ike_mode                    : me._parseEmptyValue value_set.
-                        tunnel0_ike_perfect_forward_secrecy : me._parseEmptyValue value_set.
+                    value_conf = value_set.customerGatewayConfiguration
+                    if value_conf
+                        value_conf = $.xml2json($.parseXML value_conf)
+                        value_conf = value_conf.vpn_connection
+                        dc_data =
+                            vpnConnectionId                         : me._parseEmptyValue value_conf['@attributes'].id
+                            vpnGatewayId                            : me._parseEmptyValue value_conf.vpn_gateway_id
+                            customerGatewayId                       : me._parseEmptyValue value_conf.customer_gateway_id
+                            tunnel0_ike_protocol_method             : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.authentication_protocol
+                            tunnel0_ike_pre_shared_key              : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.pre_shared_key
+                            tunnel0_ike_authentication_protocol_algorithm : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.authentication_protocol
+                            tunnel0_ike_encryption_protocol         : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.encryption_protocol
+                            tunnel0_ike_lifetime                    : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.lifetime
+                            tunnel0_ike_mode                        : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.mode
+                            tunnel0_ike_perfect_forward_secrecy     : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.perfect_forward_secrecy
+                            tunnel0_ipsec_protocol                  : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.protocol
+                            tunnel0_ipsec_authentication_protocol   : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.authentication_protocol
+                            tunnel0_ipsec_encryption_protocol       : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.encryption_protocol
+                            tunnel0_ipsec_lifetime                  : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.lifetime
+                            tunnel0_ipsec_mode                      : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.mode
+                            tunnel0_ipsec_perfect_forward_secrecy   : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.perfect_forward_secrecy
+                            tunnel0_ipsec_interval                  : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.dead_peer_detection.interval
+                            tunnel0_ipsec_retries                   : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.dead_peer_detection.retries
+                            tunnel0_tcp_mss_adjustment              : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.tcp_mss_adjustment
+                            tunnel0_clear_df_bit                    : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.clear_df_bit
+                            tunnel0_fragmentation_before_encryption : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.fragmentation_before_encryption
+                            tunnel0_customer_gateway_outside_address : me._parseEmptyValue value_conf.ipsec_tunnel[0].customer_gateway.tunnel_outside_address.ip_address
+                            tunnel0_vpn_gateway_outside_address     : me._parseEmptyValue value_conf.ipsec_tunnel[0].vpn_gateway.tunnel_outside_address.ip_address
+                            tunnel0_customer_gateway_inside_address : me._parseEmptyValue value_conf.ipsec_tunnel[0].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[0].customer_gateway.tunnel_inside_address.network_cidr
+                            tunnel0_vpn_gateway_inside_address      : me._parseEmptyValue value_conf.ipsec_tunnel[0].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[0].customer_gateway.tunnel_inside_address.network_cidr
+                            tunnel0_next_hop                        : me._parseEmptyValue value_conf.ipsec_tunnel[0].vpn_gateway.tunnel_inside_address.ip_address
+                            tunnel1_ike_protocol_method             : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.authentication_protocol
+                            tunnel1_ike_pre_shared_key              : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.pre_shared_key
+                            tunnel1_ike_authentication_protocol_algorithm : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.authentication_protocol
+                            tunnel1_ike_encryption_protocol         : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.encryption_protocol
+                            tunnel1_ike_lifetime                    : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.lifetime
+                            tunnel1_ike_mode                        : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.mode
+                            tunnel1_ike_perfect_forward_secrecy     : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.perfect_forward_secrecy
+                            tunnel1_ipsec_protocol                  : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.protocol
+                            tunnel1_ipsec_authentication_protocol   : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.authentication_protocol
+                            tunnel1_ipsec_encryption_protocol       : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.encryption_protocol
+                            tunnel1_ipsec_lifetime                  : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.lifetime
+                            tunnel1_ipsec_mode                      : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.mode
+                            tunnel1_ipsec_perfect_forward_secrecy   : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.perfect_forward_secrecy
+                            tunnel1_ipsec_interval                  : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.dead_peer_detection.interval
+                            tunnel1_ipsec_retries                   : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.dead_peer_detection.retries
+                            tunnel1_tcp_mss_adjustment              : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.tcp_mss_adjustment
+                            tunnel1_clear_df_bit                    : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.clear_df_bit
+                            tunnel1_fragmentation_before_encryption : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.fragmentation_before_encryption
+                            tunnel1_customer_gateway_outside_address : me._parseEmptyValue value_conf.ipsec_tunnel[1].customer_gateway.tunnel_outside_address.ip_address
+                            tunnel1_vpn_gateway_outside_address     : me._parseEmptyValue value_conf.ipsec_tunnel[1].vpn_gateway.tunnel_outside_address.ip_address
+                            tunnel1_customer_gateway_inside_address : me._parseEmptyValue value_conf.ipsec_tunnel[1].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[0].customer_gateway.tunnel_inside_address.network_cidr
+                            tunnel1_vpn_gateway_inside_address      : me._parseEmptyValue value_conf.ipsec_tunnel[1].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[0].customer_gateway.tunnel_inside_address.network_cidr
+                            tunnel1_next_hop                        : me._parseEmptyValue value_conf.ipsec_tunnel[1].vpn_gateway.tunnel_inside_address.ip_address
 
-                    }
-                    dc_filename = if dc_data.vpnConnectionId then dc_data.vpnConnectionId else 'download_configuration'
-                    dc_data = MC.template.configurationDownload(dc_data)
-                    dc_parse = '{"download":true,"filecontent":"'
-                    dc_parse +=  btoa(dc_data)
-                    dc_parse += '","filename":"'
-                    dc_parse += dc_filename
-                    dc_parse +='","btnname":"'
-                    dc_parse += value.name
-                    dc_parse += '"},'
-                    btn_date += dc_parse
-                if btn_date
-                    btn_date = btn_date.substring 0, btn_date.length - 1
+                        dc_filename = if dc_data.vpnConnectionId then dc_data.vpnConnectionId else 'download_configuration'
+                        dc_data = MC.template.configurationDownload(dc_data)
+                        dc_parse = '{"download":true,"filecontent":"'
+                        dc_parse +=  btoa(dc_data)
+                        dc_parse += '","filename":"'
+                        dc_parse += dc_filename
+                        dc_parse +='","btnname":"'
+                        dc_parse += value.name
+                        dc_parse += '"},'
+                        btn_data += dc_parse
+                if btn_data
+                    btn_data = btn_data.substring 0, btn_data.length - 1
                     parse_btns_result += '['
-                    parse_btns_result += btn_date
+                    parse_btns_result += btn_data
                     parse_btns_result += ']'
 
             parse_btns_result
@@ -740,9 +820,9 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     eip.detail = me.parseSourceValue 'DescribeAddresses', eip, "detail", null
 
                 lists.EIP = resources.DescribeAddresses.length
-                
-                
-            
+
+
+
 
 
             # instance
@@ -937,6 +1017,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 me.set 'status_list', status_list
 
                 null
+            null
     }
 
     model = new RegionModel()

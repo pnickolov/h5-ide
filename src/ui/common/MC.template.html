@@ -107,6 +107,30 @@
             <a class='btn btn-primary' href="data://text/plain;base64,{{{this.filecontent}}}" download="{{{this.filename}}}.txt">{{this.btnname}}</a>
         {{/if}}
         {{/each}}
+        {{#if detail_table}}
+        <br />
+            <table class="table">
+                <thead>
+                <tr>
+                    {{#each detail_table.th_set}}
+                    <th style="width:100px">{{this}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {{#each detail_table.tr1_set}}
+                    <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+                <tr>
+                    {{#each detail_table.tr2_set}}
+                    <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+            </tbody>
+        </table>
+        {{/if}}
 	</div>
 	<div class="modal-footer">
 		<button class="btn modal-close btn-silver">Close</button>

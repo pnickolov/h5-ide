@@ -88,6 +88,20 @@ define [], () ->
 
 	}
 
+	OS_TYPE = {
+		WINDOWS     : "windows"
+		AMAZON      : "amazon"
+		REDHAT      : "redhat"
+		CENTOS      : "centos"
+		FEDORA      : "fedora"
+		DEBIAN      : "debian"
+		UBUNTU      : "ubuntu"
+		GENTOO      : "gentoo"
+		SUSE        : "suse"
+		OPENSUSE    : "opensuse"
+		LINUX_OTHER : "linux-other"
+	}
+
 	#private
 	MESSAGE_E = {
 		MESSAGE_E_SESSION  : "This session has expired, please log in again"
@@ -180,15 +194,16 @@ define [], () ->
 	#public
 	AWS_RESOURCE_TYPE       : AWS_RESOURCE_TYPE
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
-	AWS_PORT_NAME       : AWS_PORT_NAME
-	REGION_KEYS			: REGION_KEYS
-	REGION_SHORT_LABEL	: REGION_SHORT_LABEL
-	REGION_LABEL		: REGION_LABEL
-	RETURN_CODE			: RETURN_CODE
-	MESSAGE_E			: MESSAGE_E
-	APP_STATE			: APP_STATE
-	OPS_STATE			: OPS_STATE
-	RECENT_NUM			: RECENT_NUM
-	RECENT_DAYS			: RECENT_DAYS
+	AWS_PORT_NAME           : AWS_PORT_NAME
+	OS_TYPE                 : OS_TYPE
+	REGION_KEYS			    : REGION_KEYS
+	REGION_SHORT_LABEL	    : REGION_SHORT_LABEL
+	REGION_LABEL		    : REGION_LABEL
+	RETURN_CODE			    : RETURN_CODE
+	MESSAGE_E			    : MESSAGE_E
+	APP_STATE			    : APP_STATE
+	OPS_STATE			    : OPS_STATE
+	RECENT_NUM			    : RECENT_NUM
+	RECENT_DAYS			    : RECENT_DAYS
 
 

@@ -100,7 +100,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "ebsOptimized" ], "show_key": "EBS Optimized"},
                     { "key": [ "rootDeviceType" ], "show_key": "Root Device Type"},
                     { "key": [ "placement", "tenancy" ], "show_key": "Tenancy"},
-                    { "key": [ "networkInterfaceSet" ], "show_key": "Network Interface"},
                     { "key": [ "blockDeviceMapping", "item", "deviceName" ], "show_key": "Block Devices"},
                     { "key": [ "groupSet", "item", "groupName" ], "show_key": "Security Groups"}
                 ]},
@@ -665,12 +664,12 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                         vpnConnectionId                     : me._parseEmptyValue value_set.vpnConnectionId
                         vpnGatewayId                        : me._parseEmptyValue value_set.vpnConnectionId
                         customerGatewayId                   : me._parseEmptyValue value_set.customerGatewayId
-                        tunnel0_ike_protocol_method         : me._parseEmptyValue value_set.vgwTelemetry.item[0]
-                        tunnel0_ike_pre_shared_key          : me._parseEmptyValue value_set.
-                        tunnel0_ike_encryption_protocol     : me._parseEmptyValue value_set.
-                        tunnel0_ike_lifetime                : me._parseEmptyValue value_set.
-                        tunnel0_ike_mode                    : me._parseEmptyValue value_set.
-                        tunnel0_ike_perfect_forward_secrecy : me._parseEmptyValue value_set.
+                        #tunnel0_ike_protocol_method         : me._parseEmptyValue value_set.vgwTelemetry.item[0]
+                        #tunnel0_ike_pre_shared_key          : me._parseEmptyValue value_set.
+                        #tunnel0_ike_encryption_protocol     : me._parseEmptyValue value_set.
+                        #tunnel0_ike_lifetime                : me._parseEmptyValue value_set.
+                        #tunnel0_ike_mode                    : me._parseEmptyValue value_set.
+                        #tunnel0_ike_perfect_forward_secrecy : me._parseEmptyValue value_set.
 
                     }
                     dc_filename = if dc_data.vpnConnectionId then dc_data.vpnConnectionId else 'download_configuration'
@@ -756,8 +755,18 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     ami_list.push ins.imageId
 
+                    delete_index = []
+
+                    if ins.networkInterfaceSet
+
+                        for eni, eni_index in ins.networkInterfaceSet.item
+
+                            delete_index.push popup_key_set.detail.DescribeInstances.sub_info.push { "key": ['networkInterfaceSet', 'item', eni_index], "show_key": "NetworkInterface-" + eni_index }
+
                     ins.detail = me.parseSourceValue 'DescribeInstances', ins, "detail", null
 
+                    popup_key_set.detail.DescribeInstances.sub_info.pop() for j in delete_index
+                    
                     is_managed = false
 
                     if ins.tagSet != undefined and ins.tagSet.item.constructor == Array

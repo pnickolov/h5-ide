@@ -302,9 +302,39 @@
             }, {
               "key": ["Subnets"],
               "show_key": "Subnets"
+            }
+          ]
+        },
+        "DescribeAddresses": {
+          "title": "publicIp",
+          "sub_info": [
+            {
+              "key": ["domain"],
+              "show_key": "Domain"
             }, {
-              "key": ["Instances", 'member'],
-              "show_key": "Instances"
+              "key": ["instanceId"],
+              "show_key": "InstanceId"
+            }, {
+              "key": ["publicIp"],
+              "show_key": "PublicIp"
+            }, {
+              "key": ["associationId"],
+              "show_key": "AssociationId"
+            }, {
+              "key": ["allocationId"],
+              "show_key": "AllocationId"
+            }, {
+              "key": ["networkInterfaceId"],
+              "show_key": "NetworkInterfaceId"
+            }, {
+              "key": ["privateIpAddress"],
+              "show_key": "PrivateIpAddress"
+            }, {
+              "key": ["SecurityGroups"],
+              "show_key": "SecurityGroups"
+            }, {
+              "key": ["Subnets"],
+              "show_key": "Subnets"
             }
           ]
         }
@@ -697,8 +727,7 @@
             }
           });
           if (cur_value) {
-            if (cur_value.constructor === Object) {
-              console.error(me._genBubble(cur_value, show_key, true));
+            if (cur_value.constructor === Object || cur_value.constructor === Array) {
               cur_value = me._genBubble(cur_value, show_key, true);
             }
             parse_sub_info += '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ';
@@ -745,7 +774,7 @@
         return parse_result;
       },
       _genBubble: function(source, title, entry) {
-        var bubble_end, bubble_front, key, me, parse_sub_info, value, _i, _len;
+        var bubble_end, bubble_front, key, me, parse_sub_info, tmp, value, _i, _len;
         if (title == null) {
           title = null;
         }
@@ -758,29 +787,45 @@
           return "";
         }
         if (source.constructor === Object) {
+          tmp = [];
           for (key in source) {
             value = source[key];
+            if (value === null) {
+              continue;
+            }
             if (value.constructor === String) {
-              parse_sub_info += '\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\", ';
+              tmp.push('\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\"');
             } else {
-              parse_sub_info += me._genBubble(value, false);
+              tmp.push(me._genBubble(value, title, false));
             }
           }
+          parse_sub_info = tmp.join(', ');
           if (entry) {
             bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data=';
             bubble_end = '>' + title + '</a>';
-            parse_sub_info = " &apos;{\\\"title\\\":" + title + ', \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; ";
+            parse_sub_info = " &apos;{\\\"title\\\": \\\"" + title + '\\\" , \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; ";
             parse_sub_info = bubble_front + parse_sub_info + bubble_end;
           }
         }
         if (source.constructor === Array) {
+          tmp = [];
           for (_i = 0, _len = source.length; _i < _len; _i++) {
             value = source[_i];
-            if (value.constructor === String) {
-              parse_sub_info += value + "\n";
-            } else {
-              parse_sub_info += me._genBubble(value, false);
+            if (value === null) {
+              continue;
             }
+            if (value.constructor === String) {
+              tmp.push(value);
+            } else {
+              tmp.push(me._genBubble(value, title, false));
+            }
+          }
+          parse_sub_info = tmp.join(', ');
+          if (entry) {
+            bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data=';
+            bubble_end = '>' + title + '</a>';
+            parse_sub_info = " &apos;{\\\"title\\\": \\\"" + title + '\\\" , \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; ";
+            parse_sub_info = bubble_front + parse_sub_info + bubble_end;
           }
         }
         return parse_sub_info;
@@ -867,6 +912,7 @@
               resources.DescribeAddresses[i].instanceId = 'Not associated';
             }
             me._set_app_property(eip, resources, i, 'DescribeAddresses');
+            eip.detail = me.parseSourceValue('DescribeAddresses', eip, "detail", null);
           }
           lists.EIP = resources.DescribeAddresses.length;
         }
@@ -924,8 +970,8 @@
               item: []
             };
             attachment = {
-              device: 'Not-Attached',
-              status: 'Not-Attached'
+              device: 'not-attached',
+              status: 'not-attached'
             };
             vol.attachmentSet.item[0] = attachment;
           } else {

@@ -725,9 +725,11 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     me._set_app_property eip, resources, i, 'DescribeAddresses'
 
+                    eip.detail = me.parseSourceValue 'DescribeAddresses', eip, "detail", null
+
                 lists.EIP = resources.DescribeAddresses.length
                 
-                eip.detail = me.parseSourceValue 'DescribeAddresses', eip, "detail", null
+                
             
 
 
@@ -794,7 +796,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 if not vol.attachmentSet
                     vol.attachmentSet = {item:[]}
 
-                    attachment = { device: 'Not-Attached', status: 'Not-Attached'}
+                    attachment = { device: 'not-attached', status: 'not-attached'}
 
                     vol.attachmentSet.item[0] = attachment
                 else

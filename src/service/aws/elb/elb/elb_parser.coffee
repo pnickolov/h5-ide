@@ -46,7 +46,17 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
         #return vo
         result_set = ($.xml2json ($.parseXML result[1])).DescribeInstanceHealthResponse.DescribeInstanceHealthResult.InstanceStates.member
 
-        resolvedObjectToArray result_set
+        result_set = resolvedObjectToArray result_set
+
+        if result_set.constructor == Object
+
+            tmp = []
+
+            tmp.push result_set
+            
+            result_set = tmp
+
+        result_set
 
     #private (parser DescribeInstanceHealth return)
     parserDescribeInstanceHealthReturn = ( result, return_code, param ) ->

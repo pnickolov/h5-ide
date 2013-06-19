@@ -42,12 +42,12 @@ define [ 'underscore', 'backbone' ], () ->
         RETURN_OVERVIEW_TAB : 'RETURN_OVERVIEW_TAB'
         RETURN_REGION_TAB   : 'RETURN_REGION_TAB'
 
-        #click operation of app/stack in region
-        CLICK_RUN_APP       : 'CLICK_RUN_APP'
-        CLICK_STOP_APP      : 'CLICK_STOP_APP'
-        CLICK_TERMINAL_APP  : 'CLICK_TERMINAL_APP'
-        CLICK_DUPLICATE_STACK   : 'CLICK_DUPLICATE_STACK'
-        CLICK_DELETE_STACK  : 'CLICK_DELETE_STACK'
+        #app/stack in region
+        APP_RUN             : 'APP_RUN'
+        APP_STOP            : 'APP_STOP'
+        APP_TERMINATE       : 'APP_TERMINATE'
+        UPDATE_STACK_LIST   : 'UPDATE_STACK_LIST'
+        STACK_DELETE        : 'STACK_DELETE'
 
         constructor : ->
             _.extend this, Backbone.Events

@@ -11,7 +11,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         template : Handlebars.compile $( '#region-tmpl' ).html()
 
         events   :
-            'click .return-overview'          : 'returnOverviewClick'
+            'click .return-overview'        : 'returnOverviewClick'
+            'click .modal btn run'          : 'runAppClick'
+            'click .modal btn stop'         : 'stopAppClick'
+            'click .modal btn terminate'    : 'terminateAppClick'
+            'click .icon-redo'              : 'duplicateStackClick'
+            'click .icon-trashcan'          : 'deleteStackClick'
 
         returnOverviewClick : ( target ) ->
             console.log 'returnOverviewClick'
@@ -21,26 +26,34 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             console.log 'dashboard region render'
             $( this.el ).html this.template this.model.attributes
 
+        #app
         runAppClick : ( event ) ->
             console.log 'dashboard region run app'
-            #ide_event.trigger ide_event.OPEN_APP_TAB, app_name, region_name, app_id
+            this.trigger 'RUN_APP_CLICK', event.currentTarget.id
 
-        stopAppClick : ( ) ->
+        stopAppClick : ( event ) ->
             console.log 'dashboard region stop app'
+            this.trigger 'STOP_APP_CLICK', event.currentTarget.id
 
-        terminateAppClick : ( ) ->
+        terminateAppClick : ( event ) ->
+            #terminal confirm dialog
             console.log 'dashboard region terminal app'
-            #ide_event.trigger ide_event.TERMINATE_APP_TAB, app_name, region_name, app_id
+            #this.trigger 'TERMINATE_APP_CLICK', event.currentTarget.id
 
-        duplicateStackClick : ( ) ->
+        #stack
+        duplicateStackClick : ( event ) ->
             console.log 'dashboard region duplicate stack'
+            #duplicate confirm dialog
+            #this.trigger 'DUPLICATE_STACK_CLICK', event.currentTarget.id, new_name
 
-        deleteStackClick : ( ) ->
+        deleteStackClick : ( event ) ->
             console.log 'dashboard region delete stack'
+            #delete confirm dialog
+            #this.trigger 'DELETE_STACK_CLICK', event.currentTarget.id
 
-        createStackClick : ( ) ->
+        createStackClick : ( event ) ->
             console.log 'dashboard region create stack'
-            #ide_event.trigger ide_event.ADD_STACK_TAB, region_name
+            ide_event.trigger ide_event.ADD_STACK_TAB, region_name
 
     }
 

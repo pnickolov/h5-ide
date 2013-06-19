@@ -27,7 +27,7 @@
 					</li>
 					<li class="col-1-2">
 						<a href="#region-stat-stack"><i class="icon-layers icon-label"></i><span class="counter">{{ cur_stack_list.length }}</span> Stacks</a>
-						<button id="addStack" type="button" href="javascript:void(0)" class="btn btn-primary btn-region-dashboard" title="Create New Stack" onclick="createStackClick()">+</button>
+						<button href="javascript:void(0)" class="btn btn-primary btn-region-dashboard" title="Create New Stack">+</button>
 					</li>
 				</ul>
 				<div class="dashboard-widget-body scroll-wrap">
@@ -39,12 +39,12 @@
 							<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{{bubble_data}}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
 								<div class="action-thumbnail">
 									{{#if isrunning}}
-									<a class="tooltip" data-tooltip="Stop App"><i class="icon-stop"></i></a>
+									<a class="modal btn stop" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to Stop", "body":"Do you confirm to stop {{name}}?", "confirm":"Stop"}' data-modal-dismiss="true"><i class="icon-stop" id="{{id}}"></i></a>
 									{{else}}
-									<a class="tooltip" data-tooltip="Run App"><i class="icon-play"></i></a>
+									<a class="modal btn run" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to Run", "body":"Do you confirm to run {{name}}?", "confirm":"Run"}' data-modal-dismiss="true"><i class="icon-play" id="{{id}}"></i></a>
 									{{/if}}
 
-									<a class="tooltip" data-tooltip="Terminate App"><i class="icon-close"></i></a>
+									<a class="modal btn terminate" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to Terminate", "body":"Do you confirm to terminate {{name}}?", "confirm":"Terminate"}' data-modal-dismiss="true"><i class="icon-close" id="{{id}}"></i></a>
 								</div>
 								<a href="" class="thumbnail-body">
 									{{#if isrunning}}
@@ -63,8 +63,9 @@
 							{{#each cur_stack_list}}
 							<div class="item-thumbnail-wrap" style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
 								<div class="action-thumbnail">
-										<a class="tooltip" data-tooltip="Duplicate Stack"><i class="icon-redo"></i></a>
-										<a class="tooltip" data-tooltip="Delete Stack"><i class="icon-trashcan"></i></a>
+										<!--a class="tooltip" data-tooltip="Duplicate Stack"><i class="icon-redo" id="{{id}}"></i></a-->
+										<input class="input" type="text" placeholder="Type something…"><i class="icon-redo" id="{{id}}"></i></input>
+										<a class="modal btn delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to Delete", "body":"Do you confirm to delete {{name}}?", "confirm":"Delete"}' data-modal-dismiss="true"><i class="icon-trashcan" id="{{id}}"></i></a>
 									</div>
 								<a href="" class="thumbnail-body">
 									<div class="thumbnail-name truncate">{{name}}</div>

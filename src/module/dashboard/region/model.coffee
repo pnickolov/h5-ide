@@ -2,7 +2,7 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'constant', 'stack_model' ], (MC, Backbone, $, _, ide_event, aws_model, constant, stack_model) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'constant', 'app_model', 'stack_model' ], (MC, Backbone, $, _, ide_event, aws_model, constant, app_model, stack_model) ->
 
     current_region = null
     resource_source = null
@@ -11,8 +11,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
     RegionModel = Backbone.Model.extend {
 
         defaults :
-            'cur_app_list'          : null
-            'cur_stack_list'        : null
+            'cur_app_list'          : []
+            'cur_stack_list'        : []
             'resourse_list'         : null
 
 
@@ -33,40 +33,38 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
             ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
 
                 # get current region's apps
-                me.getItemList(result)
+                getItemList('app', result[current_region])
 
                 null
 
             ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
 
                 # get current region's stacks
-                me.getItemList(result)
+                getItemList('stack', result[current_region])
 
                 null
             null
 
         # get current region's app/stack list
-        getItemList : ( app_list, stack_list ) ->
+        getItemList : ( flag, item_list ) ->
             me = this
 
-            cur_app_list = []
-            _.map app_list, (value) ->
-                item = me.parseItem(value, 'app')
+            cur_item_list = []
+            _.map item_list, (value) ->
+                item = me.parseItem(value, flag)
                 if item
-                    cur_app_list.push item
+                    cur_item_list.push item
 
                     null
 
-            cur_stack_list = []
-            _.map stack_list, (value) ->
-                item = me.parseItem(value, 'stack')
-                if item
-                    cur_stack_list.push item
-
-            if cur_app_list
-                me.set 'cur_app_list', cur_app_list
-            if cur_stack_list
-                me.set 'cur_stack_list', cur_stack_list
+            if cur_item_list
+                if flag == 'app'
+                    #difference
+                    if _.difference me.get('cur_app_list'), cur_item_list
+                        me.set 'cur_app_list', cur_item_list
+                else if flag == 'stack'
+                    if _.difference me.get('cur_stack_list'), cur_item_list
+                        me.set 'cur_stack_list', cur_item_list
 
         parseItem : (item, flag) ->
             id          = item.id
@@ -100,13 +98,69 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
 
             return { 'id' : id, 'name' : name, 'create_time':create_time, 'isrunning' : isrunning, 'bubble_data' : bubble_data}
 
-        duplicateStack : (region, stack_id, new_name, stack_name) ->
+        runApp : (app_id) ->
+            me = this
+
+            app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
+            app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region, app_id, app_name
+            app_model.on 'APP_START_RETURN', (result) ->
+                console.log 'APP_START_RETURN'
+                console.log result
+
+                #parse the result
+                if !result.is_error #request successfuly
+                    #push event
+                    ide_event.trigger ide_event.APP_RUN, app_name, app_id
+                #else    # failed
+
+        stopApp : (app_id) ->
+            me = this
+            app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
+            app_model.stop { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region, app_id, app_name
+            app_model.on 'APP_STOP_RETURN', (result) ->
+                console.log 'APP_STOP_RETURN'
+                console.log result
+
+                if !result.is_error
+                    ide_event.trigger ide_event.APP_STOP, app_name, app_id
+
+        terminateApp : (app_id) ->
+            me = this
+            app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
+            app_model.terminate { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region, app_id, app_name
+            app_model.on 'APP_TERMINATE_RETURN', (result) ->
+                console.log 'APP_TERMINATE_RETURN'
+                console.log result
+
+                if !result.is_error
+                    ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
+
+        duplicateStack : (stack_id, new_name) ->
             me = this
 
             # check duplicate stack name
 
+            stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
             # get service, ( src, username, session_id, region_name, stack_id, new_name, stack_name=null )
-            stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
+            stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region, stack_id, new_name, stack_name
+            stack_model.on 'STACK_SAVE__AS_RETURN', (result) ->
+                console.log 'STACK_SAVE__AS_RETURN'
+                console.log result
+
+                if !result.is_error
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+
+        deleteStack : (stack_id) ->
+            me = this
+
+            stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
+            stack_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region, stack_id, stack_name
+            stack_model.on 'STACK_REMOVE_RETURN', (result) ->
+                console.log 'STACK_REMOVE_RETURN'
+                console.log result
+
+                if !result.is_error
+                    ide_event.trigger ide_event.ADD_STACK_TAB
 
         setResource : ( resources ) ->
 

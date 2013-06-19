@@ -133,7 +133,29 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         #render
                         view.render()
 
-                    model.getItemList(current_app, current_stack)
+                    model.getItemList('app', current_app)
+                    model.getItemList('stack', current_stack)
+
+                    view.on 'RUN_APP_CLICK', (app_id) ->
+                        console.log 'dashboard_region_click:run_app'
+                        # call service
+                        model.runApp(app_id)
+                    view.on 'STOP_APP_CLICK', (app_id) ->
+                        console.log 'dashboard_region_click:stop_app'
+                        model.stopApp(app_id)
+                    view.on 'TERMINATE_APP_CLICK', (app_id) ->
+                        console.log 'dashboard_region_click:terminate_app'
+                        model.terminateApp(app_id)
+                    view.on 'DUPLICATE_STACK_CLICK', (stack_id, new_name) ->
+                        console.log 'dashboard_region_click:duplicate_stack'
+                        model.duplicateStack(stack_id, new_name)
+                    view.on 'DELETE_STACK_CLICK', (stack_id) ->
+                        console.log 'dashboard_region_click:delete_stack'
+                        model.deleteStack(stack_id)
+
+                    model.resultListListener()
+
+
 
     unLoadModule = () ->
         #view.remove()

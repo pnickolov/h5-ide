@@ -403,7 +403,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 cur_tag = value
 
                 _.map cur_attr, ( value ) ->
-                    if me.hasnotTagId value.tagSet
+                    if value.app is "Unmanaged"
                         name = if value.tagSet then value.tagSet.name else null
                         switch cur_tag
                             when "DescribeVolumes"
@@ -478,15 +478,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 null
 
             null
-
-        #if an array tagset has tagid
-        hasnotTagId : ( tagset )->
-            if tagset
-                if tagset.item
-                    _.map tagset.item, ( value ) ->
-                        if value.key is "app-id" && value.value
-                            false
-            true
 
         #parse bubble value or detail value for unmanagedSource
         parseSourceValue : ( type, value, keys, name )->
@@ -715,8 +706,10 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             _.map keyes_set, ( value ) ->
                 btn_data = ''
+
                 if value.type is "download_configuration"
                     value_conf = value_set.customerGatewayConfiguration
+
                     if value_conf
                         value_conf = $.xml2json($.parseXML value_conf)
                         value_conf = value_conf.vpn_connection
@@ -724,68 +717,52 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                             vpnConnectionId                         : me._parseEmptyValue value_conf['@attributes'].id
                             vpnGatewayId                            : me._parseEmptyValue value_conf.vpn_gateway_id
                             customerGatewayId                       : me._parseEmptyValue value_conf.customer_gateway_id
-                            tunnel0_ike_protocol_method             : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.authentication_protocol
-                            tunnel0_ike_pre_shared_key              : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.pre_shared_key
-                            tunnel0_ike_authentication_protocol_algorithm : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.authentication_protocol
-                            tunnel0_ike_encryption_protocol         : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.encryption_protocol
-                            tunnel0_ike_lifetime                    : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.lifetime
-                            tunnel0_ike_mode                        : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.mode
-                            tunnel0_ike_perfect_forward_secrecy     : me._parseEmptyValue value_conf.ipsec_tunnel[0].ike.perfect_forward_secrecy
-                            tunnel0_ipsec_protocol                  : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.protocol
-                            tunnel0_ipsec_authentication_protocol   : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.authentication_protocol
-                            tunnel0_ipsec_encryption_protocol       : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.encryption_protocol
-                            tunnel0_ipsec_lifetime                  : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.lifetime
-                            tunnel0_ipsec_mode                      : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.mode
-                            tunnel0_ipsec_perfect_forward_secrecy   : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.perfect_forward_secrecy
-                            tunnel0_ipsec_interval                  : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.dead_peer_detection.interval
-                            tunnel0_ipsec_retries                   : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.dead_peer_detection.retries
-                            tunnel0_tcp_mss_adjustment              : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.tcp_mss_adjustment
-                            tunnel0_clear_df_bit                    : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.clear_df_bit
-                            tunnel0_fragmentation_before_encryption : me._parseEmptyValue value_conf.ipsec_tunnel[0].ipsec.fragmentation_before_encryption
-                            tunnel0_customer_gateway_outside_address : me._parseEmptyValue value_conf.ipsec_tunnel[0].customer_gateway.tunnel_outside_address.ip_address
-                            tunnel0_vpn_gateway_outside_address     : me._parseEmptyValue value_conf.ipsec_tunnel[0].vpn_gateway.tunnel_outside_address.ip_address
-                            tunnel0_customer_gateway_inside_address : me._parseEmptyValue value_conf.ipsec_tunnel[0].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[0].customer_gateway.tunnel_inside_address.network_cidr
-                            tunnel0_vpn_gateway_inside_address      : me._parseEmptyValue value_conf.ipsec_tunnel[0].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[0].customer_gateway.tunnel_inside_address.network_cidr
-                            tunnel0_next_hop                        : me._parseEmptyValue value_conf.ipsec_tunnel[0].vpn_gateway.tunnel_inside_address.ip_address
-                            tunnel1_ike_protocol_method             : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.authentication_protocol
-                            tunnel1_ike_pre_shared_key              : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.pre_shared_key
-                            tunnel1_ike_authentication_protocol_algorithm : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.authentication_protocol
-                            tunnel1_ike_encryption_protocol         : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.encryption_protocol
-                            tunnel1_ike_lifetime                    : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.lifetime
-                            tunnel1_ike_mode                        : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.mode
-                            tunnel1_ike_perfect_forward_secrecy     : me._parseEmptyValue value_conf.ipsec_tunnel[1].ike.perfect_forward_secrecy
-                            tunnel1_ipsec_protocol                  : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.protocol
-                            tunnel1_ipsec_authentication_protocol   : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.authentication_protocol
-                            tunnel1_ipsec_encryption_protocol       : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.encryption_protocol
-                            tunnel1_ipsec_lifetime                  : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.lifetime
-                            tunnel1_ipsec_mode                      : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.mode
-                            tunnel1_ipsec_perfect_forward_secrecy   : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.perfect_forward_secrecy
-                            tunnel1_ipsec_interval                  : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.dead_peer_detection.interval
-                            tunnel1_ipsec_retries                   : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.dead_peer_detection.retries
-                            tunnel1_tcp_mss_adjustment              : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.tcp_mss_adjustment
-                            tunnel1_clear_df_bit                    : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.clear_df_bit
-                            tunnel1_fragmentation_before_encryption : me._parseEmptyValue value_conf.ipsec_tunnel[1].ipsec.fragmentation_before_encryption
-                            tunnel1_customer_gateway_outside_address : me._parseEmptyValue value_conf.ipsec_tunnel[1].customer_gateway.tunnel_outside_address.ip_address
-                            tunnel1_vpn_gateway_outside_address     : me._parseEmptyValue value_conf.ipsec_tunnel[1].vpn_gateway.tunnel_outside_address.ip_address
-                            tunnel1_customer_gateway_inside_address : me._parseEmptyValue value_conf.ipsec_tunnel[1].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[0].customer_gateway.tunnel_inside_address.network_cidr
-                            tunnel1_vpn_gateway_inside_address      : me._parseEmptyValue value_conf.ipsec_tunnel[1].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[0].customer_gateway.tunnel_inside_address.network_cidr
-                            tunnel1_next_hop                        : me._parseEmptyValue value_conf.ipsec_tunnel[1].vpn_gateway.tunnel_inside_address.ip_address
+
+                        count_set = [1, 2]
+                        _.map count_set, ( value, key ) ->
+                            dc_data["tunnel" + key + "_ike_protocol_method"]                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
+                            dc_data["tunnel" + key + "_ike_protocol_method"]                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
+                            dc_data["tunnel" + key + "_ike_pre_shared_key"]                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.pre_shared_key,
+                            dc_data["tunnel" + key + "_ike_authentication_protocol_algorithm"]  = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
+                            dc_data["tunnel" + key + "_ike_encryption_protocol"]                = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.encryption_protocol
+                            dc_data["tunnel" + key + "_ike_lifetime"]                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.lifetime
+                            dc_data["tunnel" + key + "_ike_mode"]                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.mode
+                            dc_data["tunnel" + key + "_ike_perfect_forward_secrecy"]            = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.perfect_forward_secrecy
+                            dc_data["tunnel" + key + "_ipsec_protocol"]                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.protocol
+                            dc_data["tunnel" + key + "_ipsec_authentication_protocol"]          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.authentication_protocol
+                            dc_data["tunnel" + key + "_ipsec_encryption_protocol"]              = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.encryption_protocol
+                            dc_data["tunnel" + key + "_ipsec_lifetime"]                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.lifetime
+                            dc_data["tunnel" + key + "_ipsec_mode"]                             = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.mode
+                            dc_data["tunnel" + key + "_ipsec_perfect_forward_secrecy"]          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.perfect_forward_secrecy
+                            dc_data["tunnel" + key + "_ipsec_interval"]                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.interval
+                            dc_data["tunnel" + key + "_ipsec_retries"]                          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.retries
+                            dc_data["tunnel" + key + "_tcp_mss_adjustment"]                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.tcp_mss_adjustment
+                            dc_data["tunnel" + key + "_clear_df_bit"]                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.clear_df_bit
+                            dc_data["tunnel" + key + "_fragmentation_before_encryption"]        = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.fragmentation_before_encryption
+                            dc_data["tunnel" + key + "_customer_gateway_outside_address"]        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_outside_address.ip_address
+                            dc_data["tunnel" + key + "_vpn_gateway_outside_address"]            = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_outside_address.ip_address
+                            dc_data["tunnel" + key + "_customer_gateway_inside_address"]        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
+                            dc_data["tunnel" + key + "_vpn_gateway_inside_address"]             = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
+                            dc_data["tunnel" + key + "_next_hop"]                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address
+
+                            null
 
                         dc_filename = if dc_data.vpnConnectionId then dc_data.vpnConnectionId else 'download_configuration'
-                        dc_data = MC.template.configurationDownload(dc_data)
-                        dc_parse = '{"download":true,"filecontent":"'
-                        dc_parse +=  btoa(dc_data)
-                        dc_parse += '","filename":"'
-                        dc_parse += dc_filename
-                        dc_parse +='","btnname":"'
-                        dc_parse += value.name
-                        dc_parse += '"},'
-                        btn_data += dc_parse
+                        dc_data     = MC.template.configurationDownload(dc_data)
+                        dc_parse    = '{"download":true,"filecontent":"'
+                        dc_parse    +=  btoa(dc_data)
+                        dc_parse    += '","filename":"'
+                        dc_parse    += dc_filename
+                        dc_parse    +='","btnname":"'
+                        dc_parse    += value.name
+                        dc_parse    += '"},'
+                        btn_data    += dc_parse
+
                 if btn_data
-                    btn_data = btn_data.substring 0, btn_data.length - 1
-                    parse_btns_result += '['
-                    parse_btns_result += btn_data
-                    parse_btns_result += ']'
+                    btn_data            = btn_data.substring 0, btn_data.length - 1
+                    parse_btns_result   += '['
+                    parse_btns_result   += btn_data
+                    parse_btns_result   += ']'
 
             parse_btns_result
 

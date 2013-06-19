@@ -59,7 +59,6 @@
             }
           ]
         },
-        "DescribeVpcs": {},
         "DescribeInstances": {
           "status": ["instanceState", "name"],
           "title": "instanceId",
@@ -263,13 +262,49 @@
           "sub_info": [
             {
               "key": ["state"],
-              "show_key": "SvpcId"
+              "show_key": "State"
             }, {
               "key": ["cidrBlock"],
               "show_key": "CIDR"
             }, {
               "key": ["instanceTenancy"],
               "show_key": "Tenancy"
+            }
+          ]
+        },
+        "DescribeLoadBalancers": {
+          "title": "LoadBalancerName",
+          "sub_info": [
+            {
+              "key": ["state"],
+              "show_key": "State"
+            }, {
+              "key": ["AvailabilityZones", "member"],
+              "show_key": "AvailabilityZones"
+            }, {
+              "key": ["CreatedTime"],
+              "show_key": "CreatedTime"
+            }, {
+              "key": ["DNSName"],
+              "show_key": "DNSName"
+            }, {
+              "key": ["HealthCheck"],
+              "show_key": "HealthCheck"
+            }, {
+              "key": ["Instances", 'member'],
+              "show_key": "Instances"
+            }, {
+              "key": ["ListenerDescriptions", "member", "Listener"],
+              "show_key": "ListenerDescriptions"
+            }, {
+              "key": ["SecurityGroups"],
+              "show_key": "SecurityGroups"
+            }, {
+              "key": ["Subnets"],
+              "show_key": "Subnets"
+            }, {
+              "key": ["Instances", 'member'],
+              "show_key": "Instances"
             }
           ]
         }
@@ -315,7 +350,6 @@
         });
         elb_model.on('ELB__DESC_INS_HLT_RETURN', function(result) {
           var elb, health, i, instance, total, _i, _j, _len, _len1, _ref, _ref1;
-          console.error(result);
           total = result.resolved_data.length;
           health = 0;
           _ref = result.resolved_data;
@@ -338,10 +372,12 @@
         dhcp_model.on('VPC_DHCP_DESC_DHCP_OPTS_RETURN', function(result) {
           var dhcp, dhcp_set, vpc, _i, _j, _len, _len1, _ref;
           dhcp_set = result.resolved_data.item;
-          console.error(dhcp_set);
           _ref = resource_source.DescribeVpcs;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             vpc = _ref[_i];
+            if (vpc.dhcpOptionsId === 'default') {
+              vpc.dhcp = '{"title": "default", "sub_info" : ["<dt>DhcpOptionsId: </dt><dd>None</dd>"]}';
+            }
             if (dhcp_set.constructor === Object) {
               if (vpc.dhcpOptionsId === dhcp_set.dhcpOptionsId) {
                 vpc.dhcp = me._genDhcp(dhcp_set);
@@ -661,6 +697,10 @@
             }
           });
           if (cur_value) {
+            if (cur_value.constructor === Object) {
+              console.error(me._genBubble(cur_value, show_key, true));
+              cur_value = me._genBubble(cur_value, show_key, true);
+            }
             parse_sub_info += '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ';
           }
           return null;
@@ -704,6 +744,47 @@
         console.log(parse_result);
         return parse_result;
       },
+      _genBubble: function(source, title, entry) {
+        var bubble_end, bubble_front, key, me, parse_sub_info, value, _i, _len;
+        if (title == null) {
+          title = null;
+        }
+        if (entry == null) {
+          entry = false;
+        }
+        me = this;
+        parse_sub_info = "";
+        if ($.isEmptyObject(source)) {
+          return "";
+        }
+        if (source.constructor === Object) {
+          for (key in source) {
+            value = source[key];
+            if (value.constructor === String) {
+              parse_sub_info += '\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\", ';
+            } else {
+              parse_sub_info += me._genBubble(value, false);
+            }
+          }
+          if (entry) {
+            bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data=';
+            bubble_end = '>' + title + '</a>';
+            parse_sub_info = " &apos;{\\\"title\\\":" + title + ', \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; ";
+            parse_sub_info = bubble_front + parse_sub_info + bubble_end;
+          }
+        }
+        if (source.constructor === Array) {
+          for (_i = 0, _len = source.length; _i < _len; _i++) {
+            value = source[_i];
+            if (value.constructor === String) {
+              parse_sub_info += value + "\n";
+            } else {
+              parse_sub_info += me._genBubble(value, false);
+            }
+          }
+        }
+        return parse_sub_info;
+      },
       parseTableValue: function(keyes_set, value_set) {
         return null;
       },
@@ -712,18 +793,21 @@
         parse_btns_result = '';
         btn_date = '';
         _.map(keyes_set, function(value) {
-          var dc_date, dc_filename, dc_parse;
+          var dc_data, dc_filename, dc_parse;
           btn_date = '';
           if (value.type === "download_configuration") {
-            dc_date = {};
-            dc_date.vpnConnectionId = value_set.vpnConnectionId ? value_set.vpnConnectionId : '';
-            dc_date = MC.template.configurationDownload(dc_date);
-            dc_filename = dc_date.vpnConnectionId ? dc_date.vpnConnectionId : 'download_configuration';
-            dc_parse = '{filecontent: "';
-            dc_parse += dc_date;
-            dc_parse += '", filename: "';
+            dc_data = {
+              vpnConnectionId: value_set.vpnConnectionId ? value_set.vpnConnectionId : '',
+              vpnGatewayId: value_set.vpnConnectionId ? value_set.vpnConnectionId : '',
+              customerGatewayId: value_set.vpnConnectionId ? value_set.vpnConnectionId : ''
+            };
+            dc_filename = dc_data.vpnConnectionId ? dc_data.vpnConnectionId : 'download_configuration';
+            dc_data = MC.template.configurationDownload(dc_data);
+            dc_parse = '{"download":true,"filecontent":"';
+            dc_parse += btoa(dc_data);
+            dc_parse += '","filename":"';
             dc_parse += dc_filename;
-            dc_parse += '",btnname:"';
+            dc_parse += '","btnname":"';
             dc_parse += value.name;
             dc_parse += '"},';
             btn_date += dc_parse;
@@ -738,129 +822,156 @@
         return parse_btns_result;
       },
       setResource: function(resources) {
-        var ami_list, cgw_set, dhcp_set, eip, elb, i, ins, is_managed, lists, manage_instances_app, manage_instances_id, me, reg, reg_result, tag, vgw_set, vol, vpc, vpn, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _len9, _m, _n, _o, _p, _q, _r, _ref, _ref1, _ref10, _ref11, _ref12, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9;
+        var ami_list, attachment, cgw_set, dhcp_set, eip, elb, i, ins, is_managed, lists, manage_instances_app, manage_instances_id, me, reg, reg_result, tag, vgw_set, vol, vpc, vpn, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _len9, _m, _n, _o, _p, _q, _r, _ref, _ref1, _ref10, _ref11, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9;
         me = this;
-        lists = {};
+        lists = {
+          ELB: 0,
+          EIP: 0,
+          Instance: 0,
+          VPC: 0,
+          VPN: 0,
+          Volume: 0
+        };
         lists.Not_Used = {
           'EIP': 0,
           'Volume': 0
         };
-        lists.ELB = resources.DescribeLoadBalancers.length;
-        reg = /app-\w{8}/;
-        _ref = resources.DescribeLoadBalancers;
-        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-          elb = _ref[i];
-          if ($.isEmptyObject(elb.Instances)) {
-            elb.state = '0 of 0 instances in service';
-          } else {
-            elb_model.DescribeInstanceHealth({
-              sender: this
-            }, $.cookie('usercode'), $.cookie('session_id'), current_region, elb.LoadBalancerName);
-          }
-          reg_result = elb.LoadBalancerName.match(reg);
-          if (reg_result) {
-            elb.app = reg_result;
-          } else {
-            elb.app = 'Unmanaged';
-          }
-        }
-        lists.EIP = resources.DescribeAddresses.length;
-        _ref1 = resources.DescribeAddresses;
-        for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
-          eip = _ref1[i];
-          if ($.isEmptyObject(eip.instanceId)) {
-            lists.Not_Used.EIP++;
-            resources.DescribeAddresses[i].instanceId = 'Not associated';
-          }
-          me._set_app_property(eip, resources, i, 'DescribeAddresses');
-        }
-        lists.Instance = resources.DescribeInstances.length;
-        ami_list = [];
-        _ref2 = resources.DescribeInstances;
-        for (i = _k = 0, _len2 = _ref2.length; _k < _len2; i = ++_k) {
-          ins = _ref2[i];
-          ami_list.push(ins.imageId);
-          is_managed = false;
-          if (ins.tagSet !== void 0 && ins.tagSet.item.constructor === Array) {
-            _ref3 = ins.tagSet.item;
-            for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
-              tag = _ref3[_l];
-              if (tag.key === 'app') {
-                is_managed = true;
-                resources.DescribeInstances[i].app = tag.value;
-              }
-              if (tag.key === 'name') {
-                resources.DescribeInstances[i].host = tag.value;
-              }
+        if (resources.DescribeLoadBalancers !== null) {
+          lists.ELB = resources.DescribeLoadBalancers.length;
+          reg = /app-\w{8}/;
+          _ref = resources.DescribeLoadBalancers;
+          for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+            elb = _ref[i];
+            elb.detail = me.parseSourceValue('DescribeLoadBalancers', elb, "detail", null);
+            if (!elb.Instances) {
+              elb.state = '0 of 0 instances in service';
+            } else {
+              elb_model.DescribeInstanceHealth({
+                sender: this
+              }, $.cookie('usercode'), $.cookie('session_id'), current_region, elb.LoadBalancerName);
+            }
+            reg_result = elb.LoadBalancerName.match(reg);
+            if (reg_result) {
+              elb.app = reg_result;
+            } else {
+              elb.app = 'Unmanaged';
             }
           }
-          if (!is_managed) {
-            resources.DescribeInstances[i].app = 'Unmanaged';
-          }
-          if (resources.DescribeInstances[i].host === void 0) {
-            resources.DescribeInstances[i].host = 'Unmanaged';
-          }
         }
-        manage_instances_id = [];
-        manage_instances_app = {};
-        _ref4 = resources.DescribeInstances;
-        for (_m = 0, _len4 = _ref4.length; _m < _len4; _m++) {
-          ins = _ref4[_m];
-          if (ins.app !== 'Unmanaged') {
-            manage_instances_id.push(ins.instanceId);
-            manage_instances_app[ins.instanceId] = ins.app;
+        if (resources.DescribeAddresses !== null) {
+          _ref1 = resources.DescribeAddresses;
+          for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
+            eip = _ref1[i];
+            if ($.isEmptyObject(eip.instanceId)) {
+              lists.Not_Used.EIP++;
+              resources.DescribeAddresses[i].instanceId = 'Not associated';
+            }
+            me._set_app_property(eip, resources, i, 'DescribeAddresses');
+          }
+          lists.EIP = resources.DescribeAddresses.length;
+        }
+        if (resources.DescribeInstances !== null) {
+          lists.Instance = resources.DescribeInstances.length;
+          ami_list = [];
+          _ref2 = resources.DescribeInstances;
+          for (i = _k = 0, _len2 = _ref2.length; _k < _len2; i = ++_k) {
+            ins = _ref2[i];
+            ami_list.push(ins.imageId);
+            ins.detail = me.parseSourceValue('DescribeInstances', ins, "detail", null);
+            is_managed = false;
+            if (ins.tagSet !== void 0 && ins.tagSet.item.constructor === Array) {
+              _ref3 = ins.tagSet.item;
+              for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+                tag = _ref3[_l];
+                if (tag.key === 'app') {
+                  is_managed = true;
+                  resources.DescribeInstances[i].app = tag.value;
+                }
+                if (tag.key === 'name') {
+                  resources.DescribeInstances[i].host = tag.value;
+                }
+              }
+            }
+            if (!is_managed) {
+              resources.DescribeInstances[i].app = 'Unmanaged';
+            }
+            if (resources.DescribeInstances[i].host === void 0) {
+              resources.DescribeInstances[i].host = 'Unmanaged';
+            }
+          }
+          manage_instances_id = [];
+          manage_instances_app = {};
+          _ref4 = resources.DescribeInstances;
+          for (_m = 0, _len4 = _ref4.length; _m < _len4; _m++) {
+            ins = _ref4[_m];
+            if (ins.app !== 'Unmanaged') {
+              manage_instances_id.push(ins.instanceId);
+              manage_instances_app[ins.instanceId] = ins.app;
+            }
           }
         }
         lists.Volume = resources.DescribeVolumes.length;
         _ref5 = resources.DescribeVolumes;
         for (i = _n = 0, _len5 = _ref5.length; _n < _len5; i = ++_n) {
           vol = _ref5[i];
+          vol.detail = me.parseSourceValue('DescribeVolumes', vol, "detail", null);
           if (vol.status === "available") {
             lists.Not_Used.Volume++;
           }
           me._set_app_property(vol, resources, i, 'DescribeVolumes');
-          if (((_ref6 = vol.attachmentSet.item) != null ? _ref6.device : void 0) == null) {
-            vol.attachmentSet.item = {};
-            vol.attachmentSet.item.device = 'Not Attached';
-            vol.attachmentSet.item.status = 'Not Attached';
+          if (!vol.attachmentSet) {
+            vol.attachmentSet = {
+              item: []
+            };
+            attachment = {
+              device: 'Not-Attached',
+              status: 'Not-Attached'
+            };
+            vol.attachmentSet.item[0] = attachment;
           } else {
-            if (_ref7 = vol.attachmentSet.item.instanceId, __indexOf.call(manage_instances_id, _ref7) >= 0) {
+            if (_ref6 = vol.attachmentSet.item.instanceId, __indexOf.call(manage_instances_id, _ref6) >= 0) {
               resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item.instanceId];
             }
           }
         }
-        lists.VPC = resources.DescribeVpcs.length;
-        _ref8 = resources.DescribeVpcs;
-        for (i = _o = 0, _len6 = _ref8.length; _o < _len6; i = ++_o) {
-          vpc = _ref8[i];
-          me._set_app_property(vpc, resources, i, 'DescribeVpcs');
-        }
-        dhcp_set = [];
-        _ref9 = resources.DescribeVpcs;
-        for (_p = 0, _len7 = _ref9.length; _p < _len7; _p++) {
-          vpc = _ref9[_p];
-          if (_ref10 = vpc.dhcpOptionsId, __indexOf.call(dhcp_set, _ref10) < 0) {
-            dhcp_set.push(vpc.dhcpOptionsId);
+        if (resources.DescribeVpcs !== null) {
+          lists.VPC = resources.DescribeVpcs.length;
+          _ref7 = resources.DescribeVpcs;
+          for (i = _o = 0, _len6 = _ref7.length; _o < _len6; i = ++_o) {
+            vpc = _ref7[i];
+            me._set_app_property(vpc, resources, i, 'DescribeVpcs');
+            vpc.detail = me.parseSourceValue('DescribeVpcs', vpc, "detail", null);
+          }
+          dhcp_set = [];
+          _ref8 = resources.DescribeVpcs;
+          for (_p = 0, _len7 = _ref8.length; _p < _len7; _p++) {
+            vpc = _ref8[_p];
+            if ((_ref9 = vpc.dhcpOptionsId, __indexOf.call(dhcp_set, _ref9) < 0) && vpc.dhcpOptionsId !== 'default') {
+              dhcp_set.push(vpc.dhcpOptionsId);
+            }
+          }
+          if (dhcp_set) {
+            dhcp_model.DescribeDhcpOptions({
+              sender: this
+            }, $.cookie('usercode'), $.cookie('session_id'), current_region, dhcp_set);
           }
         }
-        if (dhcp_set) {
-          dhcp_model.DescribeDhcpOptions({
-            sender: this
-          }, $.cookie('usercode'), $.cookie('session_id'), current_region, dhcp_set);
-        }
-        lists.VPN = resources.DescribeVpnConnections.length;
-        _ref11 = resources.DescribeVpnConnections;
-        for (i = _q = 0, _len8 = _ref11.length; _q < _len8; i = ++_q) {
-          vpn = _ref11[i];
-          me._set_app_property(vpn, resources, i, 'DescribeVpnConnections');
-        }
-        cgw_set = [];
-        vgw_set = [];
-        _ref12 = resources.DescribeVpnConnections;
-        for (_r = 0, _len9 = _ref12.length; _r < _len9; _r++) {
-          vpn = _ref12[_r];
-          cgw_set.push(vpn.customerGatewayId);
-          vgw_set.push(vpn.vpnGatewayId);
+        if (resources.DescribeVpnConnections !== null) {
+          lists.VPN = resources.DescribeVpnConnections.length;
+          _ref10 = resources.DescribeVpnConnections;
+          for (i = _q = 0, _len8 = _ref10.length; _q < _len8; i = ++_q) {
+            vpn = _ref10[i];
+            me._set_app_property(vpn, resources, i, 'DescribeVpnConnections');
+            vpn.detail = me.parseSourceValue('DescribeVpnConnections', vpn, "detail", null);
+          }
+          cgw_set = [];
+          vgw_set = [];
+          _ref11 = resources.DescribeVpnConnections;
+          for (_r = 0, _len9 = _ref11.length; _r < _len9; _r++) {
+            vpn = _ref11[_r];
+            cgw_set.push(vpn.customerGatewayId);
+            vgw_set.push(vpn.vpnGatewayId);
+          }
         }
         if (cgw_set) {
           customergateway_model.DescribeCustomerGateways({

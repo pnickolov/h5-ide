@@ -26,26 +26,20 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 "title"     :   "customerGatewayId"
                 "status"    :   "state"
                 "sub_info"  :   [
-
                         { "key": [ "customerGatewayId" ], "show_key": "CustomerGatewayId"},
                         { "key": [ "type"], "show_key": "Type"},
                         { "key": [ "ipAddress"], "show_key": "IpAddress"},
                         { "key": [ "bgpAsn"], "show_key": "BgpAsn"},
-
-
                     ]
                 },
             "DescribeVpnGateways"   :   {
                 "title"     :   "vpnGatewayId"
                 "status"    :   "state"
                 "sub_info"  :   [
-
                         { "key": [ "vpnGatewayId" ], "show_key": "VPNGatewayId"},
                         { "key": [ "type"], "show_key": "Type"},
                     ]
-            }
-            "DescribeVpcs": {}
-
+                }
             "DescribeInstances": {
                 "status": [ "instanceState", "name" ],
                 "title": "instanceId",
@@ -69,7 +63,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "isDefault" ], "show_key": "Default VPC:"},
                     { "key": [ "instanceTenancy" ], "show_key": "Tenacy"}
                 ]}
-
         },
         "detail" : {
             "DescribeVolumes": {
@@ -192,7 +185,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     for ami in result.resolved_data.item
 
                         region_ami_list[ami.imageId] = ami
-                
+
                 for ins, i in resource_source.DescribeInstances
 
                     ins.image = region_ami_list[ins.imageId]
@@ -258,7 +251,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     if cgw_set.constructor == Object
 
                         vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw_set, "bubble", null
-                        
+
                     else
 
                         for cgw in cgw_set
@@ -622,7 +615,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             parse_sub_info
 
-parseTableValue : ( keyes_set, value_set )->
+        parseTableValue : ( keyes_set, value_set )->
             null
 
         parseBtnValue : ( keyes_set, value_set )->
@@ -632,15 +625,18 @@ parseTableValue : ( keyes_set, value_set )->
             _.map keyes_set, ( value ) ->
                 btn_date = ''
                 if value.type is "download_configuration"
-                    dc_date = {}
-                    dc_date.vpnConnectionId = if value_set.vpnConnectionId then value_set.vpnConnectionId else ''
-                    dc_date = MC.template.configurationDownload(dc_date)
-                    dc_filename = if dc_date.vpnConnectionId then dc_date.vpnConnectionId else 'download_configuration'
-                    dc_parse = '{filecontent: "'
-                    dc_parse +=  dc_date
-                    dc_parse += '", filename: "'
+                    dc_data = {
+                        vpnConnectionId     : if value_set.vpnConnectionId then value_set.vpnConnectionId else ''
+                        vpnGatewayId        : if value_set.vpnConnectionId then value_set.vpnConnectionId else ''
+                        customerGatewayId   : if value_set.vpnConnectionId then value_set.vpnConnectionId else ''
+                    }
+                    dc_filename = if dc_data.vpnConnectionId then dc_data.vpnConnectionId else 'download_configuration'
+                    dc_data = MC.template.configurationDownload(dc_data)
+                    dc_parse = '{"download":true,"filecontent":"'
+                    dc_parse +=  btoa(dc_data)
+                    dc_parse += '","filename":"'
                     dc_parse += dc_filename
-                    dc_parse +='",btnname:"'
+                    dc_parse +='","btnname":"'
                     dc_parse += value.name
                     dc_parse += '"},'
                     btn_date += dc_parse
@@ -655,7 +651,7 @@ parseTableValue : ( keyes_set, value_set )->
         setResource : ( resources ) ->
 
             me = this
-            
+
             lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0}
 
             lists.Not_Used = { 'EIP' : 0, 'Volume' : 0 }
@@ -697,10 +693,10 @@ parseTableValue : ( keyes_set, value_set )->
                         resources.DescribeAddresses[i].instanceId = 'Not associated'
 
                     me._set_app_property eip, resources, i, 'DescribeAddresses'
-                
+
                 lists.EIP = resources.DescribeAddresses.length
-            
-            
+
+
 
             # instance
             if resources.DescribeInstances != null
@@ -753,7 +749,7 @@ parseTableValue : ( keyes_set, value_set )->
 
             # volume
             lists.Volume = resources.DescribeVolumes.length
-            
+
             for vol, i in resources.DescribeVolumes
 
                 vol.detail = me.parseSourceValue 'DescribeVolumes', vol, "detail", null
@@ -773,7 +769,7 @@ parseTableValue : ( keyes_set, value_set )->
                     if vol.attachmentSet.item.instanceId in manage_instances_id
 
                         resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item.instanceId]
-                        
+
             # vpc
             if resources.DescribeVpcs != null
 
@@ -827,7 +823,7 @@ parseTableValue : ( keyes_set, value_set )->
             if ami_list
                 ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
 
-           
+
             console.error resources
             me.set 'region_resource', resources
             me.set 'region_resource_list', lists

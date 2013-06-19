@@ -103,7 +103,9 @@
 			{{/each}}
 		</dl>
         {{#each btns}}
-        <a href="data:text/octet-stream,{{{this.filecontent}}}" download="{{{this.filename}}}.txt"><{{this.btnname}}/a>
+        {{#if this.download}}
+            <a class='btn btn-primary' href="data://text/plain;base64,{{{this.filecontent}}}" download="{{{this.filename}}}.txt">{{this.btnname}}</a>
+        {{/if}}
         {{/each}}
 	</div>
 	<div class="modal-footer">

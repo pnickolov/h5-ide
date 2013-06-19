@@ -146,7 +146,19 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "ListenerDescriptions", "member", "Listener" ], "show_key": "ListenerDescriptions"}
                     { "key": [ "SecurityGroups"], "show_key": "SecurityGroups"}
                     { "key": [ "Subnets" ], "show_key": "Subnets"}
-                    { "key": [ "Instances", 'member' ], "show_key": "Instances"}
+                ]}
+            "DescribeAddresses": {
+                "title": "publicIp",
+                "sub_info":[
+                    { "key": [ "domain" ], "show_key": "Domain"},
+                    { "key": [ "instanceId" ], "show_key": "InstanceId"},
+                    { "key": [ "publicIp" ], "show_key": "PublicIp"}
+                    { "key": [ "associationId" ], "show_key": "AssociationId"}
+                    { "key": [ "allocationId" ], "show_key": "AllocationId"}
+                    { "key": [ "networkInterfaceId"], "show_key": "NetworkInterfaceId"}
+                    { "key": [ "privateIpAddress"], "show_key": "PrivateIpAddress"}
+                    { "key": [ "SecurityGroups"], "show_key": "SecurityGroups"}
+                    { "key": [ "Subnets" ], "show_key": "Subnets"}
                 ]}
         }
     }
@@ -540,8 +552,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                             cur_value
 
                 if cur_value
-                    if cur_value.constructor == Object
-                        console.error me._genBubble cur_value, show_key, true
+                    if cur_value.constructor == Object or cur_value.constructor == Array
                         cur_value = me._genBubble cur_value, show_key, true
                     parse_sub_info += ( '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ')
 
@@ -575,31 +586,51 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 return ""
 
             if source.constructor == Object
-
+                tmp = []
                 for key, value of source
+
+                    continue if value == null
 
                     if value.constructor == String
 
-                        parse_sub_info += ( '\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\", ')
+                        tmp.push ( '\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\"')
 
                     else
-                        parse_sub_info += me._genBubble( value, false)
+                        tmp.push me._genBubble value, title, false
+
+                parse_sub_info = tmp.join(', ')
 
                 if entry
+
                     bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data='
                     bubble_end = '>'+title+'</a>'
-                    parse_sub_info = " &apos;{\\\"title\\\":" +title + ', \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; "
+                    parse_sub_info = " &apos;{\\\"title\\\": \\\"" +title + '\\\" , \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; "
                     parse_sub_info = bubble_front + parse_sub_info + bubble_end
+
             if source.constructor == Array
+
+                tmp = []
 
                 for value in source
 
+                    continue if value == null
+
                     if value.constructor == String
 
-                        parse_sub_info += value + "\n"
+                        tmp.push value
 
                     else
-                        parse_sub_info += me._genBubble( value, false)
+
+                        tmp.push me._genBubble value, title, false
+
+                parse_sub_info = tmp.join(', ')
+
+                if entry
+
+                    bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data='
+                    bubble_end = '>'+title+'</a>'
+                    parse_sub_info = " &apos;{\\\"title\\\": \\\"" +title + '\\\" , \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; "
+                    parse_sub_info = bubble_front + parse_sub_info + bubble_end
 
             parse_sub_info
 
@@ -651,7 +682,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     me._set_app_property eip, resources, i, 'DescribeAddresses'
                 
                 lists.EIP = resources.DescribeAddresses.length
-            
+                
+                eip.detail = me.parseSourceValue 'DescribeAddresses', eip, "detail", null
             
 
             # instance

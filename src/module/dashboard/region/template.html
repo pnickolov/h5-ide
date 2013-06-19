@@ -222,7 +222,8 @@
 				<div class="widget-region-counter active">
 					<a href="#stat-table-instance">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>13<span class="label">Instance</span>
+							<i class="icon-image icon-label"></i>{{region_resource_list.Instance}}<span class="label">Instance</span> 
+
 						</div>
 					</a>
 				</div>
@@ -231,8 +232,9 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-eip">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>4<span class="label">EIP</span>
-							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 EIP not associated with instance.","description":"This would charge you extra expense."}'>1</span>
+							<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">EIP</span> 
+							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"{{region_resource_list.Not_Used.EIP}} EIP not associated with instance.","description":"This would charge you extra expense."}'>{{region_resource_list.Not_Used.EIP}}</span>
+
 						</div>
 					</a>
 				</div>
@@ -241,13 +243,13 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-ebs">
 						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>22<span class="label">EBS</span>
-							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"2 EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>2</span>
+							<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">EBS</span> 
+							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.Volume}} EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>{{region_resource_list.Not_Used.Volume}}</span>
 						</div>
 					</a>
 				</div>
 			</div>
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+<!-- 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-ebs-snap">
 						<div class="region-stat-block-wrap">
@@ -255,13 +257,13 @@
 						</div>
 					</a>
 				</div>
-			</div>
+			</div> -->
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-vpc">
 						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>4<span class="label">VPC</span>
-							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"You have reached limit of VPC in this region","description":"The max number of VPC in each region is 5."}'>!</span>
+							<i class="icon-hdd icon-label"></i>{{region_resource_list.VPC}}<span class="label">VPC</span> 
+<!-- 							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"You have reached limit of VPC in this region","description":"The max number of VPC in each region is 5."}'>!</span> -->
 						</div>
 					</a>
 				</div>
@@ -271,8 +273,8 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-vpn">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>3<span class="label">VPN</span>
-							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 VPN not in use.","description":"VPN in stopped app is not in use but still charging money."}'>1</span>
+							<i class="icon-image icon-label"></i>{{region_resource_list.VPN}}<span class="label">VPN</span> 
+<!-- 							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 VPN not in use.","description":"VPN in stopped app is not in use but still charging money."}'>1</span> -->
 						</div>
 					</a>
 
@@ -283,13 +285,13 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-elb">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>4<span class="label">ELB</span>
+							<i class="icon-image icon-label"></i>{{region_resource_list.ELB}}<span class="label">ELB</span> 
 						</div>
 					</a>
 				</div>
 
 			</div>
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+<!-- 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-asg">
 						<div class="region-stat-block-wrap">
@@ -298,9 +300,9 @@
 						</div>
 					</a>
 				</div>
-
-			</div>
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				
+			</div> -->
+<!-- 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-rds">
 						<div class="region-stat-block-wrap">
@@ -309,25 +311,26 @@
 					</a>
 
 				</div>
-
-			</div>
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
+				
+			</div> -->
+<!-- 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
 					<a href="#stat-table-rds-snap">
 						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>4<span class="label">RDS Snapshot</span>
-							<!-- <span class="warning-counter">!</span> -->
+							<i class="icon-image icon-label"></i>4<span class="label">RDS Snapshot</span> 
+							 <span class="warning-counter">!</span>
 						</div>
 					</a>
 				</div>
+				
+			</div> -->
 
-			</div>
 		</div>
 		<div id="stat-table-instance" class="stat-table shown">
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
-						<table class="table table-region-stat" id="region-stat-table-{resource-name}">
+						<table class="table table-region-stat" id="region-stat-table-instance">
 						<thead>
 							<tr>
 								<th class="sortable" style="width:30%">Instance Name/ID</th>
@@ -335,48 +338,23 @@
 								<th class="sortable" style="width:15%">Launch Time</th>
 								<th class="sortable" style="width:10%">AMI</th>
 								<th class="sortable" style="width:10%">Availability Zone</th>
-								<th class="sortable" style="width:12%">Estimated Cost</th>
+							<!--	<th class="sortable" style="width:12%">Estimated Cost</th> -->
 								<th style="width:5%">Detail</th>
 
 							</tr>
 						</thead>
 						<tbody>
+							{{#each region_resource.DescribeInstances }}
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>GMT 19:23 2013-4-30</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
-								<td>us-east-1a</td>
-								<td>$0.014/h</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ host }}<span class="resource-id">( {{ instanceId }} )</span></td>
+								<td><i class="status status-green icon-label"></i>{{ instanceState.name }}</td>
+								<td>{{ launchTime }}</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
+								<td>{{ placement.availabilityZone}}</td>
+						<!--		<td>N/A</td> -->
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 							</tr>
-							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-long-name-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>GMT 19:23 2013-4-30</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
-								<td>us-east-1a</td>
-								<td>$0.014/h</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class=" btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>GMT 19:23 2013-4-30</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
-								<td>us-east-1a</td>
-								<td>$0.014/h</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-long-name-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>GMT 19:23 2013-4-30</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
-								<td>us-east-1a</td>
-								<td>$0.014/h</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
+							{{/each}}
 						</tbody>
 						</table>
 					</div>
@@ -386,71 +364,140 @@
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
-						<table class="table table-region-stat" id="region-stat-table-{resource-name}">
+						<table class="table table-region-stat" id="region-stat-table-eip">
 						<thead>
 							<tr>
-								<th class="sortable" style="width:40%">Instance Name/ID</th>
-								<th class="sortable" style="width:10%">Status</th>
-								<th class="sortable" style="width:20%">Launch Time</th>
-								<th class="sortable" style="width:10%">AMI</th>
-								<th class="sortable" style="width:10%">Availability Zone</th>
-								<th style="width:8%">Detail</th>
+								<th class="sortable" style="width:40%">IP</th>
+								<th class="sortable" style="width:40%">Associated Instance</th>
+								<th style="width:20%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
+							{{#each region_resource.DescribeAddresses }}
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>GMT 19:23 2013-4-30</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
-								<td>us-east-1a</td>
-								<td>N/A</td>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ publicIp }}</td>
+								<td>{{ instanceId }}</td>
 								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 							</tr>
+							{{/each}}
+						</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-ebs" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-ebs">
+						<thead>
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-long-name-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>GMT 19:23 2013-4-30</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
-								<td>us-east-1a</td>
-								<td>N/A</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								<th class="sortable" style="width:20%">Name/ID</th>
+								<th class="sortable" style="width:15%">Status</th>
+								<th class="sortable" style="width:20%">Create Time</th>
+								<th class="sortable" style="width:15%">Device Name</th>
+								<th class="sortable" style="width:15%">Attachment Status</th>
+								<th style="width:15%">Detail</th>
 							</tr>
+						</thead>
+						<tbody>
+							{{#each region_resource.DescribeVolumes }}
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>GMT 19:23 2013-4-30</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
-								<td>us-east-1a</td>
-								<td>$0.005/h</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ volumeId }}</td>
+								<td><i class="status status-green icon-label"></i>{{ status }}</td>
+								<td>{{ createTime }}</td>
+								<td>{{#each attachmentSet.item }}{{ this.device }}{{/each}}</td>
+								<td><i class="status status-green icon-label"></i>{{#each attachmentSet.item }}{{ this.status }}{{/each}}</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 							</tr>
+							{{/each}}
+						</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-vpc" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-vpc">
+						<thead>
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-long-name-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>GMT 19:23 2013-4-30</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
-								<td>us-east-1a</td>
-								<td>N/A</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:20%">Status</th>
+								<th class="sortable" style="width:25%">CIDR</th>
+								<th class="sortable" style="width:20%">DHCP Settings</th>
+								<th style="width:15%">Detail</th>
 							</tr>
+						</thead>
+						<tbody>
+							{{#each region_resource.DescribeVpcs }}
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>GMT 19:23 2013-4-30</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
-								<td>us-east-1a</td>
-								<td>N/A</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ vpcId }}</td>
+								<td><i class="status status-green icon-label"></i>{{ state }}</td>
+								<td>{{ cidrBlock }}</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{dhcp}}}'>{{ dhcpOptionsId }}</a></td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 							</tr>
+							{{/each}}
+						</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-vpn" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-vpn">
+						<thead>
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[test-long-name-app]</a>Webserver1<span class="resource-id">(i-3984398)</span></td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>GMT 19:23 2013-4-30</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"ami-231231","name":"Windows_Server-2008-SP2-English-32Bit-Base-2013.05.15","description":"Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon","property1":"blahblahblah"}'>ami-3434323</a></td>
-								<td>us-east-1a</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:20%">Status</th>
+								<th class="sortable" style="width:25%">Virtual Private Gateway</th>
+								<th class="sortable" style="width:20%">Customer Gateway</th>
+								<th style="width:15%">Detail</th>
 							</tr>
+						</thead>
+						<tbody>
+							{{#each region_resource.DescribeVpnConnections }}
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ vpnConnectionId }}</td>
+								<td><i class="status status-green icon-label"></i>{{ state }}</td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
+								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{cgw}}}'>{{ customerGatewayId }}</a></td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							{{/each}}
+						</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-elb" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-elb">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:20%">Create time</th>
+								<th class="sortable" style="width:25%">Availability Zone</th>
+								<th class="sortable" style="width:20%">Status</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+							{{#each region_resource.DescribeLoadBalancers }}
+							<tr>
+								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ DNSName }}</td>
+								<td><i class="status status-green icon-label"></i>{{ CreatedTime }}</td>
+								<td>{{ AvailabilityZones.member }}</td>
+								<td>{{ state }}</td>
+								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+							</tr>
+							{{/each}}
 						</tbody>
 						</table>
 					</div>

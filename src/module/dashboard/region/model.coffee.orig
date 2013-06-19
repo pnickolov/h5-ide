@@ -132,8 +132,13 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 ]},
             "DescribeVpcs": {
                 "title": "vpcId",
+<<<<<<< HEAD
                 "sub_info": [
+                    { "key": [ "state" ], "show_key": "SvpcId"},
+=======
+                "sub_info":[
                     { "key": [ "state" ], "show_key": "State"},
+>>>>>>> origin/feature/dashboard-region-aws-resource
                     { "key": [ "cidrBlock" ], "show_key": "CIDR"},
                     { "key": [ "instanceTenancy" ], "show_key": "Tenancy"}
                 ]}
@@ -583,6 +588,37 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             parse_result
 
+<<<<<<< HEAD
+        parseTableValue : ( keyes_set, value_set )->
+            null
+
+        parseBtnValue : ( keyes_set, value_set )->
+            parse_btns_result = ''
+            btn_date         = ''
+
+            _.map keyes_set, ( value ) ->
+                btn_date = ''
+                if value.type is "download_configuration"
+                    dc_date = {}
+                    dc_date.vpnConnectionId = if value_set.vpnConnectionId then value_set.vpnConnectionId else ''
+                    dc_date = MC.template.configurationDownload(dc_date)
+                    dc_filename = if dc_date.vpnConnectionId then dc_date.vpnConnectionId else 'download_configuration'
+                    dc_parse = '{filecontent: "'
+                    dc_parse +=  dc_date
+                    dc_parse += '", filename: "'
+                    dc_parse += dc_filename
+                    dc_parse +='",btnname:"'
+                    dc_parse += value.name
+                    dc_parse += '"},'
+                    btn_date += dc_parse
+                if btn_date
+                    btn_date = btn_date.substring 0, btn_date.length - 1
+                    parse_btns_result += '['
+                    parse_btns_result += btn_date
+                    parse_btns_result += ']'
+
+            parse_btns_result
+=======
         _genBubble : ( source, title = null, entry = false ) ->
 
             me = this
@@ -622,35 +658,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             parse_sub_info
 
-parseTableValue : ( keyes_set, value_set )->
-            null
-
-        parseBtnValue : ( keyes_set, value_set )->
-            parse_btns_result = ''
-            btn_date         = ''
-
-            _.map keyes_set, ( value ) ->
-                btn_date = ''
-                if value.type is "download_configuration"
-                    dc_date = {}
-                    dc_date.vpnConnectionId = if value_set.vpnConnectionId then value_set.vpnConnectionId else ''
-                    dc_date = MC.template.configurationDownload(dc_date)
-                    dc_filename = if dc_date.vpnConnectionId then dc_date.vpnConnectionId else 'download_configuration'
-                    dc_parse = '{filecontent: "'
-                    dc_parse +=  dc_date
-                    dc_parse += '", filename: "'
-                    dc_parse += dc_filename
-                    dc_parse +='",btnname:"'
-                    dc_parse += value.name
-                    dc_parse += '"},'
-                    btn_date += dc_parse
-                if btn_date
-                    btn_date = btn_date.substring 0, btn_date.length - 1
-                    parse_btns_result += '['
-                    parse_btns_result += btn_date
-                    parse_btns_result += ']'
-
-            parse_btns_result
+>>>>>>> origin/feature/dashboard-region-aws-resource
 
         setResource : ( resources ) ->
 

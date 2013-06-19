@@ -26,6 +26,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
         render   : ( time_stamp ) ->
             console.log 'dashboard region render'
             $( this.el ).html this.template this.model.attributes
+
             if time_stamp
                 this.time_stamp = time_stamp
             this.update_time()

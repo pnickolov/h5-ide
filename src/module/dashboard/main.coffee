@@ -105,6 +105,26 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         view.render()
 
                     #listen
+
+
+                    model.on 'change:region_resource_list', () ->
+                        console.log 'dashboard_region_resource_list'
+                        #push event
+                        model.get 'region_resource_list'
+                        #refresh view
+                        view.render()
+
+                    model.on 'change:region_resource', () ->
+                        console.log 'dashboard_region_resources'
+                        #push event
+                        model.get 'region_resource'
+                        #refresh view
+                        view.render()
+
+                    model.on 'REGION_RESOURCE_CHANGED', ()->
+
+                        view.render()
+
                     model.describeAWSResourcesService(region)
                     model.describeRegionAccountAttributesService region
                     model.describeAWSStatusService region

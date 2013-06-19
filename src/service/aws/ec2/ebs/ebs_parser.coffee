@@ -9,7 +9,35 @@
 
 define [ 'ebs_vo', 'result_vo', 'constant' ], ( ebs_vo, result_vo, constant ) ->
 
+    resolvedObjectToArray = ( objs ) ->
 
+        if objs.constructor == Array
+
+            for obj in objs
+
+                obj = resolvedObjectToArray obj
+
+        if objs.constructor == Object
+
+            if $.isEmptyObject objs
+
+                objs = null
+
+            for key, value of objs
+
+                if key == 'item' and value.constructor == Object
+
+                    tmp = []
+
+                    tmp.push resolvedObjectToArray value
+
+                    objs[key] = tmp
+
+                else if value.constructor == Object or value.constructor == Array
+
+                    objs[key] = resolvedObjectToArray value
+
+        objs
     #///////////////// Parser for CreateVolume return  /////////////////
     #private (parser CreateVolume return)
     parserCreateVolumeReturn = ( result, return_code, param ) ->
@@ -66,22 +94,14 @@ define [ 'ebs_vo', 'result_vo', 'constant' ], ( ebs_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeVolumesResult = ( result ) ->
         #resolve result
-
-        vol_list = []
-
         #return vo
-        result_set = ($.xml2json ($.parseXML result[1])).DescribeVolumesResponse.volumeSet
 
-        if not $.isEmptyObject result_set
+        result = resolvedObjectToArray ($.xml2json ($.parseXML result[1])).DescribeVolumesResponse.volumeSet
 
-            if result_set.item.constructor == Array
-
-                vol_list = result_set.item
-
-            else
-                vol_list.push result_set.item
-
-        vol_list
+        if result?.item?
+            return result.item
+        else
+            return null
 
     #private (parser DescribeVolumes return)
     parserDescribeVolumesReturn = ( result, return_code, param ) ->

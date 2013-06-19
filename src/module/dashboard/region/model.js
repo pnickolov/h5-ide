@@ -1,5 +1,7 @@
 (function() {
-  define(['backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model', 'constant'], function(Backbone, $, _, aws_model, vpc_model, constant) {
+  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  define(['backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant'], function(Backbone, $, _, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant) {
     var RegionModel, current_region, model, popup_key_set, resource_source, status_list, unmanaged_list, update_timestamp, vpc_attrs_value;
     current_region = null;
     resource_source = null;
@@ -25,6 +27,39 @@
             }
           ]
         },
+        "DescribeCustomerGateways": {
+          "title": "customerGatewayId",
+          "status": "state",
+          "sub_info": [
+            {
+              "key": ["customerGatewayId"],
+              "show_key": "CustomerGatewayId"
+            }, {
+              "key": ["type"],
+              "show_key": "Type"
+            }, {
+              "key": ["ipAddress"],
+              "show_key": "IpAddress"
+            }, {
+              "key": ["bgpAsn"],
+              "show_key": "BgpAsn"
+            }
+          ]
+        },
+        "DescribeVpnGateways": {
+          "title": "vpnGatewayId",
+          "status": "state",
+          "sub_info": [
+            {
+              "key": ["vpnGatewayId"],
+              "show_key": "VPNGatewayId"
+            }, {
+              "key": ["type"],
+              "show_key": "Type"
+            }
+          ]
+        },
+        "DescribeVpcs": {},
         "DescribeInstances": {
           "status": ["instanceState", "name"],
           "title": "instanceId",
@@ -242,6 +277,9 @@
     };
     RegionModel = Backbone.Model.extend({
       defaults: {
+        temp: null,
+        'region_resource_list': null,
+        'region_resource': null,
         'resourse_list': null,
         'vpc_attrs': null,
         'unmanaged_list': null,
@@ -257,11 +295,182 @@
           me.updateUnmanagedList();
           return null;
         });
+        ami_model.on('EC2_AMI_DESC_IMAGES_RETURN', function(result) {
+          var ami, i, ins, region_ami_list, _i, _j, _len, _len1, _ref, _ref1;
+          region_ami_list = {};
+          if (result.resolved_data.item.constructor === Array) {
+            _ref = result.resolved_data.item;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              ami = _ref[_i];
+              region_ami_list[ami.imageId] = ami;
+            }
+          }
+          _ref1 = resource_source.DescribeInstances;
+          for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
+            ins = _ref1[i];
+            ins.image = region_ami_list[ins.imageId];
+          }
+          me.reRenderRegionResource();
+          return null;
+        });
+        elb_model.on('ELB__DESC_INS_HLT_RETURN', function(result) {
+          var elb, health, i, instance, total, _i, _j, _len, _len1, _ref, _ref1;
+          console.error(result);
+          total = result.resolved_data.length;
+          health = 0;
+          _ref = result.resolved_data;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            instance = _ref[_i];
+            if (instance.state === "InService") {
+              health++;
+            }
+          }
+          _ref1 = resource_source.DescribeLoadBalancers;
+          for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
+            elb = _ref1[i];
+            if (elb.LoadBalancerName === result.param[4]) {
+              resource_source.DescribeLoadBalancers[i].state = "" + health + " of " + total + " instances in service";
+            }
+          }
+          me.reRenderRegionResource();
+          return null;
+        });
+        dhcp_model.on('VPC_DHCP_DESC_DHCP_OPTS_RETURN', function(result) {
+          var dhcp, dhcp_set, vpc, _i, _j, _len, _len1, _ref;
+          dhcp_set = result.resolved_data.item;
+          console.error(dhcp_set);
+          _ref = resource_source.DescribeVpcs;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            vpc = _ref[_i];
+            if (dhcp_set.constructor === Object) {
+              if (vpc.dhcpOptionsId === dhcp_set.dhcpOptionsId) {
+                vpc.dhcp = me._genDhcp(dhcp_set);
+              }
+            } else {
+              for (_j = 0, _len1 = dhcp_set.length; _j < _len1; _j++) {
+                dhcp = dhcp_set[_j];
+                if (vpc.dhcpOptionsId === dhcp.dhcpOptionsId) {
+                  vpc.dhcp = me._genDhcp(dhcp);
+                }
+              }
+            }
+          }
+          me.reRenderRegionResource();
+          return null;
+        });
+        customergateway_model.on('VPC_CGW_DESC_CUST_GWS_RETURN', function(result) {
+          var cgw, cgw_set, vpn, _i, _j, _len, _len1, _ref;
+          cgw_set = result.resolved_data.item;
+          _ref = resource_source.DescribeVpnConnections;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            vpn = _ref[_i];
+            if (cgw_set.constructor === Object) {
+              vpn.cgw = me.parseSourceValue('DescribeCustomerGateways', cgw_set, "bubble", null);
+            } else {
+              for (_j = 0, _len1 = cgw_set.length; _j < _len1; _j++) {
+                cgw = cgw_set[_j];
+                if (vpn.customerGatewayId === cgw.customerGatewayId) {
+                  vpn.cgw = me.parseSourceValue('DescribeCustomerGateways', cgw, "bubble", null);
+                }
+              }
+            }
+          }
+          return me.reRenderRegionResource();
+        });
+        vpngateway_model.on('VPC_VGW_DESC_VPN_GWS_RETURN', function(result) {
+          var vgw, vgw_set, vpn, _i, _j, _len, _len1, _ref;
+          vgw_set = result.resolved_data.item;
+          _ref = resource_source.DescribeVpnConnections;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            vpn = _ref[_i];
+            if (vgw_set.constructor === Object) {
+              vpn.vgw = me.parseSourceValue('DescribeVpnGateways', vgw_set, "bubble", null);
+            } else {
+              for (_j = 0, _len1 = vgw_set.length; _j < _len1; _j++) {
+                vgw = vgw_set[_j];
+                if (vpn.vpnGatewayId === vgw.vpnGatewayId) {
+                  vpn.vgw = me.parseSourceValue('DescribeVpnGateways', vgw, "bubble", null);
+                }
+              }
+            }
+          }
+          return me.reRenderRegionResource();
+        });
         return null;
       },
       temp: function() {
         var me;
         me = this;
+        return null;
+      },
+      _genDhcp: function(dhcp) {
+        var i, it, item, j, me, sub_info, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+        me = this;
+        popup_key_set.unmanaged_bubble.DescribeDhcpOptions = {};
+        popup_key_set.unmanaged_bubble.DescribeDhcpOptions.title = "dhcpOptionsId";
+        popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info = [];
+        sub_info = popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info;
+        if (dhcp.dhcpConfigurationSet.item.constructor === Array) {
+          _ref = dhcp.dhcpConfigurationSet.item;
+          for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+            item = _ref[i];
+            if (item.valueSet.item.constructor === Array) {
+              _ref1 = item.valueSet.item;
+              for (j = _j = 0, _len1 = _ref1.length; _j < _len1; j = ++_j) {
+                it = _ref1[j];
+                sub_info.push({
+                  "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', 'item', j, 'value'],
+                  "show_key": item.key
+                });
+              }
+            } else {
+              sub_info.push({
+                "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', 'item', 'value'],
+                "show_key": item.key
+              });
+            }
+          }
+        } else {
+          item = dhcp.dhcpConfigurationSet.item;
+          if (item.valueSet.item.constructor === Array) {
+            _ref2 = item.valueSet.item;
+            for (i = _k = 0, _len2 = _ref2.length; _k < _len2; i = ++_k) {
+              it = _ref2[i];
+              sub_info.push({
+                "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', j, 'value'],
+                "show_key": item.key
+              });
+            }
+          } else {
+            sub_info.push({
+              "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', 'value'],
+              "show_key": item.key
+            });
+          }
+        }
+        return me.parseSourceValue('DescribeDhcpOptions', dhcp, "bubble", null);
+      },
+      reRenderRegionResource: function() {
+        var me;
+        me = this;
+        return me.trigger("REGION_RESOURCE_CHANGED", null);
+      },
+      _set_app_property: function(resource, resources, i, action) {
+        var is_managed, tag, _i, _len, _ref;
+        is_managed = false;
+        if (resource.tagSet !== void 0 && resource.tagSet.item.constructor === Array) {
+          _ref = resource.tagSet.item;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            tag = _ref[_i];
+            if (tag.key === 'app') {
+              is_managed = true;
+              resources[action][i].app = tag.value;
+            }
+          }
+        }
+        if (!is_managed) {
+          resources[action][i].app = 'Unmanaged';
+        }
         return null;
       },
       updateUnmanagedList: function() {
@@ -529,17 +738,148 @@
         return parse_btns_result;
       },
       setResource: function(resources) {
-        var elb, lists;
+        var ami_list, cgw_set, dhcp_set, eip, elb, i, ins, is_managed, lists, manage_instances_app, manage_instances_id, me, reg, reg_result, tag, vgw_set, vol, vpc, vpn, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _len9, _m, _n, _o, _p, _q, _r, _ref, _ref1, _ref10, _ref11, _ref12, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9;
+        me = this;
         lists = {};
-        elb = resources.DescribeLoadBalancers.LoadBalancerDescriptions;
-        if ($.isEmptyObject(elb)) {
-          lists.ELB = 0;
-        } else if (elb.member.constructor === Array) {
-          lists.ELB = elb.member.length;
-        } else {
-          lists.ELB = 1;
+        lists.Not_Used = {
+          'EIP': 0,
+          'Volume': 0
+        };
+        lists.ELB = resources.DescribeLoadBalancers.length;
+        reg = /app-\w{8}/;
+        _ref = resources.DescribeLoadBalancers;
+        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+          elb = _ref[i];
+          if ($.isEmptyObject(elb.Instances)) {
+            elb.state = '0 of 0 instances in service';
+          } else {
+            elb_model.DescribeInstanceHealth({
+              sender: this
+            }, $.cookie('usercode'), $.cookie('session_id'), current_region, elb.LoadBalancerName);
+          }
+          reg_result = elb.LoadBalancerName.match(reg);
+          if (reg_result) {
+            elb.app = reg_result;
+          } else {
+            elb.app = 'Unmanaged';
+          }
         }
-        return console.error(lists);
+        lists.EIP = resources.DescribeAddresses.length;
+        _ref1 = resources.DescribeAddresses;
+        for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
+          eip = _ref1[i];
+          if ($.isEmptyObject(eip.instanceId)) {
+            lists.Not_Used.EIP++;
+            resources.DescribeAddresses[i].instanceId = 'Not associated';
+          }
+          me._set_app_property(eip, resources, i, 'DescribeAddresses');
+        }
+        lists.Instance = resources.DescribeInstances.length;
+        ami_list = [];
+        _ref2 = resources.DescribeInstances;
+        for (i = _k = 0, _len2 = _ref2.length; _k < _len2; i = ++_k) {
+          ins = _ref2[i];
+          ami_list.push(ins.imageId);
+          is_managed = false;
+          if (ins.tagSet !== void 0 && ins.tagSet.item.constructor === Array) {
+            _ref3 = ins.tagSet.item;
+            for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+              tag = _ref3[_l];
+              if (tag.key === 'app') {
+                is_managed = true;
+                resources.DescribeInstances[i].app = tag.value;
+              }
+              if (tag.key === 'name') {
+                resources.DescribeInstances[i].host = tag.value;
+              }
+            }
+          }
+          if (!is_managed) {
+            resources.DescribeInstances[i].app = 'Unmanaged';
+          }
+          if (resources.DescribeInstances[i].host === void 0) {
+            resources.DescribeInstances[i].host = 'Unmanaged';
+          }
+        }
+        manage_instances_id = [];
+        manage_instances_app = {};
+        _ref4 = resources.DescribeInstances;
+        for (_m = 0, _len4 = _ref4.length; _m < _len4; _m++) {
+          ins = _ref4[_m];
+          if (ins.app !== 'Unmanaged') {
+            manage_instances_id.push(ins.instanceId);
+            manage_instances_app[ins.instanceId] = ins.app;
+          }
+        }
+        lists.Volume = resources.DescribeVolumes.length;
+        _ref5 = resources.DescribeVolumes;
+        for (i = _n = 0, _len5 = _ref5.length; _n < _len5; i = ++_n) {
+          vol = _ref5[i];
+          if (vol.status === "available") {
+            lists.Not_Used.Volume++;
+          }
+          me._set_app_property(vol, resources, i, 'DescribeVolumes');
+          if (((_ref6 = vol.attachmentSet.item) != null ? _ref6.device : void 0) == null) {
+            vol.attachmentSet.item = {};
+            vol.attachmentSet.item.device = 'Not Attached';
+            vol.attachmentSet.item.status = 'Not Attached';
+          } else {
+            if (_ref7 = vol.attachmentSet.item.instanceId, __indexOf.call(manage_instances_id, _ref7) >= 0) {
+              resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item.instanceId];
+            }
+          }
+        }
+        lists.VPC = resources.DescribeVpcs.length;
+        _ref8 = resources.DescribeVpcs;
+        for (i = _o = 0, _len6 = _ref8.length; _o < _len6; i = ++_o) {
+          vpc = _ref8[i];
+          me._set_app_property(vpc, resources, i, 'DescribeVpcs');
+        }
+        dhcp_set = [];
+        _ref9 = resources.DescribeVpcs;
+        for (_p = 0, _len7 = _ref9.length; _p < _len7; _p++) {
+          vpc = _ref9[_p];
+          if (_ref10 = vpc.dhcpOptionsId, __indexOf.call(dhcp_set, _ref10) < 0) {
+            dhcp_set.push(vpc.dhcpOptionsId);
+          }
+        }
+        if (dhcp_set) {
+          dhcp_model.DescribeDhcpOptions({
+            sender: this
+          }, $.cookie('usercode'), $.cookie('session_id'), current_region, dhcp_set);
+        }
+        lists.VPN = resources.DescribeVpnConnections.length;
+        _ref11 = resources.DescribeVpnConnections;
+        for (i = _q = 0, _len8 = _ref11.length; _q < _len8; i = ++_q) {
+          vpn = _ref11[i];
+          me._set_app_property(vpn, resources, i, 'DescribeVpnConnections');
+        }
+        cgw_set = [];
+        vgw_set = [];
+        _ref12 = resources.DescribeVpnConnections;
+        for (_r = 0, _len9 = _ref12.length; _r < _len9; _r++) {
+          vpn = _ref12[_r];
+          cgw_set.push(vpn.customerGatewayId);
+          vgw_set.push(vpn.vpnGatewayId);
+        }
+        if (cgw_set) {
+          customergateway_model.DescribeCustomerGateways({
+            sender: this
+          }, $.cookie('usercode'), $.cookie('session_id'), current_region, cgw_set);
+        }
+        if (vgw_set) {
+          vpngateway_model.DescribeVpnGateways({
+            sender: this
+          }, $.cookie('usercode'), $.cookie('session_id'), current_region, vgw_set);
+        }
+        if (ami_list) {
+          ami_model.DescribeImages({
+            sender: this
+          }, $.cookie('usercode'), $.cookie('session_id'), current_region, ami_list);
+        }
+        console.error(resources);
+        me.set('region_resource', resources);
+        return me.set('region_resource_list', lists);
       },
       describeAWSResourcesService: function(region) {
         var me, resources;

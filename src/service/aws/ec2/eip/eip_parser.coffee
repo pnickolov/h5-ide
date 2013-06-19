@@ -9,6 +9,35 @@
 
 define [ 'eip_vo', 'result_vo', 'constant', 'jquery' ], ( eip_vo, result_vo, constant, $ ) ->
 
+    resolvedObjectToArray = ( objs ) ->
+
+        if objs.constructor == Array
+
+            for obj in objs
+
+                obj = resolvedObjectToArray obj
+
+        if objs.constructor == Object
+
+            if $.isEmptyObject objs
+
+                objs = null
+
+            for key, value of objs
+
+                if key == 'item' and value.constructor == Object
+
+                    tmp = []
+
+                    tmp.push resolvedObjectToArray value
+
+                    objs[key] = tmp
+
+                else if value.constructor == Object or value.constructor == Array
+
+                    objs[key] = resolvedObjectToArray value
+
+        objs
 
     #///////////////// Parser for AllocateAddress return  /////////////////
     #private (parser AllocateAddress return)
@@ -66,20 +95,18 @@ define [ 'eip_vo', 'result_vo', 'constant', 'jquery' ], ( eip_vo, result_vo, con
     #private (resolve result to vo )
     resolveDescribeAddressesResult = ( result ) ->
         #resolve result
-        eip_list = []
         #return vo
-        resultSet = ($.xml2json ($.parseXML result[1])).DescribeAddressesResponse.addressesSet
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeAddressesResponse.addressesSet
 
-        if not $.isEmptyObject resultSet
+        result = resolvedObjectToArray result_set
+        
+        if result?.item?
 
-            if resultSet.item.constructor == Array
+            return result.item
 
-                eip_list = resultSet.item
-
-            else
-                eip_list.push resultSet.item
-
-        eip_list
+        else
+        
+            return null
 
     #private (parser DescribeAddresses return)
     parserDescribeAddressesReturn = ( result, return_code, param ) ->

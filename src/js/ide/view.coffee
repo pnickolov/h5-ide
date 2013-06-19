@@ -27,17 +27,12 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             $( '#tab-content-dashboard' ).removeClass 'active'
             $( '#tab-content-stack01' ).removeClass   'active'
 
-        showStackTab : () ->
-            console.log 'showStackTab'
+        showTab : () ->
+            console.log 'showTab'
             #
             $( '#tab-content-stack01' ).addClass      'active'
             $( '#tab-content-dashboard' ).removeClass 'active'
             $( '#tab-content-region' ).removeClass    'active'
-
-        hideStackTab : () ->
-            console.log 'hideStackTab'
-            #
-            $( '#tab-content-stack01' ).removeClass   'active'
     }
 
     view = new MainView()

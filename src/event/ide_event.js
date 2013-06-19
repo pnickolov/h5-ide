@@ -32,7 +32,7 @@
 
       Event.prototype.OPEN_APP_TAB = 'OPEN_APP_TAB';
 
-      Event.prototype.SWITCH_STACK_TAB = 'SWITCH_STACK_TAB';
+      Event.prototype.SWITCH_TAB = 'SWITCH_TAB';
 
       Event.prototype.SWITCH_DASHBOARD = 'SWITCH_DASHBOARD';
 

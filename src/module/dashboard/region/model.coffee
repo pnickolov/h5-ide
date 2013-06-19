@@ -97,7 +97,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "ebsOptimized" ], "show_key": "EBS Optimized"},
                     { "key": [ "rootDeviceType" ], "show_key": "Root Device Type"},
                     { "key": [ "placement", "tenancy" ], "show_key": "Tenancy"},
-                    { "key": [ "networkInterfaceSet" ], "show_key": "Network Interface"},
                     { "key": [ "blockDeviceMapping", "item", "deviceName" ], "show_key": "Block Devices"},
                     { "key": [ "groupSet", "item", "groupName" ], "show_key": "Security Groups"}
                 ]
@@ -189,13 +188,17 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 if result.resolved_data.item.constructor == Array
 
-                    for ami in result.resolved_data.item
+                    _.map result.resolved_data.item, ( ami ) ->
 
                         region_ami_list[ami.imageId] = ami
 
-                for ins, i in resource_source.DescribeInstances
+                        null
+
+                _.map resource_source.DescribeInstances, ( ins, i ) ->
 
                     ins.image = region_ami_list[ins.imageId]
+
+                    null
 
                 me.reRenderRegionResource()
 
@@ -209,11 +212,13 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 (health++ if instance.state == "InService") for instance in result.resolved_data
 
-                for elb, i in resource_source.DescribeLoadBalancers
+                _.map resource_source.DescribeLoadBalancers, ( elb, i ) ->
 
                     if elb.LoadBalancerName == result.param[4]
 
                         resource_source.DescribeLoadBalancers[i].state = "#{health} of #{total} instances in service"
+
+                    null
 
                 me.reRenderRegionResource()
 
@@ -223,7 +228,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 dhcp_set = result.resolved_data.item
 
-                for vpc in resource_source.DescribeVpcs
+                _.map resource_source.DescribeVpcs, ( vpc ) ->
 
                     if vpc.dhcpOptionsId == 'default'
 
@@ -237,11 +242,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     else
 
-                        for dhcp in dhcp_set
+                        _.map dhcp_set, ( dhcp )->
 
                             if vpc.dhcpOptionsId == dhcp.dhcpOptionsId
 
                                 vpc.dhcp = me._genDhcp dhcp
+
+                                null
+
+                    null
 
                 me.reRenderRegionResource()
 
@@ -253,7 +262,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 cgw_set = result.resolved_data.item
 
-                for vpn in resource_source.DescribeVpnConnections
+                _.map resource_source.DescribeVpnConnections, ( vpn ) ->
 
                     if cgw_set.constructor == Object
 
@@ -261,11 +270,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     else
 
-                        for cgw in cgw_set
+                        _.map cgw_set, ( cgw ) ->
 
                             if vpn.customerGatewayId == cgw.customerGatewayId
 
                                 vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw, "bubble", null
+
+                            null
+
+                    null
 
                 me.reRenderRegionResource()
 
@@ -273,7 +286,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 vgw_set = result.resolved_data.item
 
-                for vpn in resource_source.DescribeVpnConnections
+                _.map resource_source.DescribeVpnConnections, ( vpn ) ->
 
                     if vgw_set.constructor == Object
 
@@ -281,11 +294,14 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     else
 
-                        for vgw in vgw_set
+                        _.map vgw_set, ( vgw )->
 
                             if vpn.vpnGatewayId == vgw.vpnGatewayId
 
                                 vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw, "bubble", null
+
+                            null
+                    null
 
                 me.reRenderRegionResource()
 
@@ -310,11 +326,11 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             if dhcp.dhcpConfigurationSet.item.constructor == Array
 
-                for item, i in dhcp.dhcpConfigurationSet.item
+                _.map dhcp.dhcpConfigurationSet.item, ( item, i ) ->
 
                     if item.valueSet.item.constructor == Array
 
-                        for it, j in item.valueSet.item
+                        _.map item.valueSet.item, ( it, j )->
 
                             sub_info.push { "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', 'item', j, 'value'], "show_key": item.key }
 
@@ -327,7 +343,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 if item.valueSet.item.constructor == Array
 
-                    for it, i in item.valueSet.item
+                    _.map item.valueSet.item, ( it, i ) ->
 
                         sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', j, 'value'], "show_key": item.key }
 
@@ -351,13 +367,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             if resource.tagSet != undefined and resource.tagSet.item.constructor == Array
 
-                for tag in resource.tagSet.item
+                _.map resource.tagSet.item, ( tag ) ->
 
                     if tag.key == 'app'
 
                         is_managed = true
 
                         resources[action][i].app = tag.value
+
+                        null
 
             if not is_managed
 
@@ -579,7 +597,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             parse_result
 
-        _genBubble : ( source, title = null, entry = false ) ->
+        _genBubble : ( source, title, entry ) ->
 
             me = this
 
@@ -591,16 +609,16 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             if source.constructor == Object
                 tmp = []
-                for key, value of source
+                _.map source, ( value, key )->
 
-                    continue if value == null
+                    if value != null
 
-                    if value.constructor == String
+                        if value.constructor == String
 
-                        tmp.push ( '\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\"')
+                            tmp.push ( '\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\"')
 
-                    else
-                        tmp.push me._genBubble value, title, false
+                        else
+                            tmp.push me._genBubble value, title, false
 
                 parse_sub_info = tmp.join(', ')
 
@@ -615,17 +633,17 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 tmp = []
 
-                for value in source
+                _.map source, ( value ) ->
 
-                    continue if value == null
+                    if value != null
 
-                    if value.constructor == String
+                        if value.constructor == String
 
-                        tmp.push value
+                            tmp.push value
 
-                    else
+                        else
 
-                        tmp.push me._genBubble value, title, false
+                            tmp.push me._genBubble value, title, false
 
                 parse_sub_info = tmp.join(', ')
 
@@ -786,7 +804,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 reg = /app-\w{8}/
 
-                for elb, i in resources.DescribeLoadBalancers
+                _.map resources.DescribeLoadBalancers, ( elb, i ) ->
 
                     #me._set_app_property elb, resources, i, 'DescribeLoadBalancers'
 
@@ -804,10 +822,12 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     if reg_result then elb.app = reg_result else elb.app = 'Unmanaged'
 
+                    null
+
             # eip
             if resources.DescribeAddresses != null
 
-                for eip, i in resources.DescribeAddresses
+                _.map resources.DescribeAddresses, ( eip, i )->
 
                     if $.isEmptyObject eip.instanceId
 
@@ -818,6 +838,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     me._set_app_property eip, resources, i, 'DescribeAddresses'
 
                     eip.detail = me.parseSourceValue 'DescribeAddresses', eip, "detail", null
+
+                    null
 
                 lists.EIP = resources.DescribeAddresses.length
 
@@ -832,17 +854,27 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 ami_list = []
 
-                for ins, i in resources.DescribeInstances
+                _.map resources.DescribeInstances, ( ins, i ) ->
 
                     ami_list.push ins.imageId
 
+                    delete_index = []
+
+                    if ins.networkInterfaceSet
+
+                        _.map ins.networkInterfaceSet.item, ( eni, eni_index )->
+
+                            delete_index.push popup_key_set.detail.DescribeInstances.sub_info.push { "key": ['networkInterfaceSet', 'item', eni_index], "show_key": "NetworkInterface-" + eni_index }
+
                     ins.detail = me.parseSourceValue 'DescribeInstances', ins, "detail", null
+
+                    popup_key_set.detail.DescribeInstances.sub_info.pop() for j in delete_index
 
                     is_managed = false
 
                     if ins.tagSet != undefined and ins.tagSet.item.constructor == Array
 
-                        for tag in ins.tagSet.item
+                        _.map ins.tagSet.item, ( tag )->
 
                             if tag.key == 'app'
 
@@ -854,6 +886,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                                 resources.DescribeInstances[i].host = tag.value
 
+                            null
+
                     if not is_managed
 
                         resources.DescribeInstances[i].app = 'Unmanaged'
@@ -862,11 +896,13 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                         resources.DescribeInstances[i].host = 'Unmanaged'
 
+                    null
+
                 # managed instanceid
                 manage_instances_id     =   []
                 manage_instances_app    =   {}
 
-                for ins in resources.DescribeInstances
+                _.map resources.DescribeInstances, ( ins ) ->
 
                     if ins.app isnt 'Unmanaged'
 
@@ -874,10 +910,12 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                         manage_instances_app[ins.instanceId] = ins.app
 
+                    null
+
             # volume
             lists.Volume = resources.DescribeVolumes.length
 
-            for vol, i in resources.DescribeVolumes
+            _.map resources.DescribeVolumes, ( vol, i )->
 
                 vol.detail = me.parseSourceValue 'DescribeVolumes', vol, "detail", null
 
@@ -897,22 +935,28 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                         resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item.instanceId]
 
+                null
+
             # vpc
             if resources.DescribeVpcs != null
 
                 lists.VPC = resources.DescribeVpcs.length
 
-                for vpc, i in resources.DescribeVpcs
+                _.map resources.DescribeVpcs, ( vpc, i )->
 
                     me._set_app_property vpc, resources, i, 'DescribeVpcs'
 
                     vpc.detail = me.parseSourceValue 'DescribeVpcs', vpc, "detail", null
 
+                    null
+
                 dhcp_set = []
 
-                for vpc in resources.DescribeVpcs
+                _.map resources.DescribeVpcs, ( vpc )->
 
                     dhcp_set.push vpc.dhcpOptionsId if vpc.dhcpOptionsId not in dhcp_set and vpc.dhcpOptionsId != 'default'
+
+                    null
 
                 # get dhcp detail
                 if dhcp_set
@@ -922,17 +966,19 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             if resources.DescribeVpnConnections != null
                 lists.VPN = resources.DescribeVpnConnections.length
 
-                for vpn, i in resources.DescribeVpnConnections
+                _.map resources.DescribeVpnConnections, ( vpn, i )->
 
                     me._set_app_property vpn, resources, i, 'DescribeVpnConnections'
 
                     vpn.detail = me.parseSourceValue 'DescribeVpnConnections', vpn, "detail", null
 
+                    null
+
                 cgw_set = []
 
                 vgw_set = []
 
-                for vpn in resources.DescribeVpnConnections
+                _.map resources.DescribeVpnConnections, ( vpn ) ->
 
                     cgw_set.push vpn.customerGatewayId
 

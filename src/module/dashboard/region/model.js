@@ -197,6 +197,12 @@
               "show_key": "Routing"
             }
           ],
+          "btns": [
+            {
+              "type": "download_configuration",
+              "name": "Download Configuration"
+            }
+          ],
           "detail_table": [
             {
               "key": ["vgwTelemetry", "item"],
@@ -339,7 +345,7 @@
         vpc_model.DescribeAccountAttributes({
           sender: this
         }, $.cookie('usercode'), $.cookie('session_id'), current_region, ["supported-platforms"]);
-        vpc_model.once('VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', function(result) {
+        vpc_model.on('VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', function(result) {
           var regionAttrSet;
           console.log('region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN');
           regionAttrSet = result.resolved_data.accountAttributeSet.item.attributeValueSet.item;
@@ -369,11 +375,14 @@
         return true;
       },
       parseSourceValue: function(type, value, keys, name) {
-        var cur_state, keys_to_parse, keys_type, parse_result, parse_sub_info, state_key, status_keys, value_to_parse;
+        var cur_state, keys_to_parse, keys_type, me, parse_btns, parse_result, parse_sub_info, parse_table, state_key, status_keys, value_to_parse;
+        me = this;
         keys_to_parse = null;
         value_to_parse = value;
         parse_result = '';
         parse_sub_info = '';
+        parse_table = '';
+        parse_btns = '';
         keys_type = keys;
         if (popup_key_set[keys]) {
           keys_to_parse = popup_key_set[keys_type][type];
@@ -388,8 +397,8 @@
           _.map(status_keys, function(value, key) {
             if (cur_state) {
               if (key > 0) {
-                cur_state = cur_state.value;
-                return cur_state;
+                cur_state = cur_state[value];
+                return null;
               }
             }
           });
@@ -437,7 +446,7 @@
           _.map(key_array, function(value, key) {
             if (cur_value) {
               if (key > 0) {
-                cur_value = cur_value.value;
+                cur_value = cur_value[value];
                 return cur_value;
               }
             }
@@ -452,6 +461,28 @@
           parse_sub_info = parse_sub_info.substring(0, parse_sub_info.length - 2);
           parse_sub_info += ']';
         }
+        if (keys_to_parse.detail_table) {
+          parse_table = me.parseTableValue(keys_to_parse.detail, value_to_parse);
+          if (parse_table) {
+            parse_table = '"detail_table":' + parse_table;
+            if (parse_sub_info) {
+              parse_sub_info = parse_sub_info + ', ' + parse_table;
+            } else {
+              parse_sub_info = parse_table;
+            }
+          }
+        }
+        if (keys_to_parse.btns) {
+          parse_btns = me.parseBtnValue(keys_to_parse.btns, value_to_parse);
+          if (parse_btns) {
+            parse_btns = '"btns":' + parse_btns;
+            if (parse_sub_info) {
+              parse_sub_info = parse_sub_info + ', ' + parse_btns;
+            } else {
+              parse_sub_info = parse_btns;
+            }
+          }
+        }
         if (parse_result) {
           parse_result = '{' + parse_result;
           if (parse_sub_info) {
@@ -463,6 +494,39 @@
         }
         console.log(parse_result);
         return parse_result;
+      },
+      parseTableValue: function(keyes_set, value_set) {
+        return null;
+      },
+      parseBtnValue: function(keyes_set, value_set) {
+        var btn_date, parse_btns_result;
+        parse_btns_result = '';
+        btn_date = '';
+        _.map(keyes_set, function(value) {
+          var dc_date, dc_filename, dc_parse;
+          btn_date = '';
+          if (value.type === "download_configuration") {
+            dc_date = {};
+            dc_date.vpnConnectionId = value_set.vpnConnectionId ? value_set.vpnConnectionId : '';
+            dc_date = MC.template.configurationDownload(dc_date);
+            dc_filename = dc_date.vpnConnectionId ? dc_date.vpnConnectionId : 'download_configuration';
+            dc_parse = '{filecontent: "';
+            dc_parse += dc_date;
+            dc_parse += '", filename: "';
+            dc_parse += dc_filename;
+            dc_parse += '",btnname:"';
+            dc_parse += value.name;
+            dc_parse += '"},';
+            btn_date += dc_parse;
+          }
+          if (btn_date) {
+            btn_date = btn_date.substring(0, btn_date.length - 1);
+            parse_btns_result += '[';
+            parse_btns_result += btn_date;
+            return parse_btns_result += ']';
+          }
+        });
+        return parse_btns_result;
       },
       setResource: function(resources) {
         var elb, lists;
@@ -492,30 +556,42 @@
         current_region = region;
         aws_model.status({
           sender: this
-        }, $.cookie('usercode'), $.cookie('session_id'), region, null);
-        return aws_model.once('AWS_STATUS_RETURN', function(result) {
-          var result_list;
+        }, $.cookie('usercode'), $.cookie('session_id'), null, null);
+        return aws_model.on('AWS_STATUS_RETURN', function(result) {
+          var result_list, service_list;
           console.log('AWS_STATUS_RETURN');
           status_list = {
             red: 0,
             yellow: 0,
             info: 0
           };
-          console.log(result.resolved_data);
+          service_list = constant.SERVICE_REGION[current_region];
           result_list = result.resolved_data.current;
           _.map(result_list, function(value) {
-            switch (value.status) {
-              case '1':
-                status_list.red += 1;
-                return null;
-              case '2':
-                status_list.yellow += 1;
-                return null;
-              case '3':
-                status_list.info += 1;
-                return null;
-              default:
-                return null;
+            var cur_service, service_set, should_show_service;
+            service_set = value;
+            cur_service = service_set.service;
+            should_show_service = false;
+            _.map(service_list, function(value) {
+              if (cur_service === value) {
+                should_show_service = true;
+              }
+              return null;
+            });
+            if (should_show_service) {
+              switch (service_set.status) {
+                case '1':
+                  status_list.red += 1;
+                  return null;
+                case '2':
+                  status_list.yellow += 1;
+                  return null;
+                case '3':
+                  status_list.info += 1;
+                  return null;
+                default:
+                  return null;
+              }
             }
           });
           me.set('status_list', status_list);

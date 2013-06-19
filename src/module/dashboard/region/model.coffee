@@ -65,7 +65,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
                 ]},
             "DescribeInstances": {
                 "title": "instanceId",
-                "sub_info":[
+                "sub_info": [
                     { "key": [ "instanceState", "name" ], "show_key": "Status"},
                     { "key": [ "keyName" ], "show_key": "Key Pair Name"},
                     { "key": [ "monitoring", "state" ], "show_key": "Monitoring"},
@@ -88,13 +88,16 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
                 ]},
             "DescribeVpnConnections": {
                 "title": "vpnConnectionId",
-                "sub_info":[
+                "sub_info": [
                     { "key": [ "state" ], "show_key": "State"},
                     { "key": [ "vpnGatewayId" ], "show_key": "Virtual Private Gateway"},
                     { "key": [ "customerGatewayId" ], "show_key": "Customer Gateway"},
                     { "key": [ "type" ], "show_key": "Type"},
                     { "key": [ "routes", "item", "source" ], "show_key": "Routing"}
                 ],
+                "btns": [
+                    { "type": "download_configuration", "name": "Download Configuration" }
+                    ],
                 "detail_table": [
                     { "key": [ "vgwTelemetry", "item" ], "show_key": "VPN Tunnel", "count_name": "tunnel"},
                     { "key": [ "outsideIpAddress" ], "show_key": "IP Address"},
@@ -104,7 +107,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
                 ]},
             "DescribeVpcs": {
                 "title": "vpcId",
-                "sub_info":[
+                "sub_info": [
                     { "key": [ "state" ], "show_key": "SvpcId"},
                     { "key": [ "cidrBlock" ], "show_key": "CIDR"},
                     { "key": [ "instanceTenancy" ], "show_key": "Tenancy"}
@@ -222,7 +225,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
 
             vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ["supported-platforms"]
 
-            vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
+            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
                 console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
@@ -248,11 +251,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
 
         #parse bubble value or detail value for unmanagedSource
         parseSourceValue : ( type, value, keys, name )->
+
+            me = this
+
             keys_to_parse  = null
             value_to_parse = value
             parse_result   = ''
             parse_sub_info = ''
-
+            parse_table    = ''
+            parse_btns     = ''
 
             keys_type = keys
             if popup_key_set[keys]
@@ -261,7 +268,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
                 keys_type = 'unmanaged_bubble'
                 keys_to_parse = popup_key_set[keys_type][type]
 
-            #has bug, fix later
             status_keys = keys_to_parse.status
             if status_keys
                 state_key = status_keys[0]
@@ -270,8 +276,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
                 _.map status_keys, ( value, key ) ->
                     if cur_state
                         if key > 0
-                            cur_state = cur_state.value
-                            cur_state
+                            cur_state = cur_state[value]
+                            null
 
                 if cur_state
                     parse_result += '"status":"' + cur_state + '", '
@@ -300,10 +306,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
                             parse_result += value_to_parse[ keys_to_parse.title ]
                             parse_result += '", '
 
-            #leave space to parse the table
-
-            #leave space to parse the btns
-
             _.map keys_to_parse.sub_info, ( value ) ->
                 key_array = value.key
                 show_key  = value.show_key
@@ -313,7 +315,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
                 _.map key_array, ( value, key ) ->
                     if cur_value
                         if key > 0
-                            cur_value = cur_value.value
+                            cur_value = cur_value[value]
                             cur_value
 
                 if cur_value
@@ -325,6 +327,26 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
                 parse_sub_info = '"sub_info":[' + parse_sub_info
                 parse_sub_info = parse_sub_info.substring 0, parse_sub_info.length - 2
                 parse_sub_info += ']'
+
+            #parse the table
+            if keys_to_parse.detail_table
+                parse_table = me.parseTableValue keys_to_parse.detail, value_to_parse
+                if parse_table
+                    parse_table = '"detail_table":' + parse_table
+                    if parse_sub_info
+                        parse_sub_info = parse_sub_info + ', ' + parse_table
+                    else
+                        parse_sub_info = parse_table
+
+            #parse the btns
+            if keys_to_parse.btns
+                parse_btns  = me.parseBtnValue keys_to_parse.btns, value_to_parse
+                if parse_btns
+                    parse_btns = '"btns":' + parse_btns
+                    if parse_sub_info
+                        parse_sub_info = parse_sub_info + ', ' + parse_btns
+                    else
+                        parse_sub_info = parse_btns
 
             if parse_result
                 parse_result = '{' + parse_result
@@ -338,6 +360,35 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
 
             parse_result
 
+        parseTableValue : ( keyes_set, value_set )->
+            null
+
+        parseBtnValue : ( keyes_set, value_set )->
+            parse_btns_result = ''
+            btn_date         = ''
+
+            _.map keyes_set, ( value ) ->
+                btn_date = ''
+                if value.type is "download_configuration"
+                    dc_date = {}
+                    dc_date.vpnConnectionId = if value_set.vpnConnectionId then value_set.vpnConnectionId else ''
+                    dc_date = MC.template.configurationDownload(dc_date)
+                    dc_filename = if dc_date.vpnConnectionId then dc_date.vpnConnectionId else 'download_configuration'
+                    dc_parse = '{filecontent: "'
+                    dc_parse +=  dc_date
+                    dc_parse += '", filename: "'
+                    dc_parse += dc_filename
+                    dc_parse +='",btnname:"'
+                    dc_parse += value.name
+                    dc_parse += '"},'
+                    btn_date += dc_parse
+                if btn_date
+                    btn_date = btn_date.substring 0, btn_date.length - 1
+                    parse_btns_result += '['
+                    parse_btns_result += btn_date
+                    parse_btns_result += ']'
+
+            parse_btns_result
 
         setResource : ( resources ) ->
 
@@ -375,30 +426,39 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'vpc_model',  'constan
 
             current_region = region
 
-            aws_model.status { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, null
-            aws_model.once 'AWS_STATUS_RETURN', ( result ) ->
+            aws_model.status { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+
+            aws_model.on 'AWS_STATUS_RETURN', ( result ) ->
 
                 console.log 'AWS_STATUS_RETURN'
 
-                status_list = { red: 0, yellow: 0, info: 0 }
-
-                console.log result.resolved_data
-
-                result_list = result.resolved_data.current
+                status_list  = { red: 0, yellow: 0, info: 0 }
+                service_list = constant.SERVICE_REGION[ current_region ]
+                result_list  = result.resolved_data.current
 
                 _.map result_list, ( value ) ->
-                    switch value.status
-                        when '1'
-                            status_list.red += 1
-                            null
-                        when '2'
-                            status_list.yellow += 1
-                            null
-                        when '3'
-                            status_list.info += 1
-                            null
-                        else
-                            null
+                    service_set         = value
+                    cur_service         = service_set.service
+                    should_show_service = false
+
+                    _.map service_list, ( value ) ->
+                        if cur_service is value
+                            should_show_service = true
+                        null
+
+                    if should_show_service
+                        switch service_set.status
+                            when '1'
+                                status_list.red += 1
+                                null
+                            when '2'
+                                status_list.yellow += 1
+                                null
+                            when '3'
+                                status_list.info += 1
+                                null
+                            else
+                                null
 
                 me.set 'status_list', status_list
 

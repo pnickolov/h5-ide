@@ -457,7 +457,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
         #if an array tagset has tagid
         hasnotTagId : ( tagset )->
             if tagset
-                 _.map tagset, ( value ) ->
+                 _.map tagset.item[0], ( value ) ->
                     if value.key is "app-id" && value.value
                         false
             true
@@ -546,7 +546,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             #parse the table
             if keys_to_parse.detail_table
-                parse_table = me.parseTableValue keys_to_parse.detail, value_to_parse
+                parse_table = me._parseTableValue keys_to_parse.detail, value_to_parse
                 if parse_table
                     parse_table = '"detail_table":' + parse_table
                     if parse_sub_info
@@ -556,7 +556,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             #parse the btns
             if keys_to_parse.btns
-                parse_btns  = me.parseBtnValue keys_to_parse.btns, value_to_parse
+                parse_btns  = me._parseBtnValue keys_to_parse.btns, value_to_parse
                 if parse_btns
                     parse_btns = '"btns":' + parse_btns
                     if parse_sub_info
@@ -615,20 +615,32 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             parse_sub_info
 
-        parseTableValue : ( keyes_set, value_set )->
+        _parseTableValue : ( keyes_set, value_set )->
             null
 
-        parseBtnValue : ( keyes_set, value_set )->
-            parse_btns_result = ''
-            btn_date         = ''
+        _parseEmptyValue : ( val )->
+            result = if val then val else ''
+            val
+
+        _parseBtnValue : ( keyes_set, value_set )->
+            me                  = this
+            parse_btns_result   = ''
+            btn_date            = ''
 
             _.map keyes_set, ( value ) ->
                 btn_date = ''
                 if value.type is "download_configuration"
                     dc_data = {
-                        vpnConnectionId     : if value_set.vpnConnectionId then value_set.vpnConnectionId else ''
-                        vpnGatewayId        : if value_set.vpnConnectionId then value_set.vpnConnectionId else ''
-                        customerGatewayId   : if value_set.vpnConnectionId then value_set.vpnConnectionId else ''
+                        vpnConnectionId                     : me._parseEmptyValue value_set.vpnConnectionId
+                        vpnGatewayId                        : me._parseEmptyValue value_set.vpnConnectionId
+                        customerGatewayId                   : me._parseEmptyValue value_set.customerGatewayId
+                        tunnel0_ike_protocol_method         : me._parseEmptyValue value_set.vgwTelemetry.item[0]
+                        tunnel0_ike_pre_shared_key          : me._parseEmptyValue value_set.
+                        tunnel0_ike_encryption_protocol     : me._parseEmptyValue value_set.
+                        tunnel0_ike_lifetime                : me._parseEmptyValue value_set.
+                        tunnel0_ike_mode                    : me._parseEmptyValue value_set.
+                        tunnel0_ike_perfect_forward_secrecy : me._parseEmptyValue value_set.
+
                     }
                     dc_filename = if dc_data.vpnConnectionId then dc_data.vpnConnectionId else 'download_configuration'
                     dc_data = MC.template.configurationDownload(dc_data)

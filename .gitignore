@@ -40,6 +40,7 @@ src/lib/constant.js
 #ignore test
 src/test/console/js/*.js
 src/test/**/*.js
+src/test/websocket/request/*.js
 
 #ignore util
 util/gen_service/out.tmp
@@ -48,6 +49,9 @@ util/gen_model/out.tmp
 util/gen_model/**/*.js
 util/gen_apilist/out.tmp
 util/gen_apilist/**/*.js
+
+#ignore event
+src/event/*.js
 
 #ignore overview
 src/module/dashboard/overview/*.js

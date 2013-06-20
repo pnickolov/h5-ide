@@ -109,6 +109,7 @@
 		<div class="col-1-2">
 			<div class="dashboard-widget" id="dashboard-region-stat-unmanaged">
 				<div class="dashboard-widget-title-wrap"><div class="dashboard-widget-title"><h4>Unmanaged Resource</h4></div><i class="icon-question-sign tooltip" data-tooltip="Resouces running in AWS but not managed by MadeiraCloud"></i></div>
+				{{#if unmanaged_list}}
 				<div class="dashboard-widget-body dashboard-widget-body-table scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
@@ -123,7 +124,6 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#if unmanaged_list}}
 								{{#each unmanaged_list.items}}
 									{{#if data-bubble-data}}
 									<tr class="bubble" data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{data-bubble-data}}}'>
@@ -137,8 +137,12 @@
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
+						</tbody>
+						</table>
+					</div>
+				</div>
 							{{else}}
-							<tr rowspan="5"><td colspan="5">There is no unmanaged resource.</td></tr>
+							<div style="height:253px;width:100%;text-align:center; line-height:253px">There is no unmanaged resource.</div>
 							{{/if}}
 							<!-- unmanaged
 							<tr class="bubble" data-bubble-template="bubbleInstanceInfo" data-bubble-data='{"name":"Webserver1","id":"i-3413243","launch-time":"GMT 19:23 2013-5-1","ebs-optimized":"false","root-device-type":"EBS","Tenancy":"default"},"block-device":"/dev/sda1"'>
@@ -205,10 +209,6 @@
 								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 							</tr>
 							-->
-						</tbody>
-						</table>
-					</div>
-				</div>
 			</div>
 		</div>
 		<!-- cinde end -->
@@ -344,29 +344,35 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#each region_resource.DescribeInstances }}
-							<tr>
-								<td>
-									{{#if app}}										
-										{{#if owner}}										
-											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+							{{#if region_resource.DescribeInstances}}
+								{{#each region_resource.DescribeInstances }}
+								<tr>
+									<td>
+										{{#if app}}										
+											{{#if owner}}										
+												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+											{{else}}
+												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											{{/if}}
 										{{else}}
-											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
 										{{/if}}
-									{{else}}
-										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-									{{/if}}
-									{{ host }}
-									<span class="resource-id">( {{ instanceId }} )</span>									
-								</td>
-								<td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
-								<td>{{ launchTime }}</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
-								<td>{{ placement.availabilityZone}}</td>
-						<!--		<td>N/A</td> -->
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							{{/each}}
+										{{ host }}
+										<span class="resource-id">( {{ instanceId }} )</span>									
+									</td>
+									<td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
+									<td>{{ launchTime }}</td>
+									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
+									<td>{{ placement.availabilityZone}}</td>
+							<!--		<td>N/A</td> -->
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget"> 
+									<p>There is no instance in this region.</p>
+								</div>
+							{{/if}}
 						</tbody>
 						</table>
 					</div>
@@ -385,24 +391,21 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#each region_resource.DescribeAddresses }}
-							<tr>
-								<td>
-									{{#if app}}
-										{{#if owner}}										
-											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
-										{{else}}
-											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
-										{{/if}}
-									{{else}}
-										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-									{{/if}}
-									{{ publicIp }}									
-								</td>
-								<td>{{ instanceId }}</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							{{/each}}
+							{{#if region_resource.DescribeAddresses}}
+								{{#each region_resource.DescribeAddresses }}
+								<tr>
+									<td>
+										{{ publicIp }}									
+									</td>
+									<td>{{ instanceId }}</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget"> 
+									<p>There is no eip in this region.</p>
+								</div>
+							{{/if}}
 						</tbody>
 						</table>
 					</div>
@@ -424,27 +427,33 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#each region_resource.DescribeVolumes }}
-							<tr>
-								<td>
-									{{#if app}}
-										{{#if owner}}										
-											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+							{{#if region_resource.DescribeVolumes}}
+								{{#each region_resource.DescribeVolumes }}
+								<tr>
+									<td>
+										{{#if app}}
+											{{#if owner}}										
+												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+											{{else}}
+												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											{{/if}}
 										{{else}}
-											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
-										{{/if}}
-									{{else}}
-										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-									{{/if}}									
-									{{ volumeId }}									
-								</td>
-								<td><i class="status status-{{ status }} icon-label"></i>{{ status }}</td>
-								<td>{{ createTime }}</td>
-								<td>{{#each attachmentSet.item }}{{ this.device }}{{/each}}</td>
-								<td><i class="status status-{{#each attachmentSet.item }}{{ this.status }}{{/each}} icon-label"></i>{{#each attachmentSet.item }}{{ this.status }}{{/each}}</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							{{/each}}
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+										{{/if}}									
+										{{ volumeId }}									
+									</td>
+									<td><i class="status status-{{ status }} icon-label"></i>{{ status }}</td>
+									<td>{{ createTime }}</td>
+									<td>{{#each attachmentSet.item }}{{ this.device }}{{/each}}</td>
+									<td><i class="status status-{{#each attachmentSet.item }}{{ this.status }}{{/each}} icon-label"></i>{{#each attachmentSet.item }}{{ this.status }}{{/each}}</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget"> 
+									<p>There is no volume in this region.</p>
+								</div>
+							{{/if}}
 						</tbody>
 						</table>
 					</div>
@@ -465,26 +474,32 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#each region_resource.DescribeVpcs }}
-							<tr>
-								<td>
-									{{#if app}}
-										{{#if owner}}										
-											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+							{{#if region_resource.DescribeVpcs}}
+								{{#each region_resource.DescribeVpcs }}
+								<tr>
+									<td>
+										{{#if app}}
+											{{#if owner}}										
+												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+											{{else}}
+												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											{{/if}}
 										{{else}}
-											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
 										{{/if}}
-									{{else}}
-										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-									{{/if}}
-									{{ vpcId }}									
-								</td>
-								<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
-								<td>{{ cidrBlock }}</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{dhcp}}}'>{{ dhcpOptionsId }}</a></td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							{{/each}}
+										{{ vpcId }}									
+									</td>
+									<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
+									<td>{{ cidrBlock }}</td>
+									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{dhcp}}}'>{{ dhcpOptionsId }}</a></td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget"> 
+									<p>There is no vpc in this region.</p>
+								</div>
+							{{/if}}
 						</tbody>
 						</table>
 					</div>
@@ -505,26 +520,32 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#each region_resource.DescribeVpnConnections }}
-							<tr>
-								<td>
-									{{#if app}}
-										{{#if owner}}										
-											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+							{{#if region_resource.DescribeVpnConnections}}
+								{{#each region_resource.DescribeVpnConnections }}
+								<tr>
+									<td>
+										{{#if app}}
+											{{#if owner}}										
+												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+											{{else}}
+												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											{{/if}}
 										{{else}}
-											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
 										{{/if}}
-									{{else}}
-										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-									{{/if}}
-									{{ vpnConnectionId }}									
-								</td>
-								<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
-								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{cgw}}}'>{{ customerGatewayId }}</a></td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							{{/each}}
+										{{ vpnConnectionId }}									
+									</td>
+									<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
+									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
+									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{cgw}}}'>{{ customerGatewayId }}</a></td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget"> 
+									<p>There is no vpn in this region.</p>
+								</div>
+							{{/if}}
 						</tbody>
 						</table>
 					</div>
@@ -545,18 +566,24 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#each region_resource.DescribeLoadBalancers }}
-							<tr>
-								<td>
-
-									{{ DNSName }}									
-								</td>
-								<td>{{ CreatedTime }}</td>
-								<td>{{ AvailabilityZones.member }}</td>
-								<td>{{ state }}</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							{{/each}}
+							{{#if region_resource.DescribeLoadBalancers}}
+								{{#each region_resource.DescribeLoadBalancers }}
+								<tr>
+									<td>
+	
+										{{ DNSName }}									
+									</td>
+									<td>{{ CreatedTime }}</td>
+									<td>{{ AvailabilityZones.member }}</td>
+									<td>{{ state }}</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget"> 
+									<p>There is no elb in this region.</p>
+								</div>
+							{{/if}}
 						</tbody>
 						</table>
 					</div>

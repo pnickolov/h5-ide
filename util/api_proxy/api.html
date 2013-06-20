@@ -15,12 +15,12 @@
 					timeout: option.timeout,
 					data: JSON.stringify({
 						jsonrpc: '2.0',
-						id: option.id,
+						id: reqId,
 						method: option.method || '',
 						params: option.params || {}
 					}),
 					success: function(res){
-						option.success(res.id, res);
+						option.success(reqId, res);
 					},
 					error: function(xhr, status, error){
 						option.error(reqId, xhr, status, error);

@@ -13,17 +13,17 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
     update_timestamp = 0
 
-    popup_key_set = {
-        "unmanaged_bubble" : {
-            "DescribeVolumes": {
+    popup_key_set =
+        "unmanaged_bubble" :
+            "DescribeVolumes":
                 "status": [ "status" ],
                 "title": "volumeId",
                 "sub_info":[
                     { "key": [ "createTime" ], "show_key": "Create Time"},
                     { "key": [ "availabilityZone" ], "show_key": "Availability Zone"},
                     { "key": [ "attachmentSet", "item", "status" ], "show_key": "Attachment Status"}
-                ]},
-            "DescribeCustomerGateways": {
+                ]
+            "DescribeCustomerGateways":
                 "title"     :   "customerGatewayId"
                 "status"    :   "state"
                 "sub_info"  :   [
@@ -31,58 +31,54 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                         { "key": [ "type"], "show_key": "Type"},
                         { "key": [ "ipAddress"], "show_key": "IpAddress"},
                         { "key": [ "bgpAsn"], "show_key": "BgpAsn"},
-                    ]
-                },
-            "DescribeVpnGateways"   :   {
+                ]
+            "DescribeVpnGateways":
                 "title"     :   "vpnGatewayId"
                 "status"    :   "state"
                 "sub_info"  :   [
                         { "key": [ "vpnGatewayId" ], "show_key": "VPNGatewayId"},
                         { "key": [ "type"], "show_key": "Type"},
-                    ]
-                }
-            "DescribeInstances": {
+                ]
+            "DescribeInstances":
                 "status": [ "instanceState", "name" ],
                 "title": "instanceId",
                 "sub_info":[
                     { "key": [ "launchTime" ], "show_key": "Launch Time"},
                     { "key": [ "placement", "availabilityZone" ], "show_key": "Availability Zone"}
-                ]},
-            "DescribeVpnConnections": {
+                ]
+            "DescribeVpnConnections":
                 "status": [ "state" ],
                 "title": "vpnConnectionId",
                 "sub_info":[
                     { "key": [ "vpnConnectionId" ], "show_key": "VPC"},
                     { "key": [ "type" ], "show_key": "Type"},
                     { "key": [ "routes", "item", "source" ], "show_key": "Routing"}
-                ]},
-            "DescribeVpcs": {
+                ]
+            "DescribeVpcs":
                 "status": [ "state" ],
                 "title": "vpcId",
                 "sub_info":[
                     { "key": [ "cidrBlock" ], "show_key": "CIDR"},
                     { "key": [ "isDefault" ], "show_key": "Default VPC:"},
                     { "key": [ "instanceTenancy" ], "show_key": "Tenacy"}
-                ]}
-        },
-        "detail" : {
-            "DescribeVolumes": {
+                ]
+        "detail" :
+            "DescribeVolumes":
                 "title": "volumeId",
                 "sub_info":[
                     { "key": [ "volumeId" ], "show_key": "Volume ID"},
-                    { "key": [ "attachmentSet", "item", "device"  ], "show_key": "Device Name"},
+                    { "key": [ "attachmentSet", "item",0, "device"  ], "show_key": "Device Name"},
                     { "key": [ "snapshotId" ], "show_key": "Snapshot ID"},
+                    { "key": [ "size" ], "show_key": "Volume Size(GiB)"}
                     { "key": [ "createTime" ], "show_key": "Create Time"},
-                    { "key": [ "attachmentSet", "item", "attachTime"  ], "show_key": "Attach Name"},
-                    { "key": [ "attachmentSet", "item", "deleteOnTermination" ], "show_key": "Delete On Termination"},
-                    { "key": [ "attachmentSet", "item", "instanceId" ], "show_key": "Instance ID"},
+                    { "key": [ "attachmentSet" ], "show_key": "AttachmentSet"},
                     { "key": [ "status" ], "show_key": "status"},
-                    { "key": [ "attachmentSet", "item", "status" ], "show_key": "Attachment Status"},
+                    { "key": [ "attachmentSet", "item", "status" ], "show_key": "AttachmentSet"},
                     { "key": [ "availabilityZone" ], "show_key": "Availability Zone"},
                     { "key": [ "volumeType" ], "show_key": "Volume Type"},
                     { "key": [ "Iops" ], "show_key": "Iops"}
-                ]},
-            "DescribeInstances": {
+                ]
+            "DescribeInstances":
                 "title": "instanceId",
                 "sub_info": [
                     { "key": [ "instanceState", "name" ], "show_key": "Status"},
@@ -95,23 +91,21 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "launchTime" ], "show_key": "Launch Time"},
                     { "key": [ "placement", "availabilityZone" ], "show_key": "Zone"},
                     { "key": [ "amiLaunchIndex" ], "show_key": "AMI Launch Index"},
-                    { "key": [ "blockDeviceMapping", "item", "deleteOnTermination"  ], "show_key": "Termination Protection"},
-                    { "key": [ "blockDeviceMapping", "item", "status" ], "show_key": "Shutdown Behavior"},
                     { "key": [ "instanceType" ], "show_key": "Instance Type"},
                     { "key": [ "ebsOptimized" ], "show_key": "EBS Optimized"},
                     { "key": [ "rootDeviceType" ], "show_key": "Root Device Type"},
                     { "key": [ "placement", "tenancy" ], "show_key": "Tenancy"},
-                    { "key": [ "blockDeviceMapping", "item", "deviceName" ], "show_key": "Block Devices"},
-                    { "key": [ "groupSet", "item", "groupName" ], "show_key": "Security Groups"}
-                ]},
-            "DescribeVpnConnections": {
+                    { "key": [ "blockDeviceMapping", "item"], "show_key": "Block Devices"}
+                    { "key": ['networkInterfaceSet', 'item'], "show_key": "NetworkInterface"}
+                ]
+            "DescribeVpnConnections":
                 "title": "vpnConnectionId",
                 "sub_info": [
                     { "key": [ "state" ], "show_key": "State"},
                     { "key": [ "vpnGatewayId" ], "show_key": "Virtual Private Gateway"},
                     { "key": [ "customerGatewayId" ], "show_key": "Customer Gateway"},
                     { "key": [ "type" ], "show_key": "Type"},
-                    { "key": [ "routes", "item", "source" ], "show_key": "Routing"}
+                    { "key": [ "routes", "item"], "show_key": "Routing"}
                 ],
                 "btns": [
                     { "type": "download_configuration", "name": "Download Configuration" }
@@ -121,16 +115,16 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "outsideIpAddress" ], "show_key": "IP Address"},
                     { "key": [ "status" ], "show_key": "Status"},
                     { "key": [ "lastStatusChange" ], "show_key": "Last Changed"},
-                    { "key": [ "statusMessage" ], "show_key": "Detail"},
-                ]},
-            "DescribeVpcs": {
+                    { "key": [ "statusMessage" ], "show_key": "Detail"}
+                ]
+            "DescribeVpcs":
                 "title": "vpcId",
                 "sub_info": [
                     { "key": [ "state" ], "show_key": "State"},
                     { "key": [ "cidrBlock" ], "show_key": "CIDR"},
                     { "key": [ "instanceTenancy" ], "show_key": "Tenancy"}
-                ]}
-            "DescribeLoadBalancers": {
+                ]
+            "DescribeLoadBalancers":
                 "title": "LoadBalancerName",
                 "sub_info":[
                     { "key": [ "state" ], "show_key": "State"},
@@ -140,10 +134,10 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "HealthCheck" ], "show_key": "HealthCheck"}
                     { "key": [ "Instances", 'member' ], "show_key": "Instances"}
                     { "key": [ "ListenerDescriptions", "member", "Listener" ], "show_key": "ListenerDescriptions"}
-                    { "key": [ "SecurityGroups"], "show_key": "SecurityGroups"}
-                    { "key": [ "Subnets" ], "show_key": "Subnets"}
-                ]}
-            "DescribeAddresses": {
+                    { "key": [ "SecurityGroups", "member"], "show_key": "SecurityGroups"}
+                    { "key": [ "Subnets", "member" ], "show_key": "Subnets"}
+                ]
+            "DescribeAddresses":
                 "title": "publicIp",
                 "sub_info":[
                     { "key": [ "domain" ], "show_key": "Domain"},
@@ -155,18 +149,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "privateIpAddress"], "show_key": "PrivateIpAddress"}
                     { "key": [ "SecurityGroups"], "show_key": "SecurityGroups"}
                     { "key": [ "Subnets" ], "show_key": "Subnets"}
-                ]}
-        }
-    }
+                ]
 
     #private
     RegionModel = Backbone.Model.extend {
 
         defaults :
 
-            temp : null
-            'region_resource_list'         : null
-            'region_resource'              : null
+            'region_resource_list'  : null
+            'region_resource'       : null
             'resourse_list'         : null
             'vpc_attrs'             : null
             'unmanaged_list'        : null
@@ -392,21 +383,18 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             me = this
 
-            time_stamp = new Date().getTime() / 1000
-            unmanaged_list = {}
-            unmanaged_list.time_stamp = time_stamp
+            time_stamp      = new Date().getTime() / 1000
+            unmanaged_list  = { "time_stamp": time_stamp, "items": [] }
+            resources_keys  = [ 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses' ]
 
-            unmanaged_list.items = []
-            resources_keys       = [ 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses' ]
-
-            console.log resource_source
+            #console.log resource_source
             _.map resources_keys, ( value ) ->
-                cur_attr = resource_source[ value ]
 
-                cur_tag = value
+                cur_attr    = resource_source[ value ]
+                cur_tag     = value
 
                 _.map cur_attr, ( value ) ->
-                    if me.hasnotTagId value.tagSet
+                    if value.app is undefined
                         name = if value.tagSet then value.tagSet.name else null
                         switch cur_tag
                             when "DescribeVolumes"
@@ -464,13 +452,14 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             current_region = region
 
-            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ["supported-platforms"]
+            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
 
             vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
                 console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
-                regionAttrSet = result.resolved_data.accountAttributeSet.item.attributeValueSet.item
+                regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item.attributeValueSet.item
+
                 if $.type(regionAttrSet) == "array"
                     vpc_attrs_value = { 'classic' : 'Classic', 'vpc' : 'VPC' }
                 else
@@ -481,14 +470,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 null
 
             null
-
-        #if an array tagset has tagid
-        hasnotTagId : ( tagset )->
-            if tagset
-                 _.map tagset.item[0], ( value ) ->
-                    if value.key is "app-id" && value.value
-                        false
-            true
 
         #parse bubble value or detail value for unmanagedSource
         parseSourceValue : ( type, value, keys, name )->
@@ -502,14 +483,16 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             parse_table    = ''
             parse_btns     = ''
 
-            keys_type = keys
+            keys_type      = keys
+
             if popup_key_set[keys]
                 keys_to_parse = popup_key_set[keys_type][type]
             else
-                keys_type = 'unmanaged_bubble'
+                keys_type     = "unmanaged_bubble"
                 keys_to_parse = popup_key_set[keys_type][type]
 
             status_keys = keys_to_parse.status
+
             if status_keys
                 state_key = status_keys[0]
                 cur_state = value_to_parse[ state_key ]
@@ -518,13 +501,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     if cur_state
                         if key > 0
                             cur_state = cur_state[value]
+                            if $.type(cur_state) == "array"
+                                cur_state = cur_state[0]
                             null
 
                 if cur_state
                     parse_result += '"status":"' + cur_state + '", '
 
             if keys_to_parse.title
-                if keys is 'unmanaged_bubble' or 'bubble'
+                if keys isnt "detail"
                     if name
                         parse_result += '"title":"' + name
                         if value_to_parse[ keys_to_parse.title ]
@@ -553,15 +538,19 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 cur_key   = key_array[0]
                 cur_value = value_to_parse[ cur_key ]
 
+                
                 _.map key_array, ( value, key ) ->
                     if cur_value
                         if key > 0
                             cur_value = cur_value[value]
+                            #if $.type(cur_value) is "array"
+                            #    cur_value = cur_value[0]
                             cur_value
 
                 if cur_value
                     if cur_value.constructor == Object or cur_value.constructor == Array
                         cur_value = me._genBubble cur_value, show_key, true
+
                     parse_sub_info += ( '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ')
 
                 null
@@ -571,9 +560,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 parse_sub_info = parse_sub_info.substring 0, parse_sub_info.length - 2
                 parse_sub_info += ']'
 
-            #parse the table
             if keys_to_parse.detail_table
-                parse_table = me._parseTableValue keys_to_parse.detail, value_to_parse
+                parse_table = me._parseTableValue keys_to_parse.detail_table, value_to_parse
                 if parse_table
                     parse_table = '"detail_table":' + parse_table
                     if parse_sub_info
@@ -581,7 +569,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     else
                         parse_sub_info = parse_table
 
-            #parse the btns
             if keys_to_parse.btns
                 parse_btns  = me._parseBtnValue keys_to_parse.btns, value_to_parse
                 if parse_btns
@@ -598,8 +585,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 else
                     parse_result = parse_result.substring 0, parse_result.length - 2
                 parse_result += '}'
-
-            console.log parse_result
 
             parse_result
 
@@ -630,16 +615,37 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 if entry
 
-                    bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data='
-                    bubble_end = '>'+title+'</a>'
-                    parse_sub_info = " &apos;{\\\"title\\\": \\\"" +title + '\\\" , \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; "
-                    parse_sub_info = bubble_front + parse_sub_info + bubble_end
+                    bubble_front    = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data='
+                    bubble_end      = '>'+title+'</a>'
+                    parse_sub_info  = " &apos;{\\\"title\\\": \\\"" +title + '\\\" , \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; "
+                    parse_sub_info  = bubble_front + parse_sub_info + bubble_end
 
             if source.constructor == Array
 
                 tmp = []
 
-                _.map source, ( value ) ->
+                titles = []
+
+                _.map source, ( value, index ) ->
+
+                    current_title = title
+
+                    if value.deviceName != undefined
+
+                        current_title = value.deviceName
+
+                    else if value.networkInterfaceId != undefined
+
+                        current_title = value.networkInterfaceId
+
+                    else if value.InstanceId != undefined
+
+                        current_title = value.InstanceId
+                    else
+
+                        current_title = title + '-' + index
+
+                    titles.push current_title
 
                     if value != null
 
@@ -649,61 +655,144 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                         else
 
-                            tmp.push me._genBubble value, title, false
+                            tmp.push me._genBubble value, current_title, false
 
-                parse_sub_info = tmp.join(', ')
+                
+                lines = []
 
                 if entry
 
-                    bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data='
-                    bubble_end = '>'+title+'</a>'
-                    parse_sub_info = " &apos;{\\\"title\\\": \\\"" +title + '\\\" , \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; "
-                    parse_sub_info = bubble_front + parse_sub_info + bubble_end
+                    _.map tmp, ( line, index ) ->
+
+                        bubble_front    = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data='
+                        bubble_end      = '>' + titles[index] + '</a>'
+                        line            = " &apos;{\\\"title\\\": \\\"" + titles[index] + '\\\" , \\\"sub_info\\\":[' + line + "]}&apos; "
+                        line            = bubble_front + line + bubble_end
+
+                        lines.push line
+
+                else
+                    lines = tmp
+                
+                parse_sub_info = lines.join(', ')
 
             parse_sub_info
 
         _parseTableValue : ( keyes_set, value_set )->
-            null
+            me                  = this
+            parse_table_result  = ''
+            table_date          = ''
+
+            detail_table =  [
+                    { "key": [ "vgwTelemetry", "item" ], "show_key": "VPN Tunnel", "count_name": "tunnel"},
+                    { "key": [ "outsideIpAddress" ], "show_key": "IP Address"},
+                    { "key": [ "status" ], "show_key": "Status"},
+                    { "key": [ "lastStatusChange" ], "show_key": "Last Changed"},
+                    { "key": [ "statusMessage" ], "show_key": "Detail"},
+                ]
+            table_set = value_set.vgwTelemetry
+            if table_set
+                table_set = table_set.item
+                if table_set
+                    parse_table_result = '{ "th_set":['
+                    _.map keyes_set, ( value, key ) ->
+                        if key isnt 0
+                            parse_table_result += ','
+                        parse_table_result += '"'
+                        parse_table_result += me._parseEmptyValue value.show_key
+                        parse_table_result += '"'
+                        null
+
+                    count_set = [1, 2]
+                    _.map count_set, ( value, key ) ->
+                        cur_key     = key
+                        cur_value   = value
+                        parse_table_result += '], "tr'
+                        parse_table_result += cur_value
+                        parse_table_result += '_set":['
+                        _.map keyes_set, ( value, key ) ->
+                            if key isnt 0
+                                parse_table_result += ',"'
+                                parse_table_result += me._parseEmptyValue table_set[cur_key][value.key]
+                                parse_table_result += '"'
+                            else
+                                parse_table_result += '"'
+                                parse_table_result += me._parseEmptyValue value.count_name
+                                parse_table_result += cur_value
+                                parse_table_result += '"'
+                            null
+                        null
+                    parse_table_result += ']}'
+            parse_table_result
 
         _parseEmptyValue : ( val )->
             result = if val then val else ''
-            val
+            result
 
         _parseBtnValue : ( keyes_set, value_set )->
             me                  = this
             parse_btns_result   = ''
-            btn_date            = ''
+            btn_data            = ''
 
             _.map keyes_set, ( value ) ->
-                btn_date = ''
-                if value.type is "download_configuration"
-                    dc_data = {
-                        vpnConnectionId                     : me._parseEmptyValue value_set.vpnConnectionId
-                        vpnGatewayId                        : me._parseEmptyValue value_set.vpnConnectionId
-                        customerGatewayId                   : me._parseEmptyValue value_set.customerGatewayId
-                        #tunnel0_ike_protocol_method         : me._parseEmptyValue value_set.vgwTelemetry.item[0]
-                        #tunnel0_ike_pre_shared_key          : me._parseEmptyValue value_set.
-                        #tunnel0_ike_encryption_protocol     : me._parseEmptyValue value_set.
-                        #tunnel0_ike_lifetime                : me._parseEmptyValue value_set.
-                        #tunnel0_ike_mode                    : me._parseEmptyValue value_set.
-                        #tunnel0_ike_perfect_forward_secrecy : me._parseEmptyValue value_set.
+                btn_data = ''
 
-                    }
-                    dc_filename = if dc_data.vpnConnectionId then dc_data.vpnConnectionId else 'download_configuration'
-                    dc_data = MC.template.configurationDownload(dc_data)
-                    dc_parse = '{"download":true,"filecontent":"'
-                    dc_parse +=  btoa(dc_data)
-                    dc_parse += '","filename":"'
-                    dc_parse += dc_filename
-                    dc_parse +='","btnname":"'
-                    dc_parse += value.name
-                    dc_parse += '"},'
-                    btn_date += dc_parse
-                if btn_date
-                    btn_date = btn_date.substring 0, btn_date.length - 1
-                    parse_btns_result += '['
-                    parse_btns_result += btn_date
-                    parse_btns_result += ']'
+                if value.type is "download_configuration"
+                    value_conf = value_set.customerGatewayConfiguration
+
+                    if value_conf
+                        value_conf = $.xml2json($.parseXML value_conf)
+                        value_conf = value_conf.vpn_connection
+                        dc_data =
+                            vpnConnectionId                         : me._parseEmptyValue value_conf['@attributes'].id
+                            vpnGatewayId                            : me._parseEmptyValue value_conf.vpn_gateway_id
+                            customerGatewayId                       : me._parseEmptyValue value_conf.customer_gateway_id
+
+                        count_set = [1, 2]
+                        _.map count_set, ( value, key ) ->
+                            dc_data["tunnel" + key + "_ike_protocol_method"]                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
+                            dc_data["tunnel" + key + "_ike_protocol_method"]                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
+                            dc_data["tunnel" + key + "_ike_pre_shared_key"]                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.pre_shared_key,
+                            dc_data["tunnel" + key + "_ike_authentication_protocol_algorithm"]  = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
+                            dc_data["tunnel" + key + "_ike_encryption_protocol"]                = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.encryption_protocol
+                            dc_data["tunnel" + key + "_ike_lifetime"]                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.lifetime
+                            dc_data["tunnel" + key + "_ike_mode"]                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.mode
+                            dc_data["tunnel" + key + "_ike_perfect_forward_secrecy"]            = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.perfect_forward_secrecy
+                            dc_data["tunnel" + key + "_ipsec_protocol"]                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.protocol
+                            dc_data["tunnel" + key + "_ipsec_authentication_protocol"]          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.authentication_protocol
+                            dc_data["tunnel" + key + "_ipsec_encryption_protocol"]              = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.encryption_protocol
+                            dc_data["tunnel" + key + "_ipsec_lifetime"]                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.lifetime
+                            dc_data["tunnel" + key + "_ipsec_mode"]                             = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.mode
+                            dc_data["tunnel" + key + "_ipsec_perfect_forward_secrecy"]          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.perfect_forward_secrecy
+                            dc_data["tunnel" + key + "_ipsec_interval"]                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.interval
+                            dc_data["tunnel" + key + "_ipsec_retries"]                          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.retries
+                            dc_data["tunnel" + key + "_tcp_mss_adjustment"]                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.tcp_mss_adjustment
+                            dc_data["tunnel" + key + "_clear_df_bit"]                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.clear_df_bit
+                            dc_data["tunnel" + key + "_fragmentation_before_encryption"]        = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.fragmentation_before_encryption
+                            dc_data["tunnel" + key + "_customer_gateway_outside_address"]        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_outside_address.ip_address
+                            dc_data["tunnel" + key + "_vpn_gateway_outside_address"]            = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_outside_address.ip_address
+                            dc_data["tunnel" + key + "_customer_gateway_inside_address"]        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
+                            dc_data["tunnel" + key + "_vpn_gateway_inside_address"]             = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
+                            dc_data["tunnel" + key + "_next_hop"]                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address
+
+                            null
+
+                        dc_filename = if dc_data.vpnConnectionId then dc_data.vpnConnectionId else 'download_configuration'
+                        dc_data     = MC.template.configurationDownload(dc_data)
+                        dc_parse    = '{"download":true,"filecontent":"'
+                        dc_parse    +=  btoa(dc_data)
+                        dc_parse    += '","filename":"'
+                        dc_parse    += dc_filename
+                        dc_parse    +='","btnname":"'
+                        dc_parse    += value.name
+                        dc_parse    += '"},'
+                        btn_data    += dc_parse
+
+                if btn_data
+                    btn_data            = btn_data.substring 0, btn_data.length - 1
+                    parse_btns_result   += '['
+                    parse_btns_result   += btn_data
+                    parse_btns_result   += ']'
 
             parse_btns_result
 
@@ -755,7 +844,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                         resources.DescribeAddresses[i].instanceId = 'Not associated'
 
-                    me._set_app_property eip, resources, i, 'DescribeAddresses'
+                    #me._set_app_property eip, resources, i, 'DescribeAddresses'
 
                     eip.detail = me.parseSourceValue 'DescribeAddresses', eip, "detail", null
 
@@ -763,6 +852,9 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 lists.EIP = resources.DescribeAddresses.length
 
+            # managed instanceid
+            manage_instances_id     =   []
+            manage_instances_app    =   {}
 
             # instance
             if resources.DescribeInstances != null
@@ -775,17 +867,17 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     ami_list.push ins.imageId
 
-                    delete_index = []
+                    #delete_index = []
 
-                    if ins.networkInterfaceSet
+                    #if ins.networkInterfaceSet
 
-                        _.map ins.networkInterfaceSet.item, ( eni, eni_index )->
+                    #    _.map ins.networkInterfaceSet.item, ( eni, eni_index )->
 
-                            delete_index.push popup_key_set.detail.DescribeInstances.sub_info.push { "key": ['networkInterfaceSet', 'item', eni_index], "show_key": "NetworkInterface-" + eni_index }
+                    #        delete_index.push popup_key_set.detail.DescribeInstances.sub_info.push { "key": ['networkInterfaceSet', 'item', eni_index], "show_key": "NetworkInterface-" + eni_index }
 
                     ins.detail = me.parseSourceValue 'DescribeInstances', ins, "detail", null
 
-                    popup_key_set.detail.DescribeInstances.sub_info.pop() for j in delete_index
+                    #popup_key_set.detail.DescribeInstances.sub_info.pop() for j in delete_index
 
                     is_managed = false
 
@@ -815,10 +907,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     null
 
-                # managed instanceid
-                manage_instances_id     =   []
-                manage_instances_app    =   {}
-
                 _.map resources.DescribeInstances, ( ins ) ->
 
                     if ins.app != undefined
@@ -828,6 +916,13 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                         manage_instances_app[ins.instanceId] = ins.app
 
                     null
+
+                # ami
+                if ami_list.length != 0
+
+                    ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
+
+                null
 
             # volume
             lists.Volume = resources.DescribeVolumes.length
@@ -848,9 +943,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     vol.attachmentSet.item[0] = attachment
                 else
 
-                    if vol.attachmentSet.item.instanceId in manage_instances_id
+                    if vol.tagSet == undefined and vol.attachmentSet.item[0].instanceId in manage_instances_id
 
-                        resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item.instanceId]
+                        resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item[0].instanceId]
+
+                        _.map resources.DescribeInstances, ( ins ) ->
+
+                            if ins.instanceId == vol.attachmentSet.item[0].instanceId and ins.owner != undefined
+
+                                resources.DescribeVolumes[i].owner = ins.owner
 
                 null
 
@@ -901,17 +1002,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     vgw_set.push vpn.vpnGatewayId
 
-            # get cgw detail
-            if cgw_set.length != 0
-                customergateway_model.DescribeCustomerGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set
+                # get cgw detail
+                if cgw_set.length != 0
+                    customergateway_model.DescribeCustomerGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set
 
-            # get vgw detail
-            if vgw_set.length != 0
-                vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
+                # get vgw detail
+                if vgw_set.length != 0
+                    vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
 
-            # ami
-            if ami_list.length != 0
-                ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
+            
 
 
             console.log resources
@@ -980,6 +1079,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 me.set 'status_list', status_list
 
                 null
+            null
     }
 
     model = new RegionModel()

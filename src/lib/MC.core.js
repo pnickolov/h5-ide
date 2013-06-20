@@ -3,17 +3,20 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system 
-#* Date: 20130607
+#* Date: 20130617
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var MC = {
-	version: '0.1.4',
+	version: '0.1.6',
 
 	// Global Variable 
 	API_URL: 'https://api.madeiracloud.com/',
 	IMG_URL: 'https://img.madeiracloud.com/',
+
+	// Global data
+	data: {},
 
 	/**
 	 * Generate GUID
@@ -258,7 +261,7 @@ var MC = {
 
 	/**
 	 * Calculate the interval time between now and target date time.
-	 * @param  {Date object} date_time The target date time with second
+	 * @param  {timespan number} date_time The target date time with second
 	 * @return {[string]} The interval time.
 	 */
 	intervalDate: function (date_time)
@@ -268,11 +271,12 @@ var MC = {
 			second = (now.getTime() - date_time) / 1000,
 			days = Math.floor(second / 86400),
 			hours = Math.floor(second / 3600),
-			minute = Math.floor(second / 60);
+			minute = Math.floor(second / 60),
+			target_date;
 
 		if (days > 30)
 		{
-			return MC.dateFormat((new Date()).setTime(date_time), "dd/MM yyyy");
+			return MC.dateFormat(new Date(date_time), "dd/MM yyyy");
 		}
 	 	else
 	 	{

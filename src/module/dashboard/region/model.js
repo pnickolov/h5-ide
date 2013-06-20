@@ -114,29 +114,26 @@
               "key": ["volumeId"],
               "show_key": "Volume ID"
             }, {
-              "key": ["attachmentSet", "item", "device"],
+              "key": ["attachmentSet", "item", 0, "device"],
               "show_key": "Device Name"
             }, {
               "key": ["snapshotId"],
               "show_key": "Snapshot ID"
             }, {
+              "key": ["size"],
+              "show_key": "Volume Size(GiB)"
+            }, {
               "key": ["createTime"],
               "show_key": "Create Time"
             }, {
-              "key": ["attachmentSet", "item", "attachTime"],
-              "show_key": "Attach Name"
-            }, {
-              "key": ["attachmentSet", "item", "deleteOnTermination"],
-              "show_key": "Delete On Termination"
-            }, {
-              "key": ["attachmentSet", "item", "instanceId"],
-              "show_key": "Instance ID"
+              "key": ["attachmentSet"],
+              "show_key": "AttachmentSet"
             }, {
               "key": ["status"],
               "show_key": "status"
             }, {
               "key": ["attachmentSet", "item", "status"],
-              "show_key": "Attachment Status"
+              "show_key": "AttachmentSet"
             }, {
               "key": ["availabilityZone"],
               "show_key": "Availability Zone"
@@ -183,12 +180,6 @@
               "key": ["amiLaunchIndex"],
               "show_key": "AMI Launch Index"
             }, {
-              "key": ["blockDeviceMapping", "item", "deleteOnTermination"],
-              "show_key": "Termination Protection"
-            }, {
-              "key": ["blockDeviceMapping", "item", "status"],
-              "show_key": "Shutdown Behavior"
-            }, {
               "key": ["instanceType"],
               "show_key": "Instance Type"
             }, {
@@ -201,11 +192,11 @@
               "key": ["placement", "tenancy"],
               "show_key": "Tenancy"
             }, {
-              "key": ["blockDeviceMapping", "item", "deviceName"],
+              "key": ["blockDeviceMapping", "item"],
               "show_key": "Block Devices"
             }, {
-              "key": ["groupSet", "item", "groupName"],
-              "show_key": "Security Groups"
+              "key": ['networkInterfaceSet', 'item'],
+              "show_key": "NetworkInterface"
             }
           ]
         },
@@ -225,7 +216,7 @@
               "key": ["type"],
               "show_key": "Type"
             }, {
-              "key": ["routes", "item", "source"],
+              "key": ["routes", "item"],
               "show_key": "Routing"
             }
           ],
@@ -295,10 +286,10 @@
               "key": ["ListenerDescriptions", "member", "Listener"],
               "show_key": "ListenerDescriptions"
             }, {
-              "key": ["SecurityGroups"],
+              "key": ["SecurityGroups", "member"],
               "show_key": "SecurityGroups"
             }, {
-              "key": ["Subnets"],
+              "key": ["Subnets", "member"],
               "show_key": "Subnets"
             }
           ]
@@ -340,7 +331,6 @@
     };
     RegionModel = Backbone.Model.extend({
       defaults: {
-        temp: null,
         'region_resource_list': null,
         'region_resource': null,
         'resourse_list': null,
@@ -525,18 +515,18 @@
         var me, resources_keys, time_stamp;
         me = this;
         time_stamp = new Date().getTime() / 1000;
-        unmanaged_list = {};
-        unmanaged_list.time_stamp = time_stamp;
-        unmanaged_list.items = [];
+        unmanaged_list = {
+          "time_stamp": time_stamp,
+          "items": []
+        };
         resources_keys = ['DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses'];
-        console.log(resource_source);
         _.map(resources_keys, function(value) {
           var cur_attr, cur_tag;
           cur_attr = resource_source[value];
           cur_tag = value;
           _.map(cur_attr, function(value) {
             var name;
-            if (me.hasnotTagId(value.tagSet)) {
+            if (value.app === void 0) {
               name = value.tagSet ? value.tagSet.name : null;
               switch (cur_tag) {
                 case "DescribeVolumes":
@@ -601,11 +591,11 @@
         current_region = region;
         vpc_model.DescribeAccountAttributes({
           sender: this
-        }, $.cookie('usercode'), $.cookie('session_id'), current_region, ["supported-platforms"]);
+        }, $.cookie('usercode'), $.cookie('session_id'), null, ["supported-platforms"]);
         vpc_model.on('VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', function(result) {
           var regionAttrSet;
           console.log('region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN');
-          regionAttrSet = result.resolved_data.accountAttributeSet.item.attributeValueSet.item;
+          regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item.attributeValueSet.item;
           if ($.type(regionAttrSet) === "array") {
             vpc_attrs_value = {
               'classic': 'Classic',
@@ -621,16 +611,6 @@
         });
         return null;
       },
-      hasnotTagId: function(tagset) {
-        if (tagset) {
-          _.map(tagset.item[0], function(value) {
-            if (value.key === "app-id" && value.value) {
-              return false;
-            }
-          });
-        }
-        return true;
-      },
       parseSourceValue: function(type, value, keys, name) {
         var cur_state, keys_to_parse, keys_type, me, parse_btns, parse_result, parse_sub_info, parse_table, state_key, status_keys, value_to_parse;
         me = this;
@@ -644,7 +624,7 @@
         if (popup_key_set[keys]) {
           keys_to_parse = popup_key_set[keys_type][type];
         } else {
-          keys_type = 'unmanaged_bubble';
+          keys_type = "unmanaged_bubble";
           keys_to_parse = popup_key_set[keys_type][type];
         }
         status_keys = keys_to_parse.status;
@@ -655,6 +635,9 @@
             if (cur_state) {
               if (key > 0) {
                 cur_state = cur_state[value];
+                if ($.type(cur_state) === "array") {
+                  cur_state = cur_state[0];
+                }
                 return null;
               }
             }
@@ -664,7 +647,7 @@
           }
         }
         if (keys_to_parse.title) {
-          if (keys === 'unmanaged_bubble' || 'bubble') {
+          if (keys !== "detail") {
             if (name) {
               parse_result += '"title":"' + name;
               if (value_to_parse[keys_to_parse.title]) {
@@ -722,7 +705,7 @@
           parse_sub_info += ']';
         }
         if (keys_to_parse.detail_table) {
-          parse_table = me._parseTableValue(keys_to_parse.detail, value_to_parse);
+          parse_table = me._parseTableValue(keys_to_parse.detail_table, value_to_parse);
           if (parse_table) {
             parse_table = '"detail_table":' + parse_table;
             if (parse_sub_info) {
@@ -752,11 +735,10 @@
           }
           parse_result += '}';
         }
-        console.log(parse_result);
         return parse_result;
       },
       _genBubble: function(source, title, entry) {
-        var bubble_end, bubble_front, me, parse_sub_info, tmp;
+        var bubble_end, bubble_front, lines, me, parse_sub_info, titles, tmp;
         me = this;
         parse_sub_info = "";
         if ($.isEmptyObject(source)) {
@@ -783,62 +765,176 @@
         }
         if (source.constructor === Array) {
           tmp = [];
-          _.map(source, function(value) {
+          titles = [];
+          _.map(source, function(value, index) {
+            var current_title;
+            current_title = title;
+            if (value.deviceName !== void 0) {
+              current_title = value.deviceName;
+            } else if (value.networkInterfaceId !== void 0) {
+              current_title = value.networkInterfaceId;
+            } else if (value.InstanceId !== void 0) {
+              current_title = value.InstanceId;
+            } else {
+              current_title = title + '-' + index;
+            }
+            titles.push(current_title);
             if (value !== null) {
               if (value.constructor === String) {
                 return tmp.push(value);
               } else {
-                return tmp.push(me._genBubble(value, title, false));
+                return tmp.push(me._genBubble(value, current_title, false));
               }
             }
           });
-          parse_sub_info = tmp.join(', ');
+          lines = [];
           if (entry) {
-            bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data=';
-            bubble_end = '>' + title + '</a>';
-            parse_sub_info = " &apos;{\\\"title\\\": \\\"" + title + '\\\" , \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; ";
-            parse_sub_info = bubble_front + parse_sub_info + bubble_end;
+            _.map(tmp, function(line, index) {
+              bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data=';
+              bubble_end = '>' + titles[index] + '</a>';
+              line = " &apos;{\\\"title\\\": \\\"" + titles[index] + '\\\" , \\\"sub_info\\\":[' + line + "]}&apos; ";
+              line = bubble_front + line + bubble_end;
+              return lines.push(line);
+            });
+          } else {
+            lines = tmp;
           }
+          parse_sub_info = lines.join(', ');
         }
         return parse_sub_info;
       },
       _parseTableValue: function(keyes_set, value_set) {
-        return null;
+        var count_set, detail_table, me, parse_table_result, table_date, table_set;
+        me = this;
+        parse_table_result = '';
+        table_date = '';
+        detail_table = [
+          {
+            "key": ["vgwTelemetry", "item"],
+            "show_key": "VPN Tunnel",
+            "count_name": "tunnel"
+          }, {
+            "key": ["outsideIpAddress"],
+            "show_key": "IP Address"
+          }, {
+            "key": ["status"],
+            "show_key": "Status"
+          }, {
+            "key": ["lastStatusChange"],
+            "show_key": "Last Changed"
+          }, {
+            "key": ["statusMessage"],
+            "show_key": "Detail"
+          }
+        ];
+        table_set = value_set.vgwTelemetry;
+        if (table_set) {
+          table_set = table_set.item;
+          if (table_set) {
+            parse_table_result = '{ "th_set":[';
+            _.map(keyes_set, function(value, key) {
+              if (key !== 0) {
+                parse_table_result += ',';
+              }
+              parse_table_result += '"';
+              parse_table_result += me._parseEmptyValue(value.show_key);
+              parse_table_result += '"';
+              return null;
+            });
+            count_set = [1, 2];
+            _.map(count_set, function(value, key) {
+              var cur_key, cur_value;
+              cur_key = key;
+              cur_value = value;
+              parse_table_result += '], "tr';
+              parse_table_result += cur_value;
+              parse_table_result += '_set":[';
+              _.map(keyes_set, function(value, key) {
+                if (key !== 0) {
+                  parse_table_result += ',"';
+                  parse_table_result += me._parseEmptyValue(table_set[cur_key][value.key]);
+                  parse_table_result += '"';
+                } else {
+                  parse_table_result += '"';
+                  parse_table_result += me._parseEmptyValue(value.count_name);
+                  parse_table_result += cur_value;
+                  parse_table_result += '"';
+                }
+                return null;
+              });
+              return null;
+            });
+            parse_table_result += ']}';
+          }
+        }
+        return parse_table_result;
       },
       _parseEmptyValue: function(val) {
         var result;
         result = val ? val : '';
-        return val;
+        return result;
       },
       _parseBtnValue: function(keyes_set, value_set) {
-        var btn_date, me, parse_btns_result;
+        var btn_data, me, parse_btns_result;
         me = this;
         parse_btns_result = '';
-        btn_date = '';
+        btn_data = '';
         _.map(keyes_set, function(value) {
-          var dc_data, dc_filename, dc_parse;
-          btn_date = '';
+          var count_set, dc_data, dc_filename, dc_parse, value_conf;
+          btn_data = '';
           if (value.type === "download_configuration") {
-            dc_data = {
-              vpnConnectionId: me._parseEmptyValue(value_set.vpnConnectionId),
-              vpnGatewayId: me._parseEmptyValue(value_set.vpnConnectionId),
-              customerGatewayId: me._parseEmptyValue(value_set.customerGatewayId)
-            };
-            dc_filename = dc_data.vpnConnectionId ? dc_data.vpnConnectionId : 'download_configuration';
-            dc_data = MC.template.configurationDownload(dc_data);
-            dc_parse = '{"download":true,"filecontent":"';
-            dc_parse += btoa(dc_data);
-            dc_parse += '","filename":"';
-            dc_parse += dc_filename;
-            dc_parse += '","btnname":"';
-            dc_parse += value.name;
-            dc_parse += '"},';
-            btn_date += dc_parse;
+            value_conf = value_set.customerGatewayConfiguration;
+            if (value_conf) {
+              value_conf = $.xml2json($.parseXML(value_conf));
+              value_conf = value_conf.vpn_connection;
+              dc_data = {
+                vpnConnectionId: me._parseEmptyValue(value_conf['@attributes'].id),
+                vpnGatewayId: me._parseEmptyValue(value_conf.vpn_gateway_id),
+                customerGatewayId: me._parseEmptyValue(value_conf.customer_gateway_id)
+              };
+              count_set = [1, 2];
+              _.map(count_set, function(value, key) {
+                dc_data["tunnel" + key + "_ike_protocol_method"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.authentication_protocol);
+                dc_data["tunnel" + key + "_ike_protocol_method"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.authentication_protocol);
+                dc_data["tunnel" + key + "_ike_pre_shared_key"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.pre_shared_key, dc_data["tunnel" + key + "_ike_authentication_protocol_algorithm"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.authentication_protocol));
+                dc_data["tunnel" + key + "_ike_encryption_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.encryption_protocol);
+                dc_data["tunnel" + key + "_ike_lifetime"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.lifetime);
+                dc_data["tunnel" + key + "_ike_mode"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.mode);
+                dc_data["tunnel" + key + "_ike_perfect_forward_secrecy"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.perfect_forward_secrecy);
+                dc_data["tunnel" + key + "_ipsec_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.protocol);
+                dc_data["tunnel" + key + "_ipsec_authentication_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.authentication_protocol);
+                dc_data["tunnel" + key + "_ipsec_encryption_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.encryption_protocol);
+                dc_data["tunnel" + key + "_ipsec_lifetime"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.lifetime);
+                dc_data["tunnel" + key + "_ipsec_mode"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.mode);
+                dc_data["tunnel" + key + "_ipsec_perfect_forward_secrecy"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.perfect_forward_secrecy);
+                dc_data["tunnel" + key + "_ipsec_interval"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.interval);
+                dc_data["tunnel" + key + "_ipsec_retries"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.retries);
+                dc_data["tunnel" + key + "_tcp_mss_adjustment"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.tcp_mss_adjustment);
+                dc_data["tunnel" + key + "_clear_df_bit"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.clear_df_bit);
+                dc_data["tunnel" + key + "_fragmentation_before_encryption"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.fragmentation_before_encryption);
+                dc_data["tunnel" + key + "_customer_gateway_outside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].customer_gateway.tunnel_outside_address.ip_address);
+                dc_data["tunnel" + key + "_vpn_gateway_outside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_outside_address.ip_address);
+                dc_data["tunnel" + key + "_customer_gateway_inside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr);
+                dc_data["tunnel" + key + "_vpn_gateway_inside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr);
+                dc_data["tunnel" + key + "_next_hop"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address);
+                return null;
+              });
+              dc_filename = dc_data.vpnConnectionId ? dc_data.vpnConnectionId : 'download_configuration';
+              dc_data = MC.template.configurationDownload(dc_data);
+              dc_parse = '{"download":true,"filecontent":"';
+              dc_parse += btoa(dc_data);
+              dc_parse += '","filename":"';
+              dc_parse += dc_filename;
+              dc_parse += '","btnname":"';
+              dc_parse += value.name;
+              dc_parse += '"},';
+              btn_data += dc_parse;
+            }
           }
-          if (btn_date) {
-            btn_date = btn_date.substring(0, btn_date.length - 1);
+          if (btn_data) {
+            btn_data = btn_data.substring(0, btn_data.length - 1);
             parse_btns_result += '[';
-            parse_btns_result += btn_date;
+            parse_btns_result += btn_data;
             return parse_btns_result += ']';
           }
         });
@@ -886,32 +982,20 @@
               lists.Not_Used.EIP++;
               resources.DescribeAddresses[i].instanceId = 'Not associated';
             }
-            me._set_app_property(eip, resources, i, 'DescribeAddresses');
             eip.detail = me.parseSourceValue('DescribeAddresses', eip, "detail", null);
             return null;
           });
           lists.EIP = resources.DescribeAddresses.length;
         }
+        manage_instances_id = [];
+        manage_instances_app = {};
         if (resources.DescribeInstances !== null) {
           lists.Instance = resources.DescribeInstances.length;
           ami_list = [];
           _.map(resources.DescribeInstances, function(ins, i) {
-            var delete_index, is_managed, j, _i, _len;
+            var is_managed;
             ami_list.push(ins.imageId);
-            delete_index = [];
-            if (ins.networkInterfaceSet) {
-              _.map(ins.networkInterfaceSet.item, function(eni, eni_index) {
-                return delete_index.push(popup_key_set.detail.DescribeInstances.sub_info.push({
-                  "key": ['networkInterfaceSet', 'item', eni_index],
-                  "show_key": "NetworkInterface-" + eni_index
-                }));
-              });
-            }
             ins.detail = me.parseSourceValue('DescribeInstances', ins, "detail", null);
-            for (_i = 0, _len = delete_index.length; _i < _len; _i++) {
-              j = delete_index[_i];
-              popup_key_set.detail.DescribeInstances.sub_info.pop();
-            }
             is_managed = false;
             if (ins.tagSet !== void 0 && ins.tagSet.item.constructor === Array) {
               _.map(ins.tagSet.item, function(tag) {
@@ -933,8 +1017,6 @@
             }
             return null;
           });
-          manage_instances_id = [];
-          manage_instances_app = {};
           _.map(resources.DescribeInstances, function(ins) {
             if (ins.app !== void 0) {
               manage_instances_id.push(ins.instanceId);
@@ -942,6 +1024,12 @@
             }
             return null;
           });
+          if (ami_list.length !== 0) {
+            ami_model.DescribeImages({
+              sender: this
+            }, $.cookie('usercode'), $.cookie('session_id'), current_region, ami_list);
+          }
+          null;
         }
         lists.Volume = resources.DescribeVolumes.length;
         _.map(resources.DescribeVolumes, function(vol, i) {
@@ -961,8 +1049,13 @@
             };
             vol.attachmentSet.item[0] = attachment;
           } else {
-            if (_ref = vol.attachmentSet.item.instanceId, __indexOf.call(manage_instances_id, _ref) >= 0) {
-              resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item.instanceId];
+            if (vol.tagSet === void 0 && (_ref = vol.attachmentSet.item[0].instanceId, __indexOf.call(manage_instances_id, _ref) >= 0)) {
+              resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item[0].instanceId];
+              _.map(resources.DescribeInstances, function(ins) {
+                if (ins.instanceId === vol.attachmentSet.item[0].instanceId && ins.owner !== void 0) {
+                  return resources.DescribeVolumes[i].owner = ins.owner;
+                }
+              });
             }
           }
           return null;
@@ -1001,21 +1094,16 @@
             cgw_set.push(vpn.customerGatewayId);
             return vgw_set.push(vpn.vpnGatewayId);
           });
-        }
-        if (cgw_set.length !== 0) {
-          customergateway_model.DescribeCustomerGateways({
-            sender: this
-          }, $.cookie('usercode'), $.cookie('session_id'), current_region, cgw_set);
-        }
-        if (vgw_set.length !== 0) {
-          vpngateway_model.DescribeVpnGateways({
-            sender: this
-          }, $.cookie('usercode'), $.cookie('session_id'), current_region, vgw_set);
-        }
-        if (ami_list.length !== 0) {
-          ami_model.DescribeImages({
-            sender: this
-          }, $.cookie('usercode'), $.cookie('session_id'), current_region, ami_list);
+          if (cgw_set.length !== 0) {
+            customergateway_model.DescribeCustomerGateways({
+              sender: this
+            }, $.cookie('usercode'), $.cookie('session_id'), current_region, cgw_set);
+          }
+          if (vgw_set.length !== 0) {
+            vpngateway_model.DescribeVpnGateways({
+              sender: this
+            }, $.cookie('usercode'), $.cookie('session_id'), current_region, vgw_set);
+          }
         }
         console.log(resources);
         me.set('region_resource', resources);
@@ -1037,7 +1125,7 @@
         aws_model.status({
           sender: this
         }, $.cookie('usercode'), $.cookie('session_id'), null, null);
-        return aws_model.on('AWS_STATUS_RETURN', function(result) {
+        aws_model.on('AWS_STATUS_RETURN', function(result) {
           var result_list, service_list;
           console.log('AWS_STATUS_RETURN');
           status_list = {
@@ -1077,6 +1165,7 @@
           me.set('status_list', status_list);
           return null;
         });
+        return null;
       }
     });
     model = new RegionModel();

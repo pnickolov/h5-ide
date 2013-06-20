@@ -91,10 +91,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
 
             if flag == 'app'
                 date = new Date()
-                date.setTime(item.time_create*1000)
+                date.setTime(item.last_start*1000)
                 start_time  = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
                 if not isrunning
-                    date.setTime(item.time_update*1000)
+                    date.setTime(item.last_stop*1000)
                     stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
 
             return { 'id' : id, 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'status' : status, 'cost' : "$0/month" }

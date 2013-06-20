@@ -2,7 +2,7 @@
 #  View Mode for navigation
 #############################
 
-define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model, Constant ) ->
+define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model, constant ) ->
 
     ###
     regions = [{
@@ -66,7 +66,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                 console.log result
 
                 #
-                app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : Constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
+                app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
                 console.log app_list
 
@@ -88,7 +88,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                 console.log result
 
                 #
-                stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : Constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
+                stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
                 console.log stack_list
 
@@ -106,8 +106,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
             console.log 'regionEmptyList'
 
-            diff              = _.difference _.keys( Constant.REGION_LABEL ), stack_region_list
-            region_empty_list = _.map diff, ( val ) -> return Constant.REGION_LABEL[ val ]
+            diff              = _.difference _.keys( constant.REGION_LABEL ), stack_region_list
+            region_empty_list = _.map diff, ( val ) -> return constant.REGION_LABEL[ val ]
 
             console.log region_empty_list
 
@@ -131,8 +131,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                 #
                 region_list = _.map result.resolved_data.item, ( value, key ) ->
                 
-                    region_city = Constant.REGION_LABEL[ value.regionName ].split( ' - ' )[1]
-                    region_area = Constant.REGION_LABEL[ value.regionName ].split( ' - ' )[0]
+                    region_city = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[1]
+                    region_area = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[0]
 
                     return { 'region_city' : region_city, 'region_area' : region_area }
 

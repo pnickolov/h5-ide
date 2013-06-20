@@ -220,7 +220,7 @@ var ready = function () {
 		$('#' + this.id.replace('stat-','')).removeClass('hover');
 	});
 	
-	$('.widget-region-counter').on('click', 'a', function(event) 
+	$(document).on('click', '.widget-region-counter a', function(event) 
 	{	
 		event.preventDefault();
 

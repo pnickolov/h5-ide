@@ -922,38 +922,40 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
 
-                null
-
             # volume
-            lists.Volume = resources.DescribeVolumes.length
+            if resources.DescribeVolumes != null
+                
+                lists.Volume = resources.DescribeVolumes.length
 
-            _.map resources.DescribeVolumes, ( vol, i )->
+                _.map resources.DescribeVolumes, ( vol, i )->
 
-                vol.detail = me.parseSourceValue 'DescribeVolumes', vol, "detail", null
+                    vol.detail = me.parseSourceValue 'DescribeVolumes', vol, "detail", null
 
-                lists.Not_Used.Volume++ if vol.status == "available"
+                    lists.Not_Used.Volume++ if vol.status == "available"
 
-                me._set_app_property vol, resources, i, 'DescribeVolumes'
+                    me._set_app_property vol, resources, i, 'DescribeVolumes'
 
-                if not vol.attachmentSet
-                    vol.attachmentSet = {item:[]}
+                    if not vol.attachmentSet
+                        vol.attachmentSet = {item:[]}
 
-                    attachment = { device: 'not-attached', status: 'not-attached'}
+                        attachment = { device: 'not-attached', status: 'not-attached'}
 
-                    vol.attachmentSet.item[0] = attachment
-                else
+                        vol.attachmentSet.item[0] = attachment
+                    else
 
-                    if vol.tagSet == undefined and vol.attachmentSet.item[0].instanceId in manage_instances_id
+                        if vol.tagSet == undefined and vol.attachmentSet.item[0].instanceId in manage_instances_id
 
-                        resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item[0].instanceId]
+                            resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item[0].instanceId]
 
-                        _.map resources.DescribeInstances, ( ins ) ->
+                            _.map resources.DescribeInstances, ( ins ) ->
 
-                            if ins.instanceId == vol.attachmentSet.item[0].instanceId and ins.owner != undefined
+                                if ins.instanceId == vol.attachmentSet.item[0].instanceId and ins.owner != undefined
 
-                                resources.DescribeVolumes[i].owner = ins.owner
+                                    resources.DescribeVolumes[i].owner = ins.owner
 
-                null
+                                null
+
+                    null
 
             # vpc
             if resources.DescribeVpcs != null

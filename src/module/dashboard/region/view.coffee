@@ -12,11 +12,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         events   :
             'click .return-overview'        : 'returnOverviewClick'
-            'click .icon-play'              : 'runAppClick'
-            'click .icon-stop'              : 'stopAppClick'
-            'click .icon-close'             : 'terminateAppClick'
-            'click .icon-redo'              : 'duplicateStackClick'
-            'click .icon-trashcan'          : 'deleteStackClick'
+            'modal-shown .run-app'          : 'runAppClick'
+            'modal-shown .stop-app'         : 'stopAppClick'
+            'modal-shown .terminate-app'    : 'terminateAppClick'
+            'modal-shown .duplicate-stack'  : 'duplicateStackClick'
+            'modal-shown .delete-stack'     : 'deleteStackClick'
 
         returnOverviewClick : ( target ) ->
             console.log 'returnOverviewClick'
@@ -28,28 +28,55 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         #app
         runAppClick : ( event ) ->
-            console.log 'dashboard region run app'
-            this.trigger 'RUN_APP_CLICK', event.currentTarget.id
+            target = $( this.el )
+            id = event.currentTarget.id
+
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'dashboard region run app'
+                modal.close()
+                event.data.target.trigger 'RUN_APP_CLICK', id
+            true
 
         stopAppClick : ( event ) ->
-            console.log 'dashboard region stop app'
-            this.trigger 'STOP_APP_CLICK', event.currentTarget.id
+            target = $( this.el )
+            id = event.currentTarget.id
+
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'dashboard region stop app'
+                event.data.target.trigger 'STOP_APP_CLICK', id
+                modal.close()
+            true
 
         terminateAppClick : ( event ) ->
-            #terminal confirm dialog
-            console.log 'dashboard region terminal app'
-            this.trigger 'TERMINATE_APP_CLICK', event.currentTarget.id
+            target = $( this.el )
+            id = event.currentTarget.id
+
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'dashboard region terminal app'
+                modal.close()
+                event.data.target.trigger 'TERMINATE_APP_CLICK', id
+            true
 
         #stack
         duplicateStackClick : ( event ) ->
-            console.log 'dashboard region duplicate stack'
-            #duplicate confirm dialog
-            this.trigger 'DUPLICATE_STACK_CLICK', event.currentTarget.id, "new_name"
+            target = $( this.el )
+            id = event.currentTarget.id
+
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'dashboard region duplicate stack'
+                modal.close()
+                event.data.target.trigger 'DUPLICATE_STACK_CLICK', id, "new_name"
+            true
 
         deleteStackClick : ( event ) ->
-            console.log 'dashboard region delete stack'
-            #delete confirm dialog
-            this.trigger 'DELETE_STACK_CLICK', event.currentTarget.id
+            target = $( this.el )
+            id = event.currentTarget.id
+
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'dashboard region delete stack'
+                modal.close()
+                event.data.target.trigger 'DELETE_STACK_CLICK', id
+            true
 
         createStackClick : ( event ) ->
             console.log 'dashboard region create stack'

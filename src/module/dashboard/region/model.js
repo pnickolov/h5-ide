@@ -119,23 +119,20 @@
               "key": ["snapshotId"],
               "show_key": "Snapshot ID"
             }, {
+              "key": ["size"],
+              "show_key": "Volume Size(GiB)"
+            }, {
               "key": ["createTime"],
               "show_key": "Create Time"
             }, {
-              "key": ["attachmentSet", "item", "attachTime"],
+              "key": ["attachmentSet"],
               "show_key": "Attach Name"
-            }, {
-              "key": ["attachmentSet", "item", "deleteOnTermination"],
-              "show_key": "Delete On Termination"
-            }, {
-              "key": ["attachmentSet", "item", "instanceId"],
-              "show_key": "Instance ID"
             }, {
               "key": ["status"],
               "show_key": "status"
             }, {
               "key": ["attachmentSet", "item", "status"],
-              "show_key": "Attachment Status"
+              "show_key": "AttachmentSet"
             }, {
               "key": ["availabilityZone"],
               "show_key": "Availability Zone"
@@ -339,7 +336,6 @@
     };
     RegionModel = Backbone.Model.extend({
       defaults: {
-        temp: null,
         'region_resource_list': null,
         'region_resource': null,
         'resourse_list': null,
@@ -527,9 +523,10 @@
         var me, resources_keys, time_stamp;
         me = this;
         time_stamp = new Date().getTime() / 1000;
-        unmanaged_list = {};
-        unmanaged_list.time_stamp = time_stamp;
-        unmanaged_list.items = [];
+        unmanaged_list = {
+          "time_stamp": time_stamp,
+          "items": []
+        };
         resources_keys = ['DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses'];
         console.log(resource_source);
         _.map(resources_keys, function(value) {
@@ -636,7 +633,7 @@
         if (popup_key_set[keys]) {
           keys_to_parse = popup_key_set[keys_type][type];
         } else {
-          keys_type = 'unmanaged_bubble';
+          keys_type = "unmanaged_bubble";
           keys_to_parse = popup_key_set[keys_type][type];
         }
         status_keys = keys_to_parse.status;
@@ -647,6 +644,9 @@
             if (cur_state) {
               if (key > 0) {
                 cur_state = cur_state[value];
+                if ($.type(cur_state) === "array") {
+                  cur_state = cur_state[0];
+                }
                 return null;
               }
             }
@@ -656,7 +656,7 @@
           }
         }
         if (keys_to_parse.title) {
-          if (keys === 'unmanaged_bubble' || 'bubble') {
+          if (keys !== "detail") {
             if (name) {
               parse_result += '"title":"' + name;
               if (value_to_parse[keys_to_parse.title]) {
@@ -692,20 +692,26 @@
           show_key = value.show_key;
           cur_key = key_array[0];
           cur_value = value_to_parse[cur_key];
-          _.map(key_array, function(value, key) {
+          if (keys !== "detail") {
+            _.map(key_array, function(value, key) {
+              if (cur_value) {
+                if (key > 0) {
+                  cur_value = cur_value[value];
+                  if ($.type(cur_value) === "array") {
+                    cur_value = cur_value[0];
+                  }
+                  return cur_value;
+                }
+              }
+            });
+          } else {
             if (cur_value) {
-              if (key > 0) {
-                cur_value = cur_value[value];
-                return cur_value;
+              if (cur_value.constructor === Object || cur_value.constructor === Array) {
+                cur_value = me._genBubble(cur_value, show_key, true);
               }
             }
-          });
-          if (cur_value) {
-            if (cur_value.constructor === Object || cur_value.constructor === Array) {
-              cur_value = me._genBubble(cur_value, show_key, true);
-            }
-            parse_sub_info += '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ';
           }
+          parse_sub_info += '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ';
           return null;
         });
         if (parse_sub_info) {
@@ -841,8 +847,7 @@
               parse_table_result += '_set":[';
               _.map(keyes_set, function(value, key) {
                 if (key !== 0) {
-                  parse_table_result += ',';
-                  parse_table_result += '"';
+                  parse_table_result += ',"';
                   parse_table_result += me._parseEmptyValue(table_set[cur_key][value.key]);
                   parse_table_result += '"';
                 } else {

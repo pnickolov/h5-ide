@@ -68,12 +68,11 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "volumeId" ], "show_key": "Volume ID"},
                     { "key": [ "attachmentSet", "item", "device"  ], "show_key": "Device Name"},
                     { "key": [ "snapshotId" ], "show_key": "Snapshot ID"},
+                    { "key": [ "size" ], "show_key": "Volume Size(GiB)"}
                     { "key": [ "createTime" ], "show_key": "Create Time"},
-                    { "key": [ "attachmentSet", "item", "attachTime"  ], "show_key": "Attach Name"},
-                    { "key": [ "attachmentSet", "item", "deleteOnTermination" ], "show_key": "Delete On Termination"},
-                    { "key": [ "attachmentSet", "item", "instanceId" ], "show_key": "Instance ID"},
+                    { "key": [ "attachmentSet" ], "show_key": "Attach Name"},
                     { "key": [ "status" ], "show_key": "status"},
-                    { "key": [ "attachmentSet", "item", "status" ], "show_key": "Attachment Status"},
+                    { "key": [ "attachmentSet", "item", "status" ], "show_key": "AttachmentSet"},
                     { "key": [ "availabilityZone" ], "show_key": "Availability Zone"},
                     { "key": [ "volumeType" ], "show_key": "Volume Type"},
                     { "key": [ "Iops" ], "show_key": "Iops"}
@@ -117,7 +116,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "outsideIpAddress" ], "show_key": "IP Address"},
                     { "key": [ "status" ], "show_key": "Status"},
                     { "key": [ "lastStatusChange" ], "show_key": "Last Changed"},
-                    { "key": [ "statusMessage" ], "show_key": "Detail"},
+                    { "key": [ "statusMessage" ], "show_key": "Detail"}
                 ]
             "DescribeVpcs":
                 "title": "vpcId",
@@ -158,9 +157,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
         defaults :
 
-            temp : null
-            'region_resource_list'         : null
-            'region_resource'              : null
+            'region_resource_list'  : null
+            'region_resource'       : null
             'resourse_list'         : null
             'vpc_attrs'             : null
             'unmanaged_list'        : null
@@ -389,18 +387,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             me = this
 
-            time_stamp = new Date().getTime() / 1000
-            unmanaged_list = {}
-            unmanaged_list.time_stamp = time_stamp
-
-            unmanaged_list.items = []
-            resources_keys       = [ 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses' ]
+            time_stamp      = new Date().getTime() / 1000
+            unmanaged_list  = { "time_stamp": time_stamp, "items": [] }
+            resources_keys  = [ 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses' ]
 
             console.log resource_source
             _.map resources_keys, ( value ) ->
-                cur_attr = resource_source[ value ]
 
-                cur_tag = value
+                cur_attr    = resource_source[ value ]
+                cur_tag     = value
 
                 _.map cur_attr, ( value ) ->
                     if value.app is "Unmanaged"
@@ -468,6 +463,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
                 regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item.attributeValueSet.item
+
                 if $.type(regionAttrSet) == "array"
                     vpc_attrs_value = { 'classic' : 'Classic', 'vpc' : 'VPC' }
                 else
@@ -491,14 +487,16 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             parse_table    = ''
             parse_btns     = ''
 
-            keys_type = keys
+            keys_type      = keys
+
             if popup_key_set[keys]
                 keys_to_parse = popup_key_set[keys_type][type]
             else
-                keys_type = 'unmanaged_bubble'
+                keys_type     = "unmanaged_bubble"
                 keys_to_parse = popup_key_set[keys_type][type]
 
             status_keys = keys_to_parse.status
+
             if status_keys
                 state_key = status_keys[0]
                 cur_state = value_to_parse[ state_key ]
@@ -507,13 +505,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     if cur_state
                         if key > 0
                             cur_state = cur_state[value]
+                            if $.type(cur_state) == "array"
+                                cur_state = cur_state[0]
                             null
 
                 if cur_state
                     parse_result += '"status":"' + cur_state + '", '
 
             if keys_to_parse.title
-                if keys is 'unmanaged_bubble' or 'bubble'
+                if keys isnt "detail"
                     if name
                         parse_result += '"title":"' + name
                         if value_to_parse[ keys_to_parse.title ]
@@ -542,16 +542,20 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 cur_key   = key_array[0]
                 cur_value = value_to_parse[ cur_key ]
 
-                _.map key_array, ( value, key ) ->
+                if keys isnt "detail"
+                    _.map key_array, ( value, key ) ->
+                        if cur_value
+                            if key > 0
+                                cur_value = cur_value[value]
+                                if $.type(cur_value) is "array"
+                                    cur_value = cur_value[0]
+                                cur_value
+                else
                     if cur_value
-                        if key > 0
-                            cur_value = cur_value[value]
-                            cur_value
+                        if cur_value.constructor == Object or cur_value.constructor == Array
+                            cur_value = me._genBubble cur_value, show_key, true
 
-                if cur_value
-                    if cur_value.constructor == Object or cur_value.constructor == Array
-                        cur_value = me._genBubble cur_value, show_key, true
-                    parse_sub_info += ( '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ')
+                parse_sub_info += ( '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ')
 
                 null
 
@@ -649,7 +653,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
         _parseTableValue : ( keyes_set, value_set )->
             me                  = this
-            parse_table_result   = ''
+            parse_table_result  = ''
             table_date          = ''
 
             detail_table =  [
@@ -674,15 +678,14 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     count_set = [1, 2]
                     _.map count_set, ( value, key ) ->
-                        cur_key = key
-                        cur_value = value
+                        cur_key     = key
+                        cur_value   = value
                         parse_table_result += '], "tr'
                         parse_table_result += cur_value
                         parse_table_result += '_set":['
                         _.map keyes_set, ( value, key ) ->
                             if key isnt 0
-                                parse_table_result += ','
-                                parse_table_result += '"'
+                                parse_table_result += ',"'
                                 parse_table_result += me._parseEmptyValue table_set[cur_key][value.key]
                                 parse_table_result += '"'
                             else

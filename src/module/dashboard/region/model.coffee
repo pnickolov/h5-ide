@@ -105,7 +105,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     { "key": [ "vpnGatewayId" ], "show_key": "Virtual Private Gateway"},
                     { "key": [ "customerGatewayId" ], "show_key": "Customer Gateway"},
                     { "key": [ "type" ], "show_key": "Type"},
-                    { "key": [ "routes", "item"], "show_key": "Routing"}
+                    { "key": [ "routes", "item", 0], "show_key": "Routing"}
                 ],
                 "btns": [
                     { "type": "download_configuration", "name": "Download Configuration" }
@@ -924,7 +924,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             # volume
             if resources.DescribeVolumes != null
-                
+
                 lists.Volume = resources.DescribeVolumes.length
 
                 _.map resources.DescribeVolumes, ( vol, i )->

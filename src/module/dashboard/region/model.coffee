@@ -9,6 +9,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
     vpc_attrs_value = null
     unmanaged_list  = null
     status_list     = null
+    owner           = null
 
     update_timestamp = 0
 
@@ -368,7 +369,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
         _set_app_property : ( resource, resources, i, action) ->
 
-            is_managed = false
 
             if resource.tagSet != undefined and resource.tagSet.item.constructor == Array
 
@@ -376,15 +376,13 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     if tag.key == 'app'
 
-                        is_managed = true
-
                         resources[action][i].app = tag.value
 
-                        null
+                    if tag.key == 'Created by' and tag.value == owner
 
-            if not is_managed
-
-                resources[action][i].app = 'Unmanaged'
+                        resources[action][i].owner = tag.value
+                        
+                    null
 
             null
 
@@ -717,6 +715,8 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
             lists.Not_Used = { 'EIP' : 0, 'Volume' : 0 }
 
+            owner = atob $.cookie( 'usercode' )
+
             # elb
             if resources.DescribeLoadBalancers != null
 
@@ -740,7 +740,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                     reg_result = elb.LoadBalancerName.match reg
 
-                    if reg_result then elb.app = reg_result else elb.app = 'Unmanaged'
+                    if reg_result then elb.app = reg_result
 
                     null
 
@@ -762,9 +762,6 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     null
 
                 lists.EIP = resources.DescribeAddresses.length
-                
-                
-            
 
 
             # instance
@@ -806,15 +803,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                                 resources.DescribeInstances[i].host = tag.value
 
+                            if tag.key == 'Created by' and tag.value == owner
+
+                                resources.DescribeInstances[i].owner = tag.value
+
                             null
-
-                    if not is_managed
-
-                        resources.DescribeInstances[i].app = 'Unmanaged'
 
                     if resources.DescribeInstances[i].host == undefined
 
-                        resources.DescribeInstances[i].host = 'Unmanaged'
+                        resources.DescribeInstances[i].host = ''
 
                     null
 
@@ -824,7 +821,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 _.map resources.DescribeInstances, ( ins ) ->
 
-                    if ins.app isnt 'Unmanaged'
+                    if ins.app != undefined
 
                         manage_instances_id.push ins.instanceId
 
@@ -879,7 +876,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     null
 
                 # get dhcp detail
-                if dhcp_set
+                if dhcp_set.length != 0
                     dhcp_model.DescribeDhcpOptions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set
 
             # vpn
@@ -905,15 +902,15 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     vgw_set.push vpn.vpnGatewayId
 
             # get cgw detail
-            if cgw_set
+            if cgw_set.length != 0
                 customergateway_model.DescribeCustomerGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set
 
             # get vgw detail
-            if vgw_set
+            if vgw_set.length != 0
                 vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
 
             # ami
-            if ami_list
+            if ami_list.length != 0
                 ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
 
 

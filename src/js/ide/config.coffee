@@ -31,7 +31,8 @@ require.config {
 		'UI.tabbar'    : 'ui/common/UI.tabbar'
 		'UI.bubble'    : 'ui/common/UI.bubble'
 		'UI.modal'     : 'ui/common/UI.modal'
-
+		'UI.table'     : 'ui/common/UI.table'
+		
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
 

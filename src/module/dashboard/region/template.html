@@ -243,7 +243,7 @@
 				<div class="widget-region-counter">
 					<a href="#stat-table-ebs">
 						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">EBS</span> 
+							<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">Volume</span> 
 							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.Volume}} EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>{{region_resource_list.Not_Used.Volume}}</span>
 						</div>
 					</a>
@@ -346,7 +346,19 @@
 						<tbody>
 							{{#each region_resource.DescribeInstances }}
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ host }}<span class="resource-id">( {{ instanceId }} )</span></td>
+								<td>
+									{{#if app}}										
+										{{#if owner}}										
+											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+										{{else}}
+											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+										{{/if}}
+									{{else}}
+										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+									{{/if}}
+									{{ host }}
+									<span class="resource-id">( {{ instanceId }} )</span>									
+								</td>
 								<td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
 								<td>{{ launchTime }}</td>
 								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
@@ -375,7 +387,18 @@
 						<tbody>
 							{{#each region_resource.DescribeAddresses }}
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ publicIp }}</td>
+								<td>
+									{{#if app}}
+										{{#if owner}}										
+											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+										{{else}}
+											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+										{{/if}}
+									{{else}}
+										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+									{{/if}}
+									{{ publicIp }}									
+								</td>
 								<td>{{ instanceId }}</td>
 								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 							</tr>
@@ -403,7 +426,18 @@
 						<tbody>
 							{{#each region_resource.DescribeVolumes }}
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ volumeId }}</td>
+								<td>
+									{{#if app}}
+										{{#if owner}}										
+											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+										{{else}}
+											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+										{{/if}}
+									{{else}}
+										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+									{{/if}}									
+									{{ volumeId }}									
+								</td>
 								<td><i class="status status-{{ status }} icon-label"></i>{{ status }}</td>
 								<td>{{ createTime }}</td>
 								<td>{{#each attachmentSet.item }}{{ this.device }}{{/each}}</td>
@@ -433,7 +467,18 @@
 						<tbody>
 							{{#each region_resource.DescribeVpcs }}
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ vpcId }}</td>
+								<td>
+									{{#if app}}
+										{{#if owner}}										
+											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+										{{else}}
+											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+										{{/if}}
+									{{else}}
+										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+									{{/if}}
+									{{ vpcId }}									
+								</td>
 								<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
 								<td>{{ cidrBlock }}</td>
 								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{dhcp}}}'>{{ dhcpOptionsId }}</a></td>
@@ -462,7 +507,18 @@
 						<tbody>
 							{{#each region_resource.DescribeVpnConnections }}
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ vpnConnectionId }}</td>
+								<td>
+									{{#if app}}
+										{{#if owner}}										
+											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+										{{else}}
+											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+										{{/if}}
+									{{else}}
+										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+									{{/if}}
+									{{ vpnConnectionId }}									
+								</td>
 								<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
 								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
 								<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{cgw}}}'>{{ customerGatewayId }}</a></td>
@@ -481,7 +537,7 @@
 						<table class="table table-region-stat" id="region-stat-table-elb">
 						<thead>
 							<tr>
-								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:25%">DNS Name</th>
 								<th class="sortable" style="width:20%">Create time</th>
 								<th class="sortable" style="width:25%">Availability Zone</th>
 								<th class="sortable" style="width:20%">Status</th>
@@ -491,7 +547,10 @@
 						<tbody>
 							{{#each region_resource.DescribeLoadBalancers }}
 							<tr>
-								<td><a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>{{ DNSName }}</td>
+								<td>
+
+									{{ DNSName }}									
+								</td>
 								<td>{{ CreatedTime }}</td>
 								<td>{{ AvailabilityZones.member }}</td>
 								<td>{{ state }}</td>

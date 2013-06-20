@@ -9,12 +9,51 @@
 
 define [ 'vpn_vo', 'result_vo', 'constant' ], ( vpn_vo, result_vo, constant ) ->
 
+    resolvedObjectToArray = ( objs ) ->
 
+        if objs.constructor == Array
+
+            for obj in objs
+
+                obj = resolvedObjectToArray obj
+
+        if objs.constructor == Object
+
+            if $.isEmptyObject objs
+
+                objs = null
+
+            for key, value of objs
+
+                if key == 'item' and value.constructor == Object
+
+                    tmp = []
+
+                    tmp.push resolvedObjectToArray value
+
+                    objs[key] = tmp
+
+                else if value.constructor == Object or value.constructor == Array
+
+                    objs[key] = resolvedObjectToArray value
+
+        objs
     #///////////////// Parser for DescribeVpnConnections return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeVpnConnectionsResult = ( result ) ->
         #return
-        ($.xml2json ($.parseXML result[1])).DescribeVpnConnectionsResponse.vpnConnectionSet
+
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeVpnConnectionsResponse.vpnConnectionSet
+
+        result = resolvedObjectToArray result_set
+
+        if result?.item?
+
+            return result.item
+
+        else
+        
+            return null
 
     #private (parser DescribeVpnConnections return)
     parserDescribeVpnConnectionsReturn = ( result, return_code, param ) ->

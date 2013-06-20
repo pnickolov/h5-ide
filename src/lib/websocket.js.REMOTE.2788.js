@@ -3,9 +3,11 @@
 
   define(['Meteor', 'underscore'], function(Meteor, _) {
     var WebSocket, host, websocketInit;
+
     host = "211.98.26.7:3000";
     websocketInit = function() {
       var func, notifyFunc;
+
       _.extend(Meteor, {
         default_connection: null,
         refresh: notifyFunc = function(notification) {}
@@ -27,6 +29,7 @@
 
       WebSocket.prototype.status = function(state, status_callback) {
         var stFunc;
+
         if (state == null) {
           state = false;
         }
@@ -46,6 +49,7 @@
 
       WebSocket.prototype.sub = function() {
         var args, name, sub_callback, sub_instance, _i;
+
         name = arguments[0], args = 3 <= arguments.length ? __slice.call(arguments, 1, _i = arguments.length - 1) : (_i = 1, []), sub_callback = arguments[_i++];
         sub_instance = Meteor.subscribe.apply(Meteor, [name].concat(__slice.call(args), [sub_callback]));
         return sub_instance;
@@ -53,6 +57,7 @@
 
       WebSocket.prototype.unsub = function(sub_instance) {
         var error;
+
         console.log("Stopping subscription");
         try {
           return sub_instance.stop();

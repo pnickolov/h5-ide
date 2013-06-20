@@ -1,7 +1,6 @@
 (function() {
   require(['WS', 'session_service'], function(WS, session_service) {
     var can_test, password, region_name, session_id, test_websocket, usercode, username;
-
     username = 'ken';
     password = 'aaa123aa';
     session_id = "";
@@ -25,7 +24,6 @@
         sender: this
       }, username, password, function(forge_result) {
         var session_info;
-
         if (!forge_result.is_error) {
           session_info = forge_result.resolved_data;
           session_id = session_info.session_id;
@@ -43,7 +41,6 @@
     test_websocket = function() {
       return asyncTest("/websocket", function() {
         var call, error, subscirbed;
-
         WS.websocketInit();
         subscirbed = new WS.WebSocket();
         try {

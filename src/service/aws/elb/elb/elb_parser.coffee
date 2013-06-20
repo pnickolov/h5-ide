@@ -9,14 +9,54 @@
 
 define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
 
+    resolvedObjectToArray = ( objs ) ->
+
+        if objs.constructor == Array
+
+            for obj in objs
+
+                obj = resolvedObjectToArray obj
+
+        if objs.constructor == Object
+
+            if $.isEmptyObject objs
+
+                objs = null
+
+            for key, value of objs
+
+                if key == 'item' and value.constructor == Object
+
+                    tmp = []
+
+                    tmp.push resolvedObjectToArray value
+
+                    objs[key] = tmp
+
+                else if value.constructor == Object or value.constructor == Array
+
+                    objs[key] = resolvedObjectToArray value
+
+        objs
 
     #///////////////// Parser for DescribeInstanceHealth return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveDescribeInstanceHealthResult = ( result ) ->
         #resolve result
-
         #return vo
-        ($.xml2json ($.parseXML result[1])).DescribeInstanceHealthResponse.DescribeInstanceHealthResult.InstanceStates
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeInstanceHealthResponse.DescribeInstanceHealthResult.InstanceStates.member
+
+        result_set = resolvedObjectToArray result_set
+
+        if result_set.constructor == Object
+
+            tmp = []
+
+            tmp.push result_set
+            
+            result_set = tmp
+
+        result_set
 
     #private (parser DescribeInstanceHealth return)
     parserDescribeInstanceHealthReturn = ( result, return_code, param ) ->
@@ -98,9 +138,25 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeLoadBalancersResult = ( result ) ->
         #resolve result
-
         #return vo
-        ($.xml2json ($.parseXML result[1])).DescribeLoadBalancersResponse.DescribeLoadBalancersResult
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions
+
+        result_set = resolvedObjectToArray result_set
+
+        if result_set
+
+            if result_set.member.constructor == Object
+            
+                tmp = result_set.member
+
+                result_set = []
+
+                result_set.push tmp
+
+            else
+                result_set = result_set.member
+
+        result_set
 
     #private (parser DescribeLoadBalancers return)
     parserDescribeLoadBalancersReturn = ( result, return_code, param ) ->

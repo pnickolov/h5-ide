@@ -58,6 +58,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
                     null
 
             if cur_item_list
+                #sort
+                cur_item_list.sort (a,b) ->
+                    return if a.create_time <= b.create_time then 1 else -1
+
                 if flag == 'app'
                     #difference
                     if _.difference me.get('cur_app_list'), cur_item_list
@@ -70,16 +74,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
             id          = item.id
             name        = item.name
             create_time = item.time_create
+
+            status      = "play"
             isrunning   = true
-            ispending   = false
 
             # check state
-            if item.state == 'Running'
-                isrunning = true
-            else if item.state == 'Stopped'
+            if item.state == constant.APP_STATE.APP_STATE_STOPPING or item.state == constant.APP_STATE.APP_STATE_INITIALIZING
+                return
+            else if item.state == constant.APP_STATE.APP_STATE_RUNNING
+                status = "play"
+            else if item.state == constant.APP_STATE.APP_STATE_STOPPED
                 isrunning = false
+                status = "stop"
             else
-                ispending = true
+                status = "pending"
 
             if flag == 'app'
                 date = new Date()
@@ -89,20 +97,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
                     date.setTime(item.time_update*1000)
                     stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
 
-                # bubble data
-                bubble_data = '{"status":' + if ispending then '"pending"' else if isrunning then '"play"' else '"stop"'
-                bubble_data += ',"title":"' + name + '","start-time":"' + start_time + '","end-time":"'
-                if not isrunning
-                    bubble_data += if stop_time then stop_time
-                bubble_data += '","cost":"$0/month"}'
+            return { 'id' : id, 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'status' : status, 'cost' : "$0/month" }
 
-            return { 'id' : id, 'name' : name, 'create_time':create_time, 'isrunning' : isrunning, 'bubble_data' : bubble_data}
-
-        runApp : (app_id) ->
+        runApp : (region, app_id) ->
             me = this
+            current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region, app_id, app_name
+            app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
             app_model.on 'APP_START_RETURN', (result) ->
                 console.log 'APP_START_RETURN'
                 console.log result
@@ -113,10 +115,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
                     ide_event.trigger ide_event.APP_RUN, app_name, app_id
                 #else    # failed
 
-        stopApp : (app_id) ->
+        stopApp : (region, app_id) ->
             me = this
+            current_region = region
+
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.stop { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region, app_id, app_name
+            app_model.stop { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
             app_model.on 'APP_STOP_RETURN', (result) ->
                 console.log 'APP_STOP_RETURN'
                 console.log result
@@ -124,10 +128,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
                 if !result.is_error
                     ide_event.trigger ide_event.APP_STOP, app_name, app_id
 
-        terminateApp : (app_id) ->
+        terminateApp : (region, app_id) ->
             me = this
+            current_region = region
+
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.terminate { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region, app_id, app_name
+            app_model.terminate { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
             app_model.on 'APP_TERMINATE_RETURN', (result) ->
                 console.log 'APP_TERMINATE_RETURN'
                 console.log result
@@ -135,14 +141,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
                 if !result.is_error
                     ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
 
-        duplicateStack : (stack_id, new_name) ->
+        duplicateStack : (region, stack_id, new_name) ->
             me = this
-
-            # check duplicate stack name
+            current_region = region
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
+
+            # check duplicate stack name
+            #if stack_name == new_name
+                #warn message
+
             # get service, ( src, username, session_id, region_name, stack_id, new_name, stack_name=null )
-            stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region, stack_id, new_name, stack_name
+            stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
             stack_model.on 'STACK_SAVE__AS_RETURN', (result) ->
                 console.log 'STACK_SAVE__AS_RETURN'
                 console.log result
@@ -150,11 +160,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_model', 'consta
                 if !result.is_error
                     ide_event.trigger ide_event.UPDATE_STACK_LIST
 
-        deleteStack : (stack_id) ->
+        deleteStack : (region, stack_id) ->
             me = this
+            current_region = region
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
-            stack_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region, stack_id, stack_name
+            stack_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, stack_name
             stack_model.on 'STACK_REMOVE_RETURN', (result) ->
                 console.log 'STACK_REMOVE_RETURN'
                 console.log result

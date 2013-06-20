@@ -12,9 +12,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         events   :
             'click .return-overview'        : 'returnOverviewClick'
-            'click .modal btn run'          : 'runAppClick'
-            'click .modal btn stop'         : 'stopAppClick'
-            'click .modal btn terminate'    : 'terminateAppClick'
+            'click .icon-play'              : 'runAppClick'
+            'click .icon-stop'              : 'stopAppClick'
+            'click .icon-close'             : 'terminateAppClick'
             'click .icon-redo'              : 'duplicateStackClick'
             'click .icon-trashcan'          : 'deleteStackClick'
 
@@ -38,18 +38,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         terminateAppClick : ( event ) ->
             #terminal confirm dialog
             console.log 'dashboard region terminal app'
-            #this.trigger 'TERMINATE_APP_CLICK', event.currentTarget.id
+            this.trigger 'TERMINATE_APP_CLICK', event.currentTarget.id
 
         #stack
         duplicateStackClick : ( event ) ->
             console.log 'dashboard region duplicate stack'
             #duplicate confirm dialog
-            #this.trigger 'DUPLICATE_STACK_CLICK', event.currentTarget.id, new_name
+            this.trigger 'DUPLICATE_STACK_CLICK', event.currentTarget.id, "new_name"
 
         deleteStackClick : ( event ) ->
             console.log 'dashboard region delete stack'
             #delete confirm dialog
-            #this.trigger 'DELETE_STACK_CLICK', event.currentTarget.id
+            this.trigger 'DELETE_STACK_CLICK', event.currentTarget.id
 
         createStackClick : ( event ) ->
             console.log 'dashboard region create stack'

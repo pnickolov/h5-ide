@@ -113,7 +113,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     view       = new View()
                     view.model = model
                     #listen
-                    model.describeAWSResourcesService(region)
+                    #model.describeAWSResourcesService(region)
 
                     model.on 'change:cur_app_list', () ->
                         console.log 'dashboard_region_change:cur_app_list'
@@ -139,19 +139,19 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     view.on 'RUN_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:run_app'
                         # call service
-                        model.runApp(app_id)
+                        model.runApp(region, app_id)
                     view.on 'STOP_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:stop_app'
-                        model.stopApp(app_id)
+                        model.stopApp(region, app_id)
                     view.on 'TERMINATE_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:terminate_app'
-                        model.terminateApp(app_id)
+                        model.terminateApp(region, app_id)
                     view.on 'DUPLICATE_STACK_CLICK', (stack_id, new_name) ->
                         console.log 'dashboard_region_click:duplicate_stack'
-                        model.duplicateStack(stack_id, new_name)
+                        model.duplicateStack(region, stack_id, new_name)
                     view.on 'DELETE_STACK_CLICK', (stack_id) ->
                         console.log 'dashboard_region_click:delete_stack'
-                        model.deleteStack(stack_id)
+                        model.deleteStack(region, stack_id)
 
                     model.resultListListener()
 

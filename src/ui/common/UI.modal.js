@@ -24,6 +24,7 @@ var modal = function (template, dismiss, callback)
 
 	modal.position();
 
+
 	if (dismiss === true)
 	{
 		$(document).on('click', modal.dismiss);
@@ -32,12 +33,15 @@ var modal = function (template, dismiss, callback)
 	$(window).on('resize', modal.position);
 	$(document)
 		.on('click', '.modal-close', modal.close)
+		.on('keyup', modal.keyup)
 		.on('mousedown', '.modal-header', modal.drag.mousedown);
 
 	if (callback)
 	{
 		callback();
 	}
+
+	return this;
 };
 
 modal.open = function (event)
@@ -61,6 +65,15 @@ modal.open = function (event)
 	}
 };
 
+modal.keyup = function (event)
+{
+	//press esc key to close modal
+	if ( event.keyCode === 27 )
+	{
+		modal.close();
+	}
+};
+
 modal.dismiss = function (event)
 {
 	if (event.target.id === 'modal-wrap')
@@ -76,6 +89,7 @@ modal.close = function ()
 
 	$(document)
 		.off('click', '.modal-close', modal.close)
+		.off('keyup', modal.keyup)
 		.off('mousedown', '.modal-header', modal.drag.mousedown);
 
 	$('#modal-wrap')

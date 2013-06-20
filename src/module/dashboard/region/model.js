@@ -216,7 +216,7 @@
               "key": ["type"],
               "show_key": "Type"
             }, {
-              "key": ["routes", "item"],
+              "key": ["routes", "item", 0],
               "show_key": "Routing"
             }
           ],
@@ -520,68 +520,70 @@
           "items": []
         };
         resources_keys = ['DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses'];
-        _.map(resources_keys, function(value) {
-          var cur_attr, cur_tag;
-          cur_attr = resource_source[value];
-          cur_tag = value;
-          _.map(cur_attr, function(value) {
-            var name;
-            if (value.app === void 0) {
-              name = value.tagSet ? value.tagSet.name : null;
-              switch (cur_tag) {
-                case "DescribeVolumes":
-                  if (!name) {
-                    if (value.attachmentSet) {
-                      if (value.attachmentSet.item) {
-                        name = value.attachmentSet.item.device;
+        if (resource_source) {
+          _.map(resources_keys, function(value) {
+            var cur_attr, cur_tag;
+            cur_attr = resource_source[value];
+            cur_tag = value;
+            _.map(cur_attr, function(value) {
+              var name;
+              if (value.app === void 0) {
+                name = value.tagSet ? value.tagSet.name : null;
+                switch (cur_tag) {
+                  case "DescribeVolumes":
+                    if (!name) {
+                      if (value.attachmentSet) {
+                        if (value.attachmentSet.item) {
+                          name = value.attachmentSet.item.device;
+                        }
                       }
                     }
-                  }
-                  unmanaged_list.items.push({
-                    'type': "Volume",
-                    'name': (name ? name : value.volumeId),
-                    'status': value.status,
-                    'cost': 0.00,
-                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
-                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
-                  });
-                  break;
-                case "DescribeInstances":
-                  unmanaged_list.items.push({
-                    'type': "Instance",
-                    'name': (name ? name : value.instanceId),
-                    'status': value.instanceState.name,
-                    'cost': 0.00,
-                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
-                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
-                  });
-                  break;
-                case "DescribeVpnConnections":
-                  unmanaged_list.items.push({
-                    'type': "VPN",
-                    'name': (name ? name : value.vpnConnectionId),
-                    'status': value.state,
-                    'cost': 0.00,
-                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
-                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
-                  });
-                  break;
-                case "DescribeVpcs":
-                  unmanaged_list.items.push({
-                    'type': "VPC",
-                    'name': (name ? name : value.vpcId),
-                    'status': value.state,
-                    'cost': 0.00,
-                    'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
-                    'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
-                  });
-                  break;
+                    unmanaged_list.items.push({
+                      'type': "Volume",
+                      'name': (name ? name : value.volumeId),
+                      'status': value.status,
+                      'cost': 0.00,
+                      'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                      'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
+                    });
+                    break;
+                  case "DescribeInstances":
+                    unmanaged_list.items.push({
+                      'type': "Instance",
+                      'name': (name ? name : value.instanceId),
+                      'status': value.instanceState.name,
+                      'cost': 0.00,
+                      'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                      'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
+                    });
+                    break;
+                  case "DescribeVpnConnections":
+                    unmanaged_list.items.push({
+                      'type': "VPN",
+                      'name': (name ? name : value.vpnConnectionId),
+                      'status': value.state,
+                      'cost': 0.00,
+                      'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                      'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
+                    });
+                    break;
+                  case "DescribeVpcs":
+                    unmanaged_list.items.push({
+                      'type': "VPC",
+                      'name': (name ? name : value.vpcId),
+                      'status': value.state,
+                      'cost': 0.00,
+                      'data-bubble-data': me.parseSourceValue(cur_tag, value, "unmanaged_bubble", name),
+                      'data-modal-data': me.parseSourceValue(cur_tag, value, "detail", name)
+                    });
+                    break;
+                }
               }
-            }
+              return null;
+            });
             return null;
           });
-          return null;
-        });
+        }
         me.set('unmanaged_list', unmanaged_list);
         return null;
       },
@@ -1029,37 +1031,39 @@
               sender: this
             }, $.cookie('usercode'), $.cookie('session_id'), current_region, ami_list);
           }
-          null;
         }
-        lists.Volume = resources.DescribeVolumes.length;
-        _.map(resources.DescribeVolumes, function(vol, i) {
-          var attachment, _ref;
-          vol.detail = me.parseSourceValue('DescribeVolumes', vol, "detail", null);
-          if (vol.status === "available") {
-            lists.Not_Used.Volume++;
-          }
-          me._set_app_property(vol, resources, i, 'DescribeVolumes');
-          if (!vol.attachmentSet) {
-            vol.attachmentSet = {
-              item: []
-            };
-            attachment = {
-              device: 'not-attached',
-              status: 'not-attached'
-            };
-            vol.attachmentSet.item[0] = attachment;
-          } else {
-            if (vol.tagSet === void 0 && (_ref = vol.attachmentSet.item[0].instanceId, __indexOf.call(manage_instances_id, _ref) >= 0)) {
-              resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item[0].instanceId];
-              _.map(resources.DescribeInstances, function(ins) {
-                if (ins.instanceId === vol.attachmentSet.item[0].instanceId && ins.owner !== void 0) {
-                  return resources.DescribeVolumes[i].owner = ins.owner;
-                }
-              });
+        if (resources.DescribeVolumes !== null) {
+          lists.Volume = resources.DescribeVolumes.length;
+          _.map(resources.DescribeVolumes, function(vol, i) {
+            var attachment, _ref;
+            vol.detail = me.parseSourceValue('DescribeVolumes', vol, "detail", null);
+            if (vol.status === "available") {
+              lists.Not_Used.Volume++;
             }
-          }
-          return null;
-        });
+            me._set_app_property(vol, resources, i, 'DescribeVolumes');
+            if (!vol.attachmentSet) {
+              vol.attachmentSet = {
+                item: []
+              };
+              attachment = {
+                device: 'not-attached',
+                status: 'not-attached'
+              };
+              vol.attachmentSet.item[0] = attachment;
+            } else {
+              if (vol.tagSet === void 0 && (_ref = vol.attachmentSet.item[0].instanceId, __indexOf.call(manage_instances_id, _ref) >= 0)) {
+                resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item[0].instanceId];
+                _.map(resources.DescribeInstances, function(ins) {
+                  if (ins.instanceId === vol.attachmentSet.item[0].instanceId && ins.owner !== void 0) {
+                    resources.DescribeVolumes[i].owner = ins.owner;
+                  }
+                  return null;
+                });
+              }
+            }
+            return null;
+          });
+        }
         if (resources.DescribeVpcs !== null) {
           lists.VPC = resources.DescribeVpcs.length;
           _.map(resources.DescribeVpcs, function(vpc, i) {

@@ -372,7 +372,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                     if tag.key == 'Created by' and tag.value == owner
 
                         resources[action][i].owner = tag.value
-                        
+
                     null
 
             null
@@ -387,59 +387,60 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
             unmanaged_list  = { "time_stamp": time_stamp, "items": [] }
             resources_keys  = [ 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses' ]
 
-            #console.log resource_source
-            _.map resources_keys, ( value ) ->
+            if resource_source
+                #console.log resource_source
+                _.map resources_keys, ( value ) ->
 
-                cur_attr    = resource_source[ value ]
-                cur_tag     = value
+                    cur_attr    = resource_source[ value ]
+                    cur_tag     = value
 
-                _.map cur_attr, ( value ) ->
-                    if value.app is undefined
-                        name = if value.tagSet then value.tagSet.name else null
-                        switch cur_tag
-                            when "DescribeVolumes"
-                                if !name
-                                    if value.attachmentSet
-                                        if value.attachmentSet.item
-                                            name = value.attachmentSet.item.device
-                                unmanaged_list.items.push {
-                                    'type': "Volume",
-                                    'name': (if name then name else value.volumeId),
-                                    'status': value.status,
-                                    'cost': 0.00,
-                                    'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
-                                    'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
-                                }
-                            when "DescribeInstances"
-                                unmanaged_list.items.push {
-                                    'type': "Instance",
-                                    'name': (if name then name else value.instanceId),
-                                    'status': value.instanceState.name,
-                                    'cost': 0.00,
-                                    'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
-                                    'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
-                                }
-                            when "DescribeVpnConnections"
-                                unmanaged_list.items.push {
-                                    'type': "VPN",
-                                    'name': (if name then name else value.vpnConnectionId),
-                                    'status': value.state,
-                                    'cost': 0.00,
-                                    'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
-                                    'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
-                                }
-                            when "DescribeVpcs"
-                                unmanaged_list.items.push {
-                                    'type': "VPC",
-                                    'name': (if name then name else value.vpcId),
-                                    'status': value.state,
-                                    'cost': 0.00,
-                                    'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
-                                    'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
-                                }
-                            else
+                    _.map cur_attr, ( value ) ->
+                        if value.app is undefined
+                            name = if value.tagSet then value.tagSet.name else null
+                            switch cur_tag
+                                when "DescribeVolumes"
+                                    if !name
+                                        if value.attachmentSet
+                                            if value.attachmentSet.item
+                                                name = value.attachmentSet.item.device
+                                    unmanaged_list.items.push {
+                                        'type': "Volume",
+                                        'name': (if name then name else value.volumeId),
+                                        'status': value.status,
+                                        'cost': 0.00,
+                                        'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
+                                        'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
+                                    }
+                                when "DescribeInstances"
+                                    unmanaged_list.items.push {
+                                        'type': "Instance",
+                                        'name': (if name then name else value.instanceId),
+                                        'status': value.instanceState.name,
+                                        'cost': 0.00,
+                                        'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
+                                        'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
+                                    }
+                                when "DescribeVpnConnections"
+                                    unmanaged_list.items.push {
+                                        'type': "VPN",
+                                        'name': (if name then name else value.vpnConnectionId),
+                                        'status': value.state,
+                                        'cost': 0.00,
+                                        'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
+                                        'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
+                                    }
+                                when "DescribeVpcs"
+                                    unmanaged_list.items.push {
+                                        'type': "VPC",
+                                        'name': (if name then name else value.vpcId),
+                                        'status': value.state,
+                                        'cost': 0.00,
+                                        'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
+                                        'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
+                                    }
+                                else
+                        null
                     null
-                null
 
             me.set 'unmanaged_list', unmanaged_list
 
@@ -538,7 +539,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 cur_key   = key_array[0]
                 cur_value = value_to_parse[ cur_key ]
 
-                
+
                 _.map key_array, ( value, key ) ->
                     if cur_value
                         if key > 0
@@ -657,7 +658,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                             tmp.push me._genBubble value, current_title, false
 
-                
+
                 lines = []
 
                 if entry
@@ -673,7 +674,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
 
                 else
                     lines = tmp
-                
+
                 parse_sub_info = lines.join(', ')
 
             parse_sub_info
@@ -1012,7 +1013,7 @@ define [ 'backbone', 'jquery', 'underscore', 'aws_model', 'ami_model', 'elb_mode
                 if vgw_set.length != 0
                     vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
 
-            
+
 
 
             console.log resources

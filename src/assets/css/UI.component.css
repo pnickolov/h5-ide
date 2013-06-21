@@ -171,7 +171,7 @@
 	line-height: 24px;
 }
 
-.table.table-region-stat tbody tr  td:last-child, 
+.table.table-region-stat tbody tr  td:last-child,
 .table-region-stat thead tr  th:last-child, {
 	/*border-right: none;*/
 	/*color: blue;*/
@@ -537,6 +537,7 @@ textarea {
 	-o-user-select: none;
 	user-select: none;
 	cursor: default;
+	pointer-events: none;
 }
 
 .scrolling.scrollbar-auto-hide > .scrollbar-veritical-wrap,
@@ -766,11 +767,11 @@ textarea {
 }
 
 .modal-body .dl-horizontal dt {
-	width: 70px;
+	width: 120px;
 }
 
 .modal-body .dl-horizontal dd {
-	margin-left: 80px;
+	margin-left: 130px;
 }
 
 .modal-footer {
@@ -909,7 +910,7 @@ textarea {
 	font-size: 12px;
 	position: absolute;
 	border-radius: 4px;
-	z-index: 99999;
+	z-index: 99;
 	min-width: 250px;
 	max-width: 400px;
 }
@@ -988,4 +989,18 @@ textarea {
 	right: 1px;
 	border-left-color: #fff;
 	border-right-width: 0;
+}
+
+/* Editable Label */
+.editable-label {
+	height: 20px;
+	width: 200px;
+	margin-top: 15px;
+	cursor: pointer
+}
+
+.editable-label input {
+	padding: 0;
+	width: 100%;
+	height: 100%;
 }

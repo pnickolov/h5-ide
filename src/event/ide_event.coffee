@@ -24,11 +24,12 @@ define [ 'underscore', 'backbone' ], () ->
         HEADER_COMPLETE     : 'HEADER_COMPLETE'
         DESIGN_COMPLETE     : 'DESIGN_COMPLETE'
 
-        #true
+        #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'
         OPEN_STACK_TAB      : 'OPEN_STACK_TAB'
         OPEN_APP_TAB        : 'OPEN_APP_TAB'
-        SWITCH_STACK_TAB    : 'SWITCH_STACK_TAB'
+        #
+        SWITCH_TAB          : 'SWITCH_TAB'
         SWITCH_DASHBOARD    : 'SWITCH_DASHBOARD'
 
         TERMINATE_APP_TAB   : 'TERMINATE_APP_TAB'
@@ -46,6 +47,7 @@ define [ 'underscore', 'backbone' ], () ->
         APP_RUN             : 'APP_RUN'
         APP_STOP            : 'APP_STOP'
         APP_TERMINATE       : 'APP_TERMINATE'
+        UPDATE_APP_LIST     : 'UPDATE_APP_LIST'
         UPDATE_STACK_LIST   : 'UPDATE_STACK_LIST'
         STACK_DELETE        : 'STACK_DELETE'
 

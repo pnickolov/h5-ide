@@ -44,7 +44,7 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             main     = $ '#main'
             tab_name = $( target ).text()
 
-            ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name, $( target ).attr 'data-region-name'
+            ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name, $( target ).attr( 'data-region-name' ), $( target ).attr( 'data-stack-id' )
 
             nav.addClass 'collapsed'
             nav.removeClass 'scroll-wrap'
@@ -66,7 +66,7 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             main     = $ '#main'
             tab_name = $( target ).text()
 
-            ide_event.trigger ide_event.OPEN_APP_TAB, tab_name
+            ide_event.trigger ide_event.OPEN_APP_TAB, $.trim( tab_name ), $( target ).attr( 'data-region-name' ) , $( target ).attr( 'data-app-id' )
 
             nav.addClass 'collapsed'
             nav.removeClass 'scroll-wrap'
@@ -87,7 +87,8 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         createNewStackClick : ( event ) ->
             console.log 'createNewStackClick'
-            ide_event.trigger ide_event.ADD_STACK_TAB
+            console.log $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' )
+            ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
 
         hoverIntent          : ->
             $('.nav-head').hoverIntent {

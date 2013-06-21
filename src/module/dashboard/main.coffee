@@ -122,9 +122,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     console.log '------------ region view load ------------ '
 
                     #view
-                    region_view       = new View()
-                    region_view.model = model
-                    view.region = region
+                    region_view        = new View()
+                    region_view.model  = model
+                    region_view.region = region
 
                     model.on 'change:vpc_attrs', () ->
                         console.log 'dashboard_change:vpc_attrs'

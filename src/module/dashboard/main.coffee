@@ -7,6 +7,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
     current_region = null
 
+    app_list   = null
+    stack_list = null
+
     #private
     loadModule = () ->
         #add handlebars script
@@ -65,6 +68,16 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 model.get 'resent_stoped_apps'
                 view.render()
 
+            model.on 'change:app_list', () ->
+                console.log 'dashboard_change:app_list'
+                app_list = model.get 'app_list'
+                null
+
+            model.on 'change:stack_list', () ->
+                console.log 'dashboard_change:stack_list'
+                stack_list = model.get 'stack_list'
+                null
+
             #model
             model.resultListListener()
             model.emptyListListener()
@@ -79,8 +92,19 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 MC.data.dashboard_type = 'REGION_TAB'
                 #push event
                 ide_event.trigger ide_event.RETURN_REGION_TAB, null
-                #render
-                #view.render()
+
+                current_app = null
+                # get current region's apps/stacks
+                _.map app_list, (value) ->
+                    if region == value.region_name
+                        current_app = value.items
+                    null
+
+                current_stack = null
+                _.map stack_list, (value) ->
+                    if region == value.region_name
+                        current_stack = value.items
+                    null
 
                 #load remote ./module/dashboard/region/view.js
                 require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal', 'UI.table' ], ( View, model ) ->
@@ -105,7 +129,15 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         view.render()
 
                     #listen
+                    model.on 'change:cur_app_list', () ->
+                        console.log 'dashboard_region_change:cur_app_list'
+                        model.get 'cur_app_list'
+                        view.render()
 
+                    model.on 'change:cur_stack_list', () ->
+                        console.log 'dashboard_region_change:cur_stack_list'
+                        model.get 'cur_stack_list'
+                        view.render()
 
                     model.on 'change:region_resource_list', () ->
                         console.log 'dashboard_region_resource_list'
@@ -125,22 +157,37 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
                         view.render()
 
-                    model.describeAWSResourcesService(region)
-                    model.describeRegionAccountAttributesService region
-                    model.describeAWSStatusService region
-
                     view.on 'RETURN_OVERVIEW_TAB', () ->
                         #set MC.data.dashboard_type
                         MC.data.dashboard_type = 'OVERVIEW_TAB'
                         #push event
                         ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
 
+                    view.on 'RUN_APP_CLICK', (app_id) ->
+                        console.log 'dashboard_region_click:run_app'
+                        # call service
+                        model.runApp(region, app_id)
+                    view.on 'STOP_APP_CLICK', (app_id) ->
+                        console.log 'dashboard_region_click:stop_app'
+                        model.stopApp(region, app_id)
+                    view.on 'TERMINATE_APP_CLICK', (app_id) ->
+                        console.log 'dashboard_region_click:terminate_app'
+                        model.terminateApp(region, app_id)
+                    view.on 'DUPLICATE_STACK_CLICK', (stack_id, new_name) ->
+                        console.log 'dashboard_region_click:duplicate_stack'
+                        model.duplicateStack(region, stack_id, new_name)
+                    view.on 'DELETE_STACK_CLICK', (stack_id) ->
+                        console.log 'dashboard_region_click:delete_stack'
+                        model.deleteStack(region, stack_id)
                     view.on 'REFRESH_REGION_BTN', () ->
                         model.describeAWSResourcesService region
 
-                    #render
-                    #view.render()
-
+                    model.describeAWSResourcesService region
+                    model.describeRegionAccountAttributesService region
+                    model.describeAWSStatusService region
+                    model.getItemList 'app', current_app
+                    model.getItemList 'stack', current_stack
+                    model.resultListListener()
 
     unLoadModule = () ->
         #view.remove()

@@ -176,6 +176,7 @@ define [], () ->
 		APP_STATE_STOPPING		: "Stopping"
 		APP_STATE_STARTING		: "Starting"
 		APP_STATE_TERMINATED	: "Terminated"
+		APP_STATE_INITIALIZING	: "Initializing"
 	}
 
 	#private
@@ -266,7 +267,7 @@ define [], () ->
 	OPS_STATE			    : OPS_STATE
 	RECENT_NUM			    : RECENT_NUM
 	RECENT_DAYS			    : RECENT_DAYS
-	AWS_RESOURCE	    : AWS_RESOURCE
-	SERVICE_REGION		: SERVICE_REGION
+	AWS_RESOURCE	    	: AWS_RESOURCE
+	SERVICE_REGION			: SERVICE_REGION
 
 

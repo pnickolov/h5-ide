@@ -114,7 +114,14 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
                 console.log 'region_view'
                 console.log region_view
-                if region_view isnt null then return
+                if region_view isnt null
+                    region_view.model.resetData()
+                    region_view.model.describeAWSResourcesService region
+                    region_view.model.describeRegionAccountAttributesService region
+                    region_view.model.describeAWSStatusService region
+                    region_view.model.getItemList 'app', current_app
+                    region_view.model.getItemList 'stack', current_stack
+                    region_view.model.resultListListener()
 
                 #load remote ./module/dashboard/region/view.js
                 require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal', 'UI.table', 'UI.tablist' ], ( View, model ) ->

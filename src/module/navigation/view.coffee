@@ -87,7 +87,8 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         createNewStackClick : ( event ) ->
             console.log 'createNewStackClick'
-            ide_event.trigger ide_event.ADD_STACK_TAB
+            console.log $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' )
+            ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
 
         hoverIntent          : ->
             $('.nav-head').hoverIntent {

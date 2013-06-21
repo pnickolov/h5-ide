@@ -11,14 +11,14 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
         template : Handlebars.compile $( '#tabbar-tmpl' ).html()
 
         events   :
-            'OPEN_TAB'  : 'openTab'
-            'CLOSE_TAB' : 'closeTab'
+            'OPEN_TAB'  : 'openTabEvent'
+            'CLOSE_TAB' : 'closeTabEvent'
 
         render   : () ->
             console.log 'tabbar render'
             $( this.el ).html this.template()
 
-        openTab  : ( event, original_tab_id, tab_id ) ->
+        openTabEvent  : ( event, original_tab_id, tab_id ) ->
             console.log 'openTab'
             console.log $( '#tab-bar-' + tab_id ).children().attr 'title'
 
@@ -26,19 +26,33 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
                 this.trigger 'SWITCH_DASHBOARD', 'dashboard'
                 return
 
-            if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[1] is 'stack'
+            if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[0] is 'untitled'
                 #push event
-                 this.trigger 'SWITCH_STACK_TAB', original_tab_id, tab_id
+                this.trigger 'SWITCH_NEW_STACK_TAB', original_tab_id, tab_id
+            else if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[1] is 'stack'
+                #push event
+                this.trigger 'SWITCH_STACK_TAB', original_tab_id, tab_id
             else
                 #push event
                 this.trigger 'SWITCH_APP_TAB', original_tab_id, tab_id
             null
 
-        closeTab : ( event, tab_id ) ->
+        closeTabEvent : ( event, tab_id ) ->
             console.log 'closeTab'
             #push event
             this.trigger 'CLOSE_STACK_TAB',  tab_id
             null
+
+        changeIcon : ( tab_id ) ->
+            console.log 'changeIcon'
+            console.log $( '#tab-bar-' + tab_id ).children().find( 'i' ).attr( 'class' )
+            null
+
+        closeTab   : ( tab_id ) ->
+            console.log 'closeTab'
+            $( '#tab-bar-' + tab_id ).children().last().trigger( 'mousedown' )
+            null
+
     }
 
     return TabBarView

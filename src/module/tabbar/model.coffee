@@ -20,15 +20,25 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone' ], ( MC, stack_model, app_
 
             if MC.tab[ current ] is undefined
                 #call service
-                console.log 'call new stack'
+                console.log 'call new|open stack'
                 #push event
-                if type is 'stack' then this.trigger 'OPEN_STACK', current else this.trigger 'OPEN_APP', current
+                if type is 'new'
+                    this.trigger 'NEW_STACK',  current
+                else if type is 'stack'
+                    this.trigger 'OPEN_STACK', current
+                else if type is 'app'
+                    this.trigger 'OPEN_APP',   current
             else
                 #read from MC.tab[ current ]
                 console.log 'read old stack from MC.tab'
                 console.log MC.tab[ current ]
                 #push event
-                if type is 'stack' then this.trigger 'OLD_STACK', current else this.trigger 'OLD_APP', current
+                if type is 'new'
+                    this.trigger 'OLD_STACK', current
+                else if type is 'stack'
+                    this.trigger 'OLD_STACK', current
+                else if type is 'app'
+                    this.trigger 'OLD_APP',   current
 
             console.log MC.tab
 

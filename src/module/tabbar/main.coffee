@@ -125,7 +125,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 null
 
             #listen
-            ide_event.onLongListen 'APP_RUN', ( app_id, tab_name ) ->
+            ide_event.onLongListen 'APP_RUN', ( tab_name, app_id ) ->
                 console.log 'APP_RUN ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
                 #
                 view.changeIcon app_id
@@ -134,7 +134,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 null
 
             #listen
-            ide_event.onLongListen 'STOP_RUN', ( app_id, tab_name ) ->
+            ide_event.onLongListen 'STOP_RUN', ( tab_name, app_id ) ->
                 console.log 'STOP_RUN ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
                 #
                 view.changeIcon app_id
@@ -143,7 +143,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 null
 
             #listen
-            ide_event.onLongListen 'APP_TERMINAL', ( app_id, tab_name ) ->
+            ide_event.onLongListen 'APP_TERMINAL', ( tab_name, app_id ) ->
                 console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
                 #
                 view.closeTab app_id
@@ -152,8 +152,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 null
 
             #listen
-            ide_event.onLongListen 'STACK_DELETE', ( stack_id, tab_name ) ->
-                console.log 'STACK_DELETE ' + ' tab_name = ' + tab_name + ', app_id = ' + stack_id
+            ide_event.onLongListen 'STACK_DELETE', ( tab_name, stack_id ) ->
+                console.log 'STACK_DELETE ' + ' tab_name = ' + tab_name + ', stack_id = ' + stack_id
                 #
                 view.closeTab stack_id
                 #push event

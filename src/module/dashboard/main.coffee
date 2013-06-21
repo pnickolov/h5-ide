@@ -117,7 +117,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 if region_view isnt null then return
 
                 #load remote ./module/dashboard/region/view.js
-                require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal', 'UI.table' ], ( View, model ) ->
+                require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal', 'UI.table', 'UI.tablist' ], ( View, model ) ->
 
                     console.log '------------ region view load ------------ '
 

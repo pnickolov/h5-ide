@@ -283,7 +283,7 @@
               "key": ["Instances", 'member'],
               "show_key": "Instances"
             }, {
-              "key": ["ListenerDescriptions", "member", "Listener"],
+              "key": ["ListenerDescriptions", "member"],
               "show_key": "ListenerDescriptions"
             }, {
               "key": ["SecurityGroups", "member"],
@@ -968,6 +968,8 @@
               current_title = value.networkInterfaceId;
             } else if (value.InstanceId !== void 0) {
               current_title = value.InstanceId;
+            } else if (value.Listener !== void 0) {
+              current_title = 'Listener' + '-' + index;
             } else {
               current_title = title + '-' + index;
             }
@@ -1300,7 +1302,6 @@
             }, $.cookie('usercode'), $.cookie('session_id'), current_region, vgw_set);
           }
         }
-        console.log(resources);
         me.set('region_resource', resources);
         return me.set('region_resource_list', lists);
       },

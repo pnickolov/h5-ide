@@ -311,14 +311,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
 
                 # get current region's apps
-                getItemList('app', result[current_region])
+                item_list = region.region_name_group for region in result when constant.REGION_LABEL[ current_region ] == region.region_group
+
+                me.getItemList('app', item_list)
 
                 null
 
             ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
 
                 # get current region's stacks
-                getItemList('stack', result[current_region])
+                item_list = region.region_name_group for region in result when constant.REGION_LABEL[ current_region ] == region.region_group
+
+                me.getItemList('stack', item_list)
 
                 null
 
@@ -428,10 +432,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
 
-            # check duplicate stack name
-            #if stack_name == new_name
-                #warn message
-
             # get service, ( src, username, session_id, region_name, stack_id, new_name, stack_name=null )
             stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
             stack_model.on 'STACK_SAVE__AS_RETURN', (result) ->
@@ -452,7 +452,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log result
 
                 if !result.is_error
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+                    ide_event.trigger ide_event.STACK_DELETE
 
         _genDhcp: (dhcp) ->
 

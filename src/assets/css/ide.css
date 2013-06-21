@@ -133,7 +133,8 @@ a {
 	color: fff;
 }
 
-.notification-counter {
+.notification-counter,
+.unread_counter {
 	display: inline-block;
 	line-height: 1;
 	padding: 4px 3px;
@@ -684,7 +685,7 @@ a {
 	color: #666;
 }
 
-.dashboard-widget-body a:hover, 
+.dashboard-widget-body a:hover,
 .dashboard-header a:hover {
 	color: #3892E3;
 }
@@ -1019,6 +1020,7 @@ a {
 .dashboard-recent-list-meta {
 	font-size: 12px;
 	color: #ccc;
+	padding: 2px 0;
 }
 
 .timestamp {
@@ -1157,7 +1159,7 @@ a {
 	display: none;
 }
 
-.thumbnail-container.shown {
+.thumbnail-container.active {
 	display: block;
 }
 
@@ -1173,7 +1175,7 @@ a {
 	height: 0;
 	padding-bottom: 18.75%;
 	border-radius: 2px;
-	border: 1px solid #D4D4D4; 
+	border: 1px solid #D4D4D4;
 	position: relative;
 	margin: 8px 0 0 5px;
 	opacity: .6;
@@ -1299,7 +1301,7 @@ a {
 }
 
 .region-stat-block-wrap:hover,
-.widget-region-counter.active .region-stat-block-wrap {
+.active > .widget-region-counter .region-stat-block-wrap {
 	background: #F0F3F7;
 	box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
 }
@@ -1349,6 +1351,10 @@ a {
 	width: 120px;
 }
 
+.table-app-link-unmanaged {
+	color: #bbb;
+}
+
 .table.table-region-stat td.table-action {
 	text-align: center;
 }
@@ -1358,8 +1364,8 @@ td.table-action a.btn {
 	height: 10px;
 	padding: 4px;
 	line-height: 12px;
-	font-size: 12px; 
-	
+	font-size: 12px;
+
 }
 
 .resource-id {
@@ -1373,7 +1379,7 @@ td.table-action a.btn {
 	display: none;
 }
 
-.stat-table.shown {
+.stat-table.active {
 	display: block;
 }
 
@@ -1546,39 +1552,10 @@ a.sidebar-hider {
 	position: relative;
 }
 
-/* Intercom Style */
-#IntercomDefaultWidget {
-	left: 0px !important;
-	bottom: 0px !important;
-	height: 59px !important;
-	width: 59px !important;
-}
-
-#IntercomDefaultWidget span,
-#IntercomDefaultWidget span:hover {
-	background: transparent url(https://s3-ap-northeast-1.amazonaws.com/madeiraassets/ide/feedback.png) no-repeat 0 0 !important;
-	background-size: auto !important;
-	height: 58px !important;
-	width: 59px !important;
-}
-
-#IntercomDefaultWidget em {
-	right: -8px;
-	top: -8px;
-	height: 17px;
-	width: 17px;
-}
-
-#IntercomDefaultWidget em span,
-#IntercomDefaultWidget:hover em span {
-	height: 100% !important;
-	width: 100% !important;
-}
-
 /*Responsive Style*/
 
 @media (min-width: 1280px) and (max-width: 1680px)  {
-  
+
 }
 
 @media (min-width: 1680px) and (max-width: 2200px)  {

@@ -419,8 +419,33 @@ var returnTrue = function () {return true},
  *
  * @example var json = $.xml2json(response);
  */
-(function(){jQuery.extend({xml2json:function f(d){var b={},e;for(e in d.childNodes){var a=d.childNodes[e];if(1==a.nodeType){var c=a.hasChildNodes()?f(a):a.nodevalue,c=null==c?{}:c;if(b.hasOwnProperty(a.nodeName)){if(!(b[a.nodeName]instanceof Array)){var g=b[a.nodeName];b[a.nodeName]=[];b[a.nodeName].push(g)}b[a.nodeName].push(c)}else b[a.nodeName]=c;if(0<a.attributes.length){b[a.nodeName]["@attributes"]={};for(var h in a.attributes)c=a.attributes.item(h),b[a.nodeName]["@attributes"][c.nodeName]=c.nodeValue}0==a.childElementCount&&(null!=a.textContent&&""!=a.textContent)&&(b[a.nodeName]=a.textContent.trim())}}return b}})})();
-
+(function() {
+	jQuery.extend({
+		xml2json: function f(d) {
+			var b = {}, e;
+			for (e in d.childNodes) {
+				var a = d.childNodes[e];
+				if (1 == a.nodeType) {
+					var c = a.hasChildNodes() ? f(a) : a.nodevalue,
+						c = null == c ? {} : c;
+					if (b.hasOwnProperty(a.nodeName)) {
+						if (!(b[a.nodeName] instanceof Array)) {
+							var g = b[a.nodeName];
+							b[a.nodeName] = [];
+							b[a.nodeName].push(g)
+						}
+						b[a.nodeName].push(c)
+					} else b[a.nodeName] = c; if (0 < a.attributes.length) {
+						b[a.nodeName]["@attributes"] = {};
+						for (var h in a.attributes) c = a.attributes.item(h), b[a.nodeName]["@attributes"][c.nodeName] = c.nodeValue
+					}
+					0 == a.childElementCount && (null != a.textContent && "" != a.textContent) && (b[a.nodeName] = a.textContent.trim())
+				}
+			}
+			return b
+		}
+	})
+})();
 /*!
  * jQuery Cookie Plugin v1.3.1
  * https://github.com/carhartl/jquery-cookie

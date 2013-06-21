@@ -25,7 +25,7 @@ define [ 'ami_vo', 'result_vo', 'constant' ], ( ami_vo, result_vo, constant ) ->
 
             for key, value of objs
 
-                if key == 'item'
+                if key == 'item' and value.constructor == Object
 
                     tmp = []
 

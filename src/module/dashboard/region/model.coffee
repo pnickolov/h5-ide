@@ -133,7 +133,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     { "key": [ "DNSName" ], "show_key": "DNSName"}
                     { "key": [ "HealthCheck" ], "show_key": "HealthCheck"}
                     { "key": [ "Instances", 'member' ], "show_key": "Instances"}
-                    { "key": [ "ListenerDescriptions", "member", "Listener" ], "show_key": "ListenerDescriptions"}
+                    { "key": [ "ListenerDescriptions", "member" ], "show_key": "ListenerDescriptions"}
                     { "key": [ "SecurityGroups", "member"], "show_key": "SecurityGroups"}
                     { "key": [ "Subnets", "member" ], "show_key": "Subnets"}
                 ]
@@ -787,6 +787,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     else if value.InstanceId != undefined
 
                         current_title = value.InstanceId
+                    else if value.Listener != undefined
+
+                        current_title = 'Listener' + '-' + index
                     else
 
                         current_title = title + '-' + index
@@ -1161,7 +1164,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
 
 
-            console.log resources
+            #console.log resources
             me.set 'region_resource', resources
             me.set 'region_resource_list', lists
 

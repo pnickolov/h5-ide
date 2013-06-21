@@ -19,6 +19,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'modal-shown .terminate-app'    : 'terminateAppClick'
             'modal-shown .duplicate-stack'  : 'duplicateStackClick'
             'modal-shown .delete-stack'     : 'deleteStackClick'
+            'click #btn-create-stack'       : 'createStackClick'
 
         returnOverviewClick : ( target ) ->
             console.log 'returnOverviewClick'
@@ -99,7 +100,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         createStackClick : ( event ) ->
             console.log 'dashboard region create stack'
-            ide_event.trigger ide_event.ADD_STACK_TAB, region_name
+            ide_event.trigger ide_event.ADD_STACK_TAB, this.region
 
     }
 

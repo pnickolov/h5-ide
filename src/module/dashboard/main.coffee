@@ -4,6 +4,9 @@
 
 define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/module/dashboard/region/template.html', 'event', 'MC' ], ( $, overview_tmpl, region_tmpl, ide_event, MC ) ->
 
+
+    current_region = null
+
     #private
     loadModule = () ->
         #add handlebars script
@@ -68,28 +71,76 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             model.describeAccountAttributesService()
 
             #listen
-            view.on 'RETURN_REGION_TAB', () ->
+            view.on 'RETURN_REGION_TAB', ( region ) ->
                 #set MC.data.dashboard_type
+
+                current_region = region
+
                 MC.data.dashboard_type = 'REGION_TAB'
                 #push event
                 ide_event.trigger ide_event.RETURN_REGION_TAB, null
                 #render
                 #view.render()
 
-        #load remote ./module/dashboard/region/view.js
-        require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal' ], ( View, model ) ->
+                #load remote ./module/dashboard/region/view.js
+                require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal', 'UI.table' ], ( View, model ) ->
 
-            #view
-            view       = new View()
-            view.model = model
-            #listen
-            view.on 'RETURN_OVERVIEW_TAB', () ->
-                #set MC.data.dashboard_type
-                MC.data.dashboard_type = 'OVERVIEW_TAB'
-                #push event
-                ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
-            #render
-            view.render()
+                    #view
+                    view       = new View()
+                    view.model = model
+
+                    model.on 'change:vpc_attrs', () ->
+                        console.log 'dashboard_change:vpc_attrs'
+                        model.get 'vpc_attrs'
+                        view.render()
+
+                    model.on 'change:unmanaged_list', () ->
+                        console.log 'dashboard_change:unmanaged_list'
+                        unmanaged_list = model.get 'unmanaged_list'
+                        view.render( unmanaged_list.time_stamp )
+
+                    model.on 'change:status_list', () ->
+                        console.log 'dashboard_change:status_list'
+                        unmanaged_list = model.get 'status_list'
+                        view.render()
+
+                    #listen
+
+
+                    model.on 'change:region_resource_list', () ->
+                        console.log 'dashboard_region_resource_list'
+                        #push event
+                        model.get 'region_resource_list'
+                        #refresh view
+                        view.render()
+
+                    model.on 'change:region_resource', () ->
+                        console.log 'dashboard_region_resources'
+                        #push event
+                        model.get 'region_resource'
+                        #refresh view
+                        view.render()
+
+                    model.on 'REGION_RESOURCE_CHANGED', ()->
+
+                        view.render()
+
+                    model.describeAWSResourcesService(region)
+                    model.describeRegionAccountAttributesService region
+                    model.describeAWSStatusService region
+
+                    view.on 'RETURN_OVERVIEW_TAB', () ->
+                        #set MC.data.dashboard_type
+                        MC.data.dashboard_type = 'OVERVIEW_TAB'
+                        #push event
+                        ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
+
+                    view.on 'REFRESH_REGION_BTN', () ->
+                        model.describeAWSResourcesService region
+
+                    #render
+                    #view.render()
+
 
     unLoadModule = () ->
         #view.remove()

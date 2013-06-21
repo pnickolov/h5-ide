@@ -11,11 +11,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         template : Handlebars.compile $( '#overview-tmpl' ).html()
 
         events   :
-            'click #map-region-spot-list li a ' : 'mapRegionClick'
+            'click #map-region-spot-list > li' : 'mapRegionClick'
 
-        mapRegionClick : ( target ) ->
+        mapRegionClick : ( event ) ->
             console.log 'mapRegionClick'
-            this.trigger 'RETURN_REGION_TAB', null
+            this.trigger 'RETURN_REGION_TAB', event.currentTarget.id
 
         render : () ->
             console.log 'dashboard overview render'

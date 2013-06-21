@@ -31,7 +31,8 @@ require.config {
 		'UI.tabbar'    : 'ui/common/UI.tabbar'
 		'UI.bubble'    : 'ui/common/UI.bubble'
 		'UI.modal'     : 'ui/common/UI.modal'
-
+		'UI.table'     : 'ui/common/UI.table'
+		
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
 
@@ -67,6 +68,12 @@ require.config {
 		'stack_model'  : 'model/stack_model'
 		'ec2_model'    : 'model/aws/ec2/ec2_model'
 		'vpc_model'    : 'model/aws/vpc/vpc_model'
+		'aws_model'    : 'model/aws/aws_model'
+		'ami_model'    : 'model/aws/ec2/ami_model'
+		'elb_model'    : 'model/aws/elb/elb_model'
+		'dhcp_model'   : 'model/aws/vpc/dhcp_model'
+		'customergateway_model'    : 'model/aws/vpc/customergateway_model'
+		'vpngateway_model'    : 'model/aws/vpc/vpngateway_model'
 
 		#result_vo
 		'result_vo'    : 'service/result_vo'

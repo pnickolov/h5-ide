@@ -7,8 +7,37 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'eip_vo', 'result_vo', 'constant' ], ( eip_vo, result_vo, constant ) ->
+define [ 'eip_vo', 'result_vo', 'constant', 'jquery' ], ( eip_vo, result_vo, constant, $ ) ->
 
+    resolvedObjectToArray = ( objs ) ->
+
+        if objs.constructor == Array
+
+            for obj in objs
+
+                obj = resolvedObjectToArray obj
+
+        if objs.constructor == Object
+
+            if $.isEmptyObject objs
+
+                objs = null
+
+            for key, value of objs
+
+                if key == 'item' and value.constructor == Object
+
+                    tmp = []
+
+                    tmp.push resolvedObjectToArray value
+
+                    objs[key] = tmp
+
+                else if value.constructor == Object or value.constructor == Array
+
+                    objs[key] = resolvedObjectToArray value
+
+        objs
 
     #///////////////// Parser for AllocateAddress return  /////////////////
     #private (parser AllocateAddress return)
@@ -66,9 +95,18 @@ define [ 'eip_vo', 'result_vo', 'constant' ], ( eip_vo, result_vo, constant ) ->
     #private (resolve result to vo )
     resolveDescribeAddressesResult = ( result ) ->
         #resolve result
-
         #return vo
-        ($.xml2json ($.parseXML result[1])).DescribeAddressesResponse.addressesSet
+        result_set = ($.xml2json ($.parseXML result[1])).DescribeAddressesResponse.addressesSet
+
+        result = resolvedObjectToArray result_set
+        
+        if result?.item?
+
+            return result.item
+
+        else
+        
+            return null
 
     #private (parser DescribeAddresses return)
     parserDescribeAddressesReturn = ( result, return_code, param ) ->

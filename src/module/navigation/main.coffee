@@ -68,6 +68,11 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
                 #call
                 model.stackListService()
 
+            ide_event.onLongListen ide_event.UPDATE_STACK_LIST, () ->
+                console.log 'UPDATE_STACK_LIST'
+                #call
+                model.stackListService()
+
     unLoadModule = () ->
         #view.remove()
 

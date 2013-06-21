@@ -28,6 +28,11 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
         #load remote ./module/dashboard/overview/view.js
         require [ './module/dashboard/overview/view', './module/dashboard/overview/model', 'UI.tooltip' ], ( View, model ) ->
 
+            console.log '------------ overview view load ------------ '
+
+            #
+            region_view = null
+
             #view
             view       = new View()
             view.model = model
@@ -85,6 +90,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
             #listen
             view.on 'RETURN_REGION_TAB', ( region ) ->
+                console.log 'RETURN_REGION_TAB'
                 #set MC.data.dashboard_type
 
                 current_region = region
@@ -106,80 +112,87 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         current_stack = value.items
                     null
 
+                console.log 'region_view'
+                console.log region_view
+                if region_view isnt null then return
+
                 #load remote ./module/dashboard/region/view.js
                 require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal', 'UI.table' ], ( View, model ) ->
 
+                    console.log '------------ region view load ------------ '
+
                     #view
-                    view       = new View()
-                    view.model = model
+                    region_view       = new View()
+                    region_view.model = model
 
                     model.on 'change:vpc_attrs', () ->
                         console.log 'dashboard_change:vpc_attrs'
                         model.get 'vpc_attrs'
-                        view.render()
+                        region_view.render()
 
                     model.on 'change:unmanaged_list', () ->
                         console.log 'dashboard_change:unmanaged_list'
                         unmanaged_list = model.get 'unmanaged_list'
-                        view.render( unmanaged_list.time_stamp )
+                        region_view.render( unmanaged_list.time_stamp )
 
                     model.on 'change:status_list', () ->
                         console.log 'dashboard_change:status_list'
                         unmanaged_list = model.get 'status_list'
-                        view.render()
+                        region_view.render()
 
                     #listen
                     model.on 'change:cur_app_list', () ->
                         console.log 'dashboard_region_change:cur_app_list'
                         model.get 'cur_app_list'
-                        view.render()
+                        region_view.render()
 
                     model.on 'change:cur_stack_list', () ->
                         console.log 'dashboard_region_change:cur_stack_list'
                         model.get 'cur_stack_list'
-                        view.render()
+                        region_view.render()
 
                     model.on 'change:region_resource_list', () ->
                         console.log 'dashboard_region_resource_list'
                         #push event
                         model.get 'region_resource_list'
                         #refresh view
-                        view.render()
+                        region_view.render()
 
                     model.on 'change:region_resource', () ->
                         console.log 'dashboard_region_resources'
                         #push event
                         model.get 'region_resource'
                         #refresh view
-                        view.render()
+                        region_view.render()
 
                     model.on 'REGION_RESOURCE_CHANGED', ()->
 
-                        view.render()
+                        region_view.render()
 
-                    view.on 'RETURN_OVERVIEW_TAB', () ->
+                    region_view.on 'RETURN_OVERVIEW_TAB', () ->
+                        console.log 'RETURN_OVERVIEW_TAB'
                         #set MC.data.dashboard_type
                         MC.data.dashboard_type = 'OVERVIEW_TAB'
                         #push event
                         ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
 
-                    view.on 'RUN_APP_CLICK', (app_id) ->
+                    region_view.on 'RUN_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:run_app'
                         # call service
                         model.runApp(region, app_id)
-                    view.on 'STOP_APP_CLICK', (app_id) ->
+                    region_view.on 'STOP_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:stop_app'
                         model.stopApp(region, app_id)
-                    view.on 'TERMINATE_APP_CLICK', (app_id) ->
+                    region_view.on 'TERMINATE_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:terminate_app'
                         model.terminateApp(region, app_id)
-                    view.on 'DUPLICATE_STACK_CLICK', (stack_id, new_name) ->
+                    region_view.on 'DUPLICATE_STACK_CLICK', (stack_id, new_name) ->
                         console.log 'dashboard_region_click:duplicate_stack'
                         model.duplicateStack(region, stack_id, new_name)
-                    view.on 'DELETE_STACK_CLICK', (stack_id) ->
+                    region_view.on 'DELETE_STACK_CLICK', (stack_id) ->
                         console.log 'dashboard_region_click:delete_stack'
                         model.deleteStack(region, stack_id)
-                    view.on 'REFRESH_REGION_BTN', () ->
+                    region_view.on 'REFRESH_REGION_BTN', () ->
                         model.describeAWSResourcesService region
 
                     model.describeAWSResourcesService region

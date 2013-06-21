@@ -28,6 +28,8 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone' ], ( MC, stack_model, app_
                     this.trigger 'OPEN_STACK', current
                 else if type is 'app'
                     this.trigger 'OPEN_APP',   current
+                else if type is 'dashboard'
+                    this.trigger 'SWITCH_DASHBOARD', null
             else
                 #read from MC.tab[ current ]
                 console.log 'read old stack from MC.tab'

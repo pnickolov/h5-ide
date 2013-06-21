@@ -305,6 +305,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             null
 
+        # reset the empty resultset when enter a second region
+        resetData : ->
+            me = this
+
+            time_stamp      = new Date().getTime() / 1000
+            unmanaged_list  = { "time_stamp": time_stamp, "items": [] }
+            me.set 'unmanaged_list', unmanaged_list
+
         resultListListener : ->
             me = this
 

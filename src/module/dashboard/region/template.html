@@ -213,34 +213,28 @@
 	<!-- ken begin -->
 	<div class="dashboard-widget">
 		<div class="grid grid-responsive grid-small-bottom row-counter">
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-				<div class="widget-region-counter active">
-					<a href="#stat-table-instance">
+			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2 active">
+					<a href="#stat-table-instance" class="widget-region-counter">
 						<div class="region-stat-block-wrap">
 							<i class="icon-image icon-label"></i>{{region_resource_list.Instance}}<span class="label">Instance</span>
 						</div>
 					</a>
-				</div>
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-				<div class="widget-region-counter">
-					<a href="#stat-table-eip">
+					<a href="#stat-table-eip" class="widget-region-counter">
 						<div class="region-stat-block-wrap">
 							<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">EIP</span>
 							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"{{region_resource_list.Not_Used.EIP}} EIP not associated with instance.","description":"This would charge you extra expense."}'>{{region_resource_list.Not_Used.EIP}}</span>
 						</div>
 					</a>
-				</div>
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-				<div class="widget-region-counter">
-					<a href="#stat-table-ebs">
+					<a href="#stat-table-ebs" class="widget-region-counter">
 						<div class="region-stat-block-wrap">
 							<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">Volume</span>
 							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.Volume}} EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>{{region_resource_list.Not_Used.Volume}}</span>
 						</div>
 					</a>
-				</div>
 			</div>
 <!-- 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
@@ -252,37 +246,27 @@
 				</div>
 			</div> -->
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-				<div class="widget-region-counter">
-					<a href="#stat-table-vpc">
+					<a href="#stat-table-vpc" class="widget-region-counter">
 						<div class="region-stat-block-wrap">
 							<i class="icon-hdd icon-label"></i>{{region_resource_list.VPC}}<span class="label">VPC</span>
 <!-- 							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"You have reached limit of VPC in this region","description":"The max number of VPC in each region is 5."}'>!</span> -->
 						</div>
 					</a>
-				</div>
-
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-				<div class="widget-region-counter">
-					<a href="#stat-table-vpn">
+					<a href="#stat-table-vpn" class="widget-region-counter">
 						<div class="region-stat-block-wrap">
 							<i class="icon-image icon-label"></i>{{region_resource_list.VPN}}<span class="label">VPN</span>
 <!-- 							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 VPN not in use.","description":"VPN in stopped app is not in use but still charging money."}'>1</span> -->
 						</div>
 					</a>
-
-				</div>
-
 			</div>
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-				<div class="widget-region-counter">
-					<a href="#stat-table-elb">
+					<a href="#stat-table-elb" class="widget-region-counter">
 						<div class="region-stat-block-wrap">
 							<i class="icon-image icon-label"></i>{{region_resource_list.ELB}}<span class="label">ELB</span>
 						</div>
 					</a>
-				</div>
-
 			</div>
 <!-- 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 				<div class="widget-region-counter">
@@ -319,7 +303,7 @@
 			</div> -->
 
 		</div>
-		<div id="stat-table-instance" class="stat-table shown">
+		<div id="stat-table-instance" class="stat-table active">
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">

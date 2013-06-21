@@ -166,23 +166,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
 
         initialize : ->
-            # me = this
-
-            # aws_model.on 'AWS_RESOURCE_RETURN', ( result ) ->
-
-            #     resource_source = result.resolved_data[current_region]
-
-            #     me.setResource resource_source
-
-            #     null
-
-        resultListListener : ->
             me = this
 
-            ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
-
-                # get current region's apps
-                me.getItemList('app', result[current_region])
+            aws_model.on 'AWS_RESOURCE_RETURN', ( result ) ->
 
                 console.log 'AWS_RESOURCE_RETURN'
 
@@ -191,13 +177,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 me.setResource resource_source
 
                 me.updateUnmanagedList()
-
-                null
-
-            ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
-
-                # get current region's stacks
-                me.getItemList('stack', result[current_region])
 
                 null
 
@@ -323,6 +302,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     null
 
                 me.reRenderRegionResource()
+
+            null
+
+        resultListListener : ->
+            me = this
+
+            ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
+
+                # get current region's apps
+                getItemList('app', result[current_region])
+
+                null
+
+            ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
+
+                # get current region's stacks
+                getItemList('stack', result[current_region])
+
+                null
 
         # get current region's app/stack list
         getItemList : ( flag, item_list ) ->
@@ -602,7 +600,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
 
-            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
+            vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
                 console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 

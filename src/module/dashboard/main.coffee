@@ -4,6 +4,12 @@
 
 define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/module/dashboard/region/template.html', 'event', 'MC' ], ( $, overview_tmpl, region_tmpl, ide_event, MC ) ->
 
+
+    current_region = null
+
+    app_list   = null
+    stack_list = null
+
     #private
     loadModule = () ->
         #add handlebars script
@@ -62,34 +68,94 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 model.get 'resent_stoped_apps'
                 view.render()
 
+            model.on 'change:app_list', () ->
+                console.log 'dashboard_change:app_list'
+                app_list = model.get 'app_list'
+                null
+
+            model.on 'change:stack_list', () ->
+                console.log 'dashboard_change:stack_list'
+                stack_list = model.get 'stack_list'
+                null
+
             #model
             model.resultListListener()
             model.emptyListListener()
             model.describeAccountAttributesService()
 
             #listen
-            view.on 'RETURN_REGION_TAB', () ->
+            view.on 'RETURN_REGION_TAB', ( region ) ->
                 #set MC.data.dashboard_type
+
+                current_region = region
+
                 MC.data.dashboard_type = 'REGION_TAB'
                 #push event
                 ide_event.trigger ide_event.RETURN_REGION_TAB, null
-                #render
-                #view.render()
 
-        #load remote ./module/dashboard/region/view.js
-        require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal' ], ( View, model ) ->
+                current_app = null
+                # get current region's apps/stacks
+                _.map app_list, (value) ->
+                    if region == value.region_name
+                        current_app = value.items
+                    null
 
-            #view
-            view       = new View()
-            view.model = model
-            #listen
-            view.on 'RETURN_OVERVIEW_TAB', () ->
-                #set MC.data.dashboard_type
-                MC.data.dashboard_type = 'OVERVIEW_TAB'
-                #push event
-                ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
-            #render
-            view.render()
+                current_stack = null
+                _.map stack_list, (value) ->
+                    if region == value.region_name
+                        current_stack = value.items
+                    null
+
+                #load remote ./module/dashboard/region/view.js
+                require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal' ], ( View, model ) ->
+
+                    #view
+                    view       = new View()
+                    view.model = model
+                    #listen
+                    #model.describeAWSResourcesService(region)
+
+                    model.on 'change:cur_app_list', () ->
+                        console.log 'dashboard_region_change:cur_app_list'
+                        model.get 'cur_app_list'
+                        view.render()
+
+                    model.on 'change:cur_stack_list', () ->
+                        console.log 'dashboard_region_change:cur_stack_list'
+                        model.get 'cur_stack_list'
+                        view.render()
+
+                    view.on 'RETURN_OVERVIEW_TAB', () ->
+                        #set MC.data.dashboard_type
+                        MC.data.dashboard_type = 'OVERVIEW_TAB'
+                        #push event
+                        ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
+                        #render
+                        view.render()
+
+                    model.getItemList('app', current_app)
+                    model.getItemList('stack', current_stack)
+
+                    view.on 'RUN_APP_CLICK', (app_id) ->
+                        console.log 'dashboard_region_click:run_app'
+                        # call service
+                        model.runApp(region, app_id)
+                    view.on 'STOP_APP_CLICK', (app_id) ->
+                        console.log 'dashboard_region_click:stop_app'
+                        model.stopApp(region, app_id)
+                    view.on 'TERMINATE_APP_CLICK', (app_id) ->
+                        console.log 'dashboard_region_click:terminate_app'
+                        model.terminateApp(region, app_id)
+                    view.on 'DUPLICATE_STACK_CLICK', (stack_id, new_name) ->
+                        console.log 'dashboard_region_click:duplicate_stack'
+                        model.duplicateStack(region, stack_id, new_name)
+                    view.on 'DELETE_STACK_CLICK', (stack_id) ->
+                        console.log 'dashboard_region_click:delete_stack'
+                        model.deleteStack(region, stack_id)
+
+                    model.resultListListener()
+
+
 
     unLoadModule = () ->
         #view.remove()

@@ -171,12 +171,39 @@ define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, resu
     resolveDescribeInstancesResult = ( result ) ->
         #resolve instance
         xml = $.parseXML result[1]
+
         rootNodeName = xml.documentElement.localName
 
-        instance_vo.instance = $.xml2json xml
+        instance_list = []
 
-        #return instance
-        instance_vo.instance
+        reservationSet = ($.xml2json xml).DescribeInstancesResponse.reservationSet
+
+        if not $.isEmptyObject reservationSet
+
+            if reservationSet.item.constructor == Array
+
+                for item in reservationSet.item
+
+                    if item.instancesSet.item.constructor == Array
+
+                        for i in item.instancesSet.item
+
+                            instance_list.push i
+
+                    else
+
+                        instance_list.push item.instancesSet.item
+            else
+
+                if reservationSet.item.instancesSet.item.constructor == Array
+
+                    instance_list = reservationSet.item.instancesSet.item
+
+                else
+
+                    instance_list.push it for it in reservationSet.item.instancesSet.item
+
+        instance_list
 
     #private (parser DescribeInstances return)
     parserDescribeInstancesReturn = ( result, return_code, param ) ->

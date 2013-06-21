@@ -176,6 +176,7 @@ define [], () ->
 		APP_STATE_STOPPING		: "Stopping"
 		APP_STATE_STARTING		: "Starting"
 		APP_STATE_TERMINATED	: "Terminated"
+		APP_STATE_INITIALIZING	: "Initializing"
 	}
 
 	#private
@@ -186,6 +187,16 @@ define [], () ->
 		OPS_STATE_ROLLBACK		: "Rollback"
 		OPS_STATE_FAILED		: "Failed"
 	}
+
+	AWS_RESOURCE = {
+		INSTANCE 		:	'EC2.Instance'
+		EIP				:	'EC2.EIP'
+		VOLUME			:	'EBS.Volume'
+		VPC				:	'VPC'
+		VPN				:	'VPC.VPN'
+		ELB				:	'ELB'
+	}
+
 
 	#private, recent items threshold
 	RECENT_NUM		= 4

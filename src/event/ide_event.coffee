@@ -9,10 +9,10 @@ define [ 'underscore', 'backbone' ], () ->
     event = {
         NAVIGATION_COMPLETE : 'NAVIGATION_COMPLETE'
     }
-    
+
     #bind event to Backbone.Events
     _.extend event, Backbone.Events
-    
+
     #public
     event
     ###
@@ -31,6 +31,8 @@ define [ 'underscore', 'backbone' ], () ->
         SWITCH_STACK_TAB    : 'SWITCH_STACK_TAB'
         SWITCH_DASHBOARD    : 'SWITCH_DASHBOARD'
 
+        TERMINATE_APP_TAB   : 'TERMINATE_APP_TAB'
+
         #result app stack region empty_region list
         RESULT_APP_LIST     : 'RESULT_APP_LIST'
         RESULT_STACK_LIST   : 'RESULT_STACK_LIST'
@@ -39,6 +41,13 @@ define [ 'underscore', 'backbone' ], () ->
         #return overview region tab
         RETURN_OVERVIEW_TAB : 'RETURN_OVERVIEW_TAB'
         RETURN_REGION_TAB   : 'RETURN_REGION_TAB'
+
+        #app/stack in region
+        APP_RUN             : 'APP_RUN'
+        APP_STOP            : 'APP_STOP'
+        APP_TERMINATE       : 'APP_TERMINATE'
+        UPDATE_STACK_LIST   : 'UPDATE_STACK_LIST'
+        STACK_DELETE        : 'STACK_DELETE'
 
         constructor : ->
             _.extend this, Backbone.Events

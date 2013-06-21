@@ -112,6 +112,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     #view
                     view       = new View()
                     view.model = model
+                    view.region = region
 
                     model.on 'change:vpc_attrs', () ->
                         console.log 'dashboard_change:vpc_attrs'

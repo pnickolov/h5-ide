@@ -182,7 +182,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
 
                 # get current region's apps
-                getItemList('app', result[current_region])
+                me.getItemList('app', result[current_region])
 
                 console.log 'AWS_RESOURCE_RETURN'
 
@@ -197,7 +197,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
 
                 # get current region's stacks
-                getItemList('stack', result[current_region])
+                me.getItemList('stack', result[current_region])
 
                 null
 

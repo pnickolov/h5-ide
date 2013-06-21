@@ -125,39 +125,39 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 null
 
             #listen
-            ide_event.onLongListen 'APP_RUN', ( tab_name, app_id ) ->
+            ide_event.onLongListen ide_event.APP_RUN, ( tab_name, app_id ) ->
                 console.log 'APP_RUN ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
                 #
                 view.changeIcon app_id
                 #push event
-                ide_event.trigger 'UPDATE_APP_LIST', null
+                ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 null
 
             #listen
-            ide_event.onLongListen 'STOP_RUN', ( tab_name, app_id ) ->
-                console.log 'STOP_RUN ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+            ide_event.onLongListen ide_event.APP_STOP, ( tab_name, app_id ) ->
+                console.log 'APP_STOP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
                 #
                 view.changeIcon app_id
                 #push event
-                ide_event.trigger 'UPDATE_APP_LIST', null
+                ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 null
 
             #listen
-            ide_event.onLongListen 'APP_TERMINAL', ( tab_name, app_id ) ->
+            ide_event.onLongListen ide_event.APP_TERMINATE, ( tab_name, app_id ) ->
                 console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
                 #
                 view.closeTab app_id
                 #push event
-                ide_event.trigger 'UPDATE_APP_LIST', null
+                ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 null
 
             #listen
-            ide_event.onLongListen 'STACK_DELETE', ( tab_name, stack_id ) ->
+            ide_event.onLongListen ide_event.STACK_DELETE, ( tab_name, stack_id ) ->
                 console.log 'STACK_DELETE ' + ' tab_name = ' + tab_name + ', stack_id = ' + stack_id
                 #
                 view.closeTab stack_id
                 #push event
-                ide_event.trigger 'UPDATE_STACK_LIST', null
+                ide_event.trigger ide_event.UPDATE_STACK_LIST, null
                 null
 
             #render

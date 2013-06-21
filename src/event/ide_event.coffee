@@ -47,6 +47,7 @@ define [ 'underscore', 'backbone' ], () ->
         APP_RUN             : 'APP_RUN'
         APP_STOP            : 'APP_STOP'
         APP_TERMINATE       : 'APP_TERMINATE'
+        UPDATE_APP_LIST     : 'UPDATE_APP_LIST'
         UPDATE_STACK_LIST   : 'UPDATE_STACK_LIST'
         STACK_DELETE        : 'STACK_DELETE'
 

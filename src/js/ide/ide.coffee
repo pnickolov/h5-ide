@@ -29,8 +29,12 @@ define [ 'MC', 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'das
 		design.loadModule()
 		#load dashboard
 		dashboard.loadModule()
-		#load navigation
-		navigation.loadModule()
+
+		setTimeout () ->
+			#load navigation
+			navigation.loadModule()
+		,2000
+
 		#temp
 		ide_event.onListen ide_event.NAVIGATION_COMPLETE, () ->
 			console.log 'NAVIGATION_COMPLETE'

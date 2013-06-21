@@ -58,12 +58,12 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
             #model
             model.appListService()
 
-            ide_event.onLongListen 'UPDATE_APP_LIST', () ->
+            ide_event.onLongListen ide_event.UPDATE_APP_LIST, () ->
                 console.log 'UPDATE_APP_LIST'
                 #call
                 model.appListService()
 
-            ide_event.onLongListen 'UPDATE_STACK_LIST', () ->
+            ide_event.onLongListen ide_event.UPDATE_STACK_LIST, () ->
                 console.log 'UPDATE_STACK_LIST'
                 #call
                 model.stackListService()

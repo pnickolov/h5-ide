@@ -1,4 +1,4 @@
-var 
+var
 	/*show_item = function (target)
 	{
 		$(target).parent().prev().find('.hide').show();
@@ -14,8 +14,8 @@ var
 	// 	tabs.css('width', tab_item_width);
 	// },
 
-	canvasPanelResize = function () 
-	{	
+	canvasPanelResize = function ()
+	{
 		var main_middle = $('#canvas-panel'),
 			resource_panel = $('#resource-panel'),
 			property_panel = $('#property-panel'),
@@ -154,7 +154,7 @@ var ready = function () {
 
 		$('.nav-head').toggleClass('accordion-group');
 		$('.sub-menu-wrapper').toggleClass('accordion-body');
-		
+
 		if (nav.hasClass('collapsed'))
 		{
 			$('.sub-menu-wrapper').each(function() {
@@ -190,7 +190,7 @@ var ready = function () {
 	});
 
 	canvasPanelResize();
-	mainContentResize(); 
+	mainContentResize();
 
 	$(window).resize(function ()
 	{
@@ -199,7 +199,7 @@ var ready = function () {
 		mainContentResize();
 	});
 
-	// Global Overview World Map Hover Sync 
+	// Global Overview World Map Hover Sync
 	$('#map-region-spot-list').on('mouseenter', 'li', function()
 	{
 		$('#stat-' + this.id).addClass('hover');
@@ -218,34 +218,6 @@ var ready = function () {
 	$('#dashboard-widget-regions').on('mouseleave', 'a', function()
 	{
 		$('#' + this.id.replace('stat-','')).removeClass('hover');
-	});
-	
-	$(document).on('click', '.widget-region-counter a', function(event) 
-	{	
-		event.preventDefault();
-
-		var id = $(this).attr('href'),
-			active = $('.row-counter .widget-region-counter.active'),
-			id_active = active.children('a').attr('href');
-
-		$(id).addClass('shown');
-		$(id_active).removeClass('shown')
-		active.removeClass('active');
-		$(this).parent().addClass('active');
-	});
-
-	$('.dashboard-region-stat-tab-head').on('click', 'a', function(event) 
-	{	
-		event.preventDefault();
-
-		var id = $(this).attr('href'),
-			active = $('.dashboard-region-stat-tab-head > li.active'),
-			id_active = active.children('a').attr('href');
-
-		$(id).addClass('shown');
-		$(id_active).removeClass('shown')
-		active.removeClass('active');
-		$(this).parent().addClass('active');
 	});
 
 //});

@@ -340,20 +340,14 @@
         'unmanaged_list': null,
         'status_list': null
       },
-      initialize: function() {},
-      resultListListener: function() {
+      initialize: function() {
         var me;
         me = this;
-        ide_event.onListen('RESULT_APP_LIST', function(result) {
-          me.getItemList('app', result[current_region]);
+        aws_model.on('AWS_RESOURCE_RETURN', function(result) {
           console.log('AWS_RESOURCE_RETURN');
           resource_source = result.resolved_data[current_region];
           me.setResource(resource_source);
           me.updateUnmanagedList();
-          return null;
-        });
-        ide_event.onListen('RESULT_STACK_LIST', function(result) {
-          me.getItemList('stack', result[current_region]);
           return null;
         });
         ami_model.on('EC2_AMI_DESC_IMAGES_RETURN', function(result) {
@@ -434,7 +428,7 @@
           });
           return me.reRenderRegionResource();
         });
-        return vpngateway_model.on('VPC_VGW_DESC_VPN_GWS_RETURN', function(result) {
+        vpngateway_model.on('VPC_VGW_DESC_VPN_GWS_RETURN', function(result) {
           var vgw_set;
           vgw_set = result.resolved_data.item;
           _.map(resource_source.DescribeVpnConnections, function(vpn) {
@@ -451,6 +445,19 @@
             return null;
           });
           return me.reRenderRegionResource();
+        });
+        return null;
+      },
+      resultListListener: function() {
+        var me;
+        me = this;
+        ide_event.onListen('RESULT_APP_LIST', function(result) {
+          getItemList('app', result[current_region]);
+          return null;
+        });
+        return ide_event.onListen('RESULT_STACK_LIST', function(result) {
+          getItemList('stack', result[current_region]);
+          return null;
         });
       },
       getItemList: function(flag, item_list) {
@@ -631,7 +638,7 @@
           console.log('STACK_REMOVE_RETURN');
           console.log(result);
           if (!result.is_error) {
-            return ide_event.trigger(ide_event.ADD_STACK_TAB);
+            return ide_event.trigger(ide_event.UPDATE_STACK_LIST);
           }
         });
       },
@@ -778,7 +785,7 @@
         vpc_model.DescribeAccountAttributes({
           sender: this
         }, $.cookie('usercode'), $.cookie('session_id'), null, ["supported-platforms"]);
-        vpc_model.on('VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', function(result) {
+        vpc_model.once('VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', function(result) {
           var regionAttrSet;
           console.log('region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN');
           regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item.attributeValueSet.item;

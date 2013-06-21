@@ -583,7 +583,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log result
 
                 if !result.is_error
-                    ide_event.trigger ide_event.ADD_STACK_TAB
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST
 
         _genDhcp: (dhcp) ->
 

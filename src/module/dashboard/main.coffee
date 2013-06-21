@@ -122,6 +122,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     region_view.model.getItemList 'app', current_app
                     region_view.model.getItemList 'stack', current_stack
                     region_view.model.resultListListener()
+                    return
 
                 #load remote ./module/dashboard/region/view.js
                 require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal', 'UI.table', 'UI.tablist' ], ( View, model ) ->

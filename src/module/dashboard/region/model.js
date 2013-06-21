@@ -456,7 +456,9 @@
           "time_stamp": time_stamp,
           "items": []
         };
-        return me.set('unmanaged_list', unmanaged_list);
+        me.set('unmanaged_list', unmanaged_list);
+        me.set('vpc_attrs', {});
+        return me.set('status_list', {});
       },
       resultListListener: function() {
         var me;

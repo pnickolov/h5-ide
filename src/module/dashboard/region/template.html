@@ -10,8 +10,10 @@
 				<span class="region-platform-classic" >{{ vpc_attrs.classic }}</span>
 				{{else}}
 				<div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 VPC.">
-				{{/if}}
-				<span class="region-platform-vpc">{{ vpc_attrs.vpc }}</span>
+                {{/if}}
+                {{#if vpc_attrs.vpc}}
+                <span class="region-platform-vpc">{{ vpc_attrs.vpc }}</span>
+                {{/if}}
 			{{else}}
 			<div class="region-platform-wrap tooltip" data-tooltip="">
 			{{/if}}

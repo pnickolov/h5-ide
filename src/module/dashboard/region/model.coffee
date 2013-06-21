@@ -312,6 +312,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             time_stamp      = new Date().getTime() / 1000
             unmanaged_list  = { "time_stamp": time_stamp, "items": [] }
             me.set 'unmanaged_list', unmanaged_list
+            me.set 'vpc_attrs', {}
+            me.set 'status_list', {}
+
 
         resultListListener : ->
             me = this

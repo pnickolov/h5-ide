@@ -306,8 +306,9 @@
 		<div id="stat-table-instance" class="stat-table active">
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-					<div class="scroll-content">
+					<div class="scroll-content">						
 						<table class="table table-region-stat" id="region-stat-table-instance">
+						{{#if region_resource.DescribeInstances}}
 						<thead>
 							<tr>
 								<th class="sortable" style="width:20%">Instance Name/ID</th>
@@ -320,7 +321,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#if region_resource.DescribeInstances}}
+							
 								{{#each region_resource.DescribeInstances }}
 								<tr>
 									<td>
@@ -348,17 +349,19 @@
 								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
 									<p>There is no instance in this region.</p>
 								</div>
-							{{/if}}
+							
 						</tbody>
-						</table>
+						{{/if}}
+						</table>						
 					</div>
 				</div>
 		</div>
 		<div id="stat-table-eip" class="stat-table">
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-					<div class="scroll-content">
+					<div class="scroll-content">						
 						<table class="table table-region-stat" id="region-stat-table-eip">
+						{{#if region_resource.DescribeAddresses}}
 						<thead>
 							<tr>
 								<th class="sortable" style="width:40%">IP</th>
@@ -367,7 +370,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#if region_resource.DescribeAddresses}}
+							
 								{{#each region_resource.DescribeAddresses }}
 								<tr>
 									<td>
@@ -381,17 +384,19 @@
 								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
 									<p>There is no eip in this region.</p>
 								</div>
-							{{/if}}
+							
 						</tbody>
-						</table>
+						{{/if}}
+						</table>						
 					</div>
 				</div>
 		</div>
 		<div id="stat-table-ebs" class="stat-table">
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-					<div class="scroll-content">
+					<div class="scroll-content">						
 						<table class="table table-region-stat" id="region-stat-table-ebs">
+						{{#if region_resource.DescribeVolumes}}
 						<thead>
 							<tr>
 								<th class="sortable" style="width:20%">Name/ID</th>
@@ -403,7 +408,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#if region_resource.DescribeVolumes}}
+							
 								{{#each region_resource.DescribeVolumes }}
 								<tr>
 									<td>
@@ -429,9 +434,11 @@
 								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
 									<p>There is no volume in this region.</p>
 								</div>
-							{{/if}}
+							
 						</tbody>
+						{{/if}}
 						</table>
+						
 					</div>
 				</div>
 		</div>
@@ -439,7 +446,9 @@
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
+						
 						<table class="table table-region-stat" id="region-stat-table-vpc">
+						{{#if region_resource.DescribeVpcs}}
 						<thead>
 							<tr>
 								<th class="sortable" style="width:25%">Name/ID</th>
@@ -450,7 +459,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#if region_resource.DescribeVpcs}}
+							
 								{{#each region_resource.DescribeVpcs }}
 								<tr>
 									<td>
@@ -475,17 +484,20 @@
 								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
 									<p>There is no vpc in this region.</p>
 								</div>
-							{{/if}}
+							
 						</tbody>
+						{{/if}}
 						</table>
+						
 					</div>
 				</div>
 		</div>
 		<div id="stat-table-vpn" class="stat-table">
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-					<div class="scroll-content">
+					<div class="scroll-content">						
 						<table class="table table-region-stat" id="region-stat-table-vpn">
+						{{#if region_resource.DescribeVpnConnections}}
 						<thead>
 							<tr>
 								<th class="sortable" style="width:25%">Name/ID</th>
@@ -496,7 +508,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#if region_resource.DescribeVpnConnections}}
+							
 								{{#each region_resource.DescribeVpnConnections }}
 								<tr>
 									<td>
@@ -521,9 +533,11 @@
 								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
 									<p>There is no vpn in this region.</p>
 								</div>
-							{{/if}}
+							
 						</tbody>
+						{{/if}}
 						</table>
+						
 					</div>
 				</div>
 		</div>
@@ -531,7 +545,9 @@
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<div class="scroll-content">
+						
 						<table class="table table-region-stat" id="region-stat-table-elb">
+						{{#if region_resource.DescribeLoadBalancers}}
 						<thead>
 							<tr>
 								<th class="sortable" style="width:25%">DNS Name</th>
@@ -542,7 +558,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{#if region_resource.DescribeLoadBalancers}}
+							
 								{{#each region_resource.DescribeLoadBalancers }}
 								<tr>
 									<td>
@@ -559,9 +575,11 @@
 								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
 									<p>There is no elb in this region.</p>
 								</div>
-							{{/if}}
+							
 						</tbody>
+						{{/if}}
 						</table>
+						
 					</div>
 				</div>
 		</div>

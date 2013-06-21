@@ -448,6 +448,16 @@
         });
         return null;
       },
+      resetData: function() {
+        var me, time_stamp;
+        me = this;
+        time_stamp = new Date().getTime() / 1000;
+        unmanaged_list = {
+          "time_stamp": time_stamp,
+          "items": []
+        };
+        return me.set('unmanaged_list', unmanaged_list);
+      },
       resultListListener: function() {
         var me;
         me = this;

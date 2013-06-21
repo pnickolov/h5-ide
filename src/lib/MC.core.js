@@ -2,16 +2,16 @@
 #**********************************************************
 #* Filename: MC.core.js
 #* Creator: Angel
-#* Description: The core of the whole system 
-#* Date: 20130617
+#* Description: The core of the whole system
+#* Date: 20130621
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var MC = {
-	version: '0.1.6',
+	version: '0.1.7',
 
-	// Global Variable 
+	// Global Variable
 	API_URL: 'https://api.madeiracloud.com/',
 	IMG_URL: 'https://img.madeiracloud.com/',
 
@@ -102,7 +102,7 @@ var MC = {
 			};
 
 		MC.api_queue[guid] = option;
-		
+
 		if (!api_frame[0])
 		{
 			$(document.body).append('<iframe id="api-frame" src="https://api.madeiracloud.com/api.html" style="display:none;"></iframe>');
@@ -271,8 +271,7 @@ var MC = {
 			second = (now.getTime() - date_time) / 1000,
 			days = Math.floor(second / 86400),
 			hours = Math.floor(second / 3600),
-			minute = Math.floor(second / 60),
-			target_date;
+			minute = Math.floor(second / 60);
 
 		if (days > 30)
 		{
@@ -299,15 +298,15 @@ var MC = {
 /*
 * Storage
 * Author: Angel
-* 
+*
 * Save data into local computer via HTML5 localStorage, up to 10MB storage capacity.
-* 
+*
 * Saving data
 * MC.storage.set(name, value)
-* 
+*
 * Getting data
 * MC.storage.get(name)
-* 
+*
 * Remove data
 * MC.storage.remove(name)
 */
@@ -337,79 +336,6 @@ MC.storage = {
 	}
 };
 
-MC.WebSocket = function (host, options)
-{
-	return this.WebSocket.prototype.init(host, options);
-};
-
-MC.WebSocket.prototype = {
-	init: function (host, options)
-	{
-		var socket = new WebSocket(host),
-			data;
-
-		if (socket)
-		{
-			if (options)
-			{
-				$.each('open message error close'.split(' '), function (i, name)
-				{
-					if (options['on' + name] && typeof options['on' + name] === 'function')
-					{
-						if (name === 'message')
-						{
-							$(socket).on(name, function (event)
-							{
-								data = event.originalEvent.data;
-								data = MC.isJSON(data) ? JSON.parse(data) : data;
-
-								options.onmessage(data);
-							});
-						}
-						else
-						{
-							$(socket).on(name, options['on' + name]);
-						}
-					}
-				});
-			}
-
-			$.each(MC.WebSocket.prototype, function (name, value)
-			{
-				if (typeof value === 'function')
-				{
-					socket[name] = value;
-				}
-			});
-			socket.options = options;
-
-			return socket;
-		}
-		else
-		{
-			return false;
-		}
-	},
-
-	post: function (message)
-	{
-		if (this.send(message) === false && this.options.onerror)
-		{
-			this.options.onerror.call(this);
-			
-			return false;
-		}
-		return true;
-	},
-
-	reconnect: function ()
-	{
-		this.close();
-
-		return MC.WebSocket.prototype.init(this.URL, this.options);
-	}
-};
-
 // For event handler
 var returnTrue = function () {return true},
 	returnFalse = function () {return false};
@@ -419,33 +345,78 @@ var returnTrue = function () {return true},
  *
  * @example var json = $.xml2json(response);
  */
-(function() {
-	jQuery.extend({
-		xml2json: function f(d) {
-			var b = {}, e;
-			for (e in d.childNodes) {
-				var a = d.childNodes[e];
-				if (1 == a.nodeType) {
-					var c = a.hasChildNodes() ? f(a) : a.nodevalue,
-						c = null == c ? {} : c;
-					if (b.hasOwnProperty(a.nodeName)) {
-						if (!(b[a.nodeName] instanceof Array)) {
-							var g = b[a.nodeName];
-							b[a.nodeName] = [];
-							b[a.nodeName].push(g)
+(function ()
+{
+	jQuery.extend(
+	{
+		xml2json: function xml2json(xml)
+		{
+			var result = {};
+
+			for (var i in xml.childNodes)
+			{
+				var node = xml.childNodes[i];
+				if (node.nodeType == 1)
+				{
+					var child = node.hasChildNodes() ? xml2json(node) : node.nodevalue;
+					child = child == null ?
+					{} : child;
+
+					if (result.hasOwnProperty(node.nodeName))
+					{
+						// For repeating elements, cast the node to array
+						if (!(result[node.nodeName] instanceof Array))
+						{
+							var tmp = result[node.nodeName];
+							result[node.nodeName] = [];
+							result[node.nodeName].push(tmp);
 						}
-						b[a.nodeName].push(c)
-					} else b[a.nodeName] = c; if (0 < a.attributes.length) {
-						b[a.nodeName]["@attributes"] = {};
-						for (var h in a.attributes) c = a.attributes.item(h), b[a.nodeName]["@attributes"][c.nodeName] = c.nodeValue
+						//result[node.nodeName].push(node.textContent.trim());
 					}
-					0 == a.childElementCount && (null != a.textContent && "" != a.textContent) && (b[a.nodeName] = a.textContent.trim())
+					else
+					{
+						result[node.nodeName] = child;
+					}
+
+					// Add attributes if any
+					if (node.attributes.length > 0)
+					{
+						result[node.nodeName]['@attributes'] = {};
+						for (var j in node.attributes)
+						{
+							var attribute = node.attributes.item(j);
+							result[node.nodeName]['@attributes'][attribute.nodeName] = attribute.nodeValue;
+						}
+					}
+
+					// Add element value
+					if (node.childElementCount == 0 && node.textContent != null && node.textContent !== "")
+					{
+						if (result[node.nodeName] instanceof Array)
+						{
+							result[node.nodeName].push(node.textContent.trim());
+						}
+						else
+						{
+							if (node.nodeName === 'member')
+							{
+								result[node.nodeName] = [];
+								result[node.nodeName].push(node.textContent.trim());
+							}
+							else
+							{
+								result[node.nodeName] = node.textContent.trim();
+							}
+						}
+					}
 				}
 			}
-			return b
+
+			return result;
 		}
-	})
+	});
 })();
+
 /*!
  * jQuery Cookie Plugin v1.3.1
  * https://github.com/carhartl/jquery-cookie

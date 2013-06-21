@@ -313,6 +313,22 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             unmanaged_list  = { "time_stamp": time_stamp, "items": [] }
             me.set 'unmanaged_list', unmanaged_list
 
+            lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0}
+            me.set 'region_resource_list', lists
+
+            resource = {
+                DescribeLoadBalancers:null
+                DescribeInstances:null
+                DescribeVpcs:null
+                DescribeAddresses:null
+                DescribeImages:null
+                DescribeVpnGateways:null
+            }
+            me.set 'region_resource', resource
+
+            # re render
+            me.reRenderRegionResource()
+
         resultListListener : ->
             me = this
 
@@ -780,6 +796,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 titles = []
 
+                is_str = false
+
                 _.map source, ( value, index ) ->
 
                     current_title = title
@@ -808,6 +826,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                         if value.constructor == String
 
+                            is_str = true
+
                             tmp.push value
 
                         else
@@ -818,15 +838,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 lines = []
 
                 if entry
+                    if not is_str
 
-                    _.map tmp, ( line, index ) ->
+                        _.map tmp, ( line, index ) ->
 
-                        bubble_front    = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data='
-                        bubble_end      = '>' + titles[index] + '</a>'
-                        line            = " &apos;{\\\"title\\\": \\\"" + titles[index] + '\\\" , \\\"sub_info\\\":[' + line + "]}&apos; "
-                        line            = bubble_front + line + bubble_end
+                            bubble_front    = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data='
+                            bubble_end      = '>' + titles[index] + '</a>'
+                            line            = " &apos;{\\\"title\\\": \\\"" + titles[index] + '\\\" , \\\"sub_info\\\":[' + line + "]}&apos; "
+                            line            = bubble_front + line + bubble_end
 
-                        lines.push line
+                            lines.push line
+
+                    else
+
+                        lines = tmp
 
                 else
                     lines = tmp

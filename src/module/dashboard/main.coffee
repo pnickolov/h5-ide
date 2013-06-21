@@ -107,14 +107,28 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     null
 
                 #load remote ./module/dashboard/region/view.js
-                require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal' ], ( View, model ) ->
+                require [ './module/dashboard/region/view', './module/dashboard/region/model', 'UI.tooltip', 'UI.bubble', 'UI.modal', 'UI.table' ], ( View, model ) ->
 
                     #view
                     view       = new View()
                     view.model = model
-                    #listen
-                    #model.describeAWSResourcesService(region)
 
+                    model.on 'change:vpc_attrs', () ->
+                        console.log 'dashboard_change:vpc_attrs'
+                        model.get 'vpc_attrs'
+                        view.render()
+
+                    model.on 'change:unmanaged_list', () ->
+                        console.log 'dashboard_change:unmanaged_list'
+                        unmanaged_list = model.get 'unmanaged_list'
+                        view.render( unmanaged_list.time_stamp )
+
+                    model.on 'change:status_list', () ->
+                        console.log 'dashboard_change:status_list'
+                        unmanaged_list = model.get 'status_list'
+                        view.render()
+
+                    #listen
                     model.on 'change:cur_app_list', () ->
                         console.log 'dashboard_region_change:cur_app_list'
                         model.get 'cur_app_list'
@@ -125,16 +139,29 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         model.get 'cur_stack_list'
                         view.render()
 
+                    model.on 'change:region_resource_list', () ->
+                        console.log 'dashboard_region_resource_list'
+                        #push event
+                        model.get 'region_resource_list'
+                        #refresh view
+                        view.render()
+
+                    model.on 'change:region_resource', () ->
+                        console.log 'dashboard_region_resources'
+                        #push event
+                        model.get 'region_resource'
+                        #refresh view
+                        view.render()
+
+                    model.on 'REGION_RESOURCE_CHANGED', ()->
+
+                        view.render()
+
                     view.on 'RETURN_OVERVIEW_TAB', () ->
                         #set MC.data.dashboard_type
                         MC.data.dashboard_type = 'OVERVIEW_TAB'
                         #push event
                         ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
-                        #render
-                        view.render()
-
-                    model.getItemList('app', current_app)
-                    model.getItemList('stack', current_stack)
 
                     view.on 'RUN_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:run_app'
@@ -152,10 +179,15 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     view.on 'DELETE_STACK_CLICK', (stack_id) ->
                         console.log 'dashboard_region_click:delete_stack'
                         model.deleteStack(region, stack_id)
+                    view.on 'REFRESH_REGION_BTN', () ->
+                        model.describeAWSResourcesService region
 
+                    model.describeAWSResourcesService region
+                    model.describeRegionAccountAttributesService region
+                    model.describeAWSStatusService region
+                    model.getItemList 'app', current_app
+                    model.getItemList 'stack', current_stack
                     model.resultListListener()
-
-
 
     unLoadModule = () ->
         #view.remove()

@@ -79,7 +79,7 @@
 							{{#each cur_stack_list}}
 							<div class="item-thumbnail-wrap" style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
 								<div class="action-thumbnail">
-										<a class="modal btn duplicate-stack"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Rename Stack", "body":"Stack Name:", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"><i class="icon-redo"></i></a>
+										<a class="modal btn duplicate-stack"  id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Rename Stack", "body":"Stack Name:", "input":"{{name}}", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"><i class="icon-redo"></i></a>
 
 										<a class="modal btn delete-stack"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to Delete", "body":"Do you confirm to delete {{name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-trashcan" id="{{id}}"></i></a>
 

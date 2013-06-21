@@ -81,11 +81,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         duplicateStackClick : ( event ) ->
             target = $( this.el )
             id = event.currentTarget.id
+            name = event.currentTarget.name
 
             $('#btn-confirm').on 'click', { target : this }, (event) ->
                 console.log 'dashboard region duplicate stack'
+                new_name = $('#modal-input-value').val()
+
+                #check duplicate stack name
+                if not new_name or new_name == name
+                    #output warn message
+                    return
+
                 modal.close()
-                event.data.target.trigger 'DUPLICATE_STACK_CLICK', id, "new_name"
+                event.data.target.trigger 'DUPLICATE_STACK_CLICK', id, new_name
             true
 
         deleteStackClick : ( event ) ->

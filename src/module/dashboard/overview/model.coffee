@@ -17,6 +17,18 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
     total_stack = 0
     total_aws   = 0
 
+    #region_tooltip
+    region_tooltip = [
+        "arrow-left map-tooltip-pointer-left",
+        "arrow-down map-tooltip-pointer",
+        "arrow-up map-tooltip-pointer-up",
+        "arrow-down map-tooltip-pointer",
+        "arrow-down map-tooltip-pointer",
+        "arrow-down map-tooltip-pointer",
+        "arrow-down map-tooltip-pointer",
+        "arrow-down map-tooltip-pointer"
+    ]
+
     OverviewModel = Backbone.Model.extend {
 
         defaults :
@@ -71,7 +83,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             result_list.region_infos = []
             region_aws_list          = []
 
-            _.map constant.REGION_KEYS, ( value )  ->
+            _.map constant.REGION_KEYS, ( value, key )  ->
 
                 region_counts[value] = { 'running_app': 0, 'stopped_app': 0, 'stack': 0 }
 
@@ -81,8 +93,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                 region_group_obj = value
 
-                _.map region_group_obj.items, ( value ) ->
-
+                _.map region_group_obj.region_name_group, ( value ) ->
                     if value.state is constant.APP_STATE.APP_STATE_RUNNING
                         region_counts[value.region].running_app += 1
                     else if value.state is constant.APP_STATE.APP_STATE_STOPPED
@@ -108,10 +119,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 null
 
             #
-            _.map constant.REGION_KEYS, ( value ) ->
+            _.map constant.REGION_KEYS, ( value, key ) ->
 
                 if region_counts[ value ].running_app isnt 0 or region_counts[ value ].stopped_app isnt 0 or region_counts[ value ].stack isnt 0
-                    result_list.region_infos.push { 'region_name' : value, 'region_city' : constant.REGION_SHORT_LABEL[ value ], 'running_app' : region_counts[ value ].running_app, 'stopped_app' : region_counts[ value ].stopped_app, 'stack': region_counts[ value ].stack }
+                    result_list.region_infos.push { 'region_name' : value, 'region_city' : constant.REGION_SHORT_LABEL[ value ], 'running_app' : region_counts[ value ].running_app, 'stopped_app' : region_counts[ value ].stopped_app, 'stack': region_counts[ value ].stack, 'pointer': region_tooltip[key] }
                     region_aws_list.push value
 
                 null
@@ -170,7 +181,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 regionAttrSet = result.resolved_data
 
                 _.map constant.REGION_KEYS, ( value ) ->
-                    cur_attr = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
+                    cur_attr = regionAttrSet[ value ].accountAttributeSet.item.attributeValueSet.item
 
                     if $.type(cur_attr) == "array"
                         region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ] }

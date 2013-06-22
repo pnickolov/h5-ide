@@ -921,14 +921,17 @@ a {
 	left: 218px;
 }
 
-#sa-east-1 .map-tooltip {
-	top: -41px;
-	left: -71px;
-}
-
 #ap-southeast-1 {
 	top: 214px;
 	left: 505px;
+}
+
+#sa-east-1 .map-tooltip,
+#ap-southeast-1 .map-tooltip,
+#ap-southeast-2 .map-tooltip,
+#ap-northeast-1 .map-tooltip {
+	top: -41px;
+	left: -71px;
 }
 
 #ap-southeast-2 {

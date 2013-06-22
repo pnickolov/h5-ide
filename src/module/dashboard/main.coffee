@@ -7,8 +7,10 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
     current_region = null
 
-    app_list   = null
-    stack_list = null
+    app_list        = null
+    stack_list      = null
+    overview_app    = null
+    overview_stack  = null
 
     #private
     loadModule = () ->
@@ -91,14 +93,10 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
                 console.log 'overview RESULT_APP_LIST'
 
-                app_list = result
+                overview_app = result
 
-                if stack_list
-                    model.updateMap model, app_list, stack_list
-                else
-                    ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
-                        stack_list = result
-                        model.updateMap model, app_list, stack_list
+                if overview_stack
+                    model.updateMap model, overview_app, overview_stack
 
                 model.updateRecentList( model, result, 'recent_launched_apps' )
                 model.updateRecentList( model, result, 'recent_stoped_apps' )
@@ -108,14 +106,14 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
                 console.log 'overview RESULT_STACK_LIST'
 
-                stack_list = result
+                overview_stack = result
 
-                if app_list
-                    model.updateMap model, app_list, stack_list
+                if overview_app
+                    model.updateMap model, overview_app, overview_stack
                 else
                     ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
-                        app_list = result
-                        model.updateMap model, app_list, stack_list
+                        overview_app = result
+                        model.updateMap model, overview_app, overview_stack
 
                 model.updateRecentList( model, result, 'recent_edited_stacks' )
 
@@ -147,6 +145,8 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     null
 
                 current_stack = null
+                console.log 'stack_list'
+                console.log stack_list
                 _.map stack_list, (value) ->
                     if region == value.region_name
                         current_stack = value.items
@@ -154,6 +154,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
                 console.log 'region_view'
                 console.log region_view
+                console.log current_stack
                 if region_view isnt null
                     region_view.model.resetData()
                     region_view.model.describeAWSResourcesService region

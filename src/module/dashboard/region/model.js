@@ -834,7 +834,7 @@
         vpc_model.once('VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', function(result) {
           var regionAttrSet;
           console.log('region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN');
-          regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item[0].attributeValueSet.item;
+          regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item.attributeValueSet.item;
           if ($.type(regionAttrSet) === "array") {
             vpc_attrs_value = {
               'classic': 'Classic',

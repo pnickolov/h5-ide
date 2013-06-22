@@ -420,7 +420,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
             app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.on 'APP_START_RETURN', (result) ->
+            app_model.once 'APP_START_RETURN', (result) ->
                 console.log 'APP_START_RETURN'
                 console.log result
 
@@ -436,7 +436,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
             app_model.stop { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.on 'APP_STOP_RETURN', (result) ->
+            app_model.once 'APP_STOP_RETURN', (result) ->
                 console.log 'APP_STOP_RETURN'
                 console.log result
 
@@ -449,7 +449,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
             app_model.terminate { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.on 'APP_TERMINATE_RETURN', (result) ->
+            app_model.once 'APP_TERMINATE_RETURN', (result) ->
                 console.log 'APP_TERMINATE_RETURN'
                 console.log result
 
@@ -478,7 +478,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
             stack_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, stack_name
-            stack_model.on 'STACK_REMOVE_RETURN', (result) ->
+            stack_model.once 'STACK_REMOVE_RETURN', (result) ->
                 console.log 'STACK_REMOVE_RETURN'
                 console.log result
 

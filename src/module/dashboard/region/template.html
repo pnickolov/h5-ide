@@ -226,7 +226,9 @@
 					<a href="#stat-table-eip" class="widget-region-counter">
 						<div class="region-stat-block-wrap">
 							<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">EIP</span>
+							{{#if region_resource_list.Not_Used.EIP}}
 							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"{{region_resource_list.Not_Used.EIP}} EIP not associated with instance.","description":"This would charge you extra expense."}'>{{region_resource_list.Not_Used.EIP}}</span>
+							{{/if}}
 						</div>
 					</a>
 			</div>
@@ -234,7 +236,9 @@
 					<a href="#stat-table-ebs" class="widget-region-counter">
 						<div class="region-stat-block-wrap">
 							<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">Volume</span>
+							{{#if region_resource_list.Not_Used.Volume}}
 							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.Volume}} EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>{{region_resource_list.Not_Used.Volume}}</span>
+							{{/if}}
 						</div>
 					</a>
 			</div>
@@ -478,7 +482,11 @@
 									</td>
 									<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
 									<td>{{ cidrBlock }}</td>
+									{{#if dhcp}}
 									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{dhcp}}}'>{{ dhcpOptionsId }}</a></td>
+									{{else}}
+									<td>None</td>
+									{{/if}}
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}

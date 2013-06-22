@@ -476,34 +476,34 @@
           DescribeImages: null,
           DescribeVpnGateways: null
         };
-        me.set('region_resource', resource);
-        return me.reRenderRegionResource();
+        return me.set('region_resource', resource);
       },
       resultListListener: function() {
         var me;
         me = this;
-        ide_event.onListen('RESULT_APP_LIST', function(result) {
-          var item_list, region, _i, _len;
-          for (_i = 0, _len = result.length; _i < _len; _i++) {
-            region = result[_i];
-            if (constant.REGION_LABEL[current_region] === region.region_group) {
-              item_list = region.region_name_group;
-            }
-          }
-          me.getItemList('app', item_list);
-          return null;
-        });
-        return ide_event.onListen('RESULT_STACK_LIST', function(result) {
-          var item_list, region, _i, _len;
-          for (_i = 0, _len = result.length; _i < _len; _i++) {
-            region = result[_i];
-            if (constant.REGION_LABEL[current_region] === region.region_group) {
-              item_list = region.region_name_group;
-            }
-          }
-          me.getItemList('stack', item_list);
-          return null;
-        });
+        return null;
+        /*
+        ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
+        
+            # get current region's apps
+            item_list = region.region_name_group for region in result when constant.REGION_LABEL[ current_region ] == region.region_group
+        
+            me.getItemList('app', item_list)
+        
+            null
+        
+        ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
+        
+            console.log 'RESULT_STACK_LIST'
+        
+            # get current region's stacks
+            item_list = region.region_name_group for region in result when constant.REGION_LABEL[ current_region ] == region.region_group
+        
+            me.getItemList('stack', item_list)
+        
+            null
+        */
+
       },
       getItemList: function(flag, item_list) {
         var cur_item_list, me;
@@ -645,6 +645,7 @@
       },
       duplicateStack: function(region, stack_id, new_name) {
         var me, s, stack_name, _i, _len, _ref;
+        console.log('duplicateStack');
         me = this;
         current_region = region;
         _ref = me.get('cur_stack_list');
@@ -657,7 +658,7 @@
         stack_model.save_as({
           sender: this
         }, $.cookie('usercode'), $.cookie('session_id'), region, stack_id, new_name, stack_name);
-        return stack_model.on('STACK_SAVE__AS_RETURN', function(result) {
+        return stack_model.once('STACK_SAVE__AS_RETURN', function(result) {
           console.log('STACK_SAVE__AS_RETURN');
           console.log(result);
           if (!result.is_error) {
@@ -683,7 +684,7 @@
           console.log('STACK_REMOVE_RETURN');
           console.log(result);
           if (!result.is_error) {
-            return ide_event.trigger(ide_event.STACK_DELETE);
+            return ide_event.trigger(ide_event.STACK_DELETE, stack_name, stack_id);
           }
         });
       },

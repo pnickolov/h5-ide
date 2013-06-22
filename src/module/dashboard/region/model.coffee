@@ -329,8 +329,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             }
             me.set 'region_resource', resource
 
-            # re render
-            me.reRenderRegionResource()
 
         resultListListener : ->
             me = this

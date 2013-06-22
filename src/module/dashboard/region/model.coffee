@@ -2,7 +2,7 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant', 'WS' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant, WS) ->
 
     current_region  = null
     resource_source = null
@@ -329,32 +329,37 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             }
             me.set 'region_resource', resource
 
-
-        resultListListener : ->
+        # sub and query request
+        queryRequest : ( region, req_id ) ->
             me = this
+
+            while true
+                req = me.getRequest region, req_id
+                if req.state != "InProcess"
+                    if req.state == "Done"
+                        return true
+                    else
+                        return false
+
             null
 
-            ###
-            ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
+        getRequest : ( region, req_id ) ->
+            me = this
 
-                # get current region's apps
-                item_list = region.region_name_group for region in result when constant.REGION_LABEL[ current_region ] == region.region_group
+            # sub request
+            WS.websocketInit()
+            subscribed = new WS.WebSocket()
+            try
+                subscribed.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, call = () ->
+                    console.log 'Subscription success'
 
-                me.getItemList('app', item_list)
-
+                    # get request
+                    req = subscribed.collection.request.findOne({id:req_id})
+                    if req
+                        return req
                 null
-
-            ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
-
-                console.log 'RESULT_STACK_LIST'
-
-                # get current region's stacks
-                item_list = region.region_name_group for region in result when constant.REGION_LABEL[ current_region ] == region.region_group
-
-                me.getItemList('stack', item_list)
-
-                null
-            ###
+            catch error
+                console.log 'Subscription failed'
 
         # get current region's app/stack list
         getItemList : ( flag, item_list ) ->
@@ -427,8 +432,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 #parse the result
                 if !result.is_error #request successfuly
                     #push event
-                    ide_event.trigger ide_event.APP_RUN, app_name, app_id
-                #else    # failed
+                    if (me.queryRequest region, result.resolved_data.id)
+                        ide_event.trigger ide_event.APP_RUN, app_name, app_id
 
         stopApp : (region, app_id) ->
             me = this
@@ -441,7 +446,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log result
 
                 if !result.is_error
-                    ide_event.trigger ide_event.APP_STOP, app_name, app_id
+
+                    if (me.queryRequest region, result.resolved_data.id)
+                        ide_event.trigger ide_event.APP_STOP, app_name, app_id
 
         terminateApp : (region, app_id) ->
             me = this

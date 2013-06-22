@@ -33,7 +33,7 @@ require.config {
 		'UI.modal'     : 'ui/common/UI.modal'
 		'UI.table'     : 'ui/common/UI.table'
 		'UI.tablist'   : 'ui/common/UI.tablist'
-		
+
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
 
@@ -81,6 +81,10 @@ require.config {
 
 		#constant
 		'constant'     : 'lib/constant'
+
+		#websocket
+		'Meteor'       : 'vender/meteor/meteor'
+		'WS'           : 'lib/websocket'
 
 		#############################################
 		#############################################
@@ -237,8 +241,16 @@ require.config {
 		'UI.bubble'    :
 			deps       : [ 'MC.template' ]
 
-		'UI.modal'    :
+		'UI.modal'     :
 			deps       : [ 'MC.template' ]
+
+		'Meteor'       :
+			deps       : ['underscore']
+			exports    : 'Meteor'
+
+		'WS'           :
+			deps       : ['Meteor', 'underscore']
+			exports    : 'WS'
 
 		#'MC.topo'     :
 		#	deps       : [ 'MC' ]

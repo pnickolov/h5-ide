@@ -20,6 +20,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'modal-shown .duplicate-stack'  : 'duplicateStackClick'
             'modal-shown .delete-stack'     : 'deleteStackClick'
             'click #btn-create-stack'       : 'createStackClick'
+            'click .app-thumbnail'          : 'clickAppThumbnail'
+            'click .stack-thumbnail'        : 'clickStackThumbnail'
 
         returnOverviewClick : ( target ) ->
             console.log 'returnOverviewClick'
@@ -109,6 +111,16 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         createStackClick : ( event ) ->
             console.log 'dashboard region create stack'
             ide_event.trigger ide_event.ADD_STACK_TAB, this.region
+
+        clickAppThumbnail : ( event ) ->
+            console.log 'dashboard region click app thumbnail'
+            console.log $(event.currentTarget).find('.thumbnail-name').text(), event.currentTarget.id, this.region
+            ide_event.trigger ide_event.OPEN_APP_TAB, $(event.currentTarget).find('.thumbnail-name').text(), event.currentTarget.id, this.region
+
+        clickStackThumbnail : ( event ) ->
+            console.log 'dashboard region click stack thumbnail'
+            console.log $(event.currentTarget).find('.thumbnail-name').text(), event.currentTarget.id, this.region
+            ide_event.trigger ide_event.OPEN_STACK_TAB, $(event.currentTarget).find('.thumbnail-name').text(), event.currentTarget.id, this.region
 
     }
 

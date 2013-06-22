@@ -91,7 +91,14 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
                 console.log 'overview RESULT_APP_LIST'
 
-                model.updateMap( model, result )
+                app_list = result
+
+                if stack_list
+                    model.updateMap model, app_list, stack_list
+                else
+                    ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
+                        stack_list = result
+                        model.updateMap model, app_list, stack_list
 
                 model.updateRecentList( model, result, 'recent_launched_apps' )
                 model.updateRecentList( model, result, 'recent_stoped_apps' )
@@ -100,6 +107,15 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
             ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
                 console.log 'overview RESULT_STACK_LIST'
+
+                stack_list = result
+
+                if app_list
+                    model.updateMap model, app_list, stack_list
+                else
+                    ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
+                        app_list = result
+                        model.updateMap model, app_list, stack_list
 
                 model.updateRecentList( model, result, 'recent_edited_stacks' )
 

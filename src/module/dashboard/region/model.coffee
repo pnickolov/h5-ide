@@ -635,7 +635,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
-                regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item.attributeValueSet.item
+                regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item[0].attributeValueSet.item
 
                 if $.type(regionAttrSet) == "array"
                     vpc_attrs_value = { 'classic' : 'Classic', 'vpc' : 'VPC' }
@@ -929,7 +929,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     value_conf = value_set.customerGatewayConfiguration
 
                     if value_conf
+                        #console.log value_conf
                         value_conf = $.xml2json($.parseXML value_conf)
+                        #console.log value_conf
                         value_conf = value_conf.vpn_connection
                         dc_data =
                             vpnConnectionId                         : me._parseEmptyValue value_conf['@attributes'].id

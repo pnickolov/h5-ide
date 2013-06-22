@@ -2,16 +2,16 @@
 #**********************************************************
 #* Filename: MC.core.js
 #* Creator: Angel
-#* Description: The core of the whole system
-#* Date: 20130621
+#* Description: The core of the whole system 
+#* Date: 20130622
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var MC = {
-	version: '0.1.7',
+	version: '0.1.8',
 
-	// Global Variable
+	// Global Variable 
 	API_URL: 'https://api.madeiracloud.com/',
 	IMG_URL: 'https://img.madeiracloud.com/',
 
@@ -102,7 +102,7 @@ var MC = {
 			};
 
 		MC.api_queue[guid] = option;
-
+		
 		if (!api_frame[0])
 		{
 			$(document.body).append('<iframe id="api-frame" src="https://api.madeiracloud.com/api.html" style="display:none;"></iframe>');
@@ -298,15 +298,15 @@ var MC = {
 /*
 * Storage
 * Author: Angel
-*
+* 
 * Save data into local computer via HTML5 localStorage, up to 10MB storage capacity.
-*
+* 
 * Saving data
 * MC.storage.set(name, value)
-*
+* 
 * Getting data
 * MC.storage.get(name)
-*
+* 
 * Remove data
 * MC.storage.remove(name)
 */
@@ -359,8 +359,7 @@ var returnTrue = function () {return true},
 				if (node.nodeType == 1)
 				{
 					var child = node.hasChildNodes() ? xml2json(node) : node.nodevalue;
-					child = child == null ?
-					{} : child;
+					child = child == null ? {} : child;
 
 					if (result.hasOwnProperty(node.nodeName))
 					{
@@ -371,11 +370,25 @@ var returnTrue = function () {return true},
 							result[node.nodeName] = [];
 							result[node.nodeName].push(tmp);
 						}
-						//result[node.nodeName].push(node.textContent.trim());
+						else
+						{
+							result[node.nodeName].push(child);
+						}
 					}
 					else
 					{
-						result[node.nodeName] = child;
+						if (node.nodeName === 'item')
+						{
+							if (typeof result[node.nodeName] === 'undefined')
+							{
+								result[node.nodeName] = [];
+							}
+							result[node.nodeName].push(child);
+						}
+						else
+						{
+							result[node.nodeName] = child;
+						}
 					}
 
 					// Add attributes if any
@@ -390,7 +403,11 @@ var returnTrue = function () {return true},
 					}
 
 					// Add element value
-					if (node.childElementCount == 0 && node.textContent != null && node.textContent !== "")
+					if (
+						node.childElementCount === 0 &&
+						node.textContent != null &&
+						node.textContent !== ""
+					)
 					{
 						if (result[node.nodeName] instanceof Array)
 						{
@@ -398,15 +415,7 @@ var returnTrue = function () {return true},
 						}
 						else
 						{
-							if (node.nodeName === 'member')
-							{
-								result[node.nodeName] = [];
-								result[node.nodeName].push(node.textContent.trim());
-							}
-							else
-							{
-								result[node.nodeName] = node.textContent.trim();
-							}
+							result[node.nodeName] = node.textContent.trim();
 						}
 					}
 				}

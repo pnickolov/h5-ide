@@ -894,10 +894,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                         parse_table_result += '"'
                         null
 
-                    count_set = [1, 2]
-                    _.map count_set, ( value, key ) ->
+                    _.map table_set, ( value, key ) ->
                         cur_key     = key
-                        cur_value   = value
+                        cur_value   = key + 1
                         parse_table_result += '], "tr'
                         parse_table_result += cur_value
                         parse_table_result += '_set":['
@@ -938,33 +937,36 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                             vpnConnectionId                         : me._parseEmptyValue value_conf['@attributes'].id
                             vpnGatewayId                            : me._parseEmptyValue value_conf.vpn_gateway_id
                             customerGatewayId                       : me._parseEmptyValue value_conf.customer_gateway_id
+                            tunnel                                  : []
+                        _.map value_conf.ipsec_tunnel, ( value, key ) ->
+                            cur_array = {}
+                            cur_array.number                                 = key + 1
+                            cur_array.ike_protocol_method                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
+                            cur_array.ike_protocol_method                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
+                            cur_array.ike_pre_shared_key                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.pre_shared_key,
+                            cur_array.ike_authentication_protocol_algorithm  = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
+                            cur_array.ike_encryption_protocol                = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.encryption_protocol
+                            cur_array.ike_lifetime                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.lifetime
+                            cur_array.ike_mode                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.mode
+                            cur_array.ike_perfect_forward_secrecy            = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.perfect_forward_secrecy
+                            cur_array.ipsec_protocol                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.protocol
+                            cur_array.ipsec_authentication_protocol          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.authentication_protocol
+                            cur_array.ipsec_encryption_protocol              = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.encryption_protocol
+                            cur_array.ipsec_lifetime                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.lifetime
+                            cur_array.ipsec_mode                             = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.mode
+                            cur_array.ipsec_perfect_forward_secrecy          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.perfect_forward_secrecy
+                            cur_array.ipsec_interval                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.interval
+                            cur_array.ipsec_retries                          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.retries
+                            cur_array.tcp_mss_adjustment                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.tcp_mss_adjustment
+                            cur_array.clear_df_bit                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.clear_df_bit
+                            cur_array.fragmentation_before_encryption        = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.fragmentation_before_encryption
+                            cur_array.customer_gateway_outside_address        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_outside_address.ip_address
+                            cur_array.vpn_gateway_outside_address            = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_outside_address.ip_address
+                            cur_array.customer_gateway_inside_address        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
+                            cur_array.vpn_gateway_inside_address             = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
+                            cur_array.next_hop                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address
 
-                        count_set = [1, 2]
-                        _.map count_set, ( value, key ) ->
-                            dc_data["tunnel" + key + "_ike_protocol_method"]                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
-                            dc_data["tunnel" + key + "_ike_protocol_method"]                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
-                            dc_data["tunnel" + key + "_ike_pre_shared_key"]                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.pre_shared_key,
-                            dc_data["tunnel" + key + "_ike_authentication_protocol_algorithm"]  = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
-                            dc_data["tunnel" + key + "_ike_encryption_protocol"]                = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.encryption_protocol
-                            dc_data["tunnel" + key + "_ike_lifetime"]                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.lifetime
-                            dc_data["tunnel" + key + "_ike_mode"]                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.mode
-                            dc_data["tunnel" + key + "_ike_perfect_forward_secrecy"]            = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.perfect_forward_secrecy
-                            dc_data["tunnel" + key + "_ipsec_protocol"]                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.protocol
-                            dc_data["tunnel" + key + "_ipsec_authentication_protocol"]          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.authentication_protocol
-                            dc_data["tunnel" + key + "_ipsec_encryption_protocol"]              = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.encryption_protocol
-                            dc_data["tunnel" + key + "_ipsec_lifetime"]                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.lifetime
-                            dc_data["tunnel" + key + "_ipsec_mode"]                             = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.mode
-                            dc_data["tunnel" + key + "_ipsec_perfect_forward_secrecy"]          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.perfect_forward_secrecy
-                            dc_data["tunnel" + key + "_ipsec_interval"]                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.interval
-                            dc_data["tunnel" + key + "_ipsec_retries"]                          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.retries
-                            dc_data["tunnel" + key + "_tcp_mss_adjustment"]                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.tcp_mss_adjustment
-                            dc_data["tunnel" + key + "_clear_df_bit"]                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.clear_df_bit
-                            dc_data["tunnel" + key + "_fragmentation_before_encryption"]        = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.fragmentation_before_encryption
-                            dc_data["tunnel" + key + "_customer_gateway_outside_address"]        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_outside_address.ip_address
-                            dc_data["tunnel" + key + "_vpn_gateway_outside_address"]            = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_outside_address.ip_address
-                            dc_data["tunnel" + key + "_customer_gateway_inside_address"]        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
-                            dc_data["tunnel" + key + "_vpn_gateway_inside_address"]             = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
-                            dc_data["tunnel" + key + "_next_hop"]                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address
+                            dc_data.tunnel.push cur_array
 
                             null
 
@@ -1235,7 +1237,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             aws_model.status { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
 
-            aws_model.on 'AWS_STATUS_RETURN', ( result ) ->
+            aws_model.once 'AWS_STATUS_RETURN', ( result ) ->
 
                 console.log 'AWS_STATUS_RETURN'
 

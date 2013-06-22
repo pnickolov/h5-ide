@@ -449,7 +449,7 @@
         return null;
       },
       resetData: function() {
-        var me, time_stamp;
+        var lists, me, resource, time_stamp;
         me = this;
         time_stamp = new Date().getTime() / 1000;
         unmanaged_list = {
@@ -458,17 +458,50 @@
         };
         me.set('unmanaged_list', unmanaged_list);
         me.set('vpc_attrs', {});
-        return me.set('status_list', {});
+        me.set('status_list', {});
+        lists = {
+          ELB: 0,
+          EIP: 0,
+          Instance: 0,
+          VPC: 0,
+          VPN: 0,
+          Volume: 0
+        };
+        me.set('region_resource_list', lists);
+        resource = {
+          DescribeLoadBalancers: null,
+          DescribeInstances: null,
+          DescribeVpcs: null,
+          DescribeAddresses: null,
+          DescribeImages: null,
+          DescribeVpnGateways: null
+        };
+        me.set('region_resource', resource);
+        return me.reRenderRegionResource();
       },
       resultListListener: function() {
         var me;
         me = this;
         ide_event.onListen('RESULT_APP_LIST', function(result) {
-          getItemList('app', result[current_region]);
+          var item_list, region, _i, _len;
+          for (_i = 0, _len = result.length; _i < _len; _i++) {
+            region = result[_i];
+            if (constant.REGION_LABEL[current_region] === region.region_group) {
+              item_list = region.region_name_group;
+            }
+          }
+          me.getItemList('app', item_list);
           return null;
         });
         return ide_event.onListen('RESULT_STACK_LIST', function(result) {
-          getItemList('stack', result[current_region]);
+          var item_list, region, _i, _len;
+          for (_i = 0, _len = result.length; _i < _len; _i++) {
+            region = result[_i];
+            if (constant.REGION_LABEL[current_region] === region.region_group) {
+              item_list = region.region_name_group;
+            }
+          }
+          me.getItemList('stack', item_list);
           return null;
         });
       },
@@ -650,7 +683,7 @@
           console.log('STACK_REMOVE_RETURN');
           console.log(result);
           if (!result.is_error) {
-            return ide_event.trigger(ide_event.UPDATE_STACK_LIST);
+            return ide_event.trigger(ide_event.STACK_DELETE);
           }
         });
       },
@@ -943,7 +976,7 @@
         return parse_result;
       },
       _genBubble: function(source, title, entry) {
-        var bubble_end, bubble_front, lines, me, parse_sub_info, titles, tmp;
+        var bubble_end, bubble_front, is_str, lines, me, parse_sub_info, titles, tmp;
         me = this;
         parse_sub_info = "";
         if ($.isEmptyObject(source)) {
@@ -971,6 +1004,7 @@
         if (source.constructor === Array) {
           tmp = [];
           titles = [];
+          is_str = false;
           _.map(source, function(value, index) {
             var current_title;
             current_title = title;
@@ -988,6 +1022,7 @@
             titles.push(current_title);
             if (value !== null) {
               if (value.constructor === String) {
+                is_str = true;
                 return tmp.push(value);
               } else {
                 return tmp.push(me._genBubble(value, current_title, false));
@@ -996,13 +1031,17 @@
           });
           lines = [];
           if (entry) {
-            _.map(tmp, function(line, index) {
-              bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data=';
-              bubble_end = '>' + titles[index] + '</a>';
-              line = " &apos;{\\\"title\\\": \\\"" + titles[index] + '\\\" , \\\"sub_info\\\":[' + line + "]}&apos; ";
-              line = bubble_front + line + bubble_end;
-              return lines.push(line);
-            });
+            if (!is_str) {
+              _.map(tmp, function(line, index) {
+                bubble_front = '<a href=\\"javascript:void(0)\\" class=\\"bubble table-link\\" data-bubble-template=\\"bubbleRegionResourceInfo\\" data-bubble-data=';
+                bubble_end = '>' + titles[index] + '</a>';
+                line = " &apos;{\\\"title\\\": \\\"" + titles[index] + '\\\" , \\\"sub_info\\\":[' + line + "]}&apos; ";
+                line = bubble_front + line + bubble_end;
+                return lines.push(line);
+              });
+            } else {
+              lines = tmp;
+            }
           } else {
             lines = tmp;
           }
@@ -1011,7 +1050,7 @@
         return parse_sub_info;
       },
       _parseTableValue: function(keyes_set, value_set) {
-        var count_set, detail_table, me, parse_table_result, table_date, table_set;
+        var detail_table, me, parse_table_result, table_date, table_set;
         me = this;
         parse_table_result = '';
         table_date = '';
@@ -1048,11 +1087,10 @@
               parse_table_result += '"';
               return null;
             });
-            count_set = [1, 2];
-            _.map(count_set, function(value, key) {
+            _.map(table_set, function(value, key) {
               var cur_key, cur_value;
               cur_key = key;
-              cur_value = value;
+              cur_value = key + 1;
               parse_table_result += '], "tr';
               parse_table_result += cur_value;
               parse_table_result += '_set":[';
@@ -1087,7 +1125,7 @@
         parse_btns_result = '';
         btn_data = '';
         _.map(keyes_set, function(value) {
-          var count_set, dc_data, dc_filename, dc_parse, value_conf;
+          var dc_data, dc_filename, dc_parse, value_conf;
           btn_data = '';
           if (value.type === "download_configuration") {
             value_conf = value_set.customerGatewayConfiguration;
@@ -1097,33 +1135,37 @@
               dc_data = {
                 vpnConnectionId: me._parseEmptyValue(value_conf['@attributes'].id),
                 vpnGatewayId: me._parseEmptyValue(value_conf.vpn_gateway_id),
-                customerGatewayId: me._parseEmptyValue(value_conf.customer_gateway_id)
+                customerGatewayId: me._parseEmptyValue(value_conf.customer_gateway_id),
+                tunnel: []
               };
-              count_set = [1, 2];
-              _.map(count_set, function(value, key) {
-                dc_data["tunnel" + key + "_ike_protocol_method"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.authentication_protocol);
-                dc_data["tunnel" + key + "_ike_protocol_method"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.authentication_protocol);
-                dc_data["tunnel" + key + "_ike_pre_shared_key"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.pre_shared_key, dc_data["tunnel" + key + "_ike_authentication_protocol_algorithm"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.authentication_protocol));
-                dc_data["tunnel" + key + "_ike_encryption_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.encryption_protocol);
-                dc_data["tunnel" + key + "_ike_lifetime"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.lifetime);
-                dc_data["tunnel" + key + "_ike_mode"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.mode);
-                dc_data["tunnel" + key + "_ike_perfect_forward_secrecy"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.perfect_forward_secrecy);
-                dc_data["tunnel" + key + "_ipsec_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.protocol);
-                dc_data["tunnel" + key + "_ipsec_authentication_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.authentication_protocol);
-                dc_data["tunnel" + key + "_ipsec_encryption_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.encryption_protocol);
-                dc_data["tunnel" + key + "_ipsec_lifetime"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.lifetime);
-                dc_data["tunnel" + key + "_ipsec_mode"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.mode);
-                dc_data["tunnel" + key + "_ipsec_perfect_forward_secrecy"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.perfect_forward_secrecy);
-                dc_data["tunnel" + key + "_ipsec_interval"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.interval);
-                dc_data["tunnel" + key + "_ipsec_retries"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.retries);
-                dc_data["tunnel" + key + "_tcp_mss_adjustment"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.tcp_mss_adjustment);
-                dc_data["tunnel" + key + "_clear_df_bit"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.clear_df_bit);
-                dc_data["tunnel" + key + "_fragmentation_before_encryption"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.fragmentation_before_encryption);
-                dc_data["tunnel" + key + "_customer_gateway_outside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].customer_gateway.tunnel_outside_address.ip_address);
-                dc_data["tunnel" + key + "_vpn_gateway_outside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_outside_address.ip_address);
-                dc_data["tunnel" + key + "_customer_gateway_inside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr);
-                dc_data["tunnel" + key + "_vpn_gateway_inside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr);
-                dc_data["tunnel" + key + "_next_hop"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address);
+              _.map(value_conf.ipsec_tunnel, function(value, key) {
+                var cur_array;
+                cur_array = {};
+                cur_array["number"] = key + 1;
+                cur_array["ike_protocol_method"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.authentication_protocol);
+                cur_array["ike_protocol_method"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.authentication_protocol);
+                cur_array["ike_pre_shared_key"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.pre_shared_key, cur_array["ike_authentication_protocol_algorithm"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.authentication_protocol));
+                cur_array["ike_encryption_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.encryption_protocol);
+                cur_array["ike_lifetime"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.lifetime);
+                cur_array["ike_mode"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.mode);
+                cur_array["ike_perfect_forward_secrecy"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ike.perfect_forward_secrecy);
+                cur_array["ipsec_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.protocol);
+                cur_array["ipsec_authentication_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.authentication_protocol);
+                cur_array["ipsec_encryption_protocol"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.encryption_protocol);
+                cur_array["ipsec_lifetime"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.lifetime);
+                cur_array["ipsec_mode"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.mode);
+                cur_array["ipsec_perfect_forward_secrecy"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.perfect_forward_secrecy);
+                cur_array["ipsec_interval"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.interval);
+                cur_array["ipsec_retries"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.retries);
+                cur_array["tcp_mss_adjustment"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.tcp_mss_adjustment);
+                cur_array["clear_df_bit"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.clear_df_bit);
+                cur_array["fragmentation_before_encryption"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].ipsec.fragmentation_before_encryption);
+                cur_array["customer_gateway_outside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].customer_gateway.tunnel_outside_address.ip_address);
+                cur_array["vpn_gateway_outside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_outside_address.ip_address);
+                cur_array["customer_gateway_inside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr);
+                cur_array["vpn_gateway_inside_address"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr);
+                cur_array["next_hop"] = me._parseEmptyValue(value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address);
+                dc_data.tunnel.push(cur_array);
                 return null;
               });
               dc_filename = dc_data.vpnConnectionId ? dc_data.vpnConnectionId : 'download_configuration';

@@ -88,6 +88,13 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             model.emptyListListener()
             model.describeAccountAttributesService()
 
+            ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->
+
+                console.log 'NAVIGATION_TO_DASHBOARD_REGION'
+                view.trigger 'RETURN_REGION_TAB', result
+
+                null
+
             #listen
             view.on 'RETURN_REGION_TAB', ( region ) ->
                 console.log 'RETURN_REGION_TAB'

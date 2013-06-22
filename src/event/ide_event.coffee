@@ -51,6 +51,9 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_STACK_LIST   : 'UPDATE_STACK_LIST'
         STACK_DELETE        : 'STACK_DELETE'
 
+        #navigation to dashboard - region
+        NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
+
         constructor : ->
             _.extend this, Backbone.Events
 

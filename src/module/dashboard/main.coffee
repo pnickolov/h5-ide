@@ -88,6 +88,23 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             model.emptyListListener()
             model.describeAccountAttributesService()
 
+            ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
+                console.log 'overview RESULT_APP_LIST'
+
+                model.updateMap( model, result )
+
+                model.updateRecentList( model, result, 'recent_launched_apps' )
+                model.updateRecentList( model, result, 'recent_stoped_apps' )
+
+                null
+
+            ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
+                console.log 'overview RESULT_STACK_LIST'
+
+                model.updateRecentList( model, result, 'recent_edited_stacks' )
+
+                null
+
             ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->
 
                 console.log 'NAVIGATION_TO_DASHBOARD_REGION'

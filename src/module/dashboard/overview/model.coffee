@@ -41,6 +41,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             me = this
 
+            ###
             #get service(model)
             ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
 
@@ -56,6 +57,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 me.updateRecentList( me, result, 'recent_edited_stacks' )
 
                 null
+            ###
             null
 
         #result list

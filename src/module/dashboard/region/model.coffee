@@ -334,7 +334,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
         resultListListener : ->
             me = this
+            null
 
+            ###
             ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
 
                 # get current region's apps
@@ -346,12 +348,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
 
+                console.log 'RESULT_STACK_LIST'
+
                 # get current region's stacks
                 item_list = region.region_name_group for region in result when constant.REGION_LABEL[ current_region ] == region.region_group
 
                 me.getItemList('stack', item_list)
 
                 null
+            ###
 
         # get current region's app/stack list
         getItemList : ( flag, item_list ) ->
@@ -454,6 +459,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
 
         duplicateStack : (region, stack_id, new_name) ->
+            console.log 'duplicateStack'
             me = this
             current_region = region
 
@@ -461,7 +467,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             # get service, ( src, username, session_id, region_name, stack_id, new_name, stack_name=null )
             stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
-            stack_model.on 'STACK_SAVE__AS_RETURN', (result) ->
+            stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
                 console.log 'STACK_SAVE__AS_RETURN'
                 console.log result
 
@@ -479,7 +485,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log result
 
                 if !result.is_error
-                    ide_event.trigger ide_event.STACK_DELETE
+                    ide_event.trigger ide_event.STACK_DELETE, stack_name, stack_id
 
         _genDhcp: (dhcp) ->
 

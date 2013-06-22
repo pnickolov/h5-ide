@@ -60,7 +60,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
             #get service(model)
             app_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-            app_model.on 'APP_LST_RETURN', ( result ) ->
+            app_model.once 'APP_LST_RETURN', ( result ) ->
 
                 console.log 'APP_LST_RETURN'
                 console.log result
@@ -82,7 +82,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
             #get service(model)
             stack_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-            stack_model.on 'STACK_LST_RETURN', ( result ) ->
+            stack_model.once 'STACK_LST_RETURN', ( result ) ->
 
                 console.log 'STACK_LST_RETURN'
                 console.log result
@@ -123,7 +123,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
             #get service(model)
             ec2_model.DescribeRegions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-            ec2_model.on 'EC2_EC2_DESC_REGIONS_RETURN', ( result ) ->
+            ec2_model.once 'EC2_EC2_DESC_REGIONS_RETURN', ( result ) ->
 
                 console.log 'EC2_EC2_DESC_REGIONS_RETURN'
                 console.log result

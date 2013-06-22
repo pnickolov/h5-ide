@@ -26,7 +26,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
         MC.data.dashboard_type = 'OVERVIEW_TAB'
 
         #load remote ./module/dashboard/overview/view.js
-        require [ './module/dashboard/overview/view', './module/dashboard/overview/model', 'UI.tooltip' ], ( View, model ) ->
+        require [ './module/dashboard/overview/view', './module/dashboard/overview/model', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
 
             console.log '------------ overview view load ------------ '
 
@@ -210,6 +210,26 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     model.getItemList 'app', current_app
                     model.getItemList 'stack', current_stack
                     model.resultListListener()
+
+                    ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
+
+                        # get current region's apps
+                        item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ current_region ] == regions.region_group
+
+                        model.getItemList('app', item_list)
+
+                        null
+
+                    ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
+
+                        console.log 'RESULT_STACK_LIST'
+
+                        # get current region's stacks
+                        item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ current_region ] == regions.region_group
+
+                        model.getItemList('stack', item_list)
+
+                        null
 
     unLoadModule = () ->
         #view.remove()

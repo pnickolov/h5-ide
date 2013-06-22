@@ -11,11 +11,11 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         template : Handlebars.compile $( '#navigation-tmpl' ).html()
 
         events   :
-            'click #nav-dashboard-region a' : 'dashboardRegionClick'
             'click .stack-list a'           : 'stackListItemsClick'
             'click .app-list a'             : 'appListItemsClick'
             'click .show-unused-region a'   : 'showEmptyRegionClick'
             'click .create-new-stack'       : 'createNewStackClick'
+            'click .region-name'            : 'regionNameClick'
 
         initialize : ->
             #
@@ -30,12 +30,7 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             #push event
             ide_event.trigger ide_event.NAVIGATION_COMPLETE
-
-        dashboardRegionClick : ( event ) ->
-            if event.target.parentNode.className isnt 'show-unused-region'
-                alert 'add dashboard region'
-                #open dashboard region
-                #ide_event.trigger ide_event.OPEN_DASHBOARD, 'dashboard'
+            null
 
         stackListItemsClick : ( event ) ->
             console.log 'stack tab click event'
@@ -85,10 +80,15 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $( event.target ).parent().prev().find('.hide').show()
             $( event.target ).hide()
 
-        createNewStackClick : ( event ) ->
+        createNewStackClick  : ( event ) ->
             console.log 'createNewStackClick'
             console.log $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' )
             ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
+
+        regionNameClick      : ( event ) ->
+            console.log 'regionNameClick'
+            console.log $( event.target ).attr( 'data-region-name' )
+            ide_event.trigger ide_event.NAVIGATION_TO_DASHBOARD_REGION, $( event.target ).attr( 'data-region-name' )
 
         hoverIntent          : ->
             $('.nav-head').hoverIntent {

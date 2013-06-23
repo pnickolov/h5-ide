@@ -6,10 +6,17 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     NavigationView = Backbone.View.extend {
 
-        el       : $( '#navigation' )
+        #element
+        el              : $ '#navigation'
 
-        template : Handlebars.compile $( '#navigation-tmpl' ).html()
+        #templdate
+        #template        : Handlebars.compile $( '#navigation-tmpl' ).html()
+        app_list_tmpl    : Handlebars.compile $( '#nav-app-list-tmpl' ).html()
+        stack_list_tmpl  : Handlebars.compile $( '#nav-stack-list-tmpl' ).html()
+        region_empty_list_tmpl : Handlebars.compile $( '#nav-region-empty-list-tmpl' ).html()
+        region_list_tmpl : Handlebars.compile $( '#nav-region-list-tmpl' ).html()
 
+        #events
         events   :
             'click .stack-list a'           : 'stackListItemsClick'
             'click .app-list a'             : 'appListItemsClick'
@@ -20,16 +27,41 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         initialize : ->
             #
 
-        render     : ->
-        	#render html
+        render     : ( template ) ->
+            #render html
             console.log 'navigation render'
-            $( this.el ).html this.template this.model.attributes
+            #$( this.el ).html this.template this.model.attributes
+            $( this.el ).html template
 
             #Collapsed Navigation Mouse Interaction
             this.hoverIntent()
 
             #push event
             ide_event.trigger ide_event.NAVIGATION_COMPLETE
+            null
+
+        appListRender : ->
+            #render html
+            console.log 'appListRender render'
+            $( this.el ).find( '.nav-app-list' ).html this.app_list_tmpl this.model.attributes
+            null
+
+        stackListRender : ->
+            #render html
+            console.log 'stackListRender render'
+            $( this.el ).find( '.nav-stack-list' ).html this.stack_list_tmpl this.model.attributes
+            null
+
+        regionEmtpyListRender : ->
+            #render html
+            console.log 'regionEmtpyListRender render'
+            $( this.el ).find( '.nav-region-empty-list' ).html this.region_empty_list_tmpl this.model.attributes
+            null
+
+        regionListRender : ->
+            #render html
+            console.log 'regionListRender render'
+            $( this.el ).find( '.nav-region-group' ).html this.region_list_tmpl this.model.attributes
             null
 
         stackListItemsClick : ( event ) ->

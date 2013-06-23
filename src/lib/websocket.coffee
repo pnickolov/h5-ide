@@ -8,7 +8,7 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 	websocketInit = () ->
 
 		_.extend Meteor, {
-						
+
 							default_connection : null
 
 							refresh : notifyFunc = (notification) ->
@@ -22,7 +22,7 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 
 				Meteor[name] = _.bind Meteor.default_connection[name], Meteor.default_connection
 
-			
+
 
 
 	class WebSocket
@@ -86,7 +86,7 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 
 			else
 
-				@collection[name].find().fetch()
+				@collection[name]
 
 
 

@@ -4,13 +4,10 @@
 
 define [ 'jquery',
          'text!/module/navigation/template.html',
-         'text!/module/navigation/app_list_tmpl.html',
-         'text!/module/navigation/stack_list_tmpl.html',
-         'text!/module/navigation/region_empty_list_tmpl.html',
-         'text!/module/navigation/region_list_tmpl.html',
+         'text!/module/navigation/template_data.html',
          '/module/navigation/model.js',
          'event'
-], ( $, template, app_list_tmpl, stack_list_tmpl, region_empty_list_tmpl, region_list_tmpl, model, ide_event ) ->
+], ( $, template, template_data, model, ide_event ) ->
 
     #private
     loadModule = () ->
@@ -18,6 +15,17 @@ define [ 'jquery',
         #add handlebars script : template
         #template = '<script type="text/x-handlebars-template" id="navigation-tmpl">' + template + '</script>'
         #$( template ).appendTo 'head'
+
+        #
+        $( 'head' ).append '<div id="template_data"></div>'
+        $( '#template_data' ).html template_data
+
+        app_list_tmpl    = $( '#template_data' ).find( '.app_list' ).html()
+        stack_list_tmpl  = $( '#template_data' ).find( '.stack_list' ).html()
+        region_empty_list_tmpl = $( '#template_data' ).find( '.region_empty_list' ).html()
+        region_list_tmpl = $( '#template_data' ).find( '.region_list' ).html()
+
+        $( 'head' ).remove '#template_data'
 
         #add handlebars script : app_list
         app_list_tmpl = '<script type="text/x-handlebars-template" id="nav-app-list-tmpl">' + app_list_tmpl + '</script>'

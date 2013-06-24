@@ -140,6 +140,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 #push event
                 ide_event.trigger ide_event.RETURN_REGION_TAB, null
 
+                ###
                 current_app = null
                 # get current region's apps/stacks
                 _.map overview_app, (value) ->
@@ -147,7 +148,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         current_app = value.items
                     null
 
-                ###
+
                 current_stack = null
                 if overview_stack && overview_stack.length > 0
                     _.map overview_stack, (value) ->
@@ -178,7 +179,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     #view
                     region_view        = new View()
                     region_view.model  = model
-                    region_view.region = region
+                    region_view.region = current_region
 
                     model.on 'change:vpc_attrs', () ->
                         console.log 'dashboard_change:vpc_attrs'
@@ -241,27 +242,27 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     region_view.on 'RUN_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:run_app'
                         # call service
-                        model.runApp(region, app_id)
+                        model.runApp(current_region, app_id)
                     region_view.on 'STOP_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:stop_app'
-                        model.stopApp(region, app_id)
+                        model.stopApp(current_region, app_id)
                     region_view.on 'TERMINATE_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:terminate_app'
-                        model.terminateApp(region, app_id)
+                        model.terminateApp(current_region, app_id)
                     region_view.on 'DUPLICATE_STACK_CLICK', (stack_id, new_name) ->
                         console.log 'dashboard_region_click:duplicate_stack'
-                        model.duplicateStack(region, stack_id, new_name)
+                        model.duplicateStack(current_region, stack_id, new_name)
                     region_view.on 'DELETE_STACK_CLICK', (stack_id) ->
                         console.log 'dashboard_region_click:delete_stack'
-                        model.deleteStack(region, stack_id)
+                        model.deleteStack(current_region, stack_id)
                     region_view.on 'REFRESH_REGION_BTN', () ->
                         model.describeAWSResourcesService region
 
                     model.describeAWSResourcesService region
                     model.describeRegionAccountAttributesService region
                     model.describeAWSStatusService region
-                    model.getItemList 'app', region, overview_app
-                    model.getItemList 'stack', region, overview_stack
+                    model.getItemList 'app', current_region, overview_app
+                    model.getItemList 'stack', current_region, overview_stack
 
                     ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
 
@@ -271,7 +272,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         # get current region's apps
                         #item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ current_region ] == regions.region_group
 
-                        model.getItemList 'app', region, overview_app
+                        model.getItemList 'app', current_region, overview_app
 
                         null
 
@@ -285,7 +286,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         # get current region's stacks
                         #item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ current_region ] == regions.region_group
 
-                        model.getItemList 'stack', region, overview_stack
+                        model.getItemList 'stack', current_region, overview_stack
 
                         null
 

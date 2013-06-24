@@ -168,6 +168,18 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 ide_event.trigger ide_event.UPDATE_STACK_LIST, null
                 null
 
+            #listen
+            ide_event.onLongListen ide_event.RETURN_REGION_TAB, ( region ) ->
+                console.log 'RETURN_REGION_TAB ' + ' region = ' + region
+                view.changeDashboardTabname region
+                null
+
+            #listen
+            ide_event.onLongListen ide_event.RETURN_OVERVIEW_TAB, () ->
+                console.log 'RETURN_OVERVIEW_TAB '
+                view.changeDashboardTabname 'Global Overview'
+                null
+
             #render
             view.render()
 

@@ -133,7 +133,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
                 MC.data.dashboard_type = 'REGION_TAB'
                 #push event
-                ide_event.trigger ide_event.RETURN_REGION_TAB, null
+                ide_event.trigger ide_event.RETURN_REGION_TAB, constant.REGION_LABEL[ region ]
 
                 if region_view isnt null
                     region_view.model.resetData()

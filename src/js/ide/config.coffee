@@ -21,6 +21,7 @@ require.config {
 		#core lib
 		'MC'           : 'lib/MC.core'
 		'MC.template'  : 'lib/MC.template'
+		'MC.ide.template'  : 'lib/MC.ide.template'
 		#'MC.topo'     : 'lib/MC.topo'
 		#'MC.canvas'   : 'lib/MC.canvas'
 
@@ -234,6 +235,9 @@ require.config {
 		'MC.template'  :
 			deps       : [ 'handlebars', 'MC' ]
 			exports    : 'MC.template'
+
+		'MC.ide.template'  :
+			deps       : [ 'MC', 'jquery', 'underscore' ]
 
 		'UI.tabbar'    :
 			deps       : [ 'MC.template' ]

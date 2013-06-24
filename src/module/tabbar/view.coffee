@@ -54,6 +54,11 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             $( '#tab-bar-' + tab_id ).children().last().trigger( 'mousedown' )
             null
 
+        changeDashboardTabname   : ( tab_name ) ->
+            console.log 'changeDashboardTabname'
+            $( '#tab-bar-dashboard' ).children().html '<i class="icon-gauge icon-label"></i>' + tab_name
+            null
+
     }
 
     return TabBarView

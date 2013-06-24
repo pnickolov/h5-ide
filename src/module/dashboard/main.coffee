@@ -11,6 +11,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
     stack_list      = null
     overview_app    = null
     overview_stack  = null
+    should_update_overview = false
 
     #private
     loadModule = () ->
@@ -145,16 +146,17 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     null
 
                 current_stack = null
-                console.log 'stack_list'
-                console.log stack_list
-                _.map stack_list, (value) ->
-                    if region == value.region_name
-                        current_stack = value.items
-                    null
+                if stack_list && stack_list.length > 0
+                    _.map stack_list, (value) ->
+                        if region == value.region_name
+                            current_stack = value.items
+                        null
+                else
+                    _.map overview_stack, (value) ->
+                        if value.region_name_group && region is value.region_name_group[0].region
+                            current_stack = value.region_name_group
+                        null
 
-                console.log 'region_view'
-                console.log region_view
-                console.log current_stack
                 if region_view isnt null
                     region_view.model.resetData()
                     region_view.model.describeAWSResourcesService region
@@ -220,11 +222,18 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         region_view.render()
 
                     region_view.on 'RETURN_OVERVIEW_TAB', () ->
-                        console.log 'RETURN_OVERVIEW_TAB'
                         #set MC.data.dashboard_type
                         MC.data.dashboard_type = 'OVERVIEW_TAB'
                         #push event
+                        if should_update_overview
+                            view.model.updateMap view.model, overview_app, overview_stack
+                            view.model.updateRecentList( view.model, overview_app, 'recent_launched_apps' )
+                            view.model.updateRecentList( view.model, overview_app, 'recent_stoped_apps' )
+                            view.model.updateRecentList( view.model, overview_stack.result, 'recent_edited_stacks' )
+                            should_update_overview = false
+                            view.render()
                         ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
+                        return
 
                     region_view.on 'RUN_APP_CLICK', (app_id) ->
                         console.log 'dashboard_region_click:run_app'
@@ -254,6 +263,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
                     ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
 
+                        overview_app = result
+                        should_update_overview = true
+
                         # get current region's apps
                         item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ current_region ] == regions.region_group
 
@@ -262,6 +274,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         null
 
                     ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
+
+                        overview_stack = result
+                        should_update_overview = true
 
                         console.log 'RESULT_STACK_LIST'
 

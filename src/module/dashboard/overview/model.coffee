@@ -74,7 +74,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
         #result list
         updateMap : ( me, app_list, stack_list ) ->
-            console.log 'updateMap'
 
             #init
             total_app   = 0
@@ -98,7 +97,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                         region_counts[value.region].running_app += 1
                     else if value.state is constant.APP_STATE.APP_STATE_STOPPED
                         region_counts[value.region].stopped_app += 1
-                        total_app += 1
+                    total_app += 1
 
                     null
 
@@ -138,7 +137,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             result_list.plural_stack = if total_stack > 1 then 's' else ''
 
             #set vo
-            console.log result_list
             me.set 'result_list', result_list
 
             null

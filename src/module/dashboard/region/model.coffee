@@ -366,9 +366,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log 'Subscription failed'
 
         # get current region's app/stack list
-        getItemList : ( flag, item_list ) ->
+        getItemList : ( flag, region, result ) ->
 
             me = this
+
+            item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ region ] == regions.region_group
 
             cur_item_list = []
             _.map item_list, (value) ->

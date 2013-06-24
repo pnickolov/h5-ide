@@ -7,8 +7,8 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
     current_region = null
 
-    app_list        = null
-    stack_list      = null
+    #app_list        = null
+    #stack_list      = null
     overview_app    = null
     overview_stack  = null
     should_update_overview = false
@@ -76,6 +76,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 model.get 'resent_stoped_apps'
                 view.render()
 
+            ###
             model.on 'change:app_list', () ->
                 console.log 'dashboard_change:app_list'
                 app_list = model.get 'app_list'
@@ -85,6 +86,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 console.log 'dashboard_change:stack_list'
                 stack_list = model.get 'stack_list'
                 null
+            ###
 
             #model
             model.resultListListener()
@@ -140,14 +142,15 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
 
                 current_app = null
                 # get current region's apps/stacks
-                _.map app_list, (value) ->
+                _.map overview_app, (value) ->
                     if region == value.region_name
                         current_app = value.items
                     null
 
+                ###
                 current_stack = null
-                if stack_list && stack_list.length > 0
-                    _.map stack_list, (value) ->
+                if overview_stack && overview_stack.length > 0
+                    _.map overview_stack, (value) ->
                         if region == value.region_name
                             current_stack = value.items
                         null
@@ -156,14 +159,15 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         if value.region_name_group && region is value.region_name_group[0].region
                             current_stack = value.region_name_group
                         null
+                ###
 
                 if region_view isnt null
                     region_view.model.resetData()
                     region_view.model.describeAWSResourcesService region
                     region_view.model.describeRegionAccountAttributesService region
                     region_view.model.describeAWSStatusService region
-                    region_view.model.getItemList 'app', current_app
-                    region_view.model.getItemList 'stack', current_stack
+                    region_view.model.getItemList 'app', region, overview_app
+                    region_view.model.getItemList 'stack', region, overview_stack
                     return
 
                 #load remote ./module/dashboard/region/view.js
@@ -256,8 +260,8 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     model.describeAWSResourcesService region
                     model.describeRegionAccountAttributesService region
                     model.describeAWSStatusService region
-                    model.getItemList 'app', current_app
-                    model.getItemList 'stack', current_stack
+                    model.getItemList 'app', region, overview_app
+                    model.getItemList 'stack', region, overview_stack
 
                     ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
 
@@ -265,9 +269,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         should_update_overview = true
 
                         # get current region's apps
-                        item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ current_region ] == regions.region_group
+                        #item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ current_region ] == regions.region_group
 
-                        model.getItemList('app', item_list)
+                        model.getItemList 'app', region, overview_app
 
                         null
 
@@ -279,9 +283,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         console.log 'RESULT_STACK_LIST'
 
                         # get current region's stacks
-                        item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ current_region ] == regions.region_group
+                        #item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ current_region ] == regions.region_group
 
-                        model.getItemList('stack', item_list)
+                        model.getItemList 'stack', region, overview_stack
 
                         null
 

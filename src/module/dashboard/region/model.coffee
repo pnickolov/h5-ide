@@ -13,6 +13,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
     update_timestamp = 0
 
+    subscribed  = null
+
     popup_key_set =
         "unmanaged_bubble" :
             "DescribeVolumes":
@@ -167,6 +169,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
         initialize : ->
             me = this
+
+            WS.websocketInit()
+            subscribed = new WS.WebSocket()
+            try
+                subscribed.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+            catch error
+                console.log 'Subscription failed'
 
             aws_model.on 'AWS_RESOURCE_RETURN', ( result ) ->
 
@@ -329,42 +338,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             }
             me.set 'region_resource', resource
 
-        # sub and query request
-        queryRequest : ( region, req_id ) ->
-            me = this
-
-            while true
-                req = me.getRequest region, req_id
-                if req.state != "InProcess"
-                    if req.state == "Done"
-                        return true
-                    else
-                        return false
-
-            null
-
-        getRequest : ( region, req_id ) ->
-            me = this
-
-            # sub request
-            WS.websocketInit()
-            subscribed = new WS.WebSocket()
-            try
-                subscribed.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, call = () ->
-                    console.log 'Subscription success'
-
-                    # get request
-                    query = subscribed.collection.request.find({id:req_id})
-                    handle = query.observeChanges call = () ->
-                        changed : (id, fields) ->
-                            console.log id, fields
-                            if state == "Done"
-                                console.log "request has been done"
-
-                    console.log req_id
-            catch error
-                console.log 'Subscription failed'
-
         # get current region's app/stack list
         getItemList : ( flag, region, result ) ->
 
@@ -437,9 +410,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 #parse the result
                 if !result.is_error #request successfuly
-                    #push event
-                    if (me.getRequest region, result.resolved_data.id)
-                        ide_event.trigger ide_event.APP_RUN, app_name, app_id
+
+                    if subscribed
+                        req_id = result.resolved_data.id
+                        console.log "request id:" + req_id
+                        query = subscribed.collection.request.find({id:req_id})
+                        handle = query.observeChanges {
+                            changed : (id, req) ->
+                                if req.state == "Done"
+                                    handle.stop()
+                                    console.log 'stop handle'
+                                    #push event
+                                    ide_event.trigger ide_event.APP_RUN, app_name, app_id
+                        }
+                    null
 
         stopApp : (region, app_id) ->
             me = this
@@ -452,9 +436,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log result
 
                 if !result.is_error
-
-                    if (me.getRequest region, result.resolved_data.id)
-                        ide_event.trigger ide_event.APP_STOP, app_name, app_id
+                    if subscribed
+                        req_id = result.resolved_data.id
+                        console.log "request id:" + req_id
+                        query = subscribed.collection.request.find({id:req_id})
+                        handle = query.observeChanges {
+                            changed : (id, req) ->
+                                if req.state == "Done"
+                                    handle.stop()
+                                    console.log 'stop handle'
+                                    #push event
+                                    ide_event.trigger ide_event.APP_STOP, app_name, app_id
+                        }
+                    null
 
         terminateApp : (region, app_id) ->
             me = this
@@ -467,7 +461,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log result
 
                 if !result.is_error
-                    ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
+                    if subscribed
+                        req_id = result.resolved_data.id
+                        console.log "request id:" + req_id
+                        query = subscribed.collection.request.find({id:req_id})
+                        handle = query.observeChanges {
+                            changed : (id, req) ->
+                                if req.state == "Done"
+                                    handle.stop()
+                                    console.log 'stop handle'
+                                    #push event
+                                    ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
+                        }
+                null
 
         duplicateStack : (region, stack_id, new_name) ->
             console.log 'duplicateStack'
@@ -476,7 +482,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
 
-            # get service, ( src, username, session_id, region_name, stack_id, new_name, stack_name=null )
             stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
             stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
                 console.log 'STACK_SAVE__AS_RETURN'

@@ -107,10 +107,10 @@
 					<a href="javascript:void(0)" class="btn btn-primary btn-dashboard-feature dropdown-toggle" data-toggle="dropdown">Create New Stack <i class="icon-caret-down"></i></a>
 					<div class="dropdown-menu create-new-stack-dropdown">
 						<p>Select the region you want to create stack in:</p>
-						<ul>
+						<ul id="dashboard-create-stack-list">
 							{{#each region_classic_list }}
-							<li>
-								<a href="">{{ region_name }}
+							<li data-region="{{region}}">
+								<a href="javascript:void(0)">{{ region_name }}
 									<div class="region-platform-wrap">
 										{{#if classic}}
 										<span class="region-platform-classic tooltip" data-tooltip="EC2-classic" data-tooltip="EC2-Classic">{{classic}}</span>

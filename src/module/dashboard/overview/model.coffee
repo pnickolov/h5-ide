@@ -39,8 +39,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             'recent_edited_stacks'  : null
             'recent_launched_apps'  : null
             'recent_stoped_apps'    : null
-            'app_list'              : null
-            'stack_list'            : null
+            #'app_list'              : null
+            #'stack_list'            : null
 
         initialize : ->
 
@@ -195,7 +195,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
         # update recent list
         updateRecentList : (me, result, flag) ->
             recent_list = []
-            item_list = []
+            #item_list = []
 
             _.map result, (value) ->
                 region_group_obj = value
@@ -213,7 +213,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                         null
 
-                item_list.push { 'region_name' : region_name, 'items' : items }
+                #item_list.push { 'region_name' : region_name, 'items' : items }
 
             # sort
             recent_list.sort (a, b) ->
@@ -229,10 +229,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             # set value
             if flag == 'recent_edited_stacks'
                 me.set 'recent_edited_stacks', recent_list
-                me.set 'stack_list', item_list
+                #me.set 'stack_list', item_list
             else if flag == 'recent_launched_apps'
                 me.set 'recent_launched_apps', recent_list
-                me.set 'app_list', item_list
+                #me.set 'app_list', item_list
             else if flag == 'recent_stoped_apps'
                 me.set 'recent_stoped_apps', recent_list
 

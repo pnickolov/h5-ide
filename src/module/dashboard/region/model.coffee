@@ -2,7 +2,7 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant', 'WS' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant, WS) ->
 
     current_region  = null
     resource_source = null
@@ -329,37 +329,48 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             }
             me.set 'region_resource', resource
 
-
-        resultListListener : ->
+        # sub and query request
+        queryRequest : ( region, req_id ) ->
             me = this
+
+            while true
+                req = me.getRequest region, req_id
+                if req.state != "InProcess"
+                    if req.state == "Done"
+                        return true
+                    else
+                        return false
+
             null
 
-            ###
-            ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
+        getRequest : ( region, req_id ) ->
+            me = this
 
-                # get current region's apps
-                item_list = region.region_name_group for region in result when constant.REGION_LABEL[ current_region ] == region.region_group
+            # sub request
+            WS.websocketInit()
+            subscribed = new WS.WebSocket()
+            try
+                subscribed.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, call = () ->
+                    console.log 'Subscription success'
 
-                me.getItemList('app', item_list)
+                    # get request
+                    query = subscribed.collection.request.find({id:req_id})
+                    handle = query.observeChanges call = () ->
+                        changed : (id, fields) ->
+                            console.log id, fields
+                            if state == "Done"
+                                console.log "request has been done"
 
-                null
-
-            ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
-
-                console.log 'RESULT_STACK_LIST'
-
-                # get current region's stacks
-                item_list = region.region_name_group for region in result when constant.REGION_LABEL[ current_region ] == region.region_group
-
-                me.getItemList('stack', item_list)
-
-                null
-            ###
+                    console.log req_id
+            catch error
+                console.log 'Subscription failed'
 
         # get current region's app/stack list
-        getItemList : ( flag, item_list ) ->
+        getItemList : ( flag, region, result ) ->
 
             me = this
+
+            item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ region ] == regions.region_group
 
             cur_item_list = []
             _.map item_list, (value) ->
@@ -420,15 +431,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
             app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.on 'APP_START_RETURN', (result) ->
+            app_model.once 'APP_START_RETURN', (result) ->
                 console.log 'APP_START_RETURN'
                 console.log result
 
                 #parse the result
                 if !result.is_error #request successfuly
                     #push event
-                    ide_event.trigger ide_event.APP_RUN, app_name, app_id
-                #else    # failed
+                    if (me.getRequest region, result.resolved_data.id)
+                        ide_event.trigger ide_event.APP_RUN, app_name, app_id
 
         stopApp : (region, app_id) ->
             me = this
@@ -436,12 +447,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
             app_model.stop { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.on 'APP_STOP_RETURN', (result) ->
+            app_model.once 'APP_STOP_RETURN', (result) ->
                 console.log 'APP_STOP_RETURN'
                 console.log result
 
                 if !result.is_error
-                    ide_event.trigger ide_event.APP_STOP, app_name, app_id
+
+                    if (me.getRequest region, result.resolved_data.id)
+                        ide_event.trigger ide_event.APP_STOP, app_name, app_id
 
         terminateApp : (region, app_id) ->
             me = this
@@ -449,7 +462,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
             app_model.terminate { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.on 'APP_TERMINATE_RETURN', (result) ->
+            app_model.once 'APP_TERMINATE_RETURN', (result) ->
                 console.log 'APP_TERMINATE_RETURN'
                 console.log result
 
@@ -478,7 +491,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
             stack_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, stack_name
-            stack_model.on 'STACK_REMOVE_RETURN', (result) ->
+            stack_model.once 'STACK_REMOVE_RETURN', (result) ->
                 console.log 'STACK_REMOVE_RETURN'
                 console.log result
 

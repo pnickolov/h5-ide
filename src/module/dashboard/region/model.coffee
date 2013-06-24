@@ -354,10 +354,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     console.log 'Subscription success'
 
                     # get request
-                    req = subscribed.collection.request.findOne({id:req_id})
-                    if req
-                        return req
-                null
+                    query = subscribed.collection.request.find({id:req_id})
+                    handle = query.observeChanges call = () ->
+                        changed : (id, fields) ->
+                            console.log id, fields
+                            if state == "Done"
+                                console.log "request has been done"
+
+                    console.log req_id
             catch error
                 console.log 'Subscription failed'
 
@@ -432,7 +436,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 #parse the result
                 if !result.is_error #request successfuly
                     #push event
-                    if (me.queryRequest region, result.resolved_data.id)
+                    if (me.getRequest region, result.resolved_data.id)
                         ide_event.trigger ide_event.APP_RUN, app_name, app_id
 
         stopApp : (region, app_id) ->
@@ -447,7 +451,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 if !result.is_error
 
-                    if (me.queryRequest region, result.resolved_data.id)
+                    if (me.getRequest region, result.resolved_data.id)
                         ide_event.trigger ide_event.APP_STOP, app_name, app_id
 
         terminateApp : (region, app_id) ->

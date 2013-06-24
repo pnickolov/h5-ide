@@ -6,42 +6,15 @@ define [ 'jquery',
          'text!/module/navigation/template.html',
          'text!/module/navigation/template_data.html',
          '/module/navigation/model.js',
-         'event'
+         'event',
+         'MC.ide.template'
 ], ( $, template, template_data, model, ide_event ) ->
 
     #private
     loadModule = () ->
 
-        #add handlebars script : template
-        #template = '<script type="text/x-handlebars-template" id="navigation-tmpl">' + template + '</script>'
-        #$( template ).appendTo 'head'
-
-        #
-        $( 'head' ).append '<div id="template_data"></div>'
-        $( '#template_data' ).html template_data
-
-        app_list_tmpl    = $( '#template_data' ).find( '.app_list' ).html()
-        stack_list_tmpl  = $( '#template_data' ).find( '.stack_list' ).html()
-        region_empty_list_tmpl = $( '#template_data' ).find( '.region_empty_list' ).html()
-        region_list_tmpl = $( '#template_data' ).find( '.region_list' ).html()
-
-        $( 'head' ).remove '#template_data'
-
-        #add handlebars script : app_list
-        app_list_tmpl = '<script type="text/x-handlebars-template" id="nav-app-list-tmpl">' + app_list_tmpl + '</script>'
-        $( app_list_tmpl ).appendTo 'head'
-
-        #add handlebars script : stack_list
-        stack_list_tmpl = '<script type="text/x-handlebars-template" id="nav-stack-list-tmpl">' + stack_list_tmpl + '</script>'
-        $( stack_list_tmpl ).appendTo 'head'
-
-        #add handlebars script : region_empty_list_tmpl
-        region_empty_list_tmpl = '<script type="text/x-handlebars-template" id="nav-region-empty-list-tmpl">' + region_empty_list_tmpl + '</script>'
-        $( region_empty_list_tmpl ).appendTo 'head'
-
-        #add handlebars script : region_list_tmpl
-        region_list_tmpl = '<script type="text/x-handlebars-template" id="nav-region-list-tmpl">' + region_list_tmpl + '</script>'
-        $( region_list_tmpl ).appendTo 'head'
+        #compile partial template
+        MC.IDEcompile 'nav', template_data, { '.app-list' : 'nav-app-list-tmpl', '.stack-list' : 'nav-stack-list-tmpl', '.region-empty-list' : 'nav-region-empty-list-tmpl', '.region-list' : 'nav-region-list-tmpl' }
 
         #load remote /module/navigation/view.js
         require [ './module/navigation/view', 'UI.tooltip', 'UI.accordion', 'hoverIntent' ], ( View ) ->
@@ -50,7 +23,7 @@ define [ 'jquery',
             view       = new View()
             view.model = model
             #refresh view
-            view.render( template )
+            view.render template
 
             #listen vo set change event
             model.on 'change:app_list', () ->

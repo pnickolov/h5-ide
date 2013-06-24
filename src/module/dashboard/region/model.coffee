@@ -375,7 +375,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             isrunning   = true
 
             # check state
-            if item.state == constant.APP_STATE.APP_STATE_STOPPING or item.state == constant.APP_STATE.APP_STATE_INITIALIZING
+            if item.state == constant.APP_STATE.APP_STATE_INITIALIZING    #constant.APP_STATE.APP_STATE_STOPPING or
                 return
             else if item.state == constant.APP_STATE.APP_STATE_RUNNING
                 status = "play"

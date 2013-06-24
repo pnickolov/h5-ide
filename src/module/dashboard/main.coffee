@@ -44,6 +44,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 console.log 'dashboard_change:result_list'
                 #push event
                 model.get 'result_list'
+
+                should_update_overview = true
+
                 #refresh view
                 view.render()
 
@@ -104,6 +107,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 model.updateRecentList( model, result, 'recent_launched_apps' )
                 model.updateRecentList( model, result, 'recent_stoped_apps' )
 
+                if should_update_overview
+                    view.render()
+
                 null
 
             ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
@@ -119,6 +125,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         model.updateMap model, overview_app, overview_stack
 
                 model.updateRecentList( model, result, 'recent_edited_stacks' )
+
+                if should_update_overview
+                    view.render()
 
                 null
 
@@ -229,13 +238,6 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         #set MC.data.dashboard_type
                         MC.data.dashboard_type = 'OVERVIEW_TAB'
                         #push event
-                        if should_update_overview
-                            view.model.updateMap view.model, overview_app, overview_stack
-                            view.model.updateRecentList( view.model, overview_app, 'recent_launched_apps' )
-                            view.model.updateRecentList( view.model, overview_app, 'recent_stoped_apps' )
-                            view.model.updateRecentList( view.model, overview_stack.result, 'recent_edited_stacks' )
-                            should_update_overview = false
-                            view.render()
                         ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
                         return
 
@@ -267,6 +269,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
 
                         overview_app = result
+
+                        console.log 'RESULT_APP_LIST'
+
                         should_update_overview = true
 
                         # get current region's apps
@@ -279,7 +284,6 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
 
                         overview_stack = result
-                        should_update_overview = true
 
                         console.log 'RESULT_STACK_LIST'
 

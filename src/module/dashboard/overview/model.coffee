@@ -17,6 +17,18 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
     total_stack = 0
     total_aws   = 0
 
+    #region_tooltip
+    region_tooltip = [
+        "arrow-left map-tooltip-pointer-left",
+        "arrow-down map-tooltip-pointer",
+        "arrow-up map-tooltip-pointer-up",
+        "arrow-down map-tooltip-pointer",
+        "arrow-down map-tooltip-pointer",
+        "arrow-down map-tooltip-pointer",
+        "arrow-down map-tooltip-pointer",
+        "arrow-down map-tooltip-pointer"
+    ]
+
     OverviewModel = Backbone.Model.extend {
 
         defaults :
@@ -61,7 +73,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             null
 
         #result list
-        updateMap : ( me, app_list ) ->
+        updateMap : ( me, app_list, stack_list ) ->
 
             #init
             total_app   = 0
@@ -70,68 +82,62 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             result_list.region_infos = []
             region_aws_list          = []
 
-            _.map constant.REGION_KEYS, ( value )  ->
+            _.map constant.REGION_KEYS, ( value, key )  ->
 
-                region_counts[value] = { 'running_app' : 0, 'stopped_app' : 0, 'stack' : 0 }
+                region_counts[value] = { 'running_app': 0, 'stopped_app': 0, 'stack': 0 }
+
+                null
+
+            _.map app_list, ( value ) ->
+
+                region_group_obj = value
+
+                _.map region_group_obj.region_name_group, ( value ) ->
+                    if value.state is constant.APP_STATE.APP_STATE_RUNNING
+                        region_counts[value.region].running_app += 1
+                    else if value.state is constant.APP_STATE.APP_STATE_STOPPED
+                        region_counts[value.region].stopped_app += 1
+                    total_app += 1
+
+                    null
 
                 null
 
-            ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
+            #onlisten stack
+            _.map stack_list, ( value ) ->
 
-                #onlisten app
-                _.map app_list, ( value ) ->
+                region_group_obj = value
 
-                    region_group_obj = value
+                _.map region_group_obj.region_name_group, ( value ) ->
 
-                    _.map region_group_obj.region_name_group, ( value ) ->
-
-                        if value.state is constant.APP_STATE.APP_STATE_RUNNING
-                            region_counts[value.region].running_app += 1
-                        else if value.state is constant.APP_STATE.APP_STATE_STOPPED
-                            region_counts[value.region].stopped_app += 1
-                        total_app += 1
-
-                        null
+                    region_counts[value.region].stack += 1
+                    total_stack += 1
 
                     null
-
-                #onlisten stack
-                _.map result, ( value ) ->
-
-                    region_group_obj = value
-
-                    _.map region_group_obj.region_name_group, ( value ) ->
-
-                        region_counts[value.region].stack += 1
-                        total_stack += 1
-
-                        null
-
-                    null
-
-                #
-                _.map constant.REGION_KEYS, ( value ) ->
-
-                    if region_counts[ value ].running_app isnt 0 or region_counts[ value ].stopped_app isnt 0 or region_counts[ value ].stack isnt 0
-                        result_list.region_infos.push { 'region_name' : value, 'region_city' : constant.REGION_SHORT_LABEL[ value ], 'running_app' : region_counts[ value ].running_app, 'stopped_app' : region_counts[ value ].stopped_app, 'stack': region_counts[ value ].stack }
-                        region_aws_list.push value
-
-                    null
-
-                total_aws = region_aws_list.length
-
-                #set data for result_list
-                result_list.total_app    = total_app
-                result_list.total_stack  = total_stack
-                result_list.total_aws    = total_aws
-                result_list.plural_app   = if total_app > 1 then 's' else ''
-                result_list.plural_aws   = if total_aws > 1 then 's' else ''
-                result_list.plural_stack = if total_stack > 1 then 's' else ''
-
-                #set vo
-                me.set 'result_list', result_list
 
                 null
+
+            #
+            _.map constant.REGION_KEYS, ( value, key ) ->
+
+                if region_counts[ value ].running_app isnt 0 or region_counts[ value ].stopped_app isnt 0 or region_counts[ value ].stack isnt 0
+                    result_list.region_infos.push { 'region_name' : value, 'region_city' : constant.REGION_SHORT_LABEL[ value ], 'running_app' : region_counts[ value ].running_app, 'stopped_app' : region_counts[ value ].stopped_app, 'stack': region_counts[ value ].stack, 'pointer': region_tooltip[key] }
+                    region_aws_list.push value
+
+                null
+
+            total_aws = region_aws_list.length
+
+            #set data for result_list
+            result_list.total_app    = total_app
+            result_list.total_stack  = total_stack
+            result_list.total_aws    = total_aws
+            result_list.plural_app   = if total_app > 1 then 's' else ''
+            result_list.plural_aws   = if total_aws > 1 then 's' else ''
+            result_list.plural_stack = if total_stack > 1 then 's' else ''
+
+            #set vo
+            me.set 'result_list', result_list
 
             null
 

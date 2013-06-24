@@ -11,7 +11,7 @@
 						<i class="icon-map-spot"></i>
 						<span>{{ region_city }}</span>
 						<div class="map-tooltip">
-							<span class="arrow-left map-tooltip-pointer-left"></span>
+							<span class="{{pointer}}"></span>
 							<div class="map-tooltip-body truncate">
 								<ul class="dashboard-widget-regions-stat">
 									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>{{ running_app }}</li>
@@ -25,7 +25,7 @@
 				{{/each}}
 				{{#each region_empty_list }}
 				<li id="{{ region_name }}" class="unused">
-					<a href="javascript:void(0)" title="Tokyo Dashboard"><i class="icon-map-spot"></i>{{ region_city }}</a>
+					<a href="javascript:void(0)" title="{{ region_city }} Dashboard"><i class="icon-map-spot"></i>{{ region_city }}</a>
 				</li>
 				{{/each}}
 				<!-- test_data

@@ -117,7 +117,7 @@ define [], () ->
 
 	#private
 	REGION_LABEL = {}
-	REGION_LABEL[ 'us-east-1' ]      = 'US East - Virginia'
+	REGION_LABEL[ 'us-east-1' ]      = 'US East - N. Virginia'
 	REGION_LABEL[ 'us-west-1' ]      = 'US West - N. California'
 	REGION_LABEL[ 'us-west-2' ]      = 'US West - Oregon'
 	REGION_LABEL[ 'eu-west-1' ]      = 'EU West - Ireland'
@@ -128,7 +128,7 @@ define [], () ->
 
 	#private
 	REGION_SHORT_LABEL = {}
-	REGION_SHORT_LABEL[ 'us-east-1' ]      = 'Virginia'
+	REGION_SHORT_LABEL[ 'us-east-1' ]      = 'N. Virginia'
 	REGION_SHORT_LABEL[ 'us-west-1' ]      = 'N. California'
 	REGION_SHORT_LABEL[ 'us-west-2' ]      = 'Oregon'
 	REGION_SHORT_LABEL[ 'eu-west-1' ]      = 'Ireland'

@@ -940,7 +940,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     value_conf = value_set.customerGatewayConfiguration
 
                     if value_conf
+                        #console.log value_conf
                         value_conf = $.xml2json($.parseXML value_conf)
+                        #console.log value_conf
                         value_conf = value_conf.vpn_connection
                         dc_data =
                             vpnConnectionId                         : me._parseEmptyValue value_conf['@attributes'].id

@@ -3,7 +3,7 @@
 #* Filename: UI.modal
 #* Creator: Angel
 #* Description: UI.modal
-#* Date: 20130620
+#* Date: 20130623
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -24,16 +24,16 @@ var modal = function (template, dismiss, callback)
 
 	modal.position();
 
-
 	if (dismiss === true)
 	{
-		$(document).on('click', modal.dismiss);
+		$(document)
+			.on('click', modal.dismiss)
+			.on('keyup', modal.keyup);
 	}
 
 	$(window).on('resize', modal.position);
 	$(document)
 		.on('click', '.modal-close', modal.close)
-		.on('keyup', modal.keyup)
 		.on('mousedown', '.modal-header', modal.drag.mousedown);
 
 	if (callback)
@@ -67,10 +67,12 @@ modal.open = function (event)
 
 modal.keyup = function (event)
 {
-	//press esc key to close modal
-	if ( event.keyCode === 27 )
+	if (event.which === 27)
 	{
 		modal.close();
+		$(document)
+			.off('click', modal.dismiss)
+			.off('keyup', modal.keyup);
 	}
 };
 
@@ -79,7 +81,9 @@ modal.dismiss = function (event)
 	if (event.target.id === 'modal-wrap')
 	{
 		modal.close();
-		$(document).off('click', modal.dismiss);
+		$(document)
+			.off('click', modal.dismiss)
+			.off('keyup', modal.keyup);
 	}
 };
 
@@ -89,7 +93,6 @@ modal.close = function ()
 
 	$(document)
 		.off('click', '.modal-close', modal.close)
-		.off('keyup', modal.keyup)
 		.off('mousedown', '.modal-header', modal.drag.mousedown);
 
 	$('#modal-wrap')

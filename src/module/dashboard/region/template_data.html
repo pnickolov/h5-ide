@@ -384,7 +384,7 @@
 </div>
 <!-- ken end -->
 
-<!-- region-unmanaged-resource-tables -->
+<!-- .region-unmanaged-resource-tables -->
 <div class='unmanaged-resource-tables'>
     {{#if unmanaged_list.items}}
         <div class="dashboard-widget-body dashboard-widget-body-table scroll-wrap">
@@ -422,9 +422,8 @@
     <div style="height:253px;width:100%;text-align:center; line-height:253px">There is no unmanaged resource.</div>
     {{/if}}
 </div>
-<!-- region-unmanaged-resource-tables -->
 
-<!-- aws-status -->
+<!-- .aws-status -->
 <div class="aws-status">
     {{#if status_list}}
         <span><i class="status status-red"></i>{{status_list.red}}</span>
@@ -436,9 +435,8 @@
         <span><i class="icon-info-sign"></i>0</span>
     {{/if}}
 </div>
-<!-- aws-status -->
 
-<!-- vpc-attrs -->
+<!-- .vpc-attrs -->
 <div class="vpc-attrs">
     {{#if vpc_attrs}}
         {{#if vpc_attrs.classic}}
@@ -455,4 +453,3 @@
     {{/if}}
     </div>
 </div>
-<!-- vpc-attrs -->

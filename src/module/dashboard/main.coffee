@@ -2,7 +2,7 @@
 #  Controller for dashboard module
 ####################################
 
-define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/module/dashboard/region/template.html', 'text!/module/dashboard/region/template_data.html', 'event', 'MC' ], ( $, overview_tmpl, region_tmpl, region_tmpl_data, ide_event, MC ) ->
+define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/module/dashboard/region/template.html', 'text!/module/dashboard/overview/template_data.html', 'text!/module/dashboard/region/template_data.html', 'event', 'MC' ], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC ) ->
 
 
     current_region = null
@@ -14,14 +14,19 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
     #private
     loadModule = () ->
         #add handlebars script
-        overview_tmpl = '<script type="text/x-handlebars-template" id="overview-tmpl">' + overview_tmpl + '</script>'
+        #overview_tmpl = '<script type="text/x-handlebars-template" id="overview-tmpl">' + overview_tmpl + '</script>'
         #load remote html ovverview_tmpl
-        $( overview_tmpl ).appendTo 'head'
+        #$( overview_tmpl ).appendTo 'head'
 
         #add handlebars script
         #overview_tmpl = '<script type="text/x-handlebars-template" id="region-tmpl">' + region_tmpl + '</script>'
         #load remote html ovverview_tmpl
         #$( overview_tmpl ).appendTo 'head'
+
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl'}
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-empty' : 'overview-empty-tmpl'}
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.stat-info' : 'stat-info-tmpl'}
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.platform-attr' : 'platform-attr-tmpl'}
 
         MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables' : 'region-resource-tables-tmpl'}
         MC.IDEcompile 'region', region_tmpl_data, {'.unmanaged-resource-tables' : 'region-unmanaged-resource-tables-tmpl'}
@@ -42,6 +47,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             #view
             view       = new View()
             view.model = model
+            view.render overview_tmpl
 
             model.on 'change:result_list', () ->
                 console.log 'dashboard_change:result_list'
@@ -51,21 +57,22 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 should_update_overview = true
 
                 #refresh view
-                view.render()
+                view.renderMapResult()
+                view.renderStatInfo()
 
             model.on 'change:region_empty_list', () ->
                 console.log 'dashboard_change:region_empty'
                 #push event
                 model.get 'region_empty_list'
                 #refresh view
-                view.render()
+                view.renderMapEmpty()
 
             model.on 'change:region_classic_list', () ->
                 console.log 'dashboard_region_classic_list'
                 #push event
                 model.get 'region_classic_list'
                 #refresh view
-                view.render()
+                view.renderPlatformAttrs()
 
             model.on 'change:resent_edited_stacks', () ->
                 console.log 'dashboard_change:resent_eidted_stacks'

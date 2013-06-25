@@ -28,3 +28,39 @@
         </li>
     {{/each}}
 </div>
+
+<!-- .stat-info -->
+<div class="stat-info">
+    <div class="dashboard-global-stat">
+    {{#if result_list }}
+        <span class="dashboard-global-stat-app"><span class="global-stat-counter">{{ result_list.total_app }}</span>App{{ result_list.plural_app }}</span>
+        <span class="dashboard-global-stat-stack"><span class="global-stat-counter">{{ result_list.total_stack }}</span>Stack{{ result_list.plural_stack }}</span>
+    {{else}}
+        <span class="dashboard-global-stat-app"><span class="global-stat-counter">0</span>App</span>
+        <span class="dashboard-global-stat-stack"><span class="global-stat-counter">0</span>Stack</span>
+    {{/if}}
+    </div>
+    {{#if result_list }}
+        <p>over <span class="dashboard-global-stat-region-counter">{{ result_list.total_aws }} </span> AWS region{{ result_list.plural_aws }}.</p>
+    {{else}}
+        <p>over <span class="dashboard-global-stat-region-counter"> 0 </span> AWS region.</p>
+    {{/if}}
+</div>
+
+<!-- .platform-attr -->
+<div class="platform-attr">
+    {{#each region_classic_list }}
+    <li data-region="{{region}}">
+        <a href="javascript:void(0)">{{ region_name }}
+            <div class="region-platform-wrap">
+                {{#if classic}}
+                    <span class="region-platform-classic tooltip" data-tooltip="EC2-classic" data-tooltip="EC2-Classic">{{classic}}</span>
+                {{/if}}
+                {{#if vpc}}
+                    <span class="region-platform-vpc tooltip" data-tooltip="EC2-vpc" data-tooltip="EC2-VPC">{{vpc}}</span>
+                {{/if}}
+            </div>
+        </a>
+    </li>
+    {{/each}}
+</div>

@@ -4,32 +4,16 @@
 	<div class="dashboard-header clearfix">
 		<a href="javascript:void(0)" title="Back to Global Overview" class="return-overview">&lt; Global Overview</a>
 		<div class="dashboard-header-right">
-			{{#if vpc_attrs}}
-				{{#if vpc_attrs.classic}}
-				<div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 Classic and EC2 VPC.">
-				<span class="region-platform-classic" >{{ vpc_attrs.classic }}</span>
-				{{else}}
-				<div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 VPC.">
-                {{/if}}
-                {{#if vpc_attrs.vpc}}
-                <span class="region-platform-vpc">{{ vpc_attrs.vpc }}</span>
-                {{/if}}
-			{{else}}
-			<div class="region-platform-wrap tooltip" data-tooltip="">
-			{{/if}}
+			<div class="vpc-attrs-list" style="display:inline">
 			</div>
 			<a href="http://status.aws.amazon.com/#NA_block" class="aws-region-status" target="_blank" title="AWS Service Health">
-				{{#if status_list}}
-				<span><i class="status status-red"></i>{{status_list.red}}</span>
-				<span><i class="status status-yellow"></i>{{status_list.yellow}}</span>
-				<span><i class="icon-info-sign"></i>{{status_list.info}}</span>
-				{{else}}
-				<span><i class="status status-red"></i>0</span>
-				<span><i class="status status-yellow"></i>0</span>
-				<span><i class="icon-info-sign"></i>0</span>
-				{{/if}}
+				<div class="aws-status-list">
+					<span><i class="status status-red"></i>0</span>
+        			<span><i class="status status-yellow"></i>0</span>
+       				<span><i class="icon-info-sign"></i>0</span>
+				</div>
 			</a>
-			<div class="refresh"><a href="javascript:void(0)" title="Refresh"><i class="icon-refresh"></i><span id="update-time">23 min ago</span></a></div>
+			<div class="refresh"><a href="javascript:void(0)" title="Refresh"><i class="icon-refresh"></i><span id="update-time">just now</span></a></div>
 		</div>
 	</div>
 	<div class="grid">
@@ -106,106 +90,9 @@
 		<div class="col-1-2">
 			<div class="dashboard-widget" id="dashboard-region-stat-unmanaged">
 				<div class="dashboard-widget-title-wrap"><div class="dashboard-widget-title"><h4>Unmanaged Resource</h4></div><i class="icon-question-sign tooltip" data-tooltip="Resouces running in AWS but not managed by MadeiraCloud"></i></div>
-				{{#if unmanaged_list.items}}
-				<div class="dashboard-widget-body dashboard-widget-body-table scroll-wrap">
-					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-					<div class="scroll-content">
-						<table class="table table-region-stat">
-						<thead>
-							<tr>
-								<th class="sortable" style="width:28%">Type</th>
-								<th class="sortable" style="width:20%">Name/ID</th>
-								<th class="sortable" style="width:20%">Status</th>
-								<th class="sortable" style="width:20%">Estimated Cost</th>
-								<th tyle="width:20%;">Detail</th>
-							</tr>
-						</thead>
-						<tbody>
-								{{#each unmanaged_list.items}}
-									{{#if data-bubble-data}}
-									<tr class="bubble" data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{data-bubble-data}}}'>
-									{{else}}
-									<tr>
-									{{/if}}
-									<td><i class="icon-{{type}}-mini icon-label"></i>{{type}}</td>
-									<td>{{name}}</td>
-									<td><i class="status status-{{status}} icon-label"></i>{{status}}</td>
-									<td>${{cost}}/h</td>
-									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-								</tr>
-								{{/each}}
-						</tbody>
-						</table>
-					</div>
-				</div>
-							{{else}}
-							<div style="height:253px;width:100%;text-align:center; line-height:253px">There is no unmanaged resource.</div>
-							{{/if}}
-							<!-- unmanaged
-							<tr class="bubble" data-bubble-template="bubbleInstanceInfo" data-bubble-data='{"name":"Webserver1","id":"i-3413243","launch-time":"GMT 19:23 2013-5-1","ebs-optimized":"false","root-device-type":"EBS","Tenancy":"default"},"block-device":"/dev/sda1"'>
-								<td><i class="icon-server icon-label"></i>Instance</td>
-								<td>i-8493849384</td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>$0.060/h</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							<tr>
-								<td><i class="icon-hdd icon-label"></i>EBS</td>
-								<td>i-8493849384</td>
-								<td><i class="status status-green icon-label"></i>In Use</td>
-								<td>$0.10/GB-m</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							<tr>
-								<td><i class="icon-image icon-label"></i>EBS Snapshot</td>
-								<td>i-8493849384</td>
-								<td><i class="status status-green icon-label"></i>Completed</td>
-								<td>$0.10/GB-m</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							<tr>
-								<td><i class="icon-image icon-label"></i>EIP</td>
-								<td>v-8493849384</td>
-								<td><i class="status status-green icon-label"></i>Associated</td>
-								<td>$0.10/GB-m</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							<tr>
-								<td><i class="icon-image icon-label"></i>VPC</td>
-								<td>v-8493849384</td>
-								<td><i class="status status-green icon-label"></i>Availabe</td>
-								<td>$0.10/GB-m</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							<tr>
-								<td><i class="icon-image icon-label"></i>VPN</td>
-								<td>v-8493849384</td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>$0.10/GB-m</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							<tr>
-								<td><i class="icon-image icon-label"></i>ELB</td>
-								<td>v-8493849384</td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>$0.10/GB-m</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							<tr>
-								<td><i class="icon-image icon-label"></i>RDS</td>
-								<td>v-8493849384</td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>$0.10/GB-m</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							<tr>
-								<td><i class="icon-image icon-label"></i>RDS Snapshot</td>
-								<td>v-8493849384</td>
-								<td><i class="status status-green icon-label"></i>Running</td>
-								<td>$0.10/GB-m</td>
-								<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalResourceDetail" data-modal-data='{"title":"Resource Name (Resource ID)"}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-							</tr>
-							-->
+			<div class='region-unmanaged-resource-tables'>
+				<div style="height:253px;width:100%;text-align:center; line-height:253px">Loading......</div>
+			</div>
 			</div>
 		</div>
 		<!-- cinde end -->

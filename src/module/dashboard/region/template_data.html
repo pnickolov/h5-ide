@@ -383,3 +383,76 @@
 	</div>
 </div>
 <!-- ken end -->
+
+<!-- region-unmanaged-resource-tables -->
+<div class='unmanaged-resource-tables'>
+    {{#if unmanaged_list.items}}
+        <div class="dashboard-widget-body dashboard-widget-body-table scroll-wrap">
+        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+        <div class="scroll-content">
+            <table class="table table-region-stat">
+            <thead>
+                <tr>
+                    <th class="sortable" style="width:28%">Type</th>
+                    <th class="sortable" style="width:20%">Name/ID</th>
+                    <th class="sortable" style="width:20%">Status</th>
+                    <th class="sortable" style="width:20%">Estimated Cost</th>
+                    <th tyle="width:20%;">Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{#each unmanaged_list.items}}
+                {{#if data-bubble-data}}
+                    <tr class="bubble" data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{data-bubble-data}}}'>
+                {{else}}
+                    <tr>
+                {{/if}}
+                    <td><i class="icon-{{type}}-mini icon-label"></i>{{type}}</td>
+                    <td>{{name}}</td>
+                    <td><i class="status status-{{status}} icon-label"></i>{{status}}</td>
+                    <td>${{cost}}/h</td>
+                    <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+    </div>
+    {{else}}
+    <div style="height:253px;width:100%;text-align:center; line-height:253px">There is no unmanaged resource.</div>
+    {{/if}}
+</div>
+<!-- region-unmanaged-resource-tables -->
+
+<!-- aws-status -->
+<div class="aws-status">
+    {{#if status_list}}
+        <span><i class="status status-red"></i>{{status_list.red}}</span>
+        <span><i class="status status-yellow"></i>{{status_list.yellow}}</span>
+        <span><i class="icon-info-sign"></i>{{status_list.info}}</span>
+    {{else}}
+        <span><i class="status status-red"></i>0</span>
+        <span><i class="status status-yellow"></i>0</span>
+        <span><i class="icon-info-sign"></i>0</span>
+    {{/if}}
+</div>
+<!-- aws-status -->
+
+<!-- vpc-attrs -->
+<div class="vpc-attrs">
+    {{#if vpc_attrs}}
+        {{#if vpc_attrs.classic}}
+            <div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 Classic and EC2 VPC.">
+            <span class="region-platform-classic" >{{ vpc_attrs.classic }}</span>
+        {{else}}
+            <div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 VPC.">
+        {{/if}}
+        {{#if vpc_attrs.vpc}}
+            <span class="region-platform-vpc">{{ vpc_attrs.vpc }}</span>
+        {{/if}}
+    {{else}}
+    <div class="region-platform-wrap tooltip" data-tooltip="">
+    {{/if}}
+    </div>
+</div>
+<!-- vpc-attrs -->

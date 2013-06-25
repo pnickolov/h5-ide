@@ -24,6 +24,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
         #$( overview_tmpl ).appendTo 'head'
 
         MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables' : 'region-resource-tables-tmpl'}
+        MC.IDEcompile 'region', region_tmpl_data, {'.unmanaged-resource-tables' : 'region-unmanaged-resource-tables-tmpl'}
+        MC.IDEcompile 'region', region_tmpl_data, {'.vpc-attrs' : 'vpc-attrs-tmpl'}
+        MC.IDEcompile 'region', region_tmpl_data, {'.aws-status' : 'aws-status-tmpl'}
 
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
@@ -159,19 +162,19 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     model.on 'change:vpc_attrs', () ->
                         console.log 'dashboard_change:vpc_attrs'
                         model.get 'vpc_attrs'
-                        #region_view.render region_tmpl
+                        region_view.renderVPCAttrs()
 
                     model.on 'change:unmanaged_list', () ->
                         console.log 'dashboard_change:unmanaged_list'
                         unmanaged_list = model.get 'unmanaged_list'
-                        #region_view.render( unmanaged_list.time_stamp )
+                        region_view.renderUnmanagedRegionResource( unmanaged_list.time_stamp )
 
                         null
 
                     model.on 'change:status_list', () ->
                         console.log 'dashboard_change:status_list'
                         unmanaged_list = model.get 'status_list'
-                        #region_view.render region_tmpl
+                        region_view.renderAWSStatus()
 
                         null
 

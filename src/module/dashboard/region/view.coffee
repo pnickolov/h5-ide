@@ -12,6 +12,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         #template : Handlebars.compile $( '#region-tmpl' ).html()
 
         stat_table : Handlebars.compile $( '#region-resource-tables-tmpl' ).html()
+        unmanaged_table : Handlebars.compile $( '#region-unmanaged-resource-tables-tmpl' ).html()
+        vpc_attrs : Handlebars.compile $( '#vpc-attrs-tmpl' ).html()
+        aws_status : Handlebars.compile $( '#aws-status-tmpl' ).html()
 
         events   :
             'click .return-overview'        : 'returnOverviewClick'
@@ -25,9 +28,32 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click .app-thumbnail'          : 'clickAppThumbnail'
             'click .stack-thumbnail'        : 'clickStackThumbnail'
 
+        renderVPCAttrs : ->
+            console.log 'dashboard region vpc_attrs render'
+            $( this.el ).find( '.vpc-attrs-list' ).html this.vpc_attrs this.model.attributes
+
+            null
+
+        renderAWSStatus : ->
+            console.log 'dashboard region aws_status render'
+            $( this.el ).find( '.aws-status-list' ).html this.aws_status this.model.attributes
+
+            null
+
         renderRegionResource : ->
             console.log 'dashboard region resource render'
             $( this.el ).find( '.region-resource-tables' ).html this.stat_table this.model.attributes
+
+            null
+
+        renderUnmanagedRegionResource : (time_stamp) ->
+            console.log 'dashboard unmanaged region resource render'
+            $( this.el ).find( '.region-unmanaged-resource-tables' ).html this.unmanaged_table this.model.attributes
+            console.log this.model.attributes
+
+            if time_stamp
+                this.time_stamp = time_stamp
+            this.update_time()
 
             null
 

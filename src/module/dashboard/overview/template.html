@@ -5,29 +5,10 @@
 	<div class="dashboard-widget grid" id="dashboard-feature-wrap">
 		<div class="col-2-3" id="dashboard-map">
 			<ul id="map-region-spot-list">
-				{{#each result_list.region_infos }}
-				<li id="{{ region_name }}">
-					<a href="javascript:void(0)">
-						<i class="icon-map-spot"></i>
-						<span>{{ region_city }}</span>
-						<div class="map-tooltip">
-							<span class="{{pointer}}"></span>
-							<div class="map-tooltip-body truncate">
-								<ul class="dashboard-widget-regions-stat">
-									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>{{ running_app }}</li>
-									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>{{ stopped_app }}</li>
-									<li><i class="icon-layers tooltip" data-tooltip="Stack"></i>{{ stack }}</li>
-								</ul>
-							</div>
-						</div>
-					</a>
-				</li>
-				{{/each}}
-				{{#each region_empty_list }}
-				<li id="{{ region_name }}" class="unused">
-					<a href="javascript:void(0)" title="{{ region_city }} Dashboard"><i class="icon-map-spot"></i>{{ region_city }}</a>
-				</li>
-				{{/each}}
+				<div class="overview-result-list">
+				</div>
+				<div class="overview-empty-list">
+				</div>
 				<!-- test_data
 				<li id="us-west-1">
 					<a href="javascript:void(0)">

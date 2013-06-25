@@ -1,5 +1,5 @@
-<!-- app_list -->
-<div class="app-list">
+<!-- .app-list-data -->
+<div class="app-list-data">
 	{{#each app_list }}
 	<li>
 		<a href="javascript:void(0)">{{ region_group }} ({{ region_count }})</a>
@@ -16,10 +16,9 @@
 	</li>
 	{{/each}}
 </div>
-<!-- app_list -->
 
-<!-- stack_list -->
-<div class="stack-list">
+<!-- .stack-list-data -->
+<div class="stack-list-data">
 	{{#each stack_list }}
 	<li>
 		<a href="javascript:void(0)" class="nav-stack-region-title create-new-stack">{{ region_group }} ({{ region_count }})<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
@@ -37,10 +36,8 @@
 	</li>
 	{{/each}}
 </div>
-<!-- stack_list -->
 
-
-<!-- region_empty_list -->
+<!-- .region-empty-list -->
 <div class="region-empty-list">
 	{{#if region_empty_list }}
 	<ul class="sub-menu nav-region-list accordion-bod">
@@ -61,9 +58,8 @@
 	</div>
 	{{/if}}
 </div>
-<!-- region_empty_list -->
 
-<!-- region_list -->
+<!-- .region-list -->
 <div class="region-list">
 	{{#each region_list }}
 	<li>
@@ -74,4 +70,3 @@
 	</li>
 	{{/each}}
 </div>
-<!-- region_list -->

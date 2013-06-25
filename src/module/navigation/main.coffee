@@ -14,7 +14,7 @@ define [ 'jquery',
     loadModule = () ->
 
         #compile partial template
-        MC.IDEcompile 'nav', template_data, { '.app-list' : 'nav-app-list-tmpl', '.stack-list' : 'nav-stack-list-tmpl', '.region-empty-list' : 'nav-region-empty-list-tmpl', '.region-list' : 'nav-region-list-tmpl' }
+        MC.IDEcompile 'nav', template_data, { '.app-list-data' : 'nav-app-list-tmpl', '.stack-list-data' : 'nav-stack-list-tmpl', '.region-empty-list' : 'nav-region-empty-list-tmpl', '.region-list' : 'nav-region-list-tmpl' }
 
         #load remote /module/navigation/view.js
         require [ './module/navigation/view', 'UI.tooltip', 'UI.accordion', 'hoverIntent' ], ( View ) ->

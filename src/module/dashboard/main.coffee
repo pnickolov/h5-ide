@@ -2,7 +2,7 @@
 #  Controller for dashboard module
 ####################################
 
-define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/module/dashboard/region/template.html', 'event', 'MC' ], ( $, overview_tmpl, region_tmpl, ide_event, MC ) ->
+define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/module/dashboard/region/template.html', 'text!/module/dashboard/region/template_data.html', 'event', 'MC' ], ( $, overview_tmpl, region_tmpl, region_tmpl_data, ide_event, MC ) ->
 
 
     current_region = null
@@ -19,9 +19,11 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
         $( overview_tmpl ).appendTo 'head'
 
         #add handlebars script
-        overview_tmpl = '<script type="text/x-handlebars-template" id="region-tmpl">' + region_tmpl + '</script>'
+        #overview_tmpl = '<script type="text/x-handlebars-template" id="region-tmpl">' + region_tmpl + '</script>'
         #load remote html ovverview_tmpl
-        $( overview_tmpl ).appendTo 'head'
+        #$( overview_tmpl ).appendTo 'head'
+
+        MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables' : 'region-resource-tables-tmpl'}
 
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
@@ -157,28 +159,32 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     model.on 'change:vpc_attrs', () ->
                         console.log 'dashboard_change:vpc_attrs'
                         model.get 'vpc_attrs'
-                        region_view.render()
+                        #region_view.render region_tmpl
 
                     model.on 'change:unmanaged_list', () ->
                         console.log 'dashboard_change:unmanaged_list'
                         unmanaged_list = model.get 'unmanaged_list'
-                        region_view.render( unmanaged_list.time_stamp )
+                        #region_view.render( unmanaged_list.time_stamp )
+
+                        null
 
                     model.on 'change:status_list', () ->
                         console.log 'dashboard_change:status_list'
                         unmanaged_list = model.get 'status_list'
-                        region_view.render()
+                        #region_view.render region_tmpl
+
+                        null
 
                     #listen
                     model.on 'change:cur_app_list', () ->
                         console.log 'dashboard_region_change:cur_app_list'
                         model.get 'cur_app_list'
-                        region_view.render()
+                        #region_view.render region_tmpl
 
                     model.on 'change:cur_stack_list', () ->
                         console.log 'dashboard_region_change:cur_stack_list'
                         model.get 'cur_stack_list'
-                        region_view.render()
+                        #region_view.render region_tmpl
 
                     model.on 'change:region_resource_list', () ->
                         console.log 'dashboard_region_resource_list'
@@ -195,6 +201,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         region_view.renderRegionResource()
 
                     model.on 'REGION_RESOURCE_CHANGED', ()->
+                        console.log 'region resource table render'
 
                         region_view.renderRegionResource()
 
@@ -251,6 +258,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         model.getItemList 'stack', current_region, overview_stack
 
                         null
+
+                    region_view.render region_tmpl
+
 
     unLoadModule = () ->
         #view.remove()

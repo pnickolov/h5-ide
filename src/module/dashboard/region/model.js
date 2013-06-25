@@ -2,7 +2,7 @@
   var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   define(['MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant', 'WS'], function(MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant, WS) {
-    var RegionModel, current_region, model, owner, popup_key_set, resource_source, status_list, unmanaged_list, update_timestamp, vpc_attrs_value;
+    var RegionModel, current_region, model, owner, popup_key_set, resource_source, status_list, subscribed, unmanaged_list, update_timestamp, vpc_attrs_value;
     current_region = null;
     resource_source = null;
     vpc_attrs_value = null;
@@ -10,6 +10,7 @@
     status_list = null;
     owner = null;
     update_timestamp = 0;
+    subscribed = null;
     popup_key_set = {
       "unmanaged_bubble": {
         "DescribeVolumes": {
@@ -341,8 +342,16 @@
         'status_list': null
       },
       initialize: function() {
-        var me;
+        var error, me;
         me = this;
+        WS.websocketInit();
+        subscribed = new WS.WebSocket();
+        try {
+          subscribed.sub("request", $.cookie('usercode'), $.cookie('session_id'), null, null);
+        } catch (_error) {
+          error = _error;
+          console.log('Subscription failed');
+        }
         aws_model.on('AWS_RESOURCE_RETURN', function(result) {
           console.log('AWS_RESOURCE_RETURN');
           resource_source = result.resolved_data[current_region];
@@ -478,50 +487,6 @@
         };
         return me.set('region_resource', resource);
       },
-      queryRequest: function(region, req_id) {
-        var me, req;
-        me = this;
-        while (true) {
-          req = me.getRequest(region, req_id);
-          if (req.state !== "InProcess") {
-            if (req.state === "Done") {
-              return true;
-            } else {
-              return false;
-            }
-          }
-        }
-        return null;
-      },
-      getRequest: function(region, req_id) {
-        var call, error, me, subscribed;
-        me = this;
-        WS.websocketInit();
-        subscribed = new WS.WebSocket();
-        try {
-          return subscribed.sub("request", $.cookie('usercode'), $.cookie('session_id'), region, call = function() {
-            var handle, query;
-            console.log('Subscription success');
-            query = subscribed.collection.request.find({
-              id: req_id
-            });
-            handle = query.observeChanges(call = function() {
-              return {
-                changed: function(id, fields) {
-                  console.log(id, fields);
-                  if (state === "Done") {
-                    return console.log("request has been done");
-                  }
-                }
-              };
-            });
-            return console.log(req_id);
-          });
-        } catch (_error) {
-          error = _error;
-          return console.log('Subscription failed');
-        }
-      },
       getItemList: function(flag, region, result) {
         var cur_item_list, item_list, me, regions, _i, _len;
         me = this;
@@ -566,7 +531,7 @@
         create_time = item.time_create;
         status = "play";
         isrunning = true;
-        if (item.state === constant.APP_STATE.APP_STATE_STOPPING || item.state === constant.APP_STATE.APP_STATE_INITIALIZING) {
+        if (item.state === constant.APP_STATE.APP_STATE_INITIALIZING) {
           return;
         } else if (item.state === constant.APP_STATE.APP_STATE_RUNNING) {
           status = "play";
@@ -615,12 +580,27 @@
           sender: this
         }, $.cookie('usercode'), $.cookie('session_id'), region, app_id, app_name);
         return app_model.once('APP_START_RETURN', function(result) {
+          var handle, query, req_id;
           console.log('APP_START_RETURN');
           console.log(result);
           if (!result.is_error) {
-            if (me.getRequest(region, result.resolved_data.id)) {
-              return ide_event.trigger(ide_event.APP_RUN, app_name, app_id);
+            if (subscribed) {
+              req_id = result.resolved_data.id;
+              console.log("request id:" + req_id);
+              query = subscribed.collection.request.find({
+                id: req_id
+              });
+              handle = query.observeChanges({
+                changed: function(id, req) {
+                  if (req.state === "Done") {
+                    handle.stop();
+                    console.log('stop handle');
+                    return ide_event.trigger(ide_event.APP_RUN, app_name, app_id);
+                  }
+                }
+              });
             }
+            return null;
           }
         });
       },
@@ -639,12 +619,27 @@
           sender: this
         }, $.cookie('usercode'), $.cookie('session_id'), region, app_id, app_name);
         return app_model.once('APP_STOP_RETURN', function(result) {
+          var handle, query, req_id;
           console.log('APP_STOP_RETURN');
           console.log(result);
           if (!result.is_error) {
-            if (me.getRequest(region, result.resolved_data.id)) {
-              return ide_event.trigger(ide_event.APP_STOP, app_name, app_id);
+            if (subscribed) {
+              req_id = result.resolved_data.id;
+              console.log("request id:" + req_id);
+              query = subscribed.collection.request.find({
+                id: req_id
+              });
+              handle = query.observeChanges({
+                changed: function(id, req) {
+                  if (req.state === "Done") {
+                    handle.stop();
+                    console.log('stop handle');
+                    return ide_event.trigger(ide_event.APP_STOP, app_name, app_id);
+                  }
+                }
+              });
             }
+            return null;
           }
         });
       },
@@ -663,11 +658,28 @@
           sender: this
         }, $.cookie('usercode'), $.cookie('session_id'), region, app_id, app_name);
         return app_model.once('APP_TERMINATE_RETURN', function(result) {
+          var handle, query, req_id;
           console.log('APP_TERMINATE_RETURN');
           console.log(result);
           if (!result.is_error) {
-            return ide_event.trigger(ide_event.APP_TERMINATE, app_name, app_id);
+            if (subscribed) {
+              req_id = result.resolved_data.id;
+              console.log("request id:" + req_id);
+              query = subscribed.collection.request.find({
+                id: req_id
+              });
+              handle = query.observeChanges({
+                changed: function(id, req) {
+                  if (req.state === "Done") {
+                    handle.stop();
+                    console.log('stop handle');
+                    return ide_event.trigger(ide_event.APP_TERMINATE, app_name, app_id);
+                  }
+                }
+              });
+            }
           }
+          return null;
         });
       },
       duplicateStack: function(region, stack_id, new_name) {

@@ -13,33 +13,12 @@
 				<li>
 					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-globe icon-nav-label"></i>
 						Global Overview
-						<!-- <span class="nav-head-note">{{ attributes.region_list.length }} Regions in Use</span> -->
 					</a>
 				</li>
 
-				{{#each region_list }}
-				<li>
-					<a href="javascript:void(0)" class="truncate nav-truncate region-name" data-region-name="{{ region_name }}">
-						<i class="status status-grey icon-nav-status"></i>{{region_city}}
-						<span class="nav-head-note">{{region_area}}</span>
-					</a>
-				</li>
-				{{/each}}
-
-				<!--
-				<li>
-					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-grey icon-nav-status"></i>N. Virginia
-					<span class="nav-head-note">US East</span></a>
-				</li>
-				<li>
-					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-grey icon-nav-status"></i>Oregon
-					<span class="nav-head-note">US West</span></a>
-				</li>
-				<li>
-					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-blue icon-nav-status"></i>Singapore
-					<span class="nav-head-note">Asia Pacific</span></a>
-				</li>
-				-->
+				<div class="nav-region-group">
+					loading...
+				</div>
 
 			</ul>
 		</div>
@@ -52,66 +31,10 @@
 
 		<div class="sub-menu-wrapper accordion-body">
 			<ul class="sub-menu nav-region-list" id="nav-app-region">
-
-				{{#each app_list }}
-				<li>
-					<a href="javascript:void(0)">{{ region_group }} ({{ region_count }})</a>
-					<ul class="nav-region-list-items app-list">
-						{{#each region_name_group }}
-						<li>
-							<a href="javascript:void(0)" data-region-name="{{ region }}" data-app-id="{{ id }}" class="truncate nav-truncate" title="{{ name }}-[{{ state }}]">
-								<i class="status status-{{ state }} icon-nav-status"></i>
-								{{ name }}
-							</a>
-						</li>
-						{{/each}}
-					</ul>
-				</li>
-				{{/each}}
-
-				<!--
-				<li>
-					<a href="javascript:void(0)">N. Virginia (3)</a>
-					<ul class="nav-region-list-items">
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-grey icon-nav-status"></i>App-name-1</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-green icon-nav-status"></i>App-long-name-2</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-blue icon-nav-status"></i>App-longlong-name-3</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:void(0)">Oregon (2)</a>
-					<ul class="nav-region-list-items">
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-red icon-nav-status"></i>App-name-1</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-red icon-nav-status"></i>App-long-name-2</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:void(0)">Singapore (3)</a>
-					<ul class="nav-region-list-items">
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-green icon-nav-status"></i>App-name-1</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-blue icon-nav-status"></i>App-long-name-2</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-grey icon-nav-status"></i>App-long-name-2</a>
-						</li>
-					</ul>
-				</li>
-				-->
+				<div class="nav-app-list">
+					loading...
+				</div>
 			</ul>
-
 		</div>
 
 	</li>
@@ -128,91 +51,14 @@
 		<div class="sub-menu-wrapper accordion-body">
 
 			<ul class="sub-menu nav-region-list accordion-bod" id="nav-stack-region">
-
-				{{#each stack_list }}
-				<li>
-					<a href="javascript:void(0)" class="nav-stack-region-title create-new-stack">{{ region_group }} ({{ region_count }})<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
-					</a>
-
-					<ul class="nav-region-list-items stack-list">
-
-						{{#each region_name_group }}
-
-						<li>
-							<a href="javascript:void(0)" data-region-name="{{ region }}" data-stack-id="{{ id }}" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>{{ name }}</a>
-						</li>
-
-						{{/each}}
-
-					</ul>
-
-				</li>
-				{{/each}}
-
-				<!--
-				<li>
-					<a href="javascript:void(0)" class="nav-stack-region-title">N. Virginia (3) <span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span></a>
-					<ul class="nav-region-list-items">
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-name-1</a></li>
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-long-name-2</a></li>
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-longlong-name-3</a></li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:void(0)" class="nav-stack-region-title">Oregon (2) <span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span></a>
-					<ul class="nav-region-list-items">
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-name-1</a></li>
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-long-name-2</a></li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:void(0)" class="nav-stack-region-title">Singapore (3) <span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span></a>
-					<ul class="nav-region-list-items">
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-name-1</a></li>
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-long-name-2</a></li>
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-long-name-2</a></li>
-					</ul>
-				</li>
-				-->
+				<div class="nav-stack-list">
+					loading...
+				</div>
 			</ul>
 
-			{{#if region_empty_list }}
-
-			<ul class="sub-menu nav-region-list accordion-bod">
-				{{#each region_empty_list }}
-
-				<li class="hide">
-					<a href="javascript:void(0)" class="nav-stack-region-title">
-						{{ this }} (0)
-						<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
-					</a>
-				</li>
-
-				{{/each}}
-
-				<!--
-				<li class="hide">
-					<a href="javascript:void(0)" class="nav-stack-region-title">
-						Tokyo (0)
-						<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
-					</a>
-				</li>
-				<li class="hide">
-					<a href="javascript:void(0)" class="nav-stack-region-title">
-						Ireland (0)
-						<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
-					</a>
-				</li>
-				-->
-			</ul>
-
-			<div class="show-unused-region">
-				<a href="javascript:void(0)" class="tooltip" data-tooltip="Show unused regions">
-					<i class="icon-double-angle-down"></i>
-				</a>
+			<div class="nav-region-empty-list">
+				loading...
 			</div>
-
-			{{/if}}
 
 		</div>
 

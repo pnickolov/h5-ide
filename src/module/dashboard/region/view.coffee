@@ -121,12 +121,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         clickAppThumbnail : ( event ) ->
             console.log 'dashboard region click app thumbnail'
             console.log $(event.currentTarget).find('.thumbnail-name').text(), event.currentTarget.id, this.region
-            ide_event.trigger ide_event.OPEN_APP_TAB, $(event.currentTarget).find('.thumbnail-name').text(), event.currentTarget.id, this.region
+            ide_event.trigger ide_event.OPEN_APP_TAB, $(event.currentTarget).find('.thumbnail-name').text(), this.region, event.currentTarget.id
 
         clickStackThumbnail : ( event ) ->
             console.log 'dashboard region click stack thumbnail'
             console.log $(event.currentTarget).find('.thumbnail-name').text(), event.currentTarget.id, this.region
-            ide_event.trigger ide_event.OPEN_STACK_TAB, $(event.currentTarget).find('.thumbnail-name').text(), event.currentTarget.id, this.region
+            ide_event.trigger ide_event.OPEN_STACK_TAB, $(event.currentTarget).find('.thumbnail-name').text(), this.region, event.currentTarget.id
 
     }
 

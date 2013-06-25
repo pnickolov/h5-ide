@@ -10,18 +10,15 @@
 */
 
 MC.IDEcompile = function( suffix, template_data, compile_obj ) {
+    
+    var data  = template_data.split(/\<!-- (.*) --\>/ig)
+    data      = _.difference( data, _.keys( compile_obj ))
+    data      = _.rest( data )
+    data      = _.object( _.values( compile_obj ), data )
+
     //
-    $( 'head' ).append( '<div id="template_' + suffix + '"></div>' )
-    //
-    suffix = '#template_' + suffix
-    $( suffix ).html( template_data )
-    //
-    _.each( compile_obj, function( value, key ) {
-    	tmp = $( suffix ).find( key ).html()
-        //add handlebars script
-        tmp = '<script type="text/x-handlebars-template" id="' + value + '">' + tmp + '</script>'
+    _.each( data, function( value, key ) {
+        tmp = '<script type="text/x-handlebars-template" id="' + key + '">' + value + '</script>'
         $( tmp ).appendTo( 'head' )
     });
-    //
-    $( 'head' ).remove( suffix )
 }

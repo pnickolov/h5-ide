@@ -1,4 +1,4 @@
-<!-- ken begin -->
+<!-- .resource-tables -->
 <div class="resource-tables">
 	<div class="dashboard-widget">
 		<div class="tab grid grid-responsive grid-small-bottom row-counter">
@@ -29,20 +29,12 @@
 						</div>
 					</a>
 			</div>
-<!-- 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-				<div class="widget-region-counter">
-					<a href="#stat-table-ebs-snap">
-						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>31<span class="label">EBS Snapshot</span>
-						</div>
-					</a>
-				</div>
-			</div> -->
+
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
 					<a href="#stat-table-vpc" class="widget-region-counter">
 						<div class="region-stat-block-wrap">
 							<i class="icon-hdd icon-label"></i>{{region_resource_list.VPC}}<span class="label">VPC</span>
-<!-- 							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"You have reached limit of VPC in this region","description":"The max number of VPC in each region is 5."}'>!</span> -->
+
 						</div>
 					</a>
 			</div>
@@ -50,7 +42,7 @@
 					<a href="#stat-table-vpn" class="widget-region-counter">
 						<div class="region-stat-block-wrap">
 							<i class="icon-image icon-label"></i>{{region_resource_list.VPN}}<span class="label">VPN</span>
-<!-- 							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"1 VPN not in use.","description":"VPN in stopped app is not in use but still charging money."}'>1</span> -->
+
 						</div>
 					</a>
 			</div>
@@ -61,39 +53,6 @@
 						</div>
 					</a>
 			</div>
-<!-- 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-				<div class="widget-region-counter">
-					<a href="#stat-table-asg">
-						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>2<span class="label">Auto Scaling Group</span>
-
-						</div>
-					</a>
-				</div>
-
-			</div> -->
-<!-- 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-				<div class="widget-region-counter">
-					<a href="#stat-table-rds">
-						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>3<span class="label">RDS</span>
-						</div>
-					</a>
-
-				</div>
-
-			</div> -->
-<!-- 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-				<div class="widget-region-counter">
-					<a href="#stat-table-rds-snap">
-						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>4<span class="label">RDS Snapshot</span>
-							 <span class="warning-counter">!</span>
-						</div>
-					</a>
-				</div>
-
-			</div> -->
 
 		</div>
 		<div id="stat-table-instance" class="stat-table active">
@@ -109,7 +68,6 @@
 								<th class="sortable" style="width:15%">Launch Time</th>
 								<th class="sortable" style="width:10%">AMI</th>
 								<th class="sortable" style="width:15%">Availability Zone</th>
-							<!--	<th class="sortable" style="width:12%">Estimated Cost</th> -->
 								<th style="width:10%">Detail</th>
 							</tr>
 						</thead>
@@ -134,7 +92,6 @@
 									<td>{{ launchTime }}</td>
 									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
 									<td>{{ placement.availabilityZone}}</td>
-							<!--		<td>N/A</td> -->
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}

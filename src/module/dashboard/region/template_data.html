@@ -339,9 +339,8 @@
 		</div>
 	</div>
 </div>
-<!-- ken end -->
 
-<!-- .region-unmanaged-resource-tables -->
+<!-- .unmanaged-resource-tables -->
 <div class='unmanaged-resource-tables'>
     {{#if unmanaged_list.items}}
         <div class="dashboard-widget-body dashboard-widget-body-table scroll-wrap">
@@ -394,7 +393,7 @@
 </div>
 
 <!-- .vpc-attrs -->
-<div class="vpc-attrs">
+<div class="vpc-attrs" style="display:inline">
     {{#if vpc_attrs}}
         {{#if vpc_attrs.classic}}
             <div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 Classic and EC2 VPC.">
@@ -406,7 +405,7 @@
             <span class="region-platform-vpc">{{ vpc_attrs.vpc }}</span>
         {{/if}}
     {{else}}
-    <div class="region-platform-wrap tooltip" data-tooltip="">
+    	<div class="region-platform-wrap tooltip" data-tooltip="">
     {{/if}}
     </div>
 </div>

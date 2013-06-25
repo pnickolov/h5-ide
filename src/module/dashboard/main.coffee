@@ -23,15 +23,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
         #load remote html ovverview_tmpl
         #$( overview_tmpl ).appendTo 'head'
 
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl'}
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-empty' : 'overview-empty-tmpl'}
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.stat-info' : 'stat-info-tmpl'}
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.platform-attr' : 'platform-attr-tmpl'}
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.overview-empty' : 'overview-empty-tmpl', '.stat-info' : 'stat-info-tmpl','.platform-attr' : 'platform-attr-tmpl' }
 
-        MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables' : 'region-resource-tables-tmpl'}
-        MC.IDEcompile 'region', region_tmpl_data, {'.unmanaged-resource-tables' : 'region-unmanaged-resource-tables-tmpl'}
-        MC.IDEcompile 'region', region_tmpl_data, {'.vpc-attrs' : 'vpc-attrs-tmpl'}
-        MC.IDEcompile 'region', region_tmpl_data, {'.aws-status' : 'aws-status-tmpl'}
+        MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl' }
 
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'

@@ -11,6 +11,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         template : Handlebars.compile $( '#region-tmpl' ).html()
 
+        stat_table : Handlebars.compile console.log $( '#resource-list' ).html()
+
         events   :
             'click .return-overview'        : 'returnOverviewClick'
             'click .refresh'                : 'returnRefreshClick'
@@ -22,6 +24,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click #btn-create-stack'       : 'createStackClick'
             'click .app-thumbnail'          : 'clickAppThumbnail'
             'click .stack-thumbnail'        : 'clickStackThumbnail'
+
+        renderRegionResource : ( target ) ->
+            console.log 'dashboard region resource render'
+            $( this.el ).find( '.stat-table' ) this.stat_table this.model.attributes
 
         returnOverviewClick : ( target ) ->
             console.log 'returnOverviewClick'

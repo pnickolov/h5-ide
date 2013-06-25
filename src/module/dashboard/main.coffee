@@ -220,18 +220,18 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         #push event
                         model.get 'region_resource_list'
                         #refresh view
-                        region_view.render()
+                        region_view.renderRegionResource()
 
                     model.on 'change:region_resource', () ->
                         console.log 'dashboard_region_resources'
                         #push event
                         model.get 'region_resource'
                         #refresh view
-                        region_view.render()
+                        region_view.renderRegionResource()
 
                     model.on 'REGION_RESOURCE_CHANGED', ()->
 
-                        region_view.render()
+                        region_view.renderRegionResource()
 
                     region_view.on 'RETURN_OVERVIEW_TAB', () ->
                         #set MC.data.dashboard_type

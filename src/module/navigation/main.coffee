@@ -2,16 +2,19 @@
 #  Controller for navigation module
 ####################################
 
-define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/model.js', 'event' ], ( $, template, model, ide_event ) ->
+define [ 'jquery',
+         'text!/module/navigation/template.html',
+         'text!/module/navigation/template_data.html',
+         '/module/navigation/model.js',
+         'event',
+         'MC.ide.template'
+], ( $, template, template_data, model, ide_event ) ->
 
     #private
     loadModule = () ->
 
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="navigation-tmpl">' + template + '</script>'
-
-        #load remote html template
-        $( template ).appendTo 'head'
+        #compile partial template
+        MC.IDEcompile 'nav', template_data, { '.app-list-data' : 'nav-app-list-tmpl', '.stack-list-data' : 'nav-stack-list-tmpl', '.region-empty-list' : 'nav-region-empty-list-tmpl', '.region-list' : 'nav-region-list-tmpl' }
 
         #load remote /module/navigation/view.js
         require [ './module/navigation/view', 'UI.tooltip', 'UI.accordion', 'hoverIntent' ], ( View ) ->
@@ -20,7 +23,7 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
             view       = new View()
             view.model = model
             #refresh view
-            view.render()
+            view.render template
 
             #listen vo set change event
             model.on 'change:app_list', () ->
@@ -28,7 +31,7 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
                 #push event
                 ide_event.trigger ide_event.RESULT_APP_LIST, model.get 'app_list'
                 #refresh view
-                view.render()
+                view.appListRender()
                 #call
                 model.stackListService()
 
@@ -37,7 +40,7 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
                 #push event
                 ide_event.trigger ide_event.RESULT_STACK_LIST, model.get 'stack_list'
                 #refresh view
-                view.render()
+                view.stackListRender()
                 #call
                 model.regionEmptyList()
 
@@ -46,14 +49,14 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
                 #push event
                 ide_event.trigger ide_event.RESULT_EMPTY_REGION_LIST, null
                 #refresh view
-                view.render()
+                view.regionEmtpyListRender()
                 #call
                 model.describeRegionsService()
 
             model.on 'change:region_list', () ->
                 console.log 'change:region_list'
                 #refresh view
-                view.render()
+                view.regionListRender()
 
             #model
             model.appListService()
@@ -67,13 +70,6 @@ define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/
                 console.log 'UPDATE_STACK_LIST'
                 #call
                 model.stackListService()
-
-            ###
-            ide_event.onLongListen ide_event.UPDATE_STACK_LIST, () ->
-                console.log 'UPDATE_STACK_LIST'
-                #call
-                model.stackListService()
-            ###
 
     unLoadModule = () ->
         #view.remove()

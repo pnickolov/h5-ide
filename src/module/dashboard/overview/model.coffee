@@ -39,8 +39,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             'recent_edited_stacks'  : null
             'recent_launched_apps'  : null
             'recent_stoped_apps'    : null
-            'app_list'              : null
-            'stack_list'            : null
+            #'app_list'              : null
+            #'stack_list'            : null
 
         initialize : ->
 
@@ -74,7 +74,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
         #result list
         updateMap : ( me, app_list, stack_list ) ->
-            console.log 'updateMap'
 
             #init
             total_app   = 0
@@ -98,7 +97,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                         region_counts[value.region].running_app += 1
                     else if value.state is constant.APP_STATE.APP_STATE_STOPPED
                         region_counts[value.region].stopped_app += 1
-                        total_app += 1
+                    total_app += 1
 
                     null
 
@@ -138,7 +137,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             result_list.plural_stack = if total_stack > 1 then 's' else ''
 
             #set vo
-            console.log result_list
             me.set 'result_list', result_list
 
             null
@@ -184,9 +182,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                     cur_attr = regionAttrSet[ value ].accountAttributeSet.item.attributeValueSet.item
 
                     if $.type(cur_attr) == "array"
-                        region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ] }
+                        region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
                     else
-                        region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ] }
+                        region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
                     null
 
                 me.set 'region_classic_list', region_classic_vpc_result
@@ -197,7 +195,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
         # update recent list
         updateRecentList : (me, result, flag) ->
             recent_list = []
-            item_list = []
+            #item_list = []
 
             _.map result, (value) ->
                 region_group_obj = value
@@ -215,7 +213,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                         null
 
-                item_list.push { 'region_name' : region_name, 'items' : items }
+                #item_list.push { 'region_name' : region_name, 'items' : items }
 
             # sort
             recent_list.sort (a, b) ->
@@ -231,10 +229,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             # set value
             if flag == 'recent_edited_stacks'
                 me.set 'recent_edited_stacks', recent_list
-                me.set 'stack_list', item_list
+                #me.set 'stack_list', item_list
             else if flag == 'recent_launched_apps'
                 me.set 'recent_launched_apps', recent_list
-                me.set 'app_list', item_list
+                #me.set 'app_list', item_list
             else if flag == 'recent_stoped_apps'
                 me.set 'recent_stoped_apps', recent_list
 

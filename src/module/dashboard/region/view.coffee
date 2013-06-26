@@ -9,9 +9,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         el       : $( '#tab-content-region' )
 
-        template : Handlebars.compile $( '#region-tmpl' ).html()
+        #template : Handlebars.compile $( '#region-tmpl' ).html()
 
-        stat_table : Handlebars.compile console.log $( '#resource-list' ).html()
+        stat_table : Handlebars.compile $( '#region-resource-tables-tmpl' ).html()
 
         events   :
             'click .return-overview'        : 'returnOverviewClick'
@@ -25,9 +25,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click .app-thumbnail'          : 'clickAppThumbnail'
             'click .stack-thumbnail'        : 'clickStackThumbnail'
 
-        renderRegionResource : ( target ) ->
+        renderRegionResource : ->
             console.log 'dashboard region resource render'
-            $( this.el ).find( '.stat-table' ) this.stat_table this.model.attributes
+            $( this.el ).find( '.region-resource-tables' ).html this.stat_table this.model.attributes
+
+            null
 
         returnOverviewClick : ( target ) ->
             console.log 'returnOverviewClick'
@@ -37,12 +39,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             console.log 'returnRefreshClick'
             this.trigger 'REFRESH_REGION_BTN', null
 
-        render   : ( time_stamp ) ->
+        #render   : ( time_stamp ) ->
+        #    console.log 'dashboard region render'
+        #    $( this.el ).html this.template this.model.attributes
+        #    if time_stamp
+        #        this.time_stamp = time_stamp
+        #    this.update_time()
+
+        render : ( template ) ->
+
             console.log 'dashboard region render'
-            $( this.el ).html this.template this.model.attributes
-            if time_stamp
-                this.time_stamp = time_stamp
-            this.update_time()
+
+            $( this.el ).html template
 
         update_time   : () ->
             me = this

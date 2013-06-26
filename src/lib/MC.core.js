@@ -2,16 +2,16 @@
 #**********************************************************
 #* Filename: MC.core.js
 #* Creator: Angel
-#* Description: The core of the whole system
-#* Date: 20130622
+#* Description: The core of the whole system 
+#* Date: 20130624
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var MC = {
-	version: '0.1.9',
+	version: '0.2',
 
-	// Global Variable
+	// Global Variable 
 	API_URL: 'https://api.madeiracloud.com/',
 	IMG_URL: 'https://img.madeiracloud.com/',
 
@@ -102,7 +102,7 @@ var MC = {
 			};
 
 		MC.api_queue[guid] = option;
-
+		
 		if (!api_frame[0])
 		{
 			$(document.body).append('<iframe id="api-frame" src="https://api.madeiracloud.com/api.html" style="display:none;"></iframe>');
@@ -298,15 +298,15 @@ var MC = {
 /*
 * Storage
 * Author: Angel
-*
+* 
 * Save data into local computer via HTML5 localStorage, up to 10MB storage capacity.
-*
+* 
 * Saving data
 * MC.storage.set(name, value)
-*
+* 
 * Getting data
 * MC.storage.get(name)
-*
+* 
 * Remove data
 * MC.storage.remove(name)
 */
@@ -362,9 +362,13 @@ var returnTrue = function () {return true},
 
 					child = child == null ? {} : child;
 
+					//console.info(child);
 					if (node.nextElementSibling && node.nextElementSibling.nodeName === node.nodeName)
 					{
-						result[node.nodeName] = [];
+						if ($.type(result[node.nodeName]) === 'undefined')
+						{
+							result[node.nodeName] = [];
+						}
 						if (!$.isEmptyObject(child))
 						{
 							result[node.nodeName].push(child);

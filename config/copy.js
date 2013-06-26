@@ -6,7 +6,7 @@ module.exports = {
 			'<%= src %>/<%= libs %>/jquery/jquery.js'         : '<%= components %>/jquery/jquery.js',
 			'<%= src %>/<%= libs %>/underscore/underscore.js' : '<%= components %>/underscore/underscore.js',
 			'<%= src %>/<%= libs %>/backbone/backbone.js'     : '<%= components %>/backbone/backbone.js',
-			'<%= src %>/<%= libs %>/handlebars/handlebars.js' : '<%= components %>/handlebars.js/handlebars.js',
+			'<%= src %>/<%= libs %>/handlebars/handlebars.js' : '<%= components %>/handlebars/handlebars.js',
 			'<%= src %>/<%= libs %>/requirejs/require.js'     : '<%= components %>/requirejs/require.js',
 			'<%= src %>/<%= libs %>/requirejs/domReady.js'    : '<%= components %>/requirejs-domready/domReady.js',
 			'<%= src %>/<%= libs %>/requirejs/text.js'        : '<%= components %>/requirejs-text/text.js',

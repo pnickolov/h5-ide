@@ -233,11 +233,11 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         console.log 'dashboard_region_click:delete_stack'
                         model.deleteStack(current_region, stack_id)
                     region_view.on 'REFRESH_REGION_BTN', () ->
-                        model.describeAWSResourcesService region
+                        model.describeAWSResourcesService current_region
 
-                    model.describeAWSResourcesService region
-                    model.describeRegionAccountAttributesService region
-                    model.describeAWSStatusService region
+                    model.describeAWSResourcesService current_region
+                    model.describeRegionAccountAttributesService current_region
+                    model.describeAWSStatusService current_region
                     model.getItemList 'app', current_region, overview_app
                     model.getItemList 'stack', current_region, overview_stack
 

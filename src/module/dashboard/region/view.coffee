@@ -15,6 +15,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         unmanaged_table : Handlebars.compile $( '#region-unmanaged-resource-tables-tmpl' ).html()
         vpc_attrs : Handlebars.compile $( '#vpc-attrs-tmpl' ).html()
         aws_status : Handlebars.compile $( '#aws-status-tmpl' ).html()
+        stat_app : Handlebars.compile $( '#stat-app-tmpl' ).html()
+        stat_stack : Handlebars.compile $( '#stat-stack-tmpl' ).html()
 
         events   :
             'click .return-overview'        : 'returnOverviewClick'
@@ -55,6 +57,16 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 this.time_stamp = time_stamp
             this.update_time()
 
+            null
+
+        renderRegionStatApp : ->
+            console.log 'dashboard region stat app render'
+            $( this.el ).find( '#region-stat-app' ).html this.stat_app this.model.attributes
+            null
+
+        renderRegionStatStack : ->
+            console.log 'dashboard region stat stack render'
+            $( this.el ).find( '#region-stat-stack' ).html this.stat_stack this.model.attributes
             null
 
         returnOverviewClick : ( target ) ->

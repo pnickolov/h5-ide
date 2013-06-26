@@ -56,7 +56,14 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 		# subscribe to remote
 		sub : ( name, args..., sub_callback ) ->
 
-			sub_instance = Meteor.subscribe name, args..., sub_callback
+			sub_instance = Meteor.subscribe name, args..., {
+				onReady: sub_callback
+				onError: ( error ) ->
+
+
+					# do something to alert
+					alert 'session invalid'
+			}
 
 			sub_instance
 
@@ -74,21 +81,6 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 			catch error
 
 				console.log "Stop subscription failed. #{error}"
-
-		# get collection
-		get : ( name ) ->
-
-			if @collection[name]?
-
-				console.log "No such collection"
-
-				null
-
-			else
-
-				@collection[name]
-
-
 
 
 	websocketInit 	: 	websocketInit

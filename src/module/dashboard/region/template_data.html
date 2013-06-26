@@ -340,7 +340,7 @@
 	</div>
 </div>
 
-<!-- .unmanaged-resource-tables -->
+<!--{{ .unmanaged-resource-tables }}-->
 <div class='unmanaged-resource-tables'>
     {{#if unmanaged_list.items}}
         <div class="dashboard-widget-body dashboard-widget-body-table scroll-wrap">
@@ -379,7 +379,7 @@
     {{/if}}
 </div>
 
-<!-- .aws-status -->
+<!--{{ .aws-status }}-->
 <div class="aws-status">
     {{#if status_list}}
         <span><i class="status status-red"></i>{{status_list.red}}</span>
@@ -392,7 +392,7 @@
     {{/if}}
 </div>
 
-<!-- .vpc-attrs -->
+<!--{{ .vpc-attrs }}-->
 <div class="vpc-attrs" style="display:inline">
     {{#if vpc_attrs}}
         {{#if vpc_attrs.classic}}
@@ -410,7 +410,16 @@
     </div>
 </div>
 
-<!-- .stat-app -->
+<!--{{ .stat-info }}-->
+<li class="col-1-2 active">
+	<a href="#region-stat-app"><i class="icon-browser icon-label"></i><span class="counter">{{ cur_app_list.length }}</span> Apps</a>
+</li>
+<li class="col-1-2">
+	<a href="#region-stat-stack"><i class="icon-layers icon-label"></i><span class="counter">{{ cur_stack_list.length }}</span> Stacks</a>
+	<button id="btn-create-stack" href="javascript:void(0)" class="btn btn-primary btn-region-dashboard" title="Create New Stack">+</button>
+</li>
+
+<!--{{ .stat-app }}-->
 <div class="stat-app">
 	{{#each cur_app_list}}
 	<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}' style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">
@@ -436,7 +445,7 @@
 	{{/each}}
 </div>
 
-<!-- .stat-stack -->
+<!--{{ .stat-stack }}-->
 <div class="stat-stack">
 	{{#each cur_stack_list}}
 	<div class="item-thumbnail-wrap" style="background: url('assets/images/ide/dummy/app-thumbnail.png') 0 0;">

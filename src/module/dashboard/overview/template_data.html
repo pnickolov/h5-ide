@@ -1,4 +1,4 @@
-<!-- .overview-result -->
+<!--{{ .overview-result }}-->
 <div class="overview-result">
     {{#each result_list.region_infos }}
     <li id="{{ region_name }}">
@@ -20,7 +20,7 @@
     {{/each}}
 </div>
 
-<!-- .overview-empty -->
+<!--{{ .overview-empty }}-->
 <div class="overview-empty">
     {{#each region_empty_list }}
         <li id="{{ region_name }}" class="unused">
@@ -29,7 +29,7 @@
     {{/each}}
 </div>
 
-<!-- .stat-info -->
+<!--{{ .stat-info }}-->
 <div class="stat-info">
     <div class="dashboard-global-stat">
     {{#if result_list }}
@@ -47,7 +47,7 @@
     {{/if}}
 </div>
 
-<!-- .platform-attr -->
+<!--{{ .platform-attr }}-->
 <div class="platform-attr">
     {{#each region_classic_list }}
     <li data-region="{{region}}">
@@ -65,7 +65,7 @@
     {{/each}}
 </div>
 
-<!-- {{ .recent-edited-stack }} -->
+<!--{{ .recent-edited-stack }}-->
 {{#if recent_edited_stacks}}
 <ul class="dashboard-recent-list">
     {{#each recent_edited_stacks }}
@@ -76,7 +76,7 @@
 <div class="blank-widget">No recent edited stack in last 30 days.</div>
 {{/if}}
 
-<!-- {{ .recent-launched-app }} -->
+<!--{{ .recent-launched-app }}-->
 {{#if recent_launched_apps}}
 <ul class="dashboard-recent-list">
     {{#each recent_launched_apps}}
@@ -87,7 +87,7 @@
 <div class="blank-widget">No recent launched app in last 30 days.</div>
 {{/if}}
 
-<!-- {{ .recent-stopped-app }} -->
+<!--{{ .recent-stopped-app }}-->
 {{#if recent_stoped_apps}}
 <ul class="dashboard-recent-list">
     {{#each recent_stoped_apps}}

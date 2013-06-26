@@ -32,7 +32,7 @@ define [ 'jquery',
 
         MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.overview-empty' : 'overview-empty-tmpl', '.stat-info' : 'stat-info-tmpl','.platform-attr' : 'platform-attr-tmpl', '.recent-edited-stack' : 'recent-edited-stack-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.recent-stopped-app' : 'recent-stopped-app-tmpl' }
 
-        MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl', '.stat-app' : 'stat-app-tmpl', '.stat-stack' : 'stat-stack-tmpl' }
+        MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl', '.stat-info' : 'stat-info-tmpl', '.stat-app' : 'stat-app-tmpl', '.stat-stack' : 'stat-stack-tmpl' }
 
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
@@ -191,11 +191,13 @@ define [ 'jquery',
                     model.on 'change:cur_app_list', () ->
                         console.log 'dashboard_region_change:cur_app_list'
                         model.get 'cur_app_list'
+                        #region_view.renderRegionStatInfo()
                         region_view.renderRegionStatApp()
 
                     model.on 'change:cur_stack_list', () ->
                         console.log 'dashboard_region_change:cur_stack_list'
                         model.get 'cur_stack_list'
+                        #region_view.renderRegionStatInfo()
                         region_view.renderRegionStatStack()
 
                     model.on 'change:region_resource_list', () ->
@@ -270,9 +272,6 @@ define [ 'jquery',
                         model.getItemList 'stack', current_region, overview_stack
 
                         null
-
-                    region_view.render region_tmpl
-
 
     unLoadModule = () ->
         #view.remove()

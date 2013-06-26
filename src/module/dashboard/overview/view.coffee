@@ -14,7 +14,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         overview_empty: Handlebars.compile $( '#overview-empty-tmpl' ).html()
         stat_info: Handlebars.compile $( '#stat-info-tmpl' ).html()
         platform_attr: Handlebars.compile $( '#platform-attr-tmpl' ).html()
-        recent_info : Handlebars.compile $( '#recent-info-tmpl' ).html()
+        recent_edited_stack : Handlebars.compile $( '#recent-edited-stack-tmpl' ).html()
+        recent_launched_app : Handlebars.compile $( '#recent-launched-app-tmpl' ).html()
+        recent_stopped_app : Handlebars.compile $( '#recent-stopped-app-tmpl' ).html()
 
         events   :
             'click #map-region-spot-list > li' : 'mapRegionClick'
@@ -51,9 +53,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             null
 
-        renderRecentInfo : ->
-            console.log 'dashboard recent info render'
-            $( this.el ).find( '.recent-info-list' ).html this.recent_info this.model.attributes
+        renderRecentEditedStack : ->
+            console.log 'dashboard recent edited stack render'
+            $( this.el ).find( '#recent-edited-stack' ).html this.recent_edited_stack this.model.attributes
+            null
+
+        renderRecentLaunchedApp : ->
+            console.log 'dashboard recent launched app render'
+            $( this.el ).find( '#recent-launched-app' ).html this.recent_launched_app this.model.attributes
+            null
+
+        renderRecentStoppedApp : ->
+            console.log 'dashboard recent stopped app render'
+            $( this.el ).find( '#recent-stopped-app' ).html this.recent_stopped_app this.model.attributes
             null
 
         mapRegionClick : ( event ) ->

@@ -30,7 +30,7 @@ define [ 'jquery',
         #load remote html ovverview_tmpl
         #$( overview_tmpl ).appendTo 'head'
 
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.overview-empty' : 'overview-empty-tmpl', '.stat-info' : 'stat-info-tmpl','.platform-attr' : 'platform-attr-tmpl', '.recent-info' : 'recent-info-tmpl' }
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.overview-empty' : 'overview-empty-tmpl', '.stat-info' : 'stat-info-tmpl','.platform-attr' : 'platform-attr-tmpl', '.recent-edited-stack' : 'recent-edited-stack-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.recent-stopped-app' : 'recent-stopped-app-tmpl' }
 
         MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl' }
 
@@ -75,20 +75,20 @@ define [ 'jquery',
                 #refresh view
                 view.renderPlatformAttrs()
 
-            model.on 'change:resent_edited_stacks', () ->
-                console.log 'dashboard_change:resent_eidted_stacks'
-                model.get 'resent_edited_stacks'
-                view.renderRecentInfo()
+            model.on 'change:recent_edited_stacks', () ->
+                console.log 'dashboard_change:recent_eidted_stacks'
+                model.get 'recent_edited_stacks'
+                view.renderRecentEditedStack()
 
-            model.on 'change:resent_launched_apps', () ->
-                console.log 'dashboard_change:resent_launched_apps'
-                model.get 'resent_launched_apps'
-                view.render()
+            model.on 'change:recent_launched_apps', () ->
+                console.log 'dashboard_change:recent_launched_apps'
+                model.get 'recent_launched_apps'
+                view.renderRecentLaunchedApp()
 
-            model.on 'change:resent_stoped_apps', () ->
-                console.log 'dashboard_change:resent_stoped_apps'
-                model.get 'resent_stoped_apps'
-                view.render()
+            model.on 'change:recent_stoped_apps', () ->
+                console.log 'dashboard_change:recent_stoped_apps'
+                model.get 'recent_stoped_apps'
+                view.renderRecentStoppedApp()
 
             #model
             model.resultListListener()

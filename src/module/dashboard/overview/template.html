@@ -163,25 +163,14 @@
 	<!-- cinde end -->
 
 	<!-- michael begin -->
-	<!--div class="grid">
+	<div class="grid">
 		<div class="col-1-3">
 			<div class="dashboard-widget widget-small" id="dashboard-recent-edit-stack">
 				<div class="dashboard-widget-title-wrap">
 					<h4 class="dashboard-widget-title">Recently Edited Stacks</h4>
 				</div>
-				<div class="dashboard-widget-body">
-					{{#if recent_edited_stacks}}
-					<ul class="dashboard-recent-list">
-
-						{{#each recent_edited_stacks }}
-						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-						{{/each}}
-
-					</ul>
-
-					{{else}}
-					<div class="blank-widget">No recent edited stack in last 30 days.</div>
-					{{/if}}
+				<div class="dashboard-widget-body" id="recent-edited-stack">
+					loading...
 				</div>
 			</div>
 		</div>
@@ -190,19 +179,8 @@
 				<div class="dashboard-widget-title-wrap">
 					<h4 class="dashboard-widget-title">Recently Launched Apps</h4>
 				</div>
-				<div class="dashboard-widget-body">
-					{{#if recent_launched_apps}}
-					<ul class="dashboard-recent-list">
-
-						{{#each recent_launched_apps}}
-						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-						{{/each}}
-
-					</ul>
-
-					{{else}}
-					<div class="blank-widget">No recent launched app in last 30 days.</div>
-					{{/if}}
+				<div class="dashboard-widget-body" id="recent-launched-app">
+					loading...
 				</div>
 			</div>
 		</div>
@@ -211,29 +189,18 @@
 				<div class="dashboard-widget-title-wrap">
 					<h4 class="dashboard-widget-title">Recently Stopped Apps</h4>
 				</div>
-				<div class="dashboard-widget-body">
-					{{#if recent_stoped_apps}}
-					<ul class="dashboard-recent-list">
-
-						{{#each recent_stoped_apps}}
-						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-						{{/each}}
-
-					</ul>
-
-					{{else}}
-					<div class="blank-widget">No recent stopped app in last 30 days.</div>
-					{{/if}}
+				<div class="dashboard-widget-body" id="recent-stopped-app">
+					loading...
 				</div>
 			</div>
 		</div>
-	</div-->
+	</div>
 
-	<div class="grid">
+	<!--div class="grid">
 		<div class="recent-info-list">
 			loading...
 		</div>
-	</div>
+	</div-->
 	<!-- michael end -->
 
 	<!-- kenshin begin -->

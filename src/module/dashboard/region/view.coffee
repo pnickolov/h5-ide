@@ -15,7 +15,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         unmanaged_table : Handlebars.compile $( '#region-unmanaged-resource-tables-tmpl' ).html()
         vpc_attrs : Handlebars.compile $( '#vpc-attrs-tmpl' ).html()
         aws_status : Handlebars.compile $( '#aws-status-tmpl' ).html()
-        stat_info : Handlebars.compile $( '#stat-info-tmpl' ).html()
+        stat_app_count : Handlebars.compile $( '#stat-app-count-tmpl' ).html()
+        stat_stack_count : Handlebars.compile $( '#stat-stack-count-tmpl' ).html()
         stat_app : Handlebars.compile $( '#stat-app-tmpl' ).html()
         stat_stack : Handlebars.compile $( '#stat-stack-tmpl' ).html()
 
@@ -67,13 +68,13 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         renderRegionStatApp : ->
             console.log 'dashboard region stat app render'
-            $( this.el ).find( '.region-stat-info' ).html this.stat_info this.model.attributes
+            $( this.el ).find( '#stat-app-count' ).html this.stat_app_count this.model.attributes
             $( this.el ).find( '#region-stat-app' ).html this.stat_app this.model.attributes
             null
 
         renderRegionStatStack : ->
             console.log 'dashboard region stat stack render'
-            $( this.el ).find( '.region-stat-info' ).html this.stat_info this.model.attributes
+            $( this.el ).find( '#stat-stack-count' ).html this.stat_stack_count this.model.attributes
             $( this.el ).find( '#region-stat-stack' ).html this.stat_stack this.model.attributes
             null
 

@@ -410,14 +410,16 @@
     </div>
 </div>
 
-<!--{{ .stat-info }}-->
-<li class="col-1-2 active">
+<!--{{ .stat-app-count }}-->
+<div class="stat-app-count">
 	<a href="#region-stat-app"><i class="icon-browser icon-label"></i><span class="counter">{{ cur_app_list.length }}</span> Apps</a>
-</li>
-<li class="col-1-2">
+</div>
+
+<!--{{ .stat-stack-count }}-->
+<div class="stat-stack-count">
 	<a href="#region-stat-stack"><i class="icon-layers icon-label"></i><span class="counter">{{ cur_stack_list.length }}</span> Stacks</a>
 	<button id="btn-create-stack" href="javascript:void(0)" class="btn btn-primary btn-region-dashboard" title="Create New Stack">+</button>
-</li>
+</div>
 
 <!--{{ .stat-app }}-->
 <div class="stat-app">

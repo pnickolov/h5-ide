@@ -2,7 +2,7 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant', 'WS' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant, WS) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant) ->
 
     current_region  = null
     resource_source = null
@@ -12,8 +12,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
     owner           = null
 
     update_timestamp = 0
-
-    subscribed  = null
 
     popup_key_set =
         "unmanaged_bubble" :
@@ -153,6 +151,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     { "key": [ "Subnets" ], "show_key": "Subnets"}
                 ]
 
+    #websocket
+    ws = MC.data.websocket
+
     #private
     RegionModel = Backbone.Model.extend {
 
@@ -169,13 +170,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
         initialize : ->
             me = this
-
-            WS.websocketInit()
-            subscribed = new WS.WebSocket()
-            try
-                subscribed.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-            catch error
-                console.log 'Subscription failed'
 
             aws_model.on 'AWS_RESOURCE_RETURN', ( result ) ->
 
@@ -411,10 +405,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 #parse the result
                 if !result.is_error #request successfuly
 
-                    if subscribed
+                    if ws
                         req_id = result.resolved_data.id
                         console.log "request id:" + req_id
-                        query = subscribed.collection.request.find({id:req_id})
+                        query = ws.collection.request.find({id:req_id})
                         handle = query.observeChanges {
                             changed : (id, req) ->
                                 if req.state == "Done"
@@ -436,10 +430,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log result
 
                 if !result.is_error
-                    if subscribed
+                    if ws
                         req_id = result.resolved_data.id
                         console.log "request id:" + req_id
-                        query = subscribed.collection.request.find({id:req_id})
+                        query = ws.collection.request.find({id:req_id})
                         handle = query.observeChanges {
                             changed : (id, req) ->
                                 if req.state == "Done"
@@ -461,10 +455,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log result
 
                 if !result.is_error
-                    if subscribed
+                    if ws
                         req_id = result.resolved_data.id
                         console.log "request id:" + req_id
-                        query = subscribed.collection.request.find({id:req_id})
+                        query = ws.collection.request.find({id:req_id})
                         handle = query.observeChanges {
                             changed : (id, req) ->
                                 if req.state == "Done"

@@ -46,7 +46,6 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             model.on 'change:result_list', () ->
                 console.log 'dashboard_change:result_list'
                 #push event
-                model.get 'result_list'
 
                 should_update_overview = true
 
@@ -57,30 +56,30 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             model.on 'change:region_empty_list', () ->
                 console.log 'dashboard_change:region_empty'
                 #push event
-                model.get 'region_empty_list'
+
                 #refresh view
                 view.renderMapEmpty()
 
             model.on 'change:region_classic_list', () ->
                 console.log 'dashboard_region_classic_list'
                 #push event
-                model.get 'region_classic_list'
+
                 #refresh view
                 view.renderPlatformAttrs()
 
             model.on 'change:resent_edited_stacks', () ->
                 console.log 'dashboard_change:resent_eidted_stacks'
-                model.get 'resent_edited_stacks'
+
                 view.render()
 
             model.on 'change:resent_launched_apps', () ->
                 console.log 'dashboard_change:resent_launched_apps'
-                model.get 'resent_launched_apps'
+
                 view.render()
 
             model.on 'change:resent_stoped_apps', () ->
                 console.log 'dashboard_change:resent_stoped_apps'
-                model.get 'resent_stoped_apps'
+
                 view.render()
 
             #model
@@ -119,7 +118,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 model.updateRecentList( model, result, 'recent_edited_stacks' )
 
                 if should_update_overview
-                    view.render()
+                    view.renderMapResult()
+                    view.renderStatInfo()
+                    view.renderMapEmpty()
 
                 null
 
@@ -182,25 +183,25 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     #listen
                     model.on 'change:cur_app_list', () ->
                         console.log 'dashboard_region_change:cur_app_list'
-                        model.get 'cur_app_list'
+
                         #region_view.render region_tmpl
 
                     model.on 'change:cur_stack_list', () ->
                         console.log 'dashboard_region_change:cur_stack_list'
-                        model.get 'cur_stack_list'
+
                         #region_view.render region_tmpl
 
                     model.on 'change:region_resource_list', () ->
                         console.log 'dashboard_region_resource_list'
                         #push event
-                        model.get 'region_resource_list'
+
                         #refresh view
                         region_view.renderRegionResource()
 
                     model.on 'change:region_resource', () ->
                         console.log 'dashboard_region_resources'
                         #push event
-                        model.get 'region_resource'
+
                         #refresh view
                         region_view.renderRegionResource()
 

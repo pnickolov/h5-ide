@@ -1,5 +1,4 @@
-<!-- .overview-result -->
-<div class="overview-result">
+<!--{{ .overview-result }}-->
     {{#each result_list.region_infos }}
     <li id="{{ region_name }}">
         <a href="javascript:void(0)">
@@ -18,19 +17,15 @@
         </a>
         </li>
     {{/each}}
-</div>
 
-<!-- .overview-empty -->
-<div class="overview-empty">
+<!--{{ .overview-empty }}-->
     {{#each region_empty_list }}
         <li id="{{ region_name }}" class="unused">
         <a href="javascript:void(0)" title="{{ region_city }} Dashboard"><i class="icon-map-spot"></i>{{ region_city }}</a>
         </li>
     {{/each}}
-</div>
 
-<!-- .stat-info -->
-<div class="stat-info">
+<!--{{ .stat-info }}-->
     <div class="dashboard-global-stat">
     {{#if result_list }}
         <span class="dashboard-global-stat-app"><span class="global-stat-counter">{{ result_list.total_app }}</span>App{{ result_list.plural_app }}</span>
@@ -45,10 +40,8 @@
     {{else}}
         <p>over <span class="dashboard-global-stat-region-counter"> 0 </span> AWS region.</p>
     {{/if}}
-</div>
 
-<!-- .platform-attr -->
-<div class="platform-attr">
+<!--{{ .platform-attr }}-->
     {{#each region_classic_list }}
     <li data-region="{{region}}">
         <a href="javascript:void(0)">{{ region_name }}
@@ -63,4 +56,3 @@
         </a>
     </li>
     {{/each}}
-</div>

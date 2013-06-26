@@ -49,7 +49,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         renderUnmanagedRegionResource : (time_stamp) ->
             console.log 'dashboard unmanaged region resource render'
             $( this.el ).find( '.region-unmanaged-resource-tables' ).html this.unmanaged_table this.model.attributes
-            console.log this.model.attributes
 
             if time_stamp
                 this.time_stamp = time_stamp

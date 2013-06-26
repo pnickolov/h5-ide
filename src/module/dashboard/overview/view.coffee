@@ -21,16 +21,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         renderMapResult : ->
             console.log 'dashboard overview-result render'
-            $( this.el ).find( '.overview-result-list' ).html this.overview_result this.model.attributes
-            cur_tmpl = $( this.el ).find( '.overview-result' ).html()
+
+            cur_tmpl = (this.overview_result this.model.attributes) + (this.overview_empty this.model.attributes)
+
             $( this.el ).find('#map-region-spot-list').html cur_tmpl
 
             null
 
         renderMapEmpty : ->
             console.log 'dashboard overview-empty render'
-            $( this.el ).find( '.overview-empty-list' ).html this.overview_empty this.model.attributes
-            cur_tmpl = $( this.el ).find( '.overview-result' ).html() + $( this.el ).find( '.overview-empty' ).html()
+
+            cur_tmpl = (this.overview_result this.model.attributes) + (this.overview_empty this.model.attributes)
+
             $( this.el ).find('#map-region-spot-list').html cur_tmpl
 
             null
@@ -43,10 +45,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         renderPlatformAttrs : ->
             console.log 'dashboard platform-attr render'
-            $( this.el ).find( '.platform-attr-list' ).html this.platform_attr this.model.attributes
 
-            cur_tmpl = $( this.el ).find( '.platform-attr' ).html()
-            $( this.el ).find('#dashboard-create-stack-list').html cur_tmpl
+            $( this.el ).find('#dashboard-create-stack-list').html this.platform_attr this.model.attributes
 
             null
 

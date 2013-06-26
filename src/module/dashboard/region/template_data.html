@@ -340,7 +340,7 @@
 	</div>
 </div>
 
-<!-- .unmanaged-resource-tables -->
+<!--{{ .unmanaged-resource-tables }}-->
 <div class='unmanaged-resource-tables'>
     {{#if unmanaged_list.items}}
         <div class="dashboard-widget-body dashboard-widget-body-table scroll-wrap">
@@ -379,8 +379,7 @@
     {{/if}}
 </div>
 
-<!-- .aws-status -->
-<div class="aws-status">
+<!--{{ .aws-status }}-->
     {{#if status_list}}
         <span><i class="status status-red"></i>{{status_list.red}}</span>
         <span><i class="status status-yellow"></i>{{status_list.yellow}}</span>
@@ -390,10 +389,8 @@
         <span><i class="status status-yellow"></i>0</span>
         <span><i class="icon-info-sign"></i>0</span>
     {{/if}}
-</div>
 
-<!-- .vpc-attrs -->
-<div class="vpc-attrs" style="display:inline">
+<!--{{ .vpc-attrs }}-->
     {{#if vpc_attrs}}
         {{#if vpc_attrs.classic}}
             <div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 Classic and EC2 VPC.">
@@ -408,4 +405,3 @@
     	<div class="region-platform-wrap tooltip" data-tooltip="">
     {{/if}}
     </div>
-</div>

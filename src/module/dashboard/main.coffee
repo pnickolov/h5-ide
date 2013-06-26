@@ -99,7 +99,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 model.updateRecentList( model, result, 'recent_stoped_apps' )
 
                 if should_update_overview
-                    view.render()
+                    view.renderMapResult()
+                    view.renderStatInfo()
+                    view.renderMapEmpty()
 
                 null
 

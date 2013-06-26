@@ -11,7 +11,7 @@
 
 MC.IDEcompile = function( suffix, template_data, compile_obj ) {
     
-    var data  = template_data.split(/\<!-- (.*) --\>/ig)
+    var data  = template_data.split( /\<!--{{ (.*) }}--\>/ig )
     data      = _.difference( data, _.keys( compile_obj ))
     data      = _.rest( data )
     data      = _.object( _.values( compile_obj ), data )

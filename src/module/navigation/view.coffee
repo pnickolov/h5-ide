@@ -43,13 +43,13 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         appListRender : ->
             #render html
             console.log 'appListRender render'
-            $( this.el ).find( '.nav-app-list' ).html this.app_list_tmpl this.model.attributes
+            $( this.el ).find( '#nav-app-region' ).html this.app_list_tmpl this.model.attributes
             null
 
         stackListRender : ->
             #render html
             console.log 'stackListRender render'
-            $( this.el ).find( '.nav-stack-list' ).html this.stack_list_tmpl this.model.attributes
+            $( this.el ).find( '#nav-stack-region' ).html this.stack_list_tmpl this.model.attributes
             null
 
         regionEmtpyListRender : ->

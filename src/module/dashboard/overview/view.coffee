@@ -14,6 +14,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         overview_empty: Handlebars.compile $( '#overview-empty-tmpl' ).html()
         stat_info: Handlebars.compile $( '#stat-info-tmpl' ).html()
         platform_attr: Handlebars.compile $( '#platform-attr-tmpl' ).html()
+        recent_info : Handlebars.compile $( '#recent-info-tmpl' ).html()
 
         events   :
             'click #map-region-spot-list > li' : 'mapRegionClick'
@@ -48,6 +49,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             cur_tmpl = $( this.el ).find( '.platform-attr' ).html()
             $( this.el ).find('#dashboard-create-stack-list').html cur_tmpl
 
+            null
+
+        renderRecentInfo : ->
+            console.log 'dashboard recent info render'
+            $( this.el ).find( '.recent-info-list' ).html this.recent_info this.model.attributes
             null
 
         mapRegionClick : ( event ) ->

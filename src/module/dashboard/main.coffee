@@ -2,7 +2,14 @@
 #  Controller for dashboard module
 ####################################
 
-define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/module/dashboard/region/template.html', 'text!/module/dashboard/overview/template_data.html', 'text!/module/dashboard/region/template_data.html', 'event', 'MC' ], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC ) ->
+define [ 'jquery',
+    'text!/module/dashboard/overview/template.html',
+    'text!/module/dashboard/region/template.html',
+    'text!/module/dashboard/overview/template_data.html',
+    'text!/module/dashboard/region/template_data.html',
+    'event',
+    'MC'
+], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC ) ->
 
 
     current_region = null
@@ -23,7 +30,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
         #load remote html ovverview_tmpl
         #$( overview_tmpl ).appendTo 'head'
 
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.overview-empty' : 'overview-empty-tmpl', '.stat-info' : 'stat-info-tmpl','.platform-attr' : 'platform-attr-tmpl' }
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.overview-empty' : 'overview-empty-tmpl', '.stat-info' : 'stat-info-tmpl','.platform-attr' : 'platform-attr-tmpl', '.recent-info' : 'recent-info-tmpl' }
 
         MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl' }
 
@@ -71,7 +78,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
             model.on 'change:resent_edited_stacks', () ->
                 console.log 'dashboard_change:resent_eidted_stacks'
                 model.get 'resent_edited_stacks'
-                view.render()
+                view.renderRecentInfo()
 
             model.on 'change:resent_launched_apps', () ->
                 console.log 'dashboard_change:resent_launched_apps'

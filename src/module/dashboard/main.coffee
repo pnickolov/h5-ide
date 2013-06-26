@@ -166,6 +166,7 @@ define [ 'jquery',
                     region_view        = new View()
                     region_view.model  = model
                     region_view.region = current_region
+                    region_view.render region_tmpl
 
                     model.on 'change:vpc_attrs', () ->
                         console.log 'dashboard_change:vpc_attrs'

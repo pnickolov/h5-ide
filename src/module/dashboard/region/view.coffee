@@ -67,6 +67,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         renderRegionStatStack : ->
             console.log 'dashboard region stat stack render'
             $( this.el ).find( '#region-stat-stack' ).html this.stat_stack this.model.attributes
+            console.log this.model.attributes
             null
 
         returnOverviewClick : ( target ) ->

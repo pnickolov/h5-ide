@@ -65,50 +65,35 @@
     {{/each}}
 </div>
 
-<!-- .recent-edited-stack -->
-<div class="recent-edited-stack">
-    {{#if recent_edited_stacks}}
-    <ul class="dashboard-recent-list">
+<!-- {{ .recent-edited-stack }} -->
+{{#if recent_edited_stacks}}
+<ul class="dashboard-recent-list">
+    {{#each recent_edited_stacks }}
+    <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    {{/each}}
+</ul>
+{{else}}
+<div class="blank-widget">No recent edited stack in last 30 days.</div>
+{{/if}}
 
-        {{#each recent_edited_stacks }}
-        <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-        {{/each}}
+<!-- {{ .recent-launched-app }} -->
+{{#if recent_launched_apps}}
+<ul class="dashboard-recent-list">
+    {{#each recent_launched_apps}}
+    <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    {{/each}}
+</ul>
+{{else}}
+<div class="blank-widget">No recent launched app in last 30 days.</div>
+{{/if}}
 
-    </ul>
-
-    {{else}}
-    <div class="blank-widget">No recent edited stack in last 30 days.</div>
-    {{/if}}
-</div>
-
-<!-- .recent-launched-app -->
-<div class="recent-launched-app">
-    {{#if recent_launched_apps}}
-    <ul class="dashboard-recent-list">
-
-        {{#each recent_launched_apps}}
-        <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-        {{/each}}
-
-    </ul>
-
-    {{else}}
-    <div class="blank-widget">No recent launched app in last 30 days.</div>
-    {{/if}}
-</div>
-
-<!-- .recent-stopped-app -->
-<div class="recent-stopped-app">
-    {{#if recent_stoped_apps}}
-    <ul class="dashboard-recent-list">
-
-        {{#each recent_stoped_apps}}
-        <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-        {{/each}}
-
-    </ul>
-
-    {{else}}
-    <div class="blank-widget">No recent stopped app in last 30 days.</div>
-    {{/if}}
-</div>
+<!-- {{ .recent-stopped-app }} -->
+{{#if recent_stoped_apps}}
+<ul class="dashboard-recent-list">
+    {{#each recent_stoped_apps}}
+    <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    {{/each}}
+</ul>
+{{else}}
+<div class="blank-widget">No recent stopped app in last 30 days.</div>
+{{/if}}

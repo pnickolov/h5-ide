@@ -2,7 +2,14 @@
 #  Controller for dashboard module
 ####################################
 
-define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/module/dashboard/region/template.html', 'text!/module/dashboard/overview/template_data.html', 'text!/module/dashboard/region/template_data.html', 'event', 'MC' ], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC ) ->
+define [ 'jquery',
+    'text!/module/dashboard/overview/template.html',
+    'text!/module/dashboard/region/template.html',
+    'text!/module/dashboard/overview/template_data.html',
+    'text!/module/dashboard/region/template_data.html',
+    'event',
+    'MC'
+], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC ) ->
 
 
     current_region = null
@@ -23,9 +30,9 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
         #load remote html ovverview_tmpl
         #$( overview_tmpl ).appendTo 'head'
 
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.overview-empty' : 'overview-empty-tmpl', '.stat-info' : 'stat-info-tmpl','.platform-attr' : 'platform-attr-tmpl' }
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.overview-empty' : 'overview-empty-tmpl', '.stat-info' : 'stat-info-tmpl','.platform-attr' : 'platform-attr-tmpl', '.recent-edited-stack' : 'recent-edited-stack-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.recent-stopped-app' : 'recent-stopped-app-tmpl' }
 
-        MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl' }
+        MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl', '.stat-app-count' : 'stat-app-count-tmpl', '.stat-stack-count' : 'stat-stack-count-tmpl', '.stat-app' : 'stat-app-tmpl', '.stat-stack' : 'stat-stack-tmpl' }
 
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
@@ -67,20 +74,20 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                 #refresh view
                 view.renderPlatformAttrs()
 
-            model.on 'change:resent_edited_stacks', () ->
-                console.log 'dashboard_change:resent_eidted_stacks'
+            model.on 'change:recent_edited_stacks', () ->
+                console.log 'dashboard_change:recent_eidted_stacks'
+                model.get 'recent_edited_stacks'
+                view.renderRecentEditedStack()
 
-                view.render()
+            model.on 'change:recent_launched_apps', () ->
+                console.log 'dashboard_change:recent_launched_apps'
+                model.get 'recent_launched_apps'
+                view.renderRecentLaunchedApp()
 
-            model.on 'change:resent_launched_apps', () ->
-                console.log 'dashboard_change:resent_launched_apps'
-
-                view.render()
-
-            model.on 'change:resent_stoped_apps', () ->
-                console.log 'dashboard_change:resent_stoped_apps'
-
-                view.render()
+            model.on 'change:recent_stoped_apps', () ->
+                console.log 'dashboard_change:recent_stoped_apps'
+                model.get 'recent_stoped_apps'
+                view.renderRecentStoppedApp()
 
             #model
             model.resultListListener()
@@ -162,6 +169,7 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     region_view        = new View()
                     region_view.model  = model
                     region_view.region = current_region
+                    region_view.render region_tmpl
 
                     model.on 'change:vpc_attrs', () ->
                         console.log 'dashboard_change:vpc_attrs'
@@ -185,13 +193,13 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                     #listen
                     model.on 'change:cur_app_list', () ->
                         console.log 'dashboard_region_change:cur_app_list'
-
-                        #region_view.render region_tmpl
+                        model.get 'cur_app_list'
+                        region_view.renderRegionStatApp()
 
                     model.on 'change:cur_stack_list', () ->
                         console.log 'dashboard_region_change:cur_stack_list'
-
-                        #region_view.render region_tmpl
+                        model.get 'cur_stack_list'
+                        region_view.renderRegionStatStack()
 
                     model.on 'change:region_resource_list', () ->
                         console.log 'dashboard_region_resource_list'
@@ -265,9 +273,6 @@ define [ 'jquery', 'text!/module/dashboard/overview/template.html', 'text!/modul
                         model.getItemList 'stack', current_region, overview_stack
 
                         null
-
-                    region_view.render region_tmpl
-
 
     unLoadModule = () ->
         #view.remove()

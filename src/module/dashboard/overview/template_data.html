@@ -56,3 +56,36 @@
         </a>
     </li>
     {{/each}}
+
+<!--{{ .recent-edited-stack }}-->
+{{#if recent_edited_stacks}}
+<ul class="dashboard-recent-list">
+    {{#each recent_edited_stacks }}
+    <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    {{/each}}
+</ul>
+{{else}}
+<div class="blank-widget">No recent edited stack in last 30 days.</div>
+{{/if}}
+
+<!--{{ .recent-launched-app }}-->
+{{#if recent_launched_apps}}
+<ul class="dashboard-recent-list">
+    {{#each recent_launched_apps}}
+    <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    {{/each}}
+</ul>
+{{else}}
+<div class="blank-widget">No recent launched app in last 30 days.</div>
+{{/if}}
+
+<!--{{ .recent-stopped-app }}-->
+{{#if recent_stoped_apps}}
+<ul class="dashboard-recent-list">
+    {{#each recent_stoped_apps}}
+    <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    {{/each}}
+</ul>
+{{else}}
+<div class="blank-widget">No recent stopped app in last 30 days.</div>
+{{/if}}

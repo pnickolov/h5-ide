@@ -2,7 +2,7 @@
 #  main for ide
 #############################
 
-define [ 'MC', 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'dashboard', 'design' ], ( MC, ide_event, view, layout, header, navigation, tabbar, dashboard, design ) ->
+define [ 'MC', 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'WS' ], ( MC, ide_event, view, layout, header, navigation, tabbar, dashboard, design, WS ) ->
 
 	initialize : () ->
 
@@ -45,3 +45,40 @@ define [ 'MC', 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'das
 			,2000
 		#ide_event.onListen ide_event.DESIGN_COMPLETE, () ->
 		#	console.log 'DESIGN_COMPLETE'
+
+		# WebSocket initialize
+
+		WS.websocketInit()
+
+		websocket = new WS.WebSocket()
+
+		initialize = true
+
+		status = () ->
+
+			websocket.status false, ()->
+
+				# do thing alert here, may trigger several time
+				
+				alert 'connection failed'
+
+			websocket.status true, ()->
+
+				if initialize == false
+
+					# do something here, trigger when connection recover
+					alert 'connection succeed'
+
+				else
+
+					initialize = false
+
+				null
+
+		setTimeout status, 10000
+
+		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+
+		MC.data.websocket = websocket
+
+		null

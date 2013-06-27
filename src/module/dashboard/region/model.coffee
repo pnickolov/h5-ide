@@ -158,8 +158,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
     RegionModel = Backbone.Model.extend {
 
         defaults :
-            'cur_app_list'          : []
-            'cur_stack_list'        : []
+            'cur_app_list'          : null
+            'cur_stack_list'        : null
             'region_resource_list'  : null
             'region_resource'       : null
             'resourse_list'         : null

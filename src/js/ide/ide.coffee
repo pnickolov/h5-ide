@@ -46,15 +46,19 @@ define [ 'MC', 'event',
 				else
 					initialize = false
 				null
+		#
 		setTimeout status, 10000
 
 		subScriptionError = ( error ) ->
 			console.log 'session invalid'
 			console.log error
 			#redirect to page ide.html
-			#window.location.href = 'login.html'
+			window.location.href = 'login.html'
 			null
+		#
 		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, subScriptionError
+		#
+		websocket.sub "stack", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 
 		#set MC.data.websocket
 		MC.data.websocket = websocket
@@ -83,7 +87,6 @@ define [ 'MC', 'event',
 		ide_event.onListen ide_event.DASHBOARD_COMPLETE, () ->
 			console.log 'DASHBOARD_COMPLETE'
 			navigation.loadModule()
-
 		#load dashboard
 		dashboard.loadModule()
 

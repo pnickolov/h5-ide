@@ -36,6 +36,8 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 				'request'			:	new Meteor.Collection "request"
 
 				'request_detail'	:	new Meteor.Collection "request_detail"
+
+				'stack'				:	new Meteor.Collection "stack"
 			}
 
 		# add a callback to specific state, true or false and a callback or nothing just return websocket status
@@ -54,15 +56,11 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 				Meteor.status().connected
 
 		# subscribe to remote
-		sub : ( name, args..., sub_callback ) ->
+		sub : ( name, args..., ready_callback, error_callback ) ->
 
 			sub_instance = Meteor.subscribe name, args..., {
-				onReady: sub_callback
-				onError: ( error ) ->
-
-
-					# do something to alert
-					alert 'session invalid'
+				onReady: ready_callback
+				onError: error_callback
 			}
 
 			sub_instance

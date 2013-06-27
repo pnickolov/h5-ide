@@ -77,7 +77,15 @@ define [ 'MC', 'event', 'view', 'layout', 'header', 'navigation', 'tabbar', 'das
 
 		setTimeout status, 10000
 
-		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+		subscription_error_handler = ( error ) ->
+
+			console.log error
+
+			alert 'Invalid Session'
+
+		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, subscription_error_handler
+
+		websocket.sub "stack", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 
 		MC.data.websocket = websocket
 

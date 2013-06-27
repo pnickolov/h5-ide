@@ -10,7 +10,10 @@ define [ 'MC', 'event',
 
 	initialize : () ->
 
-		#validation cookie
+		#############################
+		#  validation cookie
+		#############################
+		#
 		if $.cookie( 'usercode' ) is undefined then window.location.href = 'login.html'
 
 		#############################
@@ -23,6 +26,38 @@ define [ 'MC', 'event',
 		MC.data.untitled = 0
 		#set tab
 		MC.tab  = {}
+
+		#############################
+		#  WebSocket
+		#############################
+
+		WS.websocketInit()
+		websocket = new WS.WebSocket()
+		initialize = true
+
+		status = () ->
+			websocket.status false, ()->
+				# do thing alert here, may trigger several time
+				console.log 'connection failed'
+			websocket.status true, ()->
+				if initialize == false
+					# do something here, trigger when connection recover
+					console.log 'connection succeed'
+				else
+					initialize = false
+				null
+		setTimeout status, 10000
+
+		subScriptionError = ( error ) ->
+			console.log 'session invalid'
+			console.log error
+			#redirect to page ide.html
+			#window.location.href = 'login.html'
+			null
+		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, subScriptionError
+
+		#set MC.data.websocket
+		MC.data.websocket = websocket
 
 		#############################
 		#  listen ide_event
@@ -62,30 +97,5 @@ define [ 'MC', 'event',
 			, 2000
 		#load design
 		design.loadModule()
-
-		#############################
-		#  WebSocket
-		#############################
-
-		WS.websocketInit()
-		websocket = new WS.WebSocket()
-		initialize = true
-
-		status = () ->
-			websocket.status false, ()->
-				# do thing alert here, may trigger several time
-				alert 'connection failed'
-			websocket.status true, ()->
-				if initialize == false
-					# do something here, trigger when connection recover
-					alert 'connection succeed'
-				else
-					initialize = false
-				null
-
-		setTimeout status, 10000
-		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-		#set MC.data.websocket
-		MC.data.websocket = websocket
 
 		null

@@ -146,7 +146,9 @@ var ready = function () {
 		$(this).toggleClass('active');
 		main.toggleClass('wide');
 		canvasPanelResize();
+
 		Tabbar.resize(nav.hasClass('collapsed') ? $('#tab-bar').width() + 180 : $('#tab-bar').width() - 180);
+
 		nav.toggleClass('scroll-wrap');
 
 		first_level_nav[0].style.cssText = '';
@@ -164,6 +166,7 @@ var ready = function () {
 	});
 
 	// Toggle Property Panel
+	/*
 	$('#hide-property-panel').click(function (event)
 	{
 		var item = $(this).children().first(),
@@ -175,8 +178,10 @@ var ready = function () {
 		main_middle.toggleClass('right-hiden');
 		canvasPanelResize();
 	});
+	*/
 
 	// Toggle Resource Panel
+	/*
 	$('#hide-resource-panel').on('click', function (event)
 	{
 		var item = $(this).children().first(),
@@ -188,6 +193,7 @@ var ready = function () {
 		main_middle.toggleClass('left-hiden');
 		canvasPanelResize();
 	});
+	*/
 
 	canvasPanelResize();
 	mainContentResize();
@@ -198,6 +204,20 @@ var ready = function () {
 		canvasPanelResize();
 		mainContentResize();
 	});
+
+	//fixedaccordion.resize();
+
+	//Resource Panel
+    $(document).on('click', '.fixedaccordion-head select', function (event)
+    {
+        event.stopPropagation();
+    });
+    $(document).on('change', '.fixedaccordion-head select', function (event)
+    {
+        event.stopPropagation();
+
+        fixedaccordion.show.call($(this).parent().parent())
+    });
 
 	// Global Overview World Map Hover Sync
 	$('#map-region-spot-list').on('mouseenter', 'li', function()

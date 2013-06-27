@@ -2,18 +2,17 @@
 #  View(UI logic) for design
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
+define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
     DesignView = Backbone.View.extend {
 
         el       : $( '#tab-content-stack01' )
 
-        template : Handlebars.compile $( '#design-tmpl' ).html()
-
-        render   : () ->
+        render   : ( template ) ->
             console.log 'design render'
-            $( this.el ).html this.template()
-            event.trigger event.DESIGN_COMPLETE
+            $( this.el ).html template
+            #push DESIGN_COMPLETE
+            this.trigger 'DESIGN_COMPLETE'
     }
 
     return DesignView

@@ -8,24 +8,23 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
     loadModule = () ->
 
         #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="design-tmpl">' + template + '</script>'
-
+        #template = '<script type="text/x-handlebars-template" id="design-tmpl">' + template + '</script>'
         #load remote html template
-        $( template ).appendTo '#tab-content-stack01'
+        #$( template ).appendTo '#tab-content-stack01'
 
         #load remote design.js
-        require [ './module/design/view', 'event' ], ( View, event ) ->
+        require [ './module/design/view' ], ( View ) ->
 
             #view
             view       = new View()
 
             #listen event
-            event.onListen event.DESIGN_COMPLETE, () ->
-                console.log 'DESIGN_COMPLETE'
+            view.once 'DESIGN_COMPLETE', () ->
+                console.log 'view:DESIGN_COMPLETE'
                 wrap()
 
             #render
-            view.render()
+            view.render template
 
     #private
     unLoadModule = () ->

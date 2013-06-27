@@ -23,6 +23,7 @@ define [ 'underscore', 'backbone' ], () ->
         NAVIGATION_COMPLETE : 'NAVIGATION_COMPLETE'
         HEADER_COMPLETE     : 'HEADER_COMPLETE'
         DESIGN_COMPLETE     : 'DESIGN_COMPLETE'
+        RESOURCE_COMPLETE   : 'RESOURCE_COMPLETE'
         DASHBOARD_COMPLETE  : 'DASHBOARD_COMPLETE'
 
         #

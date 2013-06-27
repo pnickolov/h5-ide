@@ -50,43 +50,39 @@ define [ 'jquery',
             view.model = model
             view.render overview_tmpl
 
+            #push DASHBOARD_COMPLETE
+            ide_event.trigger ide_event.DASHBOARD_COMPLETE
+
             model.on 'change:result_list', () ->
                 console.log 'dashboard_change:result_list'
-                #push event
-
                 should_update_overview = true
-
                 #refresh view
                 view.renderMapResult()
                 view.renderStatInfo()
 
             model.on 'change:region_empty_list', () ->
                 console.log 'dashboard_change:region_empty'
-                #push event
-
                 #refresh view
                 view.renderMapEmpty()
 
             model.on 'change:region_classic_list', () ->
                 console.log 'dashboard_region_classic_list'
-                #push event
-
                 #refresh view
                 view.renderPlatformAttrs()
 
             model.on 'change:recent_edited_stacks', () ->
                 console.log 'dashboard_change:recent_eidted_stacks'
-                model.get 'recent_edited_stacks'
+                #model.get 'recent_edited_stacks'
                 view.renderRecentEditedStack()
 
             model.on 'change:recent_launched_apps', () ->
                 console.log 'dashboard_change:recent_launched_apps'
-                model.get 'recent_launched_apps'
+                #model.get 'recent_launched_apps'
                 view.renderRecentLaunchedApp()
 
             model.on 'change:recent_stoped_apps', () ->
                 console.log 'dashboard_change:recent_stoped_apps'
-                model.get 'recent_stoped_apps'
+                #model.get 'recent_stoped_apps'
                 view.renderRecentStoppedApp()
 
             #model
@@ -173,7 +169,7 @@ define [ 'jquery',
 
                     model.on 'change:vpc_attrs', () ->
                         console.log 'dashboard_change:vpc_attrs'
-                        model.get 'vpc_attrs'
+                        #model.get 'vpc_attrs'
                         region_view.renderVPCAttrs()
 
                     model.on 'change:unmanaged_list', () ->
@@ -193,31 +189,26 @@ define [ 'jquery',
                     #listen
                     model.on 'change:cur_app_list', () ->
                         console.log 'dashboard_region_change:cur_app_list'
-                        model.get 'cur_app_list'
+                        #model.get 'cur_app_list'
                         region_view.renderRegionStatApp()
 
                     model.on 'change:cur_stack_list', () ->
                         console.log 'dashboard_region_change:cur_stack_list'
-                        model.get 'cur_stack_list'
+                        #model.get 'cur_stack_list'
                         region_view.renderRegionStatStack()
 
                     model.on 'change:region_resource_list', () ->
                         console.log 'dashboard_region_resource_list'
-                        #push event
-
                         #refresh view
                         region_view.renderRegionResource()
 
                     model.on 'change:region_resource', () ->
                         console.log 'dashboard_region_resources'
-                        #push event
-
                         #refresh view
                         region_view.renderRegionResource()
 
                     model.on 'REGION_RESOURCE_CHANGED', ()->
                         console.log 'region resource table render'
-
                         region_view.renderRegionResource()
 
                     region_view.on 'RETURN_OVERVIEW_TAB', () ->

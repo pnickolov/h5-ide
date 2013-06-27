@@ -1,5 +1,4 @@
 <!--{{ .resource-tables }}-->
-<div class="resource-tables">
 	<div class="dashboard-widget">
 		<div class="tab grid grid-responsive grid-small-bottom row-counter">
 			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2 active">
@@ -338,10 +337,8 @@
 				</div>
 		</div>
 	</div>
-</div>
 
 <!--{{ .unmanaged-resource-tables }}-->
-<div class='unmanaged-resource-tables'>
     {{#if unmanaged_list.items}}
         <div class="dashboard-widget-body dashboard-widget-body-table scroll-wrap">
         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
@@ -377,7 +374,6 @@
     {{else}}
     <div style="height:253px;width:100%;text-align:center; line-height:253px">There is no unmanaged resource.</div>
     {{/if}}
-</div>
 
 <!--{{ .aws-status }}-->
     {{#if status_list}}

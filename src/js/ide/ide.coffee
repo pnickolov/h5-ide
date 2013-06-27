@@ -60,6 +60,8 @@ define [ 'MC', 'event',
 		#
 		websocket.sub "stack", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 
+		websocket.sub "app", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
+
 		#set MC.data.websocket
 		MC.data.websocket = websocket
 

@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'cloudwatch_service', 'cloudwatch_vo'], ( Backbone, cloudwatch_service, cloudwatch_vo ) ->
+define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
 
     CloudWatchModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : cloudwatch_vo.cloudwatch
+            vo : {}
         }
 
         ###### api ######

@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'aws_service', 'aws_vo'], ( Backbone, aws_service, aws_vo ) ->
+define [ 'backbone', 'aws_service'], ( Backbone, aws_service) ->
 
     AWSModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : aws_vo.data
+            vo : {}
         }
 
         ###### api ######

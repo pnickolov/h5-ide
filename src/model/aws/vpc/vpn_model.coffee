@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'vpn_service', 'vpn_vo'], ( Backbone, vpn_service, vpn_vo ) ->
+define [ 'backbone', 'vpn_service'], ( Backbone, vpn_service) ->
 
     VPNModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : vpn_vo.vpn
+            vo : {}
         }
 
         ###### api ######

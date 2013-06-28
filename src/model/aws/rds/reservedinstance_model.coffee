@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'reservedinstance_service', 'reservedinstance_vo'], ( Backbone, reservedinstance_service, reservedinstance_vo ) ->
+define [ 'backbone', 'reservedinstance_service'], ( Backbone, reservedinstance_service) ->
 
     ReservedInstanceModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : reservedinstance_vo.reservedinstance
+            vo : {}
         }
 
         ###### api ######

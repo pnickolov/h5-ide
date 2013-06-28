@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'dhcp_service', 'dhcp_vo'], ( Backbone, dhcp_service, dhcp_vo ) ->
+define [ 'backbone', 'dhcp_service'], ( Backbone, dhcp_service) ->
 
     DHCPModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : dhcp_vo.dhcp
+            vo : {}
         }
 
         ###### api ######

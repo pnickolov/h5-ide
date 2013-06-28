@@ -7,22 +7,24 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, constant ) ->
+define [  'result_vo', 'constant' ], (result_vo, constant ) ->
 
 
     #///////////////// Parser for login return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveLoginResult = ( result ) ->
+        session_info = {}
+
         #resolve result
-        session_vo.session_info.userid      = result[0]
-        session_vo.session_info.usercode    = result[1]
-        session_vo.session_info.session_id  = result[2]
-        session_vo.session_info.region_name = result[3]
-        session_vo.session_info.email       = result[4]
-        session_vo.session_info.has_cred    = result[5]
+        session_info.userid      = result[0]
+        session_info.usercode    = result[1]
+        session_info.session_id  = result[2]
+        session_info.region_name = result[3]
+        session_info.email       = result[4]
+        session_info.has_cred    = result[5]
 
         #return session_info
-        session_vo.session_info
+        session_info
 
     #private (parser login return)
     parserLoginReturn = ( result, return_code, param ) ->
@@ -105,14 +107,15 @@ define [ 'session_vo', 'result_vo', 'constant' ], ( session_vo, result_vo, const
     #///////////////// Parser for guest return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveGuestResult = ( result ) ->
+        session_info = {}
         #resolve result
-        session_vo.session_info.userid 		= result[0]
-        session_vo.session_info.usercode 	= result[1]
-        session_vo.session_info.session_id 	= result[2]
-        session_vo.session_info.region_name = result[3]
+        session_info.userid 		= result[0]
+        session_info.usercode 	= result[1]
+        session_info.session_id 	= result[2]
+        session_info.region_name = result[3]
 
         #return vo
-        session_vo.session_info
+        session_info
 
     #private (parser guest return)
     parserGuestReturn = ( result, return_code, param ) ->

@@ -7,18 +7,20 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'app_vo', 'result_vo', 'constant', 'aws_parser'], ( app_vo, result_vo, constant, aws_parser) ->
+define [ 'result_vo', 'constant', 'aws_parser'], ( result_vo, constant, aws_parser) ->
 
     resolveAppRequest = (result) ->
+        app_request = {}
+
         #resolve result
-        app_vo.app_request.id               =   result[0]
-        app_vo.app_request.state            =   result[1]
-        app_vo.app_request.brief            =   result[2]
-        app_vo.app_request.time_submit      =   result[3]
-        app_vo.app_request.rid              =   result[4]
+        app_request.id               =   result[0]
+        app_request.state            =   result[1]
+        app_request.brief            =   result[2]
+        app_request.time_submit      =   result[3]
+        app_request.rid              =   result[4]
 
         #return vo
-        app_vo.app_request
+        app_request
 
     #///////////////// Parser for create return (need resolve) /////////////////
     #private (resolve result to vo )
@@ -346,7 +348,6 @@ define [ 'app_vo', 'result_vo', 'constant', 'aws_parser'], ( app_vo, result_vo, 
             app_list[vo.region].push vo
 
         #return vo
-        app_vo.app_list = app_list
         app_list
 
     #private (parser list return)

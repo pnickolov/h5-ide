@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'customergateway_service', 'customergateway_vo'], ( Backbone, customergateway_service, customergateway_vo ) ->
+define [ 'backbone', 'customergateway_service'], ( Backbone, customergateway_service) ->
 
     CustomerGatewayModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : customergateway_vo.customergateway
+            vo : {}
         }
 
         ###### api ######

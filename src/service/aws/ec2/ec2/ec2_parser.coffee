@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'ec2_vo', 'result_vo', 'constant' ], ( ec2_vo, result_vo, constant ) ->
+define [ 'result_vo', 'constant' ], ( result_vo, constant ) ->
 
 
     #///////////////// Parser for CreateTags return  /////////////////

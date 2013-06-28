@@ -26,6 +26,8 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             $( '#tab-content-dashboard' ).addClass  'active'
             $( '#tab-content-region' ).removeClass  'active'
             $( '#tab-content-stack01' ).removeClass 'active'
+            #
+            this.resizeEvent()
 
         showRegionTab : () ->
             console.log 'showRegionTab'
@@ -33,6 +35,8 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             $( '#tab-content-region' ).addClass       'active'
             $( '#tab-content-dashboard' ).removeClass 'active'
             $( '#tab-content-stack01' ).removeClass   'active'
+            #
+            this.resizeEvent()
 
         showTab : () ->
             console.log 'showTab'
@@ -41,7 +45,7 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             $( '#tab-content-dashboard' ).removeClass 'active'
             $( '#tab-content-region' ).removeClass    'active'
             #
-            $( window ).trigger 'resize'
+            this.resizeEvent()
     }
 
     view = new MainView()

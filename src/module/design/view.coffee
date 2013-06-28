@@ -6,9 +6,9 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
     DesignView = Backbone.View.extend {
 
-        el       : $( '#tab-content-stack01' )
+        el          : $ '#tab-content-stack01'
 
-        initialize : ->
+        initialize  : ->
             $( window ).on "resize", this.resizeEvent
 
         resizeEvent : ->
@@ -31,9 +31,20 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
         render   : ( template ) ->
             console.log 'design render'
+            #render
             $( this.el ).html template
             #push DESIGN_COMPLETE
             this.trigger 'DESIGN_COMPLETE'
+
+        listen   : ( model ) ->
+            #set this.model
+            this.model = model
+            #listen model
+            this.listenTo this.model, 'change:snapshot', this.writeOldDesignHtml
+
+        writeOldDesignHtml : () ->
+            console.log 'writeOldDesignHtml'
+            this.$el.html this.model.get 'snapshot'
     }
 
     return DesignView

@@ -115,11 +115,13 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         createNewStackClick  : ( event ) ->
             console.log 'createNewStackClick'
             console.log $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' )
+            if $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' ) is undefined then return
             ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
 
         regionNameClick      : ( event ) ->
             console.log 'regionNameClick'
             console.log $( event.target ).attr( 'data-region-name' )
+            if $( event.target ).attr( 'data-region-name' ) is undefined then return
             ide_event.trigger ide_event.NAVIGATION_TO_DASHBOARD_REGION, $( event.target ).attr( 'data-region-name' )
 
         hoverIntent          : ->

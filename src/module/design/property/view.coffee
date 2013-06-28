@@ -8,17 +8,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
 
         el       : $( '#property-panel' )
 
-        events   :
-            'click #hide-property-panel' : 'hidePropertyPanel'
-
         template : Handlebars.compile $( '#property-tmpl' ).html()
+
+        initialize : ->
+            #listen
+            $( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
 
         render   : () ->
             console.log 'property render'
             $( this.el ).html this.template()
             #event.trigger event.DESIGN_COMPLETE
 
-        hidePropertyPanel : ( event ) ->
+        togglePropertyPanel : ( event ) ->
         	#
             property_panel = $ '#property-panel'
             property_panel.toggleClass 'hiden'

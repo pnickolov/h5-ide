@@ -36,6 +36,8 @@ define [ 'underscore', 'backbone' ], () ->
 
         TERMINATE_APP_TAB   : 'TERMINATE_APP_TAB'
 
+        SAVE_DESIGN_MODULE  : 'SAVE_DESIGN_MODULE'
+
         #result app stack region empty_region list
         RESULT_APP_LIST     : 'RESULT_APP_LIST'
         RESULT_STACK_LIST   : 'RESULT_STACK_LIST'

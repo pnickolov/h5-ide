@@ -2,7 +2,7 @@
 #  View Mode for navigation
 #############################
 
-define [ 'MC', 'stack_model', 'app_model', 'backbone' ], ( MC, stack_model, app_model ) ->
+define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_model, app_model, ide_event ) ->
 
     #private
     TabbarModel = Backbone.Model.extend {
@@ -16,7 +16,8 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone' ], ( MC, stack_model, app_
             #save
             #if old isnt 'dashboard' then MC.tab[ old ] = { snapshot : null, data : null }
             #test
-            if old isnt 'dashboard' and old isnt null then MC.tab[ old ] = { snapshot : old, data : old }
+            #if old isnt 'dashboard' and old isnt null then MC.tab[ old ] = { snapshot : old, data : old }
+            if old isnt 'dashboard' and old isnt null then this.trigger 'SAVE_DESIGN_MODULE', old
 
             if MC.tab[ current ] is undefined
                 #call service

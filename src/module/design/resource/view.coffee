@@ -2,16 +2,19 @@
 #  View(UI logic) for design/resource
 #############################
 
-define [ 'backbone', 'jquery', 'handlebars' ], () ->
+define [ 'backbone', 'jquery', 'handlebars', 'UI.fixedaccordion' ], () ->
 
     ResourceView = Backbone.View.extend {
 
         el       : $( '#resource-panel' )
 
+        #template : Handlebars.compile $( '#resource-tmpl' ).html()
+
         events   :
             'click #hide-resource-panel' : 'hideResourcePanel'
 
-        #template : Handlebars.compile $( '#resource-tmpl' ).html()
+        initialize : ->
+            $( window ).on "resize", fixedaccordion.resize
 
         render   : ( template ) ->
             console.log 'resource render'

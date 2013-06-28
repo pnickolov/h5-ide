@@ -72,9 +72,7 @@ define [ 'MC', 'event',
 		ide_event.onLongListen ide_event.RETURN_OVERVIEW_TAB, () -> view.showOverviewTab()
 		ide_event.onLongListen ide_event.RETURN_REGION_TAB,   () -> view.showRegionTab()
 		#listen SWITCH_TAB and SWITCH_DASHBOARD
-		ide_event.onLongListen ide_event.SWITCH_TAB,          () ->
-			view.showTab()
-			design.loadModule()
+		ide_event.onLongListen ide_event.SWITCH_TAB,          () -> view.showTab()
 		ide_event.onLongListen ide_event.SWITCH_DASHBOARD,    () -> view.showDashbaordTab()
 
 		#############################
@@ -87,24 +85,28 @@ define [ 'MC', 'event',
 		tabbar.loadModule()
 		#load dashboard
 		dashboard.loadModule()
+
 		#listen DASHBOARD_COMPLETE
 		ide_event.onListen ide_event.DASHBOARD_COMPLETE, () ->
 			console.log 'DASHBOARD_COMPLETE'
 			navigation.loadModule()
+
 		#listen NAVIGATION_COMPLETE
 		ide_event.onListen ide_event.NAVIGATION_COMPLETE, () ->
 			console.log 'NAVIGATION_COMPLETE'
+			#load design
+			design.loadModule()
 			#temp
 			setTimeout () ->
 				#load layout
 				console.log 'layout'
 				layout.ready()
 			, 2000
+
 		#listen DESIGN_COMPLETE
-		ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
-			console.log 'RESOURCE_COMPLETE'
-			#resize content
-			mainContentResize()
-			#from fixedaccordion
-			fixedaccordion.resize()
-		null
+		ide_event.onListen ide_event.DESIGN_COMPLETE, () ->
+			console.log 'DESIGN_COMPLETE'
+
+		#listen RESOURCE_COMPLETE
+		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
+		#	console.log 'RESOURCE_COMPLETE'

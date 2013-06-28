@@ -13,13 +13,13 @@ define [ 'jquery', 'text!/module/design/resource/template.html', 'event' ], ( $,
         #$( template ).appendTo '#resource-panel'
 
         #load remote module1.js
-        require [ './module/design/resource/view', 'UI.fixedaccordion' ], ( View ) ->
+        require [ './module/design/resource/view' ], ( View ) ->
 
             #view
             view       = new View()
             view.render template
             #push RESOURCE_COMPLETE
-            ide_event.trigger ide_event.RESOURCE_COMPLETE
+            #ide_event.trigger ide_event.RESOURCE_COMPLETE
 
     unLoadModule = () ->
         #view.remove()

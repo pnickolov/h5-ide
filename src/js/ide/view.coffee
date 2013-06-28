@@ -2,11 +2,18 @@
 #  View(UI logic) for Main
 #############################
 
-define [ 'backbone', 'jquery', 'handlebars' ], () ->
+define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
 
     MainView = Backbone.View.extend {
 
         el       : $ '#main'
+
+        initialize : ->
+            $( window ).on "resize", this.resizeEvent
+
+        resizeEvent : ->
+            console.log 'resizeEvent'
+            $( '.main-content' ).height window.innerHeight - 95
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'
@@ -33,6 +40,8 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             $( '#tab-content-stack01' ).addClass      'active'
             $( '#tab-content-dashboard' ).removeClass 'active'
             $( '#tab-content-region' ).removeClass    'active'
+            #
+            $( window ).trigger 'resize'
     }
 
     view = new MainView()

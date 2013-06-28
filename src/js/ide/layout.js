@@ -198,12 +198,14 @@ var ready = function () {
 	canvasPanelResize();
 	mainContentResize();
 
+	/*
 	$(window).resize(function ()
 	{
 		//tab_resize($('#tab-bar').width());
 		canvasPanelResize();
 		mainContentResize();
 	});
+	*/
 
 	//fixedaccordion.resize();
 

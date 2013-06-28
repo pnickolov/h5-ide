@@ -13,7 +13,7 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
         #$( template ).appendTo '#tab-content-stack01'
 
         #load remote design.js
-        require [ './module/design/view' ], ( View ) ->
+        require [ './module/design/view', 'event' ], ( View, ide_event ) ->
 
             #view
             view       = new View()
@@ -21,6 +21,7 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
             #listen event
             view.once 'DESIGN_COMPLETE', () ->
                 console.log 'view:DESIGN_COMPLETE'
+                ide_event.trigger ide_event.DESIGN_COMPLETE
                 wrap()
 
             #render

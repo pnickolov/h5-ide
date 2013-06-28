@@ -22,9 +22,9 @@ define [ 'underscore', 'backbone' ], () ->
         #temp
         NAVIGATION_COMPLETE : 'NAVIGATION_COMPLETE'
         HEADER_COMPLETE     : 'HEADER_COMPLETE'
+        DASHBOARD_COMPLETE  : 'DASHBOARD_COMPLETE'
         DESIGN_COMPLETE     : 'DESIGN_COMPLETE'
         RESOURCE_COMPLETE   : 'RESOURCE_COMPLETE'
-        DASHBOARD_COMPLETE  : 'DASHBOARD_COMPLETE'
 
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'

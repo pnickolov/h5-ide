@@ -13,13 +13,19 @@ define [ 'jquery', 'text!/module/design/resource/template.html', 'event' ], ( $,
         #$( template ).appendTo '#resource-panel'
 
         #load remote module1.js
-        require [ './module/design/resource/view' ], ( View ) ->
+        require [ './module/design/resource/view', './module/design/resource/model' ], ( View, model ) ->
 
             #view
             view       = new View()
             view.render template
-            #push RESOURCE_COMPLETE
-            #ide_event.trigger ide_event.RESOURCE_COMPLETE
+            view.listen model
+
+            #listen SWITCH_TAB
+            ide_event.onLongListen ide_event.SWITCH_TAB, ( type, target, region_name ) ->
+                console.log 'resource:SWITCH_TAB, type = ' + type + ', target = ' + target + ', region_name = ' + region_name
+                if type is 'NEW_STACK'
+                    model.describeAvailableZonesService region_name
+                null
 
     unLoadModule = () ->
         #view.remove()

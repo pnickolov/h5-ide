@@ -68,8 +68,9 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
             #listen new_stack
             model.on 'NEW_STACK', ( result ) ->
                 console.log 'NEW_STACK'
+                console.log model.get 'stack_region_name'
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' ,null
+                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' ,result, model.get 'stack_region_name'
 
             #listen open_stack
             model.on 'OPEN_STACK', ( result ) ->
@@ -124,6 +125,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
             ide_event.onLongListen ide_event.ADD_STACK_TAB, ( region_name ) ->
                 console.log 'ADD_STACK_TAB'
                 console.log region_name
+                #set vo
+                model.set 'stack_region_name', region_name
                 #tabbar api
                 Tabbar.add 'new-' + MC.data.untitled + '-' + region_name, 'untitled - ' + MC.data.untitled
                 #MC.data.untitled ++

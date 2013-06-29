@@ -33,6 +33,12 @@ define [ 'event',
             fixedaccordion.resize()
             null
 
+        listen   : ( model ) ->
+            #set this.model
+            this.model = model
+            #listen model
+            this.listenTo this.model, 'change:vailability_zone', this.vailabilityZoneRender
+
         resourceSelectEvent : ( event, id ) ->
             console.log 'resourceSelectEvent'
             fixedaccordion.show.call($($(this).parent().find('.fixedaccordion-head')[0]))
@@ -69,6 +75,10 @@ define [ 'event',
             if type is 'OPEN_STACK' or type is 'NEW_STACK'
                 if $( '#resource-panel' ).attr( 'class' ).indexOf( 'hide' ) isnt -1 then $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
+
+        vailabilityZoneRender : ( result ) ->
+            console.log 'vailabilityZoneRender'
+            console.log result
 
     }
 

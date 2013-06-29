@@ -2,18 +2,23 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     CanvasView = Backbone.View.extend {
 
         el       : $( '#canvas' )
 
-        template : Handlebars.compile $( '#canvas-tmpl' ).html()
+        initialize : ->
+            #listen
+            this.listenTo ide_event, 'SWITCH_TAB', this.resizeCanvasPanel
 
-        render   : () ->
+        render   : ( template ) ->
             console.log 'canvas render'
-            $( this.el ).html this.template()
-            #event.trigger event.DESIGN_COMPLETE
+            this.$el.html template
+
+        resizeCanvasPanel : ->
+            console.log 'resizeCanvasPanel'
+            canvasPanelResize()
     }
 
     return CanvasView

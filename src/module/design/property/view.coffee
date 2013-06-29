@@ -6,30 +6,21 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
 
     PropertyView = Backbone.View.extend {
 
-        el       : $( '#property-panel' )
-
-        template : Handlebars.compile $( '#property-tmpl' ).html()
+        el         : $ '#property-panel'
 
         initialize : ->
             #listen
             $( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
 
-        render   : () ->
+        render     : ( template ) ->
             console.log 'property render'
-            $( this.el ).html this.template()
-            #event.trigger event.DESIGN_COMPLETE
+            $( this.el ).html template
 
         togglePropertyPanel : ( event ) ->
-        	#
-            property_panel = $ '#property-panel'
-            property_panel.toggleClass 'hiden'
-            #
+            console.log 'togglePropertyPanel'
+            $( '#property-panel' ).toggleClass 'hiden'
             $( event ).children().first().toggleClass('icon-double-angle-left').toggleClass('icon-double-angle-right')
-            #
-            main_middle = $ '#canvas-panel'
-            main_middle.toggleClass 'right-hiden'
-            #
-            canvasPanelResize()
+            $( '#canvas-panel' ).toggleClass 'right-hiden'
     }
 
     return PropertyView

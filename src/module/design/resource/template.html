@@ -3,7 +3,12 @@
 </a>
 <div class="sidebar-title">
 	<span class="sidebar-title-text">Resource Panel</span>
-	<a href="javascript:void(0)" id="resource-search"><i class="icon-search"></i></a>
+	<div class="search-bar" id="resource-search">
+	  <i class="icon-search"></i>
+	  <input class="input" type="text" placeholder="Filter Resource by Name" />
+	  <i class="icon-cancel"></i>
+	</div>
+	<!-- <a href="javascript:void(0)" id="resource-search"><i class="icon-search"></i></a> -->
 </div>
 <div class="fixedaccordion accordion-default resource-panel-fixedaccordion" data-sub="68">
 	<div class="accordion-group">
@@ -45,40 +50,44 @@
 	<div class="accordion-group expanded">
 		<div class="fixedaccordion-head">
 			<span>Instance</span>
-			<div class="select resource-select">
-				<select>
-					<option>Favorite AMIs <span class="ami-counter">(23)</span></option>
-					<option>My AMIs <span class="ami-counter">(23)</span></option>
-				</select>
-			</div>
+		</div>
+		<div class="selectbox resource-select" id="resource-select">
+			 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<span class="cur-value">Action</span>
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+				<li class="selected" tabindex="-1"><a data-id="111" href="#">Favorite AMIs</a></li>
+				<li tabindex="-1"><a data-id="222" href="#">My AMIs</a></li>
+			  </ul>
 		</div>
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content"> <!--  style="height: 500px" -->
 				<ul class="resource-list">
 					<li>
-						<div class="btn-fav-ami faved tooltip" data-tooltip="Remove from Favorite"></div>
+						<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
 						<div class="resource-item">
 							<div class="resource-icon resource-icon-instance"></div>
 							<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
 						</div>
 					</li>
 					<li>
-						<div class="btn-fav-ami tooltip" data-tooltip="Add to Favorite"></div>
+						<div class="btn-fav-ami toggle-fav tooltip" data-tooltip="Add to Favorite" data-id="Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b"></div>
 						<div class="resource-item">
 							<div class="resource-icon resource-icon-instance"></div>
 							<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b</div>
 						</div>
 					</li>
 					<li>
-						<div class="btn-fav-ami faved tooltip" data-tooltip="Remove from Favorite"></div>
+						<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="tu-precise-12.04-i380411.1"></div>
 						<div class="resource-item">
 							<div class="resource-icon resource-icon-instance"></div>
 							<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>tu-precise-12.04-i380411.1</div>
 						</div>
 					</li>
 					<li>
-						<div class="btn-fav-ami tooltip" data-tooltip="Add to Favorite"></div>
+						<div class="btn-fav-ami toggle-fav tooltip" data-tooltip="Add to Favorite" data-id="Factory J"></div>
 						<div class="resource-item">
 							<div class="resource-icon resource-icon-instance"></div>
 							<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>Factory J</div>
@@ -109,7 +118,7 @@
 							<div class="resource-label">EBS-Snapshot-Name-00102013026</div>
 						</div>
 					</li>
-					
+
 				</ul>
 			</div>
 		</div>
@@ -186,4 +195,26 @@
 			</div>
 		</div>
 	</div>
+</div>
+<div class="search-panel" style="display:none; position:absolute; top:0; height:0">
+<ul>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title1:</div>
+		<div class='item' data-id='item11' style="padding-left:20px;">item11</div>
+		<div class='item' data-id='item12' style="padding-left:20px;">item12</div>
+		<div class='item' data-id='item13' style="padding-left:20px;">item13</div>
+	</li>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title2:</div>
+		<div class='item' data-id='item21' style="padding-left:20px;">item21</div>
+		<div class='item' data-id='item22' style="padding-left:20px;">item22</div>
+		<div class='item' data-id='item23' style="padding-left:20px;">item23</div>
+	</li>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title3:</div>
+		<div class='item' data-id='item31' style="padding-left:20px;">item31</div>
+		<div class='item' data-id='item32' style="padding-left:20px;">item32</div>
+		<div class='item' data-id='item33' style="padding-left:20px;">item33</div>
+	</li>
+</ul>
 </div>

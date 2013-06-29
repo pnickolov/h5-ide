@@ -2,24 +2,50 @@
 #  View(UI logic) for design/resource
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.fixedaccordion' ], ( ide_event ) ->
+define [ 'event',
+         'backbone', 'jquery', 'handlebars',
+         'UI.fixedaccordion', 'UI.selectbox', 'UI.toggleicon', 'UI.searchbar', 'UI.filter'
+], ( ide_event ) ->
 
     ResourceView = Backbone.View.extend {
 
-        el       : $ '#resource-panel'
+        el         : $ '#resource-panel'
 
         initialize : ->
-            #listen resize
-            $( window ).on "resize", fixedaccordion.resize
+            #listen
+            $( window ).on   'resize', fixedaccordion.resize
+            $( document ).on 'ready',  toggleicon.init
+            $( document ).on 'ready',  searchbar.init
+            $( document ).on 'ready',  selectbox.init
+            #listen
+            $( document ).delegate '#hide-resource-panel', 'click',         this.toggleResourcePanel
+            $( document ).delegate '#resource-select',     'OPTION_CHANGE', this.resourceSelectEvent
+            $( document ).delegate '#resource-panel',     'SEARCHBAR_SHOW', this.searchBarShowEvent
+            $( document ).delegate '#resource-panel',     'SEARCHBAR_HIDE', this.searchBarHideEvent
+            $( document ).delegate '#resource-panel',   'SEARCHBAR_CHANGE', this.searchBarChangeEvent
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideResourcePanel
-            #listen
-            $( document ).delegate '#hide-resource-panel', 'click', this.toggleResourcePanel
 
         render   : ( template ) ->
             console.log 'resource render'
             $( this.el ).html template
             null
+
+        resourceSelectEvent : ( event, id ) ->
+            console.log 'resourceSelectEvent'
+            fixedaccordion.show.call($($(this).parent().find('.fixedaccordion-head')[0]))
+
+        searchBarShowEvent : ( event ) ->
+            console.log 'searchBarShowEvent'
+            $($(this).find('.search-panel')[0]).show()
+
+        searchBarHideEvent : ( event ) ->
+            console.log 'searchBarHideEvent'
+            $($(this).find('.search-panel')[0]).hide()
+
+        searchBarChangeEvent : ( event, value ) ->
+            console.log 'searchBarChangeEvent'
+            filter.update($($(this).find('.search-panel')[0]), value)
 
         toggleResourcePanel : ( event ) ->
             console.log 'toggleResourcePanel'

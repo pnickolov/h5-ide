@@ -798,6 +798,10 @@ textarea {
 	overflow: hidden;
 }
 
+.accordion-group {
+	position: relative;
+}
+
 .accordion-group.expanded .accordion-body {
 	display: block;
 }
@@ -1009,7 +1013,7 @@ textarea {
 }
 
 
-/* Accordion */
+/* Fixedaccordion */
 .fixedaccordion .accordion-body {
 	display: none;
 	overflow: hidden;
@@ -1033,7 +1037,7 @@ textarea {
 	cursor: default;
 }
 
-/* Accordion default style */
+/* Fixedaccordion default style */
 .accordion-default .fixedaccordion-head {
 	/*border: 1px solid #ccc;*/
 	height: 37px;
@@ -1042,3 +1046,122 @@ textarea {
 	padding: 0 10px;
 	color: #333;
 }
+
+/* Selectbox */
+.selectbox {
+	position: relative;
+	display: inline-block;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+.selectbox .dropdown {
+  position: relative;
+}
+
+.selectbox .caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 4px solid #FFF;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  content: "";
+}
+
+.selectbox .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  background-color: #ffffff;
+}
+
+.selectbox .dropdown-menu li a {
+  display: block;
+  clear: both;
+  line-height: 20px;
+  color: #333333;
+  white-space: nowrap;
+}
+
+.selectbox .dropdown-menu li a:hover,
+.selectbox .dropdown-menu li a:focus,
+.selectbox .dropdown-menu li.selected a {
+  background-color: #eee;
+}
+
+.selectbox.open .dropdown-menu {
+  display: block;
+}
+
+/* toggleicon */
+.toggle-fav {
+	position: absolute;
+	top: -2px;
+	right: 5px;
+	width: 16px;
+	height: 16px;
+	background: url('../images/ide/btn-fav-ami-unfaved-normal.png');
+}
+
+.toggle-fav:hover {
+	top: -3px;
+	right: 3px;
+	width: 20px;
+	height: 20px;
+	background: url('../images/ide/btn-fav-ami-unfaved-hover.png');
+}
+
+.toggle-fav.faved {
+	background: url('../images/ide/btn-fav-ami-faved-normal.png');
+}
+
+.toggle-fav.faved:hover {
+	background: url('../images/ide/btn-fav-ami-faved-hover.png');
+}
+
+/* searchbar */
+.search-bar {
+	position: absolute;
+	right: 10px;
+	top: 5px;
+	width: 19px;
+	height: 30px;
+	overflow: hidden;
+	float: right;
+}
+.search-bar .icon-search {
+	display: block;
+	float: left;
+	line-height: 30px;
+	cursor: pointer;
+}
+.search-bar.open .icon-search {
+	cursor: default;
+	position: absolute;
+	left: 0px;
+}
+.search-bar input {
+	display: block;
+	float: left;
+	position: absolute;
+	left: 19px;
+}
+.search-bar .icon-cancel {
+	display: block;
+	float: left;
+	line-height: 30px;
+	cursor: pointer;
+	position: absolute;
+	left: 198px;
+}
+
+/* filter */
+.hide {
+	display: none;
+}
+

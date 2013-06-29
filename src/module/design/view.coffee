@@ -12,7 +12,6 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             $( window ).on "resize", this.resizeEvent
 
         resizeEvent : ->
-            console.log 'design:resizeEvent'
             main_middle    = $ '#canvas-panel'
             resource_panel = $ '#resource-panel'
             property_panel = $ '#property-panel'

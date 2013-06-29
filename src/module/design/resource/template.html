@@ -1,9 +1,220 @@
-<a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip="Hide Resource Panel"><i class="icon-double-angle-left"></i></a>
+<a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip="Hide Resource Panel">
+	<i class="icon-double-angle-left"></i>
+</a>
 <div class="sidebar-title">
 	<span class="sidebar-title-text">Resource Panel</span>
-	<a href="javascript:void(0)" id="resource-search"><i class="icon-search"></i></a>
-</div>			
-	<!-- <ul class="resource-type-tab">
-		<li class="active"><a href="#new" data-toggle="tab">New</a></li>
-		<li><a href="#existing" data-toggle="tab">Existing</a></li>
-	</ul> -->
+	<div class="search-bar" id="resource-search">
+	  <i class="icon-search"></i>
+	  <input class="input" type="text" placeholder="Filter Resource by Name" />
+	  <i class="icon-cancel"></i>
+	</div>
+	<!-- <a href="javascript:void(0)" id="resource-search"><i class="icon-search"></i></a> -->
+</div>
+<div class="fixedaccordion accordion-default resource-panel-fixedaccordion" data-sub="68">
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			Availability Zone
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="resource-list clearfix">
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas">
+							<div class="resource-icon resource-icon-az"></div>
+							<div class="resource-label">us-east-1a</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas">
+							<div class="resource-icon resource-icon-az"></div>
+							<div class="resource-label">us-east-1b</div>
+						</div>
+					</li>
+					<li>
+						<div  class="tooltip resource-item" data-tooltip="Drag and drop to canvas">
+							<div class="resource-icon resource-icon-az"></div>
+							<div class="resource-label">us-east-1c</div>
+						</div>
+					</li>
+					<li>
+						<div class="resource-disabled tooltip resource-item" data-tooltip="us-east-1d is alredy in use.">
+							<div class="resource-icon resource-icon-az"></div>
+							<div class="resource-label">us-east-1d</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group expanded">
+		<div class="fixedaccordion-head">
+			<span>Instance</span>
+		</div>
+		<div class="selectbox resource-select" id="resource-select">
+			 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<span class="cur-value">Action</span>
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+				<li class="selected" tabindex="-1"><a data-id="111" href="#">Favorite AMIs</a></li>
+				<li tabindex="-1"><a data-id="222" href="#">My AMIs</a></li>
+			  </ul>
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content"> <!--  style="height: 500px" -->
+				<ul class="resource-list">
+					<li>
+						<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+						<div class="resource-item">
+							<div class="resource-icon resource-icon-instance"></div>
+							<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
+						</div>
+					</li>
+					<li>
+						<div class="btn-fav-ami toggle-fav tooltip" data-tooltip="Add to Favorite" data-id="Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b"></div>
+						<div class="resource-item">
+							<div class="resource-icon resource-icon-instance"></div>
+							<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b</div>
+						</div>
+					</li>
+					<li>
+						<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="tu-precise-12.04-i380411.1"></div>
+						<div class="resource-item">
+							<div class="resource-icon resource-icon-instance"></div>
+							<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>tu-precise-12.04-i380411.1</div>
+						</div>
+					</li>
+					<li>
+						<div class="btn-fav-ami toggle-fav tooltip" data-tooltip="Add to Favorite" data-id="Factory J"></div>
+						<div class="resource-item">
+							<div class="resource-icon resource-icon-instance"></div>
+							<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>Factory J</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="btn btn-primary" id="btn-browse-community-ami">Browse Community AMIs</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			Volume & Snapshot
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="resource-list">
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach new EBS volume.">
+							<div class="resource-icon resource-icon-volume"></div>
+							<div class="resource-label">New Volume</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach EBS snapshot.">
+							<div class="resource-icon resource-icon-ebs-snapshot"></div>
+							<div class="resource-label">EBS-Snapshot-Name-00102013026</div>
+						</div>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			ELB
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="resource-list">
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new ELB.">
+							<div class="resource-icon resource-icon-elb"></div>
+							<div class="resource-label">New ELB</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			VPC
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="resource-list">
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Subnet.">
+							<div class="resource-icon resource-icon-subnet"></div>
+							<div class="resource-label">New Subnet</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Route Table.">
+							<div class="resource-icon resource-icon-rt"></div>
+							<div class="resource-label">New Route Table</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Internet Gateway.">
+							<div class="resource-icon resource-icon-igw"></div>
+							<div class="resource-label">New Internet Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item resource-disabled" data-tooltip="VPC can only have one IGW. There is already one IGW in current VPC.">
+							<div class="resource-icon resource-icon-igw"></div>
+							<div class="resource-label">New Internet Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Virtual Gateway.">
+							<div class="resource-icon resource-icon-vgw"></div>
+							<div class="resource-label">New Virtual Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Customer Gateway.">
+							<div class="resource-icon resource-icon-cgw"></div>
+							<div class="resource-label">New Customer Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Network Interface.">
+							<div class="resource-icon resource-icon-cgw"></div>
+							<div class="resource-label">New Network Interface</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="search-panel" style="display:none; position:absolute; top:0; height:0">
+<ul>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title1:</div>
+		<div class='item' data-id='item11' style="padding-left:20px;">item11</div>
+		<div class='item' data-id='item12' style="padding-left:20px;">item12</div>
+		<div class='item' data-id='item13' style="padding-left:20px;">item13</div>
+	</li>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title2:</div>
+		<div class='item' data-id='item21' style="padding-left:20px;">item21</div>
+		<div class='item' data-id='item22' style="padding-left:20px;">item22</div>
+		<div class='item' data-id='item23' style="padding-left:20px;">item23</div>
+	</li>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title3:</div>
+		<div class='item' data-id='item31' style="padding-left:20px;">item31</div>
+		<div class='item' data-id='item32' style="padding-left:20px;">item32</div>
+		<div class='item' data-id='item33' style="padding-left:20px;">item33</div>
+	</li>
+</ul>
+</div>

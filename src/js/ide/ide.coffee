@@ -83,22 +83,30 @@ define [ 'MC', 'event',
 		header.loadModule()
 		#load tabbar
 		tabbar.loadModule()
+		#load dashboard
+		dashboard.loadModule()
+
 		#listen DASHBOARD_COMPLETE
 		ide_event.onListen ide_event.DASHBOARD_COMPLETE, () ->
 			console.log 'DASHBOARD_COMPLETE'
 			navigation.loadModule()
-		#load dashboard
-		dashboard.loadModule()
 
 		#listen NAVIGATION_COMPLETE
 		ide_event.onListen ide_event.NAVIGATION_COMPLETE, () ->
 			console.log 'NAVIGATION_COMPLETE'
-
+			#load design
+			design.loadModule()
+			#temp
 			setTimeout () ->
 				#load layout
+				console.log 'layout'
 				layout.ready()
 			, 2000
-		#load design
-		design.loadModule()
 
-		null
+		#listen DESIGN_COMPLETE
+		ide_event.onListen ide_event.DESIGN_COMPLETE, () ->
+			console.log 'DESIGN_COMPLETE'
+
+		#listen RESOURCE_COMPLETE
+		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
+		#	console.log 'RESOURCE_COMPLETE'

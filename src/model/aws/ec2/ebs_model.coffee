@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'ebs_service', 'ebs_vo'], ( Backbone, ebs_service, ebs_vo ) ->
+define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
 
     EBSModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : ebs_vo.ebs
+            vo : {}
         }
 
         ###### api ######

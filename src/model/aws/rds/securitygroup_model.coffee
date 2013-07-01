@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'securitygroup_service', 'securitygroup_vo'], ( Backbone, securitygroup_service, securitygroup_vo ) ->
+define [ 'backbone', 'securitygroup_service'], ( Backbone, securitygroup_service) ->
 
     SecurityGroupModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : securitygroup_vo.securitygroup
+            vo : {}
         }
 
         ###### api ######

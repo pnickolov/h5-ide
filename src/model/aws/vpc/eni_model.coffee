@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'eni_service', 'eni_vo'], ( Backbone, eni_service, eni_vo ) ->
+define [ 'backbone', 'eni_service'], ( Backbone, eni_service) ->
 
     ENIModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : eni_vo.eni
+            vo : {}
         }
 
         ###### api ######

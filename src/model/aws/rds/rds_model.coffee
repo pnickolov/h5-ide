@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'rds_service', 'rds_vo'], ( Backbone, rds_service, rds_vo ) ->
+define [ 'backbone', 'rds_service'], ( Backbone, rds_service) ->
 
     RDSModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : rds_vo.rds
+            vo : {}
         }
 
         ###### api ######

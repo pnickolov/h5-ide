@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'parametergroup_service', 'parametergroup_vo'], ( Backbone, parametergroup_service, parametergroup_vo ) ->
+define [ 'backbone', 'parametergroup_service'], ( Backbone, parametergroup_service) ->
 
     ParameterGroupModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : parametergroup_vo.parametergroup
+            vo : {}
         }
 
         ###### api ######

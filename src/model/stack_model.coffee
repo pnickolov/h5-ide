@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'stack_service', 'stack_vo'], ( Backbone, stack_service, stack_vo ) ->
+define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
 
     StackModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : stack_vo.stack_list
+            vo : {}
         }
 
         ###### api ######

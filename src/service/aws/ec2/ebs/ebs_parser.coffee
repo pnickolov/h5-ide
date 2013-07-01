@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'ebs_vo', 'result_vo', 'constant' ], ( ebs_vo, result_vo, constant ) ->
+define [  'result_vo', 'constant' ], (result_vo, constant ) ->
 
     resolvedObjectToArray = ( objs ) ->
 

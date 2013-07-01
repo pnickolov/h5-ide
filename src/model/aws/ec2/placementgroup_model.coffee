@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'placementgroup_service', 'placementgroup_vo'], ( Backbone, placementgroup_service, placementgroup_vo ) ->
+define [ 'backbone', 'placementgroup_service'], ( Backbone, placementgroup_service) ->
 
     PlacementGroupModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : placementgroup_vo.data
+            vo : {}
         }
 
         ###### api ######

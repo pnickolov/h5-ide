@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'guest_service', 'guest_vo'], ( Backbone, guest_service, guest_vo ) ->
+define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
 
     GuestModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : guest_vo.guest
+            vo : {}
         }
 
         ###### api ######

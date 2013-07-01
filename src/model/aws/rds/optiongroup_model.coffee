@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'optiongroup_service', 'optiongroup_vo'], ( Backbone, optiongroup_service, optiongroup_vo ) ->
+define [ 'backbone', 'optiongroup_service'], ( Backbone, optiongroup_service) ->
 
     OptionGroupModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : optiongroup_vo.optiongroup
+            vo : {}
         }
 
         ###### api ######

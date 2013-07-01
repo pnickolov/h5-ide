@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autoscaling_service, autoscaling_vo ) ->
+define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) ->
 
     AutoScalingModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : autoscaling_vo.autoscaling
+            vo : {}
         }
 
         ###### api ######

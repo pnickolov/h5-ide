@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'favorite_service', 'favorite_vo'], ( Backbone, favorite_service, favorite_vo ) ->
+define [ 'backbone', 'favorite_service' ], ( Backbone, favorite_service ) ->
 
     FavoriteModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : favorite_vo.favorite
+            vo : {}
         }
 
         ###### api ######

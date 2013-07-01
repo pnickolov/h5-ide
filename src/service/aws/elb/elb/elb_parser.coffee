@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
+define [  'result_vo', 'constant' ], (result_vo, constant ) ->
 
     resolvedObjectToArray = ( objs ) ->
 
@@ -53,7 +53,7 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
             tmp = []
 
             tmp.push result_set
-            
+
             result_set = tmp
 
         result_set
@@ -146,7 +146,7 @@ define [ 'elb_vo', 'result_vo', 'constant' ], ( elb_vo, result_vo, constant ) ->
         if result_set
 
             if result_set.member.constructor == Object
-            
+
                 tmp = result_set.member
 
                 result_set = []

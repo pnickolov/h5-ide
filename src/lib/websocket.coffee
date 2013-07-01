@@ -38,6 +38,9 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 				'request_detail'	:	new Meteor.Collection "request_detail"
 
 				'stack'				:	new Meteor.Collection "stack"
+
+				'app'				:	new Meteor.Collection "app"
+
 			}
 
 		# add a callback to specific state, true or false and a callback or nothing just return websocket status

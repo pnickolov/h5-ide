@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'keypair_service', 'keypair_vo'], ( Backbone, keypair_service, keypair_vo ) ->
+define [ 'backbone', 'keypair_service'], ( Backbone, keypair_service) ->
 
     KeyPairModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : keypair_vo.keypair
+            vo : {}
         }
 
         ###### api ######

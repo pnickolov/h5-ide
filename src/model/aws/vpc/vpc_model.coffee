@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'vpc_service', 'vpc_vo'], ( Backbone, vpc_service, vpc_vo ) ->
+define [ 'backbone', 'vpc_service'], ( Backbone, vpc_service) ->
 
     VPCModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : vpc_vo.vpc
+            vo : {}
         }
 
         ###### api ######

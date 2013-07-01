@@ -6,14 +6,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
 
     ToolbarView = Backbone.View.extend {
 
-        el       : $( '#main-toolbar' )
+        el       : $ '#main-toolbar'
 
-        template : Handlebars.compile $( '#toolbar-tmpl' ).html()
-
-        render   : () ->
+        render   : ( template ) ->
             console.log 'toolbar render'
-            $( this.el ).html this.template()
-            #event.trigger event.DESIGN_COMPLETE
+            $( this.el ).html template
     }
 
     return ToolbarView

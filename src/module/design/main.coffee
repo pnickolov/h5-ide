@@ -10,9 +10,12 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
         #load remote design.js
         require [ './module/design/view', './module/design/model', 'event' ], ( View, model, ide_event ) ->
 
+            #
+            design_view_init = null
+
             #view
             view       = new View()
-            view.listen( model )
+            view.listen model
 
             #listen event
             view.once 'DESIGN_COMPLETE', () ->
@@ -21,6 +24,14 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
                 wrap()
                 #push event
                 ide_event.trigger ide_event.DESIGN_COMPLETE
+                #temp
+                setTimeout () ->
+                    #load layout
+                    console.log 'design_view_init'
+                    design_view_init = view.$el.html()
+                    null
+                , 2000
+                null
 
             #render
             view.render template
@@ -33,11 +44,25 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
                 null
 
             #listen SWITCH_TAB
-            ide_event.onLongListen ide_event.SWITCH_TAB, ( type, target ) ->
-                console.log 'design:SWITCH_TAB, type = ' + type + ', target = ' + target
+            ide_event.onLongListen ide_event.SWITCH_TAB, ( type, target, region_name ) ->
+                console.log 'design:SWITCH_TAB, type = ' + type + ', target = ' + target + ', region_name = ' + region_name
                 #save tab
-                if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, target
+                if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, target else view.$el.html design_view_init
+                #
+                if type is 'NEW_STACK'
+                    #push event
+                    ide_event.trigger ide_event.RELOAD_RESOURCE, region_name
                 null
+
+                ###
+                if type is 'OPEN_STACK'
+                    #
+                null
+                #
+                if type is 'OPEN_APP'
+                    #
+                null
+                ###
 
     #private
     unLoadModule = () ->

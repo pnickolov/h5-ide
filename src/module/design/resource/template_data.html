@@ -1,0 +1,49 @@
+<!--{{ .availability-zone-data }}-->
+{{#each availability_zone.item }}
+<li>
+	<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas">
+		<div class="resource-icon resource-icon-az"></div>
+		<div class="resource-label">{{ zoneName }}</div>
+	</div>
+</li>
+{{/each}}
+
+<!--{{ .resoruce-snapshot-data }}-->
+{{#each resoruce_snapshot.item }}
+<li>
+	<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach EBS snapshot.">
+		<div class="resource-icon resource-icon-ebs-snapshot"></div>
+		<div class="resource-label">EBS-Snapshot-Name-00102013026</div>
+	</div>
+</li>
+{{/each}}
+
+<!--{{ .quickstart-ami-data }}-->
+<li>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+	<div class="resource-item">
+		<div class="resource-icon resource-icon-instance"></div>
+		<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
+	</div>
+</li>
+
+<!--{{ .my-ami-data }}-->
+{{#each my_ami.item }}
+<li>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+	<div class="resource-item">
+		<div class="resource-icon resource-icon-instance"></div>
+		<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
+	</div>
+</li>
+{{/each}}
+
+
+<!--{{ .favorite-ami-data }}-->
+<li>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+	<div class="resource-item">
+		<div class="resource-icon resource-icon-instance"></div>
+		<div class="resource-label instance-label bubble" data-bubble-template="bubbleTest" data-bubble-data='{"title":"AMI Bubble","start-time":"GMT 19:23 2013-4-30","end-time":"GMT 19:23 2013-5-1","cost":"$19.5/month"}'>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
+	</div>
+</li>

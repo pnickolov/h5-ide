@@ -71,12 +71,14 @@ require.config {
 		'event'        : 'event/ide_event'
 
 		#model
+		'favorite_model' : 'model/favorite_model'
 		'app_model'    : 'model/app_model'
 		'stack_model'  : 'model/stack_model'
 		'ec2_model'    : 'model/aws/ec2/ec2_model'
 		'vpc_model'    : 'model/aws/vpc/vpc_model'
 		'aws_model'    : 'model/aws/aws_model'
 		'ami_model'    : 'model/aws/ec2/ami_model'
+		'ebs_model'    : 'model/aws/ec2/ebs_model'
 		'elb_model'    : 'model/aws/elb/elb_model'
 		'dhcp_model'   : 'model/aws/vpc/dhcp_model'
 		'customergateway_model'    : 'model/aws/vpc/customergateway_model'
@@ -94,6 +96,10 @@ require.config {
 
 		#############################################
 		#############################################
+
+		#favorite_service
+		'favorite_parser'    : 'service/favorite/favorite_parser'
+		'favorite_service'   : 'service/favorite/favorite_service'
 
 		#session_service
 		#'session_vo'        : 'service/session/session_vo'

@@ -25,6 +25,8 @@ define [ 'underscore', 'backbone' ], () ->
         DASHBOARD_COMPLETE  : 'DASHBOARD_COMPLETE'
         DESIGN_COMPLETE     : 'DESIGN_COMPLETE'
         RESOURCE_COMPLETE   : 'RESOURCE_COMPLETE'
+        #
+        RELOAD_RESOURCE     : 'RELOAD_RESOURCE'
 
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'

@@ -10,8 +10,12 @@ define [ 'event',
     ResourceView = Backbone.View.extend {
 
         el         : $ '#resource-panel'
+
         availability_zone_tmpl : Handlebars.compile $( '#availability-zone-tmpl' ).html()
         resoruce_snapshot_tmpl : Handlebars.compile $( '#resoruce-snapshot-tmpl' ).html()
+        quickstart_ami_tmpl    : Handlebars.compile $( '#quickstart-ami-tmpl' ).html()
+        my_ami_tmpl            : Handlebars.compile $( '#my-ami-tmpl' ).html()
+        favorite_ami_tmpl      : Handlebars.compile $( '#favorite-ami-tmpl' ).html()
 
         initialize : ->
             #listen
@@ -21,7 +25,7 @@ define [ 'event',
             $( document ).on 'ready',  selectbox.init
             #listen
             $( document ).delegate '#hide-resource-panel', 'click',         this.toggleResourcePanel
-            $( document ).delegate '#resource-select',     'OPTION_CHANGE', this.resourceSelectEvent
+            $( document ).delegate '#resource-select',     'OPTION_CHANGE', this, this.resourceSelectEvent
             $( document ).delegate '#resource-panel',     'SEARCHBAR_SHOW', this.searchBarShowEvent
             $( document ).delegate '#resource-panel',     'SEARCHBAR_HIDE', this.searchBarHideEvent
             $( document ).delegate '#resource-panel',   'SEARCHBAR_CHANGE', this.searchBarChangeEvent
@@ -40,10 +44,30 @@ define [ 'event',
             this.model = model
             #listen model
             this.listenTo this.model, 'change:availability_zone', this.availabilityZoneRender
+            this.listenTo this.model, 'change:resoruce_snapshot', this.resourceSnapshotRender
+            this.listenTo this.model, 'change:quickstart_ami',    this.quickstartAmiRender
+            this.listenTo this.model, 'change:my_ami',            this.myAmiRender
+            this.listenTo this.model, 'change:favorite_ami',      this.favoriteAmiRender
 
         resourceSelectEvent : ( event, id ) ->
             console.log 'resourceSelectEvent = ' + id
+            #if id is 'my-ami' then event.data.myAmiRender()
+            #if id is 'favorite-ami' then event.data.myAmiRender()
+            if id is 'favorite-ami'
+                $( '.favorite-ami-list' ).show()
+                $( '.quickstart-ami-list' ).hide()
+                $( '.my-ami-list' ).hide()
+            else if id is 'my-ami'
+                $( '.my-ami-list' ).show()
+                $( '.favorite-ami-list' ).hide()
+                $( '.quickstart-ami-list' ).hide()
+            else if id is 'quickstart-ami'
+                $( '.quickstart-ami-list' ).show()
+                $( '.favorite-ami-list' ).hide()
+                $( '.my-ami-list' ).hide()
+            #event.data.trigger 'RESOURCE_SELECET', id
             fixedaccordion.show.call($($(this).parent().find('.fixedaccordion-head')[0]))
+            null
 
         searchBarShowEvent : ( event ) ->
             console.log 'searchBarShowEvent'
@@ -87,7 +111,25 @@ define [ 'event',
         resourceSnapshotRender : () ->
             console.log 'resourceSnapshotRender'
             console.log this.model.attributes.resoruce_snapshot
-            $( '.resoruce-snapshot' ).html this.resoruce_snapshot_tmpl this.model.attributes
+            $( '.resoruce-snapshot' ).append this.resoruce_snapshot_tmpl this.model.attributes
+            null
+
+        quickstartAmiRender : () ->
+            console.log 'quickstartAmiRender'
+            console.log this.model.attributes.quickstart_ami
+            $( '.quickstart-ami-list' ).html this.quickstart_ami_tmpl this.model.attributes
+            null
+
+        myAmiRender : () ->
+            console.log 'myAmiRender'
+            console.log this.model.attributes.my_ami
+            $( '.my-ami-list' ).html this.my_ami_tmpl this.model.attributes
+            null
+
+        favoriteAmiRender : () ->
+            console.log 'favoriteAmiRender'
+            console.log this.model.attributes.favorite_ami
+            $( '.favorite-ami-list' ).html this.favorite_ami_tmpl this.model.attributes
             null
 
     }

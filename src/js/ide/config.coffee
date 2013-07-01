@@ -71,6 +71,7 @@ require.config {
 		'event'        : 'event/ide_event'
 
 		#model
+		'favorite_model' : 'model/favorite_model'
 		'app_model'    : 'model/app_model'
 		'stack_model'  : 'model/stack_model'
 		'ec2_model'    : 'model/aws/ec2/ec2_model'
@@ -95,6 +96,10 @@ require.config {
 
 		#############################################
 		#############################################
+
+		#favorite_service
+		'favorite_parser'    : 'service/favorite/favorite_parser'
+		'favorite_service'   : 'service/favorite/favorite_service'
 
 		#session_service
 		#'session_vo'        : 'service/session/session_vo'

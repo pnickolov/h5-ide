@@ -77,6 +77,7 @@ require.config {
 		'vpc_model'    : 'model/aws/vpc/vpc_model'
 		'aws_model'    : 'model/aws/aws_model'
 		'ami_model'    : 'model/aws/ec2/ami_model'
+		'ebs_model'    : 'model/aws/ec2/ebs_model'
 		'elb_model'    : 'model/aws/elb/elb_model'
 		'dhcp_model'   : 'model/aws/vpc/dhcp_model'
 		'customergateway_model'    : 'model/aws/vpc/customergateway_model'

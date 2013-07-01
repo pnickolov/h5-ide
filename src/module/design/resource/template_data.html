@@ -1,0 +1,19 @@
+<!--{{ .availability-zone-data }}-->
+{{#each availability_zone.item }}
+<li>
+	<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas">
+		<div class="resource-icon resource-icon-az"></div>
+		<div class="resource-label">{{ zoneName }}</div>
+	</div>
+</li>
+{{/each}}
+
+<!--{{ .resoruce-snapshot-data }}-->
+{{#each resoruce_snapshot.item }}
+<li>
+	<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach EBS snapshot.">
+		<div class="resource-icon resource-icon-ebs-snapshot"></div>
+		<div class="resource-label">EBS-Snapshot-Name-00102013026</div>
+	</div>
+</li>
+{{/each}}

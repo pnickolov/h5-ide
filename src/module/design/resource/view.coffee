@@ -10,6 +10,8 @@ define [ 'event',
     ResourceView = Backbone.View.extend {
 
         el         : $ '#resource-panel'
+        availability_zone_tmpl : Handlebars.compile $( '#availability-zone-tmpl' ).html()
+        resoruce_snapshot_tmpl : Handlebars.compile $( '#resoruce-snapshot-tmpl' ).html()
 
         initialize : ->
             #listen
@@ -37,10 +39,10 @@ define [ 'event',
             #set this.model
             this.model = model
             #listen model
-            this.listenTo this.model, 'change:vailability_zone', this.vailabilityZoneRender
+            this.listenTo this.model, 'change:availability_zone', this.availabilityZoneRender
 
         resourceSelectEvent : ( event, id ) ->
-            console.log 'resourceSelectEvent'
+            console.log 'resourceSelectEvent = ' + id
             fixedaccordion.show.call($($(this).parent().find('.fixedaccordion-head')[0]))
 
         searchBarShowEvent : ( event ) ->
@@ -76,9 +78,17 @@ define [ 'event',
                 if $( '#resource-panel' ).attr( 'class' ).indexOf( 'hide' ) isnt -1 then $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
 
-        vailabilityZoneRender : ( result ) ->
-            console.log 'vailabilityZoneRender'
-            console.log result
+        availabilityZoneRender : () ->
+            console.log 'availabilityZoneRender'
+            console.log this.model.attributes.availability_zone
+            $( '.availability-zone' ).html this.availability_zone_tmpl this.model.attributes
+            null
+
+        resourceSnapshotRender : () ->
+            console.log 'resourceSnapshotRender'
+            console.log this.model.attributes.resoruce_snapshot
+            $( '.resoruce-snapshot' ).html this.resoruce_snapshot_tmpl this.model.attributes
+            null
 
     }
 

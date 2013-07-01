@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'app_service', 'app_vo'], ( Backbone, app_service, app_vo ) ->
+define [ 'backbone', 'app_service' ], ( Backbone, app_service ) ->
 
     AppModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : app_vo.app_list
+            vo : {}
         }
 
         ###### api ######

@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'vpc_vo', 'result_vo', 'constant' ], ( vpc_vo, result_vo, constant ) ->
+define [  'result_vo', 'constant' ], (result_vo, constant ) ->
 
     resolvedObjectToArray = ( objs ) ->
 
@@ -53,7 +53,7 @@ define [ 'vpc_vo', 'result_vo', 'constant' ], ( vpc_vo, result_vo, constant ) ->
             return result.item
 
         else
-        
+
             return null
 
 

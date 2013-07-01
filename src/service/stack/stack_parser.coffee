@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant ) ->
+define [ 'result_vo', 'constant' ], ( result_vo, constant ) ->
 
 
     #///////////////// Parser for create return (need resolve) /////////////////
@@ -129,15 +129,17 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
     #///////////////// Parser for run return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveRunResult = ( result ) ->
+        stack_run = {}
+
         #resolve result
-        stack_vo.stack_run.id              =   result[0]
-        stack_vo.stack_run.state           =   result[1]
-        stack_vo.stack_run.brief           =   result[2]
-        stack_vo.stack_run.time_submit     =   result[3]
-        stack_vo.stack_run.rid             =   result[4]
+        stack_run.id              =   result[0]
+        stack_run.state           =   result[1]
+        stack_run.brief           =   result[2]
+        stack_run.time_submit     =   result[3]
+        stack_run.rid             =   result[4]
 
         #return vo
-        stack_vo.stack_run
+        stack_run
 
     #private (parser run return)
     parserRunReturn = ( result, return_code, param ) ->
@@ -228,7 +230,6 @@ define [ 'stack_vo', 'result_vo', 'constant' ], ( stack_vo, result_vo, constant 
             stack_list[vo.region].push vo
 
         #return vo
-        stack_vo.stack_list = stack_list
         stack_list
 
     #private (parser list return)

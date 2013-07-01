@@ -7,10 +7,10 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'aws_vo', 'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instance_parser'
+define [  'result_vo', 'constant', 'ebs_parser', 'eip_parser', 'instance_parser'
          'keypair_parser', 'securitygroup_parser', 'elb_parser', 'iam_parser', 'acl_parser'
          'customergateway_parser', 'dhcp_parser', 'eni_parser', 'internetgateway_parser', 'routetable_parser'
-         'subnet_parser', 'vpc_parser', 'vpn_parser', 'vpngateway_parser', 'ec2_parser', 'ami_parser' ], ( aws_vo, result_vo, constant, ebs_parser, eip_parser, instance_parser
+         'subnet_parser', 'vpc_parser', 'vpn_parser', 'vpngateway_parser', 'ec2_parser', 'ami_parser' ], (result_vo, constant, ebs_parser, eip_parser, instance_parser
          keypair_parser, securitygroup_parser, elb_parser, iam_parser, acl_parser
          customergateway_parser, dhcp_parser, eni_parser, internetgateway_parser, routetable_parser
          subnet_parser, vpc_parser, vpn_parser, vpngateway_parser, ec2_parser, ami_parser) ->

@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'acl_service', 'acl_vo'], ( Backbone, acl_service, acl_vo ) ->
+define [ 'backbone', 'acl_service'], ( Backbone, acl_service) ->
 
     ACLModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : acl_vo.acl
+            vo : {}
         }
 
         ###### api ######

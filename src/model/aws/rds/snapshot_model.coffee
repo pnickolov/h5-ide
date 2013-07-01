@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'snapshot_service', 'snapshot_vo'], ( Backbone, snapshot_service, snapshot_vo ) ->
+define [ 'backbone', 'snapshot_service'], ( Backbone, snapshot_service) ->
 
     SnapshotModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : snapshot_vo.snapshot
+            vo : {}
         }
 
         ###### api ######

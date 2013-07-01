@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'rds_vo', 'result_vo', 'constant' ], ( rds_vo, result_vo, constant ) ->
+define [  'result_vo', 'constant' ], (result_vo, constant ) ->
 
 
     #///////////////// Parser for DescribeDBEngineVersions return (need resolve) /////////////////

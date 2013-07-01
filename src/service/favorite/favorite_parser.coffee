@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'favorite_vo', 'result_vo', 'constant' ], ( favorite_vo, result_vo, constant ) ->
+define [  'result_vo', 'constant' ], (result_vo, constant ) ->
 
 
     #///////////////// Parser for add return (need resolve) /////////////////
@@ -71,22 +71,23 @@ define [ 'favorite_vo', 'result_vo', 'constant' ], ( favorite_vo, result_vo, con
     #///////////////// Parser for info return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveInfoResult = ( result ) ->
+        favorite_list = []
         #resolve result
-        favorite_vo.favorite_info.resources = []
 
         for res in result
-            favorite_vo.resource_info.usercode      = res['username']
-            favorite_vo.resource_info.region        = res['region']
-            favorite_vo.resource_info.provider      = res['provider']
-            favorite_vo.resource_info.service       = res['service']
-            favorite_vo.resource_info.resource_type = res['resource']
-            favorite_vo.resource_info.resource_id   = res['id']
-            favorite_vo.resource_info.resource_info = res['amiVO']
+            resource_info = {}
+            resource_info.usercode      = res['username']
+            resource_info.region        = res['region']
+            resource_info.provider      = res['provider']
+            resource_info.service       = res['service']
+            resource_info.resource_type = res['resource']
+            resource_info.resource_id   = res['id']
+            resource_info.resource_info = res['amiVO']
 
-            favorite_vo.favorite_info.resources.push favorite_vo.resource_info
+            favorite_list.push resource_info
 
         #return vo
-        favorite_vo.favorite_info
+        favorite_list
 
     #private (parser info return)
     parserInfoReturn = ( result, return_code, param ) ->

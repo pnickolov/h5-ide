@@ -7,21 +7,23 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'guest_vo', 'result_vo', 'constant' ], ( guest_vo, result_vo, constant ) ->
+define [  'result_vo', 'constant' ], (result_vo, constant ) ->
 
 
     #///////////////// Parser for invite return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveInviteResult = ( result ) ->
+        invite_info = {}
+
         #resolve result
-        guest_vo.invite_info.request_id     = result[0]
-        guest_vo.invite_info.state          = result[1]
-        guest_vo.invite_info.request_brief  = result[2]
-        guest_vo.invite_info.submit_time    = result[3]
-        guest_vo.invite_info.request_rid    = result[4]
+        invite_info.request_id     = result[0]
+        invite_info.state          = result[1]
+        invite_info.request_brief  = result[2]
+        invite_info.submit_time    = result[3]
+        invite_info.request_rid    = result[4]
 
         #return vo
-        guest_vo.invite_info
+        invite_info
 
     #private (parser invite return)
     parserInviteReturn = ( result, return_code, param ) ->
@@ -134,7 +136,7 @@ define [ 'guest_vo', 'result_vo', 'constant' ], ( guest_vo, result_vo, constant 
     #private (resolve result to vo )
     resolveInfoResult = ( result ) ->
         #resolve result
-        
+
 
         #return vo
         #TO-DO

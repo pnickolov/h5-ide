@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'routetable_service', 'routetable_vo'], ( Backbone, routetable_service, routetable_vo ) ->
+define [ 'backbone', 'routetable_service'], ( Backbone, routetable_service) ->
 
     RouteTableModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : routetable_vo.routetable
+            vo : {}
         }
 
         ###### api ######

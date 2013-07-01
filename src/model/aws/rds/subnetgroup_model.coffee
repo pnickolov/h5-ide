@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'subnetgroup_service', 'subnetgroup_vo'], ( Backbone, subnetgroup_service, subnetgroup_vo ) ->
+define [ 'backbone', 'subnetgroup_service'], ( Backbone, subnetgroup_service) ->
 
     SubnetGroupModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : subnetgroup_vo.subnetgroup
+            vo : {}
         }
 
         ###### api ######

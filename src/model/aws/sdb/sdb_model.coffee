@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'sdb_service', 'sdb_vo'], ( Backbone, sdb_service, sdb_vo ) ->
+define [ 'backbone', 'sdb_service'], ( Backbone, sdb_service) ->
 
     SDBModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : sdb_vo.sdb
+            vo : {}
         }
 
         ###### api ######

@@ -313,13 +313,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             me = this
 
             time_stamp      = new Date().getTime() / 1000
-            unmanaged_list  = { "time_stamp": time_stamp, "items": [] }
+            unmanaged_list  = { loading:true, "time_stamp": time_stamp, "items": [] }
             me.set 'unmanaged_list', unmanaged_list
             me.set 'vpc_attrs', {}
             me.set 'status_list', {}
 
 
-            lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0}
+            lists = {loading:true, ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0}
             me.set 'region_resource_list', lists
 
             resource = {

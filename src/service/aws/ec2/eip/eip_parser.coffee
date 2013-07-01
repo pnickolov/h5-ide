@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'eip_vo', 'result_vo', 'constant', 'jquery' ], ( eip_vo, result_vo, constant, $ ) ->
+define [  'result_vo', 'constant', 'jquery' ], (result_vo, constant, $ ) ->
 
     resolvedObjectToArray = ( objs ) ->
 
@@ -99,13 +99,13 @@ define [ 'eip_vo', 'result_vo', 'constant', 'jquery' ], ( eip_vo, result_vo, con
         result_set = ($.xml2json ($.parseXML result[1])).DescribeAddressesResponse.addressesSet
 
         result = resolvedObjectToArray result_set
-        
+
         if result?.item?
 
             return result.item
 
         else
-        
+
             return null
 
     #private (parser DescribeAddresses return)

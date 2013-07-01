@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'opsworks_service', 'opsworks_vo'], ( Backbone, opsworks_service, opsworks_vo ) ->
+define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
 
     OpsWorksModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : opsworks_vo.opsworks
+            vo : {}
         }
 
         ###### api ######

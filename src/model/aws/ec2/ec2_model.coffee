@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'ec2_service', 'ec2_vo'], ( Backbone, ec2_service, ec2_vo ) ->
+define [ 'backbone', 'ec2_service'], ( Backbone, ec2_service) ->
 
     EC2Model = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : ec2_vo.ec2
+            vo : {}
         }
 
         ###### api ######

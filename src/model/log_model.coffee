@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'log_service', 'log_vo'], ( Backbone, log_service, log_vo ) ->
+define [ 'backbone', 'log_service'], ( Backbone, log_service) ->
 
     LogModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : log_vo.log
+            vo : {}
         }
 
         ###### api ######

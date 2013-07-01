@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'internetgateway_service', 'internetgateway_vo'], ( Backbone, internetgateway_service, internetgateway_vo ) ->
+define [ 'backbone', 'internetgateway_service'], ( Backbone, internetgateway_service) ->
 
     InternetGatewayModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : internetgateway_vo.internetgateway
+            vo : {}
         }
 
         ###### api ######

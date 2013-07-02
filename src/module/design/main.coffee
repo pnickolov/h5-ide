@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
+define [ 'jquery', 'text!/module/design/template.html', 'canvas-layout' ], ( $, template, canvas_layout ) ->
 
     #private
     loadModule = () ->
@@ -52,6 +52,14 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
                 if type is 'NEW_STACK'
                     #push event
                     ide_event.trigger ide_event.RELOAD_RESOURCE, region_name
+
+                #for test
+                if type is 'OPEN_STACK'
+                    #set current tab_id
+                    MC.canvas.current_tab = target.param[4][0]
+                    #deep clone MC.canvas.STACK_JSON
+                    MC.tab[ MC.canvas.current_tab ] = $.extend(true, {}, MC.canvas.STACK_JSON)
+
                 null
 
                 ###

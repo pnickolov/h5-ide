@@ -14,8 +14,9 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
             view       = new View()
             view.render template
             #temp
-            require [ 'canvas-layout' ], ( canvas_layout ) ->
-                canvas_layout.ready()
+            require [ 'canvas-layout' ]
+            true
+
 
     unLoadModule = () ->
         #view.remove()

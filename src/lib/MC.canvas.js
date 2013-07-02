@@ -4,6 +4,7 @@
 // Temporarily data
 //MC.tab = {};
 
+/*
 MC.tab['app01'] = {
 		"id": "",
 		"name": "",
@@ -50,10 +51,11 @@ MC.tab['app01'] = {
 			}
 		}
 	};
+*/
 
 MC.canvas = {
 	selected_node: [],
-	current_tab: 'app01',
+	current_tab: '',
 
 	_addPad: function (point, adjust)
 	{

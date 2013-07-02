@@ -21,7 +21,7 @@
 <!--{{ .quickstart-ami-data }}-->
 {{#each quickstart_ami}}
 <li>
-	<div class="resource-item bubble" data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{id}}","name":"{{ name }}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{isPublic}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}"}'>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data='{"id":"{{id}}","name":"{{ name }}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{isPublic}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}", "imageSize":"{{imageSize}}", "instance_type":"{{instance_type}}"}'>
 		<div class="resource-icon resource-icon-instance"></div>
 		<div class="resource-label instance-label">{{name}}</div>
 	</div>

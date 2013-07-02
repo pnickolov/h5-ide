@@ -7,6 +7,8 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
 ], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model ) ->
 
     #private
+    ami_instance_type = null
+
     ResourcePanelModel = Backbone.Model.extend {
 
         defaults :
@@ -62,8 +64,13 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
                 console.log 'AWS_QUICKSTART_RETURN'
                 console.log result
                 ami_list = []
+                ami_instance_type = result.resolved_data.ami_instance_type
                 _.map result.resolved_data.ami, ( value, key ) ->
                     value.id = key
+                    if value.kernelId == undefined or value.kernelId == ''
+                        value.kernelId = "None"
+                    
+                    value.instance_type = me._getInstanceType value
                     ami_list.push value
                     
                 me.set 'quickstart_ami', ami_list
@@ -109,6 +116,23 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
                 me.set 'favorite_ami', result.resolved_data
                 null
 
+        _getInstanceType : ( ami ) ->
+            instance_type = ami_instance_type
+            if ami.virtualizationType == 'hvm'
+                instance_type = instance_type.windows
+            else
+                instance_type = instance_type.linux
+            if ami.rootDeviceType == 'ebs'
+                instance_type = instance_type.ebs
+            else
+                instance_type = instance_type['instance store']
+            if ami.architecture == 'x86_64'
+                instance_type = instance_type["64"]
+            else
+                instance_type = instance_type["32"]
+            instance_type = instance_type[ami.virtualizationType]
+
+            instance_type.join ', '
     }
 
     model = new ResourcePanelModel()

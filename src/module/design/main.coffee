@@ -49,7 +49,7 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
                 #save tab
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, target else view.$el.html design_view_init
                 #
-                if type is 'NEW_STACK'
+                if type is 'NEW_STACK' or type is 'OPEN_STACK'
                     #push event
                     ide_event.trigger ide_event.RELOAD_RESOURCE, region_name
                 null

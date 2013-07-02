@@ -3,6 +3,8 @@ require.config {
 
 	baseUrl            : './'
 
+	waitSeconds        : 30
+
 	deps               : [ 'js/ide/main' ]
 
 	paths              :

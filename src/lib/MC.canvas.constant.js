@@ -46,6 +46,17 @@ var constant_data = {
 		'AWS.VPC.Subnet': []
 	},
 
+	MATCH_PLACEMENT: {
+		'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
+		'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
+		'AWS.VPC.NetworkInterface': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
+		'AWS.VPC.RouteTable': ['AWS.VPC.VPC'],
+		'AWS.VPC.InternetGateway': ['AWS.VPC.VPC'],
+		'AWS.VPC.VPNGateway': ['AWS.VPC.VPC'],
+		'AWS.ELB': ['Canvas','AWS.VPC.VPC'],
+		'AWS.VPC.CustomerGateway': ['Canvas']
+	},
+
 	CONNECTION_OPTION: {
 		'AWS.EC2.Instance': {
 			'AWS.EC2.Instance': {

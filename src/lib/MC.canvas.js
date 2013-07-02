@@ -2,7 +2,7 @@
 // Author: Angel
 
 // Temporarily data
-MC.tab = {};
+//MC.tab = {};
 
 MC.tab['app01'] = {
 		"id": "",
@@ -81,6 +81,7 @@ MC.canvas = {
 				break;
 		}
 	},
+
 	_getPath: function (prev, current, next)
 	{
 		//add by xjimmy, generate path by three point
@@ -150,6 +151,7 @@ MC.canvas = {
 
 		return ' L ' + p1[0] + ' ' + p1[1] + ' Q ' + current[0] + ' ' + current[1] + ' ' + p2[0] + ' ' + p2[1];
 	},
+
 	updateResizer: function(node, width, height)
 	{
 		var pad = 10,
@@ -169,6 +171,7 @@ MC.canvas = {
 			Canvon.rectangle(width - pad, height + top - pad, pad, pad).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
 		);
 	},
+
 	connect: function (from_node, from_target_port, to_node, to_target_port, line_option)
 	{
 		var canvas_offset = $('#svg_canvas').offset(),
@@ -518,9 +521,17 @@ MC.canvas = {
 
 	},
 
+	isMatchPlace: function (type, x, y)
+	{
+		var matchGroup = MC.canvas.matchGroup(x, y).type;
+
+		matchGroup = matchGroup === undefined ? 'Canvas' : matchGroup;
+
+		return $.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ type ]) > -1;
+	},
+
 	isBlank: function (type, target_id, x, y)
 	{
-		// type: node / zone
 		var children = MC.canvas.data.get('layout.component.' + type),
 			start_x = x,
 			start_y = y,
@@ -809,7 +820,10 @@ MC.canvas.event.dragable = {
 			{
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-				if (MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y))
+				if (
+					MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
+					MC.canvas.isMatchPlace(layout_node_data[ target_id ].type, coordinate.x, coordinate.y)
+				)
 				{
 					node_connections = layout_node_data[ target_id ].connection || {};
 
@@ -820,7 +834,6 @@ MC.canvas.event.dragable = {
 						line_connection = layout_connection_data[ value['line'] ];
 
 						line_layer.removeChild(line_connection.SVG);
-
 
 						MC.canvas.connect(
 							$('#' + target_id), line_connection['target'][ target_id ],
@@ -1156,7 +1169,7 @@ MC.canvas.event.drawConnection = {
 		var from_node = event.data.originalTarget,
 			to_node = $(this),
 			port_name = event.data.port_name,
-			to_port_name = $(this).find('.connectable-port').data('name');
+			to_port_name = to_node.find('.connectable-port').data('name');
 		// if ($(event.target).hasClass(event.data.connect))
 		// {
 		// 	start_port = event.data.originalTarget;
@@ -1177,7 +1190,7 @@ MC.canvas.event.drawConnection = {
 
 		if (!from_node.is(to_node) && to_port_name !== undefined)
 		{
-			MC.canvas.connect(event.data.originalTarget, port_name, $(this), to_port_name);
+			MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
 		}
 
 		return true;
@@ -1266,13 +1279,17 @@ MC.canvas.event.siderbarDrag = {
 		var target = $(event.data.target),
 			target_id = target.attr('id'),
 			target_component_type = target.data('component-type'),
+			node_type = target.data('type'),
 			canvas_offset = $('#svg_canvas').offset(),
 			shadow_offset = event.data.shadow.position(),
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-		if (MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y))
+		if (
+			MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
+			MC.canvas.isMatchPlace(node_type, coordinate.x, coordinate.y)
+		)
 		{
-			var new_node = MC.canvas.add(target.data('type'), target.data('option'));
+			var new_node = MC.canvas.add(node_type, target.data('option'));
 			MC.canvas.position(new_node, coordinate.x, coordinate.y);
 		}
 
@@ -1460,8 +1477,6 @@ MC.canvas.event.groupResize = {
 			group_maxY,
 			group_minX,
 			group_minY;
-
-		console.info(event.data.group_child);
 
 		$.each(event.data.group_child, function (index, item)
 		{

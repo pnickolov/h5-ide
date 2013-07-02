@@ -7,17 +7,15 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
     #private
     loadModule = () ->
 
-        #add handlebars script
-        #template = '<script type="text/x-handlebars-template" id="canvas-tmpl">' + template + '</script>'
-        #load remote html template
-        #$( template ).appendTo '#canvas'
-
         #load remote module1.js
         require [ './module/design/canvas/view' ], ( View ) ->
 
             #view
             view       = new View()
-            view.render( template )
+            view.render template
+            #temp
+            require [ 'canvas-layout' ], ( canvas_layout ) ->
+                canvas_layout.ready()
 
     unLoadModule = () ->
         #view.remove()

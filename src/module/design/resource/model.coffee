@@ -61,7 +61,12 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             aws_model.once 'AWS_QUICKSTART_RETURN', ( result ) ->
                 console.log 'AWS_QUICKSTART_RETURN'
                 console.log result
-                me.set 'quickstart_ami', result.resolved_data
+                ami_list = []
+                _.map result.resolved_data.ami, ( value, key ) ->
+                    value.id = key
+                    ami_list.push value
+                    
+                me.set 'quickstart_ami', ami_list
                 null
 
         #call service
@@ -93,6 +98,14 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             favorite_model.once 'FAVORITE_INFO_RETURN', ( result ) ->
                 console.log 'FAVORITE_INFO_RETURN'
                 console.log result
+                _.map result.resolved_data, ( value ) ->
+                    value.resource_info = $.parseJSON value.resource_info
+                    _.map value.resource_info, ( val, key ) ->
+                        if val == ''
+                            value.resource_info[key] = 'None'
+
+                        null
+                    null
                 me.set 'favorite_ami', result.resolved_data
                 null
 

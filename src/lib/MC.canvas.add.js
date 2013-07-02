@@ -223,12 +223,12 @@ MC.canvas.add = function (type, option)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/Instance-Canvas.png', 15, 15, 70, 70),
+				Canvon.image('../assets/images/ide/icon/Instance-Canvas.png', 15, 8, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-sg-in',
-					'transform': 'translate(9, 28)' + MC.canvas.PORT_RIGHT_ROTATE //port position: right:0 top:-90 left:-180 bottom:-270
+					'transform': 'translate(8, 28)' + MC.canvas.PORT_RIGHT_ROTATE //port position: right:0 top:-90 left:-180 bottom:-270
 				}).data({
 					'name': 'instance-sg-in', //for identify port
 					'position': 'left', //port position: for calc point of junction
@@ -240,7 +240,7 @@ MC.canvas.add = function (type, option)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-sg-out',
-					'transform': 'translate(83, 28)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(84, 28)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'instance-sg-out',
 					'position': 'right',
@@ -252,7 +252,7 @@ MC.canvas.add = function (type, option)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-instance-attach',
-					'transform': 'translate(83, 53)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(84, 53)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'instance-attach',
 					'position': 'right',
@@ -460,7 +460,7 @@ MC.canvas.add = function (type, option)
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src-top',
-					'transform': 'translate(68, 16)' + MC.canvas.PORT_TOP_ROTATE
+					'transform': 'translate(70, 16)' + MC.canvas.PORT_TOP_ROTATE
 				}).data({
 					'name': 'rtb-src-top',
 					'position': 'top',
@@ -472,7 +472,7 @@ MC.canvas.add = function (type, option)
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src-bottom',
-					'transform': 'translate(68, 90)' + MC.canvas.PORT_BOTTOM_ROTATE
+					'transform': 'translate(70, 90)' + MC.canvas.PORT_BOTTOM_ROTATE
 				}).data({
 					'name': 'rtb-src-bottom',
 					'position': 'bottom',

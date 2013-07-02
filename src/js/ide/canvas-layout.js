@@ -43,7 +43,7 @@ var ready = function ()
 {
 	var canvas_body = $('#canvas_body');
 
-	current_tab = 'app-01';
+	current_tab = '';
 
 	MC.paper = Canvon('svg_canvas');
 	// $.ajax('../js/canvas/response.data', {

@@ -47,14 +47,28 @@ var constant_data = {
 	},
 
 	MATCH_PLACEMENT: {
-		'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
-		'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
-		'AWS.VPC.NetworkInterface': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
-		'AWS.VPC.RouteTable': ['AWS.VPC.VPC'],
-		'AWS.VPC.InternetGateway': ['AWS.VPC.VPC'],
-		'AWS.VPC.VPNGateway': ['AWS.VPC.VPC'],
-		'AWS.ELB': ['Canvas','AWS.VPC.VPC'],
-		'AWS.VPC.CustomerGateway': ['Canvas']
+		'ec2-classic': {
+			'AWS.ELB': [ 'Canvas' ],
+			'AWS.EC2.Instance': [ 'AWS.EC2.AvailabilityZone' ],
+			'AWS.EC2.EBS.Volume': [ 'AWS.EC2.AvailabilityZone ']
+		},
+		'default-vpc': {
+			'AWS.ELB': [ 'Canvas' ],
+			'AWS.EC2.Instance': [ 'AWS.EC2.AvailabilityZone' ],
+			'AWS.EC2.EBS.Volume': [ 'AWS.EC2.AvailabilityZone' ],
+			'AWS.VPC.NetworkInterface': [ 'AWS.EC2.AvailabilityZone ']
+		},
+		//'custom-vpc'
+		'ec2-vpc': {
+			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
+			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
+			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],
+			'AWS.VPC.NetworkInterface': [ 'AWS.VPC.Subnet' ],
+			'AWS.VPC.CustomerGateway': [ 'Canvas' ],
+			'AWS.VPC.RouteTable': [ 'AWS.VPC.VPC' ],
+			'AWS.VPC.InternetGateway': [ 'AWS.VPC.VPC' ],
+			'AWS.VPC.VPNGateway': [ 'AWS.VPC.VPC']
+		}
 	},
 
 	CONNECTION_OPTION: {
@@ -62,7 +76,7 @@ var constant_data = {
 			'AWS.EC2.Instance': {
 				from: 'instance-sg-out',
 				to: 'instance-sg-in',
-				relation: 'n..n',
+				relation: 'multiple',
 				color: '#88afe6' //blue
 			},
 			'AWS.EC2.EBS.Volume': {
@@ -74,7 +88,7 @@ var constant_data = {
 			'AWS.ELB': {
 				from: 'instance-sg-out',
 				to: 'elb-sg-in',
-				relation: 'n..n',
+				relation: 'multiple',
 				color: '#88afe6' //blue
 			},
 			'AWS.VPC.NetworkInterface': [
@@ -108,6 +122,7 @@ var constant_data = {
 			'AWS.EC2.Instance': {
 				from: 'elb-sg-out',
 				to: 'instance-sg-in',
+				relation: 'multiple',
 				color: '#88afe6' //blue
 			}
 		},
@@ -184,6 +199,7 @@ var constant_data = {
 		"name": "",
 		"description": "",
 		"region": "",
+		"platform": "default-vpc",//ec2-classic|ec2-vpc, default-vpc|custom-vpc
 		"state": "Enabled",
 		"username": "",
 		"owner": "",
@@ -192,7 +208,7 @@ var constant_data = {
 		"usage": "",
 		"component": {},
 		"layout": {
-			"size": [2400, 2400],
+			"size": [240, 240],
 			"component": {
 				"group": {},
 				"node": {}

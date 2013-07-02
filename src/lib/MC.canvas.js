@@ -2,14 +2,17 @@
 // Author: Angel
 
 // Temporarily data
-//MC.tab = {};
-
 /*
-MC.tab['app01'] = {
-		"id": "",
+MC.tab = {};
+
+MC.tab['app01'] = {};
+
+MC.tab['app01'].data = {
+	"id": "",
 		"name": "",
 		"description": "",
 		"region": "",
+		"platform": "ec2-vpc",
 		"state": "Enabled",
 		"username": "",
 		"owner": "",
@@ -18,7 +21,7 @@ MC.tab['app01'] = {
 		"usage": "",
 		"component": {},
 		"layout": {
-			"size": [ 2400, 2400 ],
+			"size": [ 240, 240 ],
 			"component": {
 				"group": {},
 				"node": {}
@@ -264,143 +267,156 @@ MC.canvas = {
 				MC.canvas._addPad(start0, 1);
 				MC.canvas._addPad(end0, 1);
 
-				//deep copy
-				$.extend(true, start, start0);
-				$.extend(true, end, end0);
-
-				if (Math.sqrt(Math.pow(end0.y - start0.y, 2) + Math.pow(end0.x-start0.x, 2)) > MC.canvas.PORT_PADDING * 2)
+				if ( start0.x === end0.x || start0.y === end0.y )
 				{
-					//add pad to start and end
-					MC.canvas._addPad(start, 0);
-					MC.canvas._addPad(end, 0);
-				}
+					//draw straight line
 
-				//ensure start.y>=end.y
-				if (start.y < end.y)
-				{
-					var tmp  = {};
-					$.extend(true, tmp, start);
-					$.extend(true, start, end);
-					end = tmp;
-					//swap start0 and end0 when swap start and end
-					var tmp0  = {};
-					$.extend(true, tmp0, start0);
-					$.extend(true, start0, end0);
-					end0 = tmp0;
-				}
-
-				if (start.x >= end.x)
-				{
-					start_0_90 = start.connectionAngle === 0 || start.connectionAngle === 90;
-					end_0_90 = end.connectionAngle === 0 || end.connectionAngle === 90;
-					start_180_270 = start.connectionAngle === 180 || start.connectionAngle === 270;
-					end_180_270 = end.connectionAngle === 180 || end.connectionAngle === 270;
+					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
 				}
 				else
 				{
-					//start.x<end.x
-					start_0_270 = start.connectionAngle === 0 || start.connectionAngle === 270;
-					end_0_270 = end.connectionAngle === 0 || end.connectionAngle === 270;
-					start_90_180 = start.connectionAngle === 90 || start.connectionAngle === 180;
-					end_90_180 = end.connectionAngle === 90 || end.connectionAngle === 180;
-				}
+					//deep copy
+					$.extend(true, start, start0);
+					$.extend(true, end, end0);
 
-				//1.start point
-				controlPoints.push([start0.x, start0.y]);
-				controlPoints.push([start.x, start.y]);
-
-				//2.control point
-				if (
-					(start_0_90 && end_0_90) ||
-					(start_90_180 && end_90_180)
-				)
-				{
-					//A
-					controlPoints.push([start.x, end.y]);
-				}
-				else if (
-					(start_180_270 && end_180_270) ||
-					(start_0_270 && end_0_270)
-				)
-				{
-					//B
-					controlPoints.push([end.x, start.y]);
-				}
-				else if (
-					(start_0_90 && end_180_270) ||
-					(start_90_180 && end_0_270)
-				)
-				{
-					//C
-					controlPoints.push([start.x, (start.y + end.y) / 2]);
-					controlPoints.push([end.x, (start.y + end.y) / 2]);
-				}
-				else if (
-					(start_180_270 && end_0_90) ||
-					(start_0_270 && end_90_180)
-				)
-				{
-					//D
-					controlPoints.push([(start.x + end.x) / 2, start.y]);
-					controlPoints.push([(start.x + end.x) / 2, end.y]);
-				}
-
-				//3.end point
-				controlPoints.push([end.x, end.y]);
-				controlPoints.push([end0.x, end0.y]);
-
-				//draw fold line
-				//MC.paper.polyline(controlPoints);
-
-				//draw round corner line
-				var d = "",
-					last_p = [];
-
-				$.each(controlPoints, function (idx, value)
-				{
-					if (idx === 0)
+					if (Math.sqrt(Math.pow(end0.y - start0.y, 2) + Math.pow(end0.x-start0.x, 2)) > MC.canvas.PORT_PADDING * 2)
 					{
-						//start0 point
-						d = 'M ' + value[0] + " " + value[1];
+						//add pad to start and end
+						MC.canvas._addPad(start, 0);
+						MC.canvas._addPad(end, 0);
 					}
-					else if (idx === (controlPoints.length - 1))
+
+					//ensure start.y>=end.y
+					if (start.y < end.y)
 					{
-						//end0 point
-						d += ' L ' + value[0] + ' ' + value[1];
+						var tmp  = {};
+						$.extend(true, tmp, start);
+						$.extend(true, start, end);
+						end = tmp;
+						//swap start0 and end0 when swap start and end
+						var tmp0  = {};
+						$.extend(true, tmp0, start0);
+						$.extend(true, start0, end0);
+						end0 = tmp0;
+					}
+
+					if (start.x >= end.x)
+					{
+						start_0_90 = start.connectionAngle === 0 || start.connectionAngle === 90;
+						end_0_90 = end.connectionAngle === 0 || end.connectionAngle === 90;
+						start_180_270 = start.connectionAngle === 180 || start.connectionAngle === 270;
+						end_180_270 = end.connectionAngle === 180 || end.connectionAngle === 270;
 					}
 					else
 					{
-						//middle point
-						prev_p = controlPoints[idx - 1]; //prev point
-						next_p = controlPoints[idx + 1]; //next point
+						//start.x<end.x
+						start_0_270 = start.connectionAngle === 0 || start.connectionAngle === 270;
+						end_0_270 = end.connectionAngle === 0 || end.connectionAngle === 270;
+						start_90_180 = start.connectionAngle === 90 || start.connectionAngle === 180;
+						end_90_180 = end.connectionAngle === 90 || end.connectionAngle === 180;
+					}
 
-						if (
-							(prev_p[0] === value[0] && next_p[0] === value[0]) ||
-							(prev_p[1] === value[1] && next_p[1] === value[1])
-						)
+					//1.start point
+					controlPoints.push([start0.x, start0.y]);
+					controlPoints.push([start.x, start.y]);
+
+					//2.control point
+					if (
+						(start_0_90 && end_0_90) ||
+						(start_90_180 && end_90_180)
+					)
+					{
+						//A
+						controlPoints.push([start.x, end.y]);
+					}
+					else if (
+						(start_180_270 && end_180_270) ||
+						(start_0_270 && end_0_270)
+					)
+					{
+						//B
+						controlPoints.push([end.x, start.y]);
+					}
+					else if (
+						(start_0_90 && end_180_270) ||
+						(start_90_180 && end_0_270)
+					)
+					{
+						//C
+						controlPoints.push([start.x, (start.y + end.y) / 2]);
+						controlPoints.push([end.x, (start.y + end.y) / 2]);
+					}
+					else if (
+						(start_180_270 && end_0_90) ||
+						(start_0_270 && end_90_180)
+					)
+					{
+						//D
+						controlPoints.push([(start.x + end.x) / 2, start.y]);
+						controlPoints.push([(start.x + end.x) / 2, end.y]);
+					}
+
+					//3.end point
+					controlPoints.push([end.x, end.y]);
+					controlPoints.push([end0.x, end0.y]);
+
+					//draw fold line
+					//MC.paper.polyline(controlPoints);
+
+					//draw round corner line
+					var d = "",
+						last_p = [];
+
+					$.each(controlPoints, function (idx, value)
+					{
+						if (idx === 0)
 						{
-							//three point one line
+							//start0 point
+							d = 'M ' + value[0] + " " + value[1];
+						}
+						else if (idx === (controlPoints.length - 1))
+						{
+							//end0 point
 							d += ' L ' + value[0] + ' ' + value[1];
 						}
 						else
 						{
-							//fold line
-							d += MC.canvas._getPath(prev_p, value, next_p);
-						}
-					}
-					last_p = value;
-				});
+							//middle point
+							prev_p = controlPoints[idx - 1]; //prev point
+							next_p = controlPoints[idx + 1]; //next point
 
-				if (d !== "")
-				{
-					MC.paper.path(d);
+							if (
+								(prev_p[0] === value[0] && next_p[0] === value[0]) ||
+								(prev_p[1] === value[1] && next_p[1] === value[1])
+							)
+							{
+								//three point one line
+								d += ' L ' + value[0] + ' ' + value[1];
+							}
+							else
+							{
+								//fold line
+								d += MC.canvas._getPath(prev_p, value, next_p);
+							}
+						}
+						last_p = value;
+					});
+
+					if (d !== "")
+					{
+						MC.paper.path(d);
+					}
+
 				}
 
 				svg_line = MC.paper.save();
 
 				$('#line_layer').append(svg_line);
 
-				$(svg_line).attr('data-type', 'line');
+				$(svg_line).attr({
+					'class': 'line',
+					'data-type': 'line'
+				});
 
 				if (line_option)
 				{
@@ -428,11 +444,7 @@ MC.canvas = {
 
 				layout_connection_data = MC.canvas.data.get('layout.connection.' + svg_line.id) || {};
 
-				if (line_option)
-				{
-					layout_connection_data.SVG = svg_line;
-				}
-				else
+				if (!line_option)
 				{
 					connection_target_data[ from_uid ] = from_target_port;
 					connection_target_data[ to_uid ] = to_target_port;
@@ -440,8 +452,7 @@ MC.canvas = {
 					layout_connection_data = {
 						'target': connection_target_data,
 						'auto': true,
-						'point': [],
-						'SVG': svg_line
+						'point': []
 					}
 				}
 				MC.canvas.data.set('layout.connection.' + svg_line.id, layout_connection_data);
@@ -466,46 +477,76 @@ MC.canvas = {
 	remove: function (node)
 	{
 		var node_id = node.id,
-			node_type = $(node).data('type'),
-			layout_node_data = MC.canvas.data.get('layout.component.node'),
-			layout_connection_data = MC.canvas.data.get('layout.connection'),
-			line_layer = $("#line_layer")[0],
-			connections = layout_node_data[ node_id ].connection,
-			new_connection_data,
-			connection_data,
-			connected_data;
+			node_type = $(node).data('type');
 
-		$.each(connections, function (index, value)
+		if (node_type === 'line')
 		{
-			connection_data = layout_connection_data[ value.line ];
-			new_connection_data = [];
+			var line_data = MC.canvas.data.get('layout.connection.' + node_id),
+				layout_node_data = MC.canvas.data.get('layout.component.node'),
+				target_connection,
+				new_connection_data;
 
-			line_layer.removeChild(connection_data.SVG);
-
-			$.each(connection_data.target, function (key, item)
+			$.each(line_data.target, function (target_id, target_port)
 			{
-				if (key !== node_id)
+				target_connection = layout_node_data[ target_id ].connection;
+				new_connection_data = [];
+
+				$.each(target_connection, function (i, option)
 				{
-					connected_node = key;
-				}
+					if (option.line !== node_id)
+					{
+						new_connection_data.push(option);
+					}
+				});
+
+				MC.canvas.data.set('layout.component.node.' + target_id + '.connection', new_connection_data);
 			});
 
-			connected_data = layout_node_data[ connected_node ].connection;
+			MC.canvas.data.delete('layout.connection.' + node_id);
+		}
 
-			$.each(connected_data, function (i, option)
+		if (node_type === 'node')
+		{
+			var	layout_node_data = MC.canvas.data.get('layout.component.node'),
+				layout_connection_data = MC.canvas.data.get('layout.connection'),
+				line_layer = $("#line_layer")[0],
+				connections = layout_node_data[ node_id ].connection,
+				new_connection_data,
+				connection_data,
+				connected_data;
+
+			$.each(connections, function (index, value)
 			{
-				if (option.line !== value.line && option.target !== node_id)
+				connection_data = layout_connection_data[ value.line ];
+				new_connection_data = [];
+
+				line_layer.removeChild($('#' + value.line)[0]);
+
+				$.each(connection_data.target, function (key, item)
 				{
-					new_connection_data.push(option);
-				}
+					if (key !== node_id)
+					{
+						connected_node = key;
+					}
+				});
+
+				connected_data = layout_node_data[ connected_node ].connection;
+
+				$.each(connected_data, function (i, option)
+				{
+					if (option.line !== value.line && option.target !== node_id)
+					{
+						new_connection_data.push(option);
+					}
+				});
+
+				MC.canvas.data.set('layout.component.node.' + connected_node + '.connection', new_connection_data);
+				MC.canvas.data.delete('layout.connection.' + value.line);
 			});
 
-			MC.canvas.data.set('layout.component.node.' + connected_node + '.connection', new_connection_data);
-			MC.canvas.data.delete('layout.connection.' + value.line);
-		});
-
-		MC.canvas.data.delete('layout.component.' + node_type + '.' + node_id);
-		MC.canvas.data.delete('component.' + node_id);
+			MC.canvas.data.delete('layout.component.' + node_type + '.' + node_id);
+			MC.canvas.data.delete('component.' + node_id);
+		}
 
 		$(node).remove();
 	},
@@ -525,11 +566,14 @@ MC.canvas = {
 
 	isMatchPlace: function (type, x, y)
 	{
-		var matchGroup = MC.canvas.matchGroup(x, y).type;
+		var matchGroup = MC.canvas.matchGroup(x, y).type,
+			platform = MC.canvas.data.get('platform');
 
 		matchGroup = matchGroup === undefined ? 'Canvas' : matchGroup;
 
-		return $.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ type ]) > -1;
+		platform = platform === 'custome-vpc' ? 'ec2-vpc' : platform;
+
+		return $.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ type ]) > -1;
 	},
 
 	isBlank: function (type, target_id, x, y)
@@ -689,7 +733,7 @@ MC.canvas.layout = {
 MC.canvas.data = {
 	get: function (key)
 	{
-		var context = MC.tab[MC.canvas.current_tab],
+		var context = MC.tab[MC.canvas.current_tab].data,
 			namespaces = key.split('.'),
 			last = namespaces.pop(),
 			i = 0,
@@ -706,7 +750,7 @@ MC.canvas.data = {
 
 	set: function (key, value)
 	{
-		var context = MC.tab[MC.canvas.current_tab],
+		var context = MC.tab[MC.canvas.current_tab].data,
 			namespaces = key.split('.'),
 			last = namespaces.pop(),
 			i = 0,
@@ -723,7 +767,7 @@ MC.canvas.data = {
 
 	delete: function (key)
 	{
-		var context = MC.tab[MC.canvas.current_tab],
+		var context = MC.tab[MC.canvas.current_tab].data,
 			namespaces = key.split('.'),
 			last = namespaces.pop(),
 			i = 0,
@@ -833,9 +877,9 @@ MC.canvas.event.dragable = {
 
 					$.each(node_connections, function (index, value)
 					{
-						line_connection = layout_connection_data[ value['line'] ];
+						line_connection = layout_connection_data[ value.line ];
 
-						line_layer.removeChild(line_connection.SVG);
+						line_layer.removeChild($('#' + value.line)[0]);
 
 						MC.canvas.connect(
 							$('#' + target_id), line_connection['target'][ target_id ],
@@ -877,7 +921,7 @@ MC.canvas.event.dragable = {
 
 							$.each(node_data.connection, function (i, value)
 							{
-								line_connection = layout_connection_data[ value['line'] ];
+								line_connection = layout_connection_data[ value.line ];
 
 								line_layer.removeChild(line_connection.SVG);
 
@@ -997,7 +1041,8 @@ MC.canvas.event.drawConnection = {
 			target_offset = this.getBoundingClientRect(),
 			node_id = target.parent().attr('id'),
 			node_type = MC.canvas.data.get('component.' + node_id + '.type'),
-			node_connections = MC.canvas.data.get('layout.component.node.' + node_id + '.connection'),
+			layout_node_data = MC.canvas.data.get('layout.component.node'),
+			node_connections = layout_node_data[ node_id ].connection,
 			offset = {},
 			position = target.data('position'),
 			port_type = target.data('type'),
@@ -1016,18 +1061,18 @@ MC.canvas.event.drawConnection = {
 				break;
 
 			case 'right':
-				offset.left = target_offset.left + 16;
+				offset.left = target_offset.left + 8;
 				offset.top  = target_offset.top + 8;
 				break;
 
 			case 'top':
 				offset.left = target_offset.left + 8;
-				offset.top  = target_offset.top - 8;
+				offset.top  = target_offset.top - 0;
 				break;
 
 			case 'bottom':
 				offset.left = target_offset.left + 8;
-				offset.top  = target_offset.top + 16;
+				offset.top  = target_offset.top + 8;
 				break;
 		}
 
@@ -1081,7 +1126,7 @@ MC.canvas.event.drawConnection = {
 						{
 							is_connected = false;
 
-							target_data = MC.canvas.data.get('layout.component.node.' + item.id);
+							target_data = layout_node_data[ item.id ];
 							target_connection_option = MC.canvas.CONNECTION_OPTION[ target_data.type ][ node_type ];
 
 							if ($.type(target_connection_option) !== 'array')
@@ -1090,21 +1135,18 @@ MC.canvas.event.drawConnection = {
 							}
 							$.each(target_connection_option, function (index, option)
 							{
-								if (option.relation === 'unique')
+								$.each(target_data.connection, function (index, data)
 								{
-									$.each(target_data.connection, function (index, data)
+									if (data.port === value.to)
 									{
-										if (data.port === value.to)
-										{
-											is_connected = true;
-										}
-									});
-								}
+										is_connected = true;
+									}
+								});
 							});
 
 							if (is_connected)
 							{
-								return;
+								return false;
 							}
 						}
 						$(this)
@@ -1163,8 +1205,8 @@ MC.canvas.event.drawConnection = {
 
 	draw: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
+		//event.preventDefault();
+		//event.stopPropagation();
 
 		$('#svg_canvas').off('mouseover', '.node', MC.canvas.event.drawConnection.draw);
 
@@ -1592,6 +1634,25 @@ MC.canvas.event.groupResize = {
 	}
 };
 
+MC.canvas.event.selectLine = function (event)
+{
+	event.preventDefault();
+	event.stopPropagation();
+
+	MC.canvas.event.clearSelected();
+
+	var line = $(this),
+		clone = line.attr('class', function (index, key)
+		{
+			return key + ' selected';
+		});
+
+	line.remove();
+	$('#line_layer').append(clone);
+
+	MC.canvas.selected_node.push(this);
+};
+
 MC.canvas.event.clearSelected = function ()
 {
 	$('#svg_canvas .selected').attr('class', function (index, key)
@@ -1609,7 +1670,7 @@ MC.canvas.event.keyEvent = function (event)
 		{
 			MC.canvas.remove(node);
 		});
-		MC.canvas.focused_node = [];
+		MC.canvas.selected_node = [];
 	}
 };
 
@@ -1825,7 +1886,7 @@ MC.canvas.event.keyEvent = function (event)
 // 	// - component
 // 	// - x: zone X
 // 	// - y: zone Y
-// 	// canvas 坐标 [2, 3]
+// 	// canvas 鍧愭爣 [2, 3]
 // 	position: function (uid, coordinate)
 // 	{
 // 		if (coordinate[0] < 0 || coordinate[1] < 0)
@@ -1859,7 +1920,7 @@ MC.canvas.event.keyEvent = function (event)
 // 	// - component
 // 	// - x: drop X
 // 	// - y: drop Y
-// 	// 鼠标坐标 [231, 312]
+// 	// 榧犳爣鍧愭爣 [231, 312]
 // 	drop: function (uid, zoneX, zoneY)
 // 	{
 // 		var is_blank = true,

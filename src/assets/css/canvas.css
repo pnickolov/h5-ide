@@ -638,14 +638,14 @@
 
 /** new port style **/
 .port-blue {
-	fill: #64b0fe;
-	stroke: #7ba8eb;
+	fill: #6DAEFE;
+	stroke: #6DAEFE;
 	stroke-width: 1;
 }
 
 .port-green {
-	fill: #16d053;
-	stroke: #40b765;
+	fill: #12CD4F;
+	stroke: #12CD4F;
 	stroke-width: 1;
 }
 
@@ -662,7 +662,7 @@
 }
 
 .port:hover {
-	fill: white;
+	fill: #F2F8FF;
 	stroke-width: 2;
 	cursor  : pointer;
 	/*opacity : 0.7;*/
@@ -692,10 +692,15 @@
 
 .selected .node-background {
 	fill-opacity: 0.8;
-	fill: white;
+	fill: #F2F8FF;
 	stroke-width: 1;
-	stroke: black;
-	filter: url(#dropshadow_selected);
+	stroke: #659FFF;
+	/*filter: url(#dropshadow_selected);*/
+}
+
+/* line connection */
+.line.selected {
+	stroke: black !important;
 }
 
 /* node label */

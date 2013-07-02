@@ -58,7 +58,8 @@ define [ 'jquery', 'text!/module/design/template.html', 'canvas-layout' ], ( $, 
                     #set current tab_id
                     MC.canvas.current_tab = target.param[4][0]
                     #deep clone MC.canvas.STACK_JSON
-                    MC.tab[ MC.canvas.current_tab ] = $.extend(true, {}, MC.canvas.STACK_JSON)
+                    MC.tab[ MC.canvas.current_tab ] = {}
+                    MC.tab[ MC.canvas.current_tab ].data = $.extend(true, {}, MC.canvas.STACK_JSON)
 
                 null
 

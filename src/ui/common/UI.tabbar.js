@@ -3,7 +3,7 @@
 #* Filename: UI.tabbar
 #* Creator: Angel
 #* Description: UI.tabbar
-#* Date: 20130618
+#* Date: 20130703
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -105,7 +105,7 @@ var Tabbar = {
 	{
 		var tab_bar = $('#tab-bar'),
 			tab_item = $('#tab-bar-' + tab_id),
-			original_tab = $('#tab-bar').find('.active')[0],
+			original_tab = tab_bar.find('.active')[0],
 			original_tab_id = null;
 
 		if (!tab_item[0])
@@ -122,7 +122,11 @@ var Tabbar = {
 		$('#tab-bar li').removeClass('active');
 		tab_item.addClass('active');
 
-		$('#tab-bar').trigger('OPEN_TAB', [original_tab_id, tab_id]);
+		if (original_tab_id !== tab_id)
+		{
+			tab_bar.trigger('OPEN_TAB', [original_tab_id, tab_id]);
+		}
+
 		return tab_id;
 	},
 

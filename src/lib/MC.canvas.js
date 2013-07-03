@@ -689,7 +689,7 @@ MC.canvas.layout = {
 				$('#' + connection_target_id[1]),
 				data.target[ connection_target_id[1] ],
 				{
-					'line_uid': key
+					'line_uid': line
 				}
 			);
 		});

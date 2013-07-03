@@ -228,7 +228,7 @@ MC.canvas.add = function (type, option)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-sg-in',
-					'transform': 'translate(8, 28)' + MC.canvas.PORT_RIGHT_ROTATE //port position: right:0 top:-90 left:-180 bottom:-270
+					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE //port position: right:0 top:-90 left:-180 bottom:-270
 				}).data({
 					'name': 'instance-sg-in', //for identify port
 					'position': 'left', //port position: for calc point of junction
@@ -240,7 +240,7 @@ MC.canvas.add = function (type, option)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-sg-out',
-					'transform': 'translate(84, 28)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'instance-sg-out',
 					'position': 'right',
@@ -252,7 +252,7 @@ MC.canvas.add = function (type, option)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-instance-attach',
-					'transform': 'translate(84, 53)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(84, 52)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'instance-attach',
 					'position': 'right',
@@ -262,9 +262,15 @@ MC.canvas.add = function (type, option)
 				}),
 
 				////5. os_type
-				Canvon.image('../assets/images/ide/ami/' + option.os_type + '.png', 30, 20, 39, 27),
+				Canvon.image('../assets/images/ide/ami/' + option.os_type + '.png', 30, 15, 39, 27),
 
-				////6. hostname
+				////6. volume-attached
+				Canvon.image('../assets/images/ide/icon/instance-volume-not-attached.png', 21, 48, 29, 24),
+
+				////7. eip
+				Canvon.image('../assets/images/ide/icon/instance-eip-off.png', 53, 50, 22, 16),
+
+				////8. hostname
 				Canvon.text(50, 90, option.hostname).attr({
 					'class': 'node-label hostname'
 				})

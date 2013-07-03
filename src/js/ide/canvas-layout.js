@@ -94,6 +94,10 @@ var listen = function ()
 // Dom Ready
 var ready = function ()
 {
+
+	//temp
+	MC.tab[ MC.canvas.current_tab ].data = $.extend(true, {}, MC.canvas.STACK_JSON);
+
 	/////////// create node ///////////
 	var node_vpc = MC.canvas.add('AWS.VPC.VPC', {
 		'uid': 'vpc',

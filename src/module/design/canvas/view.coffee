@@ -2,7 +2,7 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'event', 'canvas-layout', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event, canvas_layout ) ->
+define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     CanvasView = Backbone.View.extend {
 
@@ -16,11 +16,14 @@ define [ 'event', 'canvas-layout', 'MC.canvas', 'backbone', 'jquery', 'handlebar
             console.log 'canvas render'
             this.$el.html template
 
-        resizeCanvasPanel : (event) ->
-            console.log 'resizeCanvasPanel'
-            canvas_layout.ready()
+        resizeCanvasPanel : ( type ) ->
+            console.log 'resizeCanvasPanel = ' + type
             canvasPanelResize()
-
+            if type is 'OLD_STACK' or type is 'OLD_APP'
+                #temp
+                require [ 'canvas-layout' ], ( canvas_layout ) ->
+                    canvas_layout.listen()
+                    canvas_layout.connect()
     }
 
     return CanvasView

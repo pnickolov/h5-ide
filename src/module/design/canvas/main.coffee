@@ -2,7 +2,7 @@
 #  Controller for design/canvas module
 ####################################
 
-define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, template, event ) ->
+define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, template, ide_event ) ->
 
     #private
     loadModule = () ->
@@ -13,9 +13,16 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
             #view
             view       = new View()
             view.render template
-            #temp
-            require [ 'canvas-layout' ]
-            true
+
+            #listen RELOAD_RESOURCE
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name ) ->
+                console.log 'canvas:RELOAD_RESOURCE'
+                #temp
+                require [ 'canvas-layout' ], ( canvas_layout ) ->
+                    canvas_layout.listen()
+                    canvas_layout.ready()
+                    canvas_layout.connect()
+                null
 
 
     unLoadModule = () ->

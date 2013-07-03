@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
+define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], ( $, template ) ->
 
     #private
     loadModule = () ->
@@ -40,7 +40,7 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
             ide_event.onLongListen ide_event.SAVE_DESIGN_MODULE, ( target ) ->
                 console.log 'design:SAVE_DESIGN_MODULE = ' + target
                 #save tab
-                model.saveTab target, view.$el.html(), view.$el.find( '#canvas' ).html()
+                model.saveTab target, view.$el.html(), $.extend(true, {}, MC.canvas.STACK_JSON)
                 null
 
             #listen SWITCH_TAB
@@ -49,21 +49,17 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
                 #save tab
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, target else view.$el.html design_view_init
                 #
-                if type is 'NEW_STACK'
+                if type is 'NEW_STACK' or type is 'OPEN_STACK'
+                    MC.canvas.current_tab = target
+                    #temp
+                    model.saveTab target, view.$el.html(), $.extend(true, {}, MC.canvas.STACK_JSON)
                     #push event
                     ide_event.trigger ide_event.RELOAD_RESOURCE, region_name
 
-                #init data when open stack (modify by xjimmy)
-                if type is 'OPEN_STACK'
-                    #set current tab_id
-                    MC.canvas.current_tab = target.param[4][0]
-                    #deep clone MC.canvas.STACK_JSON
-                    MC.tab[ MC.canvas.current_tab ] = {}
-                    MC.tab[ MC.canvas.current_tab ].data = $.extend(true, {}, MC.canvas.STACK_JSON)
-
-                null
-
                 ###
+                if type is 'OPEN_STACK'
+                    #
+                null
                 #
                 if type is 'OPEN_APP'
                     #

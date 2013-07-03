@@ -39,8 +39,9 @@ var layout = {},
 	};
 
 // Dom Ready
-var ready = function ()
+var listen = function ()
 {
+	console.log('sdfasdfasdfffffffffffffffffffffffffffff22222')
 	var canvas_body = $('#canvas_body');
 
 	current_tab = '';
@@ -48,11 +49,11 @@ var ready = function ()
 	MC.paper = Canvon('svg_canvas');
 
 	//clear old svg element ( add by xjimmy )
-	$(MC.paper).find("#vpc_layer").empty();
-	$(MC.paper).find("#az_layer").empty();
-	$(MC.paper).find("#subnet_layer").empty();
-	$(MC.paper).find("#node_layer").empty();
-	$(MC.paper).find("#line_layer").empty();
+	//$(MC.paper).find("#vpc_layer").empty();
+	//$(MC.paper).find("#az_layer").empty();
+	//$(MC.paper).find("#subnet_layer").empty();
+	//$(MC.paper).find("#node_layer").empty();
+	//$(MC.paper).find("#line_layer").empty();
 
 
 	// $.ajax('../js/canvas/response.data', {
@@ -89,7 +90,13 @@ var ready = function ()
 	canvas_resize();
 	$(window).on('resize', canvas_resize);
 
+};
+
+// Dom Ready
+var ready = function ()
+{
 	/////////// create node ///////////
+	console.log('sdfasdfasdfffffffffffffffffffffffffffff')
 	var node_vpc = MC.canvas.add('AWS.VPC.VPC', {
 		'uid': 'vpc',
 		'vpc_name': 'vpc1',
@@ -188,6 +195,11 @@ var ready = function ()
 	});
 	MC.canvas.position(node_cgw2, 83, 24);
 
+};
+
+// Dom Ready
+var connect = function ()
+{
 	/////////// create connenction ///////////
 	MC.canvas.connect($("#host1"),"instance-attach",$("#eni"),"eni-attach");
 
@@ -206,6 +218,8 @@ var ready = function ()
 
 define( ['jquery'], function() {
 	return {
-		'ready' : ready
+		'listen' : listen,
+		'ready'  : ready,
+		'connect': connect
 	};
 });

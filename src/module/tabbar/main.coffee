@@ -73,15 +73,15 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' ,result, model.get 'stack_region_name'
 
             #listen open_stack
-            model.on 'OPEN_STACK', ( result ) ->
+            model.on 'OPEN_STACK', ( tab_id ) ->
                 console.log 'OPEN_STACK'
                 #call getStackInfo
                 model.once 'GET_STACK_COMPLETE', ( result ) ->
                     console.log 'GET_STACK_COMPLETE'
                     #push event
-                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', result
+                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get 'stack_region_name'
                 #
-                model.getStackInfo result
+                model.getStackInfo tab_id
 
             #listen old_stack
             model.on 'OLD_STACK', ( result ) ->

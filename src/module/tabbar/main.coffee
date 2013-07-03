@@ -79,7 +79,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 model.once 'GET_STACK_COMPLETE', ( result ) ->
                     console.log 'GET_STACK_COMPLETE'
                     #push event
-                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get 'stack_region_name'
+                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result
                 #
                 model.getStackInfo tab_id
 

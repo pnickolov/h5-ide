@@ -41,7 +41,6 @@ var layout = {},
 // Dom Ready
 var listen = function ()
 {
-	console.log('sdfasdfasdfffffffffffffffffffffffffffff22222')
 	var canvas_body = $('#canvas_body');
 
 	current_tab = '';
@@ -96,7 +95,6 @@ var listen = function ()
 var ready = function ()
 {
 	/////////// create node ///////////
-	console.log('sdfasdfasdfffffffffffffffffffffffffffff')
 	var node_vpc = MC.canvas.add('AWS.VPC.VPC', {
 		'uid': 'vpc',
 		'vpc_name': 'vpc1',

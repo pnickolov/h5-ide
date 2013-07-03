@@ -56,9 +56,11 @@ define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
                 #init data when open stack (modify by xjimmy)
                 if type is 'OPEN_STACK'
                     #set current tab_id
-                    MC.canvas.current_tab = target.param[4][0]
+                    #MC.canvas.current_tab = target.param[4][0]
+                    MC.canvas.current_tab = target
+                    console.log MC.tab
                     #deep clone MC.canvas.STACK_JSON
-                    MC.tab[ MC.canvas.current_tab ] = {}
+                    #MC.tab[ MC.canvas.current_tab ] = {}
                     MC.tab[ MC.canvas.current_tab ].data = $.extend(true, {}, MC.canvas.STACK_JSON)
 
                 null

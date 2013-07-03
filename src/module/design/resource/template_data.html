@@ -21,7 +21,7 @@
 <!--{{ .quickstart-ami-data }}-->
 {{#each quickstart_ami}}
 <li>
-	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data='{"id":"{{id}}","name":"{{ name }}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{isPublic}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}", "imageSize":"{{imageSize}}", "instance_type":"{{instance_type}}"}' data-type="AWS.EC2.Instance" data-option='{"name": "host", "imageId": "{{ id }}", osType: {{ osType }} }'>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data='{"id":"{{id}}","name":"{{ name }}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{isPublic}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}", "imageSize":"{{imageSize}}", "instance_type":"{{instance_type}}"}' data-type="AWS.EC2.Instance" data-option='{"name": "host", "imageId": "{{ id }}", "osType": "{{ osType }}", "architecture":"{{architecture}}", "rootDeviceType":"{{rootDeviceType}}" }'>
 		<div class="resource-icon resource-icon-instance"></div>
 		<div class="resource-label instance-label">{{name}}</div>
 	</div>
@@ -32,7 +32,7 @@
 <!--{{ .my-ami-data }}-->
 {{#each my_ami.item }}
 <li>
-	<div class="resource-item bubble"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{id}}","name":"{{ name }}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{isPublic}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}"}' data-type="AWS.EC2.Instance" data-option='{"name": "host", "imageId": "{{ id }}", osType: {{ osType }} }'>
+	<div class="resource-item bubble"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{id}}","name":"{{ name }}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{isPublic}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}"}' data-type="AWS.EC2.Instance" data-option='{"name": "host", "imageId": "{{ id }}", "osType": "{{ osType }}", "architecture":"{{architecture}}", "rootDeviceType":"{{rootDeviceType}}" }'>
 		<div class="resource-icon resource-icon-instance"></div>
 		<div class="resource-label instance-label">{{name}}</div>
 	</div>
@@ -44,7 +44,7 @@
 <!--{{ .favorite-ami-data }}-->
 {{#each favorite_ami }}
 <li>
-	<div class="resource-item bubble"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{resource_info.imageId}}","name":"{{ resource_info.name }}","description":"{{resource_info.description}}","architecture":"{{resource_info.architecture}}","imageLocation":"{{resource_info.imageLocation}}","isPublic":"{{resource_info.isPublic}}","kernelId":"{{resource_info.kernelId}}","rootDeviceName":"{{resource_info.rootDeviceName}}","rootDeviceType":"{{resource_info.rootDeviceType}}"}' data-type="AWS.EC2.Instance" data-option='{"name": "host", "imageId": "{{ id }}", osType: {{ osType }} }'>
+	<div class="resource-item bubble"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{resource_info.imageId}}","name":"{{ resource_info.name }}","description":"{{resource_info.description}}","architecture":"{{resource_info.architecture}}","imageLocation":"{{resource_info.imageLocation}}","isPublic":"{{resource_info.isPublic}}","kernelId":"{{resource_info.kernelId}}","rootDeviceName":"{{resource_info.rootDeviceName}}","rootDeviceType":"{{resource_info.rootDeviceType}}"}' data-type="AWS.EC2.Instance" data-option='{"name": "host", "imageId": "{{ id }}", "osType": "{{ osType }}", "architecture":"{{architecture}}", "rootDeviceType":"{{rootDeviceType}}" }'>
 		<div class="resource-icon resource-icon-instance"></div>
 		<div class="resource-label instance-label" >{{resource_info.name}}</div>
 	</div>

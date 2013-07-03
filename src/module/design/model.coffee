@@ -13,10 +13,7 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
 
         saveTab : ( tab_id, snapshot, data ) ->
             console.log 'saveTab'
-
-            #save snapshot ( modify by xjimmy )
-            MC.tab[ tab_id ].snapshot = snapshot
-
+            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data }
             null
 
         readTab : ( type, tab_id ) ->

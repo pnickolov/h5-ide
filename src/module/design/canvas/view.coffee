@@ -16,10 +16,14 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             console.log 'canvas render'
             this.$el.html template
 
-        resizeCanvasPanel : (event) ->
-            console.log 'resizeCanvasPanel'
+        resizeCanvasPanel : ( type ) ->
+            console.log 'resizeCanvasPanel = ' + type
             canvasPanelResize()
-
+            if type is 'OLD_STACK' or type is 'OLD_APP'
+                #temp
+                require [ 'canvas-layout' ], ( canvas_layout ) ->
+                    canvas_layout.listen()
+                    canvas_layout.connect()
     }
 
     return CanvasView

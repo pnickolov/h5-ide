@@ -19,7 +19,9 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
                 console.log 'canvas:RELOAD_RESOURCE'
                 #temp
                 require [ 'canvas-layout' ], ( canvas_layout ) ->
+                    canvas_layout.listen()
                     canvas_layout.ready()
+                    canvas_layout.connect()
                 null
 
 

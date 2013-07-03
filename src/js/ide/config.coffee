@@ -44,6 +44,7 @@ require.config {
 		'UI.toggleicon': 'ui/common/UI.toggleicon'
 		'UI.searchbar' : 'ui/common/UI.searchbar'
 		'UI.filter'    : 'ui/common/UI.filter'
+		'UI.radiobuttons': 'ui/common/UI.radiobuttons'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
@@ -58,7 +59,7 @@ require.config {
 		'view'         : 'js/ide/view'
 		#temp
 		'layout'       : 'js/ide/layout'
-		'canvas-layout': 'js/ide/canvas-layout'
+		'canvas_layout': 'js/ide/canvas_layout'
 
 		#module
 		'header'       : 'module/header/main'
@@ -282,7 +283,7 @@ require.config {
 		'MC.canvas.add':
 			deps: [ 'MC.canvas.constant']
 
-		'canvas-layout':
+		'canvas_layout':
 			deps: [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon' ]
 
 

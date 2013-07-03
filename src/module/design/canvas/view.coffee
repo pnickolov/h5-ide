@@ -21,7 +21,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             canvasPanelResize()
             if type is 'OLD_STACK' or type is 'OLD_APP'
                 #temp
-                require [ 'canvas-layout' ], ( canvas_layout ) ->
+                require [ 'canvas_layout' ], ( canvas_layout ) ->
                     canvas_layout.connect()
                     canvas_layout.listen()
     }

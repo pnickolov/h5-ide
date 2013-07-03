@@ -661,6 +661,22 @@ MC.canvas = {
 MC.canvas.layout = {
 	init: function ()
 	{
+		var canvas_size = MC.canvas.data.get("layout.size"),
+			component = MC.canvas.data.get("component");
+
+		$('#canvas_body').css({
+			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
+			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+		});
+
+		$.each(component, function (id, data)
+		{
+			MC.canvas.add(id);
+		});
+	},
+
+	create: function ()
+	{
 		var canvas_size = MC.canvas.data.get("layout.size");
 
 		$('#canvas_body').css({
@@ -671,14 +687,14 @@ MC.canvas.layout = {
 
 	save: function ()
 	{
-
+		return JSON.stringify( MC.tab[ MC.canvas.current_tab ].data );
 	}
 };
 
 MC.canvas.data = {
 	get: function (key)
 	{
-		var context = MC.tab[MC.canvas.current_tab].data,
+		var context = MC.tab[ MC.canvas.current_tab ].data,
 			namespaces = key.split('.'),
 			last = namespaces.pop(),
 			i = 0,
@@ -687,15 +703,15 @@ MC.canvas.data = {
 
 		for (; i < length; i++)
 		{
-			context = context[namespaces[i]];
+			context = context[ namespaces[ i ] ];
 		}
 
-		return context[last];
+		return context[ last ];
 	},
 
 	set: function (key, value)
 	{
-		var context = MC.tab[MC.canvas.current_tab].data,
+		var context = MC.tab[ MC.canvas.current_tab ].data,
 			namespaces = key.split('.'),
 			last = namespaces.pop(),
 			i = 0,
@@ -704,15 +720,15 @@ MC.canvas.data = {
 
 		for (; i < length; i++)
 		{
-			context = context[namespaces[i]];
+			context = context[ namespaces[ i ] ];
 		}
 
-		return context[last] = value;
+		return context[ last ] = value;
 	},
 
 	delete: function (key)
 	{
-		var context = MC.tab[MC.canvas.current_tab].data,
+		var context = MC.tab[ MC.canvas.current_tab ].data,
 			namespaces = key.split('.'),
 			last = namespaces.pop(),
 			i = 0,
@@ -721,10 +737,10 @@ MC.canvas.data = {
 
 		for (; i < length; i++)
 		{
-			context = context[namespaces[i]];
+			context = context[ namespaces[ i ] ];
 		}
 
-		delete context[last];
+		delete context[ last ];
 	}
 };
 
@@ -891,83 +907,6 @@ MC.canvas.event.dragable = {
 
 		$('#canvas_body').removeClass('dragging');
 		event.data.shadow.remove();
-
-		// if (node_class == 'zone')
-		// {
-		// 	target_zoneX = Math.round((event.pageX - event.data.offsetX + 60) / 140);
-		// 	target_zoneY = Math.round((event.pageY - event.data.offsetY + 20) / 100);
-
-		// 	if (target_zoneX > 0 && target_zoneY > 0)
-		// 	{
-		// 		zone_offsetX = target_zoneX - MC.tab[current_tab].data[target_id]['coordinate'][0];
-		// 		zone_offsetY = target_zoneY - MC.tab[current_tab].data[target_id]['coordinate'][1];
-		// 		$.each(MC.tab[current_tab].data, function (uid, item)
-		// 		{
-		// 			if (item.placement == 'zone' && item.zone == target_id)
-		// 			{
-		// 				MC.canvas.move(uid, item['coordinate'][0] + zone_offsetX, item['coordinate'][1] + zone_offsetY, false);
-		// 			}
-		// 		});
-
-		// 		MC.canvas.move(target_id, target_zoneX, target_zoneY);
-		// 	}
-		// 	else
-		// 	{
-		// 		target.css({
-		// 			'left': event.data.originalX,
-		// 			'top': event.data.originalY
-		// 		});
-		// 	}
-		// }
-		// if (node_class == 'node')
-		// {
-		// 	target_zoneX = Math.ceil((event.pageX - canvas_offset.left) / 140) - 1;
-		// 	target_zoneY = Math.ceil((event.pageY - canvas_offset.top) / 100) - 1;
-
-		// 	if (placement == 'zone')
-		// 	{
-		// 		$.each(MC.tab[current_tab].data, function (uid, item)
-		// 		{
-		// 			if (item.class == 'zone')
-		// 			{
-		// 				if (
-		// 					(target_zoneX >= item.coordinate[0] && target_zoneX < item.coordinate[0] + item.size[0]) &&
-		// 					(target_zoneY >= item.coordinate[1] && target_zoneY < item.coordinate[1] + item.size[1])
-		// 				)
-		// 				{
-		// 					is_drop_place_match = true;
-		// 					MC.tab[current_tab].data[target_id]['zone'] = uid;
-		// 					MC.canvas.drop(target_id, target_zoneX, target_zoneY);
-		// 				}
-		// 			}
-		// 		});
-		// 	}
-		// 	if (placement == 'canvas')
-		// 	{
-		// 		$.each(MC.tab[current_tab].data, function (uid, item)
-		// 		{
-		// 			if (item.class == 'zone')
-		// 			{
-		// 				if (
-		// 					(target_zoneX < item.coordinate[0] || target_zoneX > item.coordinate[0] + item.size[0]) ||
-		// 					(target_zoneY < item.coordinate[1] || target_zoneY > item.coordinate[1] + item.size[1])
-		// 				)
-		// 				{
-		// 					is_drop_place_match = true;
-		// 					MC.canvas.drop(target_id, target_zoneX, target_zoneY);
-		// 				}
-		// 			}
-		// 		});
-		// 	}
-
-		// 	if (!is_drop_place_match)
-		// 	{
-		// 		target.css({
-		// 			'left': event.data.originalX,
-		// 			'top': event.data.originalY
-		// 		});
-		// 	}
-		// }
 
 		$(document).off({
 			'mousemove': MC.canvas.event.mousemove,

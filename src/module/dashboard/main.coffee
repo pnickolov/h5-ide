@@ -148,6 +148,9 @@ define [ 'jquery',
                 ide_event.trigger ide_event.RETURN_REGION_TAB, constant.REGION_LABEL[ region ]
 
                 if region_view isnt null
+
+                    region_view.region = current_region
+                    
                     region_view.model.resetData()
                     region_view.model.describeAWSResourcesService region
                     region_view.model.describeRegionAccountAttributesService region

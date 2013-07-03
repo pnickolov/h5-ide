@@ -14,23 +14,28 @@ var fixedaccordion = {
     resize: function (event)
     {
         $('.fixedaccordion').each(function(){
-            var panel = $(this).parent(),
-                sub = $(this).data("sub") ?  $(this).data("sub") : 0,
+            var me = $(this),
+                panel = me.parent(),
+                sub = me.data("sub") ?  me.data("sub") : 0,
                 total_height = panel.height() - sub,
-                groups = $(this).find('.fixedaccordion-head'),
-                expanded_body = $(this).find('.expanded .accordion-body'),
-                head_height = $(groups[0]).outerHeight(),
+                groups = me.find('.fixedaccordion-head'),
+                expanded_body = me.find('.expanded .accordion-body'),
+                head_height = groups.first().outerHeight(),
                 heads_count = groups.length,
                 expanded_height = total_height - heads_count * head_height,
-                expanded_height = expanded_height > fixedaccordion.min_height ? expanded_height : fixedaccordion.min_height;
+                expanded_height = expanded_height > fixedaccordion.min_height ?
+                    expanded_height :
+                    fixedaccordion.min_height;
 
             $(expanded_body).outerHeight(expanded_height);
+            me.data('bodyHeight', expanded_height);
         });
     },
 
     show: function (event)
     {
         var fixedaccordion_head = $(this),
+            fixedaccordion = fixedaccordion_head.parents('.fixedaccordion').first(),
             fixedaccordion_group = fixedaccordion_head.parent(),
             fixedaccordion_body = fixedaccordion_group.find('.accordion-body'),
             expanded_group = fixedaccordion_group.parent().find('.expanded'),
@@ -39,13 +44,13 @@ var fixedaccordion = {
 
         if (!is_expanded)
         {
-            $(fixedaccordion_body).height(expanded_body.height());
-            fixedaccordion_body.slideDown(300, function ()
+            $(fixedaccordion_body).height(fixedaccordion.data('bodyHeight'));
+
+            fixedaccordion_body.slideDown(200, function ()
             {
                 fixedaccordion_group.addClass('expanded');
             });
-
-            expanded_body.slideUp(300, function ()
+            expanded_body.slideUp(200, function ()
             {
                 expanded_group.removeClass('expanded');
             });

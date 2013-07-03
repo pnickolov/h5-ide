@@ -171,143 +171,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
         initialize : ->
             me = this
 
-            aws_model.on 'AWS_RESOURCE_RETURN', ( result ) ->
-
-                console.log 'AWS_RESOURCE_RETURN'
-
-                resource_source = result.resolved_data[current_region]
-
-                me.setResource resource_source
-
-                me.updateUnmanagedList()
-
-                null
-
-            ami_model.on 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
-
-                region_ami_list = {}
-
-                if result.resolved_data.item.constructor == Array
-
-                    _.map result.resolved_data.item, ( ami ) ->
-
-                        region_ami_list[ami.imageId] = ami
-
-                        null
-
-                _.map resource_source.DescribeInstances, ( ins, i ) ->
-
-                    ins.image = region_ami_list[ins.imageId]
-
-                    null
-
-                me.reRenderRegionResource()
-
-                null
-
-            elb_model.on 'ELB__DESC_INS_HLT_RETURN', ( result ) ->
-
-                total = result.resolved_data.length
-
-                health = 0
-
-                (health++ if instance.state == "InService") for instance in result.resolved_data
-
-                _.map resource_source.DescribeLoadBalancers, ( elb, i ) ->
-
-                    if elb.LoadBalancerName == result.param[4]
-
-                        resource_source.DescribeLoadBalancers[i].state = "#{health} of #{total} instances in service"
-
-                    null
-
-                me.reRenderRegionResource()
-
-                null
-
-            dhcp_model.on 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', ( result ) ->
-
-                dhcp_set = result.resolved_data.item
-
-                _.map resource_source.DescribeVpcs, ( vpc ) ->
-
-                    if vpc.dhcpOptionsId == 'default'
-
-                        vpc.dhcp = '{"title": "default", "sub_info" : ["<dt>DhcpOptionsId: </dt><dd>None</dd>"]}'
-
-                    if dhcp_set.constructor == Object
-
-                        if vpc.dhcpOptionsId == dhcp_set.dhcpOptionsId
-
-                            vpc.dhcp = me._genDhcp dhcp_set
-
-                    else
-
-                        _.map dhcp_set, ( dhcp )->
-
-                            if vpc.dhcpOptionsId == dhcp.dhcpOptionsId
-
-                                vpc.dhcp = me._genDhcp dhcp
-
-                                null
-
-                    null
-
-                me.reRenderRegionResource()
-
-                #console.error me.parseSourceValue 'DescribeDhcpOptions', dhcp, "bubble", null
-
-                null
-
-            customergateway_model.on 'VPC_CGW_DESC_CUST_GWS_RETURN', ( result ) ->
-
-                cgw_set = result.resolved_data.item
-
-                _.map resource_source.DescribeVpnConnections, ( vpn ) ->
-
-                    if cgw_set.constructor == Object
-
-                        vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw_set, "bubble", null
-
-                    else
-
-                        _.map cgw_set, ( cgw ) ->
-
-                            if vpn.customerGatewayId == cgw.customerGatewayId
-
-                                vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw, "bubble", null
-
-                            null
-
-                    null
-
-                me.reRenderRegionResource()
-
-            vpngateway_model.on 'VPC_VGW_DESC_VPN_GWS_RETURN', ( result ) ->
-
-                vgw_set = result.resolved_data.item
-
-                _.map resource_source.DescribeVpnConnections, ( vpn ) ->
-
-                    if vgw_set.constructor == Object
-
-                        vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw_set, "bubble", null
-
-                    else
-
-                        _.map vgw_set, ( vgw )->
-
-                            if vpn.vpnGatewayId == vgw.vpnGatewayId
-
-                                vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw, "bubble", null
-
-                            null
-                    null
-
-                me.reRenderRegionResource()
-
             null
-
+            
         # reset the empty resultset when enter a second region
         resetData : ->
             me = this
@@ -1031,6 +896,26 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     else
 
                         elb_model.DescribeInstanceHealth { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName
+                        
+                        elb_model.once 'ELB__DESC_INS_HLT_RETURN', ( result ) ->
+
+                                total = result.resolved_data.length
+
+                                health = 0
+
+                                (health++ if instance.state == "InService") for instance in result.resolved_data
+
+                                _.map resources.DescribeLoadBalancers, ( elb, i ) ->
+
+                                    if elb.LoadBalancerName == result.param[4]
+
+                                        resources.DescribeLoadBalancers[i].state = "#{health} of #{total} instances in service"
+
+                                    null
+
+                                me.reRenderRegionResource()
+
+                                null
 
                     reg_result = elb.LoadBalancerName.match reg
 
@@ -1127,6 +1012,27 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
 
+                    ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
+
+                        region_ami_list = {}
+
+                        if result.resolved_data.item.constructor == Array
+
+                            _.map result.resolved_data.item, ( ami ) ->
+
+                                region_ami_list[ami.imageId] = ami
+
+                                null
+
+                        _.map resources.DescribeInstances, ( ins, i ) ->
+
+                            ins.image = region_ami_list[ins.imageId]
+
+                            null
+
+                        me.reRenderRegionResource()
+
+                        null
             # volume
             if resources.DescribeVolumes != null
 
@@ -1185,7 +1091,42 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 # get dhcp detail
                 if dhcp_set.length != 0
+
                     dhcp_model.DescribeDhcpOptions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set
+
+                    dhcp_model.once 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', ( result ) ->
+
+                        dhcp_set = result.resolved_data.item
+
+                        _.map resources.DescribeVpcs, ( vpc ) ->
+
+                            if vpc.dhcpOptionsId == 'default'
+
+                                vpc.dhcp = '{"title": "default", "sub_info" : ["<dt>DhcpOptionsId: </dt><dd>None</dd>"]}'
+
+                            if dhcp_set.constructor == Object
+
+                                if vpc.dhcpOptionsId == dhcp_set.dhcpOptionsId
+
+                                    vpc.dhcp = me._genDhcp dhcp_set
+
+                            else
+
+                                _.map dhcp_set, ( dhcp )->
+
+                                    if vpc.dhcpOptionsId == dhcp.dhcpOptionsId
+
+                                        vpc.dhcp = me._genDhcp dhcp
+
+                                        null
+
+                            null
+
+                        me.reRenderRegionResource()
+
+                        #console.error me.parseSourceValue 'DescribeDhcpOptions', dhcp, "bubble", null
+
+                        null
 
             # vpn
             if resources.DescribeVpnConnections != null
@@ -1211,13 +1152,60 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 # get cgw detail
                 if cgw_set.length != 0
+
                     customergateway_model.DescribeCustomerGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set
+
+                    customergateway_model.once 'VPC_CGW_DESC_CUST_GWS_RETURN', ( result ) ->
+
+                        cgw_set = result.resolved_data.item
+
+                        _.map resources.DescribeVpnConnections, ( vpn ) ->
+
+                            if cgw_set.constructor == Object
+
+                                vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw_set, "bubble", null
+
+                            else
+
+                                _.map cgw_set, ( cgw ) ->
+
+                                    if vpn.customerGatewayId == cgw.customerGatewayId
+
+                                        vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw, "bubble", null
+
+                                    null
+
+                            null
+
+                        me.reRenderRegionResource()
 
                 # get vgw detail
                 if vgw_set.length != 0
+
                     vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
 
+                    vpngateway_model.once 'VPC_VGW_DESC_VPN_GWS_RETURN', ( result ) ->
 
+                        vgw_set = result.resolved_data.item
+
+                        _.map resources.DescribeVpnConnections, ( vpn ) ->
+
+                            if vgw_set.constructor == Object
+
+                                vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw_set, "bubble", null
+
+                            else
+
+                                _.map vgw_set, ( vgw )->
+
+                                    if vpn.vpnGatewayId == vgw.vpnGatewayId
+
+                                        vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw, "bubble", null
+
+                                    null
+                            null
+
+                        me.reRenderRegionResource()
 
 
             #console.log resources
@@ -1240,6 +1228,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             ]
 
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
+
+            aws_model.once 'AWS_RESOURCE_RETURN', ( result ) ->
+
+                console.log 'AWS_RESOURCE_RETURN'
+
+                resource_source = result.resolved_data[current_region]
+
+                me.setResource resource_source
+
+                me.updateUnmanagedList()
+
+                null
 
         describeAWSStatusService : ( region )->
 

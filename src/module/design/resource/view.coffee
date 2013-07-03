@@ -3,9 +3,10 @@
 #############################
 
 define [ 'event',
+         './temp_view',
          'backbone', 'jquery', 'handlebars',
-         'UI.fixedaccordion', 'UI.selectbox', 'UI.toggleicon', 'UI.searchbar', 'UI.filter'
-], ( ide_event ) ->
+         'UI.fixedaccordion', 'UI.selectbox', 'UI.toggleicon', 'UI.searchbar', 'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
+], ( ide_event, temp_view ) ->
 
     ResourceView = Backbone.View.extend {
 
@@ -23,12 +24,14 @@ define [ 'event',
             $( document ).on 'ready',  toggleicon.init
             $( document ).on 'ready',  searchbar.init
             $( document ).on 'ready',  selectbox.init
+            $( document ).on 'ready',  radiobuttons.init
             #listen
             $( document ).delegate '#hide-resource-panel', 'click',         this.toggleResourcePanel
             $( document ).delegate '#resource-select',     'OPTION_CHANGE', this, this.resourceSelectEvent
             $( document ).delegate '#resource-panel',     'SEARCHBAR_SHOW', this.searchBarShowEvent
             $( document ).delegate '#resource-panel',     'SEARCHBAR_HIDE', this.searchBarHideEvent
             $( document ).delegate '#resource-panel',   'SEARCHBAR_CHANGE', this.searchBarChangeEvent
+            $( document ).delegate '#btn-browse-community-ami',   'click', this.openBrowseCommunityAMIsModal
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideResourcePanel
 
@@ -130,6 +133,11 @@ define [ 'event',
             console.log 'favoriteAmiRender'
             console.log this.model.attributes.favorite_ami
             $( '.favorite-ami-list' ).html this.favorite_ami_tmpl this.model.attributes
+            null
+
+        openBrowseCommunityAMIsModal : () ->
+            console.log 'openBrowseCommunityAMIsModal'
+            temp_view.ready()
             null
 
     }

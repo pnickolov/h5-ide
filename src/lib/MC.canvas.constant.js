@@ -199,7 +199,7 @@ var constant_data = {
 		"name": "",
 		"description": "",
 		"region": "",
-		"platform": "default-vpc",//ec2-classic|ec2-vpc, default-vpc|custom-vpc
+		"platform": "ec2-vpc",//ec2-classic|ec2-vpc, default-vpc|custom-vpc
 		"state": "Enabled",
 		"username": "",
 		"owner": "",

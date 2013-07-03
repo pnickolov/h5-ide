@@ -1,61 +1,6 @@
 // MC.Canvas
 // Author: Angel
 
-// Temporarily data
-/*
-MC.tab = {};
-
-MC.tab['app01'] = {};
-
-MC.tab['app01'].data = {
-	"id": "",
-		"name": "",
-		"description": "",
-		"region": "",
-		"platform": "ec2-vpc",
-		"state": "Enabled",
-		"username": "",
-		"owner": "",
-		"version": "5.0",
-		"tag": "",
-		"usage": "",
-		"component": {},
-		"layout": {
-			"size": [ 240, 240 ],
-			"component": {
-				"group": {},
-				"node": {}
-			},
-			"connection": {}
-		},
-		"history": {},
-		"property": {
-			"schedule": {
-				"stop": {
-				"run": null,
-				"when": null,
-				"during": null
-				},
-				"backup": {
-				"day": null,
-				"when": null
-				},
-				"start": {
-				"when": null
-				}
-			},
-			"policy": {
-				"ha": ""
-			},
-			"lease": {
-				"length": null,
-				"action": "",
-				"due": null
-			}
-		}
-	};
-*/
-
 MC.canvas = {
 	selected_node: [],
 	current_tab: '',
@@ -1886,7 +1831,7 @@ MC.canvas.event.keyEvent = function (event)
 // 	// - component
 // 	// - x: zone X
 // 	// - y: zone Y
-// 	// canvas 鍧愭爣 [2, 3]
+// 	// canvas 坐标 [2, 3]
 // 	position: function (uid, coordinate)
 // 	{
 // 		if (coordinate[0] < 0 || coordinate[1] < 0)
@@ -1920,7 +1865,7 @@ MC.canvas.event.keyEvent = function (event)
 // 	// - component
 // 	// - x: drop X
 // 	// - y: drop Y
-// 	// 榧犳爣鍧愭爣 [231, 312]
+// 	// 鼠标坐标 [231, 312]
 // 	drop: function (uid, zoneX, zoneY)
 // 	{
 // 		var is_blank = true,

@@ -47,7 +47,7 @@ var ready = function ()
 
 	MC.paper = Canvon('svg_canvas');
 
-	//clear all svg
+	//clear old svg element ( add by xjimmy )
 	$(MC.paper).find("#vpc_layer").empty();
 	$(MC.paper).find("#az_layer").empty();
 	$(MC.paper).find("#subnet_layer").empty();
@@ -77,6 +77,8 @@ var ready = function ()
 		.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
 		.on('click', MC.canvas.event.clearSelected);
 
+	$('#line_layer').on('click', '.line', MC.canvas.event.selectLine);
+
 	//canvas_body.on('mousedown', MC.canvas.selection.mousedown);
 	//canvas_body.on('selectstart', returnFalse);
 
@@ -86,7 +88,6 @@ var ready = function ()
 
 	canvas_resize();
 	$(window).on('resize', canvas_resize);
-
 
 	/////////// create node ///////////
 	var node_vpc = MC.canvas.add('AWS.VPC.VPC', {

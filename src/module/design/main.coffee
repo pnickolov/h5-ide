@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'jquery', 'text!/module/design/template.html', 'canvas-layout' ], ( $, template, canvas_layout ) ->
+define [ 'jquery', 'text!/module/design/template.html' ], ( $, template ) ->
 
     #private
     loadModule = () ->
@@ -53,7 +53,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'canvas-layout' ], ( $, 
                     #push event
                     ide_event.trigger ide_event.RELOAD_RESOURCE, region_name
 
-                #for test
+                #init data when open stack (modify by xjimmy)
                 if type is 'OPEN_STACK'
                     #set current tab_id
                     MC.canvas.current_tab = target.param[4][0]
@@ -64,9 +64,6 @@ define [ 'jquery', 'text!/module/design/template.html', 'canvas-layout' ], ( $, 
                 null
 
                 ###
-                if type is 'OPEN_STACK'
-                    #
-                null
                 #
                 if type is 'OPEN_APP'
                     #

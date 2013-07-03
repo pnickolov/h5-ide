@@ -7,6 +7,8 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
 ], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model ) ->
 
     #private
+    ami_instance_type = null
+
     ResourcePanelModel = Backbone.Model.extend {
 
         defaults :
@@ -61,7 +63,17 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             aws_model.once 'AWS_QUICKSTART_RETURN', ( result ) ->
                 console.log 'AWS_QUICKSTART_RETURN'
                 console.log result
-                me.set 'quickstart_ami', result.resolved_data
+                ami_list = []
+                ami_instance_type = result.resolved_data.ami_instance_type
+                _.map result.resolved_data.ami, ( value, key ) ->
+                    value.id = key
+                    if value.kernelId == undefined or value.kernelId == ''
+                        value.kernelId = "None"
+                    
+                    value.instance_type = me._getInstanceType value
+                    ami_list.push value
+                    
+                me.set 'quickstart_ami', ami_list
                 null
 
         #call service
@@ -93,9 +105,34 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             favorite_model.once 'FAVORITE_INFO_RETURN', ( result ) ->
                 console.log 'FAVORITE_INFO_RETURN'
                 console.log result
+                _.map result.resolved_data, ( value ) ->
+                    value.resource_info = $.parseJSON value.resource_info
+                    _.map value.resource_info, ( val, key ) ->
+                        if val == ''
+                            value.resource_info[key] = 'None'
+
+                        null
+                    null
                 me.set 'favorite_ami', result.resolved_data
                 null
 
+        _getInstanceType : ( ami ) ->
+            instance_type = ami_instance_type
+            if ami.virtualizationType == 'hvm'
+                instance_type = instance_type.windows
+            else
+                instance_type = instance_type.linux
+            if ami.rootDeviceType == 'ebs'
+                instance_type = instance_type.ebs
+            else
+                instance_type = instance_type['instance store']
+            if ami.architecture == 'x86_64'
+                instance_type = instance_type["64"]
+            else
+                instance_type = instance_type["32"]
+            instance_type = instance_type[ami.virtualizationType]
+
+            instance_type.join ', '
     }
 
     model = new ResourcePanelModel()

@@ -698,6 +698,10 @@
 	/*filter: url(#dropshadow_selected);*/
 }
 
+.line {
+	cursor: pointer;
+}
+
 /* line connection */
 .line.selected {
 	stroke: black !important;

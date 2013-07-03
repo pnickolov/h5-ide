@@ -47,7 +47,6 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
             #listen SWITCH_TAB
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, target, region_name, stack_info ) ->
                 console.log 'design:SWITCH_TAB, type = ' + type + ', target = ' + target + ', region_name = ' + region_name
-                console.log stack_info.resolved_data[0]
                 #save tab
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, target else view.$el.html design_view_init
                 #
@@ -56,8 +55,11 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                     #init
                     if MC.tab[ target ] is undefined then MC.tab[ target ] = {}
                     MC.tab[ target ].data = $.extend(true, {}, MC.canvas.STACK_JSON)
-                    #temp
-                    model.saveTab target, view.$el.html(), stack_info.resolved_data[0]
+                    #
+                    if type is 'OPEN_STACK'
+                        model.saveTab target, view.$el.html(), stack_info.resolved_data[0]
+                    else if type is 'NEW_STACK'
+                        model.saveTab target, view.$el.html(), null
                     #push event
                     ide_event.trigger ide_event.RELOAD_RESOURCE, region_name
 

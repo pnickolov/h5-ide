@@ -46,6 +46,15 @@ var ready = function ()
 	current_tab = '';
 
 	MC.paper = Canvon('svg_canvas');
+
+	//clear all svg
+	$(MC.paper).find("#vpc_layer").empty();
+	$(MC.paper).find("#az_layer").empty();
+	$(MC.paper).find("#subnet_layer").empty();
+	$(MC.paper).find("#node_layer").empty();
+	$(MC.paper).find("#line_layer").empty();
+
+
 	// $.ajax('../js/canvas/response.data', {
 	// 	success: function (data)
 	// 	{

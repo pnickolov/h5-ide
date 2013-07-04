@@ -6,7 +6,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
     DesignView = Backbone.View.extend {
 
-        el          : $ '#tab-content-stack01'
+        el          : $ '#tab-content-design'
 
         initialize  : ->
             $( window ).on "resize", this.resizeEvent

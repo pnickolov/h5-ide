@@ -57,7 +57,7 @@
 			<div class="item-wrap scroll-content">
 				<ul class="resoruce-snapshot resource-list">
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach new EBS volume.">
+						<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach new EBS volume." data-type="AWS.EC2.EBS.Volume" data-option='{"name": "/dev/sdf", "volumeSize":"1", snapshotId: ""}'>
 							<div class="resource-icon resource-icon-volume"></div>
 							<div class="resource-label">New Volume</div>
 						</div>
@@ -75,7 +75,7 @@
 			<div class="item-wrap scroll-content">
 				<ul class="resource-list">
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new ELB.">
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new ELB." data-type="AWS.ELB" data-option='{"name": "elb"}'>
 							<div class="resource-icon resource-icon-elb"></div>
 							<div class="resource-label">New ELB</div>
 						</div>
@@ -93,43 +93,43 @@
 			<div class="item-wrap scroll-content">
 				<ul class="resource-list">
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Subnet.">
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Subnet." data-type="AWS.VPC.Subnet" data-option='{"name": "subnet"}'>
 							<div class="resource-icon resource-icon-subnet"></div>
 							<div class="resource-label">New Subnet</div>
 						</div>
 					</li>
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Route Table.">
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Route Table." data-type="AWS.VPC.RouteTable" data-option='{"name": "RT"}'>
 							<div class="resource-icon resource-icon-rt"></div>
 							<div class="resource-label">New Route Table</div>
 						</div>
 					</li>
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Internet Gateway.">
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Internet Gateway." data-type="AWS.VPC.InternetGateway" data-option='{"name": "IGW"}'>
 							<div class="resource-icon resource-icon-igw"></div>
 							<div class="resource-label">New Internet Gateway</div>
 						</div>
 					</li>
 					<li>
-						<div class="tooltip resource-item resource-disabled" data-tooltip="VPC can only have one IGW. There is already one IGW in current VPC.">
+						<div class="tooltip resource-item resource-disabled" data-tooltip="VPC can only have one IGW. There is already one IGW in current VPC." data-type="AWS.VPC.InternetGateway" data-option='{"name": "IGW"}'>
 							<div class="resource-icon resource-icon-igw"></div>
 							<div class="resource-label">New Internet Gateway</div>
 						</div>
 					</li>
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Virtual Gateway.">
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Virtual Gateway." data-type="AWS.VPC.VPNGateway" data-option='{"name": "VPN"}'>
 							<div class="resource-icon resource-icon-vgw"></div>
 							<div class="resource-label">New Virtual Gateway</div>
 						</div>
 					</li>
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Customer Gateway.">
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Customer Gateway." data-type="AWS.VPC.CustomerGateway" data-option='{"name": "CGW"}'>
 							<div class="resource-icon resource-icon-cgw"></div>
 							<div class="resource-label">New Customer Gateway</div>
 						</div>
 					</li>
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Network Interface.">
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Network Interface." data-type="AWS.VPC.NetworkInterface" data-option='{"name": "eni"}'>
 							<div class="resource-icon resource-icon-cgw"></div>
 							<div class="resource-label">New Network Interface</div>
 						</div>

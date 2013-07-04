@@ -1,5 +1,6 @@
-MC.canvas.add = function (type, option)
+MC.canvas.add = function (type, option, coordinate)
 {
+
 	var group = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
 		class_type = type.replace(/\./ig, '-'),
 		component_data = {},
@@ -9,9 +10,22 @@ MC.canvas.add = function (type, option)
 		pad = 10,
 		top = 0;
 
-	group.id = option.uid || MC.guid();
+	group.id = option.uid;
 	data = MC.canvas.data.get('component');
 	layout = MC.canvas.data.get('layout.component');
+
+	if ( !coordinate )
+	{
+		//existed resource ( init data from MC.tab[tab_id].data )
+		//option = {};
+		//coordinate = {};
+	}
+	else
+	{
+		//new resource ( init data from option and layout )
+		class_type = type.replace(/\./ig, '-');
+		group.id = MC.guid();
+	}
 
 	switch (type) {
 
@@ -216,6 +230,8 @@ MC.canvas.add = function (type, option)
 		//***** instance begin *****//
 		case 'AWS.EC2.Instance':
 
+			var os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+
 			$(group).append(
 				////1. bg
 				Canvon.rectangle(0, 0, 100, 100).attr({
@@ -262,7 +278,7 @@ MC.canvas.add = function (type, option)
 				}),
 
 				////5. os_type
-				Canvon.image('../assets/images/ide/ami/' + option.os_type + '.png', 30, 15, 39, 27),
+				Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30, 15, 39, 27),
 
 				////6. volume-attached
 				Canvon.image('../assets/images/ide/icon/instance-volume-not-attached.png', 21, 48, 29, 24),
@@ -271,8 +287,8 @@ MC.canvas.add = function (type, option)
 				Canvon.image('../assets/images/ide/icon/instance-eip-off.png', 53, 50, 22, 16),
 
 				////8. hostname
-				Canvon.text(50, 90, option.hostname).attr({
-					'class': 'node-label hostname'
+				Canvon.text(50, 90, option.name).attr({
+					'class': 'node-label name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,
@@ -292,6 +308,9 @@ MC.canvas.add = function (type, option)
 			MC.canvas.data.set('component', data);
 
 			$('#node_layer').append(group);
+
+			//set the node position
+			MC.canvas.position(group, coordinate.x, coordinate.y);
 
 			break;
 		//***** instance end *****//

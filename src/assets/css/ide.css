@@ -1374,6 +1374,122 @@ td.table-action a.btn {
 	display: block;
 }
 
+/* Browse Community AMI Modal */
+
+#modal-browse-community-ami .modal-body {
+	padding: 0;
+}
+
+#modal-browse-community-ami .content-wrap {
+	height: 450px; 
+	position: relative; 
+	width: 100%;
+}
+
+.ami-left-col {
+	height: 100%;
+	width: 239px;
+	float: left;
+	background-color: #eee;
+	font-size: 12px;
+	border-right: 1px solid #ccc;
+}
+
+.ami-left-col > div {
+	width: 220px;
+	padding: 10px;
+	border-top: 1px #ccc solid;
+}
+
+.ami-left-col > div:first-child {
+    border-top: none;
+}
+
+.ami-left-col > div.filter-radio-group {
+	padding: 5px 10px 10px 10px;
+}
+
+.filter-radio-label {
+	margin-bottom: 5px;
+}
+
+#community-ami-input {
+	width: 194px;
+}
+
+#modal-browse-community-ami .radiobuttons button {
+	width: 88px;
+}
+
+#modal-browse-community-ami .radiobuttons button:first-child {
+	width: 44px;
+}
+
+#selectbox-ami-platform a.dropdown-toggle {
+	border: 1px solid #ccc;
+	padding: 4px 8px;
+	background-color: #fff;
+	display: inline-block;
+	width: 202px;
+	/*position: relative;*/
+}
+
+#selectbox-ami-platform a.dropdown-toggle .caret {
+	/*position: absolute;*/
+	border-top: 4px solid #999;
+	float: right;
+	margin-top: 5px;
+
+}
+
+#selectbox-ami-platform a.dropdown-toggle span a,
+#selectbox-ami-platform a.dropdown-toggle span {
+	color: #666;
+}
+
+#selectbox-ami-platform .dropdown-menu {
+	left: 10px;
+	top: 34px;
+	border: 1px solid #ccc;
+}
+
+#selectbox-ami-platform .dropdown-menu li a {
+	line-height: 30px;
+	padding: 0 8px;
+	width: 202px;
+}
+
+#selectbox-ami-platform .dropdown-menu li a:hover {
+	background-color: #23B6FF;
+	color: #fff;
+}
+
+#ami-count {
+	text-align: center;
+}
+
+#community-ami-filter tr td {
+	position: relative;
+}
+
+#community-ami-filter tr td .toggle-fav {
+	top: 50%;
+	left: 50%;
+	margin-left: -8px;
+	margin-top: -10px;
+}
+
+.ami-meta {
+	font-size: 12px;
+	color: #999;
+}
+
+.icon-ami-os {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	background-color: #ccc;
+}
 
 /* App/Stack Toolbar */
 #main-toolbar {
@@ -1537,6 +1653,7 @@ a.sidebar-hider {
 }
 
 .resource-icon {
+	position: relative;
 	width: 60px;
 	height: 60px;
 	background: #ccc;
@@ -1641,6 +1758,10 @@ a.sidebar-hider {
 	border-radius: 0;
 }
 
+.ebs-size {
+	font-size: 12px;
+}
+
 /* Property Panel */
 #property-panel {
 	right: 0;
@@ -1694,7 +1815,7 @@ a.sidebar-hider {
 	position: relative;
 }
 
-/* Source Panel */
+/* Resource Panel */
 .panel-fixedaccordion {
 	width: 100%;
 	height: 470px;

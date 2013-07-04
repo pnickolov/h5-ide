@@ -83,63 +83,22 @@
 	opacity: 1;
 }
 
-/* Light Style Table */
-.table-light {
-	color: #666;
-}
-
-.table-light thead {
-	background: #82BFF5;
-	color: #fff;
-	line-height: 24px;
-	font-size: 16px;
-}
-
-.table-light thead th:hover {
-	background: #5A9DDA;
-}
-
-.table-light th,
-.table-light td {
-	border: 1px solid #5A9DDA;
-}
-
-.table-light tbody {
-	border: 1px solid #D9E4EE;
-}
-
-.table-light tbody tr:hover th,
-.table-light tbody tr:hover td {
-	background: #E6F5FC;
-	/*color: #052A4C;*/
-}
-
-.table-light tbody th,
-.table-light tbody td {
-	background: #fefefe;
-	border: none;
-}
-
-.table-light tbody tr:nth-child(2n+1) td {
-	background: #F6F5F5;
-}
-
-.table-light tbody tr:nth-child(2n+1):hover td {
-	background: #E6F5FC;
-}
-
 /* Dashboard Style Table */
-.table.table-region-stat {
+.table.table-region-stat,
+.table.table-light {
 	background-color: #fff;
 	color: #666;
+	border-bottom: 1px solid #dfdfdf;
 }
 
-.table.table-region-stat thead {
+.table.table-region-stat thead,
+.table.table-light thead {
 	background-color: #eaedef;
 	border-bottom: 1px solid #dfdfdf;
 }
 
-.table.table-region-stat thead th:hover {
+.table.table-region-stat thead th:hover,
+.table.table-light thead th:hover {
 	background-color: #dde0e2;
 }
 
@@ -156,32 +115,42 @@
 	-ms-text-overflow: ellipsis;
 }
 
+.table.table-light th,
+.table.table-light td  {
+	font-weight: 400;
+	border: none;
+	border-right: 1px solid #dfdfdf;
+	position: relative;
+}
+
 .table.table-region-stat tbody tr:hover th,
-.table.table-region-stat tbody tr:hover td {
+.table.table-region-stat tbody tr:hover td,
+.table.table-light tbody tr:hover th,
+.table.table-light tbody tr:hover td {
 	background: #f0f0f0;
 }
 
 
 .table.table-region-stat tbody th,
-.table.table-region-stat tbody td {
+.table.table-region-stat tbody td,
+.table.table-light tbody th,
+.table.table-light tbody td {
 	background: #fefefe;
 }
 
-.table.table-region-stat tbody tr td {
+.table.table-region-stat tbody tr td,
+.table.table-light tbody tr td
+ {
 	line-height: 24px;
 }
 
-.table.table-region-stat tbody tr  td:last-child,
-.table-region-stat thead tr  th:last-child, {
-	/*border-right: none;*/
-	/*color: blue;*/
-}
-
-.table.table-region-stat tbody tr:nth-child(2n+1) td {
+.table.table-region-stat tbody tr:nth-child(2n+1) td,
+.table.table-light tbody tr:nth-child(2n+1) td {
 	background: #F6F5F5;
 }
 
-.table.table-region-stat tbody tr:nth-child(2n+1):hover td {
+.table.table-region-stat tbody tr:nth-child(2n+1):hover td,
+.table.table-light tbody tr:nth-child(2n+1):hover td  {
 	background: #eee;
 }
 
@@ -502,7 +471,7 @@ textarea {
 .scrollbar-horizontal-wrap {
 	position: absolute;
 	z-index: 99;
-	background: rgba(0, 0, 0, 0.2);
+	background: rgba(100, 100, 100, 0.2);
 	display: none;
 }
 
@@ -550,13 +519,13 @@ textarea {
 .scrollbar-veritical-thumb,
 .scrollbar-horizontal-thumb {
 	position: relative;
-	background-color: #903977;
-	border-radius: 3px;
+	background-color: #999;
+	border-radius: 4px;
 }
 
 .scrollbar-veritical-thumb {
-	width: 10px;
-	border-left: 1px solid #a0558a;
+	width: 8px;
+	/*border-left: 1px solid #aaa;*/
 	-webkit-transition: height 0.2s;
 	-moz-transition: height 0.2s;
 	-o-transition: height 0.2s;
@@ -564,8 +533,8 @@ textarea {
 }
 
 .scrollbar-horizontal-thumb {
-	height: 10px;
-	border-top: 1px solid #a0558a;
+	height: 8px;
+	/*border-top: 1px solid #aaa;*/
 	-webkit-transition: width 0.2s;
 	-moz-transition: width 0.2s;
 	-o-transition: width 0.2s;
@@ -596,7 +565,7 @@ textarea {
 	position: absolute;
 	padding: 5px 10px;
 	border-radius: 3px;
-	z-index: 99;
+	z-index: 9000;
 	max-width: 250px;
 }
 
@@ -729,7 +698,11 @@ textarea {
 	-moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
 	-webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
-	z-index: 9999;
+	z-index: 7000;
+}
+
+#modal-box #bubble-box {
+	z-index: 8000;
 }
 
 .modal-header .modal-close {
@@ -788,7 +761,7 @@ textarea {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	z-index: 9999;
+	z-index: 7000;
 	background-color: rgba(0, 0, 0, 0.8);
 }
 
@@ -837,7 +810,7 @@ textarea {
     width: 100%;
     height: auto;
     text-align: center;
-    z-index: 9999;
+    z-index: 10000;
 }
 
 .notification_item {
@@ -917,7 +890,7 @@ textarea {
 	font-size: 12px;
 	position: absolute;
 	border-radius: 4px;
-	z-index: 9999;
+	z-index: 6000;
 	min-width: 250px;
 	max-width: 400px;
 }
@@ -1056,46 +1029,91 @@ textarea {
 }
 
 .selectbox .dropdown {
-  position: relative;
+	position: relative;
 }
 
 .selectbox .caret {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  border-top: 4px solid #FFF;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-  content: "";
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-top: 4px solid #FFF;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	content: "";
 }
 
 .selectbox .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  display: none;
-  float: left;
-  min-width: 160px;
-  background-color: #ffffff;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+	display: none;
+	float: left;
+	min-width: 160px;
+	background-color: #ffffff;
 }
 
 .selectbox .dropdown-menu li a {
-  display: block;
-  clear: both;
-  line-height: 20px;
-  color: #333333;
-  white-space: nowrap;
+	display: block;
+	clear: both;
+	line-height: 20px;
+	color: #333333;
+	white-space: nowrap;
 }
 
 .selectbox .dropdown-menu li a:hover,
 .selectbox .dropdown-menu li a:focus,
 .selectbox .dropdown-menu li.selected a {
-  background-color: #eee;
+	background-color: #eee;
 }
 
-.selectbox.open .dropdown-menu {
-  display: block;
+.selectbox.open .dropdown-menu,
+.selectbox.open .editableoption{
+	display: block;
+}
+.selectbox .editableoption {
+	display: none;
+}
+.editableoption .label {
+	display: block;
+}
+.editableoption .edit {
+	display: none;
+}
+
+/* Radio Buttons */
+
+.radiobuttons {
+	font-size: 0;
+}
+
+.radiobuttons button {
+	font-size: 12px;
+	border-radius: 0;
+	border-right: none;
+	padding: 4px 0;
+}
+
+.radiobuttons button:first-child {
+	border-radius: 4px 0 0 4px;
+}
+
+.radiobuttons button:last-child {
+	border-radius: 0 4px 4px 0;
+	border-right: 1px solid #C3C3C3;
+}
+
+.radiobuttons button.active {
+	background-image: -o-linear-gradient(-90deg, #38B6FF 0%, #1F95ED 100%);
+	background-image: -moz-linear-gradient(-90deg, #38B6FF 0%, #1F95ED 100%);
+	background-image: -webkit-linear-gradient(-90deg, #38B6FF 0%, #1F95ED 100%);
+	background-image: -ms-linear-gradient(-90deg, #38B6FF 0%, #1F95ED 100%);
+	background-image: linear-gradient(-180deg, #38B6FF 0%, #1F95ED 100%);
+	color: #fff;
+	text-shadow: none;
+	border-top: 1px solid #aaa;
+	border-bottom: 1px solid #3177B5;
+
 }
 
 /* toggleicon */
@@ -1127,29 +1145,32 @@ textarea {
 /* searchbar */
 .search-bar {
 	position: absolute;
-	right: 10px;
-	top: 5px;
-	width: 19px;
-	height: 30px;
+	right: 0;
+	top: 0;
+	height: 32px;
+	width: 34px;
 	overflow: hidden;
 	float: right;
+	background: #ccc;
 }
 .search-bar .icon-search {
 	display: block;
 	float: left;
 	line-height: 30px;
 	cursor: pointer;
+	padding: 0 10px;
 }
 .search-bar.open .icon-search {
 	cursor: default;
-	position: absolute;
-	left: 0px;
+	/*position: absolute;
+	left: 0;*/
 }
 .search-bar input {
 	display: block;
 	float: left;
 	position: absolute;
-	left: 19px;
+	left: 34px;
+	width: 186px;
 }
 .search-bar .icon-cancel {
 	display: block;
@@ -1157,7 +1178,7 @@ textarea {
 	line-height: 30px;
 	cursor: pointer;
 	position: absolute;
-	left: 198px;
+	left: 226px;
 }
 
 /* filter */

@@ -9,30 +9,45 @@
 # **********************************************************
 */
 var filter = {
-    update: function (dom, value)
-    {
-        dom.find('.item').each(function()
-        {
-            var cur_val = $(this).data('id');
+    update: function (dom, valueset) {
+        if (!valueset || ((!valueset.type) && valueset.value == '')) {
+            dom.trigger("FILTER_RESET");
+            dom.find('.item').each(function () {
+                $(this).removeClass('hide');
+            });
+        } else {
+            dom.trigger("FILTER_SET");
+            dom.find('.item').each(function () {
+                var is_match = true,
+                    target_id = $(this).data('id'),
+                    dom = $(this);
 
-            if(!value) {
-                filter.reset(dom);
-            } else {
-                if(cur_val.indexOf(value) >= 0)
-                {
-                    $(this).removeClass('hide');
-                } else {
-                    $(this).addClass('hide');
+                if (valueset.value) {
+                    if (target_id.toLowerCase().indexOf(valueset.value.toLowerCase()) < 0) {
+                        is_match = false;
+                    }
                 }
-            }
-        });
-    },
 
-    reset: function (dom)
-    {
-        dom.find('.item').each(function()
-        {
-            $(this).removeClass('hide');
-        });
+                if (valueset.type && is_match) {
+                    var type_result = true,
+                        type_set = valueset.type;
+
+                    $.each(type_set, function (key, value) {
+                        if (type_set.hasOwnProperty(key)) {
+                            var target_value = dom.data(key);
+
+                            if (!target_value && value) {
+                                type_result = false;
+                            } else if (value && String(target_value).toLowerCase() != String(value).toLowerCase()) {
+                                type_result = false;
+                            }
+                        }
+                    });
+
+                    is_match = type_result;
+                }
+                $(this).toggleClass('hide', !is_match);
+            });
+        }
     }
 };

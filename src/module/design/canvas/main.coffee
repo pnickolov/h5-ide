@@ -18,7 +18,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name ) ->
                 console.log 'canvas:RELOAD_RESOURCE'
                 #temp
-                require [ 'canvas-layout' ], ( canvas_layout ) ->
+                require [ 'canvas_layout' ], ( canvas_layout ) ->
                     canvas_layout.listen()
                     canvas_layout.ready()
                     canvas_layout.connect()

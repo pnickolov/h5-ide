@@ -1229,7 +1229,7 @@ MC.canvas.event.siderbarDrag = {
 		event.stopPropagation();
 
 		var target = $(event.data.target),
-			target_id = target.attr('id'),
+			target_id = target.attr('id') || '',
 			target_component_type = target.data('component-type'),
 			node_type = target.data('type'),
 			canvas_offset = $('#svg_canvas').offset(),
@@ -1241,8 +1241,7 @@ MC.canvas.event.siderbarDrag = {
 			MC.canvas.isMatchPlace(node_type, coordinate.x, coordinate.y)
 		)
 		{
-			var new_node = MC.canvas.add(node_type, target.data('option'));
-			MC.canvas.position(new_node, coordinate.x, coordinate.y);
+			var new_node = MC.canvas.add(node_type, target.data('option'), coordinate );
 		}
 
 		event.data.shadow.remove();

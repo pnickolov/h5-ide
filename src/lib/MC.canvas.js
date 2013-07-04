@@ -1237,11 +1237,20 @@ MC.canvas.event.siderbarDrag = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
 		if (
+			node_type === 'node' &&
 			MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
 			MC.canvas.isMatchPlace(node_type, coordinate.x, coordinate.y)
 		)
 		{
 			var new_node = MC.canvas.add(node_type, target.data('option'), coordinate );
+		}
+
+		if (
+			node_type === 'group' &&
+			MC.canvas.isMatchPlace(node_type, coordinate.x, coordinate.y)
+		)
+		{
+			MC.canvas.add(node_type, target.data('option'), coordinate);
 		}
 
 		event.data.shadow.remove();

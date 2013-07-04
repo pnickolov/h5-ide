@@ -2,6 +2,7 @@ MC.canvas.add = function (type, option, coordinate)
 {
 
 	var group = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
+		create_mode = true,
 		class_type = type.replace(/\./ig, '-'),
 		component_data = {},
 		component_layout = {},
@@ -14,37 +15,44 @@ MC.canvas.add = function (type, option, coordinate)
 	data = MC.canvas.data.get('component');
 	layout = MC.canvas.data.get('layout.component');
 
-	if ( !coordinate )
+	if ( !option && !coordinate )
 	{
 		//existed resource ( init data from MC.tab[tab_id].data )
 		//option = {};
 		//coordinate = {};
+		create_mode = false;
 	}
 	else
 	{
 		//new resource ( init data from option and layout )
 		class_type = type.replace(/\./ig, '-');
 		group.id = MC.guid();
+		create_mode = true;
 	}
 
 	switch (type) {
 
 		//***** az begin *****//
 		case 'AWS.EC2.AvailabilityZone':
+
+			if (create_mode)
+			{
+				option.width = 44;
+				option.height = 51;
+				$.extend(true, component_layout, MC.canvas.AZ_JSON.layout);
+			}
+
 			width = option.width * MC.canvas.GRID_WIDTH,
 			height = option.height * MC.canvas.GRID_HEIGHT,
 
 			$(group).append(
+
 				////1. area
 				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'group group-az'
 				}),
-				////2.az label
-				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.az_name).attr({
-					'class': 'group-label az-name'
-				}),
 
-				////3.scale area
+				////2.scale area
 				Canvon.group().append(
 					Canvon.rectangle(
 						0, top, pad, pad
@@ -72,6 +80,11 @@ MC.canvas.add = function (type, option, coordinate)
 					).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
 				).attr({
 					'class': 'resizer-wrap'
+				}),
+
+				////3.az label
+				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
+					'class': 'group-label name'
 				})
 
 			).attr({
@@ -80,8 +93,7 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			//set layout
-			$.extend(true, component_layout, MC.canvas.AZ_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			component_layout.size = [option.width, option.height];
 			layout.group[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.group', layout.group);
@@ -93,20 +105,26 @@ MC.canvas.add = function (type, option, coordinate)
 
 		//***** vpc begin *****//
 		case 'AWS.VPC.VPC':
+
+			if (create_mode)
+			{
+				option.width = 79;
+				option.height = 69;
+				$.extend(true, component_layout, MC.canvas.VPC_JSON.layout);
+				$.extend(true, component_data, MC.canvas.VPC_JSON.data);
+			}
+
 			width = option.width * MC.canvas.GRID_WIDTH,
 			height = option.height * MC.canvas.GRID_HEIGHT,
 
 			$(group).append(
+
 				////1. area
 				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'group group-vpc'
 				}),
-				////2.az label
-				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.vpc_name).attr({
-					'class': 'group-label vpc-name'
-				}),
 
-				////3.scale area
+				////2.scale area
 				Canvon.group().append(
 					Canvon.rectangle(
 						0, top, pad, pad
@@ -134,6 +152,11 @@ MC.canvas.add = function (type, option, coordinate)
 					).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
 				).attr({
 					'class': 'resizer-wrap'
+				}),
+
+				////3.vpc label
+				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
+					'class': 'group-label name'
 				})
 
 			).attr({
@@ -142,14 +165,12 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			//set layout
-			$.extend(true, component_layout, MC.canvas.VPC_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			component_layout.size = [option.width, option.height];
 			layout.group[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.group', layout.group);
 
 			//set data
-			$.extend(true, component_data, MC.canvas.VPC_JSON.data);
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
@@ -161,20 +182,26 @@ MC.canvas.add = function (type, option, coordinate)
 
 		//***** subnet begin *****//
 		case 'AWS.VPC.Subnet':
+
+			if (create_mode)
+			{
+				option.width = 36;
+				option.height = 43;
+				$.extend(true, component_layout, MC.canvas.SUBNET_JSON.layout);
+				$.extend(true, component_data, MC.canvas.SUBNET_JSON.data);
+			}
+
 			width = option.width * MC.canvas.GRID_WIDTH,
 			height = option.height * MC.canvas.GRID_HEIGHT,
 
 			$(group).append(
+
 				////1. area
 				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'group group-subnet'
 				}),
-				////2.az label
-				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.subnet_name).attr({
-					'class': 'group-label subnet-name'
-				}),
 
-				////3.scale area
+				////2.scale area
 				Canvon.group().append(
 					Canvon.rectangle(
 						0, top, pad, pad
@@ -202,6 +229,11 @@ MC.canvas.add = function (type, option, coordinate)
 					).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
 				).attr({
 					'class': 'resizer-wrap'
+				}),
+
+				////3.subnet label
+				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
+					'class': 'group-label name'
 				})
 
 			).attr({
@@ -210,14 +242,12 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			//set layout
-			$.extend(true, component_layout, MC.canvas.SUBNET_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			component_layout.size = [option.width, option.height];
 			layout.group[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.group', layout.group);
 
 			//set data
-			$.extend(true, component_data, MC.canvas.SUBNET_JSON.data);
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
@@ -230,7 +260,13 @@ MC.canvas.add = function (type, option, coordinate)
 		//***** instance begin *****//
 		case 'AWS.EC2.Instance':
 
-			var os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+			var os_type = 'ami-unknown';
+			if (create_mode)
+			{
+				os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+				$.extend(true, component_layout, MC.canvas.INSTANCE_JSON.layout);
+				$.extend(true, component_data, MC.canvas.INSTANCE_JSON.data);
+			}
 
 			$(group).append(
 				////1. bg
@@ -296,21 +332,16 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			//set layout
-			$.extend(true, component_layout, MC.canvas.INSTANCE_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			layout.node[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.node', layout.node);
 
 			//set data
-			$.extend(true, component_data, MC.canvas.INSTANCE_JSON.data);
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
 
 			$('#node_layer').append(group);
-
-			//set the node position
-			MC.canvas.position(group, coordinate.x, coordinate.y);
 
 			break;
 		//***** instance end *****//
@@ -318,6 +349,12 @@ MC.canvas.add = function (type, option, coordinate)
 
 		//***** volume begin *****//
 		case 'AWS.EC2.EBS.Volume':
+
+			if (create_mode)
+			{
+				$.extend(true, component_layout, MC.canvas.VOLUME_JSON.layout);
+				$.extend(true, component_data, MC.canvas.VOLUME_JSON.data);
+			}
 
 			$(group).append(
 				////1. bg
@@ -341,12 +378,12 @@ MC.canvas.add = function (type, option, coordinate)
 				}),
 
 				////3. device-name
-				Canvon.text(68, 50, option.device_name).attr({
+				Canvon.text(68, 50, option.name).attr({
 					'class': 'node-label device-name'
 				}),
 
 				////3. device-name
-				Canvon.text(68, 65, option.volume_size).attr({
+				Canvon.text(68, 65, option.volumeSize + " GiB").attr({
 					'class': 'node-label volume-size'
 				})
 
@@ -356,13 +393,11 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			//set layout
-			$.extend(true, component_layout, MC.canvas.VOLUME_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			layout.node[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.node', layout.node);
 
 			//set data
-			$.extend(true, component_data, MC.canvas.VOLUME_JSON.data);
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
@@ -374,6 +409,12 @@ MC.canvas.add = function (type, option, coordinate)
 
 		//***** elb begin *****//
 		case 'AWS.ELB':
+
+			if (create_mode)
+			{
+				$.extend(true, component_layout, MC.canvas.ELB_JSON.layout);
+				$.extend(true, component_data, MC.canvas.ELB_JSON.data);
+			}
 
 			$(group).append(
 				////1. bg
@@ -421,8 +462,8 @@ MC.canvas.add = function (type, option, coordinate)
 				}),
 
 				////5. elb_name
-				Canvon.text(70, 60, option.elb_name).attr({
-					'class': 'node-label elb-name'
+				Canvon.text(70, 60, option.name).attr({
+					'class': 'node-label name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,
@@ -430,13 +471,11 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			//set layout
-			$.extend(true, component_layout, MC.canvas.ELB_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			layout.node[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.node', layout.node);
 
 			//set data
-			$.extend(true, component_data, MC.canvas.ELB_JSON.data);
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
@@ -448,6 +487,12 @@ MC.canvas.add = function (type, option, coordinate)
 
 		//***** routetable begin *****//
 		case 'AWS.VPC.RouteTable':
+
+			if (create_mode)
+			{
+				$.extend(true, component_layout, MC.canvas.ROUTETABLE_JSON.layout);
+				$.extend(true, component_data, MC.canvas.ROUTETABLE_JSON.data);
+			}
 
 			$(group).append(
 				////1. bg
@@ -507,8 +552,8 @@ MC.canvas.add = function (type, option, coordinate)
 				}),
 
 				////6. routetable name
-				Canvon.text(70, 47, option.rtb_name).attr({
-					'class': 'node-label routetable-name'
+				Canvon.text(70, 47, option.name).attr({
+					'class': 'node-label name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,
@@ -516,13 +561,11 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			// set layout
-			$.extend(true, component_layout, MC.canvas.ROUTETABLE_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			layout.node[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.node', layout.node);
 
 			// set data
-			$.extend(true, component_data, MC.canvas.ROUTETABLE_JSON.data);
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
@@ -534,6 +577,12 @@ MC.canvas.add = function (type, option, coordinate)
 
 		//***** igw begin *****//
 		case 'AWS.VPC.InternetGateway':
+
+			if (create_mode)
+			{
+				$.extend(true, component_layout, MC.canvas.IGW_JSON.layout);
+				$.extend(true, component_data, MC.canvas.IGW_JSON.data);
+			}
 
 			$(group).append(
 				////1. bg
@@ -569,8 +618,8 @@ MC.canvas.add = function (type, option, coordinate)
 				}),
 
 				////4. igw name
-				Canvon.text(70, 100, 'IGW').attr({
-					'class': 'node-label igw-name'
+				Canvon.text(70, 100, option.name).attr({
+					'class': 'node-label name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,
@@ -578,13 +627,11 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			// set layout
-			$.extend(true, component_layout, MC.canvas.IGW_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			layout.node[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.node', layout.node);
 
 			// set data
-			$.extend(true, component_data, MC.canvas.IGW_JSON.data);
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
@@ -596,6 +643,12 @@ MC.canvas.add = function (type, option, coordinate)
 
 		//***** vgw begin *****//
 		case 'AWS.VPC.VPNGateway':
+
+			if (create_mode)
+			{
+				$.extend(true, component_layout, MC.canvas.VGW_JSON.layout);
+				$.extend(true, component_data, MC.canvas.VGW_JSON.data);
+			}
 
 			$(group).append(
 				////1. bg
@@ -631,8 +684,8 @@ MC.canvas.add = function (type, option, coordinate)
 				}),
 
 				////4. vgw name
-				Canvon.text(70, 100, 'VGW').attr({
-					'class': 'node-label vgw-name'
+				Canvon.text(70, 100, option.name).attr({
+					'class': 'node-label name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,
@@ -640,13 +693,11 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			// set layout
-			$.extend(true, component_layout, MC.canvas.VGW_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			layout.node[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.node', layout.node);
 
 			// set data
-			$.extend(true, component_data, MC.canvas.VGW_JSON.data);
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
@@ -658,6 +709,12 @@ MC.canvas.add = function (type, option, coordinate)
 
 		//***** cgw begin *****//
 		case 'AWS.VPC.CustomerGateway':
+
+			if (create_mode)
+			{
+				$.extend(true, component_layout, MC.canvas.CGW_JSON.layout);
+				$.extend(true, component_data, MC.canvas.CGW_JSON.data);
+			}
 
 			$(group).append(
 				////1. bg
@@ -681,8 +738,8 @@ MC.canvas.add = function (type, option, coordinate)
 				}),
 
 				////3. cgw name
-				Canvon.text(20, 95, 'CGW').attr({
-					'class': 'node-label cgw-name'
+				Canvon.text(20, 95, option.name).attr({
+					'class': 'node-label name'
 				}),
 
 				////4. network name
@@ -696,13 +753,11 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			// set layout
-			$.extend(true, component_layout, MC.canvas.CGW_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			layout.node[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.node', layout.node);
 
 			// set data
-			$.extend(true, component_data, MC.canvas.CGW_JSON.data);
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
@@ -715,6 +770,12 @@ MC.canvas.add = function (type, option, coordinate)
 
 		//***** eni begin *****//
 		case 'AWS.VPC.NetworkInterface':
+
+			if (create_mode)
+			{
+				$.extend(true, component_layout, MC.canvas.ENI_JSON.layout);
+				$.extend(true, component_data, MC.canvas.ENI_JSON.data);
+			}
 
 			$(group).append(
 				////1. bg
@@ -762,10 +823,10 @@ MC.canvas.add = function (type, option, coordinate)
 				}),
 
 				////5. eni_name
-				Canvon.text(42, 60, option.eni_name, {
+				Canvon.text(42, 60, option.name, {
 					'text-anchor': 'start' // start, middle(default), end, inherit
 				}).attr({
-					'class': 'node-label eni-name'
+					'class': 'node-label name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,
@@ -773,13 +834,11 @@ MC.canvas.add = function (type, option, coordinate)
 			});
 
 			//set layout
-			$.extend(true, component_layout, MC.canvas.ENI_JSON.layout);
-			component_layout.coordinate = [0, 0];
+			component_layout.coordinate = [coordinate.x, coordinate.y];
 			layout.node[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.node', layout.node);
 
 			//set data
-			$.extend(true, component_data, MC.canvas.ENI_JSON.data);
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
@@ -791,8 +850,8 @@ MC.canvas.add = function (type, option, coordinate)
 
 	}
 
-
-	//$('#svg_canvas').append(group);
+	//set the node position
+	MC.canvas.position(group, coordinate.x, coordinate.y);
 
 	return group;
 };

@@ -5,7 +5,7 @@ module.exports = {
         files: [{
             expand : true,
             cwd    : '<%= src %>/',
-            src    : [ '**/*.coffee', '!service/**/**/*.coffee', '!test/**/**/*.coffee' ],
+            src    : [ '**/*.coffee', '!=service/**/**/*.coffee', '!test/**/**/*.coffee' ],
             dest   : '<%= src %>/',
             ext    : '.js'
         }]

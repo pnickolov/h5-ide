@@ -16,6 +16,7 @@ define [ 'event',
         quickstart_ami_tmpl    : Handlebars.compile $( '#quickstart-ami-tmpl' ).html()
         my_ami_tmpl            : Handlebars.compile $( '#my-ami-tmpl' ).html()
         favorite_ami_tmpl      : Handlebars.compile $( '#favorite-ami-tmpl' ).html()
+        community_ami_tmpl     : Handlebars.compile $( '#community-ami-tmpl' ).html()
         
 
         initialize : ->
@@ -37,13 +38,8 @@ define [ 'event',
 
         render   : ( template, attrs ) ->
             console.log 'resource render'
-            if attrs
-                handler_tmpl = Handlebars.compile template
-
-                $( this.el ).html handler_tmpl attrs
-
-            else
-                $( this.el ).html template
+   
+            $( this.el ).html template
             #
             fixedaccordion.resize()
             null
@@ -142,11 +138,17 @@ define [ 'event',
             $( '.favorite-ami-list' ).html this.favorite_ami_tmpl this.model.attributes
             null
 
+        communityAmiBtnRender : () ->
+            console.log 'communityAmiRender'
+            console.log this.model.attributes.community_ami
+            $( '.community-ami' ).html this.community_ami_tmpl this
+            null
+
         openBrowseCommunityAMIsModal : ( event ) ->
 
             console.log 'openBrowseCommunityAMIsModal'
 
-            event.data.trigger 'LOADING_COMMUNITY_AMI', null
+            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region
 
         communityAmiRender : () ->
 

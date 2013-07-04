@@ -8,7 +8,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
 
     #private
     ami_instance_type = null
-    community_ami = null
+    community_ami = {}
 
     ResourcePanelModel = Backbone.Model.extend {
 
@@ -98,7 +98,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
 
             me.set 'community_ami', null
 
-            if not community_ami
+            if community_ami[region_name] == undefined
                 #get service(model)
                 aws_model.Public { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
                 aws_model.once 'AWS__PUBLIC_RETURN', ( result ) ->
@@ -109,7 +109,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
                     
                     null
 
-            me.set 'community_ami', community_ami
+            me.set 'community_ami', community_ami[region_name]
 
         #call service
         favoriteAmiService : ( region_name ) ->

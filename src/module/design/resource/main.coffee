@@ -13,7 +13,7 @@ define [ 'jquery',
     loadModule = () ->
 
         #compile partial template
-        MC.IDEcompile 'design-resource', template_data, { '.availability-zone-data' : 'availability-zone-tmpl', '.resoruce-snapshot-data' : 'resoruce-snapshot-tmpl', '.quickstart-ami-data' : 'quickstart-ami-tmpl', '.my-ami-data' : 'my-ami-tmpl', '.favorite-ami-data' : 'favorite-ami-tmpl' }
+        MC.IDEcompile 'design-resource', template_data, { '.availability-zone-data' : 'availability-zone-tmpl', '.resoruce-snapshot-data' : 'resoruce-snapshot-tmpl', '.quickstart-ami-data' : 'quickstart-ami-tmpl', '.my-ami-data' : 'my-ami-tmpl', '.favorite-ami-data' : 'favorite-ami-tmpl', '.community-ami-btn':'community-ami-tmpl' }
 
         #load remote module1.js
 
@@ -21,7 +21,7 @@ define [ 'jquery',
 
             #view
             view       = new View()
-            #view.render template, null
+            view.render template
             view.listen model
             view.model = model
 
@@ -40,17 +40,16 @@ define [ 'jquery',
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name ) ->
                 console.log 'resource:RELOAD_RESOURCE'
-                view.render template, {region: region_name}
-
                 model.describeAvailableZonesService region_name
                 model.describeSnapshotsService      region_name
                 model.quickstartService             region_name
                 model.myAmiService                  region_name
                 model.favoriteAmiService            region_name
-                
+                view.region = region_name
+                view.communityAmiBtnRender()
                 null
 
-            view.on 'LOADING_COMMUNITY_AMI', () ->
+            view.on 'LOADING_COMMUNITY_AMI', ( region_name ) ->
                 model.describeCommunityAmiService region_name
 
     unLoadModule = () ->

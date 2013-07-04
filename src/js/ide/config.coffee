@@ -24,8 +24,11 @@ require.config {
 		'MC'           : 'lib/MC.core'
 		'MC.template'  : 'lib/MC.template'
 		'MC.ide.template'  : 'lib/MC.ide.template'
-		#'MC.topo'     : 'lib/MC.topo'
-		#'MC.canvas'   : 'lib/MC.canvas'
+
+		#canvas
+		'MC.canvas'    : 'lib/MC.canvas'
+		'MC.canvas.constant' : 'lib/MC.canvas.constant'
+		'MC.canvas.add': 'lib/MC.canvas.add'
 
 		#ui
 		'UI.tooltip'   : 'ui/common/UI.tooltip'
@@ -56,6 +59,7 @@ require.config {
 		'view'         : 'js/ide/view'
 		#temp
 		'layout'       : 'js/ide/layout'
+		'canvas_layout': 'js/ide/canvas_layout'
 
 		#module
 		'header'       : 'module/header/main'
@@ -270,13 +274,18 @@ require.config {
 			deps       : ['Meteor', 'underscore']
 			exports    : 'WS'
 
-		#'MC.topo'     :
-		#	deps       : [ 'MC' ]
-		#	exports    : 'MC.topo'
+		'MC.canvas':
+			deps: [ 'MC', 'canvon' ]
 
-		#'MC.canvas'   :
-		#	deps       : [ 'MC', 'MC.topo' ]
-		#	exports    : 'MC.canvas'
+		'MC.canvas.constant':
+			deps: [ 'MC.canvas' ]
+
+		'MC.canvas.add':
+			deps: [ 'MC.canvas.constant']
+
+		'canvas_layout':
+			deps: [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon' ]
+
 
 }
 

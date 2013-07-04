@@ -56,7 +56,7 @@ var constant_data = {
 			'AWS.ELB': [ 'Canvas' ],
 			'AWS.EC2.Instance': [ 'AWS.EC2.AvailabilityZone' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.EC2.AvailabilityZone' ],
-			'AWS.VPC.NetworkInterface': [ 'AWS.EC2.AvailabilityZone ']
+			'AWS.VPC.NetworkInterface': [ 'AWS.EC2.AvailabilityZone']
 		},
 		//'custom-vpc'
 		'ec2-vpc': {
@@ -67,7 +67,8 @@ var constant_data = {
 			'AWS.VPC.CustomerGateway': [ 'Canvas' ],
 			'AWS.VPC.RouteTable': [ 'AWS.VPC.VPC' ],
 			'AWS.VPC.InternetGateway': [ 'AWS.VPC.VPC' ],
-			'AWS.VPC.VPNGateway': [ 'AWS.VPC.VPC']
+			'AWS.VPC.VPNGateway': [ 'AWS.VPC.VPC' ],
+			'AWS.EC2.AvailabilityZone': [ 'Canvas','AWS.VPC.VPC' ]
 		}
 	},
 

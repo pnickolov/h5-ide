@@ -1191,7 +1191,8 @@ MC.canvas.event.siderbarDrag = {
 
 		$(document.body).append('<div id="drag_shadow"></div>');
 		shadow = $('#drag_shadow');
-		clone_node = target.find('resource-icon').clone();
+		clone_node = target.find('.resource-icon').clone();
+
 		shadow.append(clone_node);
 
 		$('#canvas_body').addClass('dragging');

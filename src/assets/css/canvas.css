@@ -587,13 +587,13 @@
 }
 
 #drag_shadow {
-	width: 100px;
-	height: 100px;
-	background: #E5F1F5;
+	width: 80px;
+	height: 80px;
+/*	background: #E5F1F5;*/
 	position: absolute;
 	opacity: 0.8;
 	z-index: 100;
-	border: 1px solid #f3f3f3;
+/*	border: 1px solid #f3f3f3;*/
 }
 
 #drag_shadow .siderbar-component-item {

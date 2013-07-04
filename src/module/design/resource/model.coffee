@@ -95,21 +95,61 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
         describeCommunityAmiService : ( region_name ) ->
 
             me = this
-
             me.set 'community_ami', null
-
+            ami_list = []
             if community_ami[region_name] == undefined
                 #get service(model)
                 aws_model.Public { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
                 aws_model.once 'AWS__PUBLIC_RETURN', ( result ) ->
                     console.log 'AWS__PUBLIC_RETURN'
-                    ami_list = []
                     
+                    _.map result.resolved_data.ami, ( value, key ) ->
+                        if value.isPublic == 'true' then value.isPublic = 'public' else value.isPublic = 'private'
+                        if value.architecture == 'x86_64' then value.architecture = '64-bit' else value.architecture = '32-bit'
+                        if value.rootDeviceType == 'ebs' then value.rootDeviceType = 'ebs' else value.rootDeviceType = 'instancestore'
+
+                        if value.name == undefined or value.name == null
+                            value.name = 'None'
+                        low_case_name = value.name.toLowerCase()
+                        if 'ubuntu' in low_case_name
+                            value.platform = 'ubuntu'
+                        else if 'centos' in low_case_name
+                            value.platform = 'centos'
+                        else if 'redhat' in low_case_name
+                            value.platform = 'redhat'
+                        else if 'windows' in low_case_name
+                            value.platform = 'windows'
+                        else if 'suse' in low_case_name
+                            value.platform = 'suse'
+                        else if 'amazonlinux' in low_case_name
+                            value.platform = 'amazonlinux'
+                        else if 'fedora' in low_case_name
+                            value.platform = 'fedora'
+                        else if 'gentoo' in low_case_name
+                            value.platform = 'gentoo'
+                        else if 'debian' in low_case_name
+                            value.platform = 'debian'
+                        else
+                            value.platform = 'otherlinux'
                         
+                        value.id = key
+                        value.instance_type = me._getInstanceType value
+
+                        _.map value, ( val, k ) ->
+
+                            if val == ''
+                                value[k] = 'None'
+
+                            null
+                        
+                        ami_list.push value
                     
+                    community_ami[region_name] = ami_list
+                    me.set 'community_ami', ami_list
                     null
 
-            me.set 'community_ami', community_ami[region_name]
+            else
+                me.set 'community_ami', community_ami[region_name]
 
         #call service
         favoriteAmiService : ( region_name ) ->

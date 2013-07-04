@@ -238,15 +238,17 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="item" data-id="ami-12345678 ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1" data-publicprivate="public" data-platform="ubuntu" data-ebs="ebs" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-12345678</td>
+							{{#each community_ami}}
+							<tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
+								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
+								<td>{{id}}</td>
 								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
-									<div class="ami-meta">public | 32-bit | EBS</div>
+									<div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div>
+									<div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div>
 								</td>
 								<td>32</td>
 							</tr>
+							{{/each}}
 							<tr class="item" data-id="ami-23456789 tu-precise-12.04-i380411.1" data-publicprivate="public" data-platform="amazonlinux" data-ebs="instancestore" data-bit="64-bit">
 								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
 								<td>ami-23456789</td>

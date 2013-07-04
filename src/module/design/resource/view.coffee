@@ -152,7 +152,7 @@ define [ 'event',
 
         communityAmiRender : () ->
 
-            modal(MC.template.browseCommunityAmi(this.model.attributes.community_ami), false)
+            modal(MC.template.browseCommunityAmi(this.model.attributes), false)
             $($('#selectbox-ami-platform').find('.cur-value')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html())
             $('#community-ami-input').on 'keyup', (event)->
                 filter.update $('#community-ami-filter'), {

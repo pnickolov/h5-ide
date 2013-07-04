@@ -669,7 +669,7 @@ MC.canvas.layout = {
 		var canvas_size = MC.canvas.data.get("layout.size"),
 			component = MC.canvas.data.get("component"),
 			connections = MC.canvas.data.get('layout.connection'),
-			connection_target_id = [];
+			connection_target_id;
 
 		$('#canvas_body').css({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
@@ -683,6 +683,8 @@ MC.canvas.layout = {
 
 		$.each(connections, function (line, data)
 		{
+			connection_target_id = [];
+
 			$.each(data.target, function (key, value)
 			{
 				connection_target_id.push(key);
@@ -704,10 +706,10 @@ MC.canvas.layout = {
 
 	create: function ()
 	{
-		var canvas_size = MC.canvas.data.get("layout.size");
-
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
 		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
+
+		var canvas_size = MC.canvas.data.get("layout.size");
 
 		$('#canvas_body').css({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,

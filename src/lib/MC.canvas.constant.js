@@ -276,6 +276,9 @@ var constant_data = {
 			"id": "",
 			"type": "AWS.EC2.Instance",
 			"coordinate": [0, 0],
+			"osType": "", //amazon|centos|debian|fedora|gentoo|linux-other|opensuse|redhat|suse|ubuntu|win
+			"architecture":"",  //i386|x86_64
+			"rootDeviceType":"", //ebs|instance-store
 			"group": {
 				"availableZone":"",
 				"subnet": "",
@@ -668,6 +671,7 @@ var constant_data = {
 		layout: {
 			"id": "",
 			"type": "AWS.VPC.CustomerGateway",
+			"networkName": "",
 			"coordinate": [0, 0],
 			"group": {
 				"availableZone":"",

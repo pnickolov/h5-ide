@@ -94,12 +94,31 @@ var listen = function ()
 // Dom Ready
 var ready = function ()
 {
-
 	//temp
+
+	//1.
+	$.ajax('js/ide/canvas_test_data.json', {
+		success: function (data)
+		{
+			if (typeof data === 'object')
+			{
+				MC.canvas_data = data;
+				MC.canvas.layout.init();
+			}
+			else
+			{
+				console.log('load test data failed');
+			}
+		}
+	});
+
+
+	return;
+
+	//2.simulate drag from resource panel
 	MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
 
 	/////////// create node ///////////
-	//simulate drag from resource panel
 	var node_vpc = MC.canvas.add('AWS.VPC.VPC', {
 		'name': 'vpc1'
 	},{
@@ -206,7 +225,7 @@ var ready = function ()
 
 	var node_cgw1 = MC.canvas.add('AWS.VPC.CustomerGateway', {
 		'name': 'CGW',
-		'network_name': 'CustomerNetwork1'
+		'networkName': 'CustomerNetwork1'
 	},{
 		'x': 83,
 		'y': 9
@@ -214,7 +233,7 @@ var ready = function ()
 
 	var node_cgw2 = MC.canvas.add('AWS.VPC.CustomerGateway', {
 		'name': 'CGW',
-		'network_name': 'CustomerNetwork2'
+		'networkName': 'CustomerNetwork2'
 	},{
 		'x': 83,
 		'y': 24

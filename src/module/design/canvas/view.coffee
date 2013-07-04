@@ -22,8 +22,20 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             if type is 'OLD_STACK' or type is 'OLD_APP'
                 #temp
                 require [ 'canvas_layout' ], ( canvas_layout ) ->
-                    canvas_layout.connect()
                     canvas_layout.listen()
+
+            if type is 'NEW_STACK'
+                require [ 'canvas_layout' ], ( canvas_layout ) ->
+                    MC.canvas.layout.create()
+                    canvas_layout.listen()
+
+            if type is 'OPEN_STACK'
+                #temp
+                require [ 'canvas_layout' ], ( canvas_layout ) ->
+                    #MC.canvas.layout.init()
+                    canvas_layout.listen()
+                    canvas_layout.ready()
+                    # canvas_layout.connect()
     }
 
     return CanvasView

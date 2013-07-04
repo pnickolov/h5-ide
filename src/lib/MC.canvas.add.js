@@ -1,9 +1,10 @@
-MC.canvas.add = function (type, option, coordinate)
+MC.canvas.add = function (flag, option, coordinate)
 {
 
 	var group = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
 		create_mode = true,
-		class_type = type.replace(/\./ig, '-'),
+		type = '',
+		class_type = '',
 		component_data = {},
 		component_layout = {},
 		width = 140,
@@ -11,24 +12,29 @@ MC.canvas.add = function (type, option, coordinate)
 		pad = 10,
 		top = 0;
 
-	group.id = option.uid;
 	data = MC.canvas.data.get('component');
 	layout = MC.canvas.data.get('layout.component');
 
 	if ( !option && !coordinate )
 	{
 		//existed resource ( init data from MC.tab[tab_id].data )
-		//option = {};
-		//coordinate = {};
 		create_mode = false;
+
+		option = {};
+		coordinate = {};
+
+		group.id = flag; //flag is uid
+		type = data[ group.id ].type;
 	}
 	else
 	{
 		//new resource ( init data from option and layout )
-		class_type = type.replace(/\./ig, '-');
-		group.id = MC.guid();
 		create_mode = true;
+
+		group.id = MC.guid();
+		type = flag; //flag is resource type
 	}
+	class_type = type.replace(/\./ig, '-'); // type is resource type
 
 	switch (type) {
 
@@ -36,10 +42,23 @@ MC.canvas.add = function (type, option, coordinate)
 		case 'AWS.EC2.AvailabilityZone':
 
 			if (create_mode)
-			{
+			{//write
+				component_layout = $.extend(true, {}, MC.canvas.AZ_JSON.layout);
+				component_layout.name = option.name;
+
 				option.width = 44;
 				option.height = 51;
-				$.extend(true, component_layout, MC.canvas.AZ_JSON.layout);
+			}
+			else
+			{//read
+				component_layout = layout.group[group.id];
+				option.name = component_layout.name;
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
+
+				option.width = component_layout.size[0];
+				option.height = component_layout.size[1];
 			}
 
 			width = option.width * MC.canvas.GRID_WIDTH,
@@ -108,11 +127,28 @@ MC.canvas.add = function (type, option, coordinate)
 
 			if (create_mode)
 			{
+				component_data = $.extend(true, {}, MC.canvas.VPC_JSON.data);
+				component_data.name = option.name;
+
+				component_layout = $.extend(true, {}, MC.canvas.VPC_JSON.layout);
+
 				option.width = 79;
 				option.height = 69;
-				$.extend(true, component_layout, MC.canvas.VPC_JSON.layout);
-				$.extend(true, component_data, MC.canvas.VPC_JSON.data);
 			}
+			else
+			{
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.group[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
+
+				option.width = component_layout.size[0];
+				option.height = component_layout.size[1];
+			}
+
 
 			width = option.width * MC.canvas.GRID_WIDTH,
 			height = option.height * MC.canvas.GRID_HEIGHT,
@@ -185,10 +221,26 @@ MC.canvas.add = function (type, option, coordinate)
 
 			if (create_mode)
 			{
+				component_data = $.extend(true, {}, MC.canvas.SUBNET_JSON.data);
+				component_data.name = option.name;
+
+				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
+
 				option.width = 36;
 				option.height = 43;
-				$.extend(true, component_layout, MC.canvas.SUBNET_JSON.layout);
-				$.extend(true, component_data, MC.canvas.SUBNET_JSON.data);
+			}
+			else
+			{
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.group[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
+
+				option.width = component_layout.size[0];
+				option.height = component_layout.size[1];
 			}
 
 			width = option.width * MC.canvas.GRID_WIDTH,
@@ -262,11 +314,30 @@ MC.canvas.add = function (type, option, coordinate)
 
 			var os_type = 'ami-unknown';
 			if (create_mode)
-			{
-				os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
-				$.extend(true, component_layout, MC.canvas.INSTANCE_JSON.layout);
-				$.extend(true, component_data, MC.canvas.INSTANCE_JSON.data);
+			{//write
+				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
+				component_data.name = option.name;
+
+				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
+				component_layout.osType =  option.osType;
+				component_layout.architecture =  option.architecture;
+				component_layout.rootDeviceType =  option.rootDeviceType;
 			}
+			else
+			{//read
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.node[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
+
+				option.osType = component_layout.osType ;
+				option.architecture = component_layout.architecture ;
+				option.rootDeviceType = component_layout.rootDeviceType ;
+			}
+			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
 
 			$(group).append(
 				////1. bg
@@ -351,9 +422,23 @@ MC.canvas.add = function (type, option, coordinate)
 		case 'AWS.EC2.EBS.Volume':
 
 			if (create_mode)
-			{
-				$.extend(true, component_layout, MC.canvas.VOLUME_JSON.layout);
-				$.extend(true, component_data, MC.canvas.VOLUME_JSON.data);
+			{//write
+				component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
+				component_data.name = option.name;
+				component_data.resource.AttachmentSet.Size = option.volumeSize;
+
+				component_layout = $.extend(true, {}, MC.canvas.VOLUME_JSON.layout);
+			}
+			else
+			{//read
+				component_data = data[group.id];
+				option.name = component_data.name;
+				option.volumeSize = component_data.resource.AttachmentSet.Size;
+
+				component_layout = layout.node[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
 			}
 
 			$(group).append(
@@ -411,9 +496,21 @@ MC.canvas.add = function (type, option, coordinate)
 		case 'AWS.ELB':
 
 			if (create_mode)
-			{
-				$.extend(true, component_layout, MC.canvas.ELB_JSON.layout);
-				$.extend(true, component_data, MC.canvas.ELB_JSON.data);
+			{//write
+				component_data = $.extend(true, {}, MC.canvas.ELB_JSON.data);
+				component_data.name = option.name;
+
+				component_layout = $.extend(true, {}, MC.canvas.ELB_JSON.layout);
+			}
+			else
+			{//read
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.node[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
 			}
 
 			$(group).append(
@@ -489,9 +586,21 @@ MC.canvas.add = function (type, option, coordinate)
 		case 'AWS.VPC.RouteTable':
 
 			if (create_mode)
-			{
-				$.extend(true, component_layout, MC.canvas.ROUTETABLE_JSON.layout);
-				$.extend(true, component_data, MC.canvas.ROUTETABLE_JSON.data);
+			{//write
+				component_data = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.data);
+				component_data.name = option.name;
+
+				component_layout = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.layout);
+			}
+			else
+			{//read
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.node[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
 			}
 
 			$(group).append(
@@ -579,9 +688,21 @@ MC.canvas.add = function (type, option, coordinate)
 		case 'AWS.VPC.InternetGateway':
 
 			if (create_mode)
-			{
-				$.extend(true, component_layout, MC.canvas.IGW_JSON.layout);
-				$.extend(true, component_data, MC.canvas.IGW_JSON.data);
+			{//write
+				component_data = $.extend(true, {}, MC.canvas.IGW_JSON.data);
+				component_data.name = option.name;
+
+				component_layout = $.extend(true, {}, MC.canvas.IGW_JSON.layout);
+			}
+			else
+			{//read
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.node[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
 			}
 
 			$(group).append(
@@ -645,9 +766,21 @@ MC.canvas.add = function (type, option, coordinate)
 		case 'AWS.VPC.VPNGateway':
 
 			if (create_mode)
-			{
-				$.extend(true, component_layout, MC.canvas.VGW_JSON.layout);
-				$.extend(true, component_data, MC.canvas.VGW_JSON.data);
+			{//write
+				component_data = $.extend(true, {}, MC.canvas.VGW_JSON.data);
+				component_data.name = option.name;
+
+				component_layout = $.extend(true, {}, MC.canvas.VGW_JSON.layout);
+			}
+			else
+			{//read
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.node[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
 			}
 
 			$(group).append(
@@ -711,9 +844,24 @@ MC.canvas.add = function (type, option, coordinate)
 		case 'AWS.VPC.CustomerGateway':
 
 			if (create_mode)
-			{
-				$.extend(true, component_layout, MC.canvas.CGW_JSON.layout);
-				$.extend(true, component_data, MC.canvas.CGW_JSON.data);
+			{//write
+				component_data = $.extend(true, {}, MC.canvas.CGW_JSON.data);
+				component_data.name = option.name;
+
+				component_layout = $.extend(true, {}, MC.canvas.CGW_JSON.layout);
+				component_layout.networkName = option.networkName;
+			}
+			else
+			{//read
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.node[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
+
+				option.networkName = component_layout.networkName;
 			}
 
 			$(group).append(
@@ -743,7 +891,7 @@ MC.canvas.add = function (type, option, coordinate)
 				}),
 
 				////4. network name
-				Canvon.text(100, 95, option.network_name).attr({
+				Canvon.text(100, 95, option.networkName).attr({
 					'class': 'node-label network-name'
 				})
 
@@ -772,9 +920,21 @@ MC.canvas.add = function (type, option, coordinate)
 		case 'AWS.VPC.NetworkInterface':
 
 			if (create_mode)
-			{
-				$.extend(true, component_layout, MC.canvas.ENI_JSON.layout);
-				$.extend(true, component_data, MC.canvas.ENI_JSON.data);
+			{//write
+				component_data = $.extend(true, {}, MC.canvas.ENI_JSON.data);
+				component_data.name = option.name;
+
+				component_layout = $.extend(true, {}, MC.canvas.ENI_JSON.layout);
+			}
+			else
+			{//read
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.node[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
 			}
 
 			$(group).append(

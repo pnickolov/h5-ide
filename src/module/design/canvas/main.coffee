@@ -15,13 +15,13 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
             view.render template
 
             #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name ) ->
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
                 console.log 'canvas:RELOAD_RESOURCE'
-                # #temp
-                # require [ 'canvas_layout' ], ( canvas_layout ) ->
-                #     canvas_layout.listen()
-                #     canvas_layout.ready()
-                #     canvas_layout.connect()
+                #temp
+                if type is 'NEW_STACK'
+                    require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.create()
+                else if type is 'OPEN_STACK'
+                    require [ 'canvas_layout' ], ( canvas_layout ) -> canvas_layout.ready()
                 null
 
 

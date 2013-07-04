@@ -18,7 +18,11 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
 
         resizeCanvasPanel : ( type ) ->
             console.log 'resizeCanvasPanel = ' + type
+            #temp resize canvas panel
             canvasPanelResize()
+            #temp
+            require [ 'canvas_layout' ], ( canvas_layout ) -> canvas_layout.listen()
+            ###
             if type is 'OLD_STACK' or type is 'OLD_APP'
                 #temp
                 require [ 'canvas_layout' ], ( canvas_layout ) ->
@@ -36,6 +40,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
                     canvas_layout.listen()
                     canvas_layout.ready()
                     # canvas_layout.connect()
+            ###
     }
 
     return CanvasView

@@ -8,6 +8,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
 
     #private
     ami_instance_type = null
+    community_ami = null
 
     ResourcePanelModel = Backbone.Model.extend {
 
@@ -17,6 +18,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             'quickstart_ami'     : null
             'my_ami'             : null
             'favorite_ami'       : null
+            'community_ami'      : null
 
         #call service
         describeAvailableZonesService : ( region_name ) ->
@@ -62,7 +64,6 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             aws_model.quickstart { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
             aws_model.once 'AWS_QUICKSTART_RETURN', ( result ) ->
                 console.log 'AWS_QUICKSTART_RETURN'
-                console.log result
                 ami_list = []
                 ami_instance_type = result.resolved_data.ami_instance_type
                 _.map result.resolved_data.ami, ( value, key ) ->
@@ -88,9 +89,27 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, null
             ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
                 console.log 'EC2_AMI_DESC_IMAGES_RETURN'
-                console.log result
                 me.set 'my_ami', result.resolved_data
                 null
+
+        describeCommunityAmiService : ( region_name ) ->
+
+            me = this
+
+            me.set 'community_ami', null
+
+            if not community_ami
+                #get service(model)
+                aws_model.Public { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
+                aws_model.once 'AWS__PUBLIC_RETURN', ( result ) ->
+                    console.log 'AWS__PUBLIC_RETURN'
+                    ami_list = []
+                    
+                        
+                    
+                    null
+
+            me.set 'community_ami', community_ami
 
         #call service
         favoriteAmiService : ( region_name ) ->
@@ -104,7 +123,6 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             favorite_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
             favorite_model.once 'FAVORITE_INFO_RETURN', ( result ) ->
                 console.log 'FAVORITE_INFO_RETURN'
-                console.log result
                 _.map result.resolved_data, ( value ) ->
                     value.resource_info = $.parseJSON value.resource_info
                     _.map value.resource_info, ( val, key ) ->

@@ -126,6 +126,33 @@
 	</dl>
 </div>
 
+<!-- bubbleAMIMongoInfo -->
+<div class="bubble-head"></i>{{id}}</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>Name</dt>
+		<dd>{{name}}</dd>
+		<dt>Description</dt>
+		<dd>{{description}}</dd>
+		<dt>Architecture</dt>
+		<dd>{{architecture}}</dd>
+		<dt>Image Location</dt>
+		<dd>{{imageLocation}}</dd>
+		<dt>Public</dt>
+		<dd>{{isPublic}}</dd>
+		<dt>KernelId</dt>
+		<dd>{{kernelId}}</dd>
+		<dt>Root Device Name</dt>
+		<dd>{{rootDeviceName}}</dd>
+		<dt>Root Device Type</dt>
+		<dd>{{rootDeviceType}}</dd>
+		<dt>Image Size</dt>
+		<dd>{{imageSize}}</dd>
+		<dt>Support Instance Type</dt>
+		<dd>{{instance_type}}</dd>
+	</dl>
+</div>
+
 <!-- bubbleSnapshotInfo -->
 <div class="bubble-head">{{id}}</div>
 <div class="bubble-content">
@@ -149,7 +176,7 @@
 		<div class="content-wrap">
 			<div class="ami-left-col">
 				<div>
-					<input id="community-ami-input" class="input" type="text" placeholder="Filter AMI by name or ID" />
+					<input id="community-ami-input" class="input" type="text" placeholder="Filter AMI by name or ID{{ac}}" />
 				</div>
 				<div id="selectbox-ami-platform" class="selectbox">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">

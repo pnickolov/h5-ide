@@ -242,6 +242,8 @@ var ready = function () {
 		$('#' + this.id.replace('stat-','')).removeClass('hover');
 	});
 
+	
+
 //});
 }
 

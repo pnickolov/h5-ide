@@ -21,8 +21,9 @@ define [ 'jquery',
 
             #view
             view       = new View()
-            view.render template
+            #view.render template, null
             view.listen model
+            view.model = model
 
             #listen SWITCH_TAB
             #ide_event.onLongListen ide_event.SWITCH_TAB, ( type, target, region_name ) ->
@@ -39,12 +40,18 @@ define [ 'jquery',
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name ) ->
                 console.log 'resource:RELOAD_RESOURCE'
+                view.render template, {region: region_name}
+
                 model.describeAvailableZonesService region_name
                 model.describeSnapshotsService      region_name
                 model.quickstartService             region_name
                 model.myAmiService                  region_name
                 model.favoriteAmiService            region_name
+                
                 null
+
+            view.on 'LOADING_COMMUNITY_AMI', () ->
+                model.describeCommunityAmiService region_name
 
     unLoadModule = () ->
         #view.remove()

@@ -3,10 +3,9 @@
 #############################
 
 define [ 'event',
-         './temp_view',
          'backbone', 'jquery', 'handlebars',
          'UI.fixedaccordion', 'UI.selectbox', 'UI.toggleicon', 'UI.searchbar', 'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
-], ( ide_event, temp_view ) ->
+], ( ide_event, Backbone, $ ) ->
 
     ResourceView = Backbone.View.extend {
 
@@ -17,6 +16,7 @@ define [ 'event',
         quickstart_ami_tmpl    : Handlebars.compile $( '#quickstart-ami-tmpl' ).html()
         my_ami_tmpl            : Handlebars.compile $( '#my-ami-tmpl' ).html()
         favorite_ami_tmpl      : Handlebars.compile $( '#favorite-ami-tmpl' ).html()
+        
 
         initialize : ->
             #listen
@@ -31,13 +31,19 @@ define [ 'event',
             $( document ).delegate '#resource-panel',     'SEARCHBAR_SHOW', this.searchBarShowEvent
             $( document ).delegate '#resource-panel',     'SEARCHBAR_HIDE', this.searchBarHideEvent
             $( document ).delegate '#resource-panel',   'SEARCHBAR_CHANGE', this.searchBarChangeEvent
-            $( document ).delegate '#btn-browse-community-ami',   'click', this.openBrowseCommunityAMIsModal
+            $( document ).delegate '#btn-browse-community-ami',   'click' , this, this.openBrowseCommunityAMIsModal
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideResourcePanel
 
-        render   : ( template ) ->
+        render   : ( template, attrs ) ->
             console.log 'resource render'
-            $( this.el ).html template
+            if attrs
+                handler_tmpl = Handlebars.compile template
+
+                $( this.el ).html handler_tmpl attrs
+
+            else
+                $( this.el ).html template
             #
             fixedaccordion.resize()
             null
@@ -51,6 +57,7 @@ define [ 'event',
             this.listenTo this.model, 'change:quickstart_ami',    this.quickstartAmiRender
             this.listenTo this.model, 'change:my_ami',            this.myAmiRender
             this.listenTo this.model, 'change:favorite_ami',      this.favoriteAmiRender
+            this.listenTo this.model, 'change:community_ami',     this.communityAmiRender
 
         resourceSelectEvent : ( event, id ) ->
             console.log 'resourceSelectEvent = ' + id
@@ -135,9 +142,78 @@ define [ 'event',
             $( '.favorite-ami-list' ).html this.favorite_ami_tmpl this.model.attributes
             null
 
-        openBrowseCommunityAMIsModal : () ->
+        openBrowseCommunityAMIsModal : ( event ) ->
+
             console.log 'openBrowseCommunityAMIsModal'
-            temp_view.ready()
+
+            event.data.trigger 'LOADING_COMMUNITY_AMI', null
+
+        communityAmiRender : () ->
+
+            modal(MC.template.browseCommunityAmi(this.model.attributes.community_ami), false)
+            $($('#selectbox-ami-platform').find('.cur-value')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html())
+            $('#community-ami-input').on 'keyup', (event)->
+                filter.update $('#community-ami-filter'), {
+                    value: $(this).val()
+                    type:{
+                        publicprivate: radiobuttons.data($('#filter-ami-public-private'))
+                        ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
+                        bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
+                        platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+                    }
+                }
+                
+            $('#filter-ami-public-private').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
+
+                    result_set = {
+                        value:$('#community-ami-input').val()
+                        type:{
+                            publicprivate:cur_radion
+                            ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
+                            bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
+                            platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data 'id'
+                        }
+                    }
+
+                    filter.update($('#community-ami-filter'), result_set)
+
+            $('#filter-ami-EBS-Instance').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
+                
+                    result_set = {
+                        value:$('#community-ami-input').val(),
+                        type:{
+                            publicprivate: radiobuttons.data($('#filter-ami-public-private'))
+                            ebs: cur_radion
+                            bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
+                            platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+                        }
+                    }
+
+                    filter.update($('#community-ami-filter'), result_set)
+
+            $('#filter-ami-32bit-64bit').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
+                    result_set = {
+                        value:$('#community-ami-input').val()
+                        type:{
+                            publicprivate: radiobuttons.data($('#filter-ami-public-private'))
+                            ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
+                            bit: cur_radion
+                            platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+                        }
+                    }
+                    filter.update($('#community-ami-filter'), result_set)
+
+            $('#selectbox-ami-platform').on 'OPTION_CHANGE', (event, id) ->
+                result_set = {
+                    value:$('#community-ami-input').val(),
+                    type:{
+                        publicprivate: radiobuttons.data($('#filter-ami-public-private')),
+                        ebs: radiobuttons.data($('#filter-ami-EBS-Instance')),
+                        bit: radiobuttons.data($('#filter-ami-32bit-64bit')),
+                        platform: id
+                    } }
+
+                filter.update($('#community-ami-filter'), result_set)
             null
 
     }

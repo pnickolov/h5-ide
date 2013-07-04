@@ -1,7 +1,7 @@
 <!--{{ .availability-zone-data }}-->
 {{#each availability_zone.item }}
 <li>
-	<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas" data-type="AWS.EC2.AvailableZone" data-option='{"name": "{{ zoneName }}"}'>
+	<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas" data-type="AWS.EC2.AvailabilityZone" data-option='{"name": "{{ zoneName }}"}'>
 		<div class="resource-icon resource-icon-az"></div>
 		<div class="resource-label">{{ zoneName }}</div>
 	</div>
@@ -11,7 +11,7 @@
 <!--{{ .resoruce-snapshot-data }}-->
 {{#each resoruce_snapshot.item }}
 <li>
-	<div class="resource-item bubble"  data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{ snapshotId }}","startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}"}' data-type="AWS.EC2.EBS.Volume" data-option='{"name": "/dev/sdf", "volumeSize":"{{ volumeSize }}", snapshotId: "{{ snapshotId }}"}'>
+	<div class="resource-item bubble"  data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{ snapshotId }}","startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}"}' data-type="AWS.EC2.EBS.Volume" data-option='{"name": "/dev/sdf", "volumeSize":"{{ volumeSize }}", "snapshotId": "{{ snapshotId }}"}'>
 		<div class="resource-icon resource-icon-ebs-snapshot"></span class="ebs-size">{{volumeSize}} GB</span></div>
 		<div class="resource-label">{{ snapshotId }}</div>
 	</div>

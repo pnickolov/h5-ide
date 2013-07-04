@@ -1,9 +1,10 @@
 // MC.Canvas
 // Author: Angel
 
+MC.canvas_data = {};
+
 MC.canvas = {
 	selected_node: [],
-	current_tab: '',
 
 	_addPad: function (point, adjust)
 	{
@@ -711,14 +712,14 @@ MC.canvas.layout = {
 
 	save: function ()
 	{
-		return JSON.stringify( MC.tab[ MC.canvas.current_tab ].data );
+		return JSON.stringify( MC.canvas_data );
 	}
 };
 
 MC.canvas.data = {
 	get: function (key)
 	{
-		var context = MC.tab[ MC.canvas.current_tab ].data,
+		var context = MC.canvas_data,
 			namespaces = key.split('.'),
 			last = namespaces.pop(),
 			i = 0,
@@ -735,7 +736,7 @@ MC.canvas.data = {
 
 	set: function (key, value)
 	{
-		var context = MC.tab[ MC.canvas.current_tab ].data,
+		var context = MC.canvas_data,
 			namespaces = key.split('.'),
 			last = namespaces.pop(),
 			i = 0,
@@ -752,7 +753,7 @@ MC.canvas.data = {
 
 	delete: function (key)
 	{
-		var context = MC.tab[ MC.canvas.current_tab ].data,
+		var context = MC.canvas_data,
 			namespaces = key.split('.'),
 			last = namespaces.pop(),
 			i = 0,

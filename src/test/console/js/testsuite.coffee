@@ -595,7 +595,7 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             aws_model.once "AWS_QUICKSTART_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
-        if current_service.toLowerCase() == "awsutil" && current_resource.toLowerCase() == "aws" && current_api == "Public"
+        if current_service.toLowerCase() == "awsutil" && current_resource.toLowerCase() == "aws" && current_api == "public"
 
             #aws.Public
             aws_model.Public {sender: me}, username, session_id, region_name

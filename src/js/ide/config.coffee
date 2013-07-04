@@ -3,7 +3,7 @@ require.config {
 
 	baseUrl            : './'
 
-	waitSeconds        : 3
+	waitSeconds        : 30
 
 	deps               : [ 'js/ide/main' ]
 

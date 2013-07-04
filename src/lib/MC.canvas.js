@@ -702,12 +702,16 @@ MC.canvas.layout = {
 
 	create: function ()
 	{
+		//clone MC.canvas.STACK_JSON to MC.canvas_data
+		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
+
 		var canvas_size = MC.canvas.data.get("layout.size");
 
 		$('#canvas_body').css({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
 		});
+
 	},
 
 	save: function ()

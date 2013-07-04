@@ -96,7 +96,7 @@ var ready = function ()
 {
 
 	//temp
-	MC.tab[ MC.canvas.current_tab ].data = $.extend(true, {}, MC.canvas.STACK_JSON);
+	MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
 
 	/////////// create node ///////////
 	//simulate drag from resource panel

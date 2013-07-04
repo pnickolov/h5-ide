@@ -709,6 +709,9 @@ MC.canvas.layout = {
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
 		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
 
+		//temp for new stack
+		MC.canvas_data.platform = "default-vpc";
+
 		var canvas_size = MC.canvas.data.get("layout.size");
 
 		$('#canvas_body').css({

@@ -2,6 +2,8 @@ MC.canvas = MC.canvas || {};
 
 var constant_data = {
 
+
+
 	GRID_WIDTH: 10,
 	GRID_HEIGHT: 10,
 
@@ -51,7 +53,7 @@ var constant_data = {
 			'AWS.ELB': [ 'Canvas' ],
 			'AWS.EC2.AvailabilityZone': [ 'Canvas' ],
 			'AWS.EC2.Instance': [ 'AWS.EC2.AvailabilityZone' ],
-			'AWS.EC2.EBS.Volume': [ 'AWS.EC2.AvailabilityZone ']
+			'AWS.EC2.EBS.Volume': [ 'AWS.EC2.AvailabilityZone' ]
 		},
 		'default-vpc': {
 			'AWS.ELB': [ 'Canvas' ],
@@ -63,7 +65,6 @@ var constant_data = {
 		//'custom-vpc'
 		'ec2-vpc': {
 			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
-			'AWS.EC2.AvailabilityZone': [ 'AWS.VPC.VPC' ],
 			'AWS.VPC.Subnet': [ 'AWS.VPC.VPC' ],
 			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],

@@ -1237,7 +1237,7 @@ MC.canvas.event.siderbarDrag = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
 		if (
-			node_type === 'node' &&
+			target_component_type === 'node' &&
 			MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
 			MC.canvas.isMatchPlace(node_type, coordinate.x, coordinate.y)
 		)
@@ -1246,7 +1246,7 @@ MC.canvas.event.siderbarDrag = {
 		}
 
 		if (
-			node_type === 'group' &&
+			target_component_type === 'group' &&
 			MC.canvas.isMatchPlace(node_type, coordinate.x, coordinate.y)
 		)
 		{

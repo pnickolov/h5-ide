@@ -42,65 +42,336 @@ MC.canvas = {
 			closestRange = 2 * MC.canvas.CORNER_RADIUS; //2*cornerRadius
 
 		/*1.above or below*/
-		if (prev[0] === current[0])
+		if (prev.x === current.x)
 		{
 			//1.1 calc p1
-			delta = current[1] - prev[1];
+			delta = current.y - prev.y;
 			if (Math.abs(delta) <= closestRange )
 			{
 				//use middle point between prev and current
-				p1 = [current[0], (prev[1] + current[1]) / 2];
+				p1 = { 'x': current.x, 'y': (prev.y + current.y) / 2};
 			}
 			else
 			{
 				sign = delta ? (delta < 0 ? -1 : 1) : 0;
-				p1 = [current[0], current[1] - cornerRadius * sign];
+				p1 = { 'x': current.x, 'y': current.y - cornerRadius * sign};
 			}
 
 			//1.2 calc p2
-			delta = current[0] - next[0];
+			delta = current.x - next.x;
 			if (Math.abs(delta) <= closestRange)
 			{
 				//use middle point between current and next
-				p2 = [(current[0] + next[0]) / 2, current[1]];
+				p2 = { 'x': (current.x + next.x) / 2, 'y': current.y};
 			}
 			else
 			{
 				sign = delta ? (delta < 0 ? -1 : 1) : 0;
-				p2 = [current[0] - cornerRadius * sign, current[1]];
+				p2 = { 'x': current.x - cornerRadius * sign, 'y': current.y};
 			}
 		}
 		else
 		{
 			/*2.left or right*/
 			//2.1 calc p1
-			delta = current[0] - prev[0];
+			delta = current.x - prev.x;
 			if (Math.abs(delta) <= closestRange)
 			{
 				//use middle point between prev and current
-				p1 = [(prev[0] + current[0]) / 2, current[1]];
+				p1 = { 'x': (prev.x + current.x) / 2, 'y': current.y};
 			}
 			else
 			{
 				sign = delta ? (delta < 0 ? -1 : 1) : 0;
-				p1 = [current[0] - cornerRadius * sign, current[1]];
+				p1 = { 'x': current.x - cornerRadius * sign, 'y': current.y};
 			}
 
 			//2.2 calc p2
-			delta = current[1] - next[1];
+			delta = current.y - next.y;
 			if (Math.abs(delta) <= closestRange)
 			{
 				//use middle point between current and next
-				p2 = [current[0], (current[1] + next[1]) / 2];
+				p2 = { 'x': current.x, 'y': (current.y + next.y) / 2};
 			}
 			else
 			{
 				sign = delta ? (delta < 0 ? -1 : 1) : 0;
-				p2 = [current[0], current[1] - cornerRadius * sign];
+				p2 = { 'x': current.x, 'y': current.y - cornerRadius * sign};
 			}
 		}
 
-		return ' L ' + p1[0] + ' ' + p1[1] + ' Q ' + current[0] + ' ' + current[1] + ' ' + p2[0] + ' ' + p2[1];
+		return ' L ' + p1.x + ' ' + p1.y + ' Q ' + current.x + ' ' + current.y + ' ' + p2.x + ' ' + p2.y;
+	},
+
+	_round_corner: function (controlPoints)
+	{
+		//add by xjimmy, draw round corner of fold line
+
+		var last_p = {},
+			prev_p = {},
+			next_p = {};
+
+		$.each(controlPoints, function (idx, value)
+		{
+			if (idx === 0)
+			{
+				//start0 point
+				d = 'M ' + value.x + " " + value.y;
+			}
+			else if (idx === (controlPoints.length - 1))
+			{
+				//end0 point
+				d += ' L ' + value.x + ' ' + value.y;
+			}
+			else
+			{
+				//middle point
+				prev_p = controlPoints[idx - 1]; //prev point
+				next_p = controlPoints[idx + 1]; //next point
+
+				if (
+					(prev_p.x === value.x && next_p.x === value.x) ||
+					(prev_p.y === value.y && next_p.y === value.y)
+				)
+				{
+					//three point one line
+					d += ' L ' + value.x + ' ' + value.y;
+				}
+				else
+				{
+					//fold line
+					d += MC.canvas._getPath(prev_p, value, next_p);
+				}
+			}
+			last_p = value;
+		});
+
+		return d;
+	},
+
+	_route: function(controlPoints, fromPt, fromDir, toPt, toDir)
+	{
+		//add by xjimmy, connection algorithm (from ManhattanConnectionRouter of draw2d)
+
+		var xDiff = fromPt.x - toPt.x;
+		var yDiff = fromPt.y - toPt.y;
+		var point;
+		var dir;
+		var pos;
+
+		if(((xDiff * xDiff) < (this.TOLxTOL)) && ((yDiff * yDiff) < (this.TOLxTOL))) {
+			controlPoints.push({ 'x': toPt.x, 'y': toPt.y });
+			return;
+		}
+		if(fromDir === this.LEFT) {
+			if((xDiff > 0) && ((yDiff * yDiff) < this.TOL) && (toDir === this.RIGHT)) {
+				point = toPt;
+				dir = toDir;
+			} else {
+				if(xDiff < 0) {
+					point = { 'x': fromPt.x - this.MINDIST, 'y': fromPt.y };
+				} else {
+					if(((yDiff > 0) && (toDir === this.DOWN)) || ((yDiff < 0) && (toDir === this.UP))) {
+						point = { 'x': toPt.x, 'y': fromPt.y };
+					} else {
+						if(fromDir == toDir) {
+							pos = Math.min(fromPt.x, toPt.x) - this.MINDIST;
+							point = { 'x': pos, 'y': fromPt.y };
+						} else {
+							point = { 'x': fromPt.x - (xDiff / 2), 'y': fromPt.y };
+						}
+					}
+				}
+				if(yDiff > 0) {
+					dir = this.UP;
+				} else {
+					dir = this.DOWN;
+				}
+			}
+		} else {
+			if(fromDir === this.RIGHT) {
+				if((xDiff < 0) && ((yDiff * yDiff) < this.TOL) && (toDir === this.LEFT)) {
+					point = toPt;
+					dir = toDir;
+				} else {
+					if(xDiff > 0) {
+						point = { 'x': fromPt.x + this.MINDIST, 'y': fromPt.y };
+					} else {
+						if(((yDiff > 0) && (toDir === this.DOWN)) || ((yDiff < 0) && (toDir === this.UP))) {
+							point = { 'x': toPt.x, 'y': fromPt.y };
+						} else {
+							if(fromDir === toDir) {
+								pos = Math.max(fromPt.x, toPt.x) + this.MINDIST;
+								point = { 'x': pos, 'y': fromPt.y };
+							} else {
+								point = { 'x': fromPt.x - (xDiff / 2), 'y': fromPt.y };
+							}
+						}
+					}
+					if(yDiff > 0) {
+						dir = this.UP;
+					} else {
+						dir = this.DOWN;
+					}
+				}
+			} else {
+				if(fromDir === this.DOWN) {
+					if(((xDiff * xDiff) < this.TOL) && (yDiff < 0) && (toDir === this.UP)) {
+						point = toPt;
+						dir = toDir;
+					} else {
+						if(yDiff > 0) {
+							point = { 'x': fromPt.x, 'y': fromPt.y + this.MINDIST };
+						} else {
+							if(((xDiff > 0) && (toDir === this.RIGHT)) || ((xDiff < 0) && (toDir === this.LEFT))) {
+								point = { 'x': fromPt.x, 'y': toPt.y };
+							} else {
+								if(fromDir === toDir) {
+									pos = Math.max(fromPt.y, toPt.y) + this.MINDIST;
+									point = { 'x': fromPt.x, 'y': pos };
+								} else {
+									point = { 'x': fromPt.x, 'y': fromPt.y - (yDiff / 2) };
+								}
+							}
+						}
+						if(xDiff > 0) {
+							dir = this.LEFT;
+						} else {
+							dir = this.RIGHT;
+						}
+					}
+				} else {
+					if(fromDir === this.UP) {
+						if(((xDiff * xDiff) < this.TOL) && (yDiff > 0) && (toDir === this.DOWN)) {
+							point = toPt;
+							dir = toDir;
+						} else {
+							if(yDiff < 0) {
+								point = { 'x': fromPt.x, 'y': fromPt.y - this.MINDIST };
+							} else {
+								if(((xDiff > 0) && (toDir === this.RIGHT)) || ((xDiff < 0) && (toDir === this.LEFT))) {
+									point = { 'x': fromPt.x, 'y': toPt.y };
+								} else {
+									if(fromDir === toDir) {
+										pos = Math.min(fromPt.y, toPt.y) - this.MINDIST;
+										point = { 'x': fromPt.x, 'y': pos };
+									} else {
+										point = { 'x': fromPt.x, 'y': fromPt.y - (yDiff / 2) };
+									}
+								}
+							}
+							if(xDiff > 0) {
+								dir = this.LEFT;
+							} else {
+								dir = this.RIGHT;
+							}
+						}
+					}
+				}
+			}
+		}
+		this._route(controlPoints, point, dir, toPt, toDir);
+		controlPoints.push(fromPt);
+	},
+
+	_route2: function (controlPoints, start0, end0)
+	{
+		//add by xjimmy, connection algorithm (xjimmy's algorithm)
+
+		var start = {},
+			end = {},
+			//start.x>=end.x
+			start_0_90 = end_0_90 = start_180_270 = end_180_270 = false,
+			//start.x<end.x
+			start_0_270 = end_0_270 = start_90_180 = end_90_180 = false;
+
+		//deep copy
+		$.extend(true, start, start0);
+		$.extend(true, end, end0);
+
+		if (Math.sqrt(Math.pow(end0.y - start0.y, 2) + Math.pow(end0.x-start0.x, 2)) > MC.canvas.PORT_PADDING * 2)
+		{
+			//add pad to start and end
+			MC.canvas._addPad(start, 0);
+			MC.canvas._addPad(end, 0);
+		}
+
+		//ensure start.y>=end.y
+		if (start.y < end.y)
+		{
+			var tmp  = {};
+			$.extend(true, tmp, start);
+			$.extend(true, start, end);
+			end = tmp;
+			//swap start0 and end0 when swap start and end
+			var tmp0  = {};
+			$.extend(true, tmp0, start0);
+			$.extend(true, start0, end0);
+			end0 = tmp0;
+		}
+
+		if (start.x >= end.x)
+		{
+			start_0_90 = start.connectionAngle === 0 || start.connectionAngle === 90;
+			end_0_90 = end.connectionAngle === 0 || end.connectionAngle === 90;
+			start_180_270 = start.connectionAngle === 180 || start.connectionAngle === 270;
+			end_180_270 = end.connectionAngle === 180 || end.connectionAngle === 270;
+		}
+		else
+		{
+			//start.x<end.x
+			start_0_270 = start.connectionAngle === 0 || start.connectionAngle === 270;
+			end_0_270 = end.connectionAngle === 0 || end.connectionAngle === 270;
+			start_90_180 = start.connectionAngle === 90 || start.connectionAngle === 180;
+			end_90_180 = end.connectionAngle === 90 || end.connectionAngle === 180;
+		}
+
+		//1.start point
+		controlPoints.push( { 'x': start0.x, 'y': start0.y });
+		controlPoints.push( { 'x': start.x, 'y': start.y });
+
+		//2.control point
+		if (
+			(start_0_90 && end_0_90) ||
+			(start_90_180 && end_90_180)
+		)
+		{
+			//A
+			controlPoints.push( { 'x': start.x, 'y': end.y });
+		}
+		else if (
+			(start_180_270 && end_180_270) ||
+			(start_0_270 && end_0_270)
+		)
+		{
+			//B
+			controlPoints.push( { 'x': end.x, 'y': start.y });
+		}
+		else if (
+			(start_0_90 && end_180_270) ||
+			(start_90_180 && end_0_270)
+		)
+		{
+			//C
+			controlPoints.push( { 'x': start.x, 'y': (start.y + end.y) / 2 });
+			controlPoints.push( { 'x': end.x, 'y': (start.y + end.y) / 2 });
+		}
+		else if (
+			(start_180_270 && end_0_90) ||
+			(start_0_270 && end_90_180)
+		)
+		{
+			//D
+			controlPoints.push( { 'x': (start.x + end.x) / 2, 'y': start.y });
+			controlPoints.push( { 'x': (start.x + end.x) / 2, 'y': end.y });
+		}
+
+		//3.end point
+		controlPoints.push( { 'x': end.x, 'y': end.y });
+		controlPoints.push( { 'x': end0.x, 'y': end0.y });
+
+		return controlPoints;
+
 	},
 
 	updateResizer: function(node, width, height)
@@ -195,11 +466,6 @@ MC.canvas = {
 
 				//add by xjimmy
 				var controlPoints = [],
-					//start.x>=end.x
-					start_0_90 = end_0_90 = start_180_270 = end_180_270 = false,
-					//start.x<end.x
-					start_0_270 = end_0_270 = start_90_180 = end_90_180 = false;
-
 					start0 = {
 						x : startX,
 						y : startY,
@@ -209,9 +475,7 @@ MC.canvas = {
 						x: endX,
 						y: endY,
 						connectionAngle: to_port.data('angle')
-					},
-					start = {},
-					end = {};
+					};
 
 				//add pad to start0 and end0
 				MC.canvas._addPad(start0, 1);
@@ -225,136 +489,25 @@ MC.canvas = {
 				}
 				else
 				{
-					//deep copy
-					$.extend(true, start, start0);
-					$.extend(true, end, end0);
 
-					if (Math.sqrt(Math.pow(end0.y - start0.y, 2) + Math.pow(end0.x-start0.x, 2)) > MC.canvas.PORT_PADDING * 2)
-					{
-						//add pad to start and end
-						MC.canvas._addPad(start, 0);
-						MC.canvas._addPad(end, 0);
-					}
+					///// route 1 (xjimmy's algorithm)/////
+					//MC.canvas._route2( controlPoints, start0, end0 );
 
-					//ensure start.y>=end.y
-					if (start.y < end.y)
-					{
-						var tmp  = {};
-						$.extend(true, tmp, start);
-						$.extend(true, start, end);
-						end = tmp;
-						//swap start0 and end0 when swap start and end
-						var tmp0  = {};
-						$.extend(true, tmp0, start0);
-						$.extend(true, start0, end0);
-						end0 = tmp0;
-					}
+					///// route 2 (ManhattanConnectionRouter, draw2d's algorithm) /////
+					MC.canvas._route( controlPoints, start0, from_port.data('angle'), end0, to_port.data('angle') );
 
-					if (start.x >= end.x)
+					///// draw fold line /////
+					if (controlPoints.length>0)
 					{
-						start_0_90 = start.connectionAngle === 0 || start.connectionAngle === 90;
-						end_0_90 = end.connectionAngle === 0 || end.connectionAngle === 90;
-						start_180_270 = start.connectionAngle === 180 || start.connectionAngle === 270;
-						end_180_270 = end.connectionAngle === 180 || end.connectionAngle === 270;
-					}
-					else
-					{
-						//start.x<end.x
-						start_0_270 = start.connectionAngle === 0 || start.connectionAngle === 270;
-						end_0_270 = end.connectionAngle === 0 || end.connectionAngle === 270;
-						start_90_180 = start.connectionAngle === 90 || start.connectionAngle === 180;
-						end_90_180 = end.connectionAngle === 90 || end.connectionAngle === 180;
-					}
+						////// draw polyline /////
+						//MC.paper.polyline(controlPoints);
 
-					//1.start point
-					controlPoints.push([start0.x, start0.y]);
-					controlPoints.push([start.x, start.y]);
-
-					//2.control point
-					if (
-						(start_0_90 && end_0_90) ||
-						(start_90_180 && end_90_180)
-					)
-					{
-						//A
-						controlPoints.push([start.x, end.y]);
-					}
-					else if (
-						(start_180_270 && end_180_270) ||
-						(start_0_270 && end_0_270)
-					)
-					{
-						//B
-						controlPoints.push([end.x, start.y]);
-					}
-					else if (
-						(start_0_90 && end_180_270) ||
-						(start_90_180 && end_0_270)
-					)
-					{
-						//C
-						controlPoints.push([start.x, (start.y + end.y) / 2]);
-						controlPoints.push([end.x, (start.y + end.y) / 2]);
-					}
-					else if (
-						(start_180_270 && end_0_90) ||
-						(start_0_270 && end_90_180)
-					)
-					{
-						//D
-						controlPoints.push([(start.x + end.x) / 2, start.y]);
-						controlPoints.push([(start.x + end.x) / 2, end.y]);
-					}
-
-					//3.end point
-					controlPoints.push([end.x, end.y]);
-					controlPoints.push([end0.x, end0.y]);
-
-					//draw fold line
-					//MC.paper.polyline(controlPoints);
-
-					//draw round corner line
-					var d = "",
-						last_p = [];
-
-					$.each(controlPoints, function (idx, value)
-					{
-						if (idx === 0)
+						/////draw round corner line /////
+						var d = MC.canvas._round_corner( controlPoints );
+						if (d !== "")
 						{
-							//start0 point
-							d = 'M ' + value[0] + " " + value[1];
+							MC.paper.path(d);
 						}
-						else if (idx === (controlPoints.length - 1))
-						{
-							//end0 point
-							d += ' L ' + value[0] + ' ' + value[1];
-						}
-						else
-						{
-							//middle point
-							prev_p = controlPoints[idx - 1]; //prev point
-							next_p = controlPoints[idx + 1]; //next point
-
-							if (
-								(prev_p[0] === value[0] && next_p[0] === value[0]) ||
-								(prev_p[1] === value[1] && next_p[1] === value[1])
-							)
-							{
-								//three point one line
-								d += ' L ' + value[0] + ' ' + value[1];
-							}
-							else
-							{
-								//fold line
-								d += MC.canvas._getPath(prev_p, value, next_p);
-							}
-						}
-						last_p = value;
-					});
-
-					if (d !== "")
-					{
-						MC.paper.path(d);
 					}
 
 				}
@@ -1099,7 +1252,7 @@ MC.canvas.event.drawConnection = {
 			endY = event.pageY - canvas_offset.top,
 			arrow_length = 8,
 			angle = Math.atan2(endY - startY, endX - startX),
-			arrowPI = Math.PI / 6
+			arrowPI = Math.PI / 6,
 			arrowAngleA = angle - arrowPI,
 			arrowAngleB = angle + arrowPI;
 

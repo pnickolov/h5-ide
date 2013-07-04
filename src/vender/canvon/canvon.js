@@ -103,8 +103,8 @@ Canvon.fn = Canvon.prototype = {
 			i;
 
 		for (i = 0; i < length; i++) {
-			points.push(path[i][0] + ',' + path[i][1]);
-		};
+			points.push(path[i].x + ',' + path[i].y);
+		}
 
 		return this.draw(this, 'polyline').attr({
 			'points': points.join(' ')
@@ -119,7 +119,7 @@ Canvon.fn = Canvon.prototype = {
 
 		for (i = 0; i < length; i++) {
 			points.push(path[i][0] + ',' + path[i][1]);
-		};
+		}
 
 		return this.draw(this, 'polygon').attr({
 			'points': points.join(' ')

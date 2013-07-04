@@ -12,6 +12,19 @@ var constant_data = {
 	COMPONENT_WIDTH_GRID: 10,
 	COMPONENT_HEIGHT_GRID: 10,
 
+
+	//constant for _route()
+	MINDIST: 20,
+	TOL: 0.1,
+	TOLxTOL: 0.01,
+	TOGGLE_DIST: 5,
+	UP : 90,
+	RIGHT : 0,
+	DOWN : 270,
+	LEFT : 180,
+
+
+	//constant for MC.canvas.add
 	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 14 l 2 0 l 6 -6 z",//new style
 
 	PORT_PADDING: 6, //port padding (to point of junction)
@@ -27,6 +40,7 @@ var constant_data = {
 	PORT_TOP_ROTATE: ", rotate(90,0,9)",
 	PORT_LEFT_ROTATE: ", rotate(180,0,9)",
 	PORT_BOTTOM_ROTATE: ", rotate(270,0,9)",
+
 
 	COLOR_BLUE: '#88afe6',
 	COLOR_GREEN: '#97bf7d',

@@ -127,8 +127,9 @@ MC.canvas = {
 		var canvas_offset = $('#svg_canvas').offset(),
 			from_uid = from_node.attr('id'),
 			to_uid = to_node.attr('id'),
-			from_type = MC.canvas.data.get('layout.component.node.' + from_uid + '.type'),
-			to_type = MC.canvas.data.get('layout.component.node.' + to_uid + '.type'),
+			layout_node_data = MC.canvas.data.get('layout.component.node'),
+			from_type = layout_node_data[ from_uid ].type,
+			to_type = layout_node_data[ to_uid ].type,
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
 			layout_connection_data,
@@ -136,6 +137,9 @@ MC.canvas = {
 			to_port,
 			from_port_offset,
 			to_port_offset,
+			from_node_connection_data,
+			to_node_connection_data,
+			is_connected,
 			startX,
 			startY,
 			endX,
@@ -155,9 +159,9 @@ MC.canvas = {
 				});
 			}
 
-			var from_node_connection_data = MC.canvas.data.get('layout.component.node.' + from_uid + '.connection') || [],
-				to_node_connection_data = MC.canvas.data.get('layout.component.node.' + to_uid + '.connection') || [],
-				is_connected = false;
+			from_node_connection_data = layout_node_data[ from_uid ].connection || [];
+			to_node_connection_data = layout_node_data[ to_uid ].connection || [];
+			is_connected = false;
 
 			$.each(from_node_connection_data, function (key, value)
 			{
@@ -1233,11 +1237,20 @@ MC.canvas.event.siderbarDrag = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
 		if (
+			node_type === 'node' &&
 			MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
 			MC.canvas.isMatchPlace(node_type, coordinate.x, coordinate.y)
 		)
 		{
 			var new_node = MC.canvas.add(node_type, target.data('option'), coordinate );
+		}
+
+		if (
+			node_type === 'group' &&
+			MC.canvas.isMatchPlace(node_type, coordinate.x, coordinate.y)
+		)
+		{
+			MC.canvas.add(node_type, target.data('option'), coordinate);
 		}
 
 		event.data.shadow.remove();

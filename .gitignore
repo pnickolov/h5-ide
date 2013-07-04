@@ -20,7 +20,6 @@ src/vender/**/*.*
 src/js/*.js
 src/js/**/*.js
 !src/js/ide/layout.js
-!src/js/ide/canvas-layout.js
 
 #ignore model
 src/model/**/*.js

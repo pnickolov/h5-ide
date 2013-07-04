@@ -49,25 +49,30 @@ var constant_data = {
 	MATCH_PLACEMENT: {
 		'ec2-classic': {
 			'AWS.ELB': [ 'Canvas' ],
+			'AWS.EC2.AvailabilityZone': [ 'Canvas' ],
 			'AWS.EC2.Instance': [ 'AWS.EC2.AvailabilityZone' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.EC2.AvailabilityZone ']
 		},
 		'default-vpc': {
 			'AWS.ELB': [ 'Canvas' ],
+			'AWS.EC2.AvailabilityZone': [ 'Canvas' ],
 			'AWS.EC2.Instance': [ 'AWS.EC2.AvailabilityZone' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.EC2.AvailabilityZone' ],
-			'AWS.VPC.NetworkInterface': [ 'AWS.EC2.AvailabilityZone ']
+			'AWS.VPC.NetworkInterface': [ 'AWS.EC2.AvailabilityZone']
 		},
 		//'custom-vpc'
 		'ec2-vpc': {
 			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
+			'AWS.EC2.AvailabilityZone': [ 'AWS.VPC.VPC' ],
+			'AWS.VPC.Subnet': [ 'AWS.VPC.VPC' ],
 			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],
 			'AWS.VPC.NetworkInterface': [ 'AWS.VPC.Subnet' ],
 			'AWS.VPC.CustomerGateway': [ 'Canvas' ],
 			'AWS.VPC.RouteTable': [ 'AWS.VPC.VPC' ],
 			'AWS.VPC.InternetGateway': [ 'AWS.VPC.VPC' ],
-			'AWS.VPC.VPNGateway': [ 'AWS.VPC.VPC']
+			'AWS.VPC.VPNGateway': [ 'AWS.VPC.VPC' ],
+			'AWS.EC2.AvailabilityZone': [ 'Canvas','AWS.VPC.VPC' ]
 		}
 	},
 

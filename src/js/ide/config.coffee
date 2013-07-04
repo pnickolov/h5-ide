@@ -3,7 +3,7 @@ require.config {
 
 	baseUrl            : './'
 
-	waitSeconds        : 30
+	waitSeconds        : 3
 
 	deps               : [ 'js/ide/main' ]
 
@@ -279,3 +279,6 @@ require.config {
 		#	exports    : 'MC.canvas'
 
 }
+
+requirejs.onError = ( err ) ->
+    console.log 'error type: ' + err.requireType + ', modules: ' + err.requireModules

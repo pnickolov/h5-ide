@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'ami_service', 'ami_vo'], ( Backbone, ami_service, ami_vo ) ->
+define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
 
     AMIModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : ami_vo.ami
+            vo : {}
         }
 
         ###### api ######

@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'instance_vo', 'result_vo', 'constant', 'jquery' ], ( instance_vo, result_vo, constant, $ ) ->
+define [  'result_vo', 'constant', 'jquery' ], (result_vo, constant, $ ) ->
 
 
     #///////////////// Parser for RunInstances return  /////////////////

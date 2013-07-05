@@ -22,7 +22,11 @@ define [ 'underscore', 'backbone' ], () ->
         #temp
         NAVIGATION_COMPLETE : 'NAVIGATION_COMPLETE'
         HEADER_COMPLETE     : 'HEADER_COMPLETE'
+        DASHBOARD_COMPLETE  : 'DASHBOARD_COMPLETE'
         DESIGN_COMPLETE     : 'DESIGN_COMPLETE'
+        RESOURCE_COMPLETE   : 'RESOURCE_COMPLETE'
+        #
+        RELOAD_RESOURCE     : 'RELOAD_RESOURCE'
 
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'
@@ -33,6 +37,8 @@ define [ 'underscore', 'backbone' ], () ->
         SWITCH_DASHBOARD    : 'SWITCH_DASHBOARD'
 
         TERMINATE_APP_TAB   : 'TERMINATE_APP_TAB'
+
+        SAVE_DESIGN_MODULE  : 'SAVE_DESIGN_MODULE'
 
         #result app stack region empty_region list
         RESULT_APP_LIST     : 'RESULT_APP_LIST'

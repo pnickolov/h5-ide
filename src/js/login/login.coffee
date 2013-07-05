@@ -97,4 +97,5 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 
 	#public object
 	ready : () ->
+		$( '#login-btn' ).removeAttr 'disabled'
 		$( '#login-form' ).submit( MC.login )

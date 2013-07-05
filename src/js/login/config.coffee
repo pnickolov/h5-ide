@@ -1,40 +1,9 @@
 
-###
-//config
-require.config({
-
-	baseUrl         : './',
-
-	deps            : [ 'js/login/main' ],
-
-	paths           : {
-
-		'jquery'    : 'vender/jquery/jquery',
-
-		'MC'        : 'lib/MC.core',
-
-		'login'     : 'js/login/login'
-
-	},
-
-	shim            : {
-
-		'jquery'    : {
-			exports : '$'
-		},
-
-		'MC'        : {
-			deps    : [ 'jquery' ],
-			exports : 'MC'
-		}
-	}
-
-});
-###
-
 require.config {
 
 	baseUrl               : './'
+
+	waitSeconds           : 30
 
 	deps                  : [ 'js/login/main' ]
 
@@ -84,3 +53,6 @@ require.config {
 			exports       : 'MC'
 
 }
+
+requirejs.onError = ( err ) ->
+    console.log 'error type: ' + err.requireType + ', modules: ' + err.requireModules

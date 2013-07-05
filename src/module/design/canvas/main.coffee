@@ -2,23 +2,28 @@
 #  Controller for design/canvas module
 ####################################
 
-define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, template, event ) ->
+define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, template, ide_event ) ->
 
     #private
     loadModule = () ->
-
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="canvas-tmpl">' + template + '</script>'
-
-        #load remote html template
-        $( template ).appendTo '#canvas'
 
         #load remote module1.js
         require [ './module/design/canvas/view' ], ( View ) ->
 
             #view
             view       = new View()
-            view.render()
+            view.render template
+
+            #listen RELOAD_RESOURCE
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
+                console.log 'canvas:RELOAD_RESOURCE'
+                #temp
+                if type is 'NEW_STACK'
+                    require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.create()
+                else if type is 'OPEN_STACK'
+                    require [ 'canvas_layout' ], ( canvas_layout ) -> canvas_layout.ready()
+                null
+
 
     unLoadModule = () ->
         #view.remove()

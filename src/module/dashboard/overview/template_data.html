@@ -1,0 +1,91 @@
+<!--{{ .overview-result }}-->
+    {{#each result_list.region_infos }}
+    <li id="{{ region_name }}">
+        <a href="javascript:void(0)">
+        <i class="icon-map-spot"></i>
+        <span>{{ region_city }}</span>
+        <div class="map-tooltip">
+        <span class="{{pointer}}"></span>
+        <div class="map-tooltip-body truncate">
+        <ul class="dashboard-widget-regions-stat">
+            <li><i class="icon-browser tooltip" data-tooltip="Running App"></i>{{ running_app }}</li>
+            <li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>{{ stopped_app }}</li>
+            <li><i class="icon-layers tooltip" data-tooltip="Stack"></i>{{ stack }}</li>
+        </ul>
+        </div>
+        </div>
+        </a>
+        </li>
+    {{/each}}
+
+<!--{{ .overview-empty }}-->
+    {{#each region_empty_list }}
+        <li id="{{ region_name }}" class="unused">
+        <a href="javascript:void(0)" title="{{ region_city }} Dashboard"><i class="icon-map-spot"></i>{{ region_city }}</a>
+        </li>
+    {{/each}}
+
+<!--{{ .stat-info }}-->
+    <div class="dashboard-global-stat">
+    {{#if result_list }}
+        <span class="dashboard-global-stat-app"><span class="global-stat-counter">{{ result_list.total_app }}</span>App{{ result_list.plural_app }}</span>
+        <span class="dashboard-global-stat-stack"><span class="global-stat-counter">{{ result_list.total_stack }}</span>Stack{{ result_list.plural_stack }}</span>
+    {{else}}
+        <span class="dashboard-global-stat-app"><span class="global-stat-counter">0</span>App</span>
+        <span class="dashboard-global-stat-stack"><span class="global-stat-counter">0</span>Stack</span>
+    {{/if}}
+    </div>
+    {{#if result_list }}
+        <p>over <span class="dashboard-global-stat-region-counter">{{ result_list.total_aws }} </span> AWS region{{ result_list.plural_aws }}.</p>
+    {{else}}
+        <p>over <span class="dashboard-global-stat-region-counter"> 0 </span> AWS region.</p>
+    {{/if}}
+
+<!--{{ .platform-attr }}-->
+    {{#each region_classic_list }}
+    <li data-region="{{region}}">
+        <a href="javascript:void(0)">{{ region_name }}
+            <div class="region-platform-wrap">
+                {{#if classic}}
+                    <span class="region-platform-classic tooltip" data-tooltip="EC2-classic" data-tooltip="EC2-Classic">{{classic}}</span>
+                {{/if}}
+                {{#if vpc}}
+                    <span class="region-platform-vpc tooltip" data-tooltip="EC2-vpc" data-tooltip="EC2-VPC">{{vpc}}</span>
+                {{/if}}
+            </div>
+        </a>
+    </li>
+    {{/each}}
+
+<!--{{ .recent-edited-stack }}-->
+{{#if recent_edited_stacks}}
+<ul class="dashboard-recent-list">
+    {{#each recent_edited_stacks }}
+    <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    {{/each}}
+</ul>
+{{else}}
+<div class="blank-widget">No recent edited stack in last 30 days.</div>
+{{/if}}
+
+<!--{{ .recent-launched-app }}-->
+{{#if recent_launched_apps}}
+<ul class="dashboard-recent-list">
+    {{#each recent_launched_apps}}
+    <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    {{/each}}
+</ul>
+{{else}}
+<div class="blank-widget">No recent launched app in last 30 days.</div>
+{{/if}}
+
+<!--{{ .recent-stopped-app }}-->
+{{#if recent_stoped_apps}}
+<ul class="dashboard-recent-list">
+    {{#each recent_stoped_apps}}
+    <li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    {{/each}}
+</ul>
+{{else}}
+<div class="blank-widget">No recent stopped app in last 30 days.</div>
+{{/if}}

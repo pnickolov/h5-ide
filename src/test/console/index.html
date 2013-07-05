@@ -40,10 +40,14 @@
 			});
 			service_list.prop("selectedIndex", -1);
 
-			region_list.on('change'), function ()
+			region_list.on('change', function ()
 			{
 				region_name = $('#region_list').val()
-			}
+				if ($("#region_name") != null )
+				{
+					$("#region_name").val(region_name);
+				}
+			});
 
 			service_list.on('change', function ()
 			{

@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'instance_vo', 'result_vo', 'constant' ], ( instance_vo, result_vo, constant ) ->
+define [  'result_vo', 'constant' ], (result_vo, constant ) ->
 
 
     #///////////////// Parser for DescribeDBInstances return (need resolve) /////////////////

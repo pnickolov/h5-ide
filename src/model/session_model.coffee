@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'session_service', 'session_vo'], ( Backbone, session_service, session_vo ) ->
+define [ 'backbone', 'session_service'], ( Backbone, session_service ) ->
 
     SessionModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : session_vo.session_info
+            vo : {}
         }
 
         ###### api ######

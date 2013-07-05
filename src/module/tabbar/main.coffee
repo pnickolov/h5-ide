@@ -58,28 +58,52 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 #model
                 model.delete tab_id
 
-            #listen open_stack
+            #listen
+            view.on 'SELECE_PLATFORM', ( platform ) ->
+                console.log 'SELECE_PLATFORM'
+                console.log 'platform          = ' + platform
+                console.log 'region_name       = ' + view.temp_region_name
+                #set vo
+                model.set 'stack_region_name', view.temp_region_name
+                #set current platform
+                MC.data.current_platform = platform
+                #tabbar api
+                Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled - ' + MC.data.untitled
+                #MC.data.untitled ++
+                MC.data.untitled = MC.data.untitled + 1
+                #
+                modal.close()
+
+            #listen
+            model.on 'SAVE_DESIGN_MODULE', ( tab_id ) ->
+                console.log 'SAVE_DESIGN_MODULE'
+                console.log 'tab_id          = ' + tab_id
+                #push event
+                ide_event.trigger ide_event.SAVE_DESIGN_MODULE, tab_id
+
+            #listen new_stack
             model.on 'NEW_STACK', ( result ) ->
                 console.log 'NEW_STACK'
+                console.log model.get 'stack_region_name'
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, null
+                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' ,result, model.get 'stack_region_name'
 
             #listen open_stack
-            model.on 'OPEN_STACK', ( result ) ->
+            model.on 'OPEN_STACK', ( tab_id ) ->
                 console.log 'OPEN_STACK'
                 #call getStackInfo
                 model.once 'GET_STACK_COMPLETE', ( result ) ->
                     console.log 'GET_STACK_COMPLETE'
                     #push event
-                    ide_event.trigger ide_event.SWITCH_TAB, null
+                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result
                 #
-                model.getStackInfo result
+                model.getStackInfo tab_id
 
             #listen old_stack
             model.on 'OLD_STACK', ( result ) ->
                 console.log 'OLD_STACK'
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, null
+                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_STACK', result
 
             #listen open_app
             model.on 'OPEN_APP', ( result ) ->
@@ -88,7 +112,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 model.once 'GET_APP_COMPLETE', ( result ) ->
                     console.log 'GET_APP_COMPLETE'
                     #push event
-                    ide_event.trigger ide_event.SWITCH_TAB, null
+                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', result
                 #
                 model.getAppInfo result
 
@@ -96,7 +120,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
             model.on 'OLD_APP', ( result ) ->
                 console.log 'OLD_APP'
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, null
+                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_APP', result
 
             #listen old_stack
             model.on 'SWITCH_DASHBOARD', ( result ) ->
@@ -117,10 +141,13 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
             ide_event.onLongListen ide_event.ADD_STACK_TAB, ( region_name ) ->
                 console.log 'ADD_STACK_TAB'
                 console.log region_name
-                #tabbar api
-                Tabbar.add 'new-' + MC.data.untitled + '-' + region_name, 'untitled - ' + MC.data.untitled
-                #MC.data.untitled ++
-                MC.data.untitled = MC.data.untitled + 1
+                #
+                view.temp_region_name = region_name
+                #
+                if model.checkPlatform( region_name )
+                    require [ 'UI.modal' ], () -> modal MC.template.createNewStack(), true
+                else
+                    view.trigger 'SELECE_PLATFORM', 'custom-vpc'
                 null
 
             #listen add app tab

@@ -63,5 +63,5 @@ var bubble = function (event)
 
 $(document).ready(function ()
 {
-	$(document).on('mouseenter mouseleave', '.bubble', bubble);
+	$(document.body).on('mouseenter mouseleave', '.bubble', bubble);
 });

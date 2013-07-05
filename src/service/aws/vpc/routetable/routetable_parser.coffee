@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'routetable_vo', 'result_vo', 'constant' ], ( routetable_vo, result_vo, constant ) ->
+define [  'result_vo', 'constant' ], (result_vo, constant ) ->
 
 
     #///////////////// Parser for DescribeRouteTables return (need resolve) /////////////////

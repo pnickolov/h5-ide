@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'request_service', 'request_vo'], ( Backbone, request_service, request_vo ) ->
+define [ 'backbone', 'request_service'], ( Backbone, request_service) ->
 
     RequestModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : request_vo.request
+            vo : {}
         }
 
         ###### api ######

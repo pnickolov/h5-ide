@@ -3,7 +3,7 @@
 #* Filename: UI.table
 #* Creator: Angel
 #* Description: UI.table
-#* Date: 20130611
+#* Date: 20130704
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -30,9 +30,7 @@ var table = {
 
 	update: function (event)
 	{
-		var target = event.target;
-
-		$(target).parent().text(target.value);
+		$(this).parent().text(this.value);
 	},
 
 	sort: function (event)
@@ -99,7 +97,7 @@ var table = {
 
 $(document).ready(function ()
 {
-	$(document)
+	$(document.body)
 		.on('click', '.table td.editable', table.edit)
 		.on('click', '.table .sortable', table.sort)
 		.on('blur', '.table-input', table.update);

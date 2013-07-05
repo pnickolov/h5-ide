@@ -3,7 +3,7 @@
 #* Filename: UI.button
 #* Creator: Angel
 #* Description: UI.button
-#* Date: 20130525
+#* Date: 20130704
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -11,8 +11,8 @@
 var button = {
 	loadingText: function (event)
 	{
-		var target = $(event.target),
-			tag = target[0].tagName.toLowerCase(),
+		var target = $(this),
+			tag = this.tagName.toLowerCase(),
 			loading_text = target.data('loading-text'),
 			original_text = tag === 'input' ? target.val() : target.text();
 
@@ -27,5 +27,5 @@ var button = {
 
 $(document).ready(function ()
 {
-	$(document).on('click', '.btn[data-loading-text]', button.loadingText);
+	$(document.body).on('click', '.btn[data-loading-text]', button.loadingText);
 });

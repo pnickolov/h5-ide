@@ -8,17 +8,16 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
     loadModule = () ->
 
         #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="toolbar-tmpl">' + template + '</script>'
-
+        #template = '<script type="text/x-handlebars-template" id="toolbar-tmpl">' + template + '</script>'
         #load remote html template
-        $( template ).appendTo '#main-toolbar'
+        #$( template ).appendTo '#main-toolbar'
 
         #load remote module1.js
         require [ './module/design/toolbar/view' ], ( View ) ->
 
             #view
             view       = new View()
-            view.render()
+            view.render( template )
 
     unLoadModule = () ->
         #view.remove()

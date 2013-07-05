@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'public_service', 'public_vo'], ( Backbone, public_service, public_vo ) ->
+define [ 'backbone', 'public_service'], ( Backbone, public_service ) ->
 
     PublicModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : public_vo.data
+            vo : {}
         }
 
         ###### api ######

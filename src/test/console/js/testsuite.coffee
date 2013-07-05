@@ -595,7 +595,7 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             aws_model.once "AWS_QUICKSTART_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
-        if current_service.toLowerCase() == "awsutil" && current_resource.toLowerCase() == "aws" && current_api == "Public"
+        if current_service.toLowerCase() == "awsutil" && current_resource.toLowerCase() == "aws" && current_api == "public"
 
             #aws.Public
             aws_model.Public {sender: me}, username, session_id, region_name
@@ -891,6 +891,11 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             snapshot_ids = if snapshot_ids != null and MC.isJSON(snapshot_ids)==true then JSON.parse snapshot_ids else snapshot_ids
             owners = if $("#owners").val() != "null" then $("#owners").val() else null
             owners = if owners != null and MC.isJSON(owners)==true then JSON.parse owners else owners
+
+            if owners == null
+                owners = ["self"]
+                $("#owners").val('["self"]')
+
             restorable_by = if $("#restorable_by").val() != "null" then $("#restorable_by").val() else null
             restorable_by = if restorable_by != null and MC.isJSON(restorable_by)==true then JSON.parse restorable_by else restorable_by
             filters = if $("#filters").val() != "null" then $("#filters").val() else null

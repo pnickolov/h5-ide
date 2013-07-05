@@ -7,7 +7,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'parametergroup_vo', 'result_vo', 'constant' ], ( parametergroup_vo, result_vo, constant ) ->
+define [  'result_vo', 'constant' ], (result_vo, constant ) ->
 
 
     #///////////////// Parser for DescribeDBParameterGroups return (need resolve) /////////////////

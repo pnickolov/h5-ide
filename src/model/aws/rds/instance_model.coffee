@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_service, instance_vo ) ->
+define [ 'backbone', 'instance_service'], ( Backbone, instance_service) ->
 
     InstanceModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : instance_vo.instance
+            vo : {}
         }
 
         ###### api ######

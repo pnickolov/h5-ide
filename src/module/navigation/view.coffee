@@ -43,13 +43,13 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         appListRender : ->
             #render html
             console.log 'appListRender render'
-            $( this.el ).find( '.nav-app-list' ).html this.app_list_tmpl this.model.attributes
+            $( this.el ).find( '#nav-app-region' ).html this.app_list_tmpl this.model.attributes
             null
 
         stackListRender : ->
             #render html
             console.log 'stackListRender render'
-            $( this.el ).find( '.nav-stack-list' ).html this.stack_list_tmpl this.model.attributes
+            $( this.el ).find( '#nav-stack-region' ).html this.stack_list_tmpl this.model.attributes
             null
 
         regionEmtpyListRender : ->
@@ -115,11 +115,13 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         createNewStackClick  : ( event ) ->
             console.log 'createNewStackClick'
             console.log $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' )
+            if $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' ) is undefined then return
             ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
 
         regionNameClick      : ( event ) ->
             console.log 'regionNameClick'
             console.log $( event.target ).attr( 'data-region-name' )
+            if $( event.target ).attr( 'data-region-name' ) is undefined then return
             ide_event.trigger ide_event.NAVIGATION_TO_DASHBOARD_REGION, $( event.target ).attr( 'data-region-name' )
 
         hoverIntent          : ->

@@ -1,9 +1,163 @@
-<a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip="Hide Resource Panel"><i class="icon-double-angle-left"></i></a>
+<a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip="Hide Resource Panel">
+	<i class="icon-double-angle-left"></i>
+</a>
 <div class="sidebar-title">
 	<span class="sidebar-title-text">Resource Panel</span>
-	<a href="javascript:void(0)" id="resource-search"><i class="icon-search"></i></a>
-</div>			
-	<!-- <ul class="resource-type-tab">
-		<li class="active"><a href="#new" data-toggle="tab">New</a></li>
-		<li><a href="#existing" data-toggle="tab">Existing</a></li>
-	</ul> -->
+	<div class="search-bar" id="resource-search">
+	  <i class="icon-search"></i>
+	  <input class="input" type="text" placeholder="Filter Resource by Name" />
+	  <i class="icon-cancel"></i>
+	</div>
+</div>
+<div class="fixedaccordion accordion-default resource-panel-fixedaccordion" data-sub="68">
+	<div class="accordion-group expanded">
+		<div class="fixedaccordion-head">
+			Availability Zone
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="availability-zone resource-list clearfix">
+					loading...
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			<span>AMIs</span>
+		</div>
+		<div class="selectbox resource-select" id="resource-select">
+			 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<span class="cur-value">Quickstart AMIs</span>
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+				<li class="selected" tabindex="-1"><a data-id="favorite-ami" href="#">Favorite AMIs</a></li>
+				<li tabindex="-1"><a data-id="my-ami" href="#">My AMIs</a></li>
+				<li tabindex="-1"><a data-id="quickstart-ami" href="#">Quickstart AMIs</a></li>
+			  </ul>
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="quickstart-ami-list resource-list">loading...</ul>
+				<ul class="my-ami-list resource-list hide">loading...</ul>
+				<ul class="favorite-ami-list resource-list hide">loading...</ul>
+			</div>
+			<div class="btn btn-primary" id="btn-browse-community-ami">Browse Community AMIs</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			Volume &amp; Snapshot
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="resoruce-snapshot resource-list">
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach new EBS volume." data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"name": "/dev/sdf", "volumeSize":"1", "snapshotId": ""}'>
+							<div class="resource-icon resource-icon-volume"></div>
+							<div class="resource-label">New Volume</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			ELB
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="resource-list">
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new ELB." data-component-type="node" data-type="AWS.ELB" data-option='{"name": "elb"}'>
+							<div class="resource-icon resource-icon-elb"></div>
+							<div class="resource-label">New ELB</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			VPC
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="resource-list">
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Subnet." data-component-type="group" data-type="AWS.VPC.Subnet" data-option='{"name": "subnet"}'>
+							<div class="resource-icon resource-icon-subnet"></div>
+							<div class="resource-label">New Subnet</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Route Table." data-component-type="node" data-type="AWS.VPC.RouteTable" data-option='{"name": "RT"}'>
+							<div class="resource-icon resource-icon-rt"></div>
+							<div class="resource-label">New Route Table</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Internet Gateway." data-component-type="node" data-type="AWS.VPC.InternetGateway" data-option='{"name": "IGW"}'>
+							<div class="resource-icon resource-icon-igw"></div>
+							<div class="resource-label">New Internet Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item resource-disabled" data-tooltip="VPC can only have one IGW. There is already one IGW in current VPC." data-component-type="node" data-type="AWS.VPC.InternetGateway" data-option='{"name": "IGW"}'>
+							<div class="resource-icon resource-icon-igw"></div>
+							<div class="resource-label">New Internet Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Virtual Gateway." data-component-type="node" data-type="AWS.VPC.VPNGateway" data-option='{"name": "VPN"}'>
+							<div class="resource-icon resource-icon-vgw"></div>
+							<div class="resource-label">New Virtual Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Customer Gateway." data-component-type="node" data-type="AWS.VPC.CustomerGateway" data-option='{"name": "CGW"}'>
+							<div class="resource-icon resource-icon-cgw"></div>
+							<div class="resource-label">New Customer Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Network Interface." data-component-type="node" data-type="AWS.VPC.NetworkInterface" data-option='{"name": "eni"}'>
+							<div class="resource-icon resource-icon-cgw"></div>
+							<div class="resource-label">New Network Interface</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="search-panel" style="display:none; position:absolute; top:0; height:0">
+<ul>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title1:</div>
+		<div class='item' data-id='item11' style="padding-left:20px;">item11</div>
+		<div class='item' data-id='item12' style="padding-left:20px;">item12</div>
+		<div class='item' data-id='item13' style="padding-left:20px;">item13</div>
+	</li>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title2:</div>
+		<div class='item' data-id='item21' style="padding-left:20px;">item21</div>
+		<div class='item' data-id='item22' style="padding-left:20px;">item22</div>
+		<div class='item' data-id='item23' style="padding-left:20px;">item23</div>
+	</li>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title3:</div>
+		<div class='item' data-id='item31' style="padding-left:20px;">item31</div>
+		<div class='item' data-id='item32' style="padding-left:20px;">item32</div>
+		<div class='item' data-id='item33' style="padding-left:20px;">item33</div>
+	</li>
+</ul>
+</div>

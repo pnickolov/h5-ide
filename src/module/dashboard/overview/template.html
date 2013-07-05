@@ -5,29 +5,6 @@
 	<div class="dashboard-widget grid" id="dashboard-feature-wrap">
 		<div class="col-2-3" id="dashboard-map">
 			<ul id="map-region-spot-list">
-				{{#each result_list.region_infos }}
-				<li id="{{ region_name }}">
-					<a href="javascript:void(0)">
-						<i class="icon-map-spot"></i>
-						<span>{{ region_city }}</span>
-						<div class="map-tooltip">
-							<span class="{{pointer}}"></span>
-							<div class="map-tooltip-body truncate">
-								<ul class="dashboard-widget-regions-stat">
-									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>{{ running_app }}</li>
-									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>{{ stopped_app }}</li>
-									<li><i class="icon-layers tooltip" data-tooltip="Stack"></i>{{ stack }}</li>
-								</ul>
-							</div>
-						</div>
-					</a>
-				</li>
-				{{/each}}
-				{{#each region_empty_list }}
-				<li id="{{ region_name }}" class="unused">
-					<a href="javascript:void(0)" title="{{ region_city }} Dashboard"><i class="icon-map-spot"></i>{{ region_city }}</a>
-				</li>
-				{{/each}}
 				<!-- test_data
 				<li id="us-west-1">
 					<a href="javascript:void(0)">
@@ -108,20 +85,7 @@
 					<div class="dropdown-menu create-new-stack-dropdown">
 						<p>Select the region you want to create stack in:</p>
 						<ul id="dashboard-create-stack-list">
-							{{#each region_classic_list }}
-							<li data-region="{{region}}">
-								<a href="javascript:void(0)">{{ region_name }}
-									<div class="region-platform-wrap">
-										{{#if classic}}
-										<span class="region-platform-classic tooltip" data-tooltip="EC2-classic" data-tooltip="EC2-Classic">{{classic}}</span>
-										{{/if}}
-										{{#if vpc}}
-										<span class="region-platform-vpc tooltip" data-tooltip="EC2-vpc" data-tooltip="EC2-VPC">{{vpc}}</span>
-										{{/if}}
-									</div>
-								</a>
-							</li>
-							{{/each}}
+
 							<!-- vpc_classic_list
 							<li>
 								<a href="">US West - Oregon
@@ -183,20 +147,9 @@
 				</div>
 				<div class="dashboard-global-stat-wrap">
 					<p>You have managed</p>
-					<div class="dashboard-global-stat">
-						{{#if result_list }}
-							<span class="dashboard-global-stat-app"><span class="global-stat-counter">{{ result_list.total_app }}</span>App{{ result_list.plural_app }}</span>
-							<span class="dashboard-global-stat-stack"><span class="global-stat-counter">{{ result_list.total_stack }}</span>Stack{{ result_list.plural_stack }}</span>
-						{{else}}
-							<span class="dashboard-global-stat-app"><span class="global-stat-counter">0</span>App</span>
-							<span class="dashboard-global-stat-stack"><span class="global-stat-counter">0</span>Stack</span>
-						{{/if}}
-					</div>
-					{{#if result_list }}
-					<p>over <span class="dashboard-global-stat-region-counter">{{ result_list.total_aws }} </span> AWS region{{ result_list.plural_aws }}.</p>
-  					{{else}}
-    				<p>over <span class="dashboard-global-stat-region-counter"> 0 </span> AWS region.</p>
-  					{{/if}}
+					<div class="stat-info-list">
+						loading...
+  					</div>
 				</div>
 			</div>
 		</div>
@@ -210,19 +163,8 @@
 				<div class="dashboard-widget-title-wrap">
 					<h4 class="dashboard-widget-title">Recently Edited Stacks</h4>
 				</div>
-				<div class="dashboard-widget-body">
-					{{#if recent_edited_stacks}}
-					<ul class="dashboard-recent-list">
-
-						{{#each recent_edited_stacks }}
-						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-						{{/each}}
-
-					</ul>
-
-					{{else}}
-					<div class="blank-widget">No recent edited stack in last 30 days.</div>
-					{{/if}}
+				<div class="dashboard-widget-body" id="recent-edited-stack">
+					loading...
 				</div>
 			</div>
 		</div>
@@ -231,19 +173,8 @@
 				<div class="dashboard-widget-title-wrap">
 					<h4 class="dashboard-widget-title">Recently Launched Apps</h4>
 				</div>
-				<div class="dashboard-widget-body">
-					{{#if recent_launched_apps}}
-					<ul class="dashboard-recent-list">
-
-						{{#each recent_launched_apps}}
-						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-						{{/each}}
-
-					</ul>
-
-					{{else}}
-					<div class="blank-widget">No recent launched app in last 30 days.</div>
-					{{/if}}
+				<div class="dashboard-widget-body" id="recent-launched-app">
+					loading...
 				</div>
 			</div>
 		</div>
@@ -252,23 +183,18 @@
 				<div class="dashboard-widget-title-wrap">
 					<h4 class="dashboard-widget-title">Recently Stopped Apps</h4>
 				</div>
-				<div class="dashboard-widget-body">
-					{{#if recent_stoped_apps}}
-					<ul class="dashboard-recent-list">
-
-						{{#each recent_stoped_apps}}
-						<li><a href="">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-						{{/each}}
-
-					</ul>
-
-					{{else}}
-					<div class="blank-widget">No recent stopped app in last 30 days.</div>
-					{{/if}}
+				<div class="dashboard-widget-body" id="recent-stopped-app">
+					loading...
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<!--div class="grid">
+		<div class="recent-info-list">
+			loading...
+		</div>
+	</div-->
 	<!-- michael end -->
 
 	<!-- kenshin begin -->

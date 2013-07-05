@@ -10,13 +10,13 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'eip_service', 'eip_vo'], ( Backbone, eip_service, eip_vo ) ->
+define [ 'backbone', 'eip_service'], ( Backbone, eip_service) ->
 
     EIPModel = Backbone.Model.extend {
 
         ###### vo (declare variable) ######
         defaults : {
-            vo : eip_vo.eip
+            vo : {}
         }
 
         ###### api ######

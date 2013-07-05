@@ -36,6 +36,11 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 				'request'			:	new Meteor.Collection "request"
 
 				'request_detail'	:	new Meteor.Collection "request_detail"
+
+				'stack'				:	new Meteor.Collection "stack"
+
+				'app'				:	new Meteor.Collection "app"
+
 			}
 
 		# add a callback to specific state, true or false and a callback or nothing just return websocket status
@@ -54,9 +59,12 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 				Meteor.status().connected
 
 		# subscribe to remote
-		sub : ( name, args..., sub_callback ) ->
+		sub : ( name, args..., ready_callback, error_callback ) ->
 
-			sub_instance = Meteor.subscribe name, args..., sub_callback
+			sub_instance = Meteor.subscribe name, args..., {
+				onReady: ready_callback
+				onError: error_callback
+			}
 
 			sub_instance
 
@@ -74,21 +82,6 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 			catch error
 
 				console.log "Stop subscription failed. #{error}"
-
-		# get collection
-		get : ( name ) ->
-
-			if @collection[name]?
-
-				console.log "No such collection"
-
-				null
-
-			else
-
-				@collection[name]
-
-
 
 
 	websocketInit 	: 	websocketInit

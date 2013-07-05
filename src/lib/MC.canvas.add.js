@@ -15,7 +15,7 @@ MC.canvas.add = function (flag, option, coordinate)
 	data = MC.canvas.data.get('component');
 	layout = MC.canvas.data.get('layout.component');
 
-	if ( !option && !coordinate )
+	if (!option && !coordinate)
 	{
 		//existed resource ( init data from MC.tab[tab_id].data )
 		create_mode = false;
@@ -107,8 +107,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable ' + class_type,
-				'data-type': 'group'
+				'class': 'dragable ' + class_type
+			}).data({
+				'type': 'group',
+				'class': type
 			});
 
 			//set layout
@@ -196,8 +198,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable ' + class_type,
-				'data-type': 'group'
+				'class': 'dragable ' + class_type
+			}).data({
+				'type': 'group',
+				'class': type
 			});
 
 			//set layout
@@ -289,8 +293,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable ' + class_type,
-				'data-type': 'group'
+				'class': 'dragable ' + class_type
+			}).data({
+				'type': 'group',
+				'class': type
 			});
 
 			//set layout
@@ -398,8 +404,10 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			//set layout
@@ -473,8 +481,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			//set layout
@@ -563,8 +573,10 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			//set layout
@@ -665,8 +677,10 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			// set layout
@@ -743,8 +757,10 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			// set layout
@@ -821,8 +837,10 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			// set layout
@@ -896,8 +914,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			// set layout
@@ -989,8 +1009,10 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			//set layout
@@ -1007,7 +1029,6 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			break;
 			//***** eni end *****//
-
 	}
 
 	//set the node position

@@ -118,7 +118,8 @@ module.exports = function( grunt ) {
 	});
 
 	/* task of use as develop */
-	grunt.registerTask( 'develop', ['make',
+	grunt.registerTask( 'develop', [
+		//'make',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',/*modify by xjimmy*/

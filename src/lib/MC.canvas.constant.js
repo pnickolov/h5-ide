@@ -2,8 +2,6 @@ MC.canvas = MC.canvas || {};
 
 var constant_data = {
 
-
-
 	GRID_WIDTH: 10,
 	GRID_HEIGHT: 10,
 
@@ -11,7 +9,6 @@ var constant_data = {
 	COMPONENT_HEIGHT: 100,
 	COMPONENT_WIDTH_GRID: 10,
 	COMPONENT_HEIGHT_GRID: 10,
-
 
 	//constant for _route()
 	MINDIST: 20,
@@ -35,7 +32,6 @@ var constant_data = {
 	PORT_UP_ROTATE: ", rotate(90,0,9)",
 	PORT_LEFT_ROTATE: ", rotate(180,0,9)",
 	PORT_DOWN_ROTATE: ", rotate(270,0,9)",
-
 
 	COLOR_BLUE: '#88afe6',
 	COLOR_GREEN: '#97bf7d',
@@ -82,7 +78,9 @@ var constant_data = {
 			'AWS.VPC.RouteTable': [ 'AWS.VPC.VPC' ],
 			'AWS.VPC.InternetGateway': [ 'AWS.VPC.VPC' ],
 			'AWS.VPC.VPNGateway': [ 'AWS.VPC.VPC' ],
-			'AWS.EC2.AvailabilityZone': [ 'Canvas','AWS.VPC.VPC' ]
+			'AWS.EC2.AvailabilityZone': [ 'AWS.VPC.VPC' ],
+			'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
+			'AWS.VPC.VPC': [ 'Canvas' ]
 		}
 	},
 

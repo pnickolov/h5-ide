@@ -1,209 +1,10 @@
-#container {
-	width: 100%;
-}
-
-#siderbar {
-	width: 219px;
-	overflow: hidden;
-	position: absolute;
-	height: 677px;
-}
-
-#siderbar_header {
-	border-top: 1px solid #741860;
-	background: url('../images/ide/siderbar_header.png') no-repeat;
-	height: 30px;
-}
-
-#hide_siderbar_btn {
-	top: 5px;
-	position: absolute;
-	display: block;
-	width: 22px;
-	height: 22px;
-	right: 0px;
-}
-
-#show_siderbar_btn {
-	top: 5px;
-	position: absolute;
-	display: none;
-	width: 22px;
-	height: 22px;
-	left: 4px;
-	background: url('../images/ide/siderbar_show.png') center no-repeat;
-}
-
-.top_btn_container {
-	border-top: 1px solid #3b3b3c;
-	border-bottom: 1px solid #202020;
-	height: 29px;
-	position: relative;
-}
-
-#siderbar_nav {
-	float: left;
-}
-
-.siderbar_nav_item {
-	display: block;
-	border-top: 1px solid #3a3a3a;
-	border-left: 1px solid #3a3a3a;
-	border-bottom: 1px solid #1a1a1a;
-	width: 58px;
-	height: 58px;
-}
-
-.siderbar_nav_item.on .siderbar_nav_item_container {
-	background-color: #b25b91;
-}
-
-.siderbar_nav_item_container {
-	height: 58px;
-	background: #212121;
-	padding-left: 4px;
-}
-
-.siderbar_nav_item_body {
-	background-color: #2e2e2e;
-	background-repeat: no-repeat;
-	background-position: 50% 40%;
-	height: 58px;
-	display: block;
-	text-align: center;
-	color: #eee;
-	font-family: arial;
-	font-size: 10px;
-	line-height: 95px;
-}
-
-#siderbar_body_main {
-	background-color: #4c4c4c;
-}
-
-#siderbar_nav_body_apps {
-	background-image: url('../images/ide/nav_apps.png');
-}
-
-#siderbar_nav_body_stacks {
-	background-image: url('../images/ide/nav_stacks.png');
-}
-
-#siderbar_nav_body_nodes {
-	background-image: url('../images/ide/nav_nodes.png');
-}
-
-.siderbar_tab_title {
-	border-bottom: 1px solid #252525;
-	border-left: 1px solid #252525;
-	padding: 5px 0px 5px 35px;
-	background-color: #2c2c2c;
-	background-position: 5px center;
-	background-repeat: no-repeat;
-	font-weight: 500;
-	color: #cdcdcd;
-	font-size: 14px;
-	cursor: pointer;
-}
-
-.siderbar_tab_title:hover {
-	color: #6296bb;
-}
-
-.siderbar_tab_title ol {
-	height: 450px;
-}
-
-#siderbar_tab_title_compute {
-	background-image: url('../images/ide/ec2_instance_small.png');
-}
-
-#siderbar_tab_title_storage {
-	background-image: url('../images/ide/ebs_volume_small.png');
-}
-
-#siderbar_tab_title_network {
-	background-image: url('../images/ide/elb_loadbalancer_small.png');
-}
-
-.siderbar_tab_sub_title {
-	padding: 10px 10px;
-	background: #414141;
-	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-	color: #cdcdcd;
-	font-weight: 500;
-	font-size: 14px;
-}
-
-.siderbar_component_wrap {
-	max-height: 300px;
-}
-
-.siderbar_component_list {
-	padding: 4px;
-}
-
-.siderbar_component_list li {
-	float: left;
-}
-
-.siderbar-component-item {
-	padding: 3px;
-	margin: 3px 0;
-	display: block;
-	width: 62px;
-	height: 62px;
-	background-position: center;
-	background-repeat: no-repeat;
-}
-
-.component_instance {
-	background-image: url('../images/ide/ec2-ami.png');
-}
-
-.component_volume {
-	background-image: url('../images/ide/ebs-snapshot.png?v=3');
-}
-
-.component_elb {
-	background-image: url('../images/ide/elb-loadbalancer.png');
-}
-
-.component_eip {
-	background-image: url('../images/ide/ec2_eip_small.png');
-}
-
-.component_keyPairs {
-	background-image: url('../images/ide/ec2_keypair_small.png');
-}
-
-.siderbar_component_item:hover {
-	background-color: #666;
-}
-
-#main_body {
-	margin-left: 219px;
-	top: 0px;
-}
-
-#main_body_header {
-	height: 30px;
-	border-top: 1px solid #741860;
-}
-
-#main_body_content {
-	height: 615px;
-	width: 100%;
-	background: rgb(237, 237, 237);
-}
-
 #canvas_container {
-	overflow: hidden;
-	width: 1900px;
+	overflow: auto;
+	/*width: 1900px;*/
 	padding: 5px;
 	background: rgb(237, 237, 237);
-	height: 1430px;
-	position: relative;
+	/*height: 1430px;*/
+	/*position: relative;*/
 }
 
 #canvas_body {
@@ -233,7 +34,7 @@
 
 #svg_canvas {
 	position: relative;
-	z-index: 50;
+	z-index: 1;
 }
 
 .attachable {
@@ -298,8 +99,8 @@
 }
 
 #drag_shadow {
-	width: 80px;
-	height: 80px;
+	width: 100px;
+	height: 100px;
 	background: #E5F1F5;
 	position: absolute;
 	opacity: 0.8;
@@ -307,8 +108,8 @@
 	border: 1px solid #f3f3f3;
 }
 
-#drag_shadow .siderbar-component-item {
-	top: 10px;
+#drag_shadow .resource-icon {
+	top: 15px;
 	position: relative;
 	margin: 0 auto;
 }

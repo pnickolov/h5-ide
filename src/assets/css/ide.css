@@ -1577,6 +1577,10 @@ a.sidebar-hider {
 	/*border-right: 1px solid #666;*/
 }
 
+#resource-panel  .accordion-body {
+	padding: 5px;
+}
+
 #resource-panel.hiden {
 	margin-left: -247px;
 }
@@ -1605,22 +1609,20 @@ a.sidebar-hider {
 }
 
 .resource-list {
-	width: 100%;
 	padding: 0 0 10px 0;
 }
 
 .resource-list > li {
-	display: inline-block;
 	position: relative;
 	float: left;
 }
 
 .resource-item {
-	width: 70px;
-	margin: 0 8px 8px 0;
+	width: 77px;
+	margin: 0 2px 8px 0;
 	border-radius: 4px;
 	cursor: pointer;
-	padding: 5px;
+	padding: 4px 2px;
 	box-sizing: border-box;
 }
 
@@ -1629,8 +1631,8 @@ a.sidebar-hider {
 }
 .resource-item:active {
 	background: #fff;
-	border: 1px solid #55C7FF;
-	padding: 4px;
+/*	border: 1px solid #55C7FF;
+	padding: 4px;*/
 }
 
 .resource-list > li:nth-child(3n) > .resource-item {
@@ -1654,8 +1656,8 @@ a.sidebar-hider {
 
 .resource-icon {
 	position: relative;
-	width: 60px;
-	height: 60px;
+	width: 70px;
+	height: 70px;
 	background: #ccc;
 }
 
@@ -1663,12 +1665,9 @@ a.sidebar-hider {
 	font-size: 11px;
 	text-align: center;
 	padding-bottom: 5px;
-	margin-left: -5px;
-	width: 70px;
-	height: 26px;
+	height: 22px;
 	word-wrap: break-word;
 	overflow: hidden;
-	line-height: 14px;
 }
 
 .resource-item:hover .resource-label {
@@ -1677,7 +1676,7 @@ a.sidebar-hider {
 
 .instance-label {
 	/*font-size: 11px;*/
-	height: 64px;
+	/*height: 64px;*/
 }
 
 #resource-select {
@@ -1789,13 +1788,14 @@ a.sidebar-hider {
     -ms-transition: margin, width 0s linear;
     -o-transition: margin, width 0s linear;
     transition: margin, width 0s linear;
-    position: relative;
+/*    position: relative;
     top: 0;
     left: 0;
-    right: 0;
+    right: 0;*/
     margin-left: 246px;
-    margin-right: 280px;
+/*    margin-right: 280px;*/
     background: #fff;
+    overflow: auto;
 }
 
 #canvas-panel.left-hiden {
@@ -1808,11 +1808,11 @@ a.sidebar-hider {
 
 /* Canvas */
 #canvas {
-	background-color: #fff;
+/*	background-color: #fff;
 	background: url('../images/ide/grid.png');
 	width: 100%;
 	height: 100%;
-	position: relative;
+	position: relative;*/
 }
 
 /* Resource Panel */

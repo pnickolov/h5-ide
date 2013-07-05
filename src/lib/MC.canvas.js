@@ -163,15 +163,15 @@ MC.canvas = {
 			controlPoints.push({ 'x': toPt.x, 'y': toPt.y });
 			return;
 		}
-		if(fromDir === this.LEFT) {
-			if((xDiff > 0) && ((yDiff * yDiff) < this.TOL) && (toDir === this.RIGHT)) {
+		if(fromDir === this.PORT_LEFT_ANGLE) {
+			if((xDiff > 0) && ((yDiff * yDiff) < this.TOL) && (toDir === this.PORT_RIGHT_ANGLE)) {
 				point = toPt;
 				dir = toDir;
 			} else {
 				if(xDiff < 0) {
 					point = { 'x': fromPt.x - this.MINDIST, 'y': fromPt.y };
 				} else {
-					if(((yDiff > 0) && (toDir === this.DOWN)) || ((yDiff < 0) && (toDir === this.UP))) {
+					if(((yDiff > 0) && (toDir === this.PORT_DOWN_ANGLE)) || ((yDiff < 0) && (toDir === this.PORT_UP_ANGLE))) {
 						point = { 'x': toPt.x, 'y': fromPt.y };
 					} else {
 						if(fromDir == toDir) {
@@ -183,21 +183,21 @@ MC.canvas = {
 					}
 				}
 				if(yDiff > 0) {
-					dir = this.UP;
+					dir = this.PORT_UP_ANGLE;
 				} else {
-					dir = this.DOWN;
+					dir = this.PORT_DOWN_ANGLE;
 				}
 			}
 		} else {
-			if(fromDir === this.RIGHT) {
-				if((xDiff < 0) && ((yDiff * yDiff) < this.TOL) && (toDir === this.LEFT)) {
+			if(fromDir === this.PORT_RIGHT_ANGLE) {
+				if((xDiff < 0) && ((yDiff * yDiff) < this.TOL) && (toDir === this.PORT_LEFT_ANGLE)) {
 					point = toPt;
 					dir = toDir;
 				} else {
 					if(xDiff > 0) {
 						point = { 'x': fromPt.x + this.MINDIST, 'y': fromPt.y };
 					} else {
-						if(((yDiff > 0) && (toDir === this.DOWN)) || ((yDiff < 0) && (toDir === this.UP))) {
+						if(((yDiff > 0) && (toDir === this.PORT_DOWN_ANGLE)) || ((yDiff < 0) && (toDir === this.PORT_UP_ANGLE))) {
 							point = { 'x': toPt.x, 'y': fromPt.y };
 						} else {
 							if(fromDir === toDir) {
@@ -209,21 +209,21 @@ MC.canvas = {
 						}
 					}
 					if(yDiff > 0) {
-						dir = this.UP;
+						dir = this.PORT_UP_ANGLE;
 					} else {
-						dir = this.DOWN;
+						dir = this.PORT_DOWN_ANGLE;
 					}
 				}
 			} else {
-				if(fromDir === this.DOWN) {
-					if(((xDiff * xDiff) < this.TOL) && (yDiff < 0) && (toDir === this.UP)) {
+				if(fromDir === this.PORT_DOWN_ANGLE) {
+					if(((xDiff * xDiff) < this.TOL) && (yDiff < 0) && (toDir === this.PORT_UP_ANGLE)) {
 						point = toPt;
 						dir = toDir;
 					} else {
 						if(yDiff > 0) {
 							point = { 'x': fromPt.x, 'y': fromPt.y + this.MINDIST };
 						} else {
-							if(((xDiff > 0) && (toDir === this.RIGHT)) || ((xDiff < 0) && (toDir === this.LEFT))) {
+							if(((xDiff > 0) && (toDir === this.PORT_RIGHT_ANGLE)) || ((xDiff < 0) && (toDir === this.PORT_LEFT_ANGLE))) {
 								point = { 'x': fromPt.x, 'y': toPt.y };
 							} else {
 								if(fromDir === toDir) {
@@ -235,21 +235,21 @@ MC.canvas = {
 							}
 						}
 						if(xDiff > 0) {
-							dir = this.LEFT;
+							dir = this.PORT_LEFT_ANGLE;
 						} else {
-							dir = this.RIGHT;
+							dir = this.PORT_RIGHT_ANGLE;
 						}
 					}
 				} else {
-					if(fromDir === this.UP) {
-						if(((xDiff * xDiff) < this.TOL) && (yDiff > 0) && (toDir === this.DOWN)) {
+					if(fromDir === this.PORT_UP_ANGLE) {
+						if(((xDiff * xDiff) < this.TOL) && (yDiff > 0) && (toDir === this.PORT_DOWN_ANGLE)) {
 							point = toPt;
 							dir = toDir;
 						} else {
 							if(yDiff < 0) {
 								point = { 'x': fromPt.x, 'y': fromPt.y - this.MINDIST };
 							} else {
-								if(((xDiff > 0) && (toDir === this.RIGHT)) || ((xDiff < 0) && (toDir === this.LEFT))) {
+								if(((xDiff > 0) && (toDir === this.PORT_RIGHT_ANGLE)) || ((xDiff < 0) && (toDir === this.PORT_LEFT_ANGLE))) {
 									point = { 'x': fromPt.x, 'y': toPt.y };
 								} else {
 									if(fromDir === toDir) {
@@ -261,9 +261,9 @@ MC.canvas = {
 								}
 							}
 							if(xDiff > 0) {
-								dir = this.LEFT;
+								dir = this.PORT_LEFT_ANGLE;
 							} else {
-								dir = this.RIGHT;
+								dir = this.PORT_RIGHT_ANGLE;
 							}
 						}
 					}

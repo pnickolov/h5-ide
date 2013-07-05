@@ -18,11 +18,6 @@ var constant_data = {
 	TOL: 0.1,
 	TOLxTOL: 0.01,
 	TOGGLE_DIST: 5,
-	UP : 90,
-	RIGHT : 0,
-	DOWN : 270,
-	LEFT : 180,
-
 
 	//constant for MC.canvas.add
 	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 14 l 2 0 l 6 -6 z",//new style
@@ -32,14 +27,14 @@ var constant_data = {
 
 	//**for port, direction is position**//
 	PORT_RIGHT_ANGLE: 0, // right
-	PORT_TOP_ANGLE: 90, //top
+	PORT_UP_ANGLE: 90, //top
 	PORT_LEFT_ANGLE: 180, //left
-	PORT_BOTTOM_ANGLE: 270, //bottom
+	PORT_DOWN_ANGLE: 270, //bottom
 
 	PORT_RIGHT_ROTATE: "", //port rotate
-	PORT_TOP_ROTATE: ", rotate(90,0,9)",
+	PORT_UP_ROTATE: ", rotate(90,0,9)",
 	PORT_LEFT_ROTATE: ", rotate(180,0,9)",
-	PORT_BOTTOM_ROTATE: ", rotate(270,0,9)",
+	PORT_DOWN_ROTATE: ", rotate(270,0,9)",
 
 
 	COLOR_BLUE: '#88afe6',

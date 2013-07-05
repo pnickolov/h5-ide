@@ -639,25 +639,25 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src-top',
-					'transform': 'translate(70, 16)' + MC.canvas.PORT_TOP_ROTATE
+					'transform': 'translate(70, 16)' + MC.canvas.PORT_UP_ROTATE
 				}).data({
 					'name': 'rtb-src-top',
 					'position': 'top',
 					'type': 'association',
 					'direction': 'in',
-					'angle': MC.canvas.PORT_TOP_ANGLE
+					'angle': MC.canvas.PORT_UP_ANGLE
 				}),
 
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src-bottom',
-					'transform': 'translate(70, 90)' + MC.canvas.PORT_BOTTOM_ROTATE
+					'transform': 'translate(70, 90)' + MC.canvas.PORT_DOWN_ROTATE
 				}).data({
 					'name': 'rtb-src-bottom',
 					'position': 'bottom',
 					'type': 'association',
 					'direction': 'in',
-					'angle': MC.canvas.PORT_BOTTOM_ANGLE
+					'angle': MC.canvas.PORT_DOWN_ANGLE
 				}),
 
 				////6. routetable name

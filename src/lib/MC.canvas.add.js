@@ -24,7 +24,7 @@ MC.canvas.add = function (flag, option, coordinate)
 		coordinate = {};
 
 		group.id = flag; //flag is uid
-		type = data[ group.id ].type;
+		type = !data[ group.id ] ? layout.group[ group.id ].type : data[ group.id ].type;
 	}
 	else
 	{
@@ -46,8 +46,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout = $.extend(true, {}, MC.canvas.AZ_JSON.layout);
 				component_layout.name = option.name;
 
-				option.width = 44;
-				option.height = 51;
+				option.width = 30;
+				option.height = 30;
 			}
 			else
 			{//read
@@ -132,8 +132,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = $.extend(true, {}, MC.canvas.VPC_JSON.layout);
 
-				option.width = 79;
-				option.height = 69;
+				option.width = 40;
+				option.height = 40;
 			}
 			else
 			{
@@ -226,8 +226,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 
-				option.width = 36;
-				option.height = 43;
+				option.width = 20;
+				option.height = 20;
 			}
 			else
 			{

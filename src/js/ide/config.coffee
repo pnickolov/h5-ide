@@ -233,7 +233,7 @@ require.config {
 			exports    : '$'
 
 		'canvon'       :
-			deps       : [ 'jquery' ]
+			deps       : [ 'jquery', 'canvas' ]
 			exports    : 'Canvon'
 
 		'underscore'   :

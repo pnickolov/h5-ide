@@ -666,22 +666,25 @@ MC.canvas = {
 MC.canvas.layout = {
 	init: function ()
 	{
-		var canvas_size = MC.canvas.data.get("layout.size"),
-			component = MC.canvas.data.get("component"),
-			connections = MC.canvas.data.get('layout.connection'),
+		var layout_data = MC.canvas.data.get("layout"),
 			connection_target_id;
 
 		$('#canvas_body').css({
-			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
-			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
+			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
 		});
 
-		$.each(component, function (id, data)
+		$.each(layout_data.component.node, function (id, data)
 		{
 			MC.canvas.add(id);
 		});
 
-		$.each(connections, function (line, data)
+		$.each(layout_data.component.group, function (id, data)
+		{
+			MC.canvas.add(id);
+		});
+
+		$.each(layout_data.connection, function (line, data)
 		{
 			connection_target_id = [];
 
@@ -921,7 +924,7 @@ MC.canvas.event.dragable = {
 							{
 								line_connection = layout_connection_data[ value.line ];
 
-								line_layer.removeChild(line_connection.SVG);
+								line_layer.removeChild($('#' + value.line)[0]);
 
 								MC.canvas.connect(
 									$('#' + item.id), line_connection['target'][ item.id ],
@@ -1188,7 +1191,8 @@ MC.canvas.event.siderbarDrag = {
 
 		$(document.body).append('<div id="drag_shadow"></div>');
 		shadow = $('#drag_shadow');
-		clone_node = target.clone();
+		clone_node = target.find('.resource-icon').clone();
+
 		shadow.append(clone_node);
 
 		$('#canvas_body').addClass('dragging');

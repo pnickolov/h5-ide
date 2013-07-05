@@ -1381,8 +1381,8 @@ td.table-action a.btn {
 }
 
 #modal-browse-community-ami .content-wrap {
-	height: 450px; 
-	position: relative; 
+	height: 450px;
+	position: relative;
 	width: 100%;
 }
 
@@ -1840,4 +1840,17 @@ a.sidebar-hider {
 		width: 30%;
 		padding-bottom: 22.5%;
 	}
+}
+
+/* icon for Instance/AMI */
+.resource-icon-instance {
+	height: 70px;
+	width: 70px;
+	background: url('../images/ide/icon/Instance-Canvas.png');
+}
+.resource-icon-instance img {
+	display: block;
+	margin: 0 auto;
+	position: relative;
+	top: 15px;
 }

@@ -375,24 +375,6 @@
 
           ]
         },
-        "4DBBCA6D-DA9E-4FCB-8340-201409256795": {
-          "id": "",
-          "type": "AWS.EC2.AvailabilityZone",
-          "coordinate": [
-            19,
-            16
-          ],
-          "size": [
-            44,
-            51
-          ],
-          "name": "",
-          "group": {
-            "availableZone": "",
-            "subnet": "",
-            "vpc": ""
-          }
-        },
         "2B90ECD0-3D29-452A-B97B-4E29F69ED87C": {
           "id": "",
           "type": "AWS.VPC.Subnet",

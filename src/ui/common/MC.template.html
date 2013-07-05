@@ -304,7 +304,7 @@
 		<div class="content-wrap">
 			<div class="ami-left-col">
 				<div>
-					<input id="community-ami-input" class="input" type="text" placeholder="Filter AMI by name or ID" />
+					<input id="community-ami-input" class="input" type="text" placeholder="Search AMI by name or ID" />
 				</div>
 				<div id="selectbox-ami-platform" class="selectbox">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -326,14 +326,6 @@
 				  	</ul>
 				</div>
 				<div class="filter-radio-group">
-					<div class="filter-radio-label">Visibility</div>
-					<div class="radiobuttons" id="filter-ami-public-private">
-						<button type="button" class="btn btn-silver active" data-radio="">Both</button>
-						<button type="button" class="btn btn-silver">Public</button>
-						<button type="button" class="btn btn-silver">Private</button>
-					</div>
-				</div>
-				<div class="filter-radio-group">
 					<div class="filter-radio-label">Architecture</div>
 					<div class="radiobuttons" id="filter-ami-32bit-64bit">
 						<button type="button" class="btn btn-silver active" data-radio="">Both</button>
@@ -352,7 +344,7 @@
 				<div id="ami-count">
 				  Total: 17832
 				</div>
-				<div id="search-ami" class="btn btn-silver">Search</div>
+				<div id="btn-search-ami" class="btn btn-silver">Search</div>
 			</div>
 			<div class="ami-right-col scroll-wrap scrollbar-auto-hide" style="height:450px; width:580px; float:left;">
 				<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
@@ -366,7 +358,7 @@
 							<th style="width:50px" class="sortable">Size(GB)</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="community_ami_table">
 							{{#each community_ami}}
 							<tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
 								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
@@ -388,7 +380,10 @@
 								</td>
 								<td>32</td>
 							</tr>-->
+							
+							
 						</tbody>
+						<div id="community_ami_page"></div>
 					</table>
 				</div>
 			</div>

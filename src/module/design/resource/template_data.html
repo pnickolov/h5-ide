@@ -2,7 +2,9 @@
 {{#each availability_zone.item }}
 <li>
 	<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas" data-component-type="group" data-type="AWS.EC2.AvailabilityZone" data-option='{"name": "{{ zoneName }}"}'>
-		<div class="resource-icon resource-icon-az"></div>
+		<div class="resource-icon resource-icon-az">
+			<div class="resource-icon-az-label">{{zoneShortName}}</div>
+		</div>
 		<div class="resource-label">{{ zoneName }}</div>
 	</div>
 </li>

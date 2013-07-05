@@ -50,7 +50,11 @@ define [ 'jquery',
                 null
 
             view.on 'LOADING_COMMUNITY_AMI', ( region_name ) ->
-                model.describeCommunityAmiService region_name
+                name = $('#community-ami-input').val()
+                platform = $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+                architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
+                rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
+                model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType
 
     unLoadModule = () ->
         #view.remove()

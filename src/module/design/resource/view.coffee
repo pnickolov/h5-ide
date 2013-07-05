@@ -33,6 +33,7 @@ define [ 'event',
             $( document ).delegate '#resource-panel',     'SEARCHBAR_HIDE', this.searchBarHideEvent
             $( document ).delegate '#resource-panel',   'SEARCHBAR_CHANGE', this.searchBarChangeEvent
             $( document ).delegate '#btn-browse-community-ami',   'click' , this, this.openBrowseCommunityAMIsModal
+            $( document ).delegate '#btn-search-ami',   'click'  , this, this.searchCommunityAmi
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideResourcePanel
 
@@ -150,74 +151,98 @@ define [ 'event',
 
             modal(MC.template.browseCommunityAmi(''), false)
 
-            #event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region
-
         communityAmiRender : () ->
 
-            modal(MC.template.browseCommunityAmi(this.model.attributes), false)
-            $($('#selectbox-ami-platform').find('.cur-value')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html())
-            $('#community-ami-input').on 'keyup', (event)->
-                filter.update $('#community-ami-filter'), {
-                    value: $(this).val()
-                    type:{
-                        publicprivate: radiobuttons.data($('#filter-ami-public-private'))
-                        ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
-                        bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
-                        platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
-                    }
-                }
+            #this.model.attributes.community_ami
+
+            this_tr = ""
+            this_tr += '<tr class="item" data-id="ami-123456 ubuntu-12" data-publicprivate="public" data-platform="ubuntu" data-ebs="ebs" data-bit="32">'
+            this_tr += '<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="ami-123456"></div></td>'
+            this_tr += '<td>ami-123456</td>'
+            this_tr += '<td><div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div><div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div></td>'
+            this_tr += '<td>32</td></tr>'
+            # <tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
+            #                     <td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
+            #                     <td>{{id}}</td>
+            #                     <td>
+            #                         <div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div>
+            #                         <div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div>
+            #                     </td>
+            #                     <td>32</td>
+            #                 </tr>
+            page = '<div>page 1</div>'
+            $("#community_ami_table").empty().html(this_tr)
+            $("#community_ami_page").empty().html(page)
+
+        searchCommunityAmi : ( event ) ->
+
+            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region
+
+            
+            # modal(MC.template.browseCommunityAmi(this.model.attributes), false)
+            # $($('#selectbox-ami-platform').find('.cur-value')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html())
+            # $('#community-ami-input').on 'keyup', (event)->
+            #     filter.update $('#community-ami-filter'), {
+            #         value: $(this).val()
+            #         type:{
+            #             publicprivate: radiobuttons.data($('#filter-ami-public-private'))
+            #             ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
+            #             bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
+            #             platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+            #         }
+            #     }
                 
-            $('#filter-ami-public-private').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
+            # $('#filter-ami-public-private').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
 
-                    result_set = {
-                        value:$('#community-ami-input').val()
-                        type:{
-                            publicprivate:cur_radion
-                            ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
-                            bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
-                            platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data 'id'
-                        }
-                    }
+            #         result_set = {
+            #             value:$('#community-ami-input').val()
+            #             type:{
+            #                 publicprivate:cur_radion
+            #                 ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
+            #                 bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
+            #                 platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data 'id'
+            #             }
+            #         }
 
-                    filter.update($('#community-ami-filter'), result_set)
+            #         filter.update($('#community-ami-filter'), result_set)
 
-            $('#filter-ami-EBS-Instance').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
+            # $('#filter-ami-EBS-Instance').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
                 
-                    result_set = {
-                        value:$('#community-ami-input').val(),
-                        type:{
-                            publicprivate: radiobuttons.data($('#filter-ami-public-private'))
-                            ebs: cur_radion
-                            bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
-                            platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
-                        }
-                    }
+            #         result_set = {
+            #             value:$('#community-ami-input').val(),
+            #             type:{
+            #                 publicprivate: radiobuttons.data($('#filter-ami-public-private'))
+            #                 ebs: cur_radion
+            #                 bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
+            #                 platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+            #             }
+            #         }
 
-                    filter.update($('#community-ami-filter'), result_set)
+            #         filter.update($('#community-ami-filter'), result_set)
 
-            $('#filter-ami-32bit-64bit').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
-                    result_set = {
-                        value:$('#community-ami-input').val()
-                        type:{
-                            publicprivate: radiobuttons.data($('#filter-ami-public-private'))
-                            ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
-                            bit: cur_radion
-                            platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
-                        }
-                    }
-                    filter.update($('#community-ami-filter'), result_set)
+            # $('#filter-ami-32bit-64bit').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
+            #         result_set = {
+            #             value:$('#community-ami-input').val()
+            #             type:{
+            #                 publicprivate: radiobuttons.data($('#filter-ami-public-private'))
+            #                 ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
+            #                 bit: cur_radion
+            #                 platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+            #             }
+            #         }
+            #         filter.update($('#community-ami-filter'), result_set)
 
-            $('#selectbox-ami-platform').on 'OPTION_CHANGE', (event, id) ->
-                result_set = {
-                    value:$('#community-ami-input').val(),
-                    type:{
-                        publicprivate: radiobuttons.data($('#filter-ami-public-private')),
-                        ebs: radiobuttons.data($('#filter-ami-EBS-Instance')),
-                        bit: radiobuttons.data($('#filter-ami-32bit-64bit')),
-                        platform: id
-                    } }
+            # $('#selectbox-ami-platform').on 'OPTION_CHANGE', (event, id) ->
+            #     result_set = {
+            #         value:$('#community-ami-input').val(),
+            #         type:{
+            #             publicprivate: radiobuttons.data($('#filter-ami-public-private')),
+            #             ebs: radiobuttons.data($('#filter-ami-EBS-Instance')),
+            #             bit: radiobuttons.data($('#filter-ami-32bit-64bit')),
+            #             platform: id
+            #         } }
 
-                filter.update($('#community-ami-filter'), result_set)
+            #     filter.update($('#community-ami-filter'), result_set)
             null
 
     }

@@ -308,7 +308,7 @@
 				</div>
 				<div id="selectbox-ami-platform" class="selectbox">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				    	<span class="cur-value">Action</span>
+				    	<span class="cur-value">All Platforms</span>
 				    	<span class="caret"></span>
 				  	</a>
 				  	<ul class="dropdown-menu" role="menu">
@@ -352,6 +352,7 @@
 				<div id="ami-count">
 				  Total: 17832
 				</div>
+				<div id="search-ami" class="btn btn-silver">Search</div>
 			</div>
 			<div class="ami-right-col scroll-wrap scrollbar-auto-hide" style="height:450px; width:580px; float:left;">
 				<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
@@ -377,52 +378,8 @@
 								<td>32</td>
 							</tr>
 							{{/each}}
-							<tr class="item" data-id="ami-12345678 ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1" data-publicprivate="public" data-platform="ubuntu" data-ebs="ebs" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-12345678</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
-									<div class="ami-meta">public | 32-bit | EBS</div>
-								</td>
-								<td>32</td>
-							</tr>
-							<tr class="item" data-id="ami-23456789 tu-precise-12.04-i380411.1" data-publicprivate="public" data-platform="amazonlinux" data-ebs="instancestore" data-bit="64-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-23456789</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>tu-precise-12.04-i380411.1</div>
-									<div class="ami-meta">public | 64-bit | Instance</div>
-								</td>
-								<td>64</td>
-							</tr>
-							<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-34567890</td>
-								<td>
-									<div>Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b</div>
-									<div class="ami-meta">private | 32-bit | Instance</div>
-								</td>
-								<td>32</td>
-							</tr>
-							<tr class="item" data-id="ami-12345678 ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1" data-publicprivate="public" data-platform="ubuntu" data-ebs="ebs" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-12345678</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
-									<div class="ami-meta">public | 32-bit | EBS</div>
-								</td>
-								<td>32</td>
-							</tr>
-							<tr class="item" data-id="ami-23456789 tu-precise-12.04-i380411.1" data-publicprivate="public" data-platform="amazonlinux" data-ebs="instancestore" data-bit="64-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-23456789</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>tu-precise-12.04-i380411.1</div>
-									<div class="ami-meta">public | 64-bit | Instance</div>
-								</td>
-								<td>64</td>
-							</tr>
-							<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
+
+							<!--<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
 								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
 								<td>ami-34567890</td>
 								<td>
@@ -430,34 +387,7 @@
 									<div class="ami-meta">private | 32-bit | Instance</div>
 								</td>
 								<td>32</td>
-							</tr>
-							<tr class="item" data-id="ami-12345678 ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1" data-publicprivate="public" data-platform="ubuntu" data-ebs="ebs" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-12345678</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
-									<div class="ami-meta">public | 32-bit | EBS</div>
-								</td>
-								<td>32</td>
-							</tr>
-							<tr class="item" data-id="ami-23456789 tu-precise-12.04-i380411.1" data-publicprivate="public" data-platform="amazonlinux" data-ebs="instancestore" data-bit="64-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-23456789</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>tu-precise-12.04-i380411.1</div>
-									<div class="ami-meta">public | 64-bit | Instance</div>
-								</td>
-								<td>64</td>
-							</tr>
-							<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-34567890</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b</div>
-									<div class="ami-meta">private | 32-bit | Instance</div>
-								</td>
-								<td>32</td>
-							</tr>
+							</tr>-->
 						</tbody>
 					</table>
 				</div>

@@ -148,7 +148,9 @@ define [ 'event',
 
             console.log 'openBrowseCommunityAMIsModal'
 
-            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region
+            modal(MC.template.browseCommunityAmi(''), false)
+
+            #event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region
 
         communityAmiRender : () ->
 

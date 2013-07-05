@@ -70,6 +70,17 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
                 me.trigger 'GET_APP_COMPLETE', result
             app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'app_region_name' ), [ app_id ]
 
+        checkPlatform : ( region_name ) ->
+            console.log 'checkPlatform'
+            support_vpc = false
+            #
+            _.each MC.data.supported_platforms, ( item ) ->
+                if region_name is item.region
+                    if item.classic then support_vpc = true else support_vpc = false
+                null
+            #
+            support_vpc
+
     }
 
     model = new TabbarModel()

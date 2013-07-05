@@ -3,7 +3,7 @@
 #* Filename: UI.tabbar
 #* Creator: Angel
 #* Description: UI.tabbar
-#* Date: 20130703
+#* Date: 20130704
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -32,7 +32,7 @@ var Tabbar = {
 		$('#tab-bar ul').append(dragging_tab);
 		target.css('visibility', 'hidden');
 
-		$(document).on('mousemove', {
+		$(document.body).on('mousemove', {
 			'target': target,
 			'dragging_tab': dragging_tab,
 			'offset_left': $('#tab-bar').offset().left + event.pageX - target.offset().left,
@@ -40,7 +40,7 @@ var Tabbar = {
 			'tab_width': tab_list.width()
 		}, Tabbar.mousemove);
 
-		$(document).on('mouseup', {
+		$(document.body).on('mouseup', {
 			'target': target,
 			'dragging_tab': dragging_tab
 		}, Tabbar.mouseup);
@@ -78,7 +78,7 @@ var Tabbar = {
 	{
 		event.data.target.css('visibility', 'visible');
 		event.data.dragging_tab.remove();
-		$(document).off({
+		$(document.body).off({
 			'mousemove': Tabbar.mousemove,
 			'mouseup': Tabbar.mouseup
 		});
@@ -105,7 +105,7 @@ var Tabbar = {
 	{
 		var tab_bar = $('#tab-bar'),
 			tab_item = $('#tab-bar-' + tab_id),
-			original_tab = tab_bar.find('.active')[0],
+			original_tab = $('#tab-bar').find('.active')[0],
 			original_tab_id = null;
 
 		if (!tab_item[0])
@@ -122,10 +122,7 @@ var Tabbar = {
 		$('#tab-bar li').removeClass('active');
 		tab_item.addClass('active');
 
-		if (original_tab_id !== tab_id)
-		{
-			tab_bar.trigger('OPEN_TAB', [original_tab_id, tab_id]);
-		}
+		$('#tab-bar').trigger('OPEN_TAB', [original_tab_id, tab_id]);
 
 		return tab_id;
 	},
@@ -142,6 +139,7 @@ var Tabbar = {
 		Tabbar.open($('#tab-bar li:last').attr('id').replace('tab-bar-', ''));
 
 		$('#tab-bar').trigger('CLOSE_TAB', tab_id);
+
 		return false;
 	},
 

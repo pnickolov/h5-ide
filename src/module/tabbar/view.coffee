@@ -14,6 +14,10 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             'OPEN_TAB'  : 'openTabEvent'
             'CLOSE_TAB' : 'closeTabEvent'
 
+        initialize : ->
+            #listen
+            $( document ).on 'click', '.new-stack-dialog', this, this.openNewStackDialog
+
         render   : () ->
             console.log 'tabbar render'
             $( this.el ).html this.template()
@@ -59,6 +63,11 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             $( '#tab-bar-dashboard' ).children().html '<i class="icon-gauge icon-label"></i>' + tab_name
             null
 
+        openNewStackDialog : ( event ) ->
+            console.log 'openNewStackDialog'
+            console.log $( event.currentTarget ).attr 'data-supported-platform'
+            event.data.trigger 'SELECE_PLATFORM', $( event.currentTarget ).attr 'data-supported-platform'
+            null
     }
 
     return TabBarView

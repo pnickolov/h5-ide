@@ -1,3 +1,4 @@
+*.bat
 
 #ignore demo
 src/js/demo/*.js

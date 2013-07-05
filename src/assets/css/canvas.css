@@ -191,90 +191,6 @@
 	border-top: 1px solid #741860;
 }
 
-#main_body_top_btn_container {
-
-}
-
-#main_body_top_btn_container ul,
-#main_body_top_btn_container li {
-	float: left;
-}
-
-.top_btn_item {
-	display: block;
-	width: 30px;
-	height: 29px;
-	border-width: 0px 1px 1px 1px;
-	border-style: solid;
-	border-color: #3b3b3c #202020 #202020 #3b3b3c;
-	background-color: #2e2e2f;
-	background-repeat: no-repeat;
-	background-image: url('../images/ide/actions.png?v=8');
-}
-
-.top_btn_item:hover {
-	border-color: #ba6c9c #ba6c9c #ba6c9c #b26795;
-	background-position-y: -31px;
-}
-
-.top_btn_item.disabled {
-	opacity: 0.5;
-}
-
-.top_btn_item.disabled:hover {
-	border-color: #3b3b3c #202020 #202020 #3b3b3c;
-	background-position-y: 0px;
-}
-#top_btn_run {
-	background-position-x: 0px;
-}
-
-#top_btn_delete {
-	background-position-x: -65px;
-}
-
-#top_btn_save {
-	background-position-x: -225px;
-}
-
-#top_btn_new {
-	background-position-x: -130px;
-}
-
-#top_btn_copy {
-	background-position-x: -514px;
-}
-
-#top_btn_rename {
-	background-position-x: -194px;
-}
-
-#top_btn_import {
-	background-position-x: -289px;
-}
-
-#top_btn_export {
-	background-position-x: -321px;
-}
-
-#top_btn_resize {
-	background-position-x: -641px;
-}
-
-#top_btn_zoom_in {
-	background-position-x: -386px;
-}
-
-#top_btn_zoom_out {
-	background-position-x: -418px;
-}
-
-.top_btn_spliter {
-	float: left;
-	height: 30px;
-	width: 8px;
-}
-
 #main_body_content {
 	height: 615px;
 	width: 100%;
@@ -320,102 +236,12 @@
 	z-index: 50;
 }
 
-.node {
-/*	box-sizing: border-box;
-	border: 3px solid rgba(255,255,255,0);
-	position: absolute;
-	border-radius: 3px;*/
-}
-
-.instance {
-	width: 115px;
-	height: 115px;
-	background: url('../images/ide/Instance-temp.png') 9px 2px no-repeat;
-}
-
-.elb {
-	width: 110px;
-	height: 80px;
-	background: url('../images/ide/elb.png?v=2') 0px 2px no-repeat;
-}
-
-.volume {
-	position: absolute;
-	width: 100px;
-	height: 115px;
-	background: url('../images/ide/ebs.png?v=5') 4px -2px no-repeat;
-}
-
-.component_body {
-	padding: 5px;
-}
-
-.port {
-/*	width: 14px;
-	height: 14px;
-	position: absolute;
-	cursor: pointer;
-	background-image: url('../images/ide/port.png?v=4');
-	background-repeat:  no-repeat;
-	visibility: hidden;*/
-}
-
 .attachable {
 	cursor: alias;
 }
 
 .port.highlight {
 	border: 1px red dotted;
-}
-
-.port_in_Firewall {
-	background-position: -84px -42px;
-	top: 42px;
-	left: 3px;
-}
-
-.port_in_Firewall.attachable {
-	background-position: -84px -28px;
-}
-
-.port_out_SecurityGroup {
-	background-position: -14px -42px;
-	top: 42px;
-	right: 3px;
-}
-
-.port_out_SecurityGroup.attachable {
-	background-position: -14px -28px;
-}
-
-.port_out_Volume {
-	background-position: -14px -14px;
-	top: 67px;
-	right: 3px;
-}
-
-.port_out_Volume.attachable {
-	background-position: -14px -28px;
-}
-
-.port_in_Volume {
-	background-position: -84px -14px;
-	top: 47px;
-	left: 2px;
-}
-
-.port_in_Volume.attachable {
-	background-position: -84px -28px;
-}
-
-.port_out_ELB {
-	background-position: -14px -42px;
-	top: 25px;
-	right: -10px;
-}
-
-.port_out_ELB.attachable {
-	background-position: -14px -28px;
 }
 
 /*.zone {
@@ -443,81 +269,6 @@
 	position: absolute;
 }*/
 
-.resizer_topleft,
-.resizer_topright,
-.resizer_bottomleft,
-.resizer_bottomright {
-	width: 30px;
-	height: 30px;
-}
-
-.resizer_topleft {
-	top: -4px;
-	left: -4px;
-	cursor: nwse-resize;
-}
-
-.resizer_topright {
-	right: -4px;
-	top: -4px;
-	cursor: nesw-resize
-}
-
-.resizer_bottomleft {
-	left: -4px;
-	bottom: -4px;
-	cursor: nesw-resize
-}
-
-.resizer_top,
-.resizer_right,
-.resizer_bottom,
-.resizer_left {
-	z-index: -3;
-}
-
-.resizer_top {
-	height: 30px;
-	width: 100%;
-	top: -4px;
-	cursor: ns-resize;
-}
-
-.resizer_right {
-	height: 100%;
-	width: 30px;
-	right: -4px;
-	cursor: ew-resize;
-}
-
-.resizer_bottom {
-	height: 30px;
-	width: 100%;
-	bottom: -4px;
-	cursor: ns-resize;
-}
-
-.resizer_left {
-	height: 100%;
-	width: 30px;
-	left: -4px;
-	cursor: ew-resize;
-}
-
-.resizer_bottomright {
-	right: -4px;
-	bottom: -4px;
-/*	border-left: 10px solid transparent;
-	border-top: 10px solid transparent;
-	border-right: 10px solid rgba(25,25,25,0.8);
-	border-bottom: 10px solid rgba(25,25,25,0.8);*/
-	cursor: nwse-resize;
-}
-
-.focused {
-	z-index: 50;
-	border: 3px solid #78BBF4;
-}
 
 .node_icon {
 	left: 38px;
@@ -526,46 +277,6 @@
 	height: 27px;
 	background: url('../images/ide/ami/ubuntu.64.ebs.png') no-repeat;
 	position: absolute;
-}
-
-.attachment_keyPairs,
-.attachment_eip {
-	width: 16px;
-	height: 16px;
-	position: absolute;
-	background-image: url('../images/ide/instance-attchment.png?v=3');
-	background-repeat: no-repeat;
-	display: none;
-}
-
-.attachment_keyPairs {
-	top: 67px;
-	left: 37px;
-	background-position: 0 0;
-}
-
-.attachment_eip {
-	top: 67px;
-	left: 57px;
-	background-position: -48px 0;
-}
-
-.attached_eip .attachment_eip {
-	cursor: pointer;
-	background-position: -64px 0;
-}
-
-.attached_eip .attachment_eip:hover {
-	background-position: -80px 0;
-}
-
-.attached_keyPairs .attachment_keyPairs {
-	cursor: pointer;
-	background-position: -16px 0;
-}
-
-.attached_keyPairs .attachment_keyPairs:hover {
-	background-position: -32px 0;
 }
 
 #canvas_select_ranger {
@@ -589,11 +300,11 @@
 #drag_shadow {
 	width: 80px;
 	height: 80px;
-/*	background: #E5F1F5;*/
+	background: #E5F1F5;
 	position: absolute;
 	opacity: 0.8;
 	z-index: 100;
-/*	border: 1px solid #f3f3f3;*/
+	border: 1px solid #f3f3f3;
 }
 
 #drag_shadow .siderbar-component-item {

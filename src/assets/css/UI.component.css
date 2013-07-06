@@ -1,3 +1,31 @@
+/* AMI icons */
+
+/*.icon-ami {
+	display: inline-block;
+	width: 40px;
+	height: 30px;
+}
+
+.icon-amz-64-instance {
+	background: url('../images/ide/ami/amazon.64.instance-store.png') center center no-repeat;
+}
+
+.icon-amz-32-ebs {
+	background: url('../images/ide/ami/amazon.32.ebs.png') center center no-repeat;
+}
+
+.icon-amz-64-ebs {
+	background: url('../images/ide/ami/amazon.64.ebs.png') center center no-repeat;
+}
+
+.icon-amz-haproxy-64-ebs {
+	background: url('../images/ide/ami/amazon.haproxy.64.ebs.png') center center no-repeat;
+}
+
+
+*/
+
+
 /* Table */
 .table {
 	max-width: 100%;
@@ -470,7 +498,7 @@ textarea {
 .scrollbar-veritical-wrap,
 .scrollbar-horizontal-wrap {
 	position: absolute;
-	z-index: 99;
+	z-index: 30;
 	background: rgba(100, 100, 100, 0.2);
 	display: none;
 }
@@ -525,7 +553,6 @@ textarea {
 
 .scrollbar-veritical-thumb {
 	width: 8px;
-	/*border-left: 1px solid #aaa;*/
 	-webkit-transition: height 0.2s;
 	-moz-transition: height 0.2s;
 	-o-transition: height 0.2s;
@@ -534,7 +561,6 @@ textarea {
 
 .scrollbar-horizontal-thumb {
 	height: 8px;
-	/*border-top: 1px solid #aaa;*/
 	-webkit-transition: width 0.2s;
 	-moz-transition: width 0.2s;
 	-o-transition: width 0.2s;
@@ -555,6 +581,45 @@ textarea {
 	transition: transform .05s;
 }
 
+/* webkit scrollbar */
+.webkit .scroll-wrap {
+	overflow: auto;
+}
+
+.webkit .scrollbar-auto-hide {
+	overflow: hidden;
+}
+
+.webkit .scrollbar-auto-hide.scroll-wrap:hover {
+	overflow: auto;
+}
+
+.scroll-wrap::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.scroll-wrap::-webkit-scrollbar-track {
+	background: rgba(200, 200, 200, 0.2);
+}
+
+.scroll-wrap::-webkit-scrollbar-thumb {
+	background-color: #999;
+	border-radius: 4px;
+}
+
+.scroll-wrap::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 0, 0, .55);
+}
+
+.scroll-wrap::-webkit-scrollbar-corner {
+	background: rgba(200, 200, 200, 0.2);
+}
+
+.scrollbar-auto-hide::-webkit-scrollbar-track {
+	opacity: 0;
+}
+
 /* Tooltip */
 #tooltip_box {
 	background: #333;
@@ -565,7 +630,7 @@ textarea {
 	position: absolute;
 	padding: 5px 10px;
 	border-radius: 3px;
-	z-index: 9000;
+	z-index: 90;
 	max-width: 250px;
 }
 
@@ -698,11 +763,11 @@ textarea {
 	-moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
 	-webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
-	z-index: 7000;
+	z-index: 70;
 }
 
 #modal-box #bubble-box {
-	z-index: 8000;
+	z-index: 80;
 }
 
 .modal-header .modal-close {
@@ -761,7 +826,7 @@ textarea {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	z-index: 7000;
+	z-index: 70;
 	background-color: rgba(0, 0, 0, 0.8);
 }
 
@@ -810,7 +875,7 @@ textarea {
     width: 100%;
     height: auto;
     text-align: center;
-    z-index: 10000;
+    z-index: 100;
 }
 
 .notification_item {
@@ -890,7 +955,7 @@ textarea {
 	font-size: 12px;
 	position: absolute;
 	border-radius: 4px;
-	z-index: 6000;
+	z-index: 60;
 	min-width: 250px;
 	max-width: 400px;
 }
@@ -985,8 +1050,22 @@ textarea {
 	height: 100%;
 }
 
-
 /* Fixedaccordion */
+.fixedaccordion-head {
+	border-bottom: 1px solid #ccc;
+	background-color: #ddd;
+}
+
+.accordion-body {
+	border-bottom: 1px solid #ccc;
+	position: relative;
+}
+
+.expanded .fixedaccordion-head {
+/*	background: #0066C3;
+	color: #fff;*/
+}
+
 .fixedaccordion .accordion-body {
 	display: none;
 	overflow: hidden;
@@ -1028,15 +1107,15 @@ textarea {
 	vertical-align: middle;
 }
 
-.selectbox .dropdown {
-	position: relative;
+.selectbox .cur-value{
+	display: inline-block;
 }
 
 .selectbox .caret {
 	display: inline-block;
 	width: 0;
 	height: 0;
-	border-top: 4px solid #FFF;
+	border-top: 4px solid #999;
 	border-right: 4px solid transparent;
 	border-left: 4px solid transparent;
 	content: "";
@@ -1044,13 +1123,12 @@ textarea {
 
 .selectbox .dropdown-menu {
 	position: absolute;
-	top: 100%;
+	top: 0;
 	left: 0;
-	z-index: 1000;
 	display: none;
-	float: left;
 	min-width: 160px;
 	background-color: #ffffff;
+	z-index: 50;
 }
 
 .selectbox .dropdown-menu li a {
@@ -1063,7 +1141,7 @@ textarea {
 
 .selectbox .dropdown-menu li a:hover,
 .selectbox .dropdown-menu li a:focus,
-.selectbox .dropdown-menu li.selected a {
+.selectbox .dropdown-menu li.selected a,.selectbox .dropdown-menu li.focused a {
 	background-color: #eee;
 }
 
@@ -1079,6 +1157,19 @@ textarea {
 }
 .editableoption .edit {
 	display: none;
+}
+
+.selectbox .scroll-wrap {
+	display: none;
+	position: absolute;
+	top:32px;
+	left: 0;
+}
+.selectbox .scroll-wrap ul{
+	position: relative;
+}
+.selectbox.open .scroll-wrap {
+	display: block;
 }
 
 /* Radio Buttons */
@@ -1185,4 +1276,3 @@ textarea {
 .hide {
 	display: none;
 }
-

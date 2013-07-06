@@ -2,9 +2,10 @@
 #  View(UI logic) for design/property
 #############################
 
-define [ 'backbone', 'jquery', 'handlebars'
-         'UI.fixedaccordion'
-], () ->
+define [ './temp_view',
+         'backbone', 'jquery', 'handlebars'
+         'UI.fixedaccordion', 'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon'
+], ( temp_view ) ->
 
     PropertyView = Backbone.View.extend {
 
@@ -16,6 +17,7 @@ define [ 'backbone', 'jquery', 'handlebars'
             $( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
             #listen
             $( window   ).on 'resize', fixedaccordion.resize
+            $( document ).on 'click', '.selectbox .dropdown-toggle', selectbox.show
             #
             this.listenTo this.model, 'change:content', this.addAccordionItem
 
@@ -33,6 +35,11 @@ define [ 'backbone', 'jquery', 'handlebars'
             console.log 'addAccordionItem'
             if this.model.attributes.content is null then return
             $( '.property-panel-tmp' ).append this.accordion_item_tmpl this.model.attributes
+
+        refresh : ->
+            console.log 'refresh'
+            selectbox.init()
+            temp_view.ready()
 
     }
 

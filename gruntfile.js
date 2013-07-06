@@ -29,6 +29,7 @@ module.exports = function( grunt ) {
 			'!<%= sourcedir[0] %>/ide/layout.js',
 			'!<%= sourcedir[0] %>/ide/canvas_layout.js',
 			'!<%= sourcedir[1] %>/design/resource/temp_view.js',
+			'!<%= sourcedir[1] %>/design/property/temp_view.js',
 			'!<%= src %>/service/*',
 			'!<%= src %>/test/*'
 		],

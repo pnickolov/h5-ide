@@ -5,6 +5,235 @@
 	<span class="sidebar-title-text">Property Panel</span>
 	<a href="javascript:void(0)" id="property-help"><i class="icon-help"></i></a>
 </div>
-<div class="fixedaccordion accordion-default resource-panel-fixedaccordion property-panel-tmp" data-sub="68">
+<div class="fixedaccordion accordion-default property-panel-tmp" data-sub="68">
 
+	<!--
+	<div class="accordion-group" >
+		<div class="fixedaccordion-head">
+			Instance Details
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<div class="property-instance-title">
+					<h5>
+					<span class="left">Name</span>
+					<span class="right">(Required)</span>
+					</h5>
+					<input class="input" type="text" value="WebServer 1" />
+				</div>
+				<div class="property-instance-link">
+					<h5>AMI</h5>
+					<div class="ami-wrap clearfix">
+						<div class="property-icon property-icon-instance"></div>
+						<div class="property-label instance-label">.NET Beanstalk Cfn Container v1.0.0.0 on Windows 2008</div>
+					</div>
+				</div>
+				<div class="property-instance-type">
+					<h5>Instance Type</h5>
+					<div class="selectbox instance-type-select" id="instance-type-select">
+						<a class="dropdown-toggle" href="#">
+							<div class="cur-value"></div>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li class="selected" tabindex="-1" data-tooltip="M1 xLarge">
+								<a data-id="111" href="#">
+									<div class="main">M1 High-Memory Quadruple Extra Large</div>
+									<div class="sub">Ecu 35 Core 16 Memory 117 GB</div>
+								</a>
+							</li>
+							<li  tabindex="-1" data-tooltip="M2 xLarge">
+								<a data-id="111" href="#">
+									<div class="main">M2 High-Memory Quadruple Extra Large</div>
+									<div class="sub">Ecu 35 Core 16 Memory 117 GB</div>
+								</a>
+							</li>
+							<li  tabindex="-1" data-tooltip="M3 xLarge">
+								<a data-id="111" href="#">
+									<div class="main">M3 High-Memory Quadruple Extra Large</div>
+									<div class="sub">Ecu 35 Core 16 Memory 117 GB</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="property-check property-instance-check">
+					<div class="checkbox">
+						<input id="checkbox_id" type="checkbox" value="None" name="check_value" />
+						<label for="checkbox_id"></label>
+						<span>EBS Optimize</span>
+					</div>
+				</div>
+				<div id="property-instance-tenancy">
+					<h5>Tenancy</h5>
+					<div class="selectbox instance-type-select" id="tenancy-select">
+						<a class="dropdown-toggle" href="#">
+							<span class="cur-value"></span>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li class="selected" tabindex="-1">
+								<a data-id="111" href="#">
+									Default
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="111" href="#">
+									tenancy1
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="111" href="#">
+									tenancy3
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div id="property-instance-keypairs">
+					<h5>Key Pair</h5>
+					<div class="selectbox" id="editable-selectbox">
+					<a class="dropdown-toggle" href="#">
+					    <div class="cur-value">Action</div>
+					    <span class="caret"></span>
+					</a>
+					<div style="height: 80px; width:200px;" class="scroll-wrap scrollbar-auto-hide  clearfix">
+						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+						<div class="scroll-content">
+					<ul class="dropdown-menu  clearfix" role="menu">
+					    <li class="selected" tabindex="-1"><a data-id="DefaultKP" href="#">DefaultKP</a></li>
+					    <li tabindex="-1"><a data-id="1234" href="#">keypair-1234-1234</a></li>
+					    <li tabindex="-1"><a data-id="2345" href="#">keypair-1234-2345</a></li>
+					    <li tabindex="-1"><a data-id="3456" href="#">keypair-1234-3456</a></li>
+					    <li tabindex="-1"><a data-id="4567" href="#">keypair-1234-4567</a></li>
+					    <li tabindex="-1"><a data-id="5678" href="#">keypair-1234-5678</a></li>
+					</ul>
+					<div class='editableoption'>
+					  	<div class="label">Create New Key Pair</div>
+					  	<div class="edit"><input type="text" placeholder="Create New Key Pair" /><button class="btn">Enter</button></div>
+					</div>
+					</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			<span>Advanced Details</span>
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<div class="property-check sg-enable-cloudwatch">
+					<div class="checkbox">
+						<input id="cloudwatch_id" type="checkbox" value="None" name="check_value" />
+						<label for="cloudwatch_id"></label>
+						<span>Enable CloudWatch</span>
+					</div>
+				</div>
+				<div class="sg-title">
+					<h5>
+						<span class="left">User Data</span>
+					</h5>
+					<textarea id="sg-user-data"></textarea>
+				</div>
+				<div class="property-check sg-base64encoded">
+					<div class="checkbox">
+						<input id="base64encoded_id" type="checkbox" value="None" name="check_value" />
+						<label for="base64encoded_id"></label>
+						<span>base64encoded</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			<span>Network Interface Details</span>
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<div class="sg-title">
+					<h5>
+						<span class="left">Descrition</span>
+					</h5>
+					<textarea id="sg-network"></textarea>
+				</div>
+				<div class="property-check sg-base64encoded">
+					<div class="checkbox">
+						<input id="source_id" type="checkbox" value="None" name="check_value" />
+						<label for="source_id"></label>
+						<span>Enable Source/Destination Checking</span>
+					</div>
+				</div>
+				<div class="sg-header">
+					<span class="name">Ip Address</span>
+					<a href="#" id="sg-ip-add" title="add ip">Add Ip</a>
+				</div>
+				<ul class="network-list" id="property-network-list">
+					<li>
+						<div class="name">1.0.0.x</div>
+						<div class="network-toggle-icon tooltip" data-tooltip="Associate with EIP"></div>
+						<div class="network-remove-icon tooltip" data-tooltip="Remove ip address"></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group  expanded">
+		<div class="fixedaccordion-head">
+			<span>Security Groups(2)</span>
+		</div>
+		<div class="selectbox security-group-select" id="security-group-select">
+			<a class="dropdown-toggle" href="#">
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+				<li class="selected" tabindex="-1">
+					<a data-id="SG001" href="#">
+						<div>SG001</div>
+						<span>Description</span>
+					</a>
+				</li>
+				<li tabindex="-1">
+					<a data-id="SG002" href="#">
+						<div>SG002</div>
+						<span>DescriptionDescriptionDescription</span>
+					</a>
+				</li>
+				<li tabindex="-1"><a id="show-newsg-panel" data-id="" href="#">New Security Groups</a></li>
+			</ul>
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="sg-info-list" id="sg-info-list">
+					<li class="clearfix" data-sgid="000">
+						<div class="col1 sg-toggle-show-icon"></div>
+						<div class="col2">
+							<div class="col2-1">DefaultSG</div>
+							<div class="col2-2">Description</div>
+							<div class="col2-3">5 rules, 2 member</div>
+						</div>
+						<div class="col3 sg-remove-item-icon tooltip" data-tooltip="Remove instance from SG"></div>
+					</li>
+					<li class="clearfix"  data-sgid="111">
+						<div class="col1 sg-toggle-show-icon"></div>
+						<div class="col2">
+							<div class="col2-1">WebLayoutSG</div>
+							<div class="col2-2">DescriptionDescriptionDescription</div>
+							<div class="col2-3">12 rules, 2 member</div>
+						</div>
+						<div class="col3 sg-remove-item-icon tooltip" data-tooltip="Remove instance from SG"></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	-->
 </div>

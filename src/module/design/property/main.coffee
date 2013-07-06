@@ -23,12 +23,13 @@ define [ 'jquery',
         #
         require [ './module/design/property/view',
                   './module/design/property/model',
-                  './module/design/property/instance/main'
-        ], ( View, model, instance_main ) ->
+                  './module/design/property/instance/main',
+                  './module/design/property/advanced_details/main'
+        ], ( View, model, instance_main, advanced_main ) ->
 
             #view
-            view       = new View { 'model' : model }
-            view.render template
+            property_view  = new View { 'model' : model }
+            property_view.render template
 
             #listen OPEN_PROPERTY
             ide_event.onLongListen ide_event.OPEN_PROPERTY, () ->
@@ -37,10 +38,14 @@ define [ 'jquery',
                 instance_main.loadModule ( view ) ->
                     console.log 'instace main'
                     model.addItem view.model.attributes.head, view.template
+                    #
+                    advanced_main.loadModule ( view ) ->
+                        console.log 'advanced instace main'
+                        model.addItem view.model.attributes.head, view.template
+                        #
+                        property_view.refresh()
 
-                instance_main.loadModule ( view ) ->
-                    console.log 'instace main2'
-                    model.addItem view.model.attributes.head, view.template
+                null
 
     unLoadModule = () ->
         #view.remove()

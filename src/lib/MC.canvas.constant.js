@@ -2,8 +2,6 @@ MC.canvas = MC.canvas || {};
 
 var constant_data = {
 
-
-
 	GRID_WIDTH: 10,
 	GRID_HEIGHT: 10,
 
@@ -11,7 +9,6 @@ var constant_data = {
 	COMPONENT_HEIGHT: 100,
 	COMPONENT_WIDTH_GRID: 10,
 	COMPONENT_HEIGHT_GRID: 10,
-
 
 	//constant for _route()
 	MINDIST: 20,
@@ -36,15 +33,14 @@ var constant_data = {
 	PORT_LEFT_ROTATE: ", rotate(180,0,9)",
 	PORT_DOWN_ROTATE: ", rotate(270,0,9)",
 
-
-	COLOR_BLUE: '#88afe6',
-	COLOR_GREEN: '#97bf7d',
+	COLOR_BLUE: '#6DAEFE',
+	COLOR_GREEN: '#12CD4F',
 	COLOR_GRAY: '#d8d7d6',
 	COLOR_PURPLE: '#bf7aa5',
 
 	LINE_COLOR: {
-		sg: '#88afe6',
-		attachment: '#97bf7d',
+		sg: '#6DAEFE',
+		attachment: '#12CD4F',
 		association: '#d8d7d6',
 		vpn: '#bf7aa5'
 	},
@@ -74,7 +70,6 @@ var constant_data = {
 		//'custom-vpc'
 		'ec2-vpc': {
 			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
-			'AWS.VPC.Subnet': [ 'AWS.VPC.VPC' ],
 			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],
 			'AWS.VPC.NetworkInterface': [ 'AWS.VPC.Subnet' ],
@@ -82,7 +77,9 @@ var constant_data = {
 			'AWS.VPC.RouteTable': [ 'AWS.VPC.VPC' ],
 			'AWS.VPC.InternetGateway': [ 'AWS.VPC.VPC' ],
 			'AWS.VPC.VPNGateway': [ 'AWS.VPC.VPC' ],
-			'AWS.EC2.AvailabilityZone': [ 'Canvas','AWS.VPC.VPC' ]
+			'AWS.EC2.AvailabilityZone': [ 'AWS.VPC.VPC' ],
+			'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
+			'AWS.VPC.VPC': [ 'Canvas' ]
 		}
 	},
 
@@ -92,37 +89,37 @@ var constant_data = {
 				from: 'instance-sg-out',
 				to: 'instance-sg-in',
 				relation: 'multiple',
-				color: '#88afe6' //blue
+				color: '#6DAEFE' //blue
 			},
 			'AWS.EC2.EBS.Volume': {
 				from: 'instance-attach',
 				to: 'volume-attach',
 				relation: 'multiple',
-				color: '#97bf7d' //green
+				color: '#12CD4F' //green
 			},
 			'AWS.ELB': {
 				from: 'instance-sg-out',
 				to: 'elb-sg-in',
 				relation: 'multiple',
-				color: '#88afe6' //blue
+				color: '#6DAEFE' //blue
 			},
 			'AWS.VPC.NetworkInterface': [
 				{
 					from: 'instance-attach',
 					to: 'eni-attach',
-					color: '#97bf7d'
+					color: '#12CD4F'
 				},
 				{
 					from: 'instance-sg-out',
 					to: 'eni-sg-in',
-					color: '#88afe6'
+					color: '#6DAEFE'
 				}
 			],
 			'AWS.VPC.RouteTable': {
 				from: 'instance-sg-in',
 				to: 'rtb-tgt-left',
 				relation: 'unique', //a instance can only connect to one routetable
-				color: '#88afe6' //blue
+				color: '#6DAEFE' //blue
 			}
 		},
 		'AWS.EC2.EBS.Volume': {
@@ -130,7 +127,7 @@ var constant_data = {
 				from: 'volume-attach',
 				to: 'instance-attach',
 				relation: 'unique', //a volume can only connect to one instance
-				color: '#97bf7d' //green
+				color: '#12CD4F' //green
 			}
 		},
 		'AWS.ELB': {
@@ -138,7 +135,7 @@ var constant_data = {
 				from: 'elb-sg-out',
 				to: 'instance-sg-in',
 				relation: 'multiple',
-				color: '#88afe6' //blue
+				color: '#6DAEFE' //blue
 			}
 		},
 		'AWS.VPC.NetworkInterface': {
@@ -146,13 +143,13 @@ var constant_data = {
 				{
 					from: 'eni-sg-in',
 					to: 'instance-sg-out',
-					color: '#88afe6' //green
+					color: '#6DAEFE' //green
 				},
 				{
 					from: 'eni-attach',
 					to: 'instance-attach',
 					relation: 'unique', //an eni can only connect to one instance
-					color: '#97bf7d'
+					color: '#12CD4F'
 				}
 			]
 		},
@@ -165,33 +162,33 @@ var constant_data = {
 			'AWS.VPC.Instance': {
 				from: 'rtb-tgt-left',
 				to: 'instance-sg-in',
-				color: '#88afe6' //blue
+				color: '#6DAEFE' //blue
 			},
 			'AWS.VPC.InternetGateway': {
 				from: 'rtb-tgt-left',
 				to: 'igw-tgt',
 				relation: 'unique', //a rt can only connect to one igw
-				color: '#88afe6' //blue
+				color: '#6DAEFE' //blue
 			},
 			'AWS.VPC.VPNGateway': {
 				from: 'rtb-tgt-right',
 				to: 'vgw-tgt',
 				relation: 'unique', //a rt can only connect to one vgw
-				color: '#88afe6' //blue
+				color: '#6DAEFE' //blue
 			}
 		},
 		'AWS.VPC.InternetGateway': {
 			'AWS.VPC.RouteTable': {
 				from: 'igw-tgt',
 				to: 'rtb-tgt-left',
-				color: '#88afe6' //blue
+				color: '#6DAEFE' //blue
 			}
 		},
 		'AWS.VPC.VPNGateway': {
 			'AWS.VPC.RouteTable': {
 				from: 'vgw-tgt',
 				to: 'rtb-tgt-right',
-				color: '#88afe6' //blue
+				color: '#6DAEFE' //blue
 			},
 			'AWS.VPC.CustomerGateway': {
 				from: 'vgw-vpn',

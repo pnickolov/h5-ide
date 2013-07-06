@@ -1,12 +1,449 @@
 <!-- Resource Panel -->
-<div id="resource-panel" class="sidebar">
-	loading...
+<div id="resource-panel" class="sidebar"><a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip="Hide Resource Panel" style="">
+	<i class="icon-double-angle-left"></i>
+</a>
+<div class="sidebar-title">
+	<span class="sidebar-title-text">Resource Panel</span>
+	<div class="search-bar" id="resource-search">
+	  <i class="icon-search"></i>
+	  <input class="input" type="text" placeholder="Filter Resource by Name">
+	  <i class="icon-cancel"></i>
+	</div>
 </div>
+<div class="fixedaccordion accordion-default resource-panel-fixedaccordion" data-sub="68">
+	<div class="accordion-group expanded">
+		<div class="fixedaccordion-head">
+			Availability Zone
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide" style="height: 303px;">
+			<div class="scrollbar-veritical-wrap" style="display: none;"><div class="scrollbar-veritical-thumb" style="top: 0px;"></div></div>
+			<div class="item-wrap scroll-content" style="-webkit-transform: translate3d(0, 0px, 0);">
+				<ul class="availability-zone resource-list clearfix">
+
+<li>
+	<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas" data-component-type="group" data-type="AWS.EC2.AvailabilityZone" data-option="{&quot;name&quot;: &quot;us-east-1a&quot;}">
+		<div class="resource-icon resource-icon-az"></div>
+		<div class="resource-label">us-east-1a</div>
+	</div>
+</li>
+
+<li>
+	<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas" data-component-type="group" data-type="AWS.EC2.AvailabilityZone" data-option="{&quot;name&quot;: &quot;us-east-1b&quot;}">
+		<div class="resource-icon resource-icon-az"></div>
+		<div class="resource-label">us-east-1b</div>
+	</div>
+</li>
+
+<li>
+	<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas" data-component-type="group" data-type="AWS.EC2.AvailabilityZone" data-option="{&quot;name&quot;: &quot;us-east-1c&quot;}">
+		<div class="resource-icon resource-icon-az"></div>
+		<div class="resource-label">us-east-1c</div>
+	</div>
+</li>
+
+<li>
+	<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas" data-component-type="group" data-type="AWS.EC2.AvailabilityZone" data-option="{&quot;name&quot;: &quot;us-east-1d&quot;}">
+		<div class="resource-icon resource-icon-az"></div>
+		<div class="resource-label">us-east-1d</div>
+	</div>
+</li>
+
+
+</ul>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			<span>AMIs</span>
+		</div>
+		<div class="selectbox resource-select" id="resource-select">
+			 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<span class="cur-value">Quickstart AMIs</span>
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+				<li class="selected" tabindex="-1"><a data-id="favorite-ami" href="#">Favorite AMIs</a></li>
+				<li tabindex="-1"><a data-id="my-ami" href="#">My AMIs</a></li>
+				<li tabindex="-1"><a data-id="quickstart-ami" href="#">Quickstart AMIs</a></li>
+			  </ul>
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide" style="">
+			<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="quickstart-ami-list resource-list clearfix">
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-f619c29f&quot;,&quot;name&quot;:&quot;ami-vpc-nat-1.1.0-beta.x86-64-ebs&quot;,&quot;description&quot;:&quot;Amazon VPC Network Address Translator&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;amazon/ami-vpc-nat-1.1.0-beta.x86-64-ebs&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-88aa75e1&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;8&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-f619c29f&quot;, &quot;osType&quot;: &quot;amazon&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/amazon.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">ami-vpc-nat-1.1.0-beta.x86-64-ebs</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ami-vpc-nat-1.1.0-beta.x86-64-ebs"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-def89fb7&quot;,&quot;name&quot;:&quot;ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1&quot;,&quot;description&quot;:&quot;&quot;,&quot;architecture&quot;:&quot;i386&quot;,&quot;imageLocation&quot;:&quot;099720109477/ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-b6aa75df&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;8&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, c1.medium&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-def89fb7&quot;, &quot;osType&quot;: &quot;ubuntu&quot;, &quot;architecture&quot;:&quot;i386&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/ubuntu.i386.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-bf96e1d6&quot;,&quot;name&quot;:&quot;Windows_Server-2012-RTM-English-64Bit-SQL_2012_SP1_Express-2013.06.12&quot;,&quot;description&quot;:&quot;Microsoft Windows Server 2012 RTM 64-bit Locale English with SQL 2012 Express AMI provided by Amazon&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;amazon/Windows_Server-2012-RTM-English-64Bit-SQL_2012_SP1_Express-2013.06.12&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;30&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hi1.4xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-bf96e1d6&quot;, &quot;osType&quot;: &quot;win&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/win.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">Windows_Server-2012-RTM-English-64Bit-SQL_2012_SP1_Express-2013.06.12</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="Windows_Server-2012-RTM-English-64Bit-SQL_2012_SP1_Express-2013.06.12"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-ca32efa3&quot;,&quot;name&quot;:&quot;suse-sles-11-sp2-v1.00.x86_64&quot;,&quot;description&quot;:&quot;SUSE Linux Enterprise Server 11 Service Pack 2 for x86_64 (Build 11.1)&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;amazon/suse-sles-11-sp2-v1.00.x86_64&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-825ea7eb&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;10&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-ca32efa3&quot;, &quot;osType&quot;: &quot;suse&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/suse.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">suse-sles-11-sp2-v1.00.x86_64</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="suse-sles-11-sp2-v1.00.x86_64"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-eda0d784&quot;,&quot;name&quot;:&quot;Windows_Server-2008-SP2-English-64Bit-Base-2013.06.12&quot;,&quot;description&quot;:&quot;Microsoft Windows Server 2008 SP2 Datacenter 64-bit Locale English Base AMI provided by Amazon&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;amazon/Windows_Server-2008-SP2-English-64Bit-Base-2013.06.12&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;30&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hi1.4xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-eda0d784&quot;, &quot;osType&quot;: &quot;win&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/win.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">Windows_Server-2008-SP2-English-64Bit-Base-2013.06.12</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="Windows_Server-2008-SP2-English-64Bit-Base-2013.06.12"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-d0f89fb9&quot;,&quot;name&quot;:&quot;ubuntu/images/ebs/ubuntu-precise-12.04-amd64-server-20130411.1&quot;,&quot;description&quot;:&quot;&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;099720109477/ubuntu/images/ebs/ubuntu-precise-12.04-amd64-server-20130411.1&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-88aa75e1&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;8&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-d0f89fb9&quot;, &quot;osType&quot;: &quot;ubuntu&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/ubuntu.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">ubuntu/images/ebs/ubuntu-precise-12.04-amd64-server-20130411.1</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-amd64-server-20130411.1"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-cd0360a4&quot;,&quot;name&quot;:&quot;ubuntu/images/ebs/ubuntu-raring-13.04-i386-server-20130423&quot;,&quot;description&quot;:&quot;&quot;,&quot;architecture&quot;:&quot;i386&quot;,&quot;imageLocation&quot;:&quot;099720109477/ubuntu/images/ebs/ubuntu-raring-13.04-i386-server-20130423&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-b6aa75df&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;8&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, c1.medium&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-cd0360a4&quot;, &quot;osType&quot;: &quot;ubuntu&quot;, &quot;architecture&quot;:&quot;i386&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/ubuntu.i386.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">ubuntu/images/ebs/ubuntu-raring-13.04-i386-server-20130423</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-raring-13.04-i386-server-20130423"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-2e1bc047&quot;,&quot;name&quot;:&quot;ami-vpc-nat-1.1.0-beta.i386-ebs&quot;,&quot;description&quot;:&quot;Amazon VPC Network Address Translator&quot;,&quot;architecture&quot;:&quot;i386&quot;,&quot;imageLocation&quot;:&quot;amazon/ami-vpc-nat-1.1.0-beta.i386-ebs&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-b6aa75df&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;8&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, c1.medium&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-2e1bc047&quot;, &quot;osType&quot;: &quot;amazon&quot;, &quot;architecture&quot;:&quot;i386&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/amazon.i386.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">ami-vpc-nat-1.1.0-beta.i386-ebs</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ami-vpc-nat-1.1.0-beta.i386-ebs"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-83a3d4ea&quot;,&quot;name&quot;:&quot;Windows_Server-2008-R2_SP1-English-64Bit-Base-2013.06.12&quot;,&quot;description&quot;:&quot;Microsoft Windows Server 2008 R2 SP1 Datacenter 64-bit Locale English Base AMI provided by Amazon&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;amazon/Windows_Server-2008-R2_SP1-English-64Bit-Base-2013.06.12&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;30&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hi1.4xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-83a3d4ea&quot;, &quot;osType&quot;: &quot;win&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/win.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">Windows_Server-2008-R2_SP1-English-64Bit-Base-2013.06.12</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="Windows_Server-2008-R2_SP1-English-64Bit-Base-2013.06.12"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-0c32ef65&quot;,&quot;name&quot;:&quot;suse-sles-11-sp2-v1.00.i386&quot;,&quot;description&quot;:&quot;SUSE Linux Enterprise Server 11 Service Pack 2 for x86 (Build 11.1)&quot;,&quot;architecture&quot;:&quot;i386&quot;,&quot;imageLocation&quot;:&quot;amazon/suse-sles-11-sp2-v1.00.i386&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-805ea7e9&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;10&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, c1.medium&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-0c32ef65&quot;, &quot;osType&quot;: &quot;suse&quot;, &quot;architecture&quot;:&quot;i386&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/suse.i386.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">suse-sles-11-sp2-v1.00.i386</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="suse-sles-11-sp2-v1.00.i386"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-4597e02c&quot;,&quot;name&quot;:&quot;Windows_Server-2008-R2_SP1-English-64Bit-SQL_2012_SP1_Express-2013.06.12&quot;,&quot;description&quot;:&quot;Microsoft Windows Server 2008 R2 SP1 Datacenter 64-bit Locale English with SQL 2012 Express AMI provided by Amazon&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;amazon/Windows_Server-2008-R2_SP1-English-64Bit-SQL_2012_SP1_Express-2013.06.12&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;30&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hi1.4xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-4597e02c&quot;, &quot;osType&quot;: &quot;win&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/win.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">Windows_Server-2008-R2_SP1-English-64Bit-SQL_2012_SP1_Express-2013.06.12</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="Windows_Server-2008-R2_SP1-English-64Bit-SQL_2012_SP1_Express-2013.06.12"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-3275ee5b&quot;,&quot;name&quot;:&quot;amzn-ami-pv-2013.03.0.x86_64-ebs&quot;,&quot;description&quot;:&quot;Amazon Linux AMI x86_64 EBS&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;amazon/amzn-ami-pv-2013.03.0.x86_64-ebs&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-88aa75e1&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;8&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-3275ee5b&quot;, &quot;osType&quot;: &quot;amazon&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/amazon.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">amzn-ami-pv-2013.03.0.x86_64-ebs</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="amzn-ami-pv-2013.03.0.x86_64-ebs"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-730c631a&quot;,&quot;name&quot;:&quot;RHEL-6.4_GA-i386-7-Hourly2&quot;,&quot;description&quot;:&quot;&quot;,&quot;architecture&quot;:&quot;i386&quot;,&quot;imageLocation&quot;:&quot;309956199498/RHEL-6.4_GA-i386-7-Hourly2&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-1cceaf75&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;7&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, c1.medium&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-730c631a&quot;, &quot;osType&quot;: &quot;redhat&quot;, &quot;architecture&quot;:&quot;i386&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/redhat.i386.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">RHEL-6.4_GA-i386-7-Hourly2</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="RHEL-6.4_GA-i386-7-Hourly2"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-7797e01e&quot;,&quot;name&quot;:&quot;Windows_Server-2012-RTM-English-64Bit-SQL_2012_SP1_Standard-2013.06.12&quot;,&quot;description&quot;:&quot;Microsoft Windows Server 2012 RTM 64-bit Locale English with SQL 2012 Standard AMI provided by Amazon&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;amazon/Windows_Server-2012-RTM-English-64Bit-SQL_2012_SP1_Standard-2013.06.12&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;35&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hi1.4xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-7797e01e&quot;, &quot;osType&quot;: &quot;win&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/win.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">Windows_Server-2012-RTM-English-64Bit-SQL_2012_SP1_Standard-2013.06.12</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="Windows_Server-2012-RTM-English-64Bit-SQL_2012_SP1_Standard-2013.06.12"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-03a0d76a&quot;,&quot;name&quot;:&quot;Windows_Server-2008-SP2-English-32Bit-Base-2013.06.12&quot;,&quot;description&quot;:&quot;Microsoft Windows Server 2008 SP2 Datacenter 32-bit Locale English Base AMI provided by Amazon&quot;,&quot;architecture&quot;:&quot;i386&quot;,&quot;imageLocation&quot;:&quot;amazon/Windows_Server-2008-SP2-English-32Bit-Base-2013.06.12&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;30&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, c1.medium&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-03a0d76a&quot;, &quot;osType&quot;: &quot;win&quot;, &quot;architecture&quot;:&quot;i386&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/win.i386.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">Windows_Server-2008-SP2-English-32Bit-Base-2013.06.12</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="Windows_Server-2008-SP2-English-32Bit-Base-2013.06.12"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-c30360aa&quot;,&quot;name&quot;:&quot;ubuntu/images/ebs/ubuntu-raring-13.04-amd64-server-20130423&quot;,&quot;description&quot;:&quot;&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;099720109477/ubuntu/images/ebs/ubuntu-raring-13.04-amd64-server-20130423&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-88aa75e1&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;8&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-c30360aa&quot;, &quot;osType&quot;: &quot;ubuntu&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/ubuntu.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">ubuntu/images/ebs/ubuntu-raring-13.04-amd64-server-20130423</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-raring-13.04-amd64-server-20130423"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-7d0c6314&quot;,&quot;name&quot;:&quot;RHEL-6.4_GA-x86_64-7-Hourly2&quot;,&quot;description&quot;:&quot;&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;309956199498/RHEL-6.4_GA-x86_64-7-Hourly2&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-1eceaf77&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;7&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-7d0c6314&quot;, &quot;osType&quot;: &quot;redhat&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/redhat.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">RHEL-6.4_GA-x86_64-7-Hourly2</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="RHEL-6.4_GA-x86_64-7-Hourly2"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-5675ee3f&quot;,&quot;name&quot;:&quot;amzn-ami-pv-2013.03.0.i386-ebs&quot;,&quot;description&quot;:&quot;Amazon Linux AMI i386 EBS&quot;,&quot;architecture&quot;:&quot;i386&quot;,&quot;imageLocation&quot;:&quot;amazon/amzn-ami-pv-2013.03.0.i386-ebs&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;aki-b6aa75df&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;8&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, c1.medium&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-5675ee3f&quot;, &quot;osType&quot;: &quot;amazon&quot;, &quot;architecture&quot;:&quot;i386&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/amazon.i386.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">amzn-ami-pv-2013.03.0.i386-ebs</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="amzn-ami-pv-2013.03.0.i386-ebs"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-2f96e146&quot;,&quot;name&quot;:&quot;Windows_Server-2008-R2_SP1-English-64Bit-SQL_2012_SP1_Standard-2013.06.12&quot;,&quot;description&quot;:&quot;Microsoft Windows Server 2008 R2 SP1 Datacenter 64-bit Locale English with SQL 2012 Standard AMI provided by Amazon&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;amazon/Windows_Server-2008-R2_SP1-English-64Bit-SQL_2012_SP1_Standard-2013.06.12&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;/dev/sda1&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;, &quot;imageSize&quot;:&quot;35&quot;, &quot;instance_type&quot;:&quot;t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge, hi1.4xlarge, hs1.8xlarge&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-2f96e146&quot;, &quot;osType&quot;: &quot;win&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/win.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">Windows_Server-2008-R2_SP1-English-64Bit-SQL_2012_SP1_Standard-2013.06.12</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="Windows_Server-2008-R2_SP1-English-64Bit-SQL_2012_SP1_Standard-2013.06.12"></div>
+</li>
+
+
+</ul>
+				<ul class="my-ami-list resource-list hide">loading...</ul>
+				<ul class="favorite-ami-list resource-list hide  clearfix">
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-0027bf69&quot;,&quot;name&quot;:&quot;Hadapt CentOS&quot;,&quot;description&quot;:&quot;None&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;None&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;None&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-0027bf69&quot;, &quot;osType&quot;: &quot;centos&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/centos.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">Hadapt CentOS</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-4471e72d&quot;,&quot;name&quot;:&quot;zs6-ubuntu-enterprise-75-5bfa26d8-a50a-41bf-ad5e-2a5e6b101d5f-ami-aed147c7.1&quot;,&quot;description&quot;:&quot;ZS6 Enterprise on Ubuntu 12.04&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;None&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;None&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-4471e72d&quot;, &quot;osType&quot;: &quot;ubuntu&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/ubuntu.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">zs6-ubuntu-enterprise-75-5bfa26d8-a50a-41bf-ad5e-2a5e6b101d5f-ami-aed147c7.1</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-d27fd2bb&quot;,&quot;name&quot;:&quot;zscm-5.6&quot;,&quot;description&quot;:&quot;None&quot;,&quot;architecture&quot;:&quot;x86_64&quot;,&quot;imageLocation&quot;:&quot;None&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;None&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-d27fd2bb&quot;, &quot;osType&quot;: &quot;linux-other&quot;, &quot;architecture&quot;:&quot;x86_64&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/linux-other.x86_64.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">zscm-5.6</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-f4dd3a9d&quot;,&quot;name&quot;:&quot;None&quot;,&quot;description&quot;:&quot;None&quot;,&quot;architecture&quot;:&quot;i386&quot;,&quot;imageLocation&quot;:&quot;None&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;None&quot;,&quot;rootDeviceType&quot;:&quot;instance-store&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-f4dd3a9d&quot;, &quot;osType&quot;: &quot;linux-other&quot;, &quot;architecture&quot;:&quot;i386&quot;, &quot;rootDeviceType&quot;:&quot;instance-store&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/linux-other.i386.instance-store.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">None</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+</li>
+
+<li>
+	<div class="resource-item bubble" data-bubble-template="bubbleAMIInfo" data-bubble-data="{&quot;id&quot;:&quot;ami-d933b8b0&quot;,&quot;name&quot;:&quot;turnkey-tomcat-apache-12.0-squeeze-x86.ebs_2-241e66b3-e911-4ae9-8504-c30393126b2a-ami-f4db5c9d.1&quot;,&quot;description&quot;:&quot;http://www.turnkeylinux.org/tomcat-apache&quot;,&quot;architecture&quot;:&quot;i386&quot;,&quot;imageLocation&quot;:&quot;None&quot;,&quot;isPublic&quot;:&quot;true&quot;,&quot;kernelId&quot;:&quot;None&quot;,&quot;rootDeviceName&quot;:&quot;None&quot;,&quot;rootDeviceType&quot;:&quot;ebs&quot;}" data-component-type="node" data-type="AWS.EC2.Instance" data-option="{&quot;name&quot;: &quot;host&quot;, &quot;imageId&quot;: &quot;ami-d933b8b0&quot;, &quot;osType&quot;: &quot;linux-other&quot;, &quot;architecture&quot;:&quot;i386&quot;, &quot;rootDeviceType&quot;:&quot;ebs&quot; }">
+		<div class="resource-icon resource-icon-instance">
+			<img src="/assets/images/ide/ami/linux-other.i386.ebs.png" width="39" height="27">
+		</div>
+		<div class="resource-label instance-label">turnkey-tomcat-apache-12.0-squeeze-x86.ebs_2-241e66b3-e911-4ae9-8504-c30393126b2a-ami-f4db5c9d.1</div>
+	</div>
+	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+</li>
+
+</ul>
+			</div>
+			<div class="btn btn-primary" id="btn-browse-community-ami">Browse Community AMIs</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			Volume &amp; Snapshot
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide" style="">
+			<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="resoruce-snapshot resource-list clearfix">
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach new EBS volume." data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option="{&quot;name&quot;: &quot;/dev/sdf&quot;, &quot;volumeSize&quot;:&quot;1&quot;, &quot;snapshotId&quot;: &quot;&quot;}">
+							<div class="resource-icon resource-icon-volume"></div>
+							<div class="resource-label">New Volume</div>
+						</div>
+					</li>
+				
+
+
+</ul>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			ELB
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide" style="">
+			<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="resource-list clearfix">
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new ELB." data-component-type="node" data-type="AWS.ELB" data-option="{&quot;name&quot;: &quot;elb&quot;}">
+							<div class="resource-icon resource-icon-elb"></div>
+							<div class="resource-label">New ELB</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group">
+		<div class="fixedaccordion-head">
+			VPC
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide" style="">
+			<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<ul class="resource-list">
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Subnet." data-component-type="group" data-type="AWS.VPC.Subnet" data-option="{&quot;name&quot;: &quot;subnet&quot;}">
+							<div class="resource-icon resource-icon-subnet"></div>
+							<div class="resource-label">New Subnet</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Route Table." data-component-type="node" data-type="AWS.VPC.RouteTable" data-option="{&quot;name&quot;: &quot;RT&quot;}">
+							<div class="resource-icon resource-icon-rt"></div>
+							<div class="resource-label">New Route Table</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Internet Gateway." data-component-type="node" data-type="AWS.VPC.InternetGateway" data-option="{&quot;name&quot;: &quot;IGW&quot;}">
+							<div class="resource-icon resource-icon-igw"></div>
+							<div class="resource-label">New Internet Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item resource-disabled" data-tooltip="VPC can only have one IGW. There is already one IGW in current VPC." data-component-type="node" data-type="AWS.VPC.InternetGateway" data-option="{&quot;name&quot;: &quot;IGW&quot;}">
+							<div class="resource-icon resource-icon-igw"></div>
+							<div class="resource-label">New Internet Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Virtual Gateway." data-component-type="node" data-type="AWS.VPC.VPNGateway" data-option="{&quot;name&quot;: &quot;VPN&quot;}">
+							<div class="resource-icon resource-icon-vgw"></div>
+							<div class="resource-label">New Virtual Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Customer Gateway." data-component-type="node" data-type="AWS.VPC.CustomerGateway" data-option="{&quot;name&quot;: &quot;CGW&quot;}">
+							<div class="resource-icon resource-icon-cgw"></div>
+							<div class="resource-label">New Customer Gateway</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new Network Interface." data-component-type="node" data-type="AWS.VPC.NetworkInterface" data-option="{&quot;name&quot;: &quot;eni&quot;}">
+							<div class="resource-icon resource-icon-cgw"></div>
+							<div class="resource-label">New Network Interface</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="search-panel" style="display:none; position:absolute; top:0; height:0">
+<ul>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title1:</div>
+		<div class="item" data-id="item11" style="padding-left:20px;">item11</div>
+		<div class="item" data-id="item12" style="padding-left:20px;">item12</div>
+		<div class="item" data-id="item13" style="padding-left:20px;">item13</div>
+	</li>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title2:</div>
+		<div class="item" data-id="item21" style="padding-left:20px;">item21</div>
+		<div class="item" data-id="item22" style="padding-left:20px;">item22</div>
+		<div class="item" data-id="item23" style="padding-left:20px;">item23</div>
+	</li>
+	<li>
+		<div style="font-weight:bold;color:#999;">Title3:</div>
+		<div class="item" data-id="item31" style="padding-left:20px;">item31</div>
+		<div class="item" data-id="item32" style="padding-left:20px;">item32</div>
+		<div class="item" data-id="item33" style="padding-left:20px;">item33</div>
+	</li>
+</ul>
+</div></div>
 
 <!-- Property Panel -->
-<div id="property-panel" class="sidebar">
+<!-- <div id="property-panel" class="sidebar">
 	loading...
-</div>
+</div> -->
 
 <!-- Canvas Panel -->
 <div id="canvas-panel">

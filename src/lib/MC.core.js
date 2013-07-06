@@ -9,7 +9,7 @@
 # **********************************************************
 */
 var MC = {
-	version: '0.2',
+	version: '0.2.1',
 
 	// Global Variable 
 	API_URL: 'https://api.madeiracloud.com/',
@@ -160,6 +160,23 @@ var MC = {
 				};
 			});
 		}, 2000);
+	},
+
+	refreshCSS: function ()
+	{
+		var date = new Date(),
+			date_query = date.getTime(),
+			item;
+
+		$('link', document.head[0]).map(function (index, item)
+		{
+			item = $(item);
+
+			if (item.attr('rel') === 'stylesheet')
+			{
+				item.attr('href', item.attr('href').replace(/\.css(\?d=[0-9]*)?/ig, '.css?d=' + date_query));
+			};
+		});
 	},
 
 	/**

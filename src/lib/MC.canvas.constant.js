@@ -10,6 +10,8 @@ var constant_data = {
 	COMPONENT_WIDTH_GRID: 10,
 	COMPONENT_HEIGHT_GRID: 10,
 
+	GROUP_PADDING: 2,
+
 	//constant for _route()
 	MINDIST: 20,
 	TOL: 0.1,

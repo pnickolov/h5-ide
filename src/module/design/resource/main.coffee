@@ -15,8 +15,7 @@ define [ 'jquery',
         #compile partial template
         MC.IDEcompile 'design-resource', template_data, { '.availability-zone-data' : 'availability-zone-tmpl', '.resoruce-snapshot-data' : 'resoruce-snapshot-tmpl', '.quickstart-ami-data' : 'quickstart-ami-tmpl', '.my-ami-data' : 'my-ami-tmpl', '.favorite-ami-data' : 'favorite-ami-tmpl' }
 
-        #load remote module1.js
-
+        #
         require [ './module/design/resource/view', './module/design/resource/model', 'UI.bubble' ], ( View, model ) ->
 
             #view

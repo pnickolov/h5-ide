@@ -49,12 +49,24 @@ define [ 'jquery',
                 view.communityAmiBtnRender()
                 null
 
-            view.on 'LOADING_COMMUNITY_AMI', ( region_name ) ->
+            view.on 'LOADING_COMMUNITY_AMI', ( region_name, state ) ->
                 name = $('#community-ami-input').val()
                 platform = $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
                 architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
                 rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
-                model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType
+                page = parseInt $('#community_ami_page_current').attr("page"), 10
+                totalPage = parseInt $('#community_ami_page_current').attr("totalPage"), 10
+                if state == 0
+                    pageNum = 1
+                    model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
+                if state == -1 and page>1
+                    pageNum = page-1
+                    model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
+
+                if state == 1 and totalPage> page
+                    pageNum = page+1
+                    model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
+
 
     unLoadModule = () ->
         #view.remove()

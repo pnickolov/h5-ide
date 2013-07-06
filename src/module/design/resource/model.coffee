@@ -103,7 +103,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
 
                 perPageNum = 50
 
-            if returnPage == undefined or returnPage == null
+            if returnPage == undefined or returnPage == null or returnPage == 0 or returnPage == "0"
 
                 returnPage = 1
 
@@ -113,8 +113,8 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
                     platform        :   platform
                     architecture    :   architecture
                     rootDeviceType  :   rootDeviceType
-                    perPageNum      :   perPageNum
-                    returnPage      :   returnPage
+                    perPageNum      :   parseInt(perPageNum, 10)
+                    returnPage      :   parseInt(returnPage, 10)
 
                 }
 

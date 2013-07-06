@@ -33,7 +33,10 @@ define [ 'event',
             $( document ).delegate '#resource-panel',     'SEARCHBAR_HIDE', this.searchBarHideEvent
             $( document ).delegate '#resource-panel',   'SEARCHBAR_CHANGE', this.searchBarChangeEvent
             $( document ).delegate '#btn-browse-community-ami',   'click' , this, this.openBrowseCommunityAMIsModal
-            $( document ).delegate '#btn-search-ami',   'click'  , this, this.searchCommunityAmi
+            $( document ).delegate '#btn-search-ami',   'click'  , this, this.searchCommunityAmiCurrent
+            $( document ).delegate '#community_ami_page_preview',   'click'  , this, this.searchCommunityAmiPreview
+            $( document ).delegate '#community_ami_page_next',   'click'  , this, this.searchCommunityAmiNext
+            
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideResourcePanel
 
@@ -177,16 +180,25 @@ define [ 'event',
                     #                 </tr>
                 
                 page = "<div>page #{this.model.attributes.community_ami.curPageNum}</div>"
-                totalNum = this.model.attributes.community_ami.totalNum
+                totalNum = this.model.attributes.community_ami.totalPageNum
                 $("#ami-count").empty().html("Total: #{totalNum}")
                 $("#community_ami_table").empty().html(this_tr)
-                $("#community_ami_page").empty().html(page)
+                #$("#community_ami_page").empty().html(page)
+                $('#community_ami_page_current').attr("totalPage", totalNum)
+                $('#community_ami_page_current').attr("page", this.model.attributes.community_ami.curPageNum)
 
 
-        searchCommunityAmi : ( event ) ->
+        searchCommunityAmiCurrent : ( event ) ->
 
-            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region
+            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, 0
 
+        searchCommunityAmiNext : ( event ) ->
+
+            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, 1
+
+        searchCommunityAmiPreview : ( event ) ->
+
+            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, -1
             
             # modal(MC.template.browseCommunityAmi(this.model.attributes), false)
             # $($('#selectbox-ami-platform').find('.cur-value')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html())

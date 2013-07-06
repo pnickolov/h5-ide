@@ -457,11 +457,7 @@ MC.canvas = {
 				endY = to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2);
 
 				MC.paper.start({
-					'fill': 'none',
-					'stroke': connection_option.color,
-					'stroke-linejoin': 'round',
-					'stroke-width': 4,
-					'filter' : 'url(#dropshadow)' //dropshadow of line
+					'stroke': connection_option.color
 				});
 
 				//add by xjimmy

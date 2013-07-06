@@ -9,22 +9,21 @@
 # **********************************************************
 */
 var tab = {
-    update: function(event)
-    {
+    update: function (event) {
         event.preventDefault();
 
-        var target = $(this).attr('href'),
-            previous_tag = $($(this).parent().parent().find('> .active')),
+        var me = $(this),
+            target = me.attr('href'),
+            previous_tag = $(me.parent().parent().find('> .active')),
             previous_target = previous_tag.children('a').attr('href');
 
         $(previous_target).removeClass('active');
         $(target).addClass('active');
         previous_tag.removeClass('active');
-        $(this).parent().addClass('active');
+        me.parent().addClass('active');
     }
 };
 
-$(document).ready(function ()
-{
+$(document).ready(function () {
     $(document).on('click', '.tab a', tab.update);
 });

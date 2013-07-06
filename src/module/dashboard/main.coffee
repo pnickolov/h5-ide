@@ -67,6 +67,8 @@ define [ 'jquery',
 
             model.on 'change:region_classic_list', () ->
                 console.log 'dashboard_region_classic_list'
+                #set MC.data.supported_platforms
+                MC.data.supported_platforms = model.get 'region_classic_list'
                 #refresh view
                 view.renderPlatformAttrs()
 

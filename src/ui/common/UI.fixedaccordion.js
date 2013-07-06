@@ -44,7 +44,7 @@ var fixedaccordion = {
 
         if (!is_expanded)
         {
-            $(fixedaccordion_body).height(fixedaccordion.data('bodyHeight'));
+            $(fixedaccordion_body).outerHeight(fixedaccordion.data('bodyHeight'));
 
             fixedaccordion_body.slideDown(200, function ()
             {

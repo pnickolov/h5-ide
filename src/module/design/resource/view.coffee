@@ -153,26 +153,35 @@ define [ 'event',
 
         communityAmiRender : () ->
 
-            #this.model.attributes.community_ami
+            totalNum = 0
+            $("#ami-count").empty().html("Total: 0")
+            if this.model.attributes.community_ami
+                 this_tr = ""
+                _.map this.model.attributes.community_ami.result, ( value, key ) ->
 
-            this_tr = ""
-            this_tr += '<tr class="item" data-id="ami-123456 ubuntu-12" data-publicprivate="public" data-platform="ubuntu" data-ebs="ebs" data-bit="32">'
-            this_tr += '<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="ami-123456"></div></td>'
-            this_tr += '<td>ami-123456</td>'
-            this_tr += '<td><div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div><div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div></td>'
-            this_tr += '<td>32</td></tr>'
-            # <tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
-            #                     <td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
-            #                     <td>{{id}}</td>
-            #                     <td>
-            #                         <div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div>
-            #                         <div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div>
-            #                     </td>
-            #                     <td>32</td>
-            #                 </tr>
-            page = '<div>page 1</div>'
-            $("#community_ami_table").empty().html(this_tr)
-            $("#community_ami_page").empty().html(page)
+                    bit = '64'
+                    if value.architecture == 'i386' then bit = '32'
+                    this_tr += '<tr class="item" data-id="'+key+' '+value.name+'" data-publicprivate="public" data-platform="'+value.osType+'" data-ebs="'+value.rootDeviceType+'" data-bit="'+bit+'">'
+                    this_tr += '<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="'+key+'"></div></td>'
+                    this_tr += '<td>'+key+'</td>'
+                    this_tr += '<td><div><i class="icon-ubuntu icon-ami-os"></i>'+value.name+'</div><div class="ami-meta">public | '+value.architecture+' | '+value.rootDeviceType+'</div></td>'
+                    this_tr += "<td>#{bit}</td></tr>"
+                    # <tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
+                    #                     <td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
+                    #                     <td>{{id}}</td>
+                    #                     <td>
+                    #                         <div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div>
+                    #                         <div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div>
+                    #                     </td>
+                    #                     <td>32</td>
+                    #                 </tr>
+                
+                page = "<div>page #{this.model.attributes.community_ami.curPageNum}</div>"
+                totalNum = this.model.attributes.community_ami.totalNum
+                $("#ami-count").empty().html("Total: #{totalNum}")
+                $("#community_ami_table").empty().html(this_tr)
+                $("#community_ami_page").empty().html(page)
+
 
         searchCommunityAmi : ( event ) ->
 

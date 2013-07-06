@@ -95,19 +95,46 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
                 me.set 'my_ami', result.resolved_data
                 null
 
-        describeCommunityAmiService : ( region_name, name, platform, architecture, rootDeviceType ) ->
+        describeCommunityAmiService : ( region_name, name, platform, architecture, rootDeviceType, perPageNum, returnPage ) ->
 
             me = this
-            me.set 'community_ami', null
-            me.set 'community_ami', 1
-            # ami_list = []
-            # if community_ami[region_name] == undefined
-            #     #get service(model)
-            #     aws_model.Public { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
-            #     aws_model.once 'AWS__PUBLIC_RETURN', ( result ) ->
-            #         console.log 'AWS__PUBLIC_RETURN'
-                    
-            #         _.map result.resolved_data.ami, ( value, key ) ->
+
+            if perPageNum == undefined or perPageNum == null
+
+                perPageNum = 50
+
+            if returnPage == undefined or returnPage == null
+
+                returnPage = 1
+
+            filters = {
+                ami : {
+                    name            :   name
+                    platform        :   platform
+                    architecture    :   architecture
+                    rootDeviceType  :   rootDeviceType
+                    perPageNum      :   perPageNum
+                    returnPage      :   returnPage
+
+                }
+
+            }
+
+
+            ami_list = []
+            if community_ami[region_name] == undefined
+                #get service(model)
+                aws_model.Public { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, filters
+                aws_model.once 'AWS__PUBLIC_RETURN', ( result ) ->
+                    console.log 'AWS__PUBLIC_RETURN'
+                    console.log result
+                    if result.resolved_data
+                        me.set 'community_ami', result.resolved_data.ami
+                    else
+                        me.set 'community_ami', null
+
+            null
+            #        _.map result.resolved_data.ami, ( value, key ) ->
             #             if value.isPublic == 'true' then value.isPublic = 'public' else value.isPublic = 'private'
             #             if value.architecture == 'x86_64' then value.architecture = '64-bit' else value.architecture = '32-bit'
             #             if value.rootDeviceType == 'ebs' then value.rootDeviceType = 'ebs' else value.rootDeviceType = 'instancestore'

@@ -443,12 +443,12 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 140, 120).attr({
+				Canvon.rectangle(0, 0, 100, 100).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/VOL-Canvas.png', 0, 0, 140, 120),
+				Canvon.image('../assets/images/ide/icon/VOL-Canvas.png', 15, 8, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -463,12 +463,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3. device-name
-				Canvon.text(68, 50, option.name).attr({
+				Canvon.text(34, 25, option.name).attr({
 					'class': 'node-label device-name'
 				}),
 
 				////3. device-name
-				Canvon.text(68, 65, option.volumeSize + " GiB").attr({
+				Canvon.text(34, 25, option.volumeSize + " GiB").attr({
 					'class': 'node-label volume-size'
 				})
 

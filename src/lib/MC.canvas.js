@@ -644,6 +644,18 @@ MC.canvas = {
 			MC.canvas.data.delete('component.' + node_id);
 		}
 
+		if (node_type === 'group')
+		{
+			var group_child = MC.canvas.groupChild(node);	
+			
+			$.each(group_child, function (index, item)
+			{
+				MC.canvas.remove(item);
+			});
+
+			MC.canvas.data.delete('layout.component.group.' + node_id);
+		}
+
 		$(node).remove();
 	},
 
@@ -828,9 +840,9 @@ MC.canvas = {
 
 			if (
 				coordinate[0] >= start_x &&
-				coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID <= end_x &&
+				coordinate[0] <= end_x &&
 				coordinate[1] >= start_y &&
-				coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID <= end_y
+				coordinate[1] <= end_y
 			)
 			{
 				matched.push($('#' + key)[0]);
@@ -1523,9 +1535,9 @@ MC.canvas.event.groupResize = {
 	{
 		var direction = event.data.direction,
 			group_border = event.data.group_border * 2,
-			left = event.pageX - event.data.originalLeft,
+			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10,
 			max_left = event.data.originalWidth,
-			top = event.pageY - event.data.originalTop,
+			top = Math.round((event.pageY - event.data.originalTop) / 10) * 10,
 			max_top = event.data.originalHeight,
 			prop;
 
@@ -1585,7 +1597,7 @@ MC.canvas.event.groupResize = {
 			case 'left':
 				prop = {
 					'x': left > max_left ? max_left : left,
-					'width': event.data.originalWidth - event.pageX + event.data.originalX
+					'width': Math.floor((event.data.originalWidth - event.pageX + event.data.originalX) / 10) * 10
 				};
 				break;
 		}

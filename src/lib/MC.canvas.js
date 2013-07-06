@@ -1268,7 +1268,7 @@ MC.canvas.event.drawConnection = {
 
 							if (is_connected)
 							{
-								return false;
+								return;
 							}
 						}
 						if (value.relation === 'multiple')
@@ -1282,11 +1282,12 @@ MC.canvas.event.drawConnection = {
 							{
 								target_connection_option = [target_connection_option];
 							}
+
 							$.each(target_connection_option, function (index, option)
 							{
 								$.each(target_data.connection, function (index, data)
 								{
-									if (data.port === value.to)
+									if (data.port === value.to && data.target === node_id)
 									{
 										is_connected = true;
 									}
@@ -1295,7 +1296,7 @@ MC.canvas.event.drawConnection = {
 
 							if (is_connected)
 							{
-								return false;
+								return;
 							}
 						}
 						$(this)
@@ -1482,6 +1483,7 @@ MC.canvas.event.siderbarDrag = {
 				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x + node_option.width, coordinate.y + node_option.height)
 			)
 			{
+				console.info("ddd");
 				MC.canvas.add(node_type, node_option, coordinate);
 			}
 		}

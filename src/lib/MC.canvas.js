@@ -1421,6 +1421,11 @@ MC.canvas.event.siderbarDrag = {
 
 		shadow.append(clone_node);
 
+		shadow.css({
+			'top': event.pageY - 50,
+			'left': event.pageX - 50
+		}).show();
+
 		$('#canvas_body').addClass('dragging');
 
 		$(document.body).on({
@@ -1428,9 +1433,7 @@ MC.canvas.event.siderbarDrag = {
 			'mouseup': MC.canvas.event.siderbarDrag.mouseup
 		}, {
 			'target': target,
-			'shadow': $(shadow),
-			'offsetX': event.pageX - target_offset.left,
-			'offsetY': event.pageY - target_offset.top,
+			'shadow': shadow
 		});
 
 		MC.canvas.event.clearSelected();
@@ -1443,8 +1446,8 @@ MC.canvas.event.siderbarDrag = {
 		event.stopPropagation();
 
 		event.data.shadow.css({
-			'top': event.pageY - event.data.offsetY,
-			'left': event.pageX - event.data.offsetX
+			'top': event.pageY - 50,
+			'left': event.pageX - 50
 		});
 
 		return false;
@@ -1483,7 +1486,6 @@ MC.canvas.event.siderbarDrag = {
 				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x + node_option.width, coordinate.y + node_option.height)
 			)
 			{
-				console.info("ddd");
 				MC.canvas.add(node_type, node_option, coordinate);
 			}
 		}

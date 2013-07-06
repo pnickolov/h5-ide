@@ -1374,16 +1374,6 @@ td.table-action a.btn {
 	display: block;
 }
 
-/* Resource Search Panel */
-
-.search-panel {
-	 position: absolute; 
-	 top: 32px; 
-	 background-color: #fff; 
-	 height: 432px; 
-	 width: 246px;
-}
-
 /* Browse Community AMI Modal */
 
 #modal-browse-community-ami .modal-body {
@@ -1635,6 +1625,10 @@ a.sidebar-hider {
 	/*border-right: 1px solid #666;*/
 }
 
+#resource-panel  .accordion-body {
+	padding: 5px;
+}
+
 #resource-panel.hiden {
 	margin-left: -247px;
 }
@@ -1663,22 +1657,20 @@ a.sidebar-hider {
 }
 
 .resource-list {
-	width: 100%;
 	padding: 0 0 10px 0;
 }
 
 .resource-list > li {
-	display: inline-block;
 	position: relative;
 	float: left;
 }
 
 .resource-item {
-	width: 70px;
-	margin: 0 8px 8px 0;
+	width: 77px;
+	margin: 0 2px 8px 0;
 	border-radius: 4px;
 	cursor: pointer;
-	padding: 5px;
+	padding: 4px 2px;
 	box-sizing: border-box;
 }
 
@@ -1687,8 +1679,8 @@ a.sidebar-hider {
 }
 .resource-item:active {
 	background: #fff;
-	border: 1px solid #55C7FF;
-	padding: 4px;
+/*	border: 1px solid #55C7FF;
+	padding: 4px;*/
 }
 
 .resource-list > li:nth-child(3n) > .resource-item {
@@ -1759,12 +1751,9 @@ a.sidebar-hider {
 	font-size: 11px;
 	text-align: center;
 	padding-bottom: 5px;
-	margin-left: -5px;
-	width: 70px;
-	height: 26px;
+	height: 22px;
 	word-wrap: break-word;
 	overflow: hidden;
-	line-height: 14px;
 }
 
 .resource-item:hover .resource-label {
@@ -1773,7 +1762,7 @@ a.sidebar-hider {
 
 .instance-label {
 	/*font-size: 11px;*/
-	height: 64px;
+	/*height: 64px;*/
 }
 
 #resource-select {
@@ -1857,6 +1846,10 @@ a.sidebar-hider {
 	border-radius: 0;
 }
 
+.ebs-size {
+	font-size: 12px;
+}
+
 /* Property Panel */
 #property-panel {
 	right: 0;
@@ -1884,13 +1877,14 @@ a.sidebar-hider {
     -ms-transition: margin, width 0s linear;
     -o-transition: margin, width 0s linear;
     transition: margin, width 0s linear;
-    position: relative;
+/*    position: relative;
     top: 0;
     left: 0;
-    right: 0;
+    right: 0;*/
     margin-left: 246px;
-    margin-right: 280px;
+/*    margin-right: 280px;*/
     background: #fff;
+    overflow: auto;
 }
 
 #canvas-panel.left-hiden {
@@ -1902,6 +1896,7 @@ a.sidebar-hider {
 }
 
 /* Canvas */
+<<<<<<< HEAD
 #canvas_container {
 	overflow: hidden;
 	width: 1900px;
@@ -1968,6 +1963,10 @@ a.sidebar-hider {
 }
 .property-instance-check{
 	position: relative;
+}
+
+/* Resource Panel */
+.panel-fixedaccordion {
 	width: 100%;
 	height: 30px;
 	overflow: hidden;
@@ -2108,4 +2107,17 @@ a.sidebar-hider {
 		width: 30%;
 		padding-bottom: 22.5%;
 	}
+}
+
+/* icon for Instance/AMI */
+.resource-icon-instance {
+	height: 70px;
+	width: 70px;
+	background: url('../images/ide/icon/Instance-Canvas.png');
+}
+.resource-icon-instance img {
+	display: block;
+	margin: 0 auto;
+	position: relative;
+	top: 15px;
 }

@@ -2,7 +2,7 @@
 // Canvon SVG framework
 // Copyright Angel Lai 2013
 // MIT license
-// 
+//
 var Canvon = function (canvas_id)
 {
 	return new Canvon.fn.init(document.getElementById(canvas_id));
@@ -49,9 +49,16 @@ Canvon.fn = Canvon.prototype = {
 		}
 		else
 		{
-			$(canvas).append(element);
+			if (this !== Canvon)
+			{
+				$(canvas).append(element);
+			}
 		}
-		this.drawn = element;
+
+		if (this !== Canvon)
+		{
+			this.drawn = element;
+		}
 
 		return $(element);
 	},
@@ -86,20 +93,9 @@ Canvon.fn = Canvon.prototype = {
 			'y1': y1,
 			'x2': x2,
 			'y2': y2
-		}).css(style || '');
+		}).css(style || {});
 	},
 
-	/**
-	 * Draw polyline
-	 * @param  {array} path  The points of path
-	 * [
-			[startX1, endY1],
-			[startX2, endY2],
-			[startX3, endY3]
-		]
-	 * @param  {object} style The style stroke
-	 * @return {object} The SVG line object
-	 */
 	polyline: function (path, style)
 	{
 		var points = [],
@@ -107,12 +103,12 @@ Canvon.fn = Canvon.prototype = {
 			i;
 
 		for (i = 0; i < length; i++) {
-			points.push(path[i][0] + ',' + path[i][1]);
-		};
+			points.push(path[i].x + ',' + path[i].y);
+		}
 
 		return this.draw(this, 'polyline').attr({
 			'points': points.join(' ')
-		}).css(style || '');
+		}).css(style || {});
 	},
 
 	polygon: function (path, style)
@@ -123,11 +119,11 @@ Canvon.fn = Canvon.prototype = {
 
 		for (i = 0; i < length; i++) {
 			points.push(path[i][0] + ',' + path[i][1]);
-		};
+		}
 
 		return this.draw(this, 'polygon').attr({
 			'points': points.join(' ')
-		}).css(style || '');
+		}).css(style || {});
 	},
 
 	circle: function (x, y, r, style)
@@ -136,7 +132,7 @@ Canvon.fn = Canvon.prototype = {
 			'cx': x,
 			'cy': y,
 			'r': r
-		}).css(style || '');
+		}).css(style || {});
 	},
 
 	ellipse: function (x, y, rx, ry, style)
@@ -146,7 +142,7 @@ Canvon.fn = Canvon.prototype = {
 			'cy': y,
 			'rx': rx,
 			'ry': ry
-		}).css(style || '');
+		}).css(style || {});
 	},
 
 	rectangle: function (x, y, width, height, style)
@@ -155,33 +151,61 @@ Canvon.fn = Canvon.prototype = {
 			'x': x,
 			'y': y,
 			'width': width,
-			'height': height 
-		}).css(style || '');
+			'height': height
+		}).css(style || {});
 	},
 
 	path: function (path, style)
 	{
 		return this.draw(this, 'path').attr({
 			'd': path
-		}).css(style || '');
+		}).css(style || {});
 	},
 
 	text: function (x, y, text, style)
 	{
 		return this.draw(this, 'text').attr({
-				'x': x,
-				'y': y
-		}).text(text).css(style || '');
+			'x': x,
+			'y': y
+		}).text(text).css(style || {});
 	},
 
 	image: function (src, x, y, width, height)
 	{
-		return this.draw(this, 'image').attr({
+		var image = this.draw(this, 'image').attr({
 			'x': x,
 			'y': y,
 			'width': width,
 			'height': height,
 			"preserveAspectRatio": "none"
-		}).setAttributeNS("http://www.w3.org/1999/xlink", "href", src);
+		});
+
+		image[0].setAttributeNS("http://www.w3.org/1999/xlink", "href", src);
+
+		return image;
+	},
+
+	use: function (href, attr, style)
+	{
+		var use = this.draw(this, 'use').attr(attr || {}).css(style || {});
+
+		use[0].setAttributeNS("http://www.w3.org/1999/xlink", 'href', href);
+
+		return use;
+	},
+
+	group: function (x, y, width, height, style) {
+		return this.draw(this, 'g').attr({
+			'x': x,
+			'y': y,
+			'width': width,
+			'height': height
+		}).css(style || {});
 	}
+
 };
+
+$.each(Canvon.prototype, function (name, fn)
+{
+	Canvon[name] = fn;
+});

@@ -42,7 +42,6 @@ $.get(TEMPLATE_LOCATION, function (data)
 			{
 				space = space[ value ];
 			}
-
 		});
 	}
 

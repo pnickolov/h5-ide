@@ -1,0 +1,316 @@
+#canvas_container {
+	overflow: auto;
+	/*width: 1900px;*/
+	padding: 5px;
+	background: rgb(237, 237, 237);
+	/*height: 1430px;*/
+	/*position: relative;*/
+}
+
+#canvas_body {
+	margin: 20px;
+	border: 1px solid #ccc;
+	background: #fff url('../images/ide/grid.png');
+/*	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;*/
+}
+
+#canvas_body.zoomed {
+	pointer-events: none;
+	background-image: url('../images/ide/canvas_background_zoom.jpg');
+/*	-webkit-transform: scale(0.5) translate(-50%, -50%);
+	-moz-transform: scale(0.5) translate(-50%, -50%);
+	-o-transform: scale(0.5) translate(-50%, -50%);
+	-ms-transform: scale(0.5) translate(-50%, -50%);
+	transform: scale(0.5) translate(-50%, -50%);*/
+}
+
+#canvas_copy {
+	width: 100%;
+	height: 100%;
+}
+
+#svg_canvas {
+	position: relative;
+	z-index: 1;
+}
+
+.attachable {
+	cursor: alias;
+}
+
+.port.highlight {
+	border: 1px red dotted;
+}
+
+/*.zone {
+	z-index: -2;
+	position: absolute;
+	background: rgba(254, 170, 45, 0.05);
+	border: 4px dashed rgb(250, 210, 150);
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border-radius: 2px;
+}
+
+.zone_title {
+	white-space: nowrap;
+	word-wrap: break-word;
+	left: -4px;
+	top: -20px;
+	color: rgb(254, 157, 79);
+	position: absolute;
+	z-index: 50;
+}
+
+.zone_resizer {
+	position: absolute;
+}*/
+
+
+.node_icon {
+	left: 38px;
+	top: 30px;
+	width: 39px;
+	height: 27px;
+	background: url('../images/ide/ami/ubuntu.64.ebs.png') no-repeat;
+	position: absolute;
+}
+
+#canvas_select_ranger {
+	position: absolute;
+	background: rgba(255, 255, 255, 0.5);
+	border: 1px solid #aaa;
+	z-index: 99;
+}
+
+#component_drag_shadow {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: rgba(100, 100, 100, 0.5);
+	position: absolute;
+	border-radius: 3px;
+	z-index: 99;
+	width: 80px;
+	height: 80px;
+}
+
+#drag_shadow {
+	width: 100px;
+	height: 100px;
+	background: #E5F1F5;
+	position: absolute;
+	opacity: 0.8;
+	z-index: 100;
+	border: 1px solid #f3f3f3;
+}
+
+#drag_shadow .resource-icon {
+	top: 15px;
+	position: relative;
+	margin: 0 auto;
+}
+
+/* Canvas */
+.shadow {
+	opacity: 0.6;
+}
+
+.zone {
+	fill: rgba(254, 170, 45, 0.05);
+	stroke: rgb(250, 210, 150);
+	stroke-linejoin: round;
+	stroke-dasharray: 15,5;
+	stroke-width: 4;
+}
+
+/*.component-highlight {
+	fill: rgba(254, 170, 45, 0.05);
+	stroke: rgb(250, 210, 150);
+	stroke-linejoin: round;
+	stroke-dasharray: 15,5;
+	stroke-width: 4;
+	points: 10, 10 20, 10, 20, 20, 10, 20 10, 10;
+}*/
+
+
+/* port style */
+/*
+.port {
+	stroke: #6d6d6d;
+	stroke-width: 2;
+	fill-opacity: 0.5;
+	fill: url(#gradient_port);
+	opacity: 1;
+}
+*/
+
+/** new port style **/
+.port-blue {
+	fill: #6DAEFE;
+	stroke: #6DAEFE;
+	stroke-width: 1;
+}
+
+.port-green {
+	fill: #12CD4F;
+	stroke: #12CD4F;
+	stroke-width: 1;
+}
+
+.port-purple {
+	fill: #bf7aa5;
+	stroke: #b22f70;
+	stroke-width: 1;
+}
+
+.port-gray {
+	fill: #d8d7d6;
+	stroke: #bebebe;
+	stroke-width: 1;
+}
+
+.port:hover {
+	fill: #F2F8FF;
+	stroke-width: 2;
+	cursor  : pointer;
+	/*opacity : 0.7;*/
+}
+
+
+.node text {
+	cursor: default;
+}
+
+/* highlight connnectable*/
+.connectable-port {
+	display: inline;
+	fill: red;
+}
+
+/* highlight connnectable node */
+.dragging .node-background {
+	fill-opacity: 0.7;
+	fill: #E5F1F5;
+}
+
+.connectable .node-background {
+	fill-opacity: 0.3;
+	fill: #97bf7d;
+}
+
+.selected .node-background {
+	fill-opacity: 0.8;
+	fill: #F2F8FF;
+	stroke-width: 1;
+	stroke: #659FFF;
+	/*filter: url(#dropshadow_selected);*/
+}
+
+.line {
+	cursor: pointer;
+	fill: none;
+	stroke-linejoin: round;
+	stroke-width: 4;
+	filter : url(#dropshadow);
+}
+
+/* line connection */
+.line.selected {
+	stroke: black !important;
+}
+
+/* node label */
+.node-label {
+	font-size: 12px;
+	text-anchor: middle;
+	fill: #333;
+}
+
+.node-background {
+	fill-opacity: 0;
+}
+
+
+/* group */
+.group-label {
+	font-size: 12px;
+	cursor: default;
+}
+
+.az-name {
+	fill: #F19812;
+}
+
+.group-vpc {
+	fill: rgba(250, 250, 250, 0.05);
+	stroke: #dcdcdc;
+	stroke-linejoin: round;
+	stroke-dasharray: none;
+	stroke-width: 6;
+}
+
+.group-az {
+	fill: rgba(254, 170, 45, 0.05);
+	stroke: #fbd396;
+	stroke-linejoin: round;
+	stroke-dasharray: 25, 10;
+	stroke-width: 4;
+}
+
+.group-subnet {
+	fill: rgba(250, 250, 250, 0.05);
+	stroke: #dbd7d7;
+	stroke-linejoin: round;
+	stroke-dasharray: 25, 10;
+	stroke-width: 3;
+}
+
+/*scale area style*/
+.group-resizer {
+	fill-opacity: 0;
+	/*position: absolute;*/
+}
+
+.resizer-topleft {
+	/*fill:blue;*/
+	cursor: nwse-resize;
+}
+
+.resizer-top {
+	/*fill:red;*/
+	cursor: ns-resize;
+}
+
+.resizer-topright {
+	/*fill:blue;*/
+	cursor: nesw-resize;
+}
+
+.resizer-left {
+	/*fill:red;*/
+	cursor: ew-resize;
+}
+
+.resizer-right {
+	/*fill:red;*/
+	cursor: ew-resize;
+}
+
+.resizer-bottomleft {
+	/*fill:blue;*/
+	cursor: nesw-resize;
+}
+
+.resizer-bottom {
+	/*fill:red;*/
+	cursor: ns-resize;
+}
+
+.resizer-bottomright {
+	/*fill:blue;*/
+	cursor: nwse-resize;
+}

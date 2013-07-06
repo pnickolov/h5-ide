@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130612
+#* Date: 20130703
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -11,101 +11,93 @@
 var scrollbar = {
 	init: function ()
 	{
-		var style = document.documentElement.style;
-		scrollbar.isTransform = (style.webkitTransform !== undefined || style.MozTransform !== undefined || style.OTransform !== undefined || style.Transform !== undefined);
-		scrollbar.isTouch = window.ontouchstart !== undefined;
+		var style = document.documentElement.style,
+			doc_scroll_wrap = document.getElementsByClassName('scroll-wrap');
 
-		if (scrollbar.isTouch)
-		{
-			$(document).on('touchstart', '.scroll-wrap', scrollbar.mousedown);
-		}
-		else
-		{
-			$(document).on('mousewheel', '.scroll-wrap', scrollbar.wheel);
-			$(document).on('DOMMouseScroll', '.scroll-wrap', scrollbar.wheel);
-			$(document).on('mousedown', '.scrollbar-veritical-thumb', {'direction': 'veritical'}, scrollbar.mousedown);
-			$(document).on('mousedown', '.scrollbar-horizontal-thumb', {'direction': 'horizontal'}, scrollbar.mousedown);
-		}
+		scrollbar.isTransform = (style.webkitTransform !== undefined || style.MozTransform !== undefined || style.OTransform !== undefined || style.Transform !== undefined);
+
+		$(document.body)
+			.on('mousewheel', '.scroll-wrap', scrollbar.wheel)
+			.on('DOMMouseScroll', '.scroll-wrap', scrollbar.wheel)
+			.on('mousedown', '.scrollbar-veritical-thumb', {'direction': 'veritical'}, scrollbar.mousedown)
+			.on('mousedown', '.scrollbar-horizontal-thumb', {'direction': 'horizontal'}, scrollbar.mousedown);
 
 		setInterval(function ()
 		{
-			scrollbar.thumb_size();
-		}, 1500);
-	},
-	thumb_size: function ()
-	{
-		$('.scroll-wrap').map(function ()
-		{
-			var wrap = $(this),
-				veritical_thumb = wrap.find('.scrollbar-veritical-thumb').first(),
-				horizontal_thumb = wrap.find('.scrollbar-horizontal-thumb').first(),
-				scroll_content = wrap.find('.scroll-content').first(),
-				max_veritical_scroll,
-				max_horizontal_scroll,
-				scrollbar_height,
-				scrollbar_width;
+			var length = doc_scroll_wrap.length;
 
-			if (scroll_content[0])
+			while (length--)
 			{
-				max_veritical_scroll = this.offsetHeight * 2 - scroll_content[0].scrollHeight,
-				max_horizontal_scroll = this.offsetWidth * 2 - scroll_content[0].scrollWidth,
-				scrollbar_height = (this.offsetHeight / scroll_content[0].scrollHeight) * this.offsetHeight,
-				scrollbar_width = (this.offsetWidth / scroll_content[0].scrollWidth) * this.offsetWidth;
+				var target = doc_scroll_wrap[ length ],
+					wrap = $(target),
+					veritical_thumb = wrap.find('.scrollbar-veritical-thumb').first(),
+					horizontal_thumb = wrap.find('.scrollbar-horizontal-thumb').first(),
+					scroll_content = wrap.find('.scroll-content').first(),
+					offsetHeight = target.offsetHeight,
+					offsetWidth = target.offsetWidth,
+					scrollbar_height,
+					scrollbar_width;
 
-				if (veritical_thumb)
+				if (scroll_content[0])
 				{
-					if (scrollbar_height <= max_veritical_scroll || scrollbar_height > wrap.height())
+					scrollbar_height = offsetHeight * offsetHeight / scroll_content[0].scrollHeight;
+					scrollbar_width = offsetWidth * offsetWidth / scroll_content[0].scrollWidth;
+
+					if (veritical_thumb)
 					{
-						veritical_thumb.parent().hide();
-						if (scrollbar.isTransform)
+						if (scrollbar_height <= offsetHeight * 2 - scroll_content[0].scrollHeight || scrollbar_height > wrap.height())
 						{
-							scroll_content.css('transform', 'translate3d(' + (scroll_content[0].realScrollLeft ? scroll_content[0].realScrollLeft : 0) + ', 0, 0)');
+							veritical_thumb.parent().hide();
+							if (scrollbar.isTransform)
+							{
+								scroll_content.css('transform', 'translate3d(' + (scroll_content[0].realScrollLeft ? scroll_content[0].realScrollLeft : 0) + ', 0, 0)');
+							}
+							else
+							{
+								scroll_content.css('top', 0);
+							}
+
+							scroll_content[0].realScrollTop = 0;
+							veritical_thumb.css('top', 0);
 						}
 						else
 						{
-							scroll_content.css('top', 0);
+							veritical_thumb.parent().show();
+							veritical_thumb.css('height', scrollbar_height);
 						}
-
-						scroll_content[0].realScrollTop = 0;
-						veritical_thumb.css('top', 0);
 					}
-					else
-					{
-						veritical_thumb.parent().show();
-						veritical_thumb.css('height', scrollbar_height);
-					}
-				}
 
-				if (horizontal_thumb)
-				{
-					if (scrollbar_width <= max_horizontal_scroll || scrollbar_width > wrap.width())
+					if (horizontal_thumb)
 					{
-						horizontal_thumb.parent().hide();
-						if (scrollbar.isTransform)
+						if (scrollbar_width <=  offsetWidth * 2 - scroll_content[0].scrollWidth || scrollbar_width > wrap.width())
 						{
-							scroll_content.css('transform', 'translate3d(0, ' + (scroll_content[0].realScrollTop ? scroll_content[0].realScrollTop : 0) + 'px, 0)');
+							horizontal_thumb.parent().hide();
+							if (scrollbar.isTransform)
+							{
+								scroll_content.css('transform', 'translate3d(0, ' + (scroll_content[0].realScrollTop ? scroll_content[0].realScrollTop : 0) + 'px, 0)');
+							}
+							else
+							{
+								scroll_content.css('left', 0);
+							}
+
+							scroll_content[0].realScrollLeft = 0;
+							horizontal_thumb.css('left', 0);
 						}
 						else
 						{
-							scroll_content.css('left', 0);
+							horizontal_thumb.parent().show();
+							horizontal_thumb.css('width', scrollbar_width);
 						}
-
-						scroll_content[0].realScrollLeft = 0;
-						horizontal_thumb.css('left', 0);
-					}
-					else
-					{
-						horizontal_thumb.parent().show();
-						horizontal_thumb.css('width', scrollbar_width);
 					}
 				}
 			}
-		});
+		}, 2500);
 	},
 	mousedown: function (event)
 	{
-		var target = $(event.target),
-			tag = target.prop('tagName').toLowerCase(),
+		var target = $(this).parent().parent(),
+			tag = event.target.tagName.toLowerCase(),
 			direction = event.data.direction,
 			veritical_thumb,
 			horizontal_thumb;
@@ -117,11 +109,6 @@ var scrollbar = {
 
 		event.preventDefault();
 		event.stopPropagation();
-
-		while (!target.hasClass('scroll-wrap'))
-		{
-			target = target.parent();
-		}
 
 		target.addClass('scrolling');
 
@@ -136,34 +123,21 @@ var scrollbar = {
 
 		event = scrollbar.isTouch ? event.originalEvent.touches[0] : event;
 
-		if (scrollbar.isTouch)
-		{
-			$(document).on({
-				'touchmove': scrollbar.mousemove,
-				'touchend': scrollbar.mouseup
-			}, {
-				'scroll_target': target,
-				'thumbTop': thumb.offset().top + event.clientY
-			});
-		}
-		else
-		{
-			$(document).on({
-				'mousemove': scrollbar.mousemove,
-				'mouseup': scrollbar.mouseup
-			}, {
-				'scroll_target': target,
-				'direction': direction,
-				'thumbPos': direction === 'veritical' ? event.clientY - veritical_thumb.offset().top : event.clientX - horizontal_thumb.offset().left
-			});
-		}
+		$(document).on({
+			'mousemove': scrollbar.mousemove,
+			'mouseup': scrollbar.mouseup
+		}, {
+			'scroll_target': target,
+			'direction': direction,
+			'thumbPos': direction === 'veritical' ? event.clientY - veritical_thumb.offset().top : event.clientX - horizontal_thumb.offset().left
+		});
 	},
 	mousemove: function (event)
 	{
 		event.preventDefault();
 		event.stopPropagation();
 
-		var target = $(event.data.scroll_target),
+		var target = event.data.scroll_target,
 			direction = event.data.direction,
 			thumbPos = event.data.thumbPos,
 			scrollbar_wrap = target.find('.scrollbar-' + direction + '-wrap').first();
@@ -279,15 +253,17 @@ var scrollbar = {
 			thumb = target.find('.scrollbar-veritical-thumb').first(),
 			thumb_wrap = target.find('.scrollbar-veritical-wrap').first(),
 			scroll_content = target.find('.scroll-content').first(),
+			wrap_height = target.height(),
 			scrollTop,
 			max_scroll,
 			scale,
 			thumb_max;
 
 		scrollTop = thumb[0].offsetTop - (delta * 12);
-		max_scroll = scroll_content[0].scrollHeight - scroll_content.parent().height();
-		scale = scroll_content[0].scrollHeight / scroll_content.parent().height();
+		max_scroll = scroll_content[0].scrollHeight - wrap_height;
+		scale = scroll_content[0].scrollHeight / wrap_height;
 		thumb_max = max_scroll / scale;
+
 		if (thumb_wrap.css('display') === 'block')
 		{
 			scrollbar.scroll_to_top(target, scrollTop);

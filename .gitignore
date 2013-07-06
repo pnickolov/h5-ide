@@ -1,3 +1,4 @@
+*.bat
 
 #ignore demo
 src/js/demo/*.js
@@ -14,7 +15,7 @@ components/**
 release
 
 #ignore vender
-src/vender/**/*.*
+src/vender/**
 !src/vender/canvon/canvon.js
 !src/vender/meteor/meteor.js
 #ignore page

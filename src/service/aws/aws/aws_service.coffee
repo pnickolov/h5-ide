@@ -61,7 +61,7 @@ define [ 'MC', 'aws_parser', 'result_vo' ], ( MC, aws_parser, result_vo ) ->
 
     #def public(self, username, session_id, region_name):
     Public = ( src, username, session_id, region_name, callback ) ->
-        send_request "Public", src, [ username, session_id, region_name ], aws_parser.parserPublicReturn, callback
+        send_request "public", src, [ username, session_id, region_name ], aws_parser.parserPublicReturn, callback
         true
 
     #def info(self, username, session_id, region_name):

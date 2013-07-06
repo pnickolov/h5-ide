@@ -20,8 +20,11 @@ define [ 'jquery',
         #compile partial template
         MC.IDEcompile 'design-property', template_data, { '.accordion-item-data' : 'accordion-item-tmpl' }
 
-        #load remote module1.js
-        require [ './module/design/property/view', './module/design/property/model' ], ( View, model ) ->
+        #
+        require [ './module/design/property/view',
+                  './module/design/property/model',
+                  './module/design/property/instance/main'
+        ], ( View, model, instance_main ) ->
 
             #view
             view       = new View { 'model' : model }
@@ -30,9 +33,14 @@ define [ 'jquery',
             #listen OPEN_PROPERTY
             ide_event.onLongListen ide_event.OPEN_PROPERTY, () ->
                 console.log 'OPEN_PROPERTY'
-                model.addItem()
-                model.addItem()
-                model.addItem()
+
+                instance_main.loadModule ( view ) ->
+                    console.log 'instace main'
+                    model.addItem view.model.attributes.head, view.template
+
+                instance_main.loadModule ( view ) ->
+                    console.log 'instace main2'
+                    model.addItem view.model.attributes.head, view.template
 
     unLoadModule = () ->
         #view.remove()

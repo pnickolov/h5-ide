@@ -10,10 +10,11 @@ define [ 'backbone', 'jquery', 'underscore' ], () ->
             'head'    : null
             'content' : null
 
-        addItem  : ->
-            this.set 'head',  'Instance Details'
-            this.set 'content', null
-            this.set 'content', 'loading...'
+        addItem  : ( head, content ) ->
+            console.log 'addItem'
+            this.set 'head', head
+            if this.get( 'content' ) is content then this.set 'content', null
+            this.set 'content', content
 
     }
 

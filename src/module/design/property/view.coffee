@@ -2,10 +2,9 @@
 #  View(UI logic) for design/property
 #############################
 
-define [ 'event',
-         'backbone', 'jquery', 'handlebars'
+define [ 'backbone', 'jquery', 'handlebars'
          'UI.fixedaccordion'
-], ( event ) ->
+], () ->
 
     PropertyView = Backbone.View.extend {
 
@@ -32,6 +31,7 @@ define [ 'event',
 
         addAccordionItem : () ->
             console.log 'addAccordionItem'
+            if this.model.attributes.content is null then return
             $( '.property-panel-tmp' ).append this.accordion_item_tmpl this.model.attributes
 
     }

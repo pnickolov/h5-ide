@@ -4,10 +4,11 @@ src/js/demo/*.js
 src/js/demo/**/*.js
 
 #ignore node_modules
-node_modules
+node_modules/**
 
 #ignore components
-components
+bower_components/**
+components/**
 
 #ignore release
 release

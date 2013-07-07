@@ -2175,6 +2175,55 @@ a.sidebar-hider {
 	height: 40px;
 	border-bottom: #eee 1px solid;
 	position: relative;
+	font-size: 12px;
+}
+#property-panel li:hover {
+	background-color: #C6E2F2;
+}
+.sg-context-wrap {
+	height: 443px;
+}
+.sg-rule-list .rule-direction-icon {
+	width: 15px;
+	height: 15px;
+	background-color: #eee;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+}
+.sg-rule-list .rule-edit-icon {
+	width: 15px;
+	height: 15px;
+	background-color: #eee;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+.sg-rule-list .rule-remove-icon {
+	width: 15px;
+	height: 15px;
+	background-color: #eee;
+	position: absolute;
+	top: 25px;
+	right: 5px;
+}
+.sg-rule-list .rule-protocol {
+	line-height: 15px;
+	position: absolute;
+	top: 25px;
+	left: 5px;
+}
+.sg-rule-list .rule-source {
+	line-height: 15px;
+	position: absolute;
+	top: 5px;
+	left: 55px;
+}
+.sg-rule-list .rule-port {
+	line-height: 15px;
+	position: absolute;
+	top: 25px;
+	left: 55px;
 }
 .sg-member-list li {
 	clear: both;
@@ -2214,6 +2263,49 @@ a.sidebar-hider {
 	margin-left:10px;
 	float: left;
 }
+.sg-rule-filter h5 {
+	width: 80px;
+	display: inline-block;
+	line-height: 30px;
+}
+.sg-rule-filter .selectbox {
+	width: 160px;
+	line-height: 30px;
+	display: inline-block;
+}
+.sg-rule-filter .selectbox .dropdown-menu {
+	top: 30px;
+}
+/* SG Rule Modal */
+#modal-sg-rule .wrap {
+	padding: 5px 0;
+	width: 450px;
+}
+#modal-sg-rule .title {
+	width: 100px;
+	display: inline-block;
+	color: #999;
+	line-height: 30px;
+}
+#modal-sg-rule .context {
+	display: inline-block;
+	color: #999;
+}
+#modal-sg-rule .radio span {
+	margin-left: 25px;
+}
+#modal-sg-rule .input {
+	width: 300px;
+}
+#modal-sg-rule .modal-protocol-select {
+	width: 80px;
+	display: inline-block;
+}
+#modal-sg-rule #sg-protocol-select-result input{
+	width: 150px;
+	display: inline-block;
+}
+
 /* Status Bar */
 
 #status-bar {

@@ -4,10 +4,9 @@
 
 define [ 'jquery',
          'text!/module/design/property/template.html',
-         'text!/module/design/property/template_data.html',
          'event',
          'MC.ide.template'
-], ( $, template, template_data, ide_event ) ->
+], ( $, template, ide_event ) ->
 
     #private
     loadModule = () ->
@@ -18,23 +17,29 @@ define [ 'jquery',
         #$( template ).appendTo '#property-panel'
 
         #compile partial template
-        MC.IDEcompile 'design-property', template_data, { '.accordion-item-data' : 'accordion-item-tmpl' }
+        #MC.IDEcompile 'design-property', template_data, { '.accordion-item-data' : 'accordion-item-tmpl' }
 
         #
         require [ './module/design/property/view',
                   './module/design/property/model',
-                  './module/design/property/instance/main',
-                  './module/design/property/advanced_details/main'
-        ], ( View, model, instance_main, advanced_main ) ->
+                  './module/design/property/instance/main'
+        ], ( View, model, instance_main ) ->
 
             #view
-            property_view  = new View { 'model' : model }
-            property_view.render template
+            view  = new View { 'model' : model }
+            view.render template
 
             #listen OPEN_PROPERTY
-            ide_event.onLongListen ide_event.OPEN_PROPERTY, () ->
+            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( id, type ) ->
                 console.log 'OPEN_PROPERTY'
 
+                instance_main.loadModule()
+                #temp
+                setTimeout () ->
+                   view.refresh()
+                , 2000
+
+                ###
                 instance_main.loadModule ( view ) ->
                     console.log 'instace main'
                     model.addItem view.model.attributes.head, view.template
@@ -44,6 +49,7 @@ define [ 'jquery',
                         model.addItem view.model.attributes.head, view.template
                         #
                         property_view.refresh()
+                ###
 
                 null
 

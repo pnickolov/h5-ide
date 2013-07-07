@@ -10,7 +10,7 @@ define [ 'jquery',
 ], ( $, template, template_data, ide_event ) ->
 
     #private
-    loadModule = ( callback ) ->
+    loadModule = () ->
 
         #add handlebars script
         #template = '<script type="text/x-handlebars-template" id="property-tmpl">' + template + '</script>'
@@ -24,12 +24,8 @@ define [ 'jquery',
         require [ './module/design/property/instance/view', './module/design/property/instance/model' ], ( view, model ) ->
 
             #view
-            #view       = new View { 'model' : model }
             view.model    = model
-            view.template = template
-            #view.render template
-            #callback
-            callback view
+            view.render template
 
     unLoadModule = () ->
         #view.remove()

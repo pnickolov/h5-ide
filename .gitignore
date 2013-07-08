@@ -1,19 +1,21 @@
+*.bat
 
 #ignore demo
 src/js/demo/*.js
 src/js/demo/**/*.js
 
 #ignore node_modules
-node_modules
+node_modules/**
 
 #ignore components
-components
+bower_components/**
+components/**
 
 #ignore release
 release
 
 #ignore vender
-src/vender/**/*.*
+src/vender/**
 !src/vender/canvon/canvon.js
 !src/vender/meteor/meteor.js
 #ignore page
@@ -58,3 +60,21 @@ src/module/dashboard/overview/*.js
 
 
 .DS_Store
+
+src/vender/meteor/meteor.js
+
+gruntfile.js
+
+gruntfile.js
+
+*.js
+
+gruntfile.js
+
+src/vender/meteor/meteor.js
+
+src/vender/meteor/meteor.js
+
+src/vender/meteor/meteor.js
+
+gruntfile.js

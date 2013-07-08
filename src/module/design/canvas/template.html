@@ -1,8 +1,6 @@
-<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scrollbar-horizontal-wrap"><div class="scrollbar-horizontal-thumb"></div></div>
-<div id="canvas_container" class="scroll-content">
+<div id="canvas_container">
 	<div id="canvas_body">
-		<svg id="svg_canvas" xmlns="http://www.w3.org/2000/svg" version="1.2" width="1%" height="1400">
+		<svg id="svg_canvas" xmlns="http://www.w3.org/2000/svg" version="1.2" width="100%" height="100%">
 			<defs>
 				<!--linearGradient for port-->
 				<linearGradient id="gradient_port" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -11,20 +9,14 @@
 				</linearGradient>
 				<!--dropshadow for line-->
 				<filter id="dropshadow" x="-50%" y="-50%" height="200%" width="200%">
-				  <feGaussianBlur in="SourceAlpha" stddeviation="0.5"></feGaussianBlur>
-				  <feOffset dx="1" dy="1" result="offsetblur"></feOffset>
-				  <feFlood flood-color="rgba(150,150,150,0.1)"></feFlood>
-				  <feComposite in2="offsetblur" operator="in"></feComposite>
-				  <feMerge>
-					<feMergeNode></feMergeNode>
-					<feMergeNode in="SourceGraphic"></feMergeNode>
-				  </feMerge>
+					<feOffset result="offOut" in="SourceGraphic" dx="1" dy="1" />
+					<feColorMatrix result = "matrixOut" in = "offOut" type = "matrix" values = "0.5 0 0 0 0 0 0.5 0 0 0 0 0 0.5 0 0 0 0 0 1 0"/>
+					<feBlend in="SourceGraphic" in2="matrixOut" mode="normal" />
 				</filter>
 				<!--dropshadow for selected node-->
 				<filter id="dropshadow_selected" x="-1" y="-1" width="300%" height="300%">
 				  <feOffset result="offOut" in="SourceGraphic" dx="0" dy="4" />
-				  <feColorMatrix result="matrixOut" in="offOut" type="matrix"
-				  values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+				  <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
 				  <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="4" />
 				  <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
 				</filter>

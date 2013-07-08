@@ -1,8 +1,4 @@
-var layout = {},
-	Private_IP = {},
-	Pubilc_IP = {},
-	SecurityGroup_Rule = {},
-
+var 
 	hide_siderbar = function ()
 	{
 		$('#siderbar_body_main').hide();

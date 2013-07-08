@@ -1517,6 +1517,7 @@ td.table-action a.btn {
 	/*box-shadow: inset 0 1px 0 rgba(255,255,255,.08);*/
 }
 
+<<<<<<< HEAD
 .toolbar-btn-group > li {
 	float: left;
 	border-right: 1px solid #E0E0E0;
@@ -1568,11 +1569,33 @@ td.table-action a.btn {
 /* Icons Placeholder */
 
 [class*='icon-toolbar-'] {
+=======
+/*.btn-toolbar {
+	display: inline-block;
+	height: 30px;
+	color: #e0e0e0;
+	font-size: 20px;
+	padding: 0 18px;
+}*/
+
+/*.btn-toolbar:hover {
+	background-color:#aaa;
+	color:#fff;
+}*/
+
+/*.toolbar-btn-group {
+>>>>>>> origin/feature/module-canvas-v2
 	display: inline-block;
 	width: 30px;
 	height: 30px;
 }
+*/
+.toolbar-btn-group > li {
+	float: left;
+	border-right: 1px solid #E0E0E0;
+}
 
+<<<<<<< HEAD
 .icon-toolbar-run {
 	background: url('../images/ide/icon-run.png') center center no-repeat;
 }
@@ -1623,6 +1646,56 @@ td.table-action a.btn {
 
 .icon-toolbar-export-json {
 	background: url('../images/ide/icon-export-json.png') center center no-repeat;
+=======
+.toolbar-btn-group > li > a {
+	display: block;
+	width: 40px;
+	height: 40px;
+}
+
+.toolbar-btn-group > li > a > i {
+	position: relative;
+	top: 10px;
+	font-size: 20px;
+	display: block;
+	text-align: center;
+	color: #323232;
+}
+
+.toolbar-btn-group .dropdown-menu {
+	top: 40px !important;
+	left: -1px !important;
+	border: 1px solid #E0E0E0;
+}
+
+.toolbar-btn-group .dropdown-menu li {
+	display: block;
+	border-bottom: 1px solid #E0E0E0;
+	cursor: pointer !important;
+	position: relative;
+}
+
+.toolbar-btn-group .dropdown-menu li:last-child {
+	border-bottom: none;
+}
+
+.toolbar-btn-group .dropdown-menu a {
+	display: block;
+	padding: 10px 5px 10px 40px;
+}
+
+.toolbar-btn-group .dropdown-menu i {
+	position: absolute;
+	top: 5px;
+	left: 0px;
+	font-size: 20px;
+	width: 40px;
+	text-align: center;
+}
+
+.toolbar-btn-group .dropdown-menu > li:hover {
+	background-color: #eee;
+>>>>>>> origin/feature/module-canvas-v2
 }
 
 /* Sidebars, including Resource Panle and Property Panel */
@@ -1676,6 +1749,10 @@ a.sidebar-hider {
 	/*border-right: 1px solid #666;*/
 }
 
+#resource-panel  .accordion-body {
+	padding: 5px;
+}
+
 #resource-panel.hiden {
 	margin-left: -247px;
 }
@@ -1689,8 +1766,19 @@ a.sidebar-hider {
 	background-color: #ddd;
 }
 
+<<<<<<< HEAD
 .expanded .fixedaccordion-head {
 
+=======
+.accordion-body {
+	border-bottom: 1px solid #ccc;
+	position: relative;
+}
+
+.expanded .fixedaccordion-head {
+/*	background: #0066C3;
+	color: #fff;*/
+>>>>>>> origin/feature/module-canvas-v2
 }
 
 #hide-resource-panel {
@@ -1698,12 +1786,10 @@ a.sidebar-hider {
 }
 
 .resource-list {
-	width: 100%;
 	padding: 0 0 10px 0;
 }
 
 .resource-list > li {
-	display: inline-block;
 	position: relative;
 	float: left;
 }
@@ -1722,8 +1808,8 @@ a.sidebar-hider {
 }
 .resource-item:active {
 	background: #fff;
-	border: 1px solid #55C7FF;
-	padding: 4px;
+/*	border: 1px solid #55C7FF;
+	padding: 4px;*/
 }
 
 .resource-list > li:nth-child(3n) > .resource-item {
@@ -1795,11 +1881,10 @@ a.sidebar-hider {
 	text-align: center;
 	padding-bottom: 5px;
 	margin-left: -5px;
-	width: 70px;
-	height: 26px;
+    width: 70px;
+    height: 22px;
 	word-wrap: break-word;
 	overflow: hidden;
-	line-height: 14px;
 }
 
 .resource-item:hover .resource-label {
@@ -1808,7 +1893,7 @@ a.sidebar-hider {
 
 .instance-label {
 	/*font-size: 11px;*/
-	height: 64px;
+	/*height: 64px;*/
 }
 
 #resource-select {
@@ -1919,13 +2004,14 @@ a.sidebar-hider {
     -ms-transition: margin, width 0s linear;
     -o-transition: margin, width 0s linear;
     transition: margin, width 0s linear;
-    position: relative;
+/*    position: relative;
     top: 0;
     left: 0;
-    right: 0;
+    right: 0;*/
     margin-left: 246px;
-    margin-right: 280px;
+/*    margin-right: 280px;*/
     background: #fff;
+    overflow: auto;
 }
 
 #canvas-panel.left-hiden {
@@ -1937,6 +2023,10 @@ a.sidebar-hider {
 }
 
 /* Canvas */
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/feature/module-canvas-v2
 #canvas_container {
 	overflow: hidden;
 	width: 1900px;
@@ -1962,15 +2052,20 @@ a.sidebar-hider {
 }
 
 /* Property Panel */
+<<<<<<< HEAD
 .property-instance h5,
 .sg-context-wrap h5
  {
+=======
+.property-instance h5 {
+>>>>>>> origin/feature/module-canvas-v2
 	margin: 5px 0;
 	color: #666;
 }
 .property-instance-title {
 	position: relative;
 }
+<<<<<<< HEAD
 .property-instance-title input,
 .sg-context-wrap input
  {
@@ -1986,6 +2081,19 @@ a.sidebar-hider {
 	float: right;
 }
 .property-instance-link .ami-wrap{
+=======
+.property-instance-title input {
+	width: 240px;
+	margin: 0 auto;
+}
+.property-instance-title .left {
+	float: left;
+}
+.property-instance-title .right {
+	float: right;
+}
+.property-instance-link .wrap{
+>>>>>>> origin/feature/module-canvas-v2
 	width: 240px;
 	height: 30px;
 	margin: 0 auto;
@@ -1993,7 +2101,11 @@ a.sidebar-hider {
 	cursor: pointer;
 	padding: 5px;
 }
+<<<<<<< HEAD
 .property-icon {
+=======
+.property-icon-instance {
+>>>>>>> origin/feature/module-canvas-v2
 	width: 15px;
 	height: 15px;
 	background-color: #eee;
@@ -2007,6 +2119,7 @@ a.sidebar-hider {
 	color: #999;
 	font-size: 0.8em;
 }
+<<<<<<< HEAD
 .property-check{
 	position: relative;
 	width: 100%;
@@ -2054,6 +2167,9 @@ a.sidebar-hider {
 	position: relative;
 }
 #instance-type-select .dropdown-toggle {
+=======
+.property-instance-check{
+>>>>>>> origin/feature/module-canvas-v2
 	position: relative;
 	width: 260px;
 	height: 40px;
@@ -2126,6 +2242,7 @@ a.sidebar-hider {
 	background-color: #fff;
 	height: 485px;
 	width: 100%;
+<<<<<<< HEAD
 }
 #aim-secondary-panel .context-wrap {
 	padding: 10px;
@@ -2304,15 +2421,80 @@ a.sidebar-hider {
 	width: 150px;
 	display: inline-block;
 }
-<<<<<<< HEAD
 .sg-protocol-option-input {
 	display: none;
 }
 .sg-protocol-option-input.show {
 	display: block;
-}
 =======
->>>>>>> feature/module-property-panel-ks
+	height: 30px;
+	overflow: hidden;
+}
+.property-instance-check .checkbox{
+	position: absolute;
+	width: 100%;
+	left: -15px;
+}
+.property-instance-check .checkbox span{
+	position: absolute;
+	left:35px;
+}
+#property-instance-keypairs .editableoption .btn {
+	width: 30px;
+	height: 18px;
+	line-height: 18px;
+	font-size: 12px;
+	padding: 0;
+	margin-left: 5px;
+}
+#property-instance-keypairs .editableoption {
+	border: 1px #eee solid;
+}
+#property-instance-keypairs .selectbox.open .editableoption {
+	border: 0px;
+}
+
+#property-instance-keypairs .scroll-wrap{
+	top:32px;
+}
+#property-instance-keypairs .cur-value {
+	width: 220px;
+}
+#instance-type-select .cur-value .main, #instance-type-select .cur-value.sub {
+	width: 220px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+#instance-type-select .cur-value {
+	width: 240px;
+	height: 40px;
+	position: relative;
+}
+#instance-type-select .dropdown-toggle {
+	position: relative;
+	width: 260px;
+	height: 40px;
+}
+#instance-type-select .dropdown-menu {
+	top: 40px;
+	background-color: #FFF;
+}
+#security-group-select {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+#security-group-select .dropdown-toggle {
+	width: 40px;
+	height: 40px;
+	background-color: #EEE;
+	display: inline-block;
+}
+#security-group-select .dropdown-menu {
+	top: 40px;
+	left: -120px;
+>>>>>>> origin/feature/module-canvas-v2
+}
 
 /* Status Bar */
 
@@ -2328,6 +2510,7 @@ a.sidebar-hider {
 	color: #aaa;
 	font-size: 12px;
 }
+<<<<<<< HEAD
 
 #status-bar > div {
 	display: inline-block;
@@ -2337,12 +2520,24 @@ a.sidebar-hider {
 
 }
 
+=======
+
+#status-bar > div {
+	display: inline-block;
+}
+
+.status-saved-time {
+
+}
+
+>>>>>>> origin/feature/module-canvas-v2
 .status-stack-validation {
 	cursor: pointer;
 	float: right;
 	margin-right: 20px;
 }
 
+<<<<<<< HEAD
 .status-validation-error {
 	color: #F74A48;
 }
@@ -2365,6 +2560,8 @@ a.sidebar-hider {
 	/*list-style-type: decimal;*/
 }
 
+=======
+>>>>>>> origin/feature/module-canvas-v2
 /* Create new stack */
 #createNewStack_wrap {
 	padding: 20px 0;
@@ -2408,3 +2605,15 @@ a.sidebar-hider {
 		padding-bottom: 22.5%;
 	}
 }
+<<<<<<< HEAD
+=======
+
+/* icon for Instance/AMI */
+
+.resource-icon-instance img {
+	display: block;
+	margin: 0 auto;
+	position: relative;
+	top: 15px;
+}
+>>>>>>> origin/feature/module-canvas-v2

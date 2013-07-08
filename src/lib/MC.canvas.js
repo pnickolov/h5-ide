@@ -790,10 +790,21 @@ MC.canvas = {
 
 			if (
 				node_id !== key &&
-				coordinate[0] >= start_x &&
-				coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID <= end_x &&
-				coordinate[1] >= start_y &&
-				coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID <= end_y
+				(
+					(coordinate[0] > start_x &&
+					coordinate[0] < end_x)
+					||
+					(coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > start_x &&
+					coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID < end_x)
+				)
+				&&
+				(
+					(coordinate[1] > start_y &&
+					coordinate[1] < end_y)
+					||
+					(coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > start_y &&
+					coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID < end_y)
+				)
 			)
 			{
 				matched.push($('#' + key)[0]);
@@ -807,10 +818,21 @@ MC.canvas = {
 
 			if (
 				node_id !== key &&
-				coordinate[0] >= start_x &&
-				coordinate[0] + size[0] <= end_x &&
-				coordinate[1] >= start_y &&
-				coordinate[1] + size[1] <= end_y
+				(
+					(coordinate[0] > start_x &&
+					coordinate[0] < end_x)
+					||
+					(coordinate[0] + size[0] > start_x &&
+					coordinate[0] + size[0] < end_x)
+				)
+				&&
+				(
+					(coordinate[1] > start_y &&
+					coordinate[1] < end_y)
+					||
+					(coordinate[1] + size[1] > start_y &&
+					coordinate[1] + size[1] < end_y)
+				)
 			)
 			{
 				matched.push($('#' + key)[0]);
@@ -839,10 +861,21 @@ MC.canvas = {
 			coordinate = item.coordinate;
 
 			if (
-				coordinate[0] >= start_x &&
-				coordinate[0] <= end_x &&
-				coordinate[1] >= start_y &&
-				coordinate[1] <= end_y
+				(
+					(coordinate[0] > start_x &&
+					coordinate[0] < end_x)
+					||
+					(coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > start_x &&
+					coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID < end_x)
+				)
+				&&
+				(
+					(coordinate[1] > start_y &&
+					coordinate[1] < end_y)
+					||
+					(coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > start_y &&
+					coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID < end_y)
+				)
 			)
 			{
 				matched.push($('#' + key)[0]);
@@ -857,10 +890,21 @@ MC.canvas = {
 			if (
 				key !== group_node.id &&
 				$.inArray(item.type, group_weight) > -1 &&
-				coordinate[0] >= start_x &&
-				coordinate[0] + size[0] <= end_x &&
-				coordinate[1] >= start_y &&
-				coordinate[1] + size[1] <= end_y
+				(
+					(coordinate[0] > start_x &&
+					coordinate[0] < end_x)
+					||
+					(coordinate[0] + size[0] > start_x &&
+					coordinate[0] + size[0] < end_x)
+				)
+				&&
+				(
+					(coordinate[1] > start_y &&
+					coordinate[1] < end_y)
+					||
+					(coordinate[1] + size[1] > start_y &&
+					coordinate[1] + size[1] < end_y)
+				)
 			)
 			{
 				matched.push($('#' + key)[0]);
@@ -1059,9 +1103,9 @@ MC.canvas.event.dragable = {
 				return key + ' selected';
 			});
 			MC.canvas.selected_node.push(event.data.target[0]);
-			
+
 			uid = event.data.target.attr("id");
-			
+
 			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", uid);
 		}
 		else

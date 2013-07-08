@@ -1713,14 +1713,14 @@ MC.canvas.event.groupResize = {
 			case 'topleft':
 				if (group_left >= group_minX)
 				{
+					group_width += (group_left - group_minX);
 					group_left = group_minX;
-					group_width = group_maxX - group_minX;
 				}
 
 				if (group_top >= group_minY)
 				{
+					group_height += (group_top - group_minY);
 					group_top = group_minY;
-					group_height = group_maxY - group_minY;
 				}
 				break;
 
@@ -1729,16 +1729,15 @@ MC.canvas.event.groupResize = {
 
 				if (group_top >= group_minY)
 				{
+					group_height += (group_top - group_minY);
 					group_top = group_minY;
-					group_height = group_maxY - group_minY;
-				}
-				break;
+				}				break;
 
 			case 'bottomleft':
 				if (group_left >= group_minX)
 				{
+					group_width += (group_left - group_minX);
 					group_left = group_minX;
-					group_width = group_maxX - group_minX;
 				}
 
 				group_height = group_height + group_top >= group_maxY ? group_height : group_maxY - group_top;
@@ -1752,7 +1751,7 @@ MC.canvas.event.groupResize = {
 			case 'top':
 				if (group_top >= group_minY)
 				{
-					group_height = group_height + group_top - group_minY - group_padding;
+					group_height += (group_top - group_minY);
 					group_top = group_minY;
 				}
 				break;
@@ -1768,8 +1767,8 @@ MC.canvas.event.groupResize = {
 			case 'left':
 				if (group_left >= group_minX)
 				{
+					group_width += (group_left - group_minX);
 					group_left = group_minX;
-					group_width = group_maxX - group_minX;
 				}
 				break;
 		}

@@ -545,6 +545,191 @@ Additional Notes and Questions
       http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
   - XSL Version: 2009-07-15-1119716
 
+<!-- modalStackValidationRun -->
+<div id="modal-stack-validation-run">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<div class="accordion accordion-default" data-accordion-option="exclusive">
+			<div class="accordion-group expanded validation-error">
+				<div class="accordion-head">
+					<i class="icon-error"></i> 1 Error
+				</div>
+				<div class="accordion-body">
+					<ol>
+						<li>Subnet(10.0.1.0/24) is attached to an ELB, but larger than /27.</li>
+					</ol>
+				</div>
+			</div>
+			<div class="accordion-group validation-warning">
+				<div class="accordion-head">
+					<i class="icon-warning"></i> 5 Warning
+				</div>
+				<div class="accordion-body">
+					<ol>
+						<li>No instance is attached to ELB.</li>
+						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to ELB.</li>
+						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to ELB.</li>
+						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+					</ol>
+				</div>
+			</div>
+			<div class="accordion-group validation-notice">
+				<div class="accordion-head">
+					<i class="icon-notice"></i> 5 Notice
+				</div>
+				<div class="accordion-body">
+					<ol>
+						<li>No instance is attached to ELB.</li>
+						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to ELB.</li>
+						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to elb1.</li>
+						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-red">Proceed</button>
+		<button disabled class="btn btn-red">Proceed</button>
+		<button class="btn btn-silver modal-close">Run Later</button>
+	</div>
+</div>
 
+<!-- modalRunStack -->
+<div id="modal-run-stack">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
 
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-red">Proceed</button>
+		<button disabled class="btn btn-red tooltip" data-tooltip="Please fix error first and try to run the stack again.">Proceed</button>
+		<button class="btn btn-silver modal-close">Run Later</button>
+	</div>
+</div>
 
+<!-- sgListItem -->
+<li class="clearfix" data-sgid="000">
+	<div class="col1 sg-toggle-show-icon"></div>
+	<div class="col2">
+		<div class="col2-1">{{name}}</div>
+		<div class="col2-2">description</div>
+		<div class="col2-3">5 rules, 2 member</div>
+	</div>
+	<div class="col3 sg-remove-item-icon tooltip" data-tooltip="Remove instance from SG"></div>
+</li>
+
+<!-- networkListItem -->
+<li>
+	<div class="name">1.0.0.x</div>
+	<div class="network-toggle-icon tooltip" data-tooltip="Associate with EIP"></div>
+	<div class="network-remove-icon tooltip" data-tooltip="Remove ip address"></div>
+</li>
+
+<!-- modalSGRule -->
+<div id="modal-sg-rule">
+	<div class="modal-header">
+		{{#if isAdd}}
+		<h3>Add Security Group Rule</h3>
+		{{else}}
+		<h3>Edit Security Group Rule</h3>
+		{{/if}}
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<div class="sg-modal-direction wrap">
+			<span class="title">Direction</span>
+			<div class="context">
+				<div class="radio inbound">
+					<input id="radio_inbound" type="radio" name="rule_direction" />
+					<label for="radio_inbound"></label>
+					<span>Inbound</span>
+				</div>
+
+				<div class="radio outbound">
+					<input id="radio_outbound" type="radio" name="rule_direction" />
+					<label for="radio_outbound"></label>
+					<span>outbound</span>
+				</div>
+			</div>
+		</div>
+		<div class="sg-modal-destination wrap">
+			<span class="title" id="rule-modle-title2">Destination</span>
+			<div class="context">
+				<input class="input" type="text" placeholder="IP Range.eg,10.0.0.1/24" />
+			</div>
+		</div>
+		<div class="sg-modal-protocol wrap">
+			<span class="title">Protocol</span>
+			<div class="context" >
+				<div class="modal-protocol-select">
+					<div class="selectbox" id="modal-protocol-select">
+					<a class="dropdown-toggle" href="#">
+						<span class="cur-value">UDP</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li class="selected" tabindex="-1">
+							<a data-id="tcp" href="#">
+							TCP
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="udp" href="#">
+							UDP
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="icmp" href="#">
+							ICMP
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="custom" href="#">
+							Custom
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="all" href="#">
+							All
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+				<div id="sg-protocol-select-result">
+					<div class="sg-protocol-option-input show" id="sg-protocol-tcp">
+						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-udp">
+						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-icmp">
+						<input class="input" type="text" placeholder="IP Range.eg,10.0.0.1/24" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-custom">
+						<input class="input" type="text" placeholder="Type.0 to 255" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-all">
+						Port Range:<span>0-65535</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-blue">Save</button>
+		<button class="btn btn-silver modal-close">Cancel</button>
+	</div>
+</div>

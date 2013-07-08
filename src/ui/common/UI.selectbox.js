@@ -20,13 +20,6 @@ var selectbox = {
                 label.html(cur_value);
             }
         });
-
-        $(document)
-            .on('click', '.selectbox .dropdown-toggle', selectbox.show)
-            .on('click', '.selectbox .editableoption', selectbox.add)
-            .on('click', '.selectbox .editableoption .btn', selectbox.edit)
-            .on('click', '.selectbox .dropdown-menu a', selectbox.select)
-            .on('keydown', '.open .dropdown-menu', selectbox.keydown);
     },
 
     show: function(event) {
@@ -134,4 +127,11 @@ var selectbox = {
 
 $(document).ready(function () {
     selectbox.init();
+
+    $(document)
+        .on('click', '.selectbox .dropdown-toggle', selectbox.show)
+        .on('click', '.selectbox .editableoption', selectbox.add)
+        .on('click', '.selectbox .editableoption .btn', selectbox.edit)
+        .on('click', '.selectbox .dropdown-menu a', selectbox.select)
+        .on('keydown', '.open .dropdown-menu', selectbox.keydown);
 });

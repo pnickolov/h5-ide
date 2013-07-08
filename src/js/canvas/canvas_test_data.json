@@ -1,0 +1,770 @@
+{
+  "id": "",
+  "name": "",
+  "description": "",
+  "region": "",
+  "platform": "ec2-vpc",
+  "state": "Enabled",
+  "username": "",
+  "owner": "",
+  "version": "5.0",
+  "tag": "",
+  "usage": "",
+  "component": {
+    "79A6B7CC-0D62-4746-A665-582553F9FCD2": {
+      "uid": "79A6B7CC-0D62-4746-A665-582553F9FCD2",
+      "type": "AWS.VPC.VPC",
+      "name": "vpc1",
+      "resource": {
+        "EnableDnsHostnames": "false",
+        "DhcpOptionsId": "",
+        "CidrBlock": "10.0.0.0/16",
+        "State": "",
+        "InstanceTenancy": "default",
+        "VpcId": "",
+        "IsDefault": "false",
+        "EnableDnsSupport": "true"
+      }
+    },
+    "2B90ECD0-3D29-452A-B97B-4E29F69ED87C": {
+      "uid": "2B90ECD0-3D29-452A-B97B-4E29F69ED87C",
+      "type": "AWS.VPC.Subnet",
+      "name": "subnet1",
+      "resource": {
+        "AvailabilityZone": "",
+        "CidrBlock": "10.0.0.0/24",
+        "SubnetId": "",
+        "VpcId": "",
+        "AvailableIpAddressCount": "",
+        "State": ""
+      }
+    },
+    "E24BD807-E17D-441F-A6CF-671F1A4D7E24": {
+      "uid": "E24BD807-E17D-441F-A6CF-671F1A4D7E24",
+      "type": "AWS.EC2.Instance",
+      "name": "host",
+      "state": "",
+      "platform": "32",
+      "software": {
+
+      },
+      "resource": {
+        "RamdiskId": "",
+        "InstanceId": "",
+        "DisableApiTermination": "false",
+        "ShutdownBehavior": "terminate",
+        "SecurityGroupId": [
+
+        ],
+        "SecurityGroup": [
+
+        ],
+        "UserData": {
+          "Base64Encoded": "false",
+          "Data": ""
+        },
+        "ImageId": "",
+        "Placement": {
+          "Tenancy": "",
+          "AvailabilityZone": "",
+          "GroupName": ""
+        },
+        "PrivateIpAddress": "",
+        "BlockDeviceMapping": [
+
+        ],
+        "KernelId": "",
+        "SubnetId": "",
+        "KeyName": "",
+        "VpcId": "",
+        "InstanceType": "",
+        "Monitoring": "disabled",
+        "EbsOptimized": "false"
+      }
+    },
+    "EE3B8DA1-D347-443E-8EEC-B0DF20236E83": {
+      "uid": "EE3B8DA1-D347-443E-8EEC-B0DF20236E83",
+      "type": "AWS.EC2.Instance",
+      "name": "host",
+      "state": "",
+      "platform": "32",
+      "software": {
+
+      },
+      "resource": {
+        "RamdiskId": "",
+        "InstanceId": "",
+        "DisableApiTermination": "false",
+        "ShutdownBehavior": "terminate",
+        "SecurityGroupId": [
+
+        ],
+        "SecurityGroup": [
+
+        ],
+        "UserData": {
+          "Base64Encoded": "false",
+          "Data": ""
+        },
+        "ImageId": "",
+        "Placement": {
+          "Tenancy": "",
+          "AvailabilityZone": "",
+          "GroupName": ""
+        },
+        "PrivateIpAddress": "",
+        "BlockDeviceMapping": [
+
+        ],
+        "KernelId": "",
+        "SubnetId": "",
+        "KeyName": "",
+        "VpcId": "",
+        "InstanceType": "",
+        "Monitoring": "disabled",
+        "EbsOptimized": "false"
+      }
+    },
+    "5BD7C400-B2D7-43C3-9160-28DD5BA86BAE": {
+      "uid": "5BD7C400-B2D7-43C3-9160-28DD5BA86BAE",
+      "type": "AWS.EC2.EBS.Volume",
+      "name": "/dev/sdf",
+      "resource": {
+        "VolumeId": "",
+        "CreateTime": "",
+        "AvailabilityZone": "",
+        "Size": "1",
+        "Status": "",
+        "SnapshotId": "",
+        "Iops": "",
+        "AttachmentSet": {
+          "VolumeId": "",
+          "Status": "",
+          "AttachTime": "",
+          "InstanceId": "",
+          "DeleteOnTermination": "true",
+          "Device": "/dev/sdf",
+          "Size": "1"
+        },
+        "VolumeType": "standard"
+      }
+    },
+    "696C9718-4268-43C0-BEE5-312FBE7849FC": {
+      "uid": "696C9718-4268-43C0-BEE5-312FBE7849FC",
+      "type": "AWS.ELB",
+      "name": "elb",
+      "resource": {
+        "HealthCheck": {
+          "Timeout": "5",
+          "Target": "HTTP:80/index.html",
+          "HealthyThreshold": "9",
+          "UnhealthyThreshold": "4",
+          "Interval": "30"
+        },
+        "Policies": {
+          "AppCookieStickinessPolicies": [
+            {
+              "CookieName": "",
+              "PolicyName": ""
+            }
+          ],
+          "OtherPolicies": [
+
+          ],
+          "LBCookieStickinessPolicies": [
+            {
+              "CookieExpirationPeriod": "",
+              "PolicyName": ""
+            }
+          ]
+        },
+        "BackendServerDescriptions": [
+          {
+            "InstantPort": "",
+            "PoliciyNames": ""
+          }
+        ],
+        "SecurityGroups": [
+
+        ],
+        "CreatedTime": "",
+        "CanonicalHostedZoneNameID": "",
+        "ListenerDescriptions": [
+          {
+            "PolicyNames": "",
+            "Listener": {
+              "LoadBalancerPort": "80",
+              "InstanceProtocol": "HTTP",
+              "Protocol": "HTTP",
+              "SSLCertificateId": "",
+              "InstancePort": "80"
+            }
+          }
+        ],
+        "DNSName": "",
+        "Scheme": "internal",
+        "CanonicalHostedZoneName": "",
+        "Instances": [
+
+        ],
+        "SourceSecurityGroup": {
+          "OwnerAlias": "",
+          "GroupName": ""
+        },
+        "Subnets": [
+
+        ],
+        "VpcId": "",
+        "LoadBalancerName": "",
+        "AvailabilityZones": [
+
+        ]
+      }
+    },
+    "9DC3F3F7-F513-4A1F-98EC-EEBFA348B6B7": {
+      "uid": "9DC3F3F7-F513-4A1F-98EC-EEBFA348B6B7",
+      "type": "AWS.VPC.RouteTable",
+      "name": "RT",
+      "resource": {
+        "VpcId": "",
+        "PropagatingVgwSet": [
+
+        ],
+        "RouteSet": [
+
+        ],
+        "RouteTableId": "",
+        "AssociationSet": [
+          {
+            "Main": "true",
+            "RouteTableId": "",
+            "SubnetId": "",
+            "RouteTableAssociationId": ""
+          }
+        ]
+      }
+    },
+    "DE92443D-877B-4886-B4D4-AA199A9A6082": {
+      "uid": "DE92443D-877B-4886-B4D4-AA199A9A6082",
+      "type": "AWS.VPC.InternetGateway",
+      "name": "IGW",
+      "resource": {
+        "InternetGatewayId": "",
+        "AttachmentSet": [
+          {
+            "VpcId": "",
+            "State": "available"
+          }
+        ]
+      }
+    },
+    "CCF10D10-E54E-44B3-8945-1254641F5833": {
+      "uid": "CCF10D10-E54E-44B3-8945-1254641F5833",
+      "type": "AWS.VPC.VPNGateway",
+      "name": "VPN",
+      "resource": {
+        "Attachments": [
+          {
+            "VpcId": "",
+            "State": "attached"
+          }
+        ],
+        "Type": "ipsec.1",
+        "AvailabilityZone": "",
+        "VpnGatewayId": "",
+        "State": "available"
+      }
+    },
+    "D37FE368-61E8-49D4-80EF-6297E4B4BB7A": {
+      "uid": "D37FE368-61E8-49D4-80EF-6297E4B4BB7A",
+      "type": "AWS.VPC.CustomerGateway",
+      "name": "CGW",
+      "resource": {
+        "Type": "ipsec.1",
+        "BgpAsn": "",
+        "CustomerGatewayId": "",
+        "State": "available",
+        "IpAddress": "1.1.1.1"
+      }
+    },
+    "374AC8E5-BEA3-4B23-A824-2A7E282C6245": {
+      "uid": "374AC8E5-BEA3-4B23-A824-2A7E282C6245",
+      "type": "AWS.VPC.NetworkInterface",
+      "name": "eni",
+      "resource": {
+        "PrivateIpAddressSet": [
+          {
+            "Association": {
+              "AssociationID": "",
+              "PublicDnsName": "",
+              "AllocationID": "",
+              "InstanceId": "",
+              "IpOwnerId": "",
+              "PublicIp": ""
+            },
+            "PrivateIpAddress": "10.0.0.1",
+            "AutoAssign": "true",
+            "Primary": "true"
+          }
+        ],
+        "Status": "",
+        "GroupSet": [
+          {
+            "GroupId": "",
+            "GroupName": ""
+          }
+        ],
+        "PrivateDnsName": "",
+        "SourceDestCheck": "true",
+        "RequestId": "",
+        "MacAddress": "",
+        "OwnerId": "",
+        "RequestManaged": "",
+        "SecondPriIpCount": "",
+        "Attachment": {
+          "InstanceId": "",
+          "AttachmentId": "",
+          "DeviceIndex": "1",
+          "AttachTime": ""
+        },
+        "AvailabilityZone": "",
+        "SubnetId": "",
+        "Description": "",
+        "VpcId": "",
+        "PrivateIpAddress": "",
+        "NetworkInterfaceId": ""
+      }
+    },
+    "BAC9F6EF-368A-45E3-8AD7-4CD79FF2CC07": {
+      "uid": "BAC9F6EF-368A-45E3-8AD7-4CD79FF2CC07",
+      "type": "AWS.VPC.CustomerGateway",
+      "name": "CGW",
+      "resource": {
+        "Type": "ipsec.1",
+        "BgpAsn": "",
+        "CustomerGatewayId": "",
+        "State": "available",
+        "IpAddress": "1.1.1.1"
+      }
+    }
+  },
+  "layout": {
+    "size": [
+      240,
+      240
+    ],
+    "component": {
+      "group": {
+        "79A6B7CC-0D62-4746-A665-582553F9FCD2": {
+          "id": "",
+          "type": "AWS.VPC.VPC",
+          "coordinate": [
+            2,
+            2
+          ],
+          "size": [
+            79,
+            69
+          ],
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+
+          ]
+        },
+        "2B90ECD0-3D29-452A-B97B-4E29F69ED87C": {
+          "id": "",
+          "type": "AWS.VPC.Subnet",
+          "coordinate": [
+            23,
+            20
+          ],
+          "size": [
+            36,
+            43
+          ],
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+
+          ]
+        },
+        "167EB154-C232-4C81-A70D-CF93AB820443": {
+          "id": "",
+          "type": "AWS.EC2.AvailabilityZone",
+          "coordinate": [
+            18,
+            16
+          ],
+          "size": [
+            44,
+            51
+          ],
+          "name": "ap-northeast-1a",
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          }
+        }
+      },
+      "node": {
+        "E24BD807-E17D-441F-A6CF-671F1A4D7E24": {
+          "id": "",
+          "type": "AWS.EC2.Instance",
+          "coordinate": [
+            27,
+            25
+          ],
+          "osType": "ubuntu",
+          "architecture": "i386",
+          "rootDeviceType": "ebs",
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+            {
+              "target": "374AC8E5-BEA3-4B23-A824-2A7E282C6245",
+              "port": "instance-attach",
+              "line": "D494A6C5-E25D-41E3-BEF2-D4A7F21207B8"
+            },
+            {
+              "target": "696C9718-4268-43C0-BEE5-312FBE7849FC",
+              "port": "instance-sg-in",
+              "line": "8AB32AF5-62FA-43E4-B6CC-51BE55CC21C3"
+            }
+          ]
+        },
+        "EE3B8DA1-D347-443E-8EEC-B0DF20236E83": {
+          "id": "",
+          "type": "AWS.EC2.Instance",
+          "coordinate": [
+            27,
+            43
+          ],
+          "osType": "redhat",
+          "architecture": "i386",
+          "rootDeviceType": "ebs",
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+            {
+              "target": "374AC8E5-BEA3-4B23-A824-2A7E282C6245",
+              "port": "instance-sg-out",
+              "line": "27A7F25B-3740-4130-AEB6-8F09C1AC0621"
+            },
+            {
+              "target": "5BD7C400-B2D7-43C3-9160-28DD5BA86BAE",
+              "port": "instance-attach",
+              "line": "5A66233B-D9D2-460C-8490-DD88B2C2D5F4"
+            }
+          ]
+        },
+        "5BD7C400-B2D7-43C3-9160-28DD5BA86BAE": {
+          "id": "",
+          "type": "AWS.EC2.EBS.Volume",
+          "coordinate": [
+            46,
+            42
+          ],
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+            {
+              "target": "EE3B8DA1-D347-443E-8EEC-B0DF20236E83",
+              "port": "volume-attach",
+              "line": "5A66233B-D9D2-460C-8490-DD88B2C2D5F4"
+            }
+          ]
+        },
+        "696C9718-4268-43C0-BEE5-312FBE7849FC": {
+          "id": "",
+          "type": "AWS.ELB",
+          "coordinate": [
+            4,
+            30
+          ],
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+            {
+              "target": "E24BD807-E17D-441F-A6CF-671F1A4D7E24",
+              "port": "elb-sg-out",
+              "line": "8AB32AF5-62FA-43E4-B6CC-51BE55CC21C3"
+            }
+          ]
+        },
+        "9DC3F3F7-F513-4A1F-98EC-EEBFA348B6B7": {
+          "id": "",
+          "type": "AWS.VPC.RouteTable",
+          "coordinate": [
+            39,
+            4
+          ],
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+            {
+              "target": "DE92443D-877B-4886-B4D4-AA199A9A6082",
+              "port": "rtb-tgt-left",
+              "line": "CFE0FDC3-3E74-4528-AA9D-8BAFA0BFB67D"
+            },
+            {
+              "target": "CCF10D10-E54E-44B3-8945-1254641F5833",
+              "port": "rtb-tgt-right",
+              "line": "F6C3CF82-9058-4E1E-BE6E-0F2136B35CEA"
+            }
+          ]
+        },
+        "DE92443D-877B-4886-B4D4-AA199A9A6082": {
+          "id": "",
+          "type": "AWS.VPC.InternetGateway",
+          "coordinate": [
+            3,
+            4
+          ],
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+            {
+              "target": "9DC3F3F7-F513-4A1F-98EC-EEBFA348B6B7",
+              "port": "igw-tgt",
+              "line": "CFE0FDC3-3E74-4528-AA9D-8BAFA0BFB67D"
+            }
+          ]
+        },
+        "CCF10D10-E54E-44B3-8945-1254641F5833": {
+          "id": "",
+          "type": "AWS.VPC.VPNGateway",
+          "coordinate": [
+            62,
+            4
+          ],
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+            {
+              "target": "9DC3F3F7-F513-4A1F-98EC-EEBFA348B6B7",
+              "port": "vgw-tgt",
+              "line": "F6C3CF82-9058-4E1E-BE6E-0F2136B35CEA"
+            },
+            {
+              "target": "D37FE368-61E8-49D4-80EF-6297E4B4BB7A",
+              "port": "vgw-vpn",
+              "line": "229D5CD2-542B-48BC-B983-8B5CED7B4621"
+            },
+            {
+              "target": "BAC9F6EF-368A-45E3-8AD7-4CD79FF2CC07",
+              "port": "vgw-vpn",
+              "line": "EE56E06F-E672-474C-BE46-5A5786E76FE8"
+            }
+          ]
+        },
+        "D37FE368-61E8-49D4-80EF-6297E4B4BB7A": {
+          "id": "",
+          "type": "AWS.VPC.CustomerGateway",
+          "coordinate": [
+            86,
+            13
+          ],
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+            {
+              "target": "CCF10D10-E54E-44B3-8945-1254641F5833",
+              "port": "cgw-vpn",
+              "line": "229D5CD2-542B-48BC-B983-8B5CED7B4621"
+            }
+          ]
+        },
+        "374AC8E5-BEA3-4B23-A824-2A7E282C6245": {
+          "id": "",
+          "type": "AWS.VPC.NetworkInterface",
+          "coordinate": [
+            44,
+            24
+          ],
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+            {
+              "target": "E24BD807-E17D-441F-A6CF-671F1A4D7E24",
+              "port": "eni-attach",
+              "line": "D494A6C5-E25D-41E3-BEF2-D4A7F21207B8"
+            },
+            {
+              "target": "EE3B8DA1-D347-443E-8EEC-B0DF20236E83",
+              "port": "eni-sg-in",
+              "line": "27A7F25B-3740-4130-AEB6-8F09C1AC0621"
+            }
+          ]
+        },
+        "BAC9F6EF-368A-45E3-8AD7-4CD79FF2CC07": {
+          "id": "",
+          "type": "AWS.VPC.CustomerGateway",
+          "coordinate": [
+            86,
+            29
+          ],
+          "group": {
+            "availableZone": "",
+            "subnet": "",
+            "vpc": ""
+          },
+          "connection": [
+            {
+              "target": "CCF10D10-E54E-44B3-8945-1254641F5833",
+              "port": "cgw-vpn",
+              "line": "EE56E06F-E672-474C-BE46-5A5786E76FE8"
+            }
+          ]
+        }
+      }
+    },
+    "connection": {
+      "D494A6C5-E25D-41E3-BEF2-D4A7F21207B8": {
+        "target": {
+          "E24BD807-E17D-441F-A6CF-671F1A4D7E24": "instance-attach",
+          "374AC8E5-BEA3-4B23-A824-2A7E282C6245": "eni-attach"
+        },
+        "auto": true,
+        "point": [
+
+        ]
+      },
+      "27A7F25B-3740-4130-AEB6-8F09C1AC0621": {
+        "target": {
+          "EE3B8DA1-D347-443E-8EEC-B0DF20236E83": "instance-sg-out",
+          "374AC8E5-BEA3-4B23-A824-2A7E282C6245": "eni-sg-in"
+        },
+        "auto": true,
+        "point": [
+
+        ]
+      },
+      "5A66233B-D9D2-460C-8490-DD88B2C2D5F4": {
+        "target": {
+          "EE3B8DA1-D347-443E-8EEC-B0DF20236E83": "instance-attach",
+          "5BD7C400-B2D7-43C3-9160-28DD5BA86BAE": "volume-attach"
+        },
+        "auto": true,
+        "point": [
+
+        ]
+      },
+      "8AB32AF5-62FA-43E4-B6CC-51BE55CC21C3": {
+        "target": {
+          "696C9718-4268-43C0-BEE5-312FBE7849FC": "elb-sg-out",
+          "E24BD807-E17D-441F-A6CF-671F1A4D7E24": "instance-sg-in"
+        },
+        "auto": true,
+        "point": [
+
+        ]
+      },
+      "CFE0FDC3-3E74-4528-AA9D-8BAFA0BFB67D": {
+        "target": {
+          "DE92443D-877B-4886-B4D4-AA199A9A6082": "igw-tgt",
+          "9DC3F3F7-F513-4A1F-98EC-EEBFA348B6B7": "rtb-tgt-left"
+        },
+        "auto": true,
+        "point": [
+
+        ]
+      },
+      "F6C3CF82-9058-4E1E-BE6E-0F2136B35CEA": {
+        "target": {
+          "9DC3F3F7-F513-4A1F-98EC-EEBFA348B6B7": "rtb-tgt-right",
+          "CCF10D10-E54E-44B3-8945-1254641F5833": "vgw-tgt"
+        },
+        "auto": true,
+        "point": [
+
+        ]
+      },
+      "229D5CD2-542B-48BC-B983-8B5CED7B4621": {
+        "target": {
+          "CCF10D10-E54E-44B3-8945-1254641F5833": "vgw-vpn",
+          "D37FE368-61E8-49D4-80EF-6297E4B4BB7A": "cgw-vpn"
+        },
+        "auto": true,
+        "point": [
+
+        ]
+      },
+      "EE56E06F-E672-474C-BE46-5A5786E76FE8": {
+        "target": {
+          "BAC9F6EF-368A-45E3-8AD7-4CD79FF2CC07": "cgw-vpn",
+          "CCF10D10-E54E-44B3-8945-1254641F5833": "vgw-vpn"
+        },
+        "auto": true,
+        "point": [
+
+        ]
+      }
+    }
+  },
+  "history": {
+    "time": {
+      "created": 0,
+      "updatd": 0
+    }
+  },
+  "property": {
+    "stoppable": "true",
+    "schedule": {
+      "stop": {
+        "run": null,
+        "when": null,
+        "during": null
+      },
+      "backup": {
+        "day": null,
+        "when": null
+      },
+      "start": {
+        "when": null
+      }
+    },
+    "policy": {
+      "ha": ""
+    },
+    "lease": {
+      "length": null,
+      "action": "",
+      "due": null
+    }
+  }
+}

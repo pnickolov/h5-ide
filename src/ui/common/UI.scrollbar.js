@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130703
+#* Date: 20130705
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -11,6 +11,11 @@
 var scrollbar = {
 	init: function ()
 	{
+		if (/webkit/ig.test(navigator.userAgent.toLowerCase()))
+		{
+			return true;
+		}
+
 		var style = document.documentElement.style,
 			doc_scroll_wrap = document.getElementsByClassName('scroll-wrap');
 

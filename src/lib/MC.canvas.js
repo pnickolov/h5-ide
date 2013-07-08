@@ -1540,9 +1540,9 @@ MC.canvas.event.groupResize = {
 		var direction = event.data.direction,
 			group_border = event.data.group_border * 2,
 			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10,
-			max_left = event.data.originalWidth,
+			max_left = event.data.originalWidth - MC.canvas.GROUP_MIN_PADDING,
 			top = Math.round((event.pageY - event.data.originalTop) / 10) * 10,
-			max_top = event.data.originalHeight,
+			max_top = event.data.originalHeight - MC.canvas.GROUP_MIN_PADDING,
 			prop;
 
 		switch (direction)
@@ -1559,7 +1559,7 @@ MC.canvas.event.groupResize = {
 			case 'topright':
 				prop = {
 					'y': top > max_top ? max_top : top,
-					'width': event.data.originalWidth + event.pageX - event.data.originalX,
+					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
 					'height': event.data.originalHeight - top
 				};
 				break;
@@ -1568,14 +1568,14 @@ MC.canvas.event.groupResize = {
 				prop = {
 					'x': left > max_left ? max_left : left,
 					'width': event.data.originalWidth - left,
-					'height': event.data.originalHeight + event.pageY - event.data.originalY
+					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
 				};
 				break;
 
 			case 'bottomright':
 				prop = {
-					'width': event.data.originalWidth + event.pageX - event.data.originalX,
-					'height': event.data.originalHeight + event.pageY - event.data.originalY
+					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
+					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
 				};
 				break;
 
@@ -1588,13 +1588,13 @@ MC.canvas.event.groupResize = {
 
 			case 'right':
 				prop = {
-					'width': event.data.originalWidth + event.pageX - event.data.originalX
+					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10
 				};
 				break;
 
 			case 'bottom':
 				prop = {
-					'height': event.data.originalHeight + event.pageY - event.data.originalY
+					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
 				};
 				break;
 
@@ -1606,14 +1606,14 @@ MC.canvas.event.groupResize = {
 				break;
 		}
 
-		if (prop.width && prop.width < group_border)
+		if (prop.width && prop.width < MC.canvas.GROUP_MIN_PADDING)
 		{
-			prop.width = group_border;
+			prop.width = MC.canvas.GROUP_MIN_PADDING;
 		}
 
-		if (prop.height && prop.height < group_border)
+		if (prop.height && prop.height < MC.canvas.GROUP_MIN_PADDING)
 		{
-			prop.height = group_border;
+			prop.height = MC.canvas.GROUP_MIN_PADDING;
 		}
 
 		event.data.target.attr(prop);

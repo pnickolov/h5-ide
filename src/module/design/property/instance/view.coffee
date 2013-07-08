@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ 'backbone', 'jquery', 'handlebars' ], () ->
+define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     InstanceView = Backbone.View.extend {
 
@@ -13,6 +13,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
         events   :
             'change .instance-name' : 'instanceNameChange'
+            'click #sg-info-list li' : 'openSgPanel'
 
         render     : () ->
             console.log 'property:instance render'
@@ -22,6 +23,10 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             console.log 'instanceNameChange'
             $( '.instance-name' ).attr 'value', event.target.value
             this.model.set 'get_host', event.target.value
+
+        openSgPanel : ->
+            console.log 'openSgPanel'
+            ide_event.trigger 'OPEN_SG'
 
     }
 

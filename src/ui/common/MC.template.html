@@ -343,3 +343,102 @@
 	<div class="network-toggle-icon tooltip" data-tooltip="Associate with EIP"></div>
 	<div class="network-remove-icon tooltip" data-tooltip="Remove ip address"></div>
 </li>
+
+<!-- modalSGRule -->
+<div id="modal-sg-rule">
+	<div class="modal-header">
+		{{#if isAdd}}
+		<h3>Add Security Group Rule</h3>
+		{{else}}
+		<h3>Edit Security Group Rule</h3>
+		{{/if}}
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<div class="sg-modal-direction wrap">
+			<span class="title">Direction</span>
+			<div class="context">
+				<div class="radio inbound">
+					<input id="radio_inbound" type="radio" name="rule_direction" />
+					<label for="radio_inbound"></label>
+					<span>Inbound</span>
+				</div>
+
+				<div class="radio outbound">
+					<input id="radio_outbound" type="radio" name="rule_direction" />
+					<label for="radio_outbound"></label>
+					<span>outbound</span>
+				</div>
+			</div>
+		</div>
+		<div class="sg-modal-destination wrap">
+			<span class="title" id="rule-modle-title2">Destination</span>
+			<div class="context">
+				<input class="input" type="text" placeholder="IP Range.eg,10.0.0.1/24" />
+			</div>
+		</div>
+		<div class="sg-modal-protocol wrap">
+			<span class="title">Protocol</span>
+			<div class="context" >
+				<div class="modal-protocol-select">
+					<div class="selectbox" id="modal-protocol-select">
+					<a class="dropdown-toggle" href="#">
+						<span class="cur-value">UDP</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li class="selected" tabindex="-1">
+							<a data-id="tcp" href="#">
+							TCP
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="udp" href="#">
+							UDP
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="icmp" href="#">
+							ICMP
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="custom" href="#">
+							Custom
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="all" href="#">
+							All
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+				<div id="sg-protocol-select-result">
+					<div class="sg-protocol-option-input show" id="sg-protocol-tcp">
+						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-udp">
+						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-icmp">
+						<input class="input" type="text" placeholder="IP Range.eg,10.0.0.1/24" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-custom">
+						<input class="input" type="text" placeholder="Type.0 to 255" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-all">
+						Port Range:<span>0-65535</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-blue">Save</button>
+		<button class="btn btn-silver modal-close">Cancel</button>
+	</div>
+</div>
+

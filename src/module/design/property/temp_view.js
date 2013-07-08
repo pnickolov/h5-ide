@@ -4,11 +4,14 @@ var ready = function () {
 	$('#property-instance-keypairs').on('EDIT_EMPTY', function(event, id){ notification('error', 'KeyPair Empty', false); });
 
 	//Property Panel
+	/*
 	$('.secondary-panel').on('click', '.back', function (event)
 	{
 		$(this).parent().parent().fadeOut(200);
 		return false;
 	});
+	*/
+	
 	$('#property-panel').on('click', '.ami-wrap', function (event)
 	{
 		$('#aim-secondary-panel').fadeIn(200);
@@ -28,20 +31,23 @@ var ready = function () {
 		$('#sg-secondary-panel .sg-title input').focus();
 	});
 	$('#security-group-select').on('OPTION_CHANGE', function(event, id)
-		{
-			if(id.length != 0) {
-				$('#sg-info-list').append(MC.template.sgListItem({name: id}));
-			}
-		});
+	{
+		if(id.length != 0) {
+			$('#sg-info-list').append(MC.template.sgListItem({name: id}));
+		}
+	});
+	/*
 	$('#sg-info-list').on('click', 'li', function (event)
 	{
 		$('#sg-secondary-panel').fadeIn(200);
 		$('#sg-secondary-panel .sg-title input').focus();
 	});
+	*/
 	$('#sg-info-list').on('click', '.sg-remove-item-icon', function (event)
 	{
 		event.stopPropagation();
 		$(this).parent().remove();
+		notification('info', 'SG is deleted', false);
 	});
 	$('#property-network-list').on('click', '.network-remove-icon', function (event)
 	{
@@ -72,6 +78,12 @@ var ready = function () {
 	$('#radio_outbound').on('change', function (event)
 	{
 		$('#rule-modle-title2').text("Destination");
+	});
+	$('#modal-sg-rule').on('OPTION_CHANGE', function(event, id)
+	{
+		console.log('modal-protocal');
+		$('#sg-protocol-select-result').find('show').removeClass('show');
+		$('#sg-protocol-' + id).addClass('show');
 	});
 
 }

@@ -21,8 +21,12 @@ define [ 'jquery',
         #
         require [ './module/design/property/view',
                   './module/design/property/model',
-                  './module/design/property/instance/main'
-        ], ( View, model, instance_main ) ->
+                  './module/design/property/instance/main',
+                  './module/design/property/sg/main'
+        ], ( View, model, instance_main, sg_main ) ->
+
+            uid  = null
+            type = null
 
             #view
             view  = new View { 'model' : model }
@@ -32,23 +36,37 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.OPEN_PROPERTY, ( uid, type ) ->
                 console.log 'OPEN_PROPERTY'
 
+                uid  = uid
+                type = type
+
                 instance_main.loadModule uid, type
                 #temp
                 setTimeout () ->
                    view.refresh()
                 , 2000
+ 
+                null
 
-                ###
-                instance_main.loadModule ( view ) ->
-                    console.log 'instace main'
-                    model.addItem view.model.attributes.head, view.template
-                    #
-                    advanced_main.loadModule ( view ) ->
-                        console.log 'advanced instace main'
-                        model.addItem view.model.attributes.head, view.template
-                        #
-                        property_view.refresh()
-                ###
+            #listen OPEN_SG
+            ide_event.onLongListen ide_event.OPEN_SG, () ->
+                console.log 'OPEN_SG'
+                sg_main.loadModule()
+                #temp
+                setTimeout () ->
+                   view.refresh()
+                , 2000
+ 
+                null
+
+            #listen OPEN_SG
+            ide_event.onLongListen ide_event.OPEN_INSTANCE, () ->
+                console.log 'OPEN_INSTANCE'
+                #
+                instance_main.loadModule uid, type
+                #temp
+                setTimeout () ->
+                   view.refresh()
+                , 2000
 
                 null
 

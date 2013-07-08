@@ -35,6 +35,7 @@ define [ './temp_view',
 
         showProperty : ( event, uid ) ->
             console.log uid
+            ide_event.trigger ide_event.OPEN_PROPERTY, uid
 
     }
 

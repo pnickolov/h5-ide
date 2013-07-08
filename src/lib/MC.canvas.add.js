@@ -15,7 +15,7 @@ MC.canvas.add = function (flag, option, coordinate)
 	data = MC.canvas.data.get('component');
 	layout = MC.canvas.data.get('layout.component');
 
-	if ( !option && !coordinate )
+	if (!option && !coordinate)
 	{
 		//existed resource ( init data from MC.tab[tab_id].data )
 		create_mode = false;
@@ -107,8 +107,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable ' + class_type,
-				'data-type': 'group'
+				'class': 'dragable ' + class_type
+			}).data({
+				'type': 'group',
+				'class': type
 			});
 
 			//set layout
@@ -196,8 +198,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable ' + class_type,
-				'data-type': 'group'
+				'class': 'dragable ' + class_type
+			}).data({
+				'type': 'group',
+				'class': type
 			});
 
 			//set layout
@@ -289,8 +293,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable ' + class_type,
-				'data-type': 'group'
+				'class': 'dragable ' + class_type
+			}).data({
+				'type': 'group',
+				'class': type
 			});
 
 			//set layout
@@ -398,8 +404,10 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			//set layout
@@ -443,17 +451,17 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 140, 120).attr({
+				Canvon.rectangle(0, 0, 100, 100).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/VOL-Canvas.png', 0, 0, 140, 120),
+				Canvon.image('../assets/images/ide/icon/VOL-Canvas.png', 18, 20, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-volume-attach',
-					'transform': 'translate(26, 62)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(22, 62)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'volume-attach',
 					'position': 'left',
@@ -463,18 +471,20 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3. device-name
-				Canvon.text(68, 50, option.name).attr({
+				Canvon.text(50, 40, option.name).attr({
 					'class': 'node-label device-name'
 				}),
 
-				////3. device-name
-				Canvon.text(68, 65, option.volumeSize + " GiB").attr({
+				////3. volume-size
+				Canvon.text(50, 65, option.volumeSize + " GiB").attr({
 					'class': 'node-label volume-size'
 				})
 
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			//set layout
@@ -515,12 +525,12 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 140, 120).attr({
+				Canvon.rectangle(0, 0, 100, 100).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/ELB-Canvas.png', 0, 0, 140, 120),
+				Canvon.image('../assets/images/ide/icon/ELB-Canvas.png', 20, 23, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -537,7 +547,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-elb-sg-out',
-					'transform': 'translate(117, 62)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(90, 62)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'elb-sg-out',
 					'position': 'right',
@@ -549,7 +559,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-elb-assoc',
-					'transform': 'translate(117, 37)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(90, 37)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'elb-assoc',
 					'position': 'right',
@@ -559,12 +569,14 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////5. elb_name
-				Canvon.text(70, 60, option.name).attr({
+				Canvon.text(50, 60, option.name).attr({
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			//set layout
@@ -605,17 +617,17 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 140, 120).attr({
+				Canvon.rectangle(0, 0, 100, 100).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/RTB-Canvas.png', 0, 0, 140, 120),
+				Canvon.image('../assets/images/ide/icon/RTB-Canvas.png', 15, 15, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-left',
-					'transform': 'translate(41, 50)' + MC.canvas.PORT_LEFT_ROTATE
+					'transform': 'translate(21, 50)' + MC.canvas.PORT_LEFT_ROTATE
 				}).data({
 					'name': 'rtb-tgt-left',
 					'position': 'left',
@@ -627,7 +639,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-right',
-					'transform': 'translate(96, 50)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(81, 50)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'rtb-tgt-right',
 					'position': 'right',
@@ -639,34 +651,36 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src-top',
-					'transform': 'translate(70, 16)' + MC.canvas.PORT_TOP_ROTATE
+					'transform': 'translate(50, 3)' + MC.canvas.PORT_UP_ROTATE
 				}).data({
 					'name': 'rtb-src-top',
 					'position': 'top',
 					'type': 'association',
 					'direction': 'in',
-					'angle': MC.canvas.PORT_TOP_ANGLE
+					'angle': MC.canvas.PORT_UP_ANGLE
 				}),
 
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src-bottom',
-					'transform': 'translate(70, 90)' + MC.canvas.PORT_BOTTOM_ROTATE
+					'transform': 'translate(50, 80)' + MC.canvas.PORT_DOWN_ROTATE
 				}).data({
 					'name': 'rtb-src-bottom',
 					'position': 'bottom',
 					'type': 'association',
 					'direction': 'in',
-					'angle': MC.canvas.PORT_BOTTOM_ANGLE
+					'angle': MC.canvas.PORT_DOWN_ANGLE
 				}),
 
 				////6. routetable name
-				Canvon.text(70, 47, option.name).attr({
+				Canvon.text(50, 33, option.name).attr({
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			// set layout
@@ -707,17 +721,17 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 140, 120).attr({
+				Canvon.rectangle(0, 0, 100, 100).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/IGW-Canvas.png', 0, 0, 140, 120),
+				Canvon.image('../assets/images/ide/icon/IGW-Canvas.png', 15, 15, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-igw-unknown',
-					'transform': 'translate(41, 50)' + MC.canvas.PORT_LEFT_ROTATE
+					'transform': 'translate(20, 50)' + MC.canvas.PORT_LEFT_ROTATE
 				}).data({
 					'name': 'igw-unknown',
 					'position': 'left',
@@ -729,7 +743,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-igw-tgt',
-					'transform': 'translate(104, 50)' + MC.canvas.PORT_LEFT_ROTATE
+					'transform': 'translate(87, 50)' + MC.canvas.PORT_LEFT_ROTATE
 				}).data({
 					'name': 'igw-tgt',
 					'position': 'right',
@@ -739,12 +753,14 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////4. igw name
-				Canvon.text(70, 100, option.name).attr({
+				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			// set layout
@@ -785,17 +801,17 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 140, 120).attr({
+				Canvon.rectangle(0, 0, 100, 100).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/VGW-Canvas.png', 0, 0, 140, 120),
+				Canvon.image('../assets/images/ide/icon/VGW-Canvas.png', 15, 15, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-vgw-tgt',
-					'transform': 'translate(33, 50)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(12, 50)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'vgw-tgt',
 					'position': 'left',
@@ -807,7 +823,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-purple port-vgw-vpn',
-					'transform': 'translate(96, 50)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(80, 50)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'vgw-vpn',
 					'position': 'right',
@@ -817,12 +833,14 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////4. vgw name
-				Canvon.text(70, 100, option.name).attr({
+				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			// set layout
@@ -866,17 +884,17 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 140, 120).attr({
+				Canvon.rectangle(0, 0, 100, 100).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/CGW-Canvas.png', 0, 0, 140, 120),
+				Canvon.image('../assets/images/ide/icon/CGW-Canvas.png', 15, 15, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-purple port-cgw-vpn',
-					'transform': 'translate(-8, 50)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(2, 50)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'cgw-vpn',
 					'position': 'left',
@@ -886,7 +904,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3. cgw name
-				Canvon.text(20, 95, option.name).attr({
+				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name'
 				}),
 
@@ -896,8 +914,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			// set layout
@@ -939,17 +959,17 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 140, 120).attr({
+				Canvon.rectangle(0, 0, 100, 100).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/ENI-Canvas.png', 0, 0, 140, 120),
+				Canvon.image('../assets/images/ide/icon/ENI-Canvas.png', 15, 25, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-sg-in',
-					'transform': 'translate(27, 37)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(12, 37)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'eni-sg-in',
 					'position': 'left',
@@ -961,7 +981,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-eni-attach',
-					'transform': 'translate(27, 62)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(12, 62)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'eni-attach',
 					'position': 'left',
@@ -973,7 +993,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-sg-out',
-					'transform': 'translate(102, 38)' + MC.canvas.PORT_RIGHT_ROTATE
+					'transform': 'translate(80, 38)' + MC.canvas.PORT_RIGHT_ROTATE
 				}).data({
 					'name': 'eni-sg-out',
 					'position': 'right',
@@ -983,14 +1003,16 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////5. eni_name
-				Canvon.text(42, 60, option.name, {
+				Canvon.text(32, 60, option.name, {
 					'text-anchor': 'start' // start, middle(default), end, inherit
 				}).attr({
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node'
+				'class': 'dragable node ' + class_type
+			}).data({
+				'type': 'node',
+				'class': type
 			});
 
 			//set layout
@@ -1007,7 +1029,6 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			break;
 			//***** eni end *****//
-
 	}
 
 	//set the node position

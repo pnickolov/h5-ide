@@ -39,23 +39,126 @@
 	</div>
 </div>
 
-<!-- modalResourceDetail -->
+<!-- modalApp -->
+<div style="width:420px">
+       <div class="modal-header">
+               <h3>{{title}}</h3>
+               <i class="modal-close">&times;</i>
+       </div>
+       <div class="modal-body">
+               <dd>{{body}}</dd>
+               {{#if input}}
+               <input id="modal-input-value" class="input" type="text" value="{{input}}" />
+               {{/if}}
+       </div>
+       <div class="modal-footer">
+               <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
+               <button class="btn modal-close btn-silver">Cancel</button>
+       </div>
+</div>
+
+<!-- modalResourceInstanceDetail -->
+<div class="modal-resource-instance-detail" style="width:420px">
+       <div class="modal-header">
+               <h3>{{title}}</h3>
+               <i class="modal-close">&times;</i>
+       </div>
+       <div class="modal-body">
+               <dl class="dl-horizontal">
+                       <dt>DnsName</dt>
+                       <dd>{{dnsName}}</dd>
+                       <dt>Architecture</dt>
+                       <dd>{{architecture}}</dd>
+                       <dt>EbsOptimized</dt>
+                       <dd>{{ebsOptimized}}</dd>
+                   <dt>GroupSet</dt>
+                       <dd>{{groupSet}}</dd>
+                       <dt>Hypervisor</dt>
+                       <dd>{{hypervisor}}</dd>
+                   <dt>ImageId</dt>
+                       <dd>{{imageId}}</dd>
+                       <dt>InstanceState</dt>
+                       <dd>{{instanceState}}</dd>
+                       <dt>InstanceType</dt>
+                       <dd>{{instanceType}}</dd>
+                       <dt>IpAddress</dt>
+                       <dd>{{ipAddress}}</dd>
+                       <dt>KernelId</dt>
+                       <dd>{{kernelId}}</dd>
+                       <dt>KeyName</dt>
+                       <dd>{{keyName}}</dd>
+                       <dt>LaunchTime</dt>
+                       <dd>{{launchTime}}</dd>
+                       <dt>Monitoring</dt>
+                       <dd>{{monitoring}}</dd>
+                       <dt>NetworkInterfaceSet</dt>
+                       <dd>{{networkInterfaceSet}}</dd>
+                       <dt>AvailabilityZone</dt>
+                       <dd>{{availabilityZone}}</dd>
+                       <dt>PrivateDnsName</dt>
+                       <dd>{{privateDnsName}}</dd>
+                       <dt>RootDeviceName</dt>
+                       <dd>{{rootDeviceName}}</dd>
+                       <dt>RootDeviceType</dt>
+                       <dd>{{rootDeviceType}}</dd>
+               </dl>
+       </div>
+       <div class="modal-footer">
+               <button class="btn modal-close btn-silver">Close</button>
+       </div>
+</div>
+
+
+
+
+
+<!-- modalRegionResourceDetail -->
+{{#if detail_table}}
+<div class="modal-resource-detail" style="width:800px">
+{{else}}
 <div class="modal-resource-detail" style="width:420px">
+{{/if}}
 	<div class="modal-header">
 		<h3>{{title}}</h3>
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
 		<dl class="dl-horizontal">
-			<dt>Key</dt>
-			<dd>Vaule</dd>
-			<dt>Key</dt>
-			<dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt, id, neque, ipsam, minima aperiam accusamus quae quia voluptate eius velit voluptatibus nam et ipsa repellendus dolor ullam libero voluptas consequatur.</dd>
-			<dt>Key</dt>
-			<dd>Vaule</dd>
-			<dt>Key</dt>
-			<dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt, id, neque, ipsam, minima aperiam accusamus quae quia voluptate eius velit voluptatibus nam et ipsa repellendus dolor ullam libero voluptas consequatur.</dd>
+	                   {{#each sub_info}}
+                       {{{this}}}
+                       {{/each}}
 		</dl>
+        {{#each btns}}
+        {{#if this.download}}
+            <a class='btn btn-primary' href="data://text/plain;base64,{{{this.filecontent}}}" download="{{{this.filename}}}.txt">{{this.btnname}}</a>
+        {{/if}}
+        {{/each}}
+        {{#if detail_table}}
+        <br />
+        <br />
+            <table class="table table-light">
+                <thead>
+                <tr>
+                    {{#each detail_table.th_set}}
+                    <th style="width:160px">{{this}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {{#each detail_table.tr1_set}}
+                    <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+                <tr>
+                    {{#each detail_table.tr2_set}}
+                    <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+            </tbody>
+        </table>
+        {{/if}}
+
 	</div>
 	<div class="modal-footer">
 		<button class="btn modal-close btn-silver">Close</button>
@@ -101,7 +204,7 @@
 </div>
 
 <!-- bubbleInstanceInfo -->
-<div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{name}}-({{id}})</div>
+<div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}-({{id}})</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">
 		<dt>Launch Time:</dt>
@@ -113,6 +216,32 @@
 	</dl>
 </div>
 
+<!-- bubbleRegionResourceInfo -->
+<div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}</div>
+<div class="bubble-content">
+       <dl class="dl-horizontal">
+               {{#each sub_info}}
+               {{{this}}}
+               {{/each}}
+       </dl>
+</div>
+
+<!-- bubbleSnapshotInfo -->
+<div class="bubble-head"></i>{{snapshotId}}</div>
+<div class="bubble-content">
+       <dl class="dl-horizontal">
+               <dt>SnapshotId</dt>
+               <dd>{{snapshotId}}</dd>
+               <dt>StartTime</dt>
+               <dd>{{startTime}}</dd>
+               <dt>Status</dt>
+               <dd>{{status}}</dd>
+               <dt>Size</dt>
+               <dd>{{size}}</dd>
+       </dl>
+</div>
+
+
 <!-- bubbleAMIInfo -->
 <div class="bubble-head">{{id}}</div>
 <div class="bubble-content">
@@ -121,23 +250,49 @@
 		<dd>{{name}}</dd>
 		<dt>Description</dt>
 		<dd>{{description}}</dd>
-		<dt>AMI Property-1</dt>
-		<dd>{{property1}}</dd>
+       <dt>Architecture</dt>
+       <dd>{{architecture}}</dd>
+       <dt>Image Location</dt>
+       <dd>{{imageLocation}}</dd>
+       <dt>Public</dt>
+       <dd>{{isPublic}}</dd>
+       <dt>KernelId</dt>
+       <dd>{{kernelId}}</dd>
+       <dt>Root Device Name</dt>
+       <dd>{{rootDeviceName}}</dd>
+       <dt>Root Device Type</dt>
+       <dd>{{rootDeviceType}}</dd>
 	</dl>
 </div>
 
-<!-- bubbleSnapshotInfo -->
-<div class="bubble-head">{{id}}</div>
+<!-- bubbleAMIMongoInfo -->
+<div class="bubble-head"></i>{{id}}</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">
+		<dt>Name</dt>
+		<dd>{{name}}</dd>
 		<dt>Description</dt>
-		<dd>{{descrption}}</dd>
-		<dt>Volume ID</dt>
-		<dd>{{volume-id}}</dd>
-		<dt>Started Time</dt>
-		<dd>{{started}}</dd>
+		<dd>{{description}}</dd>
+		<dt>Architecture</dt>
+		<dd>{{architecture}}</dd>
+		<dt>Image Location</dt>
+		<dd>{{imageLocation}}</dd>
+		<dt>Public</dt>
+		<dd>{{isPublic}}</dd>
+		<dt>KernelId</dt>
+		<dd>{{kernelId}}</dd>
+		<dt>Root Device Name</dt>
+		<dd>{{rootDeviceName}}</dd>
+		<dt>Root Device Type</dt>
+		<dd>{{rootDeviceType}}</dd>
+		<dt>Image Size</dt>
+		<dd>{{imageSize}}</dd>
+		<dt>Support Instance Type</dt>
+		<dd>{{instance_type}}</dd>
 	</dl>
 </div>
+
+
 
 <!-- browseCommunityAmi -->
 <div style="width:820px; height:500px;" id="modal-browse-community-ami">
@@ -149,11 +304,11 @@
 		<div class="content-wrap">
 			<div class="ami-left-col">
 				<div>
-					<input id="community-ami-input" class="input" type="text" placeholder="Filter AMI by name or ID" />
+					<input id="community-ami-input" class="input" type="text" placeholder="Search AMI by name or ID" />
 				</div>
 				<div id="selectbox-ami-platform" class="selectbox">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				    	<span class="cur-value">Action</span>
+				    	<span class="cur-value">All Platforms</span>
 				    	<span class="caret"></span>
 				  	</a>
 				  	<ul class="dropdown-menu" role="menu">
@@ -169,14 +324,6 @@
 				    	<li tabindex="-1"><a data-id="windows" href="#"><i class="icon-win icon-ami-os"></i>Windows</a></li>
 				    	<li tabindex="-1"><a data-id="otherlinux" href="#"><i class="icon-other-linux icon-ami-os"></i>Other Linux</a></li>
 				  	</ul>
-				</div>
-				<div class="filter-radio-group">
-					<div class="filter-radio-label">Visibility</div>
-					<div class="radiobuttons" id="filter-ami-public-private">
-						<button type="button" class="btn btn-silver active" data-radio="">Both</button>
-						<button type="button" class="btn btn-silver">Public</button>
-						<button type="button" class="btn btn-silver">Private</button>
-					</div>
 				</div>
 				<div class="filter-radio-group">
 					<div class="filter-radio-label">Architecture</div>
@@ -195,8 +342,9 @@
 					</div>
 				</div>
 				<div id="ami-count">
-				  Total: 17832
+				  Total: 0
 				</div>
+				<div id="btn-search-ami" class="btn btn-silver">Search</div>
 			</div>
 			<div class="ami-right-col scroll-wrap scrollbar-auto-hide" style="height:450px; width:580px; float:left;">
 				<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
@@ -210,53 +358,20 @@
 							<th style="width:50px" class="sortable">Size(GB)</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr class="item" data-id="ami-12345678 ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1" data-publicprivate="public" data-platform="ubuntu" data-ebs="ebs" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-12345678</td>
+						<tbody id="community_ami_table">
+							{{#each community_ami}}
+							<tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
+								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
+								<td>{{id}}</td>
 								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
-									<div class="ami-meta">public | 32-bit | EBS</div>
+									<div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div>
+									<div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div>
 								</td>
 								<td>32</td>
 							</tr>
-							<tr class="item" data-id="ami-23456789 tu-precise-12.04-i380411.1" data-publicprivate="public" data-platform="amazonlinux" data-ebs="instancestore" data-bit="64-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-23456789</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>tu-precise-12.04-i380411.1</div>
-									<div class="ami-meta">public | 64-bit | Instance</div>
-								</td>
-								<td>64</td>
-							</tr>
-							<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-34567890</td>
-								<td>
-									<div>Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b</div>
-									<div class="ami-meta">private | 32-bit | Instance</div>
-								</td>
-								<td>32</td>
-							</tr>
-							<tr class="item" data-id="ami-12345678 ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1" data-publicprivate="public" data-platform="ubuntu" data-ebs="ebs" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-12345678</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
-									<div class="ami-meta">public | 32-bit | EBS</div>
-								</td>
-								<td>32</td>
-							</tr>
-							<tr class="item" data-id="ami-23456789 tu-precise-12.04-i380411.1" data-publicprivate="public" data-platform="amazonlinux" data-ebs="instancestore" data-bit="64-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-23456789</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>tu-precise-12.04-i380411.1</div>
-									<div class="ami-meta">public | 64-bit | Instance</div>
-								</td>
-								<td>64</td>
-							</tr>
-							<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
+							{{/each}}
+
+							<!--<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
 								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
 								<td>ami-34567890</td>
 								<td>
@@ -264,41 +379,30 @@
 									<div class="ami-meta">private | 32-bit | Instance</div>
 								</td>
 								<td>32</td>
-							</tr>
-							<tr class="item" data-id="ami-12345678 ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1" data-publicprivate="public" data-platform="ubuntu" data-ebs="ebs" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-12345678</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1</div>
-									<div class="ami-meta">public | 32-bit | EBS</div>
-								</td>
-								<td>32</td>
-							</tr>
-							<tr class="item" data-id="ami-23456789 tu-precise-12.04-i380411.1" data-publicprivate="public" data-platform="amazonlinux" data-ebs="instancestore" data-bit="64-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-23456789</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>tu-precise-12.04-i380411.1</div>
-									<div class="ami-meta">public | 64-bit | Instance</div>
-								</td>
-								<td>64</td>
-							</tr>
-							<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-34567890</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b</div>
-									<div class="ami-meta">private | 32-bit | Instance</div>
-								</td>
-								<td>32</td>
-							</tr>
+							</tr>-->
+							
+							
 						</tbody>
+						<div id="community_ami_page">
+							<div id="community_ami_page_preview">
+								Preview Page
+							</div>
+							
+							<div id="community_ami_page_current" page="0", totalPage="1">
+								Current Page
+							</div>
+							
+							<div id="community_ami_page_next">
+								Next Page
+							</div>
+						</div>
 					</table>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- createNewStack -->
 <div style="width:650px">
@@ -323,5 +427,309 @@
 				</li>
 			</ul>
 		</div>
+	</div>
+</div>
+
+<!-- configurationDownload -->
+Amazon Web Services
+Virtual Private Cloud
+
+VPN Connection Configuration
+================================================================================
+AWS utilizes unique identifiers to manipulate the configuration of
+a VPN Connection. Each VPN Connection is assigned a VPN Connection Identifier
+and is associated with two other identifiers, namely the
+Customer Gateway Identifier and the Virtual Private Gateway Identifier.
+
+Your VPN Connection ID                         : {{vpnConnectionId}}
+Your Virtual Private Gateway ID         : {{vpnGatewayId}}
+Your Customer Gateway ID                       : {{customerGatewayId}}
+
+A VPN Connection consists of a pair of IPSec tunnel security associations (SAs).
+It is important that both tunnel security associations be configured.
+{{#each tunnel}}
+
+
+IPSec Tunnel #{{this.number}}
+================================================================================
+#1: Internet Key Exchange Configuration
+
+Configure the IKE SA as follows
+  - Authentication Method    : {{this.ike_protocol_method}}
+  - Pre-Shared Key           : {{this.ike_pre_shared_key}}
+  - Authentication Algorithm : {{this.ike_authentication_protocol_algorithm}}
+  - Encryption Algorithm     : {{this.ike_encryption_protocol}}
+  - Lifetime                 : {{this.ike_lifetime}} seconds
+  - Phase 1 Negotiation Mode : {{this.ike_mode}}
+  - Perfect Forward Secrecy  : {{this.ike_perfect_forward_secrecy}}
+
+#2: IPSec Configuration
+
+Configure the IPSec SA as follows:
+  - Protocol                 : {{this.ipsec_protocol}}
+  - Authentication Algorithm : {{this.ipsec_authentication_protocol}}
+  - Encryption Algorithm     : {{this.ipsec_encryption_protocol}}
+  - Lifetime                 : {{this.ipsec_lifetime}} seconds
+  - Mode                     : {{this.ipsec_mode}}
+  - Perfect Forward Secrecy  : {{this.ipsec_perfect_forward_secrecy}}
+
+IPSec Dead Peer Detection (DPD) will be enabled on the AWS Endpoint. We
+recommend configuring DPD on your endpoint as follows:
+  - DPD Interval             : {{this.ipsec_interval}}
+  - DPD Retries              : {{this.ipsec_retries}}
+
+IPSec ESP (Encapsulating Security Payload) inserts additional
+headers to transmit packets. These headers require additional space,
+which reduces the amount of space available to transmit application data.
+To limit the impact of this behavior, we recommend the following
+configuration on your Customer Gateway:
+  - TCP MSS Adjustment       : {{this.tcp_mss_adjustment}} bytes
+  - Clear Don't Fragment Bit : {{this.clear_df_bit}}
+  - Fragmentation            : {{this.fragmentation_before_encryption}}
+
+#3: Tunnel Interface Configuration
+
+Your Customer Gateway must be configured with a tunnel interface that is
+associated with the IPSec tunnel. All traffic transmitted to the tunnel
+interface is encrypted and transmitted to the Virtual Private Gateway.
+
+
+
+The Customer Gateway and Virtual Private Gateway each have two addresses that relate
+to this IPSec tunnel. Each contains an outside address, upon which encrypted
+traffic is exchanged. Each also contain an inside address associated with
+the tunnel interface.
+
+The Customer Gateway outside IP address was provided when the Customer Gateway
+was created. Changing the IP address requires the creation of a new
+Customer Gateway.
+
+The Customer Gateway inside IP address should be configured on your tunnel
+interface.
+
+Outside IP Addresses:
+  - Customer Gateway                   : {{this.customer_gateway_outside_address}}
+  - Virtual Private Gateway            : {{this.vpn_gateway_outside_address}}
+
+Inside IP Addresses
+  - Customer Gateway                   : {{this.customer_gateway_inside_address}}
+  - Virtual Private Gateway         : {{this.vpn_gateway_inside_address}}
+
+Configure your tunnel to fragment at the optimal size:
+  - Tunnel interface MTU     : 1436 bytes
+
+
+#4: Static Routing Configuration:
+
+To route traffic between your internal network and your VPC,
+you will need a static route added to your router.
+
+Static Route Configuration Options:
+
+  - Next hop       : {{this.next_hop}}
+
+You should add static routes towards your internal network on the VGW.
+The VGW will then send traffic towards your internal network over
+he tunnels.
+{{/each}}
+
+
+
+
+Additional Notes and Questions
+================================================================================
+
+  - Amazon Virtual Private Cloud Getting Started Guide:
+      http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide
+  - Amazon Virtual Private Cloud Network Administrator Guide:
+      http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
+  - XSL Version: 2009-07-15-1119716
+
+<!-- modalStackValidationRun -->
+<div id="modal-stack-validation-run">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<div class="accordion accordion-default" data-accordion-option="exclusive">
+			<div class="accordion-group expanded validation-error">
+				<div class="accordion-head">
+					<i class="icon-error"></i> 1 Error
+				</div>
+				<div class="accordion-body">
+					<ol>
+						<li>Subnet(10.0.1.0/24) is attached to an ELB, but larger than /27.</li>
+					</ol>
+				</div>
+			</div>
+			<div class="accordion-group validation-warning">
+				<div class="accordion-head">
+					<i class="icon-warning"></i> 5 Warning
+				</div>
+				<div class="accordion-body">
+					<ol>
+						<li>No instance is attached to ELB.</li>
+						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to ELB.</li>
+						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to ELB.</li>
+						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+					</ol>
+				</div>
+			</div>
+			<div class="accordion-group validation-notice">
+				<div class="accordion-head">
+					<i class="icon-notice"></i> 5 Notice
+				</div>
+				<div class="accordion-body">
+					<ol>
+						<li>No instance is attached to ELB.</li>
+						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to ELB.</li>
+						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to elb1.</li>
+						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-red">Proceed</button>
+		<button disabled class="btn btn-red">Proceed</button>
+		<button class="btn btn-silver modal-close">Run Later</button>
+	</div>
+</div>
+
+<!-- modalRunStack -->
+<div id="modal-run-stack">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-red">Proceed</button>
+		<button disabled class="btn btn-red tooltip" data-tooltip="Please fix error first and try to run the stack again.">Proceed</button>
+		<button class="btn btn-silver modal-close">Run Later</button>
+	</div>
+</div>
+
+<!-- sgListItem -->
+<li class="clearfix" data-sgid="000">
+	<div class="col1 sg-toggle-show-icon"></div>
+	<div class="col2">
+		<div class="col2-1">{{name}}</div>
+		<div class="col2-2">description</div>
+		<div class="col2-3">5 rules, 2 member</div>
+	</div>
+	<div class="col3 sg-remove-item-icon tooltip" data-tooltip="Remove instance from SG"></div>
+</li>
+
+<!-- networkListItem -->
+<li>
+	<div class="name">1.0.0.x</div>
+	<div class="network-toggle-icon tooltip" data-tooltip="Associate with EIP"></div>
+	<div class="network-remove-icon tooltip" data-tooltip="Remove ip address"></div>
+</li>
+
+<!-- modalSGRule -->
+<div id="modal-sg-rule">
+	<div class="modal-header">
+		{{#if isAdd}}
+		<h3>Add Security Group Rule</h3>
+		{{else}}
+		<h3>Edit Security Group Rule</h3>
+		{{/if}}
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<div class="sg-modal-direction wrap">
+			<span class="title">Direction</span>
+			<div class="context">
+				<div class="radio inbound">
+					<input id="radio_inbound" type="radio" name="rule_direction" />
+					<label for="radio_inbound"></label>
+					<span>Inbound</span>
+				</div>
+
+				<div class="radio outbound">
+					<input id="radio_outbound" type="radio" name="rule_direction" />
+					<label for="radio_outbound"></label>
+					<span>outbound</span>
+				</div>
+			</div>
+		</div>
+		<div class="sg-modal-destination wrap">
+			<span class="title" id="rule-modle-title2">Destination</span>
+			<div class="context">
+				<input class="input" type="text" placeholder="IP Range.eg,10.0.0.1/24" />
+			</div>
+		</div>
+		<div class="sg-modal-protocol wrap">
+			<span class="title">Protocol</span>
+			<div class="context" >
+				<div class="modal-protocol-select">
+					<div class="selectbox" id="modal-protocol-select">
+					<a class="dropdown-toggle" href="#">
+						<span class="cur-value">UDP</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li class="selected" tabindex="-1">
+							<a data-id="tcp" href="#">
+							TCP
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="udp" href="#">
+							UDP
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="icmp" href="#">
+							ICMP
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="custom" href="#">
+							Custom
+							</a>
+						</li>
+						<li  tabindex="-1">
+							<a data-id="all" href="#">
+							All
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+				<div id="sg-protocol-select-result">
+					<div class="sg-protocol-option-input show" id="sg-protocol-tcp">
+						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-udp">
+						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-icmp">
+						<input class="input" type="text" placeholder="IP Range.eg,10.0.0.1/24" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-custom">
+						<input class="input" type="text" placeholder="Type.0 to 255" />
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-all">
+						Port Range:<span>0-65535</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-blue">Save</button>
+		<button class="btn btn-silver modal-close">Cancel</button>
 	</div>
 </div>

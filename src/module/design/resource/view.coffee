@@ -3,10 +3,9 @@
 #############################
 
 define [ 'event',
-         './temp_view',
          'backbone', 'jquery', 'handlebars',
          'UI.fixedaccordion', 'UI.selectbox', 'UI.toggleicon', 'UI.searchbar', 'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
-], ( ide_event, temp_view ) ->
+], ( ide_event, Backbone, $ ) ->
 
     ResourceView = Backbone.View.extend {
 
@@ -17,6 +16,8 @@ define [ 'event',
         quickstart_ami_tmpl    : Handlebars.compile $( '#quickstart-ami-tmpl' ).html()
         my_ami_tmpl            : Handlebars.compile $( '#my-ami-tmpl' ).html()
         favorite_ami_tmpl      : Handlebars.compile $( '#favorite-ami-tmpl' ).html()
+        community_ami_tmpl     : Handlebars.compile $( '#community-ami-tmpl' ).html()
+        
 
         initialize : ->
             #listen
@@ -31,12 +32,17 @@ define [ 'event',
             $( document ).delegate '#resource-panel',     'SEARCHBAR_SHOW', this.searchBarShowEvent
             $( document ).delegate '#resource-panel',     'SEARCHBAR_HIDE', this.searchBarHideEvent
             $( document ).delegate '#resource-panel',   'SEARCHBAR_CHANGE', this.searchBarChangeEvent
-            $( document ).delegate '#btn-browse-community-ami',   'click', this.openBrowseCommunityAMIsModal
+            $( document ).delegate '#btn-browse-community-ami',   'click' , this, this.openBrowseCommunityAMIsModal
+            $( document ).delegate '#btn-search-ami',   'click'  , this, this.searchCommunityAmiCurrent
+            $( document ).delegate '#community_ami_page_preview',   'click'  , this, this.searchCommunityAmiPreview
+            $( document ).delegate '#community_ami_page_next',   'click'  , this, this.searchCommunityAmiNext
+            
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideResourcePanel
 
-        render   : ( template ) ->
+        render   : ( template, attrs ) ->
             console.log 'resource render'
+   
             $( this.el ).html template
             #
             fixedaccordion.resize()
@@ -51,6 +57,7 @@ define [ 'event',
             this.listenTo this.model, 'change:quickstart_ami',    this.quickstartAmiRender
             this.listenTo this.model, 'change:my_ami',            this.myAmiRender
             this.listenTo this.model, 'change:favorite_ami',      this.favoriteAmiRender
+            this.listenTo this.model, 'change:community_ami',     this.communityAmiRender
 
         resourceSelectEvent : ( event, id ) ->
             console.log 'resourceSelectEvent = ' + id
@@ -135,9 +142,136 @@ define [ 'event',
             $( '.favorite-ami-list' ).html this.favorite_ami_tmpl this.model.attributes
             null
 
-        openBrowseCommunityAMIsModal : () ->
+        communityAmiBtnRender : () ->
+            console.log 'communityAmiRender'
+            console.log this.model.attributes.community_ami
+            $( '.community-ami' ).html this.community_ami_tmpl this
+            null
+
+        openBrowseCommunityAMIsModal : ( event ) ->
+
             console.log 'openBrowseCommunityAMIsModal'
-            temp_view.ready()
+
+            modal(MC.template.browseCommunityAmi(''), false)
+
+        communityAmiRender : () ->
+
+            totalNum = 0
+            $("#ami-count").empty().html("Total: 0")
+            if this.model.attributes.community_ami
+                 this_tr = ""
+                _.map this.model.attributes.community_ami.result, ( value, key ) ->
+
+                    bit = '64'
+                    if value.architecture == 'i386' then bit = '32'
+                    this_tr += '<tr class="item" data-id="'+key+' '+value.name+'" data-publicprivate="public" data-platform="'+value.osType+'" data-ebs="'+value.rootDeviceType+'" data-bit="'+bit+'">'
+                    this_tr += '<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="'+key+'"></div></td>'
+                    this_tr += '<td>'+key+'</td>'
+                    this_tr += '<td><div><i class="icon-ubuntu icon-ami-os"></i>'+value.name+'</div><div class="ami-meta">public | '+value.architecture+' | '+value.rootDeviceType+'</div></td>'
+                    this_tr += "<td>#{bit}</td></tr>"
+                    # <tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
+                    #                     <td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
+                    #                     <td>{{id}}</td>
+                    #                     <td>
+                    #                         <div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div>
+                    #                         <div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div>
+                    #                     </td>
+                    #                     <td>32</td>
+                    #                 </tr>
+                currentPageNum = this.model.attributes.community_ami.curPageNum
+                page = "<div>page #{currentPageNum}</div>"
+                totalNum = this.model.attributes.community_ami.totalNum
+                totalPageNum = this.model.attributes.community_ami.totalPageNum
+                $("#ami-count").empty().html("Total: #{totalNum}")
+                $("#community_ami_table").empty().html(this_tr)
+                #$("#community_ami_page").empty().html(page)
+                $('#community_ami_page_current').attr("totalPage", totalPageNum)
+                $('#community_ami_page_current').attr("page", currentPageNum)
+                if currentPageNum == 1
+                    $("#community_ami_page_preview").hide()
+                else
+                    $("#community_ami_page_preview").show()
+                if currentPageNum == totalPageNum
+                    $("#community_ami_page_next").hide()
+                else
+                     $("#community_ami_page_next").show()
+
+        searchCommunityAmiCurrent : ( event ) ->
+
+            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, 0
+
+        searchCommunityAmiNext : ( event ) ->
+
+            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, 1
+
+        searchCommunityAmiPreview : ( event ) ->
+
+            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, -1
+            
+            # modal(MC.template.browseCommunityAmi(this.model.attributes), false)
+            # $($('#selectbox-ami-platform').find('.cur-value')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html())
+            # $('#community-ami-input').on 'keyup', (event)->
+            #     filter.update $('#community-ami-filter'), {
+            #         value: $(this).val()
+            #         type:{
+            #             publicprivate: radiobuttons.data($('#filter-ami-public-private'))
+            #             ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
+            #             bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
+            #             platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+            #         }
+            #     }
+                
+            # $('#filter-ami-public-private').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
+
+            #         result_set = {
+            #             value:$('#community-ami-input').val()
+            #             type:{
+            #                 publicprivate:cur_radion
+            #                 ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
+            #                 bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
+            #                 platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data 'id'
+            #             }
+            #         }
+
+            #         filter.update($('#community-ami-filter'), result_set)
+
+            # $('#filter-ami-EBS-Instance').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
+                
+            #         result_set = {
+            #             value:$('#community-ami-input').val(),
+            #             type:{
+            #                 publicprivate: radiobuttons.data($('#filter-ami-public-private'))
+            #                 ebs: cur_radion
+            #                 bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
+            #                 platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+            #             }
+            #         }
+
+            #         filter.update($('#community-ami-filter'), result_set)
+
+            # $('#filter-ami-32bit-64bit').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
+            #         result_set = {
+            #             value:$('#community-ami-input').val()
+            #             type:{
+            #                 publicprivate: radiobuttons.data($('#filter-ami-public-private'))
+            #                 ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
+            #                 bit: cur_radion
+            #                 platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+            #             }
+            #         }
+            #         filter.update($('#community-ami-filter'), result_set)
+
+            # $('#selectbox-ami-platform').on 'OPTION_CHANGE', (event, id) ->
+            #     result_set = {
+            #         value:$('#community-ami-input').val(),
+            #         type:{
+            #             publicprivate: radiobuttons.data($('#filter-ami-public-private')),
+            #             ebs: radiobuttons.data($('#filter-ami-EBS-Instance')),
+            #             bit: radiobuttons.data($('#filter-ami-32bit-64bit')),
+            #             platform: id
+            #         } }
+
+            #     filter.update($('#community-ami-filter'), result_set)
             null
 
     }

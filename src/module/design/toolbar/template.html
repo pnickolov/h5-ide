@@ -1,7 +1,47 @@
-<div class="toolbar-btn-left">
-	<a href="#" class="btn-toolbar"><i class="icon-file-add"></i></a>
-	<a href="#" class="btn-toolbar"><i class="icon-sitemap"></i></a>
-</div>
-<div class="toolbar-btn-right">
-	
-</div>
+<ul class="toolbar-btn-group">
+	<li class="btn-toolbar">
+		<a href="#" class="tooltip modal" data-tooltip="Run this stack into an app" data-modal-template="modalStackValidationRun" data-modal-data='{"title":"Stack Design Validation"}' data-modal-dismiss="false"><i class="icon-toolbar-run"></i> Run Stack</a>
+	</li>
+	<li class="btn-toolbar">
+		<a href="#" class="btn-toolbar tooltip" data-tooltip="Save stack."><i class="icon-toolbar-save"></i></a>
+	</li>
+	<li class="selectbox btn-toolbar">
+		<a class="dropdown-toggle tooltip" data-toggle="dropdown" data-tooltip="More Actions..." href="#">
+			<span class="icon-toolbar-more-action"></span>
+			<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu" role="menu">
+			<li><a data-id="111" href="#"><i class="icon-toolbar-duplicate"></i>Duplicate</a></li>
+			<li><a data-id="222" href="#"><i class="icon-toolbar-delete"></i>Delete</a></li>
+			<li><a data-id="333" href="#"><i class="icon-toolbar-new-stack"></i>New Stack</a></li>
+		</ul>
+	</li>
+</ul>
+<ul class="toolbar-btn-group">
+	<li class="btn-toolbar">
+		<a href="#" class="btn-toolbar tooltip" data-tooltip="Undo"><i class="icon-toolbar-undo"></i></a>
+	</li>
+	<li class="btn-toolbar">
+		<a href="#" class="btn-toolbar tooltip" data-tooltip="Redo"><i class="icon-toolbar-redo"></i></a>
+	</li>
+</ul>
+<ul class="toolbar-btn-group">
+	<li class="btn-toolbar">
+		<a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom In"><i class="icon-toolbar-zoom-in"></i></a>
+	</li>
+	<li class="btn-toolbar">
+		<a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom Out"><i class="icon-toolbar-zoom-out"></i></a>
+	</li>
+</ul>
+<ul class="toolbar-btn-group">
+	<li class="selectbox btn-toolbar">
+		<a class="dropdown-toggle tooltip" data-toggle="dropdown" data-tooltip="Export..." href="#">
+			<span class="icon-toolbar-export"></span>
+			<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu" role="menu">
+			<li><a data-id="111" href="#"><i class="icon-toolbar-export-png"></i>Export as PNG</a></li>
+			<li><a data-id="222" href="#"><i class="icon-toolbar-export-json"></i>Export as Json</a></li>
+		</ul>
+	</li>
+</ul>

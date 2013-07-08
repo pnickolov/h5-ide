@@ -13,16 +13,16 @@ define [ 'jquery',
     loadModule = () ->
 
         #compile partial template
-        MC.IDEcompile 'design-resource', template_data, { '.availability-zone-data' : 'availability-zone-tmpl', '.resoruce-snapshot-data' : 'resoruce-snapshot-tmpl', '.quickstart-ami-data' : 'quickstart-ami-tmpl', '.my-ami-data' : 'my-ami-tmpl', '.favorite-ami-data' : 'favorite-ami-tmpl' }
+        MC.IDEcompile 'design-resource', template_data, { '.availability-zone-data' : 'availability-zone-tmpl', '.resoruce-snapshot-data' : 'resoruce-snapshot-tmpl', '.quickstart-ami-data' : 'quickstart-ami-tmpl', '.my-ami-data' : 'my-ami-tmpl', '.favorite-ami-data' : 'favorite-ami-tmpl', '.community-ami-btn':'community-ami-tmpl' }
 
-        #load remote module1.js
-
+        #
         require [ './module/design/resource/view', './module/design/resource/model', 'UI.bubble' ], ( View, model ) ->
 
             #view
             view       = new View()
             view.render template
             view.listen model
+            view.model = model
 
             #listen SWITCH_TAB
             #ide_event.onLongListen ide_event.SWITCH_TAB, ( type, target, region_name ) ->
@@ -44,7 +44,28 @@ define [ 'jquery',
                 model.quickstartService             region_name
                 model.myAmiService                  region_name
                 model.favoriteAmiService            region_name
+                view.region = region_name
+                view.communityAmiBtnRender()
                 null
+
+            view.on 'LOADING_COMMUNITY_AMI', ( region_name, state ) ->
+                name = $('#community-ami-input').val()
+                platform = $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+                architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
+                rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
+                page = parseInt $('#community_ami_page_current').attr("page"), 10
+                totalPage = parseInt $('#community_ami_page_current').attr("totalPage"), 10
+                if state == 0
+                    pageNum = 1
+                    model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
+                if state == -1 and page>1
+                    pageNum = page-1
+                    model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
+
+                if state == 1 and totalPage> page
+                    pageNum = page+1
+                    model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
+
 
     unLoadModule = () ->
         #view.remove()

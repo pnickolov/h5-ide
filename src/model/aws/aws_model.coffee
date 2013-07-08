@@ -47,13 +47,13 @@ define [ 'backbone', 'aws_service'], ( Backbone, aws_service) ->
 
 
         #Public api (define function)
-        Public : ( src, username, session_id, region_name ) ->
+        Public : ( src, username, session_id, region_name, filters ) ->
 
             me = this
 
             src.model = me
 
-            aws_service.Public src, username, session_id, region_name, ( aws_result ) ->
+            aws_service.Public src, username, session_id, region_name, filters, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #Public succeed

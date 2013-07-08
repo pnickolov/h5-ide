@@ -22,8 +22,6 @@ define [ 'jquery',
             view.model    = model
             #render
             view.render()
-            #
-            view.delegateEvents view.events
 
     unLoadModule = () ->
         #view.remove()

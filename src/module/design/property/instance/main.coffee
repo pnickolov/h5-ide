@@ -24,8 +24,6 @@ define [ 'jquery',
             model.setHost uid
             #render
             view.render()
-            #
-            view.delegateEvents view.events
 
     unLoadModule = () ->
         #view.remove()

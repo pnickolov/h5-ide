@@ -19,7 +19,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
                 console.log 'canvas:RELOAD_RESOURCE'
                 #temp
                 if type is 'NEW_STACK'
-                    require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.create()
+                    require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.create(region_name)
                 else if type is 'OPEN_STACK'
                     require [ 'canvas_layout' ], ( canvas_layout ) -> canvas_layout.ready()
                 null

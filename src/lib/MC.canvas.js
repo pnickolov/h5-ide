@@ -1059,6 +1059,10 @@ MC.canvas.event.dragable = {
 				return key + ' selected';
 			});
 			MC.canvas.selected_node.push(event.data.target[0]);
+			
+			uid = event.data.target.attr("id");
+			
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", uid);
 		}
 		else
 		{
@@ -1258,9 +1262,12 @@ MC.canvas.event.drawConnection = {
 						if (value.relation === 'unique')
 						{
 							is_connected = false;
-							$.each(node_connections, function (index, data)
+
+							target_data = layout_node_data[ item.id ];
+
+							$.each(target_data.connection, function (index, data)
 							{
-								if (data.port === value.from)
+								if (data.port === value.to)
 								{
 									is_connected = true;
 								}
@@ -1287,7 +1294,7 @@ MC.canvas.event.drawConnection = {
 							{
 								$.each(target_data.connection, function (index, data)
 								{
-									if (data.port === value.to && data.target === node_id)
+									if (data.port === value.to)
 									{
 										is_connected = true;
 									}

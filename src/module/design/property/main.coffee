@@ -33,7 +33,7 @@ define [ 'jquery',
             view.render template
 
             #listen OPEN_PROPERTY
-            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( uid, type ) ->
+            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( uid ) ->
                 console.log 'OPEN_PROPERTY'
 
                 uid  = uid

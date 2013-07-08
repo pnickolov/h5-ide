@@ -55,7 +55,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                     #temp
                     ide_event.trigger ide_event.RELOAD_RESOURCE, region_name, type
                     #temp
-                    ide_event.trigger ide_event.OPEN_PROPERTY, 'E24BD807-E17D-441F-A6CF-671F1A4D7E24', null
+                    ide_event.trigger ide_event.OPEN_PROPERTY, 'E24BD807-E17D-441F-A6CF-671F1A4D7E24'
                 null
 
                 ###

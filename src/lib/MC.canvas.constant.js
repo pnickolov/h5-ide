@@ -18,6 +18,9 @@ var constant_data = {
 	TOLxTOL: 0.01,
 	TOGGLE_DIST: 5,
 
+	//min padding for group
+	GROUP_MIN_PADDING: 100,
+
 	//constant for MC.canvas.add
 	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 14 l 2 0 l 6 -6 z",//new style
 

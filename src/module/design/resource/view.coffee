@@ -178,16 +178,23 @@ define [ 'event',
                     #                     </td>
                     #                     <td>32</td>
                     #                 </tr>
-                
-                page = "<div>page #{this.model.attributes.community_ami.curPageNum}</div>"
+                currentPageNum = this.model.attributes.community_ami.curPageNum
+                page = "<div>page #{currentPageNum}</div>"
                 totalNum = this.model.attributes.community_ami.totalNum
                 totalPageNum = this.model.attributes.community_ami.totalPageNum
                 $("#ami-count").empty().html("Total: #{totalNum}")
                 $("#community_ami_table").empty().html(this_tr)
                 #$("#community_ami_page").empty().html(page)
                 $('#community_ami_page_current').attr("totalPage", totalPageNum)
-                $('#community_ami_page_current').attr("page", this.model.attributes.community_ami.curPageNum)
-
+                $('#community_ami_page_current').attr("page", currentPageNum)
+                if currentPageNum == 1
+                    $("#community_ami_page_preview").hide()
+                else
+                    $("#community_ami_page_preview").show()
+                if currentPageNum == totalPageNum
+                    $("#community_ami_page_next").hide()
+                else
+                     $("#community_ami_page_next").show()
 
         searchCommunityAmiCurrent : ( event ) ->
 

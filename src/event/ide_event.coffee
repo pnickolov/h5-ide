@@ -27,6 +27,9 @@ define [ 'underscore', 'backbone' ], () ->
         RESOURCE_COMPLETE   : 'RESOURCE_COMPLETE'
         #
         RELOAD_RESOURCE     : 'RELOAD_RESOURCE'
+        OPEN_PROPERTY       : 'OPEN_PROPERTY'
+        OPEN_SG             : 'OPEN_SG'
+        OPEN_INSTANCE       : 'OPEN_INSTANCE'
 
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'

@@ -45,6 +45,7 @@ require.config {
 		'UI.searchbar' : 'ui/common/UI.searchbar'
 		'UI.filter'    : 'ui/common/UI.filter'
 		'UI.radiobuttons': 'ui/common/UI.radiobuttons'
+		'UI.notification': 'ui/common/UI.notification'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'

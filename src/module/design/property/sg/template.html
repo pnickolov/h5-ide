@@ -1,78 +1,6 @@
-<a href="javascript:void(0)" id="hide-property-panel" class="tooltip sidebar-hider" data-tooltip="Hide Property Panel">
-	<i class="icon-double-angle-right"></i>
-</a>
-<div class="sidebar-title">
-	<span class="sidebar-title-text" id='property-title'>Property Panel</span>
-</div>
-<div class="property-details">loading...</div>
-<!--
-<div class="secondary-panel" id="aim-secondary-panel">
+<div class="secondary-panel" id="sg-secondary-panel">
 	<div class="sidebar-title">
-		<a class="back" title="back to instance" href="#">&lt;</a>
-		<span class="sidebar-title-text">ami-3432ifjf</span>
-	</div>
-	<div class="fixedaccordion accordion-default" data-sub="68">
-		<div class="accordion-group  expanded" >
-			<div class="fixedaccordion-head">
-				AMI Details
-			</div>
-			<div class="accordion-body scroll-wrap scrollbar-auto-hide context-wrap">
-				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-				<div class="item-wrap scroll-content">
-					<ul>
-						<li>
-							<span class="title">AMI ID</span>
-							<div class="context">ami-1234ee3f</div>
-						</li>
-						<li>
-							<span class="title">Name</span>
-							<div class="context">amzon-ami-pv-2013.03.0.i386-ebs</div>
-						</li><li>
-							<span class="title">Description</span>
-							<div class="context">Amazon Linux AMI i386 EBS</div>
-						</li><li>
-							<span class="title">Platform</span>
-							<div class="context">Linux</div>
-						</li><li>
-							<span class="title">Root Device Type</span>
-							<div class="context">ebs</div>
-						</li><li>
-							<span class="title">Architecture</span>
-							<div class="context">i386</div>
-						</li><li>
-							<span class="title">Virtualization</span>
-							<div class="context">paravirtual</div>
-						</li><li>
-							<span class="title">Kernel ID</span>
-							<div class="context">aki-b6aa75df</div>
-						</li><li>
-							<span class="title">Root Device</span>
-							<div class="context">/div/sda1</div>
-						</li><li>
-							<span class="title">Device List</span>
-							<div class="context">/div/sda1</div>
-						</li><li>
-							<span class="title">Size</span>
-							<div class="context">8 GB</div>
-						</li><li>
-							<span class="title">Type</span>
-							<div class="context">machine</div>
-						</li><li>
-							<span class="title">Owner</span>
-							<div class="context">137112412989(amazon)</div>
-						</li><li>
-							<span class="title">Support Instance</span>
-							<a class="context" href="#" target="_blank">c1.medium.m1.small.ti.micro</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="secondary-panel" id="sg-secondary-panel" style="display:block">
-	<div class="sidebar-title">
-		<a class="back" title="back to instance" href="#">&lt;</a>
+		<a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
 		<span class="sidebar-title-text">Custom-SG-01</span>
 	</div>
 	<div class="sg-context-wrap">
@@ -132,25 +60,25 @@
 						</div>
 					<ul class="sg-rule-list" id="sg-rule-list">
 						<li data-ruleid="123">
-							<div class='rule-direction-icon'></div>
+							<div class='rule-direction-icon tooltip' data-tooltip="outbound"></div>
 							<div class='rule-protocol'>TCP</div>
 							<div class='rule-source'>
 								<div class="rule-source-icon"></div>
 								<span>host2.ip1(10.0.0.x)</span>
 							</div>
 							<div class='rule-port' title="port message">3000-6555B</div>
-							<div class='rule-edit-icon'></div>
+							<div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
 							<div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
 						</li>
 						<li data-ruleid="234">
-							<div class='rule-direction-icon'></div>
+							<div class='rule-direction-icon tooltip' data-tooltip="inbound"></div>
 							<div class='rule-protocol'>Custom</div>
 							<div class='rule-source'>
 								<div class="rule-source-icon"></div>
 								<span>0.0.0.0</span>
 							</div>
 							<div class='rule-port' title="port message">233</div>
-							<div class='rule-edit-icon'></div>
+							<div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
 							<div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
 						</li>
 					</ul>
@@ -167,6 +95,10 @@
 				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 				<div class="item-wrap scroll-content">
 					<div class="sg-member-context">
+						<div id="sg-member-empty">
+							<p>Select an instantce/ENI/ELB and edit Security Group section in Property panel to assign member to security group.</p>
+							<img src="" title="screenshot for instruction"/>
+						</div>
 						<ul class="sg-member-list">
 							<li>
 								<div class="sg-member-icon"></div>
@@ -180,4 +112,3 @@
 	</div>
 	</div>
 </div>
--->

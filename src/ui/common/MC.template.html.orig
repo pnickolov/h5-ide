@@ -430,6 +430,7 @@
 	</div>
 </div>
 
+<<<<<<< HEAD
 <!-- configurationDownload -->
 Amazon Web Services
 Virtual Private Cloud
@@ -591,33 +592,7 @@ Additional Notes and Questions
 						<li>No instance is attached to elb1.</li>
 						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
 					</ol>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button class="btn btn-red">Proceed</button>
-		<button disabled class="btn btn-red">Proceed</button>
-		<button class="btn btn-silver modal-close">Run Later</button>
-	</div>
-</div>
-
-<!-- modalRunStack -->
-<div id="modal-run-stack">
-	<div class="modal-header">
-		<h3>{{title}}</h3>
-		<i class="modal-close">&times;</i>
-	</div>
-	<div class="modal-body">
-
-	</div>
-	<div class="modal-footer">
-		<button class="btn btn-red">Proceed</button>
-		<button disabled class="btn btn-red tooltip" data-tooltip="Please fix error first and try to run the stack again.">Proceed</button>
-		<button class="btn btn-silver modal-close">Run Later</button>
-	</div>
-</div>
-
+=======
 <!-- sgListItem -->
 <li class="clearfix" data-sgid="000">
 	<div class="col1 sg-toggle-show-icon"></div>
@@ -724,12 +699,38 @@ Additional Notes and Questions
 					<div class="sg-protocol-option-input" id="sg-protocol-all">
 						Port Range:<span>0-65535</span>
 					</div>
+>>>>>>> feature/module-property-panel-ks
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
+<<<<<<< HEAD
+		<button class="btn btn-red">Proceed</button>
+		<button disabled class="btn btn-red">Proceed</button>
+		<button class="btn btn-silver modal-close">Run Later</button>
+	</div>
+</div>
+
+<!-- modalRunStack -->
+<div id="modal-run-stack">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-red">Proceed</button>
+		<button disabled class="btn btn-red tooltip" data-tooltip="Please fix error first and try to run the stack again.">Proceed</button>
+		<button class="btn btn-silver modal-close">Run Later</button>
+	</div>
+</div>
+=======
 		<button class="btn btn-blue">Save</button>
 		<button class="btn btn-silver modal-close">Cancel</button>
 	</div>
 </div>
+
+>>>>>>> feature/module-property-panel-ks

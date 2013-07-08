@@ -959,10 +959,11 @@ MC.canvas.layout = {
 		return true;
 	},
 
-	create: function ()
+	create: function (region_name)
 	{
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
 		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
+		MC.canvas_data.region = region_name;
 
 		//temp for new stack
 		MC.canvas_data.platform = "default-vpc";

@@ -646,8 +646,8 @@ MC.canvas = {
 
 		if (node_type === 'group')
 		{
-			var group_child = MC.canvas.groupChild(node);	
-			
+			var group_child = MC.canvas.groupChild(node);
+
 			$.each(group_child, function (index, item)
 			{
 				MC.canvas.remove(item);
@@ -1268,7 +1268,7 @@ MC.canvas.event.drawConnection = {
 
 							if (is_connected)
 							{
-								return false;
+								return;
 							}
 						}
 						if (value.relation === 'multiple')
@@ -1282,11 +1282,12 @@ MC.canvas.event.drawConnection = {
 							{
 								target_connection_option = [target_connection_option];
 							}
+
 							$.each(target_connection_option, function (index, option)
 							{
 								$.each(target_data.connection, function (index, data)
 								{
-									if (data.port === value.to)
+									if (data.port === value.to && data.target === node_id)
 									{
 										is_connected = true;
 									}
@@ -1295,7 +1296,7 @@ MC.canvas.event.drawConnection = {
 
 							if (is_connected)
 							{
-								return false;
+								return;
 							}
 						}
 						$(this)
@@ -1420,6 +1421,11 @@ MC.canvas.event.siderbarDrag = {
 
 		shadow.append(clone_node);
 
+		shadow.css({
+			'top': event.pageY - 50,
+			'left': event.pageX - 50
+		}).show();
+
 		$('#canvas_body').addClass('dragging');
 
 		$(document.body).on({
@@ -1427,9 +1433,7 @@ MC.canvas.event.siderbarDrag = {
 			'mouseup': MC.canvas.event.siderbarDrag.mouseup
 		}, {
 			'target': target,
-			'shadow': $(shadow),
-			'offsetX': event.pageX - target_offset.left,
-			'offsetY': event.pageY - target_offset.top,
+			'shadow': shadow
 		});
 
 		MC.canvas.event.clearSelected();
@@ -1442,8 +1446,8 @@ MC.canvas.event.siderbarDrag = {
 		event.stopPropagation();
 
 		event.data.shadow.css({
-			'top': event.pageY - event.data.offsetY,
-			'left': event.pageX - event.data.offsetX
+			'top': event.pageY - 50,
+			'left': event.pageX - 50
 		});
 
 		return false;
@@ -1547,8 +1551,8 @@ MC.canvas.event.groupResize = {
 				prop = {
 					'y': top > max_top ? max_top : top,
 					'x': left > max_left ? max_left : left,
-					'width': event.data.originalWidth - event.pageX + event.data.originalX - group_border,
-					'height': event.data.originalHeight - event.pageY + event.data.originalY - group_border
+					'width': event.data.originalWidth - left,
+					'height': event.data.originalHeight - top
 				};
 				break;
 
@@ -1556,14 +1560,14 @@ MC.canvas.event.groupResize = {
 				prop = {
 					'y': top > max_top ? max_top : top,
 					'width': event.data.originalWidth + event.pageX - event.data.originalX,
-					'height': event.data.originalHeight - event.pageY + event.data.originalY - group_border
+					'height': event.data.originalHeight - top
 				};
 				break;
 
 			case 'bottomleft':
 				prop = {
 					'x': left > max_left ? max_left : left,
-					'width': event.data.originalWidth - event.pageX + event.data.originalX - group_border,
+					'width': event.data.originalWidth - left,
 					'height': event.data.originalHeight + event.pageY - event.data.originalY
 				};
 				break;
@@ -1578,7 +1582,7 @@ MC.canvas.event.groupResize = {
 			case 'top':
 				prop = {
 					'y': top > max_top ? max_top : top,
-					'height': event.data.originalHeight - event.pageY + event.data.originalY
+					'height': event.data.originalHeight - top
 				};
 				break;
 
@@ -1597,7 +1601,7 @@ MC.canvas.event.groupResize = {
 			case 'left':
 				prop = {
 					'x': left > max_left ? max_left : left,
-					'width': Math.floor((event.data.originalWidth - event.pageX + event.data.originalX) / 10) * 10
+					'width': event.data.originalWidth - left
 				};
 				break;
 		}

@@ -1059,6 +1059,10 @@ MC.canvas.event.dragable = {
 				return key + ' selected';
 			});
 			MC.canvas.selected_node.push(event.data.target[0]);
+			
+			uid = event.data.target.attr("id");
+			
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", uid);
 		}
 		else
 		{

@@ -11,6 +11,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
         initialize : ->
             #listen
             $( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
+            $( document ).delegate '#svg_canvas', 'CANVAS_NODE_SELECTED', this.showProperty
 
         render     : ( template ) ->
             console.log 'property render'
@@ -21,6 +22,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
             $( '#property-panel' ).toggleClass 'hiden'
             $( event ).children().first().toggleClass('icon-double-angle-left').toggleClass('icon-double-angle-right')
             $( '#canvas-panel' ).toggleClass 'right-hiden'
+
+        showProperty : ( event, uid ) ->
+            console.log uid
+
     }
 
     return PropertyView

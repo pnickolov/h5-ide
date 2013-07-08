@@ -1640,10 +1640,9 @@ MC.canvas.event.groupResize = {
 			group_id = parent.attr('id'),
 			group_width = Math.ceil(target.attr('width') / 10),
 			group_height = Math.ceil(target.attr('height') / 10),
-			group_left = Math.ceil((parent_offset.left - canvas_offset.left + offsetX) / 10),
+			group_left = Math.ceil((parent_offset.left - canvas_offset.left + offsetX ) / 10),
 			group_top = Math.ceil((
-					parent_offset.top - canvas_offset.top + offsetY - MC.canvas.GROUP_LABEL_OFFSET + event.data.group_border
-				) / 10),
+					parent_offset.top - canvas_offset.top + offsetY ) / 10) + 1,
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
 			node_minX = [],
@@ -1657,6 +1656,29 @@ MC.canvas.event.groupResize = {
 			group_maxY,
 			group_minX,
 			group_minY;
+
+
+		//adjust group_left
+		if (offsetX < 0 )
+		{
+			//when resize by left,topleft, bottomleft
+			group_left = Math.ceil((parent_offset.left - canvas_offset.left) / 10);
+		}
+
+		//adjust group_top
+		if (direction === 'top' || direction === 'topleft' || direction === 'topright')
+		{
+			//when resize by left,topleft, bottomleft
+			if (offsetY<0)
+			{//move up
+				group_top = Math.ceil((parent_offset.top - canvas_offset.top) / 10) + 1;//group title is 1 grid
+			}
+			else if (offsetY>0)
+			{//move down
+				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10);
+			}
+		}
+
 
 		$.each(event.data.group_child, function (index, item)
 		{

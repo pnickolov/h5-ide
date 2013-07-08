@@ -6,12 +6,22 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
     InstanceView = Backbone.View.extend {
 
-        el                  : $ '.property-details'
-        #accordion_item_tmpl : Handlebars.compile $( '#accordion-item-tmpl' ).html()
+        el       : $ document
+        tagName  : $ '.property-details'
 
-        render     : ( template ) ->
+        template : Handlebars.compile $( '#property-instance-tmpl' ).html()
+
+        events   :
+            'change .instance-name' : 'instanceNameChange'
+
+        render     : () ->
             console.log 'property:instance render'
-            $( '.property-details' ).html template
+            $( '.property-details' ).html this.template this.model.attributes
+
+        instanceNameChange : ( event ) ->
+            console.log 'instanceNameChange'
+            $( '.instance-name' ).attr 'value', event.target.value
+            this.model.set 'get_host', event.target.value
 
     }
 

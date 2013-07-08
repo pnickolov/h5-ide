@@ -4,8 +4,7 @@
 
 define [ 'jquery',
          'text!/module/design/property/template.html',
-         'event',
-         'MC.ide.template'
+         'event'
 ], ( $, template, ide_event ) ->
 
     #private
@@ -30,10 +29,10 @@ define [ 'jquery',
             view.render template
 
             #listen OPEN_PROPERTY
-            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( id, type ) ->
+            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( uid, type ) ->
                 console.log 'OPEN_PROPERTY'
 
-                instance_main.loadModule()
+                instance_main.loadModule uid, type
                 #temp
                 setTimeout () ->
                    view.refresh()

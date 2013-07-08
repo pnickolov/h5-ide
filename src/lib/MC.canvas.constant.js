@@ -118,7 +118,8 @@ var constant_data = {
 				{
 					from: 'instance-sg-out',
 					to: 'eni-sg-in',
-					color: '#6DAEFE'
+					color: '#6DAEFE',
+					relation: 'unique'
 				}
 			],
 			'AWS.VPC.RouteTable': {
@@ -149,7 +150,8 @@ var constant_data = {
 				{
 					from: 'eni-sg-in',
 					to: 'instance-sg-out',
-					color: '#6DAEFE' //green
+					color: '#6DAEFE', //green
+					relation: 'unique'
 				},
 				{
 					from: 'eni-attach',

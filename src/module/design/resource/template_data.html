@@ -29,7 +29,7 @@
 		</div>
 		<div class="resource-label instance-label">{{name}}</div>
 	</div>
-	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="{{name}}"></div>
+	<div class="btn-fav-ami toggle-fav toggle-icon faved tooltip" data-tooltip="Remove from Favorite" data-id="{{name}}" data-toggletext="Add to Favorite" data-toggleactive="Remove from Favorite" data-toggleclass="faved"></div>
 </li>
 {{/each}}
 
@@ -42,7 +42,7 @@
 		</div>
 		<div class="resource-label instance-label">{{name}}</div>
 	</div>
-	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="{{name}}"></div>
+	<div class="btn-fav-ami toggle-fav toggle-icon faved tooltip" data-tooltip="Remove from Favorite" data-id="{{name}}" data-toggletext="Add to Favorite" data-toggleactive="Remove from Favorite" data-toggleclass="faved"></div>
 </li>
 {{/each}}
 
@@ -56,9 +56,10 @@
 		</div>
 		<div class="resource-label instance-label" >{{resource_info.name}}</div>
 	</div>
-	<div class="btn-fav-ami toggle-fav faved tooltip" data-tooltip="Remove from Favorite" data-id="ubuntu/images/ebs/ubuntu-precise-12.04-i386-server-20130411.1"></div>
+	<div class="btn-fav-ami toggle-fav toggle-icon faved tooltip" data-tooltip="Remove from Favorite" data-id="{{resource_info.name}}" data-toggletext="Add to Favorite" data-toggleactive="Remove from Favorite" data-toggleclass="faved"></div>
 </li>
 {{/each}}
+
 
 <!--{{ .community-ami-btn }}-->
 <div class="btn btn-primary" data-region-name="{{region}}" id="btn-browse-community-ami">Browse Community AMIs</div>

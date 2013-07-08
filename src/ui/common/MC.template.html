@@ -545,6 +545,75 @@ Additional Notes and Questions
       http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
   - XSL Version: 2009-07-15-1119716
 
+<!-- modalStackValidationRun -->
+<div id="modal-stack-validation-run">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<div class="accordion accordion-default" data-accordion-option="exclusive">
+			<div class="accordion-group expanded validation-error">
+				<div class="accordion-head">
+					<i class="icon-error"></i> 1 Error
+				</div>
+				<div class="accordion-body">
+					<ol>
+						<li>Subnet(10.0.1.0/24) is attached to an ELB, but larger than /27.</li>
+					</ol>
+				</div>
+			</div>
+			<div class="accordion-group validation-warning">
+				<div class="accordion-head">
+					<i class="icon-warning"></i> 5 Warning
+				</div>
+				<div class="accordion-body">
+					<ol>
+						<li>No instance is attached to ELB.</li>
+						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to ELB.</li>
+						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to ELB.</li>
+						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+					</ol>
+				</div>
+			</div>
+			<div class="accordion-group validation-notice">
+				<div class="accordion-head">
+					<i class="icon-notice"></i> 5 Notice
+				</div>
+				<div class="accordion-body">
+					<ol>
+						<li>No instance is attached to ELB.</li>
+						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to ELB.</li>
+						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+						<li>No instance is attached to elb1.</li>
+						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-red">Proceed</button>
+		<button disabled class="btn btn-red">Proceed</button>
+		<button class="btn btn-silver modal-close">Run Later</button>
+	</div>
+</div>
 
+<!-- modalRunStack -->
+<div id="modal-run-stack">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
 
-
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-red">Proceed</button>
+		<button disabled class="btn btn-red tooltip" data-tooltip="Please fix error first and try to run the stack again.">Proceed</button>
+		<button class="btn btn-silver modal-close">Run Later</button>
+	</div>
+</div>

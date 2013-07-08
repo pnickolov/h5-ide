@@ -17,7 +17,7 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
 
             #view
             view       = new View()
-            view.render( template )
+            view.render template
 
     unLoadModule = () ->
         #view.remove()

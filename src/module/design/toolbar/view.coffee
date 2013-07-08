@@ -2,7 +2,10 @@
 #  View(UI logic) for design/toolbar
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
+define [ 'event',
+         'backbone', 'jquery', 'handlebars'
+         'UI.selectbox'
+], ( event ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -10,7 +13,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
 
         render   : ( template ) ->
             console.log 'toolbar render'
-            $( this.el ).html template
+            $( '#main-toolbar' ).html template
     }
 
     return ToolbarView

@@ -21,29 +21,48 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
             view.render template
 
             #save
-            view.on 'TOOLBAR_SAVE_STACK_CLICK', () ->
-                console.log 'design_toolbar_click:save_stack'
-                model.save_stack()
+            view.on 'TOOLBAR_SAVE_CLICK', () ->
+                console.log 'design_toolbar_click:saveStack'
+                model.saveStack()
 
             #duplicate
-            view.on 'TOOLBAR_DUPLICATE_STACK_CLICK', () ->
-                console.log 'design_toolbar_click:duplicate_stack'
-                model.duplicate_stack()
+            view.on 'TOOLBAR_DUPLICATE_CLICK', () ->
+                console.log 'design_toolbar_click:duplicateStack'
+                model.duplicateStack()
 
             #delete
-            view.on 'TOOLBAR_DELETE_STACK_CLICK', () ->
-                console.log 'design_toolbar_click:delete_stack'
-                model.delete_stack()
+            view.on 'TOOLBAR_DELETE_CLICK', () ->
+                console.log 'design_toolbar_click:deleteStack'
+                model.deleteStack()
 
             #new
-            view.on 'TOOLBAR_NEW_STACK_CLICK', () ->
-                console.log 'design_toolbar_click:new_stack'
-                model.new_stack()
+            view.on 'TOOLBAR_NEW_CLICK', () ->
+                console.log 'design_toolbar_click:newStack'
+                model.newStack()
 
             #run
-            view.on 'TOOLBAR_RUN_STACK_CLICK', () ->
-                console.log 'design_toolbar_click:run_stack'
-                model.run_stack( 'stack_test_run' )
+            view.on 'TOOLBAR_RUN_CLICK', () ->
+                console.log 'design_toolbar_click:runStack'
+                model.runStack( 'stack_test_run' )
+
+            #zoomin
+            view.on 'TOOLBAR_ZOOMIN_CLICK', () ->
+                console.log 'design_toolbar_click:zoomInStack'
+                model.zoomInStack()
+
+            #zoomout
+            view.on 'TOOLBAR_ZOOMOUT_CLICK', () ->
+                console.log 'design_toolbar_click:zoomOutStack'
+                model.zoomOutStack()
+
+            #export png
+            view.on 'TOOLBAR_EXPORT_PNG_CLICK', () ->
+                console.log 'design_toolbar_click:exportPng'
+
+            #export json
+            view.on 'TOOLBAR_EXPORT_JSON_CLICK', () ->
+                console.log 'design_toolbar_click:exportJson'
+
 
     unLoadModule = () ->
         #view.remove()

@@ -21,8 +21,8 @@ define [ 'event',
             'click .icon-toolbar-zoom-out'      : 'clickZoomOutIcon'
             'click .icon-toolbar-undo'          : 'clickUndoIcon'
             'click .icon-toolbar-redo'          : 'clickRedoIcon'
-            'click .icon-toolbar-export-png'    : 'clickExportPngIcon'
-            'click .icon-toolbar-export-json'   : 'clickExportJSONIcon'
+            'click #toolbar-export-png'         : 'clickExportPngIcon'
+            'click #toolbar-export-json'        : 'clickExportJSONIcon'
 
         render   : ( template ) ->
             console.log 'toolbar render'
@@ -30,31 +30,31 @@ define [ 'event',
 
         clickRunIcon : ->
             console.log 'clickRunIcon'
-            this.trigger 'TOOLBAR_RUN_STACK_CLICK'
+            this.trigger 'TOOLBAR_RUN_CLICK'
 
         clickSaveIcon : ->
             console.log 'clickSaveIcon'
-            this.trigger 'TOOLBAR_SAVE_STACK_CLICK'
+            this.trigger 'TOOLBAR_SAVE_CLICK'
 
         clickDuplicateIcon : ->
             console.log 'clickDuplicateIcon'
-            this.trigger 'TOOLBAR_DUPLICATE_STACK_CLICK'
+            this.trigger 'TOOLBAR_DUPLICATE_CLICK'
 
         clickDeleteIcon : ->
             console.log 'clickDeleteIcon'
-
-            this.trigger 'TOOLBAR_DELETE_STACK_CLICK'
+            this.trigger 'TOOLBAR_DELETE_CLICK'
 
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'
-
-            this.trigger 'TOOLBAR_NEW_STACK_CLICK'
+            this.trigger 'TOOLBAR_NEW_CLICK'
 
         clickZoomInIcon : ->
             console.log 'clickZoomInIcon'
+            this.trigger 'TOOLBAR_ZOOMIN_CLICK'
 
         clickZoomOutIcon : ->
             console.log 'clickZoomOutIcon'
+            this.trigger 'TOOLBAR_ZOOMOUT_CLICK'
 
         clickUndoIcon : ->
             console.log 'clickUndoIcon'
@@ -64,9 +64,11 @@ define [ 'event',
 
         clickExportPngIcon : ->
             console.log 'clickExportPngIcon'
+            this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
 
         clickExportJSONIcon : ->
             console.log 'clickExportJSONIcon'
+            this.trigger 'TOOLBAR_EXPORT_JSON_CLICK'
 
     }
 

@@ -8,7 +8,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
     ToolbarModel = Backbone.Model.extend {
 
         #save stack
-        save_stack : () ->
+        saveStack : () ->
             me = this
 
             MC.canvas_data.region = 'ap-southeast-1'
@@ -27,7 +27,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     ide_event.trigger ide_event.UPDATE_STACK_LIST
 
         #duplicate
-        duplicate_stack : () ->
+        duplicateStack : () ->
             me = this
 
             #MC.canvas_data.id = 'stack-7ed0d670'
@@ -50,7 +50,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     ide_event.trigger ide_event.UPDATE_STACK_LIST
 
         #delete
-        delete_stack : () ->
+        deleteStack : () ->
             me = this
 
             #MC.canvas_data.id = 'stack-50e101a2'
@@ -69,7 +69,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     ide_event.trigger ide_event.STACK_DELETE, MC.canvas_data.name, MC.canvas_data.id
 
         #new
-        new_stack : () ->
+        newStack : () ->
             me = this
 
             ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
@@ -82,7 +82,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
             #        console.log 'send new stack successful message'
 
         #run
-        run_stack : ( app_name ) ->
+        runStack : ( app_name ) ->
             me = this
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
@@ -93,6 +93,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
                 if !result.is_error
                     console.log 'send run stack successful message'
+
+        #zoomin
+        zoomInStack : () ->
+            MC.canvas.zoomIn()
+
+        #zoomout
+        zoomOutStack : () ->
+            MC.canvas.zoomOut()
 
     }
 

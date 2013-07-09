@@ -9,11 +9,10 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
 
         defaults :
             snapshot : null
-            #data     : null
 
-        saveTab : ( tab_id, snapshot, data ) ->
+        saveTab : ( tab_id, snapshot, data, property ) ->
             console.log 'saveTab'
-            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data }
+            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property }
             null
 
         readTab : ( type, tab_id ) ->
@@ -21,9 +20,10 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             #set snapshot|data vo
             if MC.tab[ tab_id ].snapshot is this.get 'snapshot' then this.set 'snapshot', null
             this.set 'snapshot', MC.tab[ tab_id ].snapshot
-            #this.set 'data',     MC.tab[ tab_id ].data
             #set MC.canvas_data
             this.setCanvasData MC.tab[ tab_id ].data
+            #set MC.canvas_property
+            this.setCanvasProperty MC.tab[ tab_id ].property
             null
 
         setCanvasData : ( data ) ->
@@ -32,8 +32,17 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             null
 
         getCanvasData : () ->
-            console.log 'setCanvasData'
+            console.log 'getCanvasData'
             MC.canvas_data
+
+        setCanvasProperty : ( property ) ->
+            console.log 'setCanvasProperty'
+            MC.canvas_property = property
+            null
+
+        getCanvasProperty : () ->
+            console.log 'getCanvasProperty'
+            MC.canvas_property
 
     }
 

@@ -226,6 +226,14 @@ var constant_data = {
 		}
 	},
 
+	//local variable for stack
+	STACK_PROPERTY: {
+		sg_list: [],
+		kp_list: [],
+		SCALE_RATIO: 1
+	},
+
+	//json data for stack
 	STACK_JSON: {
 		"id": "",
 		"name": "",

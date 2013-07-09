@@ -7,6 +7,8 @@
 	/*position: relative;*/
 }
 
+
+
 #canvas_body {
 	margin: 20px;
 	border: 1px solid #ccc;
@@ -17,14 +19,9 @@
 	transition: all .3s;*/
 }
 
-#canvas_body.zoomed {
-	pointer-events: none;
-	background-image: url('../images/ide/canvas_background_zoom.jpg');
-/*	-webkit-transform: scale(0.5) translate(-50%, -50%);
-	-moz-transform: scale(0.5) translate(-50%, -50%);
-	-o-transform: scale(0.5) translate(-50%, -50%);
-	-ms-transform: scale(0.5) translate(-50%, -50%);
-	transform: scale(0.5) translate(-50%, -50%);*/
+#screenshot_canvas_body {
+	padding: 10px;
+	background: #FFF url('../images/ide/grid.png');
 }
 
 #canvas_copy {
@@ -44,32 +41,6 @@
 .port.highlight {
 	border: 1px red dotted;
 }
-
-/*.zone {
-	z-index: -2;
-	position: absolute;
-	background: rgba(254, 170, 45, 0.05);
-	border: 4px dashed rgb(250, 210, 150);
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	border-radius: 2px;
-}
-
-.zone_title {
-	white-space: nowrap;
-	word-wrap: break-word;
-	left: -4px;
-	top: -20px;
-	color: rgb(254, 157, 79);
-	position: absolute;
-	z-index: 50;
-}
-
-.zone_resizer {
-	position: absolute;
-}*/
-
 
 .node_icon {
 	left: 38px;

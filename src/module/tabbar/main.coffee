@@ -2,7 +2,7 @@
 #  Controller for tabbar module
 ####################################
 
-define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], ( $, template, ide_event ) ->
+define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'UI.modal' ], ( $, template, ide_event ) ->
 
     #private
     loadModule = () ->
@@ -146,9 +146,9 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 view.temp_region_name = region_name
                 #
                 if model.checkPlatform( region_name )
-                    require [ 'UI.modal' ], () -> modal MC.template.createNewStack(), true
+                    modal MC.template.createNewStackClassic(), true
                 else
-                    view.trigger 'SELECE_PLATFORM', 'custom-vpc'
+                    modal MC.template.createNewStackVPC(), true
                 null
 
             #listen add app tab

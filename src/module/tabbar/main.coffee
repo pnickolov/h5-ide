@@ -66,7 +66,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
                 #set vo
                 model.set 'stack_region_name', view.temp_region_name
                 #set current platform
-                MC.data.current_platform = platform
+                model.set 'current_platform', platform
                 #tabbar api
                 Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled - ' + MC.data.untitled
                 #MC.data.untitled ++
@@ -85,8 +85,9 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar' ], 
             model.on 'NEW_STACK', ( result ) ->
                 console.log 'NEW_STACK'
                 console.log model.get 'stack_region_name'
+                console.log model.get 'current_platform'
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' ,result, model.get 'stack_region_name'
+                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , result, model.get( 'stack_region_name' ), null, model.get 'current_platform'
 
             #listen open_stack
             model.on 'OPEN_STACK', ( tab_id ) ->

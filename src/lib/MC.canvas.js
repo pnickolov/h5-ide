@@ -1045,13 +1045,14 @@ MC.canvas.layout = {
 		return true;
 	},
 
-	create: function ()
+	create: function (option)
 	{
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
 		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
 
-		//temp for new stack
-		MC.canvas_data.platform = "default-vpc";
+		//set region and platform
+		MC.canvas_data.region = option.region;
+		MC.canvas_data.platform = option.platform;
 
 		var canvas_size = MC.canvas.data.get("layout.size");
 

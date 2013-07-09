@@ -2,7 +2,7 @@
   "id": "",
   "name": "",
   "description": "",
-  "region": "",
+  "region": "us-east-1",
   "platform": "ec2-vpc",
   "state": "Enabled",
   "username": "",

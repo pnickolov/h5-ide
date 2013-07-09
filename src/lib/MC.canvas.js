@@ -851,7 +851,7 @@ MC.canvas = {
 
 		return {
 			'is_matched': ($.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id),
-			'target': item.id
+			'target': result.id
 		};
 	},
 
@@ -1682,6 +1682,9 @@ MC.canvas.event.siderbarDrag = {
 
 				if (match_place.is_matched)
 				{
+					if($("#"+match_place.target).data().class === "AWS.EC2.AvailabilityZone"){
+						node_option.zone = $("#"+match_place.target).text()
+					}
 					MC.canvas.add(node_type, node_option, coordinate);
 				}
 			}

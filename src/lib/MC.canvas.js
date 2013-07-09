@@ -14,9 +14,7 @@ MC.canvas = {
 
 		if (MC.canvas.SCALE_RATIO < 1)
 		{
-			MC.canvas.SCALE_RATIO -= 0.2;
-
-			MC.canvas.SCALE_RATIO = Math.round(MC.canvas.SCALE_RATIO);
+			MC.canvas.SCALE_RATIO = (MC.canvas.SCALE_RATIO * 10 + 2) / 10;
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas.SCALE_RATIO);
 
@@ -30,9 +28,7 @@ MC.canvas = {
 
 		if (MC.canvas.SCALE_RATIO < 1.6)
 		{
-			MC.canvas.SCALE_RATIO += 0.2;
-
-			MC.canvas.SCALE_RATIO = Math.round(MC.canvas.SCALE_RATIO);
+			MC.canvas.SCALE_RATIO = (MC.canvas.SCALE_RATIO * 10 + 2) / 10;
 			
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas.SCALE_RATIO);
 

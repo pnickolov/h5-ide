@@ -849,10 +849,10 @@ MC.canvas = {
 
 		platform = platform === 'custome-vpc' ? 'ec2-vpc' : platform;
 
-		return (
-			$.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 ||
-			target_id === matchGroup.id
-		);
+		return {
+			'is_matched': ($.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id),
+			'target': result.id
+		};
 	},
 
 	isBlank: function (type, target_id, x, y)
@@ -1277,6 +1277,7 @@ MC.canvas.event.dragable = {
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				node_type = target.data('class'),
 				line_layer = $("#line_layer")[0],
+				match_place,
 				coordinate;
 
 			//console.info(event.data);
@@ -1284,12 +1285,12 @@ MC.canvas.event.dragable = {
 			{
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-				//console.info(coordinate);
+				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID);
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
 					MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
-					MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID)
+					match_place.is_matched
 				)
 				{
 					node_connections = layout_node_data[ target_id ].connection || {};
@@ -1323,13 +1324,14 @@ MC.canvas.event.dragable = {
 					group_size = group_data.size,
 					group_offsetX = coordinate.x - group_coordinate[0],
 					group_offsetY = coordinate.y - group_coordinate[1],
+					match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1]),
 					child_data,
 					child_type;
 
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
-					MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1])
+					match_place.is_matched
 				)
 				{
 					MC.canvas.position(event.data.target[0], coordinate.x, coordinate.y);
@@ -1463,9 +1465,9 @@ MC.canvas.event.drawConnection = {
 
 							target_data = layout_node_data[ item.id ];
 
-							$.each(target_data.connection, function (index, data)
+							$.each(node_connections, function (index, data)
 							{
-								if (data.port === value.to)
+								if (data.port === value.from)
 								{
 									is_connected = true;
 								}
@@ -1492,7 +1494,7 @@ MC.canvas.event.drawConnection = {
 							{
 								$.each(target_data.connection, function (index, data)
 								{
-									if (data.port === value.to)
+									if (data.port === value.to && data.target === node_id)
 									{
 										is_connected = true;
 									}
@@ -1666,26 +1668,35 @@ MC.canvas.event.siderbarDrag = {
 			canvas_offset = $('#svg_canvas').offset(),
 			shadow_offset = event.data.shadow.position(),
 			node_option = target.data('option'),
-			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
+			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
+			match_place;
 
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
 
 			if (
 				target_component_type === 'node' &&
-				MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
-				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID)
+				MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y)
 			)
 			{
-				MC.canvas.add(node_type, node_option, coordinate);
+				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
+
+				if (match_place.is_matched)
+				{
+					MC.canvas.add(node_type, node_option, coordinate);
+				}
 			}
 
 			if (
-				target_component_type === 'group' &&
-				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, node_option.width, node_option.height)
+				target_component_type === 'group'
 			)
 			{
-				MC.canvas.add(node_type, node_option, coordinate);
+				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, node_option.width, node_option.height);
+
+				if (match_place.is_matched)
+				{
+					MC.canvas.add(node_type, node_option, coordinate);
+				}
 			}
 		}
 

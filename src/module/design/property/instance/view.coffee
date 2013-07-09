@@ -30,10 +30,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) 
             console.log 'openSgPanel'
             ide_event.trigger 'OPEN_SG'
 
-        instanceTypeSelect : ( event, id )->
+        instanceTypeSelect : ( event, value )->
             console.log event
-            console.log id
-            console.log 'abc'
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.setInstanceType cid, value
+            
     }
 
     view = new InstanceView()

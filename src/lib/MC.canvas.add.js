@@ -324,11 +324,13 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.ImageId = option.imageId;
+				component_data.resource.InstanceType = 'm1.small';
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
 				component_layout.osType =  option.osType;
 				component_layout.architecture =  option.architecture;
 				component_layout.rootDeviceType =  option.rootDeviceType;
+				component_layout.virtualizationType = option.virtualizationType
 				
 			}
 			else
@@ -344,6 +346,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.osType = component_layout.osType ;
 				option.architecture = component_layout.architecture ;
 				option.rootDeviceType = component_layout.rootDeviceType ;
+				option.virtualizationType = component_layout.virtualizationType
 			}
 			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
 

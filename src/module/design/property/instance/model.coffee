@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], () ->
+define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
     InstanceModel = Backbone.Model.extend {
 
@@ -21,15 +21,45 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], () ->
             null
             #this.set 'set_host', 'host'
 
+        setInstanceType  : ( uid, value ) ->
+            console.log 'setInstanceType = ' + value
+            MC.canvas_data.component[ uid ].resource.InstanceType = value
+            null
+            #this.set 'set_host', 'host'
+
         getHost  : ->
             console.log 'getHost'
             console.log this.get 'get_host'
 
+        getKerPair : ->
+            _.map MC.canvas_data.component, (value, key) ->
+
+                if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+
+                    console.log value.resource.KeyName
+
         getInstanceType : (uid) ->
             console.log uid
+            ami_info = MC.canvas_data.layout.component.node[ uid ]
+
+            current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
+
+            view_instance_type = []
+            instance_types = this._getInstanceType ami_info
+            _.map instance_types, ( value )->
+                tmp = {}
+
+                if current_instance_type == value
+                    tmp.selected = true
+                tmp.main = constant.INSTANCE_TYPE[value][0]
+                tmp.sub = constant.INSTANCE_TYPE[value][1]
+                tmp.name = value
+                view_instance_type.push tmp
+
+            view_instance_type
 
         _getInstanceType : ( ami ) ->
-            instance_type = MC.data.instance_type
+            instance_type = MC.data.instance_type[MC.canvas_data.region]
             if ami.virtualizationType == 'hvm'
                 instance_type = instance_type.windows
             else
@@ -44,7 +74,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], () ->
                 instance_type = instance_type["32"]
             instance_type = instance_type[ami.virtualizationType]
 
-            instance_type.join ', '
+            instance_type
     }
 
     model = new InstanceModel()

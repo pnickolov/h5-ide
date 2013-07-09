@@ -22,10 +22,11 @@ define [ 'jquery',
             view.model    = model
             #model
             #model.setHost uid
-            attributes = model.getInstanceType uid
-            # attributes = {
-            #     component : MC.canvas_data.component[uid]
-            # }
+            attributes = {
+                instance_type : model.getInstanceType uid
+                component : MC.canvas_data.component[uid]
+                keypair : model.getKerPair()
+            }
             #render
             view.render( attributes )
 

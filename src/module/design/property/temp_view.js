@@ -87,7 +87,7 @@ var ready = function () {
 	$('#sg-info-list').on('click', '.sg-toggle-show-icon', function (event)
 	{
 		event.stopPropagation();
-		toggleicon.click.call(($(this));
+		toggleicon.click.call($(this));
 	});
 
 }

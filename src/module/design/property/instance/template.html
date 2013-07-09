@@ -1,6 +1,6 @@
 <div class="fixedaccordion accordion-default" data-sub="68">
 	<div class="accordion-group" >
-		<div class="fixedaccordion-head" id="instance-property-detail" component="{{uid}}">
+		<div class="fixedaccordion-head" id="instance-property-detail" component="{{component.uid}}">
 			Instance Details
 		</div>
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
@@ -11,13 +11,13 @@
 					<span class="left">Name</span>
 					<span class="right">(Required)</span>
 					</h5>
-					<input class="input instance-name" type="text" value="{{ name }}" />
+					<input class="input instance-name" type="text" value="{{ component.name }}" />
 				</div>
 				<div class="property-instance-link">
 					<h5>AMI</h5>
 					<div class="ami-wrap clearfix">
 						<div class="property-icon property-icon-instance"></div>
-						<div class="property-label instance-label">{{resource.ImageId}}</div>
+						<div class="property-label instance-label">{{component.resource.ImageId}}</div>
 					</div>
 				</div>
 				<div class="property-instance-type">
@@ -28,27 +28,27 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li class="selected" tabindex="-1" data-tooltip="M1 xLarge">
-								<a data-id="111" href="#">
-									<div class="main">M1 High-Memory Quadruple Extra Large</div>
-									<div class="sub">Ecu 35 Core 16 Memory 117 GB</div>
+							
+							{{#each instance_type}}
+							
+							{{#if selected}}
+								<li class="selected" tabindex="-1" data-tooltip="{{main}}">
+									
+							{{else}}
+							
+								<li tabindex="-1" data-tooltip="{{main}}">
+							{{/if}}
+									<a data-id="{{name}}" href="#">
+									<div class="main">{{main}}</div>
+									<div class="sub">{{sub}}</div>
 								</a>
 							</li>
-							<li  tabindex="-1" data-tooltip="M2 xLarge">
-								<a data-id="111" href="#">
-									<div class="main">M2 High-Memory Quadruple Extra Large</div>
-									<div class="sub">Ecu 35 Core 16 Memory 117 GB</div>
-								</a>
-							</li>
-							<li  tabindex="-1" data-tooltip="M3 xLarge">
-								<a data-id="111" href="#">
-									<div class="main">M3 High-Memory Quadruple Extra Large</div>
-									<div class="sub">Ecu 35 Core 16 Memory 117 GB</div>
-								</a>
-							</li>
+							
+							{{/each}}
 						</ul>
 					</div>
 				</div>
+				{{# if component.resource.VpcId}}
 				<div class="property-check property-instance-check">
 					<div class="checkbox">
 						<input id="checkbox_id" type="checkbox" value="None" name="check_value" />
@@ -65,23 +65,19 @@
 						</a>
 						<ul class="dropdown-menu" role="menu">
 							<li class="selected" tabindex="-1">
-								<a data-id="111" href="#">
+								<a data-id="default" href="#">
 									Default
 								</a>
 							</li>
 							<li  tabindex="-1">
-								<a data-id="111" href="#">
-									tenancy1
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="111" href="#">
-									tenancy3
+								<a data-id="dedicated" href="#">
+									Delicated
 								</a>
 							</li>
 						</ul>
 					</div>
 				</div>
+				{{/if}}
 				<div id="property-instance-keypairs">
 					<h5>Key Pair</h5>
 					<div class="selectbox" id="editable-selectbox">

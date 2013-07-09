@@ -103,7 +103,7 @@ define [], () ->
 	}
 
 	INSTANCE_TYPE = {
-		'ti.micro' : ["T1 Micro", "ECU Up to 2 Core 1 Memory 613MB"]
+		't1.micro' : ["T1 Micro", "ECU Up to 2 Core 1 Memory 613MB"]
 		'm1.small' : ["M1 Small", "ECU 1 Core 1 Memory 1.7GB"]
 		'm1.medium': ["M1 Medium", "ECU 2 Core 1 Memory 3.7GB"]
 		'm1.large' : ["M1 Large", "ECU 4 Core 2 Memory 7.5GB"]
@@ -270,6 +270,7 @@ define [], () ->
 	RECENT_DAYS		= 30
 
 	#public
+	INSTANCE_TYPE			: INSTANCE_TYPE
 	AWS_RESOURCE_TYPE       : AWS_RESOURCE_TYPE
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
 	AWS_PORT_NAME           : AWS_PORT_NAME

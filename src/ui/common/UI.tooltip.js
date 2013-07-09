@@ -3,19 +3,13 @@
 #* Filename: UI.tooltip
 #* Creator: Angel
 #* Description: UI.tooltip
-#* Date: 20130704
+#* Date: 20130709
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var tooltip = function (event)
 {
-	if (event.type === 'mouseleave')
-	{
-		$('#tooltip_box').hide();
-		return false;
-	}
-
 	var target = $(this),
 		content = $.trim(target.data('tooltip')),
 		target_offset = target.offset(),
@@ -23,7 +17,8 @@ var tooltip = function (event)
 		width,
 		height,
 		target_width,
-		target_height;
+		target_height,
+		tooltip_timer;
 
 	if (content !== '')
 	{
@@ -47,11 +42,19 @@ var tooltip = function (event)
 			'top': target_offset.top + target_height + height - document.body.scrollTop + 45 > window.innerHeight ?
 				target_offset.top - height - 15 :
 				target_offset.top + target_height + 8
-		}).fadeIn("fast");
+		}).show();
+
+		$(document.body).on('mouseleave', '.tooltip', tooltip.clear);
 	}
+};
+
+tooltip.clear = function (event)
+{
+	$('#tooltip_box').hide();
+	$(document.body).off('mouseover', '.tooltip', tooltip.clear);
 };
 
 $(document).ready(function ()
 {
-	$(document.body).on('mouseenter mouseleave', '.tooltip', tooltip);
+	$(document.body).on('mouseenter', '.tooltip', tooltip);
 });

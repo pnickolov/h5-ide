@@ -404,7 +404,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type
+				'class': 'dragable node bubble ' + class_type,
+				'data-bubble-template': 'instanceVolume',
+				'data-bubble-data': ''
 			}).data({
 				'type': 'node',
 				'class': type

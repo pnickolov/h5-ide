@@ -63,6 +63,13 @@ var constant_data = {
 		'AWS.VPC.Subnet': []
 	},
 
+	PLATFORM_TYPE: {
+		EC2_CLASSIC: 'ec2-classic', //no vpc
+		CUSTOM_VPC: 'custom-vpc',   //has vpc
+		DEFAULT_VPC: 'default-vpc', //no vpc
+		EC2_VPC: 'ec2-vpc'			//has vpc
+	},
+
 	MATCH_PLACEMENT: {
 		'ec2-classic': {
 			'AWS.ELB': [ 'Canvas' ],
@@ -219,6 +226,14 @@ var constant_data = {
 		}
 	},
 
+	//local variable for stack
+	STACK_PROPERTY: {
+		sg_list: [],
+		kp_list: [],
+		SCALE_RATIO: 1
+	},
+
+	//json data for stack
 	STACK_JSON: {
 		"id": "",
 		"name": "",

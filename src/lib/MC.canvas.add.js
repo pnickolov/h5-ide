@@ -134,8 +134,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = $.extend(true, {}, MC.canvas.VPC_JSON.layout);
 
-				option.width = 40;
-				option.height = 40;
+				option.width = 60;
+				option.height = 60;
 			}
 			else
 			{

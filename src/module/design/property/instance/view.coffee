@@ -15,10 +15,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) 
             'change .instance-name' : 'instanceNameChange'
             'change .instance-type-select' : 'instanceTypeSelect'
             'click #sg-info-list li' : 'openSgPanel'
+            'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
 
-        render     : ( uid ) ->
+        render     : ( attributes ) ->
             console.log 'property:instance render'
-            $( '.property-details' ).html this.template MC.canvas_data.component[uid]
+            $( '.property-details' ).html this.template attributes
 
         instanceNameChange : ( event ) ->
             console.log 'instanceNameChange'
@@ -29,8 +30,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) 
             console.log 'openSgPanel'
             ide_event.trigger 'OPEN_SG'
 
-        instanceTypeSelect : ( event )->
+        instanceTypeSelect : ( event, id )->
             console.log event
+            console.log id
+            console.log 'abc'
     }
 
     view = new InstanceView()

@@ -2,9 +2,9 @@
 #  View Mode for design/resource
 #############################
 
-define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
+define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC',
          'backbone', 'jquery', 'underscore'
-], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model ) ->
+], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model, MC ) ->
 
     #private
     ami_instance_type = null
@@ -69,6 +69,12 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
                 console.log 'AWS_QUICKSTART_RETURN'
                 ami_list = []
                 ami_instance_type = result.resolved_data.ami_instance_type
+                if MC.data.instance_type
+                    MC.data.instance_type[result.param[3]] = ami_instance_type
+                else
+                    MC.data.instance_type = {}
+                    MC.data.instance_type[result.param[3]] = ami_instance_type
+                    
                 _.map result.resolved_data.ami, ( value, key ) ->
                     value.id = key
                     if value.kernelId == undefined or value.kernelId == ''

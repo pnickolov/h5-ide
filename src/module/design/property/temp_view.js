@@ -71,19 +71,23 @@ var ready = function () {
 	{
 		modal(MC.template.modalSGRule({isAdd:true}), true);
 	});
-	$('#radio_inbound').on('change', function (event)
+	$(document.body).on('change', '#radio_inbound', function (event)
 	{
 		$('#rule-modle-title2').text("Source");
 	});
-	$('#radio_outbound').on('change', function (event)
+	$(document.body).on('change', '#radio_outbound', function (event)
 	{
 		$('#rule-modle-title2').text("Destination");
 	});
-	$('#modal-sg-rule').on('OPTION_CHANGE', function(event, id)
+	$(document.body).on('OPTION_CHANGE', '#modal-sg-rule', function(event, id)
 	{
-		console.log('modal-protocal');
-		$('#sg-protocol-select-result').find('show').removeClass('show');
+		$('#sg-protocol-select-result').find('.show').removeClass('show');
 		$('#sg-protocol-' + id).addClass('show');
+	});
+	$('#sg-info-list').on('click', '.sg-toggle-show-icon', function (event)
+	{
+		event.stopPropagation();
+		toggleicon.click.call(($(this));
 	});
 
 }

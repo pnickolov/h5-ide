@@ -22,8 +22,12 @@ define [ 'jquery',
             view.model    = model
             #model
             #model.setHost uid
+            attributes = model.getInstanceType uid
+            # attributes = {
+            #     component : MC.canvas_data.component[uid]
+            # }
             #render
-            view.render( uid )
+            view.render( attributes )
 
     unLoadModule = () ->
         #view.remove()

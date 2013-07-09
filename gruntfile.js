@@ -115,7 +115,12 @@ module.exports = function( grunt ) {
 
 	/* task of use as make(compiler) */
 	grunt.registerTask( 'make', function() {
-		grunt.task.run([ 'coffee', 'coffeelint', 'jshint', 'csslint' ]);
+		grunt.task.run([
+			'coffee'
+			//'coffeelint',
+			//'jshint',
+			//'csslint'
+		]);
 	});
 
 	/* task of use as develop */

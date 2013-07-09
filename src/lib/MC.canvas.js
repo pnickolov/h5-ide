@@ -1633,7 +1633,18 @@ MC.canvas.event.siderbarDrag = {
 			'left': event.pageX - 50
 		}).show();
 
-		$('#canvas_body').addClass('dragging');
+		//console.info($(this).data('component_type'));
+		if ($(this).data('type') === 'AWS.EC2.EBS.Volume')
+		{
+			$('.AWS-EC2-Instance').attr('class', function (index, key)
+			{
+				return 'attachable ' + key;
+			});
+		}
+		else
+		{
+			$('#canvas_body').addClass('dragging');
+		}
 
 		$(document.body).on({
 			'mousemove': MC.canvas.event.siderbarDrag.mousemove,
@@ -1671,9 +1682,16 @@ MC.canvas.event.siderbarDrag = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			match_place;
 
+		if (node_type === 'AWS.EC2.EBS.Volume')
+		{
+			$('.AWS-EC2-Instance').attr('class', function (index, key)
+			{
+				return key.replace('attachable ', '');
+			});
+		}
+
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
-
 			if (
 				target_component_type === 'node' &&
 				MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y)

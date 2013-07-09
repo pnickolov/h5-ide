@@ -14,10 +14,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             #listen
             this.listenTo this, 'change:get_host', this.getHost
 
-        setHost  : ( value ) ->
+        setHost  : ( uid, value ) ->
             console.log 'setHost = ' + value
-            #this.set 'set_host', MC.canvas_data.component[ value ].name
-            this.set 'set_host', 'host'
+            MC.canvas_data.component[ uid ].name = value
+            #this.set 'set_host', 'host'
 
         getHost  : ->
             console.log 'getHost'

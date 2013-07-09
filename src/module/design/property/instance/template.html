@@ -1,6 +1,6 @@
 <div class="fixedaccordion accordion-default" data-sub="68">
 	<div class="accordion-group" >
-		<div class="fixedaccordion-head">
+		<div class="fixedaccordion-head" id="instance-property-detail" component="{{uid}}">
 			Instance Details
 		</div>
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
@@ -11,13 +11,13 @@
 					<span class="left">Name</span>
 					<span class="right">(Required)</span>
 					</h5>
-					<input class="input instance-name" type="text" value="{{ set_host }}" />
+					<input class="input instance-name" type="text" value="{{ name }}" />
 				</div>
 				<div class="property-instance-link">
 					<h5>AMI</h5>
 					<div class="ami-wrap clearfix">
 						<div class="property-icon property-icon-instance"></div>
-						<div class="property-label instance-label">.NET Beanstalk Cfn Container v1.0.0.0 on Windows 2008</div>
+						<div class="property-label instance-label">{{resource.ImageId}}</div>
 					</div>
 				</div>
 				<div class="property-instance-type">

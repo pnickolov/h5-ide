@@ -8,7 +8,7 @@ define [ 'jquery',
 ], ( $, template, ide_event ) ->
 
     #private
-    loadModule = ( uid, type ) ->
+    loadModule = ( uid ) ->
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-instance-tmpl">' + template + '</script>'
@@ -21,9 +21,9 @@ define [ 'jquery',
             #view
             view.model    = model
             #model
-            model.setHost uid
+            #model.setHost uid
             #render
-            view.render()
+            view.render( uid )
 
     unLoadModule = () ->
         #view.remove()

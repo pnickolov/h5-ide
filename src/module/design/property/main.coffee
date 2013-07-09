@@ -4,8 +4,10 @@
 
 define [ 'jquery',
          'text!/module/design/property/template.html',
-         'event'
-], ( $, template, ide_event ) ->
+         'event',
+         'constant',
+         'MC'
+], ( $, template, ide_event, constant, MC ) ->
 
     #private
     loadModule = () ->
@@ -39,7 +41,8 @@ define [ 'jquery',
                 uid  = uid
                 type = type
 
-                instance_main.loadModule uid, type
+                if MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                    instance_main.loadModule uid
                 #temp
                 setTimeout () ->
                    view.refresh()

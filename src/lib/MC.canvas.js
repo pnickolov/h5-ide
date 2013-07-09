@@ -1760,7 +1760,7 @@ MC.canvas.event.groupResize = {
 			'offsetX': event.pageX - canvas_offset.left,
 			'offsetY': event.pageY - canvas_offset.top,
 			'direction': $(target).data('direction'),
-			'group_border': parseInt(group.css('stroke-width'))
+			'group_border': parseInt(group.css('stroke-width'),10)
 		});
 	},
 	mousemove: function (event)
@@ -1786,6 +1786,7 @@ MC.canvas.event.groupResize = {
 
 			case 'topright':
 				prop = {
+					'x': left,
 					'y': top > max_top ? max_top : top,
 					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
 					'height': event.data.originalHeight - top
@@ -1795,6 +1796,7 @@ MC.canvas.event.groupResize = {
 			case 'bottomleft':
 				prop = {
 					'x': left > max_left ? max_left : left,
+					'y': top,
 					'width': event.data.originalWidth - left,
 					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
 				};
@@ -1802,6 +1804,8 @@ MC.canvas.event.groupResize = {
 
 			case 'bottomright':
 				prop = {
+					'x': left,
+					'y': top,
 					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
 					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
 				};
@@ -1809,19 +1813,27 @@ MC.canvas.event.groupResize = {
 
 			case 'top':
 				prop = {
+					'x': left,
 					'y': top > max_top ? max_top : top,
+					'width': event.data.originalWidth,
 					'height': event.data.originalHeight - top
 				};
 				break;
 
 			case 'right':
 				prop = {
-					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10
+					'x': left,
+					'y': top,
+					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
+					'height': event.data.originalHeight
 				};
 				break;
 
 			case 'bottom':
 				prop = {
+					'x': left,
+					'y': top,
+					'width': event.data.originalWidth,
 					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
 				};
 				break;
@@ -1829,8 +1841,13 @@ MC.canvas.event.groupResize = {
 			case 'left':
 				prop = {
 					'x': left > max_left ? max_left : left,
-					'width': event.data.originalWidth - left
+					'y': top,
+					'width': event.data.originalWidth - left,
+					'height': event.data.originalHeight
 				};
+				break;
+			default :
+				console.info(direction);
 				break;
 		}
 

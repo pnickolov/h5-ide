@@ -75,28 +75,28 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.group().append(
 					Canvon.rectangle(
 						0, top, pad, pad
-					).attr({'class': 'group-resizer resizer-topleft'}),
+					).attr({'class': 'group-resizer resizer-topleft', 'data-direction': 'topleft'}),
 					Canvon.rectangle(
 						pad, top, width - 2 * pad, pad
-					).attr({'class': 'group-resizer resizer-top'}),
+					).attr({'class': 'group-resizer resizer-top', 'data-direction': 'top'}),
 					Canvon.rectangle(
 						width - pad, top, pad, pad
-					).attr({'class': 'group-resizer resizer-topright'}),
+					).attr({'class': 'group-resizer resizer-topright', 'data-direction': 'topright'}),
 					Canvon.rectangle(
 						0, top + pad, pad, height - 2 * pad
-					).attr({'class': 'group-resizer resizer-left'}),
+					).attr({'class': 'group-resizer resizer-left', 'data-direction': 'left'}),
 					Canvon.rectangle(
 						width - pad, top + pad, pad, height - 2 * pad
-					).attr({'class': 'group-resizer resizer-right'}),
+					).attr({'class': 'group-resizer resizer-right', 'data-direction': 'right'}),
 					Canvon.rectangle(
 						0, height + top - pad, pad, pad
-					).attr({'class': 'group-resizer resizer-bottomleft'}),
+					).attr({'class': 'group-resizer resizer-bottomleft', 'data-direction': 'bottomleft'}),
 					Canvon.rectangle(
 						pad, height + top - pad, width - 2 * pad, pad
-					).attr({'class': 'group-resizer resizer-bottom'}),
+					).attr({'class': 'group-resizer resizer-bottom', 'data-direction': 'bottom'}),
 					Canvon.rectangle(
 						width - pad, height + top - pad, pad, pad
-					).attr({'class': 'group-resizer resizer-bottomright'})
+					).attr({'class': 'group-resizer resizer-bottomright', 'data-direction': 'bottomright'})
 				).attr({
 					'class': 'resizer-wrap'
 				}),
@@ -165,28 +165,28 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.group().append(
 					Canvon.rectangle(
 						0, top, pad, pad
-					).attr({'class': 'group-resizer resizer-topleft'}),
+					).attr({'class': 'group-resizer resizer-topleft', 'data-direction': 'topleft'}),
 					Canvon.rectangle(
 						pad, top, width - 2 * pad, pad
-					).attr({'class': 'group-resizer resizer-top'}),
+					).attr({'class': 'group-resizer resizer-top', 'data-direction': 'top'}),
 					Canvon.rectangle(
 						width - pad, top, pad, pad
-					).attr({'class': 'group-resizer resizer-topright'}),
+					).attr({'class': 'group-resizer resizer-topright', 'data-direction': 'topright'}),
 					Canvon.rectangle(
 						0, top + pad, pad, height - 2 * pad
-					).attr({'class': 'group-resizer resizer-left'}),
+					).attr({'class': 'group-resizer resizer-left', 'data-direction': 'left'}),
 					Canvon.rectangle(
 						width - pad, top + pad, pad, height - 2 * pad
-					).attr({'class': 'group-resizer resizer-right'}),
+					).attr({'class': 'group-resizer resizer-right', 'data-direction': 'right'}),
 					Canvon.rectangle(
 						0, height + top - pad, pad, pad
-					).attr({'class': 'group-resizer resizer-bottomleft'}),
+					).attr({'class': 'group-resizer resizer-bottomleft', 'data-direction': 'bottomleft'}),
 					Canvon.rectangle(
 						pad, height + top - pad, width - 2 * pad, pad
-					).attr({'class': 'group-resizer resizer-bottom'}),
+					).attr({'class': 'group-resizer resizer-bottom', 'data-direction': 'bottom'}),
 					Canvon.rectangle(
 						width - pad, height + top - pad, pad, pad
-					).attr({'class': 'group-resizer resizer-bottomright'})
+					).attr({'class': 'group-resizer resizer-bottomright', 'data-direction': 'bottomright'})
 				).attr({
 					'class': 'resizer-wrap'
 				}),
@@ -259,28 +259,28 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.group().append(
 					Canvon.rectangle(
 						0, top, pad, pad
-					).attr({'class': 'group-resizer resizer-topleft'}),
+					).attr({'class': 'group-resizer resizer-topleft', 'data-direction': 'topleft'}),
 					Canvon.rectangle(
 						pad, top, width - 2 * pad, pad
-					).attr({'class': 'group-resizer resizer-top'}),
+					).attr({'class': 'group-resizer resizer-top', 'data-direction': 'top'}),
 					Canvon.rectangle(
 						width - pad, top, pad, pad
-					).attr({'class': 'group-resizer resizer-topright'}),
+					).attr({'class': 'group-resizer resizer-topright', 'data-direction': 'topright'}),
 					Canvon.rectangle(
 						0, top + pad, pad, height - 2 * pad
-					).attr({'class': 'group-resizer resizer-left'}),
+					).attr({'class': 'group-resizer resizer-left', 'data-direction': 'left'}),
 					Canvon.rectangle(
 						width - pad, top + pad, pad, height - 2 * pad
-					).attr({'class': 'group-resizer resizer-right'}),
+					).attr({'class': 'group-resizer resizer-right', 'data-direction': 'right'}),
 					Canvon.rectangle(
 						0, height + top - pad, pad, pad
-					).attr({'class': 'group-resizer resizer-bottomleft'}),
+					).attr({'class': 'group-resizer resizer-bottomleft', 'data-direction': 'bottomleft'}),
 					Canvon.rectangle(
 						pad, height + top - pad, width - 2 * pad, pad
-					).attr({'class': 'group-resizer resizer-bottom'}),
+					).attr({'class': 'group-resizer resizer-bottom', 'data-direction': 'bottom'}),
 					Canvon.rectangle(
 						width - pad, height + top - pad, pad, pad
-					).attr({'class': 'group-resizer resizer-bottomright'})
+					).attr({'class': 'group-resizer resizer-bottomright', 'data-direction': 'bottomright'})
 				).attr({
 					'class': 'resizer-wrap'
 				}),
@@ -398,9 +398,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node bubble ' + class_type,
+				'class': 'dragable node ' + class_type,
 				'data-bubble-template': 'instanceVolume',
-				'data-bubble-data': ''
+				'data-bubble-data': '',
 				'data-type': 'node',
 				'data-class': type
 			});

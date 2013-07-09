@@ -43,6 +43,42 @@ MC.canvas = {
 		}
 	},
 
+	screenshotInit: function ()
+	{
+		var layout_node_data = MC.canvas.data.get('layout.component.node'),
+			layout_group_data = MC.canvas.data.get('layout.component.group'),
+			node_minX = [],
+			node_minY = [],
+			node_maxX = [],
+			node_maxY = [],
+			node_data,
+			group_node_data,
+			screen_maxX,
+			screen_maxY,
+			group_minX,
+			group_minY;
+
+		$.each(layout_node_data, function (index, data)
+		{
+			node_maxX.push(data.coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID);
+			node_maxY.push(data.coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID);
+		});
+
+		$.each(layout_group_data, function (index, data)
+		{
+			node_maxX.push(data.coordinate[0] + data.size[0]);
+			node_maxY.push(data.coordinate[1] + data.size[1]);
+		});
+
+		screen_maxX = Math.max.apply(Math, node_maxX) * MC.canvas.GRID_WIDTH;
+		screen_maxY = Math.max.apply(Math, node_maxY) * MC.canvas.GRID_HEIGHT;
+
+		$('#svg_canvas, #screenshot_canvas_body').css({
+			'width': screen_maxX,
+			'height': screen_maxY
+		});
+	},
+
 	_addPad: function (point, adjust)
 	{
 		//add by xjimmy, adjust point

@@ -1,10 +1,17 @@
 // MC.Canvas
 // Author: Angel
 
+//json data for current tab
 MC.canvas_data = {};
 
+//variable for current tab
+MC.canvas_property = {
+	// sg_list: [],
+	// kp_list: [],
+	// SCALE_RATIO: 1
+};
+
 MC.canvas = {
-	SCALE_RATIO: 1,
 
 	selected_node: [],
 
@@ -12,13 +19,13 @@ MC.canvas = {
 	{
 		var canvas_size = MC.canvas.data.get('layout.size');
 
-		if (MC.canvas.SCALE_RATIO < 1)
+		if (MC.canvas_property.SCALE_RATIO > 1)
 		{
-			MC.canvas.SCALE_RATIO = (MC.canvas.SCALE_RATIO * 10 + 2) / 10;
+			MC.canvas_property.SCALE_RATIO = (MC.canvas_property.SCALE_RATIO * 10 - 2) / 10;
 
-			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas.SCALE_RATIO);
+			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas_property.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas_property.SCALE_RATIO);
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas.SCALE_RATIO + '.png")');
+			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
 		}
 	},
 
@@ -26,14 +33,50 @@ MC.canvas = {
 	{
 		var canvas_size = MC.canvas.data.get('layout.size');
 
-		if (MC.canvas.SCALE_RATIO < 1.6)
+		if (MC.canvas_property.SCALE_RATIO < 1.6)
 		{
-			MC.canvas.SCALE_RATIO = (MC.canvas.SCALE_RATIO * 10 + 2) / 10;
-			
-			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas.SCALE_RATIO);
+			MC.canvas_property.SCALE_RATIO = (MC.canvas_property.SCALE_RATIO * 10 + 2) / 10;
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas.SCALE_RATIO + '.png")');
+			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas_property.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas_property.SCALE_RATIO);
+
+			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
 		}
+	},
+
+	screenshotInit: function ()
+	{
+		var layout_node_data = MC.canvas.data.get('layout.component.node'),
+			layout_group_data = MC.canvas.data.get('layout.component.group'),
+			node_minX = [],
+			node_minY = [],
+			node_maxX = [],
+			node_maxY = [],
+			node_data,
+			group_node_data,
+			screen_maxX,
+			screen_maxY,
+			group_minX,
+			group_minY;
+
+		$.each(layout_node_data, function (index, data)
+		{
+			node_maxX.push(data.coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID);
+			node_maxY.push(data.coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID);
+		});
+
+		$.each(layout_group_data, function (index, data)
+		{
+			node_maxX.push(data.coordinate[0] + data.size[0]);
+			node_maxY.push(data.coordinate[1] + data.size[1]);
+		});
+
+		screen_maxX = Math.max.apply(Math, node_maxX) * MC.canvas.GRID_WIDTH;
+		screen_maxY = Math.max.apply(Math, node_maxY) * MC.canvas.GRID_HEIGHT;
+
+		$('#svg_canvas, #screenshot_canvas_body').css({
+			'width': screen_maxX,
+			'height': screen_maxY
+		});
 	},
 
 	_addPad: function (point, adjust)
@@ -481,10 +524,10 @@ MC.canvas = {
 				from_port_offset = from_port[0].getBoundingClientRect();
 				to_port_offset = to_port[0].getBoundingClientRect();
 
-				startX = (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * MC.canvas.SCALE_RATIO;
-				startY = (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * MC.canvas.SCALE_RATIO;
-				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * MC.canvas.SCALE_RATIO;
-				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * MC.canvas.SCALE_RATIO;
+				startX = (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
+				startY = (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
+				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
+				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
 
 				MC.paper.start({
 					'stroke': connection_option.color
@@ -717,8 +760,8 @@ MC.canvas = {
 			coordinate,
 			size;
 
-		x = x * MC.canvas.SCALE_RATIO;
-		y = y * MC.canvas.SCALE_RATIO;
+		x = x * MC.canvas_property.SCALE_RATIO;
+		y = y * MC.canvas_property.SCALE_RATIO;
 
 		if (is_option_canvas)
 		{
@@ -815,10 +858,10 @@ MC.canvas = {
 	isBlank: function (type, target_id, x, y)
 	{
 		var children = MC.canvas.data.get('layout.component.' + type),
-			start_x = x * MC.canvas.SCALE_RATIO,
-			start_y = y * MC.canvas.SCALE_RATIO,
-			end_x = x + MC.canvas.COMPONENT_WIDTH_GRID * MC.canvas.SCALE_RATIO,
-			end_y = y + MC.canvas.COMPONENT_HEIGHT_GRID * MC.canvas.SCALE_RATIO,
+			start_x = x * MC.canvas_property.SCALE_RATIO,
+			start_y = y * MC.canvas_property.SCALE_RATIO,
+			end_x = x + MC.canvas.COMPONENT_WIDTH_GRID * MC.canvas_property.SCALE_RATIO,
+			end_y = y + MC.canvas.COMPONENT_HEIGHT_GRID * MC.canvas_property.SCALE_RATIO,
 			isBlank = true,
 			coordinate;
 
@@ -1003,6 +1046,9 @@ MC.canvas.layout = {
 		var layout_data = MC.canvas.data.get("layout"),
 			connection_target_id;
 
+		//temp
+		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
+
 		$('#svg_canvas').attr({
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
@@ -1046,11 +1092,40 @@ MC.canvas.layout = {
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
 		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
 
+		//clone MC.canvas.STACK_PROPERTY to MC.canvas_property
+		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
+
 		//set region and platform
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 
-		var canvas_size = MC.canvas.data.get("layout.size");
+		var canvas_size = MC.canvas.data.get('layout.size');
+
+		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
+		{
+			//has vpc (create vpc, az, and subnet by default)
+			var node_vpc = MC.canvas.add('AWS.VPC.VPC', {
+				'name': 'vpc1'
+			},{
+				'x': 2,
+				'y': 2
+			});
+
+			var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
+				'name': 'ap-northeast-1'
+			},{
+				'x': 19,
+				'y': 16
+			});
+
+			var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
+				'name': 'subnet1'
+			},{
+				'x': 23,
+				'y': 20
+			});
+		}
+
 
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
@@ -1166,8 +1241,8 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.attr('transform',
 			'translate(' +
-				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas.SCALE_RATIO)) * (MC.canvas.GRID_WIDTH / MC.canvas.SCALE_RATIO) * MC.canvas.SCALE_RATIO + ',' +
-				Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas.SCALE_RATIO) * MC.canvas.SCALE_RATIO +
+				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO + ',' +
+				Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO +
 			')'
 		);
 
@@ -1218,7 +1293,7 @@ MC.canvas.event.dragable = {
 				{
 					node_connections = layout_node_data[ target_id ].connection || {};
 
-					MC.canvas.position(target[0], coordinate.x  * MC.canvas.SCALE_RATIO, coordinate.y * MC.canvas.SCALE_RATIO);
+					MC.canvas.position(target[0], coordinate.x  * MC.canvas_property.SCALE_RATIO, coordinate.y * MC.canvas_property.SCALE_RATIO);
 
 					$.each(node_connections, function (index, value)
 					{

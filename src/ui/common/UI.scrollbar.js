@@ -16,9 +16,11 @@ var scrollbar = {
 
 		scrollbar.isTransform = (style.webkitTransform !== undefined || style.MozTransform !== undefined || style.OTransform !== undefined || style.Transform !== undefined);
 
-		$(document.body)
+		$(document)
 			.on('mousewheel', '.scroll-wrap', scrollbar.wheel)
-			.on('DOMMouseScroll', '.scroll-wrap', scrollbar.wheel)
+			.on('DOMMouseScroll', '.scroll-wrap', scrollbar.wheel);
+
+		$(document.body)
 			.on('mousedown', '.scrollbar-veritical-thumb', {'direction': 'veritical'}, scrollbar.mousedown)
 			.on('mousedown', '.scrollbar-horizontal-thumb', {'direction': 'horizontal'}, scrollbar.mousedown);
 
@@ -99,10 +101,10 @@ var scrollbar = {
 	},
 	mousedown: function (event)
 	{
-		var target = $(this).parent().parent(),
+		var thumb = $(this),
+			target = thumb.parent().parent(),
 			tag = event.target.tagName.toLowerCase(),
 			direction = event.data.direction,
-			thumb = target.find('.scrollbar-' + direction + '-thumb').first(),
 			veritical_thumb,
 			horizontal_thumb;
 
@@ -127,7 +129,7 @@ var scrollbar = {
 				'direction': direction,
 				'scrollbar_wrap': target.find('.scrollbar-' + direction + '-wrap').first(),
 				'scroll_content': target.find('.scroll-content').first(),
-				'thumb': target.find('.scrollbar-' + direction + '-thumb').first(),
+				'thumb': thumb,
 				'thumbPos': direction === 'veritical' ? event.clientY - thumb.offset().top : event.clientX - thumb.offset().left
 			})
 			.addClass('doc_scrolling');
@@ -255,7 +257,7 @@ var scrollbar = {
 		var target = $(this),
 			delta = event.originalEvent.wheelDelta ? event.originalEvent.wheelDelta / 120 : event.originalEvent.wheelDeltaY ? event.originalEvent.wheelDeltaY / 120 : -event.originalEvent.detail / 3,
 			thumb = target.find('.scrollbar-veritical-thumb').first(),
-			thumb_wrap = target.find('.scrollbar-veritical-wrap').first(),
+			scrollbar_wrap = target.find('.scrollbar-veritical-wrap').first(),
 			scroll_content = target.find('.scroll-content').first(),
 			wrap_height = target.height(),
 			scrollTop,
@@ -268,9 +270,15 @@ var scrollbar = {
 		scale = scroll_content[0].scrollHeight / wrap_height;
 		thumb_max = max_scroll / scale;
 
-		if (thumb_wrap.css('display') === 'block')
+		if (scrollbar_wrap.css('display') === 'block')
 		{
-			scrollbar.scroll_to_top(target, scrollTop);
+			scrollbar.scroll_to_top({
+				'scroll_content': scroll_content,
+				'scrollbar_wrap': scrollbar_wrap,
+				'thumb': thumb,
+				'scroll_target': target
+			}, target, scrollTop);
+
 			if (scrollTop < 0 || scrollTop > thumb_max)
 			{
 				return true;

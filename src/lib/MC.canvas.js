@@ -1279,11 +1279,12 @@ MC.canvas.event.dragable = {
 				line_layer = $("#line_layer")[0],
 				coordinate;
 
+			//console.info(event.data);
 			if (target_type === 'node')
 			{
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-				//console.info(MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID));
+				//console.info(coordinate);
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&

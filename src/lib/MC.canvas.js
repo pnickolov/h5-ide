@@ -851,7 +851,7 @@ MC.canvas = {
 
 		return {
 			'is_matched': ($.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id),
-			'target': item.id
+			'target': result.id
 		};
 	},
 
@@ -1280,6 +1280,7 @@ MC.canvas.event.dragable = {
 				match_place,
 				coordinate;
 
+			//console.info(event.data);
 			if (target_type === 'node')
 			{
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);

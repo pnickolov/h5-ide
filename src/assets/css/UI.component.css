@@ -344,19 +344,24 @@ a.table-link {
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
 	background-color: #fcfcfc;
 	border: 1px solid #aaa;
-	font-size: 11px;
-	padding: 8px 12px;
+	font-size: 14px;
+	padding: 8px 20px 8px 8px;
 	display: inline-block;
 	outline: none;
+	color: #333;
 }
 
-.input:focus {
-	border: 1px solid #649BCD;
+.input:focus,
+textarea:focus {
+	border: 1px solid #55C7FF;
 	background-color: #fff;
+	box-shadow: 1px 1px 5px rgba(78,155,252,.5);
 }
 
 .input.disabled,
 .input[disabled] {
+	box-shadow: none;
+	border: 1px solid #ccc;
 	background-color: #eee;
 }
 
@@ -369,7 +374,7 @@ textarea {
 	padding: 5px;
 	margin-bottom: 10px;
 	border: 1px solid #999;
-	font-size: 12px;
+	font-size: 14px;
 	line-height: 20px;
 	border-radius: 3px;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
@@ -574,15 +579,10 @@ textarea {
 
 .scroll-content {
 	position: relative;
-	-webkit-transition: -webkit-transform .05s;
-	-moz-transition: -moz-transform .05s;
-	-ms-transition: -ms-transform .05s;
-	-o-transition: -o-transform .05s;
-	transition: transform .05s;
 }
 
 /* webkit scrollbar */
-.webkit .scroll-wrap {
+/*.webkit .scroll-wrap {
 	overflow: auto;
 }
 
@@ -618,7 +618,7 @@ textarea {
 
 .scrollbar-auto-hide::-webkit-scrollbar-track {
 	opacity: 0;
-}
+}*/
 
 /* Tooltip */
 #tooltip_box {
@@ -1107,6 +1107,15 @@ textarea {
 	vertical-align: middle;
 }
 
+.selectbox a {
+	color: #666;
+}
+
+.selectbox .dropdown-toggle {
+	border: 1px solid #ccc;
+	position: relative;
+}
+
 .selectbox .cur-value{
 	display: inline-block;
 }
@@ -1119,11 +1128,15 @@ textarea {
 	border-right: 4px solid transparent;
 	border-left: 4px solid transparent;
 	content: "";
+	position: absolute;
+	right: 4px;
+	top: 50%;
+	margin-top: -2px;
 }
 
 .selectbox .dropdown-menu {
 	position: absolute;
-	top: 0;
+	top: 30px;
 	left: 0;
 	display: none;
 	min-width: 160px;
@@ -1141,9 +1154,11 @@ textarea {
 
 .selectbox .dropdown-menu li a:hover,
 .selectbox .dropdown-menu li a:focus,
-.selectbox .dropdown-menu li.selected a,.selectbox .dropdown-menu li.focused a {
+.selectbox .dropdown-menu li.selected a,
+.selectbox .dropdown-menu li.focused a {
 	background-color: #eee;
 }
+
 
 .selectbox.open .dropdown-menu,
 .selectbox.open .editableoption{
@@ -1151,6 +1166,10 @@ textarea {
 }
 .selectbox .editableoption {
 	display: none;
+	position: absolute;
+	top: 80px;
+	z-index: 51;
+	background: red;
 }
 .editableoption .label {
 	display: block;
@@ -1165,7 +1184,7 @@ textarea {
 	top:32px;
 	left: 0;
 }
-.selectbox .scroll-wrap ul{
+.selectbox .scroll-wrap ul {
 	position: relative;
 }
 .selectbox.open .scroll-wrap {
@@ -1253,8 +1272,6 @@ textarea {
 }
 .search-bar.open .icon-search {
 	cursor: default;
-	/*position: absolute;
-	left: 0;*/
 }
 .search-bar input {
 	display: block;
@@ -1276,3 +1293,108 @@ textarea {
 .hide {
 	display: none;
 }
+
+/* Form Element */
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+.property-control-group {
+	/*background: #ccc;*/
+	padding: 10px 0;
+	width: 260px;
+	position: relative;
+}
+
+.required-input {
+	color: #999;
+	font-size: 12px;
+	line-height: 20px;
+}
+
+.property-control-group label {
+	cursor: pointer;
+}
+
+.property-control-group > label{
+	margin-bottom: 8px;
+	color: #666;
+}
+
+.property-control-group .input {
+	width: 230px;
+}
+
+.property-control-group.error > label.left {
+	color: #F74A48;
+}
+
+.property-control-group.error .input {
+	border: 1px solid #F74A48;
+	/*background: #FFD4D3;*/
+	color: #F74A48;
+}
+
+.input-error-icon {
+	color: #fff;
+	position: absolute;
+	right: 0;
+	bottom: 10px;
+	background: #F74A48; 
+	display: inline-block;
+	width: 20px;
+	height: 15px;
+	padding: 10px 0;
+	text-align: center;
+}
+
+.property-control-group .radio-group {
+	/*width: 260px;*/
+	float: left;
+	margin-top: 5px;
+}
+
+.property-control-group textarea {
+	width: 250px;
+}
+
+.property-control-group .ranged-input {
+	width: 210px;
+}
+
+.property-control-group .selectbox {
+	width: 260px;
+	margin-top: 15px;
+	/*background: red;*/
+}
+
+.property-control-group .selectbox .dropdown-toggle {
+	padding: 8px 20px 8px 8px;
+}
+
+.property-control-group .selectbox .dropdown-menu {
+	border: 1px solid #ccc;
+	box-shadow: 0 8px 10px rgba(0,0,0,.3);
+}
+
+.property-control-group .selectbox .dropdown-menu li a {
+	padding: 8px;
+}
+
+.property-control-group .selectbox.selectbox-mega .dropdown-toggle {
+	padding: 24px 20px 8px 8px;
+}
+
+.property-control-group .selectbox.selectbox-mega .dropdown-menu {
+	top: 48px;
+} 
+
+.property-control-group .selectbox.selectbox-mega .sub span {
+	font-size: 12px;
+	color: #999;
+}}

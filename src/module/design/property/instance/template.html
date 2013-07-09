@@ -1,64 +1,62 @@
-<div class="fixedaccordion accordion-default" data-sub="68">
-	<div class="accordion-group" >
-		<div class="fixedaccordion-head" id="instance-property-detail" component="{{component.uid}}">
+<div class="fixedaccordion accordion-default" data-sub="32">
+	<div class="accordion-group  expanded" >
+		<div class="fixedaccordion-head" component="{{component.uid}}">
 			Instance Details
 		</div>
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
-				<div class="property-instance-title">
-					<h5>
-					<span class="left">Name</span>
-					<span class="right">(Required)</span>
-					</h5>
-					<input class="input instance-name" type="text" value="{{ component.name }}" />
+				<div class="property-control-group clearfix">
+					<label class="left" for="property-instance-name" >Name</label>
+					<span class="required-input right">Required</span>
+					<input class="input instance-name"  type="text" required="required" value="{{ component.name }}" name="property-instance-name" id="property-instance-name"/>
 				</div>
-				<div class="property-instance-link">
-					<h5>AMI</h5>
-					<div class="ami-wrap clearfix">
-						<div class="property-icon property-icon-instance"></div>
-						<div class="property-label instance-label">{{component.resource.ImageId}}</div>
+				<div class="property-control-group clearfix">
+					<label>AMI</label>
+					<div class="ami-wrap clearfix secondary-panel" data-secondarypanel-template="aimSecondaryPanel" data-secondarypanel-data='{}'>
+						<img class="icon-property-instance-ami" src="./assets/images/ide/ami/amazon.32.ebs.png" / >
+						<div class="property-label">{{component.resource.ImageId}}</div>
 					</div>
 				</div>
-				<div class="property-instance-type">
-					<h5>Instance Type</h5>
-					<div class="selectbox instance-type-select" id="instance-type-select">
+				<div class="property-control-group clearfix">
+					<label>Instance Type</label>
+					<div class="selectbox selectbox-mega" id="instance-type-select">
 						<a class="dropdown-toggle" href="#">
 							<div class="cur-value"></div>
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							
+
 							{{#each instance_type}}
-							
+
 							{{#if selected}}
-								<li class="selected" tabindex="-1" data-tooltip="{{main}}">
-									
+								<li class="selected tooltip" tabindex="-1" data-tooltip="{{main}}">
+
 							{{else}}
-							
-								<li tabindex="-1" data-tooltip="{{main}}">
+
+								<li class="tooltip" tabindex="-1" data-tooltip="{{main}}">
 							{{/if}}
 									<a data-id="{{name}}" href="#">
-									<div class="main">{{main}}</div>
-									<div class="sub">{{sub}}</div>
+									<div class="main  truncate">{{main}}</div>
+									<div class="sub"><span>Ecu 35</span> <span>Core 16</span> <span>Memory 117 GB</span>{{sub}}</div>
 								</a>
 							</li>
-							
+
 							{{/each}}
 						</ul>
 					</div>
 				</div>
 				{{# if component.resource.VpcId}}
-				<div class="property-check property-instance-check">
+				<div class="property-control-group clearfix">
 					<div class="checkbox">
-						<input id="checkbox_id" type="checkbox" value="None" name="check_value" />
-						<label for="checkbox_id"></label>
-						<span>EBS Optimize</span>
+						<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
+						<label for="property-instance-ebs-optimized"></label>
 					</div>
+					<label for="property-instance-ebs-optimized" >EBS Optimized</label>
 				</div>
-				<div id="property-instance-tenancy">
-					<h5>Tenancy</h5>
-					<div class="selectbox instance-type-select" id="tenancy-select">
+				<div class="property-control-group clearfix">
+					<label>Tenancy</label>
+					<div class="selectbox" id="tenancy-select">
 						<a class="dropdown-toggle" href="#">
 							<span class="cur-value"></span>
 							<span class="caret"></span>
@@ -78,14 +76,18 @@
 					</div>
 				</div>
 				{{/if}}
-				<div id="property-instance-keypairs">
-					<h5>Key Pair</h5>
-					<div class="selectbox" id="editable-selectbox">
+				<div class="property-control-group clearfix">
+					<label>Key Pair</label>
+					<div class="selectbox  selectbox-editable" id="keypair-select">
 					<a class="dropdown-toggle" href="#">
-					    <div class="cur-value">Action</div>
+					    <div class="cur-value"></div>
 					    <span class="caret"></span>
 					</a>
-					<div style="height: 80px; width:200px;" class="scroll-wrap scrollbar-auto-hide  clearfix">
+					<div class='editableoption'>
+					  	<div class="label">Create New Key Pair</div>
+					  	<div class="edit"><input class="input" type="text" placeholder="Key Pair Name" /><button class="btn btn-blue">OK</button></div>
+					</div>
+					<div style="height: 120px; width:228px;" class="scroll-wrap scrollbar-auto-hide  clearfix">
 						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 						<div class="scroll-content">
 					<ul class="dropdown-menu  clearfix" role="menu">
@@ -96,10 +98,6 @@
 					    <li tabindex="-1"><a data-id="4567" href="#">keypair-1234-4567</a></li>
 					    <li tabindex="-1"><a data-id="5678" href="#">keypair-1234-5678</a></li>
 					</ul>
-					<div class='editableoption'>
-					  	<div class="label">Create New Key Pair</div>
-					  	<div class="edit"><input type="text" placeholder="Create New Key Pair" /><button class="btn">Enter</button></div>
-					</div>
 					</div>
 					</div>
 					</div>
@@ -114,25 +112,23 @@
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
-				<div class="property-check sg-enable-cloudwatch">
+				<div class="property-control-group">
 					<div class="checkbox">
-						<input id="cloudwatch_id" type="checkbox" value="None" name="check_value" />
-						<label for="cloudwatch_id"></label>
-						<span>Enable CloudWatch</span>
+						<input id="property-instance-enable-cloudwatch" type="checkbox" value="None" name="property-instance-enable-cloudwatch" />
+						<label for="property-instance-enable-cloudwatch"></label>
 					</div>
+					<label for="property-resource-check-1" >Enable CloudWatch</label>
 				</div>
-				<div class="sg-title">
-					<h5>
-						<span class="left">User Data</span>
-					</h5>
-					<textarea id="sg-user-data"></textarea>
+				<div class="property-control-group">
+					<label class="left" for="property-instance-user-data">User Data</label>
+					<textarea id="property-instance-user-data"></textarea>
 				</div>
-				<div class="property-check sg-base64encoded">
+				<div class="property-control-group">
 					<div class="checkbox">
-						<input id="base64encoded_id" type="checkbox" value="None" name="check_value" />
-						<label for="base64encoded_id"></label>
-						<span>base64encoded</span>
+						<input id="property-instance-base64" type="checkbox" value="None" name="property-instance-base64" />
+						<label for="property-instance-base-64"></label>
 					</div>
+					<label for="property-resource-check-1" >base64 encoded</label>
 				</div>
 			</div>
 		</div>
@@ -144,34 +140,36 @@
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
-				<div class="sg-title">
-					<h5>
-						<span class="left">Descrition</span>
-					</h5>
-					<textarea id="sg-network"></textarea>
+				<div class="property-control-group">
+					<label class="left" for="property-instance-ni-description">Description</label>
+					<textarea id="property-instance-ni-description"></textarea>
 				</div>
-				<div class="property-check sg-base64encoded">
+				<div class="property-control-group clearfix">
 					<div class="checkbox">
-						<input id="source_id" type="checkbox" value="None" name="check_value" />
-						<label for="source_id"></label>
-						<span>Enable Source/Destination Checking</span>
+						<input id="property-instance-source-check" type="checkbox" value="None" name="property-instance-source-check" />
+						<label for="property-instance-source-check"></label>
 					</div>
+					<label for="property-resource-check-1">Enable Source/Destination Checking</label>
 				</div>
-				<div class="sg-header">
-					<span class="name">Ip Address</span>
-					<a href="#" id="sg-ip-add" title="add ip">Add Ip</a>
-				</div>
-				<ul class="network-list" id="property-network-list">
-					<li>
-						<div class="name">1.0.0.x</div>
-						<div class="network-toggle-icon tooltip" data-tooltip="Associate with EIP"></div>
-						<div class="network-remove-icon tooltip" data-tooltip="Remove ip address"></div>
-					</li>
-				</ul>
+				<div class="property-control-group">
+					<div class="network-list-header clearfix">
+						<span class="name">IP Address</span>
+						<a href="#" id="instance-ip-add" class="right btn btn-silver btn-small" title="Add IP Address">Add IP</a>
+					</div>
+					<ul class="network-list" id="property-network-list">
+						<li>
+							<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
+								<label for="instance-ip-1">10.0.0.</label>
+								<input type="text" class="input input-ip" value="x" id="instance-ip-1">
+							</div>
+							<div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+							<!-- <div class="network-remove-icon tooltip" data-tooltip="Remove IP address"></div> -->
+						</li>
+					</ul>
 			</div>
 		</div>
 	</div>
-	<div class="accordion-group  expanded">
+	<div class="accordion-group">
 		<div class="fixedaccordion-head">
 			<span>Security Groups(2)</span>
 		</div>
@@ -199,8 +197,8 @@
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
 				<ul class="sg-info-list" id="sg-info-list">
-					<li class="clearfix" data-sgid="000">
-						<div class="col1 sg-toggle-show-icon"></div>
+					<li class="clearfix secondary-panel" href="#" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{}'>
+						<div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div>
 						<div class="col2">
 							<div class="col2-1">DefaultSG</div>
 							<div class="col2-2">Description</div>
@@ -208,8 +206,8 @@
 						</div>
 						<div class="col3 sg-remove-item-icon tooltip" data-tooltip="Remove instance from SG"></div>
 					</li>
-					<li class="clearfix"  data-sgid="111">
-						<div class="col1 sg-toggle-show-icon"></div>
+					<li class="clearfix secondary-panel" href="#" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{}'>
+						<div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of WebLayoutSG on canvas" data-id="WebLayoutSG" data-toggletext="Hide rules of WebLayoutSG on canvas" data-toggleactive="Show rules of WebLayoutSG on canvas" data-toggleclass="sg-hide-icon"></div>
 						<div class="col2">
 							<div class="col2-1">WebLayoutSG</div>
 							<div class="col2-2">DescriptionDescriptionDescription</div>

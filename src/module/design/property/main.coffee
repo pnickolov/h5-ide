@@ -47,7 +47,7 @@ define [ 'jquery',
                 setTimeout () ->
                    view.refresh()
                 , 2000
- 
+
                 null
 
             #listen OPEN_SG
@@ -58,7 +58,7 @@ define [ 'jquery',
                 setTimeout () ->
                    view.refresh()
                 , 2000
- 
+
                 null
 
             #listen OPEN_SG

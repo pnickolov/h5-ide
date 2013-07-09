@@ -1050,7 +1050,33 @@ MC.canvas.layout = {
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 
-		var canvas_size = MC.canvas.data.get("layout.size");
+		var canvas_size = MC.canvas.data.get('layout.size');
+
+		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
+		{
+			//has vpc (create vpc, az, and subnet by default)
+			var node_vpc = MC.canvas.add('AWS.VPC.VPC', {
+				'name': 'vpc1'
+			},{
+				'x': 2,
+				'y': 2
+			});
+
+			var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
+				'name': 'ap-northeast-1'
+			},{
+				'x': 19,
+				'y': 16
+			});
+
+			var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
+				'name': 'subnet1'
+			},{
+				'x': 23,
+				'y': 20
+			});
+		}
+
 
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,

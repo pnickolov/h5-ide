@@ -1545,7 +1545,7 @@ td.table-action a.btn {
 	border-bottom: none;
 }
 
-.toolbar-btn-group .dropdown-menu a {
+.toolbar-btn-group .selectbox .dropdown-menu a {
 	display: block;
 	padding: 10px 5px 10px 40px;
 }
@@ -1712,7 +1712,7 @@ a.sidebar-hider {
 	width: 70px;
 	margin: 0 8px 8px 0;
 	border-radius: 4px;
-	cursor: move;
+	cursor: pointer;
 	padding: 5px;
 	box-sizing: border-box;
 }
@@ -1796,14 +1796,10 @@ a.sidebar-hider {
 	padding-bottom: 5px;
 	margin-left: -5px;
 	width: 70px;
-	height: 26px;
+	height: 22px;
 	word-wrap: break-word;
 	overflow: hidden;
 	line-height: 14px;
-}
-
-.resource-item:hover .resource-label {
-
 }
 
 .instance-label {
@@ -1960,6 +1956,7 @@ a.sidebar-hider {
 	position: relative;
 	z-index: 1;
 }
+
 /* Property Panel */
 
 .ami-wrap{
@@ -1982,45 +1979,26 @@ a.sidebar-hider {
 	margin-right: 5px;
 }
 
-.property-icon {
-	width: 15px;
-	height: 15px;
-	background-color: #eee;
-	float: left;
-}
-
-.property-check{
-	position: relative;
-	width: 100%;
-	height: 30px;
-	overflow: hidden;
-}
-
-.property-check .checkbox{
-	position: absolute;
-	width: 100%;
-	left: -15px;
-}
-
-.property-check .checkbox span{
-	position: absolute;
-	left:35px;
-}
-
 #security-group-select {
 	position: absolute;
 	top: 0;
 	right: 0;
 }
+
 #security-group-select .dropdown-toggle {
 	width: 38px;
 	height: 38px;
 	background-color: #EEE;
 	display: inline-block;
 }
+
 #security-group-select .dropdown-menu {
 	top: 38px;
 	left: -120px;
+}
+
+#security-group-select .dropdown-menu li a div.truncate {
+	width: 120px;
 }
 
 .sg-info-list li {
@@ -2251,6 +2229,20 @@ a.sidebar-hider {
 	right: 30px;
 	top: 50%;
 	margin-top: -8px;
+}
+
+.icon-add-sg {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background: url('../images/ide/icon-add-sg.png');
+}
+
+.icon-btn-selectbox {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	z-index: 100;
 }
 
 .network-list li .network-remove-icon {

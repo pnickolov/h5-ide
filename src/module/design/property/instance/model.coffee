@@ -52,7 +52,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 if current_instance_type == value
                     tmp.selected = true
                 tmp.main = constant.INSTANCE_TYPE[value][0]
-                tmp.sub = constant.INSTANCE_TYPE[value][1]
+                tmp.ecu  = constant.INSTANCE_TYPE[value][1]
+                tmp.core = constant.INSTANCE_TYPE[value][2]
+                tmp.mem  = constant.INSTANCE_TYPE[value][3]
                 tmp.name = value
                 view_instance_type.push tmp
 

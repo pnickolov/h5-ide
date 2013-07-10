@@ -1,6 +1,6 @@
 <div class="fixedaccordion accordion-default" data-sub="32">
 	<div class="accordion-group  expanded" >
-		<div class="fixedaccordion-head" component="{{component.uid}}">
+		<div class="fixedaccordion-head" id="instance-property-detail" component="{{component.uid}}">
 			Instance Details
 		</div>
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
@@ -38,7 +38,7 @@
 							{{/if}}
 									<a data-id="{{name}}" href="#">
 									<div class="main  truncate">{{main}}</div>
-									<div class="sub"><span>ECU 35</span> <span>Core 16</span> <span>Memory 117 GB</span>{{sub}}</div>
+									<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
 								</a>
 							</li>
 

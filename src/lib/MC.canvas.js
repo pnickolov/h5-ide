@@ -1536,23 +1536,26 @@ MC.canvas.event.drawConnection = {
 
 							$.each(target_connection_option, function (index, option)
 							{
-								$.each(target_data.connection, function (index, data)
+								if (option.from === value.to)
 								{
-									if (option.relation === 'unique')
+									$.each(target_data.connection, function (index, data)
 									{
-										if (data.port === option.from)
+										if (option.relation === 'unique')
 										{
-											is_connected = true;
+											if (data.port === option.from && data.target === node_id)
+											{
+												is_connected = true;
+											}
 										}
-									}
-									else
-									{
-										if (data.port === value.to && data.target === node_id)
+										else
 										{
-											is_connected = true;
+											if (data.port === value.to && data.target === node_id)
+											{
+												is_connected = true;
+											}
 										}
-									}
-								});
+									});
+								}
 							});
 
 							if (is_connected)

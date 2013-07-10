@@ -34,6 +34,7 @@ define [ 'jquery',
                 instance_type : model.getInstanceType uid
                 component : MC.canvas_data.component[uid]
                 keypair : model.getKerPair uid
+                ami : model.getAmi uid
             }
             #render
             view.render( attributes )

@@ -2,9 +2,9 @@
 #  View Mode for design/resource
 #############################
 
-define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC',
+define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant'
          'backbone', 'jquery', 'underscore'
-], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model, MC ) ->
+], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model, MC, constant ) ->
 
     #private
     ami_instance_type = null
@@ -99,7 +99,43 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
             ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
                 console.log 'EC2_AMI_DESC_IMAGES_RETURN'
                 me.set 'my_ami', result.resolved_data
+                me.describeStackAmiService( region_name )
                 null
+
+        describeStackAmiService : ( region_name )->
+
+            me = this
+            
+            stack_ami_list = []
+
+            _.map MC.canvas_data.component, (value)->
+
+                if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+                    if MC.data.stack_ami
+
+                        if not MC.data.stack_ami[value.resource.ImageId]
+
+                            if value.resource.ImageId not in stack_ami_list
+
+                                stack_ami_list.push value.resource.ImageId
+
+                    else
+
+                        MC.data.stack_ami = {}
+
+            ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
+            ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
+                console.log 'EC2_AMI_DESC_IMAGES_RETURN'
+                _.map result.resolved_data.item, (value)->
+
+                    value.instanceType = me._getInstanceType value
+
+                    MC.data.stack_ami[value.imageId] = value
+
+                    null
+                null
+
 
         describeCommunityAmiService : ( region_name, name, platform, architecture, rootDeviceType, perPageNum, returnPage ) ->
 

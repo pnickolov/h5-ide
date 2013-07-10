@@ -31,6 +31,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             console.log 'getHost'
             console.log this.get 'get_host'
 
+        getAmi : ( uid ) ->
+
+            ami_id = MC.canvas_data.component[ uid ].resource.ImageId
+
+            JSON.stringify MC.data.stack_ami[ami_id]
+
         getKerPair : (uid)->
 
             kp_list = []

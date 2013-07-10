@@ -1683,8 +1683,11 @@ MC.canvas.event.siderbarDrag = {
 
 				if (match_place.is_matched)
 				{
+					if($("#"+match_place.target).data().class === "AWS.VPC.Subnet"){
+						node_option.subnet = match_place.target + ".resource.SubnetId";
+					}
 					if($("#"+match_place.target).data().class === "AWS.EC2.AvailabilityZone"){
-						node_option.zone = $("#"+match_place.target).text()
+						node_option.zone = $("#"+match_place.target).text();
 					}
 					MC.canvas.add(node_type, node_option, coordinate);
 				}

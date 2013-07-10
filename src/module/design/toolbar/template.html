@@ -11,7 +11,9 @@
 			<span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu" role="menu">
-			<li><a id="toolbar-duplicate" href="#"><i class="icon-toolbar-duplicate"></i>Duplicate</a></li>
+			<li>
+				<a id="toolbar-duplicate" href="#"><i class="icon-toolbar-duplicate"></i>Duplicate</a>
+			</li>
 			<li><a id="toolbar-delete" href="#"><i class="icon-toolbar-delete"></i>Delete</a></li>
 			<li><a id="toolbar-new-stack" href="#"><i class="icon-toolbar-new-stack"></i>New Stack</a></li>
 		</ul>
@@ -27,10 +29,18 @@
 </ul>
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
+		{{#if zoomin_flag}}
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom In"><i class="icon-toolbar-zoom-in"></i></a>
+		{{else}}
+		<a href="#" class="btn-toolbar tooltip disabled" data-tooltip="Zoom In"><i class="icon-toolbar-zoom-in"></i></a>
+		{{/if}}
 	</li>
 	<li class="btn-toolbar">
+		{{#if zoomout_flag}}
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom Out"><i class="icon-toolbar-zoom-out"></i></a>
+		{{else}}
+		<a href="#" class="btn-toolbar tooltip disabled" data-tooltip="Zoom Out"><i class="icon-toolbar-zoom-out"></i></a>
+		{{/if}}
 	</li>
 </ul>
 <ul class="toolbar-btn-group">

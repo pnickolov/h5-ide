@@ -2,15 +2,15 @@
 #  Controller for design/toolbar module
 ####################################
 
-define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, template, event ) ->
+define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, toolbar_tmpl, event ) ->
 
     #private
     loadModule = () ->
 
         #add handlebars script
-        #template = '<script type="text/x-handlebars-template" id="toolbar-tmpl">' + template + '</script>'
+        toolbar_tmpl = '<script type="text/x-handlebars-template" id="toolbar-tmpl">' + toolbar_tmpl + '</script>'
         #load remote html template
-        #$( template ).appendTo '#main-toolbar'
+        $( toolbar_tmpl ).appendTo '#main-toolbar'
 
         #load remote module1.js
         require [ './module/design/toolbar/view', './module/design/toolbar/model' ], ( View, model ) ->
@@ -18,7 +18,7 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
             #view
             view       = new View()
             view.model = model
-            view.render template
+            view.render()
 
             #save
             view.on 'TOOLBAR_SAVE_CLICK', () ->
@@ -62,6 +62,7 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
             #export json
             view.on 'TOOLBAR_EXPORT_JSON_CLICK', () ->
                 console.log 'design_toolbar_click:exportJson'
+                model.exportJson()
 
 
     unLoadModule = () ->

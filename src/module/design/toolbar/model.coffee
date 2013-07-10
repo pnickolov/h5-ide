@@ -7,13 +7,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
     #private
     ToolbarModel = Backbone.Model.extend {
 
+        defaults :
+            'zoomin_flag'  : true
+            'zoomout_flag' : true
+
         #save stack
         saveStack : () ->
             me = this
 
-            MC.canvas_data.region = 'ap-southeast-1'
-            MC.canvas_data.id = 'stack-401ef6cd'
-            MC.canvas_data.name = 'stack_test_save-copy'
+            #MC.canvas_data.region = 'ap-southeast-1'
+            #MC.canvas_data.id = 'stack-401ef6cd'
+            #MC.canvas_data.name = 'stack_test_save-copy'
 
             stack_model.save { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
 
@@ -73,13 +77,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
             me = this
 
             ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
-            #stack_model.create { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
-            #stack_model.once 'STACK_CREATE_RETURN', (result) ->
-            #    console.log 'STACK_CREATE_RETURN'
-            #    console.log resutl
-
-            #    if !result.is_error
-            #        console.log 'send new stack successful message'
 
         #run
         runStack : ( app_name ) ->
@@ -96,11 +93,37 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
         #zoomin
         zoomInStack : () ->
+            me = this
+
             MC.canvas.zoomIn()
+
+            zoomin_flag = true
+            if MC.canvas_property.SCALE_RATIO <= 1
+                zoomin_flag = false
+
+            me.set 'zoomin_flag', zoomin_flag
+
+            null
+
 
         #zoomout
         zoomOutStack : () ->
+            me = this
+
             MC.canvas.zoomOut()
+
+            zoomout_flag = true
+            if MC.canvas_property.SCALE_RATIO >= 1.8
+                zoomout_flag = false
+
+            me.set 'zoomout_flag', zoomout_flag
+
+            null
+
+        #export json
+        exportJson : (filename) ->
+            me = this
+
 
     }
 

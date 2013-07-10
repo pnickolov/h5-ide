@@ -2,14 +2,16 @@
 #  View(UI logic) for design/toolbar
 #############################
 
-define [ 'event',
+define [ 'MC', 'event',
          'backbone', 'jquery', 'handlebars'
          'UI.selectbox'
-], ( ide_event ) ->
+], ( MC, ide_event ) ->
 
     ToolbarView = Backbone.View.extend {
 
         el       : $ document
+
+        template : Handlebars.compile $( '#toolbar-tmpl' ).html()
 
         events   :
             'click .icon-toolbar-run'           : 'clickRunIcon'
@@ -24,9 +26,9 @@ define [ 'event',
             'click #toolbar-export-png'         : 'clickExportPngIcon'
             'click #toolbar-export-json'        : 'clickExportJSONIcon'
 
-        render   : ( template ) ->
+        render   : () ->
             console.log 'toolbar render'
-            $( '#main-toolbar' ).html template
+            $( '#main-toolbar' ).html this.template
 
         clickRunIcon : ->
             console.log 'clickRunIcon'

@@ -31,12 +31,26 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             console.log 'getHost'
             console.log this.get 'get_host'
 
-        getKerPair : ->
+        getKerPair : (uid)->
+
+            kp_list = []
+
+            current_key_pair = MC.canvas_data.component[ uid ].resource.KeyName
+
             _.map MC.canvas_data.component, (value, key) ->
 
                 if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+                    kp = {}
 
-                    console.log value.resource.KeyName
+                    kp.name = value.resource.KeyName
+
+                    if current_key_pair == value.resource.KeyName
+
+                        kp.selected = true
+
+                    kp_list.push kp
+
+            kp_list
 
         getInstanceType : (uid) ->
             console.log uid

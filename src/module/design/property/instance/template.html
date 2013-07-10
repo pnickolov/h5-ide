@@ -1,3 +1,6 @@
+<div class="sidebar-title">
+	<span class="sidebar-title-text" id='property-title'>Property Panel</span>
+</div>
 <div class="fixedaccordion accordion-default" data-sub="32">
 	<div class="accordion-group  expanded" >
 		<div class="fixedaccordion-head" id="instance-property-detail" component="{{component.uid}}">
@@ -91,12 +94,13 @@
 							<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 							<div class="scroll-content">
 								<ul class="dropdown-menu  clearfix" role="menu">
-								    <li class="selected" tabindex="-1"><a data-id="DefaultKP" href="#">DefaultKP</a></li>
-								    <li tabindex="-1"><a data-id="1234" href="#">keypair-1234-1234</a></li>
-								    <li tabindex="-1"><a data-id="2345" href="#">keypair-1234-2345</a></li>
-								    <li tabindex="-1"><a data-id="3456" href="#">keypair-1234-3456</a></li>
-								    <li tabindex="-1"><a data-id="4567" href="#">keypair-1234-4567</a></li>
-								    <li tabindex="-1"><a data-id="5678" href="#">keypair-1234-5678</a></li>
+									{{#each keypair}}
+										{{#if selected}}
+										<li class="selected" tabindex="-1"><a data-id="{{name}}" href="#">{{name}}</a></li>
+										{{else}}
+										<li tabindex="-1"><a data-id="{{name}}" href="#">{{name}}</a></li>
+										{{/if}}
+									{{/each}}
 								</ul>
 							</div>
 						</div>

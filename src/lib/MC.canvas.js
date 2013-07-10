@@ -1622,7 +1622,10 @@ MC.canvas.event.siderbarDrag = {
 			target_offset = target.offset(),
 			canvas_offset = $('#svg_canvas').offset(),
 			shadow,
-			clone_node;
+			clone_node,
+			node_type = $(this).data('type'),
+			default_width,
+			default_height;
 
 		$(document.body).append('<div id="drag_shadow"></div>');
 		shadow = $('#drag_shadow');
@@ -1630,13 +1633,35 @@ MC.canvas.event.siderbarDrag = {
 
 		shadow.append(clone_node);
 
+		switch (node_type)
+		{
+			case 'AWS.VPC.VPC':
+				default_width = MC.canvas.GROUP_WIDTH_GRID_VPC;
+				default_height = MC.canvas.GROUP_HEIGHT_GRID_VPC;
+				break;
+			case 'AWS.EC2.AvailabilityZone':
+				default_width = MC.canvas.GROUP_WIDTH_GRID_AZ;
+				default_height = MC.canvas.GROUP_HEIGHT_GRID_AZ;
+				break;
+			case 'AWS.VPC.SUBNET':
+				default_width = MC.canvas.GROUP_WIDTH_GRID_SUBNET;
+				default_height = MC.canvas.GROUP_HEIGHT_GRID_SUBNET;
+				break;
+			default:
+				default_width = MC.canvas.COMPONENT_WIDTH_GRID;
+				default_height = MC.canvas.COMPONENT_HEIGHT_GRID;
+				break;
+		}
+
 		shadow.css({
 			'top': event.pageY - 50,
-			'left': event.pageX - 50
+			'left': event.pageX - 50,
+			'width': default_width * 10,
+			'height': default_height * 10
 		}).show();
 
 		//console.info($(this).data('component_type'));
-		if ($(this).data('type') === 'AWS.EC2.EBS.Volume')
+		if (node_type === 'AWS.EC2.EBS.Volume')
 		{
 			$('.AWS-EC2-Instance').attr('class', function (index, key)
 			{

@@ -1538,9 +1538,19 @@ MC.canvas.event.drawConnection = {
 							{
 								$.each(target_data.connection, function (index, data)
 								{
-									if (data.port === value.to && data.target === node_id)
+									if (option.relation === 'unique')
 									{
-										is_connected = true;
+										if (data.port === option.from)
+										{
+											is_connected = true;
+										}
+									}
+									else
+									{
+										if (data.port === value.to && data.target === node_id)
+										{
+											is_connected = true;
+										}
 									}
 								});
 							});
@@ -1681,14 +1691,14 @@ MC.canvas.event.siderbarDrag = {
 					'width': size[0] * MC.canvas.GRID_WIDTH,
 					'height': size[1] * MC.canvas.GRID_HEIGHT
 				})
-				.addClass(node_type.relplace('.', '-'))
+				.addClass(node_type.replace('.', '-'))
 				.show();
 		}
 		else
 		{
 			clone_node = target.find('.resource-icon').clone();
 			shadow.append(clone_node);
-			
+
 			shadow
 				.css({
 					'top': event.pageY - 50,

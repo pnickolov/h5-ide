@@ -1111,19 +1111,19 @@ MC.canvas.layout = {
 				'y': 2
 			});
 
-			var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
-				'name': 'ap-northeast-1'
-			},{
-				'x': 19,
-				'y': 16
-			});
+			//var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
+			//	'name': 'ap-northeast-1'
+			//},{
+			//	'x': 19,
+			//	'y': 16
+			//});
 
-			var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
-				'name': 'subnet1'
-			},{
-				'x': 23,
-				'y': 20
-			});
+			//var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
+			//	'name': 'subnet1'
+			//},{
+			//	'x': 23,
+			//	'y': 20
+			//});
 		}
 
 

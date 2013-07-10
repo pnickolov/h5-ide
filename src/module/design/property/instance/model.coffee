@@ -22,10 +22,29 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             #this.set 'set_host', 'host'
 
         setInstanceType  : ( uid, value ) ->
+
             console.log 'setInstanceType = ' + value
+
             MC.canvas_data.component[ uid ].resource.InstanceType = value
+
             null
             #this.set 'set_host', 'host'
+
+        setEbsOptimized : ( uid, value )->
+
+            console.log 'setEbsOptimized = ' + value
+
+            MC.canvas_data.component[ uid ].resource.EbsOptimized = value
+
+            null
+
+        setTenancy : ( uid, value ) ->
+            
+            console.log 'setTenancy = ' + value
+
+            MC.canvas_data.component[ uid ].resource.Placement.Tenancy = value
+
+            null
 
         getHost  : ->
             console.log 'getHost'

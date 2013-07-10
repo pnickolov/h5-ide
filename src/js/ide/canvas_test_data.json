@@ -74,9 +74,9 @@
 
         ],
         "KernelId": "",
-        "SubnetId": "",
+        "SubnetId": "@2B90ECD0-3D29-452A-B97B-4E29F69ED87C.resource.SubnetId",
         "KeyName": "DefaultKP",
-        "VpcId": "",
+        "VpcId": "@79A6B7CC-0D62-4746-A665-582553F9FCD2.resource.VpcId",
         "InstanceType": "m1.small",
         "Monitoring": "disabled",
         "EbsOptimized": "false"
@@ -117,9 +117,9 @@
 
         ],
         "KernelId": "",
-        "SubnetId": "",
+        "SubnetId": "@2B90ECD0-3D29-452A-B97B-4E29F69ED87C.resource.SubnetId",
         "KeyName": "DefaultKP",
-        "VpcId": "",
+        "VpcId": "@79A6B7CC-0D62-4746-A665-582553F9FCD2.resource.VpcId",
         "InstanceType": "m1.small",
         "Monitoring": "disabled",
         "EbsOptimized": "false"

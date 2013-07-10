@@ -48,8 +48,7 @@
 							{{/each}}
 						</ul>
 					</div>
-				</div>
-				{{# if component.resource.VpcId}}
+				</div>				
 				<div class="property-control-group clearfix">
 					<div class="checkbox">
 						<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
@@ -57,6 +56,7 @@
 					</div>
 					<label for="property-instance-ebs-optimized" >EBS Optimized</label>
 				</div>
+				{{# if component.resource.VpcId}}
 				<div class="property-control-group clearfix">
 					<label>Tenancy</label>
 					<div class="selectbox" id="tenancy-select">
@@ -137,6 +137,7 @@
 			</div>
 		</div>
 	</div>
+	{{# if component.resource.VpcId}}
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
 			<span>Network Interface Details</span>
@@ -173,6 +174,7 @@
 			</div>
 		</div>
 	</div>
+	{{/if}}
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
 			<span>Security Groups(2)</span>

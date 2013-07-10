@@ -14,8 +14,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) 
         events   :
             'change .instance-name' : 'instanceNameChange'
             'change .instance-type-select' : 'instanceTypeSelect'
+            'change #property-instance-ebs-optimized' : 'ebsOptimizedSelect'
             'click #sg-info-list li' : 'openSgPanel'
             'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
+            'OPTION_CHANGE #tenancy-select' : "tenancySelect"
+            
 
         render     : ( attributes ) ->
             console.log 'property:instance render'
@@ -31,10 +34,17 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) 
             ide_event.trigger 'OPEN_SG'
 
         instanceTypeSelect : ( event, value )->
-            console.log event
             cid = $( '#instance-property-detail' ).attr 'component'
             this.model.setInstanceType cid, value
-            
+
+        ebsOptimizedSelect : ( event ) ->
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.setEbsOptimized cid, event.target.checked
+
+        tenancySelect : ( event, value ) ->
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.setTenancy cid, value
+
     }
 
     view = new InstanceView()

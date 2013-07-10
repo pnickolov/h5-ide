@@ -46,8 +46,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout = $.extend(true, {}, MC.canvas.AZ_JSON.layout);
 				component_layout.name = option.name;
 
-				option.width = 30;
-				option.height = 30;
+				option.width = MC.canvas.GROUP_WIDTH_GRID_AZ;
+				option.height = MC.canvas.GROUP_HEIGHT_GRID_AZ;
 			}
 			else
 			{//read
@@ -75,28 +75,28 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.group().append(
 					Canvon.rectangle(
 						0, top, pad, pad
-					).attr('class', 'group-resizer resizer-topleft').data('direction', 'topleft'),
+					).attr({'class': 'group-resizer resizer-topleft', 'data-direction': 'topleft'}),
 					Canvon.rectangle(
 						pad, top, width - 2 * pad, pad
-					).attr('class', 'group-resizer resizer-top').data('direction', 'top'),
+					).attr({'class': 'group-resizer resizer-top', 'data-direction': 'top'}),
 					Canvon.rectangle(
 						width - pad, top, pad, pad
-					).attr('class', 'group-resizer resizer-topright').data('direction', 'topright'),
+					).attr({'class': 'group-resizer resizer-topright', 'data-direction': 'topright'}),
 					Canvon.rectangle(
 						0, top + pad, pad, height - 2 * pad
-					).attr('class', 'group-resizer resizer-left').data('direction', 'left'),
+					).attr({'class': 'group-resizer resizer-left', 'data-direction': 'left'}),
 					Canvon.rectangle(
 						width - pad, top + pad, pad, height - 2 * pad
-					).attr('class', 'group-resizer resizer-right').data('direction', 'right'),
+					).attr({'class': 'group-resizer resizer-right', 'data-direction': 'right'}),
 					Canvon.rectangle(
 						0, height + top - pad, pad, pad
-					).attr('class', 'group-resizer resizer-bottomleft').data('direction', 'bottomleft'),
+					).attr({'class': 'group-resizer resizer-bottomleft', 'data-direction': 'bottomleft'}),
 					Canvon.rectangle(
 						pad, height + top - pad, width - 2 * pad, pad
-					).attr('class', 'group-resizer resizer-bottom').data('direction', 'bottom'),
+					).attr({'class': 'group-resizer resizer-bottom', 'data-direction': 'bottom'}),
 					Canvon.rectangle(
 						width - pad, height + top - pad, pad, pad
-					).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
+					).attr({'class': 'group-resizer resizer-bottomright', 'data-direction': 'bottomright'})
 				).attr({
 					'class': 'resizer-wrap'
 				}),
@@ -107,10 +107,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable ' + class_type
-			}).data({
-				'type': 'group',
-				'class': type
+				'class': 'dragable ' + class_type,
+				'data-type': 'group',
+				'data-class': type
 			});
 
 			//set layout
@@ -134,8 +133,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = $.extend(true, {}, MC.canvas.VPC_JSON.layout);
 
-				option.width = 60;
-				option.height = 60;
+				option.width = MC.canvas.GROUP_WIDTH_GRID_VPC;
+				option.height = MC.canvas.GROUP_HEIGHT_GRID_VPC;
 			}
 			else
 			{
@@ -166,28 +165,28 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.group().append(
 					Canvon.rectangle(
 						0, top, pad, pad
-					).attr('class', 'group-resizer resizer-topleft').data('direction', 'topleft'),
+					).attr({'class': 'group-resizer resizer-topleft', 'data-direction': 'topleft'}),
 					Canvon.rectangle(
 						pad, top, width - 2 * pad, pad
-					).attr('class', 'group-resizer resizer-top').data('direction', 'top'),
+					).attr({'class': 'group-resizer resizer-top', 'data-direction': 'top'}),
 					Canvon.rectangle(
 						width - pad, top, pad, pad
-					).attr('class', 'group-resizer resizer-topright').data('direction', 'topright'),
+					).attr({'class': 'group-resizer resizer-topright', 'data-direction': 'topright'}),
 					Canvon.rectangle(
 						0, top + pad, pad, height - 2 * pad
-					).attr('class', 'group-resizer resizer-left').data('direction', 'left'),
+					).attr({'class': 'group-resizer resizer-left', 'data-direction': 'left'}),
 					Canvon.rectangle(
 						width - pad, top + pad, pad, height - 2 * pad
-					).attr('class', 'group-resizer resizer-right').data('direction', 'right'),
+					).attr({'class': 'group-resizer resizer-right', 'data-direction': 'right'}),
 					Canvon.rectangle(
 						0, height + top - pad, pad, pad
-					).attr('class', 'group-resizer resizer-bottomleft').data('direction', 'bottomleft'),
+					).attr({'class': 'group-resizer resizer-bottomleft', 'data-direction': 'bottomleft'}),
 					Canvon.rectangle(
 						pad, height + top - pad, width - 2 * pad, pad
-					).attr('class', 'group-resizer resizer-bottom').data('direction', 'bottom'),
+					).attr({'class': 'group-resizer resizer-bottom', 'data-direction': 'bottom'}),
 					Canvon.rectangle(
 						width - pad, height + top - pad, pad, pad
-					).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
+					).attr({'class': 'group-resizer resizer-bottomright', 'data-direction': 'bottomright'})
 				).attr({
 					'class': 'resizer-wrap'
 				}),
@@ -198,10 +197,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable ' + class_type
-			}).data({
-				'type': 'group',
-				'class': type
+				'class': 'dragable ' + class_type,
+				'data-type': 'group',
+				'data-class': type
 			});
 
 			//set layout
@@ -230,8 +228,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 
-				option.width = 20;
-				option.height = 20;
+				option.width = MC.canvas.GROUP_WIDTH_GRID_SUBNET;
+				option.height = MC.canvas.GROUP_HEIGHT_GRID_SUBNET;
 			}
 			else
 			{
@@ -261,28 +259,28 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.group().append(
 					Canvon.rectangle(
 						0, top, pad, pad
-					).attr('class', 'group-resizer resizer-topleft').data('direction', 'topleft'),
+					).attr({'class': 'group-resizer resizer-topleft', 'data-direction': 'topleft'}),
 					Canvon.rectangle(
 						pad, top, width - 2 * pad, pad
-					).attr('class', 'group-resizer resizer-top').data('direction', 'top'),
+					).attr({'class': 'group-resizer resizer-top', 'data-direction': 'top'}),
 					Canvon.rectangle(
 						width - pad, top, pad, pad
-					).attr('class', 'group-resizer resizer-topright').data('direction', 'topright'),
+					).attr({'class': 'group-resizer resizer-topright', 'data-direction': 'topright'}),
 					Canvon.rectangle(
 						0, top + pad, pad, height - 2 * pad
-					).attr('class', 'group-resizer resizer-left').data('direction', 'left'),
+					).attr({'class': 'group-resizer resizer-left', 'data-direction': 'left'}),
 					Canvon.rectangle(
 						width - pad, top + pad, pad, height - 2 * pad
-					).attr('class', 'group-resizer resizer-right').data('direction', 'right'),
+					).attr({'class': 'group-resizer resizer-right', 'data-direction': 'right'}),
 					Canvon.rectangle(
 						0, height + top - pad, pad, pad
-					).attr('class', 'group-resizer resizer-bottomleft').data('direction', 'bottomleft'),
+					).attr({'class': 'group-resizer resizer-bottomleft', 'data-direction': 'bottomleft'}),
 					Canvon.rectangle(
 						pad, height + top - pad, width - 2 * pad, pad
-					).attr('class', 'group-resizer resizer-bottom').data('direction', 'bottom'),
+					).attr({'class': 'group-resizer resizer-bottom', 'data-direction': 'bottom'}),
 					Canvon.rectangle(
 						width - pad, height + top - pad, pad, pad
-					).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
+					).attr({'class': 'group-resizer resizer-bottomright', 'data-direction': 'bottomright'})
 				).attr({
 					'class': 'resizer-wrap'
 				}),
@@ -293,10 +291,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable ' + class_type
-			}).data({
-				'type': 'group',
-				'class': type
+				'class': 'dragable ' + class_type,
+				'data-type': 'group',
+				'data-class': type
 			});
 
 			//set layout
@@ -323,8 +320,12 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
 				component_data.name = option.name;
+<<<<<<< HEAD
 				component_data.resource.ImageId = option.imageId;
 				component_data.resource.InstanceType = 'm1.small';
+=======
+				component_data.resource.Placement.AvailabilityZone = option.zone
+>>>>>>> develop
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
 				component_layout.osType =  option.osType;
@@ -362,37 +363,34 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-sg-in',
-					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE //port position: right:0 top:-90 left:-180 bottom:-270
-				}).data({
-					'name': 'instance-sg-in', //for identify port
-					'position': 'left', //port position: for calc point of junction
-					'type': 'sg', //color of line
-					'direction': 'in', //direction
-					'angle': MC.canvas.PORT_LEFT_ANGLE //port angle: right:0 top:90 left:180 bottom:270
+					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
+					'data-name': 'instance-sg-in', //for identify port
+					'data-position': 'left', //port position: for calc point of junction
+					'data-type': 'sg', //color of line
+					'data-direction': 'in', //direction
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE //port angle: right:0 top:90 left:180 bottom:270
 				}),
 
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-sg-out',
-					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'instance-sg-out',
-					'position': 'right',
-					'type': 'sg',
-					'direction': 'out',
-					'angle': MC.canvas.PORT_RIGHT_ANGLE
+					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'instance-sg-out',
+					'data-position': 'right',
+					'data-type': 'sg',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-instance-attach',
-					'transform': 'translate(84, 52)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'instance-attach',
-					'position': 'right',
-					'type': 'attachment',
-					'direction': 'out',
-					'angle': MC.canvas.PORT_RIGHT_ANGLE
+					'transform': 'translate(84, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'instance-attach',
+					'data-position': 'right',
+					'data-type': 'attachment',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
 				////5. os_type
@@ -409,10 +407,11 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type
-			}).data({
-				'type': 'node',
-				'class': type
+				'class': 'dragable node bubble ' + class_type,
+				'data-bubble-template': 'instanceVolume',
+				'data-bubble-data': '',
+				'data-type': 'node',
+				'data-class': type
 			});
 
 			//set layout
@@ -466,13 +465,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-volume-attach',
-					'transform': 'translate(22, 62)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'volume-attach',
-					'position': 'left',
-					'type': 'attachment',
-					'direction': 'in',
-					'angle': MC.canvas.PORT_LEFT_ANGLE
+					'transform': 'translate(22, 62)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'volume-attach',
+					'data-position': 'left',
+					'data-type': 'attachment',
+					'data-direction': 'in',
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE
 				}),
 
 				////3. device-name
@@ -486,10 +484,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable node ' + class_type
-			}).data({
-				'type': 'node',
-				'class': type
+				'class': 'dragable node ' + class_type,
+				'data-type': 'node',
+				'data-class': type
 			});
 
 			//set layout
@@ -540,37 +537,34 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-elb-sg-in',
-					'transform': 'translate(12, 50)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'elb-sg-in',
-					'position': 'left',
-					'type': 'sg',
-					'direction': "in",
-					'angle': MC.canvas.PORT_LEFT_ANGLE
+					'transform': 'translate(12, 50)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'elb-sg-in',
+					'data-position': 'left',
+					'data-type': 'sg',
+					'data-direction': "in",
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE
 				}),
 
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-elb-sg-out',
-					'transform': 'translate(90, 62)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'elb-sg-out',
-					'position': 'right',
-					'type': 'sg',
-					'direction': 'out',
-					'angle': MC.canvas.PORT_RIGHT_ANGLE
+					'transform': 'translate(90, 62)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'elb-sg-out',
+					'data-position': 'right',
+					'data-type': 'sg',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-elb-assoc',
-					'transform': 'translate(90, 37)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'elb-assoc',
-					'position': 'right',
-					'type': 'association',
-					'direction': 'out',
-					'angle': MC.canvas.PORT_RIGHT_ANGLE
+					'transform': 'translate(90, 37)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'elb-assoc',
+					'data-position': 'right',
+					'data-type': 'association',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
 				////5. elb_name
@@ -578,10 +572,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type
-			}).data({
-				'type': 'node',
-				'class': type
+				'class': 'dragable node ' + class_type,
+				'data-type': 'node',
+				'data-class': type
 			});
 
 			//set layout
@@ -632,49 +625,45 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-left',
-					'transform': 'translate(21, 50)' + MC.canvas.PORT_LEFT_ROTATE
-				}).data({
-					'name': 'rtb-tgt-left',
-					'position': 'left',
-					'type': 'sg',
-					'direction': 'out',
-					'angle': MC.canvas.PORT_LEFT_ANGLE
+					'transform': 'translate(21, 50)' + MC.canvas.PORT_LEFT_ROTATE,
+					'data-name': 'rtb-tgt-left',
+					'data-position': 'left',
+					'data-type': 'sg',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE
 				}),
 
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-right',
-					'transform': 'translate(81, 50)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'rtb-tgt-right',
-					'position': 'right',
-					'type': 'sg',
-					'direction': 'out',
-					'angle': MC.canvas.PORT_RIGHT_ANGLE
+					'transform': 'translate(81, 50)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'rtb-tgt-right',
+					'data-position': 'right',
+					'data-type': 'sg',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src-top',
-					'transform': 'translate(50, 3)' + MC.canvas.PORT_UP_ROTATE
-				}).data({
-					'name': 'rtb-src-top',
-					'position': 'top',
-					'type': 'association',
-					'direction': 'in',
-					'angle': MC.canvas.PORT_UP_ANGLE
+					'transform': 'translate(50, 3)' + MC.canvas.PORT_UP_ROTATE,
+					'data-name': 'rtb-src-top',
+					'data-position': 'top',
+					'data-type': 'association',
+					'data-direction': 'in',
+					'data-angle': MC.canvas.PORT_UP_ANGLE
 				}),
 
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src-bottom',
-					'transform': 'translate(50, 80)' + MC.canvas.PORT_DOWN_ROTATE
-				}).data({
-					'name': 'rtb-src-bottom',
-					'position': 'bottom',
-					'type': 'association',
-					'direction': 'in',
-					'angle': MC.canvas.PORT_DOWN_ANGLE
+					'transform': 'translate(50, 80)' + MC.canvas.PORT_DOWN_ROTATE,
+					'data-name': 'rtb-src-bottom',
+					'data-position': 'bottom',
+					'data-type': 'association',
+					'data-direction': 'in',
+					'data-angle': MC.canvas.PORT_DOWN_ANGLE
 				}),
 
 				////6. routetable name
@@ -682,10 +671,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type
-			}).data({
-				'type': 'node',
-				'class': type
+				'class': 'dragable node ' + class_type,
+				'data-type': 'node',
+				'data-class': type
 			});
 
 			// set layout
@@ -736,25 +724,23 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-igw-unknown',
-					'transform': 'translate(20, 50)' + MC.canvas.PORT_LEFT_ROTATE
-				}).data({
-					'name': 'igw-unknown',
-					'position': 'left',
-					'type': 'sg',
-					'direction': 'out',
-					'angle': MC.canvas.PORT_LEFT_ANGLE
+					'transform': 'translate(20, 50)' + MC.canvas.PORT_LEFT_ROTATE,
+					'data-name': 'igw-unknown',
+					'data-position': 'left',
+					'data-type': 'sg',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE
 				}),
 
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-igw-tgt',
-					'transform': 'translate(87, 50)' + MC.canvas.PORT_LEFT_ROTATE
-				}).data({
-					'name': 'igw-tgt',
-					'position': 'right',
-					'type': 'sg',
-					'direction': 'in',
-					'angle': MC.canvas.PORT_RIGHT_ANGLE
+					'transform': 'translate(87, 50)' + MC.canvas.PORT_LEFT_ROTATE,
+					'data-name': 'igw-tgt',
+					'data-position': 'right',
+					'data-type': 'sg',
+					'data-direction': 'in',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
 				////4. igw name
@@ -762,10 +748,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type
-			}).data({
-				'type': 'node',
-				'class': type
+				'class': 'dragable node ' + class_type,
+				'data-type': 'node',
+				'data-class': type
 			});
 
 			// set layout
@@ -816,25 +801,23 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-vgw-tgt',
-					'transform': 'translate(12, 50)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'vgw-tgt',
-					'position': 'left',
-					'type': 'sg',
-					'direction': 'in',
-					'angle': MC.canvas.PORT_LEFT_ANGLE
+					'transform': 'translate(12, 50)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'vgw-tgt',
+					'data-position': 'left',
+					'data-type': 'sg',
+					'data-direction': 'in',
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE
 				}),
 
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-purple port-vgw-vpn',
-					'transform': 'translate(80, 50)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'vgw-vpn',
-					'position': 'right',
-					'type': 'vpn',
-					'direction': 'out',
-					'angle': MC.canvas.PORT_RIGHT_ANGLE
+					'transform': 'translate(80, 50)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'vgw-vpn',
+					'data-position': 'right',
+					'data-type': 'vpn',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
 				////4. vgw name
@@ -842,10 +825,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type
-			}).data({
-				'type': 'node',
-				'class': type
+				'class': 'dragable node ' + class_type,
+				'data-type': 'node',
+				'data-class': type
 			});
 
 			// set layout
@@ -899,13 +881,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-purple port-cgw-vpn',
-					'transform': 'translate(2, 50)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'cgw-vpn',
-					'position': 'left',
-					'type': 'vpn',
-					'direction': 'in',
-					'angle': MC.canvas.PORT_LEFT_ANGLE
+					'transform': 'translate(2, 50)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'cgw-vpn',
+					'data-position': 'left',
+					'data-type': 'vpn',
+					'data-direction': 'in',
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE
 				}),
 
 				////3. cgw name
@@ -919,10 +900,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 
 			).attr({
-				'class': 'dragable node ' + class_type
-			}).data({
-				'type': 'node',
-				'class': type
+				'class': 'dragable node ' + class_type,
+				'data-type': 'node',
+				'data-class': type
 			});
 
 			// set layout
@@ -974,37 +954,34 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-sg-in',
-					'transform': 'translate(12, 37)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'eni-sg-in',
-					'position': 'left',
-					'type': 'sg',
-					'direction': "in",
-					'angle': MC.canvas.PORT_LEFT_ANGLE
+					'transform': 'translate(12, 37)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'eni-sg-in',
+					'data-position': 'left',
+					'data-type': 'sg',
+					'data-direction': "in",
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE
 				}),
 
 				//3 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-eni-attach',
-					'transform': 'translate(12, 62)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'eni-attach',
-					'position': 'left',
-					'type': 'attachment',
-					'direction': "in",
-					'angle': MC.canvas.PORT_LEFT_ANGLE
+					'transform': 'translate(12, 62)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'eni-attach',
+					'data-position': 'left',
+					'data-type': 'attachment',
+					'data-direction': "in",
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE
 				}),
 
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-sg-out',
-					'transform': 'translate(80, 38)' + MC.canvas.PORT_RIGHT_ROTATE
-				}).data({
-					'name': 'eni-sg-out',
-					'position': 'right',
-					'type': 'sg',
-					'direction': 'out',
-					'angle': MC.canvas.PORT_RIGHT_ANGLE
+					'transform': 'translate(80, 38)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'eni-sg-out',
+					'data-position': 'right',
+					'data-type': 'sg',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
 				////5. eni_name
@@ -1014,10 +991,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type
-			}).data({
-				'type': 'node',
-				'class': type
+				'class': 'dragable node ' + class_type,
+				'data-type': 'node',
+				'data-class': type
 			});
 
 			//set layout

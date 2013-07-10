@@ -10,6 +10,19 @@ var constant_data = {
 	COMPONENT_WIDTH_GRID: 10,
 	COMPONENT_HEIGHT_GRID: 10,
 
+	//default size for vpc
+	GROUP_WIDTH_GRID_VPC: 60,
+	GROUP_HEIGHT_GRID_VPC: 60,
+
+	//default size for az
+	GROUP_WIDTH_GRID_AZ: 40,
+	GROUP_HEIGHT_GRID_AZ: 40,
+
+	//default size for subnet
+	GROUP_WIDTH_GRID_SUBNET: 20,
+	GROUP_HEIGHT_GRID_SUBNET: 20,
+
+
 	GROUP_PADDING: 2,
 
 	//constant for _route()

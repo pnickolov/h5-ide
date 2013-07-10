@@ -1111,19 +1111,19 @@ MC.canvas.layout = {
 				'y': 2
 			});
 
-			var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
-				'name': 'ap-northeast-1'
-			},{
-				'x': 19,
-				'y': 16
-			});
+			//var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
+			//	'name': 'ap-northeast-1'
+			//},{
+			//	'x': 19,
+			//	'y': 16
+			//});
 
-			var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
-				'name': 'subnet1'
-			},{
-				'x': 23,
-				'y': 20
-			});
+			//var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
+			//	'name': 'subnet1'
+			//},{
+			//	'x': 23,
+			//	'y': 20
+			//});
 		}
 
 
@@ -1703,6 +1703,12 @@ MC.canvas.event.siderbarDrag = {
 
 				if (match_place.is_matched)
 				{
+					if($("#"+match_place.target).data().class === "AWS.VPC.Subnet"){
+						node_option.subnet = match_place.target + ".resource.SubnetId";
+					}
+					if($("#"+match_place.target).data().class === "AWS.EC2.AvailabilityZone"){
+						node_option.zone = $("#"+match_place.target).text();
+					}
 					MC.canvas.add(node_type, node_option, coordinate);
 				}
 			}

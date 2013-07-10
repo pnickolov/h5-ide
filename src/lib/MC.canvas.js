@@ -1239,10 +1239,12 @@ MC.canvas.event.dragable = {
 		event.preventDefault();
 		event.stopPropagation();
 
+		var offset = (event.data.shadow.data('type') === 'node') ? 0 : 2 * MC.canvas.GRID_HEIGHT;
+
 		event.data.shadow.attr('transform',
 			'translate(' +
 				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO + ',' +
-				Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO +
+				(offset + Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO) +
 			')'
 		);
 
@@ -1633,7 +1635,18 @@ MC.canvas.event.siderbarDrag = {
 			'left': event.pageX - 50
 		}).show();
 
-		$('#canvas_body').addClass('dragging');
+		//console.info($(this).data('component_type'));
+		if ($(this).data('type') === 'AWS.EC2.EBS.Volume')
+		{
+			$('.AWS-EC2-Instance').attr('class', function (index, key)
+			{
+				return 'attachable ' + key;
+			});
+		}
+		else
+		{
+			$('#canvas_body').addClass('dragging');
+		}
 
 		$(document.body).on({
 			'mousemove': MC.canvas.event.siderbarDrag.mousemove,
@@ -1671,9 +1684,16 @@ MC.canvas.event.siderbarDrag = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			match_place;
 
+		if (node_type === 'AWS.EC2.EBS.Volume')
+		{
+			$('.AWS-EC2-Instance').attr('class', function (index, key)
+			{
+				return key.replace('attachable ', '');
+			});
+		}
+
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
-
 			if (
 				target_component_type === 'node' &&
 				MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y)
@@ -1748,7 +1768,7 @@ MC.canvas.event.groupResize = {
 			'offsetX': event.pageX - canvas_offset.left,
 			'offsetY': event.pageY - canvas_offset.top,
 			'direction': $(target).data('direction'),
-			'group_border': parseInt(group.css('stroke-width'))
+			'group_border': parseInt(group.css('stroke-width'),10)
 		});
 	},
 	mousemove: function (event)
@@ -1804,7 +1824,7 @@ MC.canvas.event.groupResize = {
 
 			case 'right':
 				prop = {
-					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10
+					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
 				};
 				break;
 
@@ -1819,6 +1839,9 @@ MC.canvas.event.groupResize = {
 					'x': left > max_left ? max_left : left,
 					'width': event.data.originalWidth - left
 				};
+				break;
+			default :
+				console.info('unknown direction:' + direction);
 				break;
 		}
 

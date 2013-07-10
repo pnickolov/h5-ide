@@ -13,10 +13,10 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
         #$( template ).appendTo '#main-toolbar'
 
         #load remote module1.js
-        require [ './module/design/toolbar/view' ], ( View ) ->
+        require [ './module/design/toolbar/view', './module/design/toolbar/model_phantom' ], ( View, model ) ->
 
             #view
-            view       = new View()
+            view       = new View { 'model' : model }
             view.render template
 
     unLoadModule = () ->

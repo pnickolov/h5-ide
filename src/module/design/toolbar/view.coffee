@@ -50,6 +50,8 @@ define [ 'event',
 
         clickRedoIcon : ->
             console.log 'clickRedoIcon'
+            #
+            this.model.savePNG()
 
         clickExportPngIcon : ->
             console.log 'clickExportPngIcon'

@@ -275,7 +275,7 @@ require.config {
 			exports    : 'WS'
 
 		'MC.canvas':
-			deps: [ 'MC', 'canvon' ]
+			deps: [ 'MC', 'canvon', 'UI.bubble' ]
 
 		'MC.canvas.constant':
 			deps: [ 'MC.canvas' ]

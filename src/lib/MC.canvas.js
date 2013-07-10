@@ -1239,10 +1239,12 @@ MC.canvas.event.dragable = {
 		event.preventDefault();
 		event.stopPropagation();
 
+		var offset = (event.data.shadow.data('type') === 'node') ? 0 : 2 * MC.canvas.GRID_HEIGHT;
+
 		event.data.shadow.attr('transform',
 			'translate(' +
 				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO + ',' +
-				Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO +
+				(offset + Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO) +
 			')'
 		);
 
@@ -1786,7 +1788,6 @@ MC.canvas.event.groupResize = {
 
 			case 'topright':
 				prop = {
-					'x': left,
 					'y': top > max_top ? max_top : top,
 					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
 					'height': event.data.originalHeight - top
@@ -1796,7 +1797,6 @@ MC.canvas.event.groupResize = {
 			case 'bottomleft':
 				prop = {
 					'x': left > max_left ? max_left : left,
-					'y': top,
 					'width': event.data.originalWidth - left,
 					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
 				};
@@ -1804,8 +1804,6 @@ MC.canvas.event.groupResize = {
 
 			case 'bottomright':
 				prop = {
-					'x': left,
-					'y': top,
 					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
 					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
 				};
@@ -1813,27 +1811,19 @@ MC.canvas.event.groupResize = {
 
 			case 'top':
 				prop = {
-					'x': left,
 					'y': top > max_top ? max_top : top,
-					'width': event.data.originalWidth,
 					'height': event.data.originalHeight - top
 				};
 				break;
 
 			case 'right':
 				prop = {
-					'x': left,
-					'y': top,
 					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
-					'height': event.data.originalHeight
 				};
 				break;
 
 			case 'bottom':
 				prop = {
-					'x': left,
-					'y': top,
-					'width': event.data.originalWidth,
 					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
 				};
 				break;
@@ -1841,13 +1831,11 @@ MC.canvas.event.groupResize = {
 			case 'left':
 				prop = {
 					'x': left > max_left ? max_left : left,
-					'y': top,
-					'width': event.data.originalWidth - left,
-					'height': event.data.originalHeight
+					'width': event.data.originalWidth - left
 				};
 				break;
 			default :
-				console.info(direction);
+				console.info('unknown direction:' + direction);
 				break;
 		}
 

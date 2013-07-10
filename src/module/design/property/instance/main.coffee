@@ -22,8 +22,8 @@ define [ 'jquery',
                   'UI.selectbox',
                   'UI.tooltip',
                   'UI.notification',
-                  'toggleicon',
-                  'fixedaccordion'
+                  'UI.toggleicon',
+                  'UI.fixedaccordion'
         ], ( view, model ) ->
 
             #view

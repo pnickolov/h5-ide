@@ -46,8 +46,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout = $.extend(true, {}, MC.canvas.AZ_JSON.layout);
 				component_layout.name = option.name;
 
-				option.width = 30;
-				option.height = 30;
+				option.width = MC.canvas.GROUP_WIDTH_GRID_AZ;
+				option.height = MC.canvas.GROUP_HEIGHT_GRID_AZ;
 			}
 			else
 			{//read
@@ -133,8 +133,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = $.extend(true, {}, MC.canvas.VPC_JSON.layout);
 
-				option.width = 60;
-				option.height = 60;
+				option.width = MC.canvas.GROUP_WIDTH_GRID_VPC;
+				option.height = MC.canvas.GROUP_HEIGHT_GRID_VPC;
 			}
 			else
 			{
@@ -228,8 +228,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 
-				option.width = 20;
-				option.height = 20;
+				option.width = MC.canvas.GROUP_WIDTH_GRID_SUBNET;
+				option.height = MC.canvas.GROUP_HEIGHT_GRID_SUBNET;
 			}
 			else
 			{

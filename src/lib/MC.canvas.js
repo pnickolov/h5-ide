@@ -1682,7 +1682,9 @@ MC.canvas.event.siderbarDrag = {
 			shadow_offset = event.data.shadow.position(),
 			node_option = target.data('option'),
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
-			match_place;
+			match_place,
+			default_group_width,
+			default_group_height;
 
 		if (node_type === 'AWS.EC2.EBS.Volume')
 		{
@@ -1717,7 +1719,22 @@ MC.canvas.event.siderbarDrag = {
 				target_component_type === 'group'
 			)
 			{
-				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, node_option.width, node_option.height);
+				switch (node_type)
+				{
+					case 'AWS.VPC.VPC':
+						default_group_width = MC.canvas.GROUP_WIDTH_GRID_VPC;
+						default_group_height = MC.canvas.GROUP_HEIGHT_GRID_VPC;
+						break;
+					case 'AWS.EC2.AvailabilityZone':
+						default_group_width = MC.canvas.GROUP_WIDTH_GRID_AZ;
+						default_group_height = MC.canvas.GROUP_HEIGHT_GRID_AZ;
+						break;
+					case 'AWS.VPC.SUBNET':
+						default_group_width = MC.canvas.GROUP_WIDTH_GRID_SUBNET;
+						default_group_height = MC.canvas.GROUP_HEIGHT_GRID_SUBNET;
+						break;
+				}
+				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, default_group_width, default_group_height);
 
 				if (match_place.is_matched)
 				{

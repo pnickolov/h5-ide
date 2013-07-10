@@ -79,27 +79,27 @@
 				<div class="property-control-group clearfix">
 					<label>Key Pair</label>
 					<div class="selectbox  selectbox-editable" id="keypair-select">
-					<a class="dropdown-toggle" href="#">
-					    <div class="cur-value"></div>
-					    <span class="caret"></span>
-					</a>
-					<div class='editableoption'>
-					  	<div class="label">Create New Key Pair</div>
-					  	<div class="edit"><input class="input" type="text" placeholder="Key Pair Name" /><button class="btn btn-blue">OK</button></div>
-					</div>
-					<div style="height: 120px; width:228px;" class="scroll-wrap scrollbar-auto-hide  clearfix">
-						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-						<div class="scroll-content">
-					<ul class="dropdown-menu  clearfix" role="menu">
-					    <li class="selected" tabindex="-1"><a data-id="DefaultKP" href="#">DefaultKP</a></li>
-					    <li tabindex="-1"><a data-id="1234" href="#">keypair-1234-1234</a></li>
-					    <li tabindex="-1"><a data-id="2345" href="#">keypair-1234-2345</a></li>
-					    <li tabindex="-1"><a data-id="3456" href="#">keypair-1234-3456</a></li>
-					    <li tabindex="-1"><a data-id="4567" href="#">keypair-1234-4567</a></li>
-					    <li tabindex="-1"><a data-id="5678" href="#">keypair-1234-5678</a></li>
-					</ul>
-					</div>
-					</div>
+						<a class="dropdown-toggle" href="#">
+						    <div class="cur-value"></div>
+						    <span class="caret"></span>
+						</a>
+						<div class='editableoption'>
+						  	<div class="label">Create New Key Pair</div>
+						  	<div class="edit"><input class="input" type="text" placeholder="Key Pair Name" /><button class="btn btn-blue">OK</button></div>
+						</div>
+						<div style="height: 120px; width:228px;" class="scroll-wrap scrollbar-auto-hide  clearfix">
+							<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+							<div class="scroll-content">
+								<ul class="dropdown-menu  clearfix" role="menu">
+								    <li class="selected" tabindex="-1"><a data-id="DefaultKP" href="#">DefaultKP</a></li>
+								    <li tabindex="-1"><a data-id="1234" href="#">keypair-1234-1234</a></li>
+								    <li tabindex="-1"><a data-id="2345" href="#">keypair-1234-2345</a></li>
+								    <li tabindex="-1"><a data-id="3456" href="#">keypair-1234-3456</a></li>
+								    <li tabindex="-1"><a data-id="4567" href="#">keypair-1234-4567</a></li>
+								    <li tabindex="-1"><a data-id="5678" href="#">keypair-1234-5678</a></li>
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -140,7 +140,7 @@
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
-				<div class="property-control-group">
+				<div class="property-control-group clearfix">
 					<label class="left" for="property-instance-ni-description">Description</label>
 					<textarea id="property-instance-ni-description"></textarea>
 				</div>
@@ -163,9 +163,9 @@
 								<input type="text" class="input input-ip" value="x" id="instance-ip-1">
 							</div>
 							<div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-							<!-- <div class="network-remove-icon tooltip" data-tooltip="Remove IP address"></div> -->
 						</li>
 					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -174,23 +174,23 @@
 			<span>Security Groups(2)</span>
 		</div>
 		<div class="selectbox security-group-select" id="security-group-select">
-			<a class="dropdown-toggle" href="#">
-				<span class="caret"></span>
+			<a class="dropdown-toggle tooltip" data-tooltip="Add to security group." href="#">
+				<i class="icon-add-sg icon-btn-selectbox"></i>
 			</a>
 			<ul class="dropdown-menu" role="menu">
 				<li class="selected" tabindex="-1">
-					<a data-id="SG001" href="#">
-						<div>SG001</div>
-						<span>Description</span>
+					<a data-id="SG-longlonglong-name-001" href="#" title="SG description">
+						<div class="truncate">SG-longlonglong-name-001</div>
 					</a>
 				</li>
 				<li tabindex="-1">
-					<a data-id="SG002" href="#">
-						<div>SG002</div>
-						<span>DescriptionDescriptionDescription</span>
+					<a data-id="SG-longlonglong-name-002" href="#" title="SG description">
+						<div class="truncate">SG-longlonglong-name-002</div>
 					</a>
 				</li>
-				<li tabindex="-1"><a id="show-newsg-panel" data-id="" href="#">New Security Groups</a></li>
+				<li tabindex="-1">
+					<a id="show-newsg-panel" data-id="" href="#">New Security Group</a>
+				</li>
 			</ul>
 		</div>
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
@@ -200,18 +200,18 @@
 					<li class="clearfix secondary-panel" href="#" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{}'>
 						<div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div>
 						<div class="col2">
-							<div class="col2-1">DefaultSG</div>
-							<div class="col2-2">Description</div>
-							<div class="col2-3">5 rules, 2 member</div>
+							<div class="col2-1 truncate">DefaultSG</div>
+							<div class="col2-2 truncate">Description</div>
+							<div class="col2-3 truncate">5 rules, 2 members</div>
 						</div>
 						<div class="col3 sg-remove-item-icon tooltip" data-tooltip="Remove instance from SG"></div>
 					</li>
 					<li class="clearfix secondary-panel" href="#" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{}'>
 						<div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of WebLayoutSG on canvas" data-id="WebLayoutSG" data-toggletext="Hide rules of WebLayoutSG on canvas" data-toggleactive="Show rules of WebLayoutSG on canvas" data-toggleclass="sg-hide-icon"></div>
 						<div class="col2">
-							<div class="col2-1">WebLayoutSG</div>
-							<div class="col2-2">DescriptionDescriptionDescription</div>
-							<div class="col2-3">12 rules, 2 member</div>
+							<div class="col2-1 truncate">WebLayoutSG-long-long-long-long-name</div>
+							<div class="col2-2 truncate">DescriptionDescriptionDescription</div>
+							<div class="col2-3 truncate">12 rules, 2 members</div>
 						</div>
 						<div class="col3 sg-remove-item-icon tooltip" data-tooltip="Remove instance from SG"></div>
 					</li>

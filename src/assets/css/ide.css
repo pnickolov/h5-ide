@@ -2001,24 +2001,33 @@ a.sidebar-hider {
 	width: 120px;
 }
 
+.secondary-panel {
+	cursor: pointer;
+}
+
 .sg-info-list li {
 	width: 250px;
 	padding: 10px;
 	border-bottom: #eee 1px solid;
 }
 
-.sg-info-list .col1{
+.sg-info-list .col1 {
 	margin-right: 15px;
 	background-color: #eee;
 	width: 15px;
 	height: 15px;
 	float: left;
 }
-.sg-info-list .col2{
+.sg-info-list .col2 {
 	width: 180px;
 	float: left;
 	word-wrap:break-word;
 }
+
+.sg-info-list .col2 > div {
+	width: 180px;
+}
+
 .sg-info-list .col2 .col2-1 {
 	color: #000;
 	font-size: 14px;

@@ -22,6 +22,11 @@ var constant_data = {
 	GROUP_WIDTH_GRID_SUBNET: 20,
 	GROUP_HEIGHT_GRID_SUBNET: 20,
 
+	GROUP_DEFAULT_SIZE: {
+		'AWS.VPC.VPC': [60, 60],
+		'AWS.EC2.AvailabilityZone': [40, 40],
+		'AWS.VPC.Subnet': [20, 20]
+	},
 
 	GROUP_PADDING: 2,
 

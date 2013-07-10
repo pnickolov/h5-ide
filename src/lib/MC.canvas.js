@@ -1698,7 +1698,7 @@ MC.canvas.event.siderbarDrag = {
 		{
 			clone_node = target.find('.resource-icon').clone();
 			shadow.append(clone_node);
-			
+
 			shadow
 				.css({
 					'top': event.pageY - 50,

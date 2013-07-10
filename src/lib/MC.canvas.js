@@ -1681,7 +1681,7 @@ MC.canvas.event.siderbarDrag = {
 					'width': size[0] * MC.canvas.GRID_WIDTH,
 					'height': size[1] * MC.canvas.GRID_HEIGHT
 				})
-				.addClass(node_type.relplace('.', '-'))
+				.addClass(node_type.replace('.', '-'))
 				.show();
 		}
 		else

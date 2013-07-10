@@ -16,7 +16,15 @@ define [ 'jquery',
         $( 'head' ).append template
 
         #
-        require [ './module/design/property/instance/view', './module/design/property/instance/model' ], ( view, model ) ->
+        require [ './module/design/property/instance/view',
+                  './module/design/property/instance/model',
+                  'UI.secondarypanel',
+                  'UI.selectbox',
+                  'UI.tooltip',
+                  'UI.notification',
+                  'UI.toggleicon',
+                  'UI.fixedaccordion'
+        ], ( view, model ) ->
 
             #view
             view.model    = model

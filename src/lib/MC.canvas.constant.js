@@ -69,6 +69,12 @@ var constant_data = {
 		'AWS.VPC.Subnet': []
 	},
 
+	GROUP_PARENT: {
+		'AWS.VPC.VPC': '',
+		'AWS.EC2.AvailabilityZone': 'AWS.VPC.VPC',
+		'AWS.VPC.Subnet': 'AWS.EC2.AvailabilityZone'
+	},
+
 	PLATFORM_TYPE: {
 		EC2_CLASSIC: 'ec2-classic', //no vpc
 		CUSTOM_VPC: 'custom-vpc',   //has vpc

@@ -923,6 +923,40 @@ MC.canvas = {
 		return isBlank;
 	},
 
+	parentGroup: function (node_id, node_type, start_x, start_y, end_x, end_y)
+	{
+		var groups = MC.canvas.data.get('layout.component.group'),
+			group_parent_type = MC.canvas.GROUP_PARENT[ node_type ],
+			matched;
+
+		$.each(groups, function (key, item)
+		{
+			coordinate = item.coordinate;
+			size = item.size;
+
+			if (
+				node_id !== key &&
+				item.type === group_parent_type &&
+				(
+					(
+						coordinate[0] > start_x ||
+						coordinate[0] < end_x
+					)
+					&&
+					(
+						coordinate[1] > start_y ||
+						coordinate[1] < end_y
+					)
+				)
+			)
+			{
+				matched = document.getElementById( key );
+			}
+		});
+
+		return matched;
+	},
+
 	areaChild: function (node_id, start_x, start_y, end_x, end_y)
 	{
 		var children = MC.canvas.data.get('layout.component.node'),
@@ -1972,13 +2006,13 @@ MC.canvas.event.groupResize = {
 			node_maxX = [],
 			node_maxY = [],
 			group_padding = MC.canvas.GROUP_PADDING,
+			parentGroup = MC.canvas.parentGroup(group_id, parent.data('class'), group_left, group_top, group_left + group_width, group_top + group_height),
 			node_data,
 			group_node_data,
 			group_maxX,
 			group_maxY,
 			group_minX,
 			group_minY;
-
 
 		//adjust group_left
 		if (offsetX < 0 )
@@ -2000,7 +2034,6 @@ MC.canvas.event.groupResize = {
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10);
 			}
 		}
-
 
 		$.each(event.data.group_child, function (index, item)
 		{
@@ -2053,7 +2086,8 @@ MC.canvas.event.groupResize = {
 				{
 					group_height += (group_top - group_minY);
 					group_top = group_minY;
-				}				break;
+				}
+				break;
 
 			case 'bottomleft':
 				if (group_left >= group_minX)

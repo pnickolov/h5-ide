@@ -1818,7 +1818,7 @@ MC.canvas.event.groupResize = {
 
 			case 'right':
 				prop = {
-					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
+					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10
 				};
 				break;
 

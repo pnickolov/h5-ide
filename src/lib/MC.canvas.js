@@ -1111,19 +1111,19 @@ MC.canvas.layout = {
 				'y': 2
 			});
 
-			var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
-				'name': 'ap-northeast-1'
-			},{
-				'x': 19,
-				'y': 16
-			});
+			//var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
+			//	'name': 'ap-northeast-1'
+			//},{
+			//	'x': 19,
+			//	'y': 16
+			//});
 
-			var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
-				'name': 'subnet1'
-			},{
-				'x': 23,
-				'y': 20
-			});
+			//var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
+			//	'name': 'subnet1'
+			//},{
+			//	'x': 23,
+			//	'y': 20
+			//});
 		}
 
 
@@ -1239,10 +1239,12 @@ MC.canvas.event.dragable = {
 		event.preventDefault();
 		event.stopPropagation();
 
+		var offset = (event.data.shadow.data('type') === 'node') ? 0 : 2 * MC.canvas.GRID_HEIGHT;
+
 		event.data.shadow.attr('transform',
 			'translate(' +
 				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO + ',' +
-				Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO +
+				(offset + Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO) +
 			')'
 		);
 
@@ -1620,7 +1622,10 @@ MC.canvas.event.siderbarDrag = {
 			target_offset = target.offset(),
 			canvas_offset = $('#svg_canvas').offset(),
 			shadow,
-			clone_node;
+			clone_node,
+			node_type = $(this).data('type'),
+			default_width,
+			default_height;
 
 		$(document.body).append('<div id="drag_shadow"></div>');
 		shadow = $('#drag_shadow');
@@ -1628,12 +1633,45 @@ MC.canvas.event.siderbarDrag = {
 
 		shadow.append(clone_node);
 
+		switch (node_type)
+		{
+			case 'AWS.VPC.VPC':
+				default_width = MC.canvas.GROUP_WIDTH_GRID_VPC;
+				default_height = MC.canvas.GROUP_HEIGHT_GRID_VPC;
+				break;
+			case 'AWS.EC2.AvailabilityZone':
+				default_width = MC.canvas.GROUP_WIDTH_GRID_AZ;
+				default_height = MC.canvas.GROUP_HEIGHT_GRID_AZ;
+				break;
+			case 'AWS.VPC.SUBNET':
+				default_width = MC.canvas.GROUP_WIDTH_GRID_SUBNET;
+				default_height = MC.canvas.GROUP_HEIGHT_GRID_SUBNET;
+				break;
+			default:
+				default_width = MC.canvas.COMPONENT_WIDTH_GRID;
+				default_height = MC.canvas.COMPONENT_HEIGHT_GRID;
+				break;
+		}
+
 		shadow.css({
 			'top': event.pageY - 50,
-			'left': event.pageX - 50
+			'left': event.pageX - 50,
+			'width': default_width * 10,
+			'height': default_height * 10
 		}).show();
 
-		$('#canvas_body').addClass('dragging');
+		//console.info($(this).data('component_type'));
+		if (node_type === 'AWS.EC2.EBS.Volume')
+		{
+			$('.AWS-EC2-Instance').attr('class', function (index, key)
+			{
+				return 'attachable ' + key;
+			});
+		}
+		else
+		{
+			$('#canvas_body').addClass('dragging');
+		}
 
 		$(document.body).on({
 			'mousemove': MC.canvas.event.siderbarDrag.mousemove,
@@ -1669,11 +1707,20 @@ MC.canvas.event.siderbarDrag = {
 			shadow_offset = event.data.shadow.position(),
 			node_option = target.data('option'),
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
-			match_place;
+			match_place,
+			default_group_width,
+			default_group_height;
+
+		if (node_type === 'AWS.EC2.EBS.Volume')
+		{
+			$('.AWS-EC2-Instance').attr('class', function (index, key)
+			{
+				return key.replace('attachable ', '');
+			});
+		}
 
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
-
 			if (
 				target_component_type === 'node' &&
 				MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y)
@@ -1683,6 +1730,12 @@ MC.canvas.event.siderbarDrag = {
 
 				if (match_place.is_matched)
 				{
+					if($("#"+match_place.target).data().class === "AWS.VPC.Subnet"){
+						node_option.subnet = match_place.target + ".resource.SubnetId";
+					}
+					if($("#"+match_place.target).data().class === "AWS.EC2.AvailabilityZone"){
+						node_option.zone = $("#"+match_place.target).text();
+					}
 					MC.canvas.add(node_type, node_option, coordinate);
 				}
 			}
@@ -1691,7 +1744,22 @@ MC.canvas.event.siderbarDrag = {
 				target_component_type === 'group'
 			)
 			{
-				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, node_option.width, node_option.height);
+				switch (node_type)
+				{
+					case 'AWS.VPC.VPC':
+						default_group_width = MC.canvas.GROUP_WIDTH_GRID_VPC;
+						default_group_height = MC.canvas.GROUP_HEIGHT_GRID_VPC;
+						break;
+					case 'AWS.EC2.AvailabilityZone':
+						default_group_width = MC.canvas.GROUP_WIDTH_GRID_AZ;
+						default_group_height = MC.canvas.GROUP_HEIGHT_GRID_AZ;
+						break;
+					case 'AWS.VPC.SUBNET':
+						default_group_width = MC.canvas.GROUP_WIDTH_GRID_SUBNET;
+						default_group_height = MC.canvas.GROUP_HEIGHT_GRID_SUBNET;
+						break;
+				}
+				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, default_group_width, default_group_height);
 
 				if (match_place.is_matched)
 				{
@@ -1742,7 +1810,7 @@ MC.canvas.event.groupResize = {
 			'offsetX': event.pageX - canvas_offset.left,
 			'offsetY': event.pageY - canvas_offset.top,
 			'direction': $(target).data('direction'),
-			'group_border': parseInt(group.css('stroke-width'))
+			'group_border': parseInt(group.css('stroke-width'),10)
 		});
 	},
 	mousemove: function (event)
@@ -1813,6 +1881,9 @@ MC.canvas.event.groupResize = {
 					'x': left > max_left ? max_left : left,
 					'width': event.data.originalWidth - left
 				};
+				break;
+			default :
+				console.info('unknown direction:' + direction);
 				break;
 		}
 

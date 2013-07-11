@@ -465,21 +465,6 @@
               "line": "27A7F25B-3740-4130-AEB6-8F09C1AC0621"
             }          ]
         },
-        "5BD7C400-B2D7-43C3-9160-28DD5BA86BAE": {
-          "id": "",
-          "type": "AWS.EC2.EBS.Volume",
-          "coordinate": [
-            46,
-            42
-          ],
-          "group": {
-            "availableZone": "",
-            "subnet": "",
-            "vpc": ""
-          },
-          "connection": [
-          ]
-        },
         "696C9718-4268-43C0-BEE5-312FBE7849FC": {
           "id": "",
           "type": "AWS.ELB",

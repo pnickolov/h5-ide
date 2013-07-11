@@ -462,7 +462,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet.Size = option.volumeSize;
 
-				component_layout = $.extend(true, {}, MC.canvas.VOLUME_JSON.layout);
+				//component_layout = $.extend(true, {}, MC.canvas.VOLUME_JSON.layout);
 			}
 			else
 			{//read
@@ -470,50 +470,50 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.name = component_data.name;
 				option.volumeSize = component_data.resource.AttachmentSet.Size;
 
-				component_layout = layout.node[group.id];
+				//component_layout = layout.node[group.id];
 
-				coordinate.x = component_layout.coordinate[0];
-				coordinate.y = component_layout.coordinate[1];
+				//coordinate.x = component_layout.coordinate[0];
+				//coordinate.y = component_layout.coordinate[1];
 			}
 
-			$(group).append(
-				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
-					'class': 'node-background',
-					'rx': 5,
-					'ry': 5
-				}),
-				Canvon.image('../assets/images/ide/icon/VOL-Canvas.png', 18, 20, 70, 70),
+			//$(group).append(
+			//	////1. bg
+			//	Canvon.rectangle(0, 0, 100, 100).attr({
+			//		'class': 'node-background',
+			//		'rx': 5,
+			//		'ry': 5
+			//	}),
+			//	Canvon.image('../assets/images/ide/icon/VOL-Canvas.png', 18, 20, 70, 70),
 
-				//2 path: left port
-				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-green port-volume-attach',
-					'transform': 'translate(22, 62)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'volume-attach',
-					'data-position': 'left',
-					'data-type': 'attachment',
-					'data-direction': 'in',
-					'data-angle': MC.canvas.PORT_LEFT_ANGLE
-				}),
+			//	//2 path: left port
+			//	Canvon.path(MC.canvas.PATH_D_PORT).attr({
+			//		'class': 'port port-green port-volume-attach',
+			//		'transform': 'translate(22, 62)' + MC.canvas.PORT_RIGHT_ROTATE,
+			//		'data-name': 'volume-attach',
+			//		'data-position': 'left',
+			//		'data-type': 'attachment',
+			//		'data-direction': 'in',
+			//		'data-angle': MC.canvas.PORT_LEFT_ANGLE
+			//	}),
 
-				////3. device-name
-				Canvon.text(50, 40, option.name).attr({
-					'class': 'node-label device-name'
-				}),
+			//	////3. device-name
+			//	Canvon.text(50, 40, option.name).attr({
+			//		'class': 'node-label device-name'
+			//	}),
 
-				////3. volume-size
-				Canvon.text(50, 65, option.volumeSize + " GiB").attr({
-					'class': 'node-label volume-size'
-				})
+			//	////3. volume-size
+			//	Canvon.text(50, 65, option.volumeSize + " GiB").attr({
+			//		'class': 'node-label volume-size'
+			//	})
 
-			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node',
-				'data-class': type
-			});
+			//).attr({
+			//	'class': 'dragable node ' + class_type,
+			//	'data-type': 'node',
+			//	'data-class': type
+			//});
 
 			//set layout
-			component_layout.coordinate = [coordinate.x, coordinate.y];
+			//component_layout.coordinate = [coordinate.x, coordinate.y];
 			layout.node[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.node', layout.node);
 
@@ -522,7 +522,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
 
-			$('#node_layer').append(group);
+			//$('#node_layer').append(group);
 
 			break;
 		//***** volume end *****//
@@ -1036,7 +1036,10 @@ MC.canvas.add = function (flag, option, coordinate)
 	}
 
 	//set the node position
-	MC.canvas.position(group, coordinate.x, coordinate.y);
+	if (type != 'AWS.EC2.EBS.Volume' )
+	{
+		MC.canvas.position(group, coordinate.x, coordinate.y);
+	}
 
 	return group;
 };

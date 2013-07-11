@@ -801,7 +801,7 @@ MC.canvas = {
 		{
 			node_coordinate = item.coordinate;
 
-			if (
+			if ( node_coordinate && node_coordinate[0] && node_coordinate[1] &&
 				node_coordinate[0] < coordinate.x &&
 				node_coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > coordinate.x &&
 				node_coordinate[1] < coordinate.y &&
@@ -1914,6 +1914,11 @@ MC.canvas.event.siderbarDrag = {
 			event.pageY - event.data.canvas_offset.top
 		);
 
+		if (!match_node)
+		{
+			return;
+		}
+
 		if ($(match_node).data('class') === 'AWS.EC2.Instance')
 		{
 			MC.canvas.volumeBubble(match_node);
@@ -1936,7 +1941,8 @@ MC.canvas.event.siderbarDrag = {
 			node_option = target.data('option'),
 			bubble_box = $('#volume-bubble-box'),
 			target_id,
-			new_volume;
+			new_volume,
+			data_option;
 
 		$('.AWS-EC2-Instance').attr('class', function (index, key)
 		{
@@ -1949,9 +1955,10 @@ MC.canvas.event.siderbarDrag = {
 			target_node = $('#' + target_id);
 			target_offset = target_node[0].getBoundingClientRect();
 
-			new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', target.data('option'), coordinate);
+			data_option = target.data('option');
+			new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
 
-			$('#instance_volume_list').append('<li><a href="#" id="' + new_volume_id +'" class="selected"><span class="volume_name">' + new_volume_name + '</span><span class="volume_size">' + new_volume_size + 'GB</span></a></li>');
+			$('#instance_volume_list').append('<li><a href="#" id="' + new_volume.id +'" class="volume_item selected"><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
 			//MC.canvas.event.volumeSelect.call( $('#' + new_volume_id )[0] );
 

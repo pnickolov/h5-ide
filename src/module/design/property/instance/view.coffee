@@ -120,6 +120,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             notification 'info', id, false
 
         showSGfromList: (event, data) ->
+            ide_event.trigger ide_event.OPEN_SG, data
             notification 'info', data, false
 
         removeIPfromList: (event, id) ->

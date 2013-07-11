@@ -51,7 +51,7 @@ define [ 'jquery',
                 null
 
             #listen OPEN_SG
-            ide_event.onLongListen ide_event.OPEN_SG, () ->
+            ide_event.onLongListen ide_event.OPEN_SG, ( uid ) ->
                 console.log 'OPEN_SG'
                 sg_main.loadModule()
                 #temp

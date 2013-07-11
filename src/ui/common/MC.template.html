@@ -656,9 +656,11 @@ Additional Notes and Questions
 
 <!-- networkListItem -->
 <li>
-	<div class="name">1.0.0.x</div>
-	<div class="network-toggle-icon tooltip" data-tooltip="Associate with EIP"></div>
-	<div class="network-remove-icon tooltip" data-tooltip="Remove ip address"></div>
+    <div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
+    <label for="instance-ip-1">10.0.0.</label>
+    <input type="text" class="input input-ip" value="x" id="instance-ip-1">
+    </div>
+    <div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
 </li>
 
 <!-- modalSGRule -->
@@ -855,7 +857,7 @@ Additional Notes and Questions
             <div class="fixedaccordion-head sg-header">
                 <span class="name">Rule</span>
                 <span class="count">(0)</span>
-                <a href="#" class="sg-icon-add tooltip" id="sg-add-rule-icon" data-tooltip="create rule referencing IP Range"></a>
+                <a href="#" class="sg-icon-add add-sg-rule-icon tooltip" id="sg-add-rule-icon" data-tooltip="create rule referencing IP Range"></a>
             </div>
             <div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
                 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>

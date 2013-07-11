@@ -9,7 +9,7 @@ define [ 'MC', 'event',
 
     ToolbarView = Backbone.View.extend {
 
-        el       : $ document
+        el       : $( '#main-toolbar' )
 
         template : Handlebars.compile $( '#toolbar-tmpl' ).html()
 
@@ -24,7 +24,7 @@ define [ 'MC', 'event',
             'click .icon-toolbar-undo'          : 'clickUndoIcon'
             'click .icon-toolbar-redo'          : 'clickRedoIcon'
             'click #toolbar-export-png'         : 'clickExportPngIcon'
-            'click #toolbar-export-json'        : 'clickExportJSONIcon'
+            #'click #toolbar-export-json'        : 'clickExportJSONIcon'
 
         render   : () ->
             console.log 'toolbar render'
@@ -43,8 +43,12 @@ define [ 'MC', 'event',
             this.trigger 'TOOLBAR_DUPLICATE_CLICK'
 
         clickDeleteIcon : ->
-            console.log 'clickDeleteIcon'
-            this.trigger 'TOOLBAR_DELETE_CLICK'
+            target = $( '#main-toolbar' )
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'clickDeleteIcon'
+                modal.close()
+                event.data.target.trigger 'TOOLBAR_DELETE_CLICK'
+            true
 
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'

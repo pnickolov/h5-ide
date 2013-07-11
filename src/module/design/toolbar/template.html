@@ -14,7 +14,7 @@
 			<li>
 				<a id="toolbar-duplicate" href="#"><i class="icon-toolbar-duplicate"></i>Duplicate</a>
 			</li>
-			<li><a id="toolbar-delete" href="#"><i class="icon-toolbar-delete"></i>Delete</a></li>
+			<li><a class="modal" id="toolbar-delete" href="#" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete</a></li>
 			<li><a id="toolbar-new-stack" href="#"><i class="icon-toolbar-new-stack"></i>New Stack</a></li>
 		</ul>
 	</li>
@@ -51,7 +51,7 @@
 		</a>
 		<ul class="dropdown-menu" role="menu">
 			<li><a id="toolbar-export-png" href="#"><i class="icon-toolbar-export-png"></i>Export as PNG</a></li>
-			<li><a id="toolbar-export-json" href="#"><i class="icon-toolbar-export-json"></i>Export as Json</a></li>
+			<li><a class="modal" id="toolbar-export-json" href="data:application/octet-stream" download="test-text.txt" data-modal-template="modalApp" data-modal-data='{"title":"Export JSON", "body":"File Name:", "input":"{{name}}", "confirm":"Download", "color":"blue" }' data-modal-dismiss=True><i class="icon-toolbar-export-json"></i>Export as Json</a></li>
 		</ul>
 	</li>
 </ul>

@@ -62,7 +62,7 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
             #export json
             view.on 'TOOLBAR_EXPORT_JSON_CLICK', () ->
                 console.log 'design_toolbar_click:exportJson'
-                model.exportJson()
+                model.exportJson('test-text.txt')
 
 
     unLoadModule = () ->

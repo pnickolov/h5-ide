@@ -8,8 +8,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
     ToolbarModel = Backbone.Model.extend {
 
         defaults :
-            'zoomin_flag'  : true
-            'zoomout_flag' : true
+            'zoomin_flag'   : true
+            'zoomout_flag'  : true
+            'cur_name'      : null
 
         #save stack
         saveStack : () ->
@@ -105,7 +106,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
             null
 
-
         #zoomout
         zoomOutStack : () ->
             me = this
@@ -123,6 +123,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
         #export json
         exportJson : (filename) ->
             me = this
+
+            data = JSON.stringify(MC.canvas_data)
 
 
     }

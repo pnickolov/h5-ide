@@ -1,6 +1,5 @@
 MC.canvas.add = function (flag, option, coordinate)
 {
-
 	var group = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
 		create_mode = true,
 		type = '',
@@ -402,9 +401,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node bubble ' + class_type,
-				'data-bubble-template': 'instanceVolume',
-				'data-bubble-data': '',
+				'class': 'dragable node ' + class_type,
+				// 'data-bubble-template': 'instanceVolume',
+				// 'data-bubble-data': '',
 				'data-type': 'node',
 				'data-class': type
 			});

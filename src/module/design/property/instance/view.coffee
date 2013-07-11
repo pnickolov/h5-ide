@@ -23,12 +23,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-ebs-optimized' : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-user-data' : 'userdataChange'
-            
+
             'click #sg-info-list li' : 'openSgPanel'
 
             'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select' : "tenancySelect"
-            'EDIT_EMPTY #property-instance-keypairs' : "addEmptyKP"
+            'EDIT_EMPTY #keypair-select' : "addEmptyKP"
+            'OPTION_CHANGE #keypair-select' : "addtoKPList"
+            'EDIT_UPDATE #keypair-select' : "createtoKPList"
             'OPTION_CHANGE #security-group-select' : "addSGtoList"
             'click #sg-info-list .sg-remove-item-icon' : "removeSGfromList"
             'click #instance-ip-add' : "addIPtoList"
@@ -68,6 +70,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         addEmptyKP : ( event ) ->
             notification('error', 'KeyPair Empty', false)
+
+        addtoKPList : ( event, id ) ->
+            notification('info', (id + ' added'), false)
+
+        createtoKPList : ( event, id ) ->
+            notification('info', (id + ' created'), false)
 
         securityGroupAddSelect: (event) ->
             event.stopPropagation()

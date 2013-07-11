@@ -24,7 +24,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-ebs-optimized' : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-user-data' : 'userdataChange'
-
+            'change #property-instance-base64' : 'base64Change'
+            'change #property-instance-ni-description' : 'eniDescriptionChange'
+            'change #property-instance-source-check' : 'sourceCheckChange'
+            
             'click #sg-info-list li' : 'openSgPanel'
 
             'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
@@ -70,13 +73,30 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             this.model.setUserData cid, event.target.value
             #console.log event.target.value
 
+        base64Change : ( event ) ->
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.setBase64Encoded cid, event.target.checked
+
+
+        eniDescriptionChange : ( event ) ->
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.setEniDescription cid, event.target.value
+
+        sourceCheckChange : ( event ) ->
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.setSourceCheck cid, event.target.checked
+
         addEmptyKP : ( event ) ->
             notification('error', 'KeyPair Empty', false)
 
         addtoKPList : ( event, id ) ->
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.setKP cid, id
             notification('info', (id + ' added'), false)
 
         createtoKPList : ( event, id ) ->
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.addKP cid, id
             notification('info', (id + ' created'), false)
 
         securityGroupAddSelect: (event) ->

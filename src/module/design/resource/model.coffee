@@ -104,6 +104,11 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
                         value.imageId = key
                         
+                        _.map value, ( val, key ) ->
+                            if val == ''
+                                value[key] = 'None'
+                            null
+
                         if value.kernelId == undefined or value.kernelId == ''
                             value.kernelId = "None"
 
@@ -196,7 +201,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                                 stack_ami_list.push value.resource.ImageId
 
 
-            if stack_ami_list
+            if stack_ami_list.length !=0
                 ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
                 ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN'
@@ -330,7 +335,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                         
                         #cache favorite ami item to MC.data.dict_ami
                         value.resource_info.instanceType = me._getInstanceType value.resource_info
-                        MC.data.dict_ami[value.imageId] = value.resource_info
+                        MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
                         null
 
                     me.set 'favorite_ami', result.resolved_data

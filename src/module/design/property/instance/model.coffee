@@ -46,6 +46,28 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
+        setCloudWatch : ( uid, value ) ->
+
+            console.log 'setCloudWatch = ' + value
+
+            if value
+
+                MC.canvas_data.component[ uid ].resource.Monitoring = 'enabled'
+
+            else
+                MC.canvas_data.component[ uid ].resource.Monitoring = 'disabled'
+
+
+            null
+
+        setUserData : ( uid, value ) ->
+
+            console.log 'setUserData = ' + value
+
+            MC.canvas_data.component[ uid ].resource.UserData.data = value
+
+            null
+            
         getHost  : ->
             console.log 'getHost'
             console.log this.get 'get_host'
@@ -54,7 +76,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             ami_id = MC.canvas_data.component[ uid ].resource.ImageId
 
-            JSON.stringify MC.data.stack_ami[ami_id]
+            JSON.stringify MC.data.dict_ami[ami_id]
 
         getKerPair : (uid)->
 

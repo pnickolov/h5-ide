@@ -196,19 +196,19 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                                 stack_ami_list.push value.resource.ImageId
 
 
+            if stack_ami_list
+                ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
+                ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
+                    console.log 'EC2_AMI_DESC_IMAGES_RETURN'
 
-            ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
-            ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
-                console.log 'EC2_AMI_DESC_IMAGES_RETURN'
+                    _.map result.resolved_data.item, (value)->
 
-                _.map result.resolved_data.item, (value)->
+                        #cache ami item in stack to MC.data.dict_ami
+                        value.instanceType = me._getInstanceType value
+                        MC.data.dict_ami[value.imageId] = value
 
-                    #cache ami item in stack to MC.data.dict_ami
-                    value.instanceType = me._getInstanceType value
-                    MC.data.dict_ami[value.imageId] = value
-
+                        null
                     null
-                null
 
 
         describeCommunityAmiService : ( region_name, name, platform, architecture, rootDeviceType, perPageNum, returnPage ) ->

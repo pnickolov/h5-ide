@@ -15,6 +15,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) 
             'change .instance-name' : 'instanceNameChange'
             'change .instance-type-select' : 'instanceTypeSelect'
             'change #property-instance-ebs-optimized' : 'ebsOptimizedSelect'
+            'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
+            'change #property-instance-user-data' : 'userdataChange'
+            
             'click #sg-info-list li' : 'openSgPanel'
             'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select' : "tenancySelect"
@@ -45,6 +48,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) 
             cid = $( '#instance-property-detail' ).attr 'component'
             this.model.setTenancy cid, value
 
+        cloudwatchSelect : ( event ) ->
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.setCloudWatch cid, event.target.checked
+
+        userdataChange : ( event ) ->
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.setUserData cid, event.target.value
+            #console.log event.target.value
     }
 
     view = new InstanceView()

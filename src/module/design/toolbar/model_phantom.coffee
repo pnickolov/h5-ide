@@ -16,11 +16,10 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
                 data : {
                     'usercode'   : $.cookie( 'usercode' ),
                     'session_id' : $.cookie( 'session_id' ),
-                    'region'     : 'region_name',
-                    'name'       : 'tab_id',
+                    'region'     : MC.canvas_data.region,
+                    'stack_id'   : 'stack-9977a6bd',
                     'thumbnail'  : true,
-                    'screenshot' : 'http://localhost:3000/screenshot.html',
-                    'json_data'  : MC.canvas_data
+                    'screenshot' : 'http://localhost:3000/screenshot.html'
                 },
                 success : ( result ) ->
                     console.log 'phantom callback'

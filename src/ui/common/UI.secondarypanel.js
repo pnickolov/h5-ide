@@ -55,7 +55,7 @@ secondarypanel.open = function (event)
             MC.template[ target_template ]( target_data ),
             parent
         );
-        target.trigger('secondary-panel-shown');
+        target.trigger('secondary-panel-shown', target_data);
 
         $('#secondary-panel-wrap').one('closed', function ()
         {

@@ -389,7 +389,7 @@ var constant_data = {
 			"name": "DefaultKP",
 			"resource": {
 				"KeyFingerprint": "",
-				"KeyName": "" //eg: @5BC26143-0BBD-D00B-1540-14C0AF95294A.name
+				"KeyName": "DefaultKP" //eg: @5BC26143-0BBD-D00B-1540-14C0AF95294A.name
 			}
 		}
 	},

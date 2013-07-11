@@ -11,7 +11,7 @@
 var fixedaccordion = {
     min_height: 100,
 
-    resize: function (event)
+    resize: function ()
     {
         $('.fixedaccordion').each(function(){
             var me = $(this),

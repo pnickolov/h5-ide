@@ -102,6 +102,22 @@ define [], () ->
 		LINUX_OTHER : "linux-other"
 	}
 
+	INSTANCE_TYPE = {
+		't1.micro' : ["T1 Micro", "ECU Up to 2", "Core 1", "Memory 613MB"]
+		'm1.small' : ["M1 Small", "ECU 1","Core 1", "Memory 1.7GB"]
+		'm1.medium': ["M1 Medium", "ECU 2", "Core 1", "Memory 3.7GB"]
+		'm1.large' : ["M1 Large", "ECU 4","Core 2", "Memory 7.5GB"]
+		'm1.xlarge': ["M1 Extra Large", "ECU 8", "Core 4", "Memory 15GB"]
+		'm3.xlarge': ["M3 Extra Large", "ECU 13","Core 4","Memory 15GB"]
+		'm3.2xlarge' : ["M3 Double Extra Large", "ECU 26","Core 8","Memory 30GB"]
+		'm2.xlarge' : ["M2 High-Memory Extra Large", "ECU 6.5","Core 2","Memory 17.1GB"]
+		'm2.2xlarge' : ["M2 High-Memory Double Extra Large", "ECU 13","Core 4","Memory 34.2GB"]
+		'm2.4xlarge' : ["M2 High-Memory Quadruple Extra Large", "ECU 26","Core 8","Memory 68.4GB"]
+		'c1.medium' : ["C1 High-CPU Medium", "ECU 5","Core 2","Memory 1.7GB"]
+		'c1.xlarge' : ["C1 High-CPU Extra Large", "ECU 20","Core 8","Memory 7GB"]
+		'hi1.4xlarge' : ["High I/O Quadruple Extra Large", "ECU 35","Core 16","Memory 60.5GB"]
+		'hs1.8xlarge' : ["High Storage Eight Extra Large", "ECU 35","Core 16","Memory 117GB"]
+	}
 	#private
 	MESSAGE_E = {
 		MESSAGE_E_SESSION  : "This session has expired, please log in again"
@@ -254,6 +270,7 @@ define [], () ->
 	RECENT_DAYS		= 30
 
 	#public
+	INSTANCE_TYPE			: INSTANCE_TYPE
 	AWS_RESOURCE_TYPE       : AWS_RESOURCE_TYPE
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
 	AWS_PORT_NAME           : AWS_PORT_NAME

@@ -227,7 +227,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{
 				component_data = $.extend(true, {}, MC.canvas.SUBNET_JSON.data);
 				component_data.name = option.name;
-				component_data.resource.VpcId = $(".AWS-VPC-VPC")[0].id;
+				component_data.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 
@@ -331,7 +331,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				var eni = null;
 				// if subnet
 				if(option.subnet){
-					vpc_id = $(".AWS-VPC-VPC")[0].id;
+					vpc_id = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
 					component_data.resource.SubnetId = option.subnet
 					component_data.resource.VpcId = vpc_id;
 					eni = $.extend(true, {}, MC.canvas.ENI_JSON.data);

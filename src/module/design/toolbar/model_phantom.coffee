@@ -19,7 +19,8 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
                     'region'     : 'region_name',
                     'name'       : 'tab_id',
                     'thumbnail'  : true,
-                    'screenshot' : 'http://localhost:3000/screenshot.html'
+                    'screenshot' : 'http://localhost:3000/screenshot.html',
+                    'json_data'  : MC.canvas_data
                 },
                 success : ( result ) ->
                     console.log 'phantom callback'

@@ -82,6 +82,8 @@ var listen = function ()
 	$('#resource-panel').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);
 
 	$(document).on('keyup', MC.canvas.event.keyEvent);
+	
+	$(document.body).on('click', '.volume_item', MC.canvas.event.volumeSelect);
 
 	canvas_resize();
 	$(window).on('resize', canvas_resize);

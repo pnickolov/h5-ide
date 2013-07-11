@@ -1922,7 +1922,7 @@ MC.canvas.event.siderbarDrag = {
 		{
 			$('#volume-bubble-box').remove();
 
-			$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+			$('#' + match_node.id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
 		}
 
 		return false;
@@ -1948,7 +1948,7 @@ MC.canvas.event.siderbarDrag = {
 			target_node = $('#' + target_id);
 			target_offset = target_node[0].getBoundingClientRect();
 
-			$('#instance_volume_list').append('<li><a href="#" class="selected"><span class="volume_name">/dev/sdg</span><span class="volume_size">3GB</span></a></li>');
+			$('#instance_volume_list').append('<li><a href="#" id="" class="selected"><span class="volume_name">/dev/sdg</span><span class="volume_size">3GB</span></a></li>');
 
 			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
 		}
@@ -2293,8 +2293,12 @@ MC.canvas.volumeBubble = function (node)
 	if (!$('#volume-bubble-box')[0])
 	{
 		var target = $(node),
-			data = target.data('bubble-data'),
+			component_data = MC.canvas.data.get('component'),
+			node_volume_data = component_data[ node.id ].resource.BlockDeviceMapping,
+
+			data = {'list': []},
 			coordinate = {},
+			volume_id,
 			width,
 			height,
 			target_offset,
@@ -2303,6 +2307,20 @@ MC.canvas.volumeBubble = function (node)
 
 		$(document.body).append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
 		bubble_box = $('#volume-bubble-box');
+
+		$.each(node_volume_data, function (index, item)
+		{
+			volume_id = item.replace('#', '');
+			volume_data = component_data[ volume_id ];
+
+			data.list.push({
+				'volume_id': volume_id,
+				'name': volume_data.name,
+				'size': volume_data.resource.Size
+			});
+		});
+
+		data.volumeLength = node_volume_data.length;
 
 		$('#volume-bubble-content').html(
 			MC.template.instanceVolume( data )
@@ -2360,7 +2378,12 @@ MC.canvas.event.volumeShow = function (event)
 
 MC.canvas.event.volumeSelect = function (event)
 {
-	
+	var target = $(this),
+		volume_id = this.id;
+
+	target.parent().removeClass('selected');
+
+	target.addClass('selected');
 
 	return false;
 };

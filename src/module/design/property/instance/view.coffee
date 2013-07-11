@@ -122,6 +122,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             event.stopPropagation()
             $(this).parent().remove()
 
+        openSgPanel : ( event ) ->
+            console.log event
+
     }
 
     view = new InstanceView()

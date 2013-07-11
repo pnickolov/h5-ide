@@ -317,12 +317,15 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** instance begin *****//
 		case 'AWS.EC2.Instance':
 
-			var os_type = 'ami-unknown';
+			var os_type = 'ami-unknown',
+				volume_number = 0,
+				icon_volume_status = 'not-attached';
+
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
 				component_data.name = option.name;
-				component_data.resource.Placement.AvailabilityZone = option.zone
+				component_data.resource.Placement.AvailabilityZone = option.zone;
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
 				component_layout.osType =  option.osType;
@@ -343,7 +346,16 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.architecture = component_layout.architecture ;
 				option.rootDeviceType = component_layout.rootDeviceType ;
 			}
+
+			//os type
 			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+
+			//check volume number,set icon
+			volume_number = 1;
+			if (volume_number > 0)
+			{
+				icon_volume_status = 'attached-normal';
+			}
 
 			$(group).append(
 				////1. bg
@@ -390,11 +402,28 @@ MC.canvas.add = function (flag, option, coordinate)
 				////5. os_type
 				Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30, 15, 39, 27),
 
-				////6. volume-attached
-				Canvon.image('../assets/images/ide/icon/instance-volume-not-attached.png', 21, 48, 29, 24),
+				////6.1 volume-attached
+				Canvon.image('../assets/images/ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 48, 29, 24).attr({
+					'id': group.id + '_volume_status'
+				}),
+
+				//6.2 volume number
+				Canvon.text(35, 60, volume_number).attr({
+					'class': 'node-label volume-number',
+					'id': group.id + '_volume_number'
+				}),
+
+				//6.3 hot area for volume
+				Canvon.rectangle(21, 48, 29, 24).attr({
+					'class': 'instance-volume',
+					'data-target-id': group.id,
+					'fill': 'none'
+				}),
 
 				////7. eip
-				Canvon.image('../assets/images/ide/icon/instance-eip-off.png', 53, 50, 22, 16),
+				Canvon.image('../assets/images/ide/icon/instance-eip-off.png', 53, 50, 22, 16).attr({
+					'id': group.id + '_eip'
+				}),
 
 				////8. hostname
 				Canvon.text(50, 90, option.name).attr({

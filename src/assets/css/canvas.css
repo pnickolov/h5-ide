@@ -207,7 +207,10 @@
 .line {
 	cursor: pointer;
 	stroke-linejoin: round;
-	/*filter : url(#dropshadow); //only support chrome */
+}
+
+.webkit .line {
+	filter : url(#dropshadow); /*only support chrome*/
 }
 
 /* line connection */

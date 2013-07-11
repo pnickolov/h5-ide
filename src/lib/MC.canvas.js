@@ -540,8 +540,7 @@ MC.canvas = {
 						x: endX,
 						y: endY,
 						connectionAngle: to_port.data('angle')
-					},
-					filter_dropshadow = (MC.browser === 'webkit' || MC.browser === 'msie') ? 'url(#dropshadow)' : '' ;//line dropshadow only support chrome
+					};
 
 				//add pad to start0 and end0
 				MC.canvas._addPad(start0, 1);
@@ -594,7 +593,6 @@ MC.canvas = {
 				{
 					//draw straight line
 					MC.paper.start({
-						'filter': filter_dropshadow,
 						'stroke': connection_option.color,
 						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
 						'fill': 'none'
@@ -606,7 +604,6 @@ MC.canvas = {
 				{
 					//draw fold line
 					MC.paper.start({
-						'filter': filter_dropshadow,
 						'stroke': connection_option.color,
 						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
 						'fill': 'none'

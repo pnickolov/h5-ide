@@ -41,7 +41,7 @@ define [ 'jquery',
                 uid  = uid
                 type = type
 
-                if MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
                     instance_main.loadModule uid
                 #temp
                 setTimeout () ->

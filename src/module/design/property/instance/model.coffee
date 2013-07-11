@@ -75,7 +75,80 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded = value
 
             null
-            
+
+        setEniDescription: ( uid, value ) ->
+
+            console.log 'setEniDescription = ' + value
+
+            _.map MC.canvas_data.component, ( val, key ) ->
+
+                if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
+
+                    val.resource.Description = value
+
+                null
+
+            null
+
+        setSourceCheck : ( uid, value ) ->
+
+            console.log 'setSourceCheck = ' + value
+
+            _.map MC.canvas_data.component, ( val, key ) ->
+
+                if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
+
+                    val.resource.SourceDestCheck = value
+
+                null
+
+            null
+
+        setKP : ( uid, kp_name ) ->
+
+            _.map MC.canvas_property.kp_list, ( kp ) ->
+
+                if kp[kp_name]
+
+                    kp_ref = '@' + kp[kp_name] + '.resource.KeyName'
+
+                    console.log 'setKP = ' + kp_ref
+
+                    MC.canvas_data.component[ uid ].resource.KeyName = kp_ref
+
+                null
+
+            null
+
+        addKP : ( uid, kp_name ) ->
+
+            component_data = $.extend(true, {}, MC.canvas.KP_JSON.data)
+
+            kp_uid = MC.guid()
+            component_data.uid = kp_uid
+            component_data.resource.KeyName = kp_name
+            component_data.name = kp_name
+
+            kp_ref = '@' + kp_uid + '.resource.KeyName'
+
+            console.log 'addKP = ' + kp_ref
+
+            MC.canvas_data.component[ uid ].resource.KeyName = kp_ref
+
+            data = MC.canvas.data.get 'component'
+
+            data[kp_uid] = component_data
+
+            MC.canvas.data.set 'component', data
+
+            tmp = {}
+
+            tmp[kp_name] = kp_uid
+
+            MC.canvas_property.kp_list.push tmp
+
+            null
+
         getHost  : ->
             console.log 'getHost'
             console.log this.get 'get_host'
@@ -110,8 +183,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     kp = {}
 
                     kp.name = value.resource.KeyName
-
-                    if current_key_pair == value.resource.KeyName
+                    kp.uid = value.uid
+                    
+                    if MC.canvas_data.component[(current_key_pair.split ".")[0][1...]].resource.KeyName == value.resource.KeyName
 
                         kp.selected = true
 

@@ -1921,6 +1921,8 @@ MC.canvas.event.siderbarDrag = {
 		else
 		{
 			$('#volume-bubble-box').remove();
+
+			$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
 		}
 
 		return false;
@@ -1929,7 +1931,6 @@ MC.canvas.event.siderbarDrag = {
 	volumeUp: function (event)
 	{
 		var target = $(event.data.target),
-			target_id = target.attr('id') || '',
 			target_component_type = target.data('component-type'),
 			node_type = target.data('type'),
 			node_option = target.data('option'),
@@ -2331,6 +2332,8 @@ MC.canvas.volumeBubble = function (node)
 			.data('target-id', node.id)
 			.css(coordinate)
 			.show();
+
+		$('#' + node.id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-active.png');
 	}
 };
 
@@ -2344,8 +2347,6 @@ MC.canvas.event.volumeShow = function (event)
 		MC.canvas.volumeBubble(
 			document.getElementById( target_id )
 		);
-
-		$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-active.png');
 	}
 	else
 	{
@@ -2353,6 +2354,13 @@ MC.canvas.event.volumeShow = function (event)
 
 		$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
 	}
+
+	return false;
+};
+
+MC.canvas.event.volumeSelect = function (event)
+{
+	
 
 	return false;
 };

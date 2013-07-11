@@ -4,8 +4,8 @@
 
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         'UI.fixedaccordion',
-        'UI.secondarypanel',
         'UI.selectbox',
+        'UI.secondarypanel',
         'UI.tooltip',
         'UI.notification',
         'UI.modal'
@@ -27,7 +27,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-base64' : 'base64Change'
             'change #property-instance-ni-description' : 'eniDescriptionChange'
             'change #property-instance-source-check' : 'sourceCheckChange'
-            
+
             'click #sg-info-list li' : 'openSgPanel'
 
             'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
@@ -38,6 +38,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'OPTION_CHANGE #security-group-select' : "addSGtoList"
             'TOGGLE_ICON #sg-info-list' : "toggleSGfromList"
             'PREVENT_SECONDARY #sg-info-list' : "removeSGfromList"
+            'secondary-panel-shown #sg-info-list' : "showSGfromList"
             'click #instance-ip-add' : "addIPtoList"
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
@@ -117,6 +118,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         toggleSGfromList: (event, id) ->
             notification 'info', id, false
+
+        showSGfromList: (event, data) ->
+            notification 'info', data, false
 
         removeIPfromList: (event, id) ->
             event.stopPropagation()

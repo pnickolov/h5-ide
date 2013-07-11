@@ -2219,11 +2219,11 @@ a.sidebar-hider {
 	cursor: pointer;
 	width: 22px;
 	height: 16px;
-	background: url('../images/ide/instance-eip-off.png');
+	background: url('../images/ide/icon/instance-eip-off.png');
 }
 
 .toggle-eip.associated {
-	background: url('../images/ide/instance-eip-on.png');
+	background: url('../images/ide/icon/instance-eip-on.png');
 }
 
 .network-remove-icon {

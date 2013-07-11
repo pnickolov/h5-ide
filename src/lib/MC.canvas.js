@@ -1269,7 +1269,7 @@ MC.canvas.event.dragable = {
 
 		if (node_type !== 'group')
 		{
-			$('#canvas_body').addClass('dragging');
+			//$('#canvas_body').addClass('dragging');
 		}
 
 		$(document.body).on({
@@ -1338,7 +1338,6 @@ MC.canvas.event.dragable = {
 				match_place,
 				coordinate;
 
-			//console.info(event.data);
 			if (target_type === 'node')
 			{
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
@@ -1347,7 +1346,7 @@ MC.canvas.event.dragable = {
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
-					MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
+					//MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
 					match_place.is_matched
 				)
 				{

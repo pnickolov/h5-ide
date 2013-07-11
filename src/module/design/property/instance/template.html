@@ -1,5 +1,5 @@
 <div class="sidebar-title">
-	<span class="sidebar-title-text" id='property-title'>Property Panel</span>
+	<span class="sidebar-title-text" id='property-title'>{{component.instanceId}}</span>
 </div>
 <div class="fixedaccordion accordion-default" data-sub="71">
 	<div class="accordion-group  expanded" >
@@ -16,9 +16,9 @@
 				</div>
 				<div class="property-control-group clearfix">
 					<label>AMI</label>
-					<div class="ami-wrap clearfix secondary-panel" data-secondarypanel-template="aimSecondaryPanel" data-secondarypanel-data='{{{ami}}}'>
-						<img class="icon-property-instance-ami" src="./assets/images/ide/ami/amazon.32.ebs.png" / >
-						<div class="property-label">{{component.resource.ImageId}}</div>
+					<div class="ami-wrap clearfix secondary-panel" data-secondarypanel-template="aimSecondaryPanel" data-secondarypanel-data='{{{ami_string}}}'>
+						<img class="icon-property-instance-ami" src="./assets/images/ide/ami/{{ami_display.icon}}" / >
+						<div class="property-label">{{ami_display.name}}</div>
 					</div>
 				</div>
 				<div class="property-control-group clearfix">

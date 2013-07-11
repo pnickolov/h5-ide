@@ -78,6 +78,18 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             JSON.stringify MC.data.dict_ami[ami_id]
 
+        getAmiDisp : ( uid ) ->
+            
+            disp = {}
+
+            ami_id = MC.canvas_data.component[ uid ].resource.ImageId
+
+            disp.name = MC.data.dict_ami[ami_id].name
+
+            disp.icon = MC.data.dict_ami[ami_id].osType + '.' + MC.data.dict_ami[ami_id].architecture + '.' + MC.data.dict_ami[ami_id].rootDeviceType + ".png"
+
+            disp
+
         getKerPair : (uid)->
 
             kp_list = []

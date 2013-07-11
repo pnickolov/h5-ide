@@ -1935,7 +1935,8 @@ MC.canvas.event.siderbarDrag = {
 			node_type = target.data('type'),
 			node_option = target.data('option'),
 			bubble_box = $('#volume-bubble-box'),
-			target_id;
+			target_id,
+			new_volume;
 
 		$('.AWS-EC2-Instance').attr('class', function (index, key)
 		{
@@ -1948,7 +1949,11 @@ MC.canvas.event.siderbarDrag = {
 			target_node = $('#' + target_id);
 			target_offset = target_node[0].getBoundingClientRect();
 
-			$('#instance_volume_list').append('<li><a href="#" id="" class="selected"><span class="volume_name">/dev/sdg</span><span class="volume_size">3GB</span></a></li>');
+			new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', target.data('option'), coordinate);
+
+			$('#instance_volume_list').append('<li><a href="#" id="' + new_volume_id +'" class="selected"><span class="volume_name">' + new_volume_name + '</span><span class="volume_size">' + new_volume_size + 'GB</span></a></li>');
+
+			//MC.canvas.event.volumeSelect.call( $('#' + new_volume_id )[0] );
 
 			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
 		}
@@ -2376,7 +2381,7 @@ MC.canvas.event.volumeShow = function (event)
 	return false;
 };
 
-MC.canvas.event.volumeSelect = function (event)
+MC.canvas.event.volumeSelect = function ()
 {
 	var target = $(this),
 		volume_id = this.id;

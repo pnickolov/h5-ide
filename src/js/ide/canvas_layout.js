@@ -68,6 +68,7 @@ var listen = function ()
 	// });
 
 	canvas_body
+		.on('mousedown', '.instance-volume', MC.canvas.event.volumeShow)
 		.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 		.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 		.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)

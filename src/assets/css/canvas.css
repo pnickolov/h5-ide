@@ -213,6 +213,11 @@
 	filter : url(#dropshadow); /*only support chrome*/
 }
 
+.instance-volume {
+	cursor: pointer;
+	fill: rgba(255, 255, 255, 0);
+}
+
 /* line connection */
 .line.selected {
 	stroke: black !important;

@@ -2334,6 +2334,29 @@ MC.canvas.volumeBubble = function (node)
 	}
 };
 
+MC.canvas.event.volumeShow = function (event)
+{
+	var bubble_box = $('#volume-bubble-box'),
+		target_id = $(this).data('target-id');
+
+	if (!bubble_box[0])
+	{
+		MC.canvas.volumeBubble(
+			document.getElementById( target_id )
+		);
+
+		$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-active.png');
+	}
+	else
+	{
+		bubble_box.remove();
+
+		$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+	}
+
+	return false;
+};
+
 MC.canvas.event.selectLine = function (event)
 {
 	event.preventDefault();

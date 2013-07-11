@@ -1907,6 +1907,9 @@ a.sidebar-hider {
 #hide-property-panel {
 	right: 280px;
 }
+.property-details {
+	height: 500px;
+}
 
 /* Canvas and Toolbar Wrapper */
 #canvas-panel {
@@ -2219,11 +2222,11 @@ a.sidebar-hider {
 	cursor: pointer;
 	width: 22px;
 	height: 16px;
-	background: url('../images/ide/instance-eip-off.png');
+	background: url('../images/ide/icon/instance-eip-off.png');
 }
 
 .toggle-eip.associated {
-	background: url('../images/ide/instance-eip-on.png');
+	background: url('../images/ide/icon/instance-eip-on.png');
 }
 
 .network-remove-icon {

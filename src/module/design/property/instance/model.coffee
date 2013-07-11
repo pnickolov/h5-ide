@@ -39,7 +39,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             null
 
         setTenancy : ( uid, value ) ->
-            
+
             console.log 'setTenancy = ' + value
 
             MC.canvas_data.component[ uid ].resource.Placement.Tenancy = value

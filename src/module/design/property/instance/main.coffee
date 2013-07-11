@@ -17,13 +17,7 @@ define [ 'jquery',
 
         #
         require [ './module/design/property/instance/view',
-                  './module/design/property/instance/model',
-                  'UI.secondarypanel',
-                  'UI.selectbox',
-                  'UI.tooltip',
-                  'UI.notification',
-                  'UI.toggleicon',
-                  'UI.fixedaccordion'
+                  './module/design/property/instance/model'
         ], ( view, model ) ->
 
             #view

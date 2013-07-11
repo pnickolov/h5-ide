@@ -1119,7 +1119,6 @@ textarea {
 	display: none;
 	min-width: 160px;
 	background-color: #ffffff;
-	z-index: 50;
 }
 
 .selectbox .dropdown-menu,
@@ -1159,6 +1158,7 @@ textarea {
 .selectbox.open .dropdown-menu,
 .selectbox.open .editableoption {
 	display: block;
+	z-index: 50;
 }
 
 .selectbox-editable .editableoption {

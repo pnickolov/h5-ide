@@ -21,17 +21,17 @@ var secondarypanel = function (template, parent_dom)
     }
 
     panel_wrap.html(template).height(parent.height()).show();
+    panel_wrap.width(total_width);
+    panel_wrap.css("right",-total_width);
 
     panel_wrap.animate({
-        width: total_width
+        right: 0
       }, {
         duration: 500,
         specialEasing: {
             width: 'linear'
         }
     });
-    console.log( panel_wrap.html());
-
 
     $(document.body).on('click', '.back', secondarypanel.close);
 
@@ -62,14 +62,15 @@ secondarypanel.open = function ()
 
 secondarypanel.close = function ()
 {
-    var panel_wrap = $('#secondary-panel-wrap');
+    var panel_wrap = $('#secondary-panel-wrap'),
+        sub_width = panel_wrap.width();
 
     $(document.body)
         .off('click', '.back', secondarypanel.close);
 
     panel_wrap
         .animate({
-            width: 0
+            right: -sub_width
         }, {
             duration: 500,
             specialEasing: {

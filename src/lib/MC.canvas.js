@@ -529,11 +529,6 @@ MC.canvas = {
 				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
 				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
 
-				MC.paper.start({
-					'filter': 'url(#dropshadow)',
-					'stroke': connection_option.color
-				});
-
 				//add by xjimmy
 				var controlPoints = [],
 					start0 = {
@@ -545,20 +540,77 @@ MC.canvas = {
 						x: endX,
 						y: endY,
 						connectionAngle: to_port.data('angle')
-					};
+					},
+					filter_dropshadow = (MC.browser === 'webkit' || MC.browser === 'msie') ? 'url(#dropshadow)' : '' ;//line dropshadow only support chrome
 
 				//add pad to start0 and end0
 				MC.canvas._addPad(start0, 1);
 				MC.canvas._addPad(end0, 1);
 
+
+				//draw rectangle for vertical / horizontal line
+				// if ( start0.x === end0.x )
+				// {
+				// 	//draw vertical line
+				// 	MC.paper.start({
+				// 		'filter': 'url(#dropshadow)',
+				// 		'stroke': 'none',
+				// 		'stroke-width': 0,
+				// 		'fill': connection_option.color
+				// 	});
+
+				// 	var top_p = start0;
+				// 	var bottom_p = end0;
+				// 	if ( start0.y > end0.y )
+				// 	{
+				// 		top_p = end0;
+				// 		bottom_p = start0;
+				// 	}
+				// 	MC.paper.rectangle(top_p.x, top_p.y, MC.canvas.LINE_STROKE_WIDTH , bottom_p.y - top_p.y );
+				// }
+				// else if ( start0.y === end0.y )
+				// {
+				// 	//draw horizontal line
+				// 	MC.paper.start({
+				// 		'filter': 'url(#dropshadow)',
+				// 		'stroke': 'none',
+				// 		'stroke-width': 0,
+				// 		'fill': connection_option.color
+				// 	});
+
+				// 	var left_p = start0;
+				// 	var right_p = end0;
+				// 	if ( start0.y > end0.y )
+				// 	{
+				// 		left_p = end0;
+				// 		right_p = start0;
+				// 	}
+				// 	MC.paper.rectangle(left_p.x, left_p.y-2, right_p.x - left_p.x, MC.canvas.LINE_STROKE_WIDTH);
+				// }
+
+
+
 				if ( start0.x === end0.x || start0.y === end0.y )
 				{
 					//draw straight line
+					MC.paper.start({
+						'filter': filter_dropshadow,
+						'stroke': connection_option.color,
+						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+						'fill': 'none'
+					});
 
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
 				}
 				else
 				{
+					//draw fold line
+					MC.paper.start({
+						'filter': filter_dropshadow,
+						'stroke': connection_option.color,
+						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+						'fill': 'none'
+					});
 
 					///// route 1 (xjimmy's algorithm)/////
 					//MC.canvas._route2( controlPoints, start0, end0 );

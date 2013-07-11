@@ -206,10 +206,11 @@
 
 .line {
 	cursor: pointer;
-	fill: none;
 	stroke-linejoin: round;
-	stroke-width: 4;
-	filter : url(#dropshadow);
+}
+
+.webkit .line {
+	filter : url(#dropshadow); /*only support chrome*/
 }
 
 /* line connection */

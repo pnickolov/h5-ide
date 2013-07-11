@@ -530,6 +530,7 @@ MC.canvas = {
 				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
 
 				MC.paper.start({
+					'filter': 'url(#dropshadow)',
 					'stroke': connection_option.color
 				});
 

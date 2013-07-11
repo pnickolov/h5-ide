@@ -104,6 +104,11 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
                         value.imageId = key
                         
+                        _.map value, ( val, key ) ->
+                            if val == ''
+                                value[key] = 'None'
+                            null
+
                         if value.kernelId == undefined or value.kernelId == ''
                             value.kernelId = "None"
 
@@ -330,7 +335,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                         
                         #cache favorite ami item to MC.data.dict_ami
                         value.resource_info.instanceType = me._getInstanceType value.resource_info
-                        MC.data.dict_ami[value.imageId] = value.resource_info
+                        MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
                         null
 
                     me.set 'favorite_ami', result.resolved_data

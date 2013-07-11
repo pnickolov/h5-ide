@@ -1,6 +1,6 @@
 {
   "id": "",
-  "name": "",
+  "name": "stack-12345678",
   "description": "",
   "region": "us-east-1",
   "platform": "ec2-vpc",
@@ -353,8 +353,8 @@
 		"uid"	:	"GEC9F6SE-368A-45E3-8AD7-4CD79FFSDEWQ",
 		"resource"	:	{
 			"KeyName"	:	"DefaultKP",
-			"KeyFingerprint"	:	""		
-		}		
+			"KeyFingerprint"	:	""
+		}
     }
   },
   "layout": {

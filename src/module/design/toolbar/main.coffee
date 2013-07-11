@@ -35,11 +35,6 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
                 console.log 'design_toolbar_click:deleteStack'
                 model.deleteStack()
 
-            #new
-            view.on 'TOOLBAR_NEW_CLICK', () ->
-                console.log 'design_toolbar_click:newStack'
-                model.newStack()
-
             #run
             view.on 'TOOLBAR_RUN_CLICK', () ->
                 console.log 'design_toolbar_click:runStack'
@@ -54,16 +49,6 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
             view.on 'TOOLBAR_ZOOMOUT_CLICK', () ->
                 console.log 'design_toolbar_click:zoomOutStack'
                 model.zoomOutStack()
-
-            #export png
-            view.on 'TOOLBAR_EXPORT_PNG_CLICK', () ->
-                console.log 'design_toolbar_click:exportPng'
-
-            #export json
-            view.on 'TOOLBAR_EXPORT_JSON_CLICK', () ->
-                console.log 'design_toolbar_click:exportJson'
-                model.exportJson('test-text.txt')
-
 
     unLoadModule = () ->
         #view.remove()

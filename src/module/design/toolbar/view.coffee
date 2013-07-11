@@ -9,7 +9,7 @@ define [ 'MC', 'event',
 
     ToolbarView = Backbone.View.extend {
 
-        el       : $( '#main-toolbar' )
+        el       : document
 
         template : Handlebars.compile $( '#toolbar-tmpl' ).html()
 
@@ -24,15 +24,20 @@ define [ 'MC', 'event',
             'click .icon-toolbar-undo'          : 'clickUndoIcon'
             'click .icon-toolbar-redo'          : 'clickRedoIcon'
             'click #toolbar-export-png'         : 'clickExportPngIcon'
-            #'click #toolbar-export-json'        : 'clickExportJSONIcon'
+            'click #toolbar-export-json'        : 'clickExportJSONIcon'
+            'click .icon-toolbar-export'        : 'clickExportMenu'
 
         render   : () ->
             console.log 'toolbar render'
             $( '#main-toolbar' ).html this.template
 
         clickRunIcon : ->
-            console.log 'clickRunIcon'
-            this.trigger 'TOOLBAR_RUN_CLICK'
+            target = $$( '#main-toolbar' )
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'clickRunIcon'
+                event.data.target.trigger 'TOOLBAR_RUN_CLICK'
+                modal.close()
+            true
 
         clickSaveIcon : ->
             console.log 'clickSaveIcon'
@@ -52,7 +57,7 @@ define [ 'MC', 'event',
 
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'
-            this.trigger 'TOOLBAR_NEW_CLICK'
+            ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
 
         clickZoomInIcon : ->
             console.log 'clickZoomInIcon'
@@ -73,8 +78,13 @@ define [ 'MC', 'event',
             this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
 
         clickExportJSONIcon : ->
-            console.log 'clickExportJSONIcon'
-            this.trigger 'TOOLBAR_EXPORT_JSON_CLICK'
+            file_content = MC.canvas.layout.save()
+            this.trigger 'TOOLBAR_EXPORT_MENU_CLICK'
+            $( '#btn-confirm' ).attr {
+                'href'      : "data://text/plain; " + file_content,
+                'download'  : MC.canvas_data.name + '.json',
+            }
+            $( '#json-content' ).val file_content
 
     }
 

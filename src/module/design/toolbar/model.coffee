@@ -10,7 +10,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
         defaults :
             'zoomin_flag'   : true
             'zoomout_flag'  : true
-            'cur_name'      : null
 
         #save stack
         saveStack : () ->
@@ -73,12 +72,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     #trigger event
                     ide_event.trigger ide_event.STACK_DELETE, MC.canvas_data.name, MC.canvas_data.id
 
-        #new
-        newStack : () ->
-            me = this
-
-            ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
-
         #run
         runStack : ( app_name ) ->
             me = this
@@ -119,13 +112,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
             me.set 'zoomout_flag', zoomout_flag
 
             null
-
-        #export json
-        exportJson : (filename) ->
-            me = this
-
-            data = JSON.stringify(MC.canvas_data)
-
 
     }
 

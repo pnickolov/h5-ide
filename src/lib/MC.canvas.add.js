@@ -46,8 +46,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout = $.extend(true, {}, MC.canvas.AZ_JSON.layout);
 				component_layout.name = option.name;
 
-				option.width = MC.canvas.GROUP_WIDTH_GRID_AZ;
-				option.height = MC.canvas.GROUP_HEIGHT_GRID_AZ;
+				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
+				option.width = size[0];
+				option.height = size[1];
 			}
 			else
 			{//read
@@ -133,8 +134,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = $.extend(true, {}, MC.canvas.VPC_JSON.layout);
 
-				option.width = MC.canvas.GROUP_WIDTH_GRID_VPC;
-				option.height = MC.canvas.GROUP_HEIGHT_GRID_VPC;
+				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
+				option.width = size[0];
+				option.height = size[1];
 			}
 			else
 			{
@@ -228,8 +230,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 
-				option.width = MC.canvas.GROUP_WIDTH_GRID_SUBNET;
-				option.height = MC.canvas.GROUP_HEIGHT_GRID_SUBNET;
+				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
+				option.width = size[0];
+				option.height = size[1];
 			}
 			else
 			{

@@ -10,18 +10,11 @@ var constant_data = {
 	COMPONENT_WIDTH_GRID: 10,
 	COMPONENT_HEIGHT_GRID: 10,
 
-	//default size for vpc
-	GROUP_WIDTH_GRID_VPC: 60,
-	GROUP_HEIGHT_GRID_VPC: 60,
-
-	//default size for az
-	GROUP_WIDTH_GRID_AZ: 40,
-	GROUP_HEIGHT_GRID_AZ: 40,
-
-	//default size for subnet
-	GROUP_WIDTH_GRID_SUBNET: 20,
-	GROUP_HEIGHT_GRID_SUBNET: 20,
-
+	GROUP_DEFAULT_SIZE: {
+		'AWS.VPC.VPC': [60, 60], //[width, height]
+		'AWS.EC2.AvailabilityZone': [40, 40],
+		'AWS.VPC.Subnet': [20, 20]
+	},
 
 	GROUP_PADDING: 2,
 
@@ -76,6 +69,12 @@ var constant_data = {
 		'AWS.VPC.Subnet': []
 	},
 
+	GROUP_PARENT: {
+		'AWS.VPC.VPC': '',
+		'AWS.EC2.AvailabilityZone': 'AWS.VPC.VPC',
+		'AWS.VPC.Subnet': 'AWS.EC2.AvailabilityZone'
+	},
+
 	PLATFORM_TYPE: {
 		EC2_CLASSIC: 'ec2-classic', //no vpc
 		CUSTOM_VPC: 'custom-vpc',   //has vpc
@@ -97,7 +96,19 @@ var constant_data = {
 			'AWS.EC2.EBS.Volume': [ 'AWS.EC2.AvailabilityZone' ],
 			'AWS.VPC.NetworkInterface': [ 'AWS.EC2.AvailabilityZone']
 		},
-		//'custom-vpc'
+		'custom-vpc': {
+			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
+			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
+			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],
+			'AWS.VPC.NetworkInterface': [ 'AWS.VPC.Subnet' ],
+			'AWS.VPC.CustomerGateway': [ 'Canvas' ],
+			'AWS.VPC.RouteTable': [ 'AWS.VPC.VPC' ],
+			'AWS.VPC.InternetGateway': [ 'AWS.VPC.VPC' ],
+			'AWS.VPC.VPNGateway': [ 'AWS.VPC.VPC' ],
+			'AWS.EC2.AvailabilityZone': [ 'AWS.VPC.VPC' ],
+			'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
+			'AWS.VPC.VPC': [ 'Canvas' ]
+		},
 		'ec2-vpc': {
 			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
 			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],

@@ -8,6 +8,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         'UI.selectbox',
         'UI.tooltip',
         'UI.notification',
+        'UI.modal'
         'UI.toggleicon' ], ( ide_event, MC ) ->
 
     InstanceView = Backbone.View.extend {
@@ -32,7 +33,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'OPTION_CHANGE #keypair-select' : "addtoKPList"
             'EDIT_UPDATE #keypair-select' : "createtoKPList"
             'OPTION_CHANGE #security-group-select' : "addSGtoList"
-            'click #sg-info-list .sg-remove-item-icon' : "removeSGfromList"
+            'TOGGLE_ICON #sg-info-list' : "toggleSGfromList"
+            'PREVENT_SECONDARY #sg-info-list' : "removeSGfromList"
             'click #instance-ip-add' : "addIPtoList"
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
@@ -89,10 +91,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             $('#property-network-list').append MC.template.networkListItem()
             false
 
-        removeSGfromList: (event, id) ->
-            event.stopPropagation()
-            $(this).parent().remove()
+        removeSGfromList: (event, dom) ->
+            $(dom).parent().remove()
             notification 'info', 'SG is deleted', false
+
+        toggleSGfromList: (event, id) ->
+            notification 'info', id, false
 
         removeIPfromList: (event, id) ->
             event.stopPropagation()

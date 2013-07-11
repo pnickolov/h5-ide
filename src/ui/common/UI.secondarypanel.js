@@ -33,18 +33,23 @@ var secondarypanel = function (template, parent_dom)
         }
     });
 
-    $(document.body).on('click', '.back', secondarypanel.close);
-
     return this;
 };
 
-secondarypanel.open = function ()
+secondarypanel.open = function (event)
 {
     var target = $(this),
         target_template = target.data('secondarypanel-template'),
         target_data = target.data('secondarypanel-data'),
-        parent = $(this).parents('.first-panel').first();
-    if (target_template)
+        parent = target.parents('.first-panel').first(),
+        stopSecondaryPanel = $(event.target).hasClass('prevent-secondary');
+
+    if(stopSecondaryPanel) {
+        target.trigger("PREVENT_SECONDARY", $(event.target));
+        return false;
+    }
+
+    if (target_template && target_data)
     {
         secondarypanel(
             MC.template[ target_template ]( target_data ),
@@ -87,4 +92,5 @@ secondarypanel.close = function ()
 $(document).ready(function ()
 {
     $(document.body).on('click', '.secondary-panel', secondarypanel.open);
+    $(document.body).on('click', '.back', secondarypanel.close);
 });

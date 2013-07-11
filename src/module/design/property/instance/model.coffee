@@ -67,6 +67,14 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             MC.canvas_data.component[ uid ].resource.UserData.data = value
 
             null
+        
+        setBase64Encoded : ( uid, value )->
+
+            console.log 'setBase64Encoded = ' + value
+
+            MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded = value
+
+            null
             
         getHost  : ->
             console.log 'getHost'
@@ -79,7 +87,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             JSON.stringify MC.data.dict_ami[ami_id]
 
         getAmiDisp : ( uid ) ->
-            
+
             disp = {}
 
             ami_id = MC.canvas_data.component[ uid ].resource.ImageId

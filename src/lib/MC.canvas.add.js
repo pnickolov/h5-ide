@@ -227,6 +227,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{
 				component_data = $.extend(true, {}, MC.canvas.SUBNET_JSON.data);
 				component_data.name = option.name;
+				component_data.resource.VpcId = $(".AWS-VPC-VPC")[0].id;
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 
@@ -326,7 +327,23 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.ImageId = option.imageId;
 				component_data.resource.InstanceType = 'm1.small';
 				component_data.resource.Placement.AvailabilityZone = option.zone
-
+				
+				var eni = null;
+				// if subnet
+				if(option.subnet){
+					vpc_id = $(".AWS-VPC-VPC")[0].id;
+					component_data.resource.SubnetId = option.subnet
+					component_data.resource.VpcId = vpc_id;
+					eni = $.extend(true, {}, MC.canvas.ENI_JSON.data);
+					uid = MC.guid();
+					eni.uid = uid;
+					eni.name = "eni0";
+					eni.resource.Attachment.DeviceIndex = "0";
+					eni.resource.Attachment.InstanceId = "@"+group.id+".resource.InstanceId";
+					eni.resource.AvailabilityZone = option.zone;
+					eni.resource.SubnetId = option.subnet;
+					eni.resource.VpcId = vpc_id;
+				}
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
 				component_layout.osType =  option.osType;
@@ -424,7 +441,11 @@ MC.canvas.add = function (flag, option, coordinate)
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
-
+			
+			if(eni){
+				data[eni.uid] = eni;
+				MC.canvas.data.set('component', data);
+			}
 			$('#node_layer').append(group);
 
 			break;

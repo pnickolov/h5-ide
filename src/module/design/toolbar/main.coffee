@@ -55,8 +55,8 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
 
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, target ) ->
-                console.log 'toolbar:RELOAD_RESOURCE, target = ' + target
-                model.set 'stack_id', target
+                console.log 'toolbar:RELOAD_RESOURCE, target = ' + target + ', type = ' + type
+                if type is 'OPEN_STACK' then model.set 'stack_id', target
 
     unLoadModule = () ->
         #view.remove()

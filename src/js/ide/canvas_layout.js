@@ -51,7 +51,7 @@ var listen = function ()
 		.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 		.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 		.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
-		.on('click', MC.canvas.event.clearSelected);
+		.on('mousedown', MC.canvas.event.clearSelected);
 
 	$('#line_layer').on('click', '.line', MC.canvas.event.selectLine);
 

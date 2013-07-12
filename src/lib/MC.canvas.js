@@ -1318,11 +1318,6 @@ MC.canvas.event.dragable = {
 		shadow.attr('class', shadow.attr('class') + ' shadow');
 		$('#svg_canvas').append(shadow);
 
-		if (node_type !== 'group')
-		{
-			//$('#canvas_body').addClass('dragging');
-		}
-
 		$(document.body).on({
 			'mousemove': MC.canvas.event.dragable.mousemove,
 			'mouseup': MC.canvas.event.dragable.mouseup
@@ -1860,21 +1855,20 @@ MC.canvas.event.siderbarDrag = {
 
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
-			if (
-				target_component_type === 'node' &&
-				MC.canvas.isBlank("node", '', coordinate.x, coordinate.y)
-			)
+			if (target_component_type === 'node')
 			{
 				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
 
 				if (match_place.is_matched)
 				{
-					if($("#"+match_place.target).data().class === "AWS.VPC.Subnet"){
-						node_option.subnet = "@"+match_place.target + ".resource.SubnetId";
-						node_option.zone = MC.canvas_data.component[match_place.target].resource.AvailabilityZone
+					if ($("#" + match_place.target).data().class === "AWS.VPC.Subnet")
+					{
+						node_option.subnet = "@" + match_place.target + ".resource.SubnetId";
+						node_option.zone = MC.canvas_data.component[ match_place.target ].resource.AvailabilityZone
 					}
-					if($("#"+match_place.target).data().class === "AWS.EC2.AvailabilityZone"){
-						node_option.zone = $("#"+match_place.target).text();
+					if ($("#" + match_place.target).data().class === "AWS.EC2.AvailabilityZone")
+					{
+						node_option.zone = $("#" + match_place.target).text();
 					}
 					MC.canvas.add(node_type, node_option, coordinate);
 				}
@@ -1890,8 +1884,9 @@ MC.canvas.event.siderbarDrag = {
 
 				if (match_place.is_matched)
 				{
-					if(match_place.target && $("#"+match_place.target).data().class === "AWS.EC2.AvailabilityZone"){
-						node_option.zone = $("#"+match_place.target).text()
+					if (match_place.target && $("#" + match_place.target).data().class === "AWS.EC2.AvailabilityZone")
+					{
+						node_option.zone = $("#" + match_place.target).text();
 					}
 					
 					MC.canvas.add(node_type, node_option, coordinate);
@@ -2263,7 +2258,13 @@ MC.canvas.volume = {
 				data.list.push({
 					'volume_id': volume_id,
 					'name': volume_data.name,
-					'size': volume_data.resource.Size
+					'size': volume_data.resource.Size,
+					'json': JSON.stringify({
+						'instance_id': node.id,
+						'id': volume_id,
+						'name': volume_data.name,
+						'volumeSize': volume_data.resource.Size
+					})
 				});
 			});
 
@@ -2315,11 +2316,7 @@ MC.canvas.volume = {
 		}
 		else
 		{
-			bubble_box.remove();
-
-			$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
-
-			$(document).off('keyup', MC.canvas.volume.delete);
+			MC.canvas.volume.close();
 		}
 
 		return false;
@@ -2337,6 +2334,21 @@ MC.canvas.volume = {
 		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
 
 		return false;
+	},
+
+	close: function ()
+	{
+		var bubble_box = $('#volume-bubble-box');
+
+		if (bubble_box[0])
+		{
+			target_id = bubble_box.data('target-id');
+			bubble_box.remove();
+
+			$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+
+			$(document).on('keyup', MC.canvas.volume.delete);
+		}
 	},
 
 	delete: function (event)
@@ -2387,11 +2399,8 @@ MC.canvas.volume = {
 			shadow,
 			clone_node;
 
-		$(document.body).append('<div id="drag_shadow"></div>');
+		$(document.body).append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
 		shadow = $('#drag_shadow');
-
-		clone_node = target.clone();
-		shadow.append(clone_node);
 
 		shadow
 			.css({
@@ -2443,17 +2452,7 @@ MC.canvas.volume = {
 		}
 		else
 		{
-			var bubble_box = $('#volume-bubble-box');
-
-			if (bubble_box[0])
-			{
-				target_id = bubble_box.data('target-id');
-				bubble_box.remove();
-
-				$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
-
-				$(document).on('keyup', MC.canvas.volume.delete);
-			}
+			MC.canvas.volume.close();
 		}
 
 		return false;
@@ -2463,13 +2462,15 @@ MC.canvas.volume = {
 	{
 		var target = $(event.data.target),
 			target_component_type = target.data('component-type'),
-			node_type = target.data('type'),
 			node_option = target.data('option'),
 			bubble_box = $('#volume-bubble-box'),
 			target_id,
+			volume_id,
 			target_volume_data,
 			new_volume,
-			data_option;
+			data_option,
+			original_node_id,
+			original_node_volume_data;
 
 		$('.AWS-EC2-Instance').attr('class', function (index, key)
 		{
@@ -2483,26 +2484,71 @@ MC.canvas.volume = {
 			target_offset = target_node[0].getBoundingClientRect();
 			target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping');
 
-			data_option = target.data('option');
-
 			if (event.data.action === 'move')
 			{
-
+				volume_id = target.attr('id');
+				data_option = target.data('json');
 			}
 			else
 			{
-				volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
+				data_option = target.data('option');
+				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
+				volume_id = new_volume.id;
 			}
 
-			$('#instance_volume_list').append('<li><a href="#" id="' + volume.id +'" class="volume_item"><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+			if (event.data.action === 'move')
+			{
+				if (data_option.instance_id !== target_id)
+				{
+					data_json = JSON.stringify({
+						'instance_id': target_id,
+						'id': volume_id,
+						'name': data_option.name,
+						'volumeSize': data_option.size
+					});
 
-			target_volume_data.push('#' + volume.id);
+					$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="volume_item" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
-			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+					target_volume_data.push('#' + volume_id);
 
-			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+					$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
 
-			MC.canvas.volume.select.call( $('#' + volume.id )[0] );
+					MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+					// Update original data
+					original_node_id = data_option.instance_id;
+					original_node_volume_data = MC.canvas.data.get('component.' + original_node_id + '.resource.BlockDeviceMapping');
+
+					original_node_volume_data.splice(
+						original_node_volume_data.indexOf(
+							volume_id
+						), 1
+					);
+
+					MC.canvas.data.set('component.' + original_node_id + '.resource.BlockDeviceMapping', original_node_volume_data);
+
+					$('#' + original_node_id + '_volume_number').text(original_node_volume_data.length);
+				}
+			}
+			else
+			{
+				data_json = JSON.stringify({
+					'instance_id': target_id,
+					'id': volume_id,
+					'name': data_option.name,
+					'volumeSize': data_option.size
+				});
+
+				$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="volume_item" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+
+				target_volume_data.push('#' + volume_id);
+
+				$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+
+				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+			}
+
+			MC.canvas.volume.select.call( $('#' + volume_id )[0] );
 
 			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
 		}
@@ -2512,7 +2558,9 @@ MC.canvas.volume = {
 		$(document.body).off({
 			'mousemove': MC.canvas.volume.mousemove,
 			'mouseup': MC.canvas.volume.mouseup
-		});		
+		});
+
+		return false;
 	}
 };
 
@@ -2544,6 +2592,11 @@ MC.canvas.event.clearSelected = function ()
 
 	MC.canvas.selected_node = [];
 
+	if ($('#volume-bubble-box')[0])
+	{
+		MC.canvas.volume.close();
+	}
+	
 	//dispatch event when click blank area in canvas
 	$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
 };

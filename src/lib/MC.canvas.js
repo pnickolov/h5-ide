@@ -2406,8 +2406,7 @@ MC.canvas.volume = {
 			.css({
 				'top': event.pageY - 50,
 				'left': event.pageX - 50
-			})
-			.show();
+			});
 
 		$('.AWS-EC2-Instance').attr('class', function (index, key)
 		{
@@ -2436,10 +2435,18 @@ MC.canvas.volume = {
 		event.preventDefault();
 		event.stopPropagation();
 
-		event.data.shadow.css({
-			'top': event.pageY - 50,
-			'left': event.pageX - 50
-		});
+		if (
+			event.data.originalX !== event.pageX ||
+			event.data.originalY !== event.pageY
+		)
+		{
+			event.data.shadow
+				.css({
+					'top': event.pageY - 50,
+					'left': event.pageX - 50
+				})
+				.show();
+		}
 
 		match_node = MC.canvas.matchPoint(
 			event.pageX - event.data.canvas_offset.left,
@@ -2596,7 +2603,7 @@ MC.canvas.event.clearSelected = function ()
 	{
 		MC.canvas.volume.close();
 	}
-	
+
 	//dispatch event when click blank area in canvas
 	$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
 };

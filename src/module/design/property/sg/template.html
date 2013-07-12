@@ -1,4 +1,4 @@
-<div class="secondary-panel" id="sg-secondary-panel" parent="{{sg_detail.parent}}">
+<div class="secondary-panel" id="sg-secondary-panel" parent="{{sg_detail.parent}}" uid='{{sg_detail.component.uid}}'>
 	<div class="sidebar-title">
 		<a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
 		<span class="sidebar-title-text">{{sg_detail.component.resource.GroupName}}</span>
@@ -9,7 +9,7 @@
 				<span class="left">Name</span>
 				<span class="right">(Required)</span>
 			</h5>
-			<input class="input" type="text" value="{{sg_detail.component.resource.GroupName}}" />
+			<input class="input" type="text" id="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}" />
 		</div>
 		<div class="sg-description">
 			<h5>

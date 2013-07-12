@@ -31,9 +31,28 @@ define [ 'jquery',
                 ami_string : model.getAmi uid
                 ami_display : model.getAmiDisp uid
                 sg_display : model.getSgDisp uid
+                checkbox_display: model.getCheckBox uid
             }
             #render
             view.render( attributes )
+
+            ide_event.trigger ide_event.RELOAD_PROPERTY
+
+            view.on 'RE_RENDER', ( uid ) ->
+
+                attributes = {
+                    instance_type : model.getInstanceType uid
+                    component : MC.canvas_data.component[uid]
+                    keypair : model.getKerPair uid
+                    ami_string : model.getAmi uid
+                    ami_display : model.getAmiDisp uid
+                    sg_display : model.getSgDisp uid
+                    checkbox_display: model.getCheckBox uid
+                }
+
+                view.render( attributes )
+
+                ide_event.trigger ide_event.RELOAD_PROPERTY
 
     unLoadModule = () ->
         #view.remove()

@@ -51,7 +51,11 @@
 				</div>
 				<div class="property-control-group clearfix">
 					<div class="checkbox">
+						{{#if checkbox_display.ebsOptimized}}
+						<input id="property-instance-ebs-optimized" type="checkbox" value="None" checked="true" name="ebs-optimized" />
+						{{else}}
 						<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
+						{{/if}}
 						<label for="property-instance-ebs-optimized"></label>
 					</div>
 					<label for="property-instance-ebs-optimized" >EBS Optimized</label>
@@ -118,18 +122,26 @@
 			<div class="item-wrap scroll-content">
 				<div class="property-control-group">
 					<div class="checkbox">
+						{{#if checkbox_display.monitoring}}
+						<input id="property-instance-enable-cloudwatch" type="checkbox" checked="true" value="None" name="property-instance-enable-cloudwatch" />
+						{{else}}
 						<input id="property-instance-enable-cloudwatch" type="checkbox" value="None" name="property-instance-enable-cloudwatch" />
+						{{/if}}						
 						<label for="property-instance-enable-cloudwatch"></label>
 					</div>
 					<label for="property-resource-check-1" >Enable CloudWatch</label>
 				</div>
 				<div class="property-control-group">
 					<label class="left" for="property-instance-user-data">User Data</label>
-					<textarea id="property-instance-user-data"></textarea>
+					<textarea id="property-instance-user-data">{{component.resource.UserData.Data}}</textarea>
 				</div>
 				<div class="property-control-group">
 					<div class="checkbox">
+						{{#if checkbox_display.base64Encoded}}
+						<input id="property-instance-base64" type="checkbox" checked="true" value="None" name="property-instance-base64" />
+						{{else}}
 						<input id="property-instance-base64" type="checkbox" value="None" name="property-instance-base64" />
+						{{/if}}
 						<label for="property-instance-base64"></label>
 					</div>
 					<label for="property-resource-check-1" >base64 encoded</label>
@@ -184,16 +196,13 @@
 				<i class="icon-add-sg icon-btn-selectbox"></i>
 			</a>
 			<ul class="dropdown-menu" role="menu">
+				{{#each sg_display.all_sg}}
 				<li class="selected" tabindex="-1">
-					<a data-id="SG-longlonglong-name-001" href="#" title="SG description">
-						<div class="truncate">SG-longlonglong-name-001</div>
+					<a data-id="{{uid}}" href="#" title="SG description">
+						<div class="truncate">{{name}}</div>
 					</a>
 				</li>
-				<li tabindex="-1">
-					<a data-id="SG-longlonglong-name-002" href="#" title="SG description">
-						<div class="truncate">SG-longlonglong-name-002</div>
-					</a>
-				</li>
+				{{/each}}
 				<li tabindex="-1">
 					<a id="show-newsg-panel" class="secondary-panel" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{}' data-id="" href="#">New Security Group</a>
 				</li>

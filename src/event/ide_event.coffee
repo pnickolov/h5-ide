@@ -30,6 +30,7 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_PROPERTY       : 'OPEN_PROPERTY'
         OPEN_SG             : 'OPEN_SG'
         OPEN_INSTANCE       : 'OPEN_INSTANCE'
+        RELOAD_PROPERTY     : 'RELOAD_PROPERTY'
 
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'

@@ -22,6 +22,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'change #radio_outbound' : 'radioOutboundChange'
             'OPTION_CHANGE #modal-sg-rule' : 'sgModalSelectboxChange'
 
+            'change #securitygroup-name' : 'setSGName'
+
         render     : () ->
             console.log 'property:sg render'
             $( '.property-details' ).html this.template this.model.attributes
@@ -57,6 +59,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         sgModalSelectboxChange : (event, id) ->
             $('#sg-protocol-select-result').find('.show').removeClass('show')
             $('#sg-protocol-' + id).addClass('show')
+
+        setSGName : ( event ) ->
+
+            sg_uid = $("#sg-secondary-panel").attr "uid"
+
+            this.trigger 'SET_SG_NAME', sg_uid, event.target.value
     }
 
     view = new InstanceView()

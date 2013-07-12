@@ -8,7 +8,7 @@ define [ 'jquery',
 ], ( $, template, ide_event ) ->
 
     #private
-    loadModule = ( uid, parent ) ->
+    loadModule = ( uid_parent ) ->
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-sg-tmpl">' + template + '</script>'
@@ -21,9 +21,22 @@ define [ 'jquery',
             #view
             view.model    = model
 
-            view.model.getSG uid, parent
+            if uid_parent.uid
+
+                view.model.getSG uid_parent.uid, uid_parent.parent
+
+            else
+
+                view.model.addSG uid_parent.parent
             #render
             view.render()
+            
+            view.on 'SET_SG_NAME', ( uid, value ) ->
+
+                model.setSGName uid, value
+
+                view.render()
+
 
     unLoadModule = () ->
         #view.remove()

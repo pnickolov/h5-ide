@@ -64,7 +64,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             console.log 'setUserData = ' + value
 
-            MC.canvas_data.component[ uid ].resource.UserData.data = value
+            MC.canvas_data.component[ uid ].resource.UserData.Data = value
 
             null
         
@@ -149,6 +149,18 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
+        getCheckBox : ( uid ) ->
+
+            checkbox = {}
+
+            checkbox.ebsOptimized = true if MC.canvas_data.component[ uid ].resource.EbsOptimized == true or MC.canvas_data.component[ uid ].resource.EbsOptimized == 'true'
+
+            checkbox.monitoring = true if MC.canvas_data.component[ uid ].resource.Monitoring == 'enabled'
+
+            checkbox.base64Encoded = true if MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == true or MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == "true"
+
+            checkbox
+
         getHost  : ->
             console.log 'getHost'
             console.log this.get 'get_host'
@@ -176,6 +188,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             instance_sg = {}
 
             instance_sg.detail = []
+
+            instance_sg.all_sg = []
 
             sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
 
@@ -206,6 +220,17 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                         sg_detail.desc = MC.canvas_data.component[sg_uid].resource.GroupDescription
 
                         instance_sg.detail.push sg_detail
+
+                    else
+                        tmp = {}
+
+                        tmp.name = value.name
+
+                        tmp.uid = value.uid
+
+                        if tmp not in instance_sg.all_sg
+
+                            instance_sg.all_sg.push tmp
 
             instance_sg.total = instance_sg.detail.length
 

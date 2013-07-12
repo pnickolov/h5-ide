@@ -44,20 +44,20 @@ define [ 'jquery',
                 if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
                     instance_main.loadModule uid
                 #temp
-                setTimeout () ->
-                   view.refresh()
-                , 2000
+                # setTimeout () ->
+                #    view.refresh()
+                # , 2000
 
                 null
 
             #listen OPEN_SG
             ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent ) ->
                 console.log 'OPEN_SG'
-                sg_main.loadModule( uid_parent.uid, uid_parent.parent )
+                sg_main.loadModule( uid_parent )
                 #temp
-                setTimeout () ->
-                   view.refresh()
-                , 2000
+                # setTimeout () ->
+                #    view.refresh()
+                # , 2000
 
                 null
 
@@ -67,11 +67,15 @@ define [ 'jquery',
                 #
                 instance_main.loadModule uid, type
                 #temp
-                setTimeout () ->
-                   view.refresh()
-                , 2000
+                # setTimeout () ->
+                #    view.refresh()
+                # , 2000
 
                 null
+
+            ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->
+
+                view.refresh()
 
     unLoadModule = () ->
         #view.remove()

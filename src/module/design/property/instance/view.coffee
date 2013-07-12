@@ -56,6 +56,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             console.log 'instanceNameChange'
             cid = $( '#instance-property-detail' ).attr 'component'
             this.model.setHost cid, event.target.value
+            this.trigger 'RE_RENDER', cid
 
         instanceTypeSelect : ( event, value )->
             cid = $( '#instance-property-detail' ).attr 'component'
@@ -134,8 +135,16 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             $(document.body).on 'click', '.back', secondarypanel.close
 
         addSGtoList: (event, id) ->
+
             if(id.length != 0)
                 $('#sg-info-list').append MC.template.sgListItem({name: id})
+
+            else
+
+                cid = $( '#instance-property-detail' ).attr 'component'
+
+                ide_event.trigger ide_event.OPEN_SG, {parent: cid}
+
 
         removeSGfromList: (event) ->
             $(event.target).parents('li').first().remove()

@@ -10,7 +10,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
         defaults :
             'zoomin_flag'   : true
             'zoomout_flag'  : true
-            'stack_id'      : null
 
         #save stack
         saveStack : () ->
@@ -33,6 +32,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST
 
+                        #call save png
+                        me.savePNG true
+
             else    #new
                 stack_model.create { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
 
@@ -50,7 +52,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST
 
-
+                        #call save png
+                        me.savePNG true
 
         #duplicate
         duplicateStack : () ->
@@ -65,9 +68,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
                     if !result.is_error
                         console.log 'save as stack successfully'
-
-                        #load the new copy stack
-                        ide_event.trigger ide_event.OPEN_STACK_TAB, new_name, MC.canvas_data.region, result.resolved_data
 
                         #update stack list
                         ide_event.trigger ide_event.UPDATE_STACK_LIST
@@ -129,6 +129,30 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
             me.set 'zoomout_flag', zoomout_flag
 
             null
+
+        savePNG : ( is_thumbnail ) ->
+            console.log 'savePNG'
+            me = this
+            #
+            $.ajax {
+                url  : 'http://localhost:3001/savepng',
+                type : 'post',
+                data : {
+                    'usercode'   : $.cookie( 'usercode' ),
+                    'session_id' : $.cookie( 'session_id' ),
+                    'region'     : MC.canvas_data.region,
+                    'stack_id'   : MC.canvas_data.id,
+                    'thumbnail'  : is_thumbnail,
+                    'screenshot' : 'http://localhost:3000/screenshot.html'
+                },
+                success : ( result ) ->
+                    console.log 'phantom callback'
+                    console.log result
+                    if result.status is 'success'
+                        #
+                    else
+                        #
+            }
 
     }
 

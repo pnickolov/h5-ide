@@ -2,7 +2,7 @@
 #  Controller for design/toolbar module
 ####################################
 
-define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, toolbar_tmpl, ide_event ) ->
+define [ 'jquery', 'text!/module/design/toolbar/template.html' ], ( $, toolbar_tmpl ) ->
 
     #private
     loadModule = () ->
@@ -13,7 +13,7 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
         $( toolbar_tmpl ).appendTo '#main-toolbar'
 
         #load remote module1.js
-        require [ './module/design/toolbar/view', './module/design/toolbar/model', './module/design/toolbar/model_phantom' ], ( View, model ) ->
+        require [ './module/design/toolbar/view', './module/design/toolbar/model' ], ( View, model ) ->
 
             #view
             view       = new View()
@@ -53,10 +53,10 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
                 console.log 'design_toolbar_click:zoomOutStack'
                 model.zoomOutStack()
 
-            #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, target ) ->
-                console.log 'toolbar:RELOAD_RESOURCE, target = ' + target + ', type = ' + type
-                if type is 'OPEN_STACK' then model.set 'stack_id', target
+            #export to png
+            view.on 'TOOLBAR_EXPORT_PNG_CLICK', () ->
+                console.log 'design_toolbar_click:exportPngIcon'
+                model.savePNG false
 
     unLoadModule = () ->
         #view.remove()

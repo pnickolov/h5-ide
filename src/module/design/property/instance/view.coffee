@@ -46,6 +46,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
             #for sg module
+            'click .rule-edit-icon' : 'showEditRuleModal'
+            'click #sg-add-rule-icon' : 'showCreateRuleModal'
+            'click .rule-remove-icon' : 'removeRulefromList'
+            'change #radio_inbound' : 'radioInboundChange'
+            'change #radio_outbound' : 'radioOutboundChange'
+            'OPTION_CHANGE #modal-sg-rule' : 'sgModalSelectboxChange'
 
         render     : ( attributes ) ->
             console.log 'property:instance render'
@@ -135,12 +141,34 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                     target = source.parents('.secondary-panel').first()
                 secondarypanel.open target, MC.template.sgSecondaryPanel target.data('secondarypanel-data')
                 $(document.body).on 'click', '.back', secondarypanel.close
+                fixedaccordion.resize()
+                selectbox.init()
 
         openAmiPanel : ( event ) ->
             target = $('#property-ami')
             secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
             $(document.body).on 'click', '.back', secondarypanel.close
 
+        #SG SecondaryPanel
+        showEditRuleModal : (event) ->
+            modal MC.template.modalSGRule {isAdd:false}, true
+
+        showCreateRuleModal : (event) ->
+            modal MC.template.modalSGRule {isAdd:true}, true
+            return false
+
+        removeRulefromList: (event, id) ->
+            $(event.target).parents('li').first().remove()
+
+        radioInboundChange : (event) ->
+            $('#rule-modle-title2').text "Source"
+
+        radioOutboundChange : (event) ->
+            $('#rule-modle-title2').text "Destination"
+
+        sgModalSelectboxChange : (event, id) ->
+            $('#sg-protocol-select-result').find('.show').removeClass('show')
+            $('#sg-protocol-' + id).addClass('show')
     }
 
     view = new InstanceView()

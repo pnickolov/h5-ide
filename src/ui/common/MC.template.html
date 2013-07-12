@@ -762,33 +762,17 @@ Additional Notes and Questions
 </div>
 
 <!-- instanceVolume -->
-<div class="bubble-head">Attached volume (4)</div>
+<div class="bubble-head">Attached volume (<span id="instance_volume_number">{{volumeLength}}</span>)</div>
 <div class="bubble-content">
-	<ul class="instance_volume_list clearfix">
+	<ul id="instance_volume_list" class="clearfix">
+		{{#each list}}
 		<li>
-			<a href="#">
-				<span class="volume_name">/dev/sdg</span>
-				<span class="volume_size">3GB</span>
+			<a href="#" id="{{volume_id}}" class="volume_item">
+				<span class="volume_name">{{name}}</span>
+				<span class="volume_size">{{size}}GB</span>
 			</a>
 		</li>
-		<li>
-			<a href="#">
-				<span class="volume_name">/dev/sdg</span>
-				<span class="volume_size">3GB</span>
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<span class="volume_name">/dev/sdg</span>
-				<span class="volume_size">3GB</span>
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<span class="volume_name">/dev/sdg</span>
-				<span class="volume_size">3GB</span>
-			</a>
-		</li>
+		{{/each}}
 	</ul>
 
 <!-- aimSecondaryPanel -->

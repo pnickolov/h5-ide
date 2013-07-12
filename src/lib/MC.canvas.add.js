@@ -1,6 +1,5 @@
 MC.canvas.add = function (flag, option, coordinate)
 {
-
 	var group = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
 		create_mode = true,
 		type = '',
@@ -320,29 +319,33 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** instance begin *****//
 		case 'AWS.EC2.Instance':
 
-			var os_type = 'ami-unknown';
+			var os_type = 'ami-unknown',
+				volume_number = 0,
+				icon_volume_status = 'not-attached',
+				kp = null,
+				eni = null;
+
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
 				component_data.name = option.name;
+
 				component_data.resource.ImageId = option.imageId;
 				component_data.resource.InstanceType = 'm1.small';
-				component_data.resource.Placement.AvailabilityZone = option.zone
-				
-				
-				var kp = null;
+				component_data.resource.Placement.AvailabilityZone = option.zone;
+
 				// if not kp				
 				if(MC.canvas_property.kp_list.length === 0){
 					uid = MC.guid();
 					kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
 					kp.uid = uid;
-					tmp = {}
-					tmp[kp.name] = kp.uid
+					tmp = {};
+					tmp[kp.name] = kp.uid;
 					MC.canvas_property.kp_list.push(tmp);
 				}
-				
+
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
-				var eni = null;
+
 				// if subnet
 				if(option.subnet){
 					subnet_uid = option.subnet.split('.')[0].slice(1);
@@ -366,8 +369,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.osType =  option.osType;
 				component_layout.architecture =  option.architecture;
 				component_layout.rootDeviceType =  option.rootDeviceType;
-				component_layout.virtualizationType = option.virtualizationType
-				
+				component_layout.virtualizationType = option.virtualizationType;
+
 			}
 			else
 			{//read
@@ -382,9 +385,18 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.osType = component_layout.osType ;
 				option.architecture = component_layout.architecture ;
 				option.rootDeviceType = component_layout.rootDeviceType ;
-				option.virtualizationType = component_layout.virtualizationType
+				option.virtualizationType = component_layout.virtualizationType;
 			}
+
+			//os type
 			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+
+			//check volume number,set icon
+			volume_number = component_data.resource.BlockDeviceMapping.length;
+			if (volume_number > 0)
+			{
+				icon_volume_status = 'attached-normal';
+			}
 
 			$(group).append(
 				////1. bg
@@ -431,20 +443,35 @@ MC.canvas.add = function (flag, option, coordinate)
 				////5. os_type
 				Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30, 15, 39, 27),
 
-				////6. volume-attached
-				Canvon.image('../assets/images/ide/icon/instance-volume-not-attached.png', 21, 48, 29, 24),
+				////6.1 volume-attached
+				Canvon.image('../assets/images/ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 48, 29, 24).attr({
+					'id': group.id + '_volume_status'
+				}),
+
+				//6.2 volume number
+				Canvon.text(35, 60, volume_number).attr({
+					'class': 'node-label volume-number',
+					'id': group.id + '_volume_number'
+				}),
+
+				//6.3 hot area for volume
+				Canvon.rectangle(21, 48, 29, 24).attr({
+					'class': 'instance-volume',
+					'data-target-id': group.id,
+					'fill': 'none'
+				}),
 
 				////7. eip
-				Canvon.image('../assets/images/ide/icon/instance-eip-off.png', 53, 50, 22, 16),
+				Canvon.image('../assets/images/ide/icon/instance-eip-off.png', 53, 50, 22, 16).attr({
+					'id': group.id + '_eip'
+				}),
 
 				////8. hostname
 				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name'
 				})
 			).attr({
-				'class': 'dragable node bubble ' + class_type,
-				'data-bubble-template': 'instanceVolume',
-				'data-bubble-data': '',
+				'class': 'dragable node ' + class_type,
 				'data-type': 'node',
 				'data-class': type
 			});
@@ -458,7 +485,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
-			
+
 			if(kp){
 				data[kp.uid] = kp;
 				MC.canvas.data.set('component', data);
@@ -481,68 +508,20 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet.Size = option.volumeSize;
-
-				component_layout = $.extend(true, {}, MC.canvas.VOLUME_JSON.layout);
 			}
 			else
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
 				option.volumeSize = component_data.resource.AttachmentSet.Size;
-
-				component_layout = layout.node[group.id];
-
-				coordinate.x = component_layout.coordinate[0];
-				coordinate.y = component_layout.coordinate[1];
 			}
-
-			$(group).append(
-				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
-					'class': 'node-background',
-					'rx': 5,
-					'ry': 5
-				}),
-				Canvon.image('../assets/images/ide/icon/VOL-Canvas.png', 18, 20, 70, 70),
-
-				//2 path: left port
-				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-green port-volume-attach',
-					'transform': 'translate(22, 62)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'volume-attach',
-					'data-position': 'left',
-					'data-type': 'attachment',
-					'data-direction': 'in',
-					'data-angle': MC.canvas.PORT_LEFT_ANGLE
-				}),
-
-				////3. device-name
-				Canvon.text(50, 40, option.name).attr({
-					'class': 'node-label device-name'
-				}),
-
-				////3. volume-size
-				Canvon.text(50, 65, option.volumeSize + " GiB").attr({
-					'class': 'node-label volume-size'
-				})
-
-			).attr({
-				'class': 'dragable node ' + class_type,
-				'data-type': 'node',
-				'data-class': type
-			});
-
-			//set layout
-			component_layout.coordinate = [coordinate.x, coordinate.y];
-			layout.node[group.id] = component_layout;
-			MC.canvas.data.set('layout.component.node', layout.node);
 
 			//set data
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
 
-			$('#node_layer').append(group);
+			return group;
 
 			break;
 		//***** volume end *****//

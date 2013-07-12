@@ -101,6 +101,12 @@
 	border: 3px dashed #dbd7d7;
 }
 
+#drag_shadow.AWS-EC2-EBS-Volume {
+	background: none;
+	opacity: 1;
+	border: none;
+}
+
 /* Canvas */
 .shadow {
 	opacity: 0.6;
@@ -167,11 +173,6 @@
 	/*opacity : 0.7;*/
 }
 
-
-.node text {
-	cursor: default;
-}
-
 /* highlight connnectable*/
 .connectable-port {
 	display: inline;
@@ -228,12 +229,17 @@
 	font-size: 12px;
 	text-anchor: middle;
 	fill: #333;
+	cursor: default;
+}
+
+.volume-number {
+	font-size: 11px;
+	fill: #74B1FD;
 }
 
 .node-background {
 	fill-opacity: 0;
 }
-
 
 /* group */
 .group-label {
@@ -325,7 +331,7 @@
 	margin: 0 6px 10px 0;
 }
 
-#instance_volume_list li a {
+.volume_item {
 	border: 2px solid #fff;
 	position: relative;
 	display: block;
@@ -334,8 +340,8 @@
 	background: url('../images/ide/volume-resource.png') no-repeat;
 }
 
-#instance_volume_list .selected {
-	border: 2px solid #59b;
+#drag_shadow .volume_item {
+	border: none;
 }
 
 .volume_name {
@@ -353,6 +359,10 @@
 	margin-top: 12px;
 	color: #333;
 	text-align: center;
+}
+
+#instance_volume_list .selected {
+	border: 2px solid #59b;
 }
 
 #volume-bubble-box {

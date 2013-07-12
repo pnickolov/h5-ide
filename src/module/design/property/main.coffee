@@ -24,8 +24,10 @@ define [ 'jquery',
         require [ './module/design/property/view',
                   './module/design/property/model',
                   './module/design/property/instance/main',
-                  './module/design/property/sg/main'
-        ], ( View, model, instance_main, sg_main ) ->
+                  './module/design/property/sg/main',
+                  './module/design/property/stack/main',
+                  './module/design/property/volume/main'
+        ], ( View, model, instance_main, sg_main, stack_main, volume_main ) ->
 
             uid  = null
             type = null
@@ -61,7 +63,7 @@ define [ 'jquery',
 
                 null
 
-            #listen OPEN_SG
+            #listen OPEN_INSTANCE
             ide_event.onLongListen ide_event.OPEN_INSTANCE, () ->
                 console.log 'OPEN_INSTANCE'
                 #

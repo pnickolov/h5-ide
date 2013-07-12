@@ -16,7 +16,6 @@ define [ './temp_view',
             #listen
             $( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
             $( window   ).on 'resize', fixedaccordion.resize
-            $( document ).delegate '#svg_canvas', 'CANVAS_NODE_SELECTED', this.showProperty
 
         render     : ( template ) ->
             console.log 'property render'
@@ -32,10 +31,6 @@ define [ './temp_view',
             console.log 'refresh'
             selectbox.init()
             temp_view.ready()
-
-        showProperty : ( event, uid ) ->
-            console.log uid
-            ide_event.trigger ide_event.OPEN_PROPERTY, uid
 
     }
 

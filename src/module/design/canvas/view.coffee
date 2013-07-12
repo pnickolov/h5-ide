@@ -11,6 +11,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
         initialize : ->
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.resizeCanvasPanel
+            $( document ).delegate '#svg_canvas', 'CANVAS_NODE_SELECTED', this.showProperty
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -22,25 +23,13 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             canvasPanelResize()
             #temp
             require [ 'canvas_layout' ], ( canvas_layout ) -> canvas_layout.listen()
-            ###
-            if type is 'OLD_STACK' or type is 'OLD_APP'
-                #temp
-                require [ 'canvas_layout' ], ( canvas_layout ) ->
-                    canvas_layout.listen()
 
-            if type is 'NEW_STACK'
-                require [ 'canvas_layout' ], ( canvas_layout ) ->
-                    MC.canvas.layout.create()
-                    canvas_layout.listen()
+        showProperty : ( event, uid ) ->
+            console.log uid
+            console.log event.target
+            console.log event.currentTarget
+            ide_event.trigger ide_event.OPEN_PROPERTY, uid
 
-            if type is 'OPEN_STACK'
-                #temp
-                require [ 'canvas_layout' ], ( canvas_layout ) ->
-                    #MC.canvas.layout.init()
-                    canvas_layout.listen()
-                    canvas_layout.ready()
-                    # canvas_layout.connect()
-            ###
     }
 
     return CanvasView

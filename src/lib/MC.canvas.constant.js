@@ -32,6 +32,9 @@ var constant_data = {
 	STOKE_WIDTH_SUBNET:3,
 	STOKE_WIDTH_VPC:6,
 
+	//strok width of line
+	LINE_STROKE_WIDTH: 4,
+
 	//constant for MC.canvas.add
 	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 14 l 2 0 l 6 -6 z",//new style
 
@@ -67,6 +70,12 @@ var constant_data = {
 		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
 		'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],
 		'AWS.VPC.Subnet': []
+	},
+
+	GROUP_PARENT: {
+		'AWS.VPC.VPC': '',
+		'AWS.EC2.AvailabilityZone': 'AWS.VPC.VPC',
+		'AWS.VPC.Subnet': 'AWS.EC2.AvailabilityZone'
 	},
 
 	PLATFORM_TYPE: {

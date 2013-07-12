@@ -68,6 +68,7 @@ var listen = function ()
 	// });
 
 	canvas_body
+		.on('mousedown', '.instance-volume', MC.canvas.event.volumeShow)
 		.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 		.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 		.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
@@ -81,6 +82,8 @@ var listen = function ()
 	$('#resource-panel').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);
 
 	$(document).on('keyup', MC.canvas.event.keyEvent);
+	
+	$(document.body).on('click', '.volume_item', MC.canvas.event.volumeSelect);
 
 	canvas_resize();
 	$(window).on('resize', canvas_resize);

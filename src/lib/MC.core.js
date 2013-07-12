@@ -17,6 +17,7 @@ var MC = {
 
 	// Global data
 	data: {},
+	browser: '',
 
 	/**
 	 * Generate GUID
@@ -130,7 +131,11 @@ var MC = {
 
 		rbrowser.exec(navigator.userAgent.toLowerCase());
 
-		$(document.body).addClass(RegExp.$1);
+		var name = RegExp.$1;
+
+		$(document.body).addClass(name);
+
+		MC.browser = name;
 	},
 
 	/*

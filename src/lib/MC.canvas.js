@@ -1935,6 +1935,8 @@ MC.canvas.event.siderbarDrag = {
 				bubble_box.remove();
 
 				$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+
+				$(document).on('keyup', MC.canvas.event.volumeDelete);
 			}
 		}
 
@@ -2323,7 +2325,6 @@ MC.canvas.volumeBubble = function (node)
 		var target = $(node),
 			component_data = MC.canvas.data.get('component'),
 			node_volume_data = component_data[ node.id ].resource.BlockDeviceMapping,
-
 			data = {'list': []},
 			coordinate = {},
 			volume_id,
@@ -2399,6 +2400,8 @@ MC.canvas.event.volumeShow = function (event)
 		bubble_box.remove();
 
 		$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+
+		$(document).off('keyup', MC.canvas.event.volumeDelete);
 	}
 
 	return false;
@@ -2412,10 +2415,47 @@ MC.canvas.event.volumeSelect = function ()
 
 	$(this).addClass('selected');
 
+	$(document).on('keyup', MC.canvas.event.volumeDelete);
+
 	//dispatch event when select volume node
 	$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", volume_id);
 
 	return false;
+};
+
+MC.canvas.event.volumeDelete = function (event)
+{
+	if (
+		event.which === 46 ||
+		// For Mac
+		event.which === 8
+	)
+	{
+		var bubble_box = $('#volume-bubble-box'),
+			target_id = bubble_box.data('target-id'),
+			target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping'),
+			target_node = $('#' + target_id),
+			target_offset = target_node[0].getBoundingClientRect(),
+			volume_id = $('#instance_volume_list').find('.selected').attr('id');
+		
+		target_volume_data.splice(
+			target_volume_data.indexOf(
+				volume_id
+			), 1
+		);
+
+		$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+
+		MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+		MC.canvas.data.delete('component.' + volume_id);
+
+		$('#' + volume_id).parent().remove();
+
+		bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
+
+		$(document).off('keyup', MC.canvas.event.volumeDelete);
+	}
 };
 
 MC.canvas.event.selectLine = function (event)

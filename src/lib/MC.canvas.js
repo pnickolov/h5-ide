@@ -801,7 +801,8 @@ MC.canvas = {
 		{
 			node_coordinate = item.coordinate;
 
-			if ( node_coordinate && node_coordinate[0] && node_coordinate[1] &&
+			if (
+				node_coordinate &&
 				node_coordinate[0] < coordinate.x &&
 				node_coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > coordinate.x &&
 				node_coordinate[1] < coordinate.y &&
@@ -1914,20 +1915,21 @@ MC.canvas.event.siderbarDrag = {
 			event.pageY - event.data.canvas_offset.top
 		);
 
-		if (!match_node)
-		{
-			return;
-		}
-
 		if ($(match_node).data('class') === 'AWS.EC2.Instance')
 		{
 			MC.canvas.volumeBubble(match_node);
 		}
 		else
 		{
-			$('#volume-bubble-box').remove();
+			var bubble_box = $('#volume-bubble-box');
 
-			$('#' + match_node.id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+			if (bubble_box[0])
+			{
+				target_id = bubble_box.data('target-id');
+				bubble_box.remove();
+
+				$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+			}
 		}
 
 		return false;
@@ -1941,7 +1943,9 @@ MC.canvas.event.siderbarDrag = {
 			node_option = target.data('option'),
 			bubble_box = $('#volume-bubble-box'),
 			target_id,
+			target_volume_data,
 			new_volume,
+			volume_number,
 			data_option;
 
 		$('.AWS-EC2-Instance').attr('class', function (index, key)
@@ -1954,13 +1958,21 @@ MC.canvas.event.siderbarDrag = {
 			target_id = bubble_box.data('target-id');
 			target_node = $('#' + target_id);
 			target_offset = target_node[0].getBoundingClientRect();
+			target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping');
 
 			data_option = target.data('option');
 			new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
 
-			$('#instance_volume_list').append('<li><a href="#" id="' + new_volume.id +'" class="volume_item selected"><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+			$('#instance_volume_list').append('<li><a href="#" id="' + new_volume.id +'" class="volume_item"><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
-			//MC.canvas.event.volumeSelect.call( $('#' + new_volume_id )[0] );
+			target_volume_data.push(new_volume.id);
+
+			volume_number = target_volume_data.length;
+			$('#instance_volume_number, #' + target_id + '_volume_number').text(volume_number);
+
+			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+			MC.canvas.event.volumeSelect.call( $('#' + new_volume.id )[0] );
 
 			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
 		}
@@ -2390,12 +2402,11 @@ MC.canvas.event.volumeShow = function (event)
 
 MC.canvas.event.volumeSelect = function ()
 {
-	var target = $(this),
-		volume_id = this.id;
+	var volume_id = this.id;
 
-	target.parent().removeClass('selected');
+	$('#instance_volume_list').find('.selected').removeClass('selected');
 
-	target.addClass('selected');
+	$(this).addClass('selected');
 
 	return false;
 };

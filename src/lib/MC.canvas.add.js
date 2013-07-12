@@ -431,8 +431,6 @@ MC.canvas.add = function (flag, option, coordinate)
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,
-				// 'data-bubble-template': 'instanceVolume',
-				// 'data-bubble-data': '',
 				'data-type': 'node',
 				'data-class': type
 			});
@@ -514,14 +512,15 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			//set layout
 			//component_layout.coordinate = [coordinate.x, coordinate.y];
-			layout.node[group.id] = component_layout;
-			MC.canvas.data.set('layout.component.node', layout.node);
+			//layout.node[group.id] = component_layout;
+			//MC.canvas.data.set('layout.component.node', layout.node);
 
 			//set data
 			component_data.uid = group.id;
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
 
+			return group;
 			//$('#node_layer').append(group);
 
 			break;
@@ -1036,10 +1035,7 @@ MC.canvas.add = function (flag, option, coordinate)
 	}
 
 	//set the node position
-	if (type != 'AWS.EC2.EBS.Volume' )
-	{
-		MC.canvas.position(group, coordinate.x, coordinate.y);
-	}
+	MC.canvas.position(group, coordinate.x, coordinate.y);
 
 	return group;
 };

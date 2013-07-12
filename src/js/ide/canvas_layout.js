@@ -37,10 +37,6 @@ var
 // Dom Ready
 var listen = function ()
 {
-	var canvas_body = $('#canvas_body');
-
-	current_tab = '';
-
 	MC.paper = Canvon('svg_canvas');
 
 	//clear old svg element ( add by xjimmy )
@@ -50,25 +46,8 @@ var listen = function ()
 	//$(MC.paper).find("#node_layer").empty();
 	//$(MC.paper).find("#line_layer").empty();
 
-
-	// $.ajax('../js/canvas/response.data', {
-	// 	success: function (data)
-	// 	{
-	// 		if (typeof data === 'object')
-	// 		{
-	// 			user_data = $.xml2json(data);
-	// 		}
-	// 		else
-	// 		{
-	// 			user_data = $.xml2json($.parseXML(data));
-	// 		}
-	// 		MC.canvas.layout.analysis(user_data);
-	// 		MC.canvas.layout.init();
-	// 	}
-	// });
-
-	canvas_body
-		.on('mousedown', '.instance-volume', MC.canvas.event.volumeShow)
+	$('#canvas_body')
+		.on('mousedown', '.instance-volume', MC.canvas.volume.show)
 		.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 		.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 		.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
@@ -83,7 +62,7 @@ var listen = function ()
 
 	$(document).on('keyup', MC.canvas.event.keyEvent);
 	
-	$(document.body).on('click', '.volume_item', MC.canvas.event.volumeSelect);
+	$(document.body).on('click', '.volume_item', MC.canvas.volume.select);
 
 	canvas_resize();
 	$(window).on('resize', canvas_resize);
@@ -113,131 +92,6 @@ var ready = function ()
 
 
 	return;
-
-	//2.simulate drag from resource panel
-	MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
-
-	/////////// create node ///////////
-	var node_vpc = MC.canvas.add('AWS.VPC.VPC', {
-		'name': 'vpc1'
-	},{
-		'x': 2,
-		'y': 2
-	});
-
-	var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
-		'name': 'ap-northeast-1'
-	},{
-		'x': 19,
-		'y': 16
-	});
-
-	var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
-		'name': 'subnet1'
-	},{
-		'x': 23,
-		'y': 20
-	});
-
-	var node_host1 = MC.canvas.add('AWS.EC2.Instance', {
-		'name': 'host1',
-		'imageId': 'ami-d14dc2d0',
-		'osType': 'redhat',
-		'architecture':'x86_64',
-		'rootDeviceType':'ebs'
-	},{
-		'x': 25,
-		'y': 22
-	});
-
-	var node_host2 = MC.canvas.add('AWS.EC2.Instance', {
-		'name': 'host2',
-		'imageId': 'ami-fc6ceefd',
-		'osType':
-		'ubuntu',
-		'architecture':'i386',
-		'rootDeviceType':'ebs'
-	},{
-		'x': 25,
-		'y': 36
-	});
-
-	var node_volume1 = MC.canvas.add('AWS.EC2.EBS.Volume', {
-		'name': '/dev/sdf',
-		'volumeSize':'1',
-		'snapshotId': ''
-	},{
-		'x': 43,
-		'y': 36
-	});
-
-	var node_volume2 = MC.canvas.add('AWS.EC2.EBS.Volume', {
-		'name': '/dev/sdg',
-		'volumeSize':'10',
-		'snapshotId': ''
-	},{
-		'x': 43,
-		'y': 50
-	});
-
-	var node_elb = MC.canvas.add('AWS.ELB', {
-		'name': 'elb1(Internet)'
-	},{
-		'x': 3,
-		'y': 25
-	});
-
-	var node_rt1 = MC.canvas.add('AWS.VPC.RouteTable', {
-		'name': 'RT1'
-	},{
-		'x': 28,
-		'y': 3
-	});
-
-	var node_rt2 = MC.canvas.add('AWS.VPC.RouteTable', {
-		'name': 'RT2'
-	},{
-		'x': 64,
-		'y': 46
-	});
-
-	var node_eni = MC.canvas.add('AWS.VPC.NetworkInterface', {
-		'name': 'eni0'
-	},{
-		'x': 43,
-		'y': 22
-	});
-
-	var node_igw1 = MC.canvas.add('AWS.VPC.InternetGateway', {
-		'name': 'IGW'
-	},{
-		'x': 3,
-		'y': 3
-	});
-
-	var node_vgw1 = MC.canvas.add('AWS.VPC.VPNGateway', {
-		'name': 'VGW'
-	},{
-		'x': 65,
-		'y': 9
-	});
-
-	var node_cgw1 = MC.canvas.add('AWS.VPC.CustomerGateway', {
-		'name': 'CGW',
-		'networkName': 'CustomerNetwork1'
-	},{
-		'x': 83,
-		'y': 9
-	});
-
-	var node_cgw2 = MC.canvas.add('AWS.VPC.CustomerGateway', {
-		'name': 'CGW',
-		'networkName': 'CustomerNetwork2'
-	},{
-		'x': 83,
-		'y': 24
-	});
-
 };
 
 // Dom Ready

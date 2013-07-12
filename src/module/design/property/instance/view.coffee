@@ -45,13 +45,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'click #instance-ip-add' : "addIPtoList"
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
-            #for sg module
-            'click .rule-edit-icon' : 'showEditRuleModal'
-            'click #sg-add-rule-icon' : 'showCreateRuleModal'
-            'click .rule-remove-icon' : 'removeRulefromList'
-            'change #radio_inbound' : 'radioInboundChange'
-            'change #radio_outbound' : 'radioOutboundChange'
-            'OPTION_CHANGE #modal-sg-rule' : 'sgModalSelectboxChange'
+
 
         render     : ( attributes ) ->
             console.log 'property:instance render'
@@ -111,23 +105,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             this.model.addKP cid, id
             notification('info', (id + ' created'), false)
 
-        securityGroupAddSelect: (event) ->
-            fixedaccordion.show.call $('#sg-head')
-
-        addSGtoList: (event, id) ->
-            if(id.length != 0)
-                $('#sg-info-list').append MC.template.sgListItem({name: id})
 
         addIPtoList: (event) ->
             $('#property-network-list').append MC.template.networkListItem()
             false
 
-        removeSGfromList: (event) ->
-            $(event.target).parents('li').first().remove()
-            notification 'info', 'SG is deleted', false
-
-        toggleSGfromList: (event, id) ->
-            notification 'info', id, false
 
         removeIPfromList: (event, id) ->
             $(event.target).parents('li').first().remove()
@@ -151,26 +133,16 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
             $(document.body).on 'click', '.back', secondarypanel.close
 
-        #SG SecondaryPanel
-        showEditRuleModal : (event) ->
-            modal MC.template.modalSGRule {isAdd:false}, true
+        addSGtoList: (event, id) ->
+            if(id.length != 0)
+                $('#sg-info-list').append MC.template.sgListItem({name: id})
 
-        showCreateRuleModal : (event) ->
-            modal MC.template.modalSGRule {isAdd:true}, true
-            return false
-
-        removeRulefromList: (event, id) ->
+        removeSGfromList: (event) ->
             $(event.target).parents('li').first().remove()
+            notification 'info', 'SG is deleted', false
 
-        radioInboundChange : (event) ->
-            $('#rule-modle-title2').text "Source"
-
-        radioOutboundChange : (event) ->
-            $('#rule-modle-title2').text "Destination"
-
-        sgModalSelectboxChange : (event, id) ->
-            $('#sg-protocol-select-result').find('.show').removeClass('show')
-            $('#sg-protocol-' + id).addClass('show')
+        toggleSGfromList: (event, id) ->
+            notification 'info', id, false
     }
 
     view = new InstanceView()

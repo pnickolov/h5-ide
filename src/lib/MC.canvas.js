@@ -2447,12 +2447,21 @@ MC.canvas.event.clearSelected = function ()
 
 MC.canvas.event.keyEvent = function (event)
 {
-	if (event.which === 46 && MC.canvas.selected_node.length > 0)
+	if (
+		(
+			event.which === 46 ||
+			// For Mac
+			event.which === 8
+		) &&
+		MC.canvas.selected_node.length > 0
+	)
 	{
 		$.each(MC.canvas.selected_node, function (i, node)
 		{
 			MC.canvas.remove(node);
 		});
 		MC.canvas.selected_node = [];
+
+		return false;
 	}
 };

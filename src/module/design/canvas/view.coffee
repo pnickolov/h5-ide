@@ -26,8 +26,6 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
 
         showProperty : ( event, uid ) ->
             console.log uid
-            console.log event.target
-            console.log event.currentTarget
             ide_event.trigger ide_event.OPEN_PROPERTY, uid
 
     }

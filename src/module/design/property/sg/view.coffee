@@ -23,7 +23,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         openInstance : () ->
             console.log 'openInstance'
-            ide_event.trigger ide_event.OPEN_INSTANCE
+            ide_event.trigger ide_event.OPEN_PROPERTY, $('#sg-secondary-panel').attr 'parent'
 
     }
 

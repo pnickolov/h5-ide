@@ -331,17 +331,35 @@ MC.canvas.add = function (flag, option, coordinate)
 				
 				
 				var kp = null;
+				var sg = null;
 				// if not kp				
 				if(MC.canvas_property.kp_list.length === 0){
 					uid = MC.guid();
 					kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
 					kp.uid = uid;
-					tmp = {}
-					tmp[kp.name] = kp.uid
+					tmp = {};
+					tmp[kp.name] = kp.uid;
 					MC.canvas_property.kp_list.push(tmp);
+					
+					sg_uid = MC.guid();
+					sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
+					sg.uid = sg_uid;
+					tmp = {};
+					tmp.uid = sg.uid;
+					tmp.name = sg.name;
+					tmp.member = []
+					MC.canvas_property.sg_list.push(tmp);
+					if(option.subnet){
+						sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
+					}
+					else{
+						delete sg.resource.IpPermissionsEgress;
+					}
 				}
 				
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
+				component_data.resource.SecurityGroupId.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
+				MC.canvas_property.sg_list[0].member.push(group.id);
 				var eni = null;
 				// if subnet
 				if(option.subnet){
@@ -461,6 +479,10 @@ MC.canvas.add = function (flag, option, coordinate)
 			
 			if(kp){
 				data[kp.uid] = kp;
+				MC.canvas.data.set('component', data);
+			}
+			if(sg){
+				data[sg.uid] = sg;
 				MC.canvas.data.set('component', data);
 			}
 			if(eni){

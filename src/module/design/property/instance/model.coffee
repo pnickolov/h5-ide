@@ -171,6 +171,47 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             disp
 
+        getSgDisp : ( uid ) ->
+
+            instance_sg = {}
+
+            instance_sg.detail = []
+
+            sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
+
+            _.map sg_ids, ( sg_id ) ->
+
+                sg_uid = (sg_id.split ".")[0][1...]
+
+                _.map MC.canvas_property.sg_list, ( value, key ) ->
+
+                    if value.uid == sg_uid
+
+                        sg_detail = {}
+
+                        sg_detail.uid = sg_uid
+
+                        sg_detail.parent = uid
+
+                        sg_detail.members = value.member.length
+
+                        if MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress
+
+                            sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length + MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress.length
+                        else
+
+                            sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length
+
+                        sg_detail.name = MC.canvas_data.component[sg_uid].resource.GroupName
+                        sg_detail.desc = MC.canvas_data.component[sg_uid].resource.GroupDescription
+
+                        instance_sg.detail.push sg_detail
+
+            instance_sg.total = instance_sg.detail.length
+
+            instance_sg
+
+
         getKerPair : (uid)->
 
             kp_list = []

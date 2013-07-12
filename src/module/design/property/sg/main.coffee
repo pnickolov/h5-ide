@@ -8,7 +8,7 @@ define [ 'jquery',
 ], ( $, template, ide_event ) ->
 
     #private
-    loadModule = ( uid, type ) ->
+    loadModule = ( uid, parent ) ->
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-sg-tmpl">' + template + '</script>'
@@ -20,6 +20,8 @@ define [ 'jquery',
 
             #view
             view.model    = model
+
+            view.model.getSG uid, parent
             #render
             view.render()
 

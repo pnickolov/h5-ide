@@ -30,6 +30,7 @@ define [ 'jquery',
                 keypair : model.getKerPair uid
                 ami_string : model.getAmi uid
                 ami_display : model.getAmiDisp uid
+                sg_display : model.getSgDisp uid
             }
             #render
             view.render( attributes )

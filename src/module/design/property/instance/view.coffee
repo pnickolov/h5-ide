@@ -139,10 +139,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                     target = source
                 else
                     target = source.parents('.secondary-panel').first()
-                secondarypanel.open target, MC.template.sgSecondaryPanel target.data('secondarypanel-data')
-                $(document.body).on 'click', '.back', secondarypanel.close
-                fixedaccordion.resize()
-                selectbox.init()
+
+                ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data')
+                #secondarypanel.open target, MC.template.sgSecondaryPanel target.data('secondarypanel-data')
+                #$(document.body).on 'click', '.back', secondarypanel.close
+                #fixedaccordion.resize()
+                #selectbox.init()
 
         openAmiPanel : ( event ) ->
             target = $('#property-ami')

@@ -51,9 +51,9 @@ define [ 'jquery',
                 null
 
             #listen OPEN_SG
-            ide_event.onLongListen ide_event.OPEN_SG, ( uid ) ->
+            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent ) ->
                 console.log 'OPEN_SG'
-                sg_main.loadModule()
+                sg_main.loadModule( uid_parent.uid, uid_parent.parent )
                 #temp
                 setTimeout () ->
                    view.refresh()

@@ -3,7 +3,7 @@
 #* Filename: UI.bubble
 #* Creator: Angel
 #* Description: UI.bubble
-#* Date: 20130709
+#* Date: 20130712
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -39,19 +39,9 @@ var bubble = function (event)
 			MC.template[ content ]( data )
 		);
 
-		// Spical for SVG
-		if (target.prop('tagName') === 'g')
-		{
-			target_offset = target[0].getBoundingClientRect();
-			target_width = target_offset.width;
-			target_height = target_offset.height;
-		}
-		else
-		{
-			target_offset = target.offset();
-			target_width = target.innerWidth();
-			target_height = target.innerHeight();
-		}
+		target_offset = target.offset();
+		target_width = target.innerWidth();
+		target_height = target.innerHeight();
 
 		width = bubble_box.width();
 		height = bubble_box.height();

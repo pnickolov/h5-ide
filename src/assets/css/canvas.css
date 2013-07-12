@@ -241,7 +241,6 @@
 	fill-opacity: 0;
 }
 
-
 /* group */
 .group-label {
 	font-size: 12px;
@@ -332,7 +331,7 @@
 	margin: 0 6px 10px 0;
 }
 
-#instance_volume_list li a {
+.volume_item {
 	border: 2px solid #fff;
 	position: relative;
 	display: block;
@@ -341,8 +340,8 @@
 	background: url('../images/ide/volume-resource.png') no-repeat;
 }
 
-#instance_volume_list .selected {
-	border: 2px solid #59b;
+#drag_shadow .volume_item {
+	border: none;
 }
 
 .volume_name {
@@ -360,6 +359,10 @@
 	margin-top: 12px;
 	color: #333;
 	text-align: center;
+}
+
+#instance_volume_list .selected {
+	border: 2px solid #59b;
 }
 
 #volume-bubble-box {

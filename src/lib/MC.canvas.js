@@ -2327,8 +2327,6 @@ MC.canvas.volume = {
 
 	select: function ()
 	{
-		var volume_id = this.id;
-
 		$('#instance_volume_list').find('.selected').removeClass('selected');
 
 		$(this).addClass('selected');
@@ -2336,7 +2334,7 @@ MC.canvas.volume = {
 		$(document).on('keyup', MC.canvas.volume.delete);
 
 		//dispatch event when select volume node
-		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", volume_id);
+		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
 
 		return false;
 	},
@@ -2387,14 +2385,12 @@ MC.canvas.volume = {
 			node_type = target.data('type'),
 			target_component_type = target.data('component-type'),
 			shadow,
-			clone_node,
-			default_width,
-			default_height;
+			clone_node;
 
 		$(document.body).append('<div id="drag_shadow"></div>');
 		shadow = $('#drag_shadow');
 
-		clone_node = target.find('.resource-icon').clone();
+		clone_node = target.clone();
 		shadow.append(clone_node);
 
 		shadow
@@ -2417,12 +2413,12 @@ MC.canvas.volume = {
 		}, {
 			'target': target,
 			'canvas_offset': $('#svg_canvas').offset(),
-			'shadow': shadow
+			'shadow': shadow,
+			'originalPageX': event.pageX,
+			'originalPageY': event.pageY,
+			'action': 'move'
 		});
 		
-
-		MC.canvas.event.clearSelected();
-
 		return false;
 	},
 
@@ -2488,17 +2484,25 @@ MC.canvas.volume = {
 			target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping');
 
 			data_option = target.data('option');
-			new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
 
-			$('#instance_volume_list').append('<li><a href="#" id="' + new_volume.id +'" class="volume_item"><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+			if (event.data.action === 'move')
+			{
 
-			target_volume_data.push('#' + new_volume.id);
+			}
+			else
+			{
+				volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
+			}
+
+			$('#instance_volume_list').append('<li><a href="#" id="' + volume.id +'" class="volume_item"><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+
+			target_volume_data.push('#' + volume.id);
 
 			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
 
 			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
-			MC.canvas.volume.select.call( $('#' + new_volume.id )[0] );
+			MC.canvas.volume.select.call( $('#' + volume.id )[0] );
 
 			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
 		}

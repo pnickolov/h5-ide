@@ -62,7 +62,9 @@ var listen = function ()
 
 	$(document).on('keyup', MC.canvas.event.keyEvent);
 	
-	$(document.body).on('click', '.volume_item', MC.canvas.volume.select);
+	//$(document.body).on('click', '.volume_item', MC.canvas.volume.select);
+
+	$(document.body).on('mousedown', '.volume_item', MC.canvas.volume.mousedown);
 
 	canvas_resize();
 	$(window).on('resize', canvas_resize);

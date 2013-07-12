@@ -13,7 +13,8 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
         $( toolbar_tmpl ).appendTo '#main-toolbar'
 
         #load remote module1.js
-        require [ './module/design/toolbar/view', './module/design/toolbar/model', './module/design/toolbar/model_phantom' ], ( View, model ) ->
+<<<<<<< HEAD
+        require [ './module/design/toolbar/view', './module/design/toolbar/model' ], ( View, model ) ->
 
             #view
             view       = new View()
@@ -57,6 +58,13 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, target ) ->
                 console.log 'toolbar:RELOAD_RESOURCE, target = ' + target + ', type = ' + type
                 if type is 'OPEN_STACK' then model.set 'stack_id', target
+=======
+        require [ './module/design/toolbar/view', './module/design/toolbar/model_phantom' ], ( View, model ) ->
+
+            #view
+            view       = new View { 'model' : model }
+            view.render template
+>>>>>>> origin/feature/phantomjs-ks
 
     unLoadModule = () ->
         #view.remove()

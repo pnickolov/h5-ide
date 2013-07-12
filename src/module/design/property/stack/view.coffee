@@ -15,6 +15,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         render     : () ->
             console.log 'property:stack render'
+            $( '.property-details' ).html this.template this.model.attributes
 
     }
 

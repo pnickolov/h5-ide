@@ -4,8 +4,10 @@
 
 define [ 'jquery',
          'text!/module/design/property/template.html',
-         'event'
-], ( $, template, ide_event ) ->
+         'event',
+         'constant',
+         'MC'
+], ( $, template, ide_event, constant, MC ) ->
 
     #private
     loadModule = () ->
@@ -22,8 +24,10 @@ define [ 'jquery',
         require [ './module/design/property/view',
                   './module/design/property/model',
                   './module/design/property/instance/main',
-                  './module/design/property/sg/main'
-        ], ( View, model, instance_main, sg_main ) ->
+                  './module/design/property/sg/main',
+                  './module/design/property/stack/main',
+                  './module/design/property/volume/main'
+        ], ( View, model, instance_main, sg_main, stack_main, volume_main ) ->
 
             uid  = null
             type = null
@@ -39,12 +43,13 @@ define [ 'jquery',
                 uid  = uid
                 type = type
 
-                instance_main.loadModule uid, type
+                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
+                    instance_main.loadModule uid
                 #temp
                 setTimeout () ->
                    view.refresh()
                 , 2000
- 
+
                 null
 
             #listen OPEN_SG
@@ -55,10 +60,10 @@ define [ 'jquery',
                 setTimeout () ->
                    view.refresh()
                 , 2000
- 
+
                 null
 
-            #listen OPEN_SG
+            #listen OPEN_INSTANCE
             ide_event.onLongListen ide_event.OPEN_INSTANCE, () ->
                 console.log 'OPEN_INSTANCE'
                 #

@@ -226,6 +226,8 @@ MC.canvas.add = function (flag, option, coordinate)
 			{
 				component_data = $.extend(true, {}, MC.canvas.SUBNET_JSON.data);
 				component_data.name = option.name;
+				component_data.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
+				component_data.resource.AvailabilityZone = option.zone
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 
@@ -319,18 +321,56 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			var os_type = 'ami-unknown',
 				volume_number = 0,
-				icon_volume_status = 'not-attached';
+				icon_volume_status = 'not-attached',
+				kp = null,
+				eni = null;
 
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
 				component_data.name = option.name;
+
+				component_data.resource.ImageId = option.imageId;
+				component_data.resource.InstanceType = 'm1.small';
 				component_data.resource.Placement.AvailabilityZone = option.zone;
+
+				// if not kp				
+				if(MC.canvas_property.kp_list.length === 0){
+					uid = MC.guid();
+					kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
+					kp.uid = uid;
+					tmp = {};
+					tmp[kp.name] = kp.uid;
+					MC.canvas_property.kp_list.push(tmp);
+				}
+
+				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
+
+				// if subnet
+				if(option.subnet){
+					subnet_uid = option.subnet.split('.')[0].slice(1);
+					zone = MC.canvas_data.component[subnet_uid].resource.AvailabilityZone;
+					vpc_id = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
+					component_data.resource.SubnetId = option.subnet;
+					component_data.resource.VpcId = vpc_id;
+					component_data.resource.Placement.AvailabilityZone = zone;
+					eni = $.extend(true, {}, MC.canvas.ENI_JSON.data);
+					uid = MC.guid();
+					eni.uid = uid;
+					eni.name = "eni0";
+					eni.resource.Attachment.DeviceIndex = "0";
+					eni.resource.Attachment.InstanceId = "@"+group.id+".resource.InstanceId";
+					eni.resource.AvailabilityZone = zone;
+					eni.resource.SubnetId = option.subnet;
+					eni.resource.VpcId = vpc_id;
+				}
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
 				component_layout.osType =  option.osType;
 				component_layout.architecture =  option.architecture;
 				component_layout.rootDeviceType =  option.rootDeviceType;
+				component_layout.virtualizationType = option.virtualizationType;
+
 			}
 			else
 			{//read
@@ -345,6 +385,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.osType = component_layout.osType ;
 				option.architecture = component_layout.architecture ;
 				option.rootDeviceType = component_layout.rootDeviceType ;
+				option.virtualizationType = component_layout.virtualizationType;
 			}
 
 			//os type
@@ -445,6 +486,14 @@ MC.canvas.add = function (flag, option, coordinate)
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
 
+			if(kp){
+				data[kp.uid] = kp;
+				MC.canvas.data.set('component', data);
+			}
+			if(eni){
+				data[eni.uid] = eni;
+				MC.canvas.data.set('component', data);
+			}
 			$('#node_layer').append(group);
 
 			break;

@@ -63,7 +63,7 @@
           "Base64Encoded": "false",
           "Data": ""
         },
-        "ImageId": "",
+        "ImageId": "ami-3275ee5b",
         "Placement": {
           "Tenancy": "",
           "AvailabilityZone": "",
@@ -74,10 +74,10 @@
           "#5BD7C400-B2D7-43C3-9160-28DD5BA86BAE"
         ],
         "KernelId": "",
-        "SubnetId": "",
-        "KeyName": "",
-        "VpcId": "",
-        "InstanceType": "",
+        "SubnetId": "@2B90ECD0-3D29-452A-B97B-4E29F69ED87C.resource.SubnetId",
+        "KeyName": "@GEC9F6SE-368A-45E3-8AD7-4CD79FFSDEWQ.resource.KeyName",
+        "VpcId": "@79A6B7CC-0D62-4746-A665-582553F9FCD2.resource.VpcId",
+        "InstanceType": "m1.small",
         "Monitoring": "disabled",
         "EbsOptimized": "false"
       }
@@ -106,7 +106,7 @@
           "Base64Encoded": "false",
           "Data": ""
         },
-        "ImageId": "",
+        "ImageId": "ami-3275ee5b",
         "Placement": {
           "Tenancy": "",
           "AvailabilityZone": "",
@@ -117,10 +117,10 @@
 
         ],
         "KernelId": "",
-        "SubnetId": "",
-        "KeyName": "",
-        "VpcId": "",
-        "InstanceType": "",
+        "SubnetId": "@2B90ECD0-3D29-452A-B97B-4E29F69ED87C.resource.SubnetId",
+        "KeyName": "@GEC9F6SE-368A-45E3-8AD7-4CD79FFSDEWQ.resource.KeyName",
+        "VpcId": "@79A6B7CC-0D62-4746-A665-582553F9FCD2.resource.VpcId",
+        "InstanceType": "m1.small",
         "Monitoring": "disabled",
         "EbsOptimized": "false"
       }
@@ -346,6 +346,15 @@
         "State": "available",
         "IpAddress": "1.1.1.1"
       }
+    },
+    "GEC9F6SE-368A-45E3-8AD7-4CD79FFSDEWQ" :{
+    	"type"	:	"AWS.EC2.KeyPair",
+		"name"	:	"DefaultKP",
+		"uid"	:	"GEC9F6SE-368A-45E3-8AD7-4CD79FFSDEWQ",
+		"resource"	:	{
+			"KeyName"	:	"DefaultKP",
+			"KeyFingerprint"	:	""		
+		}		
     }
   },
   "layout": {
@@ -425,6 +434,7 @@
           "osType": "ubuntu",
           "architecture": "i386",
           "rootDeviceType": "ebs",
+          "virtualizationType" : "paravirtual",
           "group": {
             "availableZone": "",
             "subnet": "",
@@ -453,6 +463,7 @@
           "osType": "redhat",
           "architecture": "i386",
           "rootDeviceType": "ebs",
+          "virtualizationType" : "paravirtual",
           "group": {
             "availableZone": "",
             "subnet": "",

@@ -24,7 +24,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
                                 platform: current_platform
                             })
                 else if type is 'OPEN_STACK'
-                    require [ 'canvas_layout' ], ( canvas_layout ) -> canvas_layout.ready()
+                    require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.init()
                 null
 
 

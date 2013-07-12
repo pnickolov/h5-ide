@@ -1373,6 +1373,7 @@ MC.canvas.event.dragable = {
 
 			uid = event.data.target.attr("id");
 
+			//dispatch event when select node
 			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", uid);
 		}
 		else
@@ -2408,6 +2409,9 @@ MC.canvas.event.volumeSelect = function ()
 
 	$(this).addClass('selected');
 
+	//dispatch event when select volume node
+	$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", volume_id);
+
 	return false;
 };
 
@@ -2436,7 +2440,11 @@ MC.canvas.event.clearSelected = function ()
 	{
 		return key.replace(' selected', '');
 	});
+
 	MC.canvas.selected_node = [];
+
+	//dispatch event when click blank area in canvas
+	$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
 };
 
 MC.canvas.event.keyEvent = function (event)

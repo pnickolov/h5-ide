@@ -1945,7 +1945,6 @@ MC.canvas.event.siderbarDrag = {
 			target_id,
 			target_volume_data,
 			new_volume,
-			volume_number,
 			data_option;
 
 		$('.AWS-EC2-Instance').attr('class', function (index, key)
@@ -1965,10 +1964,9 @@ MC.canvas.event.siderbarDrag = {
 
 			$('#instance_volume_list').append('<li><a href="#" id="' + new_volume.id +'" class="volume_item"><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
-			target_volume_data.push(new_volume.id);
+			target_volume_data.push('#' + new_volume.id);
 
-			volume_number = target_volume_data.length;
-			$('#instance_volume_number, #' + target_id + '_volume_number').text(volume_number);
+			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
 
 			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 

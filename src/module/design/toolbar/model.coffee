@@ -15,51 +15,67 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
         saveStack : () ->
             me = this
 
-            #MC.canvas_data.region = 'ap-southeast-1'
-            #MC.canvas_data.id = 'stack-401ef6cd'
-            #MC.canvas_data.name = 'stack_test_save-copy'
+            id = MC.canvas_data.id
+            if id   #save
+                stack_model.save { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
 
-            stack_model.save { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
+                stack_model.once 'STACK_SAVE_RETURN', (result) ->
+                    console.log 'STACK_SAVE_RETURN'
+                    console.log result
 
-            stack_model.once 'STACK_SAVE_RETURN', (result) ->
-                console.log 'STACK_SAVE_RETURN'
-                console.log result
+                    if !result.is_error
+                        console.log 'save stack successfully'
 
-                if !result.is_error
-                    console.log 'send save stack successful message'
+                        #update initial data
 
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+                        me.trigger 'TOOLBAR_STACK_READY'
+
+                        ide_event.trigger ide_event.UPDATE_STACK_LIST
+
+            else    #new
+                stack_model.create { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
+
+                stack_model.once 'STACK_CREATE_RETURN', (result) ->
+                    console.log 'STACK_CREATE_RETURN'
+                    console.log result
+
+                    if !result.is_error
+                        console.log 'create stack successfully'
+
+                        #update initial data
+                        MC.canvas_data.id = result.resolved_data
+
+                        me.trigger 'TOOLBAR_STACK_READY'
+
+                        ide_event.trigger ide_event.UPDATE_STACK_LIST
+
+
 
         #duplicate
         duplicateStack : () ->
             me = this
 
-            #MC.canvas_data.id = 'stack-7ed0d670'
-            #MC.canvas_data.name = 'stack_test_save'
-            #MC.canvas_data.region = 'ap-southeast-1'
+            if MC.canvas_data.id
+                new_name = MC.canvas_data.name + '-copy'
+                stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
+                stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
+                    console.log 'STACK_SAVE__AS_RETURN'
+                    console.log result
 
-            new_name = MC.canvas_data.name + '-copy'
-            stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
-            stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
-                console.log 'STACK_SAVE__AS_RETURN'
-                console.log result
+                    if !result.is_error
+                        console.log 'save as stack successfully'
 
-                if !result.is_error
-                    console.log 'send save as stack successful message'
+                        #load the new copy stack
+                        ide_event.trigger ide_event.OPEN_STACK_TAB, new_name, MC.canvas_data.region, result.resolved_data
 
-                    #load the new copy stack
-                    ide_event.trigger ide_event.OPEN_STACK_TAB, new_name, MC.canvas_data.region, result.resolved_data
-
-                    #update stack list
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+                        #update stack list
+                        ide_event.trigger ide_event.UPDATE_STACK_LIST
+            else
+                console.log 'Remind user to save the stack first'
 
         #delete
         deleteStack : () ->
             me = this
-
-            #MC.canvas_data.id = 'stack-50e101a2'
-            #MC.canvas_data.region = 'ap-southeast-1'
-            #MC.canvas_data.name = MC.canvas_data.name + '-copy'
 
             stack_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
             stack_model.once 'STACK_REMOVE_RETURN', (result) ->

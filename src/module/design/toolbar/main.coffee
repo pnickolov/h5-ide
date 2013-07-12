@@ -27,8 +27,11 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
 
             #duplicate
             view.on 'TOOLBAR_DUPLICATE_CLICK', () ->
-                console.log 'design_toolbar_click:duplicateStack'
-                model.duplicateStack()
+                console.log 'design_toolbar_click:get_ready_for_stack'
+
+                model.once 'TOOLBAR_STACK_READY', () ->
+                    console.log 'design_toolbar_click:duplicateStack'
+                    model.duplicateStack()
 
             #delete
             view.on 'TOOLBAR_DELETE_CLICK', () ->

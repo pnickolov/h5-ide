@@ -45,6 +45,11 @@ define [ 'MC', 'event',
 
         clickDuplicateIcon : ->
             console.log 'clickDuplicateIcon'
+
+
+            if not MC.canvas_data.id
+                this.trigger 'TOOLBAR_SAVE_CLICK'
+
             this.trigger 'TOOLBAR_DUPLICATE_CLICK'
 
         clickDeleteIcon : ->

@@ -27,35 +27,30 @@ var secondarypanel = function (template, parent_dom)
     panel_wrap.animate({
         right: 0
       }, {
-        duration: 500,
+        duration: 200,
         specialEasing: {
             width: 'linear'
+        },
+        complete: function() {
+            $('.property-details').hide();
         }
     });
 
     return this;
 };
 
-secondarypanel.open = function (event)
+secondarypanel.open = function (dom, template)
 {
-    var target = $(this),
-        target_template = target.data('secondarypanel-template'),
-        target_data = target.data('secondarypanel-data'),
-        parent = target.parents('.first-panel').first(),
-        stopSecondaryPanel = $(event.target).hasClass('prevent-secondary');
+    var target = dom,
+        parent = target.parents('.first-panel').first();
 
-    if(stopSecondaryPanel) {
-        target.trigger("PREVENT_SECONDARY", $(event.target));
-        return false;
-    }
-
-    if (target_template && target_data)
+    if (template)
     {
         secondarypanel(
-            MC.template[ target_template ]( target_data ),
+            template,
             parent
         );
-        target.trigger('secondary-panel-shown', target_data);
+        target.trigger('secondary-panel-shown');
 
         $('#secondary-panel-wrap').one('closed', function ()
         {
@@ -73,24 +68,26 @@ secondarypanel.close = function ()
     $(document.body)
         .off('click', '.back', secondarypanel.close);
 
+    $('.property-details').show();
+
     panel_wrap
         .animate({
             right: -sub_width
         }, {
-            duration: 500,
+            duration: 200,
             specialEasing: {
               width: 'linear'
             },
         complete: function() {
             $(this).trigger('closed').remove();
         }
-        })
+        });
 
     return false;
 };
 
 $(document).ready(function ()
 {
-    $(document.body).on('click', '.secondary-panel', secondarypanel.open);
+    //$(document.body).on('click', '.secondary-panel', secondarypanel.open);
     $(document.body).on('click', '.back', secondarypanel.close);
 });

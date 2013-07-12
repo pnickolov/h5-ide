@@ -1908,7 +1908,7 @@ a.sidebar-hider {
 	right: 280px;
 }
 .property-details {
-	height: 500px;
+	height: 100%;
 }
 
 /* Canvas and Toolbar Wrapper */

@@ -22,6 +22,14 @@ define [ 'MC', 'event',
 
 		#set MC.data
 		MC.data = {}
+
+		#global config data by region
+		MC.data.config = {}
+
+		#global cache for all ami
+		MC.data.dict_ami = {}
+
+
 		#set untitled
 		MC.data.untitled = 0
 		#set tab

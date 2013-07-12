@@ -1545,7 +1545,7 @@ td.table-action a.btn {
 	border-bottom: none;
 }
 
-.toolbar-btn-group .dropdown-menu a {
+.toolbar-btn-group .selectbox .dropdown-menu a {
 	display: block;
 	padding: 10px 5px 10px 40px;
 }
@@ -1712,7 +1712,7 @@ a.sidebar-hider {
 	width: 70px;
 	margin: 0 8px 8px 0;
 	border-radius: 4px;
-	cursor: move;
+	cursor: pointer;
 	padding: 5px;
 	box-sizing: border-box;
 }
@@ -1796,14 +1796,10 @@ a.sidebar-hider {
 	padding-bottom: 5px;
 	margin-left: -5px;
 	width: 70px;
-	height: 26px;
+	height: 22px;
 	word-wrap: break-word;
 	overflow: hidden;
 	line-height: 14px;
-}
-
-.resource-item:hover .resource-label {
-
 }
 
 .instance-label {
@@ -1911,6 +1907,9 @@ a.sidebar-hider {
 #hide-property-panel {
 	right: 280px;
 }
+.property-details {
+	height: 500px;
+}
 
 /* Canvas and Toolbar Wrapper */
 #canvas-panel {
@@ -1962,120 +1961,51 @@ a.sidebar-hider {
 }
 
 /* Property Panel */
-.property-instance h5,
-.sg-context-wrap h5
- {
-	margin: 5px 0;
-	color: #666;
-}
-.property-instance-title {
-	position: relative;
-}
-.property-instance-title input,
-.sg-context-wrap input
- {
-	width: 220px;
-	margin: 0 auto;
-}
-.property-instance-title .left,
-.sg-context-wrap .left {
-	float: left;
-}
-.property-instance-title .right,
-.sg-context-wrap .right {
-	float: right;
-}
-.property-instance-link .ami-wrap{
-	width: 240px;
-	height: 30px;
-	margin: 0 auto;
-	border: 1px #eee solid;
+
+.ami-wrap{
+	width: 248px;
+	margin-top: 8px;
+	/*margin: 0 auto;*/
+	border: 1px #ccc solid;
 	cursor: pointer;
 	padding: 5px;
-}
-.property-icon {
-	width: 15px;
-	height: 15px;
-	background-color: #eee;
-	float: left;
-}
-.property-instance-type .main {
-	color: #000;
-	font-size: 1em;
-}
-.property-instance-type .sub {
-	color: #999;
-	font-size: 0.8em;
-}
-.property-check{
-	position: relative;
-	width: 100%;
-	height: 30px;
-	overflow: hidden;
-}
-.property-check .checkbox{
-	position: absolute;
-	width: 100%;
-	left: -15px;
-}
-.property-check .checkbox span{
-	position: absolute;
-	left:35px;
-}
-#property-instance-keypairs .editableoption .btn {
-	width: 30px;
-	height: 18px;
-	line-height: 18px;
-	font-size: 12px;
-	padding: 0;
-	margin-left: 5px;
-}
-#property-instance-keypairs .editableoption {
-	border: 1px #eee solid;
-}
-#property-instance-keypairs .selectbox.open .editableoption {
-	border: 0px;
+	font-size: 13px;
 }
 
-#property-instance-keypairs .scroll-wrap{
-	top:32px;
+.property-control-group .editableoption .input {
+	width: 150px;
+	padding: 4px 20px 4px 4px;
 }
-#property-instance-keypairs .cur-value {
-	width: 220px;
+
+.icon-property-instance-ami {
+	float: left;
+	margin-right: 5px;
 }
-#instance-type-select .cur-value .main, #instance-type-select .cur-value.sub {
-	width: 220px;
-	text-overflow: ellipsis;
-	overflow: hidden;
-}
-#instance-type-select .cur-value {
-	width: 240px;
-	height: 40px;
-	position: relative;
-}
-#instance-type-select .dropdown-toggle {
-	position: relative;
-	width: 260px;
-	height: 40px;
-}
-#instance-type-select .dropdown-menu {
-	top: 40px;
-	background-color: #FFF;
-}
+
 #security-group-select {
 	position: absolute;
 	top: 0;
 	right: 0;
 }
+
 #security-group-select .dropdown-toggle {
 	width: 38px;
 	height: 38px;
 	background-color: #EEE;
 	display: inline-block;
 }
+
 #security-group-select .dropdown-menu {
 	top: 38px;
 	left: -120px;
+}
+
+#security-group-select .dropdown-menu li a div.truncate {
+	width: 120px;
+}
+
+.secondary-panel {
+	cursor: pointer;
 }
 
 .sg-info-list li {
@@ -2084,18 +2014,23 @@ a.sidebar-hider {
 	border-bottom: #eee 1px solid;
 }
 
-.sg-info-list .col1{
+.sg-info-list .col1 {
 	margin-right: 15px;
 	background-color: #eee;
 	width: 15px;
 	height: 15px;
 	float: left;
 }
-.sg-info-list .col2{
+.sg-info-list .col2 {
 	width: 180px;
 	float: left;
 	word-wrap:break-word;
 }
+
+.sg-info-list .col2 > div {
+	width: 180px;
+}
+
 .sg-info-list .col2 .col2-1 {
 	color: #000;
 	font-size: 14px;
@@ -2118,30 +2053,24 @@ a.sidebar-hider {
 
 
 /* Secondary Panel */
-.secondary-panel {
-	display: none;
-	position: absolute;
-	top: 0;
-	left: 0;
+#secondary-panel-wrap {
 	background-color: #fff;
-	height: 485px;
-	width: 100%;
 }
-#aim-secondary-panel .context-wrap {
+#secondary-panel-wrap .context-wrap {
 	padding: 10px;
 	font-size: 13px;
 }
-#aim-secondary-panel .title {
+#secondary-panel-wrap .title {
 	width: 105px;
 	color: #999;
 	display: inline-block;
 }
-#aim-secondary-panel .context {
+#secondary-panel-wrap .context {
 	width: 115px;
 	color: #666;
 	display: inline-block;
 }
-#aim-secondary-panel .context-wrap a {
+#secondary-panel-wrap .context-wrap a {
 	color: #00F;
 	word-wrap:break-word;
 }
@@ -2168,6 +2097,7 @@ a.sidebar-hider {
 	top: 0;
 	right: 0;
 }
+
 .sg-rule-list li {
 	width: 260px;
 	padding: 5px;
@@ -2176,12 +2106,15 @@ a.sidebar-hider {
 	position: relative;
 	font-size: 12px;
 }
-#property-panel li:hover {
+
+/*#property-panel li:hover {
 	background-color: #C6E2F2;
-}
+}*/
+
 .sg-context-wrap {
 	height: 443px;
 }
+
 .sg-rule-list .rule-direction-icon {
 	width: 15px;
 	height: 15px;
@@ -2240,28 +2173,97 @@ a.sidebar-hider {
 	width: 230px;
 	word-wrap:break-word;
 }
+
+.network-list-header {
+	background: #ccc;
+	height: 20px;
+	line-height: 20px;
+	padding: 14px 8px;
+}
+
+.network-list-header .btn-small {
+	line-height: 20px;
+	margin-top: -2px;
+}
+
+.network-list {
+	background: #f0f0f0;
+	border: 1px solid #ccc;
+}
+
 .network-list li {
 	position: relative;
 	padding: 5px;
+	height: 20px;
 }
+
+.network-list li:nth-child(2n+1) {
+	background: #fcfcfc;
+}
+
+.network-list li:hover {
+	background: #e0e0e0;
+}
+
 .network-list li .name{
 	width: 150px;
 	float: left;
 }
-.network-list li .network-toggle-icon{
-	width: 15px;
-	height: 15px;
-	background-color: #eee;
-	margin-left:10px;
-	float: left;
+
+.network-list li .input-ip {
+	width: 10px;
+	height: 10px;
+	padding: 5px;
+	background-color: #f0f0f0;
+	font-size: 12px;
 }
-.network-list li .network-remove-icon{
-	width: 15px;
-	height: 15px;
-	background-color: #eee;
-	margin-left:10px;
-	float: left;
+
+.toggle-eip {
+	cursor: pointer;
+	width: 22px;
+	height: 16px;
+	background: url('../images/ide/icon/instance-eip-off.png');
 }
+
+.toggle-eip.associated {
+	background: url('../images/ide/icon/instance-eip-on.png');
+}
+
+.network-remove-icon {
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+	background: url('../images/ide/icon-remove.png');
+}
+
+.network-list li .toggle-eip {
+	position: absolute;
+	right: 30px;
+	top: 50%;
+	margin-top: -8px;
+}
+
+.icon-add-sg {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background: url('../images/ide/icon-add-sg.png');
+}
+
+.icon-btn-selectbox {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	z-index: 100;
+}
+
+.network-list li .network-remove-icon {
+	position: absolute;
+	right: 5px;
+	top: 50%;
+	margin-top: -8px;
+}
+
 .sg-rule-filter h5 {
 	width: 80px;
 	display: inline-block;

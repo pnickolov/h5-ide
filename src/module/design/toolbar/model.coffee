@@ -10,6 +10,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
         defaults :
             'zoomin_flag'   : true
             'zoomout_flag'  : true
+            'stack_id'      : null
 
         #save stack
         saveStack : () ->

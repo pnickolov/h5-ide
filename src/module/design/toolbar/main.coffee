@@ -2,7 +2,7 @@
 #  Controller for design/toolbar module
 ####################################
 
-define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, toolbar_tmpl, event ) ->
+define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, toolbar_tmpl, ide_event ) ->
 
     #private
     loadModule = () ->
@@ -52,6 +52,11 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
             view.on 'TOOLBAR_ZOOMOUT_CLICK', () ->
                 console.log 'design_toolbar_click:zoomOutStack'
                 model.zoomOutStack()
+
+            #listen RELOAD_RESOURCE
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, target ) ->
+                console.log 'toolbar:RELOAD_RESOURCE, target = ' + target
+                model.set 'stack_id', target
 
     unLoadModule = () ->
         #view.remove()

@@ -1211,9 +1211,9 @@ MC.canvas.layout = {
 		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
 		{
 			//has vpc (create vpc, az, and subnet by default)
-			var node_vpc = MC.canvas.add('AWS.VPC.VPC', {
+			MC.canvas.add('AWS.VPC.VPC', {
 				'name': 'vpc1'
-			},{
+			}, {
 				'x': 2,
 				'y': 2
 			});
@@ -1341,7 +1341,7 @@ MC.canvas.event.dragable = {
 		event.preventDefault();
 		event.stopPropagation();
 
-		var offset = (event.data.shadow.data('type') === 'node') ? 0 : 2 * MC.canvas.GRID_HEIGHT;
+		var offset = event.data.target_type === 'node' ? 0 : 2 * MC.canvas.GRID_HEIGHT;
 
 		event.data.shadow.attr('transform',
 			'translate(' +
@@ -1360,16 +1360,29 @@ MC.canvas.event.dragable = {
 			event.pageY === event.data.originalPageY
 		)
 		{
-			event.data.target.attr('class', function (index, key)
+			if (event.data.target_type === 'node')
 			{
-				return key + ' selected';
-			});
-			MC.canvas.selected_node.push(event.data.target[0]);
+				var target = event.data.target,
+					clone_node;
 
-			uid = event.data.target.attr("id");
+				target.attr('class', function (index, key)
+				{
+					return key + ' selected';
+				});
 
-			//dispatch event when select node
-			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", uid);
+				// Append to top
+				clone_node = target.clone();
+				target.remove();
+				$('#node_layer').append(clone_node);
+
+				MC.canvas.selected_node.push(clone_node[0]);
+
+				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+			}
+			else
+			{
+				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
+			}
 		}
 		else
 		{
@@ -1383,7 +1396,8 @@ MC.canvas.event.dragable = {
 				node_type = target.data('class'),
 				line_layer = $("#line_layer")[0],
 				match_place,
-				coordinate;
+				coordinate,
+				clone_node;
 
 			if (target_type === 'node')
 			{
@@ -1413,6 +1427,11 @@ MC.canvas.event.dragable = {
 							{'line_uid': value['line']}
 						);
 					});
+
+					// Append to top
+					clone_node = target.clone();
+					target.remove();
+					$('#node_layer').append(clone_node);
 				}
 			}
 
@@ -2009,7 +2028,7 @@ MC.canvas.event.groupResize = {
 				};
 				break;
 			default :
-				console.info('unknown direction:' + direction);
+				//console.info('unknown direction:' + direction);
 				break;
 		}
 
@@ -2306,7 +2325,8 @@ MC.canvas.volume = {
 	show: function ()
 	{
 		var bubble_box = $('#volume-bubble-box'),
-			target_id = $(this).data('target-id');
+			target_id = $(this).data('target-id'),
+			bubble_target_id;
 
 		if (!bubble_box[0])
 		{
@@ -2316,7 +2336,16 @@ MC.canvas.volume = {
 		}
 		else
 		{
+			bubble_target_id = bubble_box.data('target-id');
+			
 			MC.canvas.volume.close();
+
+			if (target_id !== bubble_target_id)
+			{
+				MC.canvas.volume.bubble(
+					document.getElementById( target_id )
+				);
+			}
 		}
 
 		return false;
@@ -2336,9 +2365,24 @@ MC.canvas.volume = {
 		return false;
 	},
 
-	close: function ()
+	close: function (event)
 	{
-		var bubble_box = $('#volume-bubble-box');
+		var bubble_box = $('#volume-bubble-box'),
+			target;
+
+		if (event)
+		{
+			target = $(event.target);
+
+			if (
+				target.attr('class') === 'instance-volume' ||
+				target.is('.volume_item') ||
+				target.parent().is('.volume_item')
+			)
+			{
+				return false;
+			}
+		}
 
 		if (bubble_box[0])
 		{
@@ -2347,7 +2391,9 @@ MC.canvas.volume = {
 
 			$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
 
-			$(document).on('keyup', MC.canvas.volume.delete);
+			$(document)
+				.off('keyup', MC.canvas.volume.delete)
+				.off('click', ':not(.instance-volume, #volume-bubble-box)', MC.canvas.volume.close);
 		}
 	},
 
@@ -2426,6 +2472,8 @@ MC.canvas.volume = {
 			'originalPageY': event.pageY,
 			'action': 'move'
 		});
+
+		MC.canvas.volume.select.call( $('#' + this.id )[0] );
 		
 		return false;
 	},
@@ -2467,6 +2515,9 @@ MC.canvas.volume = {
 
 	mouseup: function (event)
 	{
+		event.preventDefault();
+		event.stopPropagation();
+
 		var target = $(event.data.target),
 			target_component_type = target.data('component-type'),
 			node_option = target.data('option'),
@@ -2511,7 +2562,7 @@ MC.canvas.volume = {
 						'instance_id': target_id,
 						'id': volume_id,
 						'name': data_option.name,
-						'volumeSize': data_option.size
+						'volumeSize': data_option.volumeSize
 					});
 
 					$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="volume_item" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
@@ -2543,7 +2594,7 @@ MC.canvas.volume = {
 					'instance_id': target_id,
 					'id': volume_id,
 					'name': data_option.name,
-					'volumeSize': data_option.size
+					'volumeSize': data_option.volumeSize
 				});
 
 				$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="volume_item" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
@@ -2554,8 +2605,6 @@ MC.canvas.volume = {
 
 				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 			}
-
-			MC.canvas.volume.select.call( $('#' + volume_id )[0] );
 
 			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
 		}

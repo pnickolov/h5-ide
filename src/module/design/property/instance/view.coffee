@@ -138,6 +138,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             if(id.length != 0)
                 $('#sg-info-list').append MC.template.sgListItem({name: id})
+                instance_uid = $( '#instance-property-detail' ).attr 'component'
+                sg_uid = id
+                this.model.addSGtoInstance instance_uid, sg_uid
 
             else
 

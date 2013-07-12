@@ -149,6 +149,20 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
+        addSGtoInstance : (instance_uid, sg_uid) ->
+
+            MC.canvas_data.component[ instance_uid ].resource.SecurityGroupId.push '@' + sg_uid + '.resource.GroupId'
+
+            _.map MC.canvas_property.sg_list, ( sg ) ->
+
+                if sg.uid == sg_uid
+
+                    sg.member.push instance_uid
+
+                null
+
+            null
+
         getCheckBox : ( uid ) ->
 
             checkbox = {}
@@ -212,9 +226,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
 
+            sg_id_no_ref = []
+
             _.map sg_ids, ( sg_id ) ->
 
                 sg_uid = (sg_id.split ".")[0][1...]
+
+                sg_id_no_ref.push sg_uid
 
                 _.map MC.canvas_property.sg_list, ( value, key ) ->
 
@@ -240,16 +258,17 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                         instance_sg.detail.push sg_detail
 
-                    else
-                        tmp = {}
+            _.map MC.canvas_property.sg_list, (sg) ->
+                
+                if sg.uid not in sg_id_no_ref
 
-                        tmp.name = value.name
+                    tmp = {}
 
-                        tmp.uid = value.uid
+                    tmp.name = sg.name
 
-                        if tmp not in instance_sg.all_sg
+                    tmp.uid = sg.uid
 
-                            instance_sg.all_sg.push tmp
+                    instance_sg.all_sg.push tmp
 
             instance_sg.total = instance_sg.detail.length
 

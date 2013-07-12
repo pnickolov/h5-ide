@@ -30,7 +30,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                     console.log 'design_view_init'
                     design_view_init = view.$el.html()
                     null
-                , 2000
+                , 4000
                 null
 
             #render

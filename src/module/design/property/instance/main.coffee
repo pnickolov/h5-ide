@@ -32,6 +32,7 @@ define [ 'jquery',
                 ami_display : model.getAmiDisp uid
                 sg_display : model.getSgDisp uid
                 checkbox_display: model.getCheckBox uid
+                eni_display : model.getEni uid
             }
             #render
             view.render( attributes )
@@ -48,6 +49,7 @@ define [ 'jquery',
                     ami_display : model.getAmiDisp uid
                     sg_display : model.getSgDisp uid
                     checkbox_display: model.getCheckBox uid
+                    eni_display : model.getEni uid
                 }
 
                 view.render( attributes )

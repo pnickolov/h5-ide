@@ -69,6 +69,7 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu">
+							{{#if checkbox_display.tenancy}}
 							<li class="selected" tabindex="-1">
 								<a data-id="default" href="#">
 									Default
@@ -79,6 +80,18 @@
 									Delicated
 								</a>
 							</li>
+							{{else}}
+							<li tabindex="-1">
+								<a data-id="default" href="#">
+									Default
+								</a>
+							</li>
+							<li class="selected" tabindex="-1">
+								<a data-id="dedicated" href="#">
+									Delicated
+								</a>
+							</li>
+							{{/if}}
 						</ul>
 					</div>
 				</div>
@@ -159,11 +172,15 @@
 			<div class="item-wrap scroll-content">
 				<div class="property-control-group clearfix">
 					<label class="left" for="property-instance-ni-description">Description</label>
-					<textarea id="property-instance-ni-description"></textarea>
+					<textarea id="property-instance-ni-description">{{eni_display.description}}</textarea>
 				</div>
 				<div class="property-control-group clearfix">
 					<div class="checkbox">
+						{{#if eni_display.sourceCheck}}
+						<input id="property-instance-source-check" type="checkbox" checked="true" value="None" name="property-instance-source-check" />
+						{{else}}
 						<input id="property-instance-source-check" type="checkbox" value="None" name="property-instance-source-check" />
+						{{/if}}
 						<label for="property-instance-source-check"></label>
 					</div>
 					<label for="property-resource-check-1">Enable Source/Destination Checking</label>

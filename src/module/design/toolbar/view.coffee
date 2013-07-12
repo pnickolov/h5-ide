@@ -14,7 +14,7 @@ define [ 'MC', 'event',
         template : Handlebars.compile $( '#toolbar-tmpl' ).html()
 
         events   :
-            'click .icon-toolbar-run'           : 'clickRunIcon'
+            'click #toolbar-run'                : 'clickRunIcon'
             'click .icon-toolbar-save'          : 'clickSaveIcon'
             'click #toolbar-duplicate'          : 'clickDuplicateIcon'
             'click #toolbar-delete'             : 'clickDeleteIcon'
@@ -32,7 +32,7 @@ define [ 'MC', 'event',
             $( '#main-toolbar' ).html this.template
 
         clickRunIcon : ->
-            target = $$( '#main-toolbar' )
+            target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
                 console.log 'clickRunIcon'
                 event.data.target.trigger 'TOOLBAR_RUN_CLICK'

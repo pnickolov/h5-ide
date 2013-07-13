@@ -143,7 +143,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     'region'     : MC.canvas_data.region,
                     'stack_id'   : MC.canvas_data.id,
                     'thumbnail'  : is_thumbnail,
-                    'screenshot' : 'http://localhost:3000/screenshot.html'
+                    'screenshot' : 'http://localhost:3001/screenshot.html',
+                    'json_data'  : MC.canvas_data
                 },
                 success : ( result ) ->
                     console.log 'phantom callback'

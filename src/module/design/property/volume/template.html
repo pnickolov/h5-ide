@@ -1,1 +1,53 @@
-loading...
+<div class="sidebar-title">
+    <span class="sidebar-title-text">/dev/sdg</span>
+</div>
+<div class="panel-wrap">
+    <div class="property-control-group clearfix">
+        <label>Device Name</label>
+        <div class="name tooltip" data-tooltip="Required">
+            <label for="volume-device">/dev/</label>
+            <input type="text" class="input input-device" value="sdg" id="volume-device">
+        </div>
+    </div>
+    <div class="property-control-group clearfix">
+        <label>Volume Size</label>
+        <div class="ranged-number-input">
+            <label for="volume-size-ranged"></label>
+            <input id="volume-size-ranged" type="number" value="1" name="volume-size-ranged" min="1" max="1024" required="">
+        <label for="volume-property-ranged-number" >GB</label>
+        </div>
+    </div>
+    <div class="property-control-group clearfix">
+        <label>Snapshot</label>
+        <div class="ami-wrap clearfix secondary-panel" data-secondarypanel-template="aimSecondaryPanel" data-secondarypanel-data='{{{ami_string}}}'>
+            <div class="property-label">{{ami_display.name}}</div>
+        </div>
+    </div>
+    <div class="property-control-group clearfix">
+        <label>Volume Type</label>
+        <div class="context">
+            <div>
+            <div class="radio">
+                <input id="radio-standard" type="radio" name="volume-type" value="1" />
+                <label for="radio-standard"></label>
+            </div>
+            <label for="volume-property-type" >Standard</label>
+            <div>
+            <div>
+            <div class="radio">
+                <input id="radio-iops" type="radio" name="volume-type" />
+                <label for="radio-iops"></label>
+            </div>
+            <label for="volume-property-type" >Provisioned IOPS</label>
+            <div>
+        </div>
+    </div>
+    <div class="property-control-group clearfix" id="iops-group">
+        <label>IOPS</label>
+        <div class="ranged-number-input">
+            <label for="iops-ranged"></label>
+            <input id="iops-ranged" type="number" value="100" name="iops-ranged" min="100" max="2000" required="">
+        <label for="volume-property-ranged-number" >GB</label>
+        </div>
+    </div>
+</div>

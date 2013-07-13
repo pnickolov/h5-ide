@@ -42,11 +42,16 @@ define [ 'event',
 
         render   : ( template, attrs ) ->
             console.log 'resource render'
-   
-            $( this.el ).html template
+            $( '#resource-panel' ).html template
             #
             fixedaccordion.resize()
+            #
+            ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
             null
+
+        reRender   : ( template ) ->
+            console.log 're-resource render'
+            if $.trim( this.$el.html() ) is 'loading...' then $( '#resource-panel' ).html template
 
         listen   : ( model ) ->
             #set this.model

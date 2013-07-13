@@ -36,10 +36,12 @@ define [ 'jquery',
             view  = new View { 'model' : model }
             view.render template
 
-            #listen RELOAD_RESOURCE
             #show stack property
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, () ->
                 console.log 'property:RELOAD_RESOURCE'
+                #check re-render
+                view.reRender template
+                #
                 stack_main.loadModule()
 
             #listen OPEN_PROPERTY

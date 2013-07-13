@@ -10,7 +10,6 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
         initialize  : ->
             $( window   ).on "resize", this.resizeEvent
-            $( '#tab-content-design' ).bind 'DOMNodeInserted', this.domNodeInserted
 
         resizeEvent : ->
             main_middle    = $ '#canvas-panel'
@@ -46,8 +45,6 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             console.log 'writeOldDesignHtml'
             this.$el.html this.model.get 'snapshot'
 
-        domNodeInserted : ->
-            console.log 'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww'
     }
 
     return DesignView

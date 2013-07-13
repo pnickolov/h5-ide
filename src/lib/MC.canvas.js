@@ -1313,10 +1313,26 @@ MC.canvas.event.dragable = {
 			target_offset = this.getBoundingClientRect(),
 			node_type = target.data('type'),
 			canvas_offset = $('#svg_canvas').offset(),
-			shadow = target.clone();
+			shadow = target.clone(),
+			platform,
+			target_group_type;
 
 		shadow.attr('class', shadow.attr('class') + ' shadow');
 		$('#svg_canvas').append(shadow);
+
+		if (node_type === 'node')
+		{
+			platform = MC.canvas.data.get('platform');
+			target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][  target.data('class') ];
+
+			$.each(target_group_type, function (index, item)
+			{
+				$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+				{
+					return 'dropable-group ' + key;
+				});
+			});
+		}
 
 		$(document.body).on({
 			'mousemove': MC.canvas.event.dragable.mousemove,
@@ -1433,6 +1449,11 @@ MC.canvas.event.dragable = {
 					target.remove();
 					$('#node_layer').append(clone_node);
 				}
+
+				$('.dropable-group').attr('class', function (index, key)
+				{
+					return key.replace('dropable-group ', '');
+				});
 			}
 
 			if (target_type === 'group')
@@ -1777,7 +1798,9 @@ MC.canvas.event.siderbarDrag = {
 			shadow,
 			clone_node,
 			default_width,
-			default_height;
+			default_height,
+			platform,
+			target_group_type;
 
 		$(document.body).append('<div id="drag_shadow"></div>');
 		shadow = $('#drag_shadow');
@@ -1807,6 +1830,20 @@ MC.canvas.event.siderbarDrag = {
 					'left': event.pageX - 50
 				})
 				.show();
+
+			if (target_component_type === 'node')
+			{
+				platform = MC.canvas.data.get('platform');
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
+
+				$.each(target_group_type, function (index, item)
+				{
+					$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+					{
+						return 'dropable-group ' + key;
+					});
+				});
+			}
 		}
 
 		if (node_type === 'AWS.EC2.EBS.Volume')
@@ -1912,6 +1949,11 @@ MC.canvas.event.siderbarDrag = {
 				}
 			}
 		}
+
+		$('.dropable-group').attr('class', function (index, key)
+		{
+			return key.replace('dropable-group ', '');
+		});
 
 		event.data.shadow.remove();
 		$('#canvas_body').removeClass('dragging');

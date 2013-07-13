@@ -30,7 +30,7 @@ var constant_data = {
 	//stroke width for group ( .group-az .group-subnet .group-vpc in canvas.css )
 	STOKE_WIDTH_AZ: 2,
 	STOKE_WIDTH_SUBNET: 2,
-	STOKE_WIDTH_VPC: 3,
+	STOKE_WIDTH_VPC: 4,
 
 	//strok width of line
 	LINE_STROKE_WIDTH: 4,

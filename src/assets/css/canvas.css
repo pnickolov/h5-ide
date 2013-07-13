@@ -259,7 +259,8 @@
 	stroke-width: 4;
 }
 
-.AWS-VPC-VPC:hover .group-vpc {
+.AWS-VPC-VPC:hover .group-vpc,
+.dropable-group .group-vpc {
 	stroke: #C6C4C4;
 }
 
@@ -275,7 +276,8 @@
 	stroke-width: 2;
 }
 
-.AWS-EC2-AvailabilityZone:hover .group-az {
+.AWS-EC2-AvailabilityZone:hover .group-az,
+.dropable-group .group-az {
 	stroke: #F69722;
 }
 
@@ -291,7 +293,8 @@
 	stroke-width: 2;
 }
 
-.AWS-VPC-Subnet:hover .group-subnet {
+.AWS-VPC-Subnet:hover .group-subnet,
+.dropable-group .group-subnet {
 	stroke: #C6C4C4;
 }
 
@@ -303,6 +306,21 @@
 .group-resizer {
 	fill-opacity: 0;
 	/*position: absolute;*/
+}
+
+.dropable-group .group-resizer {
+	fill-opacity: 1;
+	fill: rgba(252, 190, 23, 0.15);
+}
+
+.dropable-group .group-resizer {
+	fill-opacity: 1;
+	fill: rgba(238, 238, 238, 0.5);
+}
+
+.dropable-group .group-resizer {
+	fill-opacity: 1;
+	fill: rgba(238, 238, 238, 0.5);
 }
 
 .resizer-topleft {

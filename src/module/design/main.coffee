@@ -11,7 +11,8 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
         require [ './module/design/view', './module/design/model', 'event' ], ( View, model, ide_event ) ->
 
             #
-            design_view_init = null
+            design_view_init       = null
+            design_submodule_count = 0
 
             #view
             view       = new View()
@@ -22,19 +23,20 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 console.log 'view:DESIGN_COMPLETE'
                 #wrap 'resource', 'property', 'toolbar', 'canvas'
                 wrap()
-                #push event
-                ide_event.trigger ide_event.DESIGN_COMPLETE
-                #temp
-                setTimeout () ->
-                    #load layout
-                    console.log 'design_view_init'
-                    design_view_init = view.$el.html()
-                    null
-                , 4000
-                null
 
             #render
             view.render template
+
+            #listen DESIGN_SUB_COMPLETE
+            ide_event.onLongListen ide_event.DESIGN_SUB_COMPLETE, () ->
+                console.log 'design:DESIGN_SUB_COMPLETE = ' + design_submodule_count
+                if design_submodule_count is 3
+                    design_view_init = view.$el.html()
+                    design_submodule_count = -1
+                    #push event
+                    ide_event.trigger ide_event.DESIGN_COMPLETE
+                else
+                    design_submodule_count = design_submodule_count + 1
 
             #listen SAVE_DESIGN_MODULE
             ide_event.onLongListen ide_event.SAVE_DESIGN_MODULE, ( target ) ->
@@ -54,17 +56,14 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                     if type is 'OPEN_STACK' then model.setCanvasData( stack_info.resolved_data[0] )
                     #temp
                     ide_event.trigger ide_event.RELOAD_RESOURCE, region_name, type, current_paltform
-                null
 
                 ###
-                if type is 'OPEN_STACK'
-                    #
-                null
-                #
                 if type is 'OPEN_APP'
                     #
                 null
                 ###
+
+            null
 
     #private
     unLoadModule = () ->

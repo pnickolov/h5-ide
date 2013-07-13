@@ -20,9 +20,8 @@
     {{#if volume_detail.resource.SnapshotId}}
     <div class="property-control-group clearfix">
         <label>Snapshot</label>
-        <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{}'>
-            <div>volume_detail.resource.SnapshotId</div>
-            <span>2GB - Create by xxx</span>
+        <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
+            <div>{{volume_detail.resource.SnapshotId}}</div>
         </div>
     </div>
     {{/if}}

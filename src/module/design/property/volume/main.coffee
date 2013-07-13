@@ -70,6 +70,10 @@ define [ 'jquery',
 
                 renderPropertyPanel( volume_uid )
 
+            model.once 'REFRESH_PANEL', ()->
+
+                view.render( view.model.attributes )
+
 
     unLoadModule = () ->
         #view.remove()

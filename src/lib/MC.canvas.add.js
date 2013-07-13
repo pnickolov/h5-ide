@@ -617,7 +617,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/ELB-Canvas.png', 20, 23, 70, 70),
+				Canvon.image('../assets/images/ide/icon/elb-internet-canvas.png', 20, 23, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({

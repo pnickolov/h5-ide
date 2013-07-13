@@ -70,12 +70,15 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
 
             MC.canvas_data.component[uid].resource.VolumeType = 'standard'
 
+            MC.canvas_data.component[uid].resource.Iops = ''
+
             null
 
-        setVolumeTypeIops : ( uid ) ->
+        setVolumeTypeIops : ( uid, value ) ->
 
             MC.canvas_data.component[uid].resource.VolumeType = 'iops'
-            MC.canvas_data.component[uid].resource.Iops = 100
+
+            MC.canvas_data.component[uid].resource.Iops = value
 
             null
 

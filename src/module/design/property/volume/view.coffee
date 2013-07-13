@@ -31,7 +31,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( i
                 this.trigger 'VOLUME_TYPE_STANDARD'
             else
                 $( '#iops-group' ).show()
-                this.trigger 'VOLUME_TYPE_IOPS'
+                this.trigger 'VOLUME_TYPE_IOPS', $( '#iops-ranged' ).val()
 
         deviceNameChanged : ( event ) ->
             name = $( '#volume-device' ).val()
@@ -53,8 +53,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( i
             volume_size = $( '#volume-size-ranged' ).val()
             if(iops_size > 2000 || iops_size < 1 )
                 console.log 'IOPS must be between 100 and 2000'
-            if(iops_size > 10 * volume_size)
+            else if(iops_size > 10 * volume_size)
                 console.log 'IOPS must be less than 10 times of volume size.'
+            else
+                this.trigger 'IOPS_CHANGED', iops_size
 
         showSnapshotDetail : ( event ) ->
             target = $('#snapshot-info-group')

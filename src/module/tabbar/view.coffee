@@ -33,7 +33,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
             if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[0] is 'untitled'
                 #push event
-                this.trigger 'SWITCH_NEW_STACK_TAB', original_tab_id, tab_id
+                this.trigger 'SWITCH_NEW_STACK_TAB', original_tab_id, tab_id, $( '#tab-bar-' + tab_id ).find('a').attr('title')
             else if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[1] is 'stack'
                 #push event
                 this.trigger 'SWITCH_STACK_TAB', original_tab_id, tab_id

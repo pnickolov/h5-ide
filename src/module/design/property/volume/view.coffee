@@ -25,7 +25,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( i
             $( '.property-details' ).html this.template this.model.attributes
 
         volumeTypeChecked : ( event ) ->
-            console.log $('#volume-type-radios input:checked').val()
             if($('#volume-type-radios input:checked').val() is 'radio-standard')
                 $( '#iops-group' ).hide()
                 this.trigger 'VOLUME_TYPE_STANDARD'

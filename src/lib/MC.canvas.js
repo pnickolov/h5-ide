@@ -1475,18 +1475,20 @@ MC.canvas.event.dragable = {
 			{
 				var coordinate = MC.canvas.pixelToGrid(
 						shadow_offset.left - canvas_offset.left,
-						shadow_offset.top - canvas_offset.top - MC.canvas.GROUP_LABEL_OFFSET + parseInt(target.find('.group').css('stroke-width'))
+						shadow_offset.top - canvas_offset.top - MC.canvas.GROUP_LABEL_OFFSET + (parseInt(target.find('.group').css('stroke-width')) * 2)
 					),
 					layout_group_data = MC.canvas.data.get('layout.component.group'),
 					group_data = layout_group_data[ target_id ],
 					group_coordinate = group_data.coordinate,
 					group_size = group_data.size,
-					group_offsetX = coordinate.x - group_coordinate[0],
-					group_offsetY = coordinate.y - group_coordinate[1],
 					match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1]),
 					areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]),
+					parentGroup = MC.canvas.parentGroup(target_id, group_data.type, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]),
 					child_stack = [],
 					unique_stack = [],
+					coordinate_fixed = false,
+					group_offsetX,
+					group_offsetY,
 					matched_child,
 					child_data,
 					child_type;
@@ -1509,11 +1511,45 @@ MC.canvas.event.dragable = {
 					}
 				});
 
+				if (parentGroup)
+				{
+					parent_data = layout_group_data[ parentGroup.id ];
+
+					if (parent_data.coordinate[0] + MC.canvas.GROUP_PADDING > coordinate.x)
+					{
+						coordinate.x = parent_data.coordinate[0] + MC.canvas.GROUP_PADDING;
+						coordinate_fixed = true;
+					}
+					if (parent_data.coordinate[0] + parent_data.size[0] - MC.canvas.GROUP_PADDING < coordinate.x + group_size[0])
+					{
+						coordinate.x = parent_data.coordinate[0] + parent_data.size[0] - MC.canvas.GROUP_PADDING - group_size[0];
+						coordinate_fixed = true;
+					}
+					if (parent_data.coordinate[1] + MC.canvas.GROUP_PADDING > coordinate.y)
+					{
+						coordinate.y = parent_data.coordinate[1] + MC.canvas.GROUP_PADDING;
+						coordinate_fixed = true;
+					}
+					if (parent_data.coordinate[1] + parent_data.size[1] - MC.canvas.GROUP_PADDING < coordinate.y + group_size[1])
+					{
+						coordinate.y = parent_data.coordinate[1] + parent_data.size[1] - MC.canvas.GROUP_PADDING - group_size[1];
+						coordinate_fixed = true;
+					}
+				}
+
+				group_offsetX = coordinate.x - group_coordinate[0];
+				group_offsetY = coordinate.y - group_coordinate[1];
+
 				if (
-					coordinate.x > 0 &&
-					coordinate.y > 0 &&
-					match_place.is_matched &&
-					event.data.groupChild.length === unique_stack.length
+					coordinate.x > 1 &&
+					coordinate.y > 1 &&
+					(
+						coordinate_fixed ||
+						(
+							match_place.is_matched &&
+							event.data.groupChild.length === unique_stack.length
+						)
+					)
 				)
 				{
 					MC.canvas.position(event.data.target[0], coordinate.x, coordinate.y);
@@ -1756,43 +1792,61 @@ MC.canvas.event.drawConnection = {
 		return false;
 	},
 
-	draw: function (event)
-	{
-		$('#svg_canvas').off('mouseover', '.node', MC.canvas.event.drawConnection.draw);
+	// draw: function (event)
+	// {
+	// 	$('#svg_canvas').off('mouseover', '.node', MC.canvas.event.drawConnection.draw);
 
-		var from_node = event.data.originalTarget,
-			to_node = $(this),
-			port_name = event.data.port_name,
-			to_port_name = to_node.find('.connectable-port').data('name');
+	// 	var from_node = event.data.originalTarget,
+	// 		to_node = $(this),
+	// 		port_name = event.data.port_name,
+	// 		to_port_name = to_node.find('.connectable-port').data('name');
 
-		if (!from_node.is(to_node) && to_port_name !== undefined)
-		{
-			MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
-		}
+	// 	if (!from_node.is(to_node) && to_port_name !== undefined)
+	// 	{
+	// 		MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
+	// 	}
 
-		return true;
-	},
+	// 	return true;
+	// },
+
 	mouseup: function (event)
 	{
 		MC.paper.clear(MC.paper.drewLine);
 
-		$('#svg_canvas').on('mouseover', '.node', event.data, MC.canvas.event.drawConnection.draw);
+		var match_node = MC.canvas.matchPoint(
+				event.pageX - event.data.canvas_offset.left,
+				event.pageY - event.data.canvas_offset.top
+			),
+			from_node,
+			to_node,
+			port_name,
+			to_port_name;
 
-		setTimeout(function ()
+		if (match_node)
 		{
-			$.each(event.data.option, function (type, value)
+			from_node = event.data.originalTarget;
+			to_node = $(match_node);
+			port_name = event.data.port_name;
+			to_port_name = to_node.find('.connectable-port').data('name');
+
+			if (!from_node.is(to_node) && to_port_name !== undefined)
 			{
-				$('.' + type.replace(/\./ig, '-'))
-					.attr('class', function (index, key)
-					{
-						return key.replace('connectable ', '');
-					})
-					.find('.connectable-port').attr("class", function (index, key)
-					{
-						return key.replace('connectable-port ', '');
-					});
-			});
-		}, 100);
+				MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
+			}
+		}
+
+		$.each(event.data.option, function (type, value)
+		{
+			$('.' + type.replace(/\./ig, '-'))
+				.attr('class', function (index, key)
+				{
+					return key.replace('connectable ', '');
+				})
+				.find('.connectable-port').attr("class", function (index, key)
+				{
+					return key.replace('connectable-port ', '');
+				});
+		});
 
 		$(document.body).off({
 			'mousemove': MC.canvas.event.drawConnection.mousemove,

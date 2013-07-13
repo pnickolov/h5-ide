@@ -332,16 +332,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_data.resource.ImageId = option.imageId;
 				component_data.resource.InstanceType = 'm1.small';
-<<<<<<< HEAD
-				component_data.resource.Placement.AvailabilityZone = option.zone
-				
-				
-				var kp = null;
-				var sg = null;
-=======
 				component_data.resource.Placement.AvailabilityZone = option.zone;
 
->>>>>>> origin/develop
 				// if not kp				
 				if(MC.canvas_property.kp_list.length === 0){
 					uid = MC.guid();
@@ -368,13 +360,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				}
 
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
-<<<<<<< HEAD
 				component_data.resource.SecurityGroupId.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
 				MC.canvas_property.sg_list[0].member.push(group.id);
 				var eni = null;
-=======
 
->>>>>>> origin/develop
 				// if subnet
 				if(option.subnet){
 					subnet_uid = option.subnet.split('.')[0].slice(1);

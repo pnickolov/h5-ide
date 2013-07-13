@@ -1,9 +1,9 @@
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
-		<a href="#" class="tooltip modal" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack"}' data-modal-dismiss="false"><i class="icon-toolbar-run"></i> Run Stack</a>
+		<a href="#" class="btn-toolbar tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack"}' data-modal-dismiss="true"><i class="icon-toolbar-run"></i></a>
 	</li>
 	<li class="btn-toolbar">
-		<a href="#" class="btn-toolbar tooltip" data-tooltip="Save stack."><i class="icon-toolbar-save"></i></a>
+		<a href="#" class="btn-toolbar tooltip" data-tooltip="Save stack"><i class="icon-toolbar-save"></i></a>
 	</li>
 	<li class="selectbox btn-toolbar">
 		<a class="dropdown-toggle tooltip" data-toggle="dropdown" data-tooltip="More Actions..." href="#">
@@ -11,11 +11,9 @@
 			<span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu" role="menu">
-			<li>
-				<a id="toolbar-duplicate" href="#"><i class="icon-toolbar-duplicate"></i>Duplicate</a>
-			</li>
-			<li><a class="modal" id="toolbar-delete" href="#" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete this stack?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete</a></li>
-			<li><a id="toolbar-new-stack" href="#"><i class="icon-toolbar-new-stack"></i>New Stack</a></li>
+			<li><a class="btn-toolbar" id="toolbar-duplicate" data-tooltip="Duplicate stack" href="#"><i class="icon-toolbar-duplicate"></i>Duplicate</a></li>
+			<li><a class="btn-toolbar modal" id="toolbar-delete" href="#" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete this stack?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete</a></li>
+			<li><a class="btn-toolbar" id="toolbar-new-stack" data-tooltip="Create new stack" href="#"><i class="icon-toolbar-new-stack"></i>New Stack</a></li>
 		</ul>
 	</li>
 </ul>
@@ -50,7 +48,7 @@
 			<span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu" role="menu">
-			<li><a id="toolbar-export-png" href="#"><i class="icon-toolbar-export-png"></i>Export as PNG</a></li>
+			<li><a class="btn-toolbar" id="toolbar-export-png" href="#"><i class="icon-toolbar-export-png"></i>Export as PNG</a></li>
 			<li>
 				<a class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
 					<i class="icon-toolbar-export-json"></i>Export as Json</a>

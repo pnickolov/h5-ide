@@ -257,6 +257,7 @@ var constant_data = {
 	STACK_PROPERTY: {
 		sg_list: [],
 		kp_list: [],
+		original_json:'',
 		SCALE_RATIO: 1
 	},
 

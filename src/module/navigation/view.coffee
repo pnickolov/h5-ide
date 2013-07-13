@@ -25,7 +25,8 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click .region-name'            : 'regionNameClick'
 
         initialize : ->
-            #
+            #listen
+            this.listenTo ide_event, 'SWITCH_TAB', this.hideNavigation
 
         render     : ( template ) ->
             #render html
@@ -70,21 +71,8 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             nav      = $ '#navigation'
             main     = $ '#main'
             tab_name = $( target ).text()
-
+            #
             ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name, $( target ).attr( 'data-region-name' ), $( target ).attr( 'data-stack-id' )
-
-            nav.addClass 'collapsed'
-            nav.removeClass 'scroll-wrap'
-            main.addClass 'wide'
-
-            $( '#first-level-nav' ).removeClass 'accordion'
-            $( '.nav-head').removeClass 'accordion-group'
-            $( '.sub-menu-wrapper').removeClass 'accordion-body'
-
-            if nav.hasClass( 'collapsed' )
-                $( '.sub-menu-wrapper' ).each () ->
-                    this.style.cssText = ''
-                    null
 
         appListItemsClick : ( event ) ->
             console.log 'app tab click event'
@@ -92,21 +80,8 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             nav      = $ '#navigation'
             main     = $ '#main'
             tab_name = $( target ).text()
-
+            #
             ide_event.trigger ide_event.OPEN_APP_TAB, $.trim( tab_name ), $( target ).attr( 'data-region-name' ) , $( target ).attr( 'data-app-id' )
-
-            nav.addClass 'collapsed'
-            nav.removeClass 'scroll-wrap'
-            main.addClass 'wide'
-
-            $( '#first-level-nav' ).removeClass 'accordion'
-            $( '.nav-head').removeClass 'accordion-group'
-            $( '.sub-menu-wrapper').removeClass 'accordion-body'
-
-            if nav.hasClass( 'collapsed' )
-                $( '.sub-menu-wrapper' ).each () ->
-                    this.style.cssText = ''
-                    null
 
         showEmptyRegionClick : ( event ) ->
             $( event.target ).parent().prev().find('.hide').show()
@@ -136,6 +111,24 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 out      : () ->
                     $( this ).removeClass 'collapsed-show'
             }
+
+        hideNavigation :  ->
+            console.log 'hideNavigation'
+            nav      = $ '#navigation'
+            main     = $ '#main'
+
+            nav.addClass 'collapsed'
+            nav.removeClass 'scroll-wrap'
+            main.addClass 'wide'
+
+            $( '#first-level-nav' ).removeClass 'accordion'
+            $( '.nav-head').removeClass 'accordion-group'
+            $( '.sub-menu-wrapper').removeClass 'accordion-body'
+
+            if nav.hasClass( 'collapsed' )
+                $( '.sub-menu-wrapper' ).each () ->
+                    this.style.cssText = ''
+                    null
     }
 
     return NavigationView

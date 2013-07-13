@@ -5,8 +5,8 @@
 define [ 'MC', 'event',
          'view', 'layout',
          'header', 'navigation', 'tabbar', 'dashboard', 'design',
-         'WS'
-], ( MC, ide_event, view, layout, header, navigation, tabbar, dashboard, design, WS ) ->
+         'WS', 'constant'
+], ( MC, ide_event, view, layout, header, navigation, tabbar, dashboard, design, WS, constant ) ->
 
 	initialize : () ->
 
@@ -29,6 +29,12 @@ define [ 'MC', 'event',
 		#global cache for all ami
 		MC.data.dict_ami = {}
 
+		#global stack name list
+		MC.data.stack_list = {}
+		MC.data.stack_list[r] = [] for r in constant.REGION_KEYS
+		#global app name list
+		MC.data.app_list = {}
+		MC.data.app_list[r] = [] for r in constant.REGION_KEYS
 
 		#set untitled
 		MC.data.untitled = 0

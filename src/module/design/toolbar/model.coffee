@@ -27,13 +27,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                         console.log 'save stack successfully'
 
                         #update initial data
+                        MC.canvas_property.original_json = JSON.stringify( MC.canvas_data )
 
-                        me.trigger 'TOOLBAR_STACK_READY'
+                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS'
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST
 
                         #call save png
                         me.savePNG true
+                    else
+                        me.trigger 'TOOLBAR_STACK_SAVE_ERROR'
 
             else    #new
                 stack_model.create { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
@@ -45,34 +48,37 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     if !result.is_error
                         console.log 'create stack successfully'
 
-                        #update initial data
                         MC.canvas_data.id = result.resolved_data
+                        #update initial data
+                        MC.canvas_property.original_json = JSON.stringify( MC.canvas_data )
 
-                        me.trigger 'TOOLBAR_STACK_READY'
+                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS'
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST
 
                         #call save png
                         me.savePNG true
+                    else
+                        me.trigger 'TOOLBAR_STACK_SAVE_ERROR'
 
         #duplicate
-        duplicateStack : () ->
+        duplicateStack : (new_name) ->
             me = this
 
-            if MC.canvas_data.id
-                new_name = MC.canvas_data.name + '-copy'
-                stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
-                stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
-                    console.log 'STACK_SAVE__AS_RETURN'
-                    console.log result
+            stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
+            stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
+                console.log 'STACK_SAVE__AS_RETURN'
+                console.log result
 
-                    if !result.is_error
-                        console.log 'save as stack successfully'
+                if !result.is_error
+                    console.log 'save as stack successfully'
 
-                        #update stack list
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST
-            else
-                console.log 'Remind user to save the stack first'
+                    me.trigger 'TOOLBAR_STACK_DUPLICATE_SUCCESS'
+
+                    #update stack list
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+                else
+                    me.trigger 'TOOLBAR_STACK_DUPLICATE_ERROR'
 
         #delete
         deleteStack : () ->
@@ -87,20 +93,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     console.log 'send delete stack successful message'
 
                     #trigger event
+                    me.trigger 'TOOLBAR_STACK_DELETE_SUCCESS'
                     ide_event.trigger ide_event.STACK_DELETE, MC.canvas_data.name, MC.canvas_data.id
+                else
+                    me.trigger 'TOOLBAR_STACK_DELETE_ERROR'
 
         #run
         runStack : ( app_name ) ->
             me = this
 
-            #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
             stack_model.run { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, app_name
             stack_model.once 'STACK_RUN_RETURN', (result) ->
                 console.log 'STACK_RUN_RETURN'
-                console.log resutl
+                console.log result
 
                 if !result.is_error
                     console.log 'send run stack successful message'
+                    me.trigger 'TOOLBAR_STACK_RUN_SUCCESS'
+                else
+                    me.trigger 'TOOLBAR_STACK_RUN_ERROR'
 
         #zoomin
         zoomInStack : () ->

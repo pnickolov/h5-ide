@@ -15,7 +15,13 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
 
         render   : ( template ) ->
             console.log 'canvas render'
-            this.$el.html template
+            $( '#canvas' ).html template
+            #
+            ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
+
+        reRender   : ( template ) ->
+            console.log 're-canvas render'
+            if $.trim( this.$el.html() ) is 'loading...' then $( '#canvas' ).html template
 
         resizeCanvasPanel : ( type ) ->
             console.log 'resizeCanvasPanel = ' + type

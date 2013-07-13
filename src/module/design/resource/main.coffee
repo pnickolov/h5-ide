@@ -39,6 +39,9 @@ define [ 'jquery',
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name ) ->
                 console.log 'resource:RELOAD_RESOURCE'
+                #check re-render
+                view.reRender template
+                #
                 model.describeAvailableZonesService region_name
                 model.describeSnapshotsService      region_name
                 model.quickstartService             region_name

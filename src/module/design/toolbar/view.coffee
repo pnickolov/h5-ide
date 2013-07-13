@@ -18,14 +18,13 @@ define [ 'MC', 'event',
             'click .icon-toolbar-save'          : 'clickSaveIcon'
             'click #toolbar-duplicate'          : 'clickDuplicateIcon'
             'click #toolbar-delete'             : 'clickDeleteIcon'
-            'click #toolbar-new-stack'          : 'clickNewStackIcon'
+            'click #toolbar-new'                : 'clickNewStackIcon'
             'click .icon-toolbar-zoom-in'       : 'clickZoomInIcon'
             'click .icon-toolbar-zoom-out'      : 'clickZoomOutIcon'
             'click .icon-toolbar-undo'          : 'clickUndoIcon'
             'click .icon-toolbar-redo'          : 'clickRedoIcon'
             'click #toolbar-export-png'         : 'clickExportPngIcon'
             'click #toolbar-export-json'        : 'clickExportJSONIcon'
-            'click .icon-toolbar-export'        : 'clickExportMenu'
 
         render   : () ->
             console.log 'toolbar render'
@@ -78,12 +77,12 @@ define [ 'MC', 'event',
             else if new_name in MC.data.stack_list[MC.canvas_data.region]
                 notification('error', 'Repeated stack name', true)
             else
-                ori_data = MC.canvas_property.original_json
-                new_data = JSON.stringify( MC.canvas_data )
+                #ori_data = MC.canvas_property.original_json
+                #new_data = JSON.stringify( MC.canvas_data )
 
-                if not MC.canvas_data.id or ori_data != new_data
-                    notification('info', 'Please save stack first', true)
-                else
+                #if not MC.canvas_data.id or ori_data != new_data
+                #    notification('info', 'Please save stack first', true)
+                #else
                     this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name
 
                     this.model.once 'TOOLBAR_STACK_DUPLICATE_SUCCESS', () ->
@@ -98,6 +97,7 @@ define [ 'MC', 'event',
             $('#btn-confirm').on 'click', { target : this }, (event) ->
                 console.log 'clickDeleteIcon'
                 modal.close()
+
                 me.trigger 'TOOLBAR_DELETE_CLICK'
 
                 me.model.once 'TOOLBAR_STACK_DELETE_SUCCESS', () ->

@@ -65,6 +65,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
         duplicateStack : (new_name) ->
             me = this
 
+            #check if there are changes
+            ori_data = MC.canvas_property.original_json
+            new_data = JSON.stringify( MC.canvas_data )
+
+            if not MC.canvas_data.id or ori_data != new_data
+                me.saveStack()
+
             stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
             stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
                 console.log 'STACK_SAVE__AS_RETURN'

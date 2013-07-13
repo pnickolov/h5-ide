@@ -30,6 +30,12 @@ define [ 'MC', 'event',
         render   : () ->
             console.log 'toolbar render'
             $( '#main-toolbar' ).html this.template
+            #
+            ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
+
+        reRender   : ( template ) ->
+            console.log 're-toolbar render'
+            if $.trim( $( '#main-toolbar' ).html() ) is 'loading...' then $( '#main-toolbar' ).html this.template
 
         clickRunIcon : ->
             me = this

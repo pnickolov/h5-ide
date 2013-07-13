@@ -2389,6 +2389,30 @@ a.sidebar-hider {
 	color: #666;
 }
 
+/* volume property panel */
+.panel-wrap {
+	padding: 0 10px;
+}
+#volume-device {
+	width: 40px;
+	height: 10px;
+	padding: 5px;
+	background-color: #f0f0f0;
+	font-size: 12px;
+}
+#volume-size-ranged, #iops-ranged {
+	display: inline-block;
+	width: 60px;
+}
+#iops-group {
+	display: none;
+}
+#snapshot-info-group {
+	cursor: pointer;
+	padding: 10px;
+	border: 1px #eee solid;
+}
+
 /*Responsive Style*/
 @media (min-width: 1280px) and (max-width: 1680px)  {
 

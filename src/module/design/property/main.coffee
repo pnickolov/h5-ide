@@ -60,8 +60,9 @@ define [ 'jquery',
                 if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
                     instance_main.loadModule uid
 
+                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume)
+                    volume_main.loadModule uid
                 #show vloume/snapshot property
-                volume_main.loadModule()
 
                 #show elb property
                 #elb_main.loadModule()

@@ -1186,7 +1186,7 @@ MC.canvas.layout = {
 		$.each(MC.canvas_property.sg_list, function (key, value){
 			if(value.name === "DefaultSG" && key !== 0){
 				tmp = value;
-				MC.canvas_property.sg_list.splice(key,key);
+				MC.canvas_property.sg_list.splice(key,1);
 				MC.canvas_property.sg_list.unshift(value);
 				return false;
 			}
@@ -1195,7 +1195,7 @@ MC.canvas.layout = {
 		$.each(MC.canvas_property.kp_list, function (key, value){
 			if(value.DefaultKP !== undefined && key !== 0){
 				tmp = value;
-				MC.canvas_property.kp_list.splice(key,key);
+				MC.canvas_property.kp_list.splice(key,1);
 				MC.canvas_property.kp_list.unshift(value);
 				return false;
 			}
@@ -2011,6 +2011,32 @@ MC.canvas.event.siderbarDrag = {
 			target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping');
 
 			data_option = target.data('option');
+			data_option.instanceId = target_id;
+			
+			ami_info = MC.data.config[MC.canvas_data.component[data_option.instanceId].resource.Placement.AvailabilityZone.slice(0,-1)].ami[MC.canvas_data.component[data_option.instanceId].resource.ImageId];
+				
+			device_name = ['f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+			
+			$.each(ami_info.blockDeviceMapping, function (key, value){
+				if(key.slice(0,4) == '/dev/'){
+					k = key.slice(-1);
+					index = device_name.indexOf(k);
+					if(index>=0){
+						device_name.splice(index, 1);
+					}
+				}					
+			});
+			$.each(MC.canvas_data.component[data_option.instanceId].resource.BlockDeviceMapping, function (key, value){
+				volume_uid = value.slice(1);
+				k = MC.canvas_data.component[volume_uid].name.slice(-1);
+				index = device_name.indexOf(k);
+				if(index>=0){
+					device_name.splice(index, 1);
+				}
+			});
+			
+			data_option.name = '/dev/sd' + device_name[0];			
+			
 			new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
 
 			$('#instance_volume_list').append('<li><a href="#" id="' + new_volume.id +'" class="volume_item"><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');

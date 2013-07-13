@@ -26,8 +26,9 @@ define [ 'jquery',
                   './module/design/property/instance/main',
                   './module/design/property/sg/main',
                   './module/design/property/stack/main',
-                  './module/design/property/volume/main'
-        ], ( View, model, instance_main, sg_main, stack_main, volume_main ) ->
+                  './module/design/property/volume/main',
+                  './module/design/property/elb/main'
+        ], ( View, model, instance_main, sg_main, stack_main, volume_main, elb_main ) ->
 
             uid  = null
             type = null
@@ -36,10 +37,12 @@ define [ 'jquery',
             view  = new View { 'model' : model }
             view.render template
 
-            #listen RELOAD_RESOURCE
             #show stack property
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, () ->
                 console.log 'property:RELOAD_RESOURCE'
+                #check re-render
+                view.reRender template
+                #
                 stack_main.loadModule()
 
             #listen OPEN_PROPERTY
@@ -58,7 +61,10 @@ define [ 'jquery',
                     instance_main.loadModule uid
 
                 #show vloume/snapshot property
-                #volume_main.loadModule()
+                volume_main.loadModule()
+
+                #show elb property
+                #elb_main.loadModule()
 
                 #temp
                 # setTimeout () ->

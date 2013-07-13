@@ -2,7 +2,7 @@
 #  Controller for design/toolbar module
 ####################################
 
-define [ 'jquery', 'text!/module/design/toolbar/template.html' ], ( $, toolbar_tmpl ) ->
+define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, toolbar_tmpl, ide_event ) ->
 
     #private
     loadModule = () ->
@@ -10,7 +10,7 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html' ], ( $, toolbar_t
         #add handlebars script
         toolbar_tmpl = '<script type="text/x-handlebars-template" id="toolbar-tmpl">' + toolbar_tmpl + '</script>'
         #load remote html template
-        $( toolbar_tmpl ).appendTo '#main-toolbar'
+        $( 'head' ).append toolbar_tmpl
 
         #load remote module1.js
         require [ './module/design/toolbar/view', './module/design/toolbar/model' ], ( View, model ) ->
@@ -19,6 +19,12 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html' ], ( $, toolbar_t
             view       = new View()
             view.model = model
             view.render()
+
+            #listen RELOAD_RESOURCE
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, () ->
+                console.log 'toolbar:RELOAD_RESOURCE'
+                #check re-render
+                view.reRender()
 
             #save
             view.on 'TOOLBAR_SAVE_CLICK', () ->

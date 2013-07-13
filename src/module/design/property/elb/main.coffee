@@ -1,9 +1,9 @@
 ####################################
-#  Controller for design/property/volume module
+#  Controller for design/property/elb module
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/volume/template.html',
+         'text!/module/design/property/elb/template.html',
          'event'
 ], ( $, template, ide_event ) ->
 
@@ -11,13 +11,12 @@ define [ 'jquery',
     loadModule = ( uid, type ) ->
 
         #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-volume-tmpl">' + template + '</script>'
+        template = '<script type="text/x-handlebars-template" id="property-elb-tmpl">' + template + '</script>'
         #load remote html template
         $( 'head' ).append template
-        console.log 'volume loaded'
 
         #
-        require [ './module/design/property/volume/view', './module/design/property/volume/model' ], ( view, model ) ->
+        require [ './module/design/property/elb/view', './module/design/property/elb/model' ], ( view, model ) ->
 
             #view
             view.model    = model

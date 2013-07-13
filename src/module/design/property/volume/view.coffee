@@ -21,7 +21,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( i
             'keyup #iops-ranged' : 'iopsChanged'
 
             #prepare for snapshot
-            'click #snapshot-group' : 'showSnapshotDetail'
+            'click #snapshot-info-group' : 'showSnapshotDetail'
 
         render     : ( attributes ) ->
             console.log 'property:volume render'
@@ -51,6 +51,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( i
             if(iops_size > 10 * volume_size)
                 console.log 'IOPS must be less than 10 times of volume size.'
 
+        showSnapshotDetail : ( event ) ->
+            target = $('#snapshot-info-group')
+            secondarypanel.open target, MC.template.snapshotSecondaryPanel target.data('secondarypanel-data')
+            $(document.body).on 'click', '.back', secondarypanel.close
     }
 
     view = new VolumeView()

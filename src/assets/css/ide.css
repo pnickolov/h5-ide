@@ -2407,7 +2407,11 @@ a.sidebar-hider {
 #iops-group {
 	display: none;
 }
-
+#snapshot-info-group {
+	cursor: pointer;
+	padding: 10px;
+	border: 1px #eee solid;
+}
 
 /*Responsive Style*/
 @media (min-width: 1280px) and (max-width: 1680px)  {

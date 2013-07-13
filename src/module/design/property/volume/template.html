@@ -52,7 +52,11 @@
             </div>
         </div>
     </div>
-    <div class="property-control-group clearfix" id="iops-group">
+    {{#if volume_detail.isStandard}}
+        <div class="property-control-group clearfix" id="iops-group" style="display:none">
+    {{else}}
+        <div class="property-control-group clearfix" id="iops-group" style="display:block">
+    {{/if}}
         <label>IOPS</label>
         <div class="ranged-number-input">
             <label for="iops-ranged"></label>

@@ -54,9 +54,12 @@ define [ 'jquery',
 
             view.on 'VOLUME_TYPE_IOPS', ( value )->
 
+
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
                 view.model.setVolumeTypeIops volume_uid, value
+
+                #renderPropertyPanel( volume_uid )
 
             view.on 'IOPS_CHANGED' , ( value ) ->
 

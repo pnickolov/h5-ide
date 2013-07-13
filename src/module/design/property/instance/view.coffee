@@ -4,10 +4,11 @@
 
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         'UI.fixedaccordion',
-        'UI.secondarypanel',
         'UI.selectbox',
+        'UI.secondarypanel',
         'UI.tooltip',
         'UI.notification',
+        'UI.modal'
         'UI.toggleicon' ], ( ide_event, MC ) ->
 
     InstanceView = Backbone.View.extend {
@@ -26,8 +27,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-base64' : 'base64Change'
             'change #property-instance-ni-description' : 'eniDescriptionChange'
             'change #property-instance-source-check' : 'sourceCheckChange'
-            
+
             'click #sg-info-list li' : 'openSgPanel'
+            'click #show-newsg-panel' : 'openSgPanel'
+
+            'click #property-ami' : 'openAmiPanel'
+            'click .icon-add-sg' : 'securityGroupAddSelect'
 
             'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select' : "tenancySelect"
@@ -35,9 +40,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'OPTION_CHANGE #keypair-select' : "addtoKPList"
             'EDIT_UPDATE #keypair-select' : "createtoKPList"
             'OPTION_CHANGE #security-group-select' : "addSGtoList"
-            'click #sg-info-list .sg-remove-item-icon' : "removeSGfromList"
+            'TOGGLE_ICON #sg-info-list' : "toggleSGfromList"
+            'click .sg-remove-item-icon' : "removeSGfromList"
             'click #instance-ip-add' : "addIPtoList"
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
+
+
 
         render     : ( attributes ) ->
             console.log 'property:instance render'
@@ -48,6 +56,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             console.log 'instanceNameChange'
             cid = $( '#instance-property-detail' ).attr 'component'
             this.model.setHost cid, event.target.value
+            this.trigger 'RE_RENDER', cid
 
         instanceTypeSelect : ( event, value )->
             cid = $( '#instance-property-detail' ).attr 'component'
@@ -97,27 +106,55 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             this.model.addKP cid, id
             notification('info', (id + ' created'), false)
 
-        securityGroupAddSelect: (event) ->
-            event.stopPropagation()
-            fixedaccordion.show.call $(this).parent().find '.fixedaccordion-head'
-
-        addSGtoList: (event, id) ->
-            if(id.length != 0)
-                $('#sg-info-list').append MC.template.sgListItem({name: id})
 
         addIPtoList: (event) ->
             $('#property-network-list').append MC.template.networkListItem()
             false
 
-        removeSGfromList: (event, id) ->
-            event.stopPropagation()
-            $(this).parent().remove()
-            notification 'info', 'SG is deleted', false
 
         removeIPfromList: (event, id) ->
-            event.stopPropagation()
-            $(this).parent().remove()
+            $(event.target).parents('li').first().remove()
 
+        openSgPanel : ( event ) ->
+            source = $(event.target)
+            if(!source.hasClass('sg-toggle-show-icon') || !source.hasClass('sg-remove-item-icon'))
+                if(source.hasClass('secondary-panel'))
+                    target = source
+                else
+                    target = source.parents('.secondary-panel').first()
+
+                ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data')
+                #secondarypanel.open target, MC.template.sgSecondaryPanel target.data('secondarypanel-data')
+                #$(document.body).on 'click', '.back', secondarypanel.close
+                #fixedaccordion.resize()
+                #selectbox.init()
+
+        openAmiPanel : ( event ) ->
+            target = $('#property-ami')
+            secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
+            $(document.body).on 'click', '.back', secondarypanel.close
+
+        addSGtoList: (event, id) ->
+
+            if(id.length != 0)
+                $('#sg-info-list').append MC.template.sgListItem({name: id})
+                instance_uid = $( '#instance-property-detail' ).attr 'component'
+                sg_uid = id
+                this.model.addSGtoInstance instance_uid, sg_uid
+
+            else
+
+                cid = $( '#instance-property-detail' ).attr 'component'
+
+                ide_event.trigger ide_event.OPEN_SG, {parent: cid}
+
+
+        removeSGfromList: (event) ->
+            $(event.target).parents('li').first().remove()
+            notification 'info', 'SG is deleted', false
+
+        toggleSGfromList: (event, id) ->
+            notification 'info', id, false
     }
 
     view = new InstanceView()

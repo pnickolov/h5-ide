@@ -1449,11 +1449,6 @@ MC.canvas.event.dragable = {
 					target.remove();
 					$('#node_layer').append(clone_node);
 				}
-
-				$('.dropable-group').attr('class', function (index, key)
-				{
-					return key.replace('dropable-group ', '');
-				});
 			}
 
 			if (target_type === 'group')
@@ -1538,7 +1533,11 @@ MC.canvas.event.dragable = {
 			}
 		}
 
-		$('#canvas_body').removeClass('dragging');
+		$('.dropable-group').attr('class', function (index, key)
+		{
+			return key.replace('dropable-group ', '');
+		});
+
 		event.data.shadow.remove();
 
 		$(document.body).off({
@@ -1831,7 +1830,7 @@ MC.canvas.event.siderbarDrag = {
 				})
 				.show();
 
-			if (target_component_type === 'node')
+			if (target_component_type === 'node' && node_type !== 'AWS.EC2.EBS.Volume')
 			{
 				platform = MC.canvas.data.get('platform');
 				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
@@ -1866,7 +1865,6 @@ MC.canvas.event.siderbarDrag = {
 		}
 		else
 		{
-			$('#canvas_body').addClass('dragging');
 
 			$(document.body).on({
 				'mousemove': MC.canvas.event.siderbarDrag.mousemove,
@@ -1956,7 +1954,6 @@ MC.canvas.event.siderbarDrag = {
 		});
 
 		event.data.shadow.remove();
-		$('#canvas_body').removeClass('dragging');
 
 		$(document.body).off({
 			'mousemove': MC.canvas.event.mousemove,

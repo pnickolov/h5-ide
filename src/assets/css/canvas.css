@@ -1,22 +1,17 @@
+/* Canvas */
 #canvas_container {
-	overflow: auto;
-	/*width: 1900px;*/
+	overflow: hidden;
+	width: 1900px;
 	padding: 5px;
 	background: rgb(237, 237, 237);
-	/*height: 1430px;*/
-	/*position: relative;*/
+	height: 1430px;
+	position: relative;
 }
-
-
 
 #canvas_body {
 	margin: 20px;
 	border: 1px solid #ccc;
 	background: #fff url('../images/ide/grid.png');
-/*	-webkit-transition: all .3s;
-	-moz-transition: all .3s;
-	-o-transition: all .3s;
-	transition: all .3s;*/
 }
 
 #screenshot_canvas_body {
@@ -305,7 +300,6 @@
 /*scale area style*/
 .group-resizer {
 	fill-opacity: 0;
-	/*position: absolute;*/
 }
 
 .dropable-group .group-resizer {
@@ -329,37 +323,30 @@
 }
 
 .resizer-top {
-	/*fill:red;*/
 	cursor: ns-resize;
 }
 
 .resizer-topright {
-	/*fill:blue;*/
 	cursor: nesw-resize;
 }
 
 .resizer-left {
-	/*fill:red;*/
 	cursor: ew-resize;
 }
 
 .resizer-right {
-	/*fill:red;*/
 	cursor: ew-resize;
 }
 
 .resizer-bottomleft {
-	/*fill:blue;*/
 	cursor: nesw-resize;
 }
 
 .resizer-bottom {
-	/*fill:red;*/
 	cursor: ns-resize;
 }
 
 .resizer-bottomright {
-	/*fill:blue;*/
 	cursor: nwse-resize;
 }
 

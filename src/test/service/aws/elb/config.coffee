@@ -42,8 +42,6 @@ require.config {
         'result_vo'          : 'service/result_vo'
 
         #session_service
-        'session_vo'        : 'service/session/session_vo'
-        'session_parser'    : 'service/session/session_parser'
         'session_service'   : 'service/session/session_service'
 
         #test_util(for qunit test)
@@ -52,7 +50,5 @@ require.config {
 
 
         #elb service
-        'elb_vo'        : 'service/aws/elb/elb/elb_vo'
-        'elb_parser'    : 'service/aws/elb/elb/elb_parser'
         'elb_service'   : 'service/aws/elb/elb/elb_service'
 }#end

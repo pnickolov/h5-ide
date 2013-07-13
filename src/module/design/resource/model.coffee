@@ -164,20 +164,24 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                 #get service(model)
                 ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, null
                 ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
+                    
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN'
-
-                    _.map result.resolved_data.item, (value)->
-                        #cache my ami item to MC.data.dict_ami
-                        value.instanceType = me._getInstanceType value
-                        value.osType = me._getOSType value
-                        MC.data.dict_ami[value.imageId] = value
-                        null
-
-                    me.set 'my_ami', result.resolved_data
 
                     #cache my ami to my_ami
                     MC.data.config[region_name].my_ami = {}
-                    MC.data.config[region_name].my_ami = result.resolved_data
+
+                    if result.resolved_data
+
+                        _.map result.resolved_data.item, (value)->
+                            #cache my ami item to MC.data.dict_ami
+                            value.instanceType = me._getInstanceType value
+                            value.osType = me._getOSType value
+                            MC.data.dict_ami[value.imageId] = value
+                            null
+
+                        me.set 'my_ami', result.resolved_data
+
+                        MC.data.config[region_name].my_ami = result.resolved_data
 
                     null
             null

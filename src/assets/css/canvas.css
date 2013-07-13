@@ -369,7 +369,17 @@
 	background: url('../images/ide/volume-resource.png') no-repeat;
 }
 
-#drag_shadow .volume_item {
+.snapshot_item {
+	border: 2px solid #fff;
+	position: relative;
+	display: block;
+	width: 48px;
+	height: 56px;
+	background: url('../images/ide/ebs-snapshot-resource.png') no-repeat;
+}
+
+#drag_shadow .volume_item,
+#drag_shadow .snapshot_item {
 	border: none;
 }
 

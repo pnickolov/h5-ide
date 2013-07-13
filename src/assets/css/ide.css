@@ -1769,10 +1769,16 @@ a.sidebar-hider {
 	background: #ccc;
 }
 
+.resource-icon img {
+	display: block;
+	position: relative;
+	top: 10px;
+	margin: 0 auto;
+}
+
 .resource-icon-az {
 	background: url('../images/ide/az-resource.png') center center no-repeat;
 }
-
 
 .resource-icon-az-label {
 	/*cursor: pointer;*/

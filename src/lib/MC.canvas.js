@@ -2383,10 +2383,12 @@ MC.canvas.volume = {
 					'volume_id': volume_id,
 					'name': volume_data.name,
 					'size': volume_data.resource.Size,
+					'snapshotId': volume_data.resource.SnapshotId,
 					'json': JSON.stringify({
 						'instance_id': node.id,
 						'id': volume_id,
 						'name': volume_data.name,
+						'snapshotId': volume_data.resource.SnapshotId,
 						'volumeSize': volume_data.resource.Size
 					})
 				});
@@ -2481,6 +2483,8 @@ MC.canvas.volume = {
 
 			if (
 				target.attr('class') === 'instance-volume' ||
+				target.is('.snapshot_item') ||
+				target.parent().is('.snapshot_item') ||
 				target.is('.volume_item') ||
 				target.parent().is('.volume_item')
 			)
@@ -2627,6 +2631,7 @@ MC.canvas.volume = {
 			target_component_type = target.data('component-type'),
 			node_option = target.data('option'),
 			bubble_box = $('#volume-bubble-box'),
+			volume_type,
 			target_id,
 			volume_id,
 			target_volume_data,
@@ -2679,7 +2684,9 @@ MC.canvas.volume = {
 						'volumeSize': data_option.volumeSize
 					});
 
-					$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="volume_item" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+					volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
+
+					$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
 					target_volume_data.push('#' + volume_id);
 
@@ -2711,7 +2718,9 @@ MC.canvas.volume = {
 					'volumeSize': data_option.volumeSize
 				});
 
-				$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="volume_item" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+				volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
+
+				$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
 				target_volume_data.push('#' + volume_id);
 

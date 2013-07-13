@@ -566,6 +566,11 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone;
 
 				component_data.resource.AttachmentSet.Device =  option.name;
+
+				if (option.snapshotId)
+				{
+					component_data.resource.SnapshotId = option.snapshotId;
+				}
 			}
 			else
 			{//read

@@ -256,23 +256,47 @@
 	stroke: #dcdcdc;
 	stroke-linejoin: round;
 	stroke-dasharray: none;
-	stroke-width: 6;
+	stroke-width: 4;
+}
+
+.AWS-VPC-VPC:hover .group-vpc {
+	stroke: #C6C4C4;
+}
+
+.AWS-VPC-VPC .group-label {
+	fill: #aaa;
 }
 
 .group-az {
-	fill: rgba(254, 170, 45, 0.05);
-	stroke: #fbd396;
+	fill: rgba(252,190,23,0.02);
+	stroke: #f9be76;
 	stroke-linejoin: round;
-	stroke-dasharray: 25, 10;
-	stroke-width: 4;
+	stroke-dasharray: 15, 10;
+	stroke-width: 2;
+}
+
+.AWS-EC2-AvailabilityZone:hover .group-az {
+	stroke: #F69722;
+}
+
+.AWS-EC2-AvailabilityZone .group-label {
+	fill: #F69722;
 }
 
 .group-subnet {
 	fill: rgba(250, 250, 250, 0.05);
 	stroke: #dbd7d7;
 	stroke-linejoin: round;
-	stroke-dasharray: 25, 10;
-	stroke-width: 3;
+	stroke-dasharray: 15, 10;
+	stroke-width: 2;
+}
+
+.AWS-VPC-Subnet:hover .group-subnet {
+	stroke: #C6C4C4;
+}
+
+.AWS-VPC-Subnet .group-label {
+	fill: #aaa;
 }
 
 /*scale area style*/

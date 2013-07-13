@@ -1161,36 +1161,56 @@ MC.canvas.layout = {
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
 		});
 
-		$.each(layout_data.component.node, function (id, data)
+		if (layout_data.component.node)
 		{
-			MC.canvas.add(id);
-		});
-
-		$.each(layout_data.component.group, function (id, data)
-		{
-			MC.canvas.add(id);
-		});
-
-		$.each(layout_data.connection, function (line, data)
-		{
-			connection_target_id = [];
-
-			$.each(data.target, function (key, value)
+			$.each(layout_data.component.node, function (id, data)
 			{
-				connection_target_id.push(key);
+				MC.canvas.add(id);
 			});
+		}
+		else
+		{
+			layout_data.component.node = {};
+		}
 
-			MC.canvas.connect(
-				$('#' + connection_target_id[0]),
-				data.target[ connection_target_id[0] ],
-				$('#' + connection_target_id[1]),
-				data.target[ connection_target_id[1] ],
+		if (layout_data.component.group)
+		{
+			$.each(layout_data.component.group, function (id, data)
+			{
+				MC.canvas.add(id);
+			});
+		}
+		else
+		{
+			layout_data.component.group = {};
+		}
+
+		if (layout_data.connection)
+		{
+			$.each(layout_data.connection, function (line, data)
+			{
+				connection_target_id = [];
+
+				$.each(data.target, function (key, value)
 				{
-					'line_uid': line
-				}
-			);
-		});
+					connection_target_id.push(key);
+				});
 
+				MC.canvas.connect(
+					$('#' + connection_target_id[0]),
+					data.target[ connection_target_id[0] ],
+					$('#' + connection_target_id[1]),
+					data.target[ connection_target_id[1] ],
+					{
+						'line_uid': line
+					}
+				);
+			});
+		}
+		else
+		{
+			layout_data.connection = {};
+		}
 		return true;
 	},
 

@@ -139,7 +139,7 @@
 						<input id="property-instance-enable-cloudwatch" type="checkbox" checked="true" value="None" name="property-instance-enable-cloudwatch" />
 						{{else}}
 						<input id="property-instance-enable-cloudwatch" type="checkbox" value="None" name="property-instance-enable-cloudwatch" />
-						{{/if}}						
+						{{/if}}
 						<label for="property-instance-enable-cloudwatch"></label>
 					</div>
 					<label for="property-resource-check-1" >Enable CloudWatch</label>
@@ -230,7 +230,7 @@
 			<div class="item-wrap scroll-content">
 				<ul class="sg-info-list" id="sg-info-list">
 					{{#each sg_display.detail}}
-					<li class="clearfix secondary-panel" href="#" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"uid":"{{uid}}", "parent":"{{parent}}"}'>
+					<li class="clearfix secondary-panel" href="#" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"uid":"{{uid}}", "parent":"{{parent}}"}' data-sgid="{{uid}}">
 						<div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div>
 						<div class="col2">
 							<div class="col2-1 truncate">{{name}}</div>
@@ -238,7 +238,7 @@
 							<div class="col2-3 truncate">{{rules}} rules, {{members}} members</div>
 						</div>
 						<div class="col3 sg-remove-item-icon tooltip" data-tooltip="Remove instance from SG"></div>
-					</li>					
+					</li>
 					{{/each}}
 				</ul>
 			</div>

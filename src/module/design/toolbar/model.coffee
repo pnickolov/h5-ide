@@ -93,7 +93,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     console.log 'send delete stack successful message'
 
                     #trigger event
+                    me.trigger 'TOOLBAR_STACK_DELETE_SUCCESS'
                     ide_event.trigger ide_event.STACK_DELETE, MC.canvas_data.name, MC.canvas_data.id
+                else
+                    me.trigger 'TOOLBAR_STACK_DELETE_ERROR'
 
         #run
         runStack : ( app_name ) ->
@@ -106,6 +109,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
                 if !result.is_error
                     console.log 'send run stack successful message'
+                    me.trigger 'TOOLBAR_STACK_RUN_SUCCESS'
+                else
+                    me.trigger 'TOOLBAR_STACK_RUN_ERROR'
 
         #zoomin
         zoomInStack : () ->

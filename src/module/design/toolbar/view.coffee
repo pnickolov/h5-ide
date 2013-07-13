@@ -32,11 +32,18 @@ define [ 'MC', 'event',
             $( '#main-toolbar' ).html this.template
 
         clickRunIcon : ->
+            me = this
+
             target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
                 console.log 'clickRunIcon'
-                event.data.target.trigger 'TOOLBAR_RUN_CLICK'
+                me.trigger 'TOOLBAR_RUN_CLICK'
                 modal.close()
+
+                me.model.once 'TOOLBAR_STACK_RUN_SUCCESS', () ->
+                    notification 'info', 'Run stack ' + MC.canvas_data.name + ' successfully', true
+                me.model.once 'TOOLBAR_STACK_RUN_ERROR', () ->
+                    notification 'error', 'Run stack ' + MC.canvas_data.name + ' failed', true
             true
 
         clickSaveIcon : ->

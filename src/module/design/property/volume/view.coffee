@@ -19,8 +19,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( i
             'keyup #volume-size-ranged' : 'sizeChanged'
             'change #iops-ranged' : 'iopsChanged'
             'keyup #iops-ranged' : 'iopsChanged'
-
-            #prepare for snapshot
             'click #snapshot-info-group' : 'showSnapshotDetail'
 
         render     : ( attributes ) ->

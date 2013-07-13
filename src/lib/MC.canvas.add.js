@@ -508,6 +508,11 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet.Size = option.volumeSize;
+
+				if (option.snapshotId)
+				{
+					component_data.resource.SnapshotId = option.snapshotId;
+				}
 			}
 			else
 			{//read

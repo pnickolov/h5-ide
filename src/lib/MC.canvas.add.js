@@ -323,7 +323,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				volume_number = 0,
 				icon_volume_status = 'not-attached',
 				kp = null,
+				sg = null,
 				eni = null;
+				
 
 			if (create_mode)
 			{//write

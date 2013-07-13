@@ -12,8 +12,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( i
         template : Handlebars.compile $( '#property-volume-tmpl' ).html()
 
         events   :
-            'change #radio-standard' : 'standardRadioChecked'
-            'change #radio-iops' : 'iopsRadioChecked'
+            'click #volume-type-radios input' : 'volumeTypeChecked'
             'change #volume-device' : 'deviceNameChanged'
             'change #volume-size-ranged' : 'sizeChanged'
             #'keyup #volume-size-ranged' : 'sizeChanged'
@@ -25,13 +24,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( i
             console.log 'property:volume render'
             $( '.property-details' ).html this.template this.model.attributes
 
-        standardRadioChecked : ( event ) ->
-            $( '#iops-group' ).hide()
-            this.trigger 'VOLUME_TYPE_STANDARD'
-
-        iopsRadioChecked : ( event ) ->
-            $( '#iops-group' ).show()
-            this.trigger 'VOLUME_TYPE_IOPS'
+        volumeTypeChecked : ( event ) ->
+            console.log $('#volume-type-radios input:checked').val()
+            if($('#volume-type-radios input:checked').val() is 'radio-standard')
+                $( '#iops-group' ).hide()
+                this.trigger 'VOLUME_TYPE_STANDARD'
+            else
+                $( '#iops-group' ).show()
+                this.trigger 'VOLUME_TYPE_IOPS'
 
         deviceNameChanged : ( event ) ->
             name = $( '#volume-device' ).val()

@@ -42,18 +42,33 @@
 <!-- modalApp -->
 <div style="width:420px">
        <div class="modal-header">
-               <h3>{{title}}</h3>
-               <i class="modal-close">&times;</i>
+            <h3>{{title}}</h3>
+            <i class="modal-close">&times;</i>
        </div>
        <div class="modal-body">
-               <dd>{{body}}</dd>
-               {{#if input}}
+            <dd>{{body}}</dd>
+            {{#if input}}
                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
-               {{/if}}
+            {{/if}}
        </div>
        <div class="modal-footer">
-               <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
-               <button class="btn modal-close btn-silver">Cancel</button>
+            <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
+            <button class="btn modal-close btn-silver">Cancel</button>
+       </div>
+</div>
+
+<!-- modalToolbar -->
+<div style="width:420px">
+       <div class="modal-header">
+            <h3>{{title}}</h3>
+            <i class="modal-close">&times;</i>
+       </div>
+       <div class="modal-body">
+            <textarea id="json-content"></textarea>
+       </div>
+       <div class="modal-footer">
+            <a id="btn-confirm" class="btn btn-{{color}}" href="data://text/plain; {{{this.filecontent}}}" download="{{this.download}}">{{confirm}}</a>
+            <button class="btn modal-close btn-silver">Cancel</button>
        </div>
 </div>
 
@@ -637,7 +652,7 @@ Additional Notes and Questions
 
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-red">Proceed</button>
+		<button class="btn btn-red" id="btn-confirm">Proceed</button>
 		<button disabled class="btn btn-red tooltip" data-tooltip="Please fix error first and try to run the stack again.">Proceed</button>
 		<button class="btn btn-silver modal-close">Run Later</button>
 	</div>
@@ -762,33 +777,17 @@ Additional Notes and Questions
 </div>
 
 <!-- instanceVolume -->
-<div class="bubble-head">Attached volume (4)</div>
+<div class="bubble-head">Attached volume (<span id="instance_volume_number">{{volumeLength}}</span>)</div>
 <div class="bubble-content">
-	<ul class="instance_volume_list clearfix">
+	<ul id="instance_volume_list" class="clearfix">
+		{{#each list}}
 		<li>
-			<a href="#">
-				<span class="volume_name">/dev/sdg</span>
-				<span class="volume_size">3GB</span>
+			<a href="#" id="{{volume_id}}" class="volume_item">
+				<span class="volume_name">{{name}}</span>
+				<span class="volume_size">{{size}}GB</span>
 			</a>
 		</li>
-		<li>
-			<a href="#">
-				<span class="volume_name">/dev/sdg</span>
-				<span class="volume_size">3GB</span>
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<span class="volume_name">/dev/sdg</span>
-				<span class="volume_size">3GB</span>
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<span class="volume_name">/dev/sdg</span>
-				<span class="volume_size">3GB</span>
-			</a>
-		</li>
+		{{/each}}
 	</ul>
 
 <!-- aimSecondaryPanel -->

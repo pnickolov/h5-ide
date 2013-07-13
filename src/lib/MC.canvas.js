@@ -529,10 +529,6 @@ MC.canvas = {
 				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
 				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
 
-				MC.paper.start({
-					'stroke': connection_option.color
-				});
-
 				//add by xjimmy
 				var controlPoints = [],
 					start0 = {
@@ -550,14 +546,68 @@ MC.canvas = {
 				MC.canvas._addPad(start0, 1);
 				MC.canvas._addPad(end0, 1);
 
+
+				//draw rectangle for vertical / horizontal line
+				// if ( start0.x === end0.x )
+				// {
+				// 	//draw vertical line
+				// 	MC.paper.start({
+				// 		'filter': 'url(#dropshadow)',
+				// 		'stroke': 'none',
+				// 		'stroke-width': 0,
+				// 		'fill': connection_option.color
+				// 	});
+
+				// 	var top_p = start0;
+				// 	var bottom_p = end0;
+				// 	if ( start0.y > end0.y )
+				// 	{
+				// 		top_p = end0;
+				// 		bottom_p = start0;
+				// 	}
+				// 	MC.paper.rectangle(top_p.x, top_p.y, MC.canvas.LINE_STROKE_WIDTH , bottom_p.y - top_p.y );
+				// }
+				// else if ( start0.y === end0.y )
+				// {
+				// 	//draw horizontal line
+				// 	MC.paper.start({
+				// 		'filter': 'url(#dropshadow)',
+				// 		'stroke': 'none',
+				// 		'stroke-width': 0,
+				// 		'fill': connection_option.color
+				// 	});
+
+				// 	var left_p = start0;
+				// 	var right_p = end0;
+				// 	if ( start0.y > end0.y )
+				// 	{
+				// 		left_p = end0;
+				// 		right_p = start0;
+				// 	}
+				// 	MC.paper.rectangle(left_p.x, left_p.y-2, right_p.x - left_p.x, MC.canvas.LINE_STROKE_WIDTH);
+				// }
+
+
+
 				if ( start0.x === end0.x || start0.y === end0.y )
 				{
 					//draw straight line
+					MC.paper.start({
+						'stroke': connection_option.color,
+						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+						'fill': 'none'
+					});
 
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
 				}
 				else
 				{
+					//draw fold line
+					MC.paper.start({
+						'stroke': connection_option.color,
+						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+						'fill': 'none'
+					});
 
 					///// route 1 (xjimmy's algorithm)/////
 					//MC.canvas._route2( controlPoints, start0, end0 );
@@ -752,6 +802,7 @@ MC.canvas = {
 			node_coordinate = item.coordinate;
 
 			if (
+				node_coordinate &&
 				node_coordinate[0] < coordinate.x &&
 				node_coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > coordinate.x &&
 				node_coordinate[1] < coordinate.y &&
@@ -921,6 +972,40 @@ MC.canvas = {
 		});
 
 		return isBlank;
+	},
+
+	parentGroup: function (node_id, node_type, start_x, start_y, end_x, end_y)
+	{
+		var groups = MC.canvas.data.get('layout.component.group'),
+			group_parent_type = MC.canvas.GROUP_PARENT[ node_type ],
+			matched;
+
+		$.each(groups, function (key, item)
+		{
+			coordinate = item.coordinate;
+			size = item.size;
+
+			if (
+				node_id !== key &&
+				item.type === group_parent_type &&
+				(
+					(
+						coordinate[0] > start_x ||
+						coordinate[0] < end_x
+					)
+					&&
+					(
+						coordinate[1] > start_y ||
+						coordinate[1] < end_y
+					)
+				)
+			)
+			{
+				matched = document.getElementById( key );
+			}
+		});
+
+		return matched;
 	},
 
 	areaChild: function (node_id, start_x, start_y, end_x, end_y)
@@ -1235,7 +1320,7 @@ MC.canvas.event.dragable = {
 
 		if (node_type !== 'group')
 		{
-			$('#canvas_body').addClass('dragging');
+			//$('#canvas_body').addClass('dragging');
 		}
 
 		$(document.body).on({
@@ -1288,6 +1373,7 @@ MC.canvas.event.dragable = {
 
 			uid = event.data.target.attr("id");
 
+			//dispatch event when select node
 			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", uid);
 		}
 		else
@@ -1304,7 +1390,6 @@ MC.canvas.event.dragable = {
 				match_place,
 				coordinate;
 
-			//console.info(event.data);
 			if (target_type === 'node')
 			{
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
@@ -1313,7 +1398,7 @@ MC.canvas.event.dragable = {
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
-					MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
+					//MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
 					match_place.is_matched
 				)
 				{
@@ -1536,23 +1621,26 @@ MC.canvas.event.drawConnection = {
 
 							$.each(target_connection_option, function (index, option)
 							{
-								$.each(target_data.connection, function (index, data)
+								if (option.from === value.to)
 								{
-									if (option.relation === 'unique')
+									$.each(target_data.connection, function (index, data)
 									{
-										if (data.port === option.from)
+										if (option.relation === 'unique')
 										{
-											is_connected = true;
+											if (data.port === option.from && data.target === node_id)
+											{
+												is_connected = true;
+											}
 										}
-									}
-									else
-									{
-										if (data.port === value.to && data.target === node_id)
+										else
 										{
-											is_connected = true;
+											if (data.port === value.to && data.target === node_id)
+											{
+												is_connected = true;
+											}
 										}
-									}
-								});
+									});
+								}
 							});
 
 							if (is_connected)
@@ -1691,7 +1779,7 @@ MC.canvas.event.siderbarDrag = {
 					'width': size[0] * MC.canvas.GRID_WIDTH,
 					'height': size[1] * MC.canvas.GRID_HEIGHT
 				})
-				.addClass(node_type.replace('.', '-'))
+				.addClass(node_type.replace(/\./ig, '-'))
 				.show();
 		}
 		else
@@ -1713,24 +1801,34 @@ MC.canvas.event.siderbarDrag = {
 			{
 				return 'attachable ' + key;
 			});
+
+			$(document.body).on({
+				'mousemove': MC.canvas.event.siderbarDrag.volumeMove,
+				'mouseup': MC.canvas.event.siderbarDrag.volumeUp
+			}, {
+				'target': target,
+				'canvas_offset': $('#svg_canvas').offset(),
+				'shadow': shadow
+			});
 		}
 		else
 		{
 			$('#canvas_body').addClass('dragging');
-		}
 
-		$(document.body).on({
-			'mousemove': MC.canvas.event.siderbarDrag.mousemove,
-			'mouseup': MC.canvas.event.siderbarDrag.mouseup
-		}, {
-			'target': target,
-			'shadow': shadow
-		});
+			$(document.body).on({
+				'mousemove': MC.canvas.event.siderbarDrag.mousemove,
+				'mouseup': MC.canvas.event.siderbarDrag.mouseup
+			}, {
+				'target': target,
+				'shadow': shadow
+			});
+		}
 
 		MC.canvas.event.clearSelected();
 
 		return false;
 	},
+
 	mousemove: function (event)
 	{
 		event.preventDefault();
@@ -1741,15 +1839,9 @@ MC.canvas.event.siderbarDrag = {
 			'left': event.pageX - 50
 		});
 
-		var canvas_offset = $('#svg_canvas').offset();
-
-		console.info(MC.canvas.matchPoint(
-			event.pageX - canvas_offset.left,
-			event.pageY - canvas_offset.top
-		));
-
 		return false;
 	},
+
 	mouseup: function (event)
 	{
 		var target = $(event.data.target),
@@ -1764,19 +1856,11 @@ MC.canvas.event.siderbarDrag = {
 			default_group_width,
 			default_group_height;
 
-		if (node_type === 'AWS.EC2.EBS.Volume')
-		{
-			$('.AWS-EC2-Instance').attr('class', function (index, key)
-			{
-				return key.replace('attachable ', '');
-			});
-		}
-
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
 			if (
 				target_component_type === 'node' &&
-				MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y)
+				MC.canvas.isBlank("node", '', coordinate.x, coordinate.y)
 			)
 			{
 				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
@@ -1795,7 +1879,8 @@ MC.canvas.event.siderbarDrag = {
 			}
 
 			if (
-				target_component_type === 'group'
+				target_component_type === 'group' &&
+				MC.canvas.isBlank("group", '', coordinate.x, coordinate.y)
 			)
 			{
 				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
@@ -1814,6 +1899,89 @@ MC.canvas.event.siderbarDrag = {
 
 		event.data.shadow.remove();
 		$('#canvas_body').removeClass('dragging');
+
+		$(document.body).off({
+			'mousemove': MC.canvas.event.mousemove,
+			'mouseup': MC.canvas.event.mouseup
+		});
+	},
+
+	volumeMove: function (event)
+	{
+		event.preventDefault();
+		event.stopPropagation();
+
+		event.data.shadow.css({
+			'top': event.pageY - 50,
+			'left': event.pageX - 50
+		});
+
+		match_node = MC.canvas.matchPoint(
+			event.pageX - event.data.canvas_offset.left,
+			event.pageY - event.data.canvas_offset.top
+		);
+
+		if ($(match_node).data('class') === 'AWS.EC2.Instance')
+		{
+			MC.canvas.volumeBubble(match_node);
+		}
+		else
+		{
+			var bubble_box = $('#volume-bubble-box');
+
+			if (bubble_box[0])
+			{
+				target_id = bubble_box.data('target-id');
+				bubble_box.remove();
+
+				$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+			}
+		}
+
+		return false;
+	},
+
+	volumeUp: function (event)
+	{
+		var target = $(event.data.target),
+			target_component_type = target.data('component-type'),
+			node_type = target.data('type'),
+			node_option = target.data('option'),
+			bubble_box = $('#volume-bubble-box'),
+			target_id,
+			target_volume_data,
+			new_volume,
+			data_option;
+
+		$('.AWS-EC2-Instance').attr('class', function (index, key)
+		{
+			return key.replace('attachable ', '');
+		});
+
+		if (bubble_box[0])
+		{
+			target_id = bubble_box.data('target-id');
+			target_node = $('#' + target_id);
+			target_offset = target_node[0].getBoundingClientRect();
+			target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping');
+
+			data_option = target.data('option');
+			new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
+
+			$('#instance_volume_list').append('<li><a href="#" id="' + new_volume.id +'" class="volume_item"><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+
+			target_volume_data.push('#' + new_volume.id);
+
+			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+
+			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+			MC.canvas.event.volumeSelect.call( $('#' + new_volume.id )[0] );
+
+			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
+		}
+
+		event.data.shadow.remove();
 
 		$(document.body).off({
 			'mousemove': MC.canvas.event.mousemove,
@@ -1974,13 +2142,13 @@ MC.canvas.event.groupResize = {
 			node_maxX = [],
 			node_maxY = [],
 			group_padding = MC.canvas.GROUP_PADDING,
+			parentGroup = MC.canvas.parentGroup(group_id, parent.data('class'), group_left, group_top, group_left + group_width, group_top + group_height),
 			node_data,
 			group_node_data,
 			group_maxX,
 			group_maxY,
 			group_minX,
 			group_minY;
-
 
 		//adjust group_left
 		if (offsetX < 0 )
@@ -2002,7 +2170,6 @@ MC.canvas.event.groupResize = {
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10);
 			}
 		}
-
 
 		$.each(event.data.group_child, function (index, item)
 		{
@@ -2055,7 +2222,8 @@ MC.canvas.event.groupResize = {
 				{
 					group_height += (group_top - group_minY);
 					group_top = group_minY;
-				}				break;
+				}
+				break;
 
 			case 'bottomleft':
 				if (group_left >= group_minX)
@@ -2148,6 +2316,108 @@ MC.canvas.event.groupResize = {
 	}
 };
 
+MC.canvas.volumeBubble = function (node)
+{
+	if (!$('#volume-bubble-box')[0])
+	{
+		var target = $(node),
+			component_data = MC.canvas.data.get('component'),
+			node_volume_data = component_data[ node.id ].resource.BlockDeviceMapping,
+
+			data = {'list': []},
+			coordinate = {},
+			volume_id,
+			width,
+			height,
+			target_offset,
+			target_width,
+			target_height;
+
+		$(document.body).append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
+		bubble_box = $('#volume-bubble-box');
+
+		$.each(node_volume_data, function (index, item)
+		{
+			volume_id = item.replace('#', '');
+			volume_data = component_data[ volume_id ];
+
+			data.list.push({
+				'volume_id': volume_id,
+				'name': volume_data.name,
+				'size': volume_data.resource.Size
+			});
+		});
+
+		data.volumeLength = node_volume_data.length;
+
+		$('#volume-bubble-content').html(
+			MC.template.instanceVolume( data )
+		);
+
+		target_offset = target[0].getBoundingClientRect();
+		target_width = target_offset.width;
+		target_height = target_offset.height;
+		
+		width = bubble_box.width();
+		height = bubble_box.height();
+
+		if (target_offset.left + target_width + width - document.body.scrollLeft > window.innerWidth)
+		{
+			coordinate.left = target_offset.left - width - 15;
+			bubble_box.addClass('bubble-right');
+		}
+		else
+		{
+			coordinate.left = target_offset.left + target_width + 15;
+			bubble_box.addClass('bubble-left');
+		}
+
+		coordinate.top = target_offset.top - ((height - target_height) / 2);
+
+		bubble_box
+			.data('target-id', node.id)
+			.css(coordinate)
+			.show();
+
+		$('#' + node.id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-active.png');
+	}
+};
+
+MC.canvas.event.volumeShow = function (event)
+{
+	var bubble_box = $('#volume-bubble-box'),
+		target_id = $(this).data('target-id');
+
+	if (!bubble_box[0])
+	{
+		MC.canvas.volumeBubble(
+			document.getElementById( target_id )
+		);
+	}
+	else
+	{
+		bubble_box.remove();
+
+		$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+	}
+
+	return false;
+};
+
+MC.canvas.event.volumeSelect = function ()
+{
+	var volume_id = this.id;
+
+	$('#instance_volume_list').find('.selected').removeClass('selected');
+
+	$(this).addClass('selected');
+
+	//dispatch event when select volume node
+	$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", volume_id);
+
+	return false;
+};
+
 MC.canvas.event.selectLine = function (event)
 {
 	event.preventDefault();
@@ -2173,7 +2443,11 @@ MC.canvas.event.clearSelected = function ()
 	{
 		return key.replace(' selected', '');
 	});
+
 	MC.canvas.selected_node = [];
+
+	//dispatch event when click blank area in canvas
+	$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
 };
 
 MC.canvas.event.keyEvent = function (event)

@@ -24,8 +24,10 @@ define [ 'jquery',
         require [ './module/design/property/view',
                   './module/design/property/model',
                   './module/design/property/instance/main',
-                  './module/design/property/sg/main'
-        ], ( View, model, instance_main, sg_main ) ->
+                  './module/design/property/sg/main',
+                  './module/design/property/stack/main',
+                  './module/design/property/volume/main'
+        ], ( View, model, instance_main, sg_main, stack_main, volume_main ) ->
 
             uid  = null
             type = null
@@ -34,15 +36,30 @@ define [ 'jquery',
             view  = new View { 'model' : model }
             view.render template
 
+            #listen RELOAD_RESOURCE
+            #show stack property
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, () ->
+                console.log 'property:RELOAD_RESOURCE'
+                stack_main.loadModule()
+
             #listen OPEN_PROPERTY
             ide_event.onLongListen ide_event.OPEN_PROPERTY, ( uid ) ->
-                console.log 'OPEN_PROPERTY'
+                console.log 'OPEN_PROPERTY, uid = ' + uid
 
                 uid  = uid
                 type = type
 
+                #show stack property
+                if uid is ''
+                    stack_main.loadModule()
+
+                #show instance property
                 if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
                     instance_main.loadModule uid
+
+                #show vloume/snapshot property
+                #volume_main.loadModule()
+
                 #temp
                 # setTimeout () ->
                 #    view.refresh()
@@ -61,7 +78,7 @@ define [ 'jquery',
 
                 null
 
-            #listen OPEN_SG
+            #listen OPEN_INSTANCE
             ide_event.onLongListen ide_event.OPEN_INSTANCE, () ->
                 console.log 'OPEN_INSTANCE'
                 #

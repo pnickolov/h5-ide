@@ -1,6 +1,6 @@
 {
   "id": "",
-  "name": "",
+  "name": "stack-12345678",
   "description": "",
   "region": "us-east-1",
   "platform": "ec2-vpc",
@@ -71,7 +71,7 @@
         },
         "PrivateIpAddress": "",
         "BlockDeviceMapping": [
-
+          "#5BD7C400-B2D7-43C3-9160-28DD5BA86BAE"
         ],
         "KernelId": "",
         "SubnetId": "@2B90ECD0-3D29-452A-B97B-4E29F69ED87C.resource.SubnetId",
@@ -353,8 +353,8 @@
 		"uid"	:	"GEC9F6SE-368A-45E3-8AD7-4CD79FFSDEWQ",
 		"resource"	:	{
 			"KeyName"	:	"DefaultKP",
-			"KeyFingerprint"	:	""		
-		}		
+			"KeyFingerprint"	:	""
+		}
     }
   },
   "layout": {
@@ -474,33 +474,7 @@
               "target": "374AC8E5-BEA3-4B23-A824-2A7E282C6245",
               "port": "instance-sg-out",
               "line": "27A7F25B-3740-4130-AEB6-8F09C1AC0621"
-            },
-            {
-              "target": "5BD7C400-B2D7-43C3-9160-28DD5BA86BAE",
-              "port": "instance-attach",
-              "line": "5A66233B-D9D2-460C-8490-DD88B2C2D5F4"
-            }
-          ]
-        },
-        "5BD7C400-B2D7-43C3-9160-28DD5BA86BAE": {
-          "id": "",
-          "type": "AWS.EC2.EBS.Volume",
-          "coordinate": [
-            46,
-            42
-          ],
-          "group": {
-            "availableZone": "",
-            "subnet": "",
-            "vpc": ""
-          },
-          "connection": [
-            {
-              "target": "EE3B8DA1-D347-443E-8EEC-B0DF20236E83",
-              "port": "volume-attach",
-              "line": "5A66233B-D9D2-460C-8490-DD88B2C2D5F4"
-            }
-          ]
+            }          ]
         },
         "696C9718-4268-43C0-BEE5-312FBE7849FC": {
           "id": "",
@@ -679,16 +653,6 @@
         "target": {
           "EE3B8DA1-D347-443E-8EEC-B0DF20236E83": "instance-sg-out",
           "374AC8E5-BEA3-4B23-A824-2A7E282C6245": "eni-sg-in"
-        },
-        "auto": true,
-        "point": [
-
-        ]
-      },
-      "5A66233B-D9D2-460C-8490-DD88B2C2D5F4": {
-        "target": {
-          "EE3B8DA1-D347-443E-8EEC-B0DF20236E83": "instance-attach",
-          "5BD7C400-B2D7-43C3-9160-28DD5BA86BAE": "volume-attach"
         },
         "auto": true,
         "point": [

@@ -15,8 +15,29 @@
 	<script type="text/javascript">
 	$(document).ready(function ()
 	{
+		var params = document.location.toString().split('?')[1].split('&');
+		var param_ary = [ params[0], params[1], params[2], [params[3]] ]
+
 		MC.paper = Canvon('svg_canvas');
 
+        MC.api({
+          url     : '/stack/',
+          method  : 'info',
+          data    : param_ary,
+          success: function( result, return_code ) {
+          	console.log(return_code)
+          	if ( return_code === 0 ) {
+				MC.canvas_data = result[0];
+				MC.canvas.layout.init();
+				MC.canvas.screenshotInit();
+          	}
+          },
+          error: function(result, return_code) {
+          	//TO DO
+          }
+        });
+
+		/*
 		$.ajax('js/ide/canvas_test_data.json', {
 			success: function (data)
 			{
@@ -32,6 +53,7 @@
 				}
 			}
 		});
+		*/
 	});
 	</script>
 </head>
@@ -59,6 +81,7 @@
 				  <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
 				</filter>
 			</defs>
+			<line id="svg_padding_line" x1="0" y1="0" x2="1" y2="1"/>
 			<g id="group_layer">
 				<g id="vpc_layer"></g>
 				<g id="az_layer"></g>

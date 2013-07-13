@@ -15,73 +15,70 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
         saveStack : () ->
             me = this
 
-            ##if there is no change, not save
-            name = MC.canvas_data.name
-            if not name
-                console.log 'remind user no stack name'
-            else
-                id = MC.canvas_data.id
-                if id   #save
-                    stack_model.save { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
+            id = MC.canvas_data.id
+            if id   #save
+                stack_model.save { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
 
-                    stack_model.once 'STACK_SAVE_RETURN', (result) ->
-                        console.log 'STACK_SAVE_RETURN'
-                        console.log result
-
-                        if !result.is_error
-                            console.log 'save stack successfully'
-
-                            ##update initial data
-
-                            me.trigger 'TOOLBAR_STACK_READY'
-
-                            ide_event.trigger ide_event.UPDATE_STACK_LIST
-
-                            #call save png
-                            me.savePNG true
-
-                else    #new
-                    stack_model.create { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
-
-                    stack_model.once 'STACK_CREATE_RETURN', (result) ->
-                        console.log 'STACK_CREATE_RETURN'
-                        console.log result
-
-                        if !result.is_error
-                            console.log 'create stack successfully'
-
-                            ##update initial data
-
-                            MC.canvas_data.id = result.resolved_data
-
-                            me.trigger 'TOOLBAR_STACK_READY'
-
-                            ide_event.trigger ide_event.UPDATE_STACK_LIST
-
-                            #call save png
-                            me.savePNG true
-
-        #duplicate
-        duplicateStack : () ->
-            me = this
-
-            ##if there is changes, first remind user to save
-            new_name = MC.canvas_data.name + '-copy'
-            region = MC.canvas_data.region
-            #check name
-            if new_name in MC.data.stack_list[region]
-                console.log 'remind user the repeated stack name'
-            else
-                stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, MC.canvas_data.id, new_name, MC.canvas_data.name
-                stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
-                    console.log 'STACK_SAVE__AS_RETURN'
+                stack_model.once 'STACK_SAVE_RETURN', (result) ->
+                    console.log 'STACK_SAVE_RETURN'
                     console.log result
 
                     if !result.is_error
-                        console.log 'save as stack successfully'
+                        console.log 'save stack successfully'
 
-                        #update stack list
+                        #update initial data
+                        MC.canvas_property.original_json = JSON.stringify( MC.canvas_data )
+
+                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS'
+
                         ide_event.trigger ide_event.UPDATE_STACK_LIST
+
+                        #call save png
+                        me.savePNG true
+                    else
+                        me.trigger 'TOOLBAR_STACK_SAVE_ERROR'
+
+            else    #new
+                stack_model.create { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
+
+                stack_model.once 'STACK_CREATE_RETURN', (result) ->
+                    console.log 'STACK_CREATE_RETURN'
+                    console.log result
+
+                    if !result.is_error
+                        console.log 'create stack successfully'
+
+                        MC.canvas_data.id = result.resolved_data
+                        #update initial data
+                        MC.canvas_property.original_json = JSON.stringify( MC.canvas_data )
+
+                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS'
+
+                        ide_event.trigger ide_event.UPDATE_STACK_LIST
+
+                        #call save png
+                        me.savePNG true
+                    else
+                        me.trigger 'TOOLBAR_STACK_SAVE_ERROR'
+
+        #duplicate
+        duplicateStack : (new_name) ->
+            me = this
+
+            stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
+            stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
+                console.log 'STACK_SAVE__AS_RETURN'
+                console.log result
+
+                if !result.is_error
+                    console.log 'save as stack successfully'
+
+                    me.trigger 'TOOLBAR_STACK_DUPLICATE_SUCCESS'
+
+                    #update stack list
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+                else
+                    me.trigger 'TOOLBAR_STACK_DUPLICATE_ERROR'
 
         #delete
         deleteStack : () ->

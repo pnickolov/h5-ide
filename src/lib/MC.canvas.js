@@ -1155,7 +1155,52 @@ MC.canvas.layout = {
 
 		//temp
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
-
+	
+		components = MC.canvas.data.get("component");
+		
+		$.each(components, function (key, value){
+			if(value.type==='AWS.EC2.KeyPair'){
+				tmp = {};
+				tmp[value.name] = value.uid;
+				MC.canvas_property.kp_list.push(tmp);
+			}
+			if(value.type === "AWS.EC2.SecurityGroup"){
+				tmp = {};
+				tmp.name = value.name;
+				tmp.uid = value.uid;
+				tmp.member = [];
+				$.each(components, function (k, v){
+					if(v.type === "AWS.EC2.Instance" ){
+						sg_uids = v.resource.SecurityGroupId;
+						$.each(sg_uids, function (id, sg_ref){
+							if(sg_ref.split('.')[0].slice(1) === tmp.uid){
+								tmp.member.push(v.uid);
+							}
+						})
+					}
+				});
+				MC.canvas_property.sg_list.push(tmp);
+			}
+		});
+		
+		$.each(MC.canvas_property.sg_list, function (key, value){
+			if(value.name === "DefaultSG" && key !== 0){
+				tmp = value;
+				MC.canvas_property.sg_list.splice(key,1);
+				MC.canvas_property.sg_list.unshift(value);
+				return false;
+			}
+		});
+		
+		$.each(MC.canvas_property.kp_list, function (key, value){
+			if(value.DefaultKP !== undefined && key !== 0){
+				tmp = value;
+				MC.canvas_property.kp_list.splice(key,1);
+				MC.canvas_property.kp_list.unshift(value);
+				return false;
+			}
+		});
+		
 		$('#svg_canvas').attr({
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
@@ -1223,6 +1268,7 @@ MC.canvas.layout = {
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
 		//set region and platform
+		MC.canvas.name = option.name;
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 
@@ -2609,8 +2655,17 @@ MC.canvas.volume = {
 			else
 			{
 				data_option = target.data('option');
+				data_option['instance_id'] = target_id;
 				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
-				volume_id = new_volume.id;
+				if (new_volume === null)
+				{
+					event.data.action = 'cancel';
+				}
+				else
+				{
+					volume_id = new_volume.id;
+					data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
+				}
 			}
 
 			if (event.data.action === 'move')
@@ -2647,7 +2702,7 @@ MC.canvas.volume = {
 					$('#' + original_node_id + '_volume_number').text(original_node_volume_data.length);
 				}
 			}
-			else
+			else if (!event.data.action)
 			{
 				data_json = JSON.stringify({
 					'instance_id': target_id,

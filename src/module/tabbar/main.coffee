@@ -28,10 +28,13 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 model.refresh original_tab_id, tab_id, 'dashboard'
 
             #listen
-            view.on 'SWITCH_NEW_STACK_TAB', ( original_tab_id, tab_id ) ->
+            view.on 'SWITCH_NEW_STACK_TAB', ( original_tab_id, tab_id, tab_name ) ->
                 console.log 'SWITCH_NEW_STACK_TAB'
                 console.log 'original_tab_id = ' + original_tab_id
                 console.log 'tab_id          = ' + tab_id
+                console.log 'tab_name        = ' + tab_name
+                #
+                model.set 'tab_name', tab_name
                 #call refresh
                 model.refresh original_tab_id, tab_id, 'new'
 
@@ -86,8 +89,9 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 console.log 'NEW_STACK'
                 console.log model.get 'stack_region_name'
                 console.log model.get 'current_platform'
+                console.log model.get 'tab_name'
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , result, model.get( 'stack_region_name' ), null, model.get 'current_platform'
+                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ), model.get( 'stack_region_name' ), null, model.get 'current_platform'
 
             #listen open_stack
             model.on 'OPEN_STACK', ( tab_id ) ->

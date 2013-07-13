@@ -27,29 +27,28 @@
     {{/if}}
     <div class="property-control-group clearfix">
         <label>Volume Type</label>
-        <div class="context">
+        <div class="context" id="volume-type-radios">
             <div>
             <div class="radio">
             	{{#if volume_detail.isStandard}}
-                <input id="radio-standard" type="radio" selected="true" name="volume-type" value="1" />
+                <input id="radio-standard" type="radio" name="volume-type" checked="checked" value="radio-standard" />
                 {{else}}
-                <input id="radio-standard" type="radio" name="volume-type" value="1" />
+                <input id="radio-standard" type="radio" name="volume-type" value="radio-standard"/>
                 {{/if}}
                 <label for="radio-standard"></label>
             </div>
             <label for="volume-property-type" >Standard</label>
             <div>
-            <div>
             <div class="radio">
             	{{#if volume_detail.isStandard}}
-                <input id="radio-iops" type="radio" name="volume-type" />
+                <input id="radio-iops" type="radio" name="volume-type" value="radio-iops"/>
                 {{else}}
-                <input id="radio-iops" type="radio" selected="true" name="volume-type" />
+                <input id="radio-iops" type="radio" name="volume-type" checked="checked" value="radio-iops"/>
                 {{/if}}
                 <label for="radio-iops"></label>
             </div>
             <label for="volume-property-type" >Provisioned IOPS</label>
-            <div>
+            </div>
         </div>
     </div>
     <div class="property-control-group clearfix" id="iops-group">

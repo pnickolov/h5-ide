@@ -771,7 +771,7 @@ Additional Notes and Questions
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-blue">Save</button>
+		<button class="btn btn-blue modal-close" id='sg-modal-save'>Save</button>
 		<button class="btn btn-silver modal-close">Cancel</button>
 	</div>
 </div>
@@ -826,120 +826,6 @@ Additional Notes and Questions
             </div>
         </div>
     </div>
-</div>
-
-<!-- sgSecondaryPanel -->
-<div class="sidebar-title">
-    <a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
-    <span class="sidebar-title-text">Custom-SG-01</span>
-</div>
-<div class="sg-context-wrap">
-    <div class="sg-title">
-        <h5>
-            <span class="left">Name</span>
-            <span class="right">(Required)</span>
-        </h5>
-            <input class="input" type="text" value="Custom-SG-01" />
-    </div>
-    <div class="sg-description">
-        <h5>
-            <span class="left">Description</span>
-        </h5>
-            <input class="input" type="text" value="Custom security group" />
-    </div>
-    <div class="fixedaccordion accordion-default" data-sub="125">
-        <div class="accordion-group expanded" >
-            <div class="fixedaccordion-head sg-header">
-                <span class="name">Rule</span>
-                <span class="count">(0)</span>
-                <a href="#" class="sg-icon-add add-sg-rule-icon tooltip" id="sg-add-rule-icon" data-tooltip="create rule referencing IP Range"></a>
-            </div>
-            <div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
-                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                <div class="item-wrap scroll-content">
-                    <div class="sg-rule-context">
-                        <div id="sg-rule-empty">
-                            <p>To create rule referencing IP Range, click plus button here.</p>
-                            <p>To create rul referencing specific IP or Security Group, connect the blue port of instance/ELB/ENI.</p>
-                        </div>
-                    <div class="sg-rule-filter">
-                        <h5>Sort by</h5>
-                        <div class="selectbox" id="sg-rule-filter-select">
-                            <a class="dropdown-toggle" href="#">
-                                <span class="cur-value"></span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="selected" tabindex="-1">
-                                    <a data-id="111" href="#">
-                                    Direction
-                                    </a>
-                                </li>
-                                <li tabindex="-1">
-                                    <a data-id="111" href="#">
-                                    Source/Destination
-                                    </a>
-                                </li>
-                                <li tabindex="-1">
-                                    <a data-id="111" href="#">
-                                    Protocol
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <ul class="sg-rule-list" id="sg-rule-list">
-                        <li data-ruleid="123">
-                            <div class='rule-direction-icon tooltip' data-tooltip="outbound"></div>
-                            <div class='rule-protocol'>TCP</div>
-                            <div class='rule-source'>
-                                <div class="rule-source-icon"></div>
-                                <span>host2.ip1(10.0.0.x)</span>
-                            </div>
-                            <div class='rule-port' title="port message">3000-6555B</div>
-                            <div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
-                            <div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
-                        </li>
-                        <li data-ruleid="234">
-                            <div class='rule-direction-icon tooltip' data-tooltip="inbound"></div>
-                            <div class='rule-protocol'>Custom</div>
-                            <div class='rule-source'>
-                                <div class="rule-source-icon"></div>
-                                <span>0.0.0.0</span>
-                            </div>
-                            <div class='rule-port' title="port message">233</div>
-                            <div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
-                            <div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="accordion-group" >
-        <div class="fixedaccordion-head sg-header">
-            <span class="name">Member</span>
-            <span class="count">(1)</span>
-        </div>
-        <div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
-            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-            <div class="item-wrap scroll-content">
-                <div class="sg-member-context">
-                    <div id="sg-member-empty">
-                        <p>Select an instantce/ENI/ELB and edit Security Group section in Property panel to assign member to security group.</p>
-                        <img src="" title="screenshot for instruction"/>
-                    </div>
-                    <ul class="sg-member-list">
-                        <li>
-                            <div class="sg-member-icon"></div>
-                            <div class="sg-member-name">webserver001</div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 
 <!-- snapshotSecondaryPanel -->

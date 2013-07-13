@@ -23,6 +23,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'OPTION_CHANGE #modal-sg-rule' : 'sgModalSelectboxChange'
 
             'change #securitygroup-name' : 'setSGName'
+            'click #sg-modal-save': 'modalSaveClick'
 
         render     : () ->
             console.log 'property:sg render'
@@ -30,9 +31,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             #
             $('#sg-secondary-panel').fadeIn 200
             $('#sg-secondary-panel .sg-title input').focus()
+            fixedaccordion.resize()
+            selectbox.init()
 
         openInstance : () ->
             console.log 'openInstance'
+            secondarypanel.close
             ide_event.trigger ide_event.OPEN_PROPERTY, $('#sg-secondary-panel').attr 'parent'
 
         securityGroupAddSelect: (event) ->
@@ -48,6 +52,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             return false
 
         removeRulefromList: (event, id) ->
+            target = $(event.target).parents('li').first()
+            rule_id = target.data('ruleid')
+            console.log rule_id
             $(event.target).parents('li').first().remove()
 
         radioInboundChange : (event) ->
@@ -61,10 +68,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $('#sg-protocol-' + id).addClass('show')
 
         setSGName : ( event ) ->
-
             sg_uid = $("#sg-secondary-panel").attr "uid"
 
             this.trigger 'SET_SG_NAME', sg_uid, event.target.value
+
+        modalSaveClick : (event) ->
+            console.log 'sg-modal-save'
     }
 
     view = new InstanceView()

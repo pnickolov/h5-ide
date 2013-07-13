@@ -61,7 +61,7 @@ define [ 'jquery',
                     instance_main.loadModule uid
 
                 #show vloume/snapshot property
-                volume_main.loadModule()
+                #volume_main.loadModule()
 
                 #show elb property
                 #elb_main.loadModule()

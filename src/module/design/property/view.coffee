@@ -20,6 +20,12 @@ define [ './temp_view',
         render     : ( template ) ->
             console.log 'property render'
             $( this.el ).html template
+            #
+            ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
+
+        reRender   : ( template ) ->
+            console.log 're-property render'
+            if $.trim( this.$el.html() ) is 'loading...' then $( '#property-panel' ).html template
 
         togglePropertyPanel : ( event ) ->
             console.log 'togglePropertyPanel'

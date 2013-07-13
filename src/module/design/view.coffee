@@ -9,7 +9,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
         el          : $ '#tab-content-design'
 
         initialize  : ->
-            $( window ).on "resize", this.resizeEvent
+            $( window   ).on "resize", this.resizeEvent
 
         resizeEvent : ->
             main_middle    = $ '#canvas-panel'
@@ -44,6 +44,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
         writeOldDesignHtml : () ->
             console.log 'writeOldDesignHtml'
             this.$el.html this.model.get 'snapshot'
+
     }
 
     return DesignView

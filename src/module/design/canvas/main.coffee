@@ -17,6 +17,8 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform ) ->
                 console.log 'canvas:RELOAD_RESOURCE, region_name = ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform
+                #check re-render
+                view.reRender template
                 #temp
                 if type is 'NEW_STACK'
                     require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.create({

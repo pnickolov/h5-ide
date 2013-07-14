@@ -1591,7 +1591,7 @@ MC.canvas.event.dragable = {
 					coordinate.x > 1 &&
 					coordinate.y > 1 &&
 					(
-						coordinate_fixed ||
+						(coordinate_fixed && event.data.groupChild.length === unique_stack.length) ||
 						(
 							match_place.is_matched &&
 							event.data.groupChild.length === unique_stack.length

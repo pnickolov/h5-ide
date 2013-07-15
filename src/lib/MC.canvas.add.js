@@ -323,7 +323,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				volume_number = 0,
 				icon_volume_status = 'not-attached',
 				kp = null,
+				sg = null,
 				eni = null;
+				
 
 			if (create_mode)
 			{//write
@@ -342,9 +344,27 @@ MC.canvas.add = function (flag, option, coordinate)
 					tmp = {};
 					tmp[kp.name] = kp.uid;
 					MC.canvas_property.kp_list.push(tmp);
+					
+					sg_uid = MC.guid();
+					sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
+					sg.uid = sg_uid;
+					tmp = {};
+					tmp.uid = sg.uid;
+					tmp.name = sg.name;
+					tmp.member = []
+					MC.canvas_property.sg_list.push(tmp);
+					if(option.subnet){
+						sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
+					}
+					else{
+						delete sg.resource.IpPermissionsEgress;
+					}
 				}
 
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
+				component_data.resource.SecurityGroupId.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
+				MC.canvas_property.sg_list[0].member.push(group.id);
+				var eni = null;
 
 				// if subnet
 				if(option.subnet){
@@ -490,6 +510,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				data[kp.uid] = kp;
 				MC.canvas.data.set('component', data);
 			}
+			if(sg){
+				data[sg.uid] = sg;
+				MC.canvas.data.set('component', data);
+			}
 			if(eni){
 				data[eni.uid] = eni;
 				MC.canvas.data.set('component', data);
@@ -505,9 +529,48 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			if (create_mode)
 			{//write
+
+				//set deviceName
+				ami_info = MC.data.config[MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone.slice(0,-1)].ami[MC.canvas_data.component[option.instance_id].resource.ImageId];
+				device_name = ['f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+				$.each(ami_info.blockDeviceMapping, function (key, value){
+					if(key.slice(0,4) == '/dev/'){
+						k = key.slice(-1);
+						index = device_name.indexOf(k);
+						if(index>=0){
+							device_name.splice(index, 1);
+						}
+					}
+				});
+				$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
+					volume_uid = value.slice(1);
+					k = MC.canvas_data.component[volume_uid].name.slice(-1);
+					index = device_name.indexOf(k);
+					if(index>=0){
+						device_name.splice(index, 1);
+					}
+				});
+				if (device_name.length === 0)
+				{
+					//no valid deviceName
+					notification('warning', 'No valid device name to assign,cancel!', false);
+					return null;
+				}
+
+				option.name = '/dev/sd' + device_name[0];
+
 				component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet.Size = option.volumeSize;
+				component_data.resource.AttachmentSet.InstanceId = '@' + option.instance_id + '.resource.InstanceId';
+				component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone;
+
+				component_data.resource.AttachmentSet.Device =  option.name;
+
+				if (option.snapshotId)
+				{
+					component_data.resource.SnapshotId = option.snapshotId;
+				}
 			}
 			else
 			{//read

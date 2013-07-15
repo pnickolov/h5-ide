@@ -1155,7 +1155,52 @@ MC.canvas.layout = {
 
 		//temp
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
-
+	
+		components = MC.canvas.data.get("component");
+		
+		$.each(components, function (key, value){
+			if(value.type==='AWS.EC2.KeyPair'){
+				tmp = {};
+				tmp[value.name] = value.uid;
+				MC.canvas_property.kp_list.push(tmp);
+			}
+			if(value.type === "AWS.EC2.SecurityGroup"){
+				tmp = {};
+				tmp.name = value.name;
+				tmp.uid = value.uid;
+				tmp.member = [];
+				$.each(components, function (k, v){
+					if(v.type === "AWS.EC2.Instance" ){
+						sg_uids = v.resource.SecurityGroupId;
+						$.each(sg_uids, function (id, sg_ref){
+							if(sg_ref.split('.')[0].slice(1) === tmp.uid){
+								tmp.member.push(v.uid);
+							}
+						})
+					}
+				});
+				MC.canvas_property.sg_list.push(tmp);
+			}
+		});
+		
+		$.each(MC.canvas_property.sg_list, function (key, value){
+			if(value.name === "DefaultSG" && key !== 0){
+				tmp = value;
+				MC.canvas_property.sg_list.splice(key,1);
+				MC.canvas_property.sg_list.unshift(value);
+				return false;
+			}
+		});
+		
+		$.each(MC.canvas_property.kp_list, function (key, value){
+			if(value.DefaultKP !== undefined && key !== 0){
+				tmp = value;
+				MC.canvas_property.kp_list.splice(key,1);
+				MC.canvas_property.kp_list.unshift(value);
+				return false;
+			}
+		});
+		
 		$('#svg_canvas').attr({
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
@@ -1223,6 +1268,8 @@ MC.canvas.layout = {
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
 		//set region and platform
+		//MC.canvas_data.name = option.name;
+		MC.canvas_data.name = 'test';
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 
@@ -1469,11 +1516,6 @@ MC.canvas.event.dragable = {
 					target.remove();
 					$('#node_layer').append(clone_node);
 				}
-
-				$('.dropable-group').attr('class', function (index, key)
-				{
-					return key.replace('dropable-group ', '');
-				});
 			}
 
 			if (target_type === 'group')
@@ -1558,7 +1600,11 @@ MC.canvas.event.dragable = {
 			}
 		}
 
-		$('#canvas_body').removeClass('dragging');
+		$('.dropable-group').attr('class', function (index, key)
+		{
+			return key.replace('dropable-group ', '');
+		});
+
 		event.data.shadow.remove();
 
 		$(document.body).off({
@@ -1851,7 +1897,7 @@ MC.canvas.event.siderbarDrag = {
 				})
 				.show();
 
-			if (target_component_type === 'node')
+			if (target_component_type === 'node' && node_type !== 'AWS.EC2.EBS.Volume')
 			{
 				platform = MC.canvas.data.get('platform');
 				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
@@ -1886,7 +1932,6 @@ MC.canvas.event.siderbarDrag = {
 		}
 		else
 		{
-			$('#canvas_body').addClass('dragging');
 
 			$(document.body).on({
 				'mousemove': MC.canvas.event.siderbarDrag.mousemove,
@@ -1976,7 +2021,6 @@ MC.canvas.event.siderbarDrag = {
 		});
 
 		event.data.shadow.remove();
-		$('#canvas_body').removeClass('dragging');
 
 		$(document.body).off({
 			'mousemove': MC.canvas.event.mousemove,
@@ -2340,10 +2384,12 @@ MC.canvas.volume = {
 					'volume_id': volume_id,
 					'name': volume_data.name,
 					'size': volume_data.resource.Size,
+					'snapshotId': volume_data.resource.SnapshotId,
 					'json': JSON.stringify({
 						'instance_id': node.id,
 						'id': volume_id,
 						'name': volume_data.name,
+						'snapshotId': volume_data.resource.SnapshotId,
 						'volumeSize': volume_data.resource.Size
 					})
 				});
@@ -2438,6 +2484,8 @@ MC.canvas.volume = {
 
 			if (
 				target.attr('class') === 'instance-volume' ||
+				target.is('.snapshot_item') ||
+				target.parent().is('.snapshot_item') ||
 				target.is('.volume_item') ||
 				target.parent().is('.volume_item')
 			)
@@ -2584,6 +2632,7 @@ MC.canvas.volume = {
 			target_component_type = target.data('component-type'),
 			node_option = target.data('option'),
 			bubble_box = $('#volume-bubble-box'),
+			volume_type,
 			target_id,
 			volume_id,
 			target_volume_data,
@@ -2612,8 +2661,17 @@ MC.canvas.volume = {
 			else
 			{
 				data_option = target.data('option');
+				data_option['instance_id'] = target_id;
 				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
-				volume_id = new_volume.id;
+				if (new_volume === null)
+				{
+					event.data.action = 'cancel';
+				}
+				else
+				{
+					volume_id = new_volume.id;
+					data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
+				}
 			}
 
 			if (event.data.action === 'move')
@@ -2627,7 +2685,9 @@ MC.canvas.volume = {
 						'volumeSize': data_option.volumeSize
 					});
 
-					$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="volume_item" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+					volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
+
+					$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
 					target_volume_data.push('#' + volume_id);
 
@@ -2650,7 +2710,7 @@ MC.canvas.volume = {
 					$('#' + original_node_id + '_volume_number').text(original_node_volume_data.length);
 				}
 			}
-			else
+			else if (!event.data.action)
 			{
 				data_json = JSON.stringify({
 					'instance_id': target_id,
@@ -2659,7 +2719,9 @@ MC.canvas.volume = {
 					'volumeSize': data_option.volumeSize
 				});
 
-				$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="volume_item" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+				volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
+
+				$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
 				target_volume_data.push('#' + volume_id);
 

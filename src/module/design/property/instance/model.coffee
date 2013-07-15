@@ -64,7 +64,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             console.log 'setUserData = ' + value
 
-            MC.canvas_data.component[ uid ].resource.UserData.data = value
+            MC.canvas_data.component[ uid ].resource.UserData.Data = value
 
             null
         
@@ -149,6 +149,51 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
+        addSGtoInstance : (instance_uid, sg_uid) ->
+
+            MC.canvas_data.component[ instance_uid ].resource.SecurityGroupId.push '@' + sg_uid + '.resource.GroupId'
+
+            _.map MC.canvas_property.sg_list, ( sg ) ->
+
+                if sg.uid == sg_uid
+
+                    sg.member.push instance_uid
+
+                null
+
+            null
+
+        getCheckBox : ( uid ) ->
+
+            checkbox = {}
+
+            checkbox.ebsOptimized = true if MC.canvas_data.component[ uid ].resource.EbsOptimized == true or MC.canvas_data.component[ uid ].resource.EbsOptimized == 'true'
+
+            checkbox.monitoring = true if MC.canvas_data.component[ uid ].resource.Monitoring == 'enabled'
+
+            checkbox.base64Encoded = true if MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == true or MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == "true"
+
+            checkbox.tenancy = true if MC.canvas_data.component[ uid ].resource.Placement.Tenancy == 'default' or MC.canvas_data.component[ uid ].resource.Placement.Tenancy == ''
+
+            checkbox
+
+        getEni : ( uid ) ->
+
+            eni_detail = {}
+
+            _.map MC.canvas_data.component, ( val, key ) ->
+
+                if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
+
+                    eni_detail.description = val.resource.Description
+
+                    eni_detail.sourceCheck = true if val.resource.SourceDestCheck == 'true' or val.resource.SourceDestCheck == true
+
+                null
+
+            eni_detail
+
+
         getHost  : ->
             console.log 'getHost'
             console.log this.get 'get_host'
@@ -170,6 +215,65 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             disp.icon = MC.data.dict_ami[ami_id].osType + '.' + MC.data.dict_ami[ami_id].architecture + '.' + MC.data.dict_ami[ami_id].rootDeviceType + ".png"
 
             disp
+
+        getSgDisp : ( uid ) ->
+
+            instance_sg = {}
+
+            instance_sg.detail = []
+
+            instance_sg.all_sg = []
+
+            sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
+
+            sg_id_no_ref = []
+
+            _.map sg_ids, ( sg_id ) ->
+
+                sg_uid = (sg_id.split ".")[0][1...]
+
+                sg_id_no_ref.push sg_uid
+
+                _.map MC.canvas_property.sg_list, ( value, key ) ->
+
+                    if value.uid == sg_uid
+
+                        sg_detail = {}
+
+                        sg_detail.uid = sg_uid
+
+                        sg_detail.parent = uid
+
+                        sg_detail.members = value.member.length
+
+                        if MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress
+
+                            sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length + MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress.length
+                        else
+
+                            sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length
+
+                        sg_detail.name = MC.canvas_data.component[sg_uid].resource.GroupName
+                        sg_detail.desc = MC.canvas_data.component[sg_uid].resource.GroupDescription
+
+                        instance_sg.detail.push sg_detail
+
+            _.map MC.canvas_property.sg_list, (sg) ->
+                
+                if sg.uid not in sg_id_no_ref
+
+                    tmp = {}
+
+                    tmp.name = sg.name
+
+                    tmp.uid = sg.uid
+
+                    instance_sg.all_sg.push tmp
+
+            instance_sg.total = instance_sg.detail.length
+
+            instance_sg
+
 
         getKerPair : (uid)->
 

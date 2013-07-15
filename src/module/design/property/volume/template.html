@@ -1,53 +1,71 @@
 <div class="sidebar-title">
-    <span class="sidebar-title-text">/dev/sdg</span>
+    <span class="sidebar-title-text">{{volume_detail.name}}</span>
 </div>
-<div class="panel-wrap">
+<div class="panel-wrap" id='property-panel-volume' uid='{{volume_detail.uid}}'>
     <div class="property-control-group clearfix">
         <label>Device Name</label>
         <div class="name tooltip" data-tooltip="Required">
             <label for="volume-device">/dev/</label>
-            <input type="text" class="input input-device" value="sdg" id="volume-device">
+            <input type="text" class="input input-device" value="{{volume_detail.editName}}" id="volume-device">
         </div>
     </div>
     <div class="property-control-group clearfix">
         <label>Volume Size</label>
         <div class="ranged-number-input">
             <label for="volume-size-ranged"></label>
-            <input id="volume-size-ranged" type="number" value="1" name="volume-size-ranged" min="1" max="1024" required="">
+            <input id="volume-size-ranged" type="number" value="{{volume_detail.resource.Size}}" name="volume-size-ranged" min="1" max="1024" required="">
         <label for="volume-property-ranged-number" >GB</label>
         </div>
     </div>
+    {{#if volume_detail.resource.SnapshotId}}
     <div class="property-control-group clearfix">
         <label>Snapshot</label>
         <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{}'>
-            <div>Snapshot-1212</div>
+            <div>volume_detail.resource.SnapshotId</div>
             <span>2GB - Create by xxx</span>
         </div>
     </div>
+    {{/if}}
     <div class="property-control-group clearfix">
         <label>Volume Type</label>
-        <div class="context">
+        <div class="context" id="volume-type-radios">
             <div>
             <div class="radio">
-                <input id="radio-standard" type="radio" name="volume-type" value="1" />
+            	{{#if volume_detail.isStandard}}
+                <input id="radio-standard" type="radio" name="volume-type" checked="checked" value="radio-standard" />
+                {{else}}
+                <input id="radio-standard" type="radio" name="volume-type" value="radio-standard"/>
+                {{/if}}
                 <label for="radio-standard"></label>
             </div>
             <label for="volume-property-type" >Standard</label>
-            <div>
+            </div>
             <div>
             <div class="radio">
-                <input id="radio-iops" type="radio" name="volume-type" />
+            	{{#if volume_detail.isStandard}}
+                <input id="radio-iops" type="radio" name="volume-type" value="radio-iops"/>
+                {{else}}
+                <input id="radio-iops" type="radio" name="volume-type" checked="checked" value="radio-iops"/>
+                {{/if}}
                 <label for="radio-iops"></label>
             </div>
             <label for="volume-property-type" >Provisioned IOPS</label>
-            <div>
+            </div>
         </div>
     </div>
-    <div class="property-control-group clearfix" id="iops-group">
+    {{#if volume_detail.isStandard}}
+        <div class="property-control-group clearfix" id="iops-group" style="display:none">
+    {{else}}
+        <div class="property-control-group clearfix" id="iops-group" style="display:block">
+    {{/if}}
         <label>IOPS</label>
         <div class="ranged-number-input">
             <label for="iops-ranged"></label>
+            {{#if volume_detail.isStandard}}
             <input id="iops-ranged" type="number" value="100" name="iops-ranged" min="100" max="2000" required="">
+            {{else}}
+            <input id="iops-ranged" type="number" value="{{volume_detail.resource.Iops}}" name="iops-ranged" min="100" max="2000" required="">
+            {{/if}}
         <label for="volume-property-ranged-number" >GB</label>
         </div>
     </div>

@@ -642,17 +642,20 @@ a {
 	display: inline-block;
 	border-radius: 2px;
 	font-size: 9px;
-	padding: 1px 2px;
+	padding: 1px 4px;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+	width: 28px;
+	text-align: center;
 }
 
 .region-platform-vpc {
 	color: #3892E3;
-	border: 1px solid #3892E3;
+	border: 1px solid #69ACE7;
 }
 
 .region-platform-classic {
-	color: #FBA617;
-	border: 1px solid #FBA617;
+	color: #F19812;
+	border: 1px solid #FAB94C;
 }
 
 

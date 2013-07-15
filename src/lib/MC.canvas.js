@@ -2565,9 +2565,13 @@ MC.canvas.volume = {
 	delete: function (event)
 	{
 		if (
-			event.which === 46 ||
-			// For Mac
-			event.which === 8
+			(
+				event.which === 46 ||
+				// For Mac
+				event.which === 8
+			)
+			&&
+			event.target === document.body
 		)
 		{
 			var bubble_box = $('#volume-bubble-box'),

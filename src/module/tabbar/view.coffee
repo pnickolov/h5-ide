@@ -26,7 +26,9 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             console.log 'openTab'
             console.log 'original_tab_id = ' + original_tab_id + ', tab_id = ' + tab_id
             console.log $( '#tab-bar-' + tab_id ).children().attr 'title'
-
+            #
+            if original_tab_id is tab_id then return
+            #
             if tab_id is 'dashboard'
                 this.trigger 'SWITCH_DASHBOARD', original_tab_id, tab_id
                 return

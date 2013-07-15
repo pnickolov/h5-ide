@@ -1,1 +1,177 @@
-elb loading...
+<div class="sidebar-title">
+	<span class="sidebar-title-text" id='property-title'>ELB</span>
+</div>
+<div class="fixedaccordion accordion-default" data-sub="71">
+	<div class="accordion-group  expanded" id="accordion-group-property-elb-detail">
+		<div class="fixedaccordion-head" id="elb-property-detail" component="{{component.uid}}">
+			Load Balancer Details
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-elb">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<div class="property-control-group clearfix">
+					<label class="left" for="property-elb-name" >Name</label>
+					<span class="required-input right">(Required)</span>
+					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+				</div>
+		        <label>Volume Type</label>
+		        <div class="context">
+		            <div class="radio elb-volume-type-radio">
+		                <input id="radio-standard" type="radio" name="volume-type" value="1" />
+		                <label for="radio-standard"></label>
+		            </div>
+		            <label for="volume-property-type" class="elb-volume-type-radio-text">Standard</label>
+		            <div></div>
+		            <div class="radio elb-volume-type-radio">
+		                <input id="radio-iops" type="radio" name="volume-type" />
+		                <label for="radio-iops"></label>
+		            </div>
+		            <label for="volume-property-type" class="elb-volume-type-radio-text">Provisioned IOPS</label>
+		        </div>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group" >
+		<div class="fixedaccordion-head" id="elb-property-detail" component="{{component.uid}}">
+			Listener Configuration
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-elb">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group" >
+		<div class="fixedaccordion-head" id="elb-property-detail" component="{{component.uid}}">
+			Health Check Configuration
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-elb">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<div class="property-control-group clearfix">
+					<label>Instance Type</label>
+					<div class="selectbox selectbox-mega" id="instance-type-select">
+						<a class="dropdown-toggle" href="#">
+							<div class="cur-value"></div>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="tooltip" tabindex="-1" data-tooltip="{{main}}">
+								<a data-id="{{name}}" href="#">
+									<div class="main  truncate">{{main}}</div>
+									<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+								</a>
+							</li>
+							<li class="tooltip" tabindex="-1" data-tooltip="{{main}}">
+								<a data-id="{{name}}" href="#">
+									<div class="main  truncate">{{main}}</div>
+									<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="property-control-group clearfix">
+					<label class="left" for="property-elb-name" >Name</label>
+					<span class="required-input right">(Required)</span>
+					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+				</div>
+				<div class="property-control-group clearfix">
+					<label class="left" for="property-elb-name" >Name</label>
+					<span class="required-input right">(Required)</span>
+					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+				</div>
+				<div class="property-control-group clearfix" id="elb-property-group-interval">
+					<label class="left" for="property-elb-name" >Name</label>
+					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+					<label class="left elb-property-right-text" for="property-elb-name" >Seconds</label>
+				</div>
+				<div class="property-control-group clearfix" id="elb-property-group-interval">
+					<label class="left" for="property-elb-name" >Name</label>
+					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+					<label class="left elb-property-right-text" for="property-elb-name" >Seconds</label>
+				</div>
+				<div class="property-control-group clearfix" id="elb-property-group-interval">
+					<div class="slider-container">
+						<div class="slider">
+							<a class="slider-controll"></a>
+							<div class="slider-wrap"></div>
+							<ul class="slider-line">
+								<li><span>2</span></li>
+								<li><span>3</span></li>
+								<li><span>4</span></li>
+								<li><span>5</span></li>
+								<li><span>6</span></li>
+								<li><span>7</span></li>
+								<li><span>8</span></li>
+								<li><span>9</span></li>
+								<li><span>10</span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="property-control-group clearfix" id="elb-property-group-interval">
+					<div class="slider-container">
+						<div class="slider">
+							<a class="slider-controll"></a>
+							<div class="slider-wrap"></div>
+							<ul class="slider-line">
+								<li><span>2</span></li>
+								<li><span>3</span></li>
+								<li><span>4</span></li>
+								<li><span>5</span></li>
+								<li><span>6</span></li>
+								<li><span>7</span></li>
+								<li><span>8</span></li>
+								<li><span>9</span></li>
+								<li><span>10</span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-group" id="accordion-group-property-elb-zones">
+		<div class="fixedaccordion-head" id="elb-property-zones" component="{{component.uid}}">
+			Availability Zones
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-elb">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<div class="property-control-group">
+					<div class="checkbox">
+						<input id="property-elb-az1" type="checkbox" value="None" name="property-elb-az1" />
+						<label for="property-elb-az1"></label>
+					</div>
+					<label for="property-resource-check-1" class="checkbox-label-main">US East 1a</label>
+					<label for="property-resource-check-1" class="checkbox-label-minor">8 instances</label>
+				</div>
+				<div class="property-control-group">
+					<div class="checkbox">
+						<input id="property-elb-az2" type="checkbox" value="None" name="property-elb-az2" />
+						<label for="property-elb-az2"></label>
+					</div>
+					<label for="property-resource-check-1" class="checkbox-label-main">US East 1a</label>
+					<label for="property-resource-check-1" class="checkbox-label-minor">8 instances</label>
+				</div>
+				<div class="property-control-group">
+					<div class="checkbox">
+						<input id="property-elb-az3" type="checkbox" value="None" name="property-elb-az3" />
+						<label for="property-elb-az3"></label>
+					</div>
+					<label for="property-resource-check-1" class="checkbox-label-main">US East 1a</label>
+					<label for="property-resource-check-1" class="checkbox-label-minor">8 instances</label>
+				</div>
+				<div class="property-control-group">
+					<div class="checkbox">
+						<input id="property-elb-az4" type="checkbox" value="None" name="property-elb-az4" />
+						<label for="property-elb-az4"></label>
+					</div>
+					<label for="property-resource-check-1" class="checkbox-label-main">US East 1a</label>
+					<label for="property-resource-check-1" class="checkbox-label-minor">8 instances</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

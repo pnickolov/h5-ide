@@ -47,6 +47,7 @@ require.config {
 		'UI.radiobuttons': 'ui/common/UI.radiobuttons'
 		'UI.notification': 'ui/common/UI.notification'
 		'UI.secondarypanel': 'ui/common/UI.secondarypanel'
+		'UI.slider': 'ui/common/UI.slider'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'

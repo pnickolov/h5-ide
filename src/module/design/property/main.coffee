@@ -64,7 +64,8 @@ define [ 'jquery',
                 volume_main.loadModule()
 
                 #show elb property
-                #elb_main.loadModule()
+                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_ELB)
+                    elb_main.loadModule uid
 
                 #temp
                 setTimeout () ->

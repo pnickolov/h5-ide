@@ -2666,7 +2666,7 @@ MC.canvas.volume = {
 			event.pageY - event.data.canvas_offset.top
 		);
 
-		if ($(match_node).data('class') === 'AWS.EC2.Instance')
+		if (match_node && match_node.getAttribute('data-class') === 'AWS.EC2.Instance')
 		{
 			MC.canvas.volume.bubble(match_node);
 		}
@@ -2737,12 +2737,13 @@ MC.canvas.volume = {
 						'instance_id': target_id,
 						'id': volume_id,
 						'name': data_option.name,
+						'snapshotId': data_option.snapshotId,
 						'volumeSize': data_option.volumeSize
 					});
 
 					volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
 
-					$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
 					target_volume_data.push('#' + volume_id);
 
@@ -2750,14 +2751,14 @@ MC.canvas.volume = {
 
 					MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
+					MC.canvas.volume.select.call( document.getElementById( volume_id ) );
+
 					// Update original data
 					original_node_id = data_option.instance_id;
 					original_node_volume_data = MC.canvas.data.get('component.' + original_node_id + '.resource.BlockDeviceMapping');
 
 					original_node_volume_data.splice(
-						original_node_volume_data.indexOf(
-							volume_id
-						), 1
+						original_node_volume_data.indexOf('#' + volume_id), 1
 					);
 
 					MC.canvas.data.set('component.' + original_node_id + '.resource.BlockDeviceMapping', original_node_volume_data);
@@ -2771,18 +2772,21 @@ MC.canvas.volume = {
 					'instance_id': target_id,
 					'id': volume_id,
 					'name': data_option.name,
+					'snapshotId': data_option.snapshotId,
 					'volumeSize': data_option.volumeSize
 				});
 
 				volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
 
-				$('#instance_volume_list').append('<li><a href="#" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+				$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
 				target_volume_data.push('#' + volume_id);
 
 				$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
 
 				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+				MC.canvas.volume.select.call( document.getElementById( volume_id ) );
 			}
 
 			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));

@@ -27,8 +27,11 @@ define [ 'jquery',
                   './module/design/property/sg/main',
                   './module/design/property/stack/main',
                   './module/design/property/volume/main',
-                  './module/design/property/elb/main'
-        ], ( View, model, instance_main, sg_main, stack_main, volume_main, elb_main ) ->
+                  './module/design/property/elb/main',
+                  './module/design/property/az/main',
+                  './module/design/property/subnet/main',
+                  './module/design/property/vpc/main'
+        ], ( View, model, instance_main, sg_main, stack_main, volume_main, elb_main, az_main, subnet_main, vpc_main ) ->
 
             uid  = null
             type = null
@@ -60,28 +63,38 @@ define [ 'jquery',
                 if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
                     instance_main.loadModule uid
 
+                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume)
+                    volume_main.loadModule uid
                 #show vloume/snapshot property
-                volume_main.loadModule()
 
                 #show elb property
                 if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_ELB)
                     elb_main.loadModule uid
 
+                #show az property
+                #az_main.loadModule()
+
+                #show subnet property
+                #subnet_main.loadModule()
+
+                #show vpc_main property
+                #vpc_main.loadModule()
+
                 #temp
-                setTimeout () ->
-                   view.refresh()
-                , 2000
+                # setTimeout () ->
+                #    view.refresh()
+                # , 2000
 
                 null
 
             #listen OPEN_SG
-            ide_event.onLongListen ide_event.OPEN_SG, () ->
+            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent ) ->
                 console.log 'OPEN_SG'
-                sg_main.loadModule()
+                sg_main.loadModule( uid_parent )
                 #temp
-                setTimeout () ->
-                   view.refresh()
-                , 2000
+                # setTimeout () ->
+                #    view.refresh()
+                # , 2000
 
                 null
 
@@ -91,11 +104,15 @@ define [ 'jquery',
                 #
                 instance_main.loadModule uid, type
                 #temp
-                setTimeout () ->
-                   view.refresh()
-                , 2000
+                # setTimeout () ->
+                #    view.refresh()
+                # , 2000
 
                 null
+
+            ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->
+
+                view.refresh()
 
     unLoadModule = () ->
         #view.remove()

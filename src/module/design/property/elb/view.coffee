@@ -120,7 +120,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         #     $(this).parent().remove()
 
     }
-
+    
     view = new ElbView()
 
     return view

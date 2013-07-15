@@ -1,27 +1,23 @@
-<div class="secondary-panel" id="sg-secondary-panel">
+<div class="secondary-panel" id="sg-secondary-panel" parent="{{sg_detail.parent}}" uid='{{sg_detail.component.uid}}'>
 	<div class="sidebar-title">
 		<a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
-		<span class="sidebar-title-text">Custom-SG-01</span>
+		<span class="sidebar-title-text">{{sg_detail.component.resource.GroupName}}</span>
 	</div>
 	<div class="sg-context-wrap">
-		<div class="sg-title">
-			<h5>
-				<span class="left">Name</span>
-				<span class="right">(Required)</span>
-			</h5>
-			<input class="input" type="text" value="Custom-SG-01" />
+		<div class="property-control-group clearfix">
+			<label class="left" for="securitygroup-name" >Name</label>
+			<span class="required-input right">Required</span>
+			<input class="input"  type="text" required="required" id="securitygroup-name" name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
 		</div>
-		<div class="sg-description">
-			<h5>
-				<span class="left">Description</span>
-			</h5>
-			<input class="input" type="text" value="Custom security group" />
+		<div class="property-control-group clearfix">
+			<label class="left" for="securitygroup-description" >Description</label>
+			<input class="input" type="text" id="securitygroup-description" name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" />
 		</div>
-		<div class="fixedaccordion accordion-default" data-sub="140">
+		<div class="fixedaccordion accordion-default" data-sub="106">
 		<div class="accordion-group expanded" >
 			<div class="fixedaccordion-head sg-header">
 					<span class="name">Rule</span>
-					<span class="count">(0)</span>
+					<span class="count">({{sg_detail.rules}})</span>
 					<a href="#" class="sg-icon-add tooltip" id="sg-add-rule-icon" data-tooltip="create rule referencing IP Range"></a>
 			</div>
 			<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
@@ -59,28 +55,32 @@
 							</div>
 						</div>
 					<ul class="sg-rule-list" id="sg-rule-list">
+						{{#each sg_detail.component.resource.IpPermissions}}
+						<li data-ruleid="123">
+							<div class='rule-direction-icon tooltip' data-tooltip="inbound"></div>
+							<div class='rule-protocol'>{{IpProtocol}}</div>
+							<div class='rule-source'>
+								<div class="rule-source-icon"></div>
+								<span>{{IpRanges}}</span>
+							</div>
+							<div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
+							<div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
+							<div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
+						</li>
+						{{/each}}
+						{{#each sg_detail.component.resource.IpPermissionsEgress}}
 						<li data-ruleid="123">
 							<div class='rule-direction-icon tooltip' data-tooltip="outbound"></div>
-							<div class='rule-protocol'>TCP</div>
+							<div class='rule-protocol'>{{IpProtocol}}</div>
 							<div class='rule-source'>
 								<div class="rule-source-icon"></div>
-								<span>host2.ip1(10.0.0.x)</span>
+								<span>{{IpRanges}}</span>
 							</div>
-							<div class='rule-port' title="port message">3000-6555B</div>
+							<div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
 							<div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
 							<div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
 						</li>
-						<li data-ruleid="234">
-							<div class='rule-direction-icon tooltip' data-tooltip="inbound"></div>
-							<div class='rule-protocol'>Custom</div>
-							<div class='rule-source'>
-								<div class="rule-source-icon"></div>
-								<span>0.0.0.0</span>
-							</div>
-							<div class='rule-port' title="port message">233</div>
-							<div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
-							<div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
-						</li>
+						{{/each}}			
 					</ul>
 				</div>
 			</div>
@@ -89,7 +89,7 @@
 	<div class="accordion-group" >
 			<div class="fixedaccordion-head sg-header">
 				<span class="name">Member</span>
-				<span class="count">(1)</span>
+				<span class="count">({{sg_detail.members}})</span>
 			</div>
 			<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
 				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
@@ -100,10 +100,12 @@
 							<img src="" title="screenshot for instruction"/>
 						</div>
 						<ul class="sg-member-list">
+							{{#each sg_detail.member_names}}
 							<li>
 								<div class="sg-member-icon"></div>
-								<div class="sg-member-name">webserver001</div>
+								<div class="sg-member-name">{{this}}</div>
 							</li>
+							{{/each}}
 						</ul>
 					</div>
 				</div>

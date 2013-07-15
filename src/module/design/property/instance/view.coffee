@@ -117,7 +117,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         openSgPanel : ( event ) ->
             source = $(event.target)
-            if(!source.hasClass('sg-toggle-show-icon') || !source.hasClass('sg-remove-item-icon'))
+            if(!source.hasClass('sg-toggle-show-icon') && !source.hasClass('sg-remove-item-icon'))
                 if(source.hasClass('secondary-panel'))
                     target = source
                 else

@@ -74,7 +74,8 @@ define [ 'jquery',
                 #elb_main.loadModule()
 
                 #show az property
-                #az_main.loadModule()
+                if MC.canvas_data.layout.component.group[uid] and (MC.canvas_data.layout.component.group[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone)
+                    az_main.loadModule uid
 
                 #show subnet property
                 #subnet_main.loadModule()

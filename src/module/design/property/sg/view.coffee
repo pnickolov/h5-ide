@@ -27,6 +27,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         render     : () ->
             console.log 'property:sg render'
             $( '.property-details' ).html this.template this.model.attributes
+            fixedaccordion.resize()
             #
             secondary_panel_wrap = $('#sg-secondary-panel')
             secondary_panel_wrap.animate({
@@ -37,7 +38,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                     width: 'linear'
                 },
                 complete : () ->
-                    fixedaccordion.resize()
                     selectbox.init()
                     $('#sg-secondary-panel .sg-title input').focus()
                 }

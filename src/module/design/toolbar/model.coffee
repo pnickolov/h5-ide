@@ -144,7 +144,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     #'stack_id'   : MC.canvas_data.id,
                     'thumbnail'  : is_thumbnail,
                     #'screenshot' : 'http://localhost:3001/screenshot.html',
-                    'json_data'  : MC.canvas_data
+                    'json_data'  : MC.canvas.layout.save()
                 },
                 success : ( result ) ->
                     console.log 'phantom callback'

@@ -83,7 +83,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     # end of parserPutUserLogReturn
 
 
-    #############################################################    
+    #############################################################
 
     #def put_user_log(self, username, session_id, user_logs):
     put_user_log = ( src, username, session_id, user_logs, callback ) ->

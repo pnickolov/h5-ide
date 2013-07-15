@@ -22,7 +22,14 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
 
             volume_detail.isStandard = true if volume_detail.resource.VolumeType == 'standard'
 
-            volume_detail.editName = volume_detail.name.slice(5)
+            volume_detail.isWin = true if volume_detail.name.slice(0,1) != '/'
+
+            if volume_detail.isWin
+
+                volume_detail.editName = volume_detail.name.slice(-1)
+
+            else
+                volume_detail.editName = volume_detail.name.slice(5)
 
             me.set 'volume_detail', volume_detail
 
@@ -70,12 +77,15 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
 
             MC.canvas_data.component[uid].resource.VolumeType = 'standard'
 
+            MC.canvas_data.component[uid].resource.Iops = ''
+
             null
 
-        setVolumeTypeIops : ( uid ) ->
+        setVolumeTypeIops : ( uid, value ) ->
 
             MC.canvas_data.component[uid].resource.VolumeType = 'iops'
-            MC.canvas_data.component[uid].resource.Iops = 100
+
+            MC.canvas_data.component[uid].resource.Iops = value
 
             null
 

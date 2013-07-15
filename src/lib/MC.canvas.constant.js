@@ -11,9 +11,9 @@ var constant_data = {
 	COMPONENT_HEIGHT_GRID: 10,
 
 	GROUP_DEFAULT_SIZE: {
-		'AWS.VPC.VPC': [60, 60], //[width, height]
-		'AWS.EC2.AvailabilityZone': [40, 40],
-		'AWS.VPC.Subnet': [20, 20]
+		'AWS.VPC.VPC': [30, 30], //[width, height]
+		'AWS.EC2.AvailabilityZone': [12, 12],
+		'AWS.VPC.Subnet': [10, 10]
 	},
 
 	GROUP_PADDING: 2,
@@ -324,11 +324,7 @@ var constant_data = {
 			"coordinate": [0, 0],
 			"size": [480, 240],
 			"name": "", //eg: us-east-1a
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			}
+			"groupUId": ""
 		}
 	},
 
@@ -341,11 +337,7 @@ var constant_data = {
 			"osType": "", //amazon|centos|debian|fedora|gentoo|linux-other|opensuse|redhat|suse|ubuntu|win
 			"architecture":"",  //i386|x86_64
 			"rootDeviceType":"", //ebs|instance-store
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
+			"groupUId": "",
 			"connection": []
 		},
 		data: {
@@ -472,11 +464,6 @@ var constant_data = {
 			"id": "",
 			"type": "AWS.EC2.EBS.Volume",
 			"coordinate": [0, 0],
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
 			"connection": []
 		},
 		data: {
@@ -510,11 +497,7 @@ var constant_data = {
 			"id": "",
 			"type": "AWS.ELB",
 			"coordinate": [0, 0],
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
+			"groupUId": "",
 			"connection": []
 		},
 		data: {
@@ -581,11 +564,6 @@ var constant_data = {
 			"type": "AWS.VPC.VPC",
 			"coordinate": [0, 0],
 			"size" :[0, 0],
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
 			"connection": []
 		},
 		data: {
@@ -612,11 +590,7 @@ var constant_data = {
 			"type": "AWS.VPC.Subnet",
 			"coordinate": [0, 0],
 			"size" :[0, 0],
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
+			"groupUId": "",
 			"connection": []
 		},
 		data: {
@@ -640,11 +614,7 @@ var constant_data = {
 			"id": "",
 			"type": "AWS.VPC.InternetGateway",
 			"coordinate": [0, 0],
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
+			"groupUId": "",
 			"connection": []
 		},
 		data: {
@@ -669,11 +639,7 @@ var constant_data = {
 			"id": "",
 			"type": "AWS.VPC.RouteTable",
 			"coordinate": [0, 0],
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
+			"groupUId": "",
 			"connection": []
 		},
 		data: {
@@ -702,11 +668,7 @@ var constant_data = {
 			"id": "",
 			"type": "AWS.VPC.VPNGateway",
 			"coordinate": [0, 0],
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
+			"groupUId": "",
 			"connection": []
 		},
 		data: {
@@ -735,11 +697,6 @@ var constant_data = {
 			"type": "AWS.VPC.CustomerGateway",
 			"networkName": "",
 			"coordinate": [0, 0],
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
 			"connection": []
 		},
 		data: {
@@ -762,11 +719,7 @@ var constant_data = {
 			"id": "",
 			"type": "AWS.VPC.NetworkInterface",
 			"coordinate": [0, 0],
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
+			"groupUId": "",
 			"connection": []
 		},
 		data: {
@@ -825,11 +778,7 @@ var constant_data = {
 			"id": "",
 			"type": "AWS.VPC.DhcpOptions",
 			"coordinate": [0, 0],
-			"group": {
-				"availableZone":"",
-				"subnet": "",
-				"vpc": ""
-			},
+			"groupUId": "",
 			"connection": []
 		},
 		data: {

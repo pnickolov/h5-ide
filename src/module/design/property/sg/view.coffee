@@ -71,6 +71,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             return false
 
         removeRulefromList: (event, id) ->
+            rule = {}
+            rule.inbound = $(event.target).parents('li').first().data('inbound')
+            rule.protocol = $(event.target).parents('li').first().data('protocol')
+            rule.fromport = $(event.target).parents('li').first().data('fromport')
+            rule.toport = $(event.target).parents('li').first().data('toport')
+            rule.iprange = $(event.target).parents('li').first().data('iprange')
+            sg_uid = $("#sg-secondary-panel").attr "uid"
+            this.trigger 'REMOVE_SG_RULE', sg_uid, rule
             $(event.target).parents('li').first().remove()
 
         radioSgModalChange : (event) ->

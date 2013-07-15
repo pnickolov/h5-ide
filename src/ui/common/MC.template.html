@@ -42,18 +42,33 @@
 <!-- modalApp -->
 <div style="width:420px">
        <div class="modal-header">
-               <h3>{{title}}</h3>
-               <i class="modal-close">&times;</i>
+            <h3>{{title}}</h3>
+            <i class="modal-close">&times;</i>
        </div>
        <div class="modal-body">
-               <dd>{{body}}</dd>
-               {{#if input}}
+            <dd>{{body}}</dd>
+            {{#if input}}
                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
-               {{/if}}
+            {{/if}}
        </div>
        <div class="modal-footer">
-               <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
-               <button class="btn modal-close btn-silver">Cancel</button>
+            <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
+            <button class="btn modal-close btn-silver">Cancel</button>
+       </div>
+</div>
+
+<!-- modalToolbar -->
+<div style="width:420px">
+       <div class="modal-header">
+            <h3>{{title}}</h3>
+            <i class="modal-close">&times;</i>
+       </div>
+       <div class="modal-body">
+            <textarea id="json-content"></textarea>
+       </div>
+       <div class="modal-footer">
+            <a id="btn-confirm" class="btn btn-{{color}}" href="data://text/plain; {{{this.filecontent}}}" download="{{this.download}}">{{confirm}}</a>
+            <button class="btn modal-close btn-silver">Cancel</button>
        </div>
 </div>
 
@@ -107,10 +122,6 @@
                <button class="btn modal-close btn-silver">Close</button>
        </div>
 </div>
-
-
-
-
 
 <!-- modalRegionResourceDetail -->
 {{#if detail_table}}
@@ -319,7 +330,7 @@
 				    	<li tabindex="-1"><a data-id="fedora" href="#"><i class="icon-fedora icon-ami-os"></i>Fedora</a></li>
 				    	<li tabindex="-1"><a data-id="gentoo" href="#"><i class="icon-gentoo icon-ami-os"></i>Gentoo</a></li>
 				    	<li tabindex="-1"><a data-id="opensuse" href="#"><i class="icon-open-suse icon-ami-os"></i>OpenSUSE</a></li>
-				    	
+
 				    	<li tabindex="-1"><a data-id="redhat" href="#"><i class="icon-redhat icon-ami-os"></i>Red Hat</a></li>
 				    	<li tabindex="-1"><a data-id="windows" href="#"><i class="icon-win icon-ami-os"></i>Windows</a></li>
 				    	<li tabindex="-1"><a data-id="otherlinux" href="#"><i class="icon-other-linux icon-ami-os"></i>Other Linux</a></li>
@@ -380,18 +391,18 @@
 								</td>
 								<td>32</td>
 							</tr>-->
-							
-							
+
+
 						</tbody>
 						<div id="community_ami_page">
 							<div id="community_ami_page_preview">
 								Preview Page
 							</div>
-							
+
 							<div id="community_ami_page_current" page="0", totalPage="1">
 								Current Page
 							</div>
-							
+
 							<div id="community_ami_page_next">
 								Next Page
 							</div>
@@ -403,8 +414,7 @@
 	</div>
 </div>
 
-
-<!-- createNewStack -->
+<!-- createNewStackClassic -->
 <div style="width:650px">
 	<div class="modal-header">
 		<h3>Create this stack in:</h3>
@@ -423,6 +433,32 @@
 					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="ec2-classic">
 						<h4>EC2-Classic</h4>
 						<p>Resoucres will be created into EC2-classic platform.</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- createNewStackVPC -->
+<div style="width:650px">
+	<div class="modal-header">
+		<h3>Create this stack in:</h3>
+		<i class="modal-close">×</i>
+	</div>
+	<div class="modal-body">
+		<div id="createNewStack_wrap">
+			<ul class="clearfix">
+				<li>
+					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="custom-vpc">
+						<h4>Custom VPC</h4>
+						<p>Resources will be created into a newly created VPC.</p>
+					</a>
+				</li>
+				<li>
+					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="default-vpc">
+						<h4>Default VPC</h4>
+						<p>Resoucres will be created into the default VPC.</p>
 					</a>
 				</li>
 			</ul>
@@ -612,7 +648,7 @@ Additional Notes and Questions
 
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-red">Proceed</button>
+		<button class="btn btn-red" id="btn-confirm">Proceed</button>
 		<button disabled class="btn btn-red tooltip" data-tooltip="Please fix error first and try to run the stack again.">Proceed</button>
 		<button class="btn btn-silver modal-close">Run Later</button>
 	</div>
@@ -631,9 +667,11 @@ Additional Notes and Questions
 
 <!-- networkListItem -->
 <li>
-	<div class="name">1.0.0.x</div>
-	<div class="network-toggle-icon tooltip" data-tooltip="Associate with EIP"></div>
-	<div class="network-remove-icon tooltip" data-tooltip="Remove ip address"></div>
+    <div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
+    <label for="instance-ip-1">10.0.0.</label>
+    <input type="text" class="input input-ip" value="x" id="instance-ip-1">
+    </div>
+    <div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
 </li>
 
 <!-- modalSGRule -->
@@ -647,30 +685,31 @@ Additional Notes and Questions
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
-		<div class="sg-modal-direction wrap">
-			<span class="title">Direction</span>
-			<div class="context">
-				<div class="radio inbound">
-					<input id="radio_inbound" type="radio" name="rule_direction" />
-					<label for="radio_inbound"></label>
-					<span>Inbound</span>
-				</div>
-
-				<div class="radio outbound">
-					<input id="radio_outbound" type="radio" name="rule_direction" />
-					<label for="radio_outbound"></label>
-					<span>outbound</span>
-				</div>
-			</div>
+		<div class="property-control-group clearfix">
+        	<label>Direction</label>
+        	<div class="context" id="sg-modal-direction">
+            	<div class="radio">
+            		<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="radio_inbound" />
+                	<label for="radio_inbound"></label>
+            	</div>
+            	<label for="sg-direction" >Inbound</label>
+            	<div class="radio">
+            		<input id="radio_outbound" type="radio" name="sg-direction" value="radio_outbound"/>
+                	<label for="radio_outbound"></label>
+            	</div>
+            	<label for="sg-direction" >outbound</label>
+        	</div>
+    	</div>
+    	<div class="property-control-group clearfix">
+			<label for="securitygroup-modal-description" id="rule-modle-title2">Description</label>
+			{{#if isAdd}}
+			<input class="input" type="text" id="securitygroup-modal-description" name="securitygroup-modal-description" placeholder="IP Range.eg,10.0.0.1/24" />
+			{{else}}
+			<input class="input" type="text" id="securitygroup-modal-description" name="securitygroup-modal-description" value="IP Range.eg,10.0.0.1/24" />
+			{{/if}}
 		</div>
-		<div class="sg-modal-destination wrap">
-			<span class="title" id="rule-modle-title2">Destination</span>
-			<div class="context">
-				<input class="input" type="text" placeholder="IP Range.eg,10.0.0.1/24" />
-			</div>
-		</div>
-		<div class="sg-modal-protocol wrap">
-			<span class="title">Protocol</span>
+		<div class="property-control-group clearfix">
+			<label >Protocol</label>
 			<div class="context" >
 				<div class="modal-protocol-select">
 					<div class="selectbox" id="modal-protocol-select">
@@ -707,8 +746,7 @@ Additional Notes and Questions
 					</ul>
 				</div>
 			</div>
-
-				<div id="sg-protocol-select-result">
+			<div id="sg-protocol-select-result">
 					<div class="sg-protocol-option-input show" id="sg-protocol-tcp">
 						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
 					</div>
@@ -724,12 +762,96 @@ Additional Notes and Questions
 					<div class="sg-protocol-option-input" id="sg-protocol-all">
 						Port Range:<span>0-65535</span>
 					</div>
-				</div>
+			</div>
 			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-blue">Save</button>
+		<button class="btn btn-blue modal-close" id='sg-modal-save'>Save</button>
 		<button class="btn btn-silver modal-close">Cancel</button>
 	</div>
+</div>
+
+<!-- instanceVolume -->
+<div class="bubble-head">Attached volume (<span id="instance_volume_number">{{volumeLength}}</span>)</div>
+<div class="bubble-content">
+	<ul id="instance_volume_list" class="clearfix">
+		{{#each list}}
+		<li>
+			<a href="javascript:void(0)" id="{{volume_id}}" class="
+			{{#if snapshotId}}
+				snapshot_item
+			{{else}}
+				volume_item
+			{{/if}}
+			" data-json="{{json}}">
+				<span class="volume_name">{{name}}</span>
+				<span class="volume_size">{{size}}GB</span>
+			</a>
+		</li>
+		{{/each}}
+	</ul>
+</div>
+
+<!-- aimSecondaryPanel -->
+<div class="sidebar-title">
+    <a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
+    <span class="sidebar-title-text">{{imageId}}</span>
+</div>
+<div class="fixedaccordion accordion-default" data-sub="68">
+    <div class="accordion-group  expanded" >
+        <div class="fixedaccordion-head">
+        AMI Details
+        </div>
+        <div class="accordion-body scroll-wrap scrollbar-auto-hide context-wrap">
+            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+            <div class="item-wrap scroll-content">
+                <dl class="dl-horizontal">
+                    <dt>AMI ID</dt>
+                    <dd>{{imageId}}</dd>
+                    <dt>Name</dt>
+                    <dd>{{name}}</dd>
+                    <dt>Description</dt>
+                    <dd>{{description}}</dd>
+                    <dt>Root Device Type</dt>
+                    <dd>{{rootDeviceType}}</dd>
+                    <dt>Architecture</dt>
+                    <dd>{{architecture}}</dd>
+                    <dt>Virtualization</dt>
+                    <dd>{{virtualizationType}}</dd>
+                    <dt>Kernel ID</dt>
+                    <dd>{{kernelId}}</dd>
+                    <dt>Type</dt>
+                    <dd>{{osType}}</dd>
+                    <dt>Support Instance</dt>
+                    <dd><a href="#" target="_blank">{{instance_type}}</a></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- snapshotSecondaryPanel -->
+<div class="sidebar-title">
+    <a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
+    <span class="sidebar-title-text">{{snapshotId}}</span>
+</div>
+<div class="scroll-wrap scrollbar-auto-hide context-wrap">
+    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+    <div class="item-wrap scroll-content">
+        <dl class="dl-horizontal">
+            <dt>Snapshot ID</dt>
+            <dd>{{snapshotId}}</dd>
+            <dt>Volume ID</dt>
+            <dd>{{volumeId}}</dd>
+            <dt>Description</dt>
+            <dd>{{description}}</dd>
+            <dt>Capacity</dt>
+            <dd>{{volumeSize}}GB</dd>
+            <dt>Owner</dt>
+            <dd>{{ownerId}}</dd>
+            <dt>Started</dt>
+            <dd>{{startTime}}</dd>
+        </dl>
+    </div>
 </div>

@@ -8,7 +8,7 @@ define [ 'jquery',
 ], ( $, template, ide_event ) ->
 
     #private
-    loadModule = ( uid, type ) ->
+    loadModule = ( uid ) ->
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-instance-tmpl">' + template + '</script>'
@@ -16,14 +16,45 @@ define [ 'jquery',
         $( 'head' ).append template
 
         #
-        require [ './module/design/property/instance/view', './module/design/property/instance/model' ], ( view, model ) ->
+        require [ './module/design/property/instance/view',
+                  './module/design/property/instance/model'
+        ], ( view, model ) ->
 
             #view
             view.model    = model
             #model
-            model.setHost uid
+            #model.setHost uid
+            attributes = {
+                instance_type : model.getInstanceType uid
+                component : MC.canvas_data.component[uid]
+                keypair : model.getKerPair uid
+                ami_string : model.getAmi uid
+                ami_display : model.getAmiDisp uid
+                sg_display : model.getSgDisp uid
+                checkbox_display: model.getCheckBox uid
+                eni_display : model.getEni uid
+            }
             #render
-            view.render()
+            view.render( attributes )
+
+            ide_event.trigger ide_event.RELOAD_PROPERTY
+
+            view.on 'RE_RENDER', ( uid ) ->
+
+                attributes = {
+                    instance_type : model.getInstanceType uid
+                    component : MC.canvas_data.component[uid]
+                    keypair : model.getKerPair uid
+                    ami_string : model.getAmi uid
+                    ami_display : model.getAmiDisp uid
+                    sg_display : model.getSgDisp uid
+                    checkbox_display: model.getCheckBox uid
+                    eni_display : model.getEni uid
+                }
+
+                view.render( attributes )
+
+                ide_event.trigger ide_event.RELOAD_PROPERTY
 
     unLoadModule = () ->
         #view.remove()

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>MadeiraCloud</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="./assets/css/core.css"/>
+	<link rel="stylesheet" href="./assets/css/ide.css"/>
+	<link rel="stylesheet" href="./assets/css/canvas.css"/>
+	<script type="text/javascript" src="./vender/jquery/jquery.js"></script>
+	<script type="text/javascript" src="./vender/canvon/canvon.js"></script>
+	<script type="text/javascript" src="./lib/MC.core.js"></script>
+	<script type="text/javascript" src="./lib/MC.canvas.js"></script>
+	<script type="text/javascript" src="./lib/MC.canvas.constant.js"></script>
+	<script type="text/javascript" src="./lib/MC.canvas.add.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function ()
+	{
+		var params = document.location.toString().split('?')[1].split('&');
+		var param_ary = [ params[0], params[1], params[2], [params[3]] ]
+
+		MC.paper = Canvon('svg_canvas');
+
+        MC.api({
+          url     : '/stack/',
+          method  : 'info',
+          data    : param_ary,
+          success: function( result, return_code ) {
+          	console.log(return_code)
+          	if ( return_code === 0 ) {
+				MC.canvas_data = result[0];
+				MC.canvas.layout.init();
+				MC.canvas.screenshotInit();
+          	}
+          },
+          error: function(result, return_code) {
+          	//TO DO
+          }
+        });
+
+		/*
+		$.ajax('js/ide/canvas_test_data.json', {
+			success: function (data)
+			{
+				if (typeof data === 'object')
+				{
+					MC.canvas_data = data;
+					MC.canvas.layout.init();
+					MC.canvas.screenshotInit();
+				}
+				else
+				{
+					console.log('load test data failed');
+				}
+			}
+		});
+		*/
+	});
+	</script>
+</head>
+<body>
+
+	<div id="screenshot_canvas_body">
+		<svg id="svg_canvas" xmlns="http://www.w3.org/2000/svg" version="1.2">
+			<defs>
+				<!--linearGradient for port-->
+				<linearGradient id="gradient_port" x1="0%" y1="0%" x2="100%" y2="0%">
+					<stop offset="20%" style="stop-color:#000000;stop-opacity:0.8"/>
+					<stop offset="100%" style="stop-color:#888888;stop-opacity:1"/>
+				</linearGradient>
+				<!--dropshadow for line-->
+				<filter id="dropshadow" x="-50%" y="-50%" height="200%" width="200%">
+					<feOffset result="offOut" in="SourceGraphic" dx="1" dy="1" />
+					<feColorMatrix result = "matrixOut" in = "offOut" type = "matrix" values = "0.5 0 0 0 0 0 0.5 0 0 0 0 0 0.5 0 0 0 0 0 1 0"/>
+					<feBlend in="SourceGraphic" in2="matrixOut" mode="normal" />
+				</filter>
+				<!--dropshadow for selected node-->
+				<filter id="dropshadow_selected" x="-1" y="-1" width="300%" height="300%">
+				  <feOffset result="offOut" in="SourceGraphic" dx="0" dy="4" />
+				  <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+				  <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="4" />
+				  <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+				</filter>
+			</defs>
+			<line id="svg_padding_line" x1="0" y1="0" x2="1" y2="1"/>
+			<g id="group_layer">
+				<g id="vpc_layer"></g>
+				<g id="az_layer"></g>
+				<g id="subnet_layer"></g>
+			</g>
+			<g id="node_layer"></g>
+			<g id="line_layer"></g>
+		</svg>
+	</div>
+
+</body>
+</html>

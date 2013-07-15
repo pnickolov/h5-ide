@@ -10,7 +10,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'MC', 'log_parser', 'result_vo' ], ( MC, log_parser, result_vo ) ->
+define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
     URL = '/log/'
 
@@ -54,9 +54,40 @@ define [ 'MC', 'log_parser', 'result_vo' ], ( MC, log_parser, result_vo ) ->
         true
     # end of send_request
 
+    #///////////////// Parser for put_user_log return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolvePutUserLogResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser put_user_log return)
+    parserPutUserLogReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolvePutUserLogResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserPutUserLogReturn
+
+
+    #############################################################
+
     #def put_user_log(self, username, session_id, user_logs):
     put_user_log = ( src, username, session_id, user_logs, callback ) ->
-        send_request "put_user_log", src, [ username, session_id, user_logs ], log_parser.parserPutUserLogReturn, callback
+        send_request "put_user_log", src, [ username, session_id, user_logs ], parserPutUserLogReturn, callback
         true
 
 

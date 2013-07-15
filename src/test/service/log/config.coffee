@@ -42,8 +42,6 @@ require.config {
         'result_vo'          : 'service/result_vo'
 
         #session_service
-        'session_vo'        : 'service/session/session_vo'
-        'session_parser'    : 'service/session/session_parser'
         'session_service'   : 'service/session/session_service'
 
         #test_util(for qunit test)
@@ -52,7 +50,5 @@ require.config {
 
 
         #log service
-        'log_vo'        : 'service/log/log_vo'
-        'log_parser'    : 'service/log/log_parser'
         'log_service'   : 'service/log/log_service'
 }#end

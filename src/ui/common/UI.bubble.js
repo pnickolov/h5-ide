@@ -3,7 +3,7 @@
 #* Filename: UI.bubble
 #* Creator: Angel
 #* Description: UI.bubble
-#* Date: 20130612
+#* Date: 20130712
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -19,11 +19,11 @@ var bubble = function (event)
 	var target = $(this),
 		content = target.data('bubble-template'),
 		data = target.data('bubble-data'),
-		target_offset = target.offset(),
 		bubble_box = $('#bubble-box'),
 		coordinate = {},
 		width,
 		height,
+		target_offset,
 		target_width,
 		target_height;
 
@@ -39,10 +39,12 @@ var bubble = function (event)
 			MC.template[ content ]( data )
 		);
 
-		width = bubble_box.width();
-		height = bubble_box.height();
+		target_offset = target.offset();
 		target_width = target.innerWidth();
 		target_height = target.innerHeight();
+
+		width = bubble_box.width();
+		height = bubble_box.height();
 
 		if (target_offset.left + target_width + width - document.body.scrollLeft > window.innerWidth)
 		{

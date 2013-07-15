@@ -16,11 +16,16 @@ define [ './temp_view',
             #listen
             $( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
             $( window   ).on 'resize', fixedaccordion.resize
-            $( document ).delegate '#svg_canvas', 'CANVAS_NODE_SELECTED', this.showProperty
 
         render     : ( template ) ->
             console.log 'property render'
             $( this.el ).html template
+            #
+            ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
+
+        reRender   : ( template ) ->
+            console.log 're-property render'
+            if $.trim( this.$el.html() ) is 'loading...' then $( '#property-panel' ).html template
 
         togglePropertyPanel : ( event ) ->
             console.log 'togglePropertyPanel'
@@ -32,10 +37,6 @@ define [ './temp_view',
             console.log 'refresh'
             selectbox.init()
             temp_view.ready()
-
-        showProperty : ( event, uid ) ->
-            console.log uid
-            ide_event.trigger ide_event.OPEN_PROPERTY, uid
 
     }
 

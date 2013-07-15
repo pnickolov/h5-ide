@@ -1,10 +1,83 @@
 // MC.Canvas
 // Author: Angel
 
+//json data for current tab
 MC.canvas_data = {};
 
+//variable for current tab
+MC.canvas_property = {
+	// sg_list: [],
+	// kp_list: [],
+	// SCALE_RATIO: 1
+};
+
 MC.canvas = {
+
 	selected_node: [],
+
+	zoomIn: function ()
+	{
+		var canvas_size = MC.canvas.data.get('layout.size');
+
+		if (MC.canvas_property.SCALE_RATIO > 1)
+		{
+			MC.canvas_property.SCALE_RATIO = (MC.canvas_property.SCALE_RATIO * 10 - 2) / 10;
+
+			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas_property.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas_property.SCALE_RATIO);
+
+			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
+		}
+	},
+
+	zoomOut: function ()
+	{
+		var canvas_size = MC.canvas.data.get('layout.size');
+
+		if (MC.canvas_property.SCALE_RATIO < 1.6)
+		{
+			MC.canvas_property.SCALE_RATIO = (MC.canvas_property.SCALE_RATIO * 10 + 2) / 10;
+
+			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas_property.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas_property.SCALE_RATIO);
+
+			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
+		}
+	},
+
+	screenshotInit: function ()
+	{
+		var layout_node_data = MC.canvas.data.get('layout.component.node'),
+			layout_group_data = MC.canvas.data.get('layout.component.group'),
+			node_minX = [],
+			node_minY = [],
+			node_maxX = [],
+			node_maxY = [],
+			node_data,
+			group_node_data,
+			screen_maxX,
+			screen_maxY,
+			group_minX,
+			group_minY;
+
+		$.each(layout_node_data, function (index, data)
+		{
+			node_maxX.push(data.coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID);
+			node_maxY.push(data.coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID);
+		});
+
+		$.each(layout_group_data, function (index, data)
+		{
+			node_maxX.push(data.coordinate[0] + data.size[0]);
+			node_maxY.push(data.coordinate[1] + data.size[1]);
+		});
+
+		screen_maxX = Math.max.apply(Math, node_maxX) * MC.canvas.GRID_WIDTH;
+		screen_maxY = Math.max.apply(Math, node_maxY) * MC.canvas.GRID_HEIGHT;
+
+		$('#svg_canvas, #screenshot_canvas_body').css({
+			'width': screen_maxX,
+			'height': screen_maxY
+		});
+	},
 
 	_addPad: function (point, adjust)
 	{
@@ -451,14 +524,10 @@ MC.canvas = {
 				from_port_offset = from_port[0].getBoundingClientRect();
 				to_port_offset = to_port[0].getBoundingClientRect();
 
-				startX = from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2);
-				startY = from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2);
-				endX = to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2);
-				endY = to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2);
-
-				MC.paper.start({
-					'stroke': connection_option.color
-				});
+				startX = (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
+				startY = (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
+				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
+				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
 
 				//add by xjimmy
 				var controlPoints = [],
@@ -477,14 +546,68 @@ MC.canvas = {
 				MC.canvas._addPad(start0, 1);
 				MC.canvas._addPad(end0, 1);
 
+
+				//draw rectangle for vertical / horizontal line
+				// if ( start0.x === end0.x )
+				// {
+				// 	//draw vertical line
+				// 	MC.paper.start({
+				// 		'filter': 'url(#dropshadow)',
+				// 		'stroke': 'none',
+				// 		'stroke-width': 0,
+				// 		'fill': connection_option.color
+				// 	});
+
+				// 	var top_p = start0;
+				// 	var bottom_p = end0;
+				// 	if ( start0.y > end0.y )
+				// 	{
+				// 		top_p = end0;
+				// 		bottom_p = start0;
+				// 	}
+				// 	MC.paper.rectangle(top_p.x, top_p.y, MC.canvas.LINE_STROKE_WIDTH , bottom_p.y - top_p.y );
+				// }
+				// else if ( start0.y === end0.y )
+				// {
+				// 	//draw horizontal line
+				// 	MC.paper.start({
+				// 		'filter': 'url(#dropshadow)',
+				// 		'stroke': 'none',
+				// 		'stroke-width': 0,
+				// 		'fill': connection_option.color
+				// 	});
+
+				// 	var left_p = start0;
+				// 	var right_p = end0;
+				// 	if ( start0.y > end0.y )
+				// 	{
+				// 		left_p = end0;
+				// 		right_p = start0;
+				// 	}
+				// 	MC.paper.rectangle(left_p.x, left_p.y-2, right_p.x - left_p.x, MC.canvas.LINE_STROKE_WIDTH);
+				// }
+
+
+
 				if ( start0.x === end0.x || start0.y === end0.y )
 				{
 					//draw straight line
+					MC.paper.start({
+						'stroke': connection_option.color,
+						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+						'fill': 'none'
+					});
 
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
 				}
 				else
 				{
+					//draw fold line
+					MC.paper.start({
+						'stroke': connection_option.color,
+						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+						'fill': 'none'
+					});
 
 					///// route 1 (xjimmy's algorithm)/////
 					//MC.canvas._route2( controlPoints, start0, end0 );
@@ -616,7 +739,7 @@ MC.canvas = {
 				connection_data = layout_connection_data[ value.line ];
 				new_connection_data = [];
 
-				line_layer.removeChild($('#' + value.line)[0]);
+				line_layer.removeChild(document.getElementById( value.line ));
 
 				$.each(connection_data.target, function (key, item)
 				{
@@ -669,31 +792,152 @@ MC.canvas = {
 
 	matchPoint: function (x, y)
 	{
+		var children = MC.canvas.data.get('layout.component.node'),
+			coordinate = MC.canvas.pixelToGrid(x, y),
+			matched,
+			node_coordinate;
 
+		$.each(children, function (key, item)
+		{
+			node_coordinate = item.coordinate;
+
+			if (
+				node_coordinate &&
+				node_coordinate[0] < coordinate.x &&
+				node_coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > coordinate.x &&
+				node_coordinate[1] < coordinate.y &&
+				node_coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > coordinate.y
+			)
+			{
+				matched = document.getElementById( key );
+
+				return false;
+			}
+		});
+
+		return matched;
 	},
 
-	isMatchPlace: function (target_id, node_type, x, y)
+	isMatchPlace: function (target_id, node_type, x, y, width, height)
 	{
-		var matchGroup = MC.canvas.matchGroup(target_id, x, y).type,
-			platform = MC.canvas.data.get('platform');
+		var layout_group_data = MC.canvas.data.get('layout.component.group'),
+			platform = MC.canvas.data.get('platform'),
+			group_stack = [
+				$('#subnet_layer').children(),
+				$('#az_layer').children(),
+				$('#vpc_layer').children()
+			],
+			is_option_canvas = ($.inArray('Canvas', MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1),
+			result = {},
+			is_matched,
+			group_data,
+			coordinate,
+			size;
+
+		x = x * MC.canvas_property.SCALE_RATIO;
+		y = y * MC.canvas_property.SCALE_RATIO;
+
+		if (is_option_canvas)
+		{
+			$.each(group_stack, function (index, layer_data)
+			{
+				if (layer_data)
+				{
+					$.each(layer_data, function (i, item)
+					{
+						group_data = layout_group_data[ item.id ];
+						coordinate = group_data.coordinate;
+						size = group_data.size;
+
+						if (
+							target_id !== item.id &&
+							(
+								(x >= coordinate[0] &&
+								x <= coordinate[0] + size[0])
+								||
+								(x + width >= coordinate[0] &&
+								x + width <= coordinate[0] + size[0])
+							)
+							&&
+							(
+								(y >= coordinate[1] &&
+								y <= coordinate[1] + size[1])
+								||
+								(y + height >= coordinate[1] &&
+								y + height <= coordinate[1] + size[1])
+							)
+						)
+						{
+							result = {
+								'id': item.id,
+								'type': group_data.type
+							};
+						}
+					});
+
+					if (!$.isEmptyObject(result))
+					{
+						return false;
+					}
+				}
+			});
+		}
+		else
+		{
+			$.each(group_stack, function (index, layer_data)
+			{
+				if (layer_data)
+				{
+					$.each(layer_data, function (i, item)
+					{
+						group_data = layout_group_data[ item.id ];
+						coordinate = group_data.coordinate;
+						size = group_data.size;
+
+						if (
+							target_id !== item.id &&
+							x >= coordinate[0] &&
+							x + width <= coordinate[0] + size[0] &&
+							y >= coordinate[1] &&
+							y + height <= coordinate[1] + size[1]
+						)
+						{
+							result = {
+								'id': item.id,
+								'type': group_data.type
+							};
+						}
+					});
+
+					if (!$.isEmptyObject(result))
+					{
+						return false;
+					}
+				}
+			});
+		}
+
+		matchGroup = result.type;
 
 		matchGroup = matchGroup === undefined ? 'Canvas' : matchGroup;
 
 		platform = platform === 'custome-vpc' ? 'ec2-vpc' : platform;
 
-		return (
-			$.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 ||
-			target_id === matchGroup.id
-		);
+		is_matched = ($.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id);
+
+		return {
+			'is_matched': is_matched,
+			'target': result.id === undefined && is_matched ? 'Canvas' : result.id
+		};
 	},
 
 	isBlank: function (type, target_id, x, y)
 	{
 		var children = MC.canvas.data.get('layout.component.' + type),
-			start_x = x,
-			start_y = y,
-			end_x = x + MC.canvas.COMPONENT_WIDTH_GRID,
-			end_y = y + MC.canvas.COMPONENT_HEIGHT_GRID,
+			start_x = x * MC.canvas_property.SCALE_RATIO,
+			start_y = y * MC.canvas_property.SCALE_RATIO,
+			end_x = x + MC.canvas.COMPONENT_WIDTH_GRID * MC.canvas_property.SCALE_RATIO,
+			end_y = y + MC.canvas.COMPONENT_HEIGHT_GRID * MC.canvas_property.SCALE_RATIO,
 			isBlank = true,
 			coordinate;
 
@@ -733,47 +977,38 @@ MC.canvas = {
 		return isBlank;
 	},
 
-	matchGroup: function (target_id, x, y)
+	parentGroup: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
-		var layout_group_data = MC.canvas.data.get('layout.component.group'),
-			result = {},
-			group_data;
+		var groups = MC.canvas.data.get('layout.component.group'),
+			group_parent_type = MC.canvas.GROUP_PARENT[ node_type ],
+			matched;
 
-		$.each([
-			$('#subnet_layer').children(),
-			$('#az_layer').children(),
-			$('#vpc_layer').children()
-		], function (index, layer_data)
+		$.each(groups, function (key, item)
 		{
-			if (layer_data)
-			{
-				$.each(layer_data, function (index, item)
-				{
-					group_data = layout_group_data[ item.id ];
+			coordinate = item.coordinate;
+			size = item.size;
 
-					if (
-						target_id !== item.id &&
-						x >= group_data.coordinate[0] &&
-						x <= group_data.size[0] + group_data.coordinate[0] &&
-						y >= group_data.coordinate[1] &&
-						y <= group_data.size[1] + group_data.coordinate[1]
+			if (
+				node_id !== key &&
+				item.type === group_parent_type &&
+				(
+					(
+						coordinate[0] > start_x ||
+						coordinate[0] < end_x
 					)
-					{
-						result = {
-							'id': item.id,
-							'type': group_data.type
-						};
-					}
-				});
-
-				if (!$.isEmptyObject(result))
-				{
-					return false;
-				}
+					&&
+					(
+						coordinate[1] > start_y ||
+						coordinate[1] < end_y
+					)
+				)
+			)
+			{
+				matched = document.getElementById( key );
 			}
 		});
 
-		return result;
+		return matched;
 	},
 
 	areaChild: function (node_id, start_x, start_y, end_x, end_y)
@@ -807,7 +1042,7 @@ MC.canvas = {
 				)
 			)
 			{
-				matched.push($('#' + key)[0]);
+				matched.push(document.getElementById( key ));
 			}
 		});
 
@@ -835,7 +1070,7 @@ MC.canvas = {
 				)
 			)
 			{
-				matched.push($('#' + key)[0]);
+				matched.push(document.getElementById( key ));
 			}
 		});
 
@@ -878,7 +1113,7 @@ MC.canvas = {
 				)
 			)
 			{
-				matched.push($('#' + key)[0]);
+				matched.push(document.getElementById( key ));
 			}
 		});
 
@@ -907,7 +1142,7 @@ MC.canvas = {
 				)
 			)
 			{
-				matched.push($('#' + key)[0]);
+				matched.push(document.getElementById( key ));
 			}
 		});
 
@@ -921,55 +1156,155 @@ MC.canvas.layout = {
 		var layout_data = MC.canvas.data.get("layout"),
 			connection_target_id;
 
-		$('#canvas_body').css({
+		//temp
+		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
+	
+		components = MC.canvas.data.get("component");
+		
+		$.each(components, function (key, value){
+			if(value.type==='AWS.EC2.KeyPair'){
+				tmp = {};
+				tmp[value.name] = value.uid;
+				MC.canvas_property.kp_list.push(tmp);
+			}
+			if(value.type === "AWS.EC2.SecurityGroup"){
+				tmp = {};
+				tmp.name = value.name;
+				tmp.uid = value.uid;
+				tmp.member = [];
+				$.each(components, function (k, v){
+					if(v.type === "AWS.EC2.Instance" ){
+						sg_uids = v.resource.SecurityGroupId;
+						$.each(sg_uids, function (id, sg_ref){
+							if(sg_ref.split('.')[0].slice(1) === tmp.uid){
+								tmp.member.push(v.uid);
+							}
+						})
+					}
+				});
+				MC.canvas_property.sg_list.push(tmp);
+			}
+		});
+		
+		$.each(MC.canvas_property.sg_list, function (key, value){
+			if(value.name === "DefaultSG" && key !== 0){
+				tmp = value;
+				MC.canvas_property.sg_list.splice(key,1);
+				MC.canvas_property.sg_list.unshift(value);
+				return false;
+			}
+		});
+		
+		$.each(MC.canvas_property.kp_list, function (key, value){
+			if(value.DefaultKP !== undefined && key !== 0){
+				tmp = value;
+				MC.canvas_property.kp_list.splice(key,1);
+				MC.canvas_property.kp_list.unshift(value);
+				return false;
+			}
+		});
+		
+		$('#svg_canvas').attr({
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
 		});
 
-		$.each(layout_data.component.node, function (id, data)
+		if (layout_data.component.node)
 		{
-			MC.canvas.add(id);
-		});
-
-		$.each(layout_data.component.group, function (id, data)
-		{
-			MC.canvas.add(id);
-		});
-
-		$.each(layout_data.connection, function (line, data)
-		{
-			connection_target_id = [];
-
-			$.each(data.target, function (key, value)
+			$.each(layout_data.component.node, function (id, data)
 			{
-				connection_target_id.push(key);
+				MC.canvas.add(id);
 			});
+		}
+		else
+		{
+			layout_data.component.node = {};
+		}
 
-			MC.canvas.connect(
-				$('#' + connection_target_id[0]),
-				data.target[ connection_target_id[0] ],
-				$('#' + connection_target_id[1]),
-				data.target[ connection_target_id[1] ],
+		if (layout_data.component.group)
+		{
+			$.each(layout_data.component.group, function (id, data)
+			{
+				MC.canvas.add(id);
+			});
+		}
+		else
+		{
+			layout_data.component.group = {};
+		}
+
+		if (layout_data.connection)
+		{
+			$.each(layout_data.connection, function (line, data)
+			{
+				connection_target_id = [];
+
+				$.each(data.target, function (key, value)
 				{
-					'line_uid': line
-				}
-			);
-		});
+					connection_target_id.push(key);
+				});
 
+				MC.canvas.connect(
+					$('#' + connection_target_id[0]),
+					data.target[ connection_target_id[0] ],
+					$('#' + connection_target_id[1]),
+					data.target[ connection_target_id[1] ],
+					{
+						'line_uid': line
+					}
+				);
+			});
+		}
+		else
+		{
+			layout_data.connection = {};
+		}
 		return true;
 	},
 
-	create: function ()
+	create: function (option)
 	{
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
 		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
 
-		//temp for new stack
-		MC.canvas_data.platform = "default-vpc";
+		//clone MC.canvas.STACK_PROPERTY to MC.canvas_property
+		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
-		var canvas_size = MC.canvas.data.get("layout.size");
+		//set region and platform
+		//MC.canvas_data.name = option.name;
+		MC.canvas_data.name = 'test';
+		MC.canvas_data.region = option.region;
+		MC.canvas_data.platform = option.platform;
 
-		$('#canvas_body').css({
+		var canvas_size = MC.canvas.data.get('layout.size');
+
+		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
+		{
+			//has vpc (create vpc, az, and subnet by default)
+			MC.canvas.add('AWS.VPC.VPC', {
+				'name': 'vpc1',
+			}, {
+				'x': 2,
+				'y': 2
+			});
+
+			//var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
+			//	'name': 'ap-northeast-1'
+			//},{
+			//	'x': 19,
+			//	'y': 16
+			//});
+
+			//var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
+			//	'name': 'subnet1'
+			//},{
+			//	'x': 23,
+			//	'y': 20
+			//});
+		}
+
+
+		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
 		});
@@ -1048,14 +1383,25 @@ MC.canvas.event.dragable = {
 			target_offset = this.getBoundingClientRect(),
 			node_type = target.data('type'),
 			canvas_offset = $('#svg_canvas').offset(),
-			shadow = target.clone();
+			shadow = target.clone(),
+			platform,
+			target_group_type;
 
 		shadow.attr('class', shadow.attr('class') + ' shadow');
 		$('#svg_canvas').append(shadow);
 
-		if (node_type !== 'group')
+		if (node_type === 'node')
 		{
-			$('#canvas_body').addClass('dragging');
+			platform = MC.canvas.data.get('platform');
+			target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][  target.data('class') ];
+
+			$.each(target_group_type, function (index, item)
+			{
+				$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+				{
+					return 'dropable-group ' + key;
+				});
+			});
 		}
 
 		$(document.body).on({
@@ -1081,10 +1427,12 @@ MC.canvas.event.dragable = {
 		event.preventDefault();
 		event.stopPropagation();
 
+		var offset = event.data.target_type === 'node' ? 0 : 2 * MC.canvas.GRID_HEIGHT;
+
 		event.data.shadow.attr('transform',
 			'translate(' +
-				Math.round((event.pageX - event.data.offsetX) / 10) * 10 + ',' +
-				Math.round((event.pageY - event.data.offsetY) / 10) * 10 +
+				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO + ',' +
+				(offset + Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO) +
 			')'
 		);
 
@@ -1098,15 +1446,29 @@ MC.canvas.event.dragable = {
 			event.pageY === event.data.originalPageY
 		)
 		{
-			event.data.target.attr('class', function (index, key)
+			if (event.data.target_type === 'node')
 			{
-				return key + ' selected';
-			});
-			MC.canvas.selected_node.push(event.data.target[0]);
+				var target = event.data.target,
+					clone_node;
 
-			uid = event.data.target.attr("id");
+				target.attr('class', function (index, key)
+				{
+					return key + ' selected';
+				});
 
-			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", uid);
+				// Append to top
+				clone_node = target.clone();
+				target.remove();
+				$('#node_layer').append(clone_node);
+
+				MC.canvas.selected_node.push(clone_node[0]);
+
+				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+			}
+			else
+			{
+				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
+			}
 		}
 		else
 		{
@@ -1119,31 +1481,31 @@ MC.canvas.event.dragable = {
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				node_type = target.data('class'),
 				line_layer = $("#line_layer")[0],
-				coordinate;
+				match_place,
+				coordinate,
+				clone_node;
 
 			if (target_type === 'node')
 			{
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
+				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID);
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
-					MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
-					MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y) &&
-					MC.canvas.isMatchPlace(target_id, node_type, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y) &&
-					MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID) &&
-					MC.canvas.isMatchPlace(target_id, node_type, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID)
+					//MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
+					match_place.is_matched
 				)
 				{
 					node_connections = layout_node_data[ target_id ].connection || {};
 
-					MC.canvas.position(target[0], coordinate.x, coordinate.y);
+					MC.canvas.position(target[0], coordinate.x  * MC.canvas_property.SCALE_RATIO, coordinate.y * MC.canvas_property.SCALE_RATIO);
 
 					$.each(node_connections, function (index, value)
 					{
 						line_connection = layout_connection_data[ value.line ];
 
-						line_layer.removeChild($('#' + value.line)[0]);
+						line_layer.removeChild(document.getElementById( value.line ));
 
 						MC.canvas.connect(
 							$('#' + target_id), line_connection['target'][ target_id ],
@@ -1151,6 +1513,11 @@ MC.canvas.event.dragable = {
 							{'line_uid': value['line']}
 						);
 					});
+
+					// Append to top
+					clone_node = target.clone();
+					target.remove();
+					$('#node_layer').append(clone_node);
 				}
 			}
 
@@ -1158,67 +1525,136 @@ MC.canvas.event.dragable = {
 			{
 				var coordinate = MC.canvas.pixelToGrid(
 						shadow_offset.left - canvas_offset.left,
-						shadow_offset.top - canvas_offset.top - MC.canvas.GROUP_LABEL_OFFSET + parseInt(target.find('.group').css('stroke-width'))
+						shadow_offset.top - canvas_offset.top - MC.canvas.GROUP_LABEL_OFFSET + (parseInt(target.find('.group').css('stroke-width')) * 2)
 					),
 					layout_group_data = MC.canvas.data.get('layout.component.group'),
 					group_data = layout_group_data[ target_id ],
 					group_coordinate = group_data.coordinate,
 					group_size = group_data.size,
-					group_offsetX = coordinate.x - group_coordinate[0],
-					group_offsetY = coordinate.y - group_coordinate[1],
+					match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1]),
+					areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]),
+					parentGroup = MC.canvas.parentGroup(target_id, group_data.type, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]),
+					child_stack = [],
+					unique_stack = [],
+					coordinate_fixed = false,
+					fixed_areaChild,
+					group_offsetX,
+					group_offsetY,
+					matched_child,
 					child_data,
 					child_type;
 
+				$.each(areaChild, function (index, item)
+				{
+					child_stack.push(item.id);
+				});
+
+				$.each(event.data.groupChild, function (index, item)
+				{
+					child_stack.push(item.id);
+				});
+
+				$.each(child_stack, function (index, item)
+				{
+					if ($.inArray(item, unique_stack) === -1)
+					{
+						unique_stack.push(item);
+					}
+				});
+
+				if (parentGroup)
+				{
+					parent_data = layout_group_data[ parentGroup.id ];
+
+					if (parent_data.coordinate[0] + MC.canvas.GROUP_PADDING > coordinate.x)
+					{
+						coordinate.x = parent_data.coordinate[0] + MC.canvas.GROUP_PADDING;
+						coordinate_fixed = true;
+					}
+					if (parent_data.coordinate[0] + parent_data.size[0] - MC.canvas.GROUP_PADDING < coordinate.x + group_size[0])
+					{
+						coordinate.x = parent_data.coordinate[0] + parent_data.size[0] - MC.canvas.GROUP_PADDING - group_size[0];
+						coordinate_fixed = true;
+					}
+					if (parent_data.coordinate[1] + MC.canvas.GROUP_PADDING > coordinate.y)
+					{
+						coordinate.y = parent_data.coordinate[1] + MC.canvas.GROUP_PADDING;
+						coordinate_fixed = true;
+					}
+					if (parent_data.coordinate[1] + parent_data.size[1] - MC.canvas.GROUP_PADDING < coordinate.y + group_size[1])
+					{
+						coordinate.y = parent_data.coordinate[1] + parent_data.size[1] - MC.canvas.GROUP_PADDING - group_size[1];
+						coordinate_fixed = true;
+					}
+
+					if (coordinate_fixed)
+					{
+						fixed_areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
+					}
+				}
+
+				group_offsetX = coordinate.x - group_coordinate[0];
+				group_offsetY = coordinate.y - group_coordinate[1];
+
 				if (
-					coordinate.x > 0 &&
-					coordinate.y > 0 &&
-					MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y) &&
-					MC.canvas.isMatchPlace(target_id, node_type, coordinate.x + group_size[0], coordinate.y) &&
-					MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y + group_size[1]) &&
-					MC.canvas.isMatchPlace(target_id, node_type, coordinate.x + group_size[0], coordinate.y + group_size[1])
+					coordinate.x > 1 &&
+					coordinate.y > 1 &&
+					(
+						(
+							coordinate_fixed &&
+							event.data.groupChild.length === fixed_areaChild.length
+						)
+						||
+						(
+							!coordinate_fixed &&
+							match_place.is_matched &&
+							event.data.groupChild.length === unique_stack.length
+						)
+					)
 				)
 				{
 					MC.canvas.position(event.data.target[0], coordinate.x, coordinate.y);
 
-					if (event.data.groupChild.length > 0)
+					$.each(event.data.groupChild, function (index, item)
 					{
-						$.each(event.data.groupChild, function (index, item)
+						child_type = $(item).data('type');
+
+						if (child_type === 'node')
 						{
-							child_type = $(item).data('type');
+							node_data = layout_node_data[ item.id ];
 
-							if (child_type === 'node')
+							MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
+
+							$.each(node_data.connection, function (i, value)
 							{
-								node_data = layout_node_data[ item.id ];
+								line_connection = layout_connection_data[ value.line ];
 
-								MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
+								line_layer.removeChild(document.getElementById( value.line ));
 
-								$.each(node_data.connection, function (i, value)
-								{
-									line_connection = layout_connection_data[ value.line ];
+								MC.canvas.connect(
+									$('#' + item.id), line_connection['target'][ item.id ],
+									$('#' + value.target), line_connection['target'][ value.target ],
+									{'line_uid': value['line']}
+								);
+							});
+						}
 
-									line_layer.removeChild($('#' + value.line)[0]);
+						if (child_type === 'group')
+						{
+							node_data = layout_group_data[ item.id ];
 
-									MC.canvas.connect(
-										$('#' + item.id), line_connection['target'][ item.id ],
-										$('#' + value.target), line_connection['target'][ value.target ],
-										{'line_uid': value['line']}
-									);
-								});
-							}
-
-							if (child_type === 'group')
-							{
-								node_data = layout_group_data[ item.id ];
-
-								MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
-							}
-						});
-					}
+							MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
+						}
+					});
 				}
 			}
 		}
 
-		$('#canvas_body').removeClass('dragging');
+		$('.dropable-group').attr('class', function (index, key)
+		{
+			return key.replace('dropable-group ', '');
+		});
+
 		event.data.shadow.remove();
 
 		$(document.body).off({
@@ -1309,9 +1745,9 @@ MC.canvas.event.drawConnection = {
 
 							target_data = layout_node_data[ item.id ];
 
-							$.each(target_data.connection, function (index, data)
+							$.each(node_connections, function (index, data)
 							{
-								if (data.port === value.to)
+								if (data.port === value.from)
 								{
 									is_connected = true;
 								}
@@ -1336,13 +1772,26 @@ MC.canvas.event.drawConnection = {
 
 							$.each(target_connection_option, function (index, option)
 							{
-								$.each(target_data.connection, function (index, data)
+								if (option.from === value.to)
 								{
-									if (data.port === value.to)
+									$.each(target_data.connection, function (index, data)
 									{
-										is_connected = true;
-									}
-								});
+										if (option.relation === 'unique')
+										{
+											if (data.port === option.from && data.target === node_id)
+											{
+												is_connected = true;
+											}
+										}
+										else
+										{
+											if (data.port === value.to && data.target === node_id)
+											{
+												is_connected = true;
+											}
+										}
+									});
+								}
 							});
 
 							if (is_connected)
@@ -1403,47 +1852,45 @@ MC.canvas.event.drawConnection = {
 
 		return false;
 	},
-
-	draw: function (event)
-	{
-		//event.preventDefault();
-		//event.stopPropagation();
-
-		$('#svg_canvas').off('mouseover', '.node', MC.canvas.event.drawConnection.draw);
-
-		var from_node = event.data.originalTarget,
-			to_node = $(this),
-			port_name = event.data.port_name,
-			to_port_name = to_node.find('.connectable-port').data('name');
-
-		if (!from_node.is(to_node) && to_port_name !== undefined)
-		{
-			MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
-		}
-
-		return true;
-	},
+	
 	mouseup: function (event)
 	{
 		MC.paper.clear(MC.paper.drewLine);
 
-		$('#svg_canvas').on('mouseover', '.node', event.data, MC.canvas.event.drawConnection.draw);
+		var match_node = MC.canvas.matchPoint(
+				event.pageX - event.data.canvas_offset.left,
+				event.pageY - event.data.canvas_offset.top
+			),
+			from_node,
+			to_node,
+			port_name,
+			to_port_name;
 
-		setTimeout(function ()
+		if (match_node)
 		{
-			$.each(event.data.option, function (type, value)
+			from_node = event.data.originalTarget;
+			to_node = $(match_node);
+			port_name = event.data.port_name;
+			to_port_name = to_node.find('.connectable-port').data('name');
+
+			if (!from_node.is(to_node) && to_port_name !== undefined)
 			{
-				$('.' + type.replace(/\./ig, '-'))
-					.attr('class', function (index, key)
-					{
-						return key.replace('connectable ', '');
-					})
-					.find('.connectable-port').attr("class", function (index, key)
-					{
-						return key.replace('connectable-port ', '');
-					});
-			});
-		}, 100);
+				MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
+			}
+		}
+
+		$.each(event.data.option, function (type, value)
+		{
+			$('.' + type.replace(/\./ig, '-'))
+				.attr('class', function (index, key)
+				{
+					return key.replace('connectable ', '');
+				})
+				.find('.connectable-port').attr("class", function (index, key)
+				{
+					return key.replace('connectable-port ', '');
+				});
+		});
 
 		$(document.body).off({
 			'mousemove': MC.canvas.event.drawConnection.mousemove,
@@ -1463,34 +1910,94 @@ MC.canvas.event.siderbarDrag = {
 		var target = $(this),
 			target_offset = target.offset(),
 			canvas_offset = $('#svg_canvas').offset(),
+			node_type = target.data('type'),
+			target_component_type = target.data('component-type'),
 			shadow,
-			clone_node;
+			clone_node,
+			default_width,
+			default_height,
+			platform,
+			target_group_type;
 
 		$(document.body).append('<div id="drag_shadow"></div>');
 		shadow = $('#drag_shadow');
-		clone_node = target.find('.resource-icon').clone();
 
-		shadow.append(clone_node);
+		if (target_component_type === 'group')
+		{
+			size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
 
-		shadow.css({
-			'top': event.pageY - 50,
-			'left': event.pageX - 50
-		}).show();
+			shadow
+				.css({
+					'top': event.pageY - 50,
+					'left': event.pageX - 50,
+					'width': size[0] * MC.canvas.GRID_WIDTH,
+					'height': size[1] * MC.canvas.GRID_HEIGHT
+				})
+				.addClass(node_type.replace(/\./ig, '-'))
+				.show();
+		}
+		else
+		{
+			clone_node = target.find('.resource-icon').clone();
+			shadow.append(clone_node);
 
-		$('#canvas_body').addClass('dragging');
+			shadow
+				.css({
+					'top': event.pageY - 50,
+					'left': event.pageX - 50
+				})
+				.show();
 
-		$(document.body).on({
-			'mousemove': MC.canvas.event.siderbarDrag.mousemove,
-			'mouseup': MC.canvas.event.siderbarDrag.mouseup
-		}, {
-			'target': target,
-			'shadow': shadow
-		});
+			if (target_component_type === 'node' && node_type !== 'AWS.EC2.EBS.Volume')
+			{
+				platform = MC.canvas.data.get('platform');
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
+
+				$.each(target_group_type, function (index, item)
+				{
+					$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+					{
+						return 'dropable-group ' + key;
+					});
+				});
+			}
+		}
+
+		if (node_type === 'AWS.EC2.EBS.Volume')
+		{
+			$('.AWS-EC2-Instance').attr('class', function (index, key)
+			{
+				return 'attachable ' + key;
+			});
+
+			shadow.addClass('AWS-EC2-EBS-Volume');
+
+			$(document.body).on({
+				'mousemove': MC.canvas.volume.mousemove,
+				'mouseup': MC.canvas.volume.mouseup
+			}, {
+				'target': target,
+				'canvas_offset': $('#svg_canvas').offset(),
+				'shadow': shadow
+			});
+		}
+		else
+		{
+
+			$(document.body).on({
+				'mousemove': MC.canvas.event.siderbarDrag.mousemove,
+				'mouseup': MC.canvas.event.siderbarDrag.mouseup
+			}, {
+				'target': target,
+				'shadow': shadow
+			});
+		}
 
 		MC.canvas.event.clearSelected();
 
 		return false;
 	},
+
 	mousemove: function (event)
 	{
 		event.preventDefault();
@@ -1503,6 +2010,7 @@ MC.canvas.event.siderbarDrag = {
 
 		return false;
 	},
+
 	mouseup: function (event)
 	{
 		var target = $(event.data.target),
@@ -1512,37 +2020,46 @@ MC.canvas.event.siderbarDrag = {
 			canvas_offset = $('#svg_canvas').offset(),
 			shadow_offset = event.data.shadow.position(),
 			node_option = target.data('option'),
-			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
+			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
+			match_place,
+			default_group_width,
+			default_group_height;
 
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
-
-			if (
-				target_component_type === 'node' &&
-				MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
-				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y) &&
-				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y) &&
-				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID) &&
-				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID)
-			)
+			if (target_component_type === 'node')
 			{
-				MC.canvas.add(node_type, node_option, coordinate);
+				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
+
+				if (match_place.is_matched)
+				{
+					node_option.groupUId = match_place.target;
+					MC.canvas.add(node_type, node_option, coordinate);
+				}
 			}
 
 			if (
 				target_component_type === 'group' &&
-				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y) &&
-				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x + node_option.width, coordinate.y) &&
-				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y + node_option.height) &&
-				MC.canvas.isMatchPlace(target_id, node_type, coordinate.x + node_option.width, coordinate.y + node_option.height)
+				MC.canvas.isBlank("group", '', coordinate.x, coordinate.y)
 			)
 			{
-				MC.canvas.add(node_type, node_option, coordinate);
+				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
+				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);
+
+				if (match_place.is_matched)
+				{
+					node_option.groupUId = match_place.target;
+					MC.canvas.add(node_type, node_option, coordinate);
+				}
 			}
 		}
 
+		$('.dropable-group').attr('class', function (index, key)
+		{
+			return key.replace('dropable-group ', '');
+		});
+
 		event.data.shadow.remove();
-		$('#canvas_body').removeClass('dragging');
 
 		$(document.body).off({
 			'mousemove': MC.canvas.event.mousemove,
@@ -1583,7 +2100,7 @@ MC.canvas.event.groupResize = {
 			'offsetX': event.pageX - canvas_offset.left,
 			'offsetY': event.pageY - canvas_offset.top,
 			'direction': $(target).data('direction'),
-			'group_border': parseInt(group.css('stroke-width'))
+			'group_border': parseInt(group.css('stroke-width'),10)
 		});
 	},
 	mousemove: function (event)
@@ -1655,6 +2172,9 @@ MC.canvas.event.groupResize = {
 					'width': event.data.originalWidth - left
 				};
 				break;
+			default :
+				//console.info('unknown direction:' + direction);
+				break;
 		}
 
 		if (prop.width && prop.width < MC.canvas.GROUP_MIN_PADDING)
@@ -1692,8 +2212,7 @@ MC.canvas.event.groupResize = {
 			group_width = Math.ceil(target.attr('width') / 10),
 			group_height = Math.ceil(target.attr('height') / 10),
 			group_left = Math.ceil((parent_offset.left - canvas_offset.left + offsetX ) / 10),
-			group_top = Math.ceil((
-					parent_offset.top - canvas_offset.top + offsetY ) / 10) + 1,
+			group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY ) / 10) + 1,
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
 			node_minX = [],
@@ -1701,13 +2220,13 @@ MC.canvas.event.groupResize = {
 			node_maxX = [],
 			node_maxY = [],
 			group_padding = MC.canvas.GROUP_PADDING,
+			parentGroup = MC.canvas.parentGroup(group_id, parent.data('class'), group_left, group_top, group_left + group_width, group_top + group_height),
 			node_data,
 			group_node_data,
 			group_maxX,
 			group_maxY,
 			group_minX,
 			group_minY;
-
 
 		//adjust group_left
 		if (offsetX < 0 )
@@ -1729,7 +2248,6 @@ MC.canvas.event.groupResize = {
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10);
 			}
 		}
-
 
 		$.each(event.data.group_child, function (index, item)
 		{
@@ -1782,7 +2300,8 @@ MC.canvas.event.groupResize = {
 				{
 					group_height += (group_top - group_minY);
 					group_top = group_minY;
-				}				break;
+				}
+				break;
 
 			case 'bottomleft':
 				if (group_left >= group_minX)
@@ -1875,6 +2394,403 @@ MC.canvas.event.groupResize = {
 	}
 };
 
+MC.canvas.volume = {
+	bubble: function (node)
+	{
+		if (!$('#volume-bubble-box')[0])
+		{
+			var target = $(node),
+				component_data = MC.canvas.data.get('component'),
+				node_volume_data = component_data[ node.id ].resource.BlockDeviceMapping,
+				data = {'list': []},
+				coordinate = {},
+				volume_id,
+				width,
+				height,
+				target_offset,
+				target_width,
+				target_height;
+
+			$(document.body).append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
+			bubble_box = $('#volume-bubble-box');
+
+			$.each(node_volume_data, function (index, item)
+			{
+				volume_id = item.replace('#', '');
+				volume_data = component_data[ volume_id ];
+
+				data.list.push({
+					'volume_id': volume_id,
+					'name': volume_data.name,
+					'size': volume_data.resource.Size,
+					'snapshotId': volume_data.resource.SnapshotId,
+					'json': JSON.stringify({
+						'instance_id': node.id,
+						'id': volume_id,
+						'name': volume_data.name,
+						'snapshotId': volume_data.resource.SnapshotId,
+						'volumeSize': volume_data.resource.Size
+					})
+				});
+			});
+
+			data.volumeLength = node_volume_data.length;
+
+			$('#volume-bubble-content').html(
+				MC.template.instanceVolume( data )
+			);
+
+			target_offset = target[0].getBoundingClientRect();
+			target_width = target_offset.width;
+			target_height = target_offset.height;
+			
+			width = bubble_box.width();
+			height = bubble_box.height();
+
+			if (target_offset.left + target_width + width - document.body.scrollLeft > window.innerWidth)
+			{
+				coordinate.left = target_offset.left - width - 15;
+				bubble_box.addClass('bubble-right');
+			}
+			else
+			{
+				coordinate.left = target_offset.left + target_width + 15;
+				bubble_box.addClass('bubble-left');
+			}
+
+			coordinate.top = target_offset.top - ((height - target_height) / 2);
+
+			bubble_box
+				.data('target-id', node.id)
+				.css(coordinate)
+				.show();
+
+			$('#' + node.id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-active.png');
+		}
+	},
+
+	show: function ()
+	{
+		var bubble_box = $('#volume-bubble-box'),
+			target_id = $(this).data('target-id'),
+			bubble_target_id;
+
+		if (!bubble_box[0])
+		{
+			MC.canvas.volume.bubble(
+				document.getElementById( target_id )
+			);
+		}
+		else
+		{
+			bubble_target_id = bubble_box.data('target-id');
+			
+			MC.canvas.volume.close();
+
+			if (target_id !== bubble_target_id)
+			{
+				MC.canvas.volume.bubble(
+					document.getElementById( target_id )
+				);
+			}
+		}
+
+		return false;
+	},
+
+	select: function ()
+	{
+		$('#instance_volume_list').find('.selected').removeClass('selected');
+
+		$(this).addClass('selected');
+
+		$(document).on('keyup', MC.canvas.volume.delete);
+
+		//dispatch event when select volume node
+		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
+
+		return false;
+	},
+
+	close: function (event)
+	{
+		var bubble_box = $('#volume-bubble-box'),
+			target;
+
+		if (event)
+		{
+			target = $(event.target);
+
+			if (
+				target.attr('class') === 'instance-volume' ||
+				target.is('.snapshot_item') ||
+				target.parent().is('.snapshot_item') ||
+				target.is('.volume_item') ||
+				target.parent().is('.volume_item')
+			)
+			{
+				return false;
+			}
+		}
+
+		if (bubble_box[0])
+		{
+			target_id = bubble_box.data('target-id');
+			bubble_box.remove();
+
+			$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+
+			$(document)
+				.off('keyup', MC.canvas.volume.delete)
+				.off('click', ':not(.instance-volume, #volume-bubble-box)', MC.canvas.volume.close);
+		}
+	},
+
+	delete: function (event)
+	{
+		if (
+			(
+				event.which === 46 ||
+				// For Mac
+				event.which === 8
+			)
+			&&
+			event.target === document.body
+		)
+		{
+			var bubble_box = $('#volume-bubble-box'),
+				target_id = bubble_box.data('target-id'),
+				target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping'),
+				target_node = $('#' + target_id),
+				target_offset = target_node[0].getBoundingClientRect(),
+				volume_id = $('#instance_volume_list').find('.selected').attr('id');
+			
+			target_volume_data.splice(
+				target_volume_data.indexOf(
+					volume_id
+				), 1
+			);
+
+			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+
+			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+			MC.canvas.data.delete('component.' + volume_id);
+
+			$('#' + volume_id).parent().remove();
+
+			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
+
+			$(document).off('keyup', MC.canvas.volume.delete);
+		}
+	},
+
+	mousedown: function (event)
+	{
+		event.preventDefault();
+		event.stopPropagation();
+
+		var target = $(this),
+			target_offset = target.offset(),
+			canvas_offset = $('#svg_canvas').offset(),
+			node_type = target.data('type'),
+			target_component_type = target.data('component-type'),
+			shadow,
+			clone_node;
+
+		$(document.body).append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
+		shadow = $('#drag_shadow');
+
+		shadow
+			.css({
+				'top': event.pageY - 50,
+				'left': event.pageX - 50
+			});
+
+		$('.AWS-EC2-Instance').attr('class', function (index, key)
+		{
+			return 'attachable ' + key;
+		});
+
+		shadow.addClass('AWS-EC2-EBS-Volume');
+
+		$(document.body).on({
+			'mousemove': MC.canvas.volume.mousemove,
+			'mouseup': MC.canvas.volume.mouseup
+		}, {
+			'target': target,
+			'canvas_offset': $('#svg_canvas').offset(),
+			'shadow': shadow,
+			'originalPageX': event.pageX,
+			'originalPageY': event.pageY,
+			'action': 'move'
+		});
+
+		MC.canvas.volume.select.call( $('#' + this.id )[0] );
+		
+		return false;
+	},
+
+	mousemove: function (event)
+	{
+		event.preventDefault();
+		event.stopPropagation();
+
+		if (
+			event.data.originalX !== event.pageX ||
+			event.data.originalY !== event.pageY
+		)
+		{
+			event.data.shadow
+				.css({
+					'top': event.pageY - 50,
+					'left': event.pageX - 50
+				})
+				.show();
+		}
+
+		match_node = MC.canvas.matchPoint(
+			event.pageX - event.data.canvas_offset.left,
+			event.pageY - event.data.canvas_offset.top
+		);
+
+		if (match_node && match_node.getAttribute('data-class') === 'AWS.EC2.Instance')
+		{
+			MC.canvas.volume.bubble(match_node);
+		}
+		else
+		{
+			MC.canvas.volume.close();
+		}
+
+		return false;
+	},
+
+	mouseup: function (event)
+	{
+		event.preventDefault();
+		event.stopPropagation();
+
+		var target = $(event.data.target),
+			target_component_type = target.data('component-type'),
+			node_option = target.data('option'),
+			bubble_box = $('#volume-bubble-box'),
+			volume_type,
+			target_id,
+			volume_id,
+			target_volume_data,
+			new_volume,
+			data_option,
+			original_node_id,
+			original_node_volume_data;
+
+		$('.AWS-EC2-Instance').attr('class', function (index, key)
+		{
+			return key.replace('attachable ', '');
+		});
+
+		if (bubble_box[0])
+		{
+			target_id = bubble_box.data('target-id');
+			target_node = $('#' + target_id);
+			target_offset = target_node[0].getBoundingClientRect();
+			target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping');
+
+			if (event.data.action === 'move')
+			{
+				volume_id = target.attr('id');
+				data_option = target.data('json');
+			}
+			else
+			{
+				data_option = target.data('option');
+				data_option['instance_id'] = target_id;
+				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
+				if (new_volume === null)
+				{
+					event.data.action = 'cancel';
+				}
+				else
+				{
+					volume_id = new_volume.id;
+					data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
+				}
+			}
+
+			if (event.data.action === 'move')
+			{
+				if (data_option.instance_id !== target_id)
+				{
+					data_json = JSON.stringify({
+						'instance_id': target_id,
+						'id': volume_id,
+						'name': data_option.name,
+						'snapshotId': data_option.snapshotId,
+						'volumeSize': data_option.volumeSize
+					});
+
+					volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
+
+					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+
+					target_volume_data.push('#' + volume_id);
+
+					$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+
+					MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+					MC.canvas.volume.select.call( document.getElementById( volume_id ) );
+
+					// Update original data
+					original_node_id = data_option.instance_id;
+					original_node_volume_data = MC.canvas.data.get('component.' + original_node_id + '.resource.BlockDeviceMapping');
+
+					original_node_volume_data.splice(
+						original_node_volume_data.indexOf('#' + volume_id), 1
+					);
+
+					MC.canvas.data.set('component.' + original_node_id + '.resource.BlockDeviceMapping', original_node_volume_data);
+
+					$('#' + original_node_id + '_volume_number').text(original_node_volume_data.length);
+				}
+			}
+			else if (!event.data.action)
+			{
+				data_json = JSON.stringify({
+					'instance_id': target_id,
+					'id': volume_id,
+					'name': data_option.name,
+					'snapshotId': data_option.snapshotId,
+					'volumeSize': data_option.volumeSize
+				});
+
+				volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
+
+				$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+
+				target_volume_data.push('#' + volume_id);
+
+				$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+
+				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+				MC.canvas.volume.select.call( document.getElementById( volume_id ) );
+			}
+
+			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
+		}
+
+		event.data.shadow.remove();
+
+		$(document.body).off({
+			'mousemove': MC.canvas.volume.mousemove,
+			'mouseup': MC.canvas.volume.mouseup
+		});
+
+		return false;
+	}
+};
+
 MC.canvas.event.selectLine = function (event)
 {
 	event.preventDefault();
@@ -1900,17 +2816,36 @@ MC.canvas.event.clearSelected = function ()
 	{
 		return key.replace(' selected', '');
 	});
+
 	MC.canvas.selected_node = [];
+
+	if ($('#volume-bubble-box')[0])
+	{
+		MC.canvas.volume.close();
+	}
+
+	//dispatch event when click blank area in canvas
+	$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
 };
 
 MC.canvas.event.keyEvent = function (event)
 {
-	if (event.which === 46 && MC.canvas.selected_node.length > 0)
+	if (
+		(
+			event.which === 46 ||
+			// For Mac
+			event.which === 8
+		) &&
+		MC.canvas.selected_node.length > 0 &&
+		event.target === document.body
+	)
 	{
 		$.each(MC.canvas.selected_node, function (i, node)
 		{
 			MC.canvas.remove(node);
 		});
 		MC.canvas.selected_node = [];
+
+		return false;
 	}
 };

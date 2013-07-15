@@ -2,9 +2,9 @@
 #  View Mode for design/resource
 #############################
 
-define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
+define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant'
          'backbone', 'jquery', 'underscore'
-], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model ) ->
+], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model, MC, constant ) ->
 
     #private
     ami_instance_type = null
@@ -28,16 +28,26 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             #init
             me.set 'availability_zone', null
 
-            #get service(model)
-            ec2_model.DescribeAvailabilityZones { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, null
-            ec2_model.once 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', ( result ) ->
-                console.log 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN'
-                console.log result
-                _.map result.resolved_data.item, (value)->
-                    value.zoneShortName = value.zoneName.slice(-2)
+            if  MC.data.config[region_name] and MC.data.config[region_name].zone
+
+                me.set 'availability_zone', MC.data.config[region_name].zone
+
+            else
+
+                #get service(model)
+                ec2_model.DescribeAvailabilityZones { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, null
+                ec2_model.once 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', ( result ) ->
+                    console.log 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN'
+                    console.log result
+                    _.map result.resolved_data.item, (value)->
+                        value.zoneShortName = value.zoneName.slice(-2)
+                        null
+                    me.set 'availability_zone', result.resolved_data
+
+                    #cache az to MC.data.config[region_name].zone
+                    MC.data.config[region_name].zone = result.resolved_data
+
                     null
-                me.set 'availability_zone', result.resolved_data
-                null
 
         #call service
         describeSnapshotsService : ( region_name ) ->
@@ -63,21 +73,78 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             #init
             me.set 'quickstart_ami', null
 
-            #get service(model)
-            aws_model.quickstart { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
-            aws_model.once 'AWS_QUICKSTART_RETURN', ( result ) ->
-                console.log 'AWS_QUICKSTART_RETURN'
-                ami_list = []
-                ami_instance_type = result.resolved_data.ami_instance_type
-                _.map result.resolved_data.ami, ( value, key ) ->
-                    value.id = key
-                    if value.kernelId == undefined or value.kernelId == ''
-                        value.kernelId = "None"
-                    
-                    value.instance_type = me._getInstanceType value
-                    ami_list.push value
-                    
-                me.set 'quickstart_ami', ami_list
+            #check cached data
+            if (MC.data.config[region_name] and MC.data.config[region_name].ami_list )
+                
+                me.set 'quickstart_ami', MC.data.config[region_name].ami_list
+
+                #get my AMI
+                me.myAmiService region_name
+
+                #get favorite AMI
+                me.favoriteAmiService region_name
+
+                #describe ami in stack
+                me.describeStackAmiService region_name
+
+            else
+                #get service(model)
+                aws_model.quickstart { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
+                aws_model.once 'AWS_QUICKSTART_RETURN', ( result ) ->
+                    console.log 'AWS_QUICKSTART_RETURN'
+                    ami_list = []
+                    ami_instance_type = result.resolved_data.ami_instance_type
+                    if MC.data.instance_type
+                        MC.data.instance_type[result.param[3]] = ami_instance_type
+                    else
+                        MC.data.instance_type = {}
+                        MC.data.instance_type[result.param[3]] = ami_instance_type
+                        
+                    _.map result.resolved_data.ami, ( value, key ) ->
+
+                        value.imageId = key
+                        
+                        _.map value, ( val, key ) ->
+                            if val == ''
+                                value[key] = 'None'
+                            null
+
+                        if value.kernelId == undefined or value.kernelId == ''
+                            value.kernelId = "None"
+
+                        #cache quickstart ami item to MC.data.dict_ami
+                        value.instance_type = me._getInstanceType value
+                        MC.data.dict_ami[key] = value
+
+                        ami_list.push value
+
+
+                    me.set 'quickstart_ami', ami_list
+
+                    #cache config data for current region
+                    MC.data.config[region_name]                     = {}
+                    MC.data.config[region_name].ami                 = result.resolved_data.ami
+                    MC.data.config[region_name].ami_instance_type   = result.resolved_data.ami_instance_type
+                    MC.data.config[region_name].instance_type       = result.resolved_data.instance_type
+                    MC.data.config[region_name].price               = result.resolved_data.price
+                    MC.data.config[region_name].vpc_limit           = result.resolved_data.vpc_limit
+                    #MC.data.config[region_name].zone                = result.resolved_data.zone
+                    MC.data.config[region_name].zone                = null
+
+                    MC.data.config[region_name].ami_list = ami_list
+
+                    MC.data.config[region_name].favorite_ami = null
+                    MC.data.config[region_name].my_ami = null
+
+                    #get my AMI
+                    me.myAmiService region_name
+
+                    #get favorite AMI
+                    me.favoriteAmiService region_name
+
+                    #describe ami in stack
+                    me.describeStackAmiService region_name
+
                 null
 
         #call service
@@ -88,12 +155,70 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             #init
             me.set 'my_ami', null
 
-            #get service(model)
-            ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, null
-            ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
-                console.log 'EC2_AMI_DESC_IMAGES_RETURN'
-                me.set 'my_ami', result.resolved_data
-                null
+            #check cached data
+            if MC.data.config[region_name] and MC.data.config[region_name].my_ami
+                
+                me.set 'my_ami', MC.data.config[region_name].my_ami
+
+            else
+                #get service(model)
+                ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, null
+                ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
+                    
+                    console.log 'EC2_AMI_DESC_IMAGES_RETURN'
+
+                    #cache my ami to my_ami
+                    MC.data.config[region_name].my_ami = {}
+
+                    if result.resolved_data
+
+                        _.map result.resolved_data.item, (value)->
+                            #cache my ami item to MC.data.dict_ami
+                            value.instanceType = me._getInstanceType value
+                            value.osType = me._getOSType value
+                            MC.data.dict_ami[value.imageId] = value
+                            null
+
+                        me.set 'my_ami', result.resolved_data
+
+                        MC.data.config[region_name].my_ami = result.resolved_data
+
+                    null
+            null
+
+        describeStackAmiService : ( region_name )->
+
+            me = this
+            
+            stack_ami_list = []
+
+            _.map MC.canvas_data.component, (value)->
+
+                if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+                    if MC.data.dict_ami
+
+                        if not MC.data.dict_ami[value.resource.ImageId]
+
+                            if value.resource.ImageId not in stack_ami_list
+
+                                stack_ami_list.push value.resource.ImageId
+
+
+            if stack_ami_list.length !=0
+                ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
+                ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
+                    console.log 'EC2_AMI_DESC_IMAGES_RETURN'
+
+                    _.map result.resolved_data.item, (value)->
+
+                        #cache ami item in stack to MC.data.dict_ami
+                        value.instanceType = me._getInstanceType value
+                        MC.data.dict_ami[value.imageId] = value
+
+                        null
+                    null
+
 
         describeCommunityAmiService : ( region_name, name, platform, architecture, rootDeviceType, perPageNum, returnPage ) ->
 
@@ -190,20 +315,41 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             #init
             me.set 'favorite_ami', null
 
-            #get service(model)
-            favorite_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
-            favorite_model.once 'FAVORITE_INFO_RETURN', ( result ) ->
-                console.log 'FAVORITE_INFO_RETURN'
-                _.map result.resolved_data, ( value ) ->
-                    value.resource_info = $.parseJSON value.resource_info
-                    _.map value.resource_info, ( val, key ) ->
-                        if val == ''
-                            value.resource_info[key] = 'None'
+            #check cached data
+            if MC.data.config[region_name] and MC.data.config[region_name].favorite_ami
+                
+                me.set 'favorite_ami', MC.data.config[region_name].favorite_ami
 
+            else
+
+                #get service(model)
+                favorite_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
+                favorite_model.once 'FAVORITE_INFO_RETURN', ( result ) ->
+                    console.log 'FAVORITE_INFO_RETURN'
+
+                    _.map result.resolved_data, ( value ) ->
+
+                        value.resource_info = $.parseJSON value.resource_info
+
+                        _.map value.resource_info, ( val, key ) ->
+                            if val == ''
+                                value.resource_info[key] = 'None'
+                            else
+                            null
+                        
+                        #cache favorite ami item to MC.data.dict_ami
+                        value.resource_info.instanceType = me._getInstanceType value.resource_info
+                        MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
                         null
+
+                    me.set 'favorite_ami', result.resolved_data
+
+                    #cache favorite_ami
+                    MC.data.config[region_name].favorite_ami = {}
+                    MC.data.config[region_name].favorite_ami = result.resolved_data
+
                     null
-                me.set 'favorite_ami', result.resolved_data
-                null
+            null
 
         _getInstanceType : ( ami ) ->
             instance_type = ami_instance_type
@@ -222,6 +368,39 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model'
             instance_type = instance_type[ami.virtualizationType]
 
             instance_type.join ', '
+
+        _getOSType : ( ami ) ->
+
+            #return osType by ami.name | ami.description | ami.imageLocation
+            
+            osTypeList = ['centos', 'redhat', 'redhat', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensus', 'suse','amazon', 'amazon']
+            
+            osType = 'linux-other'
+
+            if  ami.platform and ami.platform == 'windows'
+
+                osType = 'win'
+
+            else
+
+                #check ami.name
+                found = osTypeList.filter (word) -> ~ami.name.toLowerCase().indexOf word
+
+                #check ami.description
+                if found.length == 0
+                    found = osTypeList.filter (word) -> ~ami.description.toLowerCase().indexOf word
+
+                #check ami.imageLocation
+                if found.length == 0
+                    found = osTypeList.filter (word) -> ~ami.imageLocation.toLowerCase().indexOf word
+
+            if found.length == 0
+                osType = 'unknown'
+            else
+                osType = found[0]
+
+            osType
+
     }
 
     model = new ResourcePanelModel()

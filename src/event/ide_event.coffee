@@ -25,11 +25,13 @@ define [ 'underscore', 'backbone' ], () ->
         DASHBOARD_COMPLETE  : 'DASHBOARD_COMPLETE'
         DESIGN_COMPLETE     : 'DESIGN_COMPLETE'
         RESOURCE_COMPLETE   : 'RESOURCE_COMPLETE'
+        DESIGN_SUB_COMPLETE : 'DESIGN_SUB_COMPLETE'
         #
         RELOAD_RESOURCE     : 'RELOAD_RESOURCE'
         OPEN_PROPERTY       : 'OPEN_PROPERTY'
         OPEN_SG             : 'OPEN_SG'
         OPEN_INSTANCE       : 'OPEN_INSTANCE'
+        RELOAD_PROPERTY     : 'RELOAD_PROPERTY'
 
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'
@@ -42,6 +44,10 @@ define [ 'underscore', 'backbone' ], () ->
         TERMINATE_APP_TAB   : 'TERMINATE_APP_TAB'
 
         SAVE_DESIGN_MODULE  : 'SAVE_DESIGN_MODULE'
+
+        UPDATE_TABBAR       : 'UPDATE_TABBAR'
+        UPDATE_TAB_DATA     : 'UPDATE_TAB_DATA'
+        DELETE_TAB_DATA     : 'DELETE_TAB_DATA'
 
         #result app stack region empty_region list
         RESULT_APP_LIST     : 'RESULT_APP_LIST'

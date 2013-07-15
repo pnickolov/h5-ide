@@ -4,8 +4,10 @@
 
 define [ 'jquery',
          'text!/module/design/property/template.html',
-         'event'
-], ( $, template, ide_event ) ->
+         'event',
+         'constant',
+         'MC'
+], ( $, template, ide_event, constant, MC ) ->
 
     #private
     loadModule = () ->
@@ -22,8 +24,14 @@ define [ 'jquery',
         require [ './module/design/property/view',
                   './module/design/property/model',
                   './module/design/property/instance/main',
-                  './module/design/property/sg/main'
-        ], ( View, model, instance_main, sg_main ) ->
+                  './module/design/property/sg/main',
+                  './module/design/property/stack/main',
+                  './module/design/property/volume/main',
+                  './module/design/property/elb/main',
+                  './module/design/property/az/main',
+                  './module/design/property/subnet/main',
+                  './module/design/property/vpc/main'
+        ], ( View, model, instance_main, sg_main, stack_main, volume_main, elb_main, az_main, subnet_main, vpc_main ) ->
 
             uid  = null
             type = null
@@ -32,43 +40,81 @@ define [ 'jquery',
             view  = new View { 'model' : model }
             view.render template
 
+            #show stack property
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, () ->
+                console.log 'property:RELOAD_RESOURCE'
+                #check re-render
+                view.reRender template
+                #
+                stack_main.loadModule()
+
             #listen OPEN_PROPERTY
             ide_event.onLongListen ide_event.OPEN_PROPERTY, ( uid ) ->
-                console.log 'OPEN_PROPERTY'
+                console.log 'OPEN_PROPERTY, uid = ' + uid
 
                 uid  = uid
                 type = type
 
-                instance_main.loadModule uid, type
+                #show stack property
+                if uid is ''
+                    stack_main.loadModule()
+
+                #show instance property
+                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
+                    instance_main.loadModule uid
+
+                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume)
+                    volume_main.loadModule uid
+                #show vloume/snapshot property
+
+                #volume_main.loadModule()
+
+
+                #show elb property
+                #elb_main.loadModule()
+
+                #show az property
+                #az_main.loadModule()
+
+                #show subnet property
+                #subnet_main.loadModule()
+
+                #show vpc_main property
+                #vpc_main.loadModule()
+
                 #temp
-                setTimeout () ->
-                   view.refresh()
-                , 2000
- 
+                # setTimeout () ->
+                #    view.refresh()
+                # , 2000
+
                 null
 
             #listen OPEN_SG
-            ide_event.onLongListen ide_event.OPEN_SG, () ->
+            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent ) ->
                 console.log 'OPEN_SG'
-                sg_main.loadModule()
+                sg_main.loadModule( uid_parent )
                 #temp
-                setTimeout () ->
-                   view.refresh()
-                , 2000
- 
+                # setTimeout () ->
+                #    view.refresh()
+                # , 2000
+
                 null
 
-            #listen OPEN_SG
+            #listen OPEN_INSTANCE
             ide_event.onLongListen ide_event.OPEN_INSTANCE, () ->
                 console.log 'OPEN_INSTANCE'
                 #
                 instance_main.loadModule uid, type
                 #temp
-                setTimeout () ->
-                   view.refresh()
-                , 2000
+                # setTimeout () ->
+                #    view.refresh()
+                # , 2000
 
                 null
+
+            ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->
+
+                view.refresh()
 
     unLoadModule = () ->
         #view.remove()

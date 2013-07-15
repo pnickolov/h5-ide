@@ -123,10 +123,6 @@
        </div>
 </div>
 
-
-
-
-
 <!-- modalRegionResourceDetail -->
 {{#if detail_table}}
 <div class="modal-resource-detail" style="width:800px">
@@ -782,13 +778,20 @@ Additional Notes and Questions
 	<ul id="instance_volume_list" class="clearfix">
 		{{#each list}}
 		<li>
-			<a href="#" id="{{volume_id}}" class="volume_item">
+			<a href="#" id="{{volume_id}}" class="
+			{{#if snapshotId}}
+				snapshot_item
+			{{else}}
+				volume_item
+			{{/if}}
+			" data-json="{{json}}">
 				<span class="volume_name">{{name}}</span>
 				<span class="volume_size">{{size}}GB</span>
 			</a>
 		</li>
 		{{/each}}
 	</ul>
+</div>
 
 <!-- aimSecondaryPanel -->
 <div class="sidebar-title">

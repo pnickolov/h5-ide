@@ -336,6 +336,38 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             instance_type = instance_type[ami.virtualizationType]
 
             instance_type
+
+        removeSG : ( uid, sg_uid ) ->
+
+            sg_id_ref = "@"+sg_uid+'.resource.GroupId'
+
+            sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
+
+            if sg_ids.length != 1
+
+                sg_ids.splice sg_ids.indexOf sg_id_ref, 1
+
+                $.each MC.canvas_property.sg_list, ( key, value ) ->
+
+                    if value.uid == sg_uid
+
+                        index = value.member.indexOf uid
+
+                        value.member.splice index, 1
+
+                        # delete member 0 sg
+
+                        if value.member.length == 0 and value.name != 'DefaultSG'
+
+                            MC.canvas_property.sg_list.splice key, 1
+
+                            delete MC.canvas_data.component[sg_uid]
+
+                        return false
+
+            null
+
+
     }
 
     model = new InstanceModel()

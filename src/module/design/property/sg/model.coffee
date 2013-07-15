@@ -114,6 +114,31 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             null
 
+        removeSGRule : ( uid, rule ) ->
+
+            sg = MC.canvas_data.component[uid].resource
+
+            if rule.inbound == true
+
+                $.each sg.IpPermissions, ( idx, value ) ->
+
+                    if rule.protocol == value.IpProtocol and rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString() and value.IpRanges == rule.iprange
+
+                        sg.IpPermissions.splice idx, 1
+
+                        return false
+
+            else
+
+                $.each sg.IpPermissionsEgress, ( idx, value ) ->
+
+                    if rule.protocol == value.IpProtocol and rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString() and value.IpRanges == rule.iprange
+
+                        sg.IpPermissionsEgress.splice idx, 1
+
+                        return false
+
+
     }
 
     model = new InstanceModel()

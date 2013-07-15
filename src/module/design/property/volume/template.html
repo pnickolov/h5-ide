@@ -5,7 +5,11 @@
     <div class="property-control-group clearfix">
         <label>Device Name</label>
         <div class="name tooltip" data-tooltip="Required">
+        	{{#if volume_detail.isWin}}
+        	<label for="volume-device">xvd</label>
+        	{{else}}
             <label for="volume-device">/dev/</label>
+        	{{/if}}
             <input type="text" class="input input-device" value="{{volume_detail.editName}}" id="volume-device">
         </div>
     </div>
@@ -20,9 +24,8 @@
     {{#if volume_detail.resource.SnapshotId}}
     <div class="property-control-group clearfix">
         <label>Snapshot</label>
-        <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{}'>
-            <div>volume_detail.resource.SnapshotId</div>
-            <span>2GB - Create by xxx</span>
+        <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
+            <div>{{volume_detail.resource.SnapshotId}}</div>
         </div>
     </div>
     {{/if}}

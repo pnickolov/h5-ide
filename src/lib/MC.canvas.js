@@ -1465,8 +1465,18 @@ MC.canvas.event.dragable = {
 
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 			}
-			else
+			
+			if (event.data.target_type === 'group')
 			{
+				var target = event.data.target;
+
+				target.attr('class', function (index, key)
+				{
+					return key + ' selected';
+				});
+
+				MC.canvas.selected_node.push(target[0]);
+
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 			}
 		}

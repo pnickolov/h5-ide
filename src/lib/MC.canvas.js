@@ -1852,24 +1852,7 @@ MC.canvas.event.drawConnection = {
 
 		return false;
 	},
-
-	// draw: function (event)
-	// {
-	// 	$('#svg_canvas').off('mouseover', '.node', MC.canvas.event.drawConnection.draw);
-
-	// 	var from_node = event.data.originalTarget,
-	// 		to_node = $(this),
-	// 		port_name = event.data.port_name,
-	// 		to_port_name = to_node.find('.connectable-port').data('name');
-
-	// 	if (!from_node.is(to_node) && to_port_name !== undefined)
-	// 	{
-	// 		MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
-	// 	}
-
-	// 	return true;
-	// },
-
+	
 	mouseup: function (event)
 	{
 		MC.paper.clear(MC.paper.drewLine);

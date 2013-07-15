@@ -65,12 +65,18 @@ var selectbox = {
             cur_id = me.data('id') ? me.data('id') : '',
             pre_selected = cur_li.siblings('.selected'),
             parent_dom = me.parents('.selectbox').first(),
+            remove_after_click = cur_li.hasClass('remove-after-click'),
             label = parent_dom.find('.cur-value');
 
         pre_selected.removeClass('selected').removeClass('focused');
         cur_li.addClass('selected').addClass('focused');
+        
         if(label) {
             label.html(cur_value);
+        }
+
+        if(remove_after_click) {
+            cur_li.remove();
         }
 
         parent_dom.trigger("OPTION_CHANGE", [cur_id]);

@@ -133,6 +133,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             target = $('#property-ami')
             secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
             $(document.body).on 'click', '.back', secondarypanel.close
+            fixedaccordion.resize()
 
         addSGtoList: (event, id) ->
 

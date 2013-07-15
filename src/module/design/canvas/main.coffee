@@ -22,6 +22,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
                 #temp
                 if type is 'NEW_STACK'
                     require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.create({
+                                name: tab_name,
                                 region: region_name,
                                 platform: current_platform
                             })

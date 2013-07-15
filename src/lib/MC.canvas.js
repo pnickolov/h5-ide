@@ -829,6 +829,7 @@ MC.canvas = {
 			],
 			is_option_canvas = ($.inArray('Canvas', MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1),
 			result = {},
+			is_matched,
 			group_data,
 			coordinate,
 			size;
@@ -922,9 +923,11 @@ MC.canvas = {
 
 		platform = platform === 'custome-vpc' ? 'ec2-vpc' : platform;
 
+		is_matched = ($.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id);
+
 		return {
-			'is_matched': ($.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id),
-			'target': result.id
+			'is_matched': is_matched,
+			'target': result.id === undefined && is_matched ? 'Canvas' : result.id
 		};
 	},
 
@@ -1279,7 +1282,7 @@ MC.canvas.layout = {
 		{
 			//has vpc (create vpc, az, and subnet by default)
 			MC.canvas.add('AWS.VPC.VPC', {
-				'name': 'vpc1'
+				'name': 'vpc1',
 			}, {
 				'x': 2,
 				'y': 2
@@ -2036,15 +2039,7 @@ MC.canvas.event.siderbarDrag = {
 
 				if (match_place.is_matched)
 				{
-					if ($("#" + match_place.target).data().class === "AWS.VPC.Subnet")
-					{
-						node_option.subnet = "@" + match_place.target + ".resource.SubnetId";
-						node_option.zone = MC.canvas_data.component[ match_place.target ].resource.AvailabilityZone
-					}
-					if ($("#" + match_place.target).data().class === "AWS.EC2.AvailabilityZone")
-					{
-						node_option.zone = $("#" + match_place.target).text();
-					}
+					node_option.groupUId = match_place.target;
 					MC.canvas.add(node_type, node_option, coordinate);
 				}
 			}
@@ -2059,11 +2054,7 @@ MC.canvas.event.siderbarDrag = {
 
 				if (match_place.is_matched)
 				{
-					if (match_place.target && $("#" + match_place.target).data().class === "AWS.EC2.AvailabilityZone")
-					{
-						node_option.zone = $("#" + match_place.target).text();
-					}
-					
+					node_option.groupUId = match_place.target;
 					MC.canvas.add(node_type, node_option, coordinate);
 				}
 			}

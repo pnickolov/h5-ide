@@ -32,7 +32,32 @@ MC.canvas.add = function (flag, option, coordinate)
 
 		group.id = MC.guid();
 		type = flag; //flag is resource type
+
+		//get parent group
+		if (option.groupUId && option.groupUId != 'Canvas' )
+		{
+			var group_layout = MC.canvas_data.layout.component.group[ option.groupUId ];
+			option.group = {};
+
+			switch (group_layout.type)
+			{
+				case 'AWS.EC2.AvailabilityZone':
+					option.group.availableZoneName = group_layout.name;
+					option.group.vpcUId = $(".AWS-VPC-VPC")[0] ? $(".AWS-VPC-VPC")[0].id : '' ;
+					break;
+				case 'AWS.VPC.Subnet':
+					var gropu_comp = MC.canvas_data.component[ option.groupUId ];
+					option.group.subnetUId = option.groupUId;
+					option.group.availableZoneName = gropu_comp.resource.AvailabilityZone;
+					option.group.vpcUId = $(".AWS-VPC-VPC")[0].id;
+					break;
+				case 'AWS.VPC.VPC':
+					option.group.vpcUId = $(".AWS-VPC-VPC")[0].id;
+					break;
+			}
+		}
 	}
+
 	class_type = type.replace(/\./ig, '-'); // type is resource type
 
 	switch (type) {
@@ -48,6 +73,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
 				option.width = size[0];
 				option.height = size[1];
+
+				component_layout.groupUId = option.groupUId;
 			}
 			else
 			{//read
@@ -226,10 +253,11 @@ MC.canvas.add = function (flag, option, coordinate)
 			{
 				component_data = $.extend(true, {}, MC.canvas.SUBNET_JSON.data);
 				component_data.name = option.name;
-				component_data.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
-				component_data.resource.AvailabilityZone = option.zone
+				component_data.resource.VpcId = "@" + option.group.vpcUId + '.resource.VpcId';
+				component_data.resource.AvailabilityZone = option.group.availableZoneName;
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
+				component_layout.groupUId = option.groupUId;
 
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
 				option.width = size[0];
@@ -325,7 +353,6 @@ MC.canvas.add = function (flag, option, coordinate)
 				kp = null,
 				sg = null,
 				eni = null;
-				
 
 			if (create_mode)
 			{//write
@@ -334,29 +361,35 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_data.resource.ImageId = option.imageId;
 				component_data.resource.InstanceType = 'm1.small';
-				component_data.resource.Placement.AvailabilityZone = option.zone;
+				component_data.resource.Placement.AvailabilityZone = option.group.availableZoneName;
 
 				// if not kp				
 				if(MC.canvas_property.kp_list.length === 0){
+
+					//default kp
 					uid = MC.guid();
 					kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
 					kp.uid = uid;
 					tmp = {};
 					tmp[kp.name] = kp.uid;
 					MC.canvas_property.kp_list.push(tmp);
-					
+
+					//default sg
 					sg_uid = MC.guid();
 					sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
 					sg.uid = sg_uid;
 					tmp = {};
 					tmp.uid = sg.uid;
 					tmp.name = sg.name;
-					tmp.member = []
+					tmp.member = [];
 					MC.canvas_property.sg_list.push(tmp);
-					if(option.subnet){
+
+					if(option.group.subnetUId){
+						//with vpc
 						sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
 					}
 					else{
+						//without vpc
 						delete sg.resource.IpPermissionsEgress;
 					}
 				}
@@ -364,28 +397,28 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
 				component_data.resource.SecurityGroupId.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
 				MC.canvas_property.sg_list[0].member.push(group.id);
-				var eni = null;
 
 				// if subnet
-				if(option.subnet){
-					subnet_uid = option.subnet.split('.')[0].slice(1);
-					zone = MC.canvas_data.component[subnet_uid].resource.AvailabilityZone;
-					vpc_id = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
-					component_data.resource.SubnetId = option.subnet;
-					component_data.resource.VpcId = vpc_id;
-					component_data.resource.Placement.AvailabilityZone = zone;
+				if(option.group.subnetUId && option.group.vpcUId && option.group.availableZoneName ){
+
+					component_data.resource.Placement.AvailabilityZone = option.group.availableZoneName;
+					component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
+					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+
+					//default eni
 					eni = $.extend(true, {}, MC.canvas.ENI_JSON.data);
 					uid = MC.guid();
 					eni.uid = uid;
 					eni.name = "eni0";
 					eni.resource.Attachment.DeviceIndex = "0";
 					eni.resource.Attachment.InstanceId = "@"+group.id+".resource.InstanceId";
-					eni.resource.AvailabilityZone = zone;
-					eni.resource.SubnetId = option.subnet;
-					eni.resource.VpcId = vpc_id;
+					eni.resource.AvailabilityZone = component_data.resource.Placement.AvailabilityZone;
+					eni.resource.SubnetId = component_data.resource.SubnetId;
+					eni.resource.VpcId = component_data.resource.VpcId;
 				}
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
+				component_layout.groupUId = option.groupUId;
 				component_layout.osType =  option.osType;
 				component_layout.architecture =  option.architecture;
 				component_layout.rootDeviceType =  option.rootDeviceType;
@@ -598,6 +631,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 
 				component_layout = $.extend(true, {}, MC.canvas.ELB_JSON.layout);
+				component_layout.groupUId = option.groupUId;
 			}
 			else
 			{//read
@@ -617,7 +651,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/elb-internet-canvas.png', 20, 23, 70, 70),
+				Canvon.image('../assets/images/ide/icon/elb-internet-canvas.png', 20, 23, 70, 53),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -686,6 +720,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 
 				component_layout = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.layout);
+				component_layout.groupUId = option.groupUId;
 			}
 			else
 			{//read
@@ -785,6 +820,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 
 				component_layout = $.extend(true, {}, MC.canvas.IGW_JSON.layout);
+				component_layout.groupUId = option.groupUId;
 			}
 			else
 			{//read
@@ -862,6 +898,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 
 				component_layout = $.extend(true, {}, MC.canvas.VGW_JSON.layout);
+				component_layout.groupUId = option.groupUId;
 			}
 			else
 			{//read
@@ -1015,6 +1052,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 
 				component_layout = $.extend(true, {}, MC.canvas.ENI_JSON.layout);
+				component_layout.groupUId = option.groupUId;
 			}
 			else
 			{//read

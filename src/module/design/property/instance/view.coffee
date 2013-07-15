@@ -39,6 +39,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'EDIT_EMPTY #keypair-select' : "addEmptyKP"
             'OPTION_CHANGE #keypair-select' : "addtoKPList"
             'EDIT_UPDATE #keypair-select' : "createtoKPList"
+            'click #security-group-select li' : "removeSGfromSelectbox"
             'OPTION_CHANGE #security-group-select' : "addSGtoList"
             'TOGGLE_ICON #sg-info-list' : "toggleSGfromList"
             'click .sg-remove-item-icon' : "removeSGfromList"
@@ -136,7 +137,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             fixedaccordion.resize()
 
         addSGtoList: (event, id) ->
-
             if(id.length != 0)
                 $('#sg-info-list').append MC.template.sgListItem({name: id})
                 instance_uid = $( '#instance-property-detail' ).attr 'component'
@@ -149,10 +149,18 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
                 ide_event.trigger ide_event.OPEN_SG, {parent: cid}
 
+        removeSGfromSelectbox : ( event ) ->
+            target = $(event.target)
+            if(target.data('id').length != 0)
+                console.log target
+                target.remove()
+
 
         removeSGfromList: (event) ->
-            $(event.target).parents('li').first().remove()
-            notification 'info', 'SG is deleted', false
+            target = $(event.target).parents('li').first()
+            sg_id = target.data('sgid')
+            target.remove()
+            notification 'info', sg_id + ' SG is deleted', false
 
         toggleSGfromList: (event, id) ->
             notification 'info', id, false

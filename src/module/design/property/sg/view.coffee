@@ -22,26 +22,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'OPTION_CHANGE #modal-sg-rule' : 'sgModalSelectboxChange'
 
             'change #securitygroup-name' : 'setSGName'
+            'click #sg-modal-save': 'modalSaveClick'
             'click #sg-modal-save' : 'saveSgModal'
 
         render     : () ->
             console.log 'property:sg render'
             $( '.property-details' ).html this.template this.model.attributes
             #
-            secondary_panel_wrap = $('#sg-secondary-panel')
-            secondary_panel_wrap.animate({
-                right: 0
-            }, {
-                duration: 200,
-                specialEasing: {
-                    width: 'linear'
-                },
-                complete : () ->
-                    fixedaccordion.resize()
-                    selectbox.init()
-                    $('#sg-secondary-panel .sg-title input').focus()
-                }
-            )
+            $('#sg-secondary-panel').fadeIn 200
+            $('#sg-secondary-panel .sg-title input').focus()
+            fixedaccordion.resize()
+            selectbox.init()
+
 
         openInstance : () ->
             console.log 'openInstance'
@@ -71,6 +63,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             return false
 
         removeRulefromList: (event, id) ->
+            target = $(event.target).parents('li').first()
+            rule_id = target.data('ruleid')
+            console.log rule_id
             $(event.target).parents('li').first().remove()
 
         radioSgModalChange : (event) ->
@@ -87,11 +82,16 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             sg_uid = $("#sg-secondary-panel").attr "uid"
             this.trigger 'SET_SG_NAME', sg_uid, event.target.value
 
+
+        modalSaveClick : (event) ->
+            console.log 'sg-modal-save'
+
         saveSgModal : (event) ->
             sg_direction = $('#sg-modal-direction input:checked').val()
             sg_descrition = $('#securitygroup-modal-description').val()
             console.log 'dir:' + sg_direction
             console.log 'desc:' + sg_descrition
+
     }
 
     view = new InstanceView()

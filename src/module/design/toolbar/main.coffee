@@ -21,8 +21,8 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
             view.render()
 
             #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, () ->
-                console.log 'toolbar:RELOAD_RESOURCE'
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, stack_name ) ->
+                console.log 'toolbar:RELOAD_RESOURCE, stack_name = ' + stack_name
                 #check re-render
                 view.reRender()
 

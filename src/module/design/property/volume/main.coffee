@@ -52,7 +52,7 @@ define [ 'jquery',
 
                 view.model.setVolumeTypeStandard volume_uid
 
-                renderPropertyPanel( volume_uid )
+                #renderPropertyPanel( volume_uid )
 
             view.on 'VOLUME_TYPE_IOPS', ()->
 
@@ -60,7 +60,7 @@ define [ 'jquery',
 
                 view.model.setVolumeTypeIops volume_uid
 
-                renderPropertyPanel( volume_uid )
+                #renderPropertyPanel( volume_uid )
 
             view.on 'IOPS_CHANGED' , ( value ) ->
 

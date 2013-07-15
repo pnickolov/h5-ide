@@ -63,6 +63,16 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 null
                 ###
 
+            #listen
+            ide_event.onLongListen ide_event.DELETE_TAB_DATA, ( tab_id ) ->
+                console.log 'DELETE_TAB_DATA, tab_id = ' + tab_id
+                model.deleteTab tab_id
+            null
+
+            #listen
+            ide_event.onLongListen ide_event.UPDATE_TAB_DATA, ( original_tab_id, tab_id ) ->
+                console.log 'UPDATE_TAB_DATA, original_tab_id = ' + original_tab_id + ', tab_id = ' + tab_id
+                model.updateTab original_tab_id, tab_id
             null
 
     #private

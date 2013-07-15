@@ -1,23 +1,23 @@
 #############################
-#  View(UI logic) for design/property/elb
+#  View(UI logic) for design/property/vpc
 #############################
 
 define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
-    ELBView = Backbone.View.extend {
+    VPCView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile $( '#property-elb-tmpl' ).html()
+        template : Handlebars.compile $( '#property-vpc-tmpl' ).html()
 
         #events   :
 
         render     : () ->
-            console.log 'property:elb render'
+            console.log 'property:vpc render'
 
     }
 
-    view = new ELBView()
+    view = new VPCView()
 
     return view

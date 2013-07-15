@@ -49,12 +49,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                         console.log 'create stack successfully'
 
                         MC.canvas_data.id = result.resolved_data
+
                         #update initial data
                         MC.canvas_property.original_json = JSON.stringify( MC.canvas_data )
 
                         me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS'
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST
+
+                        ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, MC.canvas_data.name + '-stack'
 
                         #call save png
                         me.savePNG true
@@ -64,6 +67,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
         #duplicate
         duplicateStack : (new_name) ->
             me = this
+
+            #check if there are changes
+            ori_data = MC.canvas_property.original_json
+            new_data = JSON.stringify( MC.canvas_data )
+
+            if not MC.canvas_data.id or ori_data != new_data
+                me.saveStack()
 
             stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
             stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->

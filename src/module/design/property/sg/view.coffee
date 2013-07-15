@@ -18,22 +18,45 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click .rule-edit-icon' : 'showEditRuleModal'
             'click #sg-add-rule-icon' : 'showCreateRuleModal'
             'click .rule-remove-icon' : 'removeRulefromList'
-            'change #radio_inbound' : 'radioInboundChange'
-            'change #radio_outbound' : 'radioOutboundChange'
+            'click #sg-modal-direction input' : 'radioSgModalChange'
             'OPTION_CHANGE #modal-sg-rule' : 'sgModalSelectboxChange'
 
             'change #securitygroup-name' : 'setSGName'
+            'click #sg-modal-save' : 'saveSgModal'
 
         render     : () ->
             console.log 'property:sg render'
             $( '.property-details' ).html this.template this.model.attributes
             #
-            $('#sg-secondary-panel').fadeIn 200
-            $('#sg-secondary-panel .sg-title input').focus()
+            secondary_panel_wrap = $('#sg-secondary-panel')
+            secondary_panel_wrap.animate({
+                right: 0
+            }, {
+                duration: 200,
+                specialEasing: {
+                    width: 'linear'
+                },
+                complete : () ->
+                    fixedaccordion.resize()
+                    selectbox.init()
+                    $('#sg-secondary-panel .sg-title input').focus()
+                }
+            )
 
         openInstance : () ->
             console.log 'openInstance'
-            ide_event.trigger ide_event.OPEN_PROPERTY, $('#sg-secondary-panel').attr 'parent'
+            secondary_panel_wrap = $('#sg-secondary-panel')
+            secondary_panel_wrap.animate({
+                right: "-280px"
+            }, {
+                duration: 500,
+                specialEasing: {
+                    width: 'linear'
+                },
+                complete : () ->
+                    ide_event.trigger ide_event.OPEN_PROPERTY, $('#sg-secondary-panel').attr 'parent'
+                }
+            )
 
         securityGroupAddSelect: (event) ->
             fixedaccordion.show.call $('#sg-head')
@@ -50,21 +73,25 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         removeRulefromList: (event, id) ->
             $(event.target).parents('li').first().remove()
 
-        radioInboundChange : (event) ->
-            $('#rule-modle-title2').text "Source"
-
-        radioOutboundChange : (event) ->
-            $('#rule-modle-title2').text "Destination"
+        radioSgModalChange : (event) ->
+            if $('#sg-modal-direction input:checked').val() is "radio_inbound"
+                $('#rule-modle-title2').text "Source"
+            else
+                $('#rule-modle-title2').text "Destination"
 
         sgModalSelectboxChange : (event, id) ->
             $('#sg-protocol-select-result').find('.show').removeClass('show')
             $('#sg-protocol-' + id).addClass('show')
 
         setSGName : ( event ) ->
-
             sg_uid = $("#sg-secondary-panel").attr "uid"
-
             this.trigger 'SET_SG_NAME', sg_uid, event.target.value
+
+        saveSgModal : (event) ->
+            sg_direction = $('#sg-modal-direction input:checked').val()
+            sg_descrition = $('#securitygroup-modal-description').val()
+            console.log 'dir:' + sg_direction
+            console.log 'desc:' + sg_descrition
     }
 
     view = new InstanceView()

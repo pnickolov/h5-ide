@@ -2288,6 +2288,7 @@ a.sidebar-hider {
 	position: absolute;
 	width: 280px;
 	right: -280px;
+	height: 100%;
 }
 /* SG Rule Modal */
 #modal-sg-rule .modal-body{

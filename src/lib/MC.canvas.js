@@ -1534,6 +1534,7 @@ MC.canvas.event.dragable = {
 					child_stack = [],
 					unique_stack = [],
 					coordinate_fixed = false,
+					fixed_areaChild,
 					group_offsetX,
 					group_offsetY,
 					matched_child,
@@ -1582,6 +1583,11 @@ MC.canvas.event.dragable = {
 						coordinate.y = parent_data.coordinate[1] + parent_data.size[1] - MC.canvas.GROUP_PADDING - group_size[1];
 						coordinate_fixed = true;
 					}
+
+					if (coordinate_fixed)
+					{
+						fixed_areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
+					}
 				}
 
 				group_offsetX = coordinate.x - group_coordinate[0];
@@ -1591,7 +1597,11 @@ MC.canvas.event.dragable = {
 					coordinate.x > 1 &&
 					coordinate.y > 1 &&
 					(
-						coordinate_fixed ||
+						(
+							coordinate_fixed &&
+							event.data.groupChild.length === fixed_areaChild.length
+						)
+						||
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&

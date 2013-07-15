@@ -529,13 +529,49 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			if (create_mode)
 			{//write
+
+				//set deviceName
+				ami_info = MC.data.config[MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone.slice(0,-1)].ami[MC.canvas_data.component[option.instance_id].resource.ImageId];
+				device_name = ['f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+				$.each(ami_info.blockDeviceMapping, function (key, value){
+					if(key.slice(0,4) == '/dev/'){
+						k = key.slice(-1);
+						index = device_name.indexOf(k);
+						if(index>=0){
+							device_name.splice(index, 1);
+						}
+					}
+				});
+				$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
+					volume_uid = value.slice(1);
+					k = MC.canvas_data.component[volume_uid].name.slice(-1);
+					index = device_name.indexOf(k);
+					if(index>=0){
+						device_name.splice(index, 1);
+					}
+				});
+				if (device_name.length === 0)
+				{
+					//no valid deviceName
+					notification('warning', 'No valid device name to assign,cancel!', false);
+					return null;
+				}
+
+				option.name = '/dev/sd' + device_name[0];
+
 				component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.Size = option.volumeSize;				
 				component_data.resource.AttachmentSet.InstanceId = '@' + option.instanceId + '.resource.InstanceId';
 				component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instanceId].resource.Placement.AvailabilityZone;
 				component_data.resource.SnapshotId = option.snapshotId;
+
 				component_data.resource.AttachmentSet.Device =  option.name;
+
+				if (option.snapshotId)
+				{
+					component_data.resource.SnapshotId = option.snapshotId;
+				}
 			}
 			else
 			{//read

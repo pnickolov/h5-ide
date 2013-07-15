@@ -4,7 +4,7 @@
 
 define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
-    VolumeView = Backbone.View.extend {
+    ELBView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
@@ -18,6 +18,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     }
 
-    view = new VolumeView()
+    view = new ELBView()
 
     return view

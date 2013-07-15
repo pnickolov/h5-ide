@@ -26,14 +26,16 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             console.log 'openTab'
             console.log 'original_tab_id = ' + original_tab_id + ', tab_id = ' + tab_id
             console.log $( '#tab-bar-' + tab_id ).children().attr 'title'
-
+            #
+            if original_tab_id is tab_id then return
+            #
             if tab_id is 'dashboard'
                 this.trigger 'SWITCH_DASHBOARD', original_tab_id, tab_id
                 return
 
             if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[0] is 'untitled'
                 #push event
-                this.trigger 'SWITCH_NEW_STACK_TAB', original_tab_id, tab_id
+                this.trigger 'SWITCH_NEW_STACK_TAB', original_tab_id, tab_id, $( '#tab-bar-' + tab_id ).find('a').attr('title')
             else if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[1] is 'stack'
                 #push event
                 this.trigger 'SWITCH_STACK_TAB', original_tab_id, tab_id
@@ -68,6 +70,26 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             console.log $( event.currentTarget ).attr 'data-supported-platform'
             event.data.trigger 'SELECE_PLATFORM', $( event.currentTarget ).attr 'data-supported-platform'
             null
+
+        updateCurrentTab : ( tab_id, tab_name ) ->
+            console.log 'updateCurrentTab'
+            original_tab_id = null
+            _.each $( '.tabbar-group' ).children(), ( item ) ->
+                if $( item ).attr( 'class' ) is 'active'
+                    console.log $( item )
+                    #
+                    $( item ).attr 'id', 'tab-bar-' + tab_id
+                    #
+                    temp = $( $( item ).find( 'a' )[0] )
+                    #
+                    original_tab_id = temp.attr 'data-tab-id'
+                    #
+                    temp.attr 'title',       tab_name
+                    temp.attr 'data-tab-id', tab_id
+                    temp.attr 'href',        '#tab-content-' + tab_id
+                    temp.text tab_name
+                    null
+            return original_tab_id
     }
 
     return TabBarView

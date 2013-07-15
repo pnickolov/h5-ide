@@ -123,10 +123,6 @@
        </div>
 </div>
 
-
-
-
-
 <!-- modalRegionResourceDetail -->
 {{#if detail_table}}
 <div class="modal-resource-detail" style="width:800px">
@@ -689,30 +685,31 @@ Additional Notes and Questions
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
-		<div class="sg-modal-direction wrap">
-			<span class="title">Direction</span>
-			<div class="context">
-				<div class="radio inbound">
-					<input id="radio_inbound" type="radio" name="rule_direction" />
-					<label for="radio_inbound"></label>
-					<span>Inbound</span>
-				</div>
-
-				<div class="radio outbound">
-					<input id="radio_outbound" type="radio" name="rule_direction" />
-					<label for="radio_outbound"></label>
-					<span>outbound</span>
-				</div>
-			</div>
+		<div class="property-control-group clearfix">
+        	<label>Direction</label>
+        	<div class="context" id="sg-modal-direction">
+            	<div class="radio">
+            		<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="radio_inbound" />
+                	<label for="radio_inbound"></label>
+            	</div>
+            	<label for="sg-direction" >Inbound</label>
+            	<div class="radio">
+            		<input id="radio_outbound" type="radio" name="sg-direction" value="radio_outbound"/>
+                	<label for="radio_outbound"></label>
+            	</div>
+            	<label for="sg-direction" >outbound</label>
+        	</div>
+    	</div>
+    	<div class="property-control-group clearfix">
+			<label for="securitygroup-modal-description" id="rule-modle-title2">Description</label>
+			{{#if isAdd}}
+			<input class="input" type="text" id="securitygroup-modal-description" name="securitygroup-modal-description" placeholder="IP Range.eg,10.0.0.1/24" />
+			{{else}}
+			<input class="input" type="text" id="securitygroup-modal-description" name="securitygroup-modal-description" value="IP Range.eg,10.0.0.1/24" />
+			{{/if}}
 		</div>
-		<div class="sg-modal-destination wrap">
-			<span class="title" id="rule-modle-title2">Destination</span>
-			<div class="context">
-				<input class="input" type="text" placeholder="IP Range.eg,10.0.0.1/24" />
-			</div>
-		</div>
-		<div class="sg-modal-protocol wrap">
-			<span class="title">Protocol</span>
+		<div class="property-control-group clearfix">
+			<label >Protocol</label>
 			<div class="context" >
 				<div class="modal-protocol-select">
 					<div class="selectbox" id="modal-protocol-select">
@@ -749,8 +746,7 @@ Additional Notes and Questions
 					</ul>
 				</div>
 			</div>
-
-				<div id="sg-protocol-select-result">
+			<div id="sg-protocol-select-result">
 					<div class="sg-protocol-option-input show" id="sg-protocol-tcp">
 						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
 					</div>
@@ -766,12 +762,12 @@ Additional Notes and Questions
 					<div class="sg-protocol-option-input" id="sg-protocol-all">
 						Port Range:<span>0-65535</span>
 					</div>
-				</div>
+			</div>
 			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-blue">Save</button>
+		<button class="btn btn-blue modal-close" id="sg-modal-save">Save</button>
 		<button class="btn btn-silver modal-close">Cancel</button>
 	</div>
 </div>
@@ -782,18 +778,25 @@ Additional Notes and Questions
 	<ul id="instance_volume_list" class="clearfix">
 		{{#each list}}
 		<li>
-			<a href="#" id="{{volume_id}}" class="volume_item">
+			<a href="#" id="{{volume_id}}" class="
+			{{#if snapshotId}}
+				snapshot_item
+			{{else}}
+				volume_item
+			{{/if}}
+			" data-json="{{json}}">
 				<span class="volume_name">{{name}}</span>
 				<span class="volume_size">{{size}}GB</span>
 			</a>
 		</li>
 		{{/each}}
 	</ul>
+</div>
 
 <!-- aimSecondaryPanel -->
 <div class="sidebar-title">
     <a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
-    <span class="sidebar-title-text">ami-3432ifjf</span>
+    <span class="sidebar-title-text">{{imageId}}</span>
 </div>
 <div class="fixedaccordion accordion-default" data-sub="68">
     <div class="accordion-group  expanded" >

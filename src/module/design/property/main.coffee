@@ -27,8 +27,11 @@ define [ 'jquery',
                   './module/design/property/sg/main',
                   './module/design/property/stack/main',
                   './module/design/property/volume/main',
-                  './module/design/property/elb/main'
-        ], ( View, model, instance_main, sg_main, stack_main, volume_main, elb_main ) ->
+                  './module/design/property/elb/main',
+                  './module/design/property/az/main',
+                  './module/design/property/subnet/main',
+                  './module/design/property/vpc/main'
+        ], ( View, model, instance_main, sg_main, stack_main, volume_main, elb_main, az_main, subnet_main, vpc_main ) ->
 
             uid  = null
             type = null
@@ -66,6 +69,15 @@ define [ 'jquery',
 
                 #show elb property
                 #elb_main.loadModule()
+
+                #show az property
+                #az_main.loadModule()
+
+                #show subnet property
+                #subnet_main.loadModule()
+
+                #show vpc_main property
+                #vpc_main.loadModule()
 
                 #temp
                 # setTimeout () ->

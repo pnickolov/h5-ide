@@ -149,8 +149,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                 success : ( result ) ->
                     console.log 'phantom callback'
                     console.log result
+                    console.log result.status
                     if result.status is 'success'
-                        #
+                        me.trigger 'SAVE_PNG_COMPLETE', result.base64
                     else
                         #
             }

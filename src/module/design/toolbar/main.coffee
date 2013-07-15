@@ -64,6 +64,11 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
                 console.log 'design_toolbar_click:exportPngIcon'
                 model.savePNG false
 
+            #
+            model.on 'SAVE_PNG_COMPLETE', ( base64_image ) ->
+                console.log 'SAVE_PNG_COMPLETE'
+                view.exportPNG base64_image
+
     unLoadModule = () ->
         #view.remove()
 

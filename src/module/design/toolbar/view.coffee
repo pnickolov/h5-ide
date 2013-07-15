@@ -99,6 +99,10 @@ define [ 'MC', 'event',
             }
             $( '#json-content' ).val file_content
 
+        exportPNG : ( base64_image ) ->
+            console.log 'exportPNG'
+            $( 'body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
+
     }
 
     return ToolbarView

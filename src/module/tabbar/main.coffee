@@ -19,6 +19,9 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
             #view
             view       = new View()
 
+            #temp
+            #MC.data.event = ide_event
+
             #listen
             view.on 'SWITCH_DASHBOARD', ( original_tab_id, tab_id ) ->
                 console.log 'SWITCH_DASHBOARD'
@@ -59,7 +62,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 console.log 'CLOSE_STACK_TAB'
                 console.log 'tab_id          = ' + tab_id
                 #model
-                model.delete tab_id
+                #$model.delete tab_id
+                ide_event.trigger ide_event.DELETE_TAB_DATA, tab_id
 
             #listen
             view.on 'SELECE_PLATFORM', ( platform ) ->
@@ -211,6 +215,13 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 console.log 'RETURN_OVERVIEW_TAB '
                 view.changeDashboardTabname 'Global Overview'
                 null
+
+            #listen
+            ide_event.onLongListen ide_event.UPDATE_TABBAR, ( tab_id, tab_name ) ->
+                console.log 'UPDATE_TABBAR, tab_id = ' + tab_id + ', tab_name = ' + tab_name
+                original_tab_id = view.updateCurrentTab tab_id, tab_name
+                console.log original_tab_id
+                ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
 
             #render
             view.render()

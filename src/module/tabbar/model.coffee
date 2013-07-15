@@ -47,10 +47,12 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
 
             console.log MC.tab
 
+        ###
         delete       : ( current ) ->
             console.log 'delete'
             delete MC.tab[ current ]
             console.log MC.tab
+        ###
 
         getStackInfo : ( stack_id ) ->
             console.log 'getStackInfo'

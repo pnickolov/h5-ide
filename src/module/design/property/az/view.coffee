@@ -1,23 +1,23 @@
 #############################
-#  View(UI logic) for design/property/elb
+#  View(UI logic) for design/property/az
 #############################
 
 define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
-    ELBView = Backbone.View.extend {
+    AZView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile $( '#property-elb-tmpl' ).html()
+        template : Handlebars.compile $( '#property-az-tmpl' ).html()
 
         #events   :
 
         render     : () ->
-            console.log 'property:elb render'
+            console.log 'property:az render'
 
     }
 
-    view = new ELBView()
+    view = new AZView()
 
     return view

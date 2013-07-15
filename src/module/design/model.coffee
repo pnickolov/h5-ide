@@ -26,6 +26,19 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             this.setCanvasProperty MC.tab[ tab_id ].property
             null
 
+        updateTab : ( old_tab_id, tab_id ) ->
+            console.log 'updateTab'
+            if MC.tab[ old_tab_id ] is undefined then return
+            #
+            MC.tab[ tab_id ] = { 'snapshot' : MC.tab[ old_tab_id ].snapshot, 'data' : MC.tab[ old_tab_id ].data, 'property' : MC.tab[ old_tab_id ].property }
+            #
+            this.deleteTab old_tab_id
+
+        deleteTab    : ( tab_id ) ->
+            console.log 'deleteTab'
+            delete MC.tab[ tab_id ]
+            console.log MC.tab
+
         setCanvasData : ( data ) ->
             console.log 'setCanvasData'
             MC.canvas_data = data

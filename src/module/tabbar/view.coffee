@@ -70,6 +70,26 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             console.log $( event.currentTarget ).attr 'data-supported-platform'
             event.data.trigger 'SELECE_PLATFORM', $( event.currentTarget ).attr 'data-supported-platform'
             null
+
+        updateCurrentTab : ( tab_id, tab_name ) ->
+            console.log 'updateCurrentTab'
+            original_tab_id = null
+            _.each $( '.tabbar-group' ).children(), ( item ) ->
+                if $( item ).attr( 'class' ) is 'active'
+                    console.log $( item )
+                    #
+                    $( item ).attr 'id',     tab_id
+                    #
+                    temp = $( $( item ).find( 'a' )[0] )
+                    #
+                    original_tab_id = temp.attr 'data-tab-id'
+                    #
+                    temp.attr 'title',       tab_name
+                    temp.attr 'data-tab-id', tab_id
+                    temp.attr 'href',        tab_id
+                    temp.text tab_name
+                    null
+            return original_tab_id
     }
 
     return TabBarView

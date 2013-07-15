@@ -60,10 +60,12 @@ var listen = function ()
 
 	$('#resource-panel').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);
 
-	$(document)
-		.on('click', MC.canvas.volume.close)
-		.on('keyup', MC.canvas.event.keyEvent);
+	$(document).on('keyup', MC.canvas.event.keyEvent);
 	
+	$('#header, #navigation').on('click', MC.canvas.volume.close);
+	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
+
+
 	//$(document.body).on('click', '.volume_item', MC.canvas.volume.select);
 
 	$(document.body)

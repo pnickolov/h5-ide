@@ -1537,6 +1537,7 @@ MC.canvas.event.dragable = {
 					child_stack = [],
 					unique_stack = [],
 					coordinate_fixed = false,
+					fixed_areaChild,
 					group_offsetX,
 					group_offsetY,
 					matched_child,
@@ -1585,6 +1586,11 @@ MC.canvas.event.dragable = {
 						coordinate.y = parent_data.coordinate[1] + parent_data.size[1] - MC.canvas.GROUP_PADDING - group_size[1];
 						coordinate_fixed = true;
 					}
+
+					if (coordinate_fixed)
+					{
+						fixed_areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
+					}
 				}
 
 				group_offsetX = coordinate.x - group_coordinate[0];
@@ -1594,7 +1600,11 @@ MC.canvas.event.dragable = {
 					coordinate.x > 1 &&
 					coordinate.y > 1 &&
 					(
-						coordinate_fixed ||
+						(
+							coordinate_fixed &&
+							event.data.groupChild.length === fixed_areaChild.length
+						)
+						||
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&
@@ -1842,24 +1852,7 @@ MC.canvas.event.drawConnection = {
 
 		return false;
 	},
-
-	// draw: function (event)
-	// {
-	// 	$('#svg_canvas').off('mouseover', '.node', MC.canvas.event.drawConnection.draw);
-
-	// 	var from_node = event.data.originalTarget,
-	// 		to_node = $(this),
-	// 		port_name = event.data.port_name,
-	// 		to_port_name = to_node.find('.connectable-port').data('name');
-
-	// 	if (!from_node.is(to_node) && to_port_name !== undefined)
-	// 	{
-	// 		MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
-	// 	}
-
-	// 	return true;
-	// },
-
+	
 	mouseup: function (event)
 	{
 		MC.paper.clear(MC.paper.drewLine);

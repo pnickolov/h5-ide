@@ -28,9 +28,9 @@ var constant_data = {
 	GROUP_MIN_PADDING: 100,
 
 	//stroke width for group ( .group-az .group-subnet .group-vpc in canvas.css )
-	STOKE_WIDTH_AZ:4,
-	STOKE_WIDTH_SUBNET:3,
-	STOKE_WIDTH_VPC:6,
+	STOKE_WIDTH_AZ: 2,
+	STOKE_WIDTH_SUBNET: 2,
+	STOKE_WIDTH_VPC: 4,
 
 	//strok width of line
 	LINE_STROKE_WIDTH: 4,

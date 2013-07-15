@@ -11,6 +11,7 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             stack_region_name : null
             app_region_name   : null
             current_platform  : null
+            tab_name          : null
 
         refresh      : ( old, current, type ) ->
             console.log 'refresh'

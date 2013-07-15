@@ -26,8 +26,6 @@ require.config {
 		'result_vo'       : 'service/result_vo'
 
 		#service
-		'session_vo'      : 'service/session/session_vo'
-		'session_parser'  : 'service/session/session_parser'
 		'session_service' : 'service/session/session_service'
 
 		#model

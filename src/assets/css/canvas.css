@@ -1,22 +1,17 @@
+/* Canvas */
 #canvas_container {
-	overflow: auto;
-	/*width: 1900px;*/
+	overflow: hidden;
+	width: 1900px;
 	padding: 5px;
 	background: rgb(237, 237, 237);
-	/*height: 1430px;*/
-	/*position: relative;*/
+	height: 1430px;
+	position: relative;
 }
-
-
 
 #canvas_body {
 	margin: 20px;
 	border: 1px solid #ccc;
 	background: #fff url('../images/ide/grid.png');
-/*	-webkit-transition: all .3s;
-	-moz-transition: all .3s;
-	-o-transition: all .3s;
-	transition: all .3s;*/
 }
 
 #screenshot_canvas_body {
@@ -101,6 +96,12 @@
 	border: 3px dashed #dbd7d7;
 }
 
+#drag_shadow.AWS-EC2-EBS-Volume {
+	background: none;
+	opacity: 1;
+	border: none;
+}
+
 /* Canvas */
 .shadow {
 	opacity: 0.6;
@@ -167,11 +168,6 @@
 	/*opacity : 0.7;*/
 }
 
-
-.node text {
-	cursor: default;
-}
-
 /* highlight connnectable*/
 .connectable-port {
 	display: inline;
@@ -228,12 +224,17 @@
 	font-size: 12px;
 	text-anchor: middle;
 	fill: #333;
+	cursor: default;
+}
+
+.volume-number {
+	font-size: 11px;
+	fill: #74B1FD;
 }
 
 .node-background {
 	fill-opacity: 0;
 }
-
 
 /* group */
 .group-label {
@@ -250,29 +251,70 @@
 	stroke: #dcdcdc;
 	stroke-linejoin: round;
 	stroke-dasharray: none;
-	stroke-width: 6;
+	stroke-width: 4;
+}
+
+.AWS-VPC-VPC:hover .group-vpc,
+.dropable-group .group-vpc {
+	stroke: #C6C4C4;
+}
+
+.AWS-VPC-VPC .group-label {
+	fill: #aaa;
 }
 
 .group-az {
-	fill: rgba(254, 170, 45, 0.05);
-	stroke: #fbd396;
+	fill: rgba(252,190,23,0.02);
+	stroke: #f9be76;
 	stroke-linejoin: round;
-	stroke-dasharray: 25, 10;
-	stroke-width: 4;
+	stroke-dasharray: 15, 10;
+	stroke-width: 2;
+}
+
+.AWS-EC2-AvailabilityZone:hover .group-az,
+.dropable-group .group-az {
+	stroke: #F69722;
+}
+
+.AWS-EC2-AvailabilityZone .group-label {
+	fill: #F69722;
 }
 
 .group-subnet {
 	fill: rgba(250, 250, 250, 0.05);
 	stroke: #dbd7d7;
 	stroke-linejoin: round;
-	stroke-dasharray: 25, 10;
-	stroke-width: 3;
+	stroke-dasharray: 15, 10;
+	stroke-width: 2;
+}
+
+.AWS-VPC-Subnet:hover .group-subnet,
+.dropable-group .group-subnet {
+	stroke: #C6C4C4;
+}
+
+.AWS-VPC-Subnet .group-label {
+	fill: #aaa;
 }
 
 /*scale area style*/
 .group-resizer {
 	fill-opacity: 0;
-	/*position: absolute;*/
+}
+
+.dropable-group .group-resizer {
+	fill-opacity: 1;
+	fill: rgba(252, 190, 23, 0.15);
+}
+
+.dropable-group .group-resizer {
+	fill-opacity: 1;
+	fill: rgba(238, 238, 238, 0.5);
+}
+
+.dropable-group .group-resizer {
+	fill-opacity: 1;
+	fill: rgba(238, 238, 238, 0.5);
 }
 
 .resizer-topleft {
@@ -281,37 +323,30 @@
 }
 
 .resizer-top {
-	/*fill:red;*/
 	cursor: ns-resize;
 }
 
 .resizer-topright {
-	/*fill:blue;*/
 	cursor: nesw-resize;
 }
 
 .resizer-left {
-	/*fill:red;*/
 	cursor: ew-resize;
 }
 
 .resizer-right {
-	/*fill:red;*/
 	cursor: ew-resize;
 }
 
 .resizer-bottomleft {
-	/*fill:blue;*/
 	cursor: nesw-resize;
 }
 
 .resizer-bottom {
-	/*fill:red;*/
 	cursor: ns-resize;
 }
 
 .resizer-bottomright {
-	/*fill:blue;*/
 	cursor: nwse-resize;
 }
 
@@ -325,7 +360,7 @@
 	margin: 0 6px 10px 0;
 }
 
-#instance_volume_list li a {
+.volume_item {
 	border: 2px solid #fff;
 	position: relative;
 	display: block;
@@ -334,8 +369,18 @@
 	background: url('../images/ide/volume-resource.png') no-repeat;
 }
 
-#instance_volume_list .selected {
-	border: 2px solid #59b;
+.snapshot_item {
+	border: 2px solid #fff;
+	position: relative;
+	display: block;
+	width: 48px;
+	height: 56px;
+	background: url('../images/ide/ebs-snapshot-resource.png') no-repeat;
+}
+
+#drag_shadow .volume_item,
+#drag_shadow .snapshot_item {
+	border: none;
 }
 
 .volume_name {
@@ -353,6 +398,10 @@
 	margin-top: 12px;
 	color: #333;
 	text-align: center;
+}
+
+#instance_volume_list .selected {
+	border: 2px solid #59b;
 }
 
 #volume-bubble-box {

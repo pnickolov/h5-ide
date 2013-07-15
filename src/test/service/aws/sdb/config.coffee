@@ -42,8 +42,6 @@ require.config {
         'result_vo'          : 'service/result_vo'
 
         #session_service
-        'session_vo'        : 'service/session/session_vo'
-        'session_parser'    : 'service/session/session_parser'
         'session_service'   : 'service/session/session_service'
 
         #test_util(for qunit test)
@@ -52,7 +50,5 @@ require.config {
 
 
         #sdb service
-        'sdb_vo'        : 'service/aws/sdb/sdb/sdb_vo'
-        'sdb_parser'    : 'service/aws/sdb/sdb/sdb_parser'
         'sdb_service'   : 'service/aws/sdb/sdb/sdb_service'
 }#end

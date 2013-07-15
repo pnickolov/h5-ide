@@ -1852,7 +1852,7 @@ MC.canvas.event.drawConnection = {
 
 		return false;
 	},
-	
+
 	mouseup: function (event)
 	{
 		MC.paper.clear(MC.paper.drewLine);
@@ -2038,10 +2038,7 @@ MC.canvas.event.siderbarDrag = {
 				}
 			}
 
-			if (
-				target_component_type === 'group' &&
-				MC.canvas.isBlank("group", '', coordinate.x, coordinate.y)
-			)
+			if (target_component_type === 'group')
 			{
 				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
 				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);

@@ -565,7 +565,15 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//set deviceName
 				ami_info = MC.data.config[MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone.slice(0,-1)].ami[MC.canvas_data.component[option.instance_id].resource.ImageId];
-				device_name = ['f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+				device_name = null;
+				if(ami_info.virtualizationType != 'hvm'){
+					device_name = ['f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+				}
+				else{
+					device_name = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'];
+				}
+
+					
 				$.each(ami_info.blockDeviceMapping, function (key, value){
 					if(key.slice(0,4) == '/dev/'){
 						k = key.slice(-1);
@@ -589,8 +597,13 @@ MC.canvas.add = function (flag, option, coordinate)
 					notification('warning', 'No valid device name to assign,cancel!', false);
 					return null;
 				}
-
-				option.name = '/dev/sd' + device_name[0];
+				
+				if(ami_info.virtualizationType != 'hvm'){
+					option.name = '/dev/sd' + device_name[0];
+				}else{
+					option.name = 'xvd' + device_name[0];
+				}
+				
 
 				component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
 				component_data.name = option.name;

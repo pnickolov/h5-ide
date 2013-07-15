@@ -159,6 +159,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         removeSGfromList: (event) ->
             target = $(event.target).parents('li').first()
             sg_id = target.data('sgid')
+            cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.removeSG cid, sg_id
             target.remove()
             notification 'info', sg_id + ' SG is deleted', false
 

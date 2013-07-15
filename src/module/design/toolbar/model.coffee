@@ -49,12 +49,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                         console.log 'create stack successfully'
 
                         MC.canvas_data.id = result.resolved_data
+
                         #update initial data
                         MC.canvas_property.original_json = JSON.stringify( MC.canvas_data )
 
                         me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS'
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST
+
+                        ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, MC.canvas_data.name + '-stack'
 
                         #call save png
                         me.savePNG true

@@ -78,7 +78,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
                 if $( item ).attr( 'class' ) is 'active'
                     console.log $( item )
                     #
-                    $( item ).attr 'id', tab_id
+                    $( item ).attr 'id', 'tab-bar-' + tab_id
                     #
                     temp = $( $( item ).find( 'a' )[0] )
                     #
@@ -86,7 +86,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
                     #
                     temp.attr 'title',       tab_name
                     temp.attr 'data-tab-id', tab_id
-                    temp.attr 'href',        '#' + tab_id
+                    temp.attr 'href',        '#tab-content-' + tab_id
                     temp.text tab_name
                     null
             return original_tab_id

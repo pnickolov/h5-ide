@@ -11,9 +11,9 @@ var constant_data = {
 	COMPONENT_HEIGHT_GRID: 10,
 
 	GROUP_DEFAULT_SIZE: {
-		'AWS.VPC.VPC': [60, 60], //[width, height]
-		'AWS.EC2.AvailabilityZone': [40, 40],
-		'AWS.VPC.Subnet': [20, 20]
+		'AWS.VPC.VPC': [30, 30], //[width, height]
+		'AWS.EC2.AvailabilityZone': [12, 12],
+		'AWS.VPC.Subnet': [10, 10]
 	},
 
 	GROUP_PADDING: 2,

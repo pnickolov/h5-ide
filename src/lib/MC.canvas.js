@@ -1593,6 +1593,7 @@ MC.canvas.event.dragable = {
 					(
 						(coordinate_fixed && event.data.groupChild.length === unique_stack.length) ||
 						(
+							!coordinate_fixed &&
 							match_place.is_matched &&
 							event.data.groupChild.length === unique_stack.length
 						)
@@ -2843,7 +2844,8 @@ MC.canvas.event.keyEvent = function (event)
 			// For Mac
 			event.which === 8
 		) &&
-		MC.canvas.selected_node.length > 0
+		MC.canvas.selected_node.length > 0 &&
+		event.target === document.body
 	)
 	{
 		$.each(MC.canvas.selected_node, function (i, node)

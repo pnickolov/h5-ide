@@ -351,7 +351,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					tmp = {};
 					tmp.uid = sg.uid;
 					tmp.name = sg.name;
-					tmp.member = []
+					tmp.member = [];
 					MC.canvas_property.sg_list.push(tmp);
 					if(option.subnet){
 						sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';

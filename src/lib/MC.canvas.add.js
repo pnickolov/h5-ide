@@ -562,8 +562,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.Size = option.volumeSize;				
-				component_data.resource.AttachmentSet.InstanceId = '@' + option.instanceId + '.resource.InstanceId';
-				component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instanceId].resource.Placement.AvailabilityZone;
+				component_data.resource.AttachmentSet.InstanceId = '@' + option.instance_id + '.resource.InstanceId';
+				component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone;
 				component_data.resource.SnapshotId = option.snapshotId;
 
 				component_data.resource.AttachmentSet.Device =  option.name;

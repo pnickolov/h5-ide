@@ -54,17 +54,20 @@ define [ 'MC', 'event',
         clickSaveIcon : ->
             console.log 'clickSaveIcon'
 
-            name = MC.canvas_data.name
+            # name = MC.canvas_data.name
 
-            if not name
-                notification('error', 'No stack name', true)
-            else
-                this.trigger 'TOOLBAR_SAVE_CLICK'
+            # if not name
+            #     notification('error', 'No stack name', true)
+            # else
+            if not MC.canvas_data.name
+                MC.canvas_data.name = 'stack-12345678'
+                
+            this.trigger 'TOOLBAR_SAVE_CLICK'
 
-                this.model.once 'TOOLBAR_STACK_SAVE_SUCCESS', () ->
-                    notification 'info', 'Save stack ' + name + ' successfully', true
-                this.model.once 'TOOLBAR_STACK_SAVE_ERROR', () ->
-                    notification 'error', 'Save stack ' + name + ' failed', true
+            this.model.once 'TOOLBAR_STACK_SAVE_SUCCESS', () ->
+                notification 'info', 'Save stack ' + name + ' successfully', true
+            this.model.once 'TOOLBAR_STACK_SAVE_ERROR', () ->
+                notification 'error', 'Save stack ' + name + ' failed', true
 
         clickDuplicateIcon : ->
             console.log 'clickDuplicateIcon'

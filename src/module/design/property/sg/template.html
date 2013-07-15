@@ -4,20 +4,16 @@
 		<span class="sidebar-title-text">{{sg_detail.component.resource.GroupName}}</span>
 	</div>
 	<div class="sg-context-wrap">
-		<div class="sg-title">
-			<h5>
-				<span class="left">Name</span>
-				<span class="right">(Required)</span>
-			</h5>
-			<input class="input" type="text" id="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}" />
+		<div class="property-control-group clearfix">
+			<label class="left" for="securitygroup-name" >Name</label>
+			<span class="required-input right">Required</span>
+			<input class="input"  type="text" required="required" id="securitygroup-name" name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
 		</div>
-		<div class="sg-description">
-			<h5>
-				<span class="left">Description</span>
-			</h5>
-			<input class="input" type="text" value="{{sg_detail.component.resource.GroupDescription}}" />
+		<div class="property-control-group clearfix">
+			<label class="left" for="securitygroup-description" >Description</label>
+			<input class="input" type="text" id="securitygroup-description" name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" />
 		</div>
-		<div class="fixedaccordion accordion-default" data-sub="140">
+		<div class="fixedaccordion accordion-default" data-sub="106">
 		<div class="accordion-group expanded" >
 			<div class="fixedaccordion-head sg-header">
 					<span class="name">Rule</span>

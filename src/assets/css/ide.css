@@ -2112,7 +2112,10 @@ a.sidebar-hider {
 }*/
 
 .sg-context-wrap {
-	height: 443px;
+	height: 100%;
+}
+.sg-context-wrap .property-control-group {
+	padding: 0 10px 10px 10px;
 }
 
 .sg-rule-list .rule-direction-icon {
@@ -2277,9 +2280,14 @@ a.sidebar-hider {
 .sg-rule-filter .selectbox .dropdown-menu {
 	top: 30px;
 }
+#sg-secondary-panel {
+	position: absolute;
+	width: 280px;
+	right: -280px;
+}
 /* SG Rule Modal */
-#modal-sg-rule .wrap {
-	padding: 5px 0;
+#modal-sg-rule .modal-body{
+	padding: 10px;
 	width: 450px;
 }
 #modal-sg-rule .title {

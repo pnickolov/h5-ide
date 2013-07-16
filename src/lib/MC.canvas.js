@@ -2853,7 +2853,10 @@ MC.canvas.event.keyEvent = function (event)
 	{
 		$.each(MC.canvas.selected_node, function (i, node)
 		{
-			MC.canvas.remove(node);
+			if (node.getAttribute('data-class') !== 'AWS.VPC.VPC')
+			{
+				MC.canvas.remove(node);
+			}
 		});
 		MC.canvas.selected_node = [];
 

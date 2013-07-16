@@ -1380,49 +1380,52 @@ MC.canvas.event = {};
 MC.canvas.event.dragable = {
 	mousedown: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
-		var target = $(this),
-			target_offset = this.getBoundingClientRect(),
-			node_type = target.data('type'),
-			canvas_offset = $('#svg_canvas').offset(),
-			shadow = target.clone(),
-			platform,
-			target_group_type;
-
-		shadow.attr('class', shadow.attr('class') + ' shadow');
-		$('#svg_canvas').append(shadow);
-
-		if (node_type === 'node')
+		if (event.which === 1)
 		{
-			platform = MC.canvas.data.get('platform');
-			target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][  target.data('class') ];
+			event.preventDefault();
+			event.stopPropagation();
 
-			$.each(target_group_type, function (index, item)
+			var target = $(this),
+				target_offset = this.getBoundingClientRect(),
+				node_type = target.data('type'),
+				canvas_offset = $('#svg_canvas').offset(),
+				shadow = target.clone(),
+				platform,
+				target_group_type;
+
+			shadow.attr('class', shadow.attr('class') + ' shadow');
+			$('#svg_canvas').append(shadow);
+
+			if (node_type === 'node')
 			{
-				$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+				platform = MC.canvas.data.get('platform');
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][  target.data('class') ];
+
+				$.each(target_group_type, function (index, item)
 				{
-					return 'dropable-group ' + key;
+					$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+					{
+						return 'dropable-group ' + key;
+					});
 				});
+			}
+
+			$(document.body).on({
+				'mousemove': MC.canvas.event.dragable.mousemove,
+				'mouseup': MC.canvas.event.dragable.mouseup
+			}, {
+				'target': target,
+				'target_type': node_type,
+				'shadow': $(shadow),
+				'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+				'offsetY': event.pageY - target_offset.top + canvas_offset.top,
+				'groupChild': node_type === 'group' ? MC.canvas.groupChild(this) : null,
+				'originalPageX': event.pageX,
+				'originalPageY': event.pageY
 			});
+
+			MC.canvas.event.clearSelected();
 		}
-
-		$(document.body).on({
-			'mousemove': MC.canvas.event.dragable.mousemove,
-			'mouseup': MC.canvas.event.dragable.mouseup
-		}, {
-			'target': target,
-			'target_type': node_type,
-			'shadow': $(shadow),
-			'offsetX': event.pageX - target_offset.left + canvas_offset.left,
-			'offsetY': event.pageY - target_offset.top + canvas_offset.top,
-			'groupChild': node_type === 'group' ? MC.canvas.groupChild(this) : null,
-			'originalPageX': event.pageX,
-			'originalPageY': event.pageY
-		});
-
-		MC.canvas.event.clearSelected();
 
 		return false;
 	},
@@ -1681,151 +1684,154 @@ MC.canvas.event.dragable = {
 MC.canvas.event.drawConnection = {
 	mousedown: function (event)
 	{
-		event.preventDefault();
-
-		var canvas_offset = $('#svg_canvas').offset(),
-			target = $(this),
-			target_offset = this.getBoundingClientRect(),
-			node_id = target.parent().attr('id'),
-			node_type = MC.canvas.data.get('component.' + node_id + '.type'),
-			layout_node_data = MC.canvas.data.get('layout.component.node'),
-			node_connections = layout_node_data[ node_id ].connection,
-			offset = {},
-			position = target.data('position'),
-			port_type = target.data('type'),
-			port_name = target.data('name'),
-			connection_option = MC.canvas.CONNECTION_OPTION[ node_type ],
-			target_connection_option,
-			target_data,
-			is_connected;
-
-		//calculate point of junction
-		switch (position)
+		if (event.which === 1)
 		{
-			case 'left':
-				offset.left = target_offset.left - 8;
-				offset.top  = target_offset.top  + 8;
-				break;
+			event.preventDefault();
 
-			case 'right':
-				offset.left = target_offset.left + 8;
-				offset.top  = target_offset.top + 8;
-				break;
+			var canvas_offset = $('#svg_canvas').offset(),
+				target = $(this),
+				target_offset = this.getBoundingClientRect(),
+				node_id = target.parent().attr('id'),
+				node_type = MC.canvas.data.get('component.' + node_id + '.type'),
+				layout_node_data = MC.canvas.data.get('layout.component.node'),
+				node_connections = layout_node_data[ node_id ].connection,
+				offset = {},
+				position = target.data('position'),
+				port_type = target.data('type'),
+				port_name = target.data('name'),
+				connection_option = MC.canvas.CONNECTION_OPTION[ node_type ],
+				target_connection_option,
+				target_data,
+				is_connected;
 
-			case 'top':
-				offset.left = target_offset.left + 8;
-				offset.top  = target_offset.top - 0;
-				break;
-
-			case 'bottom':
-				offset.left = target_offset.left + 8;
-				offset.top  = target_offset.top + 8;
-				break;
-		}
-
-		$(document.body).on({
-			'mousemove': MC.canvas.event.drawConnection.mousemove,
-			'mouseup': MC.canvas.event.drawConnection.mouseup
-		}, {
-			'connect': target.data('connect'),
-			'originalTarget': target.parent(),
-			'originalX': offset.left - canvas_offset.left,
-			'originalY': offset.top - canvas_offset.top,
-			'strokeColor': MC.canvas.LINE_COLOR[ port_type ] || "#000000",
-			'option': connection_option,
-			'port_name': port_name,
-			'canvas_offset': canvas_offset
-		});
-
-		MC.canvas.event.clearSelected();
-
-		// Highlight connectable node
-		$.each(connection_option, function (type, option)
-		{
-			if ($.type(option) !== 'array')
+			//calculate point of junction
+			switch (position)
 			{
-				option = [option];
+				case 'left':
+					offset.left = target_offset.left - 8;
+					offset.top  = target_offset.top  + 8;
+					break;
+
+				case 'right':
+					offset.left = target_offset.left + 8;
+					offset.top  = target_offset.top + 8;
+					break;
+
+				case 'top':
+					offset.left = target_offset.left + 8;
+					offset.top  = target_offset.top - 0;
+					break;
+
+				case 'bottom':
+					offset.left = target_offset.left + 8;
+					offset.top  = target_offset.top + 8;
+					break;
 			}
 
-			$.each(option, function (index, value)
-			{
-				if (value.from === port_name)
-				{
-					$('.' + type.replace(/\./ig, '-') + ':not(#' + node_id + ')').each(function (index, item)
-					{
-						if (value.relation === 'unique')
-						{
-							is_connected = false;
-
-							target_data = layout_node_data[ item.id ];
-
-							$.each(node_connections, function (index, data)
-							{
-								if (data.port === value.from)
-								{
-									is_connected = true;
-								}
-							});
-
-							if (is_connected)
-							{
-								return;
-							}
-						}
-						if (value.relation === 'multiple')
-						{
-							is_connected = false;
-
-							target_data = layout_node_data[ item.id ];
-							target_connection_option = MC.canvas.CONNECTION_OPTION[ target_data.type ][ node_type ];
-
-							if ($.type(target_connection_option) !== 'array')
-							{
-								target_connection_option = [target_connection_option];
-							}
-
-							$.each(target_connection_option, function (index, option)
-							{
-								if (option.from === value.to)
-								{
-									$.each(target_data.connection, function (index, data)
-									{
-										if (option.relation === 'unique')
-										{
-											if (data.port === option.from && data.target === node_id)
-											{
-												is_connected = true;
-											}
-										}
-										else
-										{
-											if (data.port === value.to && data.target === node_id)
-											{
-												is_connected = true;
-											}
-										}
-									});
-								}
-							});
-
-							if (is_connected)
-							{
-								return;
-							}
-						}
-						$(this)
-							.attr("class", function (index, key)
-							{
-								return "connectable " + key;
-							})
-							.find('.port-' + value.to).attr("class", function (index, key)
-							{
-								return "connectable-port " + key;
-							});
-					});
-				}
+			$(document.body).on({
+				'mousemove': MC.canvas.event.drawConnection.mousemove,
+				'mouseup': MC.canvas.event.drawConnection.mouseup
+			}, {
+				'connect': target.data('connect'),
+				'originalTarget': target.parent(),
+				'originalX': offset.left - canvas_offset.left,
+				'originalY': offset.top - canvas_offset.top,
+				'strokeColor': MC.canvas.LINE_COLOR[ port_type ] || "#000000",
+				'option': connection_option,
+				'port_name': port_name,
+				'canvas_offset': canvas_offset
 			});
-		});
+
+			MC.canvas.event.clearSelected();
+
+			// Highlight connectable node
+			$.each(connection_option, function (type, option)
+			{
+				if ($.type(option) !== 'array')
+				{
+					option = [option];
+				}
+
+				$.each(option, function (index, value)
+				{
+					if (value.from === port_name)
+					{
+						$('.' + type.replace(/\./ig, '-') + ':not(#' + node_id + ')').each(function (index, item)
+						{
+							if (value.relation === 'unique')
+							{
+								is_connected = false;
+
+								target_data = layout_node_data[ item.id ];
+
+								$.each(node_connections, function (index, data)
+								{
+									if (data.port === value.from)
+									{
+										is_connected = true;
+									}
+								});
+
+								if (is_connected)
+								{
+									return;
+								}
+							}
+							if (value.relation === 'multiple')
+							{
+								is_connected = false;
+
+								target_data = layout_node_data[ item.id ];
+								target_connection_option = MC.canvas.CONNECTION_OPTION[ target_data.type ][ node_type ];
+
+								if ($.type(target_connection_option) !== 'array')
+								{
+									target_connection_option = [target_connection_option];
+								}
+
+								$.each(target_connection_option, function (index, option)
+								{
+									if (option.from === value.to)
+									{
+										$.each(target_data.connection, function (index, data)
+										{
+											if (option.relation === 'unique')
+											{
+												if (data.port === option.from && data.target === node_id)
+												{
+													is_connected = true;
+												}
+											}
+											else
+											{
+												if (data.port === value.to && data.target === node_id)
+												{
+													is_connected = true;
+												}
+											}
+										});
+									}
+								});
+
+								if (is_connected)
+								{
+									return;
+								}
+							}
+							$(this)
+								.attr("class", function (index, key)
+								{
+									return "connectable " + key;
+								})
+								.find('.port-' + value.to).attr("class", function (index, key)
+								{
+									return "connectable-port " + key;
+								});
+						});
+					}
+				});
+			});
+		}
 
 		return false;
 	},
@@ -2091,6 +2097,8 @@ MC.canvas.event.groupResize = {
 			group_offset = group[0].getBoundingClientRect(),
 			canvas_offset = $('#svg_canvas').offset();
 
+		$(document.body).css('cursor', $(event.target).css('cursor'));
+
 		$(document.body).on({
 			'mousemove': MC.canvas.event.groupResize.mousemove,
 			'mouseup': MC.canvas.event.groupResize.mouseup
@@ -2254,11 +2262,13 @@ MC.canvas.event.groupResize = {
 		{
 			//when resize by left,topleft, bottomleft
 			if (offsetY<0)
-			{//move up
+			{
+				//move up
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top) / 10) + 1;//group title is 1 grid
 			}
 			else if (offsetY>0)
-			{//move down
+			{
+				//move down
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10);
 			}
 		}
@@ -2430,10 +2440,12 @@ MC.canvas.event.groupResize = {
 			});
 		}
 
-		$(document.body).off({
-			'mousemove': MC.canvas.event.groupResize.mousemove,
-			'mouseup': MC.canvas.event.groupResize.mouseup
-		});
+		$(document.body)
+			.css('cursor', 'default')
+			.off({
+				'mousemove': MC.canvas.event.groupResize.mousemove,
+				'mouseup': MC.canvas.event.groupResize.mouseup
+			});
 	}
 };
 

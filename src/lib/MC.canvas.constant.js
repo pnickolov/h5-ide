@@ -38,7 +38,7 @@ var constant_data = {
 	TOGGLE_DIST: 5,
 
 	//min padding for group
-	GROUP_MIN_PADDING: 100,
+	GROUP_MIN_PADDING: 120,
 
 	//stroke width for group ( .group-az .group-subnet .group-vpc in canvas.css )
 	STOKE_WIDTH_AZ: 2,

@@ -1,3 +1,6 @@
+
+path = require( 'path' )
+
 module.exports = function( grunt ) {
 
 	var config = {
@@ -116,10 +119,23 @@ module.exports = function( grunt ) {
 	/* task of use as make(compiler) */
 	grunt.registerTask( 'make', function() {
 		grunt.task.run([
-			'coffee'
-			//'coffeelint',
-			//'jshint',
-			//'csslint'
+			'coffee:compile_fast',
+			'coffeelint',
+			'jshint',
+			'csslint'
+		]);
+	});
+	grunt.registerTask( 'make_fast', function() {
+		grunt.task.run([
+			'coffee:compile_fast'
+		]);
+	});
+	grunt.registerTask( 'make_all', function() {
+		grunt.task.run([
+			'coffee:compile_all',
+			'coffeelint',
+			'jshint',
+			'csslint'
 		]);
 	});
 
@@ -129,6 +145,20 @@ module.exports = function( grunt ) {
 									'livereload-start',
 									'connect:develop',
 									'open:develop',/*modify by xjimmy*/
+									'watch'
+	]);
+	grunt.registerTask( 'dev_fast', [
+									'make_fast',
+									'livereload-start',
+									'connect:develop',
+									'open:develop',
+									'watch'
+	]);
+	grunt.registerTask( 'dev_all', [
+									'make_all',
+									'livereload-start',
+									'connect:develop',
+									'open:develop',
 									'watch'
 	]);
 
@@ -141,7 +171,7 @@ module.exports = function( grunt ) {
 	]);
 
 	/* task of use as publish */
-	grunt.registerTask( 'publish', ['make',
+	grunt.registerTask( 'publish', ['all',
 									'clean',
 									'copy:publish',
 									'htmlmin',
@@ -152,6 +182,31 @@ module.exports = function( grunt ) {
 									'open:publish',/*modify by xjimmy*/
 									'connect:publish'
 	]);
+
+	/*
+	grunt.event.on( 'regarde:file', function (status, target, filepath) {
+		console.log("status = " + status );
+		console.log("filepath = " + filepath );
+		console.log("target = " + target );
+		if ( target == 'coffee' ) {
+			var config = grunt.config( 'coffee' ) || {};
+			var value = config.refresh || {};
+			value.files = value.files || [];
+			var cwd = path.dirname(filepath),
+				src = path.basename(filepath);
+			console.log("cwd = " + cwd )
+			console.log("src = " + src )
+			value.files.push({
+				expand:true,
+				src:src,
+				dest:'src/',
+				cwd:cwd,
+				ext:'.js'
+			});
+			grunt.config('coffee', config);
+		}
+	});
+	*/
 
 	/* task of use as sweep */
 	/*

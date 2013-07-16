@@ -37,6 +37,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                     ide_event.trigger ide_event.DESIGN_COMPLETE
                 else
                     design_submodule_count = design_submodule_count + 1
+                null
 
             #listen SAVE_DESIGN_MODULE
             ide_event.onLongListen ide_event.SAVE_DESIGN_MODULE, ( target ) ->
@@ -67,12 +68,14 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
             ide_event.onLongListen ide_event.DELETE_TAB_DATA, ( tab_id ) ->
                 console.log 'DELETE_TAB_DATA, tab_id = ' + tab_id
                 model.deleteTab tab_id
-            null
+                null
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_TAB_DATA, ( original_tab_id, tab_id ) ->
                 console.log 'UPDATE_TAB_DATA, original_tab_id = ' + original_tab_id + ', tab_id = ' + tab_id
                 model.updateTab original_tab_id, tab_id
+                null
+
             null
 
     #private

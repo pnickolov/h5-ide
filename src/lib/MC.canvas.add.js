@@ -516,7 +516,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////7. eip
 				Canvon.image('../assets/images/ide/icon/instance-eip-off.png', 53, 50, 22, 16).attr({
-					'id': group.id + '_eip'
+					'id': group.id + '_eip_status'
 				}),
 
 				////8. hostname
@@ -639,6 +639,8 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** elb begin *****//
 		case 'AWS.ELB':
 
+			var icon_scheme = 'internal';
+
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ELB_JSON.data);
@@ -646,6 +648,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = $.extend(true, {}, MC.canvas.ELB_JSON.layout);
 				component_layout.groupUId = option.groupUId;
+
+				component_data.resource.Scheme = icon_scheme;
 			}
 			else
 			{//read
@@ -656,7 +660,11 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
+
+				icon_scheme = component_data.resource.Scheme;
 			}
+
+			icon_scheme = component_data.resource.Scheme === 'internal' ? 'internal' : 'internet';
 
 			$(group).append(
 				////1. bg
@@ -665,7 +673,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/elb-internet-canvas.png', 20, 23, 70, 53),
+				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 20, 23, 70, 53).attr({
+					'id' : group.id + '_elb_scheme'
+				}),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -702,7 +712,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////5. elb_name
 				Canvon.text(50, 85, option.name).attr({
-					'class': 'node-label name'
+					'class': 'node-label name',
+					'id' : group.id + '_elb_name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,

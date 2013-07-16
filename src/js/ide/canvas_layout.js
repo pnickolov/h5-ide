@@ -39,84 +39,41 @@ var listen = function ()
 {
 	MC.paper = Canvon('svg_canvas');
 
-	//clear old svg element ( add by xjimmy )
-	//$(MC.paper).find("#vpc_layer").empty();
-	//$(MC.paper).find("#az_layer").empty();
-	//$(MC.paper).find("#subnet_layer").empty();
-	//$(MC.paper).find("#node_layer").empty();
-	//$(MC.paper).find("#line_layer").empty();
-
 	$('#canvas_body')
 		.on('mousedown', '.instance-volume', MC.canvas.volume.show)
 		.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 		.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 		.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
-		.on('mousedown', MC.canvas.event.clearSelected);
+		.on('mousedown', MC.canvas.event.clearSelected)
+		.on('selectstart', returnFalse);
 
 	$('#line_layer').on('click', '.line', MC.canvas.event.selectLine);
 
 	//canvas_body.on('mousedown', MC.canvas.selection.mousedown);
-	//canvas_body.on('selectstart', returnFalse);
 
 	$('#resource-panel').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);
 
-	$(document)
-		.on('click', MC.canvas.volume.close)
-		.on('keyup', MC.canvas.event.keyEvent);
+	$(document).on('keyup', MC.canvas.event.keyEvent);
 	
-	//$(document.body).on('click', '.volume_item', MC.canvas.volume.select);
+	$('#header, #navigation').on('click', MC.canvas.volume.close);
+	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
 
 	$(document.body)
 		.on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown);
 
 	canvas_resize();
 	$(window).on('resize', canvas_resize);
-
 };
 
 // Dom Ready
 var ready = function ()
 {
-	//temp
 
-	//1.
-	$.ajax('js/ide/canvas_test_data.json', {
-		success: function (data)
-		{
-			if (typeof data === 'object')
-			{
-				MC.canvas_data = data;
-				MC.canvas.layout.init();
-			}
-			else
-			{
-				console.log('load test data failed');
-			}
-		}
-	});
-
-
-	return;
 };
 
 // Dom Ready
 var connect = function ()
 {
-	/////////// create connenction ///////////
-	/*
-	MC.canvas.connect($("#host1"),"instance-attach",$("#eni"),"eni-attach");
-
-	MC.canvas.connect($("#host2"),"instance-sg-out",$("#eni"),"eni-sg-in");
-	MC.canvas.connect($("#host2"),"instance-attach",$("#volume1"),"volume-attach");
-	MC.canvas.connect($("#host2"),"instance-attach",$("#volume2"),"volume-attach");
-
-	MC.canvas.connect($("#host2"),"instance-sg-in",$("#elb"),"elb-sg-out");
-
-	MC.canvas.connect($("#igw1"),"igw-tgt",$("#rt1"),"rtb-tgt-left");
-	MC.canvas.connect($("#vgw1"),"vgw-tgt",$("#rt1"),"rtb-tgt-right");
-
-	MC.canvas.connect($("#cgw1"),"cgw-vpn",$("#vgw1"),"vgw-vpn");
-	*/
 
 };
 

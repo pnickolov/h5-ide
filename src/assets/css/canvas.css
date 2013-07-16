@@ -81,19 +81,19 @@
 	margin: 0 auto;
 }
 
-#drag_shadow.AWS-VPC-VPC {
+/*#drag_shadow.AWS-VPC-VPC {
 	background: rgba(250, 250, 250, 0.05);
-	border: 6px solid #dcdcdc;
-}
+	border: 4px solid #dcdcdc;
+}*/
 
 #drag_shadow.AWS-EC2-AvailabilityZone {
-	background: rgba(254, 170, 45, 0.05);
-	border: 4px dashed #fbd396;
+	background: rgba(252, 190, 23, 0.02);
+	border: 2px dashed #f9be76;
 }
 
 #drag_shadow.AWS-VPC-Subnet {
 	background: rgba(250, 250, 250, 0.05);
-	border: 3px dashed #dbd7d7;
+	border: 2px dashed #dbd7d7;
 }
 
 #drag_shadow.AWS-EC2-EBS-Volume {
@@ -259,12 +259,17 @@
 	stroke: #C6C4C4;
 }
 
+.AWS-VPC-VPC.selected .group-vpc {
+	stroke: #dcdcdc;
+	fill: rgba(255, 255, 255, 0);
+}
+
 .AWS-VPC-VPC .group-label {
 	fill: #aaa;
 }
 
 .group-az {
-	fill: rgba(252,190,23,0.02);
+	fill: rgba(252, 190, 23, 0.02);
 	stroke: #f9be76;
 	stroke-linejoin: round;
 	stroke-dasharray: 15, 10;
@@ -274,6 +279,11 @@
 .AWS-EC2-AvailabilityZone:hover .group-az,
 .dropable-group .group-az {
 	stroke: #F69722;
+}
+
+.AWS-EC2-AvailabilityZone.selected .group-az {
+	stroke: #f7941d;
+	fill: rgba(255, 255, 255, 0);
 }
 
 .AWS-EC2-AvailabilityZone .group-label {
@@ -291,6 +301,11 @@
 .AWS-VPC-Subnet:hover .group-subnet,
 .dropable-group .group-subnet {
 	stroke: #C6C4C4;
+}
+
+.AWS-VPC-Subnet.selected .group-subnet {
+	stroke: #dbd7d7;
+	fill: rgba(255, 255, 255, 0);
 }
 
 .AWS-VPC-Subnet .group-label {

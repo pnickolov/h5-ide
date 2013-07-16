@@ -642,17 +642,20 @@ a {
 	display: inline-block;
 	border-radius: 2px;
 	font-size: 9px;
-	padding: 1px 2px;
+	padding: 1px 4px;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+	width: 28px;
+	text-align: center;
 }
 
 .region-platform-vpc {
 	color: #3892E3;
-	border: 1px solid #3892E3;
+	border: 1px solid #69ACE7;
 }
 
 .region-platform-classic {
-	color: #FBA617;
-	border: 1px solid #FBA617;
+	color: #F19812;
+	border: 1px solid #FAB94C;
 }
 
 
@@ -1378,13 +1381,15 @@ td.table-action a.btn {
 }
 
 /* Resource Search Panel */
-
 .search-panel {
-	 position: absolute;
-	 top: 32px;
-	 background-color: #fff;
-	 height: 432px;
-	 width: 246px;
+	position: absolute;
+	top: 45px !important;
+	border: 1px solid #666;
+	overflow: hidden;
+	background-color: #fff;
+	height: auto !important;
+	padding: 10px;
+	width: 225px;
 }
 
 /* Browse Community AMI Modal */
@@ -1529,6 +1534,10 @@ td.table-action a.btn {
 	height: 40px;
 }
 
+.toolbar-btn-group .selectbox {
+	border: none;
+}
+
 .toolbar-btn-group .dropdown-menu {
 	top: 40px !important;
 	left: -1px !important;
@@ -1642,14 +1651,11 @@ td.table-action a.btn {
 }
 
 .sidebar-title {
-	background: #eee;
-	height: 30px;
-	border-bottom: 1px solid #555;
-	border-top: 1px solid #463e44;
-	box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 1px 0 0 rgba(255,255,255,.08), inset -1px 0 0 rgba(255,255,255,.08);
+	font-size: 16px;
+	background: #f3f3f3;
+	/*box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 1px 0 0 rgba(255,255,255,.08), inset -1px 0 0 rgba(255,255,255,.08);*/
 	color: #666;
-	padding: 0 10px;
-	line-height: 30px;
+	padding: 12px 10px;
 }
 
 .sidebar-hider {
@@ -1812,7 +1818,7 @@ a.sidebar-hider {
 }
 
 .resource-icon-elb {
-	background: url('../images/ide/elb-resource.png') center center no-repeat;
+	background: url('../images/ide/icon/elb-resource.png') center center no-repeat;
 }
 
 .resource-label {
@@ -1846,6 +1852,7 @@ a.sidebar-hider {
 	line-height: 37px;
 	background-color: #eee;
 	color: #666;
+	border: none;
 }
 
 #resource-select.open .dropdown-toggle {
@@ -1963,13 +1970,19 @@ a.sidebar-hider {
 /* Property Panel */
 
 .ami-wrap {
-	width: 248px;
+	box-sizing: border-box;
+	width: 250px;
 	margin-top: 8px;
-	/*margin: 0 auto;*/
-	border: 1px #ccc solid;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+	border-radius: 2px;
 	cursor: pointer;
 	padding: 5px;
-	font-size: 13px;
+	font-size: 12px;
+}
+
+.property-label {
+	padding: 4px 0;
 }
 
 .property-control-group .editableoption .input {
@@ -2423,6 +2436,24 @@ a.sidebar-hider {
 	cursor: pointer;
 	padding: 10px;
 	border: 1px #eee solid;
+}
+
+/* az property panel, can also be used for panels like az's */
+.panel-single-wrap {
+	height : 100%;
+	padding-top : 43px;
+	margin-top  : -43px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+.panel-single-wrap .panel-single {
+	height  : 100%;
+	padding : 10px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
 /*Responsive Style*/

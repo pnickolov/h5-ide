@@ -2452,6 +2452,24 @@ a.sidebar-hider {
 	border: 1px #eee solid;
 }
 
+/* az property panel, can also be used for panels like az's */
+.panel-single-wrap {
+	height : 100%;
+	padding-top : 43px;
+	margin-top  : -43px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+.panel-single-wrap .panel-single {
+	height  : 100%;
+	padding : 10px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
 /*Responsive Style*/
 @media (min-width: 1280px) and (max-width: 1680px)  {
 

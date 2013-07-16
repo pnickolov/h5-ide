@@ -6,3 +6,14 @@
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
+
+define [ 'jquery', 'event' ], ( $, template, ide_event ) ->
+
+	#change node from one group to another group
+	nodeChangeGroup = (src_node, tgt_group) ->
+		#to-do
+
+		null
+
+
+	nodeChangeGroup : nodeChangeGroup

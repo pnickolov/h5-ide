@@ -35,8 +35,11 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             console.log 'showProperty, uid = ' + uid
             ide_event.trigger ide_event.OPEN_PROPERTY, uid
 
-        changeGroup : ( event, src_node, tgt_group ) ->
+        changeGroup : ( event, option ) ->
+            src_node  = option.node
+            tgt_group = option.new_group
             console.log 'changeGroup, src_node = ' + src_node + ', tgt_group = ' + tgt_group
+            ide_event.trigger ide_event.CANVAS_NODE_CHANGE_GROUP, src_node, tgt_group
 
     }
 

@@ -1572,8 +1572,8 @@ MC.canvas.event.dragable = {
 					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + 10, coordinate.y + 10);
 
 					$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_GROUP", {
-						node: this.id,
-						new_group: parentGroup
+						node: target_id,
+						new_group: parentGroup.id
 					});
 				}
 			}

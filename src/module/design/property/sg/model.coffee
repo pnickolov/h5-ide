@@ -75,6 +75,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                         existing = true
 
+                        null
+
                 if not existing
 
                     component_data.name = sg_name
@@ -87,7 +89,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     tmp.member = [ parent ]
 
                     MC.canvas_property.sg_list.push tmp
-            
+
                     return false
             
 

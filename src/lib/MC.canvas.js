@@ -15,6 +15,24 @@ MC.canvas = {
 
 	selected_node: [],
 
+	update: function (id, type, key, value)
+	{
+		var target = $('#' + id + '_' + key);
+
+		switch (type)
+		{
+			case 'text':
+				target.text(value);
+				break;
+
+			case 'image':
+				target.attr('href', value);
+				break;
+		}
+
+		return true;
+	},
+
 	zoomIn: function ()
 	{
 		var canvas_size = MC.canvas.data.get('layout.size');
@@ -2835,7 +2853,10 @@ MC.canvas.event.keyEvent = function (event)
 	{
 		$.each(MC.canvas.selected_node, function (i, node)
 		{
-			MC.canvas.remove(node);
+			if (node.getAttribute('data-class') !== 'AWS.VPC.VPC')
+			{
+				MC.canvas.remove(node);
+			}
 		});
 		MC.canvas.selected_node = [];
 

@@ -1,5 +1,6 @@
 
-path = require( 'path' );
+var path = require( 'path' ),
+    os   = require( 'os' );
 
 module.exports = function( grunt ) {
 
@@ -82,6 +83,9 @@ module.exports = function( grunt ) {
 		sweep      : require( './config/sweep.js'   )
 
 	};
+
+	console.log("os = " + os.platform());
+	console.log("os = " + config.components );
 
 	/* init config */
 	grunt.initConfig( config );

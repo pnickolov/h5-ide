@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
+define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
     InstanceModel = Backbone.Model.extend {
 
@@ -55,24 +55,43 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             component_data = $.extend(true, {}, MC.canvas.SG_JSON.data)
 
-            if not MC.canvas_data.component[parent].resource.VpcId
+            if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
                 delete component_data.resource.IpPermissionsEgress
 
             component_data.uid = uid
 
-            sg_name = 'custom-sg'
-            # check custom sg name duplicate or not
-            component_data.name = sg_name
+            gen_num = [0...500]
 
-            component_data.resource.GroupName = sg_name
+            $.each gen_num, ( num ) ->
 
-            tmp = {}
-            tmp.uid = uid
-            tmp.name = sg_name
-            tmp.member = [ parent ]
+                sg_name = 'custom-sg' + num
 
-            MC.canvas_property.sg_list.push tmp
+                existing = false
+
+                _.map MC.canvas_data.component, ( value, key ) ->
+
+                    if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup and value.name == sg_name
+
+                        existing = true
+
+                if not existing
+
+                    component_data.name = sg_name
+
+                    component_data.resource.GroupName = sg_name
+
+                    tmp = {}
+                    tmp.uid = uid
+                    tmp.name = sg_name
+                    tmp.member = [ parent ]
+
+                    MC.canvas_property.sg_list.push tmp
+            
+                    return false
+            
+
+            
 
             data = MC.canvas.data.get('component')
 

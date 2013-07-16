@@ -373,11 +373,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				MC.canvas_property.sg_list[0].member.push(group.id);
 
 				// if subnet
-				if(option.group.subnetUId && option.group.vpcUId && option.group.availableZoneName ){
-
-					component_data.resource.Placement.AvailabilityZone = option.group.availableZoneName;
-					component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
-					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+				if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){					
 
 					//default eni
 					eni = $.extend(true, {}, MC.canvas.ENI_JSON.data);
@@ -387,8 +383,14 @@ MC.canvas.add = function (flag, option, coordinate)
 					eni.resource.Attachment.DeviceIndex = "0";
 					eni.resource.Attachment.InstanceId = "@"+group.id+".resource.InstanceId";
 					eni.resource.AvailabilityZone = component_data.resource.Placement.AvailabilityZone;
-					eni.resource.SubnetId = component_data.resource.SubnetId;
-					eni.resource.VpcId = component_data.resource.VpcId;
+					
+					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
+						component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
+						component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+						eni.resource.SubnetId = component_data.resource.SubnetId;
+						eni.resource.VpcId = component_data.resource.VpcId;
+					}
+					
 				}
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);

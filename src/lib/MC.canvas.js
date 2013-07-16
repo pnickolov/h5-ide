@@ -1277,7 +1277,27 @@ MC.canvas.layout = {
 		MC.canvas_data.platform = option.platform;
 
 		var canvas_size = MC.canvas.data.get('layout.size');
-
+		
+		uid = MC.guid();
+		kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
+		kp.uid = uid;
+		tmp = {};
+		tmp[kp.name] = kp.uid;
+		MC.canvas_property.kp_list.push(tmp);
+		sg_uid = MC.guid();
+		sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
+		sg.uid = sg_uid;
+		tmp = {};
+		tmp.uid = sg.uid;
+		tmp.name = sg.name;
+		tmp.member = [];
+		MC.canvas_property.sg_list.push(tmp);
+		data = MC.canvas.data.get('component');
+		data[kp.uid] = kp;
+		MC.canvas.data.set('component', data);
+		data[sg.uid] = sg;
+		MC.canvas.data.set('component', data);
+		
 		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
 		{
 			//has vpc (create vpc, az, and subnet by default)
@@ -1301,6 +1321,16 @@ MC.canvas.layout = {
 			//	'x': 23,
 			//	'y': 20
 			//});
+			
+
+			//default sg
+
+			sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
+
+		}
+		
+		if (option.platform === MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+			delete sg.resource.IpPermissionsEgress;
 		}
 
 

@@ -135,6 +135,13 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
+        setSGDescription : ( uid, value ) ->
+
+            MC.canvas_data.component[uid].resource.GroupDescription = value
+
+            null
+
+
         setSGRule : ( uid, rule ) ->
 
             rules = null

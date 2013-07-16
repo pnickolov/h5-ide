@@ -32,6 +32,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( id
 
             #for sg detail
             'change #securitygroup-name' : 'setSGName'
+            'change #securitygroup-description' : 'setSGDescription'
 
         render     : () ->
             console.log 'property:sg render'
@@ -118,6 +119,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( id
         setSGName : ( event ) ->
             sg_uid = $("#sg-secondary-panel").attr "uid"
             this.trigger 'SET_SG_NAME', sg_uid, event.target.value
+
+        setSGDescription : ( event ) ->
+
+            sg_uid = $("#sg-secondary-panel").attr "uid"
+            this.trigger 'SET_SG_DESC', sg_uid, event.target.value
 
         saveSgModal : ( event ) ->
             sg_direction = $('#sg-modal-direction input:checked').val()

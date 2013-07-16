@@ -98,6 +98,7 @@ var constant_data = {
 		EC2_VPC: 'ec2-vpc'			//has vpc
 	},
 
+	// If array, order by Subnet -> AZ -> Canvas.
 	MATCH_PLACEMENT: {
 		'ec2-classic': {
 			'AWS.ELB': [ 'Canvas' ],
@@ -113,7 +114,7 @@ var constant_data = {
 			'AWS.VPC.NetworkInterface': [ 'AWS.EC2.AvailabilityZone']
 		},
 		'custom-vpc': {
-			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
+			'AWS.ELB': [ 'AWS.VPC.VPC', 'Canvas' ],
 			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],
 			'AWS.VPC.NetworkInterface': [ 'AWS.VPC.Subnet' ],
@@ -126,7 +127,7 @@ var constant_data = {
 			'AWS.VPC.VPC': [ 'Canvas' ]
 		},
 		'ec2-vpc': {
-			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
+			'AWS.ELB': [ 'AWS.VPC.VPC', 'Canvas' ],
 			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],
 			'AWS.VPC.NetworkInterface': [ 'AWS.VPC.Subnet' ],

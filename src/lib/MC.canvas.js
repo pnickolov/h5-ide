@@ -996,7 +996,7 @@ MC.canvas = {
 	parentGroup: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
 		var groups = MC.canvas.data.get('layout.component.group'),
-			group_parent_type = MC.canvas.GROUP_PARENT[ node_type ],
+			group_parent_type = MC.canvas.MATCH_PLACEMENT[ MC.canvas.data.get('platform') ][ node_type ],
 			matched;
 
 		$.each(groups, function (key, item)
@@ -1006,18 +1006,11 @@ MC.canvas = {
 
 			if (
 				node_id !== key &&
-				item.type === group_parent_type &&
-				(
-					(
-						coordinate[0] > start_x ||
-						coordinate[0] < end_x
-					)
-					&&
-					(
-						coordinate[1] > start_y ||
-						coordinate[1] < end_y
-					)
-				)
+				$.inArray(item.type, group_parent_type) > -1 &&
+				coordinate[0] < start_x &&
+				coordinate[0] + size[0] > end_x &&
+				coordinate[1] < start_y &&
+				coordinate[1] + size[1] > end_y
 			)
 			{
 				matched = document.getElementById( key );
@@ -1539,6 +1532,7 @@ MC.canvas.event.dragable = {
 
 					//trigger event
 					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + 10, coordinate.y + 10);
+
 					$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_GROUP", {
 						node: this.id,
 						new_group: parentGroup

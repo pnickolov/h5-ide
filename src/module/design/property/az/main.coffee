@@ -121,7 +121,7 @@ define [ 'jquery',
                 placement.AvailabilityZone = newZone
 
         # Update Canvas
-        MC.canvas.update oldZoneID, "text", "", newZone
+        MC.canvas.update oldZoneID, "text", "az_name", newZone
 
 
 

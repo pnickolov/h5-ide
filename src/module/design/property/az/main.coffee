@@ -52,11 +52,7 @@ define [ 'jquery',
                         new_data =
                             id        : uid
                             component : MC.canvas_data.layout.component.group[uid]
-
-                        new_data.az_list = for az in new_az_data.item
-                            name      : az.zoneName
-                            selected  : az.zoneName  == new_data.component.name
-                            available : az.zoneState =="available"
+                            az_list   : possibleAZList( new_az_data.item, new_data.component.name )
 
                         view.render( new_data )
 
@@ -69,10 +65,7 @@ define [ 'jquery',
                 ec2_model.on 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', refreshList
 
             else
-                data.az_list = for az in data.az_list
-                    name      : az.zoneName
-                    selected  : az.zoneName  == data.component.name
-                    available : az.zoneState =="available"
+                data.az_list = possibleAZList( data.az_list, data.component.name )
 
             #view
             view.model = model
@@ -85,6 +78,19 @@ define [ 'jquery',
 
     unLoadModule = () ->
         #view.remove()
+
+    possibleAZList = ( datalist, selectedItemName ) ->
+        if !datalist
+            return
+
+        used_list = {}
+        for uid, az of MC.canvas_data.layout.component.group
+            used_list[az] = true
+
+        possible_list = for az in datalist when used_az_list[az.zoneName] isnt true
+            name      : az.zoneName
+            selected  : az.zoneName  == nselectedItemName
+            available : az.zoneState =="available"
 
     selectAZ = ( oldZoneID, newZone ) ->
 

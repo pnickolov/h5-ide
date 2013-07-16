@@ -1,16 +1,16 @@
 
-path = require( 'path' );
+var path = require( 'path' ),
+    os   = require( 'os' );
 
 module.exports = function( grunt ) {
 
 	var config = {
 
 		pkg        : grunt.file.readJSON( 'package.json' ),
-		comp       : grunt.file.readJSON( 'component.json' ),
 
 		src        : 'src',
 		libs       : 'vender',
-		components : 'components',
+		components : 'bower_components',
 		release    : 'release',
 
 		gruntfile  : [

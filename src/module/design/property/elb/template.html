@@ -12,32 +12,121 @@
 				<div class="property-control-group clearfix">
 					<label class="left" for="property-elb-name" >Name</label>
 					<span class="required-input right">(Required)</span>
-					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+					<input class="input elb-name"  type="text" required="required" value="{{ component.LoadBalancerName }}" name="property-elb-name" id="property-elb-name"/>
 				</div>
-		        <label>Volume Type</label>
-		        <div class="context">
-		            <div class="radio elb-volume-type-radio">
-		                <input id="radio-standard" type="radio" name="volume-type" value="1" />
-		                <label for="radio-standard"></label>
-		            </div>
-		            <label for="volume-property-type" class="elb-volume-type-radio-text">Standard</label>
-		            <div></div>
-		            <div class="radio elb-volume-type-radio">
-		                <input id="radio-iops" type="radio" name="volume-type" />
-		                <label for="radio-iops"></label>
-		            </div>
-		            <label for="volume-property-type" class="elb-volume-type-radio-text">Provisioned IOPS</label>
-		        </div>
+				<div class="property-control-group clearfix" id="property-control-group-elb-scheme">
+			        <label>Scheme</label>
+			        <div class="context">
+			            <div class="radio elb-volume-type-radio">
+			                <input id="radio-standard" type="radio" name="volume-type" value="1" />
+			                <label for="radio-standard"></label>
+			            </div>
+			            <label for="volume-property-type" class="elb-volume-type-radio-text">Internet Facing</label>
+			            <div></div>
+			            <div class="radio elb-volume-type-radio">
+			                <input id="radio-iops" type="radio" name="volume-type" />
+			                <label for="radio-iops"></label>
+			            </div>
+			            <label for="volume-property-type" class="elb-volume-type-radio-text">Internal</label>
+			        </div>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="accordion-group" >
-		<div class="fixedaccordion-head" id="elb-property-detail" component="{{component.uid}}">
+	<div class="accordion-group" id="accordion-group-elb-property-listener-main">
+		<div class="fixedaccordion-head" component="{{component.uid}}">
 			Listener Configuration
 		</div>
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-elb">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
+				<div id="accordion-group-elb-property-listener">
+					<div class="elb-property-listener-main">
+						<div class="elb-property-listener-add"></div>
+						<div class="property-control-group clearfix elb-property-listener-item">
+							<div class="left elb-property-listener-item-1">
+								<label>Load Balancer Protocol</label>
+								<div class="selectbox selectbox-mega" id="instance-type-select">
+									<a class="dropdown-toggle" href="#">
+										<div class="cur-value"></div>
+										<span class="caret"></span>
+									</a>
+									<ul class="dropdown-menu">
+										<li class="tooltip" tabindex="-1" data-tooltip="{{main}}">
+											<a data-id="{{name}}" href="#">
+												<div class="main  truncate">{{main}}</div>
+												<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+											</a>
+										</li>
+										<li class="tooltip" tabindex="-1" data-tooltip="{{main}}">
+											<a data-id="{{name}}" href="#">
+												<div class="main  truncate">{{main}}</div>
+												<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="left elb-property-listener-item-2">
+								<label class="left" for="property-elb-name" >Name</label>
+								<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+							</div>
+						</div>
+						<div class="property-control-group clearfix elb-property-listener-item">
+							<div class="left elb-property-listener-item-1">
+								<label>Load Balancer Protocol</label>
+								<div class="selectbox selectbox-mega" id="instance-type-select">
+									<a class="dropdown-toggle" href="#">
+										<div class="cur-value"></div>
+										<span class="caret"></span>
+									</a>
+									<ul class="dropdown-menu">
+										<li class="tooltip" tabindex="-1" data-tooltip="{{main}}">
+											<a data-id="{{name}}" href="#">
+												<div class="main  truncate">{{main}}</div>
+												<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+											</a>
+										</li>
+										<li class="tooltip" tabindex="-1" data-tooltip="{{main}}">
+											<a data-id="{{name}}" href="#">
+												<div class="main  truncate">{{main}}</div>
+												<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="left elb-property-listener-item-2">
+								<label class="left" for="property-elb-name" >Name</label>
+								<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="elb-property-listener-content-add">
+					Add listener
+				</div>
+				<div class="elb-property-listener-cert-main">
+					<div class="property-control-group clearfix">
+						<label class="left" for="property-elb-name" >Name</label>
+					</div>
+					<div class="property-control-group clearfix">
+						<label class="left" for="property-elb-name" >Name</label>
+						<input class="input"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+					</div>
+					<div class="property-control-group clearfix">
+						<label class="left" for="property-elb-name" >Name</label>
+						<input class="input"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+					</div>
+					<div class="property-control-group clearfix">
+						<label class="left" for="property-elb-name" >Name</label>
+						<input class="input"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+					</div>
+					<div class="property-control-group clearfix">
+						<label class="left" for="property-elb-name" >Name</label>
+						<input class="input"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -49,7 +138,7 @@
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
 				<div class="property-control-group clearfix">
-					<label>Instance Type</label>
+					<label>Ping Protocol</label>
 					<div class="selectbox selectbox-mega" id="instance-type-select">
 						<a class="dropdown-toggle" href="#">
 							<div class="cur-value"></div>
@@ -72,26 +161,27 @@
 					</div>
 				</div>
 				<div class="property-control-group clearfix">
-					<label class="left" for="property-elb-name" >Name</label>
-					<span class="required-input right">(Required)</span>
+					<label class="left" for="property-elb-name" >Ping Port</label>
 					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 				</div>
 				<div class="property-control-group clearfix">
-					<label class="left" for="property-elb-name" >Name</label>
+					<label class="left" for="property-elb-name" >Ping Path</label>
 					<span class="required-input right">(Required)</span>
 					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 				</div>
 				<div class="property-control-group clearfix" id="elb-property-group-interval">
-					<label class="left" for="property-elb-name" >Name</label>
+					<label class="left" for="property-elb-name" >Health Check Interval</label>
 					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 					<label class="left elb-property-right-text" for="property-elb-name" >Seconds</label>
 				</div>
 				<div class="property-control-group clearfix" id="elb-property-group-interval">
-					<label class="left" for="property-elb-name" >Name</label>
+					<label class="left" for="property-elb-name" >Response Timeout</label>
 					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 					<label class="left elb-property-right-text" for="property-elb-name" >Seconds</label>
 				</div>
+
 				<div class="property-control-group clearfix" id="elb-property-group-interval">
+					<label class="left" for="property-elb-name" >Unhealthy Threshold</label>
 					<div class="slider-container">
 						<div class="slider">
 							<a class="slider-controll"></a>
@@ -111,6 +201,7 @@
 					</div>
 				</div>
 				<div class="property-control-group clearfix" id="elb-property-group-interval">
+					<label class="left" for="property-elb-name" >Healthy Threshold</label>
 					<div class="slider-container">
 						<div class="slider">
 							<a class="slider-controll"></a>

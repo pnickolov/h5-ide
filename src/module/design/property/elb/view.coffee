@@ -18,7 +18,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         template : Handlebars.compile $( '#property-elb-tmpl' ).html()
 
-        #events   :
+        events   :
             # 'change .instance-name' : 'instanceNameChange'
             # 'change .instance-type-select' : 'instanceTypeSelect'
             # 'change #property-instance-ebs-optimized' : 'ebsOptimizedSelect'
@@ -40,10 +40,18 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             # 'click #instance-ip-add' : "addIPtoList"
             # 'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
+            'SLIDER_CHANGE .slider' : 'sliderChange'
+
         render     : ( attributes ) ->
             console.log 'property:elb render'
             $( '.property-details' ).html this.template attributes
+            $('.slider').setSliderValue(5)
             #fixedaccordion.resize()
+
+        sliderChange : ( event, value ) ->
+            alert $($('.slider')[0]).data('value')
+            $('.slider').setSliderValue(5)
+            alert $($('.slider')[0]).data('value')
 
         # instanceNameChange : ( event ) ->
         #     console.log 'instanceNameChange'

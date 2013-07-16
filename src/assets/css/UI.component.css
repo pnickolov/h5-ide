@@ -1429,10 +1429,6 @@ textarea {
 
 /* Slider */
 
-.slider-container {
-	height: 100px;
-}
-
 .slider {
 	background-color: #fff;
 	border-radius: 0px;

@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sg
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( ide_event ) ->
 
     InstanceView = Backbone.View.extend {
 
@@ -14,15 +14,24 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         events   :
             'click .secondary-panel .back' : 'openInstance'
 
-            #for sg module
+            #for sg rule
             'click .rule-edit-icon' : 'showEditRuleModal'
             'click #sg-add-rule-icon' : 'showCreateRuleModal'
             'click .rule-remove-icon' : 'removeRulefromList'
-            'click #sg-modal-direction input' : 'radioSgModalChange'
-            'OPTION_CHANGE #modal-sg-rule' : 'sgModalSelectboxChange'
 
-            'change #securitygroup-name' : 'setSGName'
+            #for sg modal
+            'click #sg-modal-direction input' : 'radioSgModalChange'
+            'OPTION_CHANGE #modal-protocol-select' : 'sgModalSelectboxChange'
+            'OPTION_CHANGE #protocol-icmp-main-select' : 'icmpMainSelect'
+            'OPTION_CHANGE .protocol-icmp-sub-select' : 'icmpSubSelect'
             'click #sg-modal-save' : 'saveSgModal'
+            'click .editable-label' : 'editablelabelClick'
+            'change #sg-protocol-tcp input' : 'tcpValueChange'
+            'change #sg-protocol-udp input' : 'udpValueChange'
+            'change #sg-protocol-custom input' : 'customValueChange'
+
+            #for sg detail
+            'change #securitygroup-name' : 'setSGName'
 
         render     : () ->
             console.log 'property:sg render'
@@ -90,16 +99,57 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         sgModalSelectboxChange : (event, id) ->
             $('#sg-protocol-select-result').find('.show').removeClass('show')
             $('#sg-protocol-' + id).addClass('show')
+            $('#modal-protocol-select').data('protocal-type', id)
+            protocol_type = id
+            protocol_val = ""
+            protocol_val_sub = ""
+
+        icmpMainSelect : ( event, id ) ->
+            $("#protocol-icmp-main-select").data('protocal-main', id)
+            if id is 3 || id is 5 || id is 11 || id is 12
+                $( '#protocol-icmp-sub-select-' + id).addClass('shown')
+            else
+                $('.protocol-icmp-sub-select').removeClass('shown')
+
+        icmpSubSelect : ( event, id ) ->
+            $("#protocol-icmp-main-select").data('protocal-sub', id)
 
         setSGName : ( event ) ->
             sg_uid = $("#sg-secondary-panel").attr "uid"
             this.trigger 'SET_SG_NAME', sg_uid, event.target.value
 
-        saveSgModal : (event) ->
+        saveSgModal : ( event ) ->
             sg_direction = $('#sg-modal-direction input:checked').val()
-            sg_descrition = $('#securitygroup-modal-description').val()
+            descrition_dom = $('#securitygroup-modal-description')
+            if(descrition_dom.hasClass('input'))
+                sg_descrition = descrition_dom.val()
+            else
+                sg_descrition = descrition_dom.html()
+            protocol_type =  $('#modal-protocol-select').data('protocal-type')
+            protocol_val = $("#protocol-icmp-main-select").data('protocal-main')
+            protocol_val_sub = $("#protocol-icmp-main-select").data('protocal-sub')
+            switch protocol_type
+                when "tcp" then protocol_val = $( '#sg-protocol-tcp input' ).val()
+                when "udp" then protocol_val = $( '#sg-protocol-udp input' ).val()
+                when "icmp" then console.log 'protocol:' + protocol_type
+                when "custom" then protocol_val = $( '#sg-protocol-custom input' ).val()
+                when "all" then protocol_val = ""
+                else protocol_val = ""
             console.log 'dir:' + sg_direction
             console.log 'desc:' + sg_descrition
+            console.log 'protocol:' + protocol_val
+
+        editablelabelClick : ( event ) ->
+            editablelabel.create.call $(event.target)
+
+        tcpValueChange : ( event ) ->
+            protocol_val = $( '#sg-protocol-tcp input' ).val()
+
+        udpValueChange : ( event ) ->
+            protocol_val = $( '#sg-protocol-udp input' ).val()
+
+        customValueChange : ( event ) ->
+            protocol_val = $( '#sg-protocol-custom input' ).val()
     }
 
     view = new InstanceView()

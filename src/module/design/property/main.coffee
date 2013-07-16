@@ -62,49 +62,54 @@ define [ 'jquery',
                 uid  = uid
                 #type = type
 
-                if !MC.canvas_data.component[uid] then return
                 console.log 'OPEN_PROPERTY, uid = ' + uid
-                console.log 'type = ' + MC.canvas_data.component[ uid ].type
 
                 #show stack property
                 if uid is ''
                     stack_main.loadModule()
 
                 #show az property
-                if  MC.canvas_data.layout.component.group[ uid ] and MC.canvas_data.layout.component.group[ uid ].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
-                    az_main.loadModule uid
 
-                #other sub property
-                switch MC.canvas_data.component[ uid ].type
-                    #show instance property
-                    when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid
-                    #show volume/snapshot property
-                    when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid
-                    #show elb property
-                    when constant.AWS_RESOURCE_TYPE.AWS_ELB                  then elb_main.loadModule uid
-                    #show subnet property
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet           then subnet_main.loadModule uid
-                    #show vpc property
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC              then vpc_main.loadModule uid
-                    #show dhcp property
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions      then dhcp_main.loadModule uid
-                    #show rtb property
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid
-                    #show igw property
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway  then igw_main.loadModule uid
-                    #show vgw property
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway       then vgw_main.loadModule uid
-                    #show cgw property
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway  then cgw_main.loadModule uid
-                    #show vpn property
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection    then vpn_main.loadModule uid
-                    #show eni property
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid
-                    #show acl property
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl       then acl_main.loadModule uid
-                    #
-                    else
+                if MC.canvas_data.component[ uid ]
+
+                    console.log 'type = ' + MC.canvas_data.component[ uid ].type
+                    #components except AvailabilityZone
+                    switch MC.canvas_data.component[ uid ].type
+                        #show instance property
+                        when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid
+                        #show volume/snapshot property
+                        when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid
+                        #show elb property
+                        when constant.AWS_RESOURCE_TYPE.AWS_ELB                  then elb_main.loadModule uid
+                        #show subnet property
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet           then subnet_main.loadModule uid
+                        #show vpc property
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC              then vpc_main.loadModule uid
+                        #show dhcp property
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions      then dhcp_main.loadModule uid
+                        #show rtb property
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid
+                        #show igw property
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway  then igw_main.loadModule uid
+                        #show vgw property
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway       then vgw_main.loadModule uid
+                        #show cgw property
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway  then cgw_main.loadModule uid
+                        #show vpn property
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection    then vpn_main.loadModule uid
+                        #show eni property
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid
+                        #show acl property
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl       then acl_main.loadModule uid
                         #
+                        else
+                            #
+                else
+
+                    #AvailabilityZone
+                    if MC.canvas_data.layout.component.group[ uid ] and MC.canvas_data.layout.component.group[ uid ].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                        console.log 'type = ' + MC.canvas_data.layout.component.group[ uid ].type
+                        az_main.loadModule uid
 
                 #temp
                 # setTimeout () ->

@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sg
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( ide_event ) ->
+define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( ide_event, MC ) ->
 
     InstanceView = Backbone.View.extend {
 
@@ -77,7 +77,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( id
             modal MC.template.modalSGRule {isAdd:false}, true
 
         showCreateRuleModal : (event) ->
-            modal MC.template.modalSGRule {isAdd:true}, true
+            isclassic = false
+            if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+                isclassic = true
+            modal MC.template.modalSGRule {isAdd:true, isclassic:isclassic}, true
             return false
 
         removeRulefromList: (event, id) ->

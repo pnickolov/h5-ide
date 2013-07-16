@@ -644,7 +644,6 @@ a {
 	font-size: 9px;
 	padding: 1px 4px;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
-	width: 28px;
 	text-align: center;
 }
 
@@ -2298,34 +2297,48 @@ a.sidebar-hider {
 	padding: 10px;
 	width: 450px;
 }
-#modal-sg-rule .title {
-	width: 100px;
-	display: inline-block;
-	color: #999;
-	line-height: 30px;
-}
-#modal-sg-rule .context {
-	display: inline-block;
-	color: #999;
-}
-#modal-sg-rule .radio span {
-	margin-left: 25px;
-}
-#modal-sg-rule .input {
-	width: 300px;
-}
-#modal-sg-rule .modal-protocol-select {
-	width: 80px;
-	display: inline-block;
-}
-#modal-sg-rule #sg-protocol-select-result input {
-	width: 150px;
-	display: inline-block;
-}
 .sg-protocol-option-input {
 	display: none;
+	width: 200px;
 }
 .sg-protocol-option-input.show {
+	display: inline-block;
+}
+#modal-sg-rule .editable-label {
+	display: inline-block;
+}
+#modal-sg-rule .property-control-group label.left {
+	width: 90px;
+}
+#modal-sg-rule .property-control-group {
+	width: 100%;
+}
+#modal-protocol-select {
+	width: 110px;
+	display: inline-block;
+	margin: 0;
+}
+#modal-protocol-select .dropdown-toggle {
+	width: 80px;
+}
+#sg-protocol-select-result input {
+	width: 200px;
+	display: inline-block;
+}
+#sg-protocol-icmp .selectbox {
+	width: 200px;
+	display: inline-block;
+	margin-top: 0;
+}
+#sg-protocol-icmp .selectbox .dropdown-toggle {
+	width: 170px;
+}
+#sg-protocol-icmp .selectbox.protocol-icmp-sub-select {
+	display: none;
+	margin-top: 10px;
+}
+
+#sg-protocol-icmp .selectbox.protocol-icmp-sub-select.shown {
 	display: block;
 }
 

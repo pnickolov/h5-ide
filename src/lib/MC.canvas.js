@@ -687,10 +687,8 @@ MC.canvas = {
 		x = x > 0 ? x : 0;
 		y = y > 0 ? y : 0;
 
-		var target = $(node);
-
-		MC.canvas.data.set('layout.component.' + target.data('type') + '.' + node.id + '.coordinate', [x, y]);
-		target.attr('transform', 'translate(' + (x * MC.canvas.GRID_WIDTH) + ',' + (y * MC.canvas.GRID_HEIGHT) + ')');
+		MC.canvas.data.set('layout.component.' + node.getAttribute('data-type') + '.' + node.id + '.coordinate', [x, y]);
+		node.setAttribute('transform', 'translate(' + (x * MC.canvas.GRID_WIDTH) + ',' + (y * MC.canvas.GRID_HEIGHT) + ')');
 	},
 
 	remove: function (node)
@@ -1299,6 +1297,7 @@ MC.canvas.layout = {
 		MC.canvas.data.set('component', data);
 		
 		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
+
 		{
 			//has vpc (create vpc, az, and subnet by default)
 			MC.canvas.add('AWS.VPC.VPC', {
@@ -1332,7 +1331,6 @@ MC.canvas.layout = {
 		if (option.platform === MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 			delete sg.resource.IpPermissionsEgress;
 		}
-
 
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
@@ -1495,8 +1493,18 @@ MC.canvas.event.dragable = {
 
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 			}
-			else
+			
+			if (event.data.target_type === 'group')
 			{
+				var target = event.data.target;
+
+				target.attr('class', function (index, key)
+				{
+					return key + ' selected';
+				});
+
+				MC.canvas.selected_node.push(target[0]);
+
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 			}
 		}
@@ -1637,7 +1645,7 @@ MC.canvas.event.dragable = {
 						||
 						(
 							!coordinate_fixed &&
-							match_place.is_matched &&
+							//match_place.is_matched &&
 							event.data.groupChild.length === unique_stack.length
 						)
 					)
@@ -1882,7 +1890,7 @@ MC.canvas.event.drawConnection = {
 
 		return false;
 	},
-	
+
 	mouseup: function (event)
 	{
 		MC.paper.clear(MC.paper.drewLine);
@@ -2068,10 +2076,7 @@ MC.canvas.event.siderbarDrag = {
 				}
 			}
 
-			if (
-				target_component_type === 'group' &&
-				MC.canvas.isBlank("group", '', coordinate.x, coordinate.y)
-			)
+			if (target_component_type === 'group')
 			{
 				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
 				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);

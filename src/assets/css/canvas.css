@@ -390,7 +390,7 @@
 	display: block;
 	width: 48px;
 	height: 56px;
-	background: url('../images/ide/ebs-snapshot-resource.png') no-repeat;
+	background: url('../images/ide/ebs-snapshot-resource-item.png') no-repeat;
 }
 
 #drag_shadow .volume_item,

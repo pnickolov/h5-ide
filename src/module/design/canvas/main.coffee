@@ -2,7 +2,7 @@
 #  Controller for design/canvas module
 ####################################
 
-define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, template, ide_event ) ->
+define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', './module/design/canvas/canvas' ], ( $, template, ide_event, canvas ) ->
 
     #private
     loadModule = () ->
@@ -30,6 +30,20 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
                     require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.init()
                 null
 
+
+            #listen CANVAS_NODE_CHANGE_PARENT
+            ide_event.onLongListen ide_event.CANVAS_NODE_CHANGE_PARENT, ( src_node, tgt_parent ) ->
+                console.log 'canvas:CANVAS_NODE_CHANGE_PARENT, src_node = ' + src_node + ', tgt_parent = ' + tgt_parent
+                canvas.changeNodeParent src_node, tgt_parent
+                null
+
+            #listen CANVAS_GROUP_CHANGE_PARENT
+            ide_event.onLongListen ide_event.CANVAS_GROUP_CHANGE_PARENT, ( src_group, tgt_parent ) ->
+                console.log 'canvas:CANVAS_GROUP_CHANGE_PARENT, src_group = ' + src_group + ', tgt_parent = ' + tgt_parent
+                canvas.changeGroupParent src_group, tgt_parent
+                null
+
+            null
 
     unLoadModule = () ->
         #view.remove()

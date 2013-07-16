@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
+define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
     InstanceModel = Backbone.Model.extend {
 
@@ -30,12 +30,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
                     sg_detail.members = value.member.length
 
-                    if MC.canvas_data.component[uid].resource.IpPermissionsEgress
+                    if MC.canvas_data.component[uid].resource.IpPermissionsEgress.length != 0
 
-                            sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
-                        else
+                        sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
+                    else
 
-                            sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length
+                        sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length
 
                     sg_detail.member_names = []
 
@@ -55,24 +55,41 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             component_data = $.extend(true, {}, MC.canvas.SG_JSON.data)
 
-            if not MC.canvas_data.component[parent].resource.VpcId
-
-                delete component_data.resource.IpPermissionsEgress
-
             component_data.uid = uid
 
-            sg_name = 'custom-sg'
-            # check custom sg name duplicate or not
-            component_data.name = sg_name
+            gen_num = [0...500]
 
-            component_data.resource.GroupName = sg_name
+            $.each gen_num, ( num ) ->
 
-            tmp = {}
-            tmp.uid = uid
-            tmp.name = sg_name
-            tmp.member = [ parent ]
+                sg_name = 'custom-sg' + num
 
-            MC.canvas_property.sg_list.push tmp
+                existing = false
+
+                _.map MC.canvas_data.component, ( value, key ) ->
+
+                    if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup and value.name == sg_name
+
+                        existing = true
+
+                        null
+
+                if not existing
+
+                    component_data.name = sg_name
+
+                    component_data.resource.GroupName = sg_name
+
+                    tmp = {}
+                    tmp.uid = uid
+                    tmp.name = sg_name
+                    tmp.member = [ parent ]
+
+                    MC.canvas_property.sg_list.push tmp
+
+                    return false
+            
+
+            
 
             data = MC.canvas.data.get('component')
 
@@ -113,6 +130,45 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                 null
 
             null
+
+        setSGDescription : ( uid, value ) ->
+
+            MC.canvas_data.component[uid].resource.GroupDescription = value
+
+            null
+
+
+        setSGRule : ( uid, rule ) ->
+
+            rules = null
+
+            if rule.direction == 'radio_inbound'
+
+                rules = MC.canvas_data.component[uid].resource.IpPermissions
+            else
+                rules = MC.canvas_data.component[uid].resource.IpPermissionsEgress
+
+            existing = false
+
+            _.map MC.canvas_data.component[uid].resource.IpPermissions, ( existing_rule ) ->
+
+                if existing_rule.ToPort == rule.toport and existing_rule.FromPort == rule.fromport and existing_rule.IpRanges == rule.ipranges and existing_rule.IpProtocol == rule.protocol
+
+                    existing = true
+
+                    null
+
+            if not existing
+
+                tmp = {}
+                tmp.ToPort = rule.toport
+                tmp.FromPort = rule.fromport
+                tmp.IpRanges = rule.ipranges
+                tmp.IpProtocol = rule.protocol
+                MC.canvas_data.component[uid].resource.IpPermissions.push tmp
+
+            null
+
 
         removeSGRule : ( uid, rule ) ->
 

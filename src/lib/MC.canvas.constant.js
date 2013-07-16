@@ -18,6 +18,19 @@ var constant_data = {
 
 	GROUP_PADDING: 2,
 
+	IMAGE: {
+		//volume icon of instance
+		INSTANCE_VOLUME_ATTACHED_ACTIVE: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
+		INSTANCE_VOLUME_ATTACHED_NORMAL: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
+		INSTANCE_VOLUME_NOT_ATTACHED: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
+		//eip icon of instance
+		INSTANCE_EIP_ON: MC.IMG_URL + 'ide/icon/instance-eip-on.png',
+		INSTANCE_EIP_OFF: MC.IMG_URL + 'ide/icon/instance-eip-off.png',
+		//elb icon
+		ELB_INTERNAL_CANVAS: MC.IMG_URL + 'ide/icon/elb-internal-canvas.png',
+		ELB_INTERNET_CANVAS: MC.IMG_URL + 'ide/icon/elb-internet-canvas.png'
+	},
+
 	//constant for _route()
 	MINDIST: 20,
 	TOL: 0.1,
@@ -413,19 +426,7 @@ var constant_data = {
 					}
 				],
 				"IpPermissionsEgress": [
-					{
-					"IpProtocol": "tcp",
-					"IpRanges": "0.0.0.0/0",
-					"FromPort": "22",
-					"ToPort": "22",
-					"Groups": [
-						{
-						"GroupId": "",
-						"UserId": "",
-						"GroupName": ""
-						}
-					]
-					}
+
 				],
 				"GroupId": "",
 				"Default": "true",
@@ -541,7 +542,7 @@ var constant_data = {
 					}
 				}],
 				"DNSName": "",
-				"Scheme": "internal",
+				"Scheme": "", //internal | internet-facing
 				"CanonicalHostedZoneName": "",
 				"Instances": [],
 				"SourceSecurityGroup": {

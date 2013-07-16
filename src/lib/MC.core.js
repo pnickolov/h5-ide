@@ -9,15 +9,14 @@
 # **********************************************************
 */
 var MC = {
-	version: '0.2.1',
+	version: '0.2.2',
 
 	// Global Variable 
 	API_URL: 'https://api.madeiracloud.com/',
-	IMG_URL: 'https://img.madeiracloud.com/',
+	IMG_URL: '../assets/images/',
 
 	// Global data
 	data: {},
-	browser: '',
 
 	/**
 	 * Generate GUID

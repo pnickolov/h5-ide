@@ -4,17 +4,25 @@
 		<span class="sidebar-title-text">{{sg_detail.component.resource.GroupName}}</span>
 	</div>
 	<div class="sg-context-wrap">
-		<div class="property-control-group clearfix">
-			<label class="left" for="securitygroup-name" >Name</label>
-			<span class="required-input right">Required</span>
-			<input class="input"  type="text" required="required" id="securitygroup-name" name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
-		</div>
-		<div class="property-control-group clearfix">
-			<label class="left" for="securitygroup-description" >Description</label>
-			<input class="input" type="text" id="securitygroup-description" name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" />
-		</div>
-		<div class="fixedaccordion accordion-default" data-sub="106">
+		<div class="fixedaccordion accordion-default" data-sub="32">
 		<div class="accordion-group expanded" >
+			<div class="fixedaccordion-head sg-header">
+				<span class="name">Security Group Details</span>
+			</div>
+			<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
+				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+				<div class="property-control-group clearfix">
+					<label class="left" for="securitygroup-name" >Name</label>
+					<span class="required-input right">Required</span>
+					<input class="input"  type="text" required="required" id="securitygroup-name" name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
+				</div>
+				<div class="property-control-group clearfix">
+					<label class="left" for="securitygroup-description" >Description</label>
+					<input class="input" type="text" id="securitygroup-description" name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" />
+				</div>
+			</div>
+		</div>
+		<div class="accordion-group" >
 			<div class="fixedaccordion-head sg-header">
 					<span class="name">Rule</span>
 					<span class="count">({{sg_detail.rules}})</span>

@@ -15,6 +15,24 @@ MC.canvas = {
 
 	selected_node: [],
 
+	update: function (id, type, key, value)
+	{
+		var target = $('#' + id + '_' + key);
+
+		switch (type)
+		{
+			case 'text':
+				target.text(value);
+				break;
+
+			case 'image':
+				target.attr('href', value);
+				break;
+		}
+
+		return true;
+	},
+
 	zoomIn: function ()
 	{
 		var canvas_size = MC.canvas.data.get('layout.size');
@@ -1275,11 +1293,29 @@ MC.canvas.layout = {
 		MC.canvas_data.platform = option.platform;
 
 		var canvas_size = MC.canvas.data.get('layout.size');
+		
+		uid = MC.guid();
+		kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
+		kp.uid = uid;
+		tmp = {};
+		tmp[kp.name] = kp.uid;
+		MC.canvas_property.kp_list.push(tmp);
+		sg_uid = MC.guid();
+		sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
+		sg.uid = sg_uid;
+		tmp = {};
+		tmp.uid = sg.uid;
+		tmp.name = sg.name;
+		tmp.member = [];
+		MC.canvas_property.sg_list.push(tmp);
+		data = MC.canvas.data.get('component');
+		data[kp.uid] = kp;
+		MC.canvas.data.set('component', data);
+		data[sg.uid] = sg;
+		MC.canvas.data.set('component', data);
+		
+		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
 
-		if (
-			option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC ||
-			option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC
-		)
 		{
 			//has vpc (create vpc, az, and subnet by default)
 			MC.canvas.add('AWS.VPC.VPC', {
@@ -1288,8 +1324,28 @@ MC.canvas.layout = {
 				'x': 2,
 				'y': 2
 			});
-		}
 
+			//var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
+			//	'name': 'ap-northeast-1'
+			//},{
+			//	'x': 19,
+			//	'y': 16
+			//});
+
+			//var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
+			//	'name': 'subnet1'
+			//},{
+			//	'x': 23,
+			//	'y': 20
+			//});
+			
+
+			//default sg
+
+			sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
+
+		}
+		
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
@@ -2835,7 +2891,10 @@ MC.canvas.event.keyEvent = function (event)
 	{
 		$.each(MC.canvas.selected_node, function (i, node)
 		{
-			MC.canvas.remove(node);
+			if (node.getAttribute('data-class') !== 'AWS.VPC.VPC')
+			{
+				MC.canvas.remove(node);
+			}
 		});
 		MC.canvas.selected_node = [];
 

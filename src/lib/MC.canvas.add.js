@@ -130,7 +130,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////3.az label
 				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
-					'class': 'group-label name'
+					'class': 'group-label name',
+					'id': group.id + '_az_name'
 				})
 
 			).attr({
@@ -350,8 +351,6 @@ MC.canvas.add = function (flag, option, coordinate)
 			var os_type = 'ami-unknown',
 				volume_number = 0,
 				icon_volume_status = 'not-attached',
-				kp = null,
-				sg = null,
 				eni = null;
 
 			if (create_mode)
@@ -367,31 +366,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				if(MC.canvas_property.kp_list.length === 0){
 
 					//default kp
-					uid = MC.guid();
-					kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
-					kp.uid = uid;
-					tmp = {};
-					tmp[kp.name] = kp.uid;
-					MC.canvas_property.kp_list.push(tmp);
-
-					//default sg
-					sg_uid = MC.guid();
-					sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
-					sg.uid = sg_uid;
-					tmp = {};
-					tmp.uid = sg.uid;
-					tmp.name = sg.name;
-					tmp.member = [];
-					MC.canvas_property.sg_list.push(tmp);
-
-					if(option.group.subnetUId){
-						//with vpc
-						sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
-					}
-					else{
-						//without vpc
-						delete sg.resource.IpPermissionsEgress;
-					}
+					
 				}
 
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
@@ -399,11 +374,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				MC.canvas_property.sg_list[0].member.push(group.id);
 
 				// if subnet
-				if(option.group.subnetUId && option.group.vpcUId && option.group.availableZoneName ){
-
-					component_data.resource.Placement.AvailabilityZone = option.group.availableZoneName;
-					component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
-					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+				if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){					
 
 					//default eni
 					eni = $.extend(true, {}, MC.canvas.ENI_JSON.data);
@@ -413,8 +384,14 @@ MC.canvas.add = function (flag, option, coordinate)
 					eni.resource.Attachment.DeviceIndex = "0";
 					eni.resource.Attachment.InstanceId = "@"+group.id+".resource.InstanceId";
 					eni.resource.AvailabilityZone = component_data.resource.Placement.AvailabilityZone;
-					eni.resource.SubnetId = component_data.resource.SubnetId;
-					eni.resource.VpcId = component_data.resource.VpcId;
+					
+					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
+						component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
+						component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+						eni.resource.SubnetId = component_data.resource.SubnetId;
+						eni.resource.VpcId = component_data.resource.VpcId;
+					}
+					
 				}
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
@@ -516,7 +493,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////7. eip
 				Canvon.image('../assets/images/ide/icon/instance-eip-off.png', 53, 50, 22, 16).attr({
-					'id': group.id + '_eip'
+					'id': group.id + '_eip_status'
 				}),
 
 				////8. hostname
@@ -539,14 +516,6 @@ MC.canvas.add = function (flag, option, coordinate)
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
 
-			if(kp){
-				data[kp.uid] = kp;
-				MC.canvas.data.set('component', data);
-			}
-			if(sg){
-				data[sg.uid] = sg;
-				MC.canvas.data.set('component', data);
-			}
 			if(eni){
 				data[eni.uid] = eni;
 				MC.canvas.data.set('component', data);
@@ -639,13 +608,29 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** elb begin *****//
 		case 'AWS.ELB':
 
+			var icon_scheme = 'internal';
+
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ELB_JSON.data);
 				component_data.name = option.name;
-
+				component_data.resource.LoadBalancerName = option.name;
+				
+				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
+					
+					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
+					component_data.resource.SecurityGroups.push('@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId');
+					
+				}else if (MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
+					component_data.resource.SecurityGroups.push('@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId');
+				}else {
+					component_data.resource.Scheme = 'internet-facing'	
+				}
+				
 				component_layout = $.extend(true, {}, MC.canvas.ELB_JSON.layout);
 				component_layout.groupUId = option.groupUId;
+
+				component_data.resource.Scheme = icon_scheme;
 			}
 			else
 			{//read
@@ -656,7 +641,11 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
+
+				icon_scheme = component_data.resource.Scheme;
 			}
+
+			icon_scheme = component_data.resource.Scheme === 'internal' ? 'internal' : 'internet';
 
 			$(group).append(
 				////1. bg
@@ -665,7 +654,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/elb-internet-canvas.png', 20, 23, 70, 53),
+				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 20, 23, 70, 53).attr({
+					'id' : group.id + '_elb_scheme'
+				}),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -702,7 +693,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////5. elb_name
 				Canvon.text(50, 85, option.name).attr({
-					'class': 'node-label name'
+					'class': 'node-label name',
+					'id' : group.id + '_elb_name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,

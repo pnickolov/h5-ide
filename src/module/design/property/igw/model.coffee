@@ -1,14 +1,14 @@
 #############################
-#  View Mode for design/property/az
+#  View Mode for design/property/igw
 #############################
 
 define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
-    AZModel = Backbone.Model.extend {
+    IGWModel = Backbone.Model.extend {
 
         defaults :
-            'set_availability_zone'    : null
-            'get_availability_zone'    : null
+            'set_xxx'    : null
+            'get_xxx'    : null
 
         initialize : ->
             #listen
@@ -16,6 +16,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
     }
 
-    model = new AZModel()
+    model = new IGWModel()
 
     return model

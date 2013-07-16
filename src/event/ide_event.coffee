@@ -70,6 +70,9 @@ define [ 'underscore', 'backbone' ], () ->
         #navigation to dashboard - region
         NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
 
+        #canvas
+        CANVAS_NODE_CHANGE_GROUP : 'CANVAS_NODE_CHANGE_GROUP'
+
         constructor : ->
             _.extend this, Backbone.Events
 

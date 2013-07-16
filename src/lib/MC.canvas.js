@@ -1500,7 +1500,8 @@ MC.canvas.event.dragable = {
 				line_layer = $("#line_layer")[0],
 				match_place,
 				coordinate,
-				clone_node;
+				clone_node,
+				parentGroup;
 
 			if (target_type === 'node')
 			{
@@ -1535,6 +1536,13 @@ MC.canvas.event.dragable = {
 					clone_node = target.clone();
 					target.remove();
 					$('#node_layer').append(clone_node);
+
+					//trigger event
+					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + 10, coordinate.y + 10);
+					$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_GROUP", {
+						node: this.id,
+						new_group: parentGroup
+					});
 				}
 			}
 

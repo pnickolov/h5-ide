@@ -19,9 +19,20 @@ define [ 'jquery',
         require [ './module/design/property/vpc/view', './module/design/property/vpc/model' ], ( view, model ) ->
 
             #view
-            view.model    = model
+            view.model = model
+
             #render
-            view.render()
+            component = MC.canvas_data.component[uid]
+            data      =
+                name        : component.name
+                cidrBlock   : component.resource.CidrBlock
+                dnsHosts    : component.resource.EnableDnsHostnames == "true"
+                dnsSupport  : component.resource.EnableDnsSupport   == "true"
+                defaultTenancy : true
+            view.render( data )
+            null
+
+        null
 
     unLoadModule = () ->
         #view.remove()

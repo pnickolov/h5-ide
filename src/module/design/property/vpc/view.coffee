@@ -2,7 +2,8 @@
 #  View(UI logic) for design/property/vpc
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars',
+        'UI.fixedaccordion' ], ( ide_event ) ->
 
     VPCView = Backbone.View.extend {
 
@@ -13,8 +14,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         #events   :
 
-        render     : () ->
-            console.log 'property:vpc render'
+        render   : ( attributes ) ->
+            $( '.property-details' ).html this.template attributes
+            fixedaccordion.resize()
 
     }
 

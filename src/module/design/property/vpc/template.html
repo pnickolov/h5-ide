@@ -1,1 +1,95 @@
-vpc loading...
+<div class="sidebar-title">
+  <span class="sidebar-title-text" id='property-title'>VPC</span>
+</div>
+
+<div class="fixedaccordion accordion-default" data-sub="43">
+  <div class="accordion-group expanded">
+    <div class="fixedaccordion-head" id="vpc-property-detail">VPC Details</div>
+
+    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="item-wrap scroll-content">
+        <div class="property-control-group clearfix">
+          <label class="left" for="property-vpc-name">Name</label>
+          <span class="required-input right">Required</span>
+          <input class="input vpc-name" type="text" value="{{name}}" id="property-pvc-name"/>
+        </div>
+
+        <div class="property-control-group clearfix">
+          <label class="left" for="property-cidr-block">CIDR Block</label>
+          <span class="required-input right">Required</span>
+          <input class="input cidr-block"  type="text" autofocus value="{{cidrBlock}}" id="property-cidr-block"/>
+        </div>
+
+        <div class="property-control-group">
+          <label>Tenancy</label>
+          <div class="selectbox selectbox-mega" id="property-tenancy">
+            <a class="dropdown-toggle" href="#">
+              <div class="cur-value">Default</div>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              {{#if defaultTenancy}}
+              <li class="selected" tabindex="-1">
+              {{else}}
+              <li tabindex="-1">
+              {{/if}}
+                <a href="#" data-id="default">Default</a>
+              </li>
+              {{#if defaultTenancy}}
+              <li tabindex="-1">
+              {{else}}
+              <li class="selected" tabindex="-1">
+              {{/if}}
+                <a href="#" data-id="dedicated">Dedicated</a>
+              </li>
+            </ul>
+          </div>
+          <div id="desc-dedicated" style="margin-top:5px;{{#if defaultTenancy}}display:none;{{/if}}">Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware. <a href="http://aws.amazon.com/cn/dedicated-instances/">Additional charges will apply.</a></div>
+        </div>
+
+        <div class="property-control-group">
+          <div class="checkbox">
+            <input id="property-dns-resolution" type="checkbox"{{#if dnsHosts}} checked="checked"{{/if}} name="dns-resolution">
+            <label for="property-dns-resolution"></label>
+          </div>
+          <label for="property-dns-resolution">Enable DNS resolution</label>
+        </div>
+
+        <div class="property-control-group">
+          <div class="checkbox">
+            <input id="property-dns-hostname" type="checkbox"{{#if dnsSupport}} checked="checked"{{/if}} name="dns-hostname">
+            <label for="property-dns-hostname"></label>
+          </div>
+          <label for="property-dns-hostname">Enable DNS hostname support</label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group" id="dhcp-property-detail">
+    <div class="fixedaccordion-head">DHCP Options</div>
+    <div class="accordion-body">
+      <div class="property-control-group">
+        <div>
+          <div class="radio">
+            <input id="property-dhcp-none" type="radio" name="dhcp-opts" checked="checked" value="none" />
+            <label for="property-dhcp-none"></label>
+          </div>
+          <label for="property-dhcp-none">None</label>
+        </div>
+
+        <div>
+          <div class="radio">
+            <input id="property-dhcp-spec" type="radio" name="dhcp-opts" value="specified"/>
+            <label for="property-dhcp-spec"></label>
+          </div>
+          <label for="property-dhcp-spec">Specified DHCP Options Set</label>
+        </div>
+
+        <div>
+          Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.
+        </div>
+      </div>
+    </div>
+</div>

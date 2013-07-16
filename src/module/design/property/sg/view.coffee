@@ -103,6 +103,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( id
             protocol_type = id
             protocol_val = ""
             protocol_val_sub = ""
+            null
 
         icmpMainSelect : ( event, id ) ->
             $("#protocol-icmp-main-select").data('protocal-main', id)
@@ -121,35 +122,62 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( id
         saveSgModal : ( event ) ->
             sg_direction = $('#sg-modal-direction input:checked').val()
             descrition_dom = $('#securitygroup-modal-description')
+            rule = {}
             if(descrition_dom.hasClass('input'))
                 sg_descrition = descrition_dom.val()
             else
                 sg_descrition = descrition_dom.html()
+
             protocol_type =  $('#modal-protocol-select').data('protocal-type')
+            rule.protocol = protocol_type
             protocol_val = $("#protocol-icmp-main-select").data('protocal-main')
             protocol_val_sub = $("#protocol-icmp-main-select").data('protocal-sub')
             switch protocol_type
-                when "tcp" then protocol_val = $( '#sg-protocol-tcp input' ).val()
-                when "udp" then protocol_val = $( '#sg-protocol-udp input' ).val()
-                when "icmp" then console.log 'protocol:' + protocol_type
-                when "custom" then protocol_val = $( '#sg-protocol-custom input' ).val()
-                when "all" then protocol_val = ""
-                else protocol_val = ""
-            console.log 'dir:' + sg_direction
-            console.log 'desc:' + sg_descrition
-            console.log 'protocol:' + protocol_val
+                when "tcp", "udp"
+                    protocol_val = $( '#sg-protocol-tcp input' ).val()
+                    if '-' in protocol_val
+                        rule.fromport = protocol_val.split('-')[0].trim()
+                        rule.toport = protocol_val.split('-')[1].trim()
+                    else
+                        rule.fromport = protocol_val
+                        rule.toport = protocol_val
+
+                when "icmp"
+                    rule.fromport = protocol_val
+                    rule.toport = protocol_val_sub
+
+                when "custom"
+                    rule.protocol = $( '#sg-protocol-custom input' ).val()
+                    rule.fromport = ""
+                    rule.toport = ""
+
+                when "all"
+                    rule.protocol = -1
+                    rule.fromport = ""
+                    rule.toport = ""
+
+            rule.direction = sg_direction
+            rule.ipranges = sg_descrition
+
+            sg_uid = $("#sg-secondary-panel").attr "uid"
+
+            this.trigger "SET_SG_RULE", sg_uid, rule
+
 
         editablelabelClick : ( event ) ->
             editablelabel.create.call $(event.target)
 
         tcpValueChange : ( event ) ->
             protocol_val = $( '#sg-protocol-tcp input' ).val()
+            null
 
         udpValueChange : ( event ) ->
             protocol_val = $( '#sg-protocol-udp input' ).val()
+            null
 
         customValueChange : ( event ) ->
             protocol_val = $( '#sg-protocol-custom input' ).val()
+            null
     }
 
     view = new InstanceView()

@@ -71,7 +71,7 @@ define [ 'jquery',
                     stack_main.loadModule()
 
                 #show az property
-                if  MC.canvas_data.layout.component.group[ uid ].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                if  MC.canvas_data.layout.component.group[ uid ] and MC.canvas_data.layout.component.group[ uid ].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
                     az_main.loadModule uid
 
                 #other sub property

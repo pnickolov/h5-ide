@@ -2222,8 +2222,8 @@ MC.canvas.event.groupResize = {
 			group_id = parent.attr('id'),
 			group_width = Math.ceil(target.attr('width') / 10),
 			group_height = Math.ceil(target.attr('height') / 10),
-			group_left = Math.ceil((parent_offset.left - canvas_offset.left + offsetX ) / 10),
-			group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY ) / 10) + 1,
+			group_left = Math.ceil((parent_offset.left - canvas_offset.left + offsetX) / 10),
+			group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10) + 1,
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
 			node_minX = [],
@@ -2232,6 +2232,9 @@ MC.canvas.event.groupResize = {
 			node_maxY = [],
 			group_padding = MC.canvas.GROUP_PADDING,
 			parentGroup = MC.canvas.parentGroup(group_id, parent.data('class'), group_left, group_top, group_left + group_width, group_top + group_height),
+			parent_data,
+			parent_size,
+			parent_coordinate,
 			node_data,
 			group_node_data,
 			group_maxX,
@@ -2352,6 +2355,35 @@ MC.canvas.event.groupResize = {
 					group_left = group_minX;
 				}
 				break;
+		}
+
+		if (parentGroup)
+		{
+			parent_data = layout_group_data[ parentGroup.id ];
+			parent_size = parent_data.size;
+			parent_coordinate = parent_data.coordinate;
+
+			if (group_left < parent_coordinate[0])
+			{
+				group_width = group_left + group_width - parent_coordinate[0];
+				group_left = parent_coordinate[0] + MC.canvas.GROUP_PADDING;
+			}
+
+			if (group_top < parent_coordinate[1])
+			{
+				group_height = group_top + group_height - parent_coordinate[1];
+				group_top = parent_coordinate[1] + MC.canvas.GROUP_PADDING;
+			}
+
+			if (group_width + group_left > parent_coordinate[0] + parent_size[0] - MC.canvas.GROUP_PADDING)
+			{
+				group_width = parent_coordinate[0] + parent_size[0] - MC.canvas.GROUP_PADDING - group_left;
+			}
+
+			if (group_height + group_top > parent_coordinate[1] + parent_size[1] - MC.canvas.GROUP_PADDING)
+			{
+				group_height = parent_coordinate[1] + parent_size[1] - MC.canvas.GROUP_PADDING - group_top;
+			}
 		}
 
 		if (event.data.group_child.length === MC.canvas.areaChild(group_id, group_left, group_top, group_left + group_width, group_top + group_height).length)
@@ -2476,7 +2508,7 @@ MC.canvas.volume = {
 				.css(coordinate)
 				.show();
 
-			$('#' + node.id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-active.png');
+			MC.canvas.update(node.id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_ACTIVE);
 		}
 	},
 
@@ -2549,7 +2581,7 @@ MC.canvas.volume = {
 			target_id = bubble_box.data('target-id');
 			bubble_box.remove();
 
-			$('#' + target_id + '_volume_status').attr('href', '../assets/images/ide/icon/instance-volume-attached-normal.png');
+			MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_NORMAL);
 
 			$(document)
 				.off('keyup', MC.canvas.volume.delete)
@@ -2746,7 +2778,9 @@ MC.canvas.volume = {
 
 					target_volume_data.push('#' + volume_id);
 
-					$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+					$('#instance_volume_number').text(target_volume_data.length);
+
+					MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
 
 					MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
@@ -2762,7 +2796,7 @@ MC.canvas.volume = {
 
 					MC.canvas.data.set('component.' + original_node_id + '.resource.BlockDeviceMapping', original_node_volume_data);
 
-					$('#' + original_node_id + '_volume_number').text(original_node_volume_data.length);
+					MC.canvas.update(original_node_id, 'text', 'volume_number', original_node_volume_data.length);
 				}
 			}
 			else if (!event.data.action)
@@ -2781,7 +2815,9 @@ MC.canvas.volume = {
 
 				target_volume_data.push('#' + volume_id);
 
-				$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+				$('#instance_volume_number').text(target_volume_data.length);
+
+				MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
 
 				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 

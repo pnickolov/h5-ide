@@ -70,7 +70,7 @@ define [ 'jquery',
             #render
             view.render( data )
 
-            view.on "SELECT_AZ", selectAZ
+            view.on "SELECT_AZ", updateAZ
             null
         null
 
@@ -95,7 +95,7 @@ define [ 'jquery',
 
         possible_list
 
-    selectAZ = ( oldZoneID, newZone ) ->
+     updateAZ = ( oldZoneID, newZone ) ->
 
         oldZone = MC.canvas_data.layout.component.group[oldZoneID]
 
@@ -109,16 +109,22 @@ define [ 'jquery',
         if oldZone.name == newZone
             return
 
-        # !!!!!!!!!! TODO:
-        # Update data ( and hosts' data )
-        oldZoneName  = oldZone.name
-        oldZone.name = newZone
+        # Update data ( and instance、volume、eni )
+        oldZoneName   = oldZone.name
+        oldZone.name  = newZone
+        resource_type = constant.AWS_RESOURCE_TYPE
         for uid, component of MC.canvas_data.component
-            placement     = component.resource.Placement
-            resource_type = constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
-            if component.type == resource_type and placement.AvailabilityZone == oldZoneName
-                placement.AvailabilityZone = newZone
+            console.log component.type, component.AvailabilityZone, oldZoneName
+
+            if component.type == resource_type.AWS_EC2_Instance
+                placement = component.resource.Placement
+                if placement.AvailabilityZone == oldZoneName
+                    placement.AvailabilityZone = newZone
+
+            else if component.type == resource_type.AWS_EBS_Volume
+                if component.resource.AvailabilityZone == oldZoneName
+                    component.resource.AvailabilityZone = newZone
 
         # Update Canvas
         MC.canvas.update oldZoneID, "text", "az_name", newZone

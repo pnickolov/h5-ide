@@ -70,8 +70,7 @@ define [ 'jquery',
                     model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
 
             model.on 'change:availability_zone', () ->
-                console.log 'availability_zone list changed'
-                ide_event.trigger ide_event.RELOAD_AZ
+                ide_event.trigger ide_event.RELOAD_AZ, model.get 'availability_zone'
 
     unLoadModule = () ->
         #view.remove()

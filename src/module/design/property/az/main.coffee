@@ -4,8 +4,9 @@
 
 define [ 'jquery',
          'text!/module/design/property/az/template.html',
+         'constant'
          'event'
-], ( $, template, ide_event ) ->
+], ( $, template, constant, ide_event ) ->
 
     #private
     loadModule = ( uid, type ) ->
@@ -31,11 +32,8 @@ define [ 'jquery',
                     available : true
                 ]
 
-                refreshList = () ->
+                refreshList = ( new_az_data ) ->
                     
-                    # ec2_model has fetched availabilty zone infos.
-
-                    new_az_data = MC.data.config[ MC.canvas_data.region ]?.zone
                     # The fetch fails, wait for next fetch.
                     if !new_az_data
                         return
@@ -51,7 +49,8 @@ define [ 'jquery',
                         new_data =
                             id        : uid
                             component : MC.canvas_data.layout.component.group[uid]
-                            az_list   : possibleAZList( new_az_data.item, new_data.component.name )
+
+                        new_data.az_list = possibleAZList( new_az_data.item, new_data.component.name )
 
                         view.render( new_data )
 
@@ -84,12 +83,17 @@ define [ 'jquery',
 
         used_list = {}
         for uid, az of MC.canvas_data.layout.component.group
-            used_list[az] = true
+            used_list[az.name] = true
 
-        possible_list = for az in datalist when used_az_list[az.zoneName] isnt true
-            name      : az.zoneName
-            selected  : az.zoneName  == nselectedItemName
-            available : az.zoneState =="available"
+        possible_list = []
+        for az in datalist
+            if az.zoneName == selectedItemName or used_list[az.zoneName] != true
+                possible_list.push
+                    name      : az.zoneName
+                    selected  : az.zoneName  == selectedItemName
+                    available : az.zoneState =="available"
+
+        possible_list
 
     selectAZ = ( oldZoneID, newZone ) ->
 
@@ -109,8 +113,15 @@ define [ 'jquery',
         # Update data ( and hosts' data )
         oldZoneName  = oldZone.name
         oldZone.name = newZone
+        for uid, component of MC.canvas_data.component
+            placement     = component.resource.Placement
+            resource_type = constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+            if component.type == resource_type and placement.AvailabilityZone == oldZoneName
+                placement.AvailabilityZone = newZone
 
         # Update Canvas
+        MC.canvas.update oldZoneID, "text", "", newZone
 
 
 

@@ -611,7 +611,19 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ELB_JSON.data);
 				component_data.name = option.name;
-
+				component_data.resource.LoadBalancerName = option.name;
+				
+				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
+					
+					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
+					component_data.resource.SecurityGroups.push('@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId');
+					
+				}else if (MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
+					component_data.resource.SecurityGroups.push('@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId');
+				}else {
+					component_data.resource.Scheme = 'internet-facing'	
+				}
+				
 				component_layout = $.extend(true, {}, MC.canvas.ELB_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}

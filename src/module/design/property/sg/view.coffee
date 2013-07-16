@@ -7,7 +7,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
     InstanceView = Backbone.View.extend {
 
         el       : $ document
-        tagName  : $ '.property-details'
+        tagName  : $ '#sg-secondary-panel-wrap'
 
         template : Handlebars.compile $( '#property-sg-tmpl' ).html()
 
@@ -36,10 +36,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
         render     : () ->
             console.log 'property:sg render'
-            $( '.property-details' ).html this.template this.model.attributes
+            $( '#sg-secondary-panel-wrap' ).html this.template this.model.attributes
             fixedaccordion.resize()
             #
-            secondary_panel_wrap = $('#sg-secondary-panel')
+            secondary_panel_wrap = $('#sg-secondary-panel-wrap')
             secondary_panel_wrap.animate({
                 right: 0
             }, {
@@ -85,11 +85,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
         removeRulefromList: (event, id) ->
             rule = {}
-            rule.inbound = $(event.target).parents('li').first().data('inbound')
-            rule.protocol = $(event.target).parents('li').first().data('protocol')
-            rule.fromport = $(event.target).parents('li').first().data('fromport')
-            rule.toport = $(event.target).parents('li').first().data('toport')
-            rule.iprange = $(event.target).parents('li').first().data('iprange')
+            li_dom = $(event.target).parents('li').first()
+            rule.inbound = li_dom.data('inbound')
+            rule.protocol = li_dom.data('protocol')
+            rule.fromport = li_dom.data('fromport')
+            rule.toport = li_dom.data('toport')
+            rule.iprange = li_dom.data('iprange')
             sg_uid = $("#sg-secondary-panel").attr "uid"
             this.trigger 'REMOVE_SG_RULE', sg_uid, rule
             $(event.target).parents('li').first().remove()
@@ -104,9 +105,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
             $('#sg-protocol-select-result').find('.show').removeClass('show')
             $('#sg-protocol-' + id).addClass('show')
             $('#modal-protocol-select').data('protocal-type', id)
-            protocol_type = id
-            protocol_val = ""
-            protocol_val_sub = ""
             null
 
         icmpMainSelect : ( event, id ) ->
@@ -124,7 +122,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
             this.trigger 'SET_SG_NAME', sg_uid, event.target.value
 
         setSGDescription : ( event ) ->
-
             sg_uid = $("#sg-secondary-panel").attr "uid"
             this.trigger 'SET_SG_DESC', sg_uid, event.target.value
 
@@ -177,15 +174,15 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
             editablelabel.create.call $(event.target)
 
         tcpValueChange : ( event ) ->
-            protocol_val = $( '#sg-protocol-tcp input' ).val()
+            #protocol_val = $( '#sg-protocol-tcp input' ).val()
             null
 
         udpValueChange : ( event ) ->
-            protocol_val = $( '#sg-protocol-udp input' ).val()
+            #protocol_val = $( '#sg-protocol-udp input' ).val()
             null
 
         customValueChange : ( event ) ->
-            protocol_val = $( '#sg-protocol-custom input' ).val()
+            #protocol_val = $( '#sg-protocol-custom input' ).val()
             null
     }
 

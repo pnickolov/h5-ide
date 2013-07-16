@@ -1660,10 +1660,10 @@ td.table-action a.btn {
 .sidebar-hider {
 	position: absolute;
 	top: 40%;
-	z-index: 200;
 	padding: 20px 3px;
 	background: #ccc;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+	z-index: 20;
 }
 
 a.sidebar-hider {
@@ -2296,7 +2296,7 @@ a.sidebar-hider {
 .sg-rule-filter .selectbox .dropdown-menu {
 	top: 30px;
 }
-#sg-secondary-panel {
+#sg-secondary-panel-wrap {
 	position: absolute;
 	width: 280px;
 	right: -280px;

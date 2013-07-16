@@ -13,8 +13,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         #events   :
 
-        render     : () ->
+        render     : ( attributes ) ->
             console.log 'property:az render'
+            $( '.property-details' ).html this.template attributes
 
     }
 

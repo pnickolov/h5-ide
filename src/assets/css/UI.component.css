@@ -377,7 +377,7 @@ textarea {
 	display: inline-block;
 	vertical-align: middle;
 	position: relative;
-	margin: 0 5px;
+	margin: 0 5px 0 0;
 }
 
 .checkbox label {
@@ -1090,11 +1090,14 @@ textarea {
 }
 
 .selectbox .dropdown-toggle {
-	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+	border-radius: 2px;
 	position: relative;
 }
 
-.selectbox .cur-value{
+.selectbox .cur-value {
+	font-size: 12px;
 	display: inline-block;
 }
 
@@ -1275,36 +1278,60 @@ textarea {
 	position: absolute;
 	right: 0;
 	top: 0;
-	height: 32px;
-	width: 34px;
+	height: 43px;
+	width: 43px;
 	overflow: hidden;
-	float: right;
-	background: #ccc;
+	background-color: #F5F5F5;
+	background-image: -moz-linear-gradient(top, #FFF, #E6E6E6);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#FFF), to(#E6E6E6));
+	background-image: -webkit-linear-gradient(top, #FFF, #E6E6E6);
+	background-image: -o-linear-gradient(top, #FFF, #E6E6E6);
+	background-image: linear-gradient(to bottom, #FFF, #E6E6E6);
+	background-repeat: repeat-x;
+	border-left: 1px solid #ccc;
 }
+
+.search-bar:hover {
+	background-image: none;
+	background-color: #E6E6E6;
+}
+
 .search-bar .icon-search {
 	display: block;
-	float: left;
-	line-height: 30px;
+	position: absolute;
+	height: 43px;
+	width: 43px;
 	cursor: pointer;
-	padding: 0 10px;
+	text-align: center;
+	line-height: 43px;
 }
+
 .search-bar.open .icon-search {
 	cursor: default;
 }
+
 .search-bar input {
 	display: block;
-	float: left;
 	position: absolute;
-	left: 34px;
-	width: 186px;
+	border: none;
+	left: 43px;
+	width: 193px;
+	border: none;
+	font-size: 12px;
+	padding: 15px 8px;
 }
+
+.search-bar input:focus {
+	border: none;
+}
+
 .search-bar .icon-cancel {
 	display: block;
-	float: left;
 	line-height: 30px;
 	cursor: pointer;
 	position: absolute;
-	left: 226px;
+	left: 224px;
+	top: 8px;
 }
 
 /* filter */
@@ -1341,11 +1368,12 @@ textarea {
 
 .property-control-group > label{
 	margin-bottom: 8px;
-	color: #666;
+	color: #1a1a1a;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
 
 .property-control-group .input {
-	width: 230px;
+	width: 220px;
 }
 
 .property-control-group.error > label.left {
@@ -1390,17 +1418,18 @@ textarea {
 }
 
 .property-control-group .selectbox .dropdown-toggle {
-	width: 200px;
+	width: 100%;
+	box-sizing: border-box;
 	display: inline-block;
 }
 
 .property-control-group .selectbox .dropdown-toggle {
-	padding: 8px 20px 8px 8px;
+	padding: 6px 20px 6px 8px;
 }
 
 .property-control-group .selectbox.selectbox-mega .dropdown-toggle {
-	padding: 8px 20px 8px 8px;
-	width: 230px;
+	padding: 6px 20px 6px 8px;
+	width: 100%;
 }
 
 .property-control-group .selectbox.selectbox-mega .dropdown-menu {

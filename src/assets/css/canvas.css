@@ -259,6 +259,11 @@
 	stroke: #C6C4C4;
 }
 
+.AWS-VPC-VPC.selected .group-vpc {
+	stroke: #dcdcdc;
+	fill: rgba(255, 255, 255, 0);
+}
+
 .AWS-VPC-VPC .group-label {
 	fill: #aaa;
 }
@@ -276,6 +281,11 @@
 	stroke: #F69722;
 }
 
+.AWS-EC2-AvailabilityZone.selected .group-az {
+	stroke: #f7941d;
+	fill: rgba(255, 255, 255, 0);
+}
+
 .AWS-EC2-AvailabilityZone .group-label {
 	fill: #F69722;
 }
@@ -291,6 +301,11 @@
 .AWS-VPC-Subnet:hover .group-subnet,
 .dropable-group .group-subnet {
 	stroke: #C6C4C4;
+}
+
+.AWS-VPC-Subnet.selected .group-subnet {
+	stroke: #dbd7d7;
+	fill: rgba(255, 255, 255, 0);
 }
 
 .AWS-VPC-Subnet .group-label {

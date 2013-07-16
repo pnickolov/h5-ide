@@ -31,7 +31,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             require [ 'canvas_layout' ], ( canvas_layout ) -> canvas_layout.listen()
 
         showProperty : ( event, uid ) ->
-            console.log uid
+            console.log 'showProperty, uid = ' + uid
             ide_event.trigger ide_event.OPEN_PROPERTY, uid
 
     }

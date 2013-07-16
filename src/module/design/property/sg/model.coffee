@@ -30,12 +30,12 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                     sg_detail.members = value.member.length
 
-                    if MC.canvas_data.component[uid].resource.IpPermissionsEgress
+                    if MC.canvas_data.component[uid].resource.IpPermissionsEgress.length != 0
 
-                            sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
-                        else
+                        sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
+                    else
 
-                            sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length
+                        sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length
 
                     sg_detail.member_names = []
 

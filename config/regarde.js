@@ -12,7 +12,7 @@ module.exports = {
 
 	coffee: {
 		files: '<%= coffeefiles %>',
-		tasks: [ 'coffeelint:files', 'coffee', 'livereload' ]
+		tasks: [ 'coffeelint:files', 'coffee:compile_fast', 'livereload' ]
 	},
 
 	index: {

@@ -35,7 +35,7 @@ var
 
 	mainContentResize = function()
 	{
-		$('.main-content').height(window.innerHeight - 95);
+		$('.main-content').height(window.innerHeight - 92);
 	}
 ;
 

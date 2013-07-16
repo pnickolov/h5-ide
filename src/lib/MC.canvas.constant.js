@@ -427,19 +427,7 @@ var constant_data = {
 					}
 				],
 				"IpPermissionsEgress": [
-					{
-					"IpProtocol": "tcp",
-					"IpRanges": "0.0.0.0/0",
-					"FromPort": "22",
-					"ToPort": "22",
-					"Groups": [
-						{
-						"GroupId": "",
-						"UserId": "",
-						"GroupName": ""
-						}
-					]
-					}
+
 				],
 				"GroupId": "",
 				"Default": "true",

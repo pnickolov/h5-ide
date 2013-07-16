@@ -11,7 +11,8 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
         initialize : ->
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.resizeCanvasPanel
-            $( document ).delegate '#svg_canvas', 'CANVAS_NODE_SELECTED', this.showProperty
+            $( document ).delegate '#svg_canvas', 'CANVAS_NODE_SELECTED',     this.showProperty
+            $( document ).delegate '#svg_canvas', 'CANVAS_NODE_CHANGE_GROUP', this.changeGroup
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -33,6 +34,9 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
         showProperty : ( event, uid ) ->
             console.log 'showProperty, uid = ' + uid
             ide_event.trigger ide_event.OPEN_PROPERTY, uid
+
+        changeGroup : ( event, src_node, tgt_group ) ->
+            console.log 'changeGroup, src_node = ' + src_node + ', tgt_group = ' + tgt_group
 
     }
 

@@ -32,6 +32,7 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_SG             : 'OPEN_SG'
         OPEN_INSTANCE       : 'OPEN_INSTANCE'
         RELOAD_PROPERTY     : 'RELOAD_PROPERTY'
+        RELOAD_AZ           : 'RELOAD_AZ'
 
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'

@@ -41,6 +41,15 @@ define [ 'jquery',
 
                 model.removeSGRule uid, rule
 
+            view.on 'SET_SG_RULE', ( uid, rule ) ->
+
+                model.setSGRule uid, rule
+
+            view.on 'SET_SG_DESC', ( uid, value ) ->
+
+                model.setSGDescription uid, value
+
+
     unLoadModule = () ->
         #view.remove()
 

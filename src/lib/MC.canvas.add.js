@@ -130,7 +130,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////3.az label
 				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
-					'class': 'group-label name'
+					'class': 'group-label name',
+					'id': group.id + '_az_name'
 				})
 
 			).attr({

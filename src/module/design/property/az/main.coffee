@@ -3,10 +3,9 @@
 ####################################
 
 define [ 'jquery',
-         'ec2_model',
          'text!/module/design/property/az/template.html',
          'event'
-], ( $, ec2_model, template, ide_event ) ->
+], ( $, template, ide_event ) ->
 
     #private
     loadModule = ( uid, type ) ->
@@ -41,7 +40,7 @@ define [ 'jquery',
                     if !new_az_data
                         return
 
-                    ec2_model.off 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', refreshList
+                    ide_event.off ide_event.RELOAD_AZ, refreshList
 
                     # wait for 'Resouce Panel Module' to process the data
                     # the processed data will be stored at MC.data.config.zone
@@ -62,7 +61,7 @@ define [ 'jquery',
                 # If the az list is null/empty
                 # We might want to listen ide_event.RELOAD_RESOURCE
                 # so that we can update the list
-                ec2_model.on 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', refreshList
+                ide_event.on ide_event.RELOAD_AZ, refreshList
 
             else
                 data.az_list = possibleAZList( data.az_list, data.component.name )

@@ -9,11 +9,19 @@
 
 define [ 'jquery', 'event' ], ( $, template, ide_event ) ->
 
-	#change node from one group to another group
-	nodeChangeGroup = (src_node, tgt_group) ->
+	#change node from one parent to another parent
+	changeNodeParent = (src_node, tgt_parent) ->
+		#to-do
+
+		null
+
+	#change group from one parent to another parent
+	changeGroupParent = (src_group, tgt_parent) ->
 		#to-do
 
 		null
 
 
-	nodeChangeGroup : nodeChangeGroup
+
+	changeNodeParent  : changeNodeParent
+	changeGroupParent : changeGroupParent

@@ -71,7 +71,8 @@ define [ 'underscore', 'backbone' ], () ->
         NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
 
         #canvas
-        CANVAS_NODE_CHANGE_GROUP : 'CANVAS_NODE_CHANGE_GROUP'
+        CANVAS_NODE_CHANGE_PARENT  : 'CANVAS_NODE_CHANGE_PARENT'
+        CANVAS_GROUP_CHANGE_PARENT : 'CANVAS_GROUP_CHANGE_PARENT'
 
         constructor : ->
             _.extend this, Backbone.Events

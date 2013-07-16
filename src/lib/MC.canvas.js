@@ -1568,12 +1568,11 @@ MC.canvas.event.dragable = {
 					target.remove();
 					$('#node_layer').append(clone_node);
 
-					//trigger event
-					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + 10, coordinate.y + 10);
-
-					$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_GROUP", {
-						node: target_id,
-						new_group: parentGroup.id
+					//after change node to another group,trigger event
+					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID);
+					$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_PARENT", {
+						src_node: target_id,
+						tgt_parent: parentGroup.id
 					});
 				}
 			}
@@ -1702,6 +1701,12 @@ MC.canvas.event.dragable = {
 
 							MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
 						}
+					});
+
+					//after change node to another group,trigger event
+					$("#svg_canvas").trigger("CANVAS_GROUP_CHANGE_PARENT", {
+						src_group: target_id,
+						tgt_parent: parentGroup.id
 					});
 				}
 			}

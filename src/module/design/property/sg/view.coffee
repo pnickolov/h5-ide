@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sg
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 'UI.scrollbar' ], ( ide_event, MC ) ->
 
     InstanceView = Backbone.View.extend {
 
@@ -55,11 +55,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
         openInstance : () ->
             console.log 'openInstance'
-            secondary_panel_wrap = $('#sg-secondary-panel')
+            secondary_panel_wrap = $('#sg-secondary-panel-wrap')
             secondary_panel_wrap.animate({
                 right: "-280px"
             }, {
-                duration: 500,
+                duration: 200,
                 specialEasing: {
                     width: 'linear'
                 },
@@ -75,12 +75,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
         #SG SecondaryPanel
         showEditRuleModal : (event) ->
             modal MC.template.modalSGRule {isAdd:false}, true
+            scrollbar.init()
 
         showCreateRuleModal : (event) ->
             isclassic = false
             if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
                 isclassic = true
             modal MC.template.modalSGRule {isAdd:true, isclassic:isclassic}, true
+            scrollbar.init()
             return false
 
         removeRulefromList: (event, id) ->

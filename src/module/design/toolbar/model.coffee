@@ -4,12 +4,43 @@
 
 define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'constant' ], (MC, Backbone, $, _, ide_event, stack_model, constant) ->
 
+    #websocket
+    ws = MC.data.websocket
+
     #private
     ToolbarModel = Backbone.Model.extend {
 
         defaults :
-            'zoomin_flag'   : true
-            'zoomout_flag'  : true
+            'toolbar_flag'  : null
+            'stack_name'    : null
+
+        setFlag : (type, value=null) ->
+            me = this
+
+            #set stack name
+            if MC.canvas_data.name
+                me.set 'stack_name', MC.canvas_data.name
+
+            toolbar_flag_list = me.get 'toolbar_flag'
+            if not toolbar_flag_list
+                toolbar_flag_list = { 'duplicate' : false, 'delete' : false, 'zoomin' : true, 'zoomout' : true }
+
+            if type is 'NEW_STACK'
+                toolbar_flag_list['duplicate']  = false
+                toolbar_flag_list['delete']     = false 
+            else if type is 'OPEN_STACK'
+                toolbar_flag_list['duplicate']  = true
+                toolbar_flag_list['delete']     = true
+            else if type is 'SAVE_STACK'
+                toolbar_flag_list['duplicate']  = true
+                toolbar_flag_list['delete']     = true
+            else if type is 'ZOOMIN_STACK'
+                toolbar_flag_list['zoomin']     = value
+            else if type is 'ZOOMOUT_STACK'
+                toolbar_flag_list['zoomout']    = value
+
+            me.set 'toolbar_flag', toolbar_flag_list
+            me.trigger 'UPDATE_TOOLBAR'
 
         #save stack
         saveStack : () ->
@@ -35,6 +66,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
                         #call save png
                         me.savePNG true
+
+                        #set toolbar flag
+                        me.setFlag 'SAVE_STACK'
                     else
                         me.trigger 'TOOLBAR_STACK_SAVE_ERROR'
 
@@ -61,6 +95,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
                         #call save png
                         me.savePNG true
+
+                        #set toolbar flag
+                        me.setFlag 'SAVE_STACK'
+
                     else
                         me.trigger 'TOOLBAR_STACK_SAVE_ERROR'
 
@@ -68,11 +106,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
         duplicateStack : (new_name) ->
             me = this
 
-            #check if there are changes
-            ori_data = MC.canvas_property.original_json
-            new_data = JSON.stringify( MC.canvas_data )
-
-            if not MC.canvas_data.id or ori_data != new_data
+            if not MC.canvas_data.id or me.isChanged()
                 me.saveStack()
 
             stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
@@ -83,9 +117,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                 if !result.is_error
                     console.log 'save as stack successfully'
 
-                    me.trigger 'TOOLBAR_STACK_DUPLICATE_SUCCESS'
+                    #update stack name list
+                    if new_name not in MC.data.stack_list[MC.canvas_data.region]
+                        MC.data.stack_list[MC.canvas_data.region].push new_name
 
-                    #update stack list
+                    #trigger event
+                    me.trigger 'TOOLBAR_STACK_DUPLICATE_SUCCESS'
                     ide_event.trigger ide_event.UPDATE_STACK_LIST
                 else
                     me.trigger 'TOOLBAR_STACK_DUPLICATE_ERROR'
@@ -102,9 +139,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                 if !result.is_error
                     console.log 'send delete stack successful message'
 
+                    #update stack name list
+                    if MC.canvas_data.name in MC.data.stack_list[MC.canvas_data.region]
+                        index = MC.data.stack_list[MC.canvas_data.region].indexOf(MC.canvas_data.name)
+                        MC.data.stack_list[MC.canvas_data.region].splice(index, 1)
+
                     #trigger event
                     me.trigger 'TOOLBAR_STACK_DELETE_SUCCESS'
                     ide_event.trigger ide_event.STACK_DELETE, MC.canvas_data.name, MC.canvas_data.id
+
                 else
                     me.trigger 'TOOLBAR_STACK_DELETE_ERROR'
 
@@ -112,16 +155,41 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
         runStack : ( app_name ) ->
             me = this
 
+            if not MC.canvas_data.id or me.isChanged
+                me.saveStack()
+
+            #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
             stack_model.run { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, app_name
             stack_model.once 'STACK_RUN_RETURN', (result) ->
                 console.log 'STACK_RUN_RETURN'
                 console.log result
 
                 if !result.is_error
-                    console.log 'send run stack successful message'
-                    me.trigger 'TOOLBAR_STACK_RUN_SUCCESS'
+                    console.log 'run stack request successful'
+                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS'
+
+                    if ws
+                        req_id = result.resolved_data.id
+                        console.log "request id:" + req_id
+                        query = ws.collection.request.find({id:req_id})
+                        handle = query.observeChanges {
+                            changed : (id, req) ->
+                                if req.state == "Done"
+                                    handle.stop()
+                                    console.log 'stop handle'
+
+                                    #update app name list
+                                    if app_name not in MC.data.app_list[MC.canvas_data.region]
+                                        MC.data.app_list[MC.canvas_data.region].push app_name
+
+                                    #push event
+                                    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                                    this.trigger 'TOOLBAR_STACK_RUN_SUCCESS'
+                        }
+                    null
+
                 else
-                    me.trigger 'TOOLBAR_STACK_RUN_ERROR'
+                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_ERROR'
 
         #zoomin
         zoomInStack : () ->
@@ -133,7 +201,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
             if MC.canvas_property.SCALE_RATIO <= 1
                 zoomin_flag = false
 
-            me.set 'zoomin_flag', zoomin_flag
+            me.setFlag('ZOOMIN_STACK', zoomin_flag)
 
             null
 
@@ -147,7 +215,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
             if MC.canvas_property.SCALE_RATIO >= 1.8
                 zoomout_flag = false
 
-            me.set 'zoomout_flag', zoomout_flag
+            me.setFlag('ZOOMOUT_STACK', zoomout_flag)
 
             null
 
@@ -174,6 +242,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     else
                         #
             }
+
+        isChanged : () ->
+            #check if there are changes
+            ori_data = MC.canvas_property.original_json
+            new_data = JSON.stringify( MC.canvas_data )
+
+            if ori_data != new_data
+                return true
+            else
+                return false
 
     }
 

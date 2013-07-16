@@ -18,6 +18,13 @@ var constant_data = {
 
 	GROUP_PADDING: 2,
 
+	//eip icon
+	ICON_INSTANCE_EIP_ON: '../assets/images/ide/icon/instance-eip-on.png',
+	ICON_INSTANCE_EIP_OFF: '../assets/images/ide/icon/instance-eip-off.png',
+	//elb icon
+	ICON_ELB_INTERNAL_CANVAS: '../assets/images/ide/icon/elb-internal-canvas.png',
+	ICON_ELB_INTERNET_CANVAS: '../assets/images/ide/icon/elb-internet-canvas.png',
+
 	//constant for _route()
 	MINDIST: 20,
 	TOL: 0.1,
@@ -541,7 +548,7 @@ var constant_data = {
 					}
 				}],
 				"DNSName": "",
-				"Scheme": "internal",
+				"Scheme": "", //internal | internet-facing
 				"CanonicalHostedZoneName": "",
 				"Instances": [],
 				"SourceSecurityGroup": {

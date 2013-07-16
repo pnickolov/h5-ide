@@ -7,8 +7,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
     AZModel = Backbone.Model.extend {
 
         defaults :
-            'set_xxx'    : null
-            'get_xxx'    : null
+            'set_availability_zone'    : null
+            'get_availability_zone'    : null
 
         initialize : ->
             #listen

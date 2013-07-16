@@ -70,6 +70,7 @@ define [ 'jquery',
                 if uid is ''
                     stack_main.loadModule()
 
+<<<<<<< HEAD
                 switch MC.canvas_data.component[ uid ].type
                     #show instance property
                     when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid
@@ -102,6 +103,31 @@ define [ 'jquery',
                     #
                     else
                         #
+=======
+                #show instance property
+                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
+                    instance_main.loadModule uid
+
+                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume)
+                    volume_main.loadModule uid
+                #show vloume/snapshot property
+
+                #volume_main.loadModule()
+
+
+                #show elb property
+                #elb_main.loadModule()
+
+                #show az property
+                if MC.canvas_data.layout.component.group[uid] and (MC.canvas_data.layout.component.group[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone)
+                    az_main.loadModule uid
+
+                #show subnet property
+                #subnet_main.loadModule()
+
+                #show vpc_main property
+                #vpc_main.loadModule()
+>>>>>>> origin/develop
 
                 #temp
                 # setTimeout () ->

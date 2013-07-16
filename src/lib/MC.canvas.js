@@ -687,10 +687,8 @@ MC.canvas = {
 		x = x > 0 ? x : 0;
 		y = y > 0 ? y : 0;
 
-		var target = $(node);
-
-		MC.canvas.data.set('layout.component.' + target.data('type') + '.' + node.id + '.coordinate', [x, y]);
-		target.attr('transform', 'translate(' + (x * MC.canvas.GRID_WIDTH) + ',' + (y * MC.canvas.GRID_HEIGHT) + ')');
+		MC.canvas.data.set('layout.component.' + node.getAttribute('data-type') + '.' + node.id + '.coordinate', [x, y]);
+		node.setAttribute('transform', 'translate(' + (x * MC.canvas.GRID_WIDTH) + ',' + (y * MC.canvas.GRID_HEIGHT) + ')');
 	},
 
 	remove: function (node)
@@ -1278,7 +1276,10 @@ MC.canvas.layout = {
 
 		var canvas_size = MC.canvas.data.get('layout.size');
 
-		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
+		if (
+			option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC ||
+			option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC
+		)
 		{
 			//has vpc (create vpc, az, and subnet by default)
 			MC.canvas.add('AWS.VPC.VPC', {
@@ -1287,22 +1288,7 @@ MC.canvas.layout = {
 				'x': 2,
 				'y': 2
 			});
-
-			//var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
-			//	'name': 'ap-northeast-1'
-			//},{
-			//	'x': 19,
-			//	'y': 16
-			//});
-
-			//var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
-			//	'name': 'subnet1'
-			//},{
-			//	'x': 23,
-			//	'y': 20
-			//});
 		}
-
 
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
@@ -1465,8 +1451,18 @@ MC.canvas.event.dragable = {
 
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 			}
-			else
+			
+			if (event.data.target_type === 'group')
 			{
+				var target = event.data.target;
+
+				target.attr('class', function (index, key)
+				{
+					return key + ' selected';
+				});
+
+				MC.canvas.selected_node.push(target[0]);
+
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 			}
 		}
@@ -1537,6 +1533,7 @@ MC.canvas.event.dragable = {
 					child_stack = [],
 					unique_stack = [],
 					coordinate_fixed = false,
+					fixed_areaChild,
 					group_offsetX,
 					group_offsetY,
 					matched_child,
@@ -1585,6 +1582,11 @@ MC.canvas.event.dragable = {
 						coordinate.y = parent_data.coordinate[1] + parent_data.size[1] - MC.canvas.GROUP_PADDING - group_size[1];
 						coordinate_fixed = true;
 					}
+
+					if (coordinate_fixed)
+					{
+						fixed_areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
+					}
 				}
 
 				group_offsetX = coordinate.x - group_coordinate[0];
@@ -1594,10 +1596,14 @@ MC.canvas.event.dragable = {
 					coordinate.x > 1 &&
 					coordinate.y > 1 &&
 					(
-						coordinate_fixed ||
+						(
+							coordinate_fixed &&
+							event.data.groupChild.length === fixed_areaChild.length
+						)
+						||
 						(
 							!coordinate_fixed &&
-							match_place.is_matched &&
+							//match_place.is_matched &&
 							event.data.groupChild.length === unique_stack.length
 						)
 					)
@@ -1843,23 +1849,6 @@ MC.canvas.event.drawConnection = {
 		return false;
 	},
 
-	// draw: function (event)
-	// {
-	// 	$('#svg_canvas').off('mouseover', '.node', MC.canvas.event.drawConnection.draw);
-
-	// 	var from_node = event.data.originalTarget,
-	// 		to_node = $(this),
-	// 		port_name = event.data.port_name,
-	// 		to_port_name = to_node.find('.connectable-port').data('name');
-
-	// 	if (!from_node.is(to_node) && to_port_name !== undefined)
-	// 	{
-	// 		MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
-	// 	}
-
-	// 	return true;
-	// },
-
 	mouseup: function (event)
 	{
 		MC.paper.clear(MC.paper.drewLine);
@@ -2045,10 +2034,7 @@ MC.canvas.event.siderbarDrag = {
 				}
 			}
 
-			if (
-				target_component_type === 'group' &&
-				MC.canvas.isBlank("group", '', coordinate.x, coordinate.y)
-			)
+			if (target_component_type === 'group')
 			{
 				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
 				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);

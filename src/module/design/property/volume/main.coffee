@@ -44,7 +44,7 @@ define [ 'jquery',
 
                 view.model.setVolumeSize volume_uid, value
 
-                renderPropertyPanel( volume_uid )
+                #renderPropertyPanel( volume_uid )
 
             view.on 'VOLUME_TYPE_STANDARD', ()->
 
@@ -52,13 +52,12 @@ define [ 'jquery',
 
                 view.model.setVolumeTypeStandard volume_uid
 
-                #renderPropertyPanel( volume_uid )
+            view.on 'VOLUME_TYPE_IOPS', ( value )->
 
-            view.on 'VOLUME_TYPE_IOPS', ()->
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setVolumeTypeIops volume_uid
+                view.model.setVolumeTypeIops volume_uid, value
 
                 #renderPropertyPanel( volume_uid )
 
@@ -68,7 +67,11 @@ define [ 'jquery',
 
                 view.model.setVolumeIops volume_uid, value
 
-                renderPropertyPanel( volume_uid )
+                #renderPropertyPanel( volume_uid )
+
+            model.once 'REFRESH_PANEL', ()->
+
+                view.render( view.model.attributes )
 
 
     unLoadModule = () ->

@@ -1328,10 +1328,6 @@ MC.canvas.layout = {
 
 		}
 		
-		if (option.platform === MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
-			delete sg.resource.IpPermissionsEgress;
-		}
-
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT

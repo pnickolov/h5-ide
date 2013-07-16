@@ -55,10 +55,6 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             component_data = $.extend(true, {}, MC.canvas.SG_JSON.data)
 
-            if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-
-                delete component_data.resource.IpPermissionsEgress
-
             component_data.uid = uid
 
             gen_num = [0...500]

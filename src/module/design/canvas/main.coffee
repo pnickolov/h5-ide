@@ -8,7 +8,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', './modul
     loadModule = () ->
 
         #load remote module1.js
-        require [ './module/design/canvas/view' ], ( View ) ->
+        require [ './module/design/canvas/view', './module/design/canvas/model' ], ( View, model ) ->
 
             #view
             view       = new View()
@@ -32,15 +32,15 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', './modul
 
 
             #listen CANVAS_NODE_CHANGE_PARENT
-            ide_event.onLongListen ide_event.CANVAS_NODE_CHANGE_PARENT, ( src_node, tgt_parent ) ->
+            view.on ide_event.CANVAS_NODE_CHANGE_PARENT, ( src_node, tgt_parent ) ->
                 console.log 'canvas:CANVAS_NODE_CHANGE_PARENT, src_node = ' + src_node + ', tgt_parent = ' + tgt_parent
-                canvas.changeNodeParent src_node, tgt_parent
+                model.changeNodeParent src_node, tgt_parent
                 null
 
             #listen CANVAS_GROUP_CHANGE_PARENT
-            ide_event.onLongListen ide_event.CANVAS_GROUP_CHANGE_PARENT, ( src_group, tgt_parent ) ->
+            view.on ide_event.CANVAS_GROUP_CHANGE_PARENT, ( src_group, tgt_parent ) ->
                 console.log 'canvas:CANVAS_GROUP_CHANGE_PARENT, src_group = ' + src_group + ', tgt_parent = ' + tgt_parent
-                canvas.changeGroupParent src_group, tgt_parent
+                model.changeGroupParent src_group, tgt_parent
                 null
 
             null

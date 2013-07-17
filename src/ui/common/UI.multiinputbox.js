@@ -33,7 +33,7 @@ var multiinputbox;
       $wrapper.data("row-tmpl", tmpl);
     }
 
-    $wrapper.append(tmpl);
+    $wrapper.append(tmpl).trigger("ADD_ROW");
 
     var max = parseInt($wrapper.attr("data-max-row"));
     if ( max && max <= $wrapper.children().length ) {
@@ -48,6 +48,7 @@ var multiinputbox;
     var $wrapper = $t.closest(".multi-input").removeClass("max");
 
     $t.parent().remove();
+    $wrapper.trigger("REMOVE_ROW");
 
     if ( $wrapper.children().length == 1 ) {
       $wrapper.addClass("single-row");

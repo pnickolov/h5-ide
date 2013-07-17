@@ -564,49 +564,6 @@ MC.canvas = {
 				MC.canvas._addPad(start0, 1);
 				MC.canvas._addPad(end0, 1);
 
-
-				//draw rectangle for vertical / horizontal line
-				// if ( start0.x === end0.x )
-				// {
-				// 	//draw vertical line
-				// 	MC.paper.start({
-				// 		'filter': 'url(#dropshadow)',
-				// 		'stroke': 'none',
-				// 		'stroke-width': 0,
-				// 		'fill': connection_option.color
-				// 	});
-
-				// 	var top_p = start0;
-				// 	var bottom_p = end0;
-				// 	if ( start0.y > end0.y )
-				// 	{
-				// 		top_p = end0;
-				// 		bottom_p = start0;
-				// 	}
-				// 	MC.paper.rectangle(top_p.x, top_p.y, MC.canvas.LINE_STROKE_WIDTH , bottom_p.y - top_p.y );
-				// }
-				// else if ( start0.y === end0.y )
-				// {
-				// 	//draw horizontal line
-				// 	MC.paper.start({
-				// 		'filter': 'url(#dropshadow)',
-				// 		'stroke': 'none',
-				// 		'stroke-width': 0,
-				// 		'fill': connection_option.color
-				// 	});
-
-				// 	var left_p = start0;
-				// 	var right_p = end0;
-				// 	if ( start0.y > end0.y )
-				// 	{
-				// 		left_p = end0;
-				// 		right_p = start0;
-				// 	}
-				// 	MC.paper.rectangle(left_p.x, left_p.y-2, right_p.x - left_p.x, MC.canvas.LINE_STROKE_WIDTH);
-				// }
-
-
-
 				if ( start0.x === end0.x || start0.y === end0.y )
 				{
 					//draw straight line
@@ -693,9 +650,11 @@ MC.canvas = {
 						'target': connection_target_data,
 						'auto': true,
 						'point': []
-					}
+					};
 				}
 				MC.canvas.data.set('layout.connection.' + svg_line.id, layout_connection_data);
+
+				return svg_line.id;
 			}
 		}
 	},
@@ -939,7 +898,7 @@ MC.canvas = {
 
 		platform = platform === 'custome-vpc' ? 'ec2-vpc' : platform;
 
-		is_matched = ($.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id);
+		is_matched = (is_option_canvas || $.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id);
 
 		return {
 			'is_matched': is_matched,
@@ -947,48 +906,96 @@ MC.canvas = {
 		};
 	},
 
-	isBlank: function (type, target_id, x, y)
+	isBlank: function (type, target_id, x, y, width, height)
 	{
 		var children = MC.canvas.data.get('layout.component.' + type),
-			start_x = x * MC.canvas_property.SCALE_RATIO,
-			start_y = y * MC.canvas_property.SCALE_RATIO,
-			end_x = x + MC.canvas.COMPONENT_WIDTH_GRID * MC.canvas_property.SCALE_RATIO,
-			end_y = y + MC.canvas.COMPONENT_HEIGHT_GRID * MC.canvas_property.SCALE_RATIO,
 			isBlank = true,
-			coordinate;
+			start_x,
+			start_y,
+			end_x,
+			end_y
+			coordinate,
+			size;
 
-		$.each(children, function (key, item)
+		if (type === 'node')
 		{
-			coordinate = item.coordinate;
+			start_x = x * MC.canvas_property.SCALE_RATIO;
+			start_y = y * MC.canvas_property.SCALE_RATIO;
+			end_x = (x + MC.canvas.COMPONENT_WIDTH_GRID) * MC.canvas_property.SCALE_RATIO;
+			end_y = (y + MC.canvas.COMPONENT_HEIGHT_GRID) * MC.canvas_property.SCALE_RATIO;
 
-			if (key !== target_id)
+			$.each(children, function (key, item)
 			{
-				if (
-					(
-						(coordinate[0] > start_x &&
-						coordinate[0] < end_x)
-						||
-						(coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > start_x &&
-						coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID < end_x)
-						||
-						coordinate[0] === start_x
-					)
-					&&
-					(
-						(coordinate[1] > start_y &&
-						coordinate[1] < end_y)
-						||
-						(coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > start_y &&
-						coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID < end_y)
-						||
-						coordinate[1] === start_y
-					)
-				)
+				coordinate = item.coordinate;
+
+				if (key !== target_id)
 				{
-					isBlank = false;
+					if (
+						(
+							(coordinate[0] > start_x &&
+							coordinate[0] < end_x)
+							||
+							(coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > start_x &&
+							coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID < end_x)
+							||
+							coordinate[0] === start_x
+						)
+						&&
+						(
+							(coordinate[1] > start_y &&
+							coordinate[1] < end_y)
+							||
+							(coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > start_y &&
+							coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID < end_y)
+							||
+							coordinate[1] === start_y
+						)
+					)
+					{
+						isBlank = false;
+					}
 				}
-			}
-		});
+			});
+		}
+
+		if (type === 'group')
+		{
+			start_x = x * MC.canvas_property.SCALE_RATIO;
+			start_y = y * MC.canvas_property.SCALE_RATIO;
+			end_x = (x + width) * MC.canvas_property.SCALE_RATIO;
+			end_y = (y + height) * MC.canvas_property.SCALE_RATIO;
+			target_type = children[ target_id ].type;
+
+			$.each(children, function (key, item)
+			{
+				coordinate = item.coordinate;
+				size = item.size;
+
+				if (key !== target_id && item.type === target_type)
+				{
+					if (
+						(
+							(coordinate[0] >= start_x &&
+							coordinate[0] <= end_x)
+							||
+							(coordinate[0] + size[0] >= start_x &&
+							coordinate[0] + size[0] <= end_x)
+						)
+						&&
+						(
+							(coordinate[1] >= start_y &&
+							coordinate[1] <= end_y)
+							||
+							(coordinate[1] + size[1] >= start_y &&
+							coordinate[1] + size[1] <= end_y)
+						)
+					)
+					{
+						isBlank = false;
+					}
+				}
+			});
+		}
 
 		return isBlank;
 	},
@@ -1007,13 +1014,20 @@ MC.canvas = {
 			if (
 				node_id !== key &&
 				$.inArray(item.type, group_parent_type) > -1 &&
-				coordinate[0] < start_x &&
-				coordinate[0] + size[0] > end_x &&
-				coordinate[1] < start_y &&
-				coordinate[1] + size[1] > end_y
+				(
+					coordinate[0] < start_x &&
+					coordinate[0] + size[0] > start_x
+				)
+				&&
+				(
+					coordinate[1] < start_y &&
+					coordinate[1] + size[1] > start_y
+				)
 			)
 			{
 				matched = document.getElementById( key );
+
+				return false;
 			}
 		});
 
@@ -1701,7 +1715,8 @@ MC.canvas.event.dragable = {
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&
-							event.data.groupChild.length === unique_stack.length
+							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1])
+							//event.data.groupChild.length === unique_stack.length
 						)
 					)
 				)
@@ -1969,7 +1984,8 @@ MC.canvas.event.drawConnection = {
 			from_node,
 			to_node,
 			port_name,
-			to_port_name;
+			to_port_name,
+			line_id;
 
 		if (match_node)
 		{
@@ -1980,7 +1996,10 @@ MC.canvas.event.drawConnection = {
 
 			if (!from_node.is(to_node) && to_port_name !== undefined)
 			{
-				MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
+				line_id = MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
+
+				//trigger event when connect two port
+				$("#svg_canvas").trigger("CANVAS_LINE_CREATE", line_id);
 			}
 		}
 
@@ -2952,6 +2971,10 @@ MC.canvas.event.selectLine = function (event)
 	$('#line_layer').append(clone);
 
 	MC.canvas.selected_node.push(this);
+
+	//trigger event when selecte line
+	$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", this.id);
+
 };
 
 MC.canvas.event.clearSelected = function ()
@@ -2989,6 +3012,12 @@ MC.canvas.event.keyEvent = function (event)
 			if (node.getAttribute('data-class') !== 'AWS.VPC.VPC')
 			{
 				MC.canvas.remove(node);
+
+				//trigger event when delete component
+				$("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {
+					'id': node.id,
+					'type': $(node).data('type')
+				});
 			}
 		});
 		MC.canvas.selected_node = [];

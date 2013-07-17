@@ -4,7 +4,7 @@
 
 <div class="fixedaccordion accordion-default" data-sub="43">
   <div class="accordion-group expanded">
-    <div class="fixedaccordion-head" id="vpc-property-detail">VPC Details</div>
+    <div class="fixedaccordion-head" id="vpc-property-detail" component="{{uid}}">VPC Details</div>
 
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
@@ -12,13 +12,13 @@
         <div class="property-control-group clearfix">
           <label class="left" for="property-vpc-name">Name</label>
           <span class="required-input right">Required</span>
-          <input class="input vpc-name" type="text" value="{{name}}" id="property-pvc-name"/>
+          <input class="input vpc-name" type="text" value="{{component.name}}" id="property-vpc-name"/>
         </div>
 
         <div class="property-control-group clearfix">
           <label class="left" for="property-cidr-block">CIDR Block</label>
           <span class="required-input right">Required</span>
-          <input class="input cidr-block"  type="text" autofocus value="{{cidrBlock}}" id="property-cidr-block"/>
+          <input class="input cidr-block tooltip" type="text" autofocus value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16"/>
         </div>
 
         <div class="property-control-group">
@@ -71,25 +71,24 @@
     <div class="fixedaccordion-head">DHCP Options</div>
     <div class="accordion-body">
       <div class="property-control-group">
-        <div>
-          <div class="radio">
-            <input id="property-dhcp-none" type="radio" name="dhcp-opts" checked="checked" value="none" />
-            <label for="property-dhcp-none"></label>
-          </div>
-          <label for="property-dhcp-none">None</label>
+        <div class="radio">
+          <input id="property-dhcp-none" type="radio" name="dhcp-opts" checked="checked" value="none" />
+          <label for="property-dhcp-none"></label>
         </div>
-
-        <div>
-          <div class="radio">
-            <input id="property-dhcp-spec" type="radio" name="dhcp-opts" value="specified"/>
-            <label for="property-dhcp-spec"></label>
-          </div>
-          <label for="property-dhcp-spec">Specified DHCP Options Set</label>
-        </div>
-
-        <div>
-          Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.
-        </div>
+        <label for="property-dhcp-none">None</label>
       </div>
+      
+      <div class="property-control-group">
+        <div class="radio">
+          <input id="property-dhcp-spec" type="radio" name="dhcp-opts" value="specified"/>
+          <label for="property-dhcp-spec"></label>
+        </div>
+        <label for="property-dhcp-spec">Specified DHCP Options Set </label>
+
+        <div>Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
+      </div>
+
     </div>
+    </div>
+  </div>
 </div>

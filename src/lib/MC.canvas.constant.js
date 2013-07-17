@@ -866,7 +866,7 @@ var constant_data = {
 				"RouteTableId": "",
 				"NetworkAclId": "",
 				"VpcId": "", //eg: @3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId
-				"Default": "true",
+				"Default": "false",
 				"EntrySet": [
 					{
 						"RuleAction": "allow",

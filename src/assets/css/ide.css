@@ -644,7 +644,6 @@ a {
 	font-size: 12px;
 	padding: 1px 4px;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
-	width: 28px;
 	text-align: center;
 }
 
@@ -1661,7 +1660,7 @@ td.table-action a.btn {
 .sidebar-hider {
 	position: absolute;
 	top: 40%;
-	z-index: 200;
+	z-index: 20;
 	padding: 20px 3px;
 	background: #ccc;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
@@ -2024,8 +2023,8 @@ a.sidebar-hider {
 }
 
 #security-group-select .dropdown-toggle {
-	width: 38px;
-	height: 38px;
+	width: 36px;
+	height: 36px;
 	background-color: #EEE;
 	display: inline-block;
 }
@@ -2128,8 +2127,8 @@ a.sidebar-hider {
 }
 
 .sg-header .sg-icon-add {
-	width: 40px;
-	height: 40px;
+	width: 36px;
+	height: 36px;
 	background-color: #CCC;
 	display: inline-block;
 	position: absolute;
@@ -2294,9 +2293,9 @@ a.sidebar-hider {
 
 .icon-btn-selectbox {
 	position: absolute;
-	top: 5px;
-	right: 5px;
-	z-index: 100;
+	top: 3px;
+	right: 2px;
+	z-index: 5;
 }
 
 .network-list li .network-remove-icon {
@@ -2319,10 +2318,18 @@ a.sidebar-hider {
 .sg-rule-filter .selectbox .dropdown-menu {
 	top: 30px;
 }
-#sg-secondary-panel {
+#sg-secondary-panel-wrap {
 	position: absolute;
 	width: 280px;
 	right: -280px;
+	height: 100%;
+	top: 0;
+	background-color: #FFF;
+	z-index: 10;
+}
+#sg-secondary-panel {
+	height: 100%;
+	width: 100%;
 }
 /* SG Rule Modal */
 #modal-sg-rule .modal-body{

@@ -25,7 +25,7 @@
           <label>Tenancy</label>
           <div class="selectbox selectbox-mega" id="property-tenancy">
             <a class="dropdown-toggle" href="#">
-              <div class="cur-value">Default</div>
+              <div class="cur-value">{{#if defaultTenancy}}Default{{else}}Dedicated{{/if}}</div>
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
@@ -67,27 +67,95 @@
       </div>
     </div>
   </div>
+
   <div class="accordion-group" id="dhcp-property-detail">
     <div class="fixedaccordion-head">DHCP Options</div>
-    <div class="accordion-body">
-      <div class="property-control-group">
-        <div class="radio">
-          <input id="property-dhcp-none" type="radio" name="dhcp-opts" checked="checked" value="none" />
-          <label for="property-dhcp-none"></label>
-        </div>
-        <label for="property-dhcp-none">None</label>
-      </div>
-      
-      <div class="property-control-group">
-        <div class="radio">
-          <input id="property-dhcp-spec" type="radio" name="dhcp-opts" value="specified"/>
-          <label for="property-dhcp-spec"></label>
-        </div>
-        <label for="property-dhcp-spec">Specified DHCP Options Set </label>
+    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="item-wrap scroll-content">
 
-        <div>Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
-      </div>
+        <div class="property-control-group">
+          <div class="radio">
+            <input id="property-dhcp-none" type="radio" name="dhcp-opts" checked="checked" value="none" />
+            <label for="property-dhcp-none"></label>
+          </div>
+          <label for="property-dhcp-none">None</label>
+        </div>
 
+        <div class="property-control-group">
+          <div class="radio">
+            <input id="property-dhcp-spec" type="radio" name="dhcp-opts" value="specified"/>
+            <label for="property-dhcp-spec"></label>
+          </div>
+          <label for="property-dhcp-spec">Specified DHCP Options Set</label>
+
+          <div style="padding-left:20px;">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
+        </div>
+
+        <div id="property-dhcp-options" class="property-control-group-sub">
+          <div class="property-control-group">
+            <label for="property-dhcp-domain">Domain Name</label>
+            <input class="input" type="text" value="" id="property-dhcp-domain"/>
+          </div>
+
+          <div class="property-control-group">
+            <label>Domain Name Server</label>
+            <div>
+              <div class="checkbox">
+                <input id="property-amazon-dns" type="checkbox">
+                <label for="property-amazon-dns"></label>
+              </div>
+              <label for="property-amazon-dns">AmazonProvidedDNS</label>
+            </div>
+
+            <div class="multi-input single-row" data-max-row="4">
+              <div class="multi-ipt-row"><input type="text" class="input"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+            </div>
+          </div>
+
+          <div class="property-control-group">
+            <label class="left" for="property-vpc-name">NTP Server</label>
+            <div class="multi-input single-row" data-max-row="4">
+              <div class="multi-ipt-row"><input type="text" class="input"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+            </div>
+          </div>
+
+          <div class="property-control-group">
+            <label class="left" for="property-vpc-name">NetBIOS Name Server</label>
+            <div class="multi-input single-row" data-max-row="4">
+              <div class="multi-ipt-row"><input type="text" class="input"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+            </div>
+          </div>
+
+          <div class="property-control-group">
+            <label class="left" for="property-vpc-name">NetBIOS Node Type</label>
+            <div class="selectbox selectbox-mega" id="property-tenancy">
+                <a class="dropdown-toggle" href="#">
+                  <div class="cur-value">Not specified</div>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="selected" tabindex="-1">
+                    <a href="#" data-id="default">Not specified</a>
+                  </li>
+                  <li tabindex="-1">
+                    <a href="#" data-id="dedicated">1</a>
+                  </li>
+                  <li tabindex="-1">
+                    <a href="#" data-id="dedicated">2</a>
+                  </li>
+                  <li tabindex="-1">
+                    <a href="#" data-id="dedicated">4</a>
+                  </li>
+                  <li tabindex="-1">
+                    <a href="#" data-id="dedicated">8</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+        </div>
+      </div>
     </div>
     </div>
   </div>

@@ -5,7 +5,8 @@
 define [ 'jquery',
          'text!/module/design/property/vpc/template.html',
          'event',
-         'UI.notification'
+         'UI.notification',
+         'UI.multiinputbox'
 ], ( $, template, ide_event ) ->
 
     #private

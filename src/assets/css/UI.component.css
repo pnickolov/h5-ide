@@ -1456,3 +1456,88 @@ textarea {
 	top: 0;
 	right: 0;
 }
+
+/* Multi Input Box */
+.multi-input {
+	padding-right : 15px;
+	position      : relative;
+}
+
+.multi-ipt-row {
+	margin-bottom : 5px;
+}
+
+.multi-input.single-row .icon-del {
+	display : none;
+}
+
+.multi-ipt-row input {
+	vertical-align: middle;
+}
+
+.multi-input .icon-del,
+.multi-input .icon-add {
+	display     : inline-block;
+	width       : 16px;
+	height      : 16px;
+	margin-left : 2px;
+	
+	vertical-align : middle;
+	position : relative;
+}
+
+.multi-input .icon-add { 
+	display : none;
+}
+.multi-input.max .icon-add { 
+	display : none !important;
+}
+.multi-input :last-child .icon-add {
+	display : inline-block;
+}
+
+.multi-input .icon-del:before, 
+.multi-input .icon-del:after,
+.multi-input .icon-add:before,
+.multi-input .icon-add:after {
+	position   : absolute;
+	width      : 10px;
+	height     : 4px;
+	background : #999;
+	content    : " ";
+	top        : 6px;
+	left       : 3px;
+}
+
+.multi-input .icon-add:after {
+	width  : 4px;
+	height : 10px;
+	top    : 3px;
+	left   : 6px;
+}
+
+.multi-input .icon-del:before {
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	     -o-transform: rotate(45deg);
+	        transform: rotate(45deg);
+}
+
+.multi-input .icon-del:after {
+	-webkit-transform: rotate(-45deg);
+	   -moz-transform: rotate(-45deg);
+	    -ms-transform: rotate(-45deg);
+	     -o-transform: rotate(-45deg);
+	        transform: rotate(-45deg);
+}
+
+.multi-input .icon-del:hover:before, 
+.multi-input .icon-del:hover:after {
+	background : red;
+}
+
+.multi-input .icon-add:hover:before,
+.multi-input .icon-add:hover:after {
+	background : #34E093;
+}

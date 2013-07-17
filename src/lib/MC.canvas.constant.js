@@ -38,7 +38,7 @@ var constant_data = {
 	TOGGLE_DIST: 5,
 
 	//min padding for group
-	GROUP_MIN_PADDING: 100,
+	GROUP_MIN_PADDING: 120,
 
 	//stroke width for group ( .group-az .group-subnet .group-vpc in canvas.css )
 	STOKE_WIDTH_AZ: 2,
@@ -98,6 +98,7 @@ var constant_data = {
 		EC2_VPC: 'ec2-vpc'			//has vpc
 	},
 
+	// If array, order by Subnet -> AZ -> Canvas.
 	MATCH_PLACEMENT: {
 		'ec2-classic': {
 			'AWS.ELB': [ 'Canvas' ],
@@ -113,7 +114,7 @@ var constant_data = {
 			'AWS.VPC.NetworkInterface': [ 'AWS.EC2.AvailabilityZone']
 		},
 		'custom-vpc': {
-			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
+			'AWS.ELB': [ 'AWS.VPC.VPC', 'Canvas' ],
 			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],
 			'AWS.VPC.NetworkInterface': [ 'AWS.VPC.Subnet' ],
@@ -126,7 +127,7 @@ var constant_data = {
 			'AWS.VPC.VPC': [ 'Canvas' ]
 		},
 		'ec2-vpc': {
-			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
+			'AWS.ELB': [ 'AWS.VPC.VPC', 'Canvas' ],
 			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],
 			'AWS.VPC.NetworkInterface': [ 'AWS.VPC.Subnet' ],
@@ -426,19 +427,7 @@ var constant_data = {
 					}
 				],
 				"IpPermissionsEgress": [
-					{
-					"IpProtocol": "tcp",
-					"IpRanges": "0.0.0.0/0",
-					"FromPort": "22",
-					"ToPort": "22",
-					"Groups": [
-						{
-						"GroupId": "",
-						"UserId": "",
-						"GroupName": ""
-						}
-					]
-					}
+
 				],
 				"GroupId": "",
 				"Default": "true",
@@ -664,12 +653,14 @@ var constant_data = {
 				"PropagatingVgwSet": [],
 				"RouteSet": [],
 				"RouteTableId": "",
-				"AssociationSet": [{
-					"Main": "true",
-					"RouteTableId": "",
-					"SubnetId": "",
-					"RouteTableAssociationId": ""
-				}]
+				"AssociationSet": [
+				//{
+				//	"Main": "true",
+				//	"RouteTableId": "",
+				//	"SubnetId": "",
+				//	"RouteTableAssociationId": ""
+				//}
+				]
 			}
 		}
 	},

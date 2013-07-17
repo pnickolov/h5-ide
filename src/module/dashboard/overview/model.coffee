@@ -20,8 +20,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
     #region_tooltip
     region_tooltip = [
         "arrow-left map-tooltip-pointer-left",
-        "arrow-down map-tooltip-pointer",
         "arrow-up map-tooltip-pointer-up",
+        "arrow-down map-tooltip-pointer",
         "arrow-down map-tooltip-pointer",
         "arrow-down map-tooltip-pointer",
         "arrow-down map-tooltip-pointer",

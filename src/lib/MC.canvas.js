@@ -1310,7 +1310,7 @@ MC.canvas.layout = {
 				'y': 2
 			});
 			
-			var node_az = MC.canvas.add('AWS.VPC.RouteTable', {
+			var node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
 				'name': 'MainRouteTable',
 				'group' : {
 					'vpcUId' : vpc_group.id
@@ -1336,19 +1336,14 @@ MC.canvas.layout = {
 			
 
 			//default sg
-			main_routetable = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.data);
 			main_asso = {
 				"Main": "true",
 				"RouteTableId": "",
 				"SubnetId": "",
 				"RouteTableAssociationId": ""
 			};
-			main_routetable.uid = MC.guid();
-			main_routetable.name = "MainRouteTable";
-			main_routetable.resource.AssociationSet.push(main_asso);
-			data[main_routetable.uid] = main_routetable;
-			MC.canvas.data.set('component', data);
-			MC.canvas_property.main_route = main_routetable.uid;
+			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
+			MC.canvas_property.main_route = node_rt.id;
 			
 			sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
 

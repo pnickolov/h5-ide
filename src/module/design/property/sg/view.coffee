@@ -36,6 +36,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 
         render     : () ->
             console.log 'property:sg render'
+            if this.model.attributes.sg_detail.component.name == 'DefaultSG'
+                this.model.attributes.isDefault = true
+            else
+                this.model.attributes.isDefault = false
+
             $( '#sg-secondary-panel-wrap' ).html this.template this.model.attributes
             fixedaccordion.resize()
             #

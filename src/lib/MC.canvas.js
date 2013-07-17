@@ -2104,7 +2104,8 @@ MC.canvas.event.siderbarDrag = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			match_place,
 			default_group_width,
-			default_group_height;
+			default_group_height,
+			new_node;
 
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
@@ -2115,7 +2116,16 @@ MC.canvas.event.siderbarDrag = {
 				if (match_place.is_matched)
 				{
 					node_option.groupUId = match_place.target;
-					MC.canvas.add(node_type, node_option, coordinate);
+					new_node = MC.canvas.add(node_type, node_option, coordinate);
+
+					$(new_node).attr('class', function (index, key)
+					{
+						return key + ' selected';
+					});
+
+					MC.canvas.selected_node = [new_node];
+
+					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", new_node.id);
 				}
 			}
 

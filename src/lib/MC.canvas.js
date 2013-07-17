@@ -841,17 +841,6 @@ MC.canvas = {
 								(y + height >= coordinate[1] &&
 								y + height <= coordinate[1] + size[1])
 							)
-
-
-							// (
-							// 	coordinate[0] > x ||
-							// 	coordinate[0] + size[0] > x + width
-							// )
-							// &&
-							// (
-							// 	coordinate[1] < y ||
-							// 	coordinate[1] + size[1] > y + height
-							// )
 						)
 						{
 							result = {
@@ -931,12 +920,6 @@ MC.canvas = {
 
 							if (
 								target_id !== item.id &&
-
-								// x >= coordinate[0] &&
-								// x + width <= coordinate[0] + size[0] &&
-								// y >= coordinate[1] &&
-								// y + height <= coordinate[1] + size[1]
-
 
 								coordinate[0] <= x &&
 								coordinate[0] + size[0] >= x + width &&
@@ -1338,21 +1321,6 @@ MC.canvas.layout = {
 				'y': 16
 			});
 			
-			//var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
-			//	'name': 'ap-northeast-1'
-			//},{
-			//	'x': 19,
-			//	'y': 16
-			//});
-
-			//var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
-			//	'name': 'subnet1'
-			//},{
-			//	'x': 23,
-			//	'y': 20
-			//});
-			
-
 			//default sg
 			main_asso = {
 				"Main": "true",
@@ -1467,7 +1435,7 @@ MC.canvas.event.dragable = {
 			if (node_type === 'node')
 			{
 				platform = MC.canvas.data.get('platform');
-				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][  target.data('class') ];
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ target.data('class') ];
 
 				$.each(target_group_type, function (index, item)
 				{

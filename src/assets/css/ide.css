@@ -880,22 +880,22 @@ a {
 }
 
 #us-west-1 {
-	top: 131px;
-	left: 74px;
-}
-
-#us-west-1 .map-tooltip {
-	top: -42px;
-	left: -71px;
-}
-
-#us-west-2 {
 	top: 145px;
 	left: 81px;
 }
 
-#us-west-2 .map-tooltip {
+#us-west-1 .map-tooltip {
 	top: 20px;
+	left: -71px;
+}
+
+#us-west-2 {
+	top: 131px;
+	left: 74px;
+}
+
+#us-west-2 .map-tooltip {
+	top: -42px;
 	left: -71px;
 }
 
@@ -2349,22 +2349,55 @@ a.sidebar-hider {
 #modal-sg-rule .radio span {
 	margin-left: 25px;
 }
+#modal-sg-rule label.left {
+	width: 80px;
+	line-height: 35px;
+}
 #modal-sg-rule .input {
-	width: 300px;
+	width: 200px;
+}
+#modal-sg-rule .property-control-group {
+	width: 100%;
 }
 #modal-sg-rule .modal-protocol-select {
-	width: 80px;
+	width: 90px;
 	display: inline-block;
+}
+#modal-sg-rule #modal-protocol-select {
+	width: 100%;
+	margin: 0;
 }
 #modal-sg-rule #sg-protocol-select-result input {
 	width: 150px;
 	display: inline-block;
 }
-.sg-protocol-option-input {
+#modal-sg-rule .sg-protocol-option-input {
 	display: none;
+	width: 100%;
+	margin: 0;
 }
-.sg-protocol-option-input.show {
+#modal-sg-rule .sg-protocol-option-input.show {
 	display: block;
+}
+#modal-sg-rule .protocol-icmp-sub-select {
+	display: none;
+	width: 250px;
+	margin: 0;
+}
+ #protocol-icmp-main-select {
+	width: 240px;
+	margin: 0 0 10px 0;
+}
+#sg-protocol-select-result {
+	display: inline-block;
+	width: 250px;
+}
+#modal-sg-rule .protocol-icmp-sub-select.shown {
+	display: block;
+}
+#securitygroup-modal-description {
+	display: inline-block;
+	width: 200px;
 }
 
 /* Status Bar */

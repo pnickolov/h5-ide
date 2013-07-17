@@ -98,7 +98,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
             $(event.target).parents('li').first().remove()
 
         radioSgModalChange : (event) ->
-            if $('#sg-modal-direction input:checked').val() is "radio_inbound"
+            if $('#sg-modal-direction input:checked').val() is "inbound"
                 $('#rule-modle-title2').text "Source"
             else
                 $('#rule-modle-title2').text "Destination"
@@ -168,6 +168,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
             rule.ipranges = sg_descrition
 
             sg_uid = $("#sg-secondary-panel").attr "uid"
+            $("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
 
             this.trigger "SET_SG_RULE", sg_uid, rule
 

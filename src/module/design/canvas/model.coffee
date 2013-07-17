@@ -10,10 +10,10 @@ define [ 'backbone', 'jquery', 'underscore' ], () ->
 
 		}
 
-
 		initialize : ->
 			#listen
 			null
+
 
 		#change node from one parent to another parent
 		changeNodeParent : ( src_node, tgt_parent ) ->
@@ -28,11 +28,15 @@ define [ 'backbone', 'jquery', 'underscore' ], () ->
 			null
 
 		#delete component
-		deleteComponent : ( uid ) ->
+		deleteObject : ( uid ) ->
 			#to-do
 
 			null
 
+		createLine : ( line_id ) ->
+			#to-do
+
+			null
 
 	}
 

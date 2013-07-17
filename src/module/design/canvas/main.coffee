@@ -43,10 +43,16 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', './modul
                 model.changeGroupParent src_group, tgt_parent
                 null
 
-            #listen CANVAS_COMPONENT_DELETE
-            view.on ide_event.CANVAS_COMPONENT_DELETE, ( uid ) ->
-                console.log 'canvas:CANVAS_COMPONENT_DELETE, uid = ' + uid
-                model.deleteComponent uid
+            #listen CANVAS_OBJECT_DELETE
+            view.on ide_event.CANVAS_OBJECT_DELETE, ( option ) ->
+                console.log 'canvas:CANVAS_OBJECT_DELETE, option = ' + option
+                model.deleteObject option
+                null
+
+            #listen CANVAS_LINE_CREATE
+            view.on ide_event.CANVAS_LINE_CREATE, ( line_id ) ->
+                console.log 'canvas:CANVAS_LINE_CREATE, line_id = ' + line_id
+                model.createLine line_id
                 null
 
 

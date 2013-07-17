@@ -1182,6 +1182,9 @@ MC.canvas.layout = {
 				});
 				MC.canvas_property.sg_list.push(tmp);
 			}
+			if(value.type === "AWS.VPC.RouteTable" && value.resource.AssociationSet.length > 0 && value.resource.AssociationSet[0].Main === "true"){
+				MC.canvas_property.main_route = value.uid;
+			}
 		});
 		
 		$.each(MC.canvas_property.sg_list, function (key, value){
@@ -1201,7 +1204,7 @@ MC.canvas.layout = {
 				return false;
 			}
 		});
-		
+
 		$('#svg_canvas').attr({
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
@@ -1300,13 +1303,23 @@ MC.canvas.layout = {
 
 		{
 			//has vpc (create vpc, az, and subnet by default)
-			MC.canvas.add('AWS.VPC.VPC', {
+			vpc_group = MC.canvas.add('AWS.VPC.VPC', {
 				'name': 'vpc1',
 			}, {
 				'x': 2,
 				'y': 2
 			});
-
+			
+			var node_az = MC.canvas.add('AWS.VPC.RouteTable', {
+				'name': 'MainRouteTable',
+				'group' : {
+					'vpcUId' : vpc_group.id
+				}
+			},{
+				'x': 19,
+				'y': 16
+			});
+			
 			//var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
 			//	'name': 'ap-northeast-1'
 			//},{
@@ -1323,7 +1336,20 @@ MC.canvas.layout = {
 			
 
 			//default sg
-
+			main_routetable = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.data);
+			main_asso = {
+				"Main": "true",
+				"RouteTableId": "",
+				"SubnetId": "",
+				"RouteTableAssociationId": ""
+			};
+			main_routetable.uid = MC.guid();
+			main_routetable.name = "MainRouteTable";
+			main_routetable.resource.AssociationSet.push(main_asso);
+			data[main_routetable.uid] = main_routetable;
+			MC.canvas.data.set('component', data);
+			MC.canvas_property.main_route = main_routetable.uid;
+			
 			sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
 
 		}

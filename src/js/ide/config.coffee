@@ -51,6 +51,7 @@ require.config {
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
+		'parsley' : 'lib/parsley.min'
 
 		#bootstrap
 		#'bootstrap-tab'     : 'ui/common/bootstrap-tab'

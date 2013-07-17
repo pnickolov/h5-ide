@@ -748,7 +748,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/RTB-Canvas.png', 15, 15, 70, 70),
+				Canvon.image('../assets/images/ide/icon/RT-canvas.png', 15, 15, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({

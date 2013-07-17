@@ -719,7 +719,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 		//***** routetable begin *****//
 		case 'AWS.VPC.RouteTable':
-
+			main_icon = '';
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.data);
@@ -727,6 +727,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
 					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpdId';					
 				}
+				if(option.main){
+					main_icon = "main-";
+				}
+				
 				component_layout = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}
@@ -734,7 +738,9 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
-
+				if(component_data.resource.AssociationSet.length > 0 && component_data.resource.AssociationSet[0].Main === 'true'){
+					main_icon = "main-";
+				}
 				component_layout = layout.node[group.id];
 
 				coordinate.x = component_layout.coordinate[0];
@@ -748,12 +754,12 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/RT-canvas.png', 15, 15, 70, 70),
+				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 15, 15, 70, 70),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-left',
-					'transform': 'translate(21, 50)' + MC.canvas.PORT_LEFT_ROTATE,
+					'transform': 'translate(15, 40)' + MC.canvas.PORT_LEFT_ROTATE,
 					'data-name': 'rtb-tgt-left',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -764,7 +770,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-right',
-					'transform': 'translate(81, 50)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(85, 40)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'rtb-tgt-right',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -775,7 +781,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src-top',
-					'transform': 'translate(50, 3)' + MC.canvas.PORT_UP_ROTATE,
+					'transform': 'translate(50, 1)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'rtb-src-top',
 					'data-position': 'top',
 					'data-type': 'association',
@@ -786,7 +792,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src-bottom',
-					'transform': 'translate(50, 80)' + MC.canvas.PORT_DOWN_ROTATE,
+					'transform': 'translate(50, 78)' + MC.canvas.PORT_DOWN_ROTATE,
 					'data-name': 'rtb-src-bottom',
 					'data-position': 'bottom',
 					'data-type': 'association',

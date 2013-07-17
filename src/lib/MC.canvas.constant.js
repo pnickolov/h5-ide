@@ -18,6 +18,19 @@ var constant_data = {
 
 	GROUP_PADDING: 2,
 
+	IMAGE: {
+		//volume icon of instance
+		INSTANCE_VOLUME_ATTACHED_ACTIVE: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
+		INSTANCE_VOLUME_ATTACHED_NORMAL: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
+		INSTANCE_VOLUME_NOT_ATTACHED: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
+		//eip icon of instance
+		INSTANCE_EIP_ON: MC.IMG_URL + 'ide/icon/instance-eip-on.png',
+		INSTANCE_EIP_OFF: MC.IMG_URL + 'ide/icon/instance-eip-off.png',
+		//elb icon
+		ELB_INTERNAL_CANVAS: MC.IMG_URL + 'ide/icon/elb-internal-canvas.png',
+		ELB_INTERNET_CANVAS: MC.IMG_URL + 'ide/icon/elb-internet-canvas.png'
+	},
+
 	//constant for _route()
 	MINDIST: 20,
 	TOL: 0.1,
@@ -25,7 +38,7 @@ var constant_data = {
 	TOGGLE_DIST: 5,
 
 	//min padding for group
-	GROUP_MIN_PADDING: 100,
+	GROUP_MIN_PADDING: 120,
 
 	//stroke width for group ( .group-az .group-subnet .group-vpc in canvas.css )
 	STOKE_WIDTH_AZ: 2,
@@ -85,6 +98,7 @@ var constant_data = {
 		EC2_VPC: 'ec2-vpc'			//has vpc
 	},
 
+	// If array, order by Subnet -> AZ -> Canvas.
 	MATCH_PLACEMENT: {
 		'ec2-classic': {
 			'AWS.ELB': [ 'Canvas' ],
@@ -100,7 +114,7 @@ var constant_data = {
 			'AWS.VPC.NetworkInterface': [ 'AWS.EC2.AvailabilityZone']
 		},
 		'custom-vpc': {
-			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
+			'AWS.ELB': [ 'AWS.VPC.VPC', 'Canvas' ],
 			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],
 			'AWS.VPC.NetworkInterface': [ 'AWS.VPC.Subnet' ],
@@ -113,7 +127,7 @@ var constant_data = {
 			'AWS.VPC.VPC': [ 'Canvas' ]
 		},
 		'ec2-vpc': {
-			'AWS.ELB': [ 'Canvas','AWS.VPC.VPC' ],
+			'AWS.ELB': [ 'AWS.VPC.VPC', 'Canvas' ],
 			'AWS.EC2.Instance': [ 'AWS.VPC.Subnet' ],
 			'AWS.EC2.EBS.Volume': [ 'AWS.VPC.Subnet' ],
 			'AWS.VPC.NetworkInterface': [ 'AWS.VPC.Subnet' ],
@@ -413,19 +427,7 @@ var constant_data = {
 					}
 				],
 				"IpPermissionsEgress": [
-					{
-					"IpProtocol": "tcp",
-					"IpRanges": "0.0.0.0/0",
-					"FromPort": "22",
-					"ToPort": "22",
-					"Groups": [
-						{
-						"GroupId": "",
-						"UserId": "",
-						"GroupName": ""
-						}
-					]
-					}
+
 				],
 				"GroupId": "",
 				"Default": "true",
@@ -541,7 +543,7 @@ var constant_data = {
 					}
 				}],
 				"DNSName": "",
-				"Scheme": "internal",
+				"Scheme": "", //internal | internet-facing
 				"CanonicalHostedZoneName": "",
 				"Instances": [],
 				"SourceSecurityGroup": {
@@ -651,12 +653,14 @@ var constant_data = {
 				"PropagatingVgwSet": [],
 				"RouteSet": [],
 				"RouteTableId": "",
-				"AssociationSet": [{
-					"Main": "true",
-					"RouteTableId": "",
-					"SubnetId": "",
-					"RouteTableAssociationId": ""
-				}]
+				"AssociationSet": [
+				//{
+				//	"Main": "true",
+				//	"RouteTableId": "",
+				//	"SubnetId": "",
+				//	"RouteTableAssociationId": ""
+				//}
+				]
 			}
 		}
 	},
@@ -862,7 +866,7 @@ var constant_data = {
 				"RouteTableId": "",
 				"NetworkAclId": "",
 				"VpcId": "", //eg: @3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId
-				"Default": "true",
+				"Default": "false",
 				"EntrySet": [
 					{
 						"RuleAction": "allow",

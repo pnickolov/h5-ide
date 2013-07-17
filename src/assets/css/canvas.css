@@ -2,7 +2,7 @@
 #canvas_container {
 	overflow: hidden;
 	width: 1900px;
-	padding: 5px;
+	/*padding: 5px;*/
 	background: rgb(237, 237, 237);
 	height: 1430px;
 	position: relative;

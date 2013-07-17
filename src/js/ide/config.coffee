@@ -47,9 +47,12 @@ require.config {
 		'UI.radiobuttons': 'ui/common/UI.radiobuttons'
 		'UI.notification': 'ui/common/UI.notification'
 		'UI.secondarypanel': 'ui/common/UI.secondarypanel'
+		'UI.editablelabel': 'ui/common/UI.editablelabel'
+		'UI.multiinputbox': 'ui/common/UI.multiinputbox'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
+		'parsley' : 'ui/common/parsley.min'
 
 		#bootstrap
 		#'bootstrap-tab'     : 'ui/common/bootstrap-tab'

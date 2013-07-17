@@ -1,1 +1,35 @@
-az loading...
+<div class="sidebar-title">
+  <span class="sidebar-title-text">Availability Zone</span>
+</div>
+<div class="panel-single-wrap">
+  <div class="panel-single scroll-wrap scrollbar-auto-hide">
+    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+    <div class="item-wrap scroll-content">
+
+    <div class="property-control-group">
+      <label>Quick Switch Availability Zone</label>
+      <div class="selectbox selectbox-mega" id="az-quick-select" component="{{id}}">
+        <a class="dropdown-toggle" href="#">
+          <div class="cur-value">{{component.name}}</div>
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+
+          {{#each az_list}}
+
+          {{#if selected}}
+            <li class="selected tooltip" tabindex="-1" data-tooltip="{{name}}">
+          {{else}}
+            {{#if available}}
+            <li class="tooltip" tabindex="-1" data-tooltip="{{name}}">
+            {{/if}}
+          {{/if}}
+            <a data-id="{{name}}" href="#"><div class="main truncate">{{name}}</div></a>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>

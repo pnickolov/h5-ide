@@ -3,10 +3,12 @@
 #############################
 
 define [ 'MC', 'event',
-         'view', 'layout',
+         'view', 'layout', 'canvas_layout',
          'header', 'navigation', 'tabbar', 'dashboard', 'design',
          'WS', 'constant'
-], ( MC, ide_event, view, layout, header, navigation, tabbar, dashboard, design, WS, constant ) ->
+], ( MC, ide_event, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, WS, constant ) ->
+
+	console.info canvas_layout
 
 	initialize : () ->
 
@@ -21,7 +23,7 @@ define [ 'MC', 'event',
 		#############################
 
 		#set MC.data
-		MC.data = {}
+		#MC.data = {}
 
 		#global config data by region
 		MC.data.config = {}
@@ -117,6 +119,7 @@ define [ 'MC', 'event',
 				#load layout
 				console.log 'layout'
 				layout.ready()
+				canvas_layout.ready()
 			, 2000
 
 		#listen DESIGN_COMPLETE

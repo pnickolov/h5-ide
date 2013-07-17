@@ -2,13 +2,13 @@
 #  Controller for design/canvas module
 ####################################
 
-define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, template, ide_event ) ->
+define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', './module/design/canvas/canvas' ], ( $, template, ide_event, canvas ) ->
 
     #private
     loadModule = () ->
 
         #load remote module1.js
-        require [ './module/design/canvas/view' ], ( View ) ->
+        require [ './module/design/canvas/view', './module/design/canvas/model' ], ( View, model ) ->
 
             #view
             view       = new View()
@@ -30,6 +30,33 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
                     require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.init()
                 null
 
+
+            #listen CANVAS_NODE_CHANGE_PARENT
+            view.on ide_event.CANVAS_NODE_CHANGE_PARENT, ( src_node, tgt_parent ) ->
+                console.log 'canvas:CANVAS_NODE_CHANGE_PARENT, src_node = ' + src_node + ', tgt_parent = ' + tgt_parent
+                model.changeNodeParent src_node, tgt_parent
+                null
+
+            #listen CANVAS_GROUP_CHANGE_PARENT
+            view.on ide_event.CANVAS_GROUP_CHANGE_PARENT, ( src_group, tgt_parent ) ->
+                console.log 'canvas:CANVAS_GROUP_CHANGE_PARENT, src_group = ' + src_group + ', tgt_parent = ' + tgt_parent
+                model.changeGroupParent src_group, tgt_parent
+                null
+
+            #listen CANVAS_OBJECT_DELETE
+            view.on ide_event.CANVAS_OBJECT_DELETE, ( option ) ->
+                console.log 'canvas:CANVAS_OBJECT_DELETE, option = ' + option
+                model.deleteObject option
+                null
+
+            #listen CANVAS_LINE_CREATE
+            view.on ide_event.CANVAS_LINE_CREATE, ( line_id ) ->
+                console.log 'canvas:CANVAS_LINE_CREATE, line_id = ' + line_id
+                model.createLine line_id
+                null
+
+
+            null
 
     unLoadModule = () ->
         #view.remove()

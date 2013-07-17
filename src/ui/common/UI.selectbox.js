@@ -23,11 +23,19 @@ var selectbox = {
     },
 
     show: function(event) {
+        event.preventDefault();
+
         var me = $(this);
         me.trigger("OPTION_SHOW");
         me.parent().toggleClass('open');
         me.parent().find('.selected').focus().addClass('focused');
-        return false;
+
+        $(document.body).one('click', function(event) {
+            if($(event.target).parents('.dropdown-menu').length == 0) {
+                $('.selectbox').removeClass('open');
+                $(this).off( event );
+            }
+        });
     },
 
     keydown: function(event) {
@@ -60,32 +68,36 @@ var selectbox = {
     },
 
     select: function (event) {
-        var me = $(this),
-            cur_li = me.parent(),
-            box = me.parents('.selectbox').first(),
-            cur_value = me.html(),
-            cur_id = me.data('id') ? me.data('id') : '',
-            pre_selected = cur_li.siblings('.selected'),
-            parent_dom = me.parents('.selectbox').first(),
-            remove_after_click = cur_li.hasClass('remove-after-click'),
-            label = parent_dom.find('.cur-value');
+        if($(event.target).parents('.dropdown-menu').length == 0) {
+                $('.selectbox').removeClass('open');
+        } else {
+            var me = $(this),
+                cur_li = me.parent(),
+                box = me.parents('.selectbox').first(),
+                cur_value = me.html(),
+                cur_id = me.data('id') ? me.data('id') : '',
+                pre_selected = cur_li.siblings('.selected'),
+                parent_dom = me.parents('.selectbox').first(),
+                remove_after_click = cur_li.hasClass('remove-after-click'),
+                label = parent_dom.find('.cur-value');
 
-        pre_selected.removeClass('selected').removeClass('focused');
-        cur_li.addClass('selected').addClass('focused');
-        
-        if(label) {
-            label.html(cur_value);
-        }
+            pre_selected.removeClass('selected').removeClass('focused');
+            cur_li.addClass('selected').addClass('focused');
+            
+            if(label) {
+                label.html(cur_value);
+            }
 
-        if(remove_after_click) {
-            cur_li.remove();
-        }
+            if(remove_after_click) {
+                cur_li.remove();
+            }
 
-        parent_dom.trigger("OPTION_CHANGE", [cur_id]);
+            parent_dom.trigger("OPTION_CHANGE", [cur_id]);
 
-        box.removeClass('open');
+            box.removeClass('open');
 
-        return false;
+            return false;
+    }
     },
 
     add: function (event) {

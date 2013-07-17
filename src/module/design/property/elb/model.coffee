@@ -7,19 +7,84 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
     ElbModel = Backbone.Model.extend {
 
         defaults :
-            'set_host'    : null
-            'get_host'    : null
+            'elb_detail'    : null
+            'health_detail' : null
 
-        initialize : ->
+            # 'get_host'    : null
+
+        #initialize : ->
+
+
+        initELB : ( uid ) ->
+            elb_data = MC.canvas_data.component[ uid ]
+            isInternal = elb_data.resource.Scheme
+
+            elb_detail = {
+                'isInternal' : isInternal is 'internal'
+            }
+
+            this.set 'elb_detail', elb_detail
+
+            healthcheck = elb_data.resource.HealthCheck
+
+            target = healthcheck.Target
+
+            #Ping Protocol
+            protocol = target.split(':')[0]
+
+            #Ping Port
+            port = target.split(':')[1].split('/')[0]
+
+            #Ping Path
+            path = '/' + target.split('/')[1]
+
+            #Health Check Interval
+            interval = healthcheck.Interval
+
+            #Response Timeout
+            timeout = healthcheck.Timeout
+
+            #Unhealthy Threshold
+            unhealthy_threshold = healthcheck.UnhealthyThreshold
+
+            #Healthy Threshold
+            healthy_threshold = healthcheck.HealthyThreshold
+
+            this.set 'health_detail', {
+                target: target,
+                protocol: protocol,
+                port: port,
+                path: path,
+                interval: interval,
+                timeout: timeout,
+                unhealthy_threshold: unhealthy_threshold,
+                healthy_threshold: healthy_threshold
+            }
+
+            null
+
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
 
-        # setHost  : ( uid, value ) ->
-        #     console.log 'setHost = ' + value
-        #     MC.canvas_data.component[ uid ].name = value
+        setELBName  : ( uid, value ) ->
+            console.log 'setELBName = ' + value
+            MC.canvas_data.component[ uid ].name = value
+            MC.canvas_data.component[ uid ].LoadBalancerName = value
 
-        #     null
-        #     #this.set 'set_host', 'host'
+            null
+
+        getELBName  : ( uid ) ->
+            console.log 'getELBName = ' + value
+            MC.canvas_data.component[ uid ].LoadBalancerName
+
+            #this.set 'set_host', 'host'
+
+        setScheme   : ( uid, value ) ->
+            console.log 'setScheme = ' + value
+            MC.canvas_data.component[ uid ].resource.Scheme = value
+
+            null
+
 
         # setInstanceType  : ( uid, value ) ->
 

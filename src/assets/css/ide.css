@@ -2463,7 +2463,7 @@ a.sidebar-hider {
 #accordion-group-property-elb-zones .checkbox-label-main {
 	margin-top: -8px;
 	position: absolute;
-	margin-left: 8px;
+	left: 38px;
 }
 
 #accordion-group-property-elb-zones .checkbox-label-minor {
@@ -2471,7 +2471,7 @@ a.sidebar-hider {
 	font-size: 10px;
 	color: #09f;
 	position: absolute;
-	margin-left: 8px;
+	left: 38px;
 }
 
 #accordion-group-property-elb-zones .property-control-group {
@@ -2487,7 +2487,7 @@ a.sidebar-hider {
 #accordion-group-property-elb-detail .elb-volume-type-radio-text {
 	margin-top: 10px;
 	position: absolute;
-	margin-left: 4px;
+	left: 38px;
 }
 
 #elb-property-group-interval .left {

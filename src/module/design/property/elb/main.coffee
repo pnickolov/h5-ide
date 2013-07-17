@@ -22,10 +22,13 @@ define [ 'jquery',
 
             #view
             view.model    = model
+
             #model
-            #model.setHost uid
+            model.initELB uid
             attributes = {
-                component : MC.canvas_data.component[uid]
+                component : MC.canvas_data.component[uid],
+                health_detail: model.get('health_detail'),
+                elb_detail: model.get('elb_detail')
             }
             #render
             view.render( attributes )

@@ -1,6 +1,6 @@
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
-		<a href="#" class="btn-toolbar tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack"}' data-modal-dismiss="true"><i class="icon-toolbar-run"></i></a>
+		<a href="#" class="btn-toolbar tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{stack_name}}"}' data-modal-dismiss="true"><i class="icon-toolbar-run"></i></a>
 	</li>
 	<li class="btn-toolbar">
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Save stack"><i class="icon-toolbar-save"></i></a>
@@ -11,8 +11,18 @@
 			<span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu" role="menu">
-			<li><a class="btn-toolbar" id="toolbar-duplicate" data-tooltip="Duplicate stack" href="#"><i class="icon-toolbar-duplicate"></i>Duplicate</a></li>
-			<li><a class="btn-toolbar modal" id="toolbar-delete" href="#" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete this stack?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete</a></li>
+			{{#if toolbar_flag.duplicate}}
+			<li><a class="btn-toolbar" id="toolbar-duplicate" data-tooltip="Duplicate stack" href="#"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</a></li>
+			{{else}}
+			<li><a class="btn-toolbar disabled" id="toolbar-duplicate" data-tooltip="Duplicate" href="#"><i class="icon-toolbar-duplicate"></i>Duplicate</a></li>
+			{{/if}}
+
+			{{#if toolbar_flag.delete}}
+			<li><a class="btn-toolbar modal" id="toolbar-delete" href="#" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete this stack?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</a></li>
+			{{else}}
+			<li><a class="btn-toolbar" id="toolbar-delete" data-tooltip="Delete" href="#"><i class="icon-toolbar-delete"></i>Delete</a></li>
+			{{/if}}
+
 			<li><a class="btn-toolbar" id="toolbar-new" data-tooltip="Create new stack" href="#"><i class="icon-toolbar-new-stack"></i>New Stack</a></li>
 		</ul>
 	</li>
@@ -27,14 +37,14 @@
 </ul>
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
-		{{#if zoomin_flag}}
+		{{#if toolbar_flag.zoomin}}
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom In"><i class="icon-toolbar-zoom-in"></i></a>
 		{{else}}
 		<a href="#" class="btn-toolbar tooltip disabled" data-tooltip="Zoom In"><i class="icon-toolbar-zoom-in"></i></a>
 		{{/if}}
 	</li>
 	<li class="btn-toolbar">
-		{{#if zoomout_flag}}
+		{{#if toolbar_flag.zoomout}}
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom Out"><i class="icon-toolbar-zoom-out"></i></a>
 		{{else}}
 		<a href="#" class="btn-toolbar tooltip disabled" data-tooltip="Zoom Out"><i class="icon-toolbar-zoom-out"></i></a>

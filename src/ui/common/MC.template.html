@@ -645,7 +645,7 @@ Additional Notes and Questions
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
-
+		<input class="modal-input-value" type="text" value="{{name}}" />
 	</div>
 	<div class="modal-footer">
 		<button class="btn btn-red" id="btn-confirm">Proceed</button>
@@ -672,6 +672,7 @@ Additional Notes and Questions
     <input type="text" class="input input-ip" value="x" id="instance-ip-1">
     </div>
     <div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+    <div class="network-remove-icon"></div>
 </li>
 
 <!-- modalSGRule -->
@@ -686,7 +687,7 @@ Additional Notes and Questions
 	</div>
 	<div class="modal-body">
 		<div class="property-control-group clearfix">
-        	<label>Direction</label>
+        	<label class="left">Direction</label>
         	<div class="context" id="sg-modal-direction">
             	<div class="radio">
             		<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="radio_inbound" />
@@ -701,51 +702,52 @@ Additional Notes and Questions
         	</div>
     	</div>
     	<div class="property-control-group clearfix">
-			<label for="securitygroup-modal-description" id="rule-modle-title2">Description</label>
+			<label class="left" for="securitygroup-modal-description" id="rule-modle-title2">Description</label>
 			{{#if isAdd}}
 			<input class="input" type="text" id="securitygroup-modal-description" name="securitygroup-modal-description" placeholder="IP Range.eg,10.0.0.1/24" />
 			{{else}}
-			<input class="input" type="text" id="securitygroup-modal-description" name="securitygroup-modal-description" value="IP Range.eg,10.0.0.1/24" />
+			<div class='editable-label' id="securitygroup-modal-description">IP Range.eg,10.0.0.1/24</div>
 			{{/if}}
 		</div>
 		<div class="property-control-group clearfix">
-			<label >Protocol</label>
+			<label class="left" >Protocol</label>
 			<div class="context" >
 				<div class="modal-protocol-select">
-					<div class="selectbox" id="modal-protocol-select">
-					<a class="dropdown-toggle" href="#">
-						<span class="cur-value">UDP</span>
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu" role="menu">
+					<div class="selectbox " id="modal-protocol-select"  data-protocal-type="tcp">
+						<a class="dropdown-toggle" href="#">
+							<span class="cur-value">TCP</span>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu  scroll-wrap scrollbar-auto-hide context-wrap" role="menu">
+    						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 						<li class="selected" tabindex="-1">
-							<a data-id="tcp" href="#">
-							TCP
-							</a>
-						</li>
-						<li  tabindex="-1">
-							<a data-id="udp" href="#">
-							UDP
-							</a>
-						</li>
-						<li  tabindex="-1">
-							<a data-id="icmp" href="#">
-							ICMP
-							</a>
-						</li>
-						<li  tabindex="-1">
-							<a data-id="custom" href="#">
-							Custom
-							</a>
-						</li>
-						<li  tabindex="-1">
-							<a data-id="all" href="#">
-							All
-							</a>
-						</li>
-					</ul>
+								<a data-id="tcp" href="#">
+								TCP
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="udp" href="#">
+								UDP
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="icmp" href="#">
+								ICMP
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="custom" href="#">
+								Custom
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="all" href="#">
+								All
+								</a>
+							</li>
+						</ul>
+					</div>
 				</div>
-			</div>
 			<div id="sg-protocol-select-result">
 					<div class="sg-protocol-option-input show" id="sg-protocol-tcp">
 						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
@@ -754,10 +756,327 @@ Additional Notes and Questions
 						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
 					</div>
 					<div class="sg-protocol-option-input" id="sg-protocol-icmp">
-						<input class="input" type="text" placeholder="IP Range.eg,10.0.0.1/24" />
+						<div class="selectbox" id="protocol-icmp-main-select" data-protocal-main="0"  data-protocal-sub="-1">
+						<a class="dropdown-toggle" href="#">
+							<span class="cur-value">Echo Reply(0)</span>
+							<span class="caret"></span>
+						</a>
+						<div class="dropdown-menu scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+						<ul role="menu" >
+							<li class="selected" tabindex="-1">
+								<a data-id="0" href="#">
+								Echo Reply(0)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="3" href="#">
+								Destination Unreachable(3) ...
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="4" href="#">
+								Source Quench(4)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="5" href="#">
+								Redirect Message(5) ...
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="6" href="#">
+								Alternate Host Address(6)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="8" href="#">
+								Echo Request(8)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="9" href="#">
+								Router Advertisement(9)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="10" href="#">
+								Router Solicitation(10)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="11" href="#">
+								Time Exceeded(11) ...
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="12" href="#">
+								Parameter Problem: Bad IP header(12) ...
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="13" href="#">
+								Timestamp(13)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="14" href="#">
+								Timestamp Reply(14)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="15" href="#">
+								Information Request(15)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="16" href="#">
+								Information Reply(16)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="17" href="#">
+								Address Mask Request(17)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="18" href="#">
+								Address Mask Reply(18)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="30" href="#">
+								Traceroute(30)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="31" href="#">
+								Datagram Conversion Error(31)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="32" href="#">
+								Mobile Host Redirect(32)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="33" href="#">
+								Where Are You(33)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="34" href="#">
+								Here I Am(34)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="35" href="#">
+								Mobile Registration Request(35)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="36" href="#">
+								Mobile Registration Reply(36)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="37" href="#">
+								Domain Name Request(37)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="38" href="#">
+								Domain Name Reply(38)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="39" href="#">
+								SKIP Algorithm Discovery Protocol(39)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="40" href="#">
+								Photuris Security Failures(40)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="-1" href="#">
+								All(-1)
+								</a>
+							</li>
+						</ul>
+					</div>
+					</div>
+					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-3">
+						<a class="dropdown-toggle" href="#">
+							<span class="cur-value">All(-1)</span>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li class="selected" tabindex="-1">
+								<a data-id="-1" href="#">
+								All(-1)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="0" href="#">
+								destination network unreachable(0)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="1" href="#">
+								destination host unreachable(1)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="2" href="#">
+								destination protocol unreachable(2)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="3" href="#">
+								destination port unreachable(3)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="4" href="#">
+								fragmentation required and DF flag set(4)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="5" href="#">
+								source route failed(5)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="6" href="#">
+								destination network unknown(6)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="7" href="#">
+								destination host unknown(7)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="8" href="#">
+								source host isolated(8)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="9" href="#">
+								network administratively prohibited(9)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="10" href="#">
+								host administratively prohibited(10)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="11" href="#">
+								network unreachable for TOS(11)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="12" href="#">
+								host unreachable for TOS(12)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="13" href="#">
+								communication administratively prohibited(13)
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-5">
+						<a class="dropdown-toggle" href="#">
+							<span class="cur-value">All(-1)</span>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li class="selected" tabindex="-1">
+								<a data-id="-1" href="#">
+								All(-1)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="0" href="#">
+								redirect datagram for the network(0)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="1" href="#">
+								redirect datagram for the host(1)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="2" href="#">
+								redirect datagram for the TOS & network(2)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="3" href="#">
+								redirect datagram for the TOS & host(3)
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-11">
+						<a class="dropdown-toggle" href="#">
+							<span class="cur-value">All(-1)</span>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li class="selected" tabindex="-1">
+								<a data-id="-1" href="#">
+								All(-1)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="0" href="#">
+								TTL expired transit(0)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="1" href="#">
+								fragmentation reasembly time exceeded(1)
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-12">
+						<a class="dropdown-toggle" href="#">
+							<span class="cur-value">All(-1)</span>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li class="selected" tabindex="-1">
+								<a data-id="-1" href="#">
+								All(-1)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="0" href="#">
+								pointer indicates the error(0)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="1" href="#">
+								missing a required option(1)
+								</a>
+							</li>
+							<li  tabindex="-1">
+								<a data-id="2" href="#">
+								bad length(2)
+								</a>
+							</li>
+						</ul>
+					</div>
 					</div>
 					<div class="sg-protocol-option-input" id="sg-protocol-custom">
-						<input class="input" type="text" placeholder="Type.0 to 255" />
+						<input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="">
 					</div>
 					<div class="sg-protocol-option-input" id="sg-protocol-all">
 						Port Range:<span>0-65535</span>
@@ -778,7 +1097,7 @@ Additional Notes and Questions
 	<ul id="instance_volume_list" class="clearfix">
 		{{#each list}}
 		<li>
-			<a href="javascript:void(0)" id="{{volume_id}}" class="
+			<a href="#" id="{{volume_id}}" class="
 			{{#if snapshotId}}
 				snapshot_item
 			{{else}}

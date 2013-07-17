@@ -319,21 +319,24 @@ a.table-link {
 /* Input */
 .input {
 	width: 150px;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-	background-color: #fcfcfc;
-	border: 1px solid #aaa;
+	background-color: #fff;
+	-webkit-box-shadow: 0 1px rgba(255,255,255,.5), inset 0 2px 5px #cfd4dd;
+	-moz-box-shadow: 0 1px rgba(255,255,255,.5), inset 0 2px 5px #cfd4dd;
+	box-shadow: 0 1px rgba(255,255,255,.5), inset 0 2px 5px #cfd4dd;
+	border: solid 1px #cfd7e3;
 	font-size: 14px;
 	padding: 8px 20px 8px 8px;
 	display: inline-block;
 	outline: none;
-	color: #333;
+	color: #666;
 }
 
 .input:focus,
 textarea:focus {
-	border: 1px solid #55C7FF;
-	background-color: #fff;
-	box-shadow: 1px 1px 5px rgba(78,155,252,.5);
+	-webkit-box-shadow: 0 1px rgba(255,255,255,.5), inset 0 1px 5px #9ec8e8;
+	-moz-box-shadow: 0 1px rgba(255,255,255,.5), inset 0 1px 5px #9ec8e8;
+	box-shadow: 0 1px rgba(255,255,255,.5), inset 0 1px 5px #9ec8e8;
+	border: solid 1px #96b9d4;
 }
 
 .input.disabled,
@@ -841,7 +844,7 @@ textarea {
 
 .accordion-default .accordion-body {
 	padding: 10px;
-	color: #666;
+	color: #e0e0e0;
 }
 
 /* Notification */
@@ -1030,13 +1033,12 @@ textarea {
 
 /* Fixedaccordion */
 .fixedaccordion-head {
-	border-bottom: 1px solid #ccc;
-	background-color: #ddd;
-}
-
-.accordion-body {
-	/*border-bottom: 1px solid #ccc;*/
-	position: relative;
+	height: 48px;
+	background-color: #3e444c;
+	border-bottom: 1px solid rgba(40,43,50,.75);
+	color: #c5cdd8;
+	text-shadow: 0 1px rgba(30,34,40,.75);
+	box-shadow: 0 1px rgba(255,255,255,.1);
 }
 
 .expanded .fixedaccordion-head {
@@ -1045,8 +1047,13 @@ textarea {
 }
 
 .fixedaccordion .accordion-body {
+	position: relative;
 	display: none;
 	overflow: hidden;
+	background-color: #5d5f65;
+	-webkit-box-shadow: inset 2px 0 6px rgba(60,73,92,.1);
+	-moz-box-shadow: inset 2px 0 6px rgba(60,73,92,.1);
+	box-shadow: inset 2px 0 6px rgba(60,73,92,.1);
 }
 
 .fixedaccordion .expanded .accordion-body {
@@ -1067,14 +1074,10 @@ textarea {
 	cursor: default;
 }
 
-/* Fixedaccordion default style */
-.accordion-default .fixedaccordion-head {
-	/*border: 1px solid #ccc;*/
+.fixedaccordion-head {
 	height: 37px;
 	line-height: 37px;
-	font-weight: 700;
 	padding: 0 10px;
-	color: #333;
 }
 
 /* Selectbox */
@@ -1368,7 +1371,7 @@ textarea {
 
 .property-control-group > label{
 	margin-bottom: 8px;
-	color: #1a1a1a;
+	color: #758694;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
 

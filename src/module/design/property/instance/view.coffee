@@ -41,6 +41,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'EDIT_UPDATE #keypair-select' : "createtoKPList"
             'click #security-group-select li' : "removeSGfromSelectbox"
             'OPTION_CHANGE #security-group-select' : "addSGtoList"
+            'OPTION_SHOW #security-group-select' : 'openSGAccordion'
             'TOGGLE_ICON #sg-info-list' : "toggleSGfromList"
             'click .sg-remove-item-icon' : "removeSGfromList"
             'click #instance-ip-add' : "addIPtoList"
@@ -85,7 +86,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             cid = $( '#instance-property-detail' ).attr 'component'
             this.model.setBase64Encoded cid, event.target.checked
 
-
         eniDescriptionChange : ( event ) ->
             cid = $( '#instance-property-detail' ).attr 'component'
             this.model.setEniDescription cid, event.target.value
@@ -107,11 +107,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             this.model.addKP cid, id
             notification('info', (id + ' created'), false)
 
-
         addIPtoList: (event) ->
             $('#property-network-list').append MC.template.networkListItem()
             false
-
 
         removeIPfromList: (event, id) ->
             $(event.target).parents('li').first().remove()
@@ -125,16 +123,15 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                     target = source.parents('.secondary-panel').first()
 
                 ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data')
-                #secondarypanel.open target, MC.template.sgSecondaryPanel target.data('secondarypanel-data')
-                #$(document.body).on 'click', '.back', secondarypanel.close
-                #fixedaccordion.resize()
-                #selectbox.init()
 
         openAmiPanel : ( event ) ->
             target = $('#property-ami')
             secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
             $(document.body).on 'click', '.back', secondarypanel.close
             fixedaccordion.resize()
+
+        openSGAccordion : ( event ) ->
+            fixedaccordion.show.call $('#sg-head')
 
         addSGtoList: (event, id) ->
             if(id.length != 0)

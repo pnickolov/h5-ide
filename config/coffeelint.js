@@ -12,6 +12,7 @@ module.exports = {
 		}
 	},
 
-	files: '<%= coffeefiles %>'
+	files   : '<%= coffeefiles %>',
+	changed : '<%= grunt.regarde.changed %>'
 
 };

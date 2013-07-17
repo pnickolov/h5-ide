@@ -22,6 +22,16 @@ module.exports = {
             ext    : '.js'
         }]
 
+    },
+
+    changed: {
+
+        files: [{
+            expand : true,
+            src    : '<%= grunt.regarde.changed %>',
+            ext    : '.js'
+        }]
+
     }
 
 };

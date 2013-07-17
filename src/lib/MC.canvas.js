@@ -2939,6 +2939,10 @@ MC.canvas.event.selectLine = function (event)
 	$('#line_layer').append(clone);
 
 	MC.canvas.selected_node.push(this);
+
+	//trigger event when selecte line
+	$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", this.id);
+
 };
 
 MC.canvas.event.clearSelected = function ()

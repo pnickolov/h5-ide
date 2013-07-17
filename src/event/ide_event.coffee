@@ -73,6 +73,7 @@ define [ 'underscore', 'backbone' ], () ->
         #canvas
         CANVAS_NODE_CHANGE_PARENT  : 'CANVAS_NODE_CHANGE_PARENT'
         CANVAS_GROUP_CHANGE_PARENT : 'CANVAS_GROUP_CHANGE_PARENT'
+        CANVAS_LINE_SELECTED       : 'CANVAS_LINE_SELECTED'
 
         constructor : ->
             _.extend this, Backbone.Events

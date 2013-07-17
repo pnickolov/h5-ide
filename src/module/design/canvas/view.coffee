@@ -14,6 +14,8 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             $( document ).delegate '#svg_canvas', 'CANVAS_NODE_SELECTED',     this.showProperty
             $( document ).delegate '#svg_canvas', 'CANVAS_NODE_CHANGE_PARENT', this.changeNodeParent
             $( document ).delegate '#svg_canvas', 'CANVAS_GROUP_CHANGE_PARENT', this.changeGroupParent
+            $( document ).delegate '#svg_canvas', 'CANVAS_LINE_SELECTED', this.lineSelected
+            
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -41,6 +43,9 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
 
         changeGroupParent : ( event, option ) ->
             ide_event.trigger ide_event.CANVAS_GROUP_CHANGE_PARENT, option.src_group, option.tgt_parent
+
+        lineSelected : ( event, line_id ) ->
+            ide_event.trigger ide_event.CANVAS_LINE_SELECTED, line_id
 
     }
 

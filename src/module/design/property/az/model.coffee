@@ -13,7 +13,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
         initialize : ->
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
-
     }
 
     model = new AZModel()

@@ -23,8 +23,10 @@ var selectbox = {
     },
 
     show: function(event) {
-        $(this).parent().toggleClass('open');
-        $(this).parent().find('.selected').focus().addClass('focused');
+        var me = $(this);
+        me.trigger("OPTION_SHOW");
+        me.parent().toggleClass('open');
+        me.parent().find('.selected').focus().addClass('focused');
         return false;
     },
 

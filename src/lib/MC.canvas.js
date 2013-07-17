@@ -564,49 +564,6 @@ MC.canvas = {
 				MC.canvas._addPad(start0, 1);
 				MC.canvas._addPad(end0, 1);
 
-
-				//draw rectangle for vertical / horizontal line
-				// if ( start0.x === end0.x )
-				// {
-				// 	//draw vertical line
-				// 	MC.paper.start({
-				// 		'filter': 'url(#dropshadow)',
-				// 		'stroke': 'none',
-				// 		'stroke-width': 0,
-				// 		'fill': connection_option.color
-				// 	});
-
-				// 	var top_p = start0;
-				// 	var bottom_p = end0;
-				// 	if ( start0.y > end0.y )
-				// 	{
-				// 		top_p = end0;
-				// 		bottom_p = start0;
-				// 	}
-				// 	MC.paper.rectangle(top_p.x, top_p.y, MC.canvas.LINE_STROKE_WIDTH , bottom_p.y - top_p.y );
-				// }
-				// else if ( start0.y === end0.y )
-				// {
-				// 	//draw horizontal line
-				// 	MC.paper.start({
-				// 		'filter': 'url(#dropshadow)',
-				// 		'stroke': 'none',
-				// 		'stroke-width': 0,
-				// 		'fill': connection_option.color
-				// 	});
-
-				// 	var left_p = start0;
-				// 	var right_p = end0;
-				// 	if ( start0.y > end0.y )
-				// 	{
-				// 		left_p = end0;
-				// 		right_p = start0;
-				// 	}
-				// 	MC.paper.rectangle(left_p.x, left_p.y-2, right_p.x - left_p.x, MC.canvas.LINE_STROKE_WIDTH);
-				// }
-
-
-
 				if ( start0.x === end0.x || start0.y === end0.y )
 				{
 					//draw straight line
@@ -693,9 +650,11 @@ MC.canvas = {
 						'target': connection_target_data,
 						'auto': true,
 						'point': []
-					}
+					};
 				}
 				MC.canvas.data.set('layout.connection.' + svg_line.id, layout_connection_data);
+
+				return svg_line.id;
 			}
 		}
 	},
@@ -1240,6 +1199,9 @@ MC.canvas.layout = {
 			if(value.type === "AWS.VPC.RouteTable" && value.resource.AssociationSet.length > 0 && value.resource.AssociationSet[0].Main === "true"){
 				MC.canvas_property.main_route = value.uid;
 			}
+			if(value.type === "AWS.VPC.NetworkAcl" && value.resource.Default === "true"){
+				MC.canvas_property.default_acl = value.uid;
+			}
 		});
 		
 		$.each(MC.canvas_property.sg_list, function (key, value){
@@ -1366,7 +1328,7 @@ MC.canvas.layout = {
 			});
 			
 			var node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
-				'name': 'MainRouteTable',
+				'name': 'MainRT',
 				'group' : {
 					'vpcUId' : vpc_group.id
 				}
@@ -1400,7 +1362,16 @@ MC.canvas.layout = {
 			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
 			MC.canvas_property.main_route = node_rt.id;
 			
-			sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
+			acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
+			acl.uid = MC.guid();
+			acl.resource.Default = 'true'
+			acl.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
+			data[acl.uid] = acl;
+			MC.canvas.data.set('component', data);
+			
+			MC.canvas_property.default_acl = acl.uid;
+			
+			sg.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
 
 		}
 		
@@ -2001,7 +1972,8 @@ MC.canvas.event.drawConnection = {
 			from_node,
 			to_node,
 			port_name,
-			to_port_name;
+			to_port_name,
+			line_id;
 
 		if (match_node)
 		{
@@ -2012,7 +1984,10 @@ MC.canvas.event.drawConnection = {
 
 			if (!from_node.is(to_node) && to_port_name !== undefined)
 			{
-				MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
+				line_id = MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
+
+				//trigger event when connect two port
+				$("#svg_canvas").trigger("CANVAS_LINE_CREATE", line_id);
 			}
 		}
 
@@ -2984,6 +2959,10 @@ MC.canvas.event.selectLine = function (event)
 	$('#line_layer').append(clone);
 
 	MC.canvas.selected_node.push(this);
+
+	//trigger event when selecte line
+	$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", this.id);
+
 };
 
 MC.canvas.event.clearSelected = function ()
@@ -3021,6 +3000,12 @@ MC.canvas.event.keyEvent = function (event)
 			if (node.getAttribute('data-class') !== 'AWS.VPC.VPC')
 			{
 				MC.canvas.remove(node);
+
+				//trigger event when delete component
+				$("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {
+					'id': node.id,
+					'type': $(node).data('type')
+				});
 			}
 		});
 		MC.canvas.selected_node = [];

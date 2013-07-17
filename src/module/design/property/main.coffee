@@ -25,7 +25,7 @@ define [ 'jquery',
                   './module/design/property/model',
                   './module/design/property/stack/main',
                   './module/design/property/instance/main',
-                  './module/design/property/sg/main',
+                  './module/design/property/sg/main', './module/design/property/sgrule/main',
                   './module/design/property/volume/main',
                   './module/design/property/elb/main',
                   './module/design/property/az/main',
@@ -39,7 +39,7 @@ define [ 'jquery',
                   './module/design/property/vpn/main',
                   './module/design/property/eni/main',
                   './module/design/property/acl/main'
-        ], ( View, model, stack_main, instance_main, sg_main, volume_main, elb_main, az_main, subnet_main, vpc_main, dhcp_main, rtb_main, igw_main, vgw_main, cgw_main, vpn_main, eni_main, acl_main ) ->
+        ], ( View, model, stack_main, instance_main, sg_main, sgrule_main, volume_main, elb_main, az_main, subnet_main, vpc_main, dhcp_main, rtb_main, igw_main, vgw_main, cgw_main, vpn_main, eni_main, acl_main ) ->
 
             uid  = null
             type = null
@@ -117,7 +117,7 @@ define [ 'jquery',
                 else
 
                     #select line
-
+                    sgrule_main.loadModule()
                     
 
                 #temp

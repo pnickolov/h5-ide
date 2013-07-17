@@ -99,7 +99,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                         region_counts[value.region].stopped_app += 1
                     total_app += 1
 
-                    if value.region in constant.REGION_KEYS
+                    if value.region in constant.REGION_KEYS and value.name not in MC.data.app_list[value.region]
                         MC.data.app_list[value.region].push value.name
 
                     null
@@ -116,7 +116,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                     region_counts[value.region].stack += 1
                     total_stack += 1
 
-                    if value.region in constant.REGION_KEYS
+                    if value.region in constant.REGION_KEYS and value.name not in MC.data.stack_list[value.region]
                         MC.data.stack_list[value.region].push value.name
 
                     null

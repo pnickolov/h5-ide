@@ -1570,10 +1570,13 @@ MC.canvas.event.dragable = {
 
 					//after change node to another group,trigger event
 					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID);
-					$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_PARENT", {
-						src_node: target_id,
-						tgt_parent: parentGroup.id
-					});
+					if (parentGroup)
+					{
+						$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_PARENT", {
+							src_node: target_id,
+							tgt_parent: parentGroup.id
+						});	
+					}
 				}
 			}
 
@@ -1704,10 +1707,13 @@ MC.canvas.event.dragable = {
 					});
 
 					//after change node to another group,trigger event
-					$("#svg_canvas").trigger("CANVAS_GROUP_CHANGE_PARENT", {
-						src_group: target_id,
-						tgt_parent: parentGroup.id
-					});
+					if (parentGroup)
+					{
+						$("#svg_canvas").trigger("CANVAS_GROUP_CHANGE_PARENT", {
+							src_group: target_id,
+							tgt_parent: parentGroup.id
+						});
+					}
 				}
 			}
 		}

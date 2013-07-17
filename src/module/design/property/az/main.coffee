@@ -33,12 +33,21 @@ define [ 'jquery',
                 ]
 
                 refreshList = ( new_az_data ) ->
+
+                    # If we can't find a az panel with the same uid,
+                    # then the panel is removed.
+                    unloaded = $("az-quick-select").data("component") != uid
                     
                     # The fetch fails, wait for next fetch.
-                    if !new_az_data
+                    if !new_az_data && !unloaded
                         return
 
                     ide_event.off ide_event.RELOAD_AZ, refreshList
+
+                    # If the property panel is unloaded, we will want
+                    # to remove the event listener, but not to refresh the panel
+                    if unloaded
+                        return
 
                     # wait for 'Resouce Panel Module' to process the data
                     # the processed data will be stored at MC.data.config.zone
@@ -75,7 +84,7 @@ define [ 'jquery',
         null
 
     unLoadModule = () ->
-        #view.remove()
+        null
 
     possibleAZList = ( datalist, selectedItemName ) ->
         if !datalist

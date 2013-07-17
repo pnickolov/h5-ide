@@ -185,6 +185,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                                     #push event
                                     ide_event.trigger ide_event.UPDATE_APP_LIST, null
                                     this.trigger 'TOOLBAR_STACK_RUN_SUCCESS'
+                                else if req.state == "Failed"
+                                    handle.stop()
+                                    console.log 'stop handle'
+
+                                    this.trigger 'TOOLBAR_STACK_RUN_FAILED'
                         }
                     null
 

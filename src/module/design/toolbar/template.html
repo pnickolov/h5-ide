@@ -18,7 +18,7 @@
 			{{/if}}
 
 			{{#if toolbar_flag.delete}}
-			<li><a class="btn-toolbar modal" id="toolbar-delete" href="#" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete this stack?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</a></li>
+			<li><a class="btn-toolbar modal" id="toolbar-delete" href="#" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{stack_name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</a></li>
 			{{else}}
 			<li><a class="btn-toolbar" id="toolbar-delete" data-tooltip="Delete" href="#"><i class="icon-toolbar-delete"></i>Delete</a></li>
 			{{/if}}

@@ -43,6 +43,13 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', './modul
                 model.changeGroupParent src_group, tgt_parent
                 null
 
+            #listen CANVAS_COMPONENT_DELETE
+            view.on ide_event.CANVAS_COMPONENT_DELETE, ( uid ) ->
+                console.log 'canvas:CANVAS_COMPONENT_DELETE, uid = ' + uid
+                model.deleteComponent uid
+                null
+
+
             null
 
     unLoadModule = () ->

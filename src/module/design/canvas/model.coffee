@@ -16,13 +16,19 @@ define [ 'backbone', 'jquery', 'underscore' ], () ->
 			null
 
 		#change node from one parent to another parent
-		changeNodeParent : (src_node, tgt_parent) ->
+		changeNodeParent : ( src_node, tgt_parent ) ->
 			#to-do
 
 			null
 
 		#change group from one parent to another parent
-		changeGroupParent : (src_group, tgt_parent) ->
+		changeGroupParent : ( src_group, tgt_parent ) ->
+			#to-do
+
+			null
+
+		#delete component
+		deleteComponent : ( uid ) ->
 			#to-do
 
 			null

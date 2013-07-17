@@ -15,6 +15,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             $( document ).delegate '#svg_canvas', 'CANVAS_NODE_CHANGE_PARENT', this, this.changeNodeParent
             $( document ).delegate '#svg_canvas', 'CANVAS_GROUP_CHANGE_PARENT', this, this.changeGroupParent
             $( document ).delegate '#svg_canvas', 'CANVAS_LINE_SELECTED', this.lineSelected
+            $( document ).delegate '#svg_canvas', 'CANVAS_COMPONENT_DELETE', this, this.deleteComponent
             
 
         render   : ( template ) ->
@@ -46,6 +47,9 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
 
         lineSelected : ( event, line_id ) ->
             ide_event.trigger ide_event.OPEN_PROPERTY, 'line', uid
+
+        deleteComponent : ( event, uid ) ->
+            event.data.trigger ide_event.CANVAS_COMPONENT_DELETE, uid
 
     }
 

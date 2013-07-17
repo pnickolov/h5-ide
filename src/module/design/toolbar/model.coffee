@@ -138,13 +138,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                 url  : 'http://localhost:3001/savepng',
                 type : 'post',
                 data : {
-                    'usercode'   : $.cookie( 'usercode' ),
+                    'usercode'   : $.cookie( 'usercode'   ),
                     'session_id' : $.cookie( 'session_id' ),
+                    'thumbnail'  : is_thumbnail,
+                    'json_data'  : MC.canvas.layout.save()
                     #'region'     : MC.canvas_data.region,
                     #'stack_id'   : MC.canvas_data.id,
-                    'thumbnail'  : is_thumbnail,
                     #'screenshot' : 'http://localhost:3001/screenshot.html',
-                    'json_data'  : MC.canvas.layout.save()
                 },
                 success : ( result ) ->
                     console.log 'phantom callback'

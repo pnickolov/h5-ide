@@ -22,7 +22,12 @@ define [ 'jquery',
             data =
                 id        : uid
                 component : MC.canvas_data.layout.component.group[uid]
-                az_list   : MC.data.config[ MC.canvas_data.region ]?.zone?.item
+                az_list   : MC.data.config[ MC.canvas_data.region ]
+
+            if data.az_list && data.az_list.zone
+                data.az_list = data.az_list.zone.item
+            else
+                data.az_list = null
 
             # In case we get a null az list
             if !data.az_list or data.az_list.length == 0

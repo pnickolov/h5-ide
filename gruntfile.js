@@ -120,7 +120,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'make', function() {
 		grunt.task.run([
 			'coffee:compile_fast',
-			'coffeelint',
+			'coffeelint:files',
 			'jshint',
 			'csslint'
 		]);
@@ -133,7 +133,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'make_all', function() {
 		grunt.task.run([
 			'coffee:compile_all',
-			'coffeelint',
+			'coffeelint:files',
 			'jshint',
 			'csslint'
 		]);

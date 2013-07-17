@@ -14,7 +14,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
             'toolbar_flag'  : null
             'stack_name'    : null
 
-        setFlag : (type, value=null) ->
+        setFlag : (type, value) ->
             me = this
 
             #set stack name
@@ -26,18 +26,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                 toolbar_flag_list = { 'duplicate' : false, 'delete' : false, 'zoomin' : true, 'zoomout' : true }
 
             if type is 'NEW_STACK'
-                toolbar_flag_list['duplicate']  = false
-                toolbar_flag_list['delete']     = false 
+                toolbar_flag_list.duplicate  = false
+                toolbar_flag_list.delete     = false
             else if type is 'OPEN_STACK'
-                toolbar_flag_list['duplicate']  = true
-                toolbar_flag_list['delete']     = true
+                toolbar_flag_list.duplicate  = true
+                toolbar_flag_list.delete     = true
             else if type is 'SAVE_STACK'
-                toolbar_flag_list['duplicate']  = true
-                toolbar_flag_list['delete']     = true
+                toolbar_flag_list.duplicate  = true
+                toolbar_flag_list.delete     = true
             else if type is 'ZOOMIN_STACK'
-                toolbar_flag_list['zoomin']     = value
+                toolbar_flag_list.zoomin     = value
             else if type is 'ZOOMOUT_STACK'
-                toolbar_flag_list['zoomout']    = value
+                toolbar_flag_list.zoomout    = value
 
             me.set 'toolbar_flag', toolbar_flag_list
             me.trigger 'UPDATE_TOOLBAR'
@@ -91,7 +91,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST
 
-                        ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, MC.canvas_data.name + '-stack'
+                        ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, MC.canvas_data.name + ' - stack'
 
                         #call save png
                         me.savePNG true

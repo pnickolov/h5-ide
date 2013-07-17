@@ -69,7 +69,6 @@ define [ 'jquery',
                     stack_main.loadModule()
 
                 #show az property
-
                 if MC.canvas_data.component[ uid ]
 
                     console.log 'type = ' + MC.canvas_data.component[ uid ].type

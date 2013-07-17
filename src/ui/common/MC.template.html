@@ -672,6 +672,7 @@ Additional Notes and Questions
     <input type="text" class="input input-ip" value="x" id="instance-ip-1">
     </div>
     <div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+    <div class="network-remove-icon"></div>
 </li>
 
 <!-- modalSGRule -->
@@ -760,8 +761,9 @@ Additional Notes and Questions
 							<span class="cur-value">Echo Reply(0)</span>
 							<span class="caret"></span>
 						</a>
-						<ul class="dropdown-menu scroll-wrap scrollbar-auto-hide context-wrap" role="menu" style="height:300px;">
-							<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+						<div class="dropdown-menu scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+						<ul role="menu" >
 							<li class="selected" tabindex="-1">
 								<a data-id="0" href="#">
 								Echo Reply(0)
@@ -903,6 +905,7 @@ Additional Notes and Questions
 								</a>
 							</li>
 						</ul>
+					</div>
 					</div>
 					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-3">
 						<a class="dropdown-toggle" href="#">

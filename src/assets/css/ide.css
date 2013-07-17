@@ -1660,10 +1660,10 @@ td.table-action a.btn {
 .sidebar-hider {
 	position: absolute;
 	top: 40%;
-	z-index: 200;
 	padding: 20px 3px;
 	background: #ccc;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+	z-index: 20;
 }
 
 a.sidebar-hider {
@@ -2001,8 +2001,8 @@ a.sidebar-hider {
 }
 
 #security-group-select .dropdown-toggle {
-	width: 38px;
-	height: 38px;
+	width: 36px;
+	height: 36px;
 	background-color: #EEE;
 	display: inline-block;
 }
@@ -2105,8 +2105,8 @@ a.sidebar-hider {
 }
 
 .sg-header .sg-icon-add {
-	width: 40px;
-	height: 40px;
+	width: 36px;
+	height: 36px;
 	background-color: #CCC;
 	display: inline-block;
 	position: absolute;
@@ -2271,9 +2271,9 @@ a.sidebar-hider {
 
 .icon-btn-selectbox {
 	position: absolute;
-	top: 5px;
-	right: 5px;
-	z-index: 100;
+	top: 3px;
+	right: 2px;
+	z-index: 5;
 }
 
 .network-list li .network-remove-icon {
@@ -2296,11 +2296,18 @@ a.sidebar-hider {
 .sg-rule-filter .selectbox .dropdown-menu {
 	top: 30px;
 }
-#sg-secondary-panel {
+#sg-secondary-panel-wrap {
 	position: absolute;
 	width: 280px;
 	right: -280px;
 	height: 100%;
+	top: 0;
+	background-color: #FFF;
+	z-index: 10;
+}
+#sg-secondary-panel {
+	height: 100%;
+	width: 100%;
 }
 /* SG Rule Modal */
 #modal-sg-rule .modal-body{
@@ -2324,7 +2331,7 @@ a.sidebar-hider {
 	width: 100%;
 }
 #modal-protocol-select {
-	width: 110px;
+	width: 90px;
 	display: inline-block;
 	margin: 0;
 }
@@ -2332,16 +2339,16 @@ a.sidebar-hider {
 	width: 80px;
 }
 #sg-protocol-select-result input {
-	width: 200px;
+	width: 220px;
 	display: inline-block;
 }
 #sg-protocol-icmp .selectbox {
-	width: 200px;
+	width: 220px;
 	display: inline-block;
 	margin-top: 0;
 }
 #sg-protocol-icmp .selectbox .dropdown-toggle {
-	width: 170px;
+	width: 190px;
 }
 #sg-protocol-icmp .selectbox.protocol-icmp-sub-select {
 	display: none;
@@ -2350,6 +2357,10 @@ a.sidebar-hider {
 
 #sg-protocol-icmp .selectbox.protocol-icmp-sub-select.shown {
 	display: block;
+}
+
+#modal-sg-rule label {
+	line-height: 35px;
 }
 
 /* Status Bar */
@@ -2450,6 +2461,24 @@ a.sidebar-hider {
 	cursor: pointer;
 	padding: 10px;
 	border: 1px #eee solid;
+}
+
+/* az property panel, can also be used for panels like az's */
+.panel-single-wrap {
+	height : 100%;
+	padding-top : 43px;
+	margin-top  : -43px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+.panel-single-wrap .panel-single {
+	height  : 100%;
+	padding : 10px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
 /*Responsive Style*/

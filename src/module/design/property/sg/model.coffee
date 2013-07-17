@@ -30,12 +30,12 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                     sg_detail.members = value.member.length
 
-                    if MC.canvas_data.component[uid].resource.IpPermissionsEgress
+                    if MC.canvas_data.component[uid].resource.IpPermissionsEgress.length != 0
 
-                            sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
-                        else
+                        sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
+                    else
 
-                            sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length
+                        sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length
 
                     sg_detail.member_names = []
 
@@ -54,10 +54,6 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             uid = MC.guid()
 
             component_data = $.extend(true, {}, MC.canvas.SG_JSON.data)
-
-            if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-
-                delete component_data.resource.IpPermissionsEgress
 
             component_data.uid = uid
 

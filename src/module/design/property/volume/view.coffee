@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/volume
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel', 'parsley' ], ( ide_event ) ->
 
     VolumeView = Backbone.View.extend {
 

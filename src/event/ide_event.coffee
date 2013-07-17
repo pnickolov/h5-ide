@@ -32,6 +32,7 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_SG             : 'OPEN_SG'
         OPEN_INSTANCE       : 'OPEN_INSTANCE'
         RELOAD_PROPERTY     : 'RELOAD_PROPERTY'
+        RELOAD_AZ           : 'RELOAD_AZ'
 
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'
@@ -68,6 +69,10 @@ define [ 'underscore', 'backbone' ], () ->
 
         #navigation to dashboard - region
         NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
+
+        #canvas
+        CANVAS_NODE_CHANGE_PARENT  : 'CANVAS_NODE_CHANGE_PARENT'
+        CANVAS_GROUP_CHANGE_PARENT : 'CANVAS_GROUP_CHANGE_PARENT'
 
         constructor : ->
             _.extend this, Backbone.Events

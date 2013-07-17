@@ -1687,7 +1687,7 @@ MC.canvas.event.dragable = {
 						||
 						(
 							!coordinate_fixed &&
-							//match_place.is_matched &&
+							match_place.is_matched &&
 							event.data.groupChild.length === unique_stack.length
 						)
 					)

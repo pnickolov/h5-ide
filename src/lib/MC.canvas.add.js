@@ -724,7 +724,9 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.data);
 				component_data.name = option.name;
-
+				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
+					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpdId';					
+				}
 				component_layout = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}

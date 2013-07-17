@@ -51,24 +51,24 @@ var listen = function ()
 
 	//canvas_body.on('mousedown', MC.canvas.selection.mousedown);
 
+	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
+
 	$('#resource-panel').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);
 
+};
+
+// Dom Ready
+var ready = function ()
+{
 	$(document).on('keyup', MC.canvas.event.keyEvent);
-	
+
 	$('#header, #navigation').on('click', MC.canvas.volume.close);
-	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
 
 	$(document.body)
 		.on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown);
 
 	canvas_resize();
 	$(window).on('resize', canvas_resize);
-};
-
-// Dom Ready
-var ready = function ()
-{
-
 };
 
 // Dom Ready

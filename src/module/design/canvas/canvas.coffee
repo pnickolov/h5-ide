@@ -2,7 +2,7 @@
 #* Filename     : canvas.coffee
 #* Creator      : xjimmy
 #* Create date  : 2013-06-13 13:12:00
-#* Description  : controller for draw
+#* Description  : business loginc for canvas
 # ************************************************************************************
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************

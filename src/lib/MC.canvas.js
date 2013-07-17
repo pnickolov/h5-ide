@@ -1315,7 +1315,8 @@ MC.canvas.layout = {
 				'name': 'MainRT',
 				'group' : {
 					'vpcUId' : vpc_group.id
-				}
+				},
+				'main' : true
 			},{
 				'x': 19,
 				'y': 16

@@ -690,15 +690,18 @@ Additional Notes and Questions
         	<label class="left">Direction</label>
         	<div class="context" id="sg-modal-direction">
             	<div class="radio">
-            		<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="radio_inbound" />
+            		<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="inbound" />
                 	<label for="radio_inbound"></label>
             	</div>
             	<label for="sg-direction" >Inbound</label>
-            	<div class="radio">
-            		<input id="radio_outbound" type="radio" name="sg-direction" value="radio_outbound"/>
+            	{{#if isclassic}}
+				{{else}}
+				<div class="radio">
+            		<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
                 	<label for="radio_outbound"></label>
             	</div>
             	<label for="sg-direction" >outbound</label>
+				{{/if}}
         	</div>
     	</div>
     	<div class="property-control-group clearfix">
@@ -735,6 +738,8 @@ Additional Notes and Questions
 								ICMP
 								</a>
 							</li>
+							{{#if isclassic}}
+							{{else}}
 							<li  tabindex="-1">
 								<a data-id="custom" href="#">
 								Custom
@@ -745,6 +750,7 @@ Additional Notes and Questions
 								All
 								</a>
 							</li>
+							{{/if}}
 						</ul>
 					</div>
 				</div>
@@ -1174,3 +1180,16 @@ Additional Notes and Questions
         </dl>
     </div>
 </div>
+
+<!-- sgRuleItem -->
+<li data-inbound="true" data-protocol="{{rule.protocol}}" data-fromport="{{rule.fromport}}" data-toport="{{rule.toport}}" data-iprange="{{rule.ipranges}}">
+	<div class='rule-direction-icon tooltip' data-tooltip="{{rule.direction}}"></div>
+	<div class='rule-protocol'>{{rule.protocol}}</div>
+	<div class='rule-source'>
+		<div class="rule-source-icon"></div>
+		<span>{{rule.ipranges}}</span>
+		</div>
+		<div class='rule-port' title="port message">{{rule.fromport}}-{{rule.toport}}</div>
+		<div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
+	<div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
+</li>

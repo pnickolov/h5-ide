@@ -898,7 +898,7 @@ MC.canvas = {
 
 		platform = platform === 'custome-vpc' ? 'ec2-vpc' : platform;
 
-		is_matched = ($.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id);
+		is_matched = (is_option_canvas || $.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id);
 
 		return {
 			'is_matched': is_matched,

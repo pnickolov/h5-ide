@@ -644,7 +644,6 @@ a {
 	font-size: 9px;
 	padding: 1px 4px;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
-	width: 28px;
 	text-align: center;
 }
 
@@ -1661,10 +1660,10 @@ td.table-action a.btn {
 .sidebar-hider {
 	position: absolute;
 	top: 40%;
-	z-index: 200;
 	padding: 20px 3px;
 	background: #ccc;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+	z-index: 20;
 }
 
 a.sidebar-hider {
@@ -2002,8 +2001,8 @@ a.sidebar-hider {
 }
 
 #security-group-select .dropdown-toggle {
-	width: 38px;
-	height: 38px;
+	width: 36px;
+	height: 36px;
 	background-color: #EEE;
 	display: inline-block;
 }
@@ -2106,8 +2105,8 @@ a.sidebar-hider {
 }
 
 .sg-header .sg-icon-add {
-	width: 40px;
-	height: 40px;
+	width: 36px;
+	height: 36px;
 	background-color: #CCC;
 	display: inline-block;
 	position: absolute;
@@ -2272,9 +2271,9 @@ a.sidebar-hider {
 
 .icon-btn-selectbox {
 	position: absolute;
-	top: 5px;
-	right: 5px;
-	z-index: 100;
+	top: 3px;
+	right: 2px;
+	z-index: 5;
 }
 
 .network-list li .network-remove-icon {
@@ -2297,45 +2296,71 @@ a.sidebar-hider {
 .sg-rule-filter .selectbox .dropdown-menu {
 	top: 30px;
 }
-#sg-secondary-panel {
+#sg-secondary-panel-wrap {
 	position: absolute;
 	width: 280px;
 	right: -280px;
+	height: 100%;
+	top: 0;
+	background-color: #FFF;
+	z-index: 10;
+}
+#sg-secondary-panel {
+	height: 100%;
+	width: 100%;
 }
 /* SG Rule Modal */
 #modal-sg-rule .modal-body{
 	padding: 10px;
 	width: 450px;
 }
-#modal-sg-rule .title {
-	width: 100px;
-	display: inline-block;
-	color: #999;
-	line-height: 30px;
-}
-#modal-sg-rule .context {
-	display: inline-block;
-	color: #999;
-}
-#modal-sg-rule .radio span {
-	margin-left: 25px;
-}
-#modal-sg-rule .input {
-	width: 300px;
-}
-#modal-sg-rule .modal-protocol-select {
-	width: 80px;
-	display: inline-block;
-}
-#modal-sg-rule #sg-protocol-select-result input {
-	width: 150px;
-	display: inline-block;
-}
 .sg-protocol-option-input {
 	display: none;
+	width: 200px;
 }
 .sg-protocol-option-input.show {
+	display: inline-block;
+}
+#modal-sg-rule .editable-label {
+	display: inline-block;
+}
+#modal-sg-rule .property-control-group label.left {
+	width: 90px;
+}
+#modal-sg-rule .property-control-group {
+	width: 100%;
+}
+#modal-protocol-select {
+	width: 90px;
+	display: inline-block;
+	margin: 0;
+}
+#modal-protocol-select .dropdown-toggle {
+	width: 80px;
+}
+#sg-protocol-select-result input {
+	width: 220px;
+	display: inline-block;
+}
+#sg-protocol-icmp .selectbox {
+	width: 220px;
+	display: inline-block;
+	margin-top: 0;
+}
+#sg-protocol-icmp .selectbox .dropdown-toggle {
+	width: 190px;
+}
+#sg-protocol-icmp .selectbox.protocol-icmp-sub-select {
+	display: none;
+	margin-top: 10px;
+}
+
+#sg-protocol-icmp .selectbox.protocol-icmp-sub-select.shown {
 	display: block;
+}
+
+#modal-sg-rule label {
+	line-height: 35px;
 }
 
 /* Status Bar */

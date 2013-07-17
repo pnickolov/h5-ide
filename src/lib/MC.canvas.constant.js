@@ -653,12 +653,14 @@ var constant_data = {
 				"PropagatingVgwSet": [],
 				"RouteSet": [],
 				"RouteTableId": "",
-				"AssociationSet": [{
-					"Main": "true",
-					"RouteTableId": "",
-					"SubnetId": "",
-					"RouteTableAssociationId": ""
-				}]
+				"AssociationSet": [
+				//{
+				//	"Main": "true",
+				//	"RouteTableId": "",
+				//	"SubnetId": "",
+				//	"RouteTableAssociationId": ""
+				//}
+				]
 			}
 		}
 	},

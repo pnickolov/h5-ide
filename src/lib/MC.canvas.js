@@ -947,48 +947,96 @@ MC.canvas = {
 		};
 	},
 
-	isBlank: function (type, target_id, x, y)
+	isBlank: function (type, target_id, x, y, width, height)
 	{
 		var children = MC.canvas.data.get('layout.component.' + type),
-			start_x = x * MC.canvas_property.SCALE_RATIO,
-			start_y = y * MC.canvas_property.SCALE_RATIO,
-			end_x = x + MC.canvas.COMPONENT_WIDTH_GRID * MC.canvas_property.SCALE_RATIO,
-			end_y = y + MC.canvas.COMPONENT_HEIGHT_GRID * MC.canvas_property.SCALE_RATIO,
 			isBlank = true,
-			coordinate;
+			start_x,
+			start_y,
+			end_x,
+			end_y
+			coordinate,
+			size;
 
-		$.each(children, function (key, item)
+		if (type === 'node')
 		{
-			coordinate = item.coordinate;
+			start_x = x * MC.canvas_property.SCALE_RATIO;
+			start_y = y * MC.canvas_property.SCALE_RATIO;
+			end_x = (x + MC.canvas.COMPONENT_WIDTH_GRID) * MC.canvas_property.SCALE_RATIO;
+			end_y = (y + MC.canvas.COMPONENT_HEIGHT_GRID) * MC.canvas_property.SCALE_RATIO;
 
-			if (key !== target_id)
+			$.each(children, function (key, item)
 			{
-				if (
-					(
-						(coordinate[0] > start_x &&
-						coordinate[0] < end_x)
-						||
-						(coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > start_x &&
-						coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID < end_x)
-						||
-						coordinate[0] === start_x
-					)
-					&&
-					(
-						(coordinate[1] > start_y &&
-						coordinate[1] < end_y)
-						||
-						(coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > start_y &&
-						coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID < end_y)
-						||
-						coordinate[1] === start_y
-					)
-				)
+				coordinate = item.coordinate;
+
+				if (key !== target_id)
 				{
-					isBlank = false;
+					if (
+						(
+							(coordinate[0] > start_x &&
+							coordinate[0] < end_x)
+							||
+							(coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > start_x &&
+							coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID < end_x)
+							||
+							coordinate[0] === start_x
+						)
+						&&
+						(
+							(coordinate[1] > start_y &&
+							coordinate[1] < end_y)
+							||
+							(coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > start_y &&
+							coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID < end_y)
+							||
+							coordinate[1] === start_y
+						)
+					)
+					{
+						isBlank = false;
+					}
 				}
-			}
-		});
+			});
+		}
+
+		if (type === 'group')
+		{
+			start_x = x * MC.canvas_property.SCALE_RATIO;
+			start_y = y * MC.canvas_property.SCALE_RATIO;
+			end_x = (x + width) * MC.canvas_property.SCALE_RATIO;
+			end_y = (y + height) * MC.canvas_property.SCALE_RATIO;
+			target_type = children[ target_id ].type;
+
+			$.each(children, function (key, item)
+			{
+				coordinate = item.coordinate;
+				size = item.size;
+
+				if (key !== target_id && item.type === target_type)
+				{
+					if (
+						(
+							(coordinate[0] >= start_x &&
+							coordinate[0] <= end_x)
+							||
+							(coordinate[0] + size[0] >= start_x &&
+							coordinate[0] + size[0] <= end_x)
+						)
+						&&
+						(
+							(coordinate[1] >= start_y &&
+							coordinate[1] <= end_y)
+							||
+							(coordinate[1] + size[1] >= start_y &&
+							coordinate[1] + size[1] <= end_y)
+						)
+					)
+					{
+						isBlank = false;
+					}
+				}
+			});
+		}
 
 		return isBlank;
 	},
@@ -1007,13 +1055,20 @@ MC.canvas = {
 			if (
 				node_id !== key &&
 				$.inArray(item.type, group_parent_type) > -1 &&
-				coordinate[0] < start_x &&
-				coordinate[0] + size[0] > end_x &&
-				coordinate[1] < start_y &&
-				coordinate[1] + size[1] > end_y
+				(
+					coordinate[0] < start_x &&
+					coordinate[0] + size[0] > start_x
+				)
+				&&
+				(
+					coordinate[1] < start_y &&
+					coordinate[1] + size[1] > start_y
+				)
 			)
 			{
 				matched = document.getElementById( key );
+
+				return false;
 			}
 		});
 
@@ -1688,7 +1743,8 @@ MC.canvas.event.dragable = {
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&
-							event.data.groupChild.length === unique_stack.length
+							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1])
+							//event.data.groupChild.length === unique_stack.length
 						)
 					)
 				)

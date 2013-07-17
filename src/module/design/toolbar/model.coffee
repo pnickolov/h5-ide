@@ -142,8 +142,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     'session_id' : $.cookie( 'session_id' ),
                     'thumbnail'  : is_thumbnail,
                     'json_data'  : MC.canvas.layout.save()
+                    'stack_id'   : MC.canvas_data.id,
                     #'region'     : MC.canvas_data.region,
-                    #'stack_id'   : MC.canvas_data.id,
                     #'screenshot' : 'http://localhost:3001/screenshot.html',
                 },
                 success : ( result ) ->

@@ -1165,9 +1165,9 @@ MC.canvas.layout = {
 		var layout_data = MC.canvas.data.get("layout"),
 			connection_target_id;
 
-		//temp
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
-	
+		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
+
 		components = MC.canvas.data.get("component");
 		
 		$.each(components, function (key, value){

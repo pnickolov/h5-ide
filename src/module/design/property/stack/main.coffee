@@ -23,6 +23,16 @@ define [ 'jquery',
             #render
             view.render()
 
+            #stack info
+            stack_info = {
+                stack_name          : MC.canvas_data.name,
+                region              : MC.canvas_data.region,
+                stack_type          : model.getStackType(),
+                security_groups     : model.getSecurityGroup(),
+                network_acl         : model.getNetworkACL(),
+                stack_cost          : model.getStackCost(),
+            }
+
     unLoadModule = () ->
         #view.remove()
 

@@ -14,6 +14,26 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
 
+
+        getStackType : ->
+            type = MC.canvas_data.platform
+
+            if type == 'ec2-classic'
+                return 'Classic'
+            else if type == 'ec2-vpc'
+                return ''
+            else if type == 'default-vpc|custom-vpc'
+                return 'Default VPC'
+            else if type == 'custom-vpc'
+                return 'Custom VPC'
+
+        getSecurityGroup : ->
+
+
+        getNetworkACL : ->
+
+        getStackCost : ->
+
     }
 
     model = new StackModel()

@@ -1015,21 +1015,10 @@ MC.canvas = {
 				if (key !== target_id && item.type === target_type)
 				{
 					if (
-						(
-							(coordinate[0] >= start_x &&
-							coordinate[0] <= end_x)
-							||
-							(coordinate[0] + size[0] >= start_x &&
-							coordinate[0] + size[0] <= end_x)
-						)
-						&&
-						(
-							(coordinate[1] >= start_y &&
-							coordinate[1] <= end_y)
-							||
-							(coordinate[1] + size[1] >= start_y &&
-							coordinate[1] + size[1] <= end_y)
-						)
+						coordinate[0] < end_x &&
+						coordinate[0] + size[0] > start_x &&
+						coordinate[1] < end_y &&
+						coordinate[1] + size[1] > start_y
 					)
 					{
 						isBlank = false;

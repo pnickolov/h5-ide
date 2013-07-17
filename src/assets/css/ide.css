@@ -153,7 +153,7 @@ a {
 	background-image: -o-linear-gradient(bottom, #e81414, #fa4a2d);
 	background-image: -ms-linear-gradient(bottom, #e81414, #fa4a2d);
 	background-image: linear-gradient(to top, #e81414, #fa4a2d);
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 700;
 	color: #fff;
 	text-align: center;
@@ -282,7 +282,7 @@ a {
 }
 
 .nav-head-note {
-	font-size: 11px;
+	font-size: 12px;
 	color: #999;
 	display: block;
 	margin-left: 29px;
@@ -376,7 +376,7 @@ a {
 
 .show-unused-region a {
 	padding: 3px 0;
-	font-size: 11px;
+	font-size: 12px;
 	color: #999;
 	text-align: center;
 	display: block;
@@ -641,7 +641,7 @@ a {
 	cursor: default;
 	display: inline-block;
 	border-radius: 2px;
-	font-size: 9px;
+	font-size: 12px;
 	padding: 1px 4px;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
 	width: 28px;
@@ -1324,7 +1324,7 @@ a {
 	background-image: -o-linear-gradient(bottom, #e81414, #fa4a2d);
 	background-image: -ms-linear-gradient(bottom, #e81414, #fa4a2d);
 	background-image: linear-gradient(to top, #e81414, #fa4a2d);
-	font-size: 10px;
+	font-size: 12px;
 	font-weight: 700;
 	color: #fff;
 	text-align: center;
@@ -1669,7 +1669,7 @@ td.table-action a.btn {
 
 a.sidebar-hider {
 	color: #eee;
-	font-size: 10px;
+	font-size: 12px;
 }
 
 .sidebar-hider:hover {
@@ -1809,7 +1809,7 @@ a.sidebar-hider {
 }
 
 .ebs-size {
-	font-size: 10px;
+	font-size: 12px;
 	position: absolute;
 	margin-top: 43px;
 	width: 100%;
@@ -1822,7 +1822,7 @@ a.sidebar-hider {
 }
 
 .resource-label {
-	font-size: 11px;
+	font-size: 12px;
 	text-align: center;
 	padding-bottom: 5px;
 	margin-left: -5px;

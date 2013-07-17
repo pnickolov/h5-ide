@@ -8,7 +8,7 @@ define [ 'jquery',
 ], ( $, template, ide_event ) ->
 
     #private
-    loadModule = ( uid, type ) ->
+    loadModule = ( line_id ) ->
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-sgrule-tmpl">' + template + '</script>'

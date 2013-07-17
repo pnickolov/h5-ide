@@ -23,7 +23,11 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, stack_name ) ->
                 console.log 'toolbar:RELOAD_RESOURCE, stack_name = ' + stack_name
-                #check re-render
+                model.setFlag(type)
+
+            #listen toolbar state change
+            model.on 'UPDATE_TOOLBAR', () ->
+                console.log 'update toolbar status'
                 view.reRender()
 
             #save
@@ -42,9 +46,9 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
                 model.deleteStack()
 
             #run
-            view.on 'TOOLBAR_RUN_CLICK', () ->
+            view.on 'TOOLBAR_RUN_CLICK', (app_name) ->
                 console.log 'design_toolbar_click:runStack'
-                model.runStack( 'stack_test_run' )
+                model.runStack(app_name)
 
             #zoomin
             view.on 'TOOLBAR_ZOOMIN_CLICK', () ->

@@ -1196,6 +1196,9 @@ MC.canvas.layout = {
 			if(value.type === "AWS.VPC.RouteTable" && value.resource.AssociationSet.length > 0 && value.resource.AssociationSet[0].Main === "true"){
 				MC.canvas_property.main_route = value.uid;
 			}
+			if(value.type === "AWS.VPC.NetworkAcl" && value.resource.Default === "true"){
+				MC.canvas_property.default_acl = value.uid;
+			}
 		});
 		
 		$.each(MC.canvas_property.sg_list, function (key, value){
@@ -1322,7 +1325,7 @@ MC.canvas.layout = {
 			});
 			
 			var node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
-				'name': 'MainRouteTable',
+				'name': 'MainRT',
 				'group' : {
 					'vpcUId' : vpc_group.id
 				}
@@ -1356,7 +1359,16 @@ MC.canvas.layout = {
 			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
 			MC.canvas_property.main_route = node_rt.id;
 			
-			sg.resource.VpcId = "@" + $(".AWS-VPC-VPC")[0].id + '.resource.VpcId';
+			acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
+			acl.uid = MC.guid();
+			acl.resource.Default = 'true'
+			acl.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
+			data[acl.uid] = acl;
+			MC.canvas.data.set('component', data);
+			
+			MC.canvas_property.default_acl = acl.uid;
+			
+			sg.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
 
 		}
 		
@@ -1591,10 +1603,13 @@ MC.canvas.event.dragable = {
 
 					//after change node to another group,trigger event
 					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID);
-					$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_PARENT", {
-						src_node: target_id,
-						tgt_parent: parentGroup.id
-					});
+					if (parentGroup)
+					{
+						$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_PARENT", {
+							src_node: target_id,
+							tgt_parent: parentGroup.id
+						});	
+					}
 				}
 			}
 
@@ -1684,7 +1699,7 @@ MC.canvas.event.dragable = {
 						||
 						(
 							!coordinate_fixed &&
-							//match_place.is_matched &&
+							match_place.is_matched &&
 							event.data.groupChild.length === unique_stack.length
 						)
 					)
@@ -1725,10 +1740,13 @@ MC.canvas.event.dragable = {
 					});
 
 					//after change node to another group,trigger event
-					$("#svg_canvas").trigger("CANVAS_GROUP_CHANGE_PARENT", {
-						src_group: target_id,
-						tgt_parent: parentGroup.id
-					});
+					if (parentGroup)
+					{
+						$("#svg_canvas").trigger("CANVAS_GROUP_CHANGE_PARENT", {
+							src_group: target_id,
+							tgt_parent: parentGroup.id
+						});
+					}
 				}
 			}
 		}

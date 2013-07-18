@@ -117,7 +117,7 @@ define [ 'jquery',
                 else
 
                     #select line
-                    sgrule_main.loadModule()
+                    sgrule_main.loadModule uid
                     
 
                 #temp

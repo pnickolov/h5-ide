@@ -793,7 +793,7 @@ MC.canvas = {
 		return matched;
 	},
 
-	isMatchPlace: function (target_id, node_type, x, y, width, height)
+	isMatchPlace: function (target_id, target_type, node_type, x, y, width, height)
 	{
 		var layout_group_data = MC.canvas.data.get('layout.component.group'),
 			platform = MC.canvas.data.get('platform'),
@@ -802,7 +802,7 @@ MC.canvas = {
 				$('#az_layer').children(),
 				$('#vpc_layer').children()
 			],
-			is_option_canvas = ($.inArray('Canvas', MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1),
+			is_option_canvas = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ][ 0 ] === 'Canvas',
 			result = {},
 			is_matched,
 			group_data,
@@ -859,37 +859,88 @@ MC.canvas = {
 		}
 		else
 		{
-			$.each(group_stack, function (index, layer_data)
+			if (target_type === 'node')
 			{
-				if (layer_data)
+				$.each(group_stack, function (index, layer_data)
 				{
-					$.each(layer_data, function (i, item)
+					if (layer_data)
 					{
-						group_data = layout_group_data[ item.id ];
-						coordinate = group_data.coordinate;
-						size = group_data.size;
-
-						if (
-							target_id !== item.id &&
-							x >= coordinate[0] &&
-							x + width <= coordinate[0] + size[0] &&
-							y >= coordinate[1] &&
-							y + height <= coordinate[1] + size[1]
-						)
+						$.each(layer_data, function (i, item)
 						{
-							result = {
-								'id': item.id,
-								'type': group_data.type
-							};
-						}
-					});
+							group_data = layout_group_data[ item.id ];
+							coordinate = group_data.coordinate;
+							size = group_data.size;
 
-					if (!$.isEmptyObject(result))
-					{
-						return false;
+							if (
+								target_id !== item.id &&
+
+								(
+									(x >= coordinate[0] &&
+									x <= coordinate[0] + size[0])
+									||
+									(x + width >= coordinate[0] &&
+									x + width <= coordinate[0] + size[0])
+								)
+								&&
+								(
+									(y >= coordinate[1] &&
+									y <= coordinate[1] + size[1])
+									||
+									(y + height >= coordinate[1] &&
+									y + height <= coordinate[1] + size[1])
+								)
+							)
+							{
+								result = {
+									'id': item.id,
+									'type': group_data.type
+								};
+							}
+						});
+
+						if (!$.isEmptyObject(result))
+						{
+							return false;
+						}
 					}
-				}
-			});
+				});
+			}
+
+			if (target_type === 'group')
+			{
+				$.each(group_stack, function (index, layer_data)
+				{
+					if (layer_data)
+					{
+						$.each(layer_data, function (i, item)
+						{
+							group_data = layout_group_data[ item.id ];
+							coordinate = group_data.coordinate;
+							size = group_data.size;
+
+							if (
+								target_id !== item.id &&
+
+								coordinate[0] <= x &&
+								coordinate[0] + size[0] >= x + width &&
+								coordinate[1] <= y &&
+								coordinate[1] + size[1] >= y + height
+							)
+							{
+								result = {
+									'id': item.id,
+									'type': group_data.type
+								};
+							}
+						});
+
+						if (!$.isEmptyObject(result))
+						{
+							return false;
+						}
+					}
+				});
+			}
 		}
 
 		matchGroup = result.type;
@@ -1027,6 +1078,8 @@ MC.canvas = {
 	{
 		var children = MC.canvas.data.get('layout.component.node'),
 			groups = MC.canvas.data.get('layout.component.group'),
+			group_data = groups[ node_id ],
+			group_weight = MC.canvas.GROUP_WEIGHT[ group_data.type ],
 			matched = [],
 			coordinate,
 			size;
@@ -1065,21 +1118,11 @@ MC.canvas = {
 
 			if (
 				node_id !== key &&
-				(
-					(coordinate[0] > start_x &&
-					coordinate[0] < end_x)
-					||
-					(coordinate[0] + size[0] > start_x &&
-					coordinate[0] + size[0] < end_x)
-				)
-				&&
-				(
-					(coordinate[1] > start_y &&
-					coordinate[1] < end_y)
-					||
-					(coordinate[1] + size[1] > start_y &&
-					coordinate[1] + size[1] < end_y)
-				)
+				($.inArray(item.type, group_weight) > -1 || item.type === group_data.type) &&
+				start_x < coordinate[0] + size[0] &&
+				end_x > coordinate[0] &&
+				start_y < coordinate[1] + size[1] &&
+				end_y > coordinate[1]
 			)
 			{
 				matched.push(document.getElementById( key ));
@@ -1091,74 +1134,15 @@ MC.canvas = {
 
 	groupChild: function (group_node)
 	{
-		var children = MC.canvas.data.get('layout.component.node'),
-			groups = MC.canvas.data.get('layout.component.group'),
-			group_data = groups[ group_node.id ],
-			start_x = group_data.coordinate[0],
-			start_y = group_data.coordinate[1],
-			end_x = start_x + group_data.size[0],
-			end_y = start_y + group_data.size[1],
-			matched = [],
-			group_weight = MC.canvas.GROUP_WEIGHT[ group_data.type ],
-			coordinate,
-			size;
+		var group_data = MC.canvas.data.get('layout.component.group.' + group_node.id);
 
-		$.each(children, function (key, item)
-		{
-			coordinate = item.coordinate;
-
-			if (
-				(
-					(coordinate[0] > start_x &&
-					coordinate[0] < end_x)
-					||
-					(coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > start_x &&
-					coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID < end_x)
-				)
-				&&
-				(
-					(coordinate[1] > start_y &&
-					coordinate[1] < end_y)
-					||
-					(coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > start_y &&
-					coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID < end_y)
-				)
-			)
-			{
-				matched.push(document.getElementById( key ));
-			}
-		});
-
-		$.each(groups, function (key, item)
-		{
-			coordinate = item.coordinate;
-			size = item.size;
-
-			if (
-				key !== group_node.id &&
-				$.inArray(item.type, group_weight) > -1 &&
-				(
-					(coordinate[0] > start_x &&
-					coordinate[0] < end_x)
-					||
-					(coordinate[0] + size[0] > start_x &&
-					coordinate[0] + size[0] < end_x)
-				)
-				&&
-				(
-					(coordinate[1] > start_y &&
-					coordinate[1] < end_y)
-					||
-					(coordinate[1] + size[1] > start_y &&
-					coordinate[1] + size[1] < end_y)
-				)
-			)
-			{
-				matched.push(document.getElementById( key ));
-			}
-		});
-
-		return matched;
+		return MC.canvas.areaChild(
+			group_node.id,
+			group_data.coordinate[0],
+			group_data.coordinate[1],
+			group_data.coordinate[0] + group_data.size[0],
+			group_data.coordinate[1] + group_data.size[1]
+		);
 	}
 };
 
@@ -1338,21 +1322,6 @@ MC.canvas.layout = {
 				'y': 16
 			});
 			
-			//var node_az = MC.canvas.add('AWS.EC2.AvailabilityZone', {
-			//	'name': 'ap-northeast-1'
-			//},{
-			//	'x': 19,
-			//	'y': 16
-			//});
-
-			//var node_subnet = MC.canvas.add('AWS.VPC.Subnet', {
-			//	'name': 'subnet1'
-			//},{
-			//	'x': 23,
-			//	'y': 20
-			//});
-			
-
 			//default sg
 			main_asso = {
 				"Main": "true",
@@ -1467,7 +1436,7 @@ MC.canvas.event.dragable = {
 			if (node_type === 'node')
 			{
 				platform = MC.canvas.data.get('platform');
-				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][  target.data('class') ];
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ target.data('class') ];
 
 				$.each(target_group_type, function (index, item)
 				{
@@ -1575,7 +1544,7 @@ MC.canvas.event.dragable = {
 			{
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID);
+				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID);
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
@@ -1627,7 +1596,7 @@ MC.canvas.event.dragable = {
 					group_data = layout_group_data[ target_id ],
 					group_coordinate = group_data.coordinate,
 					group_size = group_data.size,
-					match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1]),
+					match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1]),
 					areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]),
 					parentGroup = MC.canvas.parentGroup(target_id, group_data.type, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]),
 					child_stack = [],
@@ -2128,7 +2097,7 @@ MC.canvas.event.siderbarDrag = {
 	{
 		var target = $(event.data.target),
 			target_id = target.attr('id') || '',
-			target_component_type = target.data('component-type'),
+			target_type = target.data('component-type'),
 			node_type = target.data('type'),
 			canvas_offset = $('#svg_canvas').offset(),
 			shadow_offset = event.data.shadow.position(),
@@ -2140,9 +2109,9 @@ MC.canvas.event.siderbarDrag = {
 
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
-			if (target_component_type === 'node')
+			if (target_type === 'node')
 			{
-				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
+				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
 
 				if (match_place.is_matched)
 				{
@@ -2151,10 +2120,10 @@ MC.canvas.event.siderbarDrag = {
 				}
 			}
 
-			if (target_component_type === 'group')
+			if (target_type === 'group')
 			{
 				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
-				match_place = MC.canvas.isMatchPlace(target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);
+				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);
 
 				if (match_place.is_matched)
 				{

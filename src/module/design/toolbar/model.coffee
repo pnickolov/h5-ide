@@ -235,12 +235,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     #'region'     : MC.canvas_data.region,
                     #'screenshot' : 'http://localhost:3001/screenshot.html',
                 },
-                success : ( result ) ->
+                success : ( res ) ->
                     console.log 'phantom callback'
-                    console.log result
-                    console.log result.status
-                    if result.status is 'success'
-                        me.trigger 'SAVE_PNG_COMPLETE', result.base64
+                    console.log res
+                    console.log res.status
+                    if res.status is 'success'
+                        if res.thumbnail is 'true'
+                            console.log 's3 url = ' + res.result
+                        else
+                            me.trigger 'SAVE_PNG_COMPLETE', res.result
                     else
                         #
             }

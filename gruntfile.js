@@ -44,7 +44,8 @@ module.exports = function( grunt ) {
 			'!<%= src %>/vender/qunit/*.css',
 			'!<%= src %>/test/console/css/*.css',
 			'!<%= src %>/test/console/prettify/*.css',
-			'!<%= src %>/bootstrap/**/*.css'
+			'!<%= src %>/bootstrap/**/*.css',
+			'!<%= src %>/test/jsondiff/css/master.css'
 		],
 
 		coffeefiles : [

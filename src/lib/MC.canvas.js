@@ -1299,8 +1299,8 @@ MC.canvas.layout = {
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
 		//set region and platform
-		//MC.canvas_data.name = option.name;
-		MC.canvas_data.name = 'test';
+		MC.canvas_data.name = option.name;
+		//MC.canvas_data.name = 'test';
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 

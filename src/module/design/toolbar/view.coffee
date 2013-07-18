@@ -25,6 +25,8 @@ define [ 'MC', 'event',
             'click .icon-toolbar-redo'          : 'clickRedoIcon'
             'click #toolbar-export-png'         : 'clickExportPngIcon'
             'click #toolbar-export-json'        : 'clickExportJSONIcon'
+            #for debug
+            'click #toolbar-jsondiff'           : 'clickOpenJSONDiff'
 
         render   : () ->
             console.log 'toolbar render'
@@ -148,6 +150,10 @@ define [ 'MC', 'event',
                 'download'  : MC.canvas_data.name + '.json',
             }
             $( '#json-content' ).val file_content
+
+
+        clickOpenJSONDiff : ->
+            #to-do
 
     }
 

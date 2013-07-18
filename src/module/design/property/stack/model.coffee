@@ -62,7 +62,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                     MC.canvas_property.sg_list.splice(index, 1)
             #update instance
 
-        getNetworkACL : ->       
+        getNetworkACL : ->
 
         getStackCost : ->
 

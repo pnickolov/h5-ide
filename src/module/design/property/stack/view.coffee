@@ -53,7 +53,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide
         addSGtoList: (event, id) ->
             if(id.length != 0)
                 $('#sg-info-list').append MC.template.sgListItem({name: id})
-                sg_uid = id
+                #sg_uid = id
                 #this.model.addSGtoInstance instance_uid, sg_uid
             else
                 ide_event.trigger ide_event.OPEN_SG, {parent: MC.canvas_data.id}

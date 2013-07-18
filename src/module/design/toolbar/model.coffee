@@ -93,6 +93,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
                         ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, MC.canvas_data.name + ' - stack'
 
+                        MC.data.stack_list[MC.canvas_data.region].push MC.canvas_data.name
+
                         #call save png
                         me.savePNG true
 

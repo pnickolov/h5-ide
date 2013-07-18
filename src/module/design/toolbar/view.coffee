@@ -73,6 +73,8 @@ define [ 'MC', 'event',
 
             if not name
                 notification 'error', 'No stack name.'
+            else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
+                notification 'error', 'Repeated stack name'
             else
                 this.trigger 'TOOLBAR_SAVE_CLICK'
 

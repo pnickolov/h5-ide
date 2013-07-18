@@ -808,8 +808,29 @@ MC.canvas = {
 				$('#az_layer').children(),
 				$('#vpc_layer').children()
 			],
+			point = [
+				{
+					'x': x,
+					'y': y
+				},
+				{
+					'x': x + width,
+					'y': y
+				},
+				{
+					'x': x,
+					'y': y + height
+				},
+				{
+					'x': x + width,
+					'y': y + height
+				}
+			],
+			match_option = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ],
 			is_option_canvas = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ][ 0 ] === 'Canvas',
+			match = [],
 			result = {},
+			match_status,
 			is_matched,
 			group_data,
 			coordinate,
@@ -817,6 +838,7 @@ MC.canvas = {
 
 		x = x * MC.canvas_property.SCALE_RATIO;
 		y = y * MC.canvas_property.SCALE_RATIO;
+
 
 		if (is_option_canvas)
 		{
@@ -862,15 +884,21 @@ MC.canvas = {
 					}
 				}
 			});
+
+			return {
+				'is_matched': true,
+				'target': result.id === undefined && is_matched ? 'Canvas' : result.id
+			};
 		}
 		else
 		{
-			if (target_type === 'node')
+			$.each(point, function (index, data)
 			{
-				$.each(group_stack, function (index, layer_data)
+				$.each(group_stack, function (i, layer_data)
 				{
 					if (layer_data)
 					{
+						match_status = {};
 						$.each(layer_data, function (i, item)
 						{
 							group_data = layout_group_data[ item.id ];
@@ -879,92 +907,34 @@ MC.canvas = {
 
 							if (
 								target_id !== item.id &&
-
-								(
-									(x >= coordinate[0] &&
-									x <= coordinate[0] + size[0])
-									||
-									(x + width >= coordinate[0] &&
-									x + width <= coordinate[0] + size[0])
-								)
-								&&
-								(
-									(y >= coordinate[1] &&
-									y <= coordinate[1] + size[1])
-									||
-									(y + height >= coordinate[1] &&
-									y + height <= coordinate[1] + size[1])
-								)
-								// coordinate[0] <= x &&
-								// coordinate[0] + size[0] >= x + width &&
-								// coordinate[1] <= y &&
-								// coordinate[1] + size[1] >= y + height
+								data.x > coordinate[0] &&
+								data.x < coordinate[0] + size[0] &&
+								data.y > coordinate[1] &&
+								data.y < coordinate[1] + size[1]
 							)
 							{
-								result = {
-									'id': item.id,
-									'type': group_data.type
-								};
+								match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
+								match_status['target'] = item.id;
+								return false;
 							}
 						});
 
-						if (!$.isEmptyObject(result))
+						if (!$.isEmptyObject(match_status))
 						{
+							match[ index ] = match_status;
 							return false;
 						}
 					}
 				});
-			}
+			});
 
-			if (target_type === 'group')
-			{
-				$.each(group_stack, function (index, layer_data)
-				{
-					if (layer_data)
-					{
-						$.each(layer_data, function (i, item)
-						{
-							group_data = layout_group_data[ item.id ];
-							coordinate = group_data.coordinate;
-							size = group_data.size;
+			is_matched = match[0].is_matched && match[1].is_matched && match[2].is_matched && match[3].is_matched ? true : false;
 
-							if (
-								target_id !== item.id &&
-
-								coordinate[0] <= x &&
-								coordinate[0] + size[0] >= x + width &&
-								coordinate[1] <= y &&
-								coordinate[1] + size[1] >= y + height
-							)
-							{
-								result = {
-									'id': item.id,
-									'type': group_data.type
-								};
-							}
-						});
-
-						if (!$.isEmptyObject(result))
-						{
-							return false;
-						}
-					}
-				});
-			}
+			return {
+				'is_matched': is_matched,
+				'target': is_matched ? match[0].target : null
+			};
 		}
-
-		matchGroup = result.type;
-
-		matchGroup = matchGroup === undefined ? 'Canvas' : matchGroup;
-
-		platform = platform === 'custome-vpc' ? 'ec2-vpc' : platform;
-
-		is_matched = (is_option_canvas || $.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id);
-
-		return {
-			'is_matched': is_matched,
-			'target': result.id === undefined && is_matched ? 'Canvas' : result.id
-		};
 	},
 
 	isBlank: function (type, target_id, x, y, width, height)
@@ -1299,7 +1269,6 @@ MC.canvas.layout = {
 
 	create: function (option)
 	{
-
 		MC.paper = Canvon('svg_canvas');
 
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
@@ -1581,8 +1550,8 @@ MC.canvas.event.dragable = {
 
 				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID);
 				
-				console.info(MC.canvas.parentGroup(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID + coordinate.x, MC.canvas.COMPONENT_HEIGHT_GRID + coordinate.y));
-				console.info(match_place);
+				//console.info(MC.canvas.parentGroup(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID + coordinate.x, MC.canvas.COMPONENT_HEIGHT_GRID + coordinate.y));
+				//console.info(match_place);
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&

@@ -27,16 +27,23 @@ define [ 'MC', 'event',
             'click #toolbar-export-json'        : 'clickExportJSONIcon'
             #for debug
             'click #toolbar-jsondiff'           : 'clickOpenJSONDiff'
+            'click #toolbar-jsonview'           : 'clickOpenJSONView'
+
 
         render   : () ->
             console.log 'toolbar render'
             $( '#main-toolbar' ).html this.template
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
+
+
         reRender   : ( template ) ->
             console.log 're-toolbar render'
             #if $.trim( $( '#main-toolbar' ).html() ) is 'loading...' then $( '#main-toolbar' ).html this.template
             $( '#main-toolbar' ).html this.template this.model.attributes
+
+            this.initZeroClipboard()
+
 
         clickRunIcon : ->
             me = this
@@ -75,7 +82,7 @@ define [ 'MC', 'event',
 
             if not name
                 notification 'error', 'No stack name.'
-            else if name.slice(0, 7) == 'unitled'
+            else if name.slice(0, 7) == 'untitled'
                 notification 'error', 'Please modify the initial stack name'
             else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
                 notification 'error', 'Repeated stack name'
@@ -95,8 +102,6 @@ define [ 'MC', 'event',
             #check name
             if not name
                 notification 'error', 'No stack name.'
-            else if new_name.slice(0, 7) == 'unitled'
-                notification 'error', 'Please modify the initial stack name'
             else if new_name in MC.data.stack_list[MC.canvas_data.region]
                 notification 'error', 'Repeated stack name.'
             else
@@ -159,6 +164,8 @@ define [ 'MC', 'event',
             $( '#json-content' ).val file_content
 
 
+        #for debug
+
         clickOpenJSONDiff : ->
 
             a = MC.canvas_property.original_json.split('"').join('\\"')
@@ -166,6 +173,17 @@ define [ 'MC', 'event',
             param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
 
             window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
+            null
+
+        initZeroClipboard : () ->
+
+            window.zeroClipboardInit( 'toolbar-jsoncopy' )
+
+            null
+
+        clickOpenJSONView : ->
+
+            window.open 'http://jsonviewer.stack.hu/'
             null
 
     }

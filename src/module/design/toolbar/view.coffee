@@ -156,7 +156,13 @@ define [ 'MC', 'event',
 
 
         clickOpenJSONDiff : ->
-            #to-do
+
+            a = MC.canvas_property.original_json.split('"').join('\\"')
+            b = JSON.stringify(MC.canvas_data).split('"').join('\\"')
+            param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
+
+            window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
+            null
 
     }
 

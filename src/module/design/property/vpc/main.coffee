@@ -4,7 +4,9 @@
 
 define [ 'jquery',
          'text!/module/design/property/vpc/template.html',
-         'event'
+         'event',
+         'UI.notification',
+         'UI.multiinputbox'
 ], ( $, template, ide_event ) ->
 
     #private
@@ -19,9 +21,29 @@ define [ 'jquery',
         require [ './module/design/property/vpc/view', './module/design/property/vpc/model' ], ( view, model ) ->
 
             #view
-            view.model    = model
-            #render
-            view.render()
+            view.model = model
+            view.render( model.getRenderData( uid ) )
+
+            view.on "CHANGE_NAME", ( newName ) ->
+                if not validateName newName
+                    view.setName ( model.getName uid )
+                null
+
+            view.on "CHANGE_CIDR", ( newCIDR ) ->
+                if not validateCIDR newCIDR
+                    view.setCIDR ( model.getCIDR uid )
+                    notification 'error', "Must be a valid IPv4 CIDR block.", true
+                null
+
+            null
+
+        null
+
+    validateName = ( name ) ->
+        name && name.match /^[a-zA-Z0-9\-]+$/
+
+    validateCIDR = ( cird ) ->
+        cird && cird.match /^(\d{1,3}.){3}\d{1,3}\/\d\d$/
 
     unLoadModule = () ->
         #view.remove()

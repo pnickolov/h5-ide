@@ -21,6 +21,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         azSelect   : ( event, newAZName ) ->
             this.trigger "SELECT_AZ", $("#az-quick-select").attr("component"), newAZName
 
+        isPanelVisible : ( uid ) ->
+            $("#az-quick-select").attr("component") == uid
+
     }
 
     view = new AZView()

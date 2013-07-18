@@ -2,7 +2,7 @@
 #  Controller for design/canvas module
 ####################################
 
-define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', './module/design/canvas/canvas' ], ( $, template, ide_event, canvas ) ->
+define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, template, ide_event ) ->
 
     #private
     loadModule = () ->

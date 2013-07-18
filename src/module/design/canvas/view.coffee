@@ -47,7 +47,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             ide_event.trigger ide_event.OPEN_PROPERTY, 'component', uid
 
         lineSelected : ( event, line_id ) ->
-            ide_event.trigger ide_event.OPEN_PROPERTY, 'line', uid
+            ide_event.trigger ide_event.OPEN_PROPERTY, 'line', line_id
 
 
 

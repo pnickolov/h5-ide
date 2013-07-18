@@ -1177,7 +1177,6 @@ MC.canvas.layout = {
 		MC.paper = Canvon('svg_canvas');
 
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
-		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
 
 		components = MC.canvas.data.get("component");
 		
@@ -1285,6 +1284,10 @@ MC.canvas.layout = {
 		{
 			layout_data.connection = {};
 		}
+
+		//store json to original_json
+		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
+
 		return true;
 	},
 
@@ -1300,7 +1303,6 @@ MC.canvas.layout = {
 
 		//set region and platform
 		MC.canvas_data.name = option.name;
-		//MC.canvas_data.name = 'test';
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 
@@ -1374,6 +1376,9 @@ MC.canvas.layout = {
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
 		});
+
+		//store json to original_json
+		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
 
 		return true;
 	},

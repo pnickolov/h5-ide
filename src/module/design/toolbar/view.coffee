@@ -31,7 +31,6 @@ define [ 'MC', 'event',
         render   : () ->
             console.log 'toolbar render'
             $( '#main-toolbar' ).html this.template
-            #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
         reRender   : ( template ) ->
@@ -50,21 +49,23 @@ define [ 'MC', 'event',
 
                 #check app name
                 if not app_name
-                    notification 'error', 'No app name'
+                    notification 'error', 'No app name.'
                     return
                 if app_name in MC.data.app_list[MC.canvas_data.region]
-                    notification 'error', 'Repeated app name'
+                    notification 'error', 'Repeated app name.'
                     return
 
                 me.trigger 'TOOLBAR_RUN_CLICK', app_name
                 modal.close()
 
                 me.model.once 'TOOLBAR_STACK_RUN_SUCCESS', () ->
-                    notification 'info', 'Run stack ' + MC.canvas_data.name + ' successfully'
+                    notification 'info', 'Run stack ' + MC.canvas_data.name + ' successfully.'
+                me.model.once 'TOOLBAR_STACK_RUN_FAILED', () ->
+                    notification 'error', 'Run stack ' + MC.canvas_data.name + ' failed.'
                 me.model.once 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', () ->
-                    notification 'info', 'Run stack ' + MC.canvas_data.name + ' request successfully'
+                    notification 'info', 'Run stack ' + MC.canvas_data.name + ' request successfully.'
                 me.model.once 'TOOLBAR_STACK_RUN_REQUEST_ERROR', () ->
-                    notification 'error', 'Run stack ' + MC.canvas_data.name + ' request failed'
+                    notification 'error', 'Run stack ' + MC.canvas_data.name + ' request failed.'
             true
 
         clickSaveIcon : ->
@@ -73,14 +74,16 @@ define [ 'MC', 'event',
             name = MC.canvas_data.name
 
             if not name
-                notification 'error', 'No stack name'
+                notification 'error', 'No stack name.'
+            else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
+                notification 'error', 'Repeated stack name'
             else
                 this.trigger 'TOOLBAR_SAVE_CLICK'
 
                 this.model.once 'TOOLBAR_STACK_SAVE_SUCCESS', () ->
-                    notification 'info', 'Save stack ' + name + ' successfully'
+                    notification 'info', 'Save stack ' + name + ' successfully.'
                 this.model.once 'TOOLBAR_STACK_SAVE_ERROR', () ->
-                    notification 'error', 'Save stack ' + name + ' failed'
+                    notification 'error', 'Save stack ' + name + ' failed.'
 
         clickDuplicateIcon : ->
             console.log 'clickDuplicateIcon'
@@ -89,16 +92,16 @@ define [ 'MC', 'event',
             new_name = name + '-copy'
             #check name
             if not name
-                notification 'error', 'No stack name'
+                notification 'error', 'No stack name.'
             else if new_name in MC.data.stack_list[MC.canvas_data.region]
-                notification 'error', 'Repeated stack name'
+                notification 'error', 'Repeated stack name.'
             else
                 this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name
 
                 this.model.once 'TOOLBAR_STACK_DUPLICATE_SUCCESS', () ->
-                    notification 'info', 'Duplicate stack ' + name + ' successfully'
+                    notification 'info', 'Duplicate stack ' + name + ' successfully.'
                 this.model.once 'TOOLBAR_STACK_DUPLICATE_ERROR', () ->
-                    notification 'error', 'Duplicate stack ' + name + ' failed'
+                    notification 'error', 'Duplicate stack ' + name + ' failed.'
 
             true
 
@@ -113,9 +116,9 @@ define [ 'MC', 'event',
                 me.trigger 'TOOLBAR_DELETE_CLICK'
 
                 me.model.once 'TOOLBAR_STACK_DELETE_SUCCESS', () ->
-                    notification 'info', 'Delete stack ' + MC.canvas_data.name + ' successfully'
+                    notification 'info', 'Delete stack ' + MC.canvas_data.name + ' successfully.'
                 me.model.once 'TOOLBAR_STACK_DELETE_ERROR', () ->
-                    notification 'error', 'Delete stack ' + MC.canvas_data.name + ' failed'
+                    notification 'error', 'Delete stack ' + MC.canvas_data.name + ' failed.'
             true
 
         clickNewStackIcon : ->
@@ -153,7 +156,13 @@ define [ 'MC', 'event',
 
 
         clickOpenJSONDiff : ->
-            #to-do
+
+            a = MC.canvas_property.original_json.split('"').join('\\"')
+            b = JSON.stringify(MC.canvas_data).split('"').join('\\"')
+            param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
+
+            window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
+            null
 
     }
 

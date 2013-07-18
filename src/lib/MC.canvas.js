@@ -809,7 +809,7 @@ MC.canvas = {
 				$('#vpc_layer').children()
 			],
 			is_option_canvas = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ][ 0 ] === 'Canvas',
-			result = {},
+			result = [],
 			is_matched,
 			group_data,
 			coordinate,
@@ -818,6 +818,27 @@ MC.canvas = {
 		x = x * MC.canvas_property.SCALE_RATIO;
 		y = y * MC.canvas_property.SCALE_RATIO;
 
+		// var point = [
+		// 	[x, y],
+		// 	[x + width, y],
+		// 	[x, y + height],
+		// 	[x + width, y + height]
+		// ];
+
+
+		// $.each(point, function (index, coordinate)
+		// {
+		// 	$.each(group_stack, function (index, layer_data)
+		// 	{
+		// 		if (layer_data)
+		// 		{
+		// 			$.each(layer_data, function (i, item)
+		// 			{
+
+		// 			});
+		// 		}
+		// 	});
+		// });
 		if (is_option_canvas)
 		{
 			$.each(group_stack, function (index, layer_data)
@@ -895,23 +916,42 @@ MC.canvas = {
 									(y + height >= coordinate[1] &&
 									y + height <= coordinate[1] + size[1])
 								)
-								// coordinate[0] <= x &&
-								// coordinate[0] + size[0] >= x + width &&
-								// coordinate[1] <= y &&
-								// coordinate[1] + size[1] >= y + height
 							)
 							{
-								result = {
+								result.push({
 									'id': item.id,
 									'type': group_data.type
-								};
+								});
+							}
+
+							if (
+								target_id !== item.id &&
+								coordinate[0] <= x &&
+								coordinate[0] + size[0] >= x + width &&
+								coordinate[1] <= y &&
+								coordinate[1] + size[1] >= y + height
+							)
+							{
+								// console.info(group_data);
+
+								// console.info(
+								// 	$.inArray(group_data.type, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ])
+								// );
+								result.push({
+									'id': item.id,
+									'type': group_data.type
+								});
 							}
 						});
 
-						if (!$.isEmptyObject(result))
-						{
-							return false;
-						}
+						// if (result.length > 0)
+						// {
+						// 	return false;
+						// }
+						// if (!$.isEmptyObject(result))
+						// {
+						// 	return false;
+						// }
 					}
 				});
 			}
@@ -956,8 +996,6 @@ MC.canvas = {
 		matchGroup = result.type;
 
 		matchGroup = matchGroup === undefined ? 'Canvas' : matchGroup;
-
-		platform = platform === 'custome-vpc' ? 'ec2-vpc' : platform;
 
 		is_matched = (is_option_canvas || $.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id);
 
@@ -1152,6 +1190,28 @@ MC.canvas = {
 			group_data.coordinate[0] + group_data.size[0],
 			group_data.coordinate[1] + group_data.size[1]
 		);
+	},
+
+	lineTarget: function (line_id)
+	{
+		var data = MC.canvas.data.get('layout.connection.' + line_id),
+			target_id = [];
+
+		$.each(data.target, function (key, value)
+		{
+			target_id.push(key);
+		});
+
+		return [
+			{
+				'uid': target_id[0],
+				'port': data.target[ target_id[0] ],
+			},
+			{
+				'uid': target_id[1],
+				'port': data.target[ target_id[1] ],
+			}
+		];
 	}
 };
 
@@ -1559,8 +1619,8 @@ MC.canvas.event.dragable = {
 
 				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID);
 				
-				console.info(MC.canvas.parentGroup(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID + coordinate.x, MC.canvas.COMPONENT_HEIGHT_GRID + coordinate.y));
-				console.info(match_place);
+				//console.info(MC.canvas.parentGroup(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID + coordinate.x, MC.canvas.COMPONENT_HEIGHT_GRID + coordinate.y));
+				//console.info(match_place);
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&

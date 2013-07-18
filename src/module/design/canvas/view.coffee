@@ -13,15 +13,13 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             this.listenTo ide_event, 'SWITCH_TAB', this.resizeCanvasPanel
 
             #bind event
-            $( '#tab-content-design' )
+            $( document )
                 .on( 'CANVAS_NODE_SELECTED',        '#svg_canvas', this.showProperty )
                 .on( 'CANVAS_NODE_CHANGE_PARENT',   '#svg_canvas', this, this.changeNodeParent )
                 .on( 'CANVAS_GROUP_CHANGE_PARENT',  '#svg_canvas', this, this.changeGroupParent )
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_OBJECT_DELETE',        '#svg_canvas', this, this.deleteObject )
                 .on( 'CANVAS_LINE_CREATE',          '#svg_canvas', this, this.createLine )
-                
-
 
         render   : ( template ) ->
             console.log 'canvas render'

@@ -75,6 +75,8 @@ define [ 'MC', 'event',
 
             if not name
                 notification 'error', 'No stack name.'
+            else if name.slice(0, 7) == 'unitled'
+                notification 'error', 'Please modify the initial stack name'
             else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
                 notification 'error', 'Repeated stack name'
             else
@@ -93,6 +95,8 @@ define [ 'MC', 'event',
             #check name
             if not name
                 notification 'error', 'No stack name.'
+            else if new_name.slice(0, 7) == 'unitled'
+                notification 'error', 'Please modify the initial stack name'
             else if new_name in MC.data.stack_list[MC.canvas_data.region]
                 notification 'error', 'Repeated stack name.'
             else

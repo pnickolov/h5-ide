@@ -564,25 +564,21 @@ MC.canvas = {
 				MC.canvas._addPad(start0, 1);
 				MC.canvas._addPad(end0, 1);
 
+				//line style
+				MC.paper.start({
+					'stroke': connection_option.color,
+					'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+					'fill': 'none'
+				});
+
 				if ( start0.x === end0.x || start0.y === end0.y )
 				{
 					//draw straight line
-					MC.paper.start({
-						'stroke': connection_option.color,
-						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-						'fill': 'none'
-					});
-
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
 				}
 				else
 				{
 					//draw fold line
-					MC.paper.start({
-						'stroke': connection_option.color,
-						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-						'fill': 'none'
-					});
 
 					///// route 1 (xjimmy's algorithm)/////
 					//MC.canvas._route2( controlPoints, start0, end0 );
@@ -601,6 +597,16 @@ MC.canvas = {
 						if (d !== "")
 						{
 							MC.paper.path(d);
+
+							if ( connection_option.stroke_dasharray  && connection_option.color_dash && connection_option.stroke_dasharray !== '' )
+							{
+								MC.paper.path(d,{
+									'stroke': connection_option.color_dash,
+									'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+									'fill': 'none',
+									'stroke-dasharray': connection_option.stroke_dasharray
+								});
+							}
 						}
 					}
 

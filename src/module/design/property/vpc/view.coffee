@@ -43,6 +43,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
 
             'change .property-control-group-sub .input' : 'onChangeDhcpOptions'
             'OPTION_CHANGE #property-netbios-type'      : 'onChangeDhcpOptions'
+            'REMOVE_ROW #property-dhcp-options'         : 'onChangeDhcpOptions'
 
         render   : ( attributes ) ->
 
@@ -97,6 +98,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
             $("#property-dhcp-options").toggle !noDhcp
 
             this.model.setDhcp uid, !noDhcp
+
+            if noDhcp
+                this.notChangingDHCP = true
+                # User select none DHCP option.
+                # Need to reset everything here.
+                $("#property-dhcp-options .multi-ipt-row:not(:first-child)").remove()
+                $("#property-dhcp-options .multi-ipt-row .input").val("")
+                $("#property-dhcp-domain").val( this.model.defaultDomainName uid )
+                $("#property-amazon-dns").prop("checked", true)
+                $("#property-netbios-type .dropdown-menu li:first-child a").click()
+                this.notChangingDHCP = false
+
             null
 
         onChangeAmazonDns : ( event ) ->
@@ -108,6 +121,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
             null
 
         onChangeDhcpOptions : ( event ) ->
+
+            if this.notChangingDHCP
+                return
 
             # Gather all the infomation to submit
             uid  = $("#vpc-property-detail").attr("component")

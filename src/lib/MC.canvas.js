@@ -832,6 +832,7 @@ MC.canvas = {
 			result = {},
 			match_status,
 			is_matched,
+			match_target,
 			group_data,
 			coordinate,
 			size;
@@ -913,7 +914,7 @@ MC.canvas = {
 							)
 							{
 								match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
-								match_status['target'] = item.id;
+								match_target = item.id;
 								return false;
 							}
 						});
@@ -927,11 +928,32 @@ MC.canvas = {
 				});
 			});
 
-			is_matched = match.length === 4 && match[0].is_matched && match[1].is_matched && match[2].is_matched && match[3].is_matched ? true : false;
+			is_matched =
+				match[0] &&
+				match[0].is_matched &&
+				match[1] &&
+				match[1].is_matched &&
+				match[2] &&
+				match[2].is_matched &&
+				match[3] &&
+				match[3].is_matched ? true : false;
+
+			if (
+				!is_matched &&
+				$.inArray('Canvas', match_option) > -1 &&
+				!match[0] &&
+				!match[1] &&
+				!match[2] &&
+				!match[3]
+			)
+			{
+				is_matched = true;
+				match_target = 'Canvas';
+			}
 
 			return {
 				'is_matched': is_matched,
-				'target': is_matched ? match[0].target : null
+				'target': is_matched ? match_target : null
 			};
 		}
 	},

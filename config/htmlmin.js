@@ -13,8 +13,8 @@ module.exports = {
 
 	publish: {
 		expand: true,
-		cwd: '<%= src %>/',
-		src: [ '**/*.html', '!test/**/*.html' ],
+		cwd: '<%= release %>/',
+		src: [ '**/*.html', '!module/design/property/instance/template.html' ],
 		dest: '<%= release %>/',
 		ext: '.html'
 	}

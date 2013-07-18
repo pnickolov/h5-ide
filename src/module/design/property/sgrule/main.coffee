@@ -1,9 +1,9 @@
 ####################################
-#  Controller for design/property/rtb module
+#  Controller for design/property/sgrule module
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/rtb/template.html',
+         'text!/module/design/property/sgrule/template.html',
          'event'
 ], ( $, template, ide_event ) ->
 
@@ -11,12 +11,12 @@ define [ 'jquery',
     loadModule = ( option, type ) ->
 
         #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-rtb-tmpl">' + template + '</script>'
+        template = '<script type="text/x-handlebars-template" id="property-sgrule-tmpl">' + template + '</script>'
         #load remote html template
         $( 'head' ).append template
 
         #
-        require [ './module/design/property/rtb/view', './module/design/property/rtb/model' ], ( view, model ) ->
+        require [ './module/design/property/sgrule/view', './module/design/property/sgrule/model' ], ( view, model ) ->
 
             #view
             view.model    = model

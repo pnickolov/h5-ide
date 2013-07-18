@@ -2605,6 +2605,7 @@ a.sidebar-hider {
 	}
 }
 
+<<<<<<< HEAD
 /* elb property panel */
 /* written by song */
 
@@ -2741,7 +2742,7 @@ a.sidebar-hider {
 .elb-property-cert-input {
 	height: 50px;
 }
-
+=======
 /* property-stack */
 .property-info {
 	padding: 0 10px
@@ -2827,3 +2828,4 @@ a.sidebar-hider {
 .property-stack .accordion-group .accordion-body {
 	padding: 0;
 }
+>>>>>>> origin/develop

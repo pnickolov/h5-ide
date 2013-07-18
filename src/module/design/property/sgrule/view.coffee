@@ -1,24 +1,24 @@
 #############################
-#  View(UI logic) for design/property/rtb
+#  View(UI logic) for design/property/sgrule
 #############################
 
 define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
-    RTBView = Backbone.View.extend {
+    SGRuleView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile $( '#property-rtb-tmpl' ).html()
+        template : Handlebars.compile $( '#property-sgrule-tmpl' ).html()
 
         #events   :
 
         render     : ( attributes ) ->
-            console.log 'property:rtb render'
+            console.log 'property:sgrule render'
             $( '.property-details' ).html this.template attributes
 
     }
 
-    view = new RTBView()
+    view = new SGRuleView()
 
     return view

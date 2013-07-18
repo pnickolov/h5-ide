@@ -1,1 +1,154 @@
-vpc loading...
+<div class="sidebar-title">
+  <span class="sidebar-title-text" id='property-title'>{{component.name}}</span>
+</div>
+
+<div class="fixedaccordion accordion-default" data-sub="43">
+  <div class="accordion-group expanded">
+    <div class="fixedaccordion-head" id="vpc-property-detail" component="{{uid}}">VPC Details</div>
+
+    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="item-wrap scroll-content">
+        <div class="property-control-group clearfix">
+          <label class="left" for="property-vpc-name">Name</label>
+          <span class="required-input right">Required</span>
+          <input class="input vpc-name" type="text" value="{{component.name}}" id="property-vpc-name"/>
+        </div>
+
+        <div class="property-control-group clearfix">
+          <label class="left" for="property-cidr-block">CIDR Block</label>
+          <span class="required-input right">Required</span>
+          <input class="input cidr-block tooltip" type="text" autofocus value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16"/>
+        </div>
+
+        <div class="property-control-group">
+          <label>Tenancy</label>
+          <div class="selectbox selectbox-mega" id="property-tenancy">
+            <a class="dropdown-toggle" href="#">
+              <div class="cur-value">{{#if defaultTenancy}}Default{{else}}Dedicated{{/if}}</div>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              {{#if defaultTenancy}}
+              <li class="selected" tabindex="-1">
+              {{else}}
+              <li tabindex="-1">
+              {{/if}}
+                <a href="#" data-id="default">Default</a>
+              </li>
+              {{#if defaultTenancy}}
+              <li tabindex="-1">
+              {{else}}
+              <li class="selected" tabindex="-1">
+              {{/if}}
+                <a href="#" data-id="dedicated">Dedicated</a>
+              </li>
+            </ul>
+          </div>
+          <div id="desc-dedicated" style="margin-top:5px;{{#if defaultTenancy}}display:none;{{/if}}">Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware. <a href="http://aws.amazon.com/cn/dedicated-instances/">Additional charges will apply.</a></div>
+        </div>
+
+        <div class="property-control-group">
+          <div class="checkbox">
+            <input id="property-dns-resolution" type="checkbox"{{#if dnsHosts}} checked="checked"{{/if}} name="dns-resolution">
+            <label for="property-dns-resolution"></label>
+          </div>
+          <label for="property-dns-resolution">Enable DNS resolution</label>
+        </div>
+
+        <div class="property-control-group">
+          <div class="checkbox">
+            <input id="property-dns-hostname" type="checkbox"{{#if dnsSupport}} checked="checked"{{/if}} name="dns-hostname">
+            <label for="property-dns-hostname"></label>
+          </div>
+          <label for="property-dns-hostname">Enable DNS hostname support</label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-group" id="dhcp-property-detail">
+    <div class="fixedaccordion-head">DHCP Options</div>
+    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="item-wrap scroll-content">
+
+        <div class="property-control-group">
+          <div class="radio property-dhcp">
+            <input id="property-dhcp-none" type="radio" name="dhcp-opts" {{#if noneDhcp}}checked="checked"  {{/if}}value="none" />
+            <label for="property-dhcp-none"></label>
+          </div>
+          <label for="property-dhcp-none">None</label>
+        </div>
+
+        <div class="property-control-group">
+          <div class="radio property-dhcp">
+            <input id="property-dhcp-spec" type="radio" name="dhcp-opts" {{#if noneDhcp}}{{else}}checked="checked"{{/if}} value="specified"/>
+            <label for="property-dhcp-spec"></label>
+          </div>
+          <label for="property-dhcp-spec">Specified DHCP Options Set</label>
+
+          <div style="padding-left:20px;{{#if noneDhcp}}{{else}}display:none;{{/if}}" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
+        </div>
+
+        <div id="property-dhcp-options" class="property-control-group-sub">
+          <div class="property-control-group">
+            <label for="property-dhcp-domain">Domain Name</label>
+            <input class="input" type="text" value="{{dhcp.domainName}}" id="property-dhcp-domain"/>
+          </div>
+
+          <div class="property-control-group">
+            <label>Domain Name Server</label>
+            <div>
+              <div class="checkbox">
+                <input id="property-amazon-dns" {{#if dhcp.useAmazonDNS}}checked="checked"{{/if}}type="checkbox">
+                <label for="property-amazon-dns"></label>
+              </div>
+              <label for="property-amazon-dns">AmazonProvidedDNS</label>
+            </div>
+
+            <div id="property-domain-server" class="multi-input single-row" data-max-row="{{#if dhcp.useAmazonDNS}}3{{else}}4{{/if}}">
+              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+            </div>
+          </div>
+
+          <div class="property-control-group">
+            <label>NTP Server</label>
+            <div id="property-ntp-server" class="multi-input single-row" data-max-row="4">
+              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+            </div>
+          </div>
+
+          <div class="property-control-group">
+            <label>NetBIOS Name Server</label>
+            <div id="property-netbios-server" class="multi-input single-row" data-max-row="4">
+              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+            </div>
+          </div>
+
+          <div class="property-control-group">
+            <label>NetBIOS Node Type</label>
+            <div class="selectbox selectbox-mega" id="property-netbios-type">
+              <a class="dropdown-toggle" href="#">
+                <div class="cur-value tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">Not specified</div>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="selected" tabindex="-1">
+                  <a href="#" data-id="default">Not specified</a>
+                </li>
+                <li tabindex="-1"><a href="#" data-id="1">1</a></li>
+                <li tabindex="-1"><a href="#" data-id="2">2</a></li>
+                <li tabindex="-1"><a href="#" data-id="4">4</a></li>
+                <li tabindex="-1"><a href="#" data-id="8">8</a></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>

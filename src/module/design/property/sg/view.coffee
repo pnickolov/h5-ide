@@ -36,6 +36,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 
         render     : () ->
             console.log 'property:sg render'
+            if this.model.attributes.sg_detail.component.name == 'DefaultSG'
+                this.model.attributes.isDefault = true
+            else
+                this.model.attributes.isDefault = false
+
             $( '#sg-secondary-panel-wrap' ).html this.template this.model.attributes
             fixedaccordion.resize()
             #
@@ -98,7 +103,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
             $(event.target).parents('li').first().remove()
 
         radioSgModalChange : (event) ->
-            if $('#sg-modal-direction input:checked').val() is "radio_inbound"
+            if $('#sg-modal-direction input:checked').val() is "inbound"
                 $('#rule-modle-title2').text "Source"
             else
                 $('#rule-modle-title2').text "Destination"
@@ -168,6 +173,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
             rule.ipranges = sg_descrition
 
             sg_uid = $("#sg-secondary-panel").attr "uid"
+            $("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
 
             this.trigger "SET_SG_RULE", sg_uid, rule
 

@@ -14,7 +14,11 @@
 				<div class="property-control-group clearfix">
 					<label class="left" for="securitygroup-name" >Name</label>
 					<span class="required-input right">Required</span>
+					{{#if isDefault}}
+					<input class="input"  type="text" required="required" id="securitygroup-name" disabled="disabled" name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
+					{{else}}
 					<input class="input"  type="text" required="required" id="securitygroup-name" name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
+					{{/if}}
 				</div>
 				<div class="property-control-group clearfix">
 					<label class="left" for="securitygroup-description" >Description</label>

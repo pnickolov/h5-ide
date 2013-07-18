@@ -20,6 +20,9 @@ require.config {
 		'domReady'     : 'vender/requirejs/domReady'
 		'text'         : 'vender/requirejs/text'
 
+		'parsley'      : 'vender/parsleyjs/parsley.js'
+
+
 		#core lib
 		'MC'           : 'lib/MC.core'
 		'MC.template'  : 'lib/MC.template'
@@ -31,28 +34,28 @@ require.config {
 		'MC.canvas.add': 'lib/MC.canvas.add'
 
 		#ui
-		'UI.tooltip'   : 'ui/common/UI.tooltip'
-		'UI.scrollbar' : 'ui/common/UI.scrollbar'
-		'UI.accordion' : 'ui/common/UI.accordion'
-		'UI.tabbar'    : 'ui/common/UI.tabbar'
-		'UI.bubble'    : 'ui/common/UI.bubble'
-		'UI.modal'     : 'ui/common/UI.modal'
-		'UI.table'     : 'ui/common/UI.table'
-		'UI.tablist'   : 'ui/common/UI.tablist'
+		'UI.tooltip'        : 'ui/common/UI.tooltip'
+		'UI.scrollbar'      : 'ui/common/UI.scrollbar'
+		'UI.accordion'      : 'ui/common/UI.accordion'
+		'UI.tabbar'         : 'ui/common/UI.tabbar'
+		'UI.bubble'         : 'ui/common/UI.bubble'
+		'UI.modal'          : 'ui/common/UI.modal'
+		'UI.table'          : 'ui/common/UI.table'
+		'UI.tablist'        : 'ui/common/UI.tablist'
 		'UI.fixedaccordion'   : 'ui/common/UI.fixedaccordion'
-		'UI.selectbox' : 'ui/common/UI.selectbox'
-		'UI.toggleicon': 'ui/common/UI.toggleicon'
-		'UI.searchbar' : 'ui/common/UI.searchbar'
-		'UI.filter'    : 'ui/common/UI.filter'
-		'UI.radiobuttons': 'ui/common/UI.radiobuttons'
-		'UI.notification': 'ui/common/UI.notification'
-		'UI.secondarypanel': 'ui/common/UI.secondarypanel'
-		'UI.editablelabel': 'ui/common/UI.editablelabel'
-		'UI.multiinputbox': 'ui/common/UI.multiinputbox'
+		'UI.selectbox'      : 'ui/common/UI.selectbox'
+		'UI.toggleicon'     : 'ui/common/UI.toggleicon'
+		'UI.searchbar'      : 'ui/common/UI.searchbar'
+		'UI.filter'         : 'ui/common/UI.filter'
+		'UI.radiobuttons'   : 'ui/common/UI.radiobuttons'
+		'UI.notification'   : 'ui/common/UI.notification'
+		'UI.secondarypanel' : 'ui/common/UI.secondarypanel'
+		'UI.editablelabel'  : 'ui/common/UI.editablelabel'
+		'UI.multiinputbox'  : 'ui/common/UI.multiinputbox'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
-		'parsley' : 'ui/common/parsley.min'
+		#'parsley' : 'ui/common/parsley.min'
 
 		#bootstrap
 		#'bootstrap-tab'     : 'ui/common/bootstrap-tab'

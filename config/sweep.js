@@ -3,7 +3,7 @@ module.exports.run = function( grunt, config ) {
 	/* clean js files by coffee generate */
 	var coffeeSrc = [
 		config.src + '/**/*.coffee',
-		'!' + config.src + '/' + config.libs + '/**/*.coffee'
+		'!' + config.src + '/' + config.vender + '/**/*.coffee'
 	];
 
 	var coffeeFileAry = grunt.file.expand( coffeeSrc );

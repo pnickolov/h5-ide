@@ -1,4 +1,6 @@
 
+var fs = require( 'fs' );
+
 module.exports = {
 
 	develop: {
@@ -20,7 +22,8 @@ module.exports = {
 		files: [{
 			expand : true,
 			cwd    : '<%= src %>/',
-			src    : [ '**' ] ,
+			src    : [ '**', '!lib/**', '!ui/common/*.js' ] ,
+			dest   : '<%= release %>/',
 			filter : function( filepath ) {
 				if ( filepath.indexOf( 'src\\test' ) == -1 ) {
 					return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
@@ -28,8 +31,89 @@ module.exports = {
 				else {
 					return false;
 				}
-			},
-			dest   : '<%= release %>/'
+			}
+		}]
+	},
+
+	special_lib: {
+		files: [{
+			expand : true,
+			cwd    : '<%= src %>/lib/',
+			src    : [ '*.js' ] ,
+			dest   : '<%= release %>/lib/',
+			rename: function( dest, src ) {
+				var temp = src.split('/')[ src.split('/').length - 1 ].replace( /.js/g, "" );
+				temp     = temp.split('.').join('_');
+				return dest + temp + '.js';
+			}
+		}]
+	},
+
+	special_lib_rename: {
+		files: [{
+			expand : true,
+			cwd    : '<%= release %>/lib/',
+			src    : [ '*.js' ] ,
+			dest   : '<%= release %>/lib/',
+			rename: function( dest, src ) {
+				var new_name = src;
+				return dest + new_name.replace( /_/g, '.' );
+			}
+		}]
+	},
+
+	special_lib_del: {
+		files: [{
+			expand : true,
+			cwd    : '<%= release %>/lib/',
+			src    : [ '*.js' ] ,
+			dest   : '<%= release %>/lib/',
+			filter : function ( filepath ) {
+				if ( filepath.indexOf('_') != -1 ) {
+					fs.unlink( fs.realpathSync( '.' ) + '\\' + filepath );
+				}
+			}
+		}]
+	},
+
+	special_ui: {
+		files: [{
+			expand : true,
+			cwd    : '<%= src %>/ui/common/',
+			src    : [ '*.js' ] ,
+			dest   : '<%= release %>/ui/common/',
+			rename: function( dest, src ) {
+				var temp = src.split('/')[ src.split('/').length - 1 ].replace( /.js/g, "" );
+				temp     = temp.split('.').join('_');
+				return dest + temp + '.js';
+			}
+		}]
+	},
+
+	special_ui_rename: {
+		files: [{
+			expand : true,
+			cwd    : '<%= release %>/ui/common/',
+			src    : [ '*.js' ] ,
+			dest   : '<%= release %>/ui/common/',
+			rename: function( dest, src ) {
+				var new_name = src;
+				return dest + new_name.replace( /_/g, '.' );
+			}
+		}]
+	},
+
+	special_ui_del: {
+		files: [{
+			expand : true,
+			cwd    : '<%= release %>/ui/common/',
+			src    : [ '*.js' ] ,
+			dest   : '<%= release %>/ui/common/',
+			filter : function ( filepath ) {
+				if ( filepath.indexOf('_') != -1 ) {
+					fs.unlink( fs.realpathSync( '.' ) + '\\' + filepath );
+				}
+			}
 		}]
 	}
 

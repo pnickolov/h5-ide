@@ -174,9 +174,14 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'publish', ['make_all',
 									'clean',
 									'copy:publish',
-									'htmlmin',
+									'copy:special_lib',
+									'copy:special_ui',
 									'cssmin',
 									'uglify',
+									'copy:special_lib_rename',
+									'copy:special_lib_del',
+									'copy:special_ui_rename',
+									'copy:special_ui_del',
 									'open:publish',
 									'connect:publish'
 	]);

@@ -26,7 +26,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide
             name = $( '#property-stack-name' ).val()
             #check stack name
             if name.slice(0,1) == '-'
-                notification 'error', 'Stack name cannot start with dash'
+                notification 'error', 'Stack name cannot start with dash.'
+            else if name.slice(0, 7) == 'unitled'
+                notification 'error', 'Please modify the initial stack name.'                
             else if not name
                 $( '#property-stack-name' ).val me.model.attributes.stack_detail.name
             else if name in MC.data.stack_list[MC.canvas_data.region]

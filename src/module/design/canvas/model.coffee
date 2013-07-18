@@ -1,12 +1,7 @@
 #############################
 #  View Mode for canvas
 #############################
-
-<<<<<<< HEAD
-define [ 'constant', 'backbone', 'jquery', 'underscore' ], (constant) ->
-=======
 define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
->>>>>>> 771c912e34c2efb81d6e4a164ffe5b8d717bf3fc
 
 	CanvasModel = Backbone.Model.extend {
 

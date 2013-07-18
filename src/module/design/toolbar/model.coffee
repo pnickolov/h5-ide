@@ -227,18 +227,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                 url  : 'http://localhost:3001/savepng',
                 type : 'post',
                 data : {
-                    'usercode'   : $.cookie( 'usercode' ),
+                    'usercode'   : $.cookie( 'usercode'   ),
                     'session_id' : $.cookie( 'session_id' ),
-                    'region'     : MC.canvas_data.region,
-                    'stack_id'   : MC.canvas_data.id,
                     'thumbnail'  : is_thumbnail,
-                    'screenshot' : 'http://localhost:3000/screenshot.html'
+                    'json_data'  : MC.canvas.layout.save()
+                    'stack_id'   : MC.canvas_data.id,
+                    #'region'     : MC.canvas_data.region,
+                    #'screenshot' : 'http://localhost:3001/screenshot.html',
                 },
                 success : ( result ) ->
                     console.log 'phantom callback'
                     console.log result
+                    console.log result.status
                     if result.status is 'success'
-                        #
+                        me.trigger 'SAVE_PNG_COMPLETE', result.base64
                     else
                         #
             }

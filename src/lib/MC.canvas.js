@@ -1161,6 +1161,8 @@ MC.canvas.layout = {
 		var layout_data = MC.canvas.data.get("layout"),
 			connection_target_id;
 
+		MC.paper = Canvon('svg_canvas');
+
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
 
@@ -1275,6 +1277,9 @@ MC.canvas.layout = {
 
 	create: function (option)
 	{
+
+		MC.paper = Canvon('svg_canvas');
+
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
 		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
 

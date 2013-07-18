@@ -9,7 +9,7 @@ module.exports = function( grunt ) {
 		pkg        : grunt.file.readJSON( 'package.json' ),
 
 		src        : 'src',
-		libs       : 'vender',
+		vender     : 'vender',
 		components : 'bower_components',
 		release    : 'release',
 
@@ -119,8 +119,8 @@ module.exports = function( grunt ) {
 	/* task of use as make(compiler) */
 	grunt.registerTask( 'make', function() {
 		grunt.task.run([
-			'coffee:compile_fast',
 			'coffeelint:files',
+			'coffee:compile_fast',
 			'jshint',
 			'csslint'
 		]);
@@ -132,8 +132,8 @@ module.exports = function( grunt ) {
 	});
 	grunt.registerTask( 'make_all', function() {
 		grunt.task.run([
-			'coffee:compile_all',
 			'coffeelint:files',
+			'coffee:compile_all',
 			'jshint',
 			'csslint'
 		]);
@@ -171,15 +171,13 @@ module.exports = function( grunt ) {
 	]);
 
 	/* task of use as publish */
-	grunt.registerTask( 'publish', ['all',
+	grunt.registerTask( 'publish', ['make_all',
 									'clean',
 									'copy:publish',
 									'htmlmin',
-									'replace',/*add by xjimmy, replace version info*/
 									'cssmin',
 									'uglify',
-									'string-replace',/*add by xjimmy, remove console.log, console.info */
-									'open:publish',/*modify by xjimmy*/
+									'open:publish',
 									'connect:publish'
 	]);
 

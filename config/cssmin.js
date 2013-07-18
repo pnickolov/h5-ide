@@ -2,8 +2,8 @@ module.exports = {
 
 	publish: {
 		expand: true,
-		cwd: '<%= src %>/',
-		src: [ '**/*.css', '!test/**/*.css' ],
+		cwd: '<%= release %>/',
+		src: [ '**/*.css' ],
 		dest: '<%= release %>/',
 		ext: '.css'
 	}

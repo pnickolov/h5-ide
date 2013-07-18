@@ -1623,9 +1623,9 @@ MC.canvas.event.dragable = {
 				//console.info(match_place);
 				if (
 					coordinate.x > 0 &&
-					coordinate.y > 0 &&
+					coordinate.y > 0 //&&
 					//MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
-					match_place.is_matched
+					//match_place.is_matched
 				)
 				{
 					node_connections = layout_node_data[ target_id ].connection || {};

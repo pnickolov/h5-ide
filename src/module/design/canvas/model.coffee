@@ -50,15 +50,35 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 			null
 
 		#delete component
-		deleteObject : ( uid ) ->
+		deleteObject : ( option ) ->
+
+			# type: line | node | group
+
+			console.info 'type:' + option.type + 'id' + option.id
+
 			#to-do
 
 			null
 
+		#after connect two port
 		createLine : ( line_id ) ->
-			#to-do
+			
+			line_option = MC.canvas.lineTarget uid
+
+			if line_option.length == 2
+
+				console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
+				
+				#to-do
+
 
 			null
+
+
+		#after drag component from resource panel to canvas
+		createComponent : ( uid ) ->
+
+			#to-do
 
 	}
 

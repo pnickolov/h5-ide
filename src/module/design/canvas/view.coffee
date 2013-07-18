@@ -20,6 +20,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_OBJECT_DELETE',        '#svg_canvas', this, this.deleteObject )
                 .on( 'CANVAS_LINE_CREATE',          '#svg_canvas', this, this.createLine )
+                .on( 'CANVAS_COMPONENT_CREATE',     '#svg_canvas', this, this.createComponent )
                 
 
 
@@ -52,16 +53,19 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
 
 
         changeNodeParent : ( event, option ) ->
-            event.data.trigger ide_event.CANVAS_NODE_CHANGE_PARENT, option.src_node, option.tgt_parent
+            event.data.trigger 'CANVAS_NODE_CHANGE_PARENT', option.src_node, option.tgt_parent
 
         changeGroupParent : ( event, option ) ->
-            event.data.trigger ide_event.CANVAS_GROUP_CHANGE_PARENT, option.src_group, option.tgt_parent
+            event.data.trigger 'CANVAS_GROUP_CHANGE_PARENT', option.src_group, option.tgt_parent
 
         deleteObject : ( event, option ) ->
-            event.data.trigger ide_event.CANVAS_OBJECT_DELETE, option
+            event.data.trigger 'CANVAS_OBJECT_DELETE', option
 
         createLine : ( event, line_id ) ->
-            event.data.trigger ide_event.CANVAS_LINE_CREATE, line_id
+            event.data.trigger 'CANVAS_LINE_CREATE', line_id
+
+        createComponent : ( event, uid ) ->
+             event.data.trigger 'CANVAS_COMPONENT_CREATE', uid
 
 
     }

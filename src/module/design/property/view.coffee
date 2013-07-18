@@ -15,7 +15,7 @@ define [ './temp_view',
         initialize : ->
             #listen
             $( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
-            $( window   ).on 'resize', fixedaccordion.resize
+            #$( window   ).on 'resize', fixedaccordion.resize
 
         render     : ( template ) ->
             console.log 'property render'

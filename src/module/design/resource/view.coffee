@@ -21,7 +21,7 @@ define [ 'event',
 
         initialize : ->
             #listen
-            $( window   ).on 'resize', fixedaccordion.resize
+            #$( window   ).on 'resize', fixedaccordion.resize
             #$( document ).on 'ready',  toggleicon.init
             #$( document ).on 'ready',  searchbar.init
             #$( document ).on 'ready',  selectbox.init

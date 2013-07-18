@@ -11,7 +11,7 @@
 var selectbox = {
 
     init: function () {
-        $('.selectbox').each(function () {
+        $('document .selectbox').each(function () {
             var me = $(this),
                 cur_options = me.find('.selected a'),
                 cur_value = cur_options.html(),
@@ -146,6 +146,7 @@ var selectbox = {
 };
 
 $(document).ready(function () {
+    
     selectbox.init();
 
     $(document)

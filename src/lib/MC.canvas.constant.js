@@ -12,7 +12,7 @@ var constant_data = {
 
 	GROUP_DEFAULT_SIZE: {
 		'AWS.VPC.VPC': [60, 60], //[width, height]
-		'AWS.EC2.AvailabilityZone': [30, 30],
+		'AWS.EC2.AvailabilityZone': [20, 20],
 		'AWS.VPC.Subnet': [15, 15]
 	},
 
@@ -179,7 +179,10 @@ var constant_data = {
 				from: 'instance-sg-in',
 				to: 'rtb-tgt-left',
 				relation: 'unique', //a instance can only connect to one routetable
-				color: '#6DAEFE' //blue
+				color: '#6DAEFE', //blue
+				//dash line
+				color_dash: '#9FC9FD', //dash color
+				stroke_dasharray: '10, 10'
 			}
 		},
 		'AWS.EC2.EBS.Volume': {
@@ -220,11 +223,24 @@ var constant_data = {
 				to: 'rtb-tgt-left',
 				color: '#d8d7d6' //gray
 			},
-			'AWS.VPC.Instance': {
-				from: 'rtb-tgt-left',
-				to: 'instance-sg-in',
-				color: '#6DAEFE' //blue
-			},
+			'AWS.EC2.Instance': [
+				{
+					from: 'rtb-tgt-left',
+					to: 'instance-sg-in',
+					color: '#6DAEFE', //blue
+					//dash line
+					color_dash: '#9FC9FD', //dash color
+					stroke_dasharray: '10, 10'
+				},
+				{
+					from: 'rtb-tgt-right',
+					to: 'instance-sg-in',
+					color: '#6DAEFE', //blue
+					//dash line
+					color_dash: '#9FC9FD', //dash color
+					stroke_dasharray: '10, 10'
+				}
+			],
 			'AWS.VPC.InternetGateway': {
 				from: 'rtb-tgt-left',
 				to: 'igw-tgt',

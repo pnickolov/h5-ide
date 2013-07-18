@@ -1457,6 +1457,22 @@ textarea {
 	right: 0;
 }
 
+.property-control-group-sub {
+	padding-left : 20px;
+}
+
+.property-control-group-sub .property-control-group .input {
+	width : 200px;
+}
+
+.property-control-group-sub .multi-ipt-row .input {
+	width : 168px;
+}
+
+.property-control-group-sub .selectbox {
+	width : 230px;
+}
+
 /* Multi Input Box */
 .multi-input {
 	padding-right : 15px;

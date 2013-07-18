@@ -2215,6 +2215,74 @@ a.sidebar-hider {
 	word-wrap:break-word;
 }
 
+/* Subnet Panel */
+.subnet-cidr-wrapper {
+	clear : both;
+}
+.subnet-cidr-wrapper .cidr-prefix {
+	display: inline-block;
+	width: 40px;
+	line-height: 35px;
+	vertical-align: middle;
+}
+.subnet-cidr-wrapper .cidr-rest {
+	width : 180px !important;
+}
+.item-networkacl {
+	height : 70px;
+	border-bottom : 1px solid #aaa;
+}
+
+.item-networkacl .col1 {
+	float : left;
+	width : 50px;
+}
+
+.item-networkacl .col1 .radio {
+	margin : 26px 0 0 15px;
+}
+
+.item-networkacl .col2 {
+	margin      : 0 30px 0 50px;
+	padding     : 10px 0;
+	line-height : 1.7em;
+}
+
+.item-networkacl .col3 {
+	float    : right;
+	width    : 30px;
+	height   : 70px;
+	position : relative;
+}
+
+.btn-to-secondary-panel {
+	text-align  : center;
+	line-height : 70px;
+	height      : 100%;
+	z-index     : 3;
+}
+
+.btn-to-secondary-panel:hover {
+	background : #333;
+}
+
+.btn-to-secondary-panel:before {
+	content     : "\f105";
+	font-family : 'MC-ide';
+	font-size   : 20px;	
+}
+
+.item-line-button {
+	height      : 30px;
+	line-height : 30px;
+	text-align  : center;
+	display     : block;
+}
+
+.item-line-button:hover {
+	background : #555;
+}
+
 .network-list-header {
 	background: #ccc;
 	height: 20px;
@@ -2535,4 +2603,90 @@ a.sidebar-hider {
 		width: 30%;
 		padding-bottom: 22.5%;
 	}
+}
+
+/* property-stack */
+.property-info {
+	padding: 0 10px
+}
+.property-info label {
+	color: #666;
+}
+
+.property-info .property-info-value {
+	padding-left: 10px;
+	color: #1a1a1a;
+}
+
+.property-info .property-info-value {
+	padding-left: 10px;
+	color: #1a1a1a;
+}
+
+.property-item {
+	height: 48px;
+	padding: 10px 10px 10px 30px;
+	border-bottom: 1px solid #ccc;
+	position: relative;
+}
+
+.property-item p {
+	margin: 0;
+	padding: 0;
+}
+
+.property-item.sg-rule-hidden {
+	background-color: rgb(245, 245, 245);
+}
+
+.property-item:hover {
+	background-color: rgb(230, 249, 254);
+}
+
+.property-item .title {
+	font-size: 14px;
+	color: rgb(80, 80, 80);
+}
+
+.property-item .description {
+	font-size: 12px;
+	color: rgb(147, 147, 147);
+}
+
+.property-item .info {
+	font-size: 12px;
+	color: rgb(143, 190, 229);
+}
+
+.property-item .sig {
+	width: 30px;
+	height: 38px;
+	line-height: 38px;
+	position: absolute;
+	left: 0;
+}
+
+.property-item .sig span {
+	display: block;
+	border: 2px solid #ccc;
+	border-radius: 50%;
+	height: 10px;
+	width: 10px;
+	margin: 19px auto 0;
+}
+
+.property-item .sig span.grey {
+	background-color: #ccc;
+}
+
+.goto-outsite {
+	color: rgb(16, 2, 255);
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 37px;
+	padding: 0 10px;
+}
+
+.property-stack .accordion-group .accordion-body {
+	padding: 0;
 }

@@ -564,25 +564,21 @@ MC.canvas = {
 				MC.canvas._addPad(start0, 1);
 				MC.canvas._addPad(end0, 1);
 
+				//line style
+				MC.paper.start({
+					'stroke': connection_option.color,
+					'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+					'fill': 'none'
+				});
+
 				if ( start0.x === end0.x || start0.y === end0.y )
 				{
 					//draw straight line
-					MC.paper.start({
-						'stroke': connection_option.color,
-						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-						'fill': 'none'
-					});
-
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
 				}
 				else
 				{
 					//draw fold line
-					MC.paper.start({
-						'stroke': connection_option.color,
-						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-						'fill': 'none'
-					});
 
 					///// route 1 (xjimmy's algorithm)/////
 					//MC.canvas._route2( controlPoints, start0, end0 );
@@ -601,6 +597,16 @@ MC.canvas = {
 						if (d !== "")
 						{
 							MC.paper.path(d);
+
+							if ( connection_option.stroke_dasharray  && connection_option.color_dash && connection_option.stroke_dasharray !== '' )
+							{
+								MC.paper.path(d,{
+									'stroke': connection_option.color_dash,
+									'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+									'fill': 'none',
+									'stroke-dasharray': connection_option.stroke_dasharray
+								});
+							}
 						}
 					}
 
@@ -1302,17 +1308,17 @@ MC.canvas.layout = {
 		MC.canvas.data.set('component', data);
 		data[sg.uid] = sg;
 		MC.canvas.data.set('component', data);
-		
+
 		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
 		{
 			//has vpc (create vpc, az, and subnet by default)
 			vpc_group = MC.canvas.add('AWS.VPC.VPC', {
-				'name': 'vpc1',
+				'name': 'vpc1'
 			}, {
 				'x': 2,
 				'y': 2
 			});
-			
+
 			var node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
 				'name': 'MainRT',
 				'group' : {
@@ -1320,10 +1326,10 @@ MC.canvas.layout = {
 				},
 				'main' : true
 			},{
-				'x': 19,
-				'y': 16
+				'x': 51,
+				'y': 3
 			});
-			
+
 			//default sg
 			main_asso = {
 				"Main": "true",
@@ -1333,20 +1339,20 @@ MC.canvas.layout = {
 			};
 			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
 			MC.canvas_property.main_route = node_rt.id;
-			
+
 			acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
 			acl.uid = MC.guid();
-			acl.resource.Default = 'true'
+			acl.resource.Default = 'true';
 			acl.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
 			data[acl.uid] = acl;
 			MC.canvas.data.set('component', data);
-			
+
 			MC.canvas_property.default_acl = acl.uid;
-			
+
 			sg.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
 
 		}
-		
+
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT

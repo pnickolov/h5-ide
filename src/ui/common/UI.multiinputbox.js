@@ -29,7 +29,9 @@ var multiinputbox;
 
     // Get first row's html as template
     if ( !tmpl ) {
-      tmpl = $("<p>").append($wrapper.children().eq(0).clone()).html();
+      var $clone = $("<p>").append($wrapper.children().eq(0).clone());
+      $clone.find("input").removeAttr("value");
+      tmpl = $clone.html();
       $wrapper.data("row-tmpl", tmpl);
     }
 

@@ -839,7 +839,6 @@ MC.canvas = {
 		x = x * MC.canvas_property.SCALE_RATIO;
 		y = y * MC.canvas_property.SCALE_RATIO;
 
-
 		if (is_option_canvas)
 		{
 			$.each(group_stack, function (index, layer_data)
@@ -886,7 +885,7 @@ MC.canvas = {
 			});
 
 			return {
-				'is_matched': true,
+				'is_matched': $.isEmptyObject(result),
 				'target': result.id === undefined && is_matched ? 'Canvas' : result.id
 			};
 		}
@@ -928,7 +927,7 @@ MC.canvas = {
 				});
 			});
 
-			is_matched = match[0].is_matched && match[1].is_matched && match[2].is_matched && match[3].is_matched ? true : false;
+			is_matched = match.length === 4 && match[0].is_matched && match[1].is_matched && match[2].is_matched && match[3].is_matched ? true : false;
 
 			return {
 				'is_matched': is_matched,
@@ -1546,8 +1545,6 @@ MC.canvas.event.dragable = {
 
 				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID);
 				
-				//console.info(MC.canvas.parentGroup(target_id, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID + coordinate.x, MC.canvas.COMPONENT_HEIGHT_GRID + coordinate.y));
-				//console.info(match_place);
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
@@ -2202,9 +2199,10 @@ MC.canvas.event.groupResize = {
 		var direction = event.data.direction,
 			group_border = event.data.group_border * 2,
 			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10,
-			max_left = event.data.originalWidth - MC.canvas.GROUP_MIN_PADDING,
+			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
+			max_left = event.data.originalWidth - group_min_padding,
 			top = Math.round((event.pageY - event.data.originalTop) / 10) * 10,
-			max_top = event.data.originalHeight - MC.canvas.GROUP_MIN_PADDING,
+			max_top = event.data.originalHeight - MC.canvas.group_min_padding,
 			prop;
 
 		switch (direction)
@@ -2271,14 +2269,14 @@ MC.canvas.event.groupResize = {
 				break;
 		}
 
-		if (prop.width && prop.width < MC.canvas.GROUP_MIN_PADDING)
+		if (prop.width && prop.width < group_min_padding)
 		{
-			prop.width = MC.canvas.GROUP_MIN_PADDING;
+			prop.width = group_min_padding;
 		}
 
-		if (prop.height && prop.height < MC.canvas.GROUP_MIN_PADDING)
+		if (prop.height && prop.height < group_min_padding)
 		{
-			prop.height = MC.canvas.GROUP_MIN_PADDING;
+			prop.height = group_min_padding;
 		}
 
 		event.data.target.attr(prop);
@@ -2451,27 +2449,31 @@ MC.canvas.event.groupResize = {
 			if (group_left < parent_coordinate[0])
 			{
 				group_width = group_left + group_width - parent_coordinate[0];
-				group_left = parent_coordinate[0] + MC.canvas.GROUP_PADDING;
+				group_left = parent_coordinate[0] + group_padding;
 			}
 
 			if (group_top < parent_coordinate[1])
 			{
 				group_height = group_top + group_height - parent_coordinate[1];
-				group_top = parent_coordinate[1] + MC.canvas.GROUP_PADDING;
+				group_top = parent_coordinate[1] + group_padding;
 			}
 
-			if (group_width + group_left > parent_coordinate[0] + parent_size[0] - MC.canvas.GROUP_PADDING)
+			if (group_width + group_left > parent_coordinate[0] + parent_size[0] - group_padding)
 			{
-				group_width = parent_coordinate[0] + parent_size[0] - MC.canvas.GROUP_PADDING - group_left;
+				group_width = parent_coordinate[0] + parent_size[0] - group_padding - group_left;
 			}
 
-			if (group_height + group_top > parent_coordinate[1] + parent_size[1] - MC.canvas.GROUP_PADDING)
+			if (group_height + group_top > parent_coordinate[1] + parent_size[1] - group_padding)
 			{
-				group_height = parent_coordinate[1] + parent_size[1] - MC.canvas.GROUP_PADDING - group_top;
+				group_height = parent_coordinate[1] + parent_size[1] - group_padding - group_top;
 			}
 		}
 
-		if (event.data.group_child.length === MC.canvas.areaChild(group_id, group_left, group_top, group_left + group_width, group_top + group_height).length)
+		if (
+			group_width > group_padding &&
+			group_height > group_padding &&
+			event.data.group_child.length === MC.canvas.areaChild(group_id, group_left, group_top, group_left + group_width, group_top + group_height).length
+		)
 		{
 			parent.attr('transform',
 				'translate(' +

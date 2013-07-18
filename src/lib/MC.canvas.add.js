@@ -1156,5 +1156,10 @@ MC.canvas.add = function (flag, option, coordinate)
 	//set the node position
 	MC.canvas.position(group, coordinate.x, coordinate.y);
 
+	if (create_mode)
+	{
+		$("#svg_canvas").trigger("CANVAS_COMPONENT_CREATE", group.id);
+	}
+
 	return group;
 };

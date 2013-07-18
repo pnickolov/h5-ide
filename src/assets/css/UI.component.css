@@ -1483,7 +1483,7 @@ textarea {
 	margin-bottom : 5px;
 }
 
-.multi-input.single-row .icon-del {
+.multi-ipt-row:first-child:last-child .icon-del {
 	display : none;
 }
 

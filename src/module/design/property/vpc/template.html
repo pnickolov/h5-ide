@@ -50,7 +50,7 @@
 
         <div class="property-control-group">
           <div class="checkbox">
-            <input id="property-dns-resolution" type="checkbox"{{#if dnsHosts}} checked="checked"{{/if}} name="dns-resolution">
+            <input id="property-dns-resolution" type="checkbox"{{#if dnsSupport}} checked="checked"{{/if}} name="dns-resolution">
             <label for="property-dns-resolution"></label>
           </div>
           <label for="property-dns-resolution">Enable DNS resolution</label>
@@ -58,7 +58,7 @@
 
         <div class="property-control-group">
           <div class="checkbox">
-            <input id="property-dns-hostname" type="checkbox"{{#if dnsSupport}} checked="checked"{{/if}} name="dns-hostname">
+            <input id="property-dns-hostname" type="checkbox"{{#if dnsHosts}} checked="checked"{{/if}} name="dns-hostname">
             <label for="property-dns-hostname"></label>
           </div>
           <label for="property-dns-hostname">Enable DNS hostname support</label>
@@ -92,7 +92,7 @@
           <div style="padding-left:20px;{{#if noneDhcp}}{{else}}display:none;{{/if}}" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
         </div>
 
-        <div id="property-dhcp-options" class="property-control-group-sub">
+        <div id="property-dhcp-options" class="property-control-group-sub" {{#if noneDhcp}}style="display:none;"{{/if}}>
           <div class="property-control-group">
             <label for="property-dhcp-domain">Domain Name</label>
             <input class="input" type="text" value="{{dhcp.domainName}}" id="property-dhcp-domain"/>
@@ -102,28 +102,40 @@
             <label>Domain Name Server</label>
             <div>
               <div class="checkbox">
-                <input id="property-amazon-dns" {{#if dhcp.useAmazonDNS}}checked="checked"{{/if}}type="checkbox">
+                <input id="property-amazon-dns" {{#if dhcp.useAmazonDns}}checked="checked"{{/if}}type="checkbox">
                 <label for="property-amazon-dns"></label>
               </div>
               <label for="property-amazon-dns">AmazonProvidedDNS</label>
             </div>
 
-            <div id="property-domain-server" class="multi-input single-row" data-max-row="{{#if dhcp.useAmazonDNS}}3{{else}}4{{/if}}">
+            <div id="property-domain-server" class="multi-input" data-max-row="{{#if dhcp.useAmazonDns}}3{{else}}4{{/if}}">
+              {{#each dhcp.domainServers}}
+              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" value="{{this}}"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              {{else}}
               <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              {{/each}}
             </div>
           </div>
 
           <div class="property-control-group">
             <label>NTP Server</label>
-            <div id="property-ntp-server" class="multi-input single-row" data-max-row="4">
+            <div id="property-ntp-server" class="multi-input" data-max-row="4">
+              {{#each dhcp.ntpServers}}
+              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" value="{{this}}"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              {{else}}
               <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              {{/each}}
             </div>
           </div>
 
           <div class="property-control-group">
             <label>NetBIOS Name Server</label>
-            <div id="property-netbios-server" class="multi-input single-row" data-max-row="4">
+            <div id="property-netbios-server" class="multi-input" data-max-row="4">
+              {{#each dhcp.netbiosServers}}
+              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses" value="{{this}}"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              {{else}}
               <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              {{/each}}
             </div>
           </div>
 
@@ -131,17 +143,13 @@
             <label>NetBIOS Node Type</label>
             <div class="selectbox selectbox-mega" id="property-netbios-type">
               <a class="dropdown-toggle" href="#">
-                <div class="cur-value tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">Not specified</div>
+                <div class="cur-value tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#if dhcp.netbiosType}}{{dhcp.netbiosType}}{{else}}Not specified{{/if}}</div>
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
-                <li class="selected" tabindex="-1">
-                  <a href="#" data-id="default">Not specified</a>
-                </li>
-                <li tabindex="-1"><a href="#" data-id="1">1</a></li>
-                <li tabindex="-1"><a href="#" data-id="2">2</a></li>
-                <li tabindex="-1"><a href="#" data-id="4">4</a></li>
-                <li tabindex="-1"><a href="#" data-id="8">8</a></li>
+                {{#each dhcp.netbiosTypes}}
+                <li {{#if selected}}class="selected"{{/if}} tabindex="-1"><a href="#" data-id="{{id}}">{{value}}</a></li>
+                {{/each}}
               </ul>
             </div>
           </div>

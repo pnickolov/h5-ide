@@ -2216,6 +2216,74 @@ a.sidebar-hider {
 	word-wrap:break-word;
 }
 
+/* Subnet Panel */
+.subnet-cidr-wrapper {
+	clear : both;
+}
+.subnet-cidr-wrapper .cidr-prefix {
+	display: inline-block;
+	width: 40px;
+	line-height: 35px;
+	vertical-align: middle;
+}
+.subnet-cidr-wrapper .cidr-rest {
+	width : 180px !important;
+}
+.item-networkacl {
+	height : 70px;
+	border-bottom : 1px solid #aaa;
+}
+
+.item-networkacl .col1 {
+	float : left;
+	width : 50px;
+}
+
+.item-networkacl .col1 .radio {
+	margin : 26px 0 0 15px;
+}
+
+.item-networkacl .col2 {
+	margin      : 0 30px 0 50px;
+	padding     : 10px 0;
+	line-height : 1.7em;
+}
+
+.item-networkacl .col3 {
+	float    : right;
+	width    : 30px;
+	height   : 70px;
+	position : relative;
+}
+
+.btn-to-secondary-panel {
+	text-align  : center;
+	line-height : 70px;
+	height      : 100%;
+	z-index     : 3;
+}
+
+.btn-to-secondary-panel:hover {
+	background : #333;
+}
+
+.btn-to-secondary-panel:before {
+	content     : "\f105";
+	font-family : 'MC-ide';
+	font-size   : 20px;	
+}
+
+.item-line-button {
+	height      : 30px;
+	line-height : 30px;
+	text-align  : center;
+	display     : block;
+}
+
+.item-line-button:hover {
+	background : #555;
+}
+
 .network-list-header {
 	background: #ccc;
 	height: 20px;

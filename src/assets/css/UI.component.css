@@ -351,7 +351,7 @@ textarea {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	display: block;
 	width: 206px;
-	height: 80px;
+	/*height: 80px;*/
 	padding: 5px;
 	margin-bottom: 10px;
 	border: 1px solid #999;
@@ -1440,7 +1440,7 @@ textarea {
 }
 
 .property-control-group .selectbox.selectbox-mega .main {
-	width: 230px;
+	/*width: 230px;*/
 	font-size: 13px;
 }
 

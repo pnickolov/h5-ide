@@ -9,18 +9,14 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
         defaults :
             'elb_detail'    : null
             'health_detail' : null
-
-            # 'get_host'    : null
-
-        #initialize : ->
-
+            'listener_detail'   :   null
 
         initELB : ( uid ) ->
             elb_data = MC.canvas_data.component[ uid ]
-            isInternal = elb_data.resource.Scheme
+            scheme = elb_data.resource.Scheme
 
             elb_detail = {
-                'isInternal' : isInternal is 'internal'
+                'isInternal' : scheme is 'internal'
             }
 
             this.set 'elb_detail', elb_detail
@@ -61,10 +57,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 healthy_threshold: healthy_threshold
             }
 
-            null
+            #Listener
+            listenerAry = elb_data.resource.ListenerDescriptions
+            this.set 'listener_detail', {
+                listenerAry: listenerAry
+            }
 
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
+            null
 
         setELBName  : ( uid, value ) ->
             console.log 'setELBName = ' + value
@@ -85,218 +84,140 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
+        setHealthProtocol   : ( uid, value ) ->
+            console.log 'setHealthProtocol = ' + value
+            target = MC.canvas_data.component[ uid ].resource.HealthCheck.Target
+            new_target = value + ':' + target.split(':')[1]
 
-        # setInstanceType  : ( uid, value ) ->
+            MC.canvas_data.component[ uid ].resource.HealthCheck.Target = new_target
 
-        #     console.log 'setInstanceType = ' + value
+            null
 
-        #     MC.canvas_data.component[ uid ].resource.InstanceType = value
+        setHealthPort: ( uid, value ) ->
+            console.log 'setHealthPort = ' + value
+            target = MC.canvas_data.component[ uid ].resource.HealthCheck.Target
+            new_target = target.split(':')[0] + ':' + value + '/' + target.split('/')[1]
 
-        #     null
-        #     #this.set 'set_host', 'host'
+            MC.canvas_data.component[ uid ].resource.HealthCheck.Target = new_target
 
-        # setEbsOptimized : ( uid, value )->
+            null
 
-        #     console.log 'setEbsOptimized = ' + value
+        setHealthPath: ( uid, value ) ->
+            console.log 'setHealthPath = ' + value
+            target = MC.canvas_data.component[ uid ].resource.HealthCheck.Target
+            new_target = target.split('/')[0] + value
 
-        #     MC.canvas_data.component[ uid ].resource.EbsOptimized = value
+            MC.canvas_data.component[ uid ].resource.HealthCheck.Target = new_target
 
-        #     null
+            null
 
-        # setTenancy : ( uid, value ) ->
+        setHealthInterval: ( uid, value ) ->
+            console.log 'setHealthInterval = ' + value
 
-        #     console.log 'setTenancy = ' + value
+            MC.canvas_data.component[ uid ].resource.HealthCheck.Interval = Number(value)
 
-        #     MC.canvas_data.component[ uid ].resource.Placement.Tenancy = value
+            null
 
-        #     null
+        setHealthTimeout: ( uid, value ) ->
+            console.log 'setHealthTimeout = ' + value
 
-        # setCloudWatch : ( uid, value ) ->
+            MC.canvas_data.component[ uid ].resource.HealthCheck.Timeout = Number(value)
 
-        #     console.log 'setCloudWatch = ' + value
+            null
 
-        #     if value
+        setHealthUnhealth: ( uid, value ) ->
+            console.log 'setHealthUnhealth = ' + value
 
-        #         MC.canvas_data.component[ uid ].resource.Monitoring = 'enabled'
+            MC.canvas_data.component[ uid ].resource.HealthCheck.UnhealthyThreshold = Number(value)
 
-        #     else
-        #         MC.canvas_data.component[ uid ].resource.Monitoring = 'disabled'
+            null
 
+        setHealthHealth: ( uid, value ) ->
+            console.log 'setHealthHealth = ' + value
 
-        #     null
+            MC.canvas_data.component[ uid ].resource.HealthCheck.HealthyThreshold = Number(value)
 
-        # setUserData : ( uid, value ) ->
+            null
 
-        #     console.log 'setUserData = ' + value
+        setListenerAry: ( uid, value ) ->
+            console.log 'setHealthHealth = ' + value
 
-        #     MC.canvas_data.component[ uid ].resource.UserData.data = value
+            #clean ami
+            currentCert = this.getCurrentCert(uid)
+            delCertComp = true
+            if currentCert
+                currentCertUID = currentCert.uid
+                _.each value, (obj, index) ->
+                    elbProtocolValue = obj.Listener.Protocol
+                    if elbProtocolValue isnt 'HTTPS' and elbProtocolValue isnt 'SSL'
+                        value[index].Listener.SSLCertificateId = ''
+                    else
+                        delCertComp = false
+                    null
 
-        #     null
-        
-        # setBase64Encoded : ( uid, value )->
+                if delCertComp
+                    delete MC.canvas_data.component[currentCertUID]
 
-        #     console.log 'setBase64Encoded = ' + value
+            MC.canvas_data.component[uid].resource.ListenerDescriptions = value
 
-        #     MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded = value
+            null
 
-        #     null
+        getCurrentCert: ( uid ) ->
+            console.log 'getCurrentCert'
 
-        # setEniDescription: ( uid, value ) ->
+            certUID = ''
+            listenerAry = MC.canvas_data.component[ uid ].resource.ListenerDescriptions
+            _.each listenerAry, (obj) ->
+                certId = obj.Listener.SSLCertificateId
+                if certId != ''
+                    try
+                        certUID = certId.split('.')[0].slice(1)
+                        return false
+                    catch err
 
-        #     console.log 'setEniDescription = ' + value
+            MC.canvas_data.component[certUID]
 
-        #     _.map MC.canvas_data.component, ( val, key ) ->
+        setListenerCert: ( uid, value ) ->
 
-        #         if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
+            listenerAry = MC.canvas_data.component[uid].resource.ListenerDescriptions
 
-        #             val.resource.Description = value
+            currentCertUID = ''
 
-        #         null
+            currentCert = this.getCurrentCert(uid)
+            if currentCert and currentCert.uid
+                currentCertUID = currentCert.uid
+
+                #clean ami
+                if (!value.name && !value.resource.PrivateKey && !value.resource.CertificateBody)
+                    delete MC.canvas_data.component[currentCertUID]
+                    _.each listenerAry, (obj, index) ->
+                        MC.canvas_data.component[uid].resource.ListenerDescriptions[index].Listener.SSLCertificateId = ''
+                        null
+            else
+                currentCertUID = MC.guid()
+                currentCert = $.extend(true, {}, MC.canvas.SRVCERT_JSON).data
+
+            if value and value.name and value.resource.PrivateKey and value.resource.CertificateBody
+                currentCert.uid = currentCertUID
+                currentCert.name = value.name
+                currentCert.resource.PrivateKey = value.resource.PrivateKey
+                currentCert.resource.CertificateBody = value.resource.CertificateBody
+                currentCert.resource.CertificateChain = value.resource.CertificateChain
+
+                MC.canvas_data.component[currentCertUID] = currentCert
+
+                certRef = '@' + currentCertUID + '.resource.ServerCertificateMetadata.Arn'
+                _.each listenerAry, (obj, index) ->
+                    elbProtocolValue = obj.Listener.Protocol
+                    if elbProtocolValue is 'HTTPS' or elbProtocolValue is 'SSL'
+                        MC.canvas_data.component[uid].resource.ListenerDescriptions[index].Listener.SSLCertificateId = certRef
+                    else
+                        MC.canvas_data.component[uid].resource.ListenerDescriptions[index].Listener.SSLCertificateId = ''
+
+                    null
+
+            null
 
-        #     null
-
-        # setSourceCheck : ( uid, value ) ->
-
-        #     console.log 'setSourceCheck = ' + value
-
-        #     _.map MC.canvas_data.component, ( val, key ) ->
-
-        #         if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
-
-        #             val.resource.SourceDestCheck = value
-
-        #         null
-
-        #     null
-
-        # setKP : ( uid, kp_name ) ->
-
-        #     _.map MC.canvas_property.kp_list, ( kp ) ->
-
-        #         if kp[kp_name]
-
-        #             kp_ref = '@' + kp[kp_name] + '.resource.KeyName'
-
-        #             console.log 'setKP = ' + kp_ref
-
-        #             MC.canvas_data.component[ uid ].resource.KeyName = kp_ref
-
-        #         null
-
-        #     null
-
-        # addKP : ( uid, kp_name ) ->
-
-        #     component_data = $.extend(true, {}, MC.canvas.KP_JSON.data)
-
-        #     kp_uid = MC.guid()
-        #     component_data.uid = kp_uid
-        #     component_data.resource.KeyName = kp_name
-        #     component_data.name = kp_name
-
-        #     kp_ref = '@' + kp_uid + '.resource.KeyName'
-
-        #     console.log 'addKP = ' + kp_ref
-
-        #     MC.canvas_data.component[ uid ].resource.KeyName = kp_ref
-
-        #     data = MC.canvas.data.get 'component'
-
-        #     data[kp_uid] = component_data
-
-        #     MC.canvas.data.set 'component', data
-
-        #     tmp = {}
-
-        #     tmp[kp_name] = kp_uid
-
-        #     MC.canvas_property.kp_list.push tmp
-
-        #     null
-
-        # getHost  : ->
-        #     console.log 'getHost'
-        #     console.log this.get 'get_host'
-
-        # getAmi : ( uid ) ->
-
-        #     ami_id = MC.canvas_data.component[ uid ].resource.ImageId
-
-        #     JSON.stringify MC.data.dict_ami[ami_id]
-
-        # getAmiDisp : ( uid ) ->
-
-        #     disp = {}
-
-        #     ami_id = MC.canvas_data.component[ uid ].resource.ImageId
-
-        #     disp.name = MC.data.dict_ami[ami_id].name
-
-        #     disp.icon = MC.data.dict_ami[ami_id].osType + '.' + MC.data.dict_ami[ami_id].architecture + '.' + MC.data.dict_ami[ami_id].rootDeviceType + ".png"
-
-        #     disp
-
-        # getKerPair : (uid)->
-
-        #     kp_list = []
-
-        #     current_key_pair = MC.canvas_data.component[ uid ].resource.KeyName
-
-        #     _.map MC.canvas_data.component, (value, key) ->
-
-        #         if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
-        #             kp = {}
-
-        #             kp.name = value.resource.KeyName
-        #             kp.uid = value.uid
-                    
-        #             if MC.canvas_data.component[(current_key_pair.split ".")[0][1...]].resource.KeyName == value.resource.KeyName
-
-        #                 kp.selected = true
-
-        #             kp_list.push kp
-
-        #     kp_list
-
-        # getInstanceType : (uid) ->
-        #     console.log uid
-        #     ami_info = MC.canvas_data.layout.component.node[ uid ]
-
-        #     current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
-
-        #     view_instance_type = []
-        #     instance_types = this._getInstanceType ami_info
-        #     _.map instance_types, ( value )->
-        #         tmp = {}
-
-        #         if current_instance_type == value
-        #             tmp.selected = true
-        #         tmp.main = constant.INSTANCE_TYPE[value][0]
-        #         tmp.ecu  = constant.INSTANCE_TYPE[value][1]
-        #         tmp.core = constant.INSTANCE_TYPE[value][2]
-        #         tmp.mem  = constant.INSTANCE_TYPE[value][3]
-        #         tmp.name = value
-        #         view_instance_type.push tmp
-
-        #     view_instance_type
-
-        # _getInstanceType : ( ami ) ->
-        #     instance_type = MC.data.instance_type[MC.canvas_data.region]
-        #     if ami.virtualizationType == 'hvm'
-        #         instance_type = instance_type.windows
-        #     else
-        #         instance_type = instance_type.linux
-        #     if ami.rootDeviceType == 'ebs'
-        #         instance_type = instance_type.ebs
-        #     else
-        #         instance_type = instance_type['instance store']
-        #     if ami.architecture == 'x86_64'
-        #         instance_type = instance_type["64"]
-        #     else
-        #         instance_type = instance_type["32"]
-        #     instance_type = instance_type[ami.virtualizationType]
-
-        #     instance_type
     }
 
     model = new ElbModel()

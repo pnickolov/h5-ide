@@ -58,7 +58,7 @@ define [ 'jquery',
 
             #listen OPEN_PROPERTY
             ide_event.onLongListen ide_event.OPEN_PROPERTY, ( uid ) ->
-
+                
                 uid  = uid
                 #type = type
 
@@ -69,16 +69,16 @@ define [ 'jquery',
                     stack_main.loadModule()
 
                 #show instance property
-                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
-                    instance_main.loadModule uid
+                # if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
+                #     instance_main.loadModule uid
 
-                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume)
-                    volume_main.loadModule uid
+                # if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume)
+                #     volume_main.loadModule uid
                 #show vloume/snapshot property
 
                 #show elb property
-                if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_ELB)
-                    elb_main.loadModule uid
+                # if MC.canvas_data.component[uid] and (MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_ELB)
+                #     elb_main.loadModule uid
 
                 #show az property
                 if MC.canvas_data.component[ uid ]

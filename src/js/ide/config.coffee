@@ -49,6 +49,7 @@ require.config {
 		'UI.secondarypanel': 'ui/common/UI.secondarypanel'
 		'UI.slider': 'ui/common/UI.slider'
 		'UI.editablelabel': 'ui/common/UI.editablelabel'
+		
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
 		'parsley' : 'lib/parsley.min'

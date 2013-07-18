@@ -24,12 +24,14 @@ var multiinputbox;
   };
 
   function add () {
-    var $wrapper = $(this).closest(".multi-input").removeClass("single-row");
+    var $wrapper = $(this).closest(".multi-input");
     var tmpl     = $wrapper.data("row-tmpl");
 
     // Get first row's html as template
     if ( !tmpl ) {
-      tmpl = $("<p>").append($wrapper.children().eq(0).clone()).html();
+      var $clone = $("<p>").append($wrapper.children().eq(0).clone());
+      $clone.find("input").removeAttr("value");
+      tmpl = $clone.html();
       $wrapper.data("row-tmpl", tmpl);
     }
 
@@ -50,9 +52,6 @@ var multiinputbox;
     $t.parent().remove();
     $wrapper.trigger("REMOVE_ROW");
 
-    if ( $wrapper.children().length == 1 ) {
-      $wrapper.addClass("single-row");
-    }
     return false;
   }
 })();

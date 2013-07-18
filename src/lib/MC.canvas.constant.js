@@ -12,7 +12,7 @@ var constant_data = {
 
 	GROUP_DEFAULT_SIZE: {
 		'AWS.VPC.VPC': [60, 60], //[width, height]
-		'AWS.EC2.AvailabilityZone': [30, 30],
+		'AWS.EC2.AvailabilityZone': [20, 20],
 		'AWS.VPC.Subnet': [15, 15]
 	},
 

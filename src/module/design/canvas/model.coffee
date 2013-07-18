@@ -251,11 +251,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 		#after connect two port
 		createLine : ( line_id ) ->
 			
-			line_option = MC.canvas.lineTarget uid
+			line_option = MC.canvas.lineTarget line_id
 
 			if line_option.length == 2
 
-				console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
+				console.info line_option[0].line_id + ',' + line_option[0].port + " | " + line_option[1].line_id + ',' + line_option[1].port
 				
 				#to-do
 

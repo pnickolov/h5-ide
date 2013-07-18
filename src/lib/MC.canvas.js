@@ -1152,6 +1152,28 @@ MC.canvas = {
 			group_data.coordinate[0] + group_data.size[0],
 			group_data.coordinate[1] + group_data.size[1]
 		);
+	},
+
+	lineTarget: function (line_id)
+	{
+		var data = MC.canvas.data.get('layout.connection.' + line_id),
+			target_id = [];
+
+		$.each(data.target, function (key, value)
+		{
+			target_id.push(key);
+		});
+
+		return [
+			{
+				'uid': target_id[0],
+				'port': data.target[ target_id[0] ],
+			},
+			{
+				'uid': target_id[1],
+				'port': data.target[ target_id[1] ],
+			}
+		];
 	}
 };
 

@@ -92,7 +92,7 @@
           <div style="padding-left:20px;{{#if noneDhcp}}{{else}}display:none;{{/if}}" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
         </div>
 
-        <div id="property-dhcp-options" class="property-control-group-sub">
+        <div id="property-dhcp-options" class="property-control-group-sub" {{#if noneDhcp}}style="display:none;"{{/if}}>
           <div class="property-control-group">
             <label for="property-dhcp-domain">Domain Name</label>
             <input class="input" type="text" value="{{dhcp.domainName}}" id="property-dhcp-domain"/>

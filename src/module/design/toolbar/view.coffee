@@ -27,16 +27,23 @@ define [ 'MC', 'event',
             'click #toolbar-export-json'        : 'clickExportJSONIcon'
             #for debug
             'click #toolbar-jsondiff'           : 'clickOpenJSONDiff'
+            'click #toolbar-jsonview'           : 'clickOpenJSONView'
+
 
         render   : () ->
             console.log 'toolbar render'
             $( '#main-toolbar' ).html this.template
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
+
+
         reRender   : ( template ) ->
             console.log 're-toolbar render'
             #if $.trim( $( '#main-toolbar' ).html() ) is 'loading...' then $( '#main-toolbar' ).html this.template
             $( '#main-toolbar' ).html this.template this.model.attributes
+
+            this.initZeroClipboard()
+
 
         clickRunIcon : ->
             me = this
@@ -155,6 +162,8 @@ define [ 'MC', 'event',
             $( '#json-content' ).val file_content
 
 
+        #for debug
+
         clickOpenJSONDiff : ->
 
             a = MC.canvas_property.original_json.split('"').join('\\"')
@@ -162,6 +171,17 @@ define [ 'MC', 'event',
             param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
 
             window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
+            null
+
+        initZeroClipboard : () ->
+
+            window.zeroClipboardInit( 'toolbar-jsoncopy' )
+
+            null
+
+        clickOpenJSONView : ->
+
+            window.open 'http://jsonviewer.stack.hu/'
             null
 
     }

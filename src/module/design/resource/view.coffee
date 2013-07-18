@@ -25,7 +25,7 @@ define [ 'event',
             #$( document ).on 'ready',  toggleicon.init
             #$( document ).on 'ready',  searchbar.init
             #$( document ).on 'ready',  selectbox.init
-            $( document ).on 'ready',  radiobuttons.init
+            #$( document ).on 'ready',  radiobuttons.init
             #listen
             $( document ).delegate '#hide-resource-panel', 'click',         this.toggleResourcePanel
             $( document ).delegate '#resource-select',     'OPTION_CHANGE', this, this.resourceSelectEvent

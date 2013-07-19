@@ -828,14 +828,34 @@ MC.canvas = {
 			],
 			match_option = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ],
 			is_option_canvas = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ][ 0 ] === 'Canvas',
+			ignore_stack = [],
 			match = [],
 			result = {},
 			match_status,
 			is_matched,
 			match_target,
 			group_data,
+			group_child,
 			coordinate,
 			size;
+
+		if (target_id !== null)
+		{
+			ignore_stack.push(target_id);
+
+			if (target_type === 'group')
+			{
+				group_child = MC.canvas.groupChild(document.getElementById(target_id));
+
+				$.each(group_child, function (index, item)
+				{
+					if (item.getAttribute('data-type') === 'group')
+					{
+						ignore_stack.push(item.id);
+					}
+				});
+			}
+		}
 
 		x = x * MC.canvas_property.SCALE_RATIO;
 		y = y * MC.canvas_property.SCALE_RATIO;
@@ -853,7 +873,8 @@ MC.canvas = {
 						size = group_data.size;
 
 						if (
-							target_id !== item.id &&
+							$.inArray(item.id, ignore_stack) === -1 &&
+							//target_id !== item.id &&
 							(
 								(x >= coordinate[0] &&
 								x <= coordinate[0] + size[0])
@@ -906,7 +927,8 @@ MC.canvas = {
 							size = group_data.size;
 
 							if (
-								target_id !== item.id &&
+								//target_id !== item.id &&
+								$.inArray(item.id, ignore_stack) === -1 &&
 								data.x > coordinate[0] &&
 								data.x < coordinate[0] + size[0] &&
 								data.y > coordinate[1] &&
@@ -1505,8 +1527,8 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.attr('transform',
 			'translate(' +
-				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO + ',' +
-				(offset + Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO) +
+				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * MC.canvas.GRID_WIDTH + ',' +
+				(offset + Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * MC.canvas.GRID_HEIGHT) +
 			')'
 		);
 
@@ -1600,12 +1622,21 @@ MC.canvas.event.dragable = {
 						);
 					});
 
+					target.attr('class', function (index, key)
+					{
+						return key + ' selected';
+					});
+
 					// Append to top
 					clone_node = target.clone();
 					target.remove();
 					$('#node_layer').append(clone_node);
 
-					//after change node to another group,trigger event
+					MC.canvas.selected_node.push(clone_node[0]);
+
+					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+
+					//after change node to another group, trigger event
 					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID);
 					if (parentGroup)
 					{
@@ -1704,8 +1735,8 @@ MC.canvas.event.dragable = {
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&
-							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1])
-							//event.data.groupChild.length === unique_stack.length
+							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
+							event.data.groupChild.length === unique_stack.length
 						)
 					)
 				)
@@ -1743,6 +1774,15 @@ MC.canvas.event.dragable = {
 							MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
 						}
 					});
+
+					target.attr('class', function (index, key)
+					{
+						return key + ' selected';
+					});
+
+					MC.canvas.selected_node.push(target[0]);
+
+					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 
 					//after change node to another group,trigger event
 					if (parentGroup)
@@ -2143,7 +2183,7 @@ MC.canvas.event.siderbarDrag = {
 		{
 			if (target_type === 'node')
 			{
-				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
+				match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
 
 				if (match_place.is_matched)
 				{
@@ -2164,7 +2204,7 @@ MC.canvas.event.siderbarDrag = {
 			if (target_type === 'group')
 			{
 				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
-				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);
+				match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);
 
 				if (match_place.is_matched)
 				{
@@ -3014,7 +3054,7 @@ MC.canvas.event.keyEvent = function (event)
 		{
 			if (node.getAttribute('data-class') !== 'AWS.VPC.VPC')
 			{
-				MC.canvas.remove(node);
+				//MC.canvas.remove(node);
 
 				//trigger event when delete component
 				$("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {

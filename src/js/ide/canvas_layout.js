@@ -62,7 +62,7 @@ var ready = function ()
 {
 	$(document).on('keyup', MC.canvas.event.keyEvent);
 
-	$('#header, #navigation').on('click', MC.canvas.volume.close);
+	$('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close);
 
 	$(document.body)
 		.on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown);

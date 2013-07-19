@@ -28,7 +28,10 @@ var constant_data = {
 		INSTANCE_EIP_OFF: MC.IMG_URL + 'ide/icon/instance-eip-off.png',
 		//elb icon
 		ELB_INTERNAL_CANVAS: MC.IMG_URL + 'ide/icon/elb-internal-canvas.png',
-		ELB_INTERNET_CANVAS: MC.IMG_URL + 'ide/icon/elb-internet-canvas.png'
+		ELB_INTERNET_CANVAS: MC.IMG_URL + 'ide/icon/elb-internet-canvas.png',
+
+		ENI_CANVAS_ATTACHED: MC.IMG_URL + 'ide/icon/eni-canvas-attached.png',
+		ENI_CANVAS_UNATTACHED: MC.IMG_URL + 'ide/icon/eni-canvas-unattached.png'
 	},
 
 	//constant for _route()

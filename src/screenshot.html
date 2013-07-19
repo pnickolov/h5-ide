@@ -15,11 +15,12 @@
 	<script type="text/javascript">
 	$(document).ready(function ()
 	{
-		var params = document.location.toString().split('?')[1].split('&');
-		var param_ary = [ params[0], params[1], params[2], [params[3]] ]
+		//var params = document.location.toString().split('?')[1].split('&');
+		//var param_ary = [ params[0], params[1], params[2], [params[3]] ]
 
 		MC.paper = Canvon('svg_canvas');
 
+		/*
         MC.api({
           url     : '/stack/',
           method  : 'info',
@@ -36,9 +37,9 @@
           	//TO DO
           }
         });
+		*/
 
-		/*
-		$.ajax('js/ide/canvas_test_data.json', {
+		$.ajax('response.json', {
 			success: function (data)
 			{
 				if (typeof data === 'object')
@@ -53,7 +54,6 @@
 				}
 			}
 		});
-		*/
 	});
 	</script>
 </head>

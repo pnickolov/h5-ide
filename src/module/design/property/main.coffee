@@ -91,7 +91,7 @@ define [ 'jquery',
                             #show dhcp property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions      then dhcp_main.loadModule uid
                             #show rtb property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid, 'component'
                             #show igw property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway  then igw_main.loadModule uid
                             #show vgw property
@@ -117,7 +117,28 @@ define [ 'jquery',
                 else
 
                     #select line
-                    sgrule_main.loadModule uid
+                    if MC.canvas_data.layout.connection[uid]
+
+                        line_option = MC.canvas.lineTarget uid
+
+                        if line_option.length == 2
+
+                            console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
+                    
+                            key = line_option[0].port + '>' + line_option[1].port
+
+
+                            if '|instance-sg-in>rtb-tgt-left|rtb-tgt-left>instance-sg-in|'.indexOf( key ) > 0
+                                #select line between instance and routetable
+                                rtb_main.loadModule line_option, 'line'
+
+                            else if '|instance-sg-in>instance-sg-out|instance-sg-out>instance-sg-in|'.indexOf( key ) >0
+                                #select line between instance and instance
+                                sgrule_main.loadModule line_option, 'line'
+
+                            else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
+                                #select line between vgw and  cgw
+                                vpn_main.loadModule line_option, 'line'
                     
 
                 #temp

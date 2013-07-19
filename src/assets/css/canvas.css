@@ -140,25 +140,25 @@
 .port-blue {
 	fill: #6DAEFE;
 	stroke: #6DAEFE;
-	stroke-width: 1;
+	stroke-width: 0;
 }
 
 .port-green {
 	fill: #12CD4F;
 	stroke: #12CD4F;
-	stroke-width: 1;
+	stroke-width: 0;
 }
 
 .port-purple {
 	fill: #bf7aa5;
 	stroke: #b22f70;
-	stroke-width: 1;
+	stroke-width: 0;
 }
 
 .port-gray {
 	fill: #d8d7d6;
 	stroke: #bebebe;
-	stroke-width: 1;
+	stroke-width: 0;
 }
 
 .port:hover {
@@ -181,8 +181,10 @@
 }
 
 .connectable .node-background {
-	fill-opacity: 0.3;
-	fill: #97bf7d;
+	fill-opacity: 1;
+	fill: #fff;
+	stroke-width: 1;
+	stroke: #659FFF;
 }
 
 .attachable .node-background {
@@ -193,11 +195,16 @@
 }
 
 .selected .node-background {
-	fill-opacity: 0.8;
+	fill-opacity: 1;
 	fill: #F2F8FF;
 	stroke-width: 1;
 	stroke: #659FFF;
 	/*filter: url(#dropshadow_selected);*/
+}
+
+.node:hover .node-background {
+	fill-opacity: 0.5;
+	fill: #F2F8FF;
 }
 
 .line {
@@ -367,35 +374,46 @@
 
 #instance_volume_list {
 	padding: 10px;
-	width: 235px;
+	width: 265px;
 }
 
 #instance_volume_list li {
 	float: left;
-	margin: 0 6px 10px 0;
+	margin: 0 2px 8px 0;
+}
+
+.volume_item,
+.snapshot_item {
+	border: 2px solid #fff;
+	border-radius: 5px;
+	position: relative;
+	display: block;
+	width: 60px;
+	height: 60px;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 .volume_item {
-	border: 2px solid #fff;
-	position: relative;
-	display: block;
-	width: 48px;
-	height: 56px;
-	background: url('../images/ide/volume-resource.png') no-repeat;
+	background-image: url('../images/ide/icon/volume-resource.png');
 }
 
 .snapshot_item {
-	border: 2px solid #fff;
-	position: relative;
-	display: block;
-	width: 48px;
-	height: 56px;
-	background: url('../images/ide/ebs-snapshot-resource.png') no-repeat;
+	background-image: url('../images/ide/icon/ebs-snapshot-resource.png');
+}
+
+.volume_item:hover,
+.snapshot_item:hover {
+	background-color: #F3F9FF;
 }
 
 #drag_shadow .volume_item,
 #drag_shadow .snapshot_item {
 	border: none;
+}
+
+#instance_volume_list .selected {
+	border: 2px solid #0096FF;
 }
 
 .volume_name {
@@ -413,10 +431,6 @@
 	margin-top: 12px;
 	color: #333;
 	text-align: center;
-}
-
-#instance_volume_list .selected {
-	border: 2px solid #59b;
 }
 
 #volume-bubble-box {

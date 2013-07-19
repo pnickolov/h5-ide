@@ -21,7 +21,16 @@ define [ 'jquery',
             #view
             view.model    = model
             #render
-            view.render()
+            renderPropertyPanel = () ->
+                view.model.getStack()
+                view.render view.model.attributes
+
+            renderPropertyPanel()
+
+            view.on 'STACK_NAME_CHANGED', (name) ->
+                console.log 'stack name changed and refresh'
+                MC.canvas_data.name = name
+                renderPropertyPanel()
 
     unLoadModule = () ->
         #view.remove()

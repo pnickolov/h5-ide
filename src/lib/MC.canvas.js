@@ -1600,12 +1600,21 @@ MC.canvas.event.dragable = {
 						);
 					});
 
+					target.attr('class', function (index, key)
+					{
+						return key + ' selected';
+					});
+
 					// Append to top
 					clone_node = target.clone();
 					target.remove();
 					$('#node_layer').append(clone_node);
 
-					//after change node to another group,trigger event
+					MC.canvas.selected_node.push(clone_node[0]);
+
+					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+
+					//after change node to another group, trigger event
 					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID);
 					if (parentGroup)
 					{
@@ -1743,6 +1752,15 @@ MC.canvas.event.dragable = {
 							MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
 						}
 					});
+
+					target.attr('class', function (index, key)
+					{
+						return key + ' selected';
+					});
+
+					MC.canvas.selected_node.push(target[0]);
+
+					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 
 					//after change node to another group,trigger event
 					if (parentGroup)

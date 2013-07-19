@@ -63,6 +63,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
 
         onChangeName : ( event ) ->
             console.log "Name Cahanged"
+            $( '#property-title' ).html event.target.value
             this.trigger "CHANGE_NAME", event.target.value
             null
 
@@ -142,10 +143,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
 
 
         setName : ( name ) ->
-            $("#property-vpc-name").val( name )
+            $( "#property-vpc-name" ).val name
+            $( "#property-title" ).val name
 
         setCIDR : ( cidr ) ->
-            $("#property-cidr-block").val( cidr )
+            $( "#property-cidr-block" ).val cidr
     }
 
     view = new VPCView()

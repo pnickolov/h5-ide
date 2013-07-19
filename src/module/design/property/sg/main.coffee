@@ -21,13 +21,18 @@ define [ 'jquery',
             #view
             view.model    = model
 
-            if uid_parent.uid
+            if uid_parent
+                if uid_parent.uid
 
-                view.model.getSG uid_parent.uid, uid_parent.parent
+                    view.model.getSG uid_parent.uid, uid_parent.parent
 
+                else
+
+                    view.model.addSG uid_parent.parent
             else
 
-                view.model.addSG uid_parent.parent
+                view.model.addSG()
+
             #render
             view.render( expended_accordion_id )
             

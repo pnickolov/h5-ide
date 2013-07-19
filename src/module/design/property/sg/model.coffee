@@ -77,7 +77,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     tmp = {}
                     tmp.uid = uid
                     tmp.name = sg_name
-                    tmp.member = [ parent ]
+
+                    if parent
+                        tmp.member = [ parent ]
 
                     MC.canvas_property.sg_list.push tmp
 
@@ -94,17 +96,19 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             sg_detail = {}
 
-            sg_detail.parent = parent
-
             sg_detail.component = MC.canvas_data.component[uid]
 
             sg_detail.members = 1
 
             sg_detail.rules = 1
 
-            sg_detail.member_names = [ MC.canvas_data.component[parent].name ]
+            if parent
 
-            MC.canvas_data.component[parent].resource.SecurityGroupId.push '@'+uid+'.resource.GroupId'
+                sg_detail.parent = parent
+
+                sg_detail.member_names = [ MC.canvas_data.component[parent].name ]
+
+                MC.canvas_data.component[parent].resource.SecurityGroupId.push '@'+uid+'.resource.GroupId'
 
             me.set 'sg_detail', sg_detail
 

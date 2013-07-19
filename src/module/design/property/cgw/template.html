@@ -11,7 +11,7 @@
   </div>
 
   <div class="property-control-group clearfix">
-    <label class="left" for="property-cgw-ip">IP Address</label>
+    <label class="left tooltip" for="property-cgw-ip" data-tooltip="This address must be static and not behind a NAT. e.g. 12.1.2.3">IP Address</label>
     <span class="required-input right">Required</span>
     <input class="input" type="text" value="{{ip}}" id="property-cgw-ip"/>
   </div>
@@ -35,7 +35,7 @@
   </div>
 
   <div class="property-control-group clearfix" {{#if staticRouting}}style="display:none;"{{/if}}>
-    <label class="left" for="property-cgw-bgp">BGP ASN</label>
+    <label class="left tooltip" for="property-cgw-bgp" data-tooltip="1 - 65534">BGP ASN</label>
     <span class="required-input right">Required</span>
     <input class="input" type="text" value="{{BGP}}" id="property-cgw-bgp"/>
   </div>

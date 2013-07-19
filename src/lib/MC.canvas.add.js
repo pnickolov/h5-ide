@@ -108,7 +108,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////1. area
 				Canvon.rectangle(0, 0, width, height).attr({
-					'class': 'group group-az'
+					'class': 'group group-az',
+					'rx': 5,
+					'ry': 5
 				}),
 
 				////2.scale area
@@ -200,7 +202,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////1. area
 				Canvon.rectangle(0, 0, width, height).attr({
-					'class': 'group group-vpc'
+					'class': 'group group-vpc',
+					'rx': 5,
+					'ry': 5
 				}),
 
 				////2.scale area
@@ -299,7 +303,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////1. area
 				Canvon.rectangle(0, 0, width, height).attr({
-					'class': 'group group-subnet'
+					'class': 'group group-subnet',
+					'rx': 5,
+					'ry': 5
 				}),
 
 				////2.scale area

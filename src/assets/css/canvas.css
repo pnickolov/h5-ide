@@ -269,8 +269,8 @@
 	fill: rgba(252, 190, 23, 0.02);
 	stroke: #f9be76;
 	stroke-linejoin: round;
-	stroke-dasharray: 15, 10;
-	stroke-width: 2;
+	stroke-dasharray: 6, 4;
+	stroke-width: 3;
 }
 
 .AWS-EC2-AvailabilityZone:hover .group-az,
@@ -288,10 +288,10 @@
 }
 
 .group-subnet {
-	fill: rgba(250, 250, 250, 0.05);
+	fill: rgba(224, 224, 224, 0.05);
 	stroke: #dbd7d7;
 	stroke-linejoin: round;
-	stroke-dasharray: 15, 10;
+	stroke-dasharray: 6, 4;
 	stroke-width: 2;
 }
 

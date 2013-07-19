@@ -84,6 +84,9 @@ require.config {
 		'canvas'       : 'module/design/canvas/main'
 		'toolbar'      : 'module/design/toolbar/main'
 
+		#canvas event logic handler
+		'canvas_handle_elb'   : 'module/design/canvas/aws/elb/elb'
+
 		#events
 		'event'        : 'event/ide_event'
 
@@ -226,7 +229,6 @@ require.config {
 
 		'canvas_layout':
 			deps: [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon' ]
-
 
 }
 

@@ -61,12 +61,19 @@ define [ 'jquery',
                 currentCert = view.model.getCurrentCert uid
                 currentCert && view.refreshCertPanel currentCert
 
+            view.on 'REMOVE_AZ_FROM_ELB', ( value ) ->
+                view.model.removeAZFromELB uid, value
+
+            view.on 'ADD_AZ_TO_ELB', ( value ) ->
+                view.model.addAZToELB uid, value
+
             #model
             model.initELB uid
             attributes = {
                 component : MC.canvas_data.component[uid],
                 health_detail: model.get('health_detail'),
-                elb_detail: model.get('elb_detail')
+                elb_detail: model.get('elb_detail'),
+                az_detail: model.get('az_detail')
             }
             
             #render

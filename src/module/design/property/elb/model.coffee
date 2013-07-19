@@ -10,6 +10,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'elb_detail'    : null
             'health_detail' : null
             'listener_detail'   :   null
+            'az_detail' :   null
 
         initELB : ( uid ) ->
             elb_data = MC.canvas_data.component[ uid ]
@@ -62,6 +63,48 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             this.set 'listener_detail', {
                 listenerAry: listenerAry
             }
+
+            #AZ & Instance Info
+            azObj = {}
+            azObjAry = []
+
+            region = MC.canvas_data.region
+            azAry = MC.data.config[region].zone.item
+            _.each azAry, (elem) ->
+                azObj[elem.zoneName] = 0
+                null
+
+            _.each MC.canvas_data.component, (compObj) ->
+                compType = compObj.type
+                if compType is 'AWS.EC2.Instance'
+                    # subnetUID = compObj.resource.SubnetId.split('.')[0].slice(1)
+                    # subnetCompObj = MC.canvas_data.component[subnetUID]
+                    # azName = subnetCompObj.resource.AvailabilityZone
+                    azName = compObj.resource.Placement.AvailabilityZone
+                    azObj[azName]++
+                null
+
+            azAry = MC.canvas_data.component[uid].resource.AvailabilityZones
+            _.each azObj, (value, key) ->
+                obj = {}
+                obj[key] = value
+
+                selected = (key in azAry)
+                azObjAry.push({
+                    az_name: key,
+                    instance_num: value,
+                    selected: selected
+                })
+                null
+
+            azObjAry.sort (obj1, obj2) ->
+                key1 = obj1.az_name
+                length1 = key1.length
+                key2 = obj2.az_name
+                length2 = key2.length
+                return key1.slice(length1) - key2.slice(length2)
+
+            this.set 'az_detail', azObjAry
 
             null
 
@@ -215,6 +258,37 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                         MC.canvas_data.component[uid].resource.ListenerDescriptions[index].Listener.SSLCertificateId = ''
 
                     null
+
+            null
+
+        removeAZFromELB: ( uid, value ) ->
+
+            azName = value
+            elbComp = MC.canvas_data.component[uid]
+            elbAZAry = elbComp.resource.AvailabilityZones
+            newAZAry = _.filter elbAZAry, (item) ->
+                if azName is item
+                    false
+                else
+                    true
+
+            MC.canvas_data.component[uid].resource.AvailabilityZones = newAZAry
+
+            null
+
+        addAZToELB: ( uid, value ) ->
+
+            azName = value
+            addAZToElb = true
+            elbComp = MC.canvas_data.component[uid]
+            elbAZAry = elbComp.resource.AvailabilityZones
+            _.each elbAZAry, (elem, index) ->
+                if elem is azName
+                    addAZToElb = false
+                    null
+
+            if addAZToElb
+                MC.canvas_data.component[uid].resource.AvailabilityZones.push(azName)
 
             null
 

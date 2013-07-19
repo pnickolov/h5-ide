@@ -51,6 +51,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'blur #elb-property-cert-publickey-input' : 'listenerCertChanged'
             'blur #elb-property-cert-chain-input' : 'listenerCertChanged'
 
+            'change .property-elb-az-checkbox' : 'azCheckChanged'
+
         render     : ( attributes ) ->
             console.log 'property:elb render'
             $( '.property-details' ).html this.template attributes
@@ -227,6 +229,18 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             null
 
+        azCheckChanged : ( event ) ->
+            checkboxElem = $(event.target)
+
+            azName = checkboxElem.prop('name')
+            checkStat = checkboxElem.prop('checked')
+
+            if checkStat
+                this.trigger 'ADD_AZ_TO_ELB', azName
+            else
+                this.trigger 'REMOVE_AZ_FROM_ELB', azName
+
+            null
     }
     
     view = new ElbView()

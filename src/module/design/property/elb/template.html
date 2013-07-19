@@ -171,44 +171,22 @@
 		</div>
 	</div>
 	<div class="accordion-group" id="accordion-group-property-elb-zones">
-		<div class="fixedaccordion-head" id="elb-property-zones" component="{{component.uid}}">
+		<div class="fixedaccordion-head" id="elb-property-zones">
 			Availability Zones
 		</div>
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-elb">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
+				{{#each az_detail}}
 				<div class="property-control-group">
 					<div class="checkbox">
-						<input id="property-elb-az1" type="checkbox" value="None" name="property-elb-az1" />
-						<label for="property-elb-az1"></label>
+						<input class="property-elb-az-checkbox" type="checkbox" {{#if instance_num}}disabled="disabled"{{/if}} {{#if selected}}checked="checked"{{/if}} name="{{az_name}}" id="property-elb-az-{{az_name}}"/>
+						<label for="property-elb-az-{{az_name}}"></label>
 					</div>
-					<label for="property-resource-check-1" class="checkbox-label-main">US East 1a</label>
-					<label for="property-resource-check-1" class="checkbox-label-minor">8 instances</label>
+					<label for="property-elb-az-{{az_name}}" class="checkbox-label-main">{{az_name}}</label>
+					<label for="property-elb-az-{{az_name}}" class="checkbox-label-minor">{{instance_num}} instances</label>
 				</div>
-				<div class="property-control-group">
-					<div class="checkbox">
-						<input id="property-elb-az2" type="checkbox" value="None" name="property-elb-az2" />
-						<label for="property-elb-az2"></label>
-					</div>
-					<label for="property-resource-check-1" class="checkbox-label-main">US East 1a</label>
-					<label for="property-resource-check-1" class="checkbox-label-minor">8 instances</label>
-				</div>
-				<div class="property-control-group">
-					<div class="checkbox">
-						<input id="property-elb-az3" type="checkbox" value="None" name="property-elb-az3" />
-						<label for="property-elb-az3"></label>
-					</div>
-					<label for="property-resource-check-1" class="checkbox-label-main">US East 1a</label>
-					<label for="property-resource-check-1" class="checkbox-label-minor">8 instances</label>
-				</div>
-				<div class="property-control-group">
-					<div class="checkbox">
-						<input id="property-elb-az4" type="checkbox" value="None" name="property-elb-az4" />
-						<label for="property-elb-az4"></label>
-					</div>
-					<label for="property-resource-check-1" class="checkbox-label-main">US East 1a</label>
-					<label for="property-resource-check-1" class="checkbox-label-minor">8 instances</label>
-				</div>
+				{{/each}}
 			</div>
 		</div>
 	</div>

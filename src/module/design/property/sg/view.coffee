@@ -64,6 +64,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 
 
         openInstance : () ->
+            me = this
             console.log 'openInstance'
             secondary_panel_wrap = $('#sg-secondary-panel-wrap')
             secondary_panel_wrap.animate({
@@ -74,7 +75,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
                     width: 'linear'
                 },
                 complete : () ->
-                    ide_event.trigger ide_event.OPEN_PROPERTY, 'component', $('#sg-secondary-panel').attr('parent'), this.instance_expended_id
+                    ide_event.trigger ide_event.OPEN_PROPERTY, 'component', $('#sg-secondary-panel').attr('parent'), me.instance_expended_id
                 }
             )
 

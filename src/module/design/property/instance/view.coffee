@@ -8,7 +8,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         'UI.secondarypanel',
         'UI.tooltip',
         'UI.notification',
-        'UI.modal'
+        'UI.modal',
+        'UI.tablist',
         'UI.toggleicon' ], ( ide_event, MC ) ->
 
     InstanceView = Backbone.View.extend {
@@ -28,8 +29,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-ni-description' : 'eniDescriptionChange'
             'change #property-instance-source-check' : 'sourceCheckChange'
 
-            'click #sg-info-list li' : 'openSgPanel'
-            'click #show-newsg-panel' : 'openSgPanel'
+            'click #sg-info-list .sg-edit-icon' : 'openSgPanel'
+            'click #add-sg-btn' : 'openSgPanel'
 
             'click #property-ami' : 'openAmiPanel'
             'click .icon-add-sg' : 'securityGroupAddSelect'
@@ -49,9 +50,15 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
 
 
-        render     : ( attributes ) ->
+        render     : ( attributes, instance_expended_id ) ->
             console.log 'property:instance render'
             $( '.property-details' ).html this.template attributes
+            if instance_expended_id isnt undefined
+                accordion = $( '#instance-accordion' )
+                cur_id = accordion.find('.accordion-group').index accordion.find('.expanded')
+                if cur_id != instance_expended_id
+                    fixedaccordion.show.call accordion.find('.accordion-group').index instance_expended_id
+
             fixedaccordion.resize()
 
         instanceNameChange : ( event ) ->
@@ -116,13 +123,15 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         openSgPanel : ( event ) ->
             source = $(event.target)
-            if(!source.hasClass('sg-toggle-show-icon') && !source.hasClass('sg-remove-item-icon'))
-                if(source.hasClass('secondary-panel'))
-                    target = source
-                else
-                    target = source.parents('.secondary-panel').first()
+            if(source.hasClass('secondary-panel'))
+                target = source
+            else
+                target = source.parents('.secondary-panel').first()
 
-                ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data')
+            accordion = $( '#instance-accordion' )
+            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
+
+            ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data'), cur_expanded_id
 
         openAmiPanel : ( event ) ->
             target = $('#property-ami')

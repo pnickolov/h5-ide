@@ -57,7 +57,7 @@ define [ 'jquery',
                 stack_main.loadModule()
 
             #listen OPEN_PROPERTY
-            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid ) ->
+            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id ) ->
 
                 if type == 'component'
 
@@ -79,7 +79,7 @@ define [ 'jquery',
                         #components except AvailabilityZone
                         switch MC.canvas_data.component[ uid ].type
                             #show instance property
-                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid, instance_expended_id
                             #show volume/snapshot property
                             when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid
                             #show elb property
@@ -147,9 +147,9 @@ define [ 'jquery',
                 null
 
             #listen OPEN_SG
-            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent ) ->
+            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id ) ->
                 console.log 'OPEN_SG'
-                sg_main.loadModule( uid_parent )
+                sg_main.loadModule( uid_parent, expended_accordion_id )
                 #temp
                 # setTimeout () ->
                 #    view.refresh()
@@ -158,10 +158,10 @@ define [ 'jquery',
                 null
 
             #listen OPEN_INSTANCE
-            ide_event.onLongListen ide_event.OPEN_INSTANCE, () ->
+            ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id) ->
                 console.log 'OPEN_INSTANCE'
                 #
-                instance_main.loadModule uid, type
+                instance_main.loadModule uid, type, expended_accordion_id
                 #temp
                 # setTimeout () ->
                 #    view.refresh()

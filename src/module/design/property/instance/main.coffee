@@ -8,7 +8,7 @@ define [ 'jquery',
 ], ( $, template, ide_event ) ->
 
     #private
-    loadModule = ( uid ) ->
+    loadModule = ( uid, instance_expended_id ) ->
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-instance-tmpl">' + template + '</script>'
@@ -35,7 +35,7 @@ define [ 'jquery',
                 eni_display : model.getEni uid
             }
             #render
-            view.render( attributes )
+            view.render( attributes, instance_expended_id )
 
             ide_event.trigger ide_event.RELOAD_PROPERTY
 

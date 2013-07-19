@@ -2078,11 +2078,12 @@ a.sidebar-hider {
 	font-size: 12px;
 }
 .sg-info-list .col3 {
-	margin-left: 15px;
 	background-color: #eee;
-	width: 15px;
-	height: 15px;
-	float: left;
+	width: 20px;
+	height: 60px;
+	line-height: 60px;
+	right: 0;
+	position: absolute;
 }
 
 /* Secondary Panel */
@@ -2351,13 +2352,14 @@ a.sidebar-hider {
 	top: 50%;
 	margin-top: -8px;
 }
-
+/*
 .icon-add-sg {
 	display: inline-block;
 	width: 32px;
 	height: 32px;
 	background: url('../images/ide/icon-add-sg.png');
 }
+*/
 
 .icon-btn-selectbox {
 	position: absolute;
@@ -2386,6 +2388,40 @@ a.sidebar-hider {
 .sg-rule-filter .selectbox .dropdown-menu {
 	top: 30px;
 }
+#sg-wrap .tab {
+	position: absolute;
+	top: -10px;
+	left: -10px;
+	width: 280px;
+}
+#sg-wrap .tab li {
+	display: inline-block;
+	width: 140px;
+	float: left;
+}
+#sg-wrap .tab li a{
+	width: 140px;
+	background-color: #eee;
+	height: 30px;
+	line-height: 30px;
+	color: #999;
+	text-align: center;
+	display: block;
+	float: left;
+}
+#sg-wrap .tab li.active a{
+	background-color: #2E9BFC;
+	color: #FFF;
+}
+#sg-wrap .tab-content {
+	padding-top: 30px;
+}
+#sg-wrap .tab-item {
+	display: none;
+}
+#sg-wrap .tab-item.active {
+	display: block;
+}
 #sg-secondary-panel-wrap {
 	position: absolute;
 	width: 280px;
@@ -2397,6 +2433,9 @@ a.sidebar-hider {
 }
 #sg-secondary-panel {
 	height: 100%;
+	width: 100%;
+}
+#add-sg-btn {
 	width: 100%;
 }
 /* SG Rule Modal */

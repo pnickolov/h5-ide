@@ -3054,7 +3054,7 @@ MC.canvas.event.keyEvent = function (event)
 		{
 			if (node.getAttribute('data-class') !== 'AWS.VPC.VPC')
 			{
-				MC.canvas.remove(node);
+				//MC.canvas.remove(node);
 
 				//trigger event when delete component
 				$("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {

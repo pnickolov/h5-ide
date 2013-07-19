@@ -246,12 +246,14 @@ define [ 'constant',
 
 				targetObj = connectionObj.target
 				portMap = {}
-				
+
 				_.each targetObj, (value, key) ->
 					portMap[value] = key
 					null
 
-				canvas_handle_elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
+				#delete line between elb and instance
+				if portMap['elb-sg-out'] and portMap['instance-sg-in']
+					canvas_handle_elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
 
 
 			MC.canvas.remove $("#" + option.id)[0]

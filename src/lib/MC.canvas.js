@@ -3033,9 +3033,6 @@ MC.canvas.event.clearSelected = function ()
 	{
 		MC.canvas.volume.close();
 	}
-
-	//dispatch event when click blank area in canvas
-	$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
 };
 
 MC.canvas.event.keyEvent = function (event)
@@ -3066,5 +3063,14 @@ MC.canvas.event.keyEvent = function (event)
 		MC.canvas.selected_node = [];
 
 		return false;
+	}
+};
+
+MC.canvas.event.clickBlank = function (event)
+{
+	if ( event.target.id === 'svg_canvas' )
+	{
+		//dispatch event when click blank area in canvas
+		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
 	}
 };

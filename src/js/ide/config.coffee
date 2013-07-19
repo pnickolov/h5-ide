@@ -20,9 +20,6 @@ require.config {
 		'domReady'     : 'vender/requirejs/domReady'
 		'text'         : 'vender/requirejs/text'
 
-		'parsley'      : 'vender/parsleyjs/parsley'
-
-
 		#core lib
 		'MC'           : 'lib/MC.core'
 		'MC.template'  : 'lib/MC.template'

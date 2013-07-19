@@ -20,7 +20,12 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_OBJECT_DELETE',        '#svg_canvas', this, this.deleteObject )
                 .on( 'CANVAS_LINE_CREATE',          '#svg_canvas', this, this.createLine )
+<<<<<<< HEAD
+=======
                 .on( 'CANVAS_COMPONENT_CREATE',     '#svg_canvas', this, this.createComponent )
+                
+
+>>>>>>> origin/develop
 
         render   : ( template ) ->
             console.log 'canvas render'

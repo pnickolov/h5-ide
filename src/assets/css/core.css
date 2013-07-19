@@ -218,10 +218,18 @@ body {
 	font-family: Arial, sans-serif;
 }
 
+input {
+	font-family: Arial, sans-serif;
+}
+
 /* Hack custom fonts loading */
 @media (min-width: 1px) {
 	body {
 		/*font-family: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;*/
+		font-family: 'Lato','Titillium Web','Ubuntu', 'Helvetica Neue', Arial, sans-serif;
+	}
+
+	input {
 		font-family: 'Lato','Titillium Web','Ubuntu', 'Helvetica Neue', Arial, sans-serif;
 	}
 }

@@ -147,8 +147,6 @@ define [ 'MC', 'event',
 
         clickRedoIcon : ->
             console.log 'clickRedoIcon'
-            #
-            this.model.savePNG()
 
         clickExportPngIcon : ->
             console.log 'clickExportPngIcon'
@@ -163,6 +161,11 @@ define [ 'MC', 'event',
             }
             $( '#json-content' ).val file_content
 
+<<<<<<< HEAD
+        exportPNG : ( base64_image ) ->
+            console.log 'exportPNG'
+            #$( 'body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
+=======
 
         #for debug
 
@@ -185,10 +188,7 @@ define [ 'MC', 'event',
 
             window.open 'http://jsonviewer.stack.hu/'
             null
-
-        exportPNG : ( base64_image ) ->
-            console.log 'exportPNG'
-            #$( 'body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
+>>>>>>> origin/develop
 
     }
 

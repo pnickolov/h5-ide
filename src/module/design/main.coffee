@@ -12,7 +12,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
 
             #
             design_view_init       = null
-            design_submodule_count = 0
+            MC.data.design_submodule_count = 0
 
             #view
             view       = new View()
@@ -29,14 +29,14 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
 
             #listen DESIGN_SUB_COMPLETE
             ide_event.onLongListen ide_event.DESIGN_SUB_COMPLETE, () ->
-                console.log 'design:DESIGN_SUB_COMPLETE = ' + design_submodule_count
-                if design_submodule_count is 3
+                console.log 'design:DESIGN_SUB_COMPLETE = ' + MC.data.design_submodule_count
+                if MC.data.design_submodule_count is 3
                     design_view_init = view.$el.html()
-                    design_submodule_count = -1
+                    MC.data.design_submodule_count = -1
                     #push event
                     ide_event.trigger ide_event.DESIGN_COMPLETE
                 else
-                    design_submodule_count = design_submodule_count + 1
+                    MC.data.design_submodule_count = MC.data.design_submodule_count + 1
                 null
 
             #listen SAVE_DESIGN_MODULE

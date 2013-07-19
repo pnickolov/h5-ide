@@ -82,8 +82,8 @@ var Tabbar = {
 			'mousemove': Tabbar.mousemove,
 			'mouseup': Tabbar.mouseup
 		});
-
-		Tabbar.open(event.data.target.attr('id').replace('tab-bar-', ''));
+		//modify by kenshin
+		Tabbar.open(event.data.target.attr('id').replace('tab-bar-', ''), event.target.title, event);
 	},
 
 	add: function (tab_id, tab_name)
@@ -94,19 +94,25 @@ var Tabbar = {
 				'tab_name': tab_name
 			})
 		);
-
 		Tabbar.open(tab_id, tab_name);
 
 		$('#tab-bar').trigger('NEW_TAB', tab_id);
 		return tab_id;
 	},
 
-	open: function (tab_id, tab_name)
+	open: function (tab_id, tab_name, event)
 	{
 		var tab_bar = $('#tab-bar'),
 			tab_item = $('#tab-bar-' + tab_id),
 			original_tab = $('#tab-bar').find('.active')[0],
 			original_tab_id = null;
+
+		//add by kenshin
+		if ( !original_tab && event ) {
+			$( tab_bar ).find( 'ul' ).append( event.data.target );
+			original_tab = $( '#tab-bar').find( '.active' )[0];
+			tab_item     = $( '#tab-bar-' + tab_id );
+		}
 
 		if (!tab_item[0])
 		{

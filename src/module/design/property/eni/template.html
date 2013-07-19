@@ -1,1 +1,49 @@
-eni loading...
+<header class="sidebar-title">
+  <span class="sidebar-title-text" id='property-title'>{{name}}</span>
+</header>
+
+<section class="property-control-group clearfix" id="property-eni-attach-info" {{#if attached}}style="display:none;"{{/if}}>
+  Attach the Netowrk Interface to an instance within the same availability zone.
+</section>
+
+<section class="fixedaccordion accordion-default" id="property-eni-wrapper" {{#if attached}}{{else}}style="display:none;"{{/if}} data-sub="43">
+  <div class="accordion-group expanded">
+    <div class="fixedaccordion-head">
+      <span>Network Interface Details</span>
+    </div>
+    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="item-wrap scroll-content">
+        <div class="property-control-group clearfix">
+          <label class="left" for="property-eni-desc">Description</label>
+          <textarea id="property-eni-desc">{{eni_display.description}}</textarea>
+        </div>
+        <div class="property-control-group clearfix">
+          <div class="checkbox">
+            <input id="property-eni-source-check" type="checkbox" {{#if eni_display.sourceCheck}}checked="true"{{/if}} />
+            <label for="property-eni-source-check"></label>
+          </div>
+          <label for="property-eni-source-check">Enable Source/Destination Checking</label>
+        </div>
+
+        <div class="property-control-group">
+          <div class="network-list-header clearfix">
+            <span class="name">IP Address</span>
+            <a href="#" id="property-eni-ip-add" class="right btn btn-silver btn-small" title="Add IP Address">Add IP</a>
+          </div>
+          <ul class="network-list" id="property-eni-list">
+            <li>
+              <div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
+                <label for="eni-instance-ip-1">10.0.0.</label>
+                <input type="text" class="input input-ip" value="x" id="eni-instance-ip-1">
+              </div>
+              <div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+</section>

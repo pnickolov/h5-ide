@@ -15,7 +15,17 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         render     : () ->
             console.log 'property:eni render'
-            $('.property-details').html this.template
+
+            attributes =
+                name     : "ENI-1"
+                attached : true
+
+                eni_display :
+                    description : "My Network interface description"
+                    sourceCheck : true
+
+
+            $('.property-details').html this.template attributes
 
     }
 

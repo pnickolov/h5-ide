@@ -178,15 +178,26 @@ var constant_data = {
 					relation: 'unique'
 				}
 			],
-			'AWS.VPC.RouteTable': {
-				from: 'instance-sg-in',
-				to: 'rtb-tgt-left',
-				relation: 'unique', //a instance can only connect to one routetable
-				color: '#6DAEFE', //blue
-				//dash line
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
-			}
+			'AWS.VPC.RouteTable': [
+				{
+					from: 'instance-sg-in',
+					to: 'rtb-tgt-left',
+					relation: 'unique', //a instance can only connect to one routetable
+					color: '#6DAEFE', //blue
+					//dash line
+					color_dash: '#9FC9FD', //dash color
+					stroke_dasharray: '10, 10'
+				},
+				{
+					from: 'instance-sg-in',
+					to: 'rtb-tgt-right',
+					relation: 'unique', //a instance can only connect to one routetable
+					color: '#6DAEFE', //blue
+					//dash line
+					color_dash: '#9FC9FD', //dash color
+					stroke_dasharray: '10, 10'
+				}
+			]
 		},
 		'AWS.EC2.EBS.Volume': {
 			'AWS.EC2.Instance': {

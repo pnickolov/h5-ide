@@ -839,19 +839,22 @@ MC.canvas = {
 			coordinate,
 			size;
 
-		ignore_stack.push(target_id);
-
-		if (target_type === 'group')
+		if (target_id !== null)
 		{
-			group_child = MC.canvas.groupChild(document.getElementById(target_id));
+			ignore_stack.push(target_id);
 
-			$.each(group_child, function (index, item)
+			if (target_type === 'group')
 			{
-				if (item.getAttribute('data-type') === 'group')
+				group_child = MC.canvas.groupChild(document.getElementById(target_id));
+
+				$.each(group_child, function (index, item)
 				{
-					ignore_stack.push(item.id);
-				}
-			});
+					if (item.getAttribute('data-type') === 'group')
+					{
+						ignore_stack.push(item.id);
+					}
+				});
+			}
 		}
 
 		x = x * MC.canvas_property.SCALE_RATIO;
@@ -2180,7 +2183,7 @@ MC.canvas.event.siderbarDrag = {
 		{
 			if (target_type === 'node')
 			{
-				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
+				match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
 
 				if (match_place.is_matched)
 				{
@@ -2201,7 +2204,7 @@ MC.canvas.event.siderbarDrag = {
 			if (target_type === 'group')
 			{
 				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
-				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);
+				match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);
 
 				if (match_place.is_matched)
 				{

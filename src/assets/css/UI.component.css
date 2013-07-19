@@ -811,6 +811,9 @@ textarea {
 	background-color: rgba(0, 0, 0, 0.8);
 }
 
+/* tablist */
+[data-tab-target] { cursor : pointer; }
+
 /* Accordion */
 .accordion-body {
 	display: none;
@@ -1525,6 +1528,10 @@ textarea {
 	padding-left : 20px;
 }
 
+.property-control-group-sub .property-control-group {
+	width : auto;
+}
+
 .property-control-group-sub .property-control-group .input {
 	width : 200px;
 }
@@ -1538,21 +1545,31 @@ textarea {
 }
 
 /* Multi Input Box */
-.multi-input {
-	padding-right : 15px;
-	position      : relative;
-}
-
 .multi-ipt-row {
 	margin-bottom : 5px;
 }
 
-.multi-ipt-row:first-child:last-child .icon-del {
-	display : none;
+.multi-ipt-row .ipt-controls {
+	float : right;
+	width : 36px;
+	line-height : 38px;
 }
 
-.multi-ipt-row input {
-	vertical-align: middle;
+.multi-ipt-row .ipt-wrapper {
+	display  : block;
+	overflow : hidden;
+}
+
+.multi-ipt-row .ipt-wrapper input {
+	display : block;
+	width   : 100% !important;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+.multi-ipt-row:first-child:last-child .icon-del {
+	display : none;
 }
 
 .multi-input .icon-del,
@@ -1562,7 +1579,6 @@ textarea {
 	height      : 16px;
 	margin-left : 2px;
 	
-	vertical-align : middle;
 	position : relative;
 }
 

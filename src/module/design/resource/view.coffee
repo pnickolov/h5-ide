@@ -17,6 +17,8 @@ define [ 'event',
         my_ami_tmpl            : Handlebars.compile $( '#my-ami-tmpl' ).html()
         favorite_ami_tmpl      : Handlebars.compile $( '#favorite-ami-tmpl' ).html()
         community_ami_tmpl     : Handlebars.compile $( '#community-ami-tmpl' ).html()
+        resource_vpc_tmpl      : Handlebars.compile $( '#resource-vpc-tmpl' ).html()
+        
 
         initialize : ->
             #listen
@@ -57,6 +59,7 @@ define [ 'event',
             $( '#resource-panel' ).html template
             #
             fixedaccordion.resize()
+
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
             null
@@ -212,6 +215,35 @@ define [ 'event',
                     $("#community_ami_page_next").hide()
                 else
                      $("#community_ami_page_next").show()
+
+        resourceVpcRender : ( current_platform, type ) ->
+            data = {}
+
+            if not current_platform
+
+                current_platform = MC.canvas_data.platform
+
+            if current_platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+
+                data.isntClassic = false
+
+            else
+                data.isntClassic = true
+
+                if current_platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
+
+                    data.isntDefaultVPC = false
+
+                else
+                    data.isntDefaultVPC = true
+
+                    if type != 'NEW_STACK'
+
+                        data.igwIsUsed = this.model.getIgwStatus()
+
+                        data.vgwIsUsed = this.model.getVgwStatus()
+
+            $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
 
         searchCommunityAmiCurrent : ( event ) ->
 

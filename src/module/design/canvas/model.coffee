@@ -138,6 +138,22 @@ define [ 'constant',
 
 								me._removeGatewayIdFromRT comp.uid, option.id
 
+						$.each $(".resource-item"), ( idx, item) ->
+					
+							data = $(item).data()
+							
+							if data.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+
+								tmp = {
+									enable : true
+									tooltip: "Drag and drop to canvas to create a new Internet Gateway."
+								}
+								$(item)
+									.data(tmp)
+									.removeClass('resource-disabled')
+								
+								return false
+
 					# remove vgw
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
 
@@ -152,6 +168,22 @@ define [ 'constant',
 								if comp.resource.VpnGatewayId.split('.')[0][1...] == option.id
 
 									delete MC.canvas_data.component[index]
+
+						$.each $(".resource-item"), ( idx, item) ->
+					
+							data = $(item).data()
+							
+							if data.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+
+								tmp = {
+									enable : true
+									tooltip: "Drag and drop to canvas to create a new VPN Gateway."
+								}
+								$(item)
+									.data(tmp)
+									.removeClass('resource-disabled')
+								
+								return false
 
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
 
@@ -181,6 +213,32 @@ define [ 'constant',
 
 				delete MC.canvas_data.component[option.id]
 
+
+				# recover az dragable
+				if $("#" + option.id).data().class == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+
+					az_name = $("#" + option.id).text()
+
+					$.each $(".resource-item"), ( idx, item) ->
+					
+						data = $(item).data()
+						
+						if data.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and data.option.name == az_name
+
+							tmp = {
+								enable : true
+								tooltip: "Drag and drop to canvas"
+							}
+							$(item)
+								.data(tmp)
+								.removeClass('resource-disabled')
+								.addClass("tooltip")
+							
+							return false
+								
+					
+
+
 			# remove line
 			else if option.type == 'line'
 
@@ -188,12 +246,15 @@ define [ 'constant',
 
 				targetObj = connectionObj.target
 				portMap = {}
-				
+
 				_.each targetObj, (value, key) ->
 					portMap[value] = key
 					null
 
-				canvas_handle_elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
+				#delete line between elb and instance
+				if portMap['elb-sg-out'] and portMap['instance-sg-in']
+					canvas_handle_elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
+
 
 			MC.canvas.remove $("#" + option.id)[0]
 

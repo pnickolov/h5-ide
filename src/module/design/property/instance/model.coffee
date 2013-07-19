@@ -363,6 +363,22 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                             delete MC.canvas_data.component[sg_uid]
 
+                            $.each MC.canvas_data.component, ( key, comp ) ->
+
+                                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+
+                                    $.each comp.resource.IpPermissions, ( i, rule ) ->
+
+                                        if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
+
+                                            MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
+
+                                    $.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
+
+                                        if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
+
+                                            MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
+
                         return false
 
             null

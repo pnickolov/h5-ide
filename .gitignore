@@ -19,6 +19,7 @@ src/vender/**
 !src/vender/canvon/canvon.js
 !src/vender/meteor/meteor.js
 !src/vender/ZeroClipboard/*
+!src/vender/parsleyjs/parsley.js
 
 #ignore page
 src/js/*.js

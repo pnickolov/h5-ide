@@ -70,6 +70,19 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout = $.extend(true, {}, MC.canvas.AZ_JSON.layout);
 				component_layout.name = option.name;
 
+				$.each($(".resource-item"), function ( idx, item){
+					
+					var data = $(item).data();
+					
+					if(data.type === 'AWS.EC2.AvailabilityZone' && data.option.name === option.name){
+						$(item)
+							.data('enable', false)
+							.addClass('resource-disabled')
+							.removeClass("tooltip");
+						return false;
+					}					
+				});
+
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
 				option.width = size[0];
 				option.height = size[1];
@@ -834,7 +847,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.IGW_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
-
+				
+				// disable drag when add one
+				
+				$.each($(".resource-item"), function ( idx, item){
+					
+					var data = $(item).data();
+					
+					if(data.type === 'AWS.VPC.InternetGateway'){
+						$(item)
+							.data('enable', false)
+							.addClass('resource-disabled')
+							.data("tooltip", "VPC can only have one IGW. There is already one IGW in current VPC.");
+						return false;
+					}					
+				});
+				
 				component_layout = $.extend(true, {}, MC.canvas.IGW_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}
@@ -913,7 +941,18 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.VGW_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.Attachments[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
-
+				$.each($(".resource-item"), function ( idx, item){
+					
+					var data = $(item).data();
+					
+					if(data.type === 'AWS.VPC.VPNGateway'){
+						$(item)
+							.data('enable', false)
+							.addClass('resource-disabled')
+							.data("tooltip", "VPC can only have one VGW. There is already one VGW in current VPC.");
+						return false;
+					}					
+				});
 				component_layout = $.extend(true, {}, MC.canvas.VGW_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}

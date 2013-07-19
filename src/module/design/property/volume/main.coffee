@@ -24,9 +24,10 @@ define [ 'jquery',
 
             renderPropertyPanel = ( uid ) ->
 
-                view.model.getVolume uid
+                model.getVolume uid
                 #render
-                view.render( view.model.attributes )
+                #view.render( view.model.attributes )
+                view.render()
 
             renderPropertyPanel( uid )
 
@@ -34,7 +35,7 @@ define [ 'jquery',
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setDeviceName volume_uid, name
+                model.setDeviceName volume_uid, name
 
                 renderPropertyPanel( volume_uid )
 
@@ -42,7 +43,7 @@ define [ 'jquery',
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setVolumeSize volume_uid, value
+                model.setVolumeSize volume_uid, value
 
                 #renderPropertyPanel( volume_uid )
 
@@ -50,14 +51,14 @@ define [ 'jquery',
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setVolumeTypeStandard volume_uid
+                model.setVolumeTypeStandard volume_uid
 
             view.on 'VOLUME_TYPE_IOPS', ( value )->
 
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setVolumeTypeIops volume_uid, value
+                model.setVolumeTypeIops volume_uid, value
 
                 #renderPropertyPanel( volume_uid )
 
@@ -65,13 +66,13 @@ define [ 'jquery',
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setVolumeIops volume_uid, value
+                model.setVolumeIops volume_uid, value
 
                 #renderPropertyPanel( volume_uid )
 
             model.once 'REFRESH_PANEL', ()->
 
-                view.render( view.model.attributes )
+                view.render()
 
 
     unLoadModule = () ->

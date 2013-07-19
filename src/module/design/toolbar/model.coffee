@@ -237,10 +237,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                     'usercode'   : $.cookie( 'usercode'   ),
                     'session_id' : $.cookie( 'session_id' ),
                     'thumbnail'  : is_thumbnail,
-                    'json_data'  : MC.canvas.layout.save()
-                    'stack_id'   : MC.canvas_data.id,
-                    #'region'     : MC.canvas_data.region,
-                    #'screenshot' : 'http://localhost:3001/screenshot.html',
+                    'json_data'  : MC.canvas.layout.save(),
+                    'stack_id'   : MC.canvas_data.id
                 },
                 success : ( res ) ->
                     console.log 'phantom callback'

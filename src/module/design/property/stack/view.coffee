@@ -17,6 +17,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             'change #property-stack-name'   : 'stackNameChanged'
             'click #show-newsg-panel'       : 'createSecurityGroup'
             'click .deleteSG'               : 'deleteSecurityGroup'
+            'click .resetSG'                : 'resetSecurityGroup'
             
         render     : () ->
             console.log 'property:stack render'
@@ -57,6 +58,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             target.remove()
 
             notification 'info', name + ' is deleted.'
+
+            null
+
+        resetSecurityGroup : (event) ->
+            me = this
+
+            target = $(event.target).parents('div:eq(0)')
+            uid = target.attr('uid')
+            
+            me.trigger 'RESET_STACK_SG', uid
+
+            null
 
     }
 

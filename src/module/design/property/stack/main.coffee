@@ -35,6 +35,10 @@ define [ 'jquery',
             view.on 'DELETE_STACK_SG', (uid) ->
                 model.deleteSecurityGroup uid
 
+            view.on 'RESET_STACK_SG', (uid) ->
+                model.resetSecurityGroup uid
+                renderPropertyPanel()
+
 
     unLoadModule = () ->
         #view.remove()

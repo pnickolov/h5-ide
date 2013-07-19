@@ -40,12 +40,16 @@
 		<div class="accordion-body">
 			{{#each stack_detail.sg_list}}
 				<div class="property-item" uid="{{uid}}">
-					<p class="sig"><span></span></p>
+					{{#if is_shown}}
+					<p class="sig"><a class="resetSG" href="#"><span></span></a></p>
+					{{else}}
+					<p class="sig"><a class="resetSG" href="#"><span class="grey"></span></a></p>
+					{{/if}}
 					<p class="title">{{name}}</p>
 					<p class="description">{{description}}</p>
-					{{# if is_del}}
+					{{#if is_del}}
 					<p class="info">{{rule_count}} rules,{{member_count}} members
-					<a class="deleteSG" href="###">Delete</a></p>
+					<a class="deleteSG" href="#">Delete</a></p>
 					{{else}}
 					<p class="info">{{rule_count}} rules,{{member_count}} members</p>
 					{{/if}}

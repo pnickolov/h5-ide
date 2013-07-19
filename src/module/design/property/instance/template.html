@@ -208,35 +208,13 @@
 		<div class="fixedaccordion-head" id="sg-head">
 			<span>Security Groups({{sg_display.total}})</span>
 		</div>
-		<!--
-		<div class="selectbox security-group-select" id="security-group-select">
-			<a class="dropdown-toggle tooltip" data-tooltip="Add to security group." href="#">
-				<i class="icon-add-sg icon-btn-selectbox"></i>
-			</a>
-			<ul class="dropdown-menu" role="menu">
-				{{#each sg_display.all_sg}}
-				<li class="remove-after-click" tabindex="-1">
-					<a data-id="{{uid}}" href="#" title="SG description">
-						<div class="truncate">{{name}}</div>
-					</a>
-				</li>
-				{{/each}}
-				<li tabindex="-1">
-					<a id="show-newsg-panel" class="secondary-panel" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{}' data-id="" href="#">New Security Group</a>
-				</li>
-			</ul>
-		</div>
-	-->
-		<div class="accordion-body scroll-wrap scrollbar-auto-hide" id="sg-wrap">
+
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide sg-wrapper">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
 				<ul class="tab">
-					<li class="active col1">
-						<a href="#item-group">Group</a>
-					</li>
-					<li class="col2">
-						<a href="#item-rule">Rule</a>
-					</li>
+					<li data-tab-target="#item-group" class="active">Group</li>
+					<li data-tab-target="#item-rule">Rule</li>
 				</ul>
 				<div class="tab-content">
 					<div id="item-group" class="active tab-item">

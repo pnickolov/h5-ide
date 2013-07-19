@@ -3,7 +3,7 @@
 #* Filename: UI.tabbar
 #* Creator: Angel
 #* Description: UI.tabbar
-#* Date: 20130704
+#* Date: 20130719
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -44,6 +44,8 @@ var Tabbar = {
 			'target': target,
 			'dragging_tab': dragging_tab
 		}, Tabbar.mouseup);
+
+		MC.canvas.volume.close();
 
 		return false;
 	},

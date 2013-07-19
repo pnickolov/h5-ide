@@ -81,7 +81,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             null
 
 
-        getNetworkACL : ->       
+        getNetworkACL : ->
 
         getStackCost : ->
 

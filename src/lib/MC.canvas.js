@@ -1837,7 +1837,7 @@ MC.canvas.event.drawConnection = {
 			switch (position)
 			{
 				case 'left':
-					offset.left = target_offset.left - 8;
+					offset.left = target_offset.left - 0;
 					offset.top  = target_offset.top  + 8;
 					break;
 

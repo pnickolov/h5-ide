@@ -27,12 +27,18 @@ define [ 'jquery',
             view.on "CHANGE_NAME", ( newName ) ->
                 if not validateName newName
                     view.setName ( model.getName uid )
+                else
+                    model.setName uid, newName
+                    # Update Canvas
+                    MC.canvas.update uid, "text", "vpc_name", newName
                 null
 
             view.on "CHANGE_CIDR", ( newCIDR ) ->
                 if not validateCIDR newCIDR
                     view.setCIDR ( model.getCIDR uid )
                     notification 'error', "Must be a valid IPv4 CIDR block.", true
+                else
+                    model.setCIDR uid, newCIDR
                 null
 
             null

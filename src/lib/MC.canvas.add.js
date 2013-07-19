@@ -222,7 +222,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////3.vpc label
 				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
-					'class': 'group-label name'
+					'class': 'group-label name',
+					'id': group.id + '_vpc_name'
 				})
 
 			).attr({
@@ -1155,6 +1156,11 @@ MC.canvas.add = function (flag, option, coordinate)
 
 	//set the node position
 	MC.canvas.position(group, coordinate.x, coordinate.y);
+
+	if (create_mode)
+	{
+		$("#svg_canvas").trigger("CANVAS_COMPONENT_CREATE", group.id);
+	}
 
 	return group;
 };

@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130709
+#* Date: 20130719
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -34,34 +34,36 @@ var scrollbar = {
 				{
 					var target = doc_scroll_wrap[ length ],
 						wrap = $(target),
-						veritical_thumb = wrap.find('.scrollbar-veritical-thumb').first(),
-						horizontal_thumb = wrap.find('.scrollbar-horizontal-thumb').first(),
+						children = wrap.children(),
+						veritical_thumb = children[0] ? $(children[0].firstChild) : undefined,
+						horizontal_thumb = children[1] ? $(children[1].firstChild) : undefined,
 						scroll_content = wrap.find('.scroll-content').first(),
+						scroll_content_elem = scroll_content[0],
 						offsetHeight = target.offsetHeight,
 						offsetWidth = target.offsetWidth,
 						scrollbar_height,
 						scrollbar_width;
 
-					if (scroll_content[0])
+					if (scroll_content_elem && wrap.css('display') === 'block')
 					{
-						scrollbar_height = offsetHeight * offsetHeight / scroll_content[0].scrollHeight;
-						scrollbar_width = offsetWidth * offsetWidth / scroll_content[0].scrollWidth;
+						scrollbar_height = offsetHeight * offsetHeight / scroll_content_elem.scrollHeight;
+						scrollbar_width = offsetWidth * offsetWidth / scroll_content_elem.scrollWidth;
 
-						if (veritical_thumb)
+						if (veritical_thumb.hasClass('scrollbar-veritical-thumb'))
 						{
-							if (scrollbar_height <= offsetHeight * 2 - scroll_content[0].scrollHeight || scrollbar_height > wrap.height())
+							if (scrollbar_height <= offsetHeight * 2 - scroll_content_elem.scrollHeight || scrollbar_height > wrap.height())
 							{
 								veritical_thumb.parent().hide();
 								if (scrollbar.isTransform)
 								{
-									scroll_content.css('transform', 'translate3d(' + (scroll_content[0].realScrollLeft ? scroll_content[0].realScrollLeft : 0) + ', 0, 0)');
+									scroll_content.css('transform', 'translate3d(' + (scroll_content_elem.realScrollLeft ? scroll_content_elem.realScrollLeft : 0) + ', 0, 0)');
 								}
 								else
 								{
 									scroll_content.css('top', 0);
 								}
 
-								scroll_content[0].realScrollTop = 0;
+								scroll_content_elem.realScrollTop = 0;
 								veritical_thumb.css('top', 0);
 							}
 							else
@@ -71,21 +73,21 @@ var scrollbar = {
 							}
 						}
 
-						if (horizontal_thumb)
+						if (horizontal_thumb.hasClass('horizontal_thumb'))
 						{
-							if (scrollbar_width <=  offsetWidth * 2 - scroll_content[0].scrollWidth || scrollbar_width > wrap.width())
+							if (scrollbar_width <=  offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap.width())
 							{
 								horizontal_thumb.parent().hide();
 								if (scrollbar.isTransform)
 								{
-									scroll_content.css('transform', 'translate3d(0, ' + (scroll_content[0].realScrollTop ? scroll_content[0].realScrollTop : 0) + 'px, 0)');
+									scroll_content.css('transform', 'translate3d(0, ' + (scroll_content_elem.realScrollTop ? scroll_content_elem.realScrollTop : 0) + 'px, 0)');
 								}
 								else
 								{
 									scroll_content.css('left', 0);
 								}
 
-								scroll_content[0].realScrollLeft = 0;
+								scroll_content_elem.realScrollLeft = 0;
 								horizontal_thumb.css('left', 0);
 							}
 							else
@@ -141,19 +143,18 @@ var scrollbar = {
 
 		var target = event.data.scroll_target,
 			direction = event.data.direction,
-			thumbPos = event.data.thumbPos,
-			scrollbar_wrap = event.data.scrollbar_wrap;
+			thumbPos = event.data.thumbPos;
 
 		event_data = scrollbar.isTouch ? event.touches.originalEvent[0] : event;
 
 		if (direction === 'veritical')
 		{
-			scrollbar.scroll_to_top(event.data, target, scrollbar.isTouch ? thumbPos - event_data.clientY : event_data.clientY - scrollbar_wrap.offset().top - thumbPos);
+			scrollbar.scroll_to_top(event.data, target, scrollbar.isTouch ? thumbPos - event_data.clientY : event_data.clientY - event.data.scrollbar_wrap.offset().top - thumbPos);
 		}
 
 		if (direction === 'horizontal')
 		{
-			scrollbar.scroll_to_left(event.data, target, scrollbar.isTouch ? thumbPos - event_data.clientX : event_data.clientX - scrollbar_wrap.offset().left - thumbPos);
+			scrollbar.scroll_to_left(event.data, target, scrollbar.isTouch ? thumbPos - event_data.clientX : event_data.clientX - event.data.scrollbar_wrap.offset().left - thumbPos);
 		}
 
 		return false;

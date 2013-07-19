@@ -261,15 +261,10 @@ var scrollbar = {
 			scrollbar_wrap = target.find('.scrollbar-veritical-wrap').first(),
 			scroll_content = target.find('.scroll-content').first(),
 			wrap_height = target.height(),
-			scrollTop,
-			max_scroll,
-			scale,
-			thumb_max;
-
-		scrollTop = thumb[0].offsetTop - (delta * 12);
-		max_scroll = scroll_content[0].scrollHeight - wrap_height;
-		scale = scroll_content[0].scrollHeight / wrap_height;
-		thumb_max = max_scroll / scale;
+			scrollTop = thumb[0].offsetTop - (delta * 12),
+			max_scroll = scroll_content[0].scrollHeight - wrap_height,
+			scale = scroll_content[0].scrollHeight / wrap_height,
+			thumb_max = max_scroll / scale;
 
 		if (scrollbar_wrap.css('display') === 'block')
 		{

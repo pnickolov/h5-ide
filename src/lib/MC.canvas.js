@@ -2395,7 +2395,7 @@ MC.canvas.event.groupResize = {
 			group_minY;
 
 		//adjust group_left
-		if (offsetX < 0 )
+		if (offsetX < 0)
 		{
 			//when resize by left,topleft, bottomleft
 			group_left = Math.ceil((parent_offset.left - canvas_offset.left) / 10);
@@ -2405,12 +2405,12 @@ MC.canvas.event.groupResize = {
 		if (direction === 'top' || direction === 'topleft' || direction === 'topright')
 		{
 			//when resize by left,topleft, bottomleft
-			if (offsetY<0)
+			if (offsetY < 0)
 			{
 				//move up
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top) / 10) + 1;//group title is 1 grid
 			}
-			else if (offsetY>0)
+			else if (offsetY > 0)
 			{
 				//move down
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10);

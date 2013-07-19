@@ -32,13 +32,6 @@
 				<i class="icon-add-sg icon-btn-selectbox"></i>
 			</a>
 			<ul class="dropdown-menu" role="menu">
-				{{#each stack_detail.sg_list}}
-				<li class="remove-after-click" tabindex="-1">
-					<a data-id="{{uid}}" href="#" title="SG description">
-						<div class="truncate">{{name}}</div>
-					</a>
-				</li>
-				{{/each}}
 				<li tabindex="-1">
 					<a id="show-newsg-panel" class="secondary-panel" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data="{}" data-id="" href="#">New Security Group</a>
 				</li>
@@ -46,10 +39,10 @@
 		</div>
 		<div class="accordion-body">
 			{{#each stack_detail.sg_list}}
-				<div class="property-item">
+				<div class="property-item" uid="{{uid}}">
 					<p class="sig"><span></span></p>
 					<p class="title">{{name}}</p>
-					<p class="description">{{Description}}</p>
+					<p class="description">{{description}}</p>
 					{{# if is_del}}
 					<p class="info">{{rule_count}} rules,{{member_count}} members
 					<a class="deleteSG" href="###">Delete</a></p>
@@ -122,3 +115,4 @@
 	</div>
 </div>
 <a href="" class="goto-outsite">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+<div id="sg-secondary-panel-wrap"></div>

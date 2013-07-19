@@ -55,31 +55,33 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             sg_list
 
         deleteSecurityGroup : (uid) ->
+            me = this
+
             #delete sg from MC.canvas_property.sg_list
             $.each MC.canvas_property.sg_list, ( key, sg ) ->
+
                 if sg.uid == uid
+
                     #update instance
                     _.map sg.member, (iid) ->
+                        
                         sg_id_ref = "@"+uid+'.resource.GroupId'
 
                         sg_ids = MC.canvas_data.component[ iid ].resource.SecurityGroupId
 
                         if sg_ids.length != 1
 
-                            sg_ids.splice sg_ids.indexOf sg_id_ref, 1
+                            MC.canvas_data.component[ iid ].resource.SecurityGroupId.splice sg_ids.indexOf sg_id_ref, 1
 
-                            index = sg.member.indexOf uid
+                        sg.member.splice sg.member.indexOf uid, 1
 
-                            sg.member.splice index, 1
+                    if not (sg.member.length == 0 and sg.name == 'DefaultSG')
 
-                            if sg.member.length == 0 and sg.name != 'DefaultSG'
+                        MC.canvas_property.sg_list.splice key, 1
 
-                                MC.canvas_property.sg_list.splice key, 1
-
-                                delete MC.canvas_data.component[uid]
+                        delete MC.canvas_data.component[uid]
 
             null
-
 
         getNetworkACL : ->
 

@@ -11,6 +11,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 
         template : Handlebars.compile $( '#property-sg-tmpl' ).html()
 
+        instance_expended_id : 0
+
         events   :
             'click .secondary-panel .back' : 'openInstance'
 
@@ -34,7 +36,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
             'change #securitygroup-name' : 'setSGName'
             'change #securitygroup-description' : 'setSGDescription'
 
-        render     : () ->
+        render     : ( expended_accordion_id ) ->
             console.log 'property:sg render'
             if this.model.attributes.sg_detail.component.name == 'DefaultSG'
                 this.model.attributes.isDefault = true
@@ -43,6 +45,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 
             $( '#sg-secondary-panel-wrap' ).html this.template this.model.attributes
             fixedaccordion.resize()
+
+            this.instance_expended_id = expended_accordion_id
             #
             secondary_panel_wrap = $('#sg-secondary-panel-wrap')
             secondary_panel_wrap.animate({
@@ -58,7 +62,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
                 }
             )
 
+
         openInstance : () ->
+            me = this
             console.log 'openInstance'
             secondary_panel_wrap = $('#sg-secondary-panel-wrap')
             secondary_panel_wrap.animate({
@@ -69,7 +75,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
                     width: 'linear'
                 },
                 complete : () ->
-                    ide_event.trigger ide_event.OPEN_PROPERTY, $('#sg-secondary-panel').attr 'parent'
+                    ide_event.trigger ide_event.OPEN_PROPERTY, 'component', $('#sg-secondary-panel').attr('parent'), me.instance_expended_id
                 }
             )
 
@@ -173,6 +179,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
             rule.ipranges = sg_descrition
 
             sg_uid = $("#sg-secondary-panel").attr "uid"
+            cur_count = Number $("#rule-count").text()
+            cur_count = cur_count + 1
+            $("#rule-count").text cur_count
             $("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
 
             this.trigger "SET_SG_RULE", sg_uid, rule

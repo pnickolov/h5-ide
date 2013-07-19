@@ -75,9 +75,10 @@ MC.canvas.add = function (flag, option, coordinate)
 					var data = $(item).data();
 					
 					if(data.type === 'AWS.EC2.AvailabilityZone' && data.option.name === option.name){
-						$(item).attr('data-enable', "false");
-						$(item).addClass('resource-disabled');
-						$(item).removeAttr("data-tooltip");
+						$(item)
+							.data('enable', false)
+							.addClass('resource-disabled')
+							.removeClass("tooltip");
 						return false;
 					}					
 				});
@@ -846,7 +847,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.IGW_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
-
+				
+				// disable drag when add one
+				
+				$.each($(".resource-item"), function ( idx, item){
+					
+					var data = $(item).data();
+					
+					if(data.type === 'AWS.VPC.InternetGateway'){
+						$(item)
+							.data('enable', false)
+							.addClass('resource-disabled')
+							.data("tooltip", "VPC can only have one IGW. There is already one IGW in current VPC.");
+						return false;
+					}					
+				});
+				
 				component_layout = $.extend(true, {}, MC.canvas.IGW_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}

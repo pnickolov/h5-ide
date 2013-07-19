@@ -42,14 +42,14 @@ define [ 'jquery',
                 #check re-render
                 view.reRender template
                 #
-                model.describeAvailableZonesService region_name
+                model.describeAvailableZonesService region_name, type
                 model.describeSnapshotsService      region_name
                 model.quickstartService             region_name
                 #model.myAmiService                  region_name
                 #model.favoriteAmiService            region_name
                 view.region = region_name
                 view.communityAmiBtnRender()
-                view.resourceVpcRender( current_platform )
+                view.resourceVpcRender( current_platform, type )
                 null
 
             view.on 'LOADING_COMMUNITY_AMI', ( region_name, state ) ->

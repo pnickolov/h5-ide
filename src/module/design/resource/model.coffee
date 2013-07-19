@@ -21,7 +21,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
             'community_ami'      : null
 
         #call service
-        describeAvailableZonesService : ( region_name ) ->
+        describeAvailableZonesService : ( region_name, type ) ->
 
             me = this
 
@@ -30,7 +30,21 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
             if  MC.data.config[region_name] and MC.data.config[region_name].zone
 
-                me.set 'availability_zone', MC.data.config[region_name].zone
+                res = $.extend true, {}, MC.data.config[region_name].zone
+
+                if type != 'NEW_STACK'
+
+                    $.each res.item, ( idx, value ) ->
+
+                        $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+
+                            if zone.name == value.zoneName
+
+                                res.item[idx].isUsed = true
+
+                                null
+
+                me.set 'availability_zone', res
 
             else
 
@@ -45,26 +59,20 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
                     res = $.extend true, {}, result.resolved_data
 
-                    $.each res.item, ( idx, value ) ->
+                    if type != 'NEW_STACK'
 
-                        $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+                        $.each res.item, ( idx, value ) ->
 
-                            if zone.name == value.zoneName
+                            $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
 
-                                $.each $(".resource-item"), ( idx, item) ->
-                    
-                                    data = $(item).data()
-                                    
-                                    if(data.type == 'AWS.EC2.AvailabilityZone' and data.option.name == zone.name)
+                                if zone.name == value.zoneName
 
-                                        $(item).attr('data-enable', "false")
-                                        $(item).addClass('resource-disabled')
-                                        $(item).removeAttr("data-tooltip")
-                                        return false
-                                                   
+                                    res.item[idx].isUsed = true
+
+                                    null
                                 
 
-                    me.set 'availability_zone', result.resolved_data
+                    me.set 'availability_zone', res
 
                     #cache az to MC.data.config[region_name].zone
                     MC.data.config[region_name].zone = result.resolved_data
@@ -372,6 +380,20 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
                     null
             null
+
+        getIgwStatus : ->
+
+            isUsed = false
+
+            $.each MC.canvas_data.component, ( key, comp ) ->
+
+                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+
+                    isUsed = true
+
+                    return false
+
+            isUsed
 
         _getInstanceType : ( ami ) ->
             instance_type = ami_instance_type

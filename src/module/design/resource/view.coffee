@@ -203,25 +203,32 @@ define [ 'event',
                 else
                      $("#community_ami_page_next").show()
 
-        resourceVpcRender : ( current_platform ) ->
-            platform = {}
+        resourceVpcRender : ( current_platform, type ) ->
+            data = {}
+
+            if not current_platform
+
+                current_platform = MC.canvas_data.platform
 
             if current_platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-                platform.isntClassic = false
+                data.isntClassic = false
 
             else
-                platform.isntClassic = true
+                data.isntClassic = true
 
                 if current_platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
 
-                    platform.isntDefaultVPC = false
+                    data.isntDefaultVPC = false
 
                 else
-                    platform.isntDefaultVPC = true
+                    data.isntDefaultVPC = true
 
+                    if type != 'NEW_STACK'
 
-            $( '.resource-vpc-list' ).html this.resource_vpc_tmpl platform
+                        data.igwIsUsed = this.model.getIgwStatus()
+
+            $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
 
         searchCommunityAmiCurrent : ( event ) ->
 

@@ -136,6 +136,22 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 
 								me._removeGatewayIdFromRT comp.uid, option.id
 
+						$.each $(".resource-item"), ( idx, item) ->
+					
+							data = $(item).data()
+							
+							if data.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+
+								tmp = {
+									enable : true
+									tooltip: "Drag and drop to canvas to create a new Internet Gateway."
+								}
+								$(item)
+									.data(tmp)
+									.removeClass('resource-disabled')
+								
+								return false
+
 					# remove vgw
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
 
@@ -190,11 +206,14 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 						
 						if data.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and data.option.name == az_name
 
-							$(item).attr('data-enable', "true")
-
-							$(item).removeClass('resource-disabled')
-
-							$(item).attr("data-tooltip", "Drag and drop to canvas")
+							tmp = {
+								enable : true
+								tooltip: "Drag and drop to canvas"
+							}
+							$(item)
+								.data(tmp)
+								.removeClass('resource-disabled')
+								.addClass("tooltip")
 							
 							return false
 								

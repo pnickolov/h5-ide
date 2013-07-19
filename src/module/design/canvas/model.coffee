@@ -1,7 +1,9 @@
 #############################
 #  View Mode for canvas
 #############################
-define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
+define [ 'constant',
+		'canvas_handle_elb',
+		'backbone', 'jquery', 'underscore' ], ( constant, canvas_handle_elb ) ->
 
 	CanvasModel = Backbone.Model.extend {
 
@@ -112,7 +114,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 
 							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.NetworkInterfaceId.split('.')[0][1...] == option.id
 
-								delete MC.canvas_data.component[index]
+								delete MC.canvas_data.componentreturn[index]
 
 							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
@@ -181,7 +183,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 
 
 			# remove group
-			if option.type == 'group'
+			else if option.type == 'group'
 
 				nodes = MC.canvas.groupChild($("#" + option.id)[0])
 
@@ -194,6 +196,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 					me.deleteObject op
 
 				delete MC.canvas_data.component[option.id]
+
 
 				# recover az dragable
 				if $("#" + option.id).data().class == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
@@ -218,6 +221,21 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 							return false
 								
 					
+
+
+			# remove line
+			else if option.type == 'line'
+
+				connectionObj =  MC.canvas_data.layout.connection[option.id]
+
+				targetObj = connectionObj.target
+				portMap = {}
+				
+				_.each targetObj, (value, key) ->
+					portMap[value] = key
+					null
+
+				canvas_handle_elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
 
 
 			MC.canvas.remove $("#" + option.id)[0]
@@ -295,10 +313,17 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 
 			if line_option.length == 2
 
-				console.info line_option[0].line_id + ',' + line_option[0].port + " | " + line_option[1].line_id + ',' + line_option[1].port
-				
-				#to-do
+				console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
 
+				portMap = {}
+
+				$.each line_option, ( i, obj ) ->
+					portMap[obj.port] = obj.uid
+					null
+
+				#connect elb and instance
+				if portMap['instance-sg-in'] and portMap['elb-sg-out']
+					canvas_handle_elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
 
 			null
 

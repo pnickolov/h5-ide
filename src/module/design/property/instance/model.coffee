@@ -224,6 +224,10 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             instance_sg.all_sg = []
 
+            instance_sg.rules_detail_ingress = []
+
+            instance_sg.rules_detail_egress = []
+
             sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
 
             sg_id_no_ref = []
@@ -246,15 +250,15 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                         sg_detail.members = value.member.length
 
-                        if MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress
-
-                            sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length + MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress.length
-                        else
-
-                            sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length
+                        sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length + MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress.length
 
                         sg_detail.name = MC.canvas_data.component[sg_uid].resource.GroupName
+                        
                         sg_detail.desc = MC.canvas_data.component[sg_uid].resource.GroupDescription
+
+                        instance_sg.rules_detail_ingress = instance_sg.rules_detail_ingress.concat MC.canvas_data.component[sg_uid].resource.IpPermissions
+
+                        instance_sg.rules_detail_egress = instance_sg.rules_detail_egress.concat MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress
 
                         instance_sg.detail.push sg_detail
 
@@ -271,6 +275,39 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     instance_sg.all_sg.push tmp
 
             instance_sg.total = instance_sg.detail.length
+
+            array_unique = ( origin_ary )->
+
+                if origin_ary.length == 0
+
+                    return []
+
+                ary = origin_ary.slice 0
+
+
+                $.each ary, (idx, value)->
+
+                    ary[idx] = JSON.stringify value
+
+                    null
+
+                ary.sort()
+
+                tmp = [ary[0]]
+
+                _.map ary, ( val, i ) ->
+
+                    if val != tmp[tmp.length - 1]
+
+                        tmp.push(val)
+                
+
+                
+                return (JSON.parse node for node in tmp)
+
+
+            instance_sg.rules_detail_ingress = array_unique instance_sg.rules_detail_ingress
+            instance_sg.rules_detail_egress = array_unique instance_sg.rules_detail_egress
 
             instance_sg
 

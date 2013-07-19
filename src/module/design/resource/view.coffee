@@ -9,7 +9,7 @@ define [ 'event',
 
     ResourceView = Backbone.View.extend {
 
-        el         : $ '#resource-panel'
+        el                     : $ '#resource-panel'
 
         availability_zone_tmpl : Handlebars.compile $( '#availability-zone-tmpl' ).html()
         resoruce_snapshot_tmpl : Handlebars.compile $( '#resoruce-snapshot-tmpl' ).html()
@@ -22,12 +22,12 @@ define [ 'event',
 
         initialize : ->
             #listen
-            $( window   ).on 'resize', fixedaccordion.resize
-            $( document ).on 'ready',  toggleicon.init
-            $( document ).on 'ready',  searchbar.init
-            $( document ).on 'ready',  selectbox.init
-            $( document ).on 'ready',  radiobuttons.init
-            #listen
+            #$( window   ).on 'resize', fixedaccordion.resize
+            #$( document ).on 'ready',  toggleicon.init
+            #$( document ).on 'ready',  searchbar.init
+            #$( document ).on 'ready',  selectbox.init
+            #$( document ).on 'ready',  radiobuttons.init
+            ###
             $( document ).delegate '#hide-resource-panel', 'click',         this.toggleResourcePanel
             $( document ).delegate '#resource-select',     'OPTION_CHANGE', this, this.resourceSelectEvent
             $( document ).delegate '#resource-panel',     'SEARCHBAR_SHOW', this.searchBarShowEvent
@@ -37,6 +37,19 @@ define [ 'event',
             $( document ).delegate '#btn-search-ami',   'click'  , this, this.searchCommunityAmiCurrent
             $( document ).delegate '#community_ami_page_preview',   'click'  , this, this.searchCommunityAmiPreview
             $( document ).delegate '#community_ami_page_next',   'click'  , this, this.searchCommunityAmiNext
+            ###
+
+            #listen
+            $( document )
+                .on( 'click',            '#hide-resource-panel',              this.toggleResourcePanel )
+                .on( 'OPTION_CHANGE',    '#resource-select',            this, this.resourceSelectEvent )
+                .on( 'SEARCHBAR_SHOW',   '#resource-select',                  this.searchBarShowEvent )
+                .on( 'SEARCHBAR_HIDE',   '#resource-select',                  this.searchBarHideEvent )
+                .on( 'SEARCHBAR_CHANGE', '#resource-select',                  this.searchBarChangeEvent )
+                .on( 'click',            '#btn-browse-community-ami',   this, this.openBrowseCommunityAMIsModal )
+                .on( 'click',            '#btn-search-ami',             this, this.searchCommunityAmiCurrent )
+                .on( 'click',            '#community_ami_page_preview', this, this.searchCommunityAmiPreview )
+                .on( 'click',            '#community_ami_page_next',    this, this.searchCommunityAmiNext )
             
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideResourcePanel

@@ -20,9 +20,6 @@ require.config {
 		'domReady'     : 'vender/requirejs/domReady'
 		'text'         : 'vender/requirejs/text'
 
-		'parsley'      : 'vender/parsleyjs/parsley'
-
-
 		#core lib
 		'MC'           : 'lib/MC.core'
 		'MC.template'  : 'lib/MC.template'
@@ -43,6 +40,7 @@ require.config {
 		'UI.table'          : 'ui/common/UI.table'
 		'UI.tablist'        : 'ui/common/UI.tablist'
 		'UI.fixedaccordion'   : 'ui/common/UI.fixedaccordion'
+
 		'UI.selectbox'      : 'ui/common/UI.selectbox'
 		'UI.toggleicon'     : 'ui/common/UI.toggleicon'
 		'UI.searchbar'      : 'ui/common/UI.searchbar'
@@ -50,6 +48,7 @@ require.config {
 		'UI.radiobuttons'   : 'ui/common/UI.radiobuttons'
 		'UI.notification'   : 'ui/common/UI.notification'
 		'UI.secondarypanel' : 'ui/common/UI.secondarypanel'
+		'UI.slider': 'ui/common/UI.slider'
 		'UI.editablelabel'  : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'  : 'ui/common/UI.multiinputbox'
 
@@ -81,6 +80,9 @@ require.config {
 		'property'     : 'module/design/property/main'
 		'canvas'       : 'module/design/canvas/main'
 		'toolbar'      : 'module/design/toolbar/main'
+
+		#canvas event logic handler
+		'canvas_handle_elb'   : 'module/design/canvas/aws/elb/elb'
 
 		#events
 		'event'        : 'event/ide_event'
@@ -224,7 +226,6 @@ require.config {
 
 		'canvas_layout':
 			deps: [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon' ]
-
 
 }
 

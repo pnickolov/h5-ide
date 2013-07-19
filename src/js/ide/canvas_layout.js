@@ -44,10 +44,10 @@ var listen = function ()
 		.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 		.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 		.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
+		.on('click', '.line', MC.canvas.event.selectLine)
 		.on('mousedown', MC.canvas.event.clearSelected)
+		.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
 		.on('selectstart', returnFalse);
-
-	$('#line_layer').on('click', '.line', MC.canvas.event.selectLine);
 
 	//canvas_body.on('mousedown', MC.canvas.selection.mousedown);
 

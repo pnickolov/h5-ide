@@ -37,17 +37,17 @@ var
 // Dom Ready
 var listen = function ()
 {
-	MC.paper = Canvon('svg_canvas');
+	//MC.paper = Canvon('svg_canvas');
 
 	$('#canvas_body')
 		.on('mousedown', '.instance-volume', MC.canvas.volume.show)
 		.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 		.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 		.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
+		.on('click', '.line', MC.canvas.event.selectLine)
 		.on('mousedown', MC.canvas.event.clearSelected)
+		.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
 		.on('selectstart', returnFalse);
-
-	$('#line_layer').on('click', '.line', MC.canvas.event.selectLine);
 
 	//canvas_body.on('mousedown', MC.canvas.selection.mousedown);
 
@@ -62,7 +62,7 @@ var ready = function ()
 {
 	$(document).on('keyup', MC.canvas.event.keyEvent);
 
-	$('#header, #navigation').on('click', MC.canvas.volume.close);
+	$('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close);
 
 	$(document.body)
 		.on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown);

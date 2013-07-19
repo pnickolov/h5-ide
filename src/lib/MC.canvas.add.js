@@ -70,6 +70,19 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout = $.extend(true, {}, MC.canvas.AZ_JSON.layout);
 				component_layout.name = option.name;
 
+				$.each($(".resource-item"), function ( idx, item){
+					
+					var data = $(item).data();
+					
+					if(data.type === 'AWS.EC2.AvailabilityZone' && data.option.name === option.name){
+						$(item)
+							.data('enable', false)
+							.addClass('resource-disabled')
+							.removeClass("tooltip");
+						return false;
+					}					
+				});
+
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
 				option.width = size[0];
 				option.height = size[1];
@@ -222,7 +235,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////3.vpc label
 				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
-					'class': 'group-label name'
+					'class': 'group-label name',
+					'id': group.id + '_vpc_name'
 				})
 
 			).attr({
@@ -654,14 +668,14 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 20, 23, 70, 53).attr({
+				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 20, 28, 70, 53).attr({
 					'id' : group.id + '_elb_scheme'
 				}),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-elb-sg-in',
-					'transform': 'translate(12, 40)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(12, 45)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-in',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -672,7 +686,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-elb-sg-out',
-					'transform': 'translate(90, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(90, 56)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-out',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -683,7 +697,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-elb-assoc',
-					'transform': 'translate(90, 27)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(90, 32)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-assoc',
 					'data-position': 'right',
 					'data-type': 'association',
@@ -692,7 +706,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////5. elb_name
-				Canvon.text(50, 85, option.name).attr({
+				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name',
 					'id' : group.id + '_elb_name'
 				})
@@ -833,7 +847,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.IGW_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
-
+				
+				// disable drag when add one
+				
+				$.each($(".resource-item"), function ( idx, item){
+					
+					var data = $(item).data();
+					
+					if(data.type === 'AWS.VPC.InternetGateway'){
+						$(item)
+							.data('enable', false)
+							.addClass('resource-disabled')
+							.data("tooltip", "VPC can only have one IGW. There is already one IGW in current VPC.");
+						return false;
+					}					
+				});
+				
 				component_layout = $.extend(true, {}, MC.canvas.IGW_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}
@@ -912,7 +941,18 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.VGW_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.Attachments[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
-
+				$.each($(".resource-item"), function ( idx, item){
+					
+					var data = $(item).data();
+					
+					if(data.type === 'AWS.VPC.VPNGateway'){
+						$(item)
+							.data('enable', false)
+							.addClass('resource-disabled')
+							.data("tooltip", "VPC can only have one VGW. There is already one VGW in current VPC.");
+						return false;
+					}					
+				});
 				component_layout = $.extend(true, {}, MC.canvas.VGW_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}
@@ -1067,7 +1107,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.ENI_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.SubnetId = '@' + option.group.subnetUID + '.resource.SubnetId';
-				component_data.resource.VpcId = '@' + option.group.vpcUID + '.resource.SubnetId'
+				component_data.resource.VpcId = '@' + option.group.vpcUID + '.resource.SubnetId';
 
 				component_layout = $.extend(true, {}, MC.canvas.ENI_JSON.layout);
 				component_layout.groupUId = option.groupUId;
@@ -1090,12 +1130,19 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/ENI-Canvas.png', 15, 25, 70, 70),
+
+				Canvon.image('../assets/images/ide/icon/eni-canvas-unattached.png', 16, 28, 68, 53).attr({
+					'id': group.id + '_eni_status'
+				}),
+
+				Canvon.image('../assets/images/ide/icon/eip-off.png', 46, 50, 14, 17).attr({
+					'id': group.id + '_eip_status'
+				}),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-sg-in',
-					'transform': 'translate(12, 37)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(7, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg-in',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -1106,7 +1153,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-eni-attach',
-					'transform': 'translate(12, 62)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(7, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-attach',
 					'data-position': 'left',
 					'data-type': 'attachment',
@@ -1117,7 +1164,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-sg-out',
-					'transform': 'translate(80, 38)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(85, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg-out',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -1126,7 +1173,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////5. eni_name
-				Canvon.text(32, 60, option.name, {
+				Canvon.text(43, 85, option.name, {
 					'text-anchor': 'start' // start, middle(default), end, inherit
 				}).attr({
 					'class': 'node-label name'
@@ -1155,6 +1202,11 @@ MC.canvas.add = function (flag, option, coordinate)
 
 	//set the node position
 	MC.canvas.position(group, coordinate.x, coordinate.y);
+
+	if (create_mode)
+	{
+		$("#svg_canvas").trigger("CANVAS_COMPONENT_CREATE", group.id);
+	}
 
 	return group;
 };

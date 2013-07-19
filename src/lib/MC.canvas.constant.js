@@ -12,7 +12,7 @@ var constant_data = {
 
 	GROUP_DEFAULT_SIZE: {
 		'AWS.VPC.VPC': [60, 60], //[width, height]
-		'AWS.EC2.AvailabilityZone': [30, 30],
+		'AWS.EC2.AvailabilityZone': [20, 20],
 		'AWS.VPC.Subnet': [15, 15]
 	},
 
@@ -28,7 +28,10 @@ var constant_data = {
 		INSTANCE_EIP_OFF: MC.IMG_URL + 'ide/icon/instance-eip-off.png',
 		//elb icon
 		ELB_INTERNAL_CANVAS: MC.IMG_URL + 'ide/icon/elb-internal-canvas.png',
-		ELB_INTERNET_CANVAS: MC.IMG_URL + 'ide/icon/elb-internet-canvas.png'
+		ELB_INTERNET_CANVAS: MC.IMG_URL + 'ide/icon/elb-internet-canvas.png',
+
+		ENI_CANVAS_ATTACHED: MC.IMG_URL + 'ide/icon/eni-canvas-attached.png',
+		ENI_CANVAS_UNATTACHED: MC.IMG_URL + 'ide/icon/eni-canvas-unattached.png'
 	},
 
 	//constant for _route()
@@ -175,12 +178,26 @@ var constant_data = {
 					relation: 'unique'
 				}
 			],
-			'AWS.VPC.RouteTable': {
-				from: 'instance-sg-in',
-				to: 'rtb-tgt-left',
-				relation: 'unique', //a instance can only connect to one routetable
-				color: '#6DAEFE' //blue
-			}
+			'AWS.VPC.RouteTable': [
+				{
+					from: 'instance-sg-in',
+					to: 'rtb-tgt-left',
+					relation: 'unique', //a instance can only connect to one routetable
+					color: '#6DAEFE', //blue
+					//dash line
+					color_dash: '#9FC9FD', //dash color
+					stroke_dasharray: '10, 10'
+				},
+				{
+					from: 'instance-sg-in',
+					to: 'rtb-tgt-right',
+					relation: 'unique', //a instance can only connect to one routetable
+					color: '#6DAEFE', //blue
+					//dash line
+					color_dash: '#9FC9FD', //dash color
+					stroke_dasharray: '10, 10'
+				}
+			]
 		},
 		'AWS.EC2.EBS.Volume': {
 			'AWS.EC2.Instance': {
@@ -220,11 +237,24 @@ var constant_data = {
 				to: 'rtb-tgt-left',
 				color: '#d8d7d6' //gray
 			},
-			'AWS.VPC.Instance': {
-				from: 'rtb-tgt-left',
-				to: 'instance-sg-in',
-				color: '#6DAEFE' //blue
-			},
+			'AWS.EC2.Instance': [
+				{
+					from: 'rtb-tgt-left',
+					to: 'instance-sg-in',
+					color: '#6DAEFE', //blue
+					//dash line
+					color_dash: '#9FC9FD', //dash color
+					stroke_dasharray: '10, 10'
+				},
+				{
+					from: 'rtb-tgt-right',
+					to: 'instance-sg-in',
+					color: '#6DAEFE', //blue
+					//dash line
+					color_dash: '#9FC9FD', //dash color
+					stroke_dasharray: '10, 10'
+				}
+			],
 			'AWS.VPC.InternetGateway': {
 				from: 'rtb-tgt-left',
 				to: 'igw-tgt',

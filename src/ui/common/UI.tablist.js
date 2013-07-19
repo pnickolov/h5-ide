@@ -8,22 +8,23 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
+/* A modified version to reduce redundant html code by Morris */
 var tab = {
-    update: function (event) {
-        event.preventDefault();
+    update : function ( event ) {
+        var $target = $( event.currentTarget );
+        if ( $target.hasClass("active") )
+            return false;
 
-        var me = $(this),
-            target = me.attr('href'),
-            previous_tag = $(me.parent().parent().find('> .active')),
-            previous_target = previous_tag.children('a').attr('href');
+        var $previous_selected = 
+                $target.addClass("active")
+                       .siblings(".active").removeClass("active");
 
-        $(previous_target).removeClass('active');
-        $(target).addClass('active');
-        previous_tag.removeClass('active');
-        me.parent().addClass('active');
+        $($previous_selected.attr("data-tab-target")).removeClass("active");
+        $($target.attr("data-tab-target")).addClass("active");
+
+        return false;
     }
 };
-
-$(document).ready(function () {
-    $(document).on('click', '.tab a', tab.update);
+$(function(){
+    $(document.body).on('click', '.tab [data-tab-target]', tab.update );
 });

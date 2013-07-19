@@ -1,4 +1,5 @@
 *.bat
+.DS_Store
 
 #ignore demo
 src/js/demo/*.js
@@ -12,12 +13,14 @@ bower_components/**
 components/**
 
 #ignore release
-release
+release/**
 
 #ignore vender
 src/vender/**
 !src/vender/canvon/canvon.js
 !src/vender/meteor/meteor.js
+!src/vender/ZeroClipboard/*
+
 #ignore page
 src/js/*.js
 src/js/**/*.js
@@ -33,7 +36,6 @@ src/service/*.js
 
 #ignore module
 src/module/**/*.js
-!src/module/canvas/canvas.js
 
 #ignore lib
 src/lib/websocket.js
@@ -54,27 +56,3 @@ util/gen_apilist/**/*.js
 
 #ignore event
 src/event/*.js
-
-#ignore overview
-src/module/dashboard/overview/*.js
-
-
-.DS_Store
-
-src/vender/meteor/meteor.js
-
-gruntfile.js
-
-gruntfile.js
-
-*.js
-
-gruntfile.js
-
-src/vender/meteor/meteor.js
-
-src/vender/meteor/meteor.js
-
-src/vender/meteor/meteor.js
-
-gruntfile.js

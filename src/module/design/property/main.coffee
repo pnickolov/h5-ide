@@ -1,7 +1,6 @@
 ####################################
 #  Controller for design/property module
 ####################################
-
 define [ 'jquery',
          'text!/module/design/property/template.html',
          'event',
@@ -57,7 +56,7 @@ define [ 'jquery',
                 stack_main.loadModule()
 
             #listen OPEN_PROPERTY
-            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid ) ->
+            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id ) ->
 
                 if type == 'component'
 
@@ -79,7 +78,7 @@ define [ 'jquery',
                         #components except AvailabilityZone
                         switch MC.canvas_data.component[ uid ].type
                             #show instance property
-                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid, instance_expended_id
                             #show volume/snapshot property
                             when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid
                             #show elb property
@@ -91,7 +90,7 @@ define [ 'jquery',
                             #show dhcp property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions      then dhcp_main.loadModule uid
                             #show rtb property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid, 'component'
                             #show igw property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway  then igw_main.loadModule uid
                             #show vgw property
@@ -104,6 +103,7 @@ define [ 'jquery',
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid
                             #show acl property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl       then acl_main.loadModule uid
+
                             #
                             else
                                 #
@@ -117,7 +117,28 @@ define [ 'jquery',
                 else
 
                     #select line
-                    sgrule_main.loadModule uid
+                    if MC.canvas_data.layout.connection[uid]
+
+                        line_option = MC.canvas.lineTarget uid
+
+                        if line_option.length == 2
+
+                            console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
+                    
+                            key = line_option[0].port + '>' + line_option[1].port
+
+
+                            if '|instance-sg-in>rtb-tgt-left|rtb-tgt-left>instance-sg-in|'.indexOf( key ) > 0
+                                #select line between instance and routetable
+                                rtb_main.loadModule line_option, 'line'
+
+                            else if '|instance-sg-in>instance-sg-out|instance-sg-out>instance-sg-in|'.indexOf( key ) >0
+                                #select line between instance and instance
+                                sgrule_main.loadModule line_option, 'line'
+
+                            else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
+                                #select line between vgw and  cgw
+                                vpn_main.loadModule line_option, 'line'
                     
 
                 #temp
@@ -128,9 +149,9 @@ define [ 'jquery',
                 null
 
             #listen OPEN_SG
-            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent ) ->
+            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id ) ->
                 console.log 'OPEN_SG'
-                sg_main.loadModule( uid_parent )
+                sg_main.loadModule( uid_parent, expended_accordion_id )
                 #temp
                 # setTimeout () ->
                 #    view.refresh()
@@ -139,10 +160,10 @@ define [ 'jquery',
                 null
 
             #listen OPEN_INSTANCE
-            ide_event.onLongListen ide_event.OPEN_INSTANCE, () ->
+            ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id) ->
                 console.log 'OPEN_INSTANCE'
                 #
-                instance_main.loadModule uid, type
+                instance_main.loadModule uid, type, expended_accordion_id
                 #temp
                 # setTimeout () ->
                 #    view.refresh()

@@ -564,25 +564,21 @@ MC.canvas = {
 				MC.canvas._addPad(start0, 1);
 				MC.canvas._addPad(end0, 1);
 
+				//line style
+				MC.paper.start({
+					'stroke': connection_option.color,
+					'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+					'fill': 'none'
+				});
+
 				if ( start0.x === end0.x || start0.y === end0.y )
 				{
 					//draw straight line
-					MC.paper.start({
-						'stroke': connection_option.color,
-						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-						'fill': 'none'
-					});
-
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
 				}
 				else
 				{
 					//draw fold line
-					MC.paper.start({
-						'stroke': connection_option.color,
-						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-						'fill': 'none'
-					});
 
 					///// route 1 (xjimmy's algorithm)/////
 					//MC.canvas._route2( controlPoints, start0, end0 );
@@ -601,6 +597,16 @@ MC.canvas = {
 						if (d !== "")
 						{
 							MC.paper.path(d);
+
+							if ( connection_option.stroke_dasharray  && connection_option.color_dash && connection_option.stroke_dasharray !== '' )
+							{
+								MC.paper.path(d,{
+									'stroke': connection_option.color_dash,
+									'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+									'fill': 'none',
+									'stroke-dasharray': connection_option.stroke_dasharray
+								});
+							}
 						}
 					}
 
@@ -802,12 +808,54 @@ MC.canvas = {
 				$('#az_layer').children(),
 				$('#vpc_layer').children()
 			],
+			point = [
+				{
+					'x': x,
+					'y': y
+				},
+				{
+					'x': x + width,
+					'y': y
+				},
+				{
+					'x': x,
+					'y': y + height
+				},
+				{
+					'x': x + width,
+					'y': y + height
+				}
+			],
+			match_option = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ],
 			is_option_canvas = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ][ 0 ] === 'Canvas',
+			ignore_stack = [],
+			match = [],
 			result = {},
+			match_status,
 			is_matched,
+			match_target,
 			group_data,
+			group_child,
 			coordinate,
 			size;
+
+		if (target_id !== null)
+		{
+			ignore_stack.push(target_id);
+
+			if (target_type === 'group')
+			{
+				group_child = MC.canvas.groupChild(document.getElementById(target_id));
+
+				$.each(group_child, function (index, item)
+				{
+					if (item.getAttribute('data-type') === 'group')
+					{
+						ignore_stack.push(item.id);
+					}
+				});
+			}
+		}
 
 		x = x * MC.canvas_property.SCALE_RATIO;
 		y = y * MC.canvas_property.SCALE_RATIO;
@@ -825,7 +873,8 @@ MC.canvas = {
 						size = group_data.size;
 
 						if (
-							target_id !== item.id &&
+							$.inArray(item.id, ignore_stack) === -1 &&
+							//target_id !== item.id &&
 							(
 								(x >= coordinate[0] &&
 								x <= coordinate[0] + size[0])
@@ -856,15 +905,21 @@ MC.canvas = {
 					}
 				}
 			});
+
+			return {
+				'is_matched': $.isEmptyObject(result),
+				'target': result.id === undefined && is_matched ? 'Canvas' : result.id
+			};
 		}
 		else
 		{
-			if (target_type === 'node')
+			$.each(point, function (index, data)
 			{
-				$.each(group_stack, function (index, layer_data)
+				$.each(group_stack, function (i, layer_data)
 				{
 					if (layer_data)
 					{
+						match_status = {};
 						$.each(layer_data, function (i, item)
 						{
 							group_data = layout_group_data[ item.id ];
@@ -872,89 +927,57 @@ MC.canvas = {
 							size = group_data.size;
 
 							if (
-								target_id !== item.id &&
-
-								(
-									(x >= coordinate[0] &&
-									x <= coordinate[0] + size[0])
-									||
-									(x + width >= coordinate[0] &&
-									x + width <= coordinate[0] + size[0])
-								)
-								&&
-								(
-									(y >= coordinate[1] &&
-									y <= coordinate[1] + size[1])
-									||
-									(y + height >= coordinate[1] &&
-									y + height <= coordinate[1] + size[1])
-								)
+								//target_id !== item.id &&
+								$.inArray(item.id, ignore_stack) === -1 &&
+								data.x > coordinate[0] &&
+								data.x < coordinate[0] + size[0] &&
+								data.y > coordinate[1] &&
+								data.y < coordinate[1] + size[1]
 							)
 							{
-								result = {
-									'id': item.id,
-									'type': group_data.type
-								};
+								match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
+								match_target = item.id;
+								return false;
 							}
 						});
 
-						if (!$.isEmptyObject(result))
+						if (!$.isEmptyObject(match_status))
 						{
+							match[ index ] = match_status;
 							return false;
 						}
 					}
 				});
-			}
+			});
 
-			if (target_type === 'group')
+			is_matched =
+				match[0] &&
+				match[0].is_matched &&
+				match[1] &&
+				match[1].is_matched &&
+				match[2] &&
+				match[2].is_matched &&
+				match[3] &&
+				match[3].is_matched ? true : false;
+
+			if (
+				!is_matched &&
+				$.inArray('Canvas', match_option) > -1 &&
+				!match[0] &&
+				!match[1] &&
+				!match[2] &&
+				!match[3]
+			)
 			{
-				$.each(group_stack, function (index, layer_data)
-				{
-					if (layer_data)
-					{
-						$.each(layer_data, function (i, item)
-						{
-							group_data = layout_group_data[ item.id ];
-							coordinate = group_data.coordinate;
-							size = group_data.size;
-
-							if (
-								target_id !== item.id &&
-
-								coordinate[0] <= x &&
-								coordinate[0] + size[0] >= x + width &&
-								coordinate[1] <= y &&
-								coordinate[1] + size[1] >= y + height
-							)
-							{
-								result = {
-									'id': item.id,
-									'type': group_data.type
-								};
-							}
-						});
-
-						if (!$.isEmptyObject(result))
-						{
-							return false;
-						}
-					}
-				});
+				is_matched = true;
+				match_target = 'Canvas';
 			}
+
+			return {
+				'is_matched': is_matched,
+				'target': is_matched ? match_target : null
+			};
 		}
-
-		matchGroup = result.type;
-
-		matchGroup = matchGroup === undefined ? 'Canvas' : matchGroup;
-
-		platform = platform === 'custome-vpc' ? 'ec2-vpc' : platform;
-
-		is_matched = (is_option_canvas || $.inArray(matchGroup, MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ]) > -1 || target_id === matchGroup.id);
-
-		return {
-			'is_matched': is_matched,
-			'target': result.id === undefined && is_matched ? 'Canvas' : result.id
-		};
 	},
 
 	isBlank: function (type, target_id, x, y, width, height)
@@ -968,46 +991,46 @@ MC.canvas = {
 			coordinate,
 			size;
 
-		if (type === 'node')
-		{
-			start_x = x * MC.canvas_property.SCALE_RATIO;
-			start_y = y * MC.canvas_property.SCALE_RATIO;
-			end_x = (x + MC.canvas.COMPONENT_WIDTH_GRID) * MC.canvas_property.SCALE_RATIO;
-			end_y = (y + MC.canvas.COMPONENT_HEIGHT_GRID) * MC.canvas_property.SCALE_RATIO;
+		// if (type === 'node')
+		// {
+		// 	start_x = x * MC.canvas_property.SCALE_RATIO;
+		// 	start_y = y * MC.canvas_property.SCALE_RATIO;
+		// 	end_x = (x + MC.canvas.COMPONENT_WIDTH_GRID) * MC.canvas_property.SCALE_RATIO;
+		// 	end_y = (y + MC.canvas.COMPONENT_HEIGHT_GRID) * MC.canvas_property.SCALE_RATIO;
 
-			$.each(children, function (key, item)
-			{
-				coordinate = item.coordinate;
+		// 	$.each(children, function (key, item)
+		// 	{
+		// 		coordinate = item.coordinate;
 
-				if (key !== target_id)
-				{
-					if (
-						(
-							(coordinate[0] > start_x &&
-							coordinate[0] < end_x)
-							||
-							(coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > start_x &&
-							coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID < end_x)
-							||
-							coordinate[0] === start_x
-						)
-						&&
-						(
-							(coordinate[1] > start_y &&
-							coordinate[1] < end_y)
-							||
-							(coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > start_y &&
-							coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID < end_y)
-							||
-							coordinate[1] === start_y
-						)
-					)
-					{
-						isBlank = false;
-					}
-				}
-			});
-		}
+		// 		if (key !== target_id)
+		// 		{
+		// 			if (
+		// 				(
+		// 					(coordinate[0] > start_x &&
+		// 					coordinate[0] < end_x)
+		// 					||
+		// 					(coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > start_x &&
+		// 					coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID < end_x)
+		// 					||
+		// 					coordinate[0] === start_x
+		// 				)
+		// 				&&
+		// 				(
+		// 					(coordinate[1] > start_y &&
+		// 					coordinate[1] < end_y)
+		// 					||
+		// 					(coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > start_y &&
+		// 					coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID < end_y)
+		// 					||
+		// 					coordinate[1] === start_y
+		// 				)
+		// 			)
+		// 			{
+		// 				isBlank = false;
+		// 			}
+		// 		}
+		// 	});
+		// }
 
 		if (type === 'group')
 		{
@@ -1022,17 +1045,16 @@ MC.canvas = {
 				coordinate = item.coordinate;
 				size = item.size;
 
-				if (key !== target_id && item.type === target_type)
+				if (
+					key !== target_id &&
+					item.type === target_type &&
+					coordinate[0] <= end_x &&
+					coordinate[0] + size[0] >= start_x &&
+					coordinate[1] <= end_y &&
+					coordinate[1] + size[1] >= start_y
+				)
 				{
-					if (
-						coordinate[0] < end_x &&
-						coordinate[0] + size[0] > start_x &&
-						coordinate[1] < end_y &&
-						coordinate[1] + size[1] > start_y
-					)
-					{
-						isBlank = false;
-					}
+					isBlank = false;
 				}
 			});
 		}
@@ -1119,10 +1141,10 @@ MC.canvas = {
 			if (
 				node_id !== key &&
 				($.inArray(item.type, group_weight) > -1 || item.type === group_data.type) &&
-				start_x < coordinate[0] + size[0] &&
-				end_x > coordinate[0] &&
-				start_y < coordinate[1] + size[1] &&
-				end_y > coordinate[1]
+				start_x <= coordinate[0] + size[0] &&
+				end_x >= coordinate[0] &&
+				start_y <= coordinate[1] + size[1] &&
+				end_y >= coordinate[1]
 			)
 			{
 				matched.push(document.getElementById( key ));
@@ -1143,6 +1165,28 @@ MC.canvas = {
 			group_data.coordinate[0] + group_data.size[0],
 			group_data.coordinate[1] + group_data.size[1]
 		);
+	},
+
+	lineTarget: function (line_id)
+	{
+		var data = MC.canvas.data.get('layout.connection.' + line_id),
+			target_id = [];
+
+		$.each(data.target, function (key, value)
+		{
+			target_id.push(key);
+		});
+
+		return [
+			{
+				'uid': target_id[0],
+				'port': data.target[ target_id[0] ],
+			},
+			{
+				'uid': target_id[1],
+				'port': data.target[ target_id[1] ],
+			}
+		];
 	}
 };
 
@@ -1152,8 +1196,9 @@ MC.canvas.layout = {
 		var layout_data = MC.canvas.data.get("layout"),
 			connection_target_id;
 
+		MC.paper = Canvon('svg_canvas');
+
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
-		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
 
 		components = MC.canvas.data.get("component");
 		
@@ -1261,11 +1306,17 @@ MC.canvas.layout = {
 		{
 			layout_data.connection = {};
 		}
+
+		//store json to original_json
+		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
+
 		return true;
 	},
 
 	create: function (option)
 	{
+		MC.paper = Canvon('svg_canvas');
+
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
 		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
 
@@ -1273,8 +1324,7 @@ MC.canvas.layout = {
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
 		//set region and platform
-		//MC.canvas_data.name = option.name;
-		MC.canvas_data.name = 'test';
+		MC.canvas_data.name = option.name;
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 
@@ -1299,18 +1349,17 @@ MC.canvas.layout = {
 		MC.canvas.data.set('component', data);
 		data[sg.uid] = sg;
 		MC.canvas.data.set('component', data);
-		
-		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
 
+		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
 		{
 			//has vpc (create vpc, az, and subnet by default)
 			vpc_group = MC.canvas.add('AWS.VPC.VPC', {
-				'name': 'vpc1',
+				'name': 'vpc1'
 			}, {
 				'x': 2,
 				'y': 2
 			});
-			
+
 			var node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
 				'name': 'MainRT',
 				'group' : {
@@ -1318,10 +1367,10 @@ MC.canvas.layout = {
 				},
 				'main' : true
 			},{
-				'x': 19,
-				'y': 16
+				'x': 51,
+				'y': 3
 			});
-			
+
 			//default sg
 			main_asso = {
 				"Main": "true",
@@ -1331,24 +1380,27 @@ MC.canvas.layout = {
 			};
 			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
 			MC.canvas_property.main_route = node_rt.id;
-			
+
 			acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
 			acl.uid = MC.guid();
-			acl.resource.Default = 'true'
+			acl.resource.Default = 'true';
 			acl.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
 			data[acl.uid] = acl;
 			MC.canvas.data.set('component', data);
-			
+
 			MC.canvas_property.default_acl = acl.uid;
-			
+
 			sg.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
 
 		}
-		
+
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
 		});
+
+		//store json to original_json
+		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
 
 		return true;
 	},
@@ -1475,8 +1527,8 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.attr('transform',
 			'translate(' +
-				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO + ',' +
-				(offset + Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO) * MC.canvas_property.SCALE_RATIO) +
+				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * MC.canvas.GRID_WIDTH + ',' +
+				(offset + Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * MC.canvas.GRID_HEIGHT) +
 			')'
 		);
 
@@ -1545,6 +1597,7 @@ MC.canvas.event.dragable = {
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
 				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID);
+				
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
@@ -1569,12 +1622,21 @@ MC.canvas.event.dragable = {
 						);
 					});
 
+					target.attr('class', function (index, key)
+					{
+						return key + ' selected';
+					});
+
 					// Append to top
 					clone_node = target.clone();
 					target.remove();
 					$('#node_layer').append(clone_node);
 
-					//after change node to another group,trigger event
+					MC.canvas.selected_node.push(clone_node[0]);
+
+					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+
+					//after change node to another group, trigger event
 					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID);
 					if (parentGroup)
 					{
@@ -1673,8 +1735,8 @@ MC.canvas.event.dragable = {
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&
-							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1])
-							//event.data.groupChild.length === unique_stack.length
+							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
+							event.data.groupChild.length === unique_stack.length
 						)
 					)
 				)
@@ -1712,6 +1774,15 @@ MC.canvas.event.dragable = {
 							MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
 						}
 					});
+
+					target.attr('class', function (index, key)
+					{
+						return key + ' selected';
+					});
+
+					MC.canvas.selected_node.push(target[0]);
+
+					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 
 					//after change node to another group,trigger event
 					if (parentGroup)
@@ -1766,7 +1837,7 @@ MC.canvas.event.drawConnection = {
 			switch (position)
 			{
 				case 'left':
-					offset.left = target_offset.left - 8;
+					offset.left = target_offset.left - 0;
 					offset.top  = target_offset.top  + 8;
 					break;
 
@@ -2001,6 +2072,11 @@ MC.canvas.event.siderbarDrag = {
 			platform,
 			target_group_type;
 
+		if (target.data('enable') === false)
+		{
+			return false;
+		}
+
 		$(document.body).append('<div id="drag_shadow"></div>');
 		shadow = $('#drag_shadow');
 
@@ -2105,25 +2181,35 @@ MC.canvas.event.siderbarDrag = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			match_place,
 			default_group_width,
-			default_group_height;
+			default_group_height,
+			new_node;
 
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
 			if (target_type === 'node')
 			{
-				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
+				match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
 
 				if (match_place.is_matched)
 				{
 					node_option.groupUId = match_place.target;
-					MC.canvas.add(node_type, node_option, coordinate);
+					new_node = MC.canvas.add(node_type, node_option, coordinate);
+
+					$(new_node).attr('class', function (index, key)
+					{
+						return key + ' selected';
+					});
+
+					MC.canvas.selected_node = [new_node];
+
+					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", new_node.id);
 				}
 			}
 
 			if (target_type === 'group')
 			{
 				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
-				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);
+				match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);
 
 				if (match_place.is_matched)
 				{
@@ -2159,39 +2245,40 @@ MC.canvas.event.groupResize = {
 			group_offset = group[0].getBoundingClientRect(),
 			canvas_offset = $('#svg_canvas').offset();
 
-		$(document.body).css('cursor', $(event.target).css('cursor'));
-
-		$(document.body).on({
-			'mousemove': MC.canvas.event.groupResize.mousemove,
-			'mouseup': MC.canvas.event.groupResize.mouseup
-		}, {
-			'parent': parent,
-			'resizer': target,
-			'group_title': parent.find('.group-label'),
-			'target': group,
-			'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
-			'originalX': event.pageX,
-			'originalY': event.pageY,
-			'originalWidth': group_offset.width,
-			'originalHeight': group_offset.height,
-			'originalTop': group_offset.top,
-			'originalLeft': group_offset.left,
-			'originalTranslate': parent.attr('transform'),
-			'canvas_offset': canvas_offset,
-			'offsetX': event.pageX - canvas_offset.left,
-			'offsetY': event.pageY - canvas_offset.top,
-			'direction': $(target).data('direction'),
-			'group_border': parseInt(group.css('stroke-width'),10)
-		});
+		$(document.body)
+			.css('cursor', $(event.target).css('cursor'))
+			.on({
+				'mousemove': MC.canvas.event.groupResize.mousemove,
+				'mouseup': MC.canvas.event.groupResize.mouseup
+			}, {
+				'parent': parent,
+				'resizer': target,
+				'group_title': parent.find('.group-label'),
+				'target': group,
+				'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
+				'originalX': event.pageX,
+				'originalY': event.pageY,
+				'originalWidth': group_offset.width,
+				'originalHeight': group_offset.height,
+				'originalTop': group_offset.top,
+				'originalLeft': group_offset.left,
+				'originalTranslate': parent.attr('transform'),
+				'canvas_offset': canvas_offset,
+				'offsetX': event.pageX - canvas_offset.left,
+				'offsetY': event.pageY - canvas_offset.top,
+				'direction': $(target).data('direction'),
+				'group_border': parseInt(group.css('stroke-width'),10)
+			});
 	},
 	mousemove: function (event)
 	{
 		var direction = event.data.direction,
 			group_border = event.data.group_border * 2,
 			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10,
-			max_left = event.data.originalWidth - MC.canvas.GROUP_MIN_PADDING,
+			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
+			max_left = event.data.originalWidth - group_min_padding,
 			top = Math.round((event.pageY - event.data.originalTop) / 10) * 10,
-			max_top = event.data.originalHeight - MC.canvas.GROUP_MIN_PADDING,
+			max_top = event.data.originalHeight - MC.canvas.group_min_padding,
 			prop;
 
 		switch (direction)
@@ -2258,14 +2345,14 @@ MC.canvas.event.groupResize = {
 				break;
 		}
 
-		if (prop.width && prop.width < MC.canvas.GROUP_MIN_PADDING)
+		if (prop.width && prop.width < group_min_padding)
 		{
-			prop.width = MC.canvas.GROUP_MIN_PADDING;
+			prop.width = group_min_padding;
 		}
 
-		if (prop.height && prop.height < MC.canvas.GROUP_MIN_PADDING)
+		if (prop.height && prop.height < group_min_padding)
 		{
-			prop.height = MC.canvas.GROUP_MIN_PADDING;
+			prop.height = group_min_padding;
 		}
 
 		event.data.target.attr(prop);
@@ -2313,7 +2400,7 @@ MC.canvas.event.groupResize = {
 			group_minY;
 
 		//adjust group_left
-		if (offsetX < 0 )
+		if (offsetX < 0)
 		{
 			//when resize by left,topleft, bottomleft
 			group_left = Math.ceil((parent_offset.left - canvas_offset.left) / 10);
@@ -2323,12 +2410,12 @@ MC.canvas.event.groupResize = {
 		if (direction === 'top' || direction === 'topleft' || direction === 'topright')
 		{
 			//when resize by left,topleft, bottomleft
-			if (offsetY<0)
+			if (offsetY < 0)
 			{
 				//move up
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top) / 10) + 1;//group title is 1 grid
 			}
-			else if (offsetY>0)
+			else if (offsetY > 0)
 			{
 				//move down
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10);
@@ -2438,27 +2525,31 @@ MC.canvas.event.groupResize = {
 			if (group_left < parent_coordinate[0])
 			{
 				group_width = group_left + group_width - parent_coordinate[0];
-				group_left = parent_coordinate[0] + MC.canvas.GROUP_PADDING;
+				group_left = parent_coordinate[0] + group_padding;
 			}
 
 			if (group_top < parent_coordinate[1])
 			{
 				group_height = group_top + group_height - parent_coordinate[1];
-				group_top = parent_coordinate[1] + MC.canvas.GROUP_PADDING;
+				group_top = parent_coordinate[1] + group_padding;
 			}
 
-			if (group_width + group_left > parent_coordinate[0] + parent_size[0] - MC.canvas.GROUP_PADDING)
+			if (group_width + group_left > parent_coordinate[0] + parent_size[0] - group_padding)
 			{
-				group_width = parent_coordinate[0] + parent_size[0] - MC.canvas.GROUP_PADDING - group_left;
+				group_width = parent_coordinate[0] + parent_size[0] - group_padding - group_left;
 			}
 
-			if (group_height + group_top > parent_coordinate[1] + parent_size[1] - MC.canvas.GROUP_PADDING)
+			if (group_height + group_top > parent_coordinate[1] + parent_size[1] - group_padding)
 			{
-				group_height = parent_coordinate[1] + parent_size[1] - MC.canvas.GROUP_PADDING - group_top;
+				group_height = parent_coordinate[1] + parent_size[1] - group_padding - group_top;
 			}
 		}
 
-		if (event.data.group_child.length === MC.canvas.areaChild(group_id, group_left, group_top, group_left + group_width, group_top + group_height).length)
+		if (
+			group_width > group_padding &&
+			group_height > group_padding &&
+			event.data.group_child.length === MC.canvas.areaChild(group_id, group_left, group_top, group_left + group_width, group_top + group_height).length
+		)
 		{
 			parent.attr('transform',
 				'translate(' +
@@ -2719,6 +2810,7 @@ MC.canvas.volume = {
 		shadow = $('#drag_shadow');
 
 		shadow
+			.addClass('AWS-EC2-EBS-Volume')
 			.css({
 				'top': event.pageY - 50,
 				'left': event.pageX - 50
@@ -2728,8 +2820,6 @@ MC.canvas.volume = {
 		{
 			return 'attachable ' + key;
 		});
-
-		shadow.addClass('AWS-EC2-EBS-Volume');
 
 		$(document.body).on({
 			'mousemove': MC.canvas.volume.mousemove,
@@ -2948,9 +3038,6 @@ MC.canvas.event.clearSelected = function ()
 	{
 		MC.canvas.volume.close();
 	}
-
-	//dispatch event when click blank area in canvas
-	$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
 };
 
 MC.canvas.event.keyEvent = function (event)
@@ -2969,7 +3056,7 @@ MC.canvas.event.keyEvent = function (event)
 		{
 			if (node.getAttribute('data-class') !== 'AWS.VPC.VPC')
 			{
-				MC.canvas.remove(node);
+				//MC.canvas.remove(node);
 
 				//trigger event when delete component
 				$("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {
@@ -2981,5 +3068,14 @@ MC.canvas.event.keyEvent = function (event)
 		MC.canvas.selected_node = [];
 
 		return false;
+	}
+};
+
+MC.canvas.event.clickBlank = function (event)
+{
+	if ( event.target.id === 'svg_canvas' )
+	{
+		//dispatch event when click blank area in canvas
+		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
 	}
 };

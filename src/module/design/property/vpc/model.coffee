@@ -17,6 +17,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         getRenderData : ( uid ) ->
             component = MC.canvas_data.component[ uid ]
 
+            dhcpid = component.resource.DhcpOptionsId
+
             data =
                 uid            : uid
                 component      : component
@@ -26,11 +28,25 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 noneDhcp       : component.resource.DhcpOptionsId      == "default"
 
             if !data.noneDhcp
-                data.dhcp =
-                    domainName   : "XXXXXXX"
-                    useAmazonDNS : true
+                if dhcpid
+                    data.dhcp = this.getDHCPOptions uid
+
+                if !data.dhcp
+                    data.dhcp =
+                        domainName   : this.defaultDomainName uid
+                        useAmazonDNS : true
+            else
+                data.dhcp = {}
 
             data
+
+        setName : ( uid, newName ) ->
+            MC.canvas_data.component[ uid ].name = newName
+            null
+
+        setCIDR : ( uid, newCIDR ) ->
+            MC.canvas_data.component[ uid ].resource.CidrBlock = newCIDR
+            null
 
         getName : ( uid ) ->
             MC.canvas_data.component[ uid ].name
@@ -61,7 +77,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             else
                 dhcpid
 
-        getDHCPOptions : ( vpcUid ) ->
+        getDHCPComponent : ( vpcUid ) ->
             vpc    = MC.canvas_data.component[ vpcUid ]
             dhcpid = this.parseDhcpId( vpc.resource.DhcpOptionsId )
 
@@ -97,7 +113,14 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     component.resource.DhcpOptionsId = ""
             else
                 dhcpid = this.parseDhcpId component.resource.DhcpOptionsId
-                component.resource.DhcpOptionsId = ""
+                noDHCP = dhcpid == ""
+
+                component.resource.DhcpOptionsId = "default"
+
+                # The VPC component has no associated DHCP component
+                noDHCP = dhcpid == ""
+                if noDHCP
+                    return
 
                 # delete already exists DHCP component
                 component_data = MC.canvas.data.get('component')
@@ -122,7 +145,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 if options.useAmazonDns
                     values.push Value : "AmazonProvidedDNS"
 
-                values.push Value : s for s in options.domainServers
+                if options.domainServers
+                    values.push Value : s for s in options.domainServers
 
                 configSet.push
                     Key : "domain-name-servers"
@@ -147,8 +171,47 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     Key : "netbios-node-type"
                     ValueSet : [ Value : options.netbiosType ]
 
-            this.getDHCPOptions( vpcUid ).resource.DhcpConfigurationSet = configSet
+            this.getDHCPComponent( vpcUid ).resource.DhcpConfigurationSet = configSet
             null
+
+        # TODO : Generate default domain name for dhcp
+        defaultDomainName : ( vpcUid ) ->
+            "XXXXXXXXXX"
+
+        getDHCPOptions : ( vpcUid ) ->
+            dhcpid = this.parseDhcpId MC.canvas_data.component[ vpcUid ].resource.DhcpOptionsId
+            dhcp   = MC.canvas_data.component[ dhcpid ]
+
+            config = dhcp.resource.DhcpConfigurationSet
+            if config.length == 0
+                return null
+
+            keyMap =
+                "domain-name-servers"  : "domainServers"
+                "netbios-name-servers" : "netbiosServers"
+                "ntp-servers"          : "ntpServers"
+
+            data = { useAmazonDns : false }
+            for i in config
+                if i.Key == "domain-name"
+                    data.domainName  = i.ValueSet[0].Value
+
+                else if i.Key == "netbios-node-type"
+                    data.netbiosType = i.ValueSet[0].Value
+
+                else
+                    key = keyMap[ i.Key ]
+                    if !key
+                        continue
+
+                    data[key] = values = []
+                    for value in i.ValueSet
+                        if value.Value == "AmazonProvidedDNS"
+                            data.useAmazonDns = true
+                        else
+                            values.push value.Value
+
+            data
     }
 
     model = new VPCModel()

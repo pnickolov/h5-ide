@@ -93,6 +93,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
                         ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, MC.canvas_data.name + ' - stack'
 
+                        MC.data.stack_list[MC.canvas_data.region].push MC.canvas_data.name
+
                         #call save png
                         me.savePNG true
 
@@ -185,6 +187,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                                     #push event
                                     ide_event.trigger ide_event.UPDATE_APP_LIST, null
                                     this.trigger 'TOOLBAR_STACK_RUN_SUCCESS'
+                                else if req.state == "Failed"
+                                    handle.stop()
+                                    console.log 'stop handle'
+
+                                    this.trigger 'TOOLBAR_STACK_RUN_FAILED'
                         }
                     null
 
@@ -227,18 +234,21 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                 url  : 'http://localhost:3001/savepng',
                 type : 'post',
                 data : {
-                    'usercode'   : $.cookie( 'usercode' ),
+                    'usercode'   : $.cookie( 'usercode'   ),
                     'session_id' : $.cookie( 'session_id' ),
-                    'region'     : MC.canvas_data.region,
-                    'stack_id'   : MC.canvas_data.id,
                     'thumbnail'  : is_thumbnail,
-                    'screenshot' : 'http://localhost:3000/screenshot.html'
+                    'json_data'  : MC.canvas.layout.save(),
+                    'stack_id'   : MC.canvas_data.id
                 },
-                success : ( result ) ->
+                success : ( res ) ->
                     console.log 'phantom callback'
-                    console.log result
-                    if result.status is 'success'
-                        #
+                    console.log res
+                    console.log res.status
+                    if res.status is 'success'
+                        if res.thumbnail is 'true'
+                            console.log 's3 url = ' + res.result
+                        else
+                            me.trigger 'SAVE_PNG_COMPLETE', res.result
                     else
                         #
             }

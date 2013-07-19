@@ -1181,6 +1181,85 @@ Additional Notes and Questions
     </div>
 </div>
 
+<!-- elbPropertyListenerItem -->
+<div class="elb-property-listener-main">
+	<div class="elb-property-listener-item-remove">×</div>
+	<div class="property-control-group clearfix elb-property-listener-item">
+		<div class="left elb-property-listener-item-1">
+			<label>Load Balancer Protocol</label>
+			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select">
+				<a class="dropdown-toggle" href="#">
+					<div class="cur-value">{{Protocol}}</div>
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">HTTP</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">HTTPS</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">TCP</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">SSL</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="left elb-property-listener-item-2">
+			<label class="left">Port</label>
+			<input class="input elb-property-listener-elb-port-input" type="text" required="required" value="{{LoadBalancerPort}}"/>
+		</div>
+	</div>
+	<div class="property-control-group clearfix elb-property-listener-item">
+		<div class="left elb-property-listener-item-1">
+			<label>Load Balancer Protocol</label>
+			<div class="selectbox selectbox-mega elb-property-listener-instance-protocol-select">
+				<a class="dropdown-toggle" href="#">
+					<div class="cur-value">{{InstanceProtocol}}</div>
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">HTTP</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">HTTPS</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">TCP</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">SSL</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="left elb-property-listener-item-2">
+			<label class="left">Port</label>
+			<input class="input elb-property-listener-instance-port-input" type="text" required="required" value="{{InstancePort}}"/>
+		</div>
+	</div>
+</div>
+
 <!-- sgRuleItem -->
 <li data-inbound="true" data-protocol="{{rule.protocol}}" data-fromport="{{rule.fromport}}" data-toport="{{rule.toport}}" data-iprange="{{rule.ipranges}}">
 	<div class='rule-direction-icon tooltip' data-tooltip="{{rule.direction}}"></div>

@@ -1,7 +1,6 @@
 ####################################
 #  Controller for design/property module
 ####################################
-
 define [ 'jquery',
          'text!/module/design/property/template.html',
          'event',
@@ -104,6 +103,7 @@ define [ 'jquery',
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid
                             #show acl property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl       then acl_main.loadModule uid
+
                             #
                             else
                                 #

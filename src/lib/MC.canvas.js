@@ -2243,7 +2243,9 @@ MC.canvas.event.groupResize = {
 			parent = $(target.parentNode.parentNode),
 			group = parent.find('.group'),
 			group_offset = group[0].getBoundingClientRect(),
-			canvas_offset = $('#svg_canvas').offset();
+			canvas_offset = $('#svg_canvas').offset(),
+			group_left = group_offset.left - canvas_offset.left,
+			group_top = group_offset.top - canvas_offset.top;
 
 		$(document.body)
 			.css('cursor', $(event.target).css('cursor'))
@@ -2268,7 +2270,14 @@ MC.canvas.event.groupResize = {
 				'offsetY': event.pageY - canvas_offset.top,
 				'direction': $(target).data('direction'),
 				'group_border': parseInt(group.css('stroke-width'),10),
-				'parentGroup': MC.canvas.parentGroup(parent.attr('id'), parent.data('class'), group_offset.left / MC.canvas.GRID_WIDTH, group_offset.top / MC.canvas.GRID_HEIGHT, (group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH, (group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
+				'parentGroup': MC.canvas.parentGroup(
+					parent.attr('id'),
+					parent.data('class'),
+					Math.ceil(group_left / MC.canvas.GRID_WIDTH),
+					Math.ceil(group_top / MC.canvas.GRID_HEIGHT),
+					Math.ceil((group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH),
+					Math.ceil((group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
+				)
 			});
 	},
 	mousemove: function (event)

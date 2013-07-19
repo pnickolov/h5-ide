@@ -1,7 +1,6 @@
 ####################################
 #  Controller for design/property module
 ####################################
-
 define [ 'jquery',
          'text!/module/design/property/template.html',
          'event',

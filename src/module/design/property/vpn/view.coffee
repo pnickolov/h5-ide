@@ -15,6 +15,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         render     : () ->
             console.log 'property:vpn render'
+            $( '.property-details' ).html this.template
 
             attributes =
                 connectedCGW   : "customer-gateway-1"

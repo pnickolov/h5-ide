@@ -202,7 +202,7 @@
 	/*filter: url(#dropshadow_selected);*/
 }
 
-.AWS-EC2-Instance:hover .node-background {
+.node:hover .node-background {
 	fill-opacity: 0.5;
 	fill: #F2F8FF;
 }

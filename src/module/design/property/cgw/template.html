@@ -1,1 +1,45 @@
-cgw loading...
+<header class="sidebar-title">
+  <span class="sidebar-title-text" id='property-title'>{{name}}</span>
+</header>
+
+<section class="property-info">
+
+  <div class="property-control-group clearfix">
+    <label class="left" for="property-cgw-name">Name</label>
+    <span class="required-input right">Required</span>
+    <input class="input" type="text" value="{{name}}" id="property-cgw-name" {{#if default}}autofocus{{/if}}/>
+  </div>
+
+  <div class="property-control-group clearfix">
+    <label class="left tooltip" for="property-cgw-ip" data-tooltip="This address must be static and not behind a NAT. e.g. 12.1.2.3">IP Address</label>
+    <span class="required-input right">Required</span>
+    <input class="input" type="text" value="{{ip}}" id="property-cgw-ip"/>
+  </div>
+
+  <div class="property-control-group clearfix">
+    <label>Routing</label>
+    <p></p>
+    <div class="radio">
+      <input id="property-routing-static" type="radio" name="routing-type" {{#if staticRouting}}checked="checked" {{/if}}value="static" />
+      <label for="property-routing-static"></label>
+    </div>
+    <label for="property-routing-static">Static</label>
+  </div>
+
+  <div class="property-control-group clearfix">
+    <div class="radio">
+      <input id="property-routing-dynamic" type="radio" name="routing-type" {{#if staticRouting}}{{else}}checked="checked" {{/if}}value="dynamic" />
+      <label for="property-routing-dynamic"></label>
+    </div>
+    <label for="property-routing-dynamic">Dynamic</label>
+  </div>
+
+  <div class="property-control-group clearfix" {{#if staticRouting}}style="display:none;"{{/if}}>
+    <label class="left tooltip" for="property-cgw-bgp" data-tooltip="1 - 65534">BGP ASN</label>
+    <span class="required-input right">Required</span>
+    <input class="input" type="text" value="{{BGP}}" id="property-cgw-bgp"/>
+  </div>
+
+</section>
+
+

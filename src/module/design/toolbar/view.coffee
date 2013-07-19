@@ -94,6 +94,8 @@ define [ 'MC', 'event',
                 this.model.once 'TOOLBAR_STACK_SAVE_ERROR', () ->
                     notification 'error', 'Save stack ' + name + ' failed.'
 
+            true
+
         clickDuplicateIcon : ->
             console.log 'clickDuplicateIcon'
 

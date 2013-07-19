@@ -1796,16 +1796,21 @@ a.sidebar-hider {
 }
 
 .resource-icon-instance {
-	background: url('../images/ide/instance-resource.png') center center no-repeat;
+	background: url('../images/ide/icon/instance-resource.png') center center no-repeat;
 }
 
 .resource-icon-volume {
-	background: url('../images/ide/volume-resource.png') center center no-repeat;
+	background: url('../images/ide/icon/volume-resource.png') center center no-repeat;
 }
 
 .resource-icon-ebs-snapshot {
-	background: url('../images/ide/ebs-snapshot-resource.png') center center no-repeat;
+	background: url('../images/ide/icon/ebs-snapshot-resource.png') center center no-repeat;
 }
+
+.resource-icon-eni {
+	background: url('../images/ide/icon/eni-resource.png') center center no-repeat;
+}
+
 
 .ebs-size {
 	font-size: 12px;
@@ -1817,7 +1822,7 @@ a.sidebar-hider {
 }
 
 .resource-icon-elb {
-	background: url('../images/ide/elb-resource.png') center center no-repeat;
+	background: url('../images/ide/icon/elb-resource.png') center center no-repeat;
 }
 
 .resource-label {

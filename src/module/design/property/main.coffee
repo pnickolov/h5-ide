@@ -138,7 +138,9 @@ define [ 'jquery',
                                 #select line between instance and instance
                                 sgrule_main.loadModule line_option, 'line'
 
-
+                            else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
+                                #select line between vgw and  cgw
+                                vpn_main.loadModule line_option, 'line'
                     
 
                 #temp

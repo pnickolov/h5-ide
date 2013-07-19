@@ -140,25 +140,25 @@
 .port-blue {
 	fill: #6DAEFE;
 	stroke: #6DAEFE;
-	stroke-width: 1;
+	stroke-width: 0;
 }
 
 .port-green {
 	fill: #12CD4F;
 	stroke: #12CD4F;
-	stroke-width: 1;
+	stroke-width: 0;
 }
 
 .port-purple {
 	fill: #bf7aa5;
 	stroke: #b22f70;
-	stroke-width: 1;
+	stroke-width: 0;
 }
 
 .port-gray {
 	fill: #d8d7d6;
 	stroke: #bebebe;
-	stroke-width: 1;
+	stroke-width: 0;
 }
 
 .port:hover {
@@ -202,7 +202,7 @@
 	/*filter: url(#dropshadow_selected);*/
 }
 
-.AWS-EC2-Instance:hover .node-background {
+.node:hover .node-background {
 	fill-opacity: 0.5;
 	fill: #F2F8FF;
 }
@@ -395,11 +395,11 @@
 }
 
 .volume_item {
-	background-image: url('../images/ide/volume-resource.png');
+	background-image: url('../images/ide/icon/volume-resource.png');
 }
 
 .snapshot_item {
-	background-image: url('../images/ide/ebs-snapshot-resource.png');
+	background-image: url('../images/ide/icon/ebs-snapshot-resource.png');
 }
 
 .volume_item:hover,

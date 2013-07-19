@@ -70,6 +70,18 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout = $.extend(true, {}, MC.canvas.AZ_JSON.layout);
 				component_layout.name = option.name;
 
+				$.each($(".resource-item"), function ( idx, item){
+					
+					var data = $(item).data();
+					
+					if(data.type === 'AWS.EC2.AvailabilityZone' && data.option.name === option.name){
+						$(item).attr('data-enable', "false");
+						$(item).addClass('resource-disabled');
+						$(item).removeAttr("data-tooltip");
+						return false;
+					}					
+				});
+
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
 				option.width = size[0];
 				option.height = size[1];

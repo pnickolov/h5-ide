@@ -179,6 +179,27 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 
 				delete MC.canvas_data.component[option.id]
 
+				# recover az dragable
+				if $("#" + option.id).data().class == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+
+					az_name = $("#" + option.id).text()
+
+					$.each $(".resource-item"), ( idx, item) ->
+					
+						data = $(item).data()
+						
+						if data.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and data.option.name == az_name
+
+							$(item).attr('data-enable', "true")
+
+							$(item).removeClass('resource-disabled')
+
+							$(item).attr("data-tooltip", "Drag and drop to canvas")
+							
+							return false
+								
+					
+
 
 			MC.canvas.remove $("#" + option.id)[0]
 

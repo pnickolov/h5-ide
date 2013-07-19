@@ -42,6 +42,28 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                     _.map result.resolved_data.item, (value)->
                         value.zoneShortName = value.zoneName.slice(-2)
                         null
+
+                    res = $.extend true, {}, result.resolved_data
+
+                    $.each res.item, ( idx, value ) ->
+
+                        $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+
+                            if zone.name == value.zoneName
+
+                                $.each $(".resource-item"), ( idx, item) ->
+                    
+                                    data = $(item).data()
+                                    
+                                    if(data.type == 'AWS.EC2.AvailabilityZone' and data.option.name == zone.name)
+
+                                        $(item).attr('data-enable', "false")
+                                        $(item).addClass('resource-disabled')
+                                        $(item).removeAttr("data-tooltip")
+                                        return false
+                                                   
+                                
+
                     me.set 'availability_zone', result.resolved_data
 
                     #cache az to MC.data.config[region_name].zone

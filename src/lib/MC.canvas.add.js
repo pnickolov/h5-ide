@@ -1092,11 +1092,11 @@ MC.canvas.add = function (flag, option, coordinate)
 					'ry': 5
 				}),
 
-				Canvon.image('../assets/images/ide/icon/eni-canvas-unattached.png', 16, 23, 68, 53).attr({
+				Canvon.image('../assets/images/ide/icon/eni-canvas-unattached.png', 16, 28, 68, 53).attr({
 					'id': group.id + '_eni_status'
 				}),
 
-				Canvon.image('../assets/images/ide/icon/eip-off.png', 46, 45, 14, 17).attr({
+				Canvon.image('../assets/images/ide/icon/eip-off.png', 46, 50, 14, 17).attr({
 					'id': group.id + '_eip_status'
 				}),
 
@@ -1134,7 +1134,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////5. eni_name
-				Canvon.text(50, 80, option.name, {
+				Canvon.text(43, 85, option.name, {
 					'text-anchor': 'start' // start, middle(default), end, inherit
 				}).attr({
 					'class': 'node-label name'

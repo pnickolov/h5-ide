@@ -2072,6 +2072,11 @@ MC.canvas.event.siderbarDrag = {
 			platform,
 			target_group_type;
 
+		if (target.data('enable') === false)
+		{
+			return false;
+		}
+
 		$(document.body).append('<div id="drag_shadow"></div>');
 		shadow = $('#drag_shadow');
 

@@ -338,7 +338,29 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'resizer-wrap'
 				}),
 
-				////3.subnet label
+				//3 path: left port
+				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+					'class': 'port port-gray port-subnet-association-in',
+					'transform': 'translate(-10, 66)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
+					'data-name': 'subnet-association-in', //for identify port
+					'data-position': 'left', //port position: for calc point of junction
+					'data-type': 'association', //color of line
+					'data-direction': 'in', //direction
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE //port angle: right:0 top:90 left:180 bottom:270
+				}),
+
+				//4 path: right port
+				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+					'class': 'port port-gray port-subnet-association-out',
+					'transform': 'translate(153, 66)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'subnet-association-out',
+					'data-position': 'right',
+					'data-type': 'association',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
+				}),
+
+				////5.subnet label
 				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
 					'class': 'group-label name'
 				})

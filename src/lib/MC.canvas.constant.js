@@ -237,6 +237,20 @@ var constant_data = {
 				to: 'rtb-tgt-left',
 				color: '#d8d7d6' //gray
 			},
+			'AWS.VPC.Subnet': [
+				{
+					from: 'rtb-src-top',
+					to: 'subnet-association-out',
+					relation: 'multiple',
+					color: '#d8d7d6'
+				},
+				{
+					from: 'rtb-src-bottom',
+					to: 'subnet-association-out',
+					relation: 'multiple',
+					color: '#d8d7d6'
+				}
+			],
 			'AWS.EC2.Instance': [
 				{
 					from: 'rtb-tgt-left',
@@ -294,6 +308,22 @@ var constant_data = {
 				relation: 'unique', //a cgw can only connect to one vgw
 				color: '#bf7aa5' //purple
 			}
+		},
+		'AWS.VPC.Subnet': {
+			'AWS.VPC.RouteTable': [
+				{
+					from: 'subnet-association-out',
+					to: 'rtb-src-top',
+					relation: 'multiple',
+					color: '#d8d7d6'
+				},
+				{
+					from: 'subnet-association-out',
+					to: 'rtb-src-bottom',
+					relation: 'multiple',
+					color: '#d8d7d6'
+				}
+			]
 		}
 	},
 

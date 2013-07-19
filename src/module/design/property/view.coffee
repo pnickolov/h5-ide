@@ -35,7 +35,7 @@ define [ './temp_view',
 
         refresh : ->
             console.log 'refresh'
-            #selectbox.init()
+            selectbox.init()
             temp_view.ready()
 
     }

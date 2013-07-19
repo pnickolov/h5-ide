@@ -74,7 +74,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
                     width: 'linear'
                 },
                 complete : () ->
-                    ide_event.trigger ide_event.OPEN_PROPERTY, $('#sg-secondary-panel').attr 'parent', this.instance_expended_id
+                    ide_event.trigger ide_event.OPEN_PROPERTY, 'component', $('#sg-secondary-panel').attr('parent'), this.instance_expended_id
                 }
             )
 

@@ -253,7 +253,7 @@
 							</li>
 							{{/each}}
 						</ul>
-						<div class="btn btn-silver secondary-panel" id="add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{}'>Create new Security Group</div>
+						<div class="btn btn-silver secondary-panel" id="add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"parent":"{{component.uid}}"}'>Create new Security Group</div>
 					</div>
 					<div id="item-rule" class="tab-item">
 						<div class="sg-rule-filter">
@@ -283,24 +283,30 @@
 							</div>
 						</div>
 					<ul class="sg-rule-list">
+						{{#each sg_display.rules_detail_ingress}}
 						<li data-inbound="true">
 							<div class='rule-direction-icon tooltip' data-tooltip="inbound"></div>
-							<div class='rule-protocol'>TCP</div>
+							<div class='rule-protocol'>{{IpProtocol}}</div>
 							<div class='rule-source'>
 								<div class="rule-source-icon"></div>
-								<span>123</span>
+								<span>{{IpRanges}}</span>
 							</div>
-							<div class='rule-port' title="port message">123-123</div>
+							<div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
 						</li>
+						{{/each}}
+						
+						{{#each sg_display.rules_detail_egress}}
 						<li data-inbound="true">
-							<div class='rule-direction-icon tooltip' data-tooltip="inbound"></div>
-							<div class='rule-protocol'>TCP</div>
+							<div class='rule-direction-icon tooltip' data-tooltip="outbound"></div>
+							<div class='rule-protocol'>{{IpProtocol}}</div>
 							<div class='rule-source'>
 								<div class="rule-source-icon"></div>
-								<span>123</span>
+								<span>{{IpRanges}}</span>
 							</div>
-							<div class='rule-port' title="port message">123-123</div>
+							<div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
 						</li>
+						{{/each}}
+
 					</div>
 				</div>
 			</div>

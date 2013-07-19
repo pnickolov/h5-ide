@@ -2267,7 +2267,8 @@ MC.canvas.event.groupResize = {
 				'offsetX': event.pageX - canvas_offset.left,
 				'offsetY': event.pageY - canvas_offset.top,
 				'direction': $(target).data('direction'),
-				'group_border': parseInt(group.css('stroke-width'),10)
+				'group_border': parseInt(group.css('stroke-width'),10),
+				'parentGroup': MC.canvas.parentGroup(parent.attr('id'), parent.data('class'), group_offset.left / MC.canvas.GRID_WIDTH, group_offset.top / MC.canvas.GRID_HEIGHT, (group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH, (group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
 			});
 	},
 	mousemove: function (event)
@@ -2388,7 +2389,7 @@ MC.canvas.event.groupResize = {
 			node_maxX = [],
 			node_maxY = [],
 			group_padding = MC.canvas.GROUP_PADDING,
-			parentGroup = MC.canvas.parentGroup(group_id, parent.data('class'), group_left, group_top, group_left + group_width, group_top + group_height),
+			parentGroup = event.data.parentGroup,
 			parent_data,
 			parent_size,
 			parent_coordinate,

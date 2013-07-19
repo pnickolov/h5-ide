@@ -146,6 +146,7 @@ var selectbox = {
 };
 
 $(document).ready(function () {
+    
     selectbox.init();
 
     $(document)

@@ -3066,8 +3066,6 @@ MC.canvas.event.keyEvent = function (event)
 					'id': node.id,
 					'type': $(node).data('type')
 				});
-
-				MC.canvas.remove(node);
 			}
 		});
 		MC.canvas.selected_node = [];

@@ -655,14 +655,14 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 20, 23, 70, 53).attr({
+				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 20, 28, 70, 53).attr({
 					'id' : group.id + '_elb_scheme'
 				}),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-elb-sg-in',
-					'transform': 'translate(12, 40)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(12, 45)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-in',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -673,7 +673,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-elb-sg-out',
-					'transform': 'translate(90, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(90, 56)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-out',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -693,7 +693,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////5. elb_name
-				Canvon.text(50, 85, option.name).attr({
+				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name',
 					'id' : group.id + '_elb_name'
 				})

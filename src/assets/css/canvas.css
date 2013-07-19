@@ -81,10 +81,10 @@
 	margin: 0 auto;
 }
 
-/*#drag_shadow.AWS-VPC-VPC {
+#drag_shadow.AWS-VPC-VPC {
 	background: rgba(250, 250, 250, 0.05);
 	border: 4px solid #dcdcdc;
-}*/
+}
 
 #drag_shadow.AWS-EC2-AvailabilityZone {
 	background: rgba(252, 190, 23, 0.02);
@@ -103,17 +103,6 @@
 }
 
 /* Canvas */
-.shadow {
-	opacity: 0.6;
-}
-
-.zone {
-	fill: rgba(254, 170, 45, 0.05);
-	stroke: rgb(250, 210, 150);
-	stroke-linejoin: round;
-	stroke-dasharray: 15,5;
-	stroke-width: 4;
-}
 
 /*.component-highlight {
 	fill: rgba(254, 170, 45, 0.05);
@@ -222,8 +211,9 @@
 }
 
 /* line connection */
-.line.selected {
-	stroke: black !important;
+.line.selected,
+.line.selected path {
+	stroke: #666 !important;
 }
 
 /* node label */
@@ -235,7 +225,7 @@
 }
 
 .volume-number {
-	font-size: 11px;
+	font-size: 12px;
 	fill: #74B1FD;
 }
 

@@ -1068,7 +1068,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.ENI_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.SubnetId = '@' + option.group.subnetUID + '.resource.SubnetId';
-				component_data.resource.VpcId = '@' + option.group.vpcUID + '.resource.SubnetId'
+				component_data.resource.VpcId = '@' + option.group.vpcUID + '.resource.SubnetId';
 
 				component_layout = $.extend(true, {}, MC.canvas.ENI_JSON.layout);
 				component_layout.groupUId = option.groupUId;
@@ -1091,12 +1091,19 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/ENI-Canvas.png', 15, 25, 70, 70),
+
+				Canvon.image('../assets/images/ide/icon/eni-canvas-unattached.png', 16, 23, 68, 53).attr({
+					'id': group.id + '_eni_status'
+				}),
+
+				Canvon.image('../assets/images/ide/icon/eip-off.png', 46, 45, 14, 17).attr({
+					'id': group.id + '_eip_status'
+				}),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-sg-in',
-					'transform': 'translate(12, 37)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(7, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg-in',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -1107,7 +1114,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-eni-attach',
-					'transform': 'translate(12, 62)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(7, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-attach',
 					'data-position': 'left',
 					'data-type': 'attachment',
@@ -1118,7 +1125,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-sg-out',
-					'transform': 'translate(80, 38)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(85, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg-out',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -1127,7 +1134,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////5. eni_name
-				Canvon.text(32, 60, option.name, {
+				Canvon.text(50, 80, option.name, {
 					'text-anchor': 'start' // start, middle(default), end, inherit
 				}).attr({
 					'class': 'node-label name'

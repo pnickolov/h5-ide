@@ -395,6 +395,20 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
             isUsed
 
+        getVgwStatus : ->
+
+            isUsed = false
+
+            $.each MC.canvas_data.component, ( key, comp ) ->
+
+                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+
+                    isUsed = true
+
+                    return false
+
+            isUsed
+
         _getInstanceType : ( ami ) ->
             instance_type = ami_instance_type
             if ami.virtualizationType == 'hvm'

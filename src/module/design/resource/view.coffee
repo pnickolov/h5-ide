@@ -241,6 +241,8 @@ define [ 'event',
 
                         data.igwIsUsed = this.model.getIgwStatus()
 
+                        data.vgwIsUsed = this.model.getVgwStatus()
+
             $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
 
         searchCommunityAmiCurrent : ( event ) ->

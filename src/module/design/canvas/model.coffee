@@ -169,6 +169,22 @@ define [ 'constant',
 
 									delete MC.canvas_data.component[index]
 
+						$.each $(".resource-item"), ( idx, item) ->
+					
+							data = $(item).data()
+							
+							if data.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+
+								tmp = {
+									enable : true
+									tooltip: "Drag and drop to canvas to create a new VPN Gateway."
+								}
+								$(item)
+									.data(tmp)
+									.removeClass('resource-disabled')
+								
+								return false
+
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
 
 						$.each MC.canvas_data.component, ( index, comp ) ->

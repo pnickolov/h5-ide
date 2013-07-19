@@ -941,7 +941,18 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.VGW_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.Attachments[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
-
+				$.each($(".resource-item"), function ( idx, item){
+					
+					var data = $(item).data();
+					
+					if(data.type === 'AWS.VPC.VPNGateway'){
+						$(item)
+							.data('enable', false)
+							.addClass('resource-disabled')
+							.data("tooltip", "VPC can only have one VGW. There is already one VGW in current VPC.");
+						return false;
+					}					
+				});
 				component_layout = $.extend(true, {}, MC.canvas.VGW_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}

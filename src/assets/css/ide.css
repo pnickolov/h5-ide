@@ -1278,10 +1278,6 @@ a {
 	font-size: 16px;
 }
 
-.widget-region-counter {
-	position: relative;
-}
-
 .region-stat-block-wrap {
 	height: 110px;
 	padding: 25px 10px;
@@ -1297,7 +1293,7 @@ a {
 }
 
 .region-stat-block-wrap:hover,
-.active > .widget-region-counter .region-stat-block-wrap {
+.active > .region-stat-block-wrap {
 	background: #F0F3F7;
 	box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
 }
@@ -2393,40 +2389,35 @@ a.sidebar-hider {
 .sg-rule-filter .selectbox .dropdown-menu {
 	top: 30px;
 }
-#sg-wrap .tab {
-	position: absolute;
-	top: -10px;
-	left: -10px;
-	width: 280px;
+
+.sg-wrapper {
+	padding : 0 !important;
 }
-#sg-wrap .tab li {
-	display: inline-block;
-	width: 140px;
-	float: left;
+
+.sg-wrapper .tab li {
+	width : 50%;
+	float : left;
+
+	background  : #eee;
+	height      : 30px;
+	line-height : 30px;
+	color       : #999;
+	text-align  : center;
+	
+	cursor : pointer;
 }
-#sg-wrap .tab li a{
-	width: 140px;
-	background-color: #eee;
-	height: 30px;
-	line-height: 30px;
-	color: #999;
-	text-align: center;
-	display: block;
-	float: left;
+.sg-wrapper .tab .active {
+	background : #2E9BFC;
+	color      : #FFF;
 }
-#sg-wrap .tab li.active a{
-	background-color: #2E9BFC;
-	color: #FFF;
+.sg-wrapper .tab-item {
+	display : none;
 }
-#sg-wrap .tab-content {
-	padding-top: 30px;
+
+.sg-wrapper .tab-item.active {
+	display : block;
 }
-#sg-wrap .tab-item {
-	display: none;
-}
-#sg-wrap .tab-item.active {
-	display: block;
-}
+
 #sg-secondary-panel-wrap {
 	position: absolute;
 	width: 280px;

@@ -811,6 +811,9 @@ textarea {
 	background-color: rgba(0, 0, 0, 0.8);
 }
 
+/* tablist */
+[data-tab-target] { cursor : pointer; }
+
 /* Accordion */
 .accordion-body {
 	display: none;

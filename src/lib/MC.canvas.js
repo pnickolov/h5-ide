@@ -15,6 +15,33 @@ MC.canvas = {
 
 	selected_node: [],
 
+	display: function (id, key, is_visible)
+	{
+		var target = $('#' + id + '_' + key);
+
+		if (is_visible === null || is_visible === undefined )
+		{
+			switch (target.attr('display'))
+			{
+				case 'none':
+					is_visible = false;
+					break;
+				default:
+					is_visible = true;
+					break;
+			}
+			return is_visible;
+		}
+		else if (is_visible === true)
+		{
+			target.attr('display', 'inline');
+		}
+		else
+		{
+			target.attr('display', 'none');
+		}
+	},
+
 	update: function (id, type, key, value)
 	{
 		var target = $('#' + id + '_' + key);

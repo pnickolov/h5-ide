@@ -685,13 +685,15 @@ MC.canvas = {
 		if (node_type === 'line')
 		{
 			var line_data = MC.canvas.data.get('layout.connection.' + node_id),
-				layout_node_data = MC.canvas.data.get('layout.component.node'),
+				layout_component_data = MC.canvas.data.get('layout.component'),
 				target_connection,
+				target_node,
 				new_connection_data;
 
 			$.each(line_data.target, function (target_id, target_port)
 			{
-				target_connection = layout_node_data[ target_id ].connection;
+				target_node = $('#' + target_id);
+				target_connection = layout_component_data[ target_node.data('type') ][ target_id ].connection;
 				new_connection_data = [];
 
 				$.each(target_connection, function (i, option)
@@ -702,7 +704,7 @@ MC.canvas = {
 					}
 				});
 
-				MC.canvas.data.set('layout.component.node.' + target_id + '.connection', new_connection_data);
+				MC.canvas.data.set('layout.component.' + target_node.data('type') + '.' + target_id + '.connection', new_connection_data);
 			});
 
 			MC.canvas.data.delete('layout.connection.' + node_id);
@@ -1481,9 +1483,17 @@ MC.canvas.event.dragable = {
 				target_offset = this.getBoundingClientRect(),
 				node_type = target.data('type'),
 				canvas_offset = $('#svg_canvas').offset(),
-				shadow = target.clone(),
+				shadow,
 				platform,
 				target_group_type;
+
+			if (target.data('class') === 'AWS.VPC.Subnet')
+			{
+				target.find('.port-subnet-association-in').first().hide();
+				target.find('.port-subnet-association-out').first().hide();
+			}
+
+			shadow = target.clone();
 
 			shadow.attr('class', shadow.attr('class') + ' shadow');
 			$('#svg_canvas').append(shadow);
@@ -1779,6 +1789,9 @@ MC.canvas.event.dragable = {
 					// Re-draw group connection
 					if (group_data.type === 'AWS.VPC.Subnet')
 					{
+						target.find('.port-subnet-association-in').first().show();
+						target.find('.port-subnet-association-out').first().show();
+
 						node_connections = layout_group_data[ target_id ].connection || {};
 
 						$.each(node_connections, function (index, value)
@@ -1788,7 +1801,7 @@ MC.canvas.event.dragable = {
 							line_layer.removeChild(document.getElementById( value.line ));
 
 							MC.canvas.connect(
-								$('#' + target_id), line_connection['target'][ target_id ],
+								target, line_connection['target'][ target_id ],
 								$('#' + value.target), line_connection['target'][ value.target ],
 								{'line_uid': value['line']}
 							);

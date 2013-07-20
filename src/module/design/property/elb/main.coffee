@@ -21,7 +21,6 @@ define [ 'jquery',
 
             #event
             view.on 'ELB_NAME_CHANGED', ( value ) ->
-                alert 'main: ' + uid
                 view.model.setELBName uid, value
 
             view.on 'SCHEME_SELECT_CHANGED', ( value ) ->

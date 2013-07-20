@@ -124,8 +124,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             MC.canvas_data.component[ uid ].name = value
             MC.canvas_data.component[ uid ].LoadBalancerName = value
 
-            alert 'model: ' + uid
-
             null
 
         getELBName  : ( uid ) ->

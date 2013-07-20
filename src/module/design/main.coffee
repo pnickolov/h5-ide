@@ -52,7 +52,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 #save tab
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, target else view.$el.html design_view_init
                 #
-                if type is 'NEW_STACK' or type is 'OPEN_STACK'
+                if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
                     #
                     if type is 'OPEN_STACK' then model.setCanvasData( stack_info.resolved_data[0] )
                     #temp

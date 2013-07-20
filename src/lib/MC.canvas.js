@@ -1207,22 +1207,29 @@ MC.canvas.layout = {
 
 		components = MC.canvas.data.get("component");
 		
-		$.each(components, function (key, value){
-			if(value.type==='AWS.EC2.KeyPair'){
+		$.each(components, function (key, value)
+		{
+			if (value.type === 'AWS.EC2.KeyPair')
+			{
 				tmp = {};
 				tmp[value.name] = value.uid;
 				MC.canvas_property.kp_list.push(tmp);
 			}
-			if(value.type === "AWS.EC2.SecurityGroup"){
+			if (value.type === "AWS.EC2.SecurityGroup")
+			{
 				tmp = {};
 				tmp.name = value.name;
 				tmp.uid = value.uid;
 				tmp.member = [];
-				$.each(components, function (k, v){
-					if(v.type === "AWS.EC2.Instance" ){
+				$.each(components, function (k, v)
+				{
+					if (v.type === "AWS.EC2.Instance")
+					{
 						sg_uids = v.resource.SecurityGroupId;
-						$.each(sg_uids, function (id, sg_ref){
-							if(sg_ref.split('.')[0].slice(1) === tmp.uid){
+						$.each(sg_uids, function (id, sg_ref)
+						{
+							if (sg_ref.split('.')[0].slice(1) === tmp.uid)
+							{
 								tmp.member.push(v.uid);
 							}
 						})
@@ -1230,27 +1237,33 @@ MC.canvas.layout = {
 				});
 				MC.canvas_property.sg_list.push(tmp);
 			}
-			if(value.type === "AWS.VPC.RouteTable" && value.resource.AssociationSet.length > 0 && value.resource.AssociationSet[0].Main === "true"){
+			if (value.type === "AWS.VPC.RouteTable" && value.resource.AssociationSet.length > 0 && value.resource.AssociationSet[0].Main === "true")
+			{
 				MC.canvas_property.main_route = value.uid;
 			}
-			if(value.type === "AWS.VPC.NetworkAcl" && value.resource.Default === "true"){
+			if (value.type === "AWS.VPC.NetworkAcl" && value.resource.Default === "true")
+			{
 				MC.canvas_property.default_acl = value.uid;
 			}
 		});
-		
-		$.each(MC.canvas_property.sg_list, function (key, value){
-			if(value.name === "DefaultSG" && key !== 0){
+
+		$.each(MC.canvas_property.sg_list, function (key, value)
+		{
+			if (value.name === "DefaultSG" && key !== 0)
+			{
 				tmp = value;
-				MC.canvas_property.sg_list.splice(key,1);
+				MC.canvas_property.sg_list.splice(key, 1);
 				MC.canvas_property.sg_list.unshift(value);
 				return false;
 			}
 		});
-		
-		$.each(MC.canvas_property.kp_list, function (key, value){
-			if(value.DefaultKP !== undefined && key !== 0){
+
+		$.each(MC.canvas_property.kp_list, function (key, value)
+		{
+			if (value.DefaultKP !== undefined && key !== 0)
+			{
 				tmp = value;
-				MC.canvas_property.kp_list.splice(key,1);
+				MC.canvas_property.kp_list.splice(key, 1);
 				MC.canvas_property.kp_list.unshift(value);
 				return false;
 			}
@@ -1789,6 +1802,25 @@ MC.canvas.event.dragable = {
 							node_data = layout_group_data[ item.id ];
 
 							MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
+
+							// Re-draw group connection
+							if (node_data.type === 'AWS.VPC.Subnet')
+							{
+								node_connections = layout_group_data[ item.id ].connection || {};
+
+								$.each(node_connections, function (index, value)
+								{
+									line_connection = layout_connection_data[ value.line ];
+
+									line_layer.removeChild(document.getElementById( value.line ));
+
+									MC.canvas.connect(
+										$(item), line_connection['target'][ item.id ],
+										$('#' + value.target), line_connection['target'][ value.target ],
+										{'line_uid': value['line']}
+									);
+								});
+							}
 						}
 					});
 

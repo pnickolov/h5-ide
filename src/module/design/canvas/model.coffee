@@ -26,17 +26,33 @@ define [ 'constant',
 			if component.type == resource_type.AWS_EC2_Instance
 				parent = MC.canvas_data.layout.component.group[ tgt_parent ]
 
-				if parent.name == component.resource.Placement.AvailabilityZone
-					# Nothing is changed
-					return
+				# Parent can be AvailabilityZone or Subnet
+				if parent.type == resource_type.AWS_VPC_Subnet
+					parent = MC.canvas_data.component[ tgt_parent ]
+					console.log "Instance:", src_node, "dragged from subnet:", component.resource.SubnetId, "to:", tgt_parent
 
-				console.log "Instance:", src_node, "dragged from:", component.resource.Placement.AvailabilityZone, "to:", parent.name
-				component.resource.Placement.AvailabilityZone = parent.name
+					# Nothing is changed
+					if component.resource.SubnetId.indexOf( tgt_parent ) != -1
+						return
+
+					newAZ = parent.resource.AvailabilityZone
+					# Update instance's subnet
+					component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
+				else
+					console.log "Instance:", src_node, "dragged from:", component.resource.Placement.AvailabilityZone, "to:", parent.name
+
+					# Nothing is changed
+					if parent.name == component.resource.Placement.AvailabilityZone
+						return
+
+					newAZ = parent.name
+
+				component.resource.Placement.AvailabilityZone = newAZ
 
 				#We should also update those Volumes that are attached to this Instance.
 				updateVolume = ( component, id ) ->
 					if component.type == resource_type.AWS_EBS_Volume and component.resource.AttachmentSet.InstanceId.indexOf( this )
-						 component.resource.AvailabilityZone = parent.name
+						 component.resource.AvailabilityZone = newAZ
 					null
 
 				_.each MC.canvas_data.component, updateVolume, component.uid

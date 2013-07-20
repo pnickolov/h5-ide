@@ -1523,12 +1523,10 @@ MC.canvas.event.dragable = {
 		event.preventDefault();
 		event.stopPropagation();
 
-		var offset = event.data.target_type === 'node' ? 0 : 2 * MC.canvas.GRID_HEIGHT;
-
 		event.data.shadow.attr('transform',
 			'translate(' +
 				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * MC.canvas.GRID_WIDTH + ',' +
-				(offset + Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * MC.canvas.GRID_HEIGHT) +
+				Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * MC.canvas.GRID_HEIGHT +
 			')'
 		);
 
@@ -1652,7 +1650,7 @@ MC.canvas.event.dragable = {
 			{
 				var coordinate = MC.canvas.pixelToGrid(
 						shadow_offset.left - canvas_offset.left,
-						shadow_offset.top - canvas_offset.top - MC.canvas.GROUP_LABEL_OFFSET + (parseInt(target.find('.group').css('stroke-width')) * 2)
+						shadow_offset.top - canvas_offset.top// + (parseInt(target.find('.group').css('stroke-width')) * 1)
 					),
 					layout_group_data = MC.canvas.data.get('layout.component.group'),
 					group_data = layout_group_data[ target_id ],
@@ -2243,7 +2241,9 @@ MC.canvas.event.groupResize = {
 			parent = $(target.parentNode.parentNode),
 			group = parent.find('.group'),
 			group_offset = group[0].getBoundingClientRect(),
-			canvas_offset = $('#svg_canvas').offset();
+			canvas_offset = $('#svg_canvas').offset(),
+			group_left = group_offset.left - canvas_offset.left,
+			group_top = group_offset.top - canvas_offset.top;
 
 		$(document.body)
 			.css('cursor', $(event.target).css('cursor'))
@@ -2267,18 +2267,28 @@ MC.canvas.event.groupResize = {
 				'offsetX': event.pageX - canvas_offset.left,
 				'offsetY': event.pageY - canvas_offset.top,
 				'direction': $(target).data('direction'),
-				'group_border': parseInt(group.css('stroke-width'),10)
+				'group_border': parseInt(group.css('stroke-width'),10),
+				'group_type': parent.data('class'),
+				'parentGroup': MC.canvas.parentGroup(
+					parent.attr('id'),
+					parent.data('class'),
+					Math.ceil(group_left / MC.canvas.GRID_WIDTH),
+					Math.ceil(group_top / MC.canvas.GRID_HEIGHT),
+					Math.ceil((group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH),
+					Math.ceil((group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
+				)
 			});
 	},
 	mousemove: function (event)
 	{
 		var direction = event.data.direction,
+			type = event.data.group_type,
 			group_border = event.data.group_border * 2,
 			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10,
 			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
 			max_left = event.data.originalWidth - group_min_padding,
 			top = Math.round((event.pageY - event.data.originalTop) / 10) * 10,
-			max_top = event.data.originalHeight - MC.canvas.group_min_padding,
+			max_top = event.data.originalHeight - group_min_padding,
 			prop;
 
 		switch (direction)
@@ -2359,17 +2369,18 @@ MC.canvas.event.groupResize = {
 
 		if (prop.x)
 		{
-			event.data.group_title.attr('x', prop.x + 1);
+			event.data.group_title.attr('x', prop.x + MC.canvas.GROUP_LABEL_COORDINATE[ type ][0]);
 		}
 		if (prop.y)
 		{
-			event.data.group_title.attr('y', prop.y - 6);
+			event.data.group_title.attr('y', prop.y + MC.canvas.GROUP_LABEL_COORDINATE[ type ][1]);
 		}
 	},
 	mouseup: function (event)
 	{
 		var parent = event.data.parent,
 			target = event.data.target,
+			type = event.data.group_type,
 			group_title = event.data.group_title,
 			direction = event.data.direction,
 			parent_offset = parent[0].getBoundingClientRect(),
@@ -2380,7 +2391,7 @@ MC.canvas.event.groupResize = {
 			group_width = Math.ceil(target.attr('width') / 10),
 			group_height = Math.ceil(target.attr('height') / 10),
 			group_left = Math.ceil((parent_offset.left - canvas_offset.left + offsetX) / 10),
-			group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10) + 1,
+			group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10),
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
 			node_minX = [],
@@ -2388,7 +2399,7 @@ MC.canvas.event.groupResize = {
 			node_maxX = [],
 			node_maxY = [],
 			group_padding = MC.canvas.GROUP_PADDING,
-			parentGroup = MC.canvas.parentGroup(group_id, parent.data('class'), group_left, group_top, group_left + group_width, group_top + group_height),
+			parentGroup = event.data.parentGroup,
 			parent_data,
 			parent_size,
 			parent_coordinate,
@@ -2413,7 +2424,7 @@ MC.canvas.event.groupResize = {
 			if (offsetY < 0)
 			{
 				//move up
-				group_top = Math.ceil((parent_offset.top - canvas_offset.top) / 10) + 1;//group title is 1 grid
+				group_top = Math.ceil((parent_offset.top - canvas_offset.top) / 10);
 			}
 			else if (offsetY > 0)
 			{
@@ -2566,8 +2577,8 @@ MC.canvas.event.groupResize = {
 			});
 
 			group_title.attr({
-				'x': 1,
-				'y': -6
+				'x': MC.canvas.GROUP_LABEL_COORDINATE[ type ][0],
+				'y': MC.canvas.GROUP_LABEL_COORDINATE[ type ][1]
 			});
 
 			MC.canvas.data.set('layout.component.group.' + group_id + '.coordinate', [group_left, group_top]);

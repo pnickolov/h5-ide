@@ -23,9 +23,9 @@ var constant_data = {
 		INSTANCE_VOLUME_ATTACHED_ACTIVE: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
 		INSTANCE_VOLUME_ATTACHED_NORMAL: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
 		INSTANCE_VOLUME_NOT_ATTACHED: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
-		//eip icon of instance
-		INSTANCE_EIP_ON: MC.IMG_URL + 'ide/icon/instance-eip-on.png',
-		INSTANCE_EIP_OFF: MC.IMG_URL + 'ide/icon/instance-eip-off.png',
+		//eip icon of instance/eni
+		EIP_ON: MC.IMG_URL + 'ide/icon/eip-on.png',
+		EIP_OFF: MC.IMG_URL + 'ide/icon/eip-off.png',
 		//elb icon
 		ELB_INTERNAL_CANVAS: MC.IMG_URL + 'ide/icon/elb-internal-canvas.png',
 		ELB_INTERNET_CANVAS: MC.IMG_URL + 'ide/icon/elb-internet-canvas.png',
@@ -81,6 +81,12 @@ var constant_data = {
 	},
 
 	GROUP_LABEL_OFFSET: -6,
+
+	GROUP_LABEL_COORDINATE: {
+		'AWS.VPC.VPC': [6, 16],
+		'AWS.EC2.AvailabilityZone': [4, 14],
+		'AWS.VPC.Subnet': [4, 14]
+	},
 
 	GROUP_WEIGHT: {
 		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
@@ -237,6 +243,20 @@ var constant_data = {
 				to: 'rtb-tgt-left',
 				color: '#d8d7d6' //gray
 			},
+			'AWS.VPC.Subnet': [
+				{
+					from: 'rtb-src-top',
+					to: 'subnet-association-out',
+					relation: 'multiple',
+					color: '#d8d7d6'
+				},
+				{
+					from: 'rtb-src-bottom',
+					to: 'subnet-association-out',
+					relation: 'multiple',
+					color: '#d8d7d6'
+				}
+			],
 			'AWS.EC2.Instance': [
 				{
 					from: 'rtb-tgt-left',
@@ -294,6 +314,22 @@ var constant_data = {
 				relation: 'unique', //a cgw can only connect to one vgw
 				color: '#bf7aa5' //purple
 			}
+		},
+		'AWS.VPC.Subnet': {
+			'AWS.VPC.RouteTable': [
+				{
+					from: 'subnet-association-out',
+					to: 'rtb-src-top',
+					relation: 'multiple',
+					color: '#d8d7d6'
+				},
+				{
+					from: 'subnet-association-out',
+					to: 'rtb-src-bottom',
+					relation: 'multiple',
+					color: '#d8d7d6'
+				}
+			]
 		}
 	},
 

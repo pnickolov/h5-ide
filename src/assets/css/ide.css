@@ -2777,6 +2777,58 @@ a.sidebar-hider {
 	height: 50px;
 }
 
+/* property-newtwork-acl */
+.acl-rule-col1 {
+	float  : left;
+	width  : 35px;
+	height : 50px;
+}
+
+.acl-rule-col2 {
+	float  : left;
+	width  : 60px;
+	height : 50px;
+}
+
+.acl-rule-col4 {
+	float  : right;
+	width  : 20px;
+	height : 50px;
+}
+
+.acl-rule-allow-cb {
+	width      : 16px;
+	height     : 16px;
+	background : red;
+	display    : inline-block;
+}
+
+.acl-rule-allow-cb.checked {
+	background : green;
+}
+
+.acl-rule-inbound, .acl-rule-outbound {
+	display:block;
+}
+.acl-rule-inbound:before {
+	content : "<";
+}
+.acl-rule-outbound:before {
+	content : ">";
+}
+.property-rule-delete-btn {
+	display    : inline-block;
+	width      : 16px;
+	height     : 16px;
+	background : #777;
+	color      : #fff;
+	text-align : center;
+	
+}
+.property-rule-delete-btn:before {
+	content : "x";
+}
+
 /* property-stack */
 .property-info {
 	padding: 0 10px

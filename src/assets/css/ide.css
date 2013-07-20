@@ -2862,6 +2862,11 @@ a.sidebar-hider {
 	padding: 0;
 }
 
+.property-stack .create-sg {
+top: 2px;
+height: 35px;
+}
+
 /* property-rt */
 
 .property-routetable .property-item p {

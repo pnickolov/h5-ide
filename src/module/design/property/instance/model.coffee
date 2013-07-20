@@ -25,7 +25,23 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             console.log 'setInstanceType = ' + value
 
-            MC.canvas_data.component[ uid ].resource.InstanceType = value
+            type_ary = value.split '.'
+
+            eni_number = 0
+
+            $.each MC.canvas_data.component, (index, comp) ->
+
+                if comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid
+
+                    eni_number += 1
+
+            if eni_number > 2 and eni_number > MC.data.config[MC.canvas_data.component[uid].resource.Placement.AvailabilityZone].instance_type[type_ary[0]][type_ary[1]].eni
+
+                this.trigger 'EXCEED_ENI_LIMIT'
+
+            else
+                
+                MC.canvas_data.component[ uid ].resource.InstanceType = value
 
             null
             #this.set 'set_host', 'host'

@@ -932,10 +932,11 @@ var constant_data = {
 				}],
 				"Status": "",
 				"GroupSet": [
-				{
-					"GroupId": "", //eg: @B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupId
-					"GroupName": "" //eg: @B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupName
-				}],
+				//{
+				//	"GroupId": "", //eg: @B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupId
+				//	"GroupName": "" //eg: @B70030F1-0107-B526-8022-14C0BBD50CC1.resource.GroupName
+				//}
+				],
 				"PrivateDnsName": "",
 				"SourceDestCheck": "true",
 				"RequestId": "",

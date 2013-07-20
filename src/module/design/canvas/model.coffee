@@ -255,6 +255,10 @@ define [ 'constant',
 				if portMap['elb-sg-out'] and portMap['instance-sg-in']
 					canvas_handle_elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
 
+				if portMap['instance-attach'] and portMap['eni-attach']
+
+					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
+
 
 			MC.canvas.remove $("#" + option.id)[0]
 
@@ -358,9 +362,17 @@ define [ 'constant',
 
 					reach_max 			= 	false
 
+					total_device_index  = 	[0...16]
+
 					$.each MC.canvas_data.component, ( uid, comp ) ->
 
 						if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == portMap['instance-attach']
+
+							device_index_int = parseInt(comp.resource.Attachment.DeviceIndex, 10)
+
+							if device_index_int in total_device_index
+
+								total_device_index.splice total_device_index.indexOf(device_index_int), 1
 
 							current_eni_number += 1
 
@@ -374,7 +386,11 @@ define [ 'constant',
 
 						me.trigger 'ENI_REACH_MAX'
 
+						MC.canvas.remove $("#" + line_id)[0]
+
 					else
+
+						MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
 
 						MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
 

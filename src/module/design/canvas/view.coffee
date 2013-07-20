@@ -66,7 +66,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
              event.data.trigger 'CANVAS_COMPONENT_CREATE', uid
 
         showEniReachMax : () ->
-            notification 'error', 'The Instance you selected has attach too many eni, please unattach one or change the instance type.'
+            notification 'info', 'The Instance you selected has attach too many eni, please unattach one or change the instance type.'
     }
 
     return CanvasView

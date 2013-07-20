@@ -57,9 +57,11 @@ define [ 'jquery',
 
                 ide_event.trigger ide_event.RELOAD_PROPERTY
 
-            mode.on 'EXCEED_ENI_LIMIT', ( instance_type, eni_number ) ->
+            model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
 
                 notification 'error', 'Instance Type: '+ instance_type + ' only support at most ' + eni_number + ' Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type'
+
+                view.trigger 'RE_RENDER', uid
 
     unLoadModule = () ->
         #view.remove()

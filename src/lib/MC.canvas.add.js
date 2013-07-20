@@ -398,6 +398,10 @@ MC.canvas.add = function (flag, option, coordinate)
 					eni.resource.Attachment.DeviceIndex = "0";
 					eni.resource.Attachment.InstanceId = "@"+group.id+".resource.InstanceId";
 					eni.resource.AvailabilityZone = component_data.resource.Placement.AvailabilityZone;
+					var sg_group = {};
+					sg_group.GroupId = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId';
+					sg_group.GroupName = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupName';	
+					eni.resource.GroupSet.push(sg_group);
 					
 					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
 						component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
@@ -1109,6 +1113,11 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 				component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.SubnetId';
 
+				var sg_group = {};
+				sg_group.GroupId = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId';
+				sg_group.GroupName = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupName';	
+				component_data.resource.GroupSet.push(sg_group);
+				
 				component_layout = $.extend(true, {}, MC.canvas.ENI_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}

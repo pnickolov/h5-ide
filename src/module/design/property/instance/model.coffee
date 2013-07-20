@@ -31,13 +31,15 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             $.each MC.canvas_data.component, (index, comp) ->
 
-                if comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid
+                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid
 
                     eni_number += 1
 
-            if eni_number > 2 and eni_number > MC.data.config[MC.canvas_data.component[uid].resource.Placement.AvailabilityZone].instance_type[type_ary[0]][type_ary[1]].eni
+            max_eni_num = MC.data.config[MC.canvas_data.component[uid].resource.Placement.AvailabilityZone[0...-1]].instance_type[type_ary[0]][type_ary[1]].eni
 
-                this.trigger 'EXCEED_ENI_LIMIT'
+            if eni_number > 2 and eni_number > max_eni_num
+
+                this.trigger 'EXCEED_ENI_LIMIT', uid, value, max_eni_num
 
             else
                 
@@ -167,15 +169,30 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
         addSGtoInstance : (instance_uid, sg_uid) ->
 
-            MC.canvas_data.component[ instance_uid ].resource.SecurityGroupId.push '@' + sg_uid + '.resource.GroupId'
+            if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-            _.map MC.canvas_property.sg_list, ( sg ) ->
+                $.each MC.canvas_data.component, ( key, comp ) ->
 
-                if sg.uid == sg_uid
+                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == instance_uid and comp.resource.Attachment.DeviceIndex == '0'
 
-                    sg.member.push instance_uid
+                        group = {
+                            GroupId : '@' + sg_uid + '.resource.GroupId'
+                            GroupName : '@' +  sg_uid + '.resource.GroupName'
+                        }
 
-                null
+                        MC.canvas_data.component[ comp.uid ].resource.GroupSet.push group
+
+                        return false
+            else
+                MC.canvas_data.component[ instance_uid ].resource.SecurityGroupId.push '@' + sg_uid + '.resource.GroupId'
+
+                _.map MC.canvas_property.sg_list, ( sg ) ->
+
+                    if sg.uid == sg_uid
+
+                        sg.member.push instance_uid
+
+                    null
 
             null
 
@@ -244,7 +261,19 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             instance_sg.rules_detail_egress = []
 
-            sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
+            sg_ids = null
+
+            if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+
+                $.each MC.canvas_data.component, ( key, comp ) ->
+
+                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid and comp.resource.Attachment.DeviceIndex == '0'
+
+                        sg_ids = (g.GroupId for g in MC.canvas_data.component[ comp.uid ].resource.GroupSet)
+
+                        return false
+            else
+                sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
 
             sg_id_no_ref = []
 

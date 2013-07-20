@@ -23,9 +23,9 @@ var constant_data = {
 		INSTANCE_VOLUME_ATTACHED_ACTIVE: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
 		INSTANCE_VOLUME_ATTACHED_NORMAL: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
 		INSTANCE_VOLUME_NOT_ATTACHED: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
-		//eip icon of instance
-		INSTANCE_EIP_ON: MC.IMG_URL + 'ide/icon/instance-eip-on.png',
-		INSTANCE_EIP_OFF: MC.IMG_URL + 'ide/icon/instance-eip-off.png',
+		//eip icon of instance/eni
+		EIP_ON: MC.IMG_URL + 'ide/icon/eip-on.png',
+		EIP_OFF: MC.IMG_URL + 'ide/icon/eip-off.png',
 		//elb icon
 		ELB_INTERNAL_CANVAS: MC.IMG_URL + 'ide/icon/elb-internal-canvas.png',
 		ELB_INTERNET_CANVAS: MC.IMG_URL + 'ide/icon/elb-internet-canvas.png',

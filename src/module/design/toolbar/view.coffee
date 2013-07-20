@@ -44,7 +44,6 @@ define [ 'MC', 'event',
             #
             zeroclipboard.init 'toolbar-jsoncopy', ZeroClipboard
 
-        ###
         reRender   : ( type ) ->
             console.log 're-toolbar render'
             if $.trim( $( '#main-toolbar' ).html() ) is 'loading...'
@@ -53,7 +52,6 @@ define [ 'MC', 'event',
                     $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
                 else
                     $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
-        ###
 
         clickRunIcon : ->
             me = this

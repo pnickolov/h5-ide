@@ -32,10 +32,12 @@ define [ 'jquery',
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, stack_name ) ->
                 console.log 'toolbar:RELOAD_RESOURCE, stack_name = ' + stack_name + ', type = ' + type
+                #check re-render
+                view.reRender type
                 #
                 type = type
                 #
-                model.setFlag(type)
+                model.setFlag type
                 #
                 view.render type
 

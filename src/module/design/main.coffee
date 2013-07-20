@@ -35,6 +35,8 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                     MC.data.design_submodule_count = -1
                     #push event
                     ide_event.trigger ide_event.DESIGN_COMPLETE
+                    #off DESIGN_SUB_COMPLETE
+                    ide_event.offListen ide_event.DESIGN_SUB_COMPLETE
                 else
                     MC.data.design_submodule_count = MC.data.design_submodule_count + 1
                 null

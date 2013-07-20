@@ -144,7 +144,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3.az label
-				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
+				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name',
 					'id': group.id + '_az_name'
 				})
@@ -238,7 +238,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3.vpc label
-				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
+				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name',
 					'id': group.id + '_vpc_name'
 				})
@@ -341,7 +341,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-subnet-association-in',
-					'transform': 'translate(-10, 66)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
+					'transform': 'translate(-12, ' + ((height / 2) - 13) + ')', //port position: right:0 top:-90 left:-180 bottom:-270
 					'data-name': 'subnet-association-in', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
 					'data-type': 'association', //color of line
@@ -352,7 +352,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-subnet-association-out',
-					'transform': 'translate(153, 66)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(' + (width + 4) + ', ' + ((height / 2) - 13) + ')',
 					'data-name': 'subnet-association-out',
 					'data-position': 'right',
 					'data-type': 'association',
@@ -361,7 +361,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////5.subnet label
-				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
+				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name'
 				})
 

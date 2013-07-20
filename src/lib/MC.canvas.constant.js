@@ -82,6 +82,12 @@ var constant_data = {
 
 	GROUP_LABEL_OFFSET: -6,
 
+	GROUP_LABEL_COORDINATE: {
+		'AWS.VPC.VPC': [6, 16],
+		'AWS.EC2.AvailabilityZone': [4, 14],
+		'AWS.VPC.Subnet': [4, 14]
+	},
+
 	GROUP_WEIGHT: {
 		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
 		'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],

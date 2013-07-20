@@ -8,7 +8,7 @@ define [ 'jquery',
 ], ( $, template, ide_event ) ->
 
     #private
-    loadModule = ( uid, type ) ->
+    loadModule = ( line_option, type ) ->
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-vpn-tmpl">' + template + '</script>'
@@ -21,7 +21,11 @@ define [ 'jquery',
             #view
             view.model    = model
             #render
-            view.render()
+            renderVPNPanel = (line_option) ->
+                view.model.getVPN line_option
+                view.render view.model.attributes
+
+            renderVPNPanel line_option
 
     unLoadModule = () ->
         #view.remove()

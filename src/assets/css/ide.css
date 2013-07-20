@@ -2796,7 +2796,6 @@ a.sidebar-hider {
 }
 
 .property-item {
-	height: 48px;
 	padding: 10px 10px 10px 30px;
 	border-bottom: 1px solid #ccc;
 	position: relative;
@@ -2862,3 +2861,51 @@ a.sidebar-hider {
 .property-stack .accordion-group .accordion-body {
 	padding: 0;
 }
+
+/* property-rt */
+
+.property-routetable .property-item p {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.list-style-square {
+	position: relative;
+	padding-left: 18px;
+}
+
+.list-style-square:before {
+	content: "";
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	left: 0;
+	background-color: rgb(179, 179, 179);
+	margin-top: 2px;
+}
+
+.property-item .list-style-square {
+	padding-left: 20px;
+}
+
+.property-item .route-list {
+	padding-bottom: 15px;
+}
+
+.property-routetable .multi-input {
+	padding-top: 5px;
+}
+
+.property-routetable .multi-input {
+	padding-top: 5px;
+}
+
+.property-routetable .allow-checkbox {
+	padding-top: 5px;
+}
+
+
+
+
+
+

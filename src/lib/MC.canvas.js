@@ -1547,6 +1547,12 @@ MC.canvas.event.dragable = {
 	},
 	mouseup: function (event)
 	{
+		if (event.data.target.data('class') === 'AWS.VPC.Subnet')
+		{
+			event.data.target.find('.port-subnet-association-in').first().show();
+			event.data.target.find('.port-subnet-association-out').first().show();
+		}
+
 		// Selected
 		if (
 			event.pageX === event.data.originalPageX &&
@@ -1789,9 +1795,6 @@ MC.canvas.event.dragable = {
 					// Re-draw group connection
 					if (group_data.type === 'AWS.VPC.Subnet')
 					{
-						target.find('.port-subnet-association-in').first().show();
-						target.find('.port-subnet-association-out').first().show();
-
 						node_connections = layout_group_data[ target_id ].connection || {};
 
 						$.each(node_connections, function (index, value)

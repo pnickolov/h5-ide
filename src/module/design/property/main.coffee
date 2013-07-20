@@ -42,6 +42,7 @@ define [ 'jquery',
 
             uid  = null
             type = null
+            MC.data.current_sub_main = null
 
             #view
             view  = new View { 'model' : model }
@@ -53,10 +54,12 @@ define [ 'jquery',
                 #check re-render
                 view.reRender template
                 #
-                stack_main.loadModule()
+                stack_main.loadModule stack_main
 
             #listen OPEN_PROPERTY
             ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id ) ->
+
+                if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
 
                 if type == 'component'
 
@@ -69,7 +72,7 @@ define [ 'jquery',
 
                     #show stack property
                     if uid is ''
-                        stack_main.loadModule()
+                        stack_main.loadModule stack_main
 
                     #show az property
                     if MC.canvas_data.component[ uid ]
@@ -78,33 +81,31 @@ define [ 'jquery',
                         #components except AvailabilityZone
                         switch MC.canvas_data.component[ uid ].type
                             #show instance property
-                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid, instance_expended_id
+                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid, instance_expended_id, instance_main
                             #show volume/snapshot property
-                            when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid, volume_main
                             #show elb property
-
-                            when constant.AWS_RESOURCE_TYPE.AWS_ELB
-                                elb_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_ELB                  then elb_main.loadModule uid, elb_main
                             #show subnet property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet           then subnet_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet           then subnet_main.loadModule uid, subnet_main
                             #show vpc property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC              then vpc_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC              then vpc_main.loadModule uid, vpc_main
                             #show dhcp property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions      then dhcp_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions      then dhcp_main.loadModule uid, dhcp_main
                             #show rtb property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid, 'component'
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid, 'component', rtb_main
                             #show igw property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway  then igw_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway  then igw_main.loadModule uid, igw_main
                             #show vgw property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway       then vgw_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway       then vgw_main.loadModule uid, vgw_main
                             #show cgw property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway  then cgw_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway  then cgw_main.loadModule uid, cgw_main
                             #show vpn property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection    then vpn_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection    then vpn_main.loadModule uid, null, vpn_main
                             #show eni property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid, eni_main
                             #show acl property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl       then acl_main.loadModule uid
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl       then acl_main.loadModule uid, acl_main
 
                             #
                             else
@@ -114,7 +115,7 @@ define [ 'jquery',
                         #AvailabilityZone
                         if MC.canvas_data.layout.component.group[ uid ] and MC.canvas_data.layout.component.group[ uid ].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
                             console.log 'type = ' + MC.canvas_data.layout.component.group[ uid ].type
-                            az_main.loadModule uid
+                            az_main.loadModule uid, az_main
 
                 else
 
@@ -132,15 +133,15 @@ define [ 'jquery',
 
                             if '|instance-sg-in>rtb-tgt-left|rtb-tgt-left>instance-sg-in|'.indexOf( key ) > 0
                                 #select line between instance and routetable
-                                rtb_main.loadModule line_option, 'line'
+                                rtb_main.loadModule line_option, 'line', rtb_main
 
                             else if '|instance-sg-in>instance-sg-out|instance-sg-out>instance-sg-in|'.indexOf( key ) >0
                                 #select line between instance and instance
-                                sgrule_main.loadModule line_option, 'line'
+                                sgrule_main.loadModule line_option, 'line', sgrule_main
 
                             else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
                                 #select line between vgw and  cgw
-                                vpn_main.loadModule line_option, 'line'
+                                vpn_main.loadModule line_option, 'line', vpn_main
                     
 
                 #temp
@@ -153,7 +154,7 @@ define [ 'jquery',
             #listen OPEN_SG
             ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id ) ->
                 console.log 'OPEN_SG'
-                sg_main.loadModule( uid_parent, expended_accordion_id )
+                sg_main.loadModule( uid_parent, expended_accordion_id, sg_main )
                 #temp
                 # setTimeout () ->
                 #    view.refresh()
@@ -165,7 +166,7 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id) ->
                 console.log 'OPEN_INSTANCE'
                 #
-                instance_main.loadModule uid, type, expended_accordion_id
+                instance_main.loadModule uid, expended_accordion_id, instance_main
                 #temp
                 # setTimeout () ->
                 #    view.refresh()

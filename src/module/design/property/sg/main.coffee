@@ -7,27 +7,41 @@ define [ 'jquery',
          'event'
 ], ( $, template, ide_event ) ->
 
-    #private
-    loadModule = ( uid_parent, expended_accordion_id ) ->
+    #
+    current_view = null
 
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-sg-tmpl">' + template + '</script>'
-        #load remote html template
-        $( 'head' ).append template
+    #add handlebars script
+    template = '<script type="text/x-handlebars-template" id="property-sg-tmpl">' + template + '</script>'
+    #load remote html template
+    $( 'head' ).append template
+
+    #private
+    loadModule = ( uid_parent, expended_accordion_id, current_main ) ->
+
+        #
+        MC.data.current_sub_main = current_main
 
         #
         require [ './module/design/property/sg/view', './module/design/property/sg/model' ], ( view, model ) ->
 
+            #
+            current_view  = view
+
             #view
             view.model    = model
 
-            if uid_parent.uid
+            if uid_parent
+                if uid_parent.uid
 
-                view.model.getSG uid_parent.uid, uid_parent.parent
+                    view.model.getSG uid_parent.uid, uid_parent.parent
 
+                else
+
+                    view.model.addSG uid_parent.parent
             else
 
-                view.model.addSG uid_parent.parent
+                view.model.addSG()
+
             #render
             view.render( expended_accordion_id )
             
@@ -51,7 +65,7 @@ define [ 'jquery',
 
 
     unLoadModule = () ->
-        #view.remove()
+        current_view.off()
 
     #public
     loadModule   : loadModule

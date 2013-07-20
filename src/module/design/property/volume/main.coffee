@@ -7,17 +7,26 @@ define [ 'jquery',
          'event'
 ], ( $, template, ide_event ) ->
 
-    #private
-    loadModule = ( uid ) ->
+    #
+    current_view = null
 
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-volume-tmpl">' + template + '</script>'
-        #load remote html template
-        $( 'head' ).append template
-        console.log 'volume loaded'
+    #add handlebars script
+    template = '<script type="text/x-handlebars-template" id="property-volume-tmpl">' + template + '</script>'
+    #load remote html template
+    $( 'head' ).append template
+    console.log 'volume loaded'
+
+    #private
+    loadModule = ( uid, current_main ) ->
+
+        #
+        MC.data.current_sub_main = current_main
 
         #
         require [ './module/design/property/volume/view', './module/design/property/volume/model' ], ( view, model ) ->
+
+            #
+            current_view  = view
 
             #view
             view.model    = model
@@ -76,7 +85,7 @@ define [ 'jquery',
 
 
     unLoadModule = () ->
-        #view.remove()
+        current_view.off()
 
     #public
     loadModule   : loadModule

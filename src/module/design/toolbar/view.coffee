@@ -3,15 +3,17 @@
 #############################
 
 define [ 'MC', 'event',
+         'zeroclipboard',
          'backbone', 'jquery', 'handlebars',
-         'UI.selectbox', 'UI.notification'
-], ( MC, ide_event ) ->
+         'UI.selectbox', 'UI.notification', 'UI.zeroclipboard'
+], ( MC, ide_event, ZeroClipboard ) ->
 
     ToolbarView = Backbone.View.extend {
 
         el       : document
 
-        template : Handlebars.compile $( '#toolbar-tmpl' ).html()
+        stack_tmpl : Handlebars.compile $( '#toolbar-stack-tmpl' ).html()
+        app_tmpl : Handlebars.compile $( '#toolbar-app-tmpl' ).html()
 
         events   :
             'click #toolbar-run'                : 'clickRunIcon'
@@ -28,22 +30,28 @@ define [ 'MC', 'event',
             #for debug
             'click #toolbar-jsondiff'           : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'           : 'clickOpenJSONView'
+            'COPY_TO_CLIP_COMPLETE'             : 'copytoClipComplete'
 
-
-        render   : () ->
+        render   : ( type ) ->
             console.log 'toolbar render'
-            $( '#main-toolbar' ).html this.template
+            #
+            if type is 'OPEN_APP'
+                $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
+            else
+                $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
+            #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
+            #
+            zeroclipboard.init 'toolbar-jsoncopy', ZeroClipboard
 
-
-
-        reRender   : ( template ) ->
+        reRender   : ( type ) ->
             console.log 're-toolbar render'
-            #if $.trim( $( '#main-toolbar' ).html() ) is 'loading...' then $( '#main-toolbar' ).html this.template
-            $( '#main-toolbar' ).html this.template this.model.attributes
-
-            this.initZeroClipboard()
-
+            if $.trim( $( '#main-toolbar' ).html() ) is 'loading...'
+                #
+                if type is 'OPEN_STACK'
+                    $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
+                else
+                    $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
 
         clickRunIcon : ->
             me = this
@@ -93,6 +101,8 @@ define [ 'MC', 'event',
                     notification 'info', 'Save stack ' + name + ' successfully.'
                 this.model.once 'TOOLBAR_STACK_SAVE_ERROR', () ->
                     notification 'error', 'Save stack ' + name + ' failed.'
+
+            true
 
         clickDuplicateIcon : ->
             console.log 'clickDuplicateIcon'
@@ -163,33 +173,30 @@ define [ 'MC', 'event',
             }
             $( '#json-content' ).val file_content
 
-
-        #for debug
-
-        clickOpenJSONDiff : ->
-
-            a = MC.canvas_property.original_json.split('"').join('\\"')
-            b = JSON.stringify(MC.canvas_data).split('"').join('\\"')
-            param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
-
-            window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
-            null
-
-        initZeroClipboard : () ->
-
-            window.zeroClipboardInit( 'toolbar-jsoncopy' )
-
-            null
-
-        clickOpenJSONView : ->
-
-            window.open 'http://jsonviewer.stack.hu/'
-            null
-
         exportPNG : ( base64_image ) ->
             console.log 'exportPNG'
             #$( 'body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
 
+        #for debug
+        clickOpenJSONDiff : ->
+            #
+            a = MC.canvas_property.original_json.split('"').join('\\"')
+            b = JSON.stringify(MC.canvas_data).split('"').join('\\"')
+            param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
+            #
+            window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
+            null
+
+        clickOpenJSONView : ->
+            window.open 'http://jsonviewer.stack.hu/'
+            null
+
+        copytoClipComplete : ( event, id, length ) ->
+            console.log 'copytoClipComplete'
+            notification 'info', 'Copied ' + id + ' to clipboard: ' + length + ' bytes'
+            null
+
     }
 
     return ToolbarView
+

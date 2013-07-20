@@ -7,16 +7,25 @@ define [ 'jquery',
          'event'
 ], ( $, template, ide_event ) ->
 
-    #private
-    loadModule = ( option, type ) ->
+    #
+    current_view = null
 
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-sgrule-tmpl">' + template + '</script>'
-        #load remote html template
-        $( 'head' ).append template
+    #add handlebars script
+    template = '<script type="text/x-handlebars-template" id="property-sgrule-tmpl">' + template + '</script>'
+    #load remote html template
+    $( 'head' ).append template
+
+    #private
+    loadModule = ( uid, type, current_main ) ->
+
+        #
+        MC.data.current_sub_main = current_main
 
         #
         require [ './module/design/property/sgrule/view', './module/design/property/sgrule/model' ], ( view, model ) ->
+
+            #
+            current_view  = view
 
             #view
             view.model    = model
@@ -24,7 +33,7 @@ define [ 'jquery',
             view.render()
 
     unLoadModule = () ->
-        #view.remove()
+        current_view.off()
 
     #public
     loadModule   : loadModule

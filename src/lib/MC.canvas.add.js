@@ -108,7 +108,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////1. area
 				Canvon.rectangle(0, 0, width, height).attr({
-					'class': 'group group-az'
+					'class': 'group group-az',
+					'rx': 5,
+					'ry': 5
 				}),
 
 				////2.scale area
@@ -142,7 +144,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3.az label
-				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
+				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name',
 					'id': group.id + '_az_name'
 				})
@@ -200,7 +202,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////1. area
 				Canvon.rectangle(0, 0, width, height).attr({
-					'class': 'group group-vpc'
+					'class': 'group group-vpc',
+					'rx': 5,
+					'ry': 5
 				}),
 
 				////2.scale area
@@ -234,7 +238,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3.vpc label
-				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
+				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name',
 					'id': group.id + '_vpc_name'
 				})
@@ -299,7 +303,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////1. area
 				Canvon.rectangle(0, 0, width, height).attr({
-					'class': 'group group-subnet'
+					'class': 'group group-subnet',
+					'rx': 5,
+					'ry': 5
 				}),
 
 				////2.scale area
@@ -332,8 +338,30 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'resizer-wrap'
 				}),
 
-				////3.subnet label
-				Canvon.text(1, MC.canvas.GROUP_LABEL_OFFSET, option.name).attr({
+				//3 path: left port
+				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+					'class': 'port port-gray port-subnet-association-in',
+					'transform': 'translate(-12, ' + ((height / 2) - 13) + ')', //port position: right:0 top:-90 left:-180 bottom:-270
+					'data-name': 'subnet-association-in', //for identify port
+					'data-position': 'left', //port position: for calc point of junction
+					'data-type': 'association', //color of line
+					'data-direction': 'in', //direction
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE //port angle: right:0 top:90 left:180 bottom:270
+				}),
+
+				//4 path: right port
+				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+					'class': 'port port-gray port-subnet-association-out',
+					'transform': 'translate(' + (width + 4) + ', ' + ((height / 2) - 13) + ')',
+					'data-name': 'subnet-association-out',
+					'data-position': 'right',
+					'data-type': 'association',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
+				}),
+
+				////5.subnet label
+				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name'
 				})
 
@@ -506,7 +534,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////7. eip
-				Canvon.image('../assets/images/ide/icon/instance-eip-off.png', 53, 50, 22, 16).attr({
+				Canvon.image(MC.canvas.IMAGE.EIP_OFF, 58, 49, 14, 17).attr({
 					'id': group.id + '_eip_status'
 				}),
 
@@ -1069,7 +1097,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////3. cgw name
 				Canvon.text(50, 90, option.name).attr({
-					'class': 'node-label name'
+					'class': 'node-label name',
+					'id': group.id + '_cgw_name'
 				}),
 
 				////4. network name
@@ -1135,7 +1164,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'id': group.id + '_eni_status'
 				}),
 
-				Canvon.image('../assets/images/ide/icon/eip-off.png', 46, 50, 14, 17).attr({
+				Canvon.image(MC.canvas.IMAGE.EIP_OFF, 46, 50, 14, 17).attr({
 					'id': group.id + '_eip_status'
 				}),
 

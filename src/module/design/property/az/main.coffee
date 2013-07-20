@@ -7,15 +7,24 @@ define [ 'jquery',
          'event'
 ], ( $, template, ide_event ) ->
 
-    #private
-    loadModule = ( uid, type ) ->
+    #
+    current_view = null
 
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-az-tmpl">' + template + '</script>'
-        #load remote html template
-        $( 'head' ).append template
+    #add handlebars script
+    template = '<script type="text/x-handlebars-template" id="property-az-tmpl">' + template + '</script>'
+    #load remote html template
+    $( 'head' ).append template
+
+    #private
+    loadModule = ( uid, current_main ) ->
+
+        #
+        MC.data.current_sub_main = current_main
 
         onViewModelLoaded = ( view, model ) ->
+
+            #
+            current_view  = view
 
             data = model.getRenderData( uid )
 
@@ -82,7 +91,7 @@ define [ 'jquery',
 
 
     unLoadModule = () ->
-        null
+        current_view.off()
 
     #public
     loadModule   : loadModule

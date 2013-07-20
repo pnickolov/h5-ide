@@ -2065,15 +2065,16 @@ MC.canvas.event.drawConnection = {
 
 			coordinate = MC.canvas.pixelToGrid(event.pageX - event.data.canvas_offset.left, event.pageY - event.data.canvas_offset.top);
 
-			$.each(children, function (key, item)
+			$.each(layout_group_data, function (key, item)
 			{
 				group_coordinate = item.coordinate;
 				group_size = item.size;
 
 				if (
+					item.type === 'AWS.VPC.Subnet' &&
 					group_coordinate &&
 					group_coordinate[0] < coordinate.x &&
-					group_coordinate[0] + group_size.size[0] > coordinate.x &&
+					group_coordinate[0] + group_size[0] > coordinate.x &&
 					group_coordinate[1] < coordinate.y &&
 					group_coordinate[1] + group_size[1] > coordinate.y
 				)

@@ -423,44 +423,95 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             sg_id_ref = "@"+sg_uid+'.resource.GroupId'
 
-            sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
+            if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-            if sg_ids.length != 1
+                sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
 
-                sg_ids.splice sg_ids.indexOf sg_id_ref, 1
+                if sg_ids.length != 1
 
-                $.each MC.canvas_property.sg_list, ( key, value ) ->
+                    sg_ids.splice sg_ids.indexOf sg_id_ref, 1
 
-                    if value.uid == sg_uid
+                    $.each MC.canvas_property.sg_list, ( key, value ) ->
 
-                        index = value.member.indexOf uid
+                        if value.uid == sg_uid
 
-                        value.member.splice index, 1
+                            index = value.member.indexOf uid
 
-                        # delete member 0 sg
+                            value.member.splice index, 1
 
-                        if value.member.length == 0 and value.name != 'DefaultSG'
+                            # delete member 0 sg
 
-                            MC.canvas_property.sg_list.splice key, 1
+                            if value.member.length == 0 and value.name != 'DefaultSG'
 
-                            delete MC.canvas_data.component[sg_uid]
+                                MC.canvas_property.sg_list.splice key, 1
 
-                            $.each MC.canvas_data.component, ( key, comp ) ->
+                                delete MC.canvas_data.component[sg_uid]
 
-                                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+                                $.each MC.canvas_data.component, ( key, comp ) ->
 
-                                    $.each comp.resource.IpPermissions, ( i, rule ) ->
+                                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
 
-                                        if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
+                                        $.each comp.resource.IpPermissions, ( i, rule ) ->
 
-                                            MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
+                                            if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
 
-                                    $.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
+                                                MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
 
-                                        if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
+                                        $.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
 
-                                            MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
+                                            if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
 
+                                                MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
+
+                            return false
+
+            else
+
+                $.each MC.canvas_data.component, ( key, comp ) ->
+
+                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid and comp.resource.Attachment.DeviceIndex == '0'
+
+                        if comp.GroupId.length != 1
+
+                            $.each comp.GroupId, ( index, group) ->
+
+                                if group.GroupId == sg_id_ref
+
+                                    comp.GroupId.splice index, 1
+
+                                    return false
+
+                            $.each MC.canvas_property.sg_list, ( idx, value ) ->
+
+                                if value.uid == sg_uid
+
+                                    index = value.member.indexOf uid
+
+                                    value.member.splice index, 1
+
+                                    # delete member 0 sg
+
+                                    if value.member.length == 0 and value.name != 'DefaultSG'
+
+                                        MC.canvas_property.sg_list.splice idx, 1
+
+                                        delete MC.canvas_data.component[sg_uid]
+
+                                        $.each MC.canvas_data.component, ( key, comp ) ->
+
+                                            if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+
+                                                $.each comp.resource.IpPermissions, ( i, rule ) ->
+
+                                                    if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
+
+                                                        MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
+
+                                                $.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
+
+                                                    if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
+
+                                                        MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
                         return false
 
             null

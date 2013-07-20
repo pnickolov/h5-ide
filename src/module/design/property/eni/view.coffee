@@ -16,7 +16,10 @@ define [ 'event',
 
         template : Handlebars.compile $( '#property-eni-tmpl' ).html()
 
-        #events   :
+        events   :
+
+            "change #property-eni-desc" : "setEniDesc"
+            "change #property-eni-source-check" : "setEniSourceDestCheck"
 
         render     : () ->
             console.log 'property:eni render'
@@ -33,7 +36,19 @@ define [ 'event',
                     total : 1
 
 
-            $('.property-details').html this.template attributes
+            $('.property-details').html this.template this.model.attributes
+
+        setEniDesc : ( event ) ->
+
+            uid = $("#property-eni-attach-info").attr "component"
+
+            this.trigger "SET_ENI_DESC", uid, event.target.value
+
+        setEniSourceDestCheck : ( event ) ->
+
+            uid = $("#property-eni-attach-info").attr "component"
+
+            this.trigger "SET_ENI_SOURCE_DEST_CHECK", uid, event.target.checked
 
     }
 

@@ -1105,7 +1105,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 		//***** eni begin *****//
 		case 'AWS.VPC.NetworkInterface':
-
+			
+			var attached = 'unattached';
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ENI_JSON.data);
@@ -1125,6 +1126,10 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
+				
+				if(component_data.resource.Attachment.InstanceId){
+					attached = 'attached'
+				}
 
 				component_layout = layout.node[group.id];
 
@@ -1140,7 +1145,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'ry': 5
 				}),
 
-				Canvon.image('../assets/images/ide/icon/eni-canvas-unattached.png', 16, 28, 68, 53).attr({
+				Canvon.image('../assets/images/ide/icon/eni-canvas-'+attached+'.png', 16, 28, 68, 53).attr({
 					'id': group.id + '_eni_status'
 				}),
 

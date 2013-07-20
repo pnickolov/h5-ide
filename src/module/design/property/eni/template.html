@@ -2,11 +2,11 @@
   <span class="sidebar-title-text" id='property-title'>{{name}}</span>
 </header>
 
-<section class="property-control-group clearfix" id="property-eni-attach-info" {{#if attached}}style="display:none;"{{/if}}>
-  Attach the Netowrk Interface to an instance within the same availability zone.
+<section class="property-control-group clearfix" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
+  Attach the Netowrk Interface to an instance.
 </section>
 
-<section class="fixedaccordion accordion-default" id="property-eni-wrapper" {{#if attached}}{{else}}style="display:none;"{{/if}} data-sub="43">
+<section class="fixedaccordion accordion-default" id="property-eni-wrapper" {{#if eni_display.resource.Attachment.InstanceId}}{{else}}style="display:none;"{{/if}} data-sub="43">
 
   <div class="accordion-group expanded">
     <div class="fixedaccordion-head">
@@ -17,11 +17,11 @@
       <div class="item-wrap scroll-content">
         <div class="property-control-group clearfix">
           <label class="left" for="property-eni-desc">Description</label>
-          <textarea id="property-eni-desc">{{eni_display.description}}</textarea>
+          <textarea id="property-eni-desc">{{eni_display.resource.Description}}</textarea>
         </div>
         <div class="property-control-group clearfix">
           <div class="checkbox">
-            <input id="property-eni-source-check" type="checkbox" {{#if eni_display.sourceCheck}}checked="true"{{/if}} />
+            <input id="property-eni-source-check" type="checkbox" {{#if eni_display.resource.SourceDestCheck}}checked="true"{{/if}} />
             <label for="property-eni-source-check"></label>
           </div>
           <label for="property-eni-source-check">Enable Source/Destination Checking</label>

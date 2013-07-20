@@ -259,6 +259,8 @@ define [ 'constant',
 
 					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 
+					MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
+
 
 			MC.canvas.remove $("#" + option.id)[0]
 
@@ -389,6 +391,8 @@ define [ 'constant',
 						MC.canvas.remove $("#" + line_id)[0]
 
 					else
+
+						MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
 
 						MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
 

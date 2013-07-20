@@ -108,7 +108,22 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                 sg_detail.member_names = [ MC.canvas_data.component[parent].name ]
 
-                MC.canvas_data.component[parent].resource.SecurityGroupId.push '@'+uid+'.resource.GroupId'
+                if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+
+                    $.each MC.canvas_data.component, ( key, comp ) ->
+
+                        if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == parent and comp.resource.Attachment.DeviceIndex == '0'
+
+                            group = {
+                                GroupId : '@' + uid + '.resource.GroupId'
+                                GroupName : '@' +  uid + '.resource.GroupName'
+                            }
+
+                            MC.canvas_data.component[ comp.uid ].resource.GroupSet.push group
+
+                            return false
+                else
+                    MC.canvas_data.component[parent].resource.SecurityGroupId.push '@'+uid+'.resource.GroupId'
 
             me.set 'sg_detail', sg_detail
 

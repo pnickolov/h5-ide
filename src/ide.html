@@ -9,30 +9,6 @@
 	<link rel="stylesheet" href="./assets/css/grid.css"/>
 	<link rel="stylesheet" href="./assets/css/UI.component.css"/>
 	<link rel="stylesheet" href="./assets/css/canvas.css"/>
-
-	<!-- for debug -->
-	<script type="text/javascript" data-main="./js/ide/config" src="./vender/ZeroClipboard/ZeroClipboard.js"></script>
-	<script type="text/javascript">
-
-		var zeroClipboardInit = function(el)
-		{
-
-			var clip = new ZeroClipboard( document.getElementById(el), {
-				moviePath: "vender/ZeroClipboard/ZeroClipboard.swf"
-			} );
-
-			clip.on( 'complete', function(client, args) {
-				id = clip.htmlBridge.title
-				alert("Copied " + id + " to clipboard: " + args.text.length + "bytes" );
-			} );
-
-			clip.on( 'mouseup', function(client) {
-				clip.setText( JSON.stringify(MC.canvas_data ) );
-			} );
-		}
-
-	</script>
-
 </head>
 <body id="body">
 

@@ -37,7 +37,7 @@ define [ 'jquery',
 
             view.on 'RESET_STACK_SG', (uid) ->
                 model.resetSecurityGroup uid
-                renderPropertyPanel()
+                view.render view.model.attributes
 
 
     unLoadModule = () ->

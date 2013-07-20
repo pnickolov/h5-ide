@@ -5,6 +5,7 @@
 define [ 'jquery',
          'text!/module/design/property/instance/template.html',
          'event'
+         'UI.notification'
 ], ( $, template, ide_event ) ->
 
     #private
@@ -55,6 +56,12 @@ define [ 'jquery',
                 view.render( attributes )
 
                 ide_event.trigger ide_event.RELOAD_PROPERTY
+
+            model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
+
+                notification 'error', 'Instance Type: '+ instance_type + ' only support at most ' + eni_number + ' Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type'
+
+                view.trigger 'RE_RENDER', uid
 
     unLoadModule = () ->
         #view.remove()

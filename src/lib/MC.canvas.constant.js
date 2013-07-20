@@ -219,6 +219,12 @@ var constant_data = {
 				to: 'instance-sg-in',
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
+			},
+			'AWS.VPC.Subnet': {
+				from: 'elb-assoc',
+				to: 'subnet-association-in',
+				relation: 'multiple',
+				color: '#d8d7d6' //gray
 			}
 		},
 		'AWS.VPC.NetworkInterface': {
@@ -329,7 +335,13 @@ var constant_data = {
 					relation: 'multiple',
 					color: '#d8d7d6'
 				}
-			]
+			],
+			'AWS.ELB': {
+				from: 'subnet-association-in',
+				to: 'elb-assoc',
+				relation: 'unique',
+				color: '#d8d7d6' //gray
+			}
 		}
 	},
 

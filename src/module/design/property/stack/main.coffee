@@ -7,8 +7,14 @@ define [ 'jquery',
          'event'
 ], ( $, template, ide_event ) ->
 
+    #
+    current_view = null
+
     #private
-    loadModule = ( uid, type ) ->
+    loadModule = ( current_main ) ->
+
+        #
+        MC.data.current_sub_main = current_main
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-stack-tmpl">' + template + '</script>'
@@ -17,6 +23,9 @@ define [ 'jquery',
 
         #
         require [ './module/design/property/stack/view', './module/design/property/stack/model' ], ( view, model ) ->
+
+            #
+            current_view  = view
 
             #view
             view.model    = model
@@ -41,7 +50,7 @@ define [ 'jquery',
 
 
     unLoadModule = () ->
-        #view.remove()
+        current_view.off()
 
     #public
     loadModule   : loadModule

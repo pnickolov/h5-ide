@@ -7,8 +7,14 @@ define [ 'jquery',
          'event'
 ], ( $, template, ide_event ) ->
 
+    #
+    current_view = null
+
     #private
-    loadModule = ( uid ) ->
+    loadModule = ( uid, current_main ) ->
+
+        #
+        MC.data.current_sub_main = current_main
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-elb-tmpl">' + template + '</script>'
@@ -19,6 +25,9 @@ define [ 'jquery',
         require [ './module/design/property/elb/view',
                   './module/design/property/elb/model'
         ], ( view, model ) ->
+
+            #
+            current_view  = view
 
             #view
             view.model    = model
@@ -80,7 +89,7 @@ define [ 'jquery',
             view.render( attributes )
 
     unLoadModule = () ->
-        #view.remove()
+        current_view.off()
 
     #public
     loadModule   : loadModule

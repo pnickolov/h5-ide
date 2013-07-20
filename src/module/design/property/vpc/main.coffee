@@ -9,8 +9,14 @@ define [ 'jquery',
          'UI.multiinputbox'
 ], ( $, template, ide_event ) ->
 
+    #
+    current_view = null
+
     #private
-    loadModule = ( uid, type ) ->
+    loadModule = ( uid, current_main ) ->
+
+        #
+        MC.data.current_sub_main = current_main
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-vpc-tmpl">' + template + '</script>'
@@ -19,6 +25,9 @@ define [ 'jquery',
 
         #
         require [ './module/design/property/vpc/view', './module/design/property/vpc/model' ], ( view, model ) ->
+
+            #
+            current_view  = view
 
             #view
             view.model = model
@@ -52,7 +61,7 @@ define [ 'jquery',
         cird && cird.match /^(\d{1,3}.){3}\d{1,3}\/\d\d$/
 
     unLoadModule = () ->
-        #view.remove()
+        current_view.off()
 
     #public
     loadModule   : loadModule

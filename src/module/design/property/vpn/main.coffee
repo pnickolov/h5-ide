@@ -7,8 +7,14 @@ define [ 'jquery',
          'event'
 ], ( $, template, ide_event ) ->
 
+    #
+    current_view = null
+
     #private
-    loadModule = ( uid, type ) ->
+    loadModule = ( uid, type, current_main ) ->
+
+        #
+        MC.data.current_sub_main = current_main
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="property-vpn-tmpl">' + template + '</script>'
@@ -18,13 +24,16 @@ define [ 'jquery',
         #
         require [ './module/design/property/vpn/view', './module/design/property/vpn/model' ], ( view, model ) ->
 
+            #
+            current_view  = view
+
             #view
             view.model    = model
             #render
             view.render()
 
     unLoadModule = () ->
-        #view.remove()
+        current_view.off()
 
     #public
     loadModule   : loadModule

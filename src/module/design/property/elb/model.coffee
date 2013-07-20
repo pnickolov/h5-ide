@@ -13,11 +13,22 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'az_detail' :   null
 
         initELB : ( uid ) ->
+            allComp = MC.canvas_data.component
+            
             elb_data = MC.canvas_data.component[ uid ]
             scheme = elb_data.resource.Scheme
 
+            # have igw ?
+            haveIGW = false
+
+            igwCompAry = _.filter allComp, (obj) ->
+                obj.type is 'AWS.VPC.InternetGateway'
+            if igwCompAry.length isnt 0
+                haveIGW = true
+
             elb_detail = {
-                'isInternal' : scheme is 'internal'
+                'isInternal' : scheme is 'internal',
+                'haveIGW' : haveIGW
             }
 
             this.set 'elb_detail', elb_detail
@@ -113,6 +124,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             MC.canvas_data.component[ uid ].name = value
             MC.canvas_data.component[ uid ].LoadBalancerName = value
 
+            alert 'model: ' + uid
+
             null
 
         getELBName  : ( uid ) ->
@@ -123,7 +136,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
         setScheme   : ( uid, value ) ->
             console.log 'setScheme = ' + value
-            MC.canvas_data.component[ uid ].resource.Scheme = value
+
+            if value is 'internal'
+                MC.canvas_data.component[ uid ].resource.Scheme = 'internal'
+            else
+                MC.canvas_data.component[ uid ].resource.Scheme = 'internet-facing'
 
             null
 

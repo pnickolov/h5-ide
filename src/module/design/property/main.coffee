@@ -82,7 +82,9 @@ define [ 'jquery',
                             #show volume/snapshot property
                             when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid
                             #show elb property
-                            when constant.AWS_RESOURCE_TYPE.AWS_ELB                  then elb_main.loadModule uid
+
+                            when constant.AWS_RESOURCE_TYPE.AWS_ELB
+                                elb_main.loadModule uid
                             #show subnet property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet           then subnet_main.loadModule uid
                             #show vpc property

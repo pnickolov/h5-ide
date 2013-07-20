@@ -10,12 +10,6 @@ define [ 'jquery',
     #private
     loadModule = ( uid ) ->
 
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-elb-tmpl">' + template + '</script>'
-        #load remote html template
-        $( 'head' ).append template
-
-        #
         require [ './module/design/property/elb/view',
                   './module/design/property/elb/model'
         ], ( view, model ) ->
@@ -23,8 +17,11 @@ define [ 'jquery',
             #view
             view.model    = model
 
+            view.off()
+
             #event
             view.on 'ELB_NAME_CHANGED', ( value ) ->
+                alert 'main: ' + uid
                 view.model.setELBName uid, value
 
             view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
@@ -77,10 +74,10 @@ define [ 'jquery',
             }
             
             #render
-            view.render( attributes )
+            view.render template, attributes
 
     unLoadModule = () ->
-        #view.remove()
+        # view.remove()
 
     #public
     loadModule   : loadModule

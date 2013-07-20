@@ -10,16 +10,16 @@ define [ 'jquery',
     #
     current_view = null
 
+    #add handlebars script
+    template = '<script type="text/x-handlebars-template" id="property-sgrule-tmpl">' + template + '</script>'
+    #load remote html template
+    $( 'head' ).append template
+
     #private
     loadModule = ( uid, type, current_main ) ->
 
         #
         MC.data.current_sub_main = current_main
-
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-sgrule-tmpl">' + template + '</script>'
-        #load remote html template
-        $( 'head' ).append template
 
         #
         require [ './module/design/property/sgrule/view', './module/design/property/sgrule/model' ], ( view, model ) ->

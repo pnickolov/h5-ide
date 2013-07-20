@@ -10,17 +10,17 @@ define [ 'jquery',
     #
     current_view = null
 
+    #add handlebars script
+    template = '<script type="text/x-handlebars-template" id="property-volume-tmpl">' + template + '</script>'
+    #load remote html template
+    $( 'head' ).append template
+    console.log 'volume loaded'
+
     #private
     loadModule = ( uid, current_main ) ->
 
         #
         MC.data.current_sub_main = current_main
-
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-volume-tmpl">' + template + '</script>'
-        #load remote html template
-        $( 'head' ).append template
-        console.log 'volume loaded'
 
         #
         require [ './module/design/property/volume/view', './module/design/property/volume/model' ], ( view, model ) ->

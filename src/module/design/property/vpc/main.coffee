@@ -12,16 +12,16 @@ define [ 'jquery',
     #
     current_view = null
 
+    #add handlebars script
+    template = '<script type="text/x-handlebars-template" id="property-vpc-tmpl">' + template + '</script>'
+    #load remote html template
+    $( 'head' ).append template
+
     #private
     loadModule = ( uid, current_main ) ->
 
         #
         MC.data.current_sub_main = current_main
-
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-vpc-tmpl">' + template + '</script>'
-        #load remote html template
-        $( 'head' ).append template
 
         #
         require [ './module/design/property/vpc/view', './module/design/property/vpc/model' ], ( view, model ) ->

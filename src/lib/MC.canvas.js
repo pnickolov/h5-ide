@@ -2033,17 +2033,22 @@ MC.canvas.event.drawConnection = {
 				event.pageX - event.data.canvas_offset.left,
 				event.pageY - event.data.canvas_offset.top
 			),
-			from_node,
+			from_node = event.data.originalTarget,
+			port_name = event.data.port_name,
+			from_type = from_node.data('class'),
+			layout_group_data,
 			to_node,
 			port_name,
 			to_port_name,
-			line_id;
+			line_id,
+			coordinate,
+			group_coordinate,
+			group_size,
+			matched;
 
 		if (match_node)
 		{
-			from_node = event.data.originalTarget;
 			to_node = $(match_node);
-			port_name = event.data.port_name;
 			to_port_name = to_node.find('.connectable-port').data('name');
 
 			if (!from_node.is(to_node) && to_port_name !== undefined)
@@ -2052,6 +2057,45 @@ MC.canvas.event.drawConnection = {
 
 				//trigger event when connect two port
 				$("#svg_canvas").trigger("CANVAS_LINE_CREATE", line_id);
+			}
+		}
+		else if (from_type === 'AWS.VPC.RouteTable' || from_type === 'AWS.ELB')
+		{
+			layout_group_data = MC.canvas.data.get('layout.component.group');
+
+			coordinate = MC.canvas.pixelToGrid(event.pageX - event.data.canvas_offset.left, event.pageY - event.data.canvas_offset.top);
+
+			$.each(children, function (key, item)
+			{
+				group_coordinate = item.coordinate;
+				group_size = item.size;
+
+				if (
+					group_coordinate &&
+					group_coordinate[0] < coordinate.x &&
+					group_coordinate[0] + group_size.size[0] > coordinate.x &&
+					group_coordinate[1] < coordinate.y &&
+					group_coordinate[1] + group_size[1] > coordinate.y
+				)
+				{
+					matched = document.getElementById( key );
+
+					return false;
+				}
+			});
+
+			if (matched)
+			{
+				to_node = $(matched);
+				to_port_name = to_node.find('.connectable-port').data('name');
+
+				if (!from_node.is(to_node) && to_port_name !== undefined)
+				{
+					line_id = MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
+
+					//trigger event when connect two port
+					$("#svg_canvas").trigger("CANVAS_LINE_CREATE", line_id);
+				}
 			}
 		}
 
@@ -2633,6 +2677,9 @@ MC.canvas.event.groupResize = {
 		}
 		else
 		{
+			group_width = Math.ceil(event.data.originalWidth / 10);
+			group_height = Math.ceil(event.data.originalHeight / 10);
+
 			parent.attr('transform', event.data.originalTranslate);
 
 			target.attr({

@@ -490,9 +490,12 @@ MC.canvas = {
 		var canvas_offset = $('#svg_canvas').offset(),
 			from_uid = from_node.attr('id'),
 			to_uid = to_node.attr('id'),
-			layout_node_data = MC.canvas.data.get('layout.component.node'),
-			from_type = layout_node_data[ from_uid ].type,
-			to_type = layout_node_data[ to_uid ].type,
+			layout_component_data = MC.canvas.data.get('layout.component'),
+			layout_node_data = layout_component_data.node,
+			from_data = layout_component_data[ from_node.data('type') ][ from_uid ],
+			to_data = layout_component_data[ to_node.data('type') ][ to_uid ],
+			from_type = from_data.type,
+			to_type = to_data.type,
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
 			layout_connection_data,
@@ -522,8 +525,8 @@ MC.canvas = {
 				});
 			}
 
-			from_node_connection_data = layout_node_data[ from_uid ].connection || [];
-			to_node_connection_data = layout_node_data[ to_uid ].connection || [];
+			from_node_connection_data = from_data.connection || [];
+			to_node_connection_data = to_data.connection || [];
 			is_connected = false;
 
 			$.each(from_node_connection_data, function (key, value)
@@ -641,8 +644,8 @@ MC.canvas = {
 						'line': svg_line.id
 					});
 
-					MC.canvas.data.set('layout.component.node.' + from_uid + '.connection', from_node_connection_data);
-					MC.canvas.data.set('layout.component.node.' + to_uid + '.connection', to_node_connection_data);
+					MC.canvas.data.set('layout.component.' + from_node.data('type') + '.' + from_uid + '.connection', from_node_connection_data);
+					MC.canvas.data.set('layout.component.' + to_node.data('type') + '.' + to_uid + '.connection', to_node_connection_data);
 				}
 
 				layout_connection_data = MC.canvas.data.get('layout.connection.' + svg_line.id) || {};
@@ -1773,6 +1776,25 @@ MC.canvas.event.dragable = {
 						}
 					});
 
+					// Re-draw group connection
+					if (group_data.type === 'AWS.VPC.Subnet')
+					{
+						node_connections = layout_group_data[ target_id ].connection || {};
+
+						$.each(node_connections, function (index, value)
+						{
+							line_connection = layout_connection_data[ value.line ];
+
+							line_layer.removeChild(document.getElementById( value.line ));
+
+							MC.canvas.connect(
+								$('#' + target_id), line_connection['target'][ target_id ],
+								$('#' + value.target), line_connection['target'][ value.target ],
+								{'line_uid': value['line']}
+							);
+						});
+					}
+
 					target.attr('class', function (index, key)
 					{
 						return key + ' selected';
@@ -1821,7 +1843,8 @@ MC.canvas.event.drawConnection = {
 				parent = target.parent(),
 				node_id = parent.attr('id'),
 				node_type = parent.data('class'),
-				layout_node_data = MC.canvas.data.get('layout.component.' + parent.data('type')),
+				layout_component_data = MC.canvas.data.get('layout.component'),
+				layout_node_data = layout_component_data[ parent.data('type') ],
 				node_connections = layout_node_data[ node_id ].connection,
 				position = target.data('position'),
 				port_type = target.data('type'),
@@ -1909,7 +1932,8 @@ MC.canvas.event.drawConnection = {
 							{
 								is_connected = false;
 
-								target_data = layout_node_data[ item.id ];
+								//target_data = layout_node_data[ item.id ];
+								target_data = layout_component_data[ item.getAttribute('data-type') ][ item.id ];
 								target_connection_option = MC.canvas.CONNECTION_OPTION[ target_data.type ][ node_type ];
 
 								if ($.type(target_connection_option) !== 'array')
@@ -2245,12 +2269,21 @@ MC.canvas.event.groupResize = {
 			canvas_offset = $('#svg_canvas').offset(),
 			group_left = group_offset.left - canvas_offset.left,
 			group_top = group_offset.top - canvas_offset.top,
-			type = parent.data('class');
+			type = parent.data('class'),
+			node_connections;
 
 		if (type === 'AWS.VPC.Subnet')
 		{
 			parent.find('.port-subnet-association-in').first().hide();
 			parent.find('.port-subnet-association-out').first().hide();
+
+			// Re-draw group connection
+			node_connections = MC.canvas.data.get('layout.component.group.' + parent.attr('id') + '.connection') || {};
+
+			$.each(node_connections, function (index, value)
+			{
+				line_layer.removeChild(document.getElementById( value.line ));
+			});
 		}
 
 		$(document.body)
@@ -2385,13 +2418,6 @@ MC.canvas.event.groupResize = {
 		{
 			event.data.group_title.attr('y', prop.y + label_offset[1]);
 		}
-
-		// if (type === 'AWS.VPC.Subnet')
-		// {
-		// 	event.data.group_port[0].attr('transform', 'translate(' + (left - 12) + ', ' + (((prop.height || event.data.originalHeight - top) / 2) - 13) + ')');
-			
-		// 	event.data.group_port[1].attr('transform', 'translate(' + (left + (prop.width || event.data.originalWidth - left) + 4) + ', ' + (((prop.height || event.data.originalHeight - top) / 2) - 13) + ')');
-		// }
 	},
 	mouseup: function (event)
 	{
@@ -2417,6 +2443,7 @@ MC.canvas.event.groupResize = {
 			node_maxY = [],
 			group_padding = MC.canvas.GROUP_PADDING,
 			parentGroup = event.data.parentGroup,
+			layout_connection_data,
 			parent_data,
 			parent_size,
 			parent_coordinate,
@@ -2626,6 +2653,23 @@ MC.canvas.event.groupResize = {
 			event.data.group_port[0].attr('transform', 'translate(-12, ' + ((group_height * MC.canvas.GRID_HEIGHT / 2) - 13) + ')').show();
 			
 			event.data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + ((group_height * MC.canvas.GRID_HEIGHT / 2) - 13) + ')').show();
+
+			// Re-draw group connection
+			layout_connection_data = MC.canvas.data.get('layout.connection');
+			node_connections = layout_group_data[ group_id ].connection || {};
+
+			$.each(node_connections, function (index, value)
+			{
+				line_connection = layout_connection_data[ value.line ];
+
+				//line_layer.removeChild(document.getElementById( value.line ));
+
+				MC.canvas.connect(
+					$('#' + group_id), line_connection['target'][ group_id ],
+					$('#' + value.target), line_connection['target'][ value.target ],
+					{'line_uid': value['line']}
+				);
+			});
 		}
 
 		$(document.body)

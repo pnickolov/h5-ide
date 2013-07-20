@@ -1802,6 +1802,25 @@ MC.canvas.event.dragable = {
 							node_data = layout_group_data[ item.id ];
 
 							MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
+
+							// Re-draw group connection
+							if (node_data.type === 'AWS.VPC.Subnet')
+							{
+								node_connections = layout_group_data[ item.id ].connection || {};
+
+								$.each(node_connections, function (index, value)
+								{
+									line_connection = layout_connection_data[ value.line ];
+
+									line_layer.removeChild(document.getElementById( value.line ));
+
+									MC.canvas.connect(
+										$(item), line_connection['target'][ item.id ],
+										$('#' + value.target), line_connection['target'][ value.target ],
+										{'line_uid': value['line']}
+									);
+								});
+							}
 						}
 					});
 

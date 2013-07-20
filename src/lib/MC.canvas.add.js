@@ -1106,8 +1106,8 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ENI_JSON.data);
 				component_data.name = option.name;
-				component_data.resource.SubnetId = '@' + option.group.subnetUID + '.resource.SubnetId';
-				component_data.resource.VpcId = '@' + option.group.vpcUID + '.resource.SubnetId';
+				component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
+				component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.SubnetId';
 
 				component_layout = $.extend(true, {}, MC.canvas.ENI_JSON.layout);
 				component_layout.groupUId = option.groupUId;

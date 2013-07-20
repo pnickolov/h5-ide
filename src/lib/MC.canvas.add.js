@@ -534,7 +534,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////7. eip
-				Canvon.image('../assets/images/ide/icon/instance-eip-off.png', 53, 50, 22, 16).attr({
+				Canvon.image(MC.canvas.IMAGE.EIP_OFF, 58, 49, 14, 17).attr({
 					'id': group.id + '_eip_status'
 				}),
 
@@ -1163,7 +1163,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'id': group.id + '_eni_status'
 				}),
 
-				Canvon.image('../assets/images/ide/icon/eip-off.png', 46, 50, 14, 17).attr({
+				Canvon.image(MC.canvas.IMAGE.EIP_OFF, 46, 50, 14, 17).attr({
 					'id': group.id + '_eip_status'
 				}),
 

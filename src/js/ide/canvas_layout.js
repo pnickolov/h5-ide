@@ -37,7 +37,7 @@ var
 // Dom Ready
 var listen = function ()
 {
-	//MC.paper = Canvon('svg_canvas');
+	MC.paper = Canvon('svg_canvas');
 
 	$('#canvas_body')
 		.on('mousedown', '.instance-volume', MC.canvas.volume.show)

@@ -26,12 +26,24 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
                     vpn_detail.cgw_name = cgw.name
                     vpn_detail.is_dynamic = if cgw.BgpAsn then true else false
-                    vpn_detail.ips = []
+                    vpn_detail.ips = ['192.168.1.1', '192.168.1.2']
                     vpn_detail.is_del = if vpn_detail.ips.length > 1 then true else false
 
                 null
                 
             me.set 'vpn_detail', vpn_detail
+
+        delIP : (ip) ->
+            me = this
+
+            vpn_detail = me.get 'vpn_detail'
+
+            if ip in vpn_detail.ips
+                delete vpn_detail.ips[vpn_detail.ips.indexOf(ip)]
+
+                me.set 'vpn_detail', vpn_detail
+
+            null
 
     }
 

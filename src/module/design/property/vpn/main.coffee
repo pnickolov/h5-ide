@@ -27,6 +27,10 @@ define [ 'jquery',
 
             renderVPNPanel line_option
 
+            view.once 'VPN_DELETE_IP', (ip) ->
+                model.delIP ip
+                
+
     unLoadModule = () ->
         #view.remove()
 

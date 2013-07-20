@@ -56,7 +56,7 @@ var constant_data = {
 	//constant for MC.canvas.add
 	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 14 l 2 0 l 6 -6 z", //new style
 
-	PORT_PADDING: 6, //port padding (to point of junction)
+	PORT_PADDING: 4, //port padding (to point of junction)
 	CORNER_RADIUS: 8, //cornerRadius of fold line
 
 	//**for port, direction is position**//
@@ -199,6 +199,12 @@ var constant_data = {
 				to: 'eni-sg-in',
 				color: '#6DAEFE',
 				relation: 'unique'
+			},
+			{
+				from: 'instance-sg-in',
+				to: 'eni-sg-out',
+				color: '#6DAEFE',
+				relation: 'multiple'
 			}],
 			'AWS.VPC.RouteTable': [
 			{
@@ -253,14 +259,20 @@ var constant_data = {
 			{
 				from: 'eni-sg-in',
 				to: 'instance-sg-out',
-				color: '#6DAEFE', //green
-				relation: 'unique'
+				color: '#6DAEFE', //blue
+				relation: 'multiple'
+			},
+			{
+				from: 'eni-sg-out',
+				to: 'instance-sg-in',
+				color: '#6DAEFE', //blue
+				relation: 'multiple'
 			},
 			{
 				from: 'eni-attach',
 				to: 'instance-attach',
 				relation: 'unique', //an eni can only connect to one instance
-				color: '#12CD4F'
+				color: '#12CD4F' //green
 			}]
 		},
 		'AWS.VPC.RouteTable':

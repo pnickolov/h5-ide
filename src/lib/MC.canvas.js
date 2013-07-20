@@ -1481,9 +1481,17 @@ MC.canvas.event.dragable = {
 				target_offset = this.getBoundingClientRect(),
 				node_type = target.data('type'),
 				canvas_offset = $('#svg_canvas').offset(),
-				shadow = target.clone(),
+				shadow,
 				platform,
 				target_group_type;
+
+			if (target.data('class') === 'AWS.VPC.Subnet')
+			{
+				target.find('.port-subnet-association-in').first().hide();
+				target.find('.port-subnet-association-out').first().hide();
+			}
+
+			shadow = target.clone();
 
 			shadow.attr('class', shadow.attr('class') + ' shadow');
 			$('#svg_canvas').append(shadow);
@@ -1779,6 +1787,9 @@ MC.canvas.event.dragable = {
 					// Re-draw group connection
 					if (group_data.type === 'AWS.VPC.Subnet')
 					{
+						target.find('.port-subnet-association-in').first().show();
+						target.find('.port-subnet-association-out').first().show();
+
 						node_connections = layout_group_data[ target_id ].connection || {};
 
 						$.each(node_connections, function (index, value)
@@ -1788,7 +1799,7 @@ MC.canvas.event.dragable = {
 							line_layer.removeChild(document.getElementById( value.line ));
 
 							MC.canvas.connect(
-								$('#' + target_id), line_connection['target'][ target_id ],
+								target, line_connection['target'][ target_id ],
 								$('#' + value.target), line_connection['target'][ value.target ],
 								{'line_uid': value['line']}
 							);

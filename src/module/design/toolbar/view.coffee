@@ -12,7 +12,8 @@ define [ 'MC', 'event',
 
         el       : document
 
-        template : Handlebars.compile $( '#toolbar-tmpl' ).html()
+        stack_tmpl : Handlebars.compile $( '#toolbar-stack-tmpl' ).html()
+        app_tmpl : Handlebars.compile $( '#toolbar-app-tmpl' ).html()
 
         events   :
             'click #toolbar-run'                : 'clickRunIcon'
@@ -31,18 +32,26 @@ define [ 'MC', 'event',
             'click #toolbar-jsonview'           : 'clickOpenJSONView'
             'COPY_TO_CLIP_COMPLETE'             : 'copytoClipComplete'
 
-        render   : () ->
+        render   : ( type ) ->
             console.log 'toolbar render'
             #
-            $( '#main-toolbar' ).html this.template this.model.attributes
+            if type is 'OPEN_APP'
+                $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
+            else
+                $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
             #
             zeroclipboard.init 'toolbar-jsoncopy', ZeroClipboard
 
-        reRender   : ( template ) ->
+        reRender   : ( type ) ->
             console.log 're-toolbar render'
-            if $.trim( $( '#main-toolbar' ).html() ) is 'loading...' then $( '#main-toolbar' ).html this.template this.model.attributes
+            if $.trim( $( '#main-toolbar' ).html() ) is 'loading...'
+                #
+                if type is 'OPEN_STACK'
+                    $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
+                else
+                    $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
 
         clickRunIcon : ->
             me = this

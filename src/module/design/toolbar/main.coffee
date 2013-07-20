@@ -2,18 +2,27 @@
 #  Controller for design/toolbar module
 ####################################
 
-define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, toolbar_tmpl, ide_event ) ->
+define [ 'jquery',
+         'text!/module/design/toolbar/stack_template.html',
+         'text!/module/design/toolbar/app_template.html',
+         'event'
+], ( $, stack_template, app_template, ide_event ) ->
 
     #private
     loadModule = () ->
 
         #add handlebars script
-        toolbar_tmpl = '<script type="text/x-handlebars-template" id="toolbar-tmpl">' + toolbar_tmpl + '</script>'
+        stack_template = '<script type="text/x-handlebars-template" id="toolbar-stack-tmpl">' + stack_template + '</script>'
+        app_template   = '<script type="text/x-handlebars-template" id="toolbar-app-tmpl">'   + app_template   + '</script>'
         #load remote html template
-        $( 'head' ).append toolbar_tmpl
+        $( 'head' ).append stack_template
+        $( 'head' ).append app_template
 
-        #load remote module1.js
+        #
         require [ './module/design/toolbar/view', './module/design/toolbar/model' ], ( View, model ) ->
+
+            #
+            type      = null
 
             #view
             view       = new View()
@@ -22,16 +31,20 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
 
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, stack_name ) ->
-                console.log 'toolbar:RELOAD_RESOURCE, stack_name = ' + stack_name
+                console.log 'toolbar:RELOAD_RESOURCE, stack_name = ' + stack_name + ', type = ' + type
                 #check re-render
-                view.reRender()
+                view.reRender type
                 #
-                model.setFlag(type)
+                type = type
+                #
+                model.setFlag type
+                #
+                view.render type
 
             #listen toolbar state change
             model.on 'UPDATE_TOOLBAR', () ->
                 console.log 'update toolbar status'
-                view.render()
+                view.render type
 
             #save
             view.on 'TOOLBAR_SAVE_CLICK', () ->

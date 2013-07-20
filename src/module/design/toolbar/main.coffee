@@ -23,12 +23,15 @@ define [ 'jquery', 'text!/module/design/toolbar/template.html', 'event' ], ( $, 
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, stack_name ) ->
                 console.log 'toolbar:RELOAD_RESOURCE, stack_name = ' + stack_name
+                #check re-render
+                view.reRender()
+                #
                 model.setFlag(type)
 
             #listen toolbar state change
             model.on 'UPDATE_TOOLBAR', () ->
                 console.log 'update toolbar status'
-                view.reRender()
+                view.render()
 
             #save
             view.on 'TOOLBAR_SAVE_CLICK', () ->

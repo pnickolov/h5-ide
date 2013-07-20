@@ -1069,7 +1069,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////3. cgw name
 				Canvon.text(50, 90, option.name).attr({
-					'class': 'node-label name'
+					'class': 'node-label name',
+					'id': group.id + '_cgw_name'
 				}),
 
 				////4. network name

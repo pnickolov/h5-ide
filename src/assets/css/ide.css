@@ -1815,6 +1815,26 @@ a.sidebar-hider {
 	background: url('../images/ide/icon/eni-resource.png') center center no-repeat;
 }
 
+.resource-icon-subnet {
+	background: url('../images/ide/subnet-resource.png') center center no-repeat;
+}
+
+.resource-icon-rt {
+	background: url('../images/ide/RT-resource.png') center center no-repeat;
+}
+
+.resource-icon-igw {
+	background: url('../images/ide/igw-resource.png') center center no-repeat;
+}
+
+.resource-icon-vgw {
+	background: url('../images/ide/vgw-resource.png') center center no-repeat;
+}
+
+.resource-icon-cgw {
+	background: url('../images/ide/cgw-resource.png') center center no-repeat;
+}
+
 
 .ebs-size {
 	font-size: 12px;

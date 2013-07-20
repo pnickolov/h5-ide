@@ -154,7 +154,7 @@ define [ 'jquery',
             #listen OPEN_SG
             ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id ) ->
                 console.log 'OPEN_SG'
-                sg_main.loadModule( uid_parent, expended_accordion_id )
+                sg_main.loadModule( uid_parent, expended_accordion_id, sg_main )
                 #temp
                 # setTimeout () ->
                 #    view.refresh()
@@ -166,7 +166,7 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id) ->
                 console.log 'OPEN_INSTANCE'
                 #
-                instance_main.loadModule uid, type, expended_accordion_id, instance_main
+                instance_main.loadModule uid, expended_accordion_id, instance_main
                 #temp
                 # setTimeout () ->
                 #    view.refresh()

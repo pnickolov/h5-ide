@@ -20,15 +20,17 @@ require.config {
 		'domReady'     : 'vender/requirejs/domReady'
 		'text'         : 'vender/requirejs/text'
 
+		'zeroclipboard': 'vender/zeroclipboard/ZeroClipboard'
+
 		#core lib
-		'MC'           : 'lib/MC.core'
-		'MC.template'  : 'lib/MC.template'
-		'MC.ide.template'  : 'lib/MC.ide.template'
+		'MC'                 : 'lib/MC.core'
+		'MC.template'        : 'lib/MC.template'
+		'MC.ide.template'    : 'lib/MC.ide.template'
 
 		#canvas
-		'MC.canvas'    : 'lib/MC.canvas'
+		'MC.canvas'          : 'lib/MC.canvas'
 		'MC.canvas.constant' : 'lib/MC.canvas.constant'
-		'MC.canvas.add': 'lib/MC.canvas.add'
+		'MC.canvas.add'      : 'lib/MC.canvas.add'
 
 		#ui
 		'UI.tooltip'        : 'ui/common/UI.tooltip'
@@ -39,8 +41,7 @@ require.config {
 		'UI.modal'          : 'ui/common/UI.modal'
 		'UI.table'          : 'ui/common/UI.table'
 		'UI.tablist'        : 'ui/common/UI.tablist'
-		'UI.fixedaccordion'   : 'ui/common/UI.fixedaccordion'
-
+		'UI.fixedaccordion' : 'ui/common/UI.fixedaccordion'
 		'UI.selectbox'      : 'ui/common/UI.selectbox'
 		'UI.toggleicon'     : 'ui/common/UI.toggleicon'
 		'UI.searchbar'      : 'ui/common/UI.searchbar'
@@ -48,9 +49,10 @@ require.config {
 		'UI.radiobuttons'   : 'ui/common/UI.radiobuttons'
 		'UI.notification'   : 'ui/common/UI.notification'
 		'UI.secondarypanel' : 'ui/common/UI.secondarypanel'
-		'UI.slider': 'ui/common/UI.slider'
+		'UI.slider'         : 'ui/common/UI.slider'
 		'UI.editablelabel'  : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'  : 'ui/common/UI.multiinputbox'
+		'UI.zeroclipboard'  : 'ui/common/UI.zeroclipboard'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
@@ -229,5 +231,5 @@ require.config {
 
 }
 
-requirejs.onError = ( err ) ->
-    console.log 'error type: ' + err.requireType + ', modules: ' + err.requireModules
+#requirejs.onError = ( err ) ->
+#    console.log 'error type: ' + err.requireType + ', modules: ' + err.requireModules

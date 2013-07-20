@@ -654,6 +654,35 @@ Additional Notes and Questions
 	</div>
 </div>
 
+<!-- modalAddACL -->
+<div id="modal-run-stack">
+  <div class="modal-header"><h3>Add Network ACL Rule</h3><i class="modal-close">&times;</i></div>
+  <div class="modal-body">
+    <div class="modal-row">
+      <label for="modal-acl-number">Rule Number</label>
+      <input class="input" type="text" maxLength="5" id="modal-acl-number">
+    </div>
+    <div class="modal-row">
+      <label>Action</label>
+    </div>
+    <div class="modal-row">
+      <label>Direction</label>
+    </div>
+    <div class="modal-row">
+      <label>Source</label>
+      <div class="modal-acl-source-wrapper"></div>
+    </div>
+    <div class="modal-row">
+      <label for="Source">Protocol</label>
+      <div class="sg-protocol-control"></div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-blue">Save</button>
+    <button class="btn btn-silver modal-close">Cancel</button>
+  </div>
+</div>
+
 <!-- sgListItem -->
 <li class="clearfix" data-sgid="000">
 	<div class="col1 sg-toggle-show-icon"></div>

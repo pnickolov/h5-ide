@@ -284,7 +284,25 @@ var constant_data = {
 				to: 'instance-attach',
 				relation: 'unique', //an eni can only connect to one instance
 				color: '#12CD4F' //green
-			}]
+			}],
+			'AWS.VPC.RouteTable':[
+			{
+				from: 'eni-sg-in',
+				to: 'rtb-tgt-left',
+				color: '#6DAEFE', //blue
+				relation: 'multiple',
+				color_dash: '#9FC9FD', //dash color
+				stroke_dasharray: '10, 10'
+			},
+			{
+				from: 'eni-sg-in',
+				to: 'rtb-tgt-right',
+				color: '#6DAEFE', //blue
+				relation: 'multiple',
+				color_dash: '#9FC9FD', //dash color
+				stroke_dasharray: '10, 10'
+			}
+			]
 		},
 		'AWS.VPC.RouteTable':
 		{

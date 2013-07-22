@@ -320,6 +320,21 @@ define [ 'constant',
 
 							return false
 
+				# remove line between eni and rt
+				if portMap['eni-sg-in'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+
+					rt_uid = null
+
+					if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
+
+					$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
+
+						if route.NetworkInterfaceId and route.NetworkInterfaceId.split('.')[0][1...] == portMap['eni-sg-in']
+
+							MC.canvas_data.component[rt_uid].resource.RouteSet.splice index, 1
+
+							return false
+
 				# remove line between vgw and rt
 				if portMap['vgw-tgt'] and portMap['rtb-tgt-right']
 
@@ -574,7 +589,7 @@ define [ 'constant',
 					
 					vgw_route = {
 						'DestinationCidrBlock'		:	'0.0.0.0/0',
-						'GatewayId'					:	'@' + portMap['vgw-tgt'] + '.resource.InstanceId',
+						'GatewayId'					:	'@' + portMap['vgw-tgt'] + '.resource.VpnGatewayId',
 						'InstanceId'				:	'',
 						'InstanceOwnerId'			:	'',
 						'NetworkInterfaceId'		:	'',
@@ -584,6 +599,24 @@ define [ 'constant',
 
 					MC.canvas_data.component[rt_uid].resource.RouteSet.push vgw_route
 
+				# routetable to eni
+				if portMap['eni-sg-in'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+
+					rt_uid = null
+
+					if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
+					
+					instance_route = {
+						'DestinationCidrBlock'		:	'0.0.0.0/0',
+						'GatewayId'					:	'',
+						'InstanceId'				:	'',
+						'InstanceOwnerId'			:	'',
+						'NetworkInterfaceId'		:	'@' + portMap['eni-sg-in'] + '.resource.NetworkInterfaceId',
+						'State'						:	'',
+						'Origin'					:	''
+					}
+
+					MC.canvas_data.component[rt_uid].resource.RouteSet.push instance_route
 
 			null
 

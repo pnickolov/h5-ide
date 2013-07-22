@@ -1185,6 +1185,8 @@ MC.canvas = {
 
 			if (
 				node_id !== key &&
+				item.type !== 'AWS.VPC.InternetGateway' &&
+				item.type !== 'AWS.VPC.VPNGateway' &&
 				(
 					(coordinate[0] > start_x &&
 					coordinate[0] < end_x)
@@ -2773,7 +2775,16 @@ MC.canvas.event.groupResize = {
 			group_maxX,
 			group_maxY,
 			group_minX,
-			group_minY;
+			group_minY,
+			igw_gateway,
+			igw_gateway_id,
+			igw_gateway_data,
+			igw_top,
+			vgw_gateway,
+			vgw_gateway_id,
+			vgw_gateway_data,
+			vgw_top,
+			line_connection;
 
 		//adjust group_left
 		if (offsetX < 0)
@@ -2927,6 +2938,79 @@ MC.canvas.event.groupResize = {
 			event.data.group_child.length === MC.canvas.areaChild(group_id, group_left, group_top, group_left + group_width, group_top + group_height).length
 		)
 		{
+			if (type === 'AWS.VPC.VPC')
+			{
+				layout_connection_data = MC.canvas.data.get('layout.connection');
+
+				igw_gateway = $('.AWS-VPC-InternetGateway');
+				if (igw_gateway[0])
+				{
+					igw_gateway_id = igw_gateway.attr('id');
+					igw_gateway_data = layout_node_data[ igw_gateway_id ];
+					igw_top = igw_gateway_data.coordinate[1];
+
+					if (igw_top > group_top + group_height - 10)
+					{
+						igw_top = group_top + group_height - 10;
+					}
+
+					if (igw_top < group_top)
+					{
+						igw_top = group_top;
+					}
+
+					// MC.canvas.COMPONENT_SIZE[0] / 2 = 5
+					MC.canvas.position(igw_gateway[0],  (group_left - 5) * MC.canvas_property.SCALE_RATIO, igw_top * MC.canvas_property.SCALE_RATIO);
+
+					$.each(igw_gateway_data.connection, function (index, value)
+					{
+						line_connection = layout_connection_data[ value.line ];
+
+						line_layer.removeChild(document.getElementById( value.line ));
+
+						MC.canvas.connect(
+							$('#' + igw_gateway_id), line_connection['target'][ igw_gateway_id ],
+							$('#' + value.target), line_connection['target'][ value.target ],
+							{'line_uid': value['line']}
+						);
+					});
+				}
+
+				vgw_gateway = $('.AWS-VPC-VPNGateway');
+				if (vgw_gateway[0])
+				{
+					vgw_gateway_id = vgw_gateway.attr('id');
+					vgw_gateway_data = layout_node_data[ vgw_gateway_id ];
+					vgw_top = vgw_gateway_data.coordinate[1];
+
+					if (vgw_top > group_top + group_height - 10)
+					{
+						vgw_top = group_top + group_height - 10;
+					}
+
+					if (vgw_top < group_top)
+					{
+						vgw_top = group_top;
+					}
+
+					// MC.canvas.COMPONENT_SIZE[0] / 2 = 5
+					MC.canvas.position(vgw_gateway[0],  (group_left + group_width - 5) * MC.canvas_property.SCALE_RATIO, vgw_top * MC.canvas_property.SCALE_RATIO);
+
+					$.each(vgw_gateway_data.connection, function (index, value)
+					{
+						line_connection = layout_connection_data[ value.line ];
+
+						line_layer.removeChild(document.getElementById( value.line ));
+
+						MC.canvas.connect(
+							$('#' + vgw_gateway_id), line_connection['target'][ vgw_gateway_id ],
+							$('#' + value.target), line_connection['target'][ value.target ],
+							{'line_uid': value['line']}
+						);
+					});
+				}
+			}
+
 			parent.attr('transform',
 				'translate(' +
 					group_left * 10 + ',' +

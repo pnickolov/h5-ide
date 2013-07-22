@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/vpn
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event ) ->
 
    VPNView = Backbone.View.extend {
 
@@ -27,7 +27,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             ips = []
             _.map $("#property-vpn-ips .input"), (target) -> ips.push target.value
 
-            ori_ips = me.model.attributes
+            ori_ips = me.model.attributes.vpn_detail.ips
+
+            new_ip = ip for ip in ips when ori_ips.indexOf(ip) == -1
+
+            if new_ip
+                #validation check
+                if new_ip in ori_ips
+                    notification 'warn', 'IP Prefixes must be unique from each other'
+                    
+                me.trigger 'VPN_ADD_IP', new_ip
+            else
+                notification 'warn', 'Must be a valid IPv4 CIDR Address'
 
             console.log ips
 

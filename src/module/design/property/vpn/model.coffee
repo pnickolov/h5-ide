@@ -45,6 +45,16 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             null
 
+        addIP : (new_ip) ->
+            me = this
+
+            vpn_detail = me.get 'vpn_detail'
+
+            if new_ip not in vpn_detail.ips
+                vpn_detail.ips.push new_ip
+
+                me.set 'vpn_detail', vpn_detail
+
     }
 
     model = new VPNModel()

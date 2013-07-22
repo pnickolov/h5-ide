@@ -43,7 +43,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
         writeOldDesignHtml : () ->
             console.log 'writeOldDesignHtml'
-            this.$el.html this.model.get 'snapshot'
+            this.$el.empty().html this.model.get 'snapshot'
 
     }
 

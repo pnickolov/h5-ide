@@ -9,7 +9,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
         defaults :
             'uid'         : null
             'name'        : null
-            'update_name' : null
+            'update_instance_title' : null
 
         listen : ->
             #listen
@@ -23,7 +23,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
         setName  : () ->
             console.log 'setName'
             MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
-            this.set 'update_name', this.get 'name'
+            this.set 'update_instance_title', this.get 'name'
             null
 
         getName  : () ->

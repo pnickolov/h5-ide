@@ -53,6 +53,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         render     : ( attributes, instance_expended_id ) ->
             console.log 'property:instance render'
             #
+            this.undelegateEvents()
+            #
             #$( '.property-details' ).html this.template attributes
             $( '.property-details' ).html this.template this.model.attributes
             #
@@ -63,6 +65,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                     fixedaccordion.show.call accordion.find('.accordion-group').index instance_expended_id
 
             fixedaccordion.resize()
+            #
+            this.delegateEvents this.events
 
         instanceNameChange : ( event ) ->
             console.log 'instanceNameChange'

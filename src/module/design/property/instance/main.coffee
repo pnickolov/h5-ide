@@ -46,10 +46,7 @@ define [ 'jquery',
             #
             model.listen()
             #
-            model.on 'change:update_name', () ->
-                view.undelegateEvents()
-                view.render()
-                view.delegateEvents view.events
+            model.on 'change:update_instance_title', () -> view.render()
 
             ###
             #model

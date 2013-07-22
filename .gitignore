@@ -16,10 +16,10 @@ components/**
 release/**
 
 #ignore vender
-src/vender/**
+!src/vender/**
+!src/vender/zeroclipboard/**
 !src/vender/canvon/canvon.js
 !src/vender/meteor/meteor.js
-!src/vender/ZeroClipboard/*
 
 #ignore page
 src/js/*.js

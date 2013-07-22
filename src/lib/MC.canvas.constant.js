@@ -283,19 +283,13 @@ var constant_data = {
 				to: 'rtb-tgt-left',
 				color: '#d8d7d6' //gray
 			},
-			'AWS.VPC.Subnet': [
+			'AWS.VPC.Subnet':
 			{
-				from: 'rtb-src-top',
+				from: 'rtb-src',
 				to: 'subnet-association-out',
 				relation: 'multiple',
 				color: '#d8d7d6'
 			},
-			{
-				from: 'rtb-src-bottom',
-				to: 'subnet-association-out',
-				relation: 'multiple',
-				color: '#d8d7d6'
-			}],
 			'AWS.EC2.Instance': [
 			{
 				from: 'rtb-tgt-left',
@@ -364,19 +358,13 @@ var constant_data = {
 		},
 		'AWS.VPC.Subnet':
 		{
-			'AWS.VPC.RouteTable': [
+			'AWS.VPC.RouteTable':
 			{
 				from: 'subnet-association-out',
-				to: 'rtb-src-top',
+				to: 'rtb-src',
 				relation: 'multiple',
 				color: '#d8d7d6'
 			},
-			{
-				from: 'subnet-association-out',
-				to: 'rtb-src-bottom',
-				relation: 'multiple',
-				color: '#d8d7d6'
-			}],
 			'AWS.ELB':
 			{
 				from: 'subnet-association-in',

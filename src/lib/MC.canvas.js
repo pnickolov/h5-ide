@@ -566,12 +566,54 @@ MC.canvas = {
 
 			if (is_connected === false || line_option)
 			{
-				from_port = from_node.find('.port-' + from_target_port);
-				to_port = to_node.find('.port-' + to_target_port);
+				// Special for AWS.VPC.Subnet and AWS.VPC.RouteTable
+				if (
+					(from_type === 'AWS.VPC.Subnet' && to_type === 'AWS.VPC.RouteTable') ||
+					(to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable')
+				)
+				{
+					if (from_type === 'AWS.VPC.Subnet')
+					{
+						from_port = from_node.find('.port-' + from_target_port);
+						from_port_offset = from_port[0].getBoundingClientRect();
 
-				from_port_offset = from_port[0].getBoundingClientRect();
-				to_port_offset = to_port[0].getBoundingClientRect();
+						if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
+						{
+							to_port = to_node.find('.port-rtb-src-bottom');
+						}
+						else
+						{
+							to_port = to_node.find('.port-rtb-src-top');
+						}
 
+						to_port_offset = to_port[0].getBoundingClientRect();
+					}
+
+					if (to_type === 'AWS.VPC.Subnet')
+					{
+						to_port = to_node.find('.port-' + to_target_port);
+						to_port_offset = to_port[0].getBoundingClientRect();
+
+						if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
+						{
+							from_port = from_node.find('.port-rtb-src-bottom');
+						}
+						else
+						{
+							from_port = from_node.find('.port-rtb-src-top');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+					}
+				}
+				else
+				{
+					from_port = from_node.find('.port-' + from_target_port);
+					from_port_offset = from_port[0].getBoundingClientRect();
+					to_port = to_node.find('.port-' + to_target_port);
+					to_port_offset = to_port[0].getBoundingClientRect();
+				}
+			
 				startX = (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
 				startY = (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
 				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
@@ -639,7 +681,6 @@ MC.canvas = {
 							}
 						}
 					}
-
 				}
 
 				svg_line = MC.paper.save();

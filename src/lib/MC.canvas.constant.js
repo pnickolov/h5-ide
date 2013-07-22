@@ -290,8 +290,9 @@ var constant_data = {
 		{
 			'AWS.VPC.RouteTable':
 			{
-				from: 'rtb-src-top',
+				from: 'rtb-src',
 				to: 'rtb-tgt-left',
+				relation: 'multiple',
 				color: '#d8d7d6' //gray
 			},
 			'AWS.VPC.Subnet':

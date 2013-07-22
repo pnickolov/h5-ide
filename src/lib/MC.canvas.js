@@ -392,12 +392,46 @@ MC.canvas = {
 		controlPoints.push(fromPt);
 	},
 
-	_route2: function (controlPoints, start0, end0)
+	_adjustMidY: function (port_id, mid_y, point, sign)
+	{
+		switch (port_id)
+		{
+			case 'rtb-src':
+				mid_y = point.y;
+				break;
+			case 'rtb-tgt-left':
+			case 'rtb-tgt-right': //both left and right
+				mid_y = point.y + 50 * sign;
+				break;
+		}
+		return mid_y;
+	},
+
+	_adjustMidX: function (port_id, mid_x, point, sign)
+	{
+		switch (port_id)
+		{
+			case 'rtb-tgt-left': //for start
+				mid_x = point.x + 4;
+				break;
+			case 'rtb-tgt-right': //for end
+				mid_x = point.x - 4;
+				break;
+			case 'rtb-src': //both top and bottom
+				mid_x = point.x + 75 * sign;
+				break;
+		}
+		return mid_x;
+	},
+
+	_route2: function (controlPoints, start0, end0, from_type, to_type, from_port_name, to_port_name)
 	{
 		//add by xjimmy, connection algorithm (xjimmy's algorithm)
 
 		var start = {},
 			end = {},
+			mid_x,
+			mid_y,
 			//start.x>=end.x
 			start_0_90 = end_0_90 = start_180_270 = end_180_270 = false,
 			//start.x<end.x
@@ -414,6 +448,9 @@ MC.canvas = {
 			MC.canvas._addPad(end, 0);
 		}
 
+		MC.canvas._addPad(start, 0);
+		MC.canvas._addPad(end, 0);
+
 		//ensure start.y>=end.y
 		if (start.y < end.y)
 		{
@@ -426,6 +463,14 @@ MC.canvas = {
 			$.extend(true, tmp0, start0);
 			$.extend(true, start0, end0);
 			end0 = tmp0;
+			//swap from_type and to_type
+			var tmp_type  = from_type;
+			from_type = to_type;
+			to_type = tmp_type;
+			//swap from_port_name and to_port_name
+			var tmp_port_name  = from_port_name;
+			from_port_name = to_port_name;
+			to_port_name = tmp_port_name;
 		}
 
 		if (start.x >= end.x)
@@ -471,8 +516,23 @@ MC.canvas = {
 		)
 		{
 			//C
-			controlPoints.push( { 'x': start.x, 'y': (start.y + end.y) / 2 });
-			controlPoints.push( { 'x': end.x, 'y': (start.y + end.y) / 2 });
+			mid_y = (start.y + end.y) / 2;
+			if (to_type === "AWS.VPC.RouteTable" && to_type != from_type)
+			{
+				if (Math.abs(mid_y - end.y) > 5)
+				{
+					mid_y = MC.canvas._adjustMidY(to_port_name, mid_y, end, 1);
+				}
+			}
+			else if (from_type == "AWS.VPC.RouteTable" && to_type != from_type)
+			{
+				if (Math.abs(start.y - mid_y) > 5)
+				{
+					mid_y = MC.canvas._adjustMidY(from_port_name, mid_y, start, -1);
+				}
+			}
+			controlPoints.push( { 'x': start.x, 'y': mid_y });
+			controlPoints.push( { 'x': end.x, 'y': mid_y });
 		}
 		else if (
 			(start_180_270 && end_0_90) ||
@@ -480,8 +540,23 @@ MC.canvas = {
 		)
 		{
 			//D
-			controlPoints.push( { 'x': (start.x + end.x) / 2, 'y': start.y });
-			controlPoints.push( { 'x': (start.x + end.x) / 2, 'y': end.y });
+			mid_x = (start.x + end.x) / 2;
+			if (to_type == "AWS.VPC.RouteTable" && to_type != from_type)
+			{
+				if (Math.abs(start.x - mid_x) > 5)
+				{
+					mid_x = MC.canvas._adjustMidX(to_port_name, mid_x, start, 1);
+				}
+			}
+			else if (from_type == "AWS.VPC.RouteTable" && to_type != from_type)
+			{
+				if (Math.abs(mid_x - end.x) > 5)
+				{
+					mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
+				}
+			}
+			controlPoints.push( { 'x': mid_x, 'y': start.y });
+			controlPoints.push( { 'x': mid_x, 'y': end.y });
 		}
 
 		//3.end point
@@ -653,10 +728,10 @@ MC.canvas = {
 					//draw fold line
 
 					///// route 1 (xjimmy's algorithm)/////
-					//MC.canvas._route2( controlPoints, start0, end0 );
+					MC.canvas._route2(controlPoints, start0, end0, from_type, to_type ,from_target_port, to_target_port);
 
 					///// route 2 (ManhattanConnectionRouter, draw2d's algorithm) /////
-					MC.canvas._route( controlPoints, start0, from_port.data('angle'), end0, to_port.data('angle') );
+					//MC.canvas._route( controlPoints, start0, from_port.data('angle'), end0, to_port.data('angle') );
 
 					///// draw fold line /////
 					if (controlPoints.length>0)

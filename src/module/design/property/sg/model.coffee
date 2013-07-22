@@ -30,13 +30,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                     sg_detail.members = value.member.length
 
-                    if MC.canvas_data.component[uid].resource.IpPermissionsEgress.length != 0
-
-                        sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
-                    else
-
-                        sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length
-
+                    sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
+                    
                     sg_detail.member_names = []
 
                     _.map value.member, ( instance_uid ) ->
@@ -82,7 +77,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     tmp = {}
                     tmp.uid = uid
                     tmp.name = sg_name
-                    tmp.member = [ parent ]
+
+                    if parent
+                        tmp.member = [ parent ]
 
                     MC.canvas_property.sg_list.push tmp
 
@@ -99,17 +96,34 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             sg_detail = {}
 
-            sg_detail.parent = parent
-
             sg_detail.component = MC.canvas_data.component[uid]
 
             sg_detail.members = 1
 
             sg_detail.rules = 1
 
-            sg_detail.member_names = [ MC.canvas_data.component[parent].name ]
+            if parent
 
-            MC.canvas_data.component[parent].resource.SecurityGroupId.push '@'+uid+'.resource.GroupId'
+                sg_detail.parent = parent
+
+                sg_detail.member_names = [ MC.canvas_data.component[parent].name ]
+
+                if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+
+                    $.each MC.canvas_data.component, ( key, comp ) ->
+
+                        if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == parent and comp.resource.Attachment.DeviceIndex == '0'
+
+                            group = {
+                                GroupId : '@' + uid + '.resource.GroupId'
+                                GroupName : '@' +  uid + '.resource.GroupName'
+                            }
+
+                            MC.canvas_data.component[ comp.uid ].resource.GroupSet.push group
+
+                            return false
+                else
+                    MC.canvas_data.component[parent].resource.SecurityGroupId.push '@'+uid+'.resource.GroupId'
 
             me.set 'sg_detail', sg_detail
 

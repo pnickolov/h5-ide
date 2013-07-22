@@ -351,7 +351,7 @@ textarea {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	display: block;
 	width: 206px;
-	height: 80px;
+	/*height: 80px;*/
 	padding: 5px;
 	margin-bottom: 10px;
 	border: 1px solid #999;
@@ -810,6 +810,9 @@ textarea {
 	z-index: 70;
 	background-color: rgba(0, 0, 0, 0.8);
 }
+
+/* tablist */
+[data-tab-target] { cursor : pointer; }
 
 /* Accordion */
 .accordion-body {
@@ -1440,7 +1443,7 @@ textarea {
 }
 
 .property-control-group .selectbox.selectbox-mega .main {
-	width: 230px;
+	/*width: 230px;*/
 	font-size: 13px;
 }
 
@@ -1457,8 +1460,76 @@ textarea {
 	right: 0;
 }
 
+/* added by song */
+
+/* Slider */
+
+.slider {
+	background-color: #fff;
+	border-radius: 0px;
+	height: 2px;
+	width: 240px;
+	border: 1px #bbb solid;
+	border-left: 0;
+	border-right: 0;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	cursor: default;
+}
+
+.slider .slider-controll {
+	background-color: #aaa;
+	border-radius: 5px;
+	height: 10px;
+	width: 10px;
+	border: 0;
+	position: absolute;
+	z-index: 99;
+	margin-top: -5px;
+	margin-left: -10px;
+	border: 1px #bbb solid;
+}
+
+.slider-line {
+	list-style: none;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	margin-top: -8px;
+	margin-left: -5px;
+	width: 500px;
+}
+
+.slider-line li {
+	float: left;
+	width: 29px;
+	height: 20px;
+	border-left: 1px #ccc solid;
+	color: #888;
+	line-height: 60px;
+}
+
+.slider-line li span {
+	margin-left: -5px;
+}
+
+.slider-wrap {
+	width: 10px;
+	height: 2px;
+	border: 1px #bbb solid;
+	position: absolute;
+	border-left: 0;
+	border-right: 0;
+	margin-top: -1px;
+	margin-left: -7px;
+}
+
 .property-control-group-sub {
 	padding-left : 20px;
+}
+
+.property-control-group-sub .property-control-group {
+	width : auto;
 }
 
 .property-control-group-sub .property-control-group .input {
@@ -1474,21 +1545,31 @@ textarea {
 }
 
 /* Multi Input Box */
-.multi-input {
-	padding-right : 15px;
-	position      : relative;
-}
-
 .multi-ipt-row {
 	margin-bottom : 5px;
 }
 
-.multi-ipt-row:first-child:last-child .icon-del {
-	display : none;
+.multi-ipt-row .ipt-controls {
+	float : right;
+	width : 36px;
+	line-height : 38px;
 }
 
-.multi-ipt-row input {
-	vertical-align: middle;
+.multi-ipt-row .ipt-wrapper {
+	display  : block;
+	overflow : hidden;
+}
+
+.multi-ipt-row .ipt-wrapper input {
+	display : block;
+	width   : 100% !important;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+.multi-ipt-row:first-child:last-child .icon-del {
+	display : none;
 }
 
 .multi-input .icon-del,
@@ -1498,7 +1579,6 @@ textarea {
 	height      : 16px;
 	margin-left : 2px;
 	
-	vertical-align : middle;
 	position : relative;
 }
 

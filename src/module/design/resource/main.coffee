@@ -13,7 +13,7 @@ define [ 'jquery',
     loadModule = () ->
 
         #compile partial template
-        MC.IDEcompile 'design-resource', template_data, { '.availability-zone-data' : 'availability-zone-tmpl', '.resoruce-snapshot-data' : 'resoruce-snapshot-tmpl', '.quickstart-ami-data' : 'quickstart-ami-tmpl', '.my-ami-data' : 'my-ami-tmpl', '.favorite-ami-data' : 'favorite-ami-tmpl', '.community-ami-btn':'community-ami-tmpl' }
+        MC.IDEcompile 'design-resource', template_data, { '.availability-zone-data' : 'availability-zone-tmpl', '.resoruce-snapshot-data' : 'resoruce-snapshot-tmpl', '.quickstart-ami-data' : 'quickstart-ami-tmpl', '.my-ami-data' : 'my-ami-tmpl', '.favorite-ami-data' : 'favorite-ami-tmpl', '.community-ami-btn':'community-ami-tmpl', '.resource-vpc-select-list' : 'resource-vpc-tmpl' }
 
         #
         require [ './module/design/resource/view', './module/design/resource/model', 'UI.bubble' ], ( View, model ) ->
@@ -37,18 +37,19 @@ define [ 'jquery',
             #    #if id is 'favorite-ami' then
 
             #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name ) ->
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform, tab_name ) ->
                 console.log 'resource:RELOAD_RESOURCE'
                 #check re-render
                 view.reRender template
                 #
-                model.describeAvailableZonesService region_name
+                model.describeAvailableZonesService region_name, type
                 model.describeSnapshotsService      region_name
                 model.quickstartService             region_name
                 #model.myAmiService                  region_name
                 #model.favoriteAmiService            region_name
                 view.region = region_name
                 view.communityAmiBtnRender()
+                view.resourceVpcRender( current_platform, type )
                 null
 
             view.on 'LOADING_COMMUNITY_AMI', ( region_name, state ) ->

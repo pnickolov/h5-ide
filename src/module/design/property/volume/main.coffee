@@ -7,26 +7,41 @@ define [ 'jquery',
          'event'
 ], ( $, template, ide_event ) ->
 
-    #private
-    loadModule = ( uid ) ->
+    #
+    current_view  = null
+    current_model = null
 
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-volume-tmpl">' + template + '</script>'
-        #load remote html template
-        $( 'head' ).append template
-        console.log 'volume loaded'
+    #add handlebars script
+    template = '<script type="text/x-handlebars-template" id="property-volume-tmpl">' + template + '</script>'
+    #load remote html template
+    $( 'head' ).append template
+    console.log 'volume loaded'
+
+    #private
+    loadModule = ( uid, current_main ) ->
+
+        #
+        MC.data.current_sub_main = current_main
 
         #
         require [ './module/design/property/volume/view', './module/design/property/volume/model' ], ( view, model ) ->
+
+            #
+            if current_view then view.delegateEvents view.events
+
+            #
+            current_view  = view
+            current_model = model
 
             #view
             view.model    = model
 
             renderPropertyPanel = ( uid ) ->
 
-                view.model.getVolume uid
+                model.getVolume uid
                 #render
-                view.render( view.model.attributes )
+                #view.render( view.model.attributes )
+                view.render()
 
             renderPropertyPanel( uid )
 
@@ -34,7 +49,7 @@ define [ 'jquery',
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setDeviceName volume_uid, name
+                model.setDeviceName volume_uid, name
 
                 renderPropertyPanel( volume_uid )
 
@@ -42,7 +57,7 @@ define [ 'jquery',
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setVolumeSize volume_uid, value
+                model.setVolumeSize volume_uid, value
 
                 #renderPropertyPanel( volume_uid )
 
@@ -50,14 +65,14 @@ define [ 'jquery',
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setVolumeTypeStandard volume_uid
+                model.setVolumeTypeStandard volume_uid
 
             view.on 'VOLUME_TYPE_IOPS', ( value )->
 
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setVolumeTypeIops volume_uid, value
+                model.setVolumeTypeIops volume_uid, value
 
                 #renderPropertyPanel( volume_uid )
 
@@ -65,17 +80,21 @@ define [ 'jquery',
 
                 volume_uid = $("#property-panel-volume").attr 'uid'
 
-                view.model.setVolumeIops volume_uid, value
+                model.setVolumeIops volume_uid, value
 
                 #renderPropertyPanel( volume_uid )
 
             model.once 'REFRESH_PANEL', ()->
 
-                view.render( view.model.attributes )
+                view.render()
 
 
     unLoadModule = () ->
-        #view.remove()
+        current_view.off()
+        current_model.off()
+        current_view.undelegateEvents()
+        #ide_event.offListen ide_event.<EVENT_TYPE>
+        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public
     loadModule   : loadModule

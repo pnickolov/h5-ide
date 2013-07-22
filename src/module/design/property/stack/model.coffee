@@ -50,17 +50,52 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                 member_count = if 'member' of sg then sg.member.length else 0
                 is_del = if member_count == 0 and MC.canvas_property.sg_list.length > 1 then true else false
                 rule_count = if 'rules' of sg then sg.rules.length else 0
-                sg_list.push { 'uid' : sg.uid, 'name' : sg.name, 'description' : desc, 'member_count' : member_count, 'rule_count' : rule_count, 'is_del' : is_del }
+                sg_list.push { 'uid' : sg.uid, 'name' : sg.name, 'description' : desc, 'member_count' : member_count, 'rule_count' : rule_count, 'is_del' : is_del, 'is_shown' : true }
             
             sg_list
 
         deleteSecurityGroup : (uid) ->
+            me = this
+
             #delete sg from MC.canvas_property.sg_list
-            _.map MC.canvas_property.sg_list, (sg) ->
+            $.each MC.canvas_property.sg_list, ( key, sg ) ->
+
+                if sg and sg.uid == uid
+
+                    #update instance
+                    _.map sg.member, (iid) ->
+
+                        sg_id_ref = "@"+uid+'.resource.GroupId'
+
+                        sg_ids = MC.canvas_data.component[ iid ].resource.SecurityGroupId
+
+                        if sg_ids.length != 1
+
+                            MC.canvas_data.component[ iid ].resource.SecurityGroupId.splice sg_ids.indexOf sg_id_ref, 1
+
+                    MC.canvas_property.sg_list.splice key, 1
+
+                    delete MC.canvas_data.component[uid]
+
+            null
+
+        resetSecurityGroup : (uid) ->
+            me = this
+
+            stack_detail = me.get 'stack_detail'
+
+            _.map stack_detail.sg_list, (sg) ->
                 if sg.uid == uid
-                    index = MC.canvas_property.sg_list.indexOf(sg)
-                    MC.canvas_property.sg_list.splice(index, 1)
-            #update instance
+
+                    flag = stack_detail.sg_list[ stack_detail.sg_list.indexOf sg ].is_shown
+                    stack_detail.sg_list[ stack_detail.sg_list.indexOf sg ].is_shown = not flag
+
+                    me.set 'stack_detail', stack_detail
+
+            console.log me.get 'stack_detail'
+
+            null
+
 
         getNetworkACL : ->
 

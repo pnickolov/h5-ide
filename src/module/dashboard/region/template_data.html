@@ -3,60 +3,46 @@
 Loading...
 {{else}}
 	<div class="dashboard-widget">
-		<div class="tab grid grid-responsive grid-small-bottom row-counter">
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2 active">
-					<a href="#stat-table-instance" class="widget-region-counter">
-						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>{{region_resource_list.Instance}}<span class="label">Instance</span>
-						</div>
-					</a>
-			</div>
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-					<a href="#stat-table-eip" class="widget-region-counter">
-						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">EIP</span>
-							{{#if region_resource_list.Not_Used.EIP}}
-							<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"{{region_resource_list.Not_Used.EIP}} EIP not associated with instance.","description":"This would charge you extra expense."}'>{{region_resource_list.Not_Used.EIP}}</span>
-							{{/if}}
-						</div>
-					</a>
-			</div>
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-					<a href="#stat-table-ebs" class="widget-region-counter">
-						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">Volume</span>
-							{{#if region_resource_list.Not_Used.Volume}}
-							<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.Volume}} EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>{{region_resource_list.Not_Used.Volume}}</span>
-							{{/if}}
-						</div>
-					</a>
-			</div>
+		<ul class="tab grid grid-responsive grid-small-bottom row-counter">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2 active" data-tab-target="#stat-table-instance">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>{{region_resource_list.Instance}}<span class="label">Instance</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-eip">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">EIP</span>
+					{{#if region_resource_list.Not_Used.EIP}}
+					<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"{{region_resource_list.Not_Used.EIP}} EIP not associated with instance.","description":"This would charge you extra expense."}'>{{region_resource_list.Not_Used.EIP}}</span>
+					{{/if}}
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-ebs">
+				<div class="region-stat-block-wrap">
+					<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">Volume</span>
+					{{#if region_resource_list.Not_Used.Volume}}
+					<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.Volume}} EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>{{region_resource_list.Not_Used.Volume}}</span>
+					{{/if}}
+				</div>
+			</li>
 
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-					<a href="#stat-table-vpc" class="widget-region-counter">
-						<div class="region-stat-block-wrap">
-							<i class="icon-hdd icon-label"></i>{{region_resource_list.VPC}}<span class="label">VPC</span>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-vpc">
+				<div class="region-stat-block-wrap">
+					<i class="icon-hdd icon-label"></i>{{region_resource_list.VPC}}<span class="label">VPC</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-vpn">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>{{region_resource_list.VPN}}<span class="label">VPN</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-elb">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>{{region_resource_list.ELB}}<span class="label">ELB</span>
+				</div>
+			</li>
 
-						</div>
-					</a>
-			</div>
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-					<a href="#stat-table-vpn" class="widget-region-counter">
-						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>{{region_resource_list.VPN}}<span class="label">VPN</span>
-
-						</div>
-					</a>
-			</div>
-			<div class="col-1-6 col-1-8-bp1 col-1-10-bp2">
-					<a href="#stat-table-elb" class="widget-region-counter">
-						<div class="region-stat-block-wrap">
-							<i class="icon-image icon-label"></i>{{region_resource_list.ELB}}<span class="label">ELB</span>
-						</div>
-					</a>
-			</div>
-
-		</div>
+		</ul>
 		<div id="stat-table-instance" class="stat-table active">
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
 					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
@@ -411,18 +397,11 @@ Loading...
     </div>
 
 <!--{{ .stat-app-count }}-->
-	{{#if cur_app_list}}
-		<a href="#region-stat-app"><i class="icon-browser icon-label"></i><span class="counter">{{ cur_app_list.length }}</span> Apps</a>
-	{{else}}
-		<a href="#region-stat-app"><i class="icon-browser icon-label"></i><span class="counter">0</span> Apps</a>
-	{{/if}}
+	<a href="#"><i class="icon-browser icon-label"></i><span class="counter">
+		{{#if cur_app_list}}{{ cur_app_list.length }}{{else}}0{{/if}}</span> Apps</a>
 
 <!--{{ .stat-stack-count }}-->
-	{{#if cur_stack_list}}
-		<a href="#region-stat-stack"><i class="icon-layers icon-label"></i><span class="counter">{{ cur_stack_list.length }}</span> Stacks</a>
-	{{else}}
-		<a href="#region-stat-stack"><i class="icon-layers icon-label"></i><span class="counter">0</span> Stacks</a>
-	{{/if}}
+	<a href="#"><i class="icon-layers icon-label"></i><span class="counter">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span> Stacks</a>
 	<button id="btn-create-stack" href="javascript:void(0)" class="btn btn-primary btn-region-dashboard" title="Create New Stack">+</button>
 
 <!--{{ .stat-app }}-->

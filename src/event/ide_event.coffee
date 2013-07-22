@@ -79,6 +79,9 @@ define [ 'underscore', 'backbone' ], () ->
         onLongListen : ( type ,callback ) ->
             this.on type, callback
 
+        offListen : ( type, function_name ) ->
+            if function_name then this.off type, function_name else this.off type
+
     event = new Event()
 
     event

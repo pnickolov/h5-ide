@@ -2,7 +2,7 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event ) ->
 
     CanvasView = Backbone.View.extend {
 
@@ -13,7 +13,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
             this.listenTo ide_event, 'SWITCH_TAB', this.resizeCanvasPanel
 
             #bind event
-            $( '#tab-content-design' )
+            $( document )
                 .on( 'CANVAS_NODE_SELECTED',        '#svg_canvas', this.showProperty )
                 .on( 'CANVAS_NODE_CHANGE_PARENT',   '#svg_canvas', this, this.changeNodeParent )
                 .on( 'CANVAS_GROUP_CHANGE_PARENT',  '#svg_canvas', this, this.changeGroupParent )
@@ -21,8 +21,6 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
                 .on( 'CANVAS_OBJECT_DELETE',        '#svg_canvas', this, this.deleteObject )
                 .on( 'CANVAS_LINE_CREATE',          '#svg_canvas', this, this.createLine )
                 .on( 'CANVAS_COMPONENT_CREATE',     '#svg_canvas', this, this.createComponent )
-                
-
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -67,7 +65,8 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
         createComponent : ( event, uid ) ->
              event.data.trigger 'CANVAS_COMPONENT_CREATE', uid
 
-
+        showEniReachMax : () ->
+            notification 'info', 'The Instance you selected has attach too many eni, please unattach one or change the instance type.'
     }
 
     return CanvasView

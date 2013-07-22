@@ -85,6 +85,7 @@ require.config {
 
 		#canvas event logic handler
 		'canvas_handle_elb'   : 'module/design/canvas/aws/elb/elb'
+		'canvas_handle_vpn'   : 'module/design/canvas/aws/vpn/vpn'
 
 		#events
 		'event'        : 'event/ide_event'

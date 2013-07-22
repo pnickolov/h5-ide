@@ -22,7 +22,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide
 
         addIP : (event) ->
             me = this
-            console.log 'add ip'
+            #console.log 'add ip'
 
             ips = []
             _.map $("#property-vpn-ips .input"), (target) -> ips.push target.value
@@ -35,19 +35,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide
                 #validation check
                 if new_ip in ori_ips
                     notification 'warn', 'IP Prefixes must be unique from each other'
-                    
+
                 me.trigger 'VPN_ADD_IP', new_ip
             else
                 notification 'warn', 'Must be a valid IPv4 CIDR Address'
 
-            console.log ips
+            #console.log ips
 
             null
 
         removeIP : (event, target) ->
             ip = target.value
 
-            console.log 'delete vpn ip ' + ip
+            #console.log 'delete vpn ip ' + ip
 
             this.trigger 'VPN_DELETE_IP', ip
 

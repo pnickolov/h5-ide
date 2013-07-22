@@ -3,7 +3,8 @@
 #############################
 define [ 'constant',
 		'canvas_handle_elb',
-		'backbone', 'jquery', 'underscore' ], ( constant, canvas_handle_elb ) ->
+		'canvas_handle_vpn',
+		'backbone', 'jquery', 'underscore' ], ( constant, canvas_handle_elb, canvas_handle_vpn ) ->
 
 	CanvasModel = Backbone.Model.extend {
 
@@ -277,6 +278,9 @@ define [ 'constant',
 
 					MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
 
+				if portMap['vgw-vpn'] and portMap['cgw-vpn']
+					canvas_handle_vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+
 
 			MC.canvas.remove $("#" + option.id)[0]
 
@@ -413,6 +417,10 @@ define [ 'constant',
 						MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
 
 						MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
+
+				#connect vgw and cgw
+				if portMap['vgw-vpn'] and portMap['cgw-vpn']
+					canvas_handle_vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
 			null
 

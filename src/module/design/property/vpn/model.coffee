@@ -19,21 +19,24 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             vpn_detail = me.get 'vpn_detail'
 
             if not vpn_detail
+                vpn_detail = {}
+
                 cgw_uid = node.uid for node in line_option when node.port == 'cgw-vpn'
                 vgw_uid = node.uid for node in line_option when node.port == 'vgw-vpn'
 
                 if cgw_uid and vgw_uid
-                    vpn_detail.is_dynamic = if MC.canvas_data.component[ cgw_uid ].BgpAsn then true else false
+                    vpn_detail.is_dynamic = if !!MC.canvas_data.component[cgw_uid].resource.BgpAsn then true else false
                     vpn_detail.cgw_name = MC.canvas_data.component[ cgw_uid ].name
 
-                    _.map MC.canvas_data.component, (item) ->
-                        cgw_ref = '@' + cgw_uid + '.resource.VpnGatewayId'
-                        vgw_ref = '@' + vgw_uid + '.resource.CustomerGatewayId'
+                    vgw_ref = '@' + vgw_uid + '.resource.VpnGatewayId'
+                    cgw_ref = '@' + cgw_uid + '.resource.CustomerGatewayId'
 
-                        if item.type == 'AWS.VPC.VPNConnection' and item.resource.VpnGatewayId == cgw_ref and item.resource.CustomerGatewayId == vgw_ref
+                    _.map MC.canvas_data.component, (item) ->
+
+                        if item.type == 'AWS.VPC.VPNConnection' and item.resource.VpnGatewayId == vgw_ref and item.resource.CustomerGatewayId == cgw_ref
                            
                             vpn_detail.uid = item.uid
-                            
+
                             vpn_detail.name = item.name
 
                             vpn_detail.ips = []
@@ -52,12 +55,15 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             vpn_detail = me.get 'vpn_detail'
 
             if ip in vpn_detail.ips
-                delete vpn_detail.ips[vpn_detail.ips.indexOf(ip)]
+                vpn_detail.ips.splice vpn_detail.ips.indexOf(ip), 1
 
                 #update vpn component
                 routes = MC.canvas_data.component[ vpn_detail.uid ].resource.Routes
 
-                delete MC.canvas_data.component[ vpn_detail.uid ].resource.Routes[ routes.indexOf(route) ] for route in routes when route.DestinationCidrBlock == ip
+                for route in routes
+                    if route.DestinationCidrBlock == ip
+                        MC.canvas_data.component[ vpn_detail.uid ].resource.Routes.splice(routes.indexOf(route), 1)
+                        break
 
                 me.set 'vpn_detail', vpn_detail
 

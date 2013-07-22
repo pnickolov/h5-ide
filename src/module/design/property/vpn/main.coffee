@@ -27,11 +27,11 @@ define [ 'jquery',
 
             renderVPNPanel line_option
 
-            view.once 'VPN_DELETE_IP', (ip) ->
+            view.on 'VPN_DELETE_IP', (ip) ->
                 console.log "VPN_DELETE_IP:" + ip
                 model.delIP ip
                 
-            view.once 'VPN_ADD_IP', (new_ip) ->
+            view.on 'VPN_ADD_IP', (new_ip) ->
                 console.log "VPN_ADD_IP:" + new_ip
                 model.addIP new_ip
 

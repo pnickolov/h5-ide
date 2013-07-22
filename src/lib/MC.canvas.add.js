@@ -544,7 +544,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////8. hostname
 				Canvon.text(50, 90, option.name).attr({
-					'class': 'node-label name'
+					'class': 'node-label name',
+					'id': group.id + '_hostname'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,

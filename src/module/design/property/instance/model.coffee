@@ -17,6 +17,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
         setHost  : ( uid, value ) ->
             console.log 'setHost = ' + value
             MC.canvas_data.component[ uid ].name = value
+            MC.canvas.update(uid,'text','hostname', value)
 
             null
             #this.set 'set_host', 'host'

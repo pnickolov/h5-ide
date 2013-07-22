@@ -10,6 +10,17 @@ var constant_data = {
 	COMPONENT_WIDTH_GRID: 10,
 	COMPONENT_HEIGHT_GRID: 10,
 
+	COMPONENT_SIZE:
+	{
+		'AWS.ELB': [10, 10],
+		'AWS.EC2.Instance': [10, 10],
+		'AWS.VPC.NetworkInterface': [10, 10],
+		'AWS.VPC.CustomerGateway': [20, 10],
+		'AWS.VPC.RouteTable': [10, 10],
+		'AWS.VPC.InternetGateway': [10, 10],
+		'AWS.VPC.VPNGateway': [10, 10]
+	},
+
 	GROUP_DEFAULT_SIZE:
 	{
 		'AWS.VPC.VPC': [60, 60], //[width, height]
@@ -283,19 +294,13 @@ var constant_data = {
 				to: 'rtb-tgt-left',
 				color: '#d8d7d6' //gray
 			},
-			'AWS.VPC.Subnet': [
+			'AWS.VPC.Subnet':
 			{
-				from: 'rtb-src-top',
+				from: 'rtb-src',
 				to: 'subnet-association-out',
 				relation: 'multiple',
 				color: '#d8d7d6'
 			},
-			{
-				from: 'rtb-src-bottom',
-				to: 'subnet-association-out',
-				relation: 'multiple',
-				color: '#d8d7d6'
-			}],
 			'AWS.EC2.Instance': [
 			{
 				from: 'rtb-tgt-left',
@@ -364,19 +369,13 @@ var constant_data = {
 		},
 		'AWS.VPC.Subnet':
 		{
-			'AWS.VPC.RouteTable': [
+			'AWS.VPC.RouteTable':
 			{
 				from: 'subnet-association-out',
-				to: 'rtb-src-top',
+				to: 'rtb-src',
 				relation: 'multiple',
 				color: '#d8d7d6'
 			},
-			{
-				from: 'subnet-association-out',
-				to: 'rtb-src-bottom',
-				relation: 'multiple',
-				color: '#d8d7d6'
-			}],
 			'AWS.ELB':
 			{
 				from: 'subnet-association-in',

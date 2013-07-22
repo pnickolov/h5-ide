@@ -829,9 +829,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-gray port-rtb-src-top',
+					'class': 'port port-gray port-rtb-src port-rtb-src-top',
 					'transform': 'translate(50, 1)' + MC.canvas.PORT_UP_ROTATE,
-					'data-name': 'rtb-src-top',
+					'data-name': 'rtb-src',
 					'data-position': 'top',
 					'data-type': 'association',
 					'data-direction': 'in',
@@ -840,9 +840,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-gray port-rtb-src-bottom',
+					'class': 'port port-gray port-rtb-src port-rtb-src-bottom',
 					'transform': 'translate(50, 78)' + MC.canvas.PORT_DOWN_ROTATE,
-					'data-name': 'rtb-src-bottom',
+					'data-name': 'rtb-src',
 					'data-position': 'bottom',
 					'data-type': 'association',
 					'data-direction': 'in',

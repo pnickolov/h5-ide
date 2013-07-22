@@ -36,27 +36,25 @@ define [ 'jquery',
             view.model = model
 
             #render
-            view.render formatData model.attributes
+            view.render()
 
             view.on "CHANGE_NAME", ( change ) ->
-                # TODO : Validate Name
-                model.setName change.value
-                change.accept()
 
+                model.setName change.value
                 # Sync the name to canvas
                 MC.canvas.update uid, "text", "name", change.value
                 null
 
-            view.on "CHANGE_ACL", ( change ) ->
-                model.setACL change.value
-                change.accept()
+            view.on "CHANGE_CIDR", ( change ) ->
+                error model.setCIDR change.value
+                change.done error
                 null
 
-            view.on "CHANGE_CIDR", ( change ) ->
-                # TODO : Validate CIDR
-                model.setCIDR change.value
-                change.accept()
+            view.on "CHANGE_ACL", ( change ) ->
+                model.setACL change.value
                 null
+
+            
 
     unLoadModule = () ->
         current_view.off()
@@ -64,16 +62,6 @@ define [ 'jquery',
         current_view.undelegateEvents()
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
-
-    formatData = ( data ) ->
-        # Should not touch model's data
-
-        data = $.extend true, {}, data
-        CIDR = data.CIDR.split "."
-        data.CIDRPrefix = CIDR[0] + "." + CIDR[1] + "."
-        data.CIDR = CIDR[2] + "." + CIDR[3]
-
-        data
 
     #public
     loadModule   : loadModule

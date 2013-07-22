@@ -10,7 +10,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             uid  : null
             name : null
             CIDR : null
-            networkACL : null
+            networkACL : null # Array
 
         initialize : ->
             #listen
@@ -72,6 +72,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             null
 
         setCIDR : ( cidr ) ->
+
+            # TODO : Validate CIDR
+
             MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock = cidr
             null
 

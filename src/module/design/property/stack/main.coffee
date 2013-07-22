@@ -8,7 +8,8 @@ define [ 'jquery',
 ], ( $, template, ide_event ) ->
 
     #
-    current_view = null
+    current_view  = null
+    current_model = null
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-stack-tmpl">' + template + '</script>'
@@ -26,6 +27,9 @@ define [ 'jquery',
 
             #
             current_view  = view
+            current_model = model
+            #
+            current_view.delegateEvents view.events
 
             #view
             view.model    = model
@@ -51,6 +55,10 @@ define [ 'jquery',
 
     unLoadModule = () ->
         current_view.off()
+        current_model.off()
+        current_view.undelegateEvents()
+        #ide_event.offListen ide_event.<EVENT_TYPE>
+        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public
     loadModule   : loadModule

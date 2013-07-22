@@ -11,11 +11,17 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
         template : Handlebars.compile $( '#property-rtb-tmpl' ).html()
 
-        #events   :
+        events   :
+
+            'change .ipt-wrapper' : 'addIp'
 
         render     : () ->
             console.log 'property:rtb render'
             $( '.property-details' ).html this.template this.model.attributes
+
+        addIp : ( event ) ->
+
+            console.log event
 
     }
 

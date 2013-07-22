@@ -860,7 +860,7 @@ MC.canvas = {
 				node_coordinate[0] < coordinate.x &&
 				node_coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0] > coordinate.x &&
 				node_coordinate[1] < coordinate.y &&
-				node_coordinate[1] + MC.canvas.COMPONENT_SIZE[ data.type ][1] > coordinate.y
+				node_coordinate[1] + MC.canvas.COMPONENT_SIZE[ item.type ][1] > coordinate.y
 			)
 			{
 				matched = document.getElementById( key );

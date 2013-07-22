@@ -1,6 +1,6 @@
 <!-- title -->
 <div class="sidebar-title">
-	<span class="sidebar-title-text" id='property-title'>RT-1</span>
+	<span class="sidebar-title-text" id='property-title'>{{route_table.name}}</span>
 </div>
 
 <!-- body -->
@@ -9,7 +9,7 @@
 <div class="property-info">
 	<div class="property-control-group clearfix">
 		<label class="left" for="rt-name">Name</label>
-		<input class="input" type="text" required="required" value="RT-1" name="rt-name" id="rt-name">
+		<input class="input" type="text" required="required" value="{{route_table}}" name="rt-name" id="rt-name">
 	</div>	
 	<div class="property-info-readonly">
 		<!-- If current RT is main route table, show text "Main Route Table" -->

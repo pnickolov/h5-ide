@@ -25,7 +25,8 @@ define [ 'jquery',
 
         #
         require [ './module/design/property/instance/view',
-                  './module/design/property/instance/model'
+                  './module/design/property/instance/model',
+                  './module/design/property/sglist/main'
         ], ( view, model ) ->
 
             #

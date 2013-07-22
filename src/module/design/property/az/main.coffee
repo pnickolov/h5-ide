@@ -50,7 +50,7 @@ define [ 'jquery',
                     if !new_az_data && !unloaded
                         return
 
-                    ide_event.off ide_event.RELOAD_AZ, refreshList
+                    ide_event.offListen ide_event.RELOAD_AZ, refreshList
 
                     # If the property panel is unloaded, we will want
                     # to remove the event listener, but not to refresh the panel

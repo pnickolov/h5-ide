@@ -1,12 +1,10 @@
-<div class="sidebar-title">
-  <span class="sidebar-title-text" id='property-title'>{{component.name}}</span>
-</div>
+<div class="sidebar-title"><span class="sidebar-title-text" id='property-title'>{{component.name}}</span></div>
 
 <div class="fixedaccordion accordion-default" data-sub="43">
-  <div class="accordion-group expanded">
-    <div class="fixedaccordion-head" id="vpc-property-detail" component="{{uid}}">VPC Details</div>
+  <section class="accordion-group expanded">
+    <header class="fixedaccordion-head" id="vpc-property-detail" data-component="{{uid}}">VPC Details</header>
 
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+    <article class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <div class="item-wrap scroll-content">
         <div class="property-control-group clearfix">
@@ -18,7 +16,7 @@
         <div class="property-control-group clearfix">
           <label class="left" for="property-cidr-block">CIDR Block</label>
           <span class="required-input right">Required</span>
-          <input class="input cidr-block tooltip" type="text" autofocus value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16"/>
+          <input class="input cidr-block tooltip" type="text" value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16"/>
         </div>
 
         <div class="property-control-group">
@@ -65,12 +63,12 @@
         </div>
 
       </div>
-    </div>
-  </div>
+    </article>
+  </section>
 
-  <div class="accordion-group" id="dhcp-property-detail">
-    <div class="fixedaccordion-head">DHCP Options</div>
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+  <section class="accordion-group" id="dhcp-property-detail">
+    <header class="fixedaccordion-head">DHCP Options</header>
+    <article class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <div class="item-wrap scroll-content">
 
@@ -174,7 +172,6 @@
 
         </div>
       </div>
-    </div>
-    </div>
-  </div>
+    </article>
+  </section>
 </div>

@@ -74,23 +74,23 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
         onChangeTenancy : ( event, newValue ) ->
             $("#desc-dedicated").toggle( newValue == "dedicated" )
 
-            uid = $("#vpc-property-detail").attr("component")
+            uid = $("#vpc-property-detail").attr("data-component")
             this.model.setTenancy uid, newValue
             null
 
         onChangeDnsSupport : ( event ) ->
-            uid = $("#vpc-property-detail").attr("component")
+            uid = $("#vpc-property-detail").attr("data-component")
             this.model.setDnsSupport uid, event.target.checked
             null
 
         onChangeDnsHostname : ( event ) ->
-            uid = $("#vpc-property-detail").attr("component")
+            uid = $("#vpc-property-detail").attr("data-component")
             this.model.setDnsHosts uid, event.target.checked
             null
 
         onChangeDhcp : ( event ) ->
 
-            uid = $("#vpc-property-detail").attr("component")
+            uid = $("#vpc-property-detail").attr("data-component")
             $selectOption = $(".property-dhcp input:checked")
 
             noDhcp = $selectOption.attr("id") == "property-dhcp-none"
@@ -127,7 +127,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
                 return
 
             # Gather all the infomation to submit
-            uid  = $("#vpc-property-detail").attr("component")
+            uid  = $("#vpc-property-detail").attr("data-component")
             data =
                 domainName     : $("#property-dhcp-domain").val()
                 useAmazonDns   : $("#property-amazon-dns").is(":checked")

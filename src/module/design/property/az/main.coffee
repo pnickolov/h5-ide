@@ -102,6 +102,10 @@ define [ 'jquery',
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
+        # AZ use ide_event, but it's not need to unload here.
+        # The event callback will only be fired one time. And it also check if
+        # the panel is unloaded.
+
     #public
     loadModule   : loadModule
     unLoadModule : unLoadModule

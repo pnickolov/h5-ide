@@ -14,6 +14,7 @@ var constant_data = {
 	{
 		'AWS.ELB': [10, 10],
 		'AWS.EC2.Instance': [10, 10],
+		'AWS.EC2.EBS.Volume': [10, 10],
 		'AWS.VPC.NetworkInterface': [10, 10],
 		'AWS.VPC.CustomerGateway': [20, 10],
 		'AWS.VPC.RouteTable': [10, 10],

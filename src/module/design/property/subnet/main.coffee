@@ -66,6 +66,9 @@ define [ 'jquery',
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     formatData = ( data ) ->
+        # Should not touch model's data
+
+        data = $.extend true, {}, data
         CIDR = data.CIDR.split "."
         data.CIDRPrefix = CIDR[0] + "." + CIDR[1] + "."
         data.CIDR = CIDR[2] + "." + CIDR[3]

@@ -21,7 +21,27 @@ define [ 'jquery',
             #view
             view.model    = model
             #render
-            view.render()
+            view.render model.getRenderData uid
+
+            view.on "CHANGE_NAME", ( uid, change ) ->
+                # TODO : Validate Name
+                model.setName uid, change.value
+                change.accept()
+
+                # Sync the name to canvas
+                MC.canvas.update uid, "text", "name", change.value
+                null
+
+            view.on "CHANGE_ACL", ( uid, change ) ->
+                model.setACL uid, change.value
+                change.accept()
+                null
+
+            view.on "CHANGE_CIDR", ( uid, change ) ->
+                # TODO : Validate CIDR
+                model.setCIDR uid, change.value
+                change.accept()
+                null
 
     unLoadModule = () ->
         #view.remove()

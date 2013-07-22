@@ -2648,8 +2648,8 @@ MC.canvas.event.groupResize = {
 
 				node_minX.push(node_data.coordinate[0]);
 				node_minY.push(node_data.coordinate[1]);
-				node_maxX.push(node_data.coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0]);
-				node_maxY.push(node_data.coordinate[1] + MC.canvas.COMPONENT_SIZE[ item.type ][1]);
+				node_maxX.push(node_data.coordinate[0] + MC.canvas.COMPONENT_SIZE[ node_data.type ][0]);
+				node_maxY.push(node_data.coordinate[1] + MC.canvas.COMPONENT_SIZE[ node_data.type ][1]);
 			}
 
 			if (layout_group_data[ item.id ])

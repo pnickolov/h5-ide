@@ -1562,13 +1562,14 @@ MC.canvas.event.dragable = {
 
 			var target = $(this),
 				target_offset = this.getBoundingClientRect(),
-				node_type = target.data('type'),
+				target_type = target.data('type'),
+				node_type = target.data('class'),
 				canvas_offset = $('#svg_canvas').offset(),
 				shadow,
 				platform,
 				target_group_type;
 
-			if (target.data('class') === 'AWS.VPC.Subnet')
+			if (node_type === 'AWS.VPC.Subnet')
 			{
 				target.find('.port').hide();
 			}
@@ -1578,10 +1579,10 @@ MC.canvas.event.dragable = {
 			shadow.attr('class', shadow.attr('class') + ' shadow');
 			$('#svg_canvas').append(shadow);
 
-			if (node_type === 'node')
+			if (target_type === 'node')
 			{
 				platform = MC.canvas.data.get('platform');
-				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ target.data('class') ];
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
 
 				$.each(target_group_type, function (index, item)
 				{
@@ -1592,19 +1593,39 @@ MC.canvas.event.dragable = {
 				});
 			}
 
-			$(document.body).on({
-				'mousemove': MC.canvas.event.dragable.mousemove,
-				'mouseup': MC.canvas.event.dragable.mouseup
-			}, {
-				'target': target,
-				'target_type': node_type,
-				'shadow': $(shadow),
-				'offsetX': event.pageX - target_offset.left + canvas_offset.left,
-				'offsetY': event.pageY - target_offset.top + canvas_offset.top,
-				'groupChild': node_type === 'group' ? MC.canvas.groupChild(this) : null,
-				'originalPageX': event.pageX,
-				'originalPageY': event.pageY
-			});
+			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+			{
+				$(document.body).on({
+					'mousemove': MC.canvas.event.dragable.gatewaymove,
+					'mouseup': MC.canvas.event.dragable.gatewayup
+				}, {
+					'target': target,
+					'target_type': target_type,
+					'node_type': node_type,
+					'vpc_data': MC.canvas.data.get('layout.component.group.' + $('.AWS-VPC-VPC').attr('id')),
+					'shadow': $(shadow),
+					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
+					'originalPageX': event.pageX,
+					'originalPageY': event.pageY
+				});
+			}
+			else
+			{
+				$(document.body).on({
+					'mousemove': MC.canvas.event.dragable.mousemove,
+					'mouseup': MC.canvas.event.dragable.mouseup
+				}, {
+					'target': target,
+					'target_type': target_type,
+					'shadow': $(shadow),
+					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
+					'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
+					'originalPageX': event.pageX,
+					'originalPageY': event.pageY
+				});
+			}
 
 			MC.canvas.event.clearSelected();
 		}
@@ -1940,6 +1961,101 @@ MC.canvas.event.dragable = {
 		$(document.body).off({
 			'mousemove': MC.canvas.event.mousemove,
 			'mouseup': MC.canvas.event.mouseup
+		});
+	},
+	gatewaymove: function (event)
+	{
+		event.preventDefault();
+		event.stopPropagation();
+
+		var gateway_top = Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO));
+
+		// MC.canvas.COMPONENT_SIZE for AWS.VPC.InternetGateway and AWS.VPC.VPNGateway = 10
+		if (gateway_top > event.data.vpc_data.coordinate[1] + event.data.vpc_data.size[1] - 10)
+		{
+			gateway_top = event.data.vpc_data.coordinate[1] + event.data.vpc_data.size[1] - 10;
+		}
+
+		if (gateway_top < event.data.vpc_data.coordinate[1])
+		{
+			gateway_top = event.data.vpc_data.coordinate[1];
+		}
+
+		if (event.data.node_type === 'AWS.VPC.InternetGateway')
+		{
+			event.data.shadow.attr('transform',
+				'translate(' +
+					// MC.canvas.COMPONENT_SIZE[0] / 2 = 5
+					(event.data.vpc_data.coordinate[0] - 5) * MC.canvas.GRID_WIDTH + ',' +
+					gateway_top * MC.canvas.GRID_HEIGHT +
+				')'
+			);
+		}
+
+		if (event.data.node_type === 'AWS.VPC.VPNGateway')
+		{
+			event.data.shadow.attr('transform',
+				'translate(' +
+					// MC.canvas.COMPONENT_SIZE[0] / 2 = 5
+					(event.data.vpc_data.coordinate[0] + event.data.vpc_data.size[0] - 5) * MC.canvas.GRID_WIDTH + ',' +
+					gateway_top * MC.canvas.GRID_HEIGHT +
+				')'
+			);
+		}
+
+		return false;	
+	},
+	gatewayup: function (event)
+	{
+		var target = event.data.target,
+			target_id = target.attr('id'),
+			target_type = event.data.target_type,
+			canvas_offset = $('#svg_canvas').offset(),
+			shadow_offset = event.data.shadow[0].getBoundingClientRect(),
+			layout_node_data = MC.canvas.data.get('layout.component.node'),
+			layout_connection_data = MC.canvas.data.get('layout.connection'),
+			node_type = target.data('class'),
+			line_layer = $("#line_layer")[0],
+			coordinate;
+
+		coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
+
+		node_connections = layout_node_data[ target_id ].connection || {};
+
+		MC.canvas.position(target[0], coordinate.x  * MC.canvas_property.SCALE_RATIO, coordinate.y * MC.canvas_property.SCALE_RATIO);
+
+		$.each(node_connections, function (index, value)
+		{
+			line_connection = layout_connection_data[ value.line ];
+
+			line_layer.removeChild(document.getElementById( value.line ));
+
+			MC.canvas.connect(
+				$('#' + target_id), line_connection['target'][ target_id ],
+				$('#' + value.target), line_connection['target'][ value.target ],
+				{'line_uid': value['line']}
+			);
+		});
+
+		target.attr('class', function (index, key)
+		{
+			return key + ' selected';
+		});
+
+		MC.canvas.selected_node.push(event.data.target[0]);
+
+		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", target_id);
+
+		$('.dropable-group').attr('class', function (index, key)
+		{
+			return key.replace('dropable-group ', '');
+		});
+
+		event.data.shadow.remove();
+
+		$(document.body).off({
+			'mousemove': MC.canvas.event.gatewaymove,
+			'mouseup': MC.canvas.event.gatewayup
 		});
 	}
 };

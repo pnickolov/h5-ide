@@ -41,6 +41,14 @@ define [ 'jquery',
 
             model.getUID  uid
             model.getName()
+            model.getInstanceType()
+            model.getAmiDisp()
+            model.getAmi()
+            model.getComponent()
+            model.getKerPair()
+            model.getSgDisp()
+            model.getCheckBox()
+            model.getEni()
             #
             view.render()
             #

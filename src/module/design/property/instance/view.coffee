@@ -70,57 +70,68 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         instanceNameChange : ( event ) ->
             console.log 'instanceNameChange'
-            cid = $( '#instance-property-detail' ).attr 'component'
             this.model.set 'name', event.target.value
             null
             #this.model.setHost cid, event.target.value
             #this.trigger 'RE_RENDER', cid
 
         instanceTypeSelect : ( event, value )->
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.setInstanceType cid, value
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            #this.model.setInstanceType cid, value
+            this.model.set 'instance_type', value
 
         ebsOptimizedSelect : ( event ) ->
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.setEbsOptimized cid, event.target.checked
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            #this.model.setEbsOptimized cid, event.target.checked
+            this.model.set 'ebs_optimized', event.target.checked
 
         tenancySelect : ( event, value ) ->
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.setTenancy cid, value
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            #this.model.setTenancy cid, value
+            this.model.set 'tenacy', value
 
 
         cloudwatchSelect : ( event ) ->
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.setCloudWatch cid, event.target.checked
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            #this.model.setCloudWatch cid, event.target.checked
+
+            this.model.set 'cloudwatch', event.target.checked
 
         userdataChange : ( event ) ->
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.setUserData cid, event.target.value
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            #this.model.setUserData cid, event.target.value
             #console.log event.target.value
 
+            this.model.set 'user_data', event.target.value
+
         base64Change : ( event ) ->
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.setBase64Encoded cid, event.target.checked
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            #this.model.setBase64Encoded cid, event.target.checked
+
+            this.model.set 'base64', event.target.checked
 
         eniDescriptionChange : ( event ) ->
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.setEniDescription cid, event.target.value
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            #this.model.setEniDescription cid, event.target.value
+
+            this.model.set 'eni_description', event.target.value
 
         sourceCheckChange : ( event ) ->
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.setSourceCheck cid, event.target.checked
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            #this.model.setSourceCheck cid, event.target.checked
+            this.model.set 'source_check', event.target.checked
 
         addEmptyKP : ( event ) ->
             notification('error', 'KeyPair Empty', false)
 
         addtoKPList : ( event, id ) ->
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.setKP cid, id
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.set 'set_kp', id
             notification('info', (id + ' added'), false)
 
         createtoKPList : ( event, id ) ->
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.addKP cid, id
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.set 'add_kp', id
             notification('info', (id + ' created'), false)
 
         addIPtoList: (event) ->
@@ -154,9 +165,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         addSGtoList: (event, id) ->
             if(id.length != 0)
                 $('#sg-info-list').append MC.template.sgListItem({name: id})
-                instance_uid = $( '#instance-property-detail' ).attr 'component'
-                sg_uid = id
-                this.model.addSGtoInstance instance_uid, sg_uid
+                #instance_uid = $( '#instance-property-detail' ).attr 'component'
+                #sg_uid = id
+                #this.model.addSGtoInstance instance_uid, sg_uid
+                this.model.set 'add_sg', id
 
             else
 
@@ -174,8 +186,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         removeSGfromList: (event) ->
             target = $(event.target).parents('li').first()
             sg_id = target.data('sgid')
-            cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.removeSG cid, sg_id
+            #cid = $( '#instance-property-detail' ).attr 'component'
+            this.model.set 'remove_sg', sg_id
             target.remove()
             notification 'info', sg_id + ' SG is deleted', false
 

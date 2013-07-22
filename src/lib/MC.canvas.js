@@ -1570,8 +1570,7 @@ MC.canvas.event.dragable = {
 
 			if (target.data('class') === 'AWS.VPC.Subnet')
 			{
-				target.find('.port-subnet-association-in').first().hide();
-				target.find('.port-subnet-association-out').first().hide();
+				target.find('.port').hide();
 			}
 
 			shadow = target.clone();
@@ -1630,8 +1629,7 @@ MC.canvas.event.dragable = {
 	{
 		if (event.data.target.data('class') === 'AWS.VPC.Subnet')
 		{
-			event.data.target.find('.port-subnet-association-in').first().show();
-			event.data.target.find('.port-subnet-association-out').first().show();
+			event.data.target.find('.port').show();
 		}
 
 		// Selected
@@ -2437,8 +2435,7 @@ MC.canvas.event.groupResize = {
 
 		if (type === 'AWS.VPC.Subnet')
 		{
-			parent.find('.port-subnet-association-in').first().hide();
-			parent.find('.port-subnet-association-out').first().hide();
+			parent.find('.port').hide();
 
 			// Re-draw group connection
 			node_connections = MC.canvas.data.get('layout.component.group.' + parent.attr('id') + '.connection') || {};
@@ -2827,8 +2824,6 @@ MC.canvas.event.groupResize = {
 			$.each(node_connections, function (index, value)
 			{
 				line_connection = layout_connection_data[ value.line ];
-
-				//line_layer.removeChild(document.getElementById( value.line ));
 
 				MC.canvas.connect(
 					$('#' + group_id), line_connection['target'][ group_id ],

@@ -54,7 +54,13 @@ define [ 'jquery',
             #
             model.listen()
             #
-            model.on 'change:update_instance_title', () -> view.render()
+            model.on 'change:update_instance_title', () ->
+
+                view.render()
+
+                ide_event.trigger ide_event.RELOAD_PROPERTY
+                
+            ide_event.trigger ide_event.RELOAD_PROPERTY
 
             ###
             #model
@@ -72,7 +78,7 @@ define [ 'jquery',
             #render
             view.render( attributes, instance_expended_id )
 
-            ide_event.trigger ide_event.RELOAD_PROPERTY
+            
 
             view.on 'RE_RENDER', ( uid ) ->
 

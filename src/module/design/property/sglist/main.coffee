@@ -1,9 +1,9 @@
 ####################################
-#  Controller for design/property/sg_list module
+#  Controller for design/property/sglist module
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/sg_list/template.html',
+         'text!/module/design/property/sglist/template.html',
          'event'
 ], ( $, template, ide_event ) ->
 
@@ -23,7 +23,7 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #
-        require [ './module/design/property/sg_list/view', './module/design/property/sg_list/model' ], ( view, model ) ->
+        require [ './module/design/property/sglist/view', './module/design/property/sglist/model' ], ( view, model ) ->
 
             #
             if current_view then view.delegateEvents view.events

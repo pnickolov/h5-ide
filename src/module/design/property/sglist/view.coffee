@@ -1,5 +1,5 @@
 #############################
-#  View(UI logic) for design/property/sg_list
+#  View(UI logic) for design/property/sglist
 #############################
 
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->

@@ -1,5 +1,5 @@
 #############################
-#  View Mode for design/property/sg_list
+#  View Mode for design/property/sglist
 #############################
 
 define [ 'backbone', 'jquery', 'underscore' ], () ->

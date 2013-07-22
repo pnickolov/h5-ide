@@ -105,8 +105,8 @@ MC.canvas = {
 
 		$.each(layout_node_data, function (index, data)
 		{
-			node_maxX.push(data.coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID);
-			node_maxY.push(data.coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID);
+			node_maxX.push(data.coordinate[0] + MC.canvas.COMPONENT_SIZE[ data.type ][0]);
+			node_maxY.push(data.coordinate[1] + MC.canvas.COMPONENT_SIZE[ data.type ][1]);
 		});
 
 		$.each(layout_group_data, function (index, data)
@@ -858,9 +858,9 @@ MC.canvas = {
 			if (
 				node_coordinate &&
 				node_coordinate[0] < coordinate.x &&
-				node_coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > coordinate.x &&
+				node_coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0] > coordinate.x &&
 				node_coordinate[1] < coordinate.y &&
-				node_coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > coordinate.y
+				node_coordinate[1] + MC.canvas.COMPONENT_SIZE[ data.type ][1] > coordinate.y
 			)
 			{
 				matched = document.getElementById( key );
@@ -1189,8 +1189,8 @@ MC.canvas = {
 					(coordinate[0] > start_x &&
 					coordinate[0] < end_x)
 					||
-					(coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID > start_x &&
-					coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID < end_x)
+					(coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0] > start_x &&
+					coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][1] < end_x)
 				)
 				&&
 				(
@@ -1694,7 +1694,7 @@ MC.canvas.event.dragable = {
 			{
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_HEIGHT_GRID);
+				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_SIZE[ node_type ][0], MC.canvas.COMPONENT_SIZE[ node_type ][1]);
 				
 				if (
 					coordinate.x > 0 &&
@@ -1735,7 +1735,7 @@ MC.canvas.event.dragable = {
 					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 
 					//after change node to another group, trigger event
-					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_WIDTH_GRID, coordinate.y + MC.canvas.COMPONENT_HEIGHT_GRID);
+					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_SIZE[ node_type ][0], coordinate.y + MC.canvas.COMPONENT_SIZE[ node_type ][1]);
 					if (parentGroup)
 					{
 						$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_PARENT", {
@@ -2286,7 +2286,9 @@ MC.canvas.event.siderbarDrag = {
 			shadow
 				.css({
 					'top': event.pageY - 50,
-					'left': event.pageX - 50
+					'left': event.pageX - 50,
+					'width': MC.canvas.COMPONENT_SIZE[ node_type ][0] * MC.canvas.GRID_WIDTH,
+					'height': MC.canvas.COMPONENT_SIZE[ node_type ][1] * MC.canvas.GRID_HEIGHT
 				})
 				.show();
 
@@ -2372,7 +2374,7 @@ MC.canvas.event.siderbarDrag = {
 		{
 			if (target_type === 'node')
 			{
-				match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_WIDTH_GRID, MC.canvas.COMPONENT_WIDTH_GRID);
+				match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_SIZE[ node_type ][0], MC.canvas.COMPONENT_SIZE[ node_type ][1]);
 
 				if (match_place.is_matched)
 				{
@@ -2646,8 +2648,8 @@ MC.canvas.event.groupResize = {
 
 				node_minX.push(node_data.coordinate[0]);
 				node_minY.push(node_data.coordinate[1]);
-				node_maxX.push(node_data.coordinate[0] + MC.canvas.COMPONENT_WIDTH_GRID);
-				node_maxY.push(node_data.coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID);
+				node_maxX.push(node_data.coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0]);
+				node_maxY.push(node_data.coordinate[1] + MC.canvas.COMPONENT_SIZE[ item.type ][1]);
 			}
 
 			if (layout_group_data[ item.id ])

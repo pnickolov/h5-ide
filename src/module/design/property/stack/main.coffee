@@ -26,10 +26,11 @@ define [ 'jquery',
         require [ './module/design/property/stack/view', './module/design/property/stack/model' ], ( view, model ) ->
 
             #
+            if current_view then view.delegateEvents view.events
+
+            #
             current_view  = view
             current_model = model
-            #
-            current_view.delegateEvents view.events
 
             #view
             view.model    = model

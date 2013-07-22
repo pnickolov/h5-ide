@@ -38,6 +38,31 @@ define [ 'jquery',
 
             #view
             view.model    = model
+
+            model.getUID  uid
+            model.getName()
+            model.getInstanceType()
+            model.getAmiDisp()
+            model.getAmi()
+            model.getComponent()
+            model.getKerPair()
+            model.getSgDisp()
+            model.getCheckBox()
+            model.getEni()
+            #
+            view.render()
+            #
+            model.listen()
+            #
+            model.on 'change:update_instance_title', () ->
+
+                view.render()
+
+                ide_event.trigger ide_event.RELOAD_PROPERTY
+                
+            ide_event.trigger ide_event.RELOAD_PROPERTY
+
+            ###
             #model
             #model.setHost uid
             attributes = {
@@ -53,7 +78,7 @@ define [ 'jquery',
             #render
             view.render( attributes, instance_expended_id )
 
-            ide_event.trigger ide_event.RELOAD_PROPERTY
+            
 
             view.on 'RE_RENDER', ( uid ) ->
 
@@ -71,6 +96,7 @@ define [ 'jquery',
                 view.render( attributes )
 
                 ide_event.trigger ide_event.RELOAD_PROPERTY
+            ###
 
             model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
 

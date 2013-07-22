@@ -2,27 +2,81 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
+define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (constant, ide_event) ->
 
     InstanceModel = Backbone.Model.extend {
 
         defaults :
-            'set_host'    : null
-            'get_host'    : null
+            'uid'         : null
+            'name'        : null
+            'update_instance_title' : null
+            'instance_type' : null
+            'instance_ami' : null
+            'instance_ami_property' : null
+            'keypair' : null
+            'component' : null
+            'sg_display' : null
+            'checkbox_display' : null
+            'eni_display'   : null
+            'ebs_optimized' : null
+            'tenacy' : null
+            'cloudwatch' : null
+            'user_data' : null
+            'base64'    :  null
+            'eni_description' : null
+            'source_check' : null
+            'add_kp' : null
+            'set_kp' : null
+            'add_sg'   : null
+            'remove_sg' : null
 
         initialize : ->
+            this.listenTo ide_event, 'SWITCH_TAB', this.updateUID
+
+        updateUID : ( type ) ->
+            console.log 'updateUID'
+            if type is 'OLD_APP' or  type is 'OLD_STACK'
+                this.set 'get_uid', $( '#instance-property-detail' ).data 'uid'
+
+        listen : ->
             #listen
-            this.listenTo this, 'change:get_host', this.getHost
+            this.listenTo this, 'change:name', this.setName
+            this.listenTo this, 'change:instance_type', this.setInstanceType
+            this.listenTo this, 'change:ebs_optimized', this.setEbsOptimized
+            this.listenTo this, 'change:cloudwatch', this.setCloudWatch
+            this.listenTo this, 'change:user_data', this.setUserData
+            this.listenTo this, 'change:base64' , this.setBase64Encoded
+            this.listenTo this, 'change:eni_description' , this.setEniDescription
+            this.listenTo this, 'change:source_check', this.setSourceCheck
+            this.listenTo this, 'change:set_kp', this.setKP
+            this.listenTo this, 'change:add_kp', this.addKP
+            this.listenTo this, 'change:add_sg', this.addSGtoInstance
+            this.listenTo this, 'change:remove_sg', this.removeSG
 
-        setHost  : ( uid, value ) ->
-            console.log 'setHost = ' + value
-            MC.canvas_data.component[ uid ].name = value
-            MC.canvas.update(uid,'text','hostname', value)
-
+        getUID  : ( uid ) ->
+            console.log 'getUID'
+            this.set 'get_uid', MC.canvas_data.component[ uid ].uid
             null
-            #this.set 'set_host', 'host'
 
-        setInstanceType  : ( uid, value ) ->
+        setName  : () ->
+            console.log 'setName'
+            MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
+            this.set 'update_instance_title', this.get 'name'
+
+            MC.canvas.update(uid,'text','hostname', this.get('name'))
+            null
+
+
+        getName  : () ->
+            console.log 'getName'
+            this.set 'name', MC.canvas_data.component[ this.get( 'get_uid' )].name
+            null
+           
+        setInstanceType  : () ->
+
+            uid = this.get 'get_uid'
+
+            value = this.get 'instance_type'
 
             console.log 'setInstanceType = ' + value
 
@@ -49,27 +103,31 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             null
             #this.set 'set_host', 'host'
 
-        setEbsOptimized : ( uid, value )->
+        setEbsOptimized : ( value )->
 
-            console.log 'setEbsOptimized = ' + value
+            uid = this.get 'get_uid'
 
-            MC.canvas_data.component[ uid ].resource.EbsOptimized = value
+            #console.log 'setEbsOptimized = ' + value
 
-            null
-
-        setTenancy : ( uid, value ) ->
-
-            console.log 'setTenancy = ' + value
-
-            MC.canvas_data.component[ uid ].resource.Placement.Tenancy = value
+            MC.canvas_data.component[ uid ].resource.EbsOptimized = this.get 'ebs_optimized'
 
             null
 
-        setCloudWatch : ( uid, value ) ->
+        setTenancy : ( value ) ->
 
-            console.log 'setCloudWatch = ' + value
+            uid  = this.get 'get_uid'
 
-            if value
+            MC.canvas_data.component[ uid ].resource.Placement.Tenancy = this.get 'tenacy'
+
+            null
+
+        setCloudWatch : () ->
+
+            #console.log 'setCloudWatch = ' + value
+
+            uid = this.get 'get_uid'
+
+            if this.get 'cloudwatch'
 
                 MC.canvas_data.component[ uid ].resource.Monitoring = 'enabled'
 
@@ -79,51 +137,62 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        setUserData : ( uid, value ) ->
+        setUserData : () ->
 
-            console.log 'setUserData = ' + value
+            #console.log 'setUserData = ' + value
 
-            MC.canvas_data.component[ uid ].resource.UserData.Data = value
+            uid = this.get 'get_uid'
+
+            MC.canvas_data.component[ uid ].resource.UserData.Data = this.get 'user_data'
 
             null
         
-        setBase64Encoded : ( uid, value )->
+        setBase64Encoded : ()->
 
-            console.log 'setBase64Encoded = ' + value
+            #console.log 'setBase64Encoded = ' + value
 
-            MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded = value
+            MC.canvas_data.component[ this.get('get_uid') ].resource.UserData.Base64Encoded = this.get 'base64'
 
             null
 
-        setEniDescription: ( uid, value ) ->
+        setEniDescription: () ->
 
-            console.log 'setEniDescription = ' + value
+            #console.log 'setEniDescription = ' + value
+
+            uid = this.get 'get_uid'
 
             _.map MC.canvas_data.component, ( val, key ) ->
 
                 if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
 
-                    val.resource.Description = value
+                    val.resource.Description = this.get 'eni_description'
 
                 null
 
             null
 
-        setSourceCheck : ( uid, value ) ->
+        setSourceCheck : () ->
 
-            console.log 'setSourceCheck = ' + value
+            #console.log 'setSourceCheck = ' + value
+            me = this
+            
+            uid = this.get 'get_uid'
 
             _.map MC.canvas_data.component, ( val, key ) ->
 
                 if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
 
-                    val.resource.SourceDestCheck = value
+                    val.resource.SourceDestCheck = me.get 'source_check'
 
                 null
 
             null
 
-        setKP : ( uid, kp_name ) ->
+        setKP : () ->
+
+            uid = this.get 'get_uid'
+
+            kp_name = this.get 'set_kp'
 
             _.map MC.canvas_property.kp_list, ( kp ) ->
 
@@ -139,7 +208,10 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        addKP : ( uid, kp_name ) ->
+        addKP : () ->
+
+            uid = this.get 'get_uid'
+            kp_name = this.get 'add_kp'
 
             component_data = $.extend(true, {}, MC.canvas.KP_JSON.data)
 
@@ -150,7 +222,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             kp_ref = '@' + kp_uid + '.resource.KeyName'
 
-            console.log 'addKP = ' + kp_ref
+            #console.log 'addKP = ' + kp_ref
 
             MC.canvas_data.component[ uid ].resource.KeyName = kp_ref
 
@@ -168,7 +240,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        addSGtoInstance : (instance_uid, sg_uid) ->
+        addSGtoInstance : () ->
+
+            instance_uid = this.get 'get_uid'
+
+            sg_uid = this.get 'add_sg'
 
             if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
@@ -197,7 +273,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        getCheckBox : ( uid ) ->
+        getCheckBox : () ->
+
+            uid = this.get 'get_uid'
 
             checkbox = {}
 
@@ -209,9 +287,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             checkbox.tenancy = true if MC.canvas_data.component[ uid ].resource.Placement.Tenancy == 'default' or MC.canvas_data.component[ uid ].resource.Placement.Tenancy == ''
 
-            checkbox
+            this.set 'checkbox_display', checkbox
 
-        getEni : ( uid ) ->
+        getEni : () ->
+
+            uid = this.get 'get_uid'
 
             eni_detail = {}
 
@@ -225,20 +305,23 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                 null
 
-            eni_detail
+            this.set 'eni_display', eni_detail
 
+        getComponent : () ->
 
-        getHost  : ->
-            console.log 'getHost'
-            console.log this.get 'get_host'
+            this.set 'component', MC.canvas_data.component[ this.get( 'get_uid') ]
 
-        getAmi : ( uid ) ->
+        getAmi : () ->
+
+            uid = this.get 'get_uid'
 
             ami_id = MC.canvas_data.component[ uid ].resource.ImageId
 
-            JSON.stringify MC.data.dict_ami[ami_id]
+            this.set 'instance_ami_property', JSON.stringify(MC.data.dict_ami[ami_id])
 
-        getAmiDisp : ( uid ) ->
+        getAmiDisp : () ->
+
+            uid = this.get 'get_uid'
 
             disp = {}
 
@@ -248,9 +331,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             disp.icon = MC.data.dict_ami[ami_id].osType + '.' + MC.data.dict_ami[ami_id].architecture + '.' + MC.data.dict_ami[ami_id].rootDeviceType + ".png"
 
-            disp
+            this.set 'instance_ami', disp
 
-        getSgDisp : ( uid ) ->
+        getSgDisp : () ->
+
+            uid = this.get 'get_uid'
 
             instance_sg = {}
 
@@ -355,10 +440,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             instance_sg.rules_detail_ingress = array_unique instance_sg.rules_detail_ingress
             instance_sg.rules_detail_egress = array_unique instance_sg.rules_detail_egress
 
-            instance_sg
+            this.set 'sg_display', instance_sg
 
 
-        getKerPair : (uid)->
+        getKerPair : ()->
+
+            uid = this.get 'get_uid'
 
             kp_list = []
 
@@ -378,10 +465,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                     kp_list.push kp
 
-            kp_list
+            this.set 'keypair', kp_list
 
-        getInstanceType : (uid) ->
-            console.log uid
+        getInstanceType : () ->
+            
+            uid = this.get 'get_uid'
+
             ami_info = MC.canvas_data.layout.component.node[ uid ]
 
             current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
@@ -400,7 +489,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 tmp.name = value
                 view_instance_type.push tmp
 
-            view_instance_type
+            this.set 'instance_type', view_instance_type
 
         _getInstanceType : ( ami ) ->
             instance_type = MC.data.instance_type[MC.canvas_data.region]
@@ -420,7 +509,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             instance_type
 
-        removeSG : ( uid, sg_uid ) ->
+        removeSG : () ->
+
+            uid = this.get 'get_uid'
+
+            sg_uid = this.get 'remove_sg'
 
             sg_id_ref = "@"+sg_uid+'.resource.GroupId'
 

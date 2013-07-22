@@ -1442,8 +1442,8 @@ MC.canvas.layout = {
 			vpc_group = MC.canvas.add('AWS.VPC.VPC', {
 				'name': 'vpc1'
 			}, {
-				'x': 2,
-				'y': 2
+				'x': 5,
+				'y': 3
 			});
 
 			var node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
@@ -1841,8 +1841,20 @@ MC.canvas.event.dragable = {
 				group_offsetY = coordinate.y - group_coordinate[1];
 
 				if (
-					coordinate.x > 1 &&
-					coordinate.y > 1 &&
+					(
+						(
+							group_data.type === 'AWS.VPC.VPC' &&
+							coordinate.x > 5 &&
+							coordinate.y > 2
+						)
+						||
+						(
+							group_data.type !== 'AWS.VPC.VPC' &&
+							coordinate.x > 1 &&
+							coordinate.y > 1
+						)
+					)
+					&&
 					(
 						(
 							coordinate_fixed &&
@@ -1898,7 +1910,6 @@ MC.canvas.event.dragable = {
 								$.each(node_connections, function (index, value)
 								{
 									line_connection = layout_connection_data[ value.line ];
-
 									line_layer.removeChild(document.getElementById( value.line ));
 
 									MC.canvas.connect(

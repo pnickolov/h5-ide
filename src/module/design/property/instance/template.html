@@ -1,4 +1,28 @@
 <div class="sidebar-title">
+	<span class="sidebar-title-text" id='property-title'>{{ name }}</span>
+</div>
+<div class="fixedaccordion accordion-default" data-sub="43" id="instance-accordion">
+	<div class="accordion-group  expanded" >
+		<div class="fixedaccordion-head" id="instance-property-detail" component="{{ uid }}">
+			Instance Details
+		</div>
+		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<div class="item-wrap scroll-content">
+				<div class="property-control-group clearfix">
+					<label class="left" for="property-instance-name" >Name</label>
+					<span class="required-input right">Required</span>
+					<input class="input instance-name"  type="text" required="required" value="{{ name }}" name="property-instance-name" id="property-instance-name"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="sg-secondary-panel-wrap">
+</div>
+
+<!--
+<div class="sidebar-title">
 	<span class="sidebar-title-text" id='property-title'>{{component.name}}</span>
 </div>
 <div class="fixedaccordion accordion-default" data-sub="43" id="instance-accordion">
@@ -293,3 +317,4 @@
 </div>
 <div id="sg-secondary-panel-wrap">
 </div>
+-->

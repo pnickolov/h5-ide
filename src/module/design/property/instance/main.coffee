@@ -38,6 +38,20 @@ define [ 'jquery',
 
             #view
             view.model    = model
+
+            model.getUID  uid
+            model.getName()
+            #
+            view.render()
+            #
+            model.listen()
+            #
+            model.on 'change:update_name', () ->
+                view.undelegateEvents()
+                view.render()
+                view.delegateEvents view.events
+
+            ###
             #model
             #model.setHost uid
             attributes = {
@@ -71,6 +85,7 @@ define [ 'jquery',
                 view.render( attributes )
 
                 ide_event.trigger ide_event.RELOAD_PROPERTY
+            ###
 
             model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
 

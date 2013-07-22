@@ -7,19 +7,29 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
     InstanceModel = Backbone.Model.extend {
 
         defaults :
-            'set_host'    : null
-            'get_host'    : null
+            'uid'         : null
+            'name'        : null
+            'update_name' : null
 
-        initialize : ->
+        listen : ->
             #listen
-            this.listenTo this, 'change:get_host', this.getHost
+            this.listenTo this, 'change:name', this.setName
 
-        setHost  : ( uid, value ) ->
-            console.log 'setHost = ' + value
-            MC.canvas_data.component[ uid ].name = value
-
+        getUID  : ( uid ) ->
+            console.log 'getUID'
+            this.set 'get_uid', MC.canvas_data.component[ uid ].uid
             null
-            #this.set 'set_host', 'host'
+
+        setName  : () ->
+            console.log 'setName'
+            MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
+            this.set 'update_name', this.get 'name'
+            null
+
+        getName  : () ->
+            console.log 'getName'
+            this.set 'name', MC.canvas_data.component[ this.get( 'get_uid' )].name
+            null
 
         setInstanceType  : ( uid, value ) ->
 
@@ -226,10 +236,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             eni_detail
 
-
-        getHost  : ->
-            console.log 'getHost'
-            console.log this.get 'get_host'
 
         getAmi : ( uid ) ->
 

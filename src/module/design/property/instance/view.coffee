@@ -52,7 +52,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         render     : ( attributes, instance_expended_id ) ->
             console.log 'property:instance render'
-            $( '.property-details' ).html this.template attributes
+            #
+            #$( '.property-details' ).html this.template attributes
+            $( '.property-details' ).html this.template this.model.attributes
+            #
             if instance_expended_id isnt undefined
                 accordion = $( '#instance-accordion' )
                 cur_id = accordion.find('.accordion-group').index accordion.find('.expanded')
@@ -64,8 +67,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         instanceNameChange : ( event ) ->
             console.log 'instanceNameChange'
             cid = $( '#instance-property-detail' ).attr 'component'
-            this.model.setHost cid, event.target.value
-            this.trigger 'RE_RENDER', cid
+            this.model.set 'name', event.target.value
+            null
+            #this.model.setHost cid, event.target.value
+            #this.trigger 'RE_RENDER', cid
 
         instanceTypeSelect : ( event, value )->
             cid = $( '#instance-property-detail' ).attr 'component'

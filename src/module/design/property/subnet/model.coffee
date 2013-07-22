@@ -7,14 +7,16 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
     SubnetModel = Backbone.Model.extend {
 
         defaults :
-            'set_xxx'    : null
-            'get_xxx'    : null
+            uid  : null
+            name : null
+            CIDR : null
+            networkACL : null
 
         initialize : ->
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
 
-        getRenderData : ( uid ) ->
+        setId : ( uid ) ->
 
             subnet_component = MC.canvas_data.component[ uid ]
             networkACLs = []
@@ -62,17 +64,18 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             if linkToDefault
                 defaultACL.isUsed = true
 
-            data
-
-        setName : ( uid, name ) ->
-            MC.canvas_data.component[ uid ].name = name
+            this.set data
             null
 
-        setCIDR : ( uid, cidr ) ->
-            MC.canvas_data.component[ uid ].resource.CidrBlock = cidr
+        setName : ( name ) ->
+            MC.canvas_data.component[ this.attributes.uid ].name = name
             null
 
-        setACL : ( uid, acl_uid ) ->
+        setCIDR : ( cidr ) ->
+            MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock = cidr
+            null
+
+        setACL : ( acl_uid ) ->
             
             ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
             for id, component of MC.canvas_data.component
@@ -82,7 +85,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 removed = false
 
                 for asscn, idx in component.resource.AssociationSet
-                    if asscn.SubnetId.indexOf( uid ) != -1
+                    if asscn.SubnetId.indexOf( this.attributes.uid ) != -1
                         component.resource.AssociationSet.splice idx, 1
                         removed = true
                         break
@@ -92,7 +95,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             acl = MC.canvas_data.component[ acl_uid ]
             acl.resource.AssociationSet.push
-                SubnetId : "@" + uid + ".resource.SubnetId"
+                SubnetId : "@" + this.attributes.uid + ".resource.SubnetId"
                 NetworkAclAssociationId : ""
                 NetworkAclId : ""
             null

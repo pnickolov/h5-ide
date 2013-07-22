@@ -19,30 +19,23 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         render     : ( data ) ->
             console.log 'property:subnet render', data
-
-            this.uid = data.uid
-
-            CIDR = data.CIDR.split "."
-            data.CIDRPrefix = CIDR[0] + "." + CIDR[1] + "."
-            data.CIDR = CIDR[2] + "." + CIDR[3]
-
             $( '.property-details' ).html this.template data
 
 
         onChangeCIDR : ( event ) ->
             change.value = $("#property-cidr-prefix").html() + $("#property-cidr-block").val()
             change.event = "CHANGE_CIDR"
-            this.trigger "CHANGE_CIDR", this.uid, change
+            this.trigger "CHANGE_CIDR", change
 
         onChangeName : ( event ) ->
             change.value = event.target.value
             change.event = "CHANGE_NAME"
-            this.trigger "CHANGE_NAME", this.uid, change
+            this.trigger "CHANGE_NAME", change
 
         onChangeACL : () ->
             change.value = $( "#networkacl-list :checked" ).attr "data-uid"
             change.event = "CHANGE_ACL"
-            this.trigger "CHANGE_ACL", this.uid, change
+            this.trigger "CHANGE_ACL", change
 
         onViewACL : () ->
             null

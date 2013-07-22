@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
+define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (constant, ide_event) ->
 
     InstanceModel = Backbone.Model.extend {
 
@@ -29,6 +29,14 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'set_kp' : null
             'add_sg'   : null
             'remove_sg' : null
+
+        initialize : ->
+            this.listenTo ide_event, 'SWITCH_TAB', this.updateUID
+
+        updateUID : ( type ) ->
+            console.log 'updateUID'
+            if type is 'OLD_APP' or  type is 'OLD_STACK'
+                this.set 'get_uid', $( '#instance-property-detail' ).data 'uid'
 
         listen : ->
             #listen

@@ -10,6 +10,17 @@ var constant_data = {
 	COMPONENT_WIDTH_GRID: 10,
 	COMPONENT_HEIGHT_GRID: 10,
 
+	COMPONENT_SIZE:
+	{
+		'AWS.ELB': [10, 10],
+		'AWS.EC2.Instance': [10, 10],
+		'AWS.VPC.NetworkInterface': [10, 10],
+		'AWS.VPC.CustomerGateway': [20, 10],
+		'AWS.VPC.RouteTable': [10, 10],
+		'AWS.VPC.InternetGateway': [10, 10],
+		'AWS.VPC.VPNGateway': [10, 10]
+	},
+
 	GROUP_DEFAULT_SIZE:
 	{
 		'AWS.VPC.VPC': [60, 60], //[width, height]

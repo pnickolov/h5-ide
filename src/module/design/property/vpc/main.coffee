@@ -9,16 +9,30 @@ define [ 'jquery',
          'UI.multiinputbox'
 ], ( $, template, ide_event ) ->
 
-    #private
-    loadModule = ( uid, type ) ->
+    #
+    current_view  = null
+    current_model = null
 
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="property-vpc-tmpl">' + template + '</script>'
-        #load remote html template
-        $( 'head' ).append template
+    #add handlebars script
+    template = '<script type="text/x-handlebars-template" id="property-vpc-tmpl">' + template + '</script>'
+    #load remote html template
+    $( 'head' ).append template
+
+    #private
+    loadModule = ( uid, current_main ) ->
+
+        #
+        MC.data.current_sub_main = current_main
 
         #
         require [ './module/design/property/vpc/view', './module/design/property/vpc/model' ], ( view, model ) ->
+
+            #
+            if current_view then view.delegateEvents view.events
+
+            #
+            current_view  = view
+            current_model = model
 
             #view
             view.model = model
@@ -52,7 +66,11 @@ define [ 'jquery',
         cird && cird.match /^(\d{1,3}.){3}\d{1,3}\/\d\d$/
 
     unLoadModule = () ->
-        #view.remove()
+        current_view.off()
+        current_model.off()
+        current_view.undelegateEvents()
+        #ide_event.offListen ide_event.<EVENT_TYPE>
+        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public
     loadModule   : loadModule

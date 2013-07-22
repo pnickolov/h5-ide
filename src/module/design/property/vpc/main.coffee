@@ -30,7 +30,7 @@ define [ 'jquery',
                 else
                     model.setName uid, newName
                     # Update Canvas
-                    MC.canvas.update uid, "text", "vpc_name", newName
+                    MC.canvas.update uid, "text", "name", newName
                 null
 
             view.on "CHANGE_CIDR", ( newCIDR ) ->

@@ -72,7 +72,7 @@ define [ 'jquery',
                 # Set data
                 model.setNewAZ oldZoneID, newZone
                 # Update Canvas
-                MC.canvas.update oldZoneID, "text", "az_name", newZone
+                MC.canvas.update oldZoneID, "text", "name", newZone
 
             null
 

@@ -29,7 +29,7 @@ define [ 'jquery',
                 change.accept()
 
                 # Sync the name to canvas
-                MC.canvas.update uid, "text", "cgw_name", change.value
+                MC.canvas.update uid, "text", "name", change.value
                 null
 
             view.on "CHANGE_IP", ( uid, change ) ->

@@ -47,6 +47,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
 
         render   : ( attributes ) ->
 
+            this.uid = attributes.uid
+
             selectedType = attributes.dhcp.netbiosType || 0
             attributes.dhcp.netbiosTypes = [
                   { id : "default" , value : "Not specified", selected : selectedType == 0 }
@@ -74,23 +76,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
         onChangeTenancy : ( event, newValue ) ->
             $("#desc-dedicated").toggle( newValue == "dedicated" )
 
-            uid = $("#vpc-property-detail").attr("data-component")
-            this.model.setTenancy uid, newValue
+            this.model.setTenancy this.uid, newValue
             null
 
         onChangeDnsSupport : ( event ) ->
-            uid = $("#vpc-property-detail").attr("data-component")
-            this.model.setDnsSupport uid, event.target.checked
+            this.model.setDnsSupport this.uid, event.target.checked
             null
 
         onChangeDnsHostname : ( event ) ->
-            uid = $("#vpc-property-detail").attr("data-component")
-            this.model.setDnsHosts uid, event.target.checked
+            this.model.setDnsHosts this.uid, event.target.checked
             null
 
         onChangeDhcp : ( event ) ->
 
-            uid = $("#vpc-property-detail").attr("data-component")
             $selectOption = $(".property-dhcp input:checked")
 
             noDhcp = $selectOption.attr("id") == "property-dhcp-none"
@@ -98,7 +96,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
             $("#property-dhcp-desc").toggle    noDhcp
             $("#property-dhcp-options").toggle !noDhcp
 
-            this.model.setDhcp uid, !noDhcp
+            this.model.setDhcp this.uid, !noDhcp
 
             if noDhcp
                 this.notChangingDHCP = true
@@ -106,7 +104,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
                 # Need to reset everything here.
                 $("#property-dhcp-options .multi-ipt-row:not(:first-child)").remove()
                 $("#property-dhcp-options .multi-ipt-row .input").val("")
-                $("#property-dhcp-domain").val( this.model.defaultDomainName uid )
+                $("#property-dhcp-domain").val( this.model.defaultDomainName this.uid )
                 $("#property-amazon-dns").prop("checked", true)
                 $("#property-netbios-type .dropdown-menu li:first-child a").click()
                 this.notChangingDHCP = false
@@ -127,7 +125,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
                 return
 
             # Gather all the infomation to submit
-            uid  = $("#vpc-property-detail").attr("data-component")
             data =
                 domainName     : $("#property-dhcp-domain").val()
                 useAmazonDns   : $("#property-amazon-dns").is(":checked")
@@ -138,7 +135,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
 
             console.log "DHCP Options Changed", data
 
-            this.model.setDHCPOptions uid, data
+            this.model.setDHCPOptions this.uid, data
             null
 
 

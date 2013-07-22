@@ -418,7 +418,7 @@ MC.canvas = {
 				mid_x = point.x - 4;
 				break;
 			case 'rtb-src': //both top and bottom
-				mid_x = point.x + 75 * sign;
+				mid_x = point.x + 50 * sign;
 				break;
 		}
 		return mid_x;
@@ -552,7 +552,7 @@ MC.canvas = {
 			{
 				if (Math.abs(mid_x - end.x) > 5)
 				{
-					mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
+					mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, start, -1);
 				}
 			}
 			controlPoints.push( { 'x': mid_x, 'y': start.y });

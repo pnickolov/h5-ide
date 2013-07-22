@@ -13,9 +13,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
         #events   :
 
-        render     : ( attributes ) ->
+        render     : () ->
             console.log 'property:rtb render'
-            $( '.property-details' ).html this.template attributes
+            $( '.property-details' ).html this.template this.model.attributes
 
     }
 

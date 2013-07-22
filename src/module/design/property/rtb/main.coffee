@@ -35,6 +35,9 @@ define [ 'jquery',
             #view
             view.model    = model
             #render
+
+            model.getRoute( uid )
+
             view.render()
 
     unLoadModule = () ->

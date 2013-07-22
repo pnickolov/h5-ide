@@ -1585,6 +1585,14 @@ td.table-action a.btn {
 	background: url('../images/ide/icon-run.png') center center no-repeat;
 }
 
+.icon-toolbar-stop {
+	background: url('../images/ide/icon-stop.png') center center no-repeat;
+}
+
+.icon-toolbar-terminate {
+	background: url('../images/ide/icon-terminate.png') center center no-repeat;
+}
+
 .icon-toolbar-save {
 	background: url('../images/ide/icon-save.png') center center no-repeat;
 }
@@ -1778,7 +1786,7 @@ a.sidebar-hider {
 }
 
 .resource-icon-az {
-	background: url('../images/ide/az-resource.png') center center no-repeat;
+	background: url('../images/ide/icon/az-resource.png') center center no-repeat;
 }
 
 .resource-icon-az-label {
@@ -1805,6 +1813,26 @@ a.sidebar-hider {
 
 .resource-icon-eni {
 	background: url('../images/ide/icon/eni-resource.png') center center no-repeat;
+}
+
+.resource-icon-subnet {
+	background: url('../images/ide/icon/subnet-resource.png') center center no-repeat;
+}
+
+.resource-icon-rt {
+	background: url('../images/ide/icon/RT-resource.png') center center no-repeat;
+}
+
+.resource-icon-igw {
+	background: url('../images/ide/icon/igw-resource.png') center center no-repeat;
+}
+
+.resource-icon-vgw {
+	background: url('../images/ide/icon/vgw-resource.png') center center no-repeat;
+}
+
+.resource-icon-cgw {
+	background: url('../images/ide/icon/cgw-resource.png') center center no-repeat;
 }
 
 
@@ -2775,6 +2803,58 @@ a.sidebar-hider {
 
 .elb-property-cert-input {
 	height: 50px;
+}
+
+/* property-newtwork-acl */
+.acl-rule-col1 {
+	float  : left;
+	width  : 35px;
+	height : 50px;
+}
+
+.acl-rule-col2 {
+	float  : left;
+	width  : 60px;
+	height : 50px;
+}
+
+.acl-rule-col4 {
+	float  : right;
+	width  : 20px;
+	height : 50px;
+}
+
+.acl-rule-allow-cb {
+	width      : 16px;
+	height     : 16px;
+	background : red;
+	display    : inline-block;
+}
+
+.acl-rule-allow-cb.checked {
+	background : green;
+}
+
+.acl-rule-inbound, .acl-rule-outbound {
+	display:block;
+}
+.acl-rule-inbound:before {
+	content : "<";
+}
+.acl-rule-outbound:before {
+	content : ">";
+}
+.property-rule-delete-btn {
+	display    : inline-block;
+	width      : 16px;
+	height     : 16px;
+	background : #777;
+	color      : #fff;
+	text-align : center;
+	
+}
+.property-rule-delete-btn:before {
+	content : "x";
 }
 
 /* property-stack */

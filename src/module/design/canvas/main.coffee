@@ -62,6 +62,9 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
                 null
 
 
+            model.on 'ENI_REACH_MAX', ()->
+                console.log 'ENI reach limit'
+                view.showEniReachMax()
 
             null
 

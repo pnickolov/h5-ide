@@ -2,7 +2,7 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event ) ->
 
     CanvasView = Backbone.View.extend {
 
@@ -65,7 +65,8 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars' ], ( ide_event
         createComponent : ( event, uid ) ->
              event.data.trigger 'CANVAS_COMPONENT_CREATE', uid
 
-
+        showEniReachMax : () ->
+            notification 'info', 'The Instance you selected has attach too many eni, please unattach one or change the instance type.'
     }
 
     return CanvasView

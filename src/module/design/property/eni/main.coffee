@@ -34,8 +34,18 @@ define [ 'jquery',
 
             #view
             view.model    = model
+
+            model.getENIDisplay uid
             #render
             view.render()
+
+            view.on 'SET_ENI_DESC', ( uid, value ) ->
+
+                model.setEniDesc uid, value
+
+            view.on 'SET_ENI_SOURCE_DEST_CHECK', ( uid, check ) ->
+
+                model.setSourceDestCheck uid, check
 
     unLoadModule = () ->
         current_view.off()

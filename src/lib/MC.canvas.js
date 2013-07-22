@@ -2809,8 +2809,8 @@ MC.canvas.event.groupResize = {
 			});
 
 			group_title.attr({
-				'x': 1,
-				'y': -6
+				'x': MC.canvas.GROUP_LABEL_COORDINATE[ type ][0],
+				'y': MC.canvas.GROUP_LABEL_COORDINATE[ type ][1]
 			});
 		}
 

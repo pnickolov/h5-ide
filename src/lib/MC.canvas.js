@@ -2366,27 +2366,61 @@ MC.canvas.event.siderbarDrag = {
 			match_place,
 			default_group_width,
 			default_group_height,
-			new_node;
+			new_node,
+			vpc_id,
+			vpc_data,
+			vpc_coordinate;
 
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
 			if (target_type === 'node')
 			{
-				match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_SIZE[ node_type ][0], MC.canvas.COMPONENT_SIZE[ node_type ][1]);
-
-				if (match_place.is_matched)
+				if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 				{
-					node_option.groupUId = match_place.target;
-					new_node = MC.canvas.add(node_type, node_option, coordinate);
+					vpc_id = $('.AWS-VPC-VPC').attr('id');
+					vpc_data = MC.canvas.data.get('layout.component.group.' + vpc_id);
+					vpc_coordinate = vpc_data.coordinate;
 
-					$(new_node).attr('class', function (index, key)
+					node_option.groupUId = vpc_id;
+
+					if (coordinate.y > vpc_coordinate[1] + vpc_data.size[1])
 					{
-						return key + ' selected';
-					});
+						coordinate.y = vpc_coordinate[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1];
+					}
+					if (coordinate.y < vpc_coordinate[1])
+					{
+						coordinate.y = vpc_coordinate[1];
+					}
 
-					MC.canvas.selected_node = [new_node];
+					if (node_type === 'AWS.VPC.InternetGateway')
+					{
+						coordinate.x = vpc_coordinate[0] - (MC.canvas.COMPONENT_SIZE[ node_type ][1] / 2);
+					}
+					if (node_type === 'AWS.VPC.VPNGateway')
+					{
+						coordinate.x = vpc_coordinate[0] + vpc_data.size[0] - (MC.canvas.COMPONENT_SIZE[ node_type ][1] / 2);
+					}
 
-					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", new_node.id);
+					MC.canvas.add(node_type, node_option, coordinate);
+				}
+				else
+				{
+					match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_SIZE[ node_type ][0], MC.canvas.COMPONENT_SIZE[ node_type ][1]);
+
+					if (match_place.is_matched)
+					{
+						node_option.groupUId = match_place.target;
+						new_node = MC.canvas.add(node_type, node_option, coordinate);
+
+						$(new_node).attr('class', function (index, key)
+						{
+							return key + ' selected';
+						});
+
+						MC.canvas.selected_node = [new_node];
+
+						$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", new_node.id);
+					}
 				}
 			}
 

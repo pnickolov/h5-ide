@@ -1320,23 +1320,17 @@ MC.canvas = {
 	lineTarget: function (line_id)
 	{
 		var data = MC.canvas.data.get('layout.connection.' + line_id),
-			target_id = [];
+			result = [];
 
 		$.each(data.target, function (key, value)
 		{
-			target_id.push(key);
+			result.push({
+				'uid': key,
+				'port': value
+			});
 		});
 
-		return [
-			{
-				'uid': target_id[0],
-				'port': data.target[ target_id[0] ],
-			},
-			{
-				'uid': target_id[1],
-				'port': data.target[ target_id[1] ],
-			}
-		];
+		return result;
 	}
 };
 
@@ -3245,9 +3239,12 @@ MC.canvas.volume = {
 
 		if (!bubble_box[0])
 		{
-			MC.canvas.volume.bubble(
-				document.getElementById( target_id )
-			);
+			if (MC.canvas.data.get('component.' + target_id  + '.resource.BlockDeviceMapping').length > 0)
+			{
+				MC.canvas.volume.bubble(
+					document.getElementById( target_id )
+				);
+			}
 		}
 		else
 		{
@@ -3272,7 +3269,7 @@ MC.canvas.volume = {
 
 		$(this).addClass('selected');
 
-		$(document).on('keyup', MC.canvas.volume.delete);
+		$(document).on('keyup', MC.canvas.volume.remove);
 
 		//dispatch event when select volume node
 		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
@@ -3309,12 +3306,12 @@ MC.canvas.volume = {
 			MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_NORMAL);
 
 			$(document)
-				.off('keyup', MC.canvas.volume.delete)
+				.off('keyup', MC.canvas.volume.remove)
 				.off('click', ':not(.instance-volume, #volume-bubble-box)', MC.canvas.volume.close);
 		}
 	},
 
-	delete: function (event)
+	remove: function (event)
 	{
 		if (
 			(
@@ -3349,7 +3346,7 @@ MC.canvas.volume = {
 
 			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
 
-			$(document).off('keyup', MC.canvas.volume.delete);
+			$(document).off('keyup', MC.canvas.volume.remove);
 		}
 	},
 

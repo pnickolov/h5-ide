@@ -401,7 +401,7 @@ MC.canvas = {
 				break;
 			case 'rtb-tgt-left':
 			case 'rtb-tgt-right': //both left and right
-				mid_y = point.y + 50 * sign;
+				mid_y = point.y + 40 * sign;
 				break;
 		}
 		return mid_y;
@@ -418,7 +418,7 @@ MC.canvas = {
 				mid_x = point.x - 4;
 				break;
 			case 'rtb-src': //both top and bottom
-				mid_x = point.x + 50 * sign;
+				mid_x = point.x + 40 * sign;
 				break;
 		}
 		return mid_x;
@@ -541,18 +541,25 @@ MC.canvas = {
 		{
 			//D
 			mid_x = (start.x + end.x) / 2;
-			if (to_type == "AWS.VPC.RouteTable" && to_type != from_type)
+			if (to_type == 'AWS.VPC.RouteTable' && to_type != from_type)
 			{
 				if (Math.abs(start.x - mid_x) > 5)
 				{
 					mid_x = MC.canvas._adjustMidX(to_port_name, mid_x, start, 1);
 				}
 			}
-			else if (from_type == "AWS.VPC.RouteTable" && to_type != from_type)
+			else if (from_type == 'AWS.VPC.RouteTable' && to_type != from_type)
 			{
 				if (Math.abs(mid_x - end.x) > 5)
 				{
-					mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, start, -1);
+					if (to_type == 'AWS.VPC.InternetGateway' || to_type == 'AWS.VPC.VPNGateway' )
+					{
+						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
+					}
+					else
+					{
+						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, start, -1);
+					}
 				}
 			}
 			controlPoints.push( { 'x': mid_x, 'y': start.y });

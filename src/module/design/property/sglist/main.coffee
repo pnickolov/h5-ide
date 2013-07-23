@@ -8,8 +8,8 @@ define [ 'jquery',
 ], ( $, template, ide_event ) ->
 
     #
-    current_view  = null
-    current_model = null
+    current_view     = null
+    #current_model = null
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-sg-list-tmpl">' + template + '</script>'
@@ -17,20 +17,17 @@ define [ 'jquery',
     $( 'head' ).append template
 
     #private
-    loadModule = ( current_main ) ->
+    loadModule = ( model ) ->
 
         #
-        MC.data.current_sub_main = current_main
-
-        #
-        require [ './module/design/property/sglist/view', './module/design/property/sglist/model' ], ( view, model ) ->
+        require [ './module/design/property/sglist/view' ], ( view ) ->
 
             #
             if current_view then view.delegateEvents view.events
 
             #
             current_view  = view
-            current_model = model
+            #current_model = model
 
             #view
             view.model    = model
@@ -38,10 +35,9 @@ define [ 'jquery',
             #render
             view.render()
 
-
     unLoadModule = () ->
         current_view.off()
-        current_model.off()
+        #current_model.off()
         current_view.undelegateEvents()
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>

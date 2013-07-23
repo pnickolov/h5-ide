@@ -24,27 +24,13 @@
 				<div class="property-control-group clearfix">
 					<label>Instance Type</label>
 					<div class="selectbox selectbox-mega" id="instance-type-select">
-						<a class="dropdown-toggle" href="#">
-							<div class="cur-value"></div>
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-
+						<div class="selection"></div>	
+						<ul class="dropdown">
 							{{#each instance_type}}
-
-							{{#if selected}}
-								<li class="selected tooltip" tabindex="-1" data-tooltip="{{main}}">
-
-							{{else}}
-
-								<li class="tooltip" tabindex="-1" data-tooltip="{{main}}">
-							{{/if}}
-									<a data-id="{{name}}" href="#">
-									<div class="main  truncate">{{main}}</div>
-									<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
-								</a>
+							<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}">
+								<div class="main  truncate">{{main}}</div>
+								<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
 							</li>
-
 							{{/each}}
 						</ul>
 					</div>
@@ -64,33 +50,14 @@
 				<div class="property-control-group clearfix">
 					<label>Tenancy</label>
 					<div class="selectbox" id="tenancy-select">
-						<a class="dropdown-toggle" href="#">
-							<span class="cur-value"></span>
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu" role="menu">
+						<div class="selection">{{#if checkbox_display.tenancy}}Default{{else}}Dedicated{{/if}}</div>
+						<ul class="dropdown" tabindex="-1">
 							{{#if checkbox_display.tenancy}}
-							<li class="selected" tabindex="-1">
-								<a data-id="default" href="#">
-									Default
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="dedicated" href="#">
-									Delicated
-								</a>
-							</li>
+							<li class="item selected" data-id="default">Default</li>
+							<li class="item" data-id="dedicated">Delicated</li>
 							{{else}}
-							<li tabindex="-1">
-								<a data-id="default" href="#">
-									Default
-								</a>
-							</li>
-							<li class="selected" tabindex="-1">
-								<a data-id="dedicated" href="#">
-									Delicated
-								</a>
-							</li>
+							<li class="item" data-id="default">Default</li>
+							<li class="item selected" data-id="dedicated">Dedicated</li>
 							{{/if}}
 						</ul>
 					</div>
@@ -99,10 +66,7 @@
 				<div class="property-control-group clearfix">
 					<label>Key Pair</label>
 					<div class="selectbox  selectbox-editable" id="keypair-select">
-						<a class="dropdown-toggle" href="#">
-						    <div class="cur-value"></div>
-						    <span class="caret"></span>
-						</a>
+						<div class="selection"></div>
 						<div class='editableoption'>
 						  	<div class="label">Create New Key Pair</div>
 						  	<div class="edit"><input class="input" type="text" placeholder="Key Pair Name" /><button class="btn btn-blue">OK</button></div>
@@ -110,13 +74,9 @@
 						<div style="height: 120px; width:228px;" class="scroll-wrap scrollbar-auto-hide  clearfix">
 							<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 							<div class="scroll-content">
-								<ul class="dropdown-menu  clearfix" role="menu">
+								<ul class="dropdown clearfix" tabindex="-1">
 									{{#each keypair}}
-										{{#if selected}}
-										<li class="selected" tabindex="-1"><a data-id="{{name}}" href="#">{{name}}</a></li>
-										{{else}}
-										<li tabindex="-1"><a data-id="{{name}}" href="#">{{name}}</a></li>
-										{{/if}}
+									<li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}">{{name}}</li>
 									{{/each}}
 								</ul>
 							</div>
@@ -208,7 +168,8 @@
 		<div class="fixedaccordion-head" id="sg-head">
 			<span>Security Groups({{sg_display.total}})</span>
 		</div>
-
+		<div class="sg-group">loading...</div>
+		<!--
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide sg-wrapper">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
@@ -237,27 +198,6 @@
 						<div class="sg-rule-filter">
 							<h5>Sort by</h5>
 							<div class="selectbox" id="sg-rule-filter-select">
-								<a class="dropdown-toggle" href="#">
-									<span class="cur-value"></span>
-									<span class="caret"></span>
-								</a>
-								<ul class="dropdown-menu" role="menu">
-									<li class="selected" tabindex="-1">
-										<a data-id="111" href="#">
-											Direction
-										</a>
-									</li>
-									<li  tabindex="-1">
-										<a data-id="111" href="#">
-											Source/Destination
-										</a>
-									</li>
-									<li  tabindex="-1">
-										<a data-id="111" href="#">
-											Protocol
-										</a>
-									</li>
-								</ul>
 							</div>
 						</div>
 					<ul class="sg-rule-list">
@@ -289,6 +229,7 @@
 				</div>
 			</div>
 		</div>
+		-->
 	</div>
 </div>
 <div id="sg-secondary-panel-wrap">

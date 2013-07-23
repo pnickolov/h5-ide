@@ -32,10 +32,29 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
-            #view
-            view.model    = model
+            model.setId uid
+            view.model = model
+
             #render
             view.render()
+
+            view.on "CHANGE_NAME", ( change ) ->
+
+                model.setName change.value
+                # Sync the name to canvas
+                MC.canvas.update uid, "text", "name", change.value
+                null
+
+            view.on "CHANGE_CIDR", ( change ) ->
+                error model.setCIDR change.value
+                change.done error
+                null
+
+            view.on "CHANGE_ACL", ( change ) ->
+                model.setACL change.value
+                null
+
+            
 
     unLoadModule = () ->
         current_view.off()

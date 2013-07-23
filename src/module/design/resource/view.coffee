@@ -258,7 +258,7 @@ define [ 'event',
             event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, -1
             
             # modal(MC.template.browseCommunityAmi(this.model.attributes), false)
-            # $($('#selectbox-ami-platform').find('.cur-value')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html())
+            # $($('#selectbox-ami-platform').find('.selection')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html())
             # $('#community-ami-input').on 'keyup', (event)->
             #     filter.update $('#community-ami-filter'), {
             #         value: $(this).val()

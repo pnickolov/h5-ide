@@ -32,20 +32,20 @@
 </ul>
 <ul class="toolbar-btn-group">
   <li class="selectbox btn-toolbar">
-    <a class="dropdown-toggle tooltip" data-toggle="dropdown" data-tooltip="Export..." href="#" id="toolbar-export">
+    <div class="selection tooltip" data-toggle="dropdown" data-tooltip="Export..." id="toolbar-export">
       <span class="icon-toolbar-export"></span>
-      <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu" role="menu">
-      <li><a class="btn-toolbar" id="toolbar-export-png" href="#"><i class="icon-toolbar-export-png"></i>Export as PNG</a></li>
-      <li>
-        <a class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
-          <i class="icon-toolbar-export-json"></i>Export as Json</a>
+    </div>
+    <ul class="dropdown-menu" tabindex="-1">
+      <li class="btn-toolbar" id="toolbar-export-png">
+        <i class="icon-toolbar-export-png"></i>Export as PNG
+      </li>
+      <li class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
+        <i class="icon-toolbar-export-json"></i>Export as Json
       </li>
       <!-- for debug -->
-      <li><a class="btn-toolbar" id="toolbar-jsondiff" href="#"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</a></li>
-      <li><a class="btn-toolbar" id="toolbar-jsoncopy"  data-clipboard-text="" title="jsondata" href="#"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</a></li>
-      <li><a class="btn-toolbar" id="toolbar-jsonview" href="#"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</a></li>
+      <li class="btn-toolbar" id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
+      <li class="btn-toolbar" id="toolbar-jsoncopy" data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
+      <li class="btn-toolbar" id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</a></li>
     </ul>
   </li>
 </ul>

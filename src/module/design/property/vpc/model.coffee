@@ -6,15 +6,21 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
     VPCModel = Backbone.Model.extend {
 
-        # defaults :
-        #     'set_xxx'    : null
-        #     'get_xxx'    : null
+        ###
+        defaults :
+            uid            : null
+            component      : null
+            dnsSupport     : null
+            dnsHosts       : null
+            defaultTenancy : null
+            noneDhcp       : null
+        ###
 
         initialize : ->
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
 
-        getRenderData : ( uid ) ->
+        setId : ( uid ) ->
             component = MC.canvas_data.component[ uid ]
 
             dhcpid = component.resource.DhcpOptionsId
@@ -38,37 +44,31 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             else
                 data.dhcp = {}
 
-            data
-
-        setName : ( uid, newName ) ->
-            MC.canvas_data.component[ uid ].name = newName
+            this.set data
             null
 
-        setCIDR : ( uid, newCIDR ) ->
-            MC.canvas_data.component[ uid ].resource.CidrBlock = newCIDR
+        setName : ( newName ) ->
+            MC.canvas_data.component[ this.attributes.uid ].name = newName
             null
 
-        getName : ( uid ) ->
-            MC.canvas_data.component[ uid ].name
+        setCIDR : ( newCIDR ) ->
+            MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock = newCIDR
+            null
 
-        getCIDR : ( uid ) ->
-            MC.canvas_data.component[ uid ].resource.CidrBlock
-
-        setTenancy : ( uid, tenancy ) ->
-            component = MC.canvas_data.component[ uid ]
+        setTenancy : ( tenancy ) ->
+            component = MC.canvas_data.component[ this.attributes.uid ]
             component.resource.InstanceTenancy = tenancy
+            null
 
-            console.log "UID:", uid, "InstanceTenancy:", component.resource.InstanceTenancy
-
-        setDnsSupport : ( uid, enable ) ->
-            component = MC.canvas_data.component[ uid ]
+        setDnsSupport : ( enable ) ->
+            component = MC.canvas_data.component[ this.attributes.uid ]
             component.resource.EnableDnsSupport = if enable then "true" else "false"
-            console.log "UID:", uid, "VPC Resource:", component.resource
+            null
 
-        setDnsHosts : ( uid, enable ) ->
-            component = MC.canvas_data.component[ uid ]
+        setDnsHosts : ( enable ) ->
+            component = MC.canvas_data.component[ this.attributes.uid ]
             component.resource.EnableDnsHostnames = if enable then "true" else "false"
-            console.log "UID:", uid, "VPC Resource:", component.resource
+            null
 
         parseDhcpId : ( dhcpid ) ->
             extract = /@([^.]+)\./.exec( dhcpid )
@@ -106,8 +106,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
         # This method only sets whether or not the VPC use none DHCP
         # It does not modify already exists DHCP when enabling DHCP
-        setDhcp : ( uid, enable ) ->
-            component = MC.canvas_data.component[ uid ]
+        setDhcp : ( enable ) ->
+            component = MC.canvas_data.component[ this.attributes.uid ]
             if enable
                 if component.resource.DhcpOptionsId == "default"
                     component.resource.DhcpOptionsId = ""
@@ -132,7 +132,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             null
 
         # DHCP Options Setting
-        setDHCPOptions : ( vpcUid, options ) ->
+        setDHCPOptions : ( options ) ->
 
             configSet = []
             if options.domainName
@@ -171,7 +171,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     Key : "netbios-node-type"
                     ValueSet : [ Value : options.netbiosType ]
 
-            this.getDHCPComponent( vpcUid ).resource.DhcpConfigurationSet = configSet
+            this.getDHCPComponent( this.attributes.uid ).resource.DhcpConfigurationSet = configSet
             null
 
         # TODO : Generate default domain name for dhcp

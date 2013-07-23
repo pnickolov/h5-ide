@@ -4,7 +4,7 @@ var ready = function () {
 	//$('#btn-browse-community-ami').on('click', function (event)
 	//{
 		modal(MC.template.browseCommunityAmi(''), false);
-		$($('#selectbox-ami-platform').find('.cur-value')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html());
+		$($('#selectbox-ami-platform').find('.selection')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html());
 		$('#community-ami-input').on('keyup', function(event)
 			{
 				filter.update($('#community-ami-filter'), {

@@ -109,8 +109,7 @@ define [ 'event',  'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( id
                 timeout  : 100
 
                 over     : () ->
-                    if $('#navigation').hasClass 'collapsed'
-                        $( this ).delay( 300 ).addClass 'collapsed-show'
+                    $( this ).delay( 300 ).addClass 'collapsed-show'
 
                 out      : () ->
                     $( this ).removeClass 'collapsed-show'

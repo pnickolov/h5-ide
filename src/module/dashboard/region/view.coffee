@@ -171,6 +171,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         createStackClick : ( event ) ->
             console.log 'dashboard region create stack'
             ide_event.trigger ide_event.ADD_STACK_TAB, this.region
+            return false
 
         clickAppThumbnail : ( event ) ->
             console.log 'dashboard region click app thumbnail'

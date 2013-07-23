@@ -110,9 +110,15 @@
 
             <div id="property-domain-server" class="multi-input" data-max-row="{{#if dhcp.useAmazonDns}}3{{else}}4{{/if}}">
               {{#each dhcp.domainServers}}
-              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" value="{{this}}"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" value="{{this}}" type="text"></span>
+              </div>
               {{else}}
-              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" type="text"></span>
+              </div>
               {{/each}}
             </div>
           </div>
@@ -121,9 +127,15 @@
             <label>NTP Server</label>
             <div id="property-ntp-server" class="multi-input" data-max-row="4">
               {{#each dhcp.ntpServers}}
-              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" value="{{this}}"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" value="{{this}}" type="text"></span>
+              </div>
               {{else}}
-              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" type="text"></span>
+              </div>
               {{/each}}
             </div>
           </div>
@@ -132,9 +144,15 @@
             <label>NetBIOS Name Server</label>
             <div id="property-netbios-server" class="multi-input" data-max-row="4">
               {{#each dhcp.netbiosServers}}
-              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses" value="{{this}}"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses" value="{{this}}" type="text"></span>
+              </div>
               {{else}}
-              <div class="multi-ipt-row"><input type="text" class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></div>
+              <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" type="text"></span>
+              </div>
               {{/each}}
             </div>
           </div>

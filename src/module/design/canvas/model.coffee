@@ -1,7 +1,9 @@
 #############################
 #  View Mode for canvas
 #############################
-define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
+define [ 'constant',
+		'canvas_handle_elb',
+		'backbone', 'jquery', 'underscore' ], ( constant, canvas_handle_elb ) ->
 
 	CanvasModel = Backbone.Model.extend {
 
@@ -24,17 +26,33 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 			if component.type == resource_type.AWS_EC2_Instance
 				parent = MC.canvas_data.layout.component.group[ tgt_parent ]
 
-				if parent.name == component.resource.Placement.AvailabilityZone
-					# Nothing is changed
-					return
+				# Parent can be AvailabilityZone or Subnet
+				if parent.type == resource_type.AWS_VPC_Subnet
+					parent = MC.canvas_data.component[ tgt_parent ]
+					console.log "Instance:", src_node, "dragged from subnet:", component.resource.SubnetId, "to:", tgt_parent
 
-				console.log "Instance:", src_node, "dragged from:", component.resource.Placement.AvailabilityZone, "to:", parent.name
-				component.resource.Placement.AvailabilityZone = parent.name
+					# Nothing is changed
+					if component.resource.SubnetId.indexOf( tgt_parent ) != -1
+						return
+
+					newAZ = parent.resource.AvailabilityZone
+					# Update instance's subnet
+					component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
+				else
+					console.log "Instance:", src_node, "dragged from:", component.resource.Placement.AvailabilityZone, "to:", parent.name
+
+					# Nothing is changed
+					if parent.name == component.resource.Placement.AvailabilityZone
+						return
+
+					newAZ = parent.name
+
+				component.resource.Placement.AvailabilityZone = newAZ
 
 				#We should also update those Volumes that are attached to this Instance.
 				updateVolume = ( component, id ) ->
 					if component.type == resource_type.AWS_EBS_Volume and component.resource.AttachmentSet.InstanceId.indexOf( this )
-						 component.resource.AvailabilityZone = parent.name
+						 component.resource.AvailabilityZone = newAZ
 					null
 
 				_.each MC.canvas_data.component, updateVolume, component.uid
@@ -112,7 +130,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 
 							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.NetworkInterfaceId.split('.')[0][1...] == option.id
 
-								delete MC.canvas_data.component[index]
+								delete MC.canvas_data.componentreturn[index]
 
 							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
@@ -136,6 +154,22 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 
 								me._removeGatewayIdFromRT comp.uid, option.id
 
+						$.each $(".resource-item"), ( idx, item) ->
+					
+							data = $(item).data()
+							
+							if data.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+
+								tmp = {
+									enable : true
+									tooltip: "Drag and drop to canvas to create a new Internet Gateway."
+								}
+								$(item)
+									.data(tmp)
+									.removeClass('resource-disabled')
+								
+								return false
+
 					# remove vgw
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
 
@@ -151,6 +185,22 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 
 									delete MC.canvas_data.component[index]
 
+						$.each $(".resource-item"), ( idx, item) ->
+					
+							data = $(item).data()
+							
+							if data.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+
+								tmp = {
+									enable : true
+									tooltip: "Drag and drop to canvas to create a new VPN Gateway."
+								}
+								$(item)
+									.data(tmp)
+									.removeClass('resource-disabled')
+								
+								return false
+
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
 
 						$.each MC.canvas_data.component, ( index, comp ) ->
@@ -165,7 +215,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 
 
 			# remove group
-			if option.type == 'group'
+			else if option.type == 'group'
 
 				nodes = MC.canvas.groupChild($("#" + option.id)[0])
 
@@ -178,6 +228,54 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 					me.deleteObject op
 
 				delete MC.canvas_data.component[option.id]
+
+
+				# recover az dragable
+				if $("#" + option.id).data().class == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+
+					az_name = $("#" + option.id).text()
+
+					$.each $(".resource-item"), ( idx, item) ->
+					
+						data = $(item).data()
+						
+						if data.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and data.option.name == az_name
+
+							tmp = {
+								enable : true
+								tooltip: "Drag and drop to canvas"
+							}
+							$(item)
+								.data(tmp)
+								.removeClass('resource-disabled')
+								.addClass("tooltip")
+							
+							return false
+								
+					
+
+
+			# remove line
+			else if option.type == 'line'
+
+				connectionObj =  MC.canvas_data.layout.connection[option.id]
+
+				targetObj = connectionObj.target
+				portMap = {}
+
+				_.each targetObj, (value, key) ->
+					portMap[value] = key
+					null
+
+				#delete line between elb and instance
+				if portMap['elb-sg-out'] and portMap['instance-sg-in']
+					canvas_handle_elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
+
+				if portMap['instance-attach'] and portMap['eni-attach']
+
+					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
+
+					MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
 
 
 			MC.canvas.remove $("#" + option.id)[0]
@@ -251,14 +349,70 @@ define [ 'constant', 'backbone', 'jquery', 'underscore' ], ( constant ) ->
 		#after connect two port
 		createLine : ( line_id ) ->
 			
+			me = this
+
 			line_option = MC.canvas.lineTarget line_id
 
 			if line_option.length == 2
 
-				console.info line_option[0].line_id + ',' + line_option[0].port + " | " + line_option[1].line_id + ',' + line_option[1].port
-				
-				#to-do
+				console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
 
+				portMap = {}
+
+				$.each line_option, ( i, obj ) ->
+					portMap[obj.port] = obj.uid
+					null
+
+				#connect elb and instance
+				if portMap['instance-sg-in'] and portMap['elb-sg-out']
+					canvas_handle_elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
+
+				if portMap['instance-attach'] and portMap['eni-attach']
+
+					# check whether instance has position to add one more eni
+					instance_component 	= 	MC.canvas_data.component[portMap['instance-attach']]
+
+					instance_type 		= 	instance_component.resource.InstanceType.split('.')
+
+					max_eni_number 		= 	MC.data.config[instance_component.resource.Placement.AvailabilityZone[0...-1]].instance_type[instance_type[0]][instance_type[1]].eni
+
+					current_eni_number 	= 	0
+
+					reach_max 			= 	false
+
+					total_device_index  = 	[0...16]
+
+					$.each MC.canvas_data.component, ( uid, comp ) ->
+
+						if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == portMap['instance-attach']
+
+							device_index_int = parseInt(comp.resource.Attachment.DeviceIndex, 10)
+
+							if device_index_int in total_device_index
+
+								total_device_index.splice total_device_index.indexOf(device_index_int), 1
+
+							current_eni_number += 1
+
+							if current_eni_number >= max_eni_number
+
+								reach_max = true
+
+								return false
+
+					if reach_max
+
+						me.trigger 'ENI_REACH_MAX'
+
+						MC.canvas.remove $("#" + line_id)[0]
+
+					else
+
+						MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
+
+						MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
+
+						MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
 
 			null
 

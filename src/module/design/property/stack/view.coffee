@@ -2,7 +2,9 @@
 #  View(UI logic) for design/property/stack
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars',
+    'UI.notification',
+    'UI.secondarypanel' ], ( ide_event ) ->
 
     StackView = Backbone.View.extend {
 
@@ -14,8 +16,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide
         events   :
             'change #property-stack-name'   : 'stackNameChanged'
             'click #show-newsg-panel'       : 'createSecurityGroup'
-            'OPTION_CHANGE #security-group-select' : "addSGtoList"
-
+            'click .deleteSG'               : 'deleteSecurityGroup'
+            'click .resetSG'                : 'resetSecurityGroup'
+            
         render     : () ->
             console.log 'property:stack render'
             $( '.property-details' ).html this.template this.model.attributes
@@ -26,7 +29,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide
             name = $( '#property-stack-name' ).val()
             #check stack name
             if name.slice(0,1) == '-'
-                notification 'error', 'Stack name cannot start with dash'
+                notification 'error', 'Stack name cannot start with dash.'
+            else if name.slice(0, 8) == 'untitled'
+                notification 'error', 'Please modify the initial stack name.'
             else if not name
                 $( '#property-stack-name' ).val me.model.attributes.stack_detail.name
             else if name in MC.data.stack_list[MC.canvas_data.region]
@@ -37,26 +42,34 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide
 
         createSecurityGroup : (event) ->
 
-            cid = $( '#property-stack' ).attr 'component'
+            ide_event.trigger ide_event.OPEN_SG
 
-            ide_event.trigger ide_event.OPEN_SG, {parent: cid}
+        deleteSecurityGroup : (event) ->
+            me = this
 
-            source = $(event.target)
-            if(!source.hasClass('sg-toggle-show-icon') && !source.hasClass('sg-remove-item-icon'))
-                if(source.hasClass('secondary-panel'))
-                    target = source
-                else
-                    target = source.parents('.secondary-panel').first()
+            target = $(event.target).parents('div:eq(0)')
+            uid = target.attr('uid')
+            name = target.children('p.title').text()
 
-                ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data')
+            console.log "Remove sg:" + uid
 
-        addSGtoList: (event, id) ->
-            if(id.length != 0)
-                $('#sg-info-list').append MC.template.sgListItem({name: id})
-                #sg_uid = id
-                #this.model.addSGtoInstance instance_uid, sg_uid
-            else
-                ide_event.trigger ide_event.OPEN_SG, {parent: MC.canvas_data.id}
+            me.trigger 'DELETE_STACK_SG', uid
+
+            target.remove()
+
+            notification 'info', name + ' is deleted.'
+
+            null
+
+        resetSecurityGroup : (event) ->
+            me = this
+
+            target = $(event.target).parents('div:eq(0)')
+            uid = target.attr('uid')
+            
+            me.trigger 'RESET_STACK_SG', uid
+
+            null
 
     }
 

@@ -2,7 +2,7 @@
 #  View(UI logic) for navigation
 #############################
 
-define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event',  'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event ) ->
 
     NavigationView = Backbone.View.extend {
 
@@ -72,7 +72,8 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             main     = $ '#main'
             tab_name = $( target ).text()
             #
-            ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name, $( target ).attr( 'data-region-name' ), $( target ).attr( 'data-stack-id' )
+            #ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name, $( target ).attr( 'data-region-name' ), $( target ).attr( 'data-stack-id' )
+            this.checkDesignLoadComplete ide_event.OPEN_STACK_TAB, tab_name, $( target ).attr( 'data-region-name' ), $( target ).attr( 'data-stack-id' )
 
         appListItemsClick : ( event ) ->
             console.log 'app tab click event'
@@ -81,7 +82,8 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             main     = $ '#main'
             tab_name = $( target ).text()
             #
-            ide_event.trigger ide_event.OPEN_APP_TAB, $.trim( tab_name ), $( target ).attr( 'data-region-name' ) , $( target ).attr( 'data-app-id' )
+            #ide_event.trigger ide_event.OPEN_APP_TAB, $.trim( tab_name ), $( target ).attr( 'data-region-name' ) , $( target ).attr( 'data-app-id' )
+            this.checkDesignLoadComplete ide_event.OPEN_APP_TAB, $.trim( tab_name ), $( target ).attr( 'data-region-name' ) , $( target ).attr( 'data-app-id' )
 
         showEmptyRegionClick : ( event ) ->
             $( event.target ).parent().prev().find('.hide').show()
@@ -91,7 +93,9 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             console.log 'createNewStackClick'
             console.log $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' )
             if $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' ) is undefined then return
-            ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
+            #
+            #ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
+            this.checkDesignLoadComplete ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
 
         regionNameClick      : ( event ) ->
             console.log 'regionNameClick'
@@ -129,6 +133,13 @@ define [ 'event',  'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 $( '.sub-menu-wrapper' ).each () ->
                     this.style.cssText = ''
                     null
+
+        checkDesignLoadComplete : ( type, tab_name, region_name, tab_id ) ->
+            console.log 'checkDesignLoadComplete'
+            if MC.data.design_submodule_count isnt -1
+                notification 'warning', 'Design Module no download complete.', false
+            else
+                ide_event.trigger type, tab_name, region_name, tab_id
     }
 
     return NavigationView

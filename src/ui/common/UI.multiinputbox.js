@@ -49,8 +49,10 @@ var multiinputbox;
     var $t       = $(this);
     var $wrapper = $t.closest(".multi-input").removeClass("max");
 
-    $t.parent().remove();
-    $wrapper.trigger("REMOVE_ROW");
+    var $target = $t.closest(".multi-ipt-row");
+    $wrapper.trigger("REMOVE_ROW", $target.find("input") );
+
+    $target.remove();
 
     return false;
   }

@@ -42,17 +42,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
         createSecurityGroup : (event) ->
 
-            #ide_event.trigger ide_event.OPEN_SG
-            source = $(event.target)
-            if(source.hasClass('secondary-panel'))
-                target = source
-            else
-                target = source.parents('.secondary-panel').first()
-
-            #accordion = $( '#instance-accordion' )
-            #cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
-
-            ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data')
+            ide_event.trigger ide_event.OPEN_SG
 
         deleteSecurityGroup : (event) ->
             me = this

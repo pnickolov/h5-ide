@@ -26,8 +26,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             if stack_detail.is_vpc
                 stack_detail.acl_list = me.getNetworkACL()
 
-            me.getSecurityGroup()
-
             stack_detail.cost = me.getStackCost()
 
             me.set 'stack_detail', stack_detail
@@ -57,7 +55,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                 sg_detail.uid = sg.uid
                 sg_detail.parent = sg.uid
-                sg_detail.members = sg.member.length
+                sg_detail.members = if 'member' in sg then sg.member.length else 0
                 sg_detail.rules = MC.canvas_data.component[sg.uid].resource.IpPermissions.length + MC.canvas_data.component[sg.uid].resource.IpPermissionsEgress.length
                 sg_detail.name = MC.canvas_data.component[sg.uid].resource.GroupName
                 sg_detail.desc = MC.canvas_data.component[sg.uid].resource.GroupDescription

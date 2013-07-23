@@ -22,25 +22,10 @@
         <div class="property-control-group">
           <label>Tenancy</label>
           <div class="selectbox selectbox-mega" id="property-tenancy">
-            <a class="dropdown-toggle" href="#">
-              <div class="cur-value">{{#if defaultTenancy}}Default{{else}}Dedicated{{/if}}</div>
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              {{#if defaultTenancy}}
-              <li class="selected" tabindex="-1">
-              {{else}}
-              <li tabindex="-1">
-              {{/if}}
-                <a href="#" data-id="default">Default</a>
-              </li>
-              {{#if defaultTenancy}}
-              <li tabindex="-1">
-              {{else}}
-              <li class="selected" tabindex="-1">
-              {{/if}}
-                <a href="#" data-id="dedicated">Dedicated</a>
-              </li>
+            <div class="selection">{{#if defaultTenancy}}Default{{else}}Dedicated{{/if}}</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="item{{#if defaultTenancy}} selected{{/if}}" data-id="default">Default</li>
+              <li class="item{{#if defaultTenancy}}{{else}} selected{{/if}}" data-id="dedicated">Dedicated</li>
             </ul>
           </div>
           <div id="desc-dedicated" style="margin-top:5px;{{#if defaultTenancy}}display:none;{{/if}}">Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware. <a href="http://aws.amazon.com/cn/dedicated-instances/">Additional charges will apply.</a></div>
@@ -158,13 +143,10 @@
           <div class="property-control-group">
             <label>NetBIOS Node Type</label>
             <div class="selectbox selectbox-mega" id="property-netbios-type">
-              <a class="dropdown-toggle" href="#">
-                <div class="cur-value tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#if dhcp.netbiosType}}{{dhcp.netbiosType}}{{else}}Not specified{{/if}}</div>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
+              <div class="selection tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#if dhcp.netbiosType}}{{dhcp.netbiosType}}{{else}}Not specified{{/if}}</div>
+              <ul class="dropdown" tabindex="-1">
                 {{#each dhcp.netbiosTypes}}
-                <li {{#if selected}}class="selected"{{/if}} tabindex="-1"><a href="#" data-id="{{id}}">{{value}}</a></li>
+                <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}">{{value}}</li>
                 {{/each}}
               </ul>
             </div>

@@ -25,15 +25,12 @@
           <div class="acl-sort-rule clearfix">
             <h5 class="left">Sort by</h5>
             <div class="selectbox right" id="acl-sort-rule-select">
-              <a class="dropdown-toggle" href="#">
-                <span class="cur-value">{{sortRule}}</span>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu" role="menu">
-                <li tabindex="-1"><a data-id="1" href="#">Rule Number</a></li>
-                <li tabindex="-1"><a data-id="2" href="#">Action</a>
-                <li tabindex="-1"><a data-id="3" href="#">Direction</a>
-                <li tabindex="-1"><a data-id="4" href="#">Source/Destination</a></li>
+              <div class="selection">{{sortRule}}</div>
+              <ul class="dropdown" tabindex="-1">
+                <li data-id="1" class="item selected">Rule Number</li>
+                <li data-id="2" class="item">Action</li>
+                <li data-id="3" class="item">Direction</li>
+                <li data-id="4" class="item">Source/Destination</li>
               </ul>
             </div>
           </div>

@@ -28,13 +28,11 @@
 			Security Group({{stack_detail.sg_list.length}})
 		</div>
 		<div class="selectbox security-group-select" id="security-group-select">
-			<a class="dropdown-toggle tooltip" data-tooltip="Add to security group." href="#">
+			<div class="selection tooltip" data-tooltip="Add to security group.">
 				<i class="icon-add-sg icon-btn-selectbox"></i>
-			</a>
-			<ul class="dropdown-menu" role="menu">
-				<li tabindex="-1">
-					<a id="show-newsg-panel" class="secondary-panel" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data="{}" data-id="" href="#">New Security Group</a>
-				</li>
+			</div>
+			<ul class="dropdown" tabindex="-1">
+				<li id="show-newsg-panel" class="item secondary-panel" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data="{}" data-id="" href="#">New Security Group</li>
 			</ul>
 		</div>
 		<div class="accordion-body">
@@ -64,13 +62,11 @@
 			Network ACL({{stack_detail.acl_list.length}})
 		</div>
 		<div class="selectbox security-group-select" id="security-group-select">
-			<a class="dropdown-toggle tooltip" data-tooltip="Add to security group." href="#">
+			<div class="selection tooltip" data-tooltip="Add to security group." href="#">
 				<i class="icon-add-sg icon-btn-selectbox"></i>
-			</a>
-			<ul class="dropdown-menu" role="menu">
-				<li tabindex="-1">
-					<a id="show-newsg-panel" class="secondary-panel" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data="{}" data-id="" href="#">New Security Group</a>
-				</li>
+			</div>
+			<ul class="dropdown" tabindex="-1">
+				<li id="show-newsg-panel" class="item secondary-panel" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data="{}" data-id="" href="#">New Security Group</li>
 			</ul>
 		</div>
 		<div class="accordion-body">

@@ -11,7 +11,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         template : Handlebars.compile $( '#property-subnet-tmpl' ).html()
 
-        #events   :
+        events   :
+            'click #networkacl-create': 'openAclPanel'
 
         render     : () ->
             console.log 'property:subnet render'
@@ -41,6 +42,23 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 ]
 
             $( '.property-details' ).html this.template data
+
+        openAclPanel : ( event ) ->
+            source = $(event.target)
+            if(source.hasClass('secondary-panel'))
+                target = source
+            else
+                target = source.parents('.secondary-panel').first()
+
+            accordion = $( '#instance-accordion' )
+            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
+
+            aclUID = MC.guid()
+            aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
+            aclObj.uid = aclUID
+            MC.canvas_data.component[aclUID] = aclObj
+
+            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
 
     }
 

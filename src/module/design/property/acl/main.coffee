@@ -10,16 +10,11 @@ define [ 'jquery',
     #
     current_view = null
 
-    #add handlebars script
-    template = '<script type="text/x-handlebars-template" id="property-acl-tmpl">' + template + '</script>'
-    #load remote html template
-    $( 'head' ).append template
-
     #private
-    loadModule = ( uid, current_main ) ->
+    loadModule = ( uid_parent, expended_accordion_id, aclUID ) ->
 
         #
-        MC.data.current_sub_main = current_main
+        MC.data.current_sub_main = this
 
         #
         require [ './module/design/property/acl/view', './module/design/property/acl/model' ], ( view, model ) ->
@@ -27,10 +22,13 @@ define [ 'jquery',
             #
             current_view  = view
 
+            #model
+            model.init aclUID
+
             #view
             view.model    = model
             #render
-            view.render()
+            view.render expended_accordion_id, template, model.attributes
 
     unLoadModule = () ->
         current_view.off()

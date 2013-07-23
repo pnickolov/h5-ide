@@ -162,6 +162,13 @@ define [ 'jquery',
 
                 null
 
+            #listen OPEN_ACL
+            ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid ) ->
+                console.log 'OPEN_ACL'
+                acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid )
+
+                null
+
             #listen OPEN_INSTANCE
             ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id) ->
                 console.log 'OPEN_INSTANCE'

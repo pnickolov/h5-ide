@@ -2431,6 +2431,7 @@ a.sidebar-hider {
 	height: 100%;
 	width: 100%;
 }
+
 #add-sg-btn {
 	width: 100%;
 }
@@ -2957,7 +2958,36 @@ a.sidebar-hider {
 }
 
 
+/* ACL Property Panel */
+#acl-secondary-panel-wrap {
+	position: absolute;
+	width: 280px;
+	right: -280px;
+	height: 100%;
+	top: 0;
+	background-color: #FFF;
+	z-index: 10;
+}
+#acl-secondary-panel {
+	height: 100%;
+	width: 100%;
+}
 
+.acl-header .acl-icon-add {
+	width: 36px;
+	height: 36px;
+	background-color: #CCC;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
 
+.acl-modal-one-row-left .radio, .radio-label {
+	/*float: left;*/
+}
 
-
+.acl-float-left {
+	float: left;
+	margin-right: 20px;
+}

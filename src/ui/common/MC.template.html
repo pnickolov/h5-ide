@@ -662,19 +662,107 @@ Additional Notes and Questions
       <label for="modal-acl-number">Rule Number</label>
       <input class="input" type="text" maxLength="5" id="modal-acl-number">
     </div>
-    <div class="modal-row">
-      <label>Action</label>
+    <div class="modal-row acl-modal-one-row-left">
+        <label>Action</label>
+        <div class="modal-acl-source-wrapper">
+            <div class="radio acl-float-left">
+                <input type="radio" id="acl-add-model-action-allow" name="acl-add-model-action-select"/>
+                <label for="acl-add-model-action-allow"></label>
+            </div>
+            <label class="radio-label acl-float-left" for="acl-add-model-action-allow">Allow</label>
+            <div></div>
+            <div class="radio">
+                <input type="radio" id="acl-add-model-action-deny" name="acl-add-model-action-select"/>
+                <label for="acl-add-model-action-deny"></label>
+            </div>
+            <label class="radio-label" for="acl-add-model-action-deny">Deny</label>
+        </div>
     </div>
-    <div class="modal-row">
-      <label>Direction</label>
+    <div class="modal-row acl-modal-one-row-left">
+        <label>Direction</label>
+        <div class="modal-acl-source-wrapper">
+            <div class="radio acl-float-left">
+                <input type="radio" id="acl-add-model-direction-inbound" name="acl-add-model-direction-select"/>
+                <label for="acl-add-model-direction-inbound"></label>
+            </div>
+            <label class="radio-label acl-float-left" for="acl-add-model-direction-inbound">Inbound</label>
+            <div></div>
+            <div class="radio">
+                <input type="radio" id="acl-add-model-direction-outbound" name="acl-add-model-direction-select"/>
+                <label for="acl-add-model-direction-outbound"></label>
+            </div>
+            <label class="radio-label" for="acl-add-model-direction-outbound">Outbound</label>
+        </div>
     </div>
     <div class="modal-row">
       <label>Source</label>
-      <div class="modal-acl-source-wrapper"></div>
+      <div class="modal-acl-source-wrapper property-control-group">
+		<div class="selectbox selectbox-mega" id="acl-add-model-source-select">
+			<a class="dropdown-toggle" href="#">
+				<div class="cur-value">HTTP</div>
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li tabindex="-1" >
+					<a data-id="TCP" href="#">
+						TCP
+					</a>
+				</li>
+				<li tabindex="-1">
+					<a data-id="HTTP" href="#">
+						HTTP
+					</a>
+				</li>
+				<li tabindex="-1">
+					<a data-id="HTTPS" href="#">
+						HTTPS
+					</a>
+				</li>
+				<li tabindex="-1">
+					<a data-id="SSL" href="#">
+						SSL
+					</a>
+				</li>
+			</ul>
+		</div>
+      </div>
     </div>
     <div class="modal-row">
       <label for="Source">Protocol</label>
-      <div class="sg-protocol-control"></div>
+		<div class="modal-acl-source-wrapper property-control-group">
+			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select">
+				<a class="dropdown-toggle" href="#">
+					<div class="cur-value">HTTP</div>
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">HTTP</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">HTTPS</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">TCP</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">SSL</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div>
+			<label class="left">Port</label>
+			<input class="input elb-property-listener-elb-port-input" type="text" required="required" value="{{LoadBalancerPort}}"/>
+		</div>
     </div>
   </div>
   <div class="modal-footer">

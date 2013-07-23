@@ -3,7 +3,7 @@
 	"version"         : "1.0.4",
 	"devDependencies" : {
 		"bower"                 : "0.10.0",
-		"grunt"                 : "0.0.7",
+		"grunt"                 : "*",
 		"grunt-contrib-copy"    : "0.4.1",
 		"grunt-contrib-coffee"  : "0.7.0",
 		"grunt-coffeelint"      : "0.0.7",

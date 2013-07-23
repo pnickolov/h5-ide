@@ -46,6 +46,10 @@
 	position: absolute;
 }
 
+.shadow {
+	opacity: 0.6;
+}
+
 #canvas_select_ranger {
 	position: absolute;
 	background: rgba(255, 255, 255, 0.5);

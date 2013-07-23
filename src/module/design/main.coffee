@@ -35,6 +35,8 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                     MC.data.design_submodule_count = -1
                     #push event
                     ide_event.trigger ide_event.DESIGN_COMPLETE
+                    #off DESIGN_SUB_COMPLETE
+                    ide_event.offListen ide_event.DESIGN_SUB_COMPLETE
                 else
                     MC.data.design_submodule_count = MC.data.design_submodule_count + 1
                 null
@@ -52,7 +54,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 #save tab
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, target else view.$el.html design_view_init
                 #
-                if type is 'NEW_STACK' or type is 'OPEN_STACK'
+                if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
                     #
                     if type is 'OPEN_STACK' then model.setCanvasData( stack_info.resolved_data[0] )
                     #temp

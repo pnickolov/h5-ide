@@ -1500,33 +1500,33 @@ td.table-action a.btn {
 	border: none;
 }
 
-.toolbar-btn-group .dropdown-menu {
-	top: 40px !important;
-	left: -1px !important;
-	border: 1px solid #E0E0E0;
+.toolbar-btn-group .selection {
+	width  : 40px;
+	height : 40px;
 }
 
-.toolbar-btn-group .dropdown-menu li {
+.toolbar-btn-group .selectbox .dropdown {
+	border : 1px solid #E0E0E0;
+	width  : auto;
+}
+
+.toolbar-btn-group .dropdown li {
 	display: block;
 	border-bottom: 1px solid #E0E0E0;
 	cursor: pointer !important;
 	position: relative;
+	padding: 10px 5px 10px 40px;
 }
 
 .toolbar-btn-group a {
 	position: relative;
 }
 
-.toolbar-btn-group .dropdown-menu li:last-child {
+.toolbar-btn-group .dropdown li:last-child {
 	border-bottom: none;
 }
 
-.toolbar-btn-group .selectbox .dropdown-menu a {
-	display: block;
-	padding: 10px 5px 10px 40px;
-}
-
-.toolbar-btn-group .dropdown-menu i {
+.toolbar-btn-group .dropdown i {
 	position: absolute;
 	top: 5px;
 	left: 0px;
@@ -1535,7 +1535,7 @@ td.table-action a.btn {
 	text-align: center;
 }
 
-.toolbar-btn-group .dropdown-menu > li:hover {
+.toolbar-btn-group .dropdown > li:hover {
 	background-color: #eee;
 }
 
@@ -2035,7 +2035,7 @@ a.sidebar-hider {
 }
 
 .secondary-panel {
-	cursor: pointer;
+/*	cursor: pointer;*/
 }
 
 .sg-info-list li {
@@ -2426,6 +2426,7 @@ a.sidebar-hider {
 	height: 100%;
 	width: 100%;
 }
+
 #add-sg-btn {
 	width: 100%;
 }
@@ -2818,6 +2819,7 @@ a.sidebar-hider {
 	background : #777;
 	color      : #fff;
 	text-align : center;
+	cursor: pointer;
 	
 }
 .property-rule-delete-btn:before {
@@ -2952,7 +2954,65 @@ a.sidebar-hider {
 }
 
 
+/* ACL Property Panel */
+#acl-secondary-panel-wrap {
+	position: absolute;
+	width: 280px;
+	right: -280px;
+	height: 100%;
+	top: 0;
+	background-color: #FFF;
+	z-index: 10;
+}
+#acl-secondary-panel {
+	height: 100%;
+	width: 100%;
+}
 
+.acl-header .acl-icon-add {
+	width: 36px;
+	height: 36px;
+	background-color: #CCC;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
 
+.acl-modal-one-row-left .radio, .radio-label {
+	/*float: left;*/
+}
 
+.acl-float-left {
+	float: left;
+	margin-right: 20px;
+}
 
+.acl-modal-one-row-left > label {
+	float: left;
+}
+
+.acl-modal-one-row-left .modal-acl-source-wrapper {
+	margin-top: 5px;
+	margin-left: 80px;
+}
+
+.modal-row {
+	margin-top: 20px;
+}
+
+.modal-row > label {
+	margin-right: 20px;
+}
+
+#modal-run-stack .modal-body {
+	width: 290px;
+}
+
+#modal-run-stack .selectbox {
+	width: 100px;
+}
+
+.acl-rules li:hover {
+	background-color: #fff;
+}

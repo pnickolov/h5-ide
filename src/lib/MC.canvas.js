@@ -3616,11 +3616,14 @@ MC.canvas.event.clearSelected = function ()
 
 MC.canvas.event.keyEvent = function (event)
 {
+	var keyCode = event.which;
+
+	// Delete resource - delete/backspace
 	if (
 		(
-			event.which === 46 ||
+			keyCode === 46 ||
 			// For Mac
-			event.which === 8
+			keyCode === 8
 		) &&
 		MC.canvas.selected_node.length > 0 &&
 		event.target === document.body
@@ -3643,11 +3646,84 @@ MC.canvas.event.keyEvent = function (event)
 
 		return false;
 	}
+
+	// Move node
+	if (
+		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
+		MC.canvas.selected_node.length === 1 &&
+		MC.canvas.selected_node[ 0 ].getAttribute('data-type') === 'node'
+	)
+	{
+		var target = $(MC.canvas.selected_node[ 0 ]),
+			target_id = target.attr('id'),
+			layout_node_data = MC.canvas.data.get('layout.component.node'),
+			layout_connection_data = MC.canvas.data.get('layout.connection'),
+			node_data = layout_node_data[ target_id ],
+			node_type = target.data('class'),
+			target_type = target.data('type'),
+			line_layer = $("#line_layer")[0],
+			coordinate = {'x': node_data.coordinate[0], 'y': node_data.coordinate[1]},
+			match_place;
+
+		if (keyCode === 37)
+		{
+			coordinate.x--;
+		}
+
+		if (keyCode === 38)
+		{
+			coordinate.y--;
+		}
+
+		if (keyCode === 39)
+		{
+			coordinate.x++;
+		}
+
+		if (keyCode === 40)
+		{
+			coordinate.y++;
+		}
+
+		match_place = MC.canvas.isMatchPlace(
+			target_id,
+			target_type,
+			node_type,
+			coordinate.x,
+			coordinate.y,
+			MC.canvas.COMPONENT_SIZE[ node_type ][0],
+			MC.canvas.COMPONENT_SIZE[ node_type ][1]
+		);
+		
+		if (
+			coordinate.x > 0 &&
+			coordinate.y > 0 &&
+			match_place.is_matched
+		)
+		{
+			node_connections = layout_node_data[ target_id ].connection || {};
+
+			MC.canvas.position(target[0], coordinate.x  * MC.canvas_property.SCALE_RATIO, coordinate.y * MC.canvas_property.SCALE_RATIO);
+
+			$.each(node_connections, function (index, value)
+			{
+				line_connection = layout_connection_data[ value.line ];
+
+				line_layer.removeChild(document.getElementById( value.line ));
+
+				MC.canvas.connect(
+					$('#' + target_id), line_connection['target'][ target_id ],
+					$('#' + value.target), line_connection['target'][ value.target ],
+					{'line_uid': value['line']}
+				);
+			});
+		}
+	}
 };
 
 MC.canvas.event.clickBlank = function (event)
 {
-	if ( event.target.id === 'svg_canvas' )
+	if (event.target.id === 'svg_canvas')
 	{
 		//dispatch event when click blank area in canvas
 		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");

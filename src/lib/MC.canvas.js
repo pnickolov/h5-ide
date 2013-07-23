@@ -1536,8 +1536,8 @@ MC.canvas.layout = {
 				},
 				'main' : true
 			},{
-				'x': 51,
-				'y': 3
+				'x': 50,
+				'y': 5
 			});
 
 			//default sg

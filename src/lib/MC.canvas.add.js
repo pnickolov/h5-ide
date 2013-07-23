@@ -814,7 +814,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 11, 11, 58, 58),
+				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 11, 11, 58, 58).attr({
 					'id': group.id + '_rt_status'
 				}),
 

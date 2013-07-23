@@ -2063,9 +2063,9 @@ MC.canvas.event.dragable = {
 		var gateway_top = Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO));
 
 		// MC.canvas.COMPONENT_SIZE for AWS.VPC.InternetGateway and AWS.VPC.VPNGateway = 10
-		if (gateway_top > event.data.vpc_data.coordinate[1] + event.data.vpc_data.size[1] - 10)
+		if (gateway_top > event.data.vpc_data.coordinate[1] + event.data.vpc_data.size[1] - 8)
 		{
-			gateway_top = event.data.vpc_data.coordinate[1] + event.data.vpc_data.size[1] - 10;
+			gateway_top = event.data.vpc_data.coordinate[1] + event.data.vpc_data.size[1] - 8;
 		}
 
 		if (gateway_top < event.data.vpc_data.coordinate[1])
@@ -2077,8 +2077,8 @@ MC.canvas.event.dragable = {
 		{
 			event.data.shadow.attr('transform',
 				'translate(' +
-					// MC.canvas.COMPONENT_SIZE[0] / 2 = 5
-					(event.data.vpc_data.coordinate[0] - 5) * MC.canvas.GRID_WIDTH + ',' +
+					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
+					(event.data.vpc_data.coordinate[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
 					gateway_top * MC.canvas.GRID_HEIGHT +
 				')'
 			);
@@ -2088,8 +2088,8 @@ MC.canvas.event.dragable = {
 		{
 			event.data.shadow.attr('transform',
 				'translate(' +
-					// MC.canvas.COMPONENT_SIZE[0] / 2 = 5
-					(event.data.vpc_data.coordinate[0] + event.data.vpc_data.size[0] - 5) * MC.canvas.GRID_WIDTH + ',' +
+					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
+					(event.data.vpc_data.coordinate[0] + event.data.vpc_data.size[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
 					gateway_top * MC.canvas.GRID_HEIGHT +
 				')'
 			);
@@ -3028,9 +3028,9 @@ MC.canvas.event.groupResize = {
 					igw_gateway_data = layout_node_data[ igw_gateway_id ];
 					igw_top = igw_gateway_data.coordinate[1];
 
-					if (igw_top > group_top + group_height - 10)
+					if (igw_top > group_top + group_height - 8)
 					{
-						igw_top = group_top + group_height - 10;
+						igw_top = group_top + group_height - 8;
 					}
 
 					if (igw_top < group_top)
@@ -3038,8 +3038,8 @@ MC.canvas.event.groupResize = {
 						igw_top = group_top;
 					}
 
-					// MC.canvas.COMPONENT_SIZE[0] / 2 = 5
-					MC.canvas.position(igw_gateway[0],  (group_left - 5) * MC.canvas_property.SCALE_RATIO, igw_top * MC.canvas_property.SCALE_RATIO);
+					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
+					MC.canvas.position(igw_gateway[0],  (group_left - 4) * MC.canvas_property.SCALE_RATIO, igw_top * MC.canvas_property.SCALE_RATIO);
 
 					$.each(igw_gateway_data.connection, function (index, value)
 					{
@@ -3062,9 +3062,9 @@ MC.canvas.event.groupResize = {
 					vgw_gateway_data = layout_node_data[ vgw_gateway_id ];
 					vgw_top = vgw_gateway_data.coordinate[1];
 
-					if (vgw_top > group_top + group_height - 10)
+					if (vgw_top > group_top + group_height - 8)
 					{
-						vgw_top = group_top + group_height - 10;
+						vgw_top = group_top + group_height - 8;
 					}
 
 					if (vgw_top < group_top)
@@ -3072,8 +3072,8 @@ MC.canvas.event.groupResize = {
 						vgw_top = group_top;
 					}
 
-					// MC.canvas.COMPONENT_SIZE[0] / 2 = 5
-					MC.canvas.position(vgw_gateway[0],  (group_left + group_width - 5) * MC.canvas_property.SCALE_RATIO, vgw_top * MC.canvas_property.SCALE_RATIO);
+					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
+					MC.canvas.position(vgw_gateway[0],  (group_left + group_width - 4) * MC.canvas_property.SCALE_RATIO, vgw_top * MC.canvas_property.SCALE_RATIO);
 
 					$.each(vgw_gateway_data.connection, function (index, value)
 					{

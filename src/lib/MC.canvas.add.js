@@ -799,12 +799,12 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, 80, 80).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 15, 15, 70, 70),
+				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 15, 15, 70, 61),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -915,12 +915,12 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, 80, 80).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/igw-canvas.png', 15, 15, 70, 70),
+				Canvon.image('../assets/images/ide/icon/igw-canvas.png', 15, 15, 60, 46),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -1005,12 +1005,12 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, 80, 80).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/vgw-canvas.png', 15, 15, 70, 70),
+				Canvon.image('../assets/images/ide/icon/vgw-canvas.png', 15, 15, 60, 46),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -1090,7 +1090,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/cgw-canvas.png', 13, 10, 173, 76),
+				Canvon.image('../assets/images/ide/icon/cgw-canvas.png', 13, 10, 167, 76),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({

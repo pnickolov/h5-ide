@@ -88,6 +88,8 @@ define [ 'jquery',
                 # Update Canvas
                 MC.canvas.update oldZoneID, "text", "name", newZone
 
+                ide_event.trigger ide_event.CHANGE_AZ, MC.canvas_data.layout.group[oldZoneID].name, newZone
+
             null
 
         #

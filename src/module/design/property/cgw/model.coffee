@@ -6,32 +6,66 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
     CGWModel = Backbone.Model.extend {
 
+        ###
         defaults :
-            'set_xxx'    : null
-            'get_xxx'    : null
+            uid  : null
+            name : null
+            BGP  : null
+            ip   : null
+        ###
 
         initialize : ->
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
 
-        getRenderData : ( uid ) ->
+        setId : ( uid ) ->
             cgw_component = MC.canvas_data.component[ uid ]
 
-            uid  : uid
-            name : cgw_component.name
-            BGP  : cgw_component.resource.BgpAsn
-            ip   : cgw_component.resource.IpAddress
+            this.set
+                uid  : uid
+                name : cgw_component.name
+                BGP  : cgw_component.resource.BgpAsn
+                ip   : cgw_component.resource.IpAddress
 
-        setName : ( uid, name ) ->
-            MC.canvas_data.component[ uid ].name = name
             null
 
-        setIP   : ( uid, ip ) ->
-            MC.canvas_data.component[ uid ].resource.IpAddress = ip
+        setName : ( name ) ->
+            MC.canvas_data.component[ this.attributes.uid ].name = name
             null
 
-        setBGP  : ( uid, bgp ) ->
-            MC.canvas_data.component[ uid ].resource.BgpAsn = bgp
+        setIP   : ( ip ) ->
+            MC.canvas_data.component[ this.attributes.uid ].resource.IpAddress = ip
+            null
+
+        setBGP  : ( bgp ) ->
+
+            if bgp
+
+                if !bgp.match( /^\d+$/ )
+                    error = "ASN must be a number"
+                    return
+
+                bgp = parseInt bgp, 10
+
+                if bgp > 65534 || bgp < 1
+                    error = "Must be between 1 and 65534"
+                    return
+
+                area = MC.canvas_data.region
+
+                if bgp == 7224 && area == "us-east-1"
+                    error = "ASN number 7224 is reserved in Virginia"
+                    return
+
+                if bgp == 9095 && area == "eu-west-1"
+                    error = "ASN number 9059 is reserved in Ireland"
+                    return
+
+            if error
+                return error
+            else
+                MC.canvas_data.component[ this.attributes.uid ].resource.BgpAsn = bgp
+
             null
     }
 

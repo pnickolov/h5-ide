@@ -17,39 +17,42 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             "change #property-cgw-name" : 'onChangeName'
             "change #property-cgw-ip"   : 'onChangeIP'
 
-        render     : ( data ) ->
+        render     : () ->
             console.log 'property:cgw render'
-
-            this.uid = data.uid
-            $( '.property-details' ).html this.template data
+            $( '.property-details' ).html this.template this.model.attributes
 
         onChangeRouting : () ->
             $( '#property-cgw-bgp-wrapper' ).toggle $('#property-routing-dynamic').is(':checked')
 
             change.value = ""
             change.event = "CHANGE_BGP"
-            this.trigger "CHANGE_BGP", this.uid, change
+            this.trigger "CHANGE_BGP", change
 
         onChangeBGP : ( event ) ->
-            change.value = event.target.value
-            change.event = "CHANGE_BGP"
 
-            this.trigger "CHANGE_BGP", this.uid, change
+            change.handled = false
+            change.value   = event.target.value
+            change.event   = "CHANGE_BGP"
+
+            this.trigger "CHANGE_BGP", change
 
         onChangeName : ( event ) ->
+
+            # TODO : Validate Name
+            $( '#property-title' ).html event.target.value
+
             change.value = event.target.value
             change.event = "CHANGE_NAME"
 
-            this.trigger "CHANGE_NAME", this.uid, change
+            this.trigger "CHANGE_NAME", change
 
         onChangeIP   : ( event ) ->
+
+            # TODO : Validate IP
             change.value = event.target.value
             change.event = "CHANGE_IP"
 
-            this.trigger "CHANGE_IP", this.uid, change
-
-        setName : ( name ) ->
-            $( "#property-cgw-name" ).val name
+            this.trigger "CHANGE_IP", change
 
         setBGP : ( bgp ) ->
             dynamic = false
@@ -60,12 +63,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $( '#property-routing-dynamic' ).prop "checked", dynamic
             $( '#property-routing-static' ).prop  "checked", !dynamic
             $( '#property-cgw-bgp-wrapper').toggle dynamic
-
-        setIP : ( ip ) ->
-            $( '#property-cgw-ip' ).val ip
-
-        showError : ( type, errorInfo ) ->
-            null
     }
 
     view = new CGWView()
@@ -78,18 +75,21 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
     change =
         value   : ""
         event   : ""
-        context : view
-        accept  : () ->
-            $( eventTgtMap[ this.event ] ).attr "lastValue", this.value
+        handled : true
+        done    : ( error ) ->
+            if this.handled
+                return
 
-            if this.event == "CHANGE_NAME"
-                $( '#property-title' ).html this.value
+            if error
+                # TODO : show error on the input
 
-        reject  : ( reason ) ->
-            # TODO : show error on the input
+                # Restore last value
+                $ipt = $( eventTgtMap[ this.event ] )
+                $ipt.val( $ipt.attr "lastValue" )
+            else
+                $( eventTgtMap[ this.event ] ).attr "lastValue", this.value
 
-            # Restore last value
-            $ipt = $( eventTgtMap[ this.event ] )
-            $ipt.val( $ipt.attr "lastValue" )
+            this.handled = true
+            null
 
     return view

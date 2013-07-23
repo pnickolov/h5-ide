@@ -157,9 +157,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             listenerItemElem.each (index, elem) ->
                 that = $(this)
-                elbProtocolValue = $.trim(that.find('.elb-property-listener-elb-protocol-select .cur-value').text())
+                elbProtocolValue = $.trim(that.find('.elb-property-listener-elb-protocol-select .selection').text())
                 elbPortValue = that.find('.elb-property-listener-elb-port-input').val()
-                instanceProtocolValue = $.trim(that.find('.elb-property-listener-instance-protocol-select .cur-value').text())
+                instanceProtocolValue = $.trim(that.find('.elb-property-listener-instance-protocol-select .selection').text())
                 instancePortValue = that.find('.elb-property-listener-instance-port-input').val()
 
                 if !isNaN(parseInt(elbPortValue, 10)) and !isNaN(parseInt(instancePortValue, 10))

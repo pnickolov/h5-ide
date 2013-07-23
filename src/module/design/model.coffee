@@ -10,20 +10,23 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
         defaults :
             snapshot : null
 
-        saveTab : ( tab_id, snapshot, data, property ) ->
+        saveTab : ( tab_id, snapshot, data, property, property_panel ) ->
             console.log 'saveTab'
-            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property }
+            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel }
             null
 
         readTab : ( type, tab_id ) ->
             console.log 'readTab'
             #set snapshot|data vo
             if MC.tab[ tab_id ].snapshot is this.get 'snapshot' then this.set 'snapshot', null
-            this.set 'snapshot', MC.tab[ tab_id ].snapshot
-            #set MC.canvas_data
-            this.setCanvasData MC.tab[ tab_id ].data
-            #set MC.canvas_property
+            #
+            this.set 'snapshot',   MC.tab[ tab_id ].snapshot
+            #
+            this.setCanvasData     MC.tab[ tab_id ].data
+            #
             this.setCanvasProperty MC.tab[ tab_id ].property
+            #
+            this.setPropertyPanel  MC.tab[ tab_id ].property_panel
             null
 
         updateTab : ( old_tab_id, tab_id ) ->
@@ -38,6 +41,7 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             console.log 'deleteTab'
             delete MC.tab[ tab_id ]
             console.log MC.tab
+            null
 
         setCanvasData : ( data ) ->
             console.log 'setCanvasData'
@@ -56,6 +60,20 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
         getCanvasProperty : () ->
             console.log 'getCanvasProperty'
             MC.canvas_property
+
+        setPropertyPanel : ( property_panel ) ->
+            console.log 'setPropertyPanel'
+            MC.data.current_sub_main = property_panel
+            #temp
+            MC.data.current_sub_main.LoadModule()
+            null
+
+        getPropertyPanel : () ->
+            console.log 'getPropertyPanel'
+            #temp
+            MC.data.current_sub_main.unLoadModule()
+            #
+            MC.data.current_sub_main
 
     }
 

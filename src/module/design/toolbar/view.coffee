@@ -27,6 +27,9 @@ define [ 'MC', 'event',
             'click .icon-toolbar-redo'          : 'clickRedoIcon'
             'click #toolbar-export-png'         : 'clickExportPngIcon'
             'click #toolbar-export-json'        : 'clickExportJSONIcon'
+            'click .icon-toolbar-stop'          : 'clickStopApp'
+            'click .icon-toolbar-run'           : 'clickRunApp'
+            'click .icon-toolbar-terminate'     : 'clickTerminateApp'
             #for debug
             'click #toolbar-jsondiff'           : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'           : 'clickOpenJSONView'
@@ -175,6 +178,15 @@ define [ 'MC', 'event',
 
         notify : (type, msg) ->
             notification type, msg
+
+        clickStopApp : (event) ->
+            console.log 'click stop app'
+
+        clickRunApp : (event) ->
+            console.log 'click run app'
+
+        clickTerminateApp : (event) ->
+            console.log 'click terminate app'
 
     }
 

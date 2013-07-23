@@ -168,7 +168,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'STACK_RUN_RETURN'
                 console.log result
 
-                me.handleRequest result
+                me.handleRequest result, 'RUN'
 
         #zoomin
         zoomIn : () ->
@@ -235,7 +235,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             else
                 return false
 
-        runApp : () ->
+        startApp : () ->
             me = this
 
             app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
@@ -244,7 +244,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'APP_START_RETURN'
                 console.log result
 
-                me.handleRequest result
+                me.handleRequest result, 'START'
 
         stopApp : () ->
             me = this
@@ -255,7 +255,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'APP_STOP_RETURN'
                 console.log result
 
-                me.handleRequest result
+                me.handleRequest result, 'STOP'
 
         terminateApp : () ->
             me = this
@@ -267,14 +267,23 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'APP_TERMINATE_RETURN'
                 console.log result
 
-                me.handleRequest result
+                me.handleRequest result, 'TERMINATE'
 
-        handleRequest : (req_result) ->
-            me = this
+        handleRequest : (result, flag) ->
 
             if !result.is_error
-                console.log 'stop app request successfully'
-                me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS'
+                if flag == 'RUN'
+                    console.log 'run stack request successfully'
+                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS'
+                else if flag == 'START'
+                    console.log 'start app request successfully'
+                    me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS'
+                else if flag == 'STOP'
+                    console.log 'stop app request successfully'
+                    me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS'
+                else if flag == 'TERMINATE'
+                    console.log 'terminate app request successfully'
+                    me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS'
 
                 if ws
                     req_id = result.resolved_data.id
@@ -288,12 +297,28 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                                 #push event
                                 ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                                this.trigger 'TOOLBAR_APP_START_SUCCESS'
+
+                                if flag == 'RUN'
+                                    this.trigger 'TOOLBAR_STACK_RUN_SUCCESS'
+                                else if flag == 'START'
+                                    this.trigger 'TOOLBAR_APP_START_SUCCESS'
+                                else if flag == 'STOP'
+                                    this.trigger 'TOOLBAR_APP_STOP_SUCCESS'
+                                else if flag == 'TERMINATE'
+                                    this.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS'
+
                             else if req.state == "Failed"
                                 handle.stop()
                                 console.log 'stop handle'
 
-                                this.trigger 'TOOLBAR_APP_START_FAILED'
+                                if flag == 'RUN'
+                                    this.trigger 'TOOLBAR_STACK_RUN_FAILED'
+                                else if flag == 'START'
+                                    this.trigger 'TOOLBAR_APP_START_FAILED'
+                                else if flag == 'STOP'
+                                    this.trigger 'TOOLBAR_APP_STOP_FAILED'
+                                else if flag == 'TERMINATE'
+                                    this.trigger 'TOOLBAR_APP_TERMINATE_FAILED'
                     }
                 null
 

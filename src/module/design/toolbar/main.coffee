@@ -107,6 +107,33 @@ define [ 'jquery',
             model.once 'TOOLBAR_STACK_DELETE_ERROR', () ->
                 view.notify 'error', 'Delete stack ' + MC.canvas_data.name + ' failed.'
 
+            model.once 'TOOLBAR_APP_START_REQUEST_SUCCESS', () ->
+                view.notify 'info', 'Start app ' + MC.canvas_data.name + ' request successfully.'
+            model.once 'TOOLBAR_APP_START_REQUEST_FAILED', () ->
+                view.notify 'error', 'Start app ' +　MC.canvas_data.name + ' request failed.'
+            model.once 'TOOLBAR_APP_START_SUCCESS', () ->
+                view.notify 'info', 'Start app ' + MC.canvas_data.name + ' successfully.'
+            model.once 'TOOLBAR_APP_START_FAILED', () ->
+                view.notify 'error', 'Start app ' + MC.canvas_data.name + ' failed.'
+
+            model.once 'TOOLBAR_APP_STOP_REQUEST_SUCCESS', () ->
+                view.notify 'info', 'Stop app ' + MC.canvas_data.name + ' request successfully.'
+            model.once 'TOOLBAR_APP_STOP_REQUEST_FAILED', () ->
+                view.notify 'error', 'Stop app ' + MC.canvas_data.name + ' request failed.'
+            model.once 'TOOLBAR_APP_STOP_SUCCESS', () ->
+                view.notify 'info', 'Stop app ' + MC.canvas_data.name + ' successfully.'
+            model.once 'TOOLBAR_APP_STOP_FAILED', () ->
+                view.notify 'error', 'Stop app ' + MC.canvas_data.name + ' successfully.'
+
+            model.once 'TOOLBAR_APP_TERMINATE_REQUEST_SUCCESS', () ->
+                view.notify 'info', 'Terminate app ' + MC.canvas_data.name + ' request successfully.'
+            model.once 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', () ->
+                view.notify 'error', 'Terminate app ' + MC.canvas_data.name + ' request failed.'
+            model.once 'TOOLBAR_APP_TERMINATE_SUCCESS', () ->
+                view.notify 'info', 'Terminate app ' + MC.canvas_data.name + ' successfully.'
+            model.once 'TOOLBAR_APP_TERMINATE_FAILED', () ->
+                view.notify 'error', 'Terminate app ' + MC.canvas_data.name + ' failed.'
+
     unLoadModule = () ->
         #view.remove()
 

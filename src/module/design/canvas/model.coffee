@@ -486,11 +486,9 @@ define [ 'constant',
 						MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
 
 				# routetable to subnet
-				if portMap['subnet-association-out'] and ( portMap['rtb-src-bottom'] or portMap['rtb-src-top'] )
+				if portMap['subnet-association-out'] and portMap['rtb-src']
 
-					rt_uid = null
-
-					if portMap['rtb-src-bottom'] then rt_uid = portMap['rtb-src-bottom'] else rt_uid = portMap['rtb-src-top']
+					rt_uid = portMap['rtb-src']
 
 					# add association
 					if MC.canvas_data.component[rt_uid].resource.AssociationSet.length == 0 or MC.canvas_data.component[rt_uid].resource.AssociationSet[0].Main != 'true'

@@ -9,18 +9,20 @@
 <div class="property-info">
 	<div class="property-control-group clearfix">
 		<label class="left" for="rt-name">Name</label>
-		<input class="input" type="text" required="required" value="{{route_table.name}}" name="rt-name" id="rt-name">
+		<input class="input" type="text" required="required" value="{{route_table.name}}" name="rt-name" id="rt-name" data-uid="{{route_table.uid}}">
 	</div>	
 	<div class="property-info-readonly">
 		<!-- If current RT is main route table, show text "Main Route Table" -->
-
+		
+		{{#if route_table.isMain}}
 		<p>Main Route Table</p>
-
+		{{else}}
 		<!-- If current RT is not main route table, show button "Set as Main Route Table -->
 
 		<p>
-			<button class="btn btn-primary" style="width: 200px;">Set as Main Route Table</button>
+			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">Set as Main Route Table</button>
 		</p>
+		{{/if}}
 	</div>
 
 

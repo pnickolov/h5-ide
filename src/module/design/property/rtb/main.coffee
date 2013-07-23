@@ -40,6 +40,29 @@ define [ 'jquery',
 
             view.render()
 
+            view.on 'SET_ROUTE', ( uid, data, routes ) ->
+
+                model.setRoutes uid, data, routes
+
+            view.on 'SET_NAME', ( uid, name ) ->
+
+                model.setName uid, name
+
+            view.on 'SET_MAIN_RT', ( uid ) ->
+
+                model.setMainRT uid
+
+                model.getRoute( uid )
+
+                view.render()
+
+            view.on 'REFRESH_PROPERTY', () ->
+
+                model.getRoute( uid )
+
+                view.render()
+
+
     unLoadModule = () ->
         current_view.off()
         current_model.off()

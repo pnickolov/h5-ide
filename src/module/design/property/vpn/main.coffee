@@ -17,7 +17,7 @@ define [ 'jquery',
     $( 'head' ).append template
 
     #private
-    loadModule = ( uid, type, current_main ) ->
+    loadModule = ( line_option, type, current_main ) ->
 
         #
         MC.data.current_sub_main = current_main
@@ -35,7 +35,19 @@ define [ 'jquery',
             #view
             view.model    = model
             #render
-            view.render()
+            renderVPNPanel = (line_option) ->
+                view.model.getVPN line_option
+                view.render view.model.attributes
+
+            renderVPNPanel line_option
+
+            view.on 'VPN_DELETE_IP', (ip) ->
+                console.log "VPN_DELETE_IP:" + ip
+                model.delIP ip
+                
+            view.on 'VPN_ADD_IP', (new_ip) ->
+                console.log "VPN_ADD_IP:" + new_ip
+                model.addIP new_ip
 
     unLoadModule = () ->
         current_view.off()

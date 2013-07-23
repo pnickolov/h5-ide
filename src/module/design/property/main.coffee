@@ -61,6 +61,9 @@ define [ 'jquery',
             #listen OPEN_PROPERTY
             ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id ) ->
 
+                #
+                MC.data.last_open_property = { 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
+
                 if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
 
                 if type == 'component'

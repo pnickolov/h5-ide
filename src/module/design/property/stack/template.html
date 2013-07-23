@@ -25,10 +25,10 @@
 <div class="fixedaccordion accordion-default property-stack" data-sub="68">
 	<div class="accordion-group expanded">
 		<div class="fixedaccordion-head">
-			Security Group({{stack_detail.sg_list.length}})
+			Security Group({{sg_display.detail.length}})
 		</div>
-		<button class="create-sg btn btn-primary btn-region-dashboard" title="Create New Security Group">+</button>
-		<!--div class="selectbox security-group-select" id="security-group-select">
+		<!--button class="create-sg btn btn-primary btn-region-dashboard" title="Create New Security Group">+</button>
+		<div class="selectbox security-group-select" id="security-group-select">
 			<a class="dropdown-toggle tooltip" data-tooltip="Add to security group." href="#">
 				<i class="icon-add-sg icon-btn-selectbox"></i>
 			</a>
@@ -38,7 +38,8 @@
 				</li>
 			</ul>
 		</div-->
-		<div class="accordion-body">
+		<div class="sg-group">loading...</div>
+		<!--div class="accordion-body">
 			{{#each stack_detail.sg_list}}
 				<div class="property-item" uid="{{uid}}">
 					{{#if is_shown}}
@@ -56,7 +57,7 @@
 					{{/if}}
 				</div>
 			{{/each}}
-		</div>
+		</div-->
 	</div>
 
 	{{#if stack_detail.is_vpc}}

@@ -44,17 +44,14 @@ define [ 'jquery',
             renderPropertyPanel = () ->
                 view.model.getStack()
                 view.render view.model.attributes
+                sglist_main.loadModule model
 
             renderPropertyPanel()
-
-            sglist_main.loadModule model
 
             view.on 'STACK_NAME_CHANGED', (name) ->
                 console.log 'stack name changed and refresh'
                 MC.canvas_data.name = name
                 renderPropertyPanel()
-
-                sglist_main.loadModule model
 
             view.on 'DELETE_STACK_SG', (uid) ->
                 model.deleteSecurityGroup uid

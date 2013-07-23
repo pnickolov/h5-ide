@@ -15,7 +15,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
         events   :
             'change #property-stack-name'   : 'stackNameChanged'
-            'click .create-sg'              : 'createSecurityGroup'
+            'click #add-sg-btn'             : 'createSecurityGroup'
             'click .deleteSG'               : 'deleteSecurityGroup'
             'click .resetSG'                : 'resetSecurityGroup'
             

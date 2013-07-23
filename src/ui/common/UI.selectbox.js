@@ -71,14 +71,15 @@ var selectbox = {
 
     function toggle ( event ) {
 
-        // TODO : OPTION_SHOW event is now bound to the selectbox
-
         var $selectbox = $( event.currentTarget ).closest(".selectbox");
 
         if ( $selectbox.hasClass('open') ) {
             $selectbox.removeClass('open');
             return false;
         }
+
+        // Close other opened dropdown
+        $(".selectbox.open").removeClass('open');
         
         var $dropdown  = $selectbox.addClass('open')
                                    .find(".dropdown");
@@ -171,7 +172,6 @@ var selectbox = {
     $(function(){
         selectbox.init();
         $(document.body)
-            .on('click',   ".selectbox",                 false)
             .on('click',   ".selectbox .selection",      toggle)
             .on('click',   ".selectbox .dropdown .item", select)
             .on('click',   ".selectbox .editor",         add)

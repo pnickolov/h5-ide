@@ -22,9 +22,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             stack_detail.region = constant.REGION_LABEL[MC.canvas_data.region]
             stack_detail.type = me.getStackType()
             stack_detail.is_vpc = true if stack_detail.type and stack_detail.type != 'EC2 Classic'
-            stack_detail.sg_list = me.getSecurityGroup()
+            
             if stack_detail.is_vpc
                 stack_detail.acl_list = me.getNetworkACL()
+
+            me.getSecurityGroup()
 
             stack_detail.cost = me.getStackCost()
 
@@ -50,12 +52,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             stack_sg.rules_detail_ingress = []
             stack_sg.rules_detail_egress = []
 
-            sg_list = []
             _.map MC.canvas_property.sg_list, ( sg ) ->
                 sg_detail = {}
 
                 sg_detail.uid = sg.uid
-
+                sg_detail.parent = sg.uid
                 sg_detail.members = sg.member.length
                 sg_detail.rules = MC.canvas_data.component[sg.uid].resource.IpPermissions.length + MC.canvas_data.component[sg.uid].resource.IpPermissionsEgress.length
                 sg_detail.name = MC.canvas_data.component[sg.uid].resource.GroupName

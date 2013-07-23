@@ -42,7 +42,8 @@ define [ 'jquery',
             view.model    = model
             #render
             renderPropertyPanel = () ->
-                view.model.getStack()
+                model.getStack()
+                model.getSecurityGroup()
                 view.render view.model.attributes
                 sglist_main.loadModule model
 

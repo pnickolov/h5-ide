@@ -56,7 +56,13 @@ define [ 'jquery',
 
                 view.render()
 
-            view.on 'REFRESH_PROPERTY', () ->
+            ide_event.on ide_event.CANVAS_DELETE_OBJECT, () ->
+
+                model.getRoute( uid )
+
+                view.render()
+
+            ide_event.on ide_event.CANVAS_CREATE_LINE, () ->
 
                 model.getRoute( uid )
 
@@ -67,7 +73,8 @@ define [ 'jquery',
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
-        #ide_event.offListen ide_event.<EVENT_TYPE>
+        ide_event.offListen ide_event.CANVAS_DELETE_OBJECT
+        ide_event.offListen ide_event.CANVAS_CREATE_LINE
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public

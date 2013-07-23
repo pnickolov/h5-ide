@@ -18,23 +18,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             'change #rt-name' : 'changeName'
             'click #set-main-rt' : 'setMainRT'
 
-        initialize : () ->
-
-            $( document )
-                .on( 'CANVAS_LINE_CREATE',          '#svg_canvas', this, this.createLine )
-
         render     : () ->
             console.log 'property:rtb render'
             $( '.property-details' ).html this.template this.model.attributes
 
-
-        createLine : ( event, line_id ) ->
-
-            event.data.trigger 'REFRESH_PROPERTY'
-
-        deleteObject : ( event, option ) ->
-
-            event.data.trigger 'REFRESH_PROPERTY'
 
         addIp : ( event ) ->
 

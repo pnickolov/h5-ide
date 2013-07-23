@@ -131,7 +131,7 @@ define [ 'jquery',
                             key = line_option[0].port + '>' + line_option[1].port
 
 
-                            if '|instance-sg-in>rtb-tgt-left|rtb-tgt-left>instance-sg-in|rtb-tgt-right>instance-sg-in|instance-sg-in>rtb-tgt-right|'.indexOf( key ) > 0
+                            if key.indexOf( 'rtb' ) >= 0
                                 #select line between instance and routetable
                                 $.each line_option, ( idx, value ) ->
 

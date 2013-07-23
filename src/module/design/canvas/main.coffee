@@ -46,29 +46,16 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
             #listen CANVAS_OBJECT_DELETE
             view.on 'CANVAS_OBJECT_DELETE', ( option ) ->
                 console.log 'canvas:CANVAS_OBJECT_DELETE, option = ' + option
-
-                # get line id
-                line_option = MC.canvas.lineTarget option.id
-
                 # remove line
                 model.deleteObject option
-
-                # reload proerpty with old id
-                $.each line_option, ( idx, value ) ->
-
-                    if value.port.indexOf('rtb') >=0
-
-                        ide_event.trigger ide_event.OPEN_PROPERTY, 'component', value.uid
-
-                        return false
-
-                
+                ide_event.trigger ide_event.CANVAS_DELETE_OBJECT
                 null
 
             #listen CANVAS_LINE_CREATE
             view.on 'CANVAS_LINE_CREATE', ( line_id ) ->
                 console.log 'canvas:CANVAS_LINE_CREATE, line_id = ' + line_id
                 model.createLine line_id
+                ide_event.trigger ide_event.CANVAS_CREATE_LINE
                 null
 
             #listen CANVAS_COMPONENT_CREATE

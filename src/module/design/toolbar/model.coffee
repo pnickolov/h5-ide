@@ -2,7 +2,7 @@
 #  View Mode for design/toolbar module
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'constant' ], (MC, Backbone, $, _, ide_event, stack_model, constant) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_model', 'constant' ], (MC, Backbone, $, _, ide_event, stack_model, app_model, constant) ->
 
     #websocket
     ws = MC.data.websocket
@@ -34,15 +34,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
             else if type is 'SAVE_STACK'
                 toolbar_flag_list.duplicate  = true
                 toolbar_flag_list.delete     = true
-            else if type is 'ZOOMIN_STACK'
+            else if type is 'ZOOM_IN'
                 toolbar_flag_list.zoomin     = value
-            else if type is 'ZOOMOUT_STACK'
+            else if type is 'ZOOM_OUT'
                 toolbar_flag_list.zoomout    = value
             else if type is 'OPEN_APP'
                 toolbar_flag_list.run = true
 
             me.set 'toolbar_flag', toolbar_flag_list
-            me.trigger 'UPDATE_TOOLBAR'
+            me.trigger 'UPDATE_TOOLBAR', type
 
         #save stack
         saveStack : () ->
@@ -168,40 +168,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                 console.log 'STACK_RUN_RETURN'
                 console.log result
 
-                if !result.is_error
-                    console.log 'run stack request successful'
-                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS'
-
-                    if ws
-                        req_id = result.resolved_data.id
-                        console.log "request id:" + req_id
-                        query = ws.collection.request.find({id:req_id})
-                        handle = query.observeChanges {
-                            changed : (id, req) ->
-                                if req.state == "Done"
-                                    handle.stop()
-                                    console.log 'stop handle'
-
-                                    #update app name list
-                                    if app_name not in MC.data.app_list[MC.canvas_data.region]
-                                        MC.data.app_list[MC.canvas_data.region].push app_name
-
-                                    #push event
-                                    ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                                    this.trigger 'TOOLBAR_STACK_RUN_SUCCESS'
-                                else if req.state == "Failed"
-                                    handle.stop()
-                                    console.log 'stop handle'
-
-                                    this.trigger 'TOOLBAR_STACK_RUN_FAILED'
-                        }
-                    null
-
-                else
-                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_ERROR'
+                me.handleRequest result
 
         #zoomin
-        zoomInStack : () ->
+        zoomIn : () ->
             me = this
 
             MC.canvas.zoomIn()
@@ -210,12 +180,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
             if MC.canvas_property.SCALE_RATIO <= 1
                 zoomin_flag = false
 
-            me.setFlag('ZOOMIN_STACK', zoomin_flag)
+            me.setFlag('ZOOM_IN', zoomin_flag)
 
             null
 
         #zoomout
-        zoomOutStack : () ->
+        zoomOut : () ->
             me = this
 
             MC.canvas.zoomOut()
@@ -224,7 +194,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
             if MC.canvas_property.SCALE_RATIO >= 1.8
                 zoomout_flag = false
 
-            me.setFlag('ZOOMOUT_STACK', zoomout_flag)
+            me.setFlag('ZOOM_OUT', zoomout_flag)
 
             null
 
@@ -264,6 +234,71 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                 return true
             else
                 return false
+
+        runApp : () ->
+            me = this
+
+            app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+            app_model.once 'APP_START_RETURN', (result) ->
+                console.log 'APP_START_RETURN'
+                console.log result
+
+                me.handleRequest result
+
+        stopApp : () ->
+            me = this
+
+            app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+            app_model.once 'APP_STOP_RETURN', (result) ->
+                console.log 'APP_STOP_RETURN'
+                console.log result
+
+                me.handleRequest result
+
+        terminateApp : () ->
+            me = this
+
+            #terminate : ( src, username, session_id, region_name, app_id, app_name=null )
+            app_model.terminate { sender : this }, $.cookie( 'usercode' ), $( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+            app_model.once 'APP_TERMINATE_RETURN', (result) ->
+                console.log 'APP_TERMINATE_RETURN'
+                console.log result
+
+                me.handleRequest result
+
+        handleRequest : (req_result) ->
+            me = this
+
+            if !result.is_error
+                console.log 'stop app request successfully'
+                me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS'
+
+                if ws
+                    req_id = result.resolved_data.id
+                    console.log 'request id:' + req_id
+                    query = ws.collection.request.find({id:req_id})
+                    handle = query.observeChanges {
+                        changed : (id, req) ->
+                            if req.state == "Done"
+                                handle.stop()
+                                console.log 'stop handle'
+
+                                #push event
+                                ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                                this.trigger 'TOOLBAR_APP_START_SUCCESS'
+                            else if req.state == "Failed"
+                                handle.stop()
+                                console.log 'stop handle'
+
+                                this.trigger 'TOOLBAR_APP_START_FAILED'
+                    }
+                null
+
+            else
+                me.trigger 'TOOLBAR_APP_STOP_REQUEST_ERROR'
 
     }
 

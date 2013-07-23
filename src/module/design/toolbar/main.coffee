@@ -26,8 +26,6 @@ define [ 'jquery',
             view.model = model
             view.render()
 
-            type = null
-
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, item_name ) ->
                 if type.search('APP') >= 0
@@ -36,14 +34,12 @@ define [ 'jquery',
                     console.log 'toolbar:RELOAD_RESOURCE, stack name = ' + item_name + ', type = ' + type
 
                 #
-                type = type
-                #
                 model.setFlag type
                 #
                 #view.render type
 
             #listen toolbar state change
-            model.on 'UPDATE_TOOLBAR', () ->
+            model.on 'UPDATE_TOOLBAR', (type) ->
                 console.log 'update toolbar status'
                 view.render type
 
@@ -69,13 +65,13 @@ define [ 'jquery',
 
             #zoomin
             view.on 'TOOLBAR_ZOOMIN_CLICK', () ->
-                console.log 'design_toolbar_click:zoomInStack'
-                model.zoomInStack()
+                console.log 'design_toolbar_click:zoomIn'
+                model.zoomIn()
 
             #zoomout
             view.on 'TOOLBAR_ZOOMOUT_CLICK', () ->
-                console.log 'design_toolbar_click:zoomOutStack'
-                model.zoomOutStack()
+                console.log 'design_toolbar_click:zoomOut'
+                model.zoomOut()
 
             #export to png
             view.on 'TOOLBAR_EXPORT_PNG_CLICK', () ->

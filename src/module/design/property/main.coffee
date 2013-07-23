@@ -135,9 +135,15 @@ define [ 'jquery',
                             key = line_option[0].port + '>' + line_option[1].port
 
 
-                            if '|instance-sg-in>rtb-tgt-left|rtb-tgt-left>instance-sg-in|'.indexOf( key ) > 0
+                            if key.indexOf( 'rtb' ) >= 0
                                 #select line between instance and routetable
-                                rtb_main.loadModule line_option, 'line', rtb_main
+                                $.each line_option, ( idx, value ) ->
+
+                                    if value.port.indexOf('rtb') >=0
+
+                                        rtb_main.loadModule value.uid, 'component', rtb_main
+
+                                        return false
 
                             else if '|instance-sg-in>instance-sg-out|instance-sg-out>instance-sg-in|'.indexOf( key ) >0
                                 #select line between instance and instance
@@ -163,6 +169,13 @@ define [ 'jquery',
                 # setTimeout () ->
                 #    view.refresh()
                 # , 2000
+
+                null
+
+            #listen OPEN_ACL
+            ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid ) ->
+                console.log 'OPEN_ACL'
+                acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid )
 
                 null
 

@@ -9,23 +9,10 @@
     <div class="property-control-group">
       <label>Quick Switch Availability Zone</label>
       <div class="selectbox selectbox-mega" id="az-quick-select" component="{{id}}">
-        <a class="dropdown-toggle" href="#">
-          <div class="cur-value">{{component.name}}</div>
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-
+        <div class="selection">{{component.name}}</div>
+        <ul class="dropdown" tabindex="-1">
           {{#each az_list}}
-
-          {{#if selected}}
-            <li class="selected tooltip" tabindex="-1" data-tooltip="{{name}}">
-          {{else}}
-            {{#if available}}
-            <li class="tooltip" tabindex="-1" data-tooltip="{{name}}">
-            {{/if}}
-          {{/if}}
-            <a data-id="{{name}}" href="#"><div class="main truncate">{{name}}</div></a>
-            </li>
+            <li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}">{{name}}</li>
           {{/each}}
         </ul>
       </div>

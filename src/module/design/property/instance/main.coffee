@@ -9,8 +9,9 @@ define [ 'jquery',
 ], ( $, template, ide_event ) ->
 
     #
-    current_view  = null
-    current_model = null
+    current_view     = null
+    current_model    = null
+    current_sub_main = null
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-instance-tmpl">' + template + '</script>'
@@ -27,10 +28,13 @@ define [ 'jquery',
         require [ './module/design/property/instance/view',
                   './module/design/property/instance/model',
                   './module/design/property/sglist/main'
-        ], ( view, model ) ->
+        ], ( view, model, sglist_main ) ->
 
             #
             if current_view then view.delegateEvents view.events
+
+            #
+            current_sub_main = sglist_main
 
             #
             current_view  = view
@@ -52,12 +56,14 @@ define [ 'jquery',
             model.getEni()
             #
             view.render()
+            sglist_main.loadModule model
             #
             model.listen()
             #
             model.on 'change:update_instance_title', () ->
 
                 view.render()
+                sglist_main.loadModule model
 
                 ide_event.trigger ide_event.RELOAD_PROPERTY
                 
@@ -109,6 +115,8 @@ define [ 'jquery',
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
+        #
+        current_sub_main.unLoadModule()
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 

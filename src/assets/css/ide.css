@@ -1585,6 +1585,14 @@ td.table-action a.btn {
 	background: url('../images/ide/icon-run.png') center center no-repeat;
 }
 
+.icon-toolbar-stop {
+	background: url('../images/ide/icon-stop.png') center center no-repeat;
+}
+
+.icon-toolbar-terminate {
+	background: url('../images/ide/icon-terminate.png') center center no-repeat;
+}
+
 .icon-toolbar-save {
 	background: url('../images/ide/icon-save.png') center center no-repeat;
 }
@@ -1778,7 +1786,7 @@ a.sidebar-hider {
 }
 
 .resource-icon-az {
-	background: url('../images/ide/az-resource.png') center center no-repeat;
+	background: url('../images/ide/icon/az-resource.png') center center no-repeat;
 }
 
 .resource-icon-az-label {
@@ -1805,6 +1813,26 @@ a.sidebar-hider {
 
 .resource-icon-eni {
 	background: url('../images/ide/icon/eni-resource.png') center center no-repeat;
+}
+
+.resource-icon-subnet {
+	background: url('../images/ide/icon/subnet-resource.png') center center no-repeat;
+}
+
+.resource-icon-rt {
+	background: url('../images/ide/icon/RT-resource.png') center center no-repeat;
+}
+
+.resource-icon-igw {
+	background: url('../images/ide/icon/igw-resource.png') center center no-repeat;
+}
+
+.resource-icon-vgw {
+	background: url('../images/ide/icon/vgw-resource.png') center center no-repeat;
+}
+
+.resource-icon-cgw {
+	background: url('../images/ide/icon/cgw-resource.png') center center no-repeat;
 }
 
 

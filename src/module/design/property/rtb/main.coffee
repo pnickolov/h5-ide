@@ -56,6 +56,10 @@ define [ 'jquery',
 
                 view.render()
 
+            view.on 'SET_PROPAGATION', ( uid, value ) ->
+
+                model.setPropagation uid, value
+
             ide_event.on ide_event.CANVAS_DELETE_OBJECT, () ->
 
                 model.getRoute( uid )

@@ -1,12 +1,10 @@
-<div class="sidebar-title">
-  <span class="sidebar-title-text" id='property-title'>{{component.name}}</span>
-</div>
+<div class="sidebar-title"><span class="sidebar-title-text" id='property-title'>{{component.name}}</span></div>
 
 <div class="fixedaccordion accordion-default" data-sub="43">
-  <div class="accordion-group expanded">
-    <div class="fixedaccordion-head" id="vpc-property-detail" component="{{uid}}">VPC Details</div>
+  <section class="accordion-group expanded">
+    <header class="fixedaccordion-head" id="vpc-property-detail">VPC Details</header>
 
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+    <article class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <div class="item-wrap scroll-content">
         <div class="property-control-group clearfix">
@@ -18,31 +16,16 @@
         <div class="property-control-group clearfix">
           <label class="left" for="property-cidr-block">CIDR Block</label>
           <span class="required-input right">Required</span>
-          <input class="input cidr-block tooltip" type="text" autofocus value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16"/>
+          <input class="input cidr-block tooltip" type="text" value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16"/>
         </div>
 
         <div class="property-control-group">
           <label>Tenancy</label>
           <div class="selectbox selectbox-mega" id="property-tenancy">
-            <a class="dropdown-toggle" href="#">
-              <div class="cur-value">{{#if defaultTenancy}}Default{{else}}Dedicated{{/if}}</div>
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              {{#if defaultTenancy}}
-              <li class="selected" tabindex="-1">
-              {{else}}
-              <li tabindex="-1">
-              {{/if}}
-                <a href="#" data-id="default">Default</a>
-              </li>
-              {{#if defaultTenancy}}
-              <li tabindex="-1">
-              {{else}}
-              <li class="selected" tabindex="-1">
-              {{/if}}
-                <a href="#" data-id="dedicated">Dedicated</a>
-              </li>
+            <div class="selection">{{#if defaultTenancy}}Default{{else}}Dedicated{{/if}}</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="item{{#if defaultTenancy}} selected{{/if}}" data-id="default">Default</li>
+              <li class="item{{#if defaultTenancy}}{{else}} selected{{/if}}" data-id="dedicated">Dedicated</li>
             </ul>
           </div>
           <div id="desc-dedicated" style="margin-top:5px;{{#if defaultTenancy}}display:none;{{/if}}">Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware. <a href="http://aws.amazon.com/cn/dedicated-instances/">Additional charges will apply.</a></div>
@@ -65,12 +48,12 @@
         </div>
 
       </div>
-    </div>
-  </div>
+    </article>
+  </section>
 
-  <div class="accordion-group" id="dhcp-property-detail">
-    <div class="fixedaccordion-head">DHCP Options</div>
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+  <section class="accordion-group" id="dhcp-property-detail">
+    <header class="fixedaccordion-head">DHCP Options</header>
+    <article class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <div class="item-wrap scroll-content">
 
@@ -160,13 +143,10 @@
           <div class="property-control-group">
             <label>NetBIOS Node Type</label>
             <div class="selectbox selectbox-mega" id="property-netbios-type">
-              <a class="dropdown-toggle" href="#">
-                <div class="cur-value tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#if dhcp.netbiosType}}{{dhcp.netbiosType}}{{else}}Not specified{{/if}}</div>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
+              <div class="selection tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#if dhcp.netbiosType}}{{dhcp.netbiosType}}{{else}}Not specified{{/if}}</div>
+              <ul class="dropdown" tabindex="-1">
                 {{#each dhcp.netbiosTypes}}
-                <li {{#if selected}}class="selected"{{/if}} tabindex="-1"><a href="#" data-id="{{id}}">{{value}}</a></li>
+                <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}">{{value}}</li>
                 {{/each}}
               </ul>
             </div>
@@ -174,7 +154,6 @@
 
         </div>
       </div>
-    </div>
-    </div>
-  </div>
+    </article>
+  </section>
 </div>

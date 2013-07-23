@@ -45,13 +45,13 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
             ide_event.onLongListen ide_event.SAVE_DESIGN_MODULE, ( target ) ->
                 console.log 'design:SAVE_DESIGN_MODULE = ' + target
                 #save tab
-                model.saveTab target, view.$el.html(), model.getCanvasData(), model.getCanvasProperty()
+                model.saveTab target, view.$el.html(), model.getCanvasData(), model.getCanvasProperty(), model.getPropertyPanel(), model.getLastOpenProperty()
                 null
 
             #listen SWITCH_TAB
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, target, region_name, stack_info, current_paltform ) ->
                 console.log 'design:SWITCH_TAB, type = ' + type + ', target = ' + target + ', region_name = ' + region_name + ', current_paltform = ' + current_paltform
-                #save tab
+                #
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, target else view.$el.html design_view_init
                 #
                 if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'

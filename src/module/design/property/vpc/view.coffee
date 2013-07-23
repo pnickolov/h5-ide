@@ -45,10 +45,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
             'OPTION_CHANGE #property-netbios-type'      : 'onChangeDhcpOptions'
             'REMOVE_ROW #property-dhcp-options'         : 'onChangeDhcpOptions'
 
-        render   : ( attributes ) ->
+        render   : () ->
 
-            selectedType = attributes.dhcp.netbiosType || 0
-            attributes.dhcp.netbiosTypes = [
+            data = $.extend( true, {}, this.model.attributes )
+
+            selectedType = data.dhcp.netbiosType || 0
+            data.dhcp.netbiosTypes = [
                   { id : "default" , value : "Not specified", selected : selectedType == 0 }
                 , { id : 1 , value : 1, selected : selectedType == 1 }
                 , { id : 2 , value : 2, selected : selectedType == 2 }
@@ -56,41 +58,38 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
                 , { id : 8 , value : 8, selected : selectedType == 8 }
             ]
 
-            $( '.property-details' ).html this.template attributes
+            $( '.property-details' ).html this.template data
             $( '#property-domain-server' ).on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
 
             fixedaccordion.resize()
 
         onChangeName : ( event ) ->
-            console.log "Name Cahanged"
+            # TODO : Valiate Name
             $( '#property-title' ).html event.target.value
             this.trigger "CHANGE_NAME", event.target.value
             null
 
         onChangeCidr : ( event ) ->
-            this.trigger "CHANGE_CIDR", event.target.value
+            # TODO : Valiate CIDR
+            this.model.setCIDR event.target.value
             null
 
         onChangeTenancy : ( event, newValue ) ->
             $("#desc-dedicated").toggle( newValue == "dedicated" )
 
-            uid = $("#vpc-property-detail").attr("component")
-            this.model.setTenancy uid, newValue
+            this.model.setTenancy newValue
             null
 
         onChangeDnsSupport : ( event ) ->
-            uid = $("#vpc-property-detail").attr("component")
-            this.model.setDnsSupport uid, event.target.checked
+            this.model.setDnsSupport event.target.checked
             null
 
         onChangeDnsHostname : ( event ) ->
-            uid = $("#vpc-property-detail").attr("component")
-            this.model.setDnsHosts uid, event.target.checked
+            this.model.setDnsHosts event.target.checked
             null
 
         onChangeDhcp : ( event ) ->
 
-            uid = $("#vpc-property-detail").attr("component")
             $selectOption = $(".property-dhcp input:checked")
 
             noDhcp = $selectOption.attr("id") == "property-dhcp-none"
@@ -98,7 +97,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
             $("#property-dhcp-desc").toggle    noDhcp
             $("#property-dhcp-options").toggle !noDhcp
 
-            this.model.setDhcp uid, !noDhcp
+            this.model.setDhcp !noDhcp
 
             if noDhcp
                 this.notChangingDHCP = true
@@ -106,9 +105,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
                 # Need to reset everything here.
                 $("#property-dhcp-options .multi-ipt-row:not(:first-child)").remove()
                 $("#property-dhcp-options .multi-ipt-row .input").val("")
-                $("#property-dhcp-domain").val( this.model.defaultDomainName uid )
+                $("#property-dhcp-domain").val( this.model.defaultDomainName this.uid )
                 $("#property-amazon-dns").prop("checked", true)
-                $("#property-netbios-type .dropdown-menu li:first-child a").click()
+                $("#property-netbios-type .dropdown .item:first-child").click()
                 this.notChangingDHCP = false
 
             null
@@ -127,27 +126,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
                 return
 
             # Gather all the infomation to submit
-            uid  = $("#vpc-property-detail").attr("component")
             data =
                 domainName     : $("#property-dhcp-domain").val()
                 useAmazonDns   : $("#property-amazon-dns").is(":checked")
                 domainServers  : mapFilterInput "#property-domain-server .input"
                 ntpServers     : mapFilterInput "#property-ntp-server .input"
                 netbiosServers : mapFilterInput "#property-netbios-server .input"
-                netbiosType    : parseInt( $("#property-netbios-type .cur-value").html(), 10 ) || 0
+                netbiosType    : parseInt( $("#property-netbios-type .selection").html(), 10 ) || 0
 
             console.log "DHCP Options Changed", data
 
-            this.model.setDHCPOptions uid, data
+            this.model.setDHCPOptions data
             null
-
-
-        setName : ( name ) ->
-            $( "#property-vpc-name" ).val name
-            $( "#property-title" ).val name
-
-        setCIDR : ( cidr ) ->
-            $( "#property-cidr-block" ).val cidr
     }
 
     view = new VPCView()

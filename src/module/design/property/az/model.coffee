@@ -58,7 +58,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             if oldZone.name == newZone
                 return false
 
-            # Update data ( and instance、volume、eni )
+            # Update data ( and instance、volume、subnet、eni )
             oldZoneName   = oldZone.name
             oldZone.name  = newZone
             resource_type = constant.AWS_RESOURCE_TYPE
@@ -72,13 +72,15 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     if placement.AvailabilityZone == oldZoneName
                         placement.AvailabilityZone = newZone
 
-                else if component.type == resource_type.AWS_EBS_Volume
-                    if component.resource.AvailabilityZone == oldZoneName
-                        component.resource.AvailabilityZone = newZone
+                else if component.resource.AvailabilityZone == oldZoneName
 
-                ##### TODO : eni
-                ## else if component.type == resource_type.AWS_VPC_NetworkInterface
-                    
+                    if component.type == resource_type.AWS_EBS_Volume ||
+                       component.type == resource_type.AWS_VPC_Subnet ||
+                       component.type == resource_type.AWS_VPC_NetworkInterface
+
+                        component.resource.AvailabilityZone = newZone
+                    else
+                        console.log "[Warning] component:", component "has the same AZ, but not changed!!!"
 
             true
     }

@@ -50,7 +50,7 @@ define [ 'jquery',
                     if !new_az_data && !unloaded
                         return
 
-                    ide_event.off ide_event.RELOAD_AZ, refreshList
+                    ide_event.offListen ide_event.RELOAD_AZ, refreshList
 
                     # If the property panel is unloaded, we will want
                     # to remove the event listener, but not to refresh the panel
@@ -86,7 +86,9 @@ define [ 'jquery',
                 # Set data
                 model.setNewAZ oldZoneID, newZone
                 # Update Canvas
-                MC.canvas.update oldZoneID, "text", "az_name", newZone
+                MC.canvas.update oldZoneID, "text", "name", newZone
+
+                ide_event.trigger ide_event.CHANGE_AZ, MC.canvas_data.layout.group[oldZoneID].name, newZone
 
             null
 
@@ -101,6 +103,10 @@ define [ 'jquery',
         current_view.undelegateEvents()
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+
+        # AZ use ide_event, but it's not need to unload here.
+        # The event callback will only be fired one time. And it also check if
+        # the panel is unloaded.
 
     #public
     loadModule   : loadModule

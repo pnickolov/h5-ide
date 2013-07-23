@@ -81,31 +81,12 @@
 				<div class="property-control-group clearfix">
 					<label>Ping Protocol</label>
 					<div class="selectbox selectbox-mega" id="elb-property-health-protocol-select">
-						<a class="dropdown-toggle" href="#">
-							<div class="cur-value">{{health_detail.protocol}}</div>
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-							<li {{#ifCond health_detail.protocol 'TCP'}}class="selected"{{/ifCond}} tabindex="-1" >
-								<a data-id="TCP" href="#">
-									TCP
-								</a>
-							</li>
-							<li {{#ifCond health_detail.protocol 'HTTP'}}class="selected"{{/ifCond}} tabindex="-1">
-								<a data-id="HTTP" href="#">
-									HTTP
-								</a>
-							</li>
-							<li {{#ifCond health_detail.protocol 'HTTPS'}}class="selected"{{/ifCond}} tabindex="-1">
-								<a data-id="HTTPS" href="#">
-									HTTPS
-								</a>
-							</li>
-							<li {{#ifCond health_detail.protocol 'SSL'}}class="selected"{{/ifCond}} tabindex="-1">
-								<a data-id="SSL" href="#">
-									SSL
-								</a>
-							</li>
+						<div class="selection">{{health_detail.protocol}}</div>
+						<ul class="dropdown" tabindex="-1">
+							<li class="item{{#ifCond health_detail.protocol 'TCP'}} selected{{/ifCond}}" data-id="TCP">TCP</li>
+							<li class="item{{#ifCond health_detail.protocol 'HTTP'}} selected{{/ifCond}}" data-id="HTTP">HTTP</li>
+							<li class="item{{#ifCond health_detail.protocol 'HTTPS'}} selected{{/ifCond}}" data-id="HTTPS">HTTPS</li>
+							<li class="item{{#ifCond health_detail.protocol 'SSL'}} selected{{/ifCond}}" data-id="SSL">SSL</li>
 						</ul>
 					</div>
 				</div>

@@ -10,9 +10,9 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
         defaults :
             snapshot : null
 
-        saveTab : ( tab_id, snapshot, data, property, property_panel ) ->
+        saveTab : ( tab_id, snapshot, data, property, property_panel, last_open_property ) ->
             console.log 'saveTab'
-            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel }
+            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'last_open_property' : last_open_property }
             null
 
         readTab : ( type, tab_id ) ->
@@ -20,13 +20,15 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             #set snapshot|data vo
             if MC.tab[ tab_id ].snapshot is this.get 'snapshot' then this.set 'snapshot', null
             #
-            this.set 'snapshot',   MC.tab[ tab_id ].snapshot
+            this.set 'snapshot',      MC.tab[ tab_id ].snapshot
             #
-            this.setCanvasData     MC.tab[ tab_id ].data
+            this.setCanvasData        MC.tab[ tab_id ].data
             #
-            this.setCanvasProperty MC.tab[ tab_id ].property
+            this.setCanvasProperty    MC.tab[ tab_id ].property
             #
-            this.setPropertyPanel  MC.tab[ tab_id ].property_panel
+            this.setPropertyPanel     MC.tab[ tab_id ].property_panel
+            #
+            this.setLastOpenProperty  MC.tab[ tab_id ].last_open_property
             null
 
         updateTab : ( old_tab_id, tab_id ) ->
@@ -64,8 +66,6 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
         setPropertyPanel : ( property_panel ) ->
             console.log 'setPropertyPanel'
             MC.data.current_sub_main = property_panel
-            #temp
-            MC.data.current_sub_main.LoadModule()
             null
 
         getPropertyPanel : () ->
@@ -75,6 +75,20 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             #
             MC.data.current_sub_main
 
+        setLastOpenProperty : ( last_open_property ) ->
+            console.log 'setLastOpenProperty'
+            #
+            MC.data.last_open_property = last_open_property
+            #temp
+            if !MC.data.last_open_property
+                MC.data.last_open_property = { 'type' : 'component', 'uid' : '', 'instance_expended_id' : '' }
+            #
+            ide_event.trigger ide_event.OPEN_PROPERTY, MC.data.last_open_property.type, MC.data.last_open_property.uid, MC.data.last_open_property.instance_expended_id
+            null
+
+        getLastOpenProperty : () ->
+            console.log 'getLastOpenProperty'
+            MC.data.last_open_property
     }
 
     model = new DesignModel()

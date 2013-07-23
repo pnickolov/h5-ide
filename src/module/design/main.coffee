@@ -45,7 +45,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
             ide_event.onLongListen ide_event.SAVE_DESIGN_MODULE, ( target ) ->
                 console.log 'design:SAVE_DESIGN_MODULE = ' + target
                 #save tab
-                model.saveTab target, view.$el.html(), model.getCanvasData(), model.getCanvasProperty(), model.getPropertyPanel()
+                model.saveTab target, view.$el.html(), model.getCanvasData(), model.getCanvasProperty(), model.getPropertyPanel(), model.getLastOpenProperty()
                 null
 
             #listen SWITCH_TAB

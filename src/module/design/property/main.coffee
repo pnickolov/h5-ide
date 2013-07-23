@@ -40,8 +40,8 @@ define [ 'jquery',
                   './module/design/property/acl/main'
         ], ( View, model, stack_main, instance_main, sg_main, sgrule_main, volume_main, elb_main, az_main, subnet_main, vpc_main, dhcp_main, rtb_main, igw_main, vgw_main, cgw_main, vpn_main, eni_main, acl_main ) ->
 
-            uid  = null
-            type = null
+            uid      = null
+            tab_type = null
             MC.data.current_sub_main = null
 
             #view
@@ -49,10 +49,12 @@ define [ 'jquery',
             view.render template
 
             #show stack property
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, () ->
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
                 console.log 'property:RELOAD_RESOURCE'
                 #check re-render
                 view.reRender template
+                #
+                tab_type = type
                 #
                 stack_main.loadModule stack_main
 
@@ -66,7 +68,6 @@ define [ 'jquery',
                     #select component
 
                     uid  = uid
-                    #type = type
 
                     console.log 'OPEN_PROPERTY, uid = ' + uid
 
@@ -85,7 +86,7 @@ define [ 'jquery',
                             #show volume/snapshot property
                             when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid, volume_main
                             #show elb property
-                            when constant.AWS_RESOURCE_TYPE.AWS_ELB                  then elb_main.loadModule uid, elb_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_ELB                  then elb_main.loadModule uid, elb_main, tab_type
                             #show subnet property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet           then subnet_main.loadModule uid, subnet_main
                             #show vpc property

@@ -428,6 +428,14 @@ define [ 'constant',
 		#after drag component from resource panel to canvas
 		createComponent : ( uid ) ->
 
+			componentType = MC.canvas_data.component[uid].type
+
+			if componentType is 'AWS.ELB'
+				canvas_handle_elb.init(uid)
+
+			if componentType is 'AWS.VPC.InternetGateway'
+				canvas_handle_elb.setAllELBSchemeAsInternal()
+
 			#to-do
 
 	}

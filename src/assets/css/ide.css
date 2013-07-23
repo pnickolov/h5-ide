@@ -1826,6 +1826,7 @@ a.sidebar-hider {
 	word-wrap: break-word;
 	overflow: hidden;
 	line-height: 14px;
+	color: #eee;
 }
 
 .instance-label {
@@ -2909,6 +2910,11 @@ a.sidebar-hider {
 
 .property-stack .accordion-group .accordion-body {
 	padding: 0;
+}
+
+.property-stack .create-sg {
+top: 2px;
+height: 35px;
 }
 
 /* property-rt */

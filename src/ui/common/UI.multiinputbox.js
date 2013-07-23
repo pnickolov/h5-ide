@@ -50,7 +50,7 @@ var multiinputbox;
     var $wrapper = $t.closest(".multi-input").removeClass("max");
 
     var $target = $t.closest(".multi-ipt-row");
-    var value   = $target.val();
+    var value   = $target.find("input").val();
     $target.remove();
 
     $wrapper.trigger("REMOVE_ROW", value );

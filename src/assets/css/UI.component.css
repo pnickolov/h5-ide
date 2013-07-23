@@ -783,6 +783,23 @@ textarea {
 	min-height: 100px;
 }
 
+.modal-text-wraper {
+	display: table; 
+	height: 100px;
+	width: 390px;
+	position: absolute; 
+	overflow: hidden;
+}
+.modal-center-align-helper {
+	display: table-cell; 
+	vertical-align: middle;
+}
+
+.modal-text {
+	font-size: 16px;
+	color: #666;
+}
+
 .modal-body .dl-horizontal dt,
 .modal-body .dl-horizontal dd {
 	margin-top: 10px;

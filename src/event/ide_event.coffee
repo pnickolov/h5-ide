@@ -34,6 +34,9 @@ define [ 'underscore', 'backbone' ], () ->
         RELOAD_PROPERTY     : 'RELOAD_PROPERTY'
         RELOAD_AZ           : 'RELOAD_AZ'
 
+        # User Input Change Event
+        CHANGE_AZ           : 'CHANGE_AZ'
+
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'
         OPEN_STACK_TAB      : 'OPEN_STACK_TAB'

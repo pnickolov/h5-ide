@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/vpn
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.multiinputbox' ], ( ide_event ) ->
 
    VPNView = Backbone.View.extend {
 
@@ -44,12 +44,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide
 
             null
 
-        removeIP : (event, target) ->
-            ip = target.value
+        removeIP : (event, ip) ->
 
-            #console.log 'delete vpn ip ' + ip
+            if ip
 
-            this.trigger 'VPN_DELETE_IP', ip
+                this.trigger 'VPN_DELETE_IP', ip
 
             null
 

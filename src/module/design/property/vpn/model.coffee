@@ -67,6 +67,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
                 me.set 'vpn_detail', vpn_detail
 
+                me.trigger 'UPDATE_VPN_DATA'
+
             null
 
         addIP : (new_ip) ->
@@ -83,6 +85,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                 MC.canvas_data.component[ vpn_detail.uid ].resource.Routes.push route
 
                 me.set 'vpn_detail', vpn_detail
+
+                me.trigger 'UPDATE_VPN_DATA'
 
             null
 

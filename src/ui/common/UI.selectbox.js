@@ -8,151 +8,175 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
+
+/* A modified version to reduce redundant html code by Morris */
+
+// var selectbox = {
+
+//     add: function (event) {
+//         var me = $(this),
+//             label = me.find('.label'),
+//             edit = me.find('.edit');
+
+//         label.hide();
+//         edit.show();
+//         edit.find('input').focus();
+
+//         return false;
+//     },
+
+//     edit: function (event) {
+//         var me = $(this),
+//             editableoption = me.parents('.editableoption').first(),
+//             selectbox = me.parents('.selectbox').first(),
+//             cur_text = selectbox.find('input').val(),
+//             label = editableoption.find('.label'),
+//             edit = editableoption.find('.edit'),
+//             input = edit.find('input'),
+//             cur_value = selectbox.find('.cur-value'),
+//             dropdown_menu = selectbox.find('.dropdown-menu'),
+//             pre_selected = dropdown_menu.find('.selected');
+
+//         if (!cur_text || cur_text.length == 0) {
+//             selectbox.trigger("EDIT_EMPTY");
+//         } else {
+//             input.val('');
+//             label.show();
+//             edit.hide();
+//             pre_selected.removeClass('selected');
+//             if(cur_value) {
+//                 cur_value.html(cur_text);
+//             }
+//             dropdown_menu.append('<li class="selected" tabindex="-1"><a data-id="'+ cur_text + '" href="#">'+ cur_text + '</a></li>');
+
+//             me.trigger("EDIT_UPDATE", [cur_text]);
+
+//             selectbox
+//                 .trigger("OPTION_CHANGE", [cur_text])
+//                 .removeClass('open');
+//         }
+//     }
+// };
+
 var selectbox = {
-
-    init: function () {
-        $('.selectbox').each(function () {
-            var me = $(this),
-                cur_options = me.find('.selected a'),
-                cur_value = cur_options.html(),
-                label = me.find('.cur-value');
-            if(label) {
-                label.html(cur_value);
-            }
+    init : function () {
+        $(".selectbox").each(function () {
+            var $this = $(this);
+            $this.find(".selection").html( $this.find(".selected").html () );
         });
-    },
-
-    show: function(event) {
-        event.preventDefault();
-
-        var me = $(this);
-        me.trigger("OPTION_SHOW");
-        me.parent().toggleClass('open');
-        me.parent().find('.selected').focus().addClass('focused');
-
-        $(document.body).one('click', function(event) {
-            if($(event.target).parents('.dropdown-menu').length == 0) {
-                $('.selectbox').removeClass('open');
-                $(this).off( event );
-            }
-        });
-    },
-
-    keydown: function(event) {
-        if(!/(38|40|27)/.test(event.which))
-            return
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        var me = $(this),
-            list_items = me.find('li'),
-            key_code = event.which,
-            pre_focused = me.find('.focused'),
-            update_selected,
-            index,
-            update_value;
-
-        index = list_items.index(list_items.filter('li.focused'));
-
-        if(key_code == 40) {
-            index = index < list_items.length - 1 ? index + 1 : 0;
-        } else if (key_code == 38) {
-            index = index > 1 ? index - 1 : list_items.length - 1;
-        } else if(key_code == 27) {
-            index = 0;
-        }
-
-        pre_focused.removeClass('focused');
-        list_items.eq(index).addClass('focused').focus();
-    },
-
-    select: function (event) {
-        if($(event.target).parents('.dropdown-menu').length == 0) {
-                $('.selectbox').removeClass('open');
-        } else {
-            var me = $(this),
-                cur_li = me.parent(),
-                box = me.parents('.selectbox').first(),
-                cur_value = me.html(),
-                cur_id = me.data('id') ? me.data('id') : '',
-                pre_selected = cur_li.siblings('.selected'),
-                parent_dom = me.parents('.selectbox').first(),
-                remove_after_click = cur_li.hasClass('remove-after-click'),
-                label = parent_dom.find('.cur-value');
-
-            pre_selected.removeClass('selected').removeClass('focused');
-            cur_li.addClass('selected').addClass('focused');
-            
-            if(label) {
-                label.html(cur_value);
-            }
-
-            if(remove_after_click) {
-                cur_li.remove();
-            }
-
-            parent_dom.trigger("OPTION_CHANGE", [cur_id]);
-
-            box.removeClass('open');
-
-            return false;
-    }
-    },
-
-    add: function (event) {
-        var me = $(this),
-            label = me.find('.label'),
-            edit = me.find('.edit');
-
-        label.hide();
-        edit.show();
-        edit.find('input').focus();
-
-        return false;
-    },
-
-    edit: function (event) {
-        var me = $(this),
-            editableoption = me.parents('.editableoption').first(),
-            selectbox = me.parents('.selectbox').first(),
-            cur_text = selectbox.find('input').val(),
-            label = editableoption.find('.label'),
-            edit = editableoption.find('.edit'),
-            input = edit.find('input'),
-            cur_value = selectbox.find('.cur-value'),
-            dropdown_menu = selectbox.find('.dropdown-menu'),
-            pre_selected = dropdown_menu.find('.selected');
-
-        if (!cur_text || cur_text.length == 0) {
-            selectbox.trigger("EDIT_EMPTY");
-        } else {
-            input.val('');
-            label.show();
-            edit.hide();
-            pre_selected.removeClass('selected');
-            if(cur_value) {
-                cur_value.html(cur_text);
-            }
-            dropdown_menu.append('<li class="selected" tabindex="-1"><a data-id="'+ cur_text + '" href="#">'+ cur_text + '</a></li>');
-
-            me.trigger("EDIT_UPDATE", [cur_text]);
-
-            selectbox
-                .trigger("OPTION_CHANGE", [cur_text])
-                .removeClass('open');
-        }
     }
 };
 
-$(document).ready(function () {
-    
-    selectbox.init();
+(function(){
 
-    $(document)
-        .on('click', '.selectbox .dropdown-toggle', selectbox.show)
-        .on('click', '.selectbox .editableoption', selectbox.add)
-        .on('click', '.selectbox .editableoption .btn', selectbox.edit)
-        .on('click', '.selectbox .dropdown-menu a', selectbox.select)
-        .on('keydown', '.open .dropdown-menu', selectbox.keydown);
-});
+    function toggle ( event ) {
+
+        var $selectbox = $( event.currentTarget ).closest(".selectbox");
+
+        if ( $selectbox.hasClass('open') ) {
+            $selectbox.removeClass('open');
+            return false;
+        }
+
+        // Close other opened dropdown
+        $(".selectbox.open").removeClass('open');
+        
+        var $dropdown  = $selectbox.addClass('open')
+                                   .find(".dropdown");
+
+        $dropdown.find(".focused")
+                 .removeClass('focused');
+
+        $dropdown.find(".selected")
+                 .focus().addClass('focused');
+
+
+        // Close dropdown during next click.
+        $(document.body).one('click', function( event ){
+            $selectbox.removeClass('open');
+        });
+
+        $selectbox.trigger("OPTION_SHOW");
+        return false;
+
+    }
+
+    function select ( event ) {
+
+        // Update Selected Item
+        var $this = $( event.currentTarget ).addClass('selected');
+        $this.siblings(".selected").removeClass('selected');
+
+        // Set the value to select and close dropdown
+        var $selectbox = $this.closest(".selectbox").removeClass('open');
+        $selectbox.find(".selection").html( $this.html() );
+
+        // TODO : OPTION_CHANGE's parameter no long is array.
+        $selectbox.trigger( "OPTION_CHANGE", $this.attr('data-id') );
+
+        return false;
+    }
+
+    function keydown ( event ) {
+
+        if ( !window.dddddd ) {
+            window.dddddd = 1;
+        } else {
+            ++window.dddddd;window
+        }
+
+        if( !/(38|40|13|27)/.test(event.which) )
+            return;
+
+        var $dropdown = $( event.currentTarget );
+
+        if ( event.which == 27 ) {
+            // Esc
+            $dropdown.closest(".selectbox").removeClass('open');
+            return false;
+        }
+
+        if ( event.which == 13 ) {
+            // Enter
+            if ( !$dropdown.hasClass('selected') ) {
+                event.currentTarget = $dropdown.find(".focused");
+                select( event );
+            }
+
+            return false;
+        }
+
+        var $options  = $dropdown.children();
+        var index     = $options.filter(".focused").removeClass('focused').index();
+
+        if ( event.which == 40 ) {
+            index = index < $options.length - 1 ? index + 1 : 0;
+        } else {
+            index = index > 1 ? index - 1 : $options.length - 1;
+        }
+
+        $options.eq( index ).addClass('focused').focus();
+
+        return false;
+    }
+
+
+    function add () {
+
+    }
+
+    function edit () {
+
+    }
+
+    $(function(){
+        selectbox.init();
+        $(document.body)
+            .on('click',   ".selectbox .selection",      toggle)
+            .on('click',   ".selectbox .dropdown .item", select)
+            .on('click',   ".selectbox .editor",         add)
+            .on('click',   ".selectbox .editor .btn",    edit)
+            .on('keydown', ".selectbox.open .dropdown",  keydown);
+    });
+
+})();

@@ -142,7 +142,9 @@
     $('html')
       .on('click.dropdown.data-api touchstart.dropdown.data-api', clearMenus)
     $('body')
-      .on('click.dropdown touchstart.dropdown.data-api', '.dropdown', function (e) { e.stopPropagation() })
+      // Modified by Morris, .dropdown is also used in selectbox component. Enabling this
+      // line will effectly disable propagation for the selectbox.
+      .on('click.dropdown.data-api touchstart.dropdown.data-api', toggle, function (e) { e.stopPropagation() })
       .on('click.dropdown.data-api touchstart.dropdown.data-api'  , toggle, Dropdown.prototype.toggle)
       .on('keydown.dropdown.data-api touchstart.dropdown.data-api', toggle + ', [role=menu]' , Dropdown.prototype.keydown)
   })

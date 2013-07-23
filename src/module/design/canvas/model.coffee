@@ -3,7 +3,8 @@
 #############################
 define [ 'constant',
 		'canvas_handle_elb',
-		'backbone', 'jquery', 'underscore' ], ( constant, canvas_handle_elb ) ->
+		'canvas_handle_vpn',
+		'backbone', 'jquery', 'underscore' ], ( constant, canvas_handle_elb, canvas_handle_vpn ) ->
 
 	CanvasModel = Backbone.Model.extend {
 
@@ -277,6 +278,7 @@ define [ 'constant',
 
 					MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
 
+
 				# remove line between igw and rt
 				if portMap['igw-tgt'] and portMap['rtb-tgt-left']
 
@@ -360,6 +362,10 @@ define [ 'constant',
 					$.each remove_index.sort().reverse(), ( i, v) ->
 
 						MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet.splice v, 1
+
+				if portMap['vgw-vpn'] and portMap['cgw-vpn']
+					canvas_handle_vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+
 
 
 			MC.canvas.remove $("#" + option.id)[0]
@@ -498,6 +504,7 @@ define [ 'constant',
 
 						MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
 
+
 				# routetable to subnet
 				if portMap['subnet-association-out'] and portMap['rtb-src']
 
@@ -629,11 +636,24 @@ define [ 'constant',
 
 					MC.canvas_data.component[rt_uid].resource.RouteSet.push instance_route
 
+				#connect vgw and cgw
+				if portMap['vgw-vpn'] and portMap['cgw-vpn']
+					canvas_handle_vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+
+
 			null
 
 
 		#after drag component from resource panel to canvas
 		createComponent : ( uid ) ->
+
+			componentType = MC.canvas_data.component[uid].type
+
+			if componentType is 'AWS.ELB'
+				canvas_handle_elb.init(uid)
+
+			if componentType is 'AWS.VPC.InternetGateway'
+				canvas_handle_elb.setAllELBSchemeAsInternal()
 
 			#to-do
 

@@ -107,7 +107,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
                 $("#property-dhcp-options .multi-ipt-row .input").val("")
                 $("#property-dhcp-domain").val( this.model.defaultDomainName this.uid )
                 $("#property-amazon-dns").prop("checked", true)
-                $("#property-netbios-type .dropdown-menu li:first-child a").click()
+                $("#property-netbios-type .dropdown .item:first-child").click()
                 this.notChangingDHCP = false
 
             null
@@ -132,7 +132,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
                 domainServers  : mapFilterInput "#property-domain-server .input"
                 ntpServers     : mapFilterInput "#property-ntp-server .input"
                 netbiosServers : mapFilterInput "#property-netbios-server .input"
-                netbiosType    : parseInt( $("#property-netbios-type .cur-value").html(), 10 ) || 0
+                netbiosType    : parseInt( $("#property-netbios-type .selection").html(), 10 ) || 0
 
             console.log "DHCP Options Changed", data
 

@@ -14,22 +14,24 @@
 					<span class="required-input right">(Required)</span>
 					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 				</div>
+				{{# if component.resource.VpcId}}
 				<div class="property-control-group clearfix" id="property-control-group-elb-scheme">
-			        <label>{{elb_detail.abc}}</label>
+			        <label>Scheme</label>
 			        <div class="context">
 			            <div class="radio elb-volume-type-radio">
-			                <input type="radio" {{#unless elb_detail.isInternal}}checked="checked"{{/unless}} name="elb-scheme-select" value="internet" id="elb-scheme-select1"/>
+			                <input type="radio" {{#unless elb_detail.isInternal}}checked="checked"{{/unless}} {{#if elb_detail.haveIGW}}disabled="disabled"{{/if}} name="elb-scheme-select" value="internet" id="elb-scheme-select1"/>
 			                <label for="elb-scheme-select1"></label>
 			            </div>
-			            <label for="volume-property-type" class="elb-volume-type-radio-text">Internet Facing</label>
+			            <label for="elb-scheme-select1" class="elb-volume-type-radio-text">Internet Facing</label>
 			            <div></div>
 			            <div class="radio elb-volume-type-radio">
 			                <input type="radio" {{#if elb_detail.isInternal}}checked="checked"{{/if}} name="elb-scheme-select" value="internal" id="elb-scheme-select2"/>
 			                <label for="elb-scheme-select2"></label>
 			            </div>
-			            <label for="volume-property-type" class="elb-volume-type-radio-text">Internal</label>
+			            <label for="elb-scheme-select2" class="elb-volume-type-radio-text">Internal</label>
 			        </div>
 				</div>
+				{{/if}}
 			</div>
 		</div>
 	</div>
@@ -79,31 +81,12 @@
 				<div class="property-control-group clearfix">
 					<label>Ping Protocol</label>
 					<div class="selectbox selectbox-mega" id="elb-property-health-protocol-select">
-						<a class="dropdown-toggle" href="#">
-							<div class="cur-value">{{health_detail.protocol}}</div>
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-							<li {{#ifCond health_detail.protocol 'TCP'}}class="selected"{{/ifCond}} tabindex="-1" >
-								<a data-id="TCP" href="#">
-									TCP
-								</a>
-							</li>
-							<li {{#ifCond health_detail.protocol 'HTTP'}}class="selected"{{/ifCond}} tabindex="-1">
-								<a data-id="HTTP" href="#">
-									HTTP
-								</a>
-							</li>
-							<li {{#ifCond health_detail.protocol 'HTTPS'}}class="selected"{{/ifCond}} tabindex="-1">
-								<a data-id="HTTPS" href="#">
-									HTTPS
-								</a>
-							</li>
-							<li {{#ifCond health_detail.protocol 'SSL'}}class="selected"{{/ifCond}} tabindex="-1">
-								<a data-id="SSL" href="#">
-									SSL
-								</a>
-							</li>
+						<div class="selection">{{health_detail.protocol}}</div>
+						<ul class="dropdown" tabindex="-1">
+							<li class="item{{#ifCond health_detail.protocol 'TCP'}} selected{{/ifCond}}" data-id="TCP">TCP</li>
+							<li class="item{{#ifCond health_detail.protocol 'HTTP'}} selected{{/ifCond}}" data-id="HTTP">HTTP</li>
+							<li class="item{{#ifCond health_detail.protocol 'HTTPS'}} selected{{/ifCond}}" data-id="HTTPS">HTTPS</li>
+							<li class="item{{#ifCond health_detail.protocol 'SSL'}} selected{{/ifCond}}" data-id="SSL">SSL</li>
 						</ul>
 					</div>
 				</div>

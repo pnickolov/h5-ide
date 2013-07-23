@@ -46,7 +46,11 @@
             <i class="modal-close">&times;</i>
        </div>
        <div class="modal-body">
-            <dd>{{body}}</dd>
+       		<div class="modal-text-wraper">
+       			<div class="modal-center-align-helper">
+		            <div class="modal-text">{{body}}</div>
+	            </div>
+            </div>
             {{#if input}}
                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
             {{/if}}
@@ -318,23 +322,20 @@
 					<input id="community-ami-input" class="input" type="text" placeholder="Search AMI by name or ID" />
 				</div>
 				<div id="selectbox-ami-platform" class="selectbox">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				    	<span class="cur-value">All Platforms</span>
-				    	<span class="caret"></span>
-				  	</a>
-				  	<ul class="dropdown-menu" role="menu">
-				    	<li class="selected" tabindex="-1"><a data-id="" href="#">All Platforms</a></li>
-				    	<li tabindex="-1"><a data-id="amazonlinux" href="#"><i class="icon-amz-linux icon-ami-os"></i>Amazon Linux</a></li>
-				    	<li tabindex="-1"><a data-id="centos" href="#"><i class="icon-cent icon-ami-os"></i>Cent OS</a></li>
-				    	<li tabindex="-1"><a data-id="debian" href="#"><i class="icon-debian icon-ami-os"></i>Debian</a></li>
-				    	<li tabindex="-1"><a data-id="fedora" href="#"><i class="icon-fedora icon-ami-os"></i>Fedora</a></li>
-				    	<li tabindex="-1"><a data-id="gentoo" href="#"><i class="icon-gentoo icon-ami-os"></i>Gentoo</a></li>
-				    	<li tabindex="-1"><a data-id="opensuse" href="#"><i class="icon-open-suse icon-ami-os"></i>OpenSUSE</a></li>
+          <div class="selection">All Platforms</div>
+			  	<ul class="dropdown" tabindex="-1">
+			    	<li class="item selected" data-id="">All Platforms</li>
+			    	<li class="item" data-id="amazonlinux"><i class="icon-amz-linux icon-ami-os"></i>Amazon Linux</li>
+			    	<li class="item" data-id="centos"><i class="icon-cent icon-ami-os"></i>Cent OS</li>
+			    	<li class="item" data-id="debian"><i class="icon-debian icon-ami-os"></i>Debian</li>
+			    	<li class="item" data-id="fedora"><i class="icon-fedora icon-ami-os"></i>Fedora</li>
+			    	<li class="item" data-id="gentoo"><i class="icon-gentoo icon-ami-os"></i>Gentoo</li>
+			    	<li class="item" data-id="opensuse"><i class="icon-open-suse icon-ami-os"></i>OpenSUSE</li>
 
-				    	<li tabindex="-1"><a data-id="redhat" href="#"><i class="icon-redhat icon-ami-os"></i>Red Hat</a></li>
-				    	<li tabindex="-1"><a data-id="windows" href="#"><i class="icon-win icon-ami-os"></i>Windows</a></li>
-				    	<li tabindex="-1"><a data-id="otherlinux" href="#"><i class="icon-other-linux icon-ami-os"></i>Other Linux</a></li>
-				  	</ul>
+			    	<li class="item" data-id="redhat"><i class="icon-redhat icon-ami-os"></i>Red Hat</li>
+			    	<li class="item" data-id="windows"><i class="icon-win icon-ami-os"></i>Windows</li>
+			    	<li class="item" data-id="otherlinux"><i class="icon-other-linux icon-ami-os"></i>Other Linux</li>
+			  	</ul>
 				</div>
 				<div class="filter-radio-group">
 					<div class="filter-radio-label">Architecture</div>
@@ -662,23 +663,110 @@ Additional Notes and Questions
       <label for="modal-acl-number">Rule Number</label>
       <input class="input" type="text" maxLength="5" id="modal-acl-number">
     </div>
-    <div class="modal-row">
-      <label>Action</label>
+    <div class="modal-row acl-modal-one-row-left">
+        <label>Action</label>
+        <div class="modal-acl-source-wrapper">
+            <div class="radio acl-float-left">
+                <input type="radio" id="acl-add-model-action-allow" checked="checked" name="acl-add-model-action-select"/>
+                <label for="acl-add-model-action-allow"></label>
+            </div>
+            <label class="radio-label acl-float-left" for="acl-add-model-action-allow">Allow</label>
+            <div></div>
+            <div class="radio">
+                <input type="radio" id="acl-add-model-action-deny" name="acl-add-model-action-select"/>
+                <label for="acl-add-model-action-deny"></label>
+            </div>
+            <label class="radio-label" for="acl-add-model-action-deny">Deny</label>
+        </div>
     </div>
-    <div class="modal-row">
-      <label>Direction</label>
+    <div class="modal-row acl-modal-one-row-left">
+        <label>Direction</label>
+        <div class="modal-acl-source-wrapper">
+            <div class="radio acl-float-left">
+                <input type="radio" id="acl-add-model-direction-inbound" checked="checked" name="acl-add-model-direction-select"/>
+                <label for="acl-add-model-direction-inbound"></label>
+            </div>
+            <label class="radio-label acl-float-left" for="acl-add-model-direction-inbound">Inbound</label>
+            <div></div>
+            <div class="radio">
+                <input type="radio" id="acl-add-model-direction-outbound" name="acl-add-model-direction-select"/>
+                <label for="acl-add-model-direction-outbound"></label>
+            </div>
+            <label class="radio-label" for="acl-add-model-direction-outbound">Outbound</label>
+        </div>
     </div>
     <div class="modal-row">
       <label>Source</label>
-      <div class="modal-acl-source-wrapper"></div>
+      <div class="modal-acl-source-wrapper property-control-group">
+		<div class="selectbox selectbox-mega" id="acl-add-model-source-select">
+			<a class="dropdown-toggle" href="#">
+				<div class="cur-value">HTTP</div>
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li tabindex="-1" >
+					<a data-id="TCP" href="#">
+						TCP
+					</a>
+				</li>
+				<li tabindex="-1">
+					<a data-id="HTTP" href="#">
+						HTTP
+					</a>
+				</li>
+				<li tabindex="-1">
+					<a data-id="HTTPS" href="#">
+						HTTPS
+					</a>
+				</li>
+				<li tabindex="-1">
+					<a data-id="SSL" href="#">
+						SSL
+					</a>
+				</li>
+			</ul>
+		</div>
+      </div>
     </div>
     <div class="modal-row">
       <label for="Source">Protocol</label>
-      <div class="sg-protocol-control"></div>
+		<div class="modal-acl-source-wrapper property-control-group">
+			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select" id="acl-rule-modal-protocol-select">
+				<a class="dropdown-toggle" href="#">
+					<div class="cur-value">HTTP</div>
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">HTTP</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">HTTPS</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">TCP</div>
+						</a>
+					</li>
+					<li class="tooltip" tabindex="-1">
+						<a href="#">
+							<div class="main truncate">SSL</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div>
+			<input class="input" id="acl-rule-modal-port-input" type="text" placeholder="Port Range e.g.80 or 49152-65535" required="required" value="{{LoadBalancerPort}}"/>
+		</div>
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-blue">Save</button>
+    <button class="btn btn-blue" id="acl-modal-rule-save-btn">Save</button>
     <button class="btn btn-silver modal-close">Cancel</button>
   </div>
 </div>
@@ -746,39 +834,16 @@ Additional Notes and Questions
 			<div class="context" >
 				<div class="modal-protocol-select">
 					<div class="selectbox " id="modal-protocol-select"  data-protocal-type="tcp">
-						<a class="dropdown-toggle" href="#">
-							<span class="cur-value">TCP</span>
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu  scroll-wrap scrollbar-auto-hide context-wrap" role="menu">
-    						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-						<li class="selected" tabindex="-1">
-								<a data-id="tcp" href="#">
-								TCP
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="udp" href="#">
-								UDP
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="icmp" href="#">
-								ICMP
-								</a>
-							</li>
+            <div class="selection">TCP</div>
+						<ul class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" tabindex="-1">
+    					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+						  <li class="selected item" data-id="tcp">TCP</li>
+							<li class="item" data-id="udp">UDP</li>
+							<li class="item" data-id="icmp">ICMP</li>
 							{{#if isclassic}}
 							{{else}}
-							<li  tabindex="-1">
-								<a data-id="custom" href="#">
-								Custom
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="all" href="#">
-								All
-								</a>
-							</li>
+							<li class="item" data-id="custom">Custom</li>
+							<li class="item" data-id="all">All</li>
 							{{/if}}
 						</ul>
 					</div>
@@ -792,321 +857,86 @@ Additional Notes and Questions
 					</div>
 					<div class="sg-protocol-option-input" id="sg-protocol-icmp">
 						<div class="selectbox" id="protocol-icmp-main-select" data-protocal-main="0"  data-protocal-sub="-1">
-						<a class="dropdown-toggle" href="#">
-							<span class="cur-value">Echo Reply(0)</span>
-							<span class="caret"></span>
-						</a>
-						<div class="dropdown-menu scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
-						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-						<ul role="menu" >
-							<li class="selected" tabindex="-1">
-								<a data-id="0" href="#">
-								Echo Reply(0)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="3" href="#">
-								Destination Unreachable(3) ...
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="4" href="#">
-								Source Quench(4)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="5" href="#">
-								Redirect Message(5) ...
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="6" href="#">
-								Alternate Host Address(6)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="8" href="#">
-								Echo Request(8)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="9" href="#">
-								Router Advertisement(9)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="10" href="#">
-								Router Solicitation(10)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="11" href="#">
-								Time Exceeded(11) ...
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="12" href="#">
-								Parameter Problem: Bad IP header(12) ...
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="13" href="#">
-								Timestamp(13)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="14" href="#">
-								Timestamp Reply(14)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="15" href="#">
-								Information Request(15)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="16" href="#">
-								Information Reply(16)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="17" href="#">
-								Address Mask Request(17)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="18" href="#">
-								Address Mask Reply(18)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="30" href="#">
-								Traceroute(30)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="31" href="#">
-								Datagram Conversion Error(31)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="32" href="#">
-								Mobile Host Redirect(32)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="33" href="#">
-								Where Are You(33)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="34" href="#">
-								Here I Am(34)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="35" href="#">
-								Mobile Registration Request(35)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="36" href="#">
-								Mobile Registration Reply(36)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="37" href="#">
-								Domain Name Request(37)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="38" href="#">
-								Domain Name Reply(38)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="39" href="#">
-								SKIP Algorithm Discovery Protocol(39)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="40" href="#">
-								Photuris Security Failures(40)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="-1" href="#">
-								All(-1)
-								</a>
-							</li>
-						</ul>
-					</div>
+              <div class="selection">Echo Reply(0)</div>
+	   					<div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+		    				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+    						<ul tabindex="-1">
+    							<li class="item selected" data-id="0">Echo Reply(0)</li>
+    							<li class="item" data-id="3">Destination Unreachable(3) ...</li>
+    							<li class="item" data-id="4">Source Quench(4)</li>
+    							<li class="item" data-id="5">Redirect Message(5) ...</li>
+    							<li class="item" data-id="6">Alternate Host Address(6)</li>
+    							<li class="item" data-id="8">Echo Request(8)</li>
+    							<li class="item" data-id="9">Router Advertisement(9)</li>
+    							<li class="item" data-id="10">Router Solicitation(10)</li>
+    							<li class="item" data-id="11">Time Exceeded(11) ...</li>
+    							<li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
+    							<li class="item" data-id="13">Timestamp(13)</li>
+    							<li class="item" data-id="14">Timestamp Reply(14)</li>
+    							<li class="item" data-id="15">Information Request(15)</li>
+    							<li class="item" data-id="16">Information Reply(16)</li>
+    							<li class="item" data-id="17">Address Mask Request(17)</li>
+    							<li class="item" data-id="18">Address Mask Reply(18)</li>
+    							<li class="item" data-id="30">Traceroute(30)</li>
+    							<li class="item" data-id="31">Datagram Conversion Error(31)</li>
+    							<li class="item" data-id="32">Mobile Host Redirect(32)</li>
+    							<li class="item" data-id="33">Where Are You(33)</li>
+    							<li class="item" data-id="34">Here I Am(34)</li>
+    							<li class="item" data-id="35">Mobile Registration Request(35)</li>
+    							<li class="item" data-id="36">Mobile Registration Reply(36)</li>
+    							<li class="item" data-id="37">Domain Name Request(37)</li>
+    							<li class="item" data-id="38">Domain Name Reply(38)</li>
+    							<li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
+    							<li class="item" data-id="40">Photuris Security Failures(40)</li>
+    							<li class="item" data-id="-1">All(-1)</li>
+    						</ul>
+    					</div>
 					</div>
 					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-3">
-						<a class="dropdown-toggle" href="#">
-							<span class="cur-value">All(-1)</span>
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li class="selected" tabindex="-1">
-								<a data-id="-1" href="#">
-								All(-1)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="0" href="#">
-								destination network unreachable(0)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="1" href="#">
-								destination host unreachable(1)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="2" href="#">
-								destination protocol unreachable(2)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="3" href="#">
-								destination port unreachable(3)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="4" href="#">
-								fragmentation required and DF flag set(4)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="5" href="#">
-								source route failed(5)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="6" href="#">
-								destination network unknown(6)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="7" href="#">
-								destination host unknown(7)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="8" href="#">
-								source host isolated(8)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="9" href="#">
-								network administratively prohibited(9)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="10" href="#">
-								host administratively prohibited(10)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="11" href="#">
-								network unreachable for TOS(11)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="12" href="#">
-								host unreachable for TOS(12)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="13" href="#">
-								communication administratively prohibited(13)
-								</a>
-							</li>
+            <div class="selection">All(-1</div>
+						<ul class="dropdown" tabindex="-1">
+							<li class="item selected" data-id="-1">All(-1)</li>
+							<li class="item" data-id="0">destination network unreachable(0)</li>
+							<li class="item" data-id="1">destination host unreachable(1)</li>
+							<li class="item" data-id="2">destination protocol unreachable(2)</li>
+							<li class="item" data-id="3">destination port unreachable(3)</li>
+							<li class="item" data-id="4">fragmentation required and DF flag set(4)</li>
+							<li class="item" data-id="5">source route failed(5)</li>
+							<li class="item" data-id="6">destination network unknown(6)</li>
+							<li class="item" data-id="7">destination host unknown(7)</li>
+							<li class="item" data-id="8">source host isolated(8)</li>
+							<li class="item" data-id="9">network administratively prohibited(9)</li>
+							<li class="item" data-id="10">host administratively prohibited(10)</li>
+							<li class="item" data-id="11">network unreachable for TOS(11)</li>
+							<li class="item" data-id="12">host unreachable for TOS(12)</li>
+							<li class="item" data-id="13">communication administratively prohibited(13)</li>
 						</ul>
 					</div>
 					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-5">
-						<a class="dropdown-toggle" href="#">
-							<span class="cur-value">All(-1)</span>
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li class="selected" tabindex="-1">
-								<a data-id="-1" href="#">
-								All(-1)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="0" href="#">
-								redirect datagram for the network(0)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="1" href="#">
-								redirect datagram for the host(1)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="2" href="#">
-								redirect datagram for the TOS & network(2)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="3" href="#">
-								redirect datagram for the TOS & host(3)
-								</a>
-							</li>
+            <div class="selection">All(-1)</div>
+						<ul class="dropdown" tabindex="-1">
+							<li class="selected item" data-id="-1">All(-1)</li>
+							<li class="item" data-id="0">redirect datagram for the network(0)</li>
+							<li class="item" data-id="1">redirect datagram for the host(1)</li>
+							<li class="item" data-id="2">redirect datagram for the TOS & network(2)</li>
+							<li class="item" data-id="3">redirect datagram for the TOS & host(3)</li>
 						</ul>
 					</div>
 					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-11">
-						<a class="dropdown-toggle" href="#">
-							<span class="cur-value">All(-1)</span>
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li class="selected" tabindex="-1">
-								<a data-id="-1" href="#">
-								All(-1)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="0" href="#">
-								TTL expired transit(0)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="1" href="#">
-								fragmentation reasembly time exceeded(1)
-								</a>
-							</li>
+            <div class="selection">All(-1)</div>
+						<ul class="dropdown" tabindex="-1">
+							<li class="item selected" data-id="-1">All(-1)</li>
+							<li class="item" data-id="0">TTL expired transit(0)</li>
+							<li class="item" data-id="1">fragmentation reasembly time exceeded(1)</li>
 						</ul>
 					</div>
 					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-12">
-						<a class="dropdown-toggle" href="#">
-							<span class="cur-value">All(-1)</span>
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li class="selected" tabindex="-1">
-								<a data-id="-1" href="#">
-								All(-1)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="0" href="#">
-								pointer indicates the error(0)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="1" href="#">
-								missing a required option(1)
-								</a>
-							</li>
-							<li  tabindex="-1">
-								<a data-id="2" href="#">
-								bad length(2)
-								</a>
-							</li>
+						<div class="selection">All(-1)</div>
+						<ul class="dropdown" role="menu">
+							<li class="item selected" data-id="-1">All(-1)</li>
+							<li class="item" data-id="0">pointer indicates the error(0)</li>
+							<li class="item" data-id="1">missing a required option(1)</li>
+							<li class="item" data-id="2">bad length(2)</li>
 						</ul>
 					</div>
 					</div>
@@ -1217,31 +1047,12 @@ Additional Notes and Questions
 		<div class="left elb-property-listener-item-1">
 			<label>Load Balancer Protocol</label>
 			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select">
-				<a class="dropdown-toggle" href="#">
-					<div class="cur-value">{{Protocol}}</div>
-					<span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu">
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">HTTP</div>
-						</a>
-					</li>
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">HTTPS</div>
-						</a>
-					</li>
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">TCP</div>
-						</a>
-					</li>
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">SSL</div>
-						</a>
-					</li>
+				<div class="selection">{{Protocol}}</div>
+				<ul class="dropdown">
+					<li class="item tooltip"><div class="main truncate">HTTP</div></li>
+					<li class="item tooltip"><div class="main truncate">HTTPS</div></li>
+					<li class="item tooltip"><div class="main truncate">TCP</div></li>
+					<li class="item tooltip"><div class="main truncate">SSL</div></li>
 				</ul>
 			</div>
 		</div>
@@ -1254,31 +1065,12 @@ Additional Notes and Questions
 		<div class="left elb-property-listener-item-1">
 			<label>Load Balancer Protocol</label>
 			<div class="selectbox selectbox-mega elb-property-listener-instance-protocol-select">
-				<a class="dropdown-toggle" href="#">
-					<div class="cur-value">{{InstanceProtocol}}</div>
-					<span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu">
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">HTTP</div>
-						</a>
-					</li>
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">HTTPS</div>
-						</a>
-					</li>
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">TCP</div>
-						</a>
-					</li>
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">SSL</div>
-						</a>
-					</li>
+        <div class="selection">{{InstanceProtocol}}</div>
+				<ul class="dropdown">
+					<li class="item tooltip"><div class="main truncate">HTTP</div></li>
+					<li class="item tooltip"><div class="main truncate">HTTPS</div></li>
+					<li class="item tooltip"><div class="main truncate">TCP</div></li>
+					<li class="item tooltip"><div class="main truncate">SSL</div></li>
 				</ul>
 			</div>
 		</div>

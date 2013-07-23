@@ -420,12 +420,19 @@ define [ 'constant',
 		#after drag component from resource panel to canvas
 		createComponent : ( uid ) ->
 
-			componentType = MC.canvas_data.component[uid].type
+			compObj = MC.canvas_data.component[uid]
 
-			if componentType is 'AWS.ELB'
+			groupObj = MC.canvas_data.layout.component.group[uid]
+
+			if compObj
+				componentType = MC.canvas_data.component[uid].type
+			else
+				componentType = constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+			
+			if componentType is constant.AWS_RESOURCE_TYPE.AWS_ELB
 				canvas_handle_elb.init(uid)
 
-			if componentType is 'AWS.VPC.InternetGateway'
+			if componentType is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 				canvas_handle_elb.setAllELBSchemeAsInternal()
 
 			#to-do

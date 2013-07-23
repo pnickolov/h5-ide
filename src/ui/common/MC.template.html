@@ -695,31 +695,12 @@ Additional Notes and Questions
       <label>Source</label>
       <div class="modal-acl-source-wrapper property-control-group">
 		<div class="selectbox selectbox-mega" id="acl-add-model-source-select">
-			<a class="dropdown-toggle" href="#">
-				<div class="cur-value">HTTP</div>
-				<span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li tabindex="-1" >
-					<a data-id="TCP" href="#">
-						TCP
-					</a>
-				</li>
-				<li tabindex="-1">
-					<a data-id="HTTP" href="#">
-						HTTP
-					</a>
-				</li>
-				<li tabindex="-1">
-					<a data-id="HTTPS" href="#">
-						HTTPS
-					</a>
-				</li>
-				<li tabindex="-1">
-					<a data-id="SSL" href="#">
-						SSL
-					</a>
-				</li>
+			<div class="selection">HTTP</div>
+			<ul class="dropdown">
+				<li class="item tooltip"><div class="main truncate">HTTP</div></li>
+				<li class="item tooltip"><div class="main truncate">HTTPS</div></li>
+				<li class="item tooltip"><div class="main truncate">TCP</div></li>
+				<li class="item tooltip"><div class="main truncate">SSL</div></li>
 			</ul>
 		</div>
       </div>
@@ -727,32 +708,13 @@ Additional Notes and Questions
     <div class="modal-row">
       <label for="Source">Protocol</label>
 		<div class="modal-acl-source-wrapper property-control-group">
-			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select" id="acl-rule-modal-protocol-select">
-				<a class="dropdown-toggle" href="#">
-					<div class="cur-value">HTTP</div>
-					<span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu">
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">HTTP</div>
-						</a>
-					</li>
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">HTTPS</div>
-						</a>
-					</li>
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">TCP</div>
-						</a>
-					</li>
-					<li class="tooltip" tabindex="-1">
-						<a href="#">
-							<div class="main truncate">SSL</div>
-						</a>
-					</li>
+			<div class="selectbox selectbox-mega" id="acl-add-model-protocol-select">
+				<div class="selection">HTTP</div>
+				<ul class="dropdown">
+					<li class="item tooltip"><div class="main truncate">HTTP</div></li>
+					<li class="item tooltip"><div class="main truncate">HTTPS</div></li>
+					<li class="item tooltip"><div class="main truncate">TCP</div></li>
+					<li class="item tooltip"><div class="main truncate">SSL</div></li>
 				</ul>
 			</div>
 		</div>

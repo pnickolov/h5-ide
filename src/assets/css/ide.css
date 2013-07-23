@@ -2068,7 +2068,7 @@ a.sidebar-hider {
 }
 
 .secondary-panel {
-	cursor: pointer;
+/*	cursor: pointer;*/
 }
 
 .sg-info-list li {
@@ -2852,6 +2852,7 @@ a.sidebar-hider {
 	background : #777;
 	color      : #fff;
 	text-align : center;
+	cursor: pointer;
 	
 }
 .property-rule-delete-btn:before {
@@ -3043,4 +3044,8 @@ a.sidebar-hider {
 
 #modal-run-stack .selectbox {
 	width: 100px;
+}
+
+.acl-rules li:hover {
+	background-color: #fff;
 }

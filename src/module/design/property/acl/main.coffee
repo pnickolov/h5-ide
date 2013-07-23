@@ -4,15 +4,16 @@
 
 define [ 'jquery',
          'text!/module/design/property/acl/template.html',
+         'text!/module/design/property/acl/rule_item.html',
          'event'
-], ( $, template, ide_event ) ->
+], ( $, template, rule_template, ide_event ) ->
 
     #
     current_view  = null
     current_model = null
 
     #private
-    loadModule = ( uid_parent, expended_accordion_id, aclUID ) ->
+    loadModule = ( uid_parent, expended_accordion_id, uid ) ->
 
         #
         MC.data.current_sub_main = this
@@ -28,12 +29,19 @@ define [ 'jquery',
             current_model = model
 
             #model
-            model.init aclUID
+            model.init uid
 
             #view
             view.model    = model
+
+            view.on 'ADD_RULE_TO_ACL', (value) ->
+                view.model.addRuleToACL uid, value
+
+            model.on 'REFRESH_RULE_LIST', (value) ->
+                view.refreshRuleList uid, value
+
             #render
-            view.render expended_accordion_id, template, model.attributes
+            view.render expended_accordion_id, template, rule_template, model.attributes
 
     unLoadModule = () ->
         current_view.off()

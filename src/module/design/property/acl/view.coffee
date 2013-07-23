@@ -8,6 +8,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         el       : $ document
         tagName  : $ '.property-details'
+        ruleTpl  : null
 
         initialize : ->
             #handlebars equal logic
@@ -21,14 +22,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         events   :
             'click .secondary-panel .back' : 'returnMainPanel'
             'click #acl-add-rule-icon' : 'showCreateRuleModal'
+            'click #acl-modal-rule-save-btn' : 'saveRule'
 
         instance_expended_id : 0
 
-        render     : (expended_accordion_id, template, attributes) ->
+        render     : (expended_accordion_id, template, rule_template, attributes) ->
             console.log 'property:acl render'
             htmlTpl = Handlebars.compile template
 
             $('#acl-secondary-panel-wrap').html htmlTpl(attributes)
+
+            this.ruleTpl = Handlebars.compile rule_template
+
+            $('#acl-secondary-panel-wrap .acl-rules').html this.ruleTpl(attributes)
 
             this.instance_expended_id = expended_accordion_id
 
@@ -68,6 +74,33 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             modal MC.template.modalAddACL {}, true
             scrollbar.init()
             return false
+
+        saveRule : () ->
+
+            ruleNumber = $('#modal-acl-number').val()
+            action = $('#acl-add-model-action-allow').prop('checked')
+            inboundDirection = $('#acl-add-model-direction-inbound').prop('checked')
+            source = $.trim($('#acl-add-model-source-select').find('.cur-value').text())
+            protocol = $.trim($('#acl-rule-modal-protocol-select').find('.cur-value').text())
+            port = $('#acl-rule-modal-port-input').val()
+
+            this.trigger 'ADD_RULE_TO_ACL', {
+                rule: ruleNumber,
+                action: action,
+                inbound: inboundDirection,
+                source: source,
+                protocol: protocol,
+                port: port
+            }
+
+            $('#modal-wrap').trigger('closed').remove()
+
+            null
+
+        refreshRuleList : (uid, value) ->
+            $('#acl-secondary-panel-wrap .acl-rules').html this.ruleTpl({
+                component: value
+            })
     }
 
     view = new ACLView()

@@ -666,7 +666,7 @@ Additional Notes and Questions
         <label>Action</label>
         <div class="modal-acl-source-wrapper">
             <div class="radio acl-float-left">
-                <input type="radio" id="acl-add-model-action-allow" selected="selected" name="acl-add-model-action-select"/>
+                <input type="radio" id="acl-add-model-action-allow" checked="checked" name="acl-add-model-action-select"/>
                 <label for="acl-add-model-action-allow"></label>
             </div>
             <label class="radio-label acl-float-left" for="acl-add-model-action-allow">Allow</label>
@@ -682,7 +682,7 @@ Additional Notes and Questions
         <label>Direction</label>
         <div class="modal-acl-source-wrapper">
             <div class="radio acl-float-left">
-                <input type="radio" id="acl-add-model-direction-inbound" selected="selected" name="acl-add-model-direction-select"/>
+                <input type="radio" id="acl-add-model-direction-inbound" checked="checked" name="acl-add-model-direction-select"/>
                 <label for="acl-add-model-direction-inbound"></label>
             </div>
             <label class="radio-label acl-float-left" for="acl-add-model-direction-inbound">Inbound</label>
@@ -760,12 +760,12 @@ Additional Notes and Questions
 			</div>
 		</div>
 		<div>
-			<input class="input" id="acl-rule-modal-protocol-input" type="text" placeholder="Port Range e.g.80 or 49152-65535" required="required" value="{{LoadBalancerPort}}"/>
+			<input class="input" id="acl-rule-modal-port-input" type="text" placeholder="Port Range e.g.80 or 49152-65535" required="required" value="{{LoadBalancerPort}}"/>
 		</div>
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-blue">Save</button>
+    <button class="btn btn-blue" id="acl-modal-rule-save-btn">Save</button>
     <button class="btn btn-silver modal-close">Cancel</button>
   </div>
 </div>

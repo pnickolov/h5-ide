@@ -31,7 +31,9 @@ var
 
 	canvas_resize = function ()
 	{
-		$('#main_body_content').css('height', window.innerHeight - 62);
+		//$('#main_body_content').css('height', window.innerHeight - 60);
+
+		$('#canvas').css('height', window.innerHeight - 129);
 	};
 
 // Dom Ready

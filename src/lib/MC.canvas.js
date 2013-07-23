@@ -1413,6 +1413,11 @@ MC.canvas.layout = {
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
 		});
 
+		$('#canvas_container').css({
+			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
+			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
+		});
+
 		if (layout_data.component.node)
 		{
 			$.each(layout_data.component.node, function (id, data)
@@ -1552,6 +1557,11 @@ MC.canvas.layout = {
 		}
 
 		$('#svg_canvas').attr({
+			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
+			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+		});
+
+		$('#canvas_container').css({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
 		});

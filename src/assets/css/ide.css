@@ -3019,3 +3019,28 @@ a.sidebar-hider {
 	float: left;
 	margin-right: 20px;
 }
+
+.acl-modal-one-row-left > label {
+	float: left;
+}
+
+.acl-modal-one-row-left .modal-acl-source-wrapper {
+	margin-top: 5px;
+	margin-left: 80px;
+}
+
+.modal-row {
+	margin-top: 20px;
+}
+
+.modal-row > label {
+	margin-right: 20px;
+}
+
+#modal-run-stack .modal-body {
+	width: 290px;
+}
+
+#modal-run-stack .selectbox {
+	width: 100px;
+}

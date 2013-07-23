@@ -666,7 +666,7 @@ Additional Notes and Questions
         <label>Action</label>
         <div class="modal-acl-source-wrapper">
             <div class="radio acl-float-left">
-                <input type="radio" id="acl-add-model-action-allow" name="acl-add-model-action-select"/>
+                <input type="radio" id="acl-add-model-action-allow" selected="selected" name="acl-add-model-action-select"/>
                 <label for="acl-add-model-action-allow"></label>
             </div>
             <label class="radio-label acl-float-left" for="acl-add-model-action-allow">Allow</label>
@@ -682,7 +682,7 @@ Additional Notes and Questions
         <label>Direction</label>
         <div class="modal-acl-source-wrapper">
             <div class="radio acl-float-left">
-                <input type="radio" id="acl-add-model-direction-inbound" name="acl-add-model-direction-select"/>
+                <input type="radio" id="acl-add-model-direction-inbound" selected="selected" name="acl-add-model-direction-select"/>
                 <label for="acl-add-model-direction-inbound"></label>
             </div>
             <label class="radio-label acl-float-left" for="acl-add-model-direction-inbound">Inbound</label>
@@ -730,7 +730,7 @@ Additional Notes and Questions
     <div class="modal-row">
       <label for="Source">Protocol</label>
 		<div class="modal-acl-source-wrapper property-control-group">
-			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select">
+			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select" id="acl-rule-modal-protocol-select">
 				<a class="dropdown-toggle" href="#">
 					<div class="cur-value">HTTP</div>
 					<span class="caret"></span>
@@ -760,8 +760,7 @@ Additional Notes and Questions
 			</div>
 		</div>
 		<div>
-			<label class="left">Port</label>
-			<input class="input elb-property-listener-elb-port-input" type="text" required="required" value="{{LoadBalancerPort}}"/>
+			<input class="input" id="acl-rule-modal-protocol-input" type="text" placeholder="Port Range e.g.80 or 49152-65535" required="required" value="{{LoadBalancerPort}}"/>
 		</div>
     </div>
   </div>

@@ -1826,6 +1826,7 @@ a.sidebar-hider {
 	word-wrap: break-word;
 	overflow: hidden;
 	line-height: 14px;
+	color: #eee;
 }
 
 .instance-label {

@@ -15,7 +15,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
         events   :
             'change #property-stack-name'   : 'stackNameChanged'
-            'click #show-newsg-panel'       : 'createSecurityGroup'
+            'click #add-sg-btn'             : 'createSecurityGroup'
             'click .deleteSG'               : 'deleteSecurityGroup'
             'click .resetSG'                : 'resetSecurityGroup'
             
@@ -35,7 +35,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             else if not name
                 $( '#property-stack-name' ).val me.model.attributes.stack_detail.name
             else if name in MC.data.stack_list[MC.canvas_data.region]
-                notification 'error', 'Stack name \"' + name + '\" is already in user. Please use another one.'
+                notification 'error', 'Stack name \"' + name + '\" is already in using. Please use another one.'
             else
                 me.trigger 'STACK_NAME_CHANGED', name
                 ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, name + ' - stack'

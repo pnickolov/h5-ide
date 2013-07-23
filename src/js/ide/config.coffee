@@ -85,6 +85,7 @@ require.config {
 
 		#canvas event logic handler
 		'canvas_handle_elb'   : 'module/design/canvas/aws/elb/elb'
+		'canvas_handle_vpn'   : 'module/design/canvas/aws/vpn/vpn'
 
 		#events
 		'event'        : 'event/ide_event'
@@ -231,5 +232,5 @@ require.config {
 
 }
 
-requirejs.onError = ( err ) ->
-    console.log 'error type: ' + err.requireType + ', modules: ' + err.requireModules
+#requirejs.onError = ( err ) ->
+#    console.log 'error type:', err.requireType, ', modules:', err.requireModules, ', error:', err

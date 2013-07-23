@@ -73,14 +73,6 @@ define [ 'MC', 'event',
                 me.trigger 'TOOLBAR_RUN_CLICK', app_name
                 modal.close()
 
-                me.model.once 'TOOLBAR_STACK_RUN_SUCCESS', () ->
-                    notification 'info', 'Run stack ' + MC.canvas_data.name + ' successfully.'
-                me.model.once 'TOOLBAR_STACK_RUN_FAILED', () ->
-                    notification 'error', 'Run stack ' + MC.canvas_data.name + ' failed.'
-                me.model.once 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', () ->
-                    notification 'info', 'Run stack ' + MC.canvas_data.name + ' request successfully.'
-                me.model.once 'TOOLBAR_STACK_RUN_REQUEST_ERROR', () ->
-                    notification 'error', 'Run stack ' + MC.canvas_data.name + ' request failed.'
             true
 
         clickSaveIcon : ->
@@ -97,11 +89,6 @@ define [ 'MC', 'event',
             else
                 this.trigger 'TOOLBAR_SAVE_CLICK'
 
-                this.model.once 'TOOLBAR_STACK_SAVE_SUCCESS', () ->
-                    notification 'info', 'Save stack ' + name + ' successfully.'
-                this.model.once 'TOOLBAR_STACK_SAVE_ERROR', () ->
-                    notification 'error', 'Save stack ' + name + ' failed.'
-
             true
 
         clickDuplicateIcon : ->
@@ -117,11 +104,6 @@ define [ 'MC', 'event',
             else
                 this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name
 
-                this.model.once 'TOOLBAR_STACK_DUPLICATE_SUCCESS', () ->
-                    notification 'info', 'Duplicate stack ' + name + ' successfully.'
-                this.model.once 'TOOLBAR_STACK_DUPLICATE_ERROR', () ->
-                    notification 'error', 'Duplicate stack ' + name + ' failed.'
-
             true
 
         clickDeleteIcon : ->
@@ -133,11 +115,6 @@ define [ 'MC', 'event',
                 modal.close()
 
                 me.trigger 'TOOLBAR_DELETE_CLICK'
-
-                me.model.once 'TOOLBAR_STACK_DELETE_SUCCESS', () ->
-                    notification 'info', 'Delete stack ' + MC.canvas_data.name + ' successfully.'
-                me.model.once 'TOOLBAR_STACK_DELETE_ERROR', () ->
-                    notification 'error', 'Delete stack ' + MC.canvas_data.name + ' failed.'
             true
 
         clickNewStackIcon : ->
@@ -195,6 +172,9 @@ define [ 'MC', 'event',
             console.log 'copytoClipComplete'
             notification 'info', 'Copied ' + id + ' to clipboard: ' + length + ' bytes'
             null
+
+        notify : (type, msg) ->
+            notification type, msg
 
     }
 

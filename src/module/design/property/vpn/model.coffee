@@ -7,12 +7,88 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
     VPNModel = Backbone.Model.extend {
 
         defaults :
-            'set_xxx'    : null
-            'get_xxx'    : null
+            'vpn_detail'    : null
 
         initialize : ->
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
+
+        getVPN : (line_option) ->
+            me = this
+
+            vpn_detail = me.get 'vpn_detail'
+
+            if not vpn_detail
+                vpn_detail = {}
+
+                cgw_uid = node.uid for node in line_option when node.port == 'cgw-vpn'
+                vgw_uid = node.uid for node in line_option when node.port == 'vgw-vpn'
+
+                if cgw_uid and vgw_uid
+                    vpn_detail.is_dynamic = if !!MC.canvas_data.component[cgw_uid].resource.BgpAsn then true else false
+                    vpn_detail.cgw_name = MC.canvas_data.component[ cgw_uid ].name
+
+                    vgw_ref = '@' + vgw_uid + '.resource.VpnGatewayId'
+                    cgw_ref = '@' + cgw_uid + '.resource.CustomerGatewayId'
+
+                    _.map MC.canvas_data.component, (item) ->
+
+                        if item.type == 'AWS.VPC.VPNConnection' and item.resource.VpnGatewayId == vgw_ref and item.resource.CustomerGatewayId == cgw_ref
+                           
+                            vpn_detail.uid = item.uid
+
+                            vpn_detail.name = item.name
+
+                            vpn_detail.ips = []
+                            
+                            vpn_detail.ips.push route.DestinationCidrBlock for route in item.resource.Routes
+
+                            vpn_detail.is_del = if vpn_detail.ips.length > 1 then true else false
+
+                            null
+
+                me.set 'vpn_detail', vpn_detail
+            
+        delIP : (ip) ->
+            me = this
+
+            vpn_detail = me.get 'vpn_detail'
+
+            if ip in vpn_detail.ips
+                vpn_detail.ips.splice vpn_detail.ips.indexOf(ip), 1
+
+                #update vpn component
+                routes = MC.canvas_data.component[ vpn_detail.uid ].resource.Routes
+
+                for route in routes
+                    if route.DestinationCidrBlock == ip
+                        MC.canvas_data.component[ vpn_detail.uid ].resource.Routes.splice(routes.indexOf(route), 1)
+                        break
+
+                me.set 'vpn_detail', vpn_detail
+
+                me.trigger 'UPDATE_VPN_DATA'
+
+            null
+
+        addIP : (new_ip) ->
+            me = this
+
+            vpn_detail = me.get 'vpn_detail'
+
+            if new_ip not in vpn_detail.ips
+                vpn_detail.ips.push new_ip
+
+                #update vpn component
+                route = { 'Source' : '', 'State' : '', 'DestinationCidrBlock' : new_ip }
+
+                MC.canvas_data.component[ vpn_detail.uid ].resource.Routes.push route
+
+                me.set 'vpn_detail', vpn_detail
+
+                me.trigger 'UPDATE_VPN_DATA'
+
+            null
 
     }
 

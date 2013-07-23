@@ -1,7 +1,7 @@
 <div class="secondary-panel" id="acl-secondary-panel" parent="{{parent}}" uid='{{component.uid}}'>
   <div class="sidebar-title">
     <a class="back" href="#">&lt;</a>
-    <span class="sidebar-title-text">{{component.name}}</span>
+    <span class="sidebar-title-text back">{{component.name}}</span>
   </div>
 
   <div class="property-info">
@@ -15,49 +15,28 @@
   <div class="fixedaccordion accordion-default" data-sub="43">
 
       <section class="accordion-group expanded">
-        <div class="fixedaccordion-head sg-header">
+        <div class="fixedaccordion-head acl-header">
             <span class="name">Rule</span>
             <span class="count">(<span id="acl-rule-count">{{rules.length}}</span>)</span>
-            <a href="#" class="acl-icon-add tooltip" id="acl-add-rule" data-tooltip="Create new Network ACL Rule"></a>
+            <a href="#" class="acl-icon-add tooltip" id="acl-add-rule-icon" data-tooltip="Create new Network ACL Rule"></a>
         </div>
 
         <div class="accordion-body">
           <div class="acl-sort-rule clearfix">
             <h5 class="left">Sort by</h5>
             <div class="selectbox right" id="acl-sort-rule-select">
-              <a class="dropdown-toggle" href="#">
-                <span class="cur-value">{{sortRule}}</span>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu" role="menu">
-                <li tabindex="-1"><a data-id="1" href="#">Rule Number</a></li>
-                <li tabindex="-1"><a data-id="2" href="#">Action</a>
-                <li tabindex="-1"><a data-id="3" href="#">Direction</a>
-                <li tabindex="-1"><a data-id="4" href="#">Source/Destination</a></li>
+              <div class="selection">{{sortRule}}</div>
+              <ul class="dropdown" tabindex="-1">
+                <li data-id="1" class="item selected">Rule Number</li>
+                <li data-id="2" class="item">Action</li>
+                <li data-id="3" class="item">Direction</li>
+                <li data-id="4" class="item">Source/Destination</li>
               </ul>
             </div>
           </div>
 
           <ul class="acl-rules">
-            {{#each rules}}
-            <li>
-              <h5>{{name}}</h5>
-              <div class="clearfix">
-                <span class="acl-rule-col1">
-                  <a href="#" class="acl-rule-allow-cb tooltip {{#if allow}}checked{{/if}}" data-tooltip="Allow/Deny"></a>
-                </span>
-                <span class="acl-rule-col2">
-                  <span class="{{#if inbound}}acl-rule-inbound{{else}}acl-rule-outbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
-                  <span class="acl-rule-protocol">{{protocol}}</span>
-                </span>
-                <span class="acl-rule-col4"><a class="property-rule-delete-btn"></a></span>
-                <div class="acl-rule-col3">
-                  <div class="acl-rule-source tooltip" data-tooltip="Source: 0.0.0.0/0 Destination: 0.0.0.0/0">{{source}}</div>
-                  <div class="acl-rule-port">{{port}}</div>
-                </div>
-              </div>
-            </li>
-            {{/each}}
+
           </ul>
           
         </div>

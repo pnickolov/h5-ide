@@ -10,6 +10,7 @@ define [ 'jquery',
     #
     current_view  = null
     current_model = null
+    current_sub_main = null
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-stack-tmpl">' + template + '</script>'
@@ -23,10 +24,15 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #
-        require [ './module/design/property/stack/view', './module/design/property/stack/model' ], ( view, model ) ->
+        require [ './module/design/property/stack/view',
+                  './module/design/property/stack/model',
+                  './module/design/property/sglist/main'
+        ], ( view, model, sglist_main ) ->
 
             #
             if current_view then view.delegateEvents view.events
+
+            current_sub_main = sglist_main
 
             #
             current_view  = view
@@ -41,10 +47,14 @@ define [ 'jquery',
 
             renderPropertyPanel()
 
+            sglist_main.loadModule model
+
             view.on 'STACK_NAME_CHANGED', (name) ->
                 console.log 'stack name changed and refresh'
                 MC.canvas_data.name = name
                 renderPropertyPanel()
+
+                sglist_main.loadModule model
 
             view.on 'DELETE_STACK_SG', (uid) ->
                 model.deleteSecurityGroup uid
@@ -53,11 +63,15 @@ define [ 'jquery',
                 model.resetSecurityGroup uid
                 view.render view.model.attributes
 
+                sglist_main.loadModule model
+
 
     unLoadModule = () ->
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
+
+        current_sub_main.unLoadModule()
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 

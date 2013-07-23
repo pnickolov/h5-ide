@@ -1,37 +1,35 @@
-<div class="sidebar-title">
-  <span class="sidebar-title-text" id='property-title'>{{component.name}}</span>
-</div>
+<div class="sidebar-title"><span class="sidebar-title-text" id='property-title'>{{name}}</span></div>
 
 
 <div class="fixedaccordion accordion-default" data-sub="43">
-  <div class="accordion-group expanded">
-    <div class="fixedaccordion-head" id="subnet-property-detail" component="{{component.uid}}">Subnet Details</div>
+  <section class="accordion-group expanded">
+    <header class="fixedaccordion-head" id="subnet-property-detail">Subnet Details</header>
 
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+    <article class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <div class="item-wrap scroll-content">
         <div class="property-control-group clearfix">
           <label class="left" for="property-subnet-name">Name</label>
           <span class="required-input right">Required</span>
-          <input class="input" type="text" value="{{component.name}}" id="property-subnet-name"/>
+          <input class="input" type="text" value="{{name}}" lastValue="{{name}}" id="property-subnet-name"/>
         </div>
 
         <div class="property-control-group clearfix">
           <label class="left" for="property-cidr-block">CIDR Block</label>
           <span class="required-input right">Required</span>
           <div class="subnet-cidr-wrapper">
-            <span class="cidr-prefix">{{CIDRPrefix}}</span><input class="input cidr-rest tooltip" type="text" value="{{CIDR}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."/>
+            <span class="cidr-prefix" id="property-cidr-prefix">{{CIDRPrefix}}</span><input class="input cidr-rest tooltip" type="text" value="{{CIDR}}" lastValue="{{CIDR}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."/>
           </div>
           
         </div>
 
       </div>
-    </div>
-  </div>
+    </article>
+  </section>
 
-  <div class="accordion-group">
-    <div class="fixedaccordion-head">Associated Network ACL</div>
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide" style="padding:0;">
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">Associated Network ACL</header>
+    <section class="accordion-body scroll-wrap scrollbar-auto-hide" style="padding:0;">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <div class="item-wrap scroll-content">
 
@@ -40,7 +38,7 @@
             <li class="clearfix item-networkacl">
               <div class="col1">
                 <div class="radio">
-                  <input id="property-acl-{{@index}}" type="radio" name="networkacl" {{#if isUsed}}checked="checked"{{/if}} value="{{name}}"/>
+                  <input id="property-acl-{{@index}}" type="radio" name="networkacl" {{#if isUsed}}checked="checked"{{/if}} value="{{name}}" data-uid="{{uid}}"/>
                   <label for="property-acl-{{@index}}"></label>
                 </div>
               </div>
@@ -57,10 +55,8 @@
         <a href="#" class="item-line-button" id="networkacl-create">Create new Network ACL...</a>
 
       </div>
-    </div>
-  </div>
+    </section>
+  </section>
 
-</div>
-
-<div id="sg-secondary-panel-wrap">
+<div id="acl-secondary-panel-wrap">
 </div>

@@ -16,8 +16,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile $( '#property-elb-tmpl' ).html()
-
         initialize : ->
             #handlebars equal logic
             Handlebars.registerHelper 'ifCond', (v1, v2, options) ->
@@ -53,9 +51,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             'change .property-elb-az-checkbox' : 'azCheckChanged'
 
-        render     : ( attributes ) ->
+        render     : ( template, attributes ) ->
+
+            htmlTpl = Handlebars.compile template
+
             console.log 'property:elb render'
-            $( '.property-details' ).html this.template attributes
+            $( '.property-details' ).html htmlTpl(attributes)
 
             health_detail = this.model.get('health_detail')
             $('#elb-property-slider-unhealthy').setSliderValue(health_detail.unhealthy_threshold)
@@ -77,6 +78,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             console.log 'elbNameChange'
             value = event.target.value
             cid = $( '#elb-property-detail' ).attr 'component'
+
             this.trigger 'ELB_NAME_CHANGED', value
 
             MC.canvas.update cid, 'text', 'elb_name', value
@@ -157,9 +159,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             listenerItemElem.each (index, elem) ->
                 that = $(this)
-                elbProtocolValue = $.trim(that.find('.elb-property-listener-elb-protocol-select .cur-value').text())
+                elbProtocolValue = $.trim(that.find('.elb-property-listener-elb-protocol-select .selection').text())
                 elbPortValue = that.find('.elb-property-listener-elb-port-input').val()
-                instanceProtocolValue = $.trim(that.find('.elb-property-listener-instance-protocol-select .cur-value').text())
+                instanceProtocolValue = $.trim(that.find('.elb-property-listener-instance-protocol-select .selection').text())
                 instancePortValue = that.find('.elb-property-listener-instance-port-input').val()
 
                 if !isNaN(parseInt(elbPortValue, 10)) and !isNaN(parseInt(instancePortValue, 10))

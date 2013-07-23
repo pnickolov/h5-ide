@@ -1,5 +1,20 @@
 define [ 'MC' ], ( MC ) ->
 	return {
+		init: (uid) ->
+
+			allComp = MC.canvas_data.component
+			haveVPC = allComp[uid].resource.VpcId
+			if !haveVPC
+				MC.canvas_data.component[uid].resource.Scheme = ''
+
+			# have igw ?
+			igwCompAry = _.filter allComp, (obj) ->
+				obj.type is 'AWS.VPC.InternetGateway'
+			if igwCompAry.length isnt 0
+				MC.canvas_data.component[uid].resource.Scheme = 'internet-facing'
+
+			null
+
 		addInstanceAndAZToELB: (elbUID, instanceUID) ->
 			elbComp = MC.canvas_data.component[elbUID]
 			instanceComp = MC.canvas_data.component[instanceUID]
@@ -57,5 +72,13 @@ define [ 'MC' ], ( MC ) ->
 
 			MC.canvas_data.component[elbUID].resource.Instances = newInstanceAry
 
+			null
+
+		setAllELBSchemeAsInternal: () ->
+			_.each MC.canvas_data.component, (value, key) ->
+				if value.type is 'AWS.ELB'
+					MC.canvas_data.component[key].resource.Scheme = 'internal'
+					MC.canvas.update key, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNAL_CANVAS
+				null
 			null
 	}

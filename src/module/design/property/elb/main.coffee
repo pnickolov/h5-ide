@@ -13,17 +13,16 @@ define [ 'jquery',
     current_model = null
 
     #add handlebars script
-    template     = '<script type="text/x-handlebars-template" id="property-elb-tmpl">' + template + '</script>'
-    app_template = '<script type="text/x-handlebars-template" id="property-elb-app-tmpl">' + app_template + '</script>'
-    #load remote html template
-    $( 'head' ).append template
-    $( 'head' ).append app_template
+    # template     = '<script type="text/x-handlebars-template" id="property-elb-tmpl">' + template + '</script>'
+    # app_template = '<script type="text/x-handlebars-template" id="property-elb-app-tmpl">' + app_template + '</script>'
+    # #load remote html template
+    # $( 'head' ).append template
+    # $( 'head' ).append app_template
 
     #private
     loadModule = ( uid, current_main, tab_type ) ->
         console.log 'elb main, tab_type = ' + tab_type
 
-        #
         MC.data.current_sub_main = current_main
 
         #set view_type
@@ -31,6 +30,7 @@ define [ 'jquery',
 
         #
         require [ './module/design/property/elb/' + view_type,
+
                   './module/design/property/elb/model'
         ], ( view, model ) ->
 
@@ -101,14 +101,12 @@ define [ 'jquery',
             }
             
             #render
-            view.render( attributes )
+            view.render template, attributes
 
     unLoadModule = () ->
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
-        #ide_event.offListen ide_event.<EVENT_TYPE>
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public
     loadModule   : loadModule

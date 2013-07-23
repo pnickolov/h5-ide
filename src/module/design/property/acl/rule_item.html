@@ -1,0 +1,19 @@
+{{#each component.resource.EntrySet}}
+  <li>
+    <h5>{{#ifCond RuleNumber "32767"}}*{{else}}{{RuleNumber}}{{/ifCond}}</h5>
+    <div class="clearfix">
+      <span class="acl-rule-col1">
+        <a href="#" class="acl-rule-allow-cb tooltip {{#ifCond RuleAction "allow"}}allow{{/ifCond}}" data-tooltip="Allow/Deny"></a>
+      </span>
+      <span class="acl-rule-col2">
+        <span class="{{#if Egress}}acl-rule-inbound{{else}}acl-rule-outbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
+        <span class="acl-rule-protocol">{{Protocol}}</span>
+      </span>
+      <span class="acl-rule-col4"><a class="property-rule-delete-btn"></a></span>
+      <div class="acl-rule-col3">
+        <div class="acl-rule-source tooltip" data-tooltip="Source: 0.0.0.0/0 Destination: 0.0.0.0/0">{{CidrBlock}}</div>
+        <div class="acl-rule-port">{{PortRange.From}}-{{PortRange.To}}</div>
+      </div>
+    </div>
+  </li>
+{{/each}}

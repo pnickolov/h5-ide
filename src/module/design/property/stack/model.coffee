@@ -7,9 +7,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
     StackModel = Backbone.Model.extend {
 
         defaults :
-            'set_xxx'    : null
-            'get_xxx'    : null
             'stack_detail'  : null
+            'sg_display'    : null
 
         initialize : ->
             #listen
@@ -23,7 +22,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             stack_detail.region = constant.REGION_LABEL[MC.canvas_data.region]
             stack_detail.type = me.getStackType()
             stack_detail.is_vpc = true if stack_detail.type and stack_detail.type != 'EC2 Classic'
-            stack_detail.sg_list = me.getSecurityGroup()
+            
             if stack_detail.is_vpc
                 stack_detail.acl_list = me.getNetworkACL()
 
@@ -44,15 +43,49 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                 return 'Custom VPC'
 
         getSecurityGroup : ->
-            sg_list = []
+            me = this
+
+            stack_sg = {}
+            stack_sg.detail = []
+            stack_sg.rules_detail_ingress = []
+            stack_sg.rules_detail_egress = []
+
             _.map MC.canvas_property.sg_list, ( sg ) ->
-                desc = MC.canvas_data.component[sg.uid].resource.GroupDescription
-                member_count = if 'member' of sg then sg.member.length else 0
-                is_del = if member_count == 0 and MC.canvas_property.sg_list.length > 1 then true else false
-                rule_count = if 'rules' of sg then sg.rules.length else 0
-                sg_list.push { 'uid' : sg.uid, 'name' : sg.name, 'description' : desc, 'member_count' : member_count, 'rule_count' : rule_count, 'is_del' : is_del, 'is_shown' : true }
-            
-            sg_list
+                sg_detail = {}
+
+                sg_detail.uid = sg.uid
+                sg_detail.parent = sg.uid
+                sg_detail.members = if 'member' in sg then sg.member.length else 0
+                sg_detail.rules = MC.canvas_data.component[sg.uid].resource.IpPermissions.length + MC.canvas_data.component[sg.uid].resource.IpPermissionsEgress.length
+                sg_detail.name = MC.canvas_data.component[sg.uid].resource.GroupName
+                sg_detail.desc = MC.canvas_data.component[sg.uid].resource.GroupDescription
+                
+                stack_sg.rules_detail_ingress = stack_sg.rules_detail_ingress.concat MC.canvas_data.component[sg.uid].resource.IpPermissions
+                stack_sg.rules_detail_egress = stack_sg.rules_detail_egress.concat MC.canvas_data.component[sg.uid].resource.IpPermissionsEgress
+                
+                stack_sg.detail.push sg_detail
+
+            array_unique = ( ori_ary )->
+
+                if ori_ary.length == 0
+                    return []
+
+                ary = ori_ary.slice 0
+                tmp = []
+
+                $.each ary, (idx, value)->
+                    str = JSON.stringify value
+                    if str not in tmp
+                        tmp.push str
+                    null
+                                
+                return (JSON.parse item for item in tmp)
+
+
+            stack_sg.rules_detail_ingress = array_unique stack_sg.rules_detail_ingress
+            stack_sg.rules_detail_egress = array_unique stack_sg.rules_detail_egress
+                          
+            me.set 'sg_display', stack_sg
 
         deleteSecurityGroup : (uid) ->
             me = this

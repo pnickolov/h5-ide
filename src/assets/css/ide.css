@@ -2035,7 +2035,7 @@ a.sidebar-hider {
 }
 
 .secondary-panel {
-	cursor: pointer;
+/*	cursor: pointer;*/
 }
 
 .sg-info-list li {
@@ -2426,6 +2426,7 @@ a.sidebar-hider {
 	height: 100%;
 	width: 100%;
 }
+
 #add-sg-btn {
 	width: 100%;
 }
@@ -2818,6 +2819,7 @@ a.sidebar-hider {
 	background : #777;
 	color      : #fff;
 	text-align : center;
+	cursor: pointer;
 	
 }
 .property-rule-delete-btn:before {
@@ -2909,6 +2911,11 @@ a.sidebar-hider {
 	padding: 0;
 }
 
+.property-stack .create-sg {
+top: 2px;
+height: 35px;
+}
+
 /* property-rt */
 
 .property-routetable .property-item p {
@@ -2952,7 +2959,65 @@ a.sidebar-hider {
 }
 
 
+/* ACL Property Panel */
+#acl-secondary-panel-wrap {
+	position: absolute;
+	width: 280px;
+	right: -280px;
+	height: 100%;
+	top: 0;
+	background-color: #FFF;
+	z-index: 10;
+}
+#acl-secondary-panel {
+	height: 100%;
+	width: 100%;
+}
 
+.acl-header .acl-icon-add {
+	width: 36px;
+	height: 36px;
+	background-color: #CCC;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
 
+.acl-modal-one-row-left .radio, .radio-label {
+	/*float: left;*/
+}
 
+.acl-float-left {
+	float: left;
+	margin-right: 20px;
+}
 
+.acl-modal-one-row-left > label {
+	float: left;
+}
+
+.acl-modal-one-row-left .modal-acl-source-wrapper {
+	margin-top: 5px;
+	margin-left: 80px;
+}
+
+.modal-row {
+	margin-top: 20px;
+}
+
+.modal-row > label {
+	margin-right: 20px;
+}
+
+#modal-run-stack .modal-body {
+	width: 290px;
+}
+
+#modal-run-stack .selectbox {
+	width: 100px;
+}
+
+.acl-rules li:hover {
+	background-color: #fff;
+}

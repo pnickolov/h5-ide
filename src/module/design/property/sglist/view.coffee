@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sglist
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( ide_event ) ->
 
     SGListView = Backbone.View.extend {
 

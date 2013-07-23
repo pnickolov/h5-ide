@@ -21,25 +21,26 @@ define [ 'jquery',
         #
         require [ './module/design/toolbar/view', './module/design/toolbar/model' ], ( View, model ) ->
 
-            #
-            type      = null
-
             #view
             view       = new View()
             view.model = model
             view.render()
 
+            type = null
+
             #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, stack_name ) ->
-                console.log 'toolbar:RELOAD_RESOURCE, stack_name = ' + stack_name + ', type = ' + type
-                #check re-render
-                view.reRender type
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, item_name ) ->
+                if type.search('APP') >= 0
+                    console.log 'toolbar:RELOAD_RESOURCE, app name = ' + item_name + ', type = ' + type
+                else
+                    console.log 'toolbar:RELOAD_RESOURCE, stack name = ' + item_name + ', type = ' + type
+
                 #
                 type = type
                 #
                 model.setFlag type
                 #
-                view.render type
+                #view.render type
 
             #listen toolbar state change
             model.on 'UPDATE_TOOLBAR', () ->
@@ -85,6 +86,30 @@ define [ 'jquery',
             model.on 'SAVE_PNG_COMPLETE', ( base64_image ) ->
                 console.log 'SAVE_PNG_COMPLETE'
                 view.exportPNG base64_image
+
+            model.once 'TOOLBAR_STACK_RUN_SUCCESS', () ->
+                view.notify 'info', 'Run stack ' + MC.canvas_data.name + ' successfully.'
+            model.once 'TOOLBAR_STACK_RUN_FAILED', () ->
+                view.notify 'error', 'Run stack ' + MC.canvas_data.name + ' failed.'
+            model.once 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', () ->
+                view.notify 'info', 'Run stack ' + MC.canvas_data.name + ' request successfully.'
+            model.once 'TOOLBAR_STACK_RUN_REQUEST_ERROR', () ->
+                view.notify 'error', 'Run stack ' + MC.canvas_data.name + ' request failed.'
+
+            model.once 'TOOLBAR_STACK_SAVE_SUCCESS', () ->
+                view.notify 'info', 'Save stack ' + name + ' successfully.'
+            model.once 'TOOLBAR_STACK_SAVE_ERROR', () ->
+                view.notify 'error', 'Save stack ' + name + ' failed.'
+
+            model.once 'TOOLBAR_STACK_DUPLICATE_SUCCESS', () ->
+                view.notify 'info', 'Duplicate stack ' + name + ' successfully.'
+            model.once 'TOOLBAR_STACK_DUPLICATE_ERROR', () ->
+                view.notify 'error', 'Duplicate stack ' + name + ' failed.'
+
+            model.once 'TOOLBAR_STACK_DELETE_SUCCESS', () ->
+                view.notify 'info', 'Delete stack ' + MC.canvas_data.name + ' successfully.'
+            model.once 'TOOLBAR_STACK_DELETE_ERROR', () ->
+                view.notify 'error', 'Delete stack ' + MC.canvas_data.name + ' failed.'
 
     unLoadModule = () ->
         #view.remove()

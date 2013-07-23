@@ -12,18 +12,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
 
         defaults :
             'toolbar_flag'  : null
-            'stack_name'    : null
+            'item_name'     : null
 
         setFlag : (type, value) ->
             me = this
 
             #set stack name
             if MC.canvas_data.name
-                me.set 'stack_name', MC.canvas_data.name
+                me.set 'item_name', MC.canvas_data.name
 
             toolbar_flag_list = me.get 'toolbar_flag'
             if not toolbar_flag_list
-                toolbar_flag_list = { 'duplicate' : false, 'delete' : false, 'zoomin' : true, 'zoomout' : true }
+                toolbar_flag_list = { 'duplicate' : false, 'delete' : false, 'zoomin' : true, 'zoomout' : true, 'terminate' : true }
 
             if type is 'NEW_STACK'
                 toolbar_flag_list.duplicate  = false
@@ -38,6 +38,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'cons
                 toolbar_flag_list.zoomin     = value
             else if type is 'ZOOMOUT_STACK'
                 toolbar_flag_list.zoomout    = value
+            else if type is 'OPEN_APP'
+                toolbar_flag_list.run = true
 
             me.set 'toolbar_flag', toolbar_flag_list
             me.trigger 'UPDATE_TOOLBAR'

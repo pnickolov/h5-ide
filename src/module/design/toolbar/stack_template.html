@@ -1,6 +1,6 @@
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
-		<a href="#" class="btn-toolbar tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{stack_name}}"}' data-modal-dismiss="true"><i class="icon-toolbar-run"></i></a>
+		<a href="#" class="btn-toolbar tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_name}}"}' data-modal-dismiss="true"><i class="icon-toolbar-run"></i></a>
 	</li>
 	<li class="btn-toolbar">
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Save stack"><i class="icon-toolbar-save"></i></a>
@@ -18,7 +18,7 @@
 			{{/if}}
 
 			{{#if toolbar_flag.delete}}
-			<li><a class="btn-toolbar modal" id="toolbar-delete" href="#" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{stack_name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</a></li>
+			<li><a class="btn-toolbar modal" id="toolbar-delete" href="#" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</a></li>
 			{{else}}
 			<li><a class="btn-toolbar" id="toolbar-delete" data-tooltip="Delete" href="#"><i class="icon-toolbar-delete"></i>Delete</a></li>
 			{{/if}}

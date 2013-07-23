@@ -280,20 +280,22 @@ define [ 'constant',
 				# remove line between igw and rt
 				if portMap['igw-tgt'] and portMap['rtb-tgt-left']
 
+					remove_index = []
+
 					$.each MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet, ( index, route ) ->
 
 						if route.GatewayId and route.GatewayId.split('.')[0][1...] == portMap['igw-tgt']
 
-							MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet.splice index, 1
+							remove_index.push index
+					
+					$.each remove_index.sort().reverse(), ( i, v) ->
 
-							return false
-
+						MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet.splice v, 1
+							
 				# remove line between subnet and rt
-				if portMap['subnet-association-out'] and ( portMap['rtb-src-bottom'] or portMap['rtb-src-top'] )
+				if portMap['subnet-association-out'] and portMap['rtb-src']
 
-					rt_uid = null
-
-					if portMap['rtb-src-bottom'] then rt_uid = portMap['rtb-src-bottom'] else rt_uid = portMap['rtb-src-top']
+					rt_uid = portMap['rtb-src']
 
 					if MC.canvas_data.component[rt_uid].resource.AssociationSet != 0 and MC.canvas_data.component[rt_uid].resource.AssociationSet[0].Main != 'true'
 
@@ -312,13 +314,17 @@ define [ 'constant',
 
 					if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
 
+					remove_index = []
+
 					$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
 
 						if route.InstanceId and route.InstanceId.split('.')[0][1...] == portMap['instance-sg-in']
 
-							MC.canvas_data.component[rt_uid].resource.RouteSet.splice index, 1
+							remove_index.push index
 
-							return false
+					$.each remove_index.sort().reverse(), ( i, v) ->
+						
+						MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
 
 				# remove line between eni and rt
 				if portMap['eni-sg-in'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
@@ -327,26 +333,33 @@ define [ 'constant',
 
 					if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
 
+					remove_index = []
+
 					$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
 
 						if route.NetworkInterfaceId and route.NetworkInterfaceId.split('.')[0][1...] == portMap['eni-sg-in']
 
-							MC.canvas_data.component[rt_uid].resource.RouteSet.splice index, 1
+							remove_index.push index
 
-							return false
+					$.each remove_index.sort().reverse(), ( i, v) ->
+
+						MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
+							
 
 				# remove line between vgw and rt
 				if portMap['vgw-tgt'] and portMap['rtb-tgt-right']
+
+					remove_index = []
 
 					$.each MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet, ( index, route ) ->
 
 						if route.GatewayId and route.GatewayId.split('.')[0][1...] == portMap['vgw-tgt']
 
-							MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet.splice index, 1
+							remove_index.push index
 
-							return false
+					$.each remove_index.sort().reverse(), ( i, v) ->
 
-
+						MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet.splice v, 1
 
 
 			MC.canvas.remove $("#" + option.id)[0]

@@ -22,8 +22,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
             $( document )
                 .on( 'CANVAS_LINE_CREATE',          '#svg_canvas', this, this.createLine )
-                .on( 'CANVAS_OBJECT_DELETE',        '#svg_canvas', this, this.deleteObject )
-
 
         render     : () ->
             console.log 'property:rtb render'

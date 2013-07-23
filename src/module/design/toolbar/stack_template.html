@@ -6,14 +6,14 @@
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Save stack"><i class="icon-toolbar-save"></i></a>
 	</li>
 	<li class="selectbox btn-toolbar">
-		<div class="selection tooltip" data-tooltip="More Actions..." data-toggle="dropdown"></div>
+		<div class="selection tooltip" data-tooltip="More Actions...">
 			<span class="icon-toolbar-more-action"></span>
 		</div>
 		<ul class="dropdown" tabindex="-1">
 			{{#if toolbar_flag.duplicate}}
 			<li class="btn-toolbar" id="toolbar-duplicate" data-tooltip="Duplicate stack"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</li>
 			{{else}}
-			<li class="btn-toolbar disabled" id="toolbar-duplicate" data-tooltip="Duplicate"><i class="icon-toolbar-duplicate"></i>Duplicate</li>
+			<li class="btn-toolbar disabled" id="toolbar-duplicate" data-tooltip="Duplicate stack"><i class="icon-toolbar-duplicate"></i>Duplicate</li>
 			{{/if}}
 
 			{{#if toolbar_flag.delete}}
@@ -52,15 +52,13 @@
 </ul>
 <ul class="toolbar-btn-group">
 	<li class="selectbox btn-toolbar">
-		<div class="selection tooltip" data-toggle="dropdown" data-tooltip="Export..." id="toolbar-export">
+		<div class="selection tooltip" data-tooltip="Export..." id="toolbar-export">
 			<span class="icon-toolbar-export"></span>
 		</div>
 		<ul class="dropdown" tabindex="-1">
 			<li class="btn-toolbar" id="toolbar-export-png"><i class="icon-toolbar-export-png"></i>Export as PNG</li>
-			<li>
-				<a class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
-					<i class="icon-toolbar-export-json"></i>Export as Json
-			</li>
+			<li class="btn-toolbar modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
+				<i class="icon-toolbar-export-json"></i>Export as Json</li>
 			<!-- for debug -->
 			<li class="btn-toolbar" id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
 			<li class="btn-toolbar" id="toolbar-jsoncopy"  data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>

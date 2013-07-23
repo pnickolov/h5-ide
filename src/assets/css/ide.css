@@ -1478,7 +1478,10 @@ td.table-action a.btn {
 
 /* App/Stack Toolbar */
 #main-toolbar {
+	z-index: 2;
 	position: relative;
+	height: 43px;
+	width: 100%;
 	top: 0;
 	background: #fff;
 	border-bottom: 1px solid #ccc;
@@ -2800,7 +2803,7 @@ a.sidebar-hider {
 	display    : inline-block;
 }
 
-.acl-rule-allow-cb.checked {
+.acl-rule-allow-cb.allow {
 	background : green;
 }
 

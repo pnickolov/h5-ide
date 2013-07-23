@@ -7,8 +7,8 @@ var constant_data = {
 
 	COMPONENT_WIDTH: 100,
 	COMPONENT_HEIGHT: 100,
-	COMPONENT_WIDTH_GRID: 10,
-	COMPONENT_HEIGHT_GRID: 10,
+	// COMPONENT_WIDTH_GRID: 10,
+	// COMPONENT_HEIGHT_GRID: 10,
 
 	COMPONENT_SIZE:
 	{
@@ -17,9 +17,9 @@ var constant_data = {
 		'AWS.EC2.EBS.Volume': [10, 10],
 		'AWS.VPC.NetworkInterface': [10, 10],
 		'AWS.VPC.CustomerGateway': [20, 10],
-		'AWS.VPC.RouteTable': [10, 10],
-		'AWS.VPC.InternetGateway': [10, 10],
-		'AWS.VPC.VPNGateway': [10, 10]
+		'AWS.VPC.RouteTable': [8, 8],
+		'AWS.VPC.InternetGateway': [8, 8],
+		'AWS.VPC.VPNGateway': [8, 8]
 	},
 
 	GROUP_DEFAULT_SIZE:

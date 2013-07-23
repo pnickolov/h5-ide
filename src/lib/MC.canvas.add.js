@@ -146,7 +146,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				////3.az label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name',
-					'id': group.id + '_az_name'
+					'id': group.id + '_name'
 				})
 
 			).attr({
@@ -240,7 +240,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				////3.vpc label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name',
-					'id': group.id + '_vpc_name'
+					'id': group.id + '_name'
 				})
 
 			).attr({
@@ -362,7 +362,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////5.subnet label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
-					'class': 'group-label name'
+					'class': 'group-label name',
+					'id': group.id + '_name'
 				})
 
 			).attr({
@@ -1106,7 +1107,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				////3. cgw name
 				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name',
-					'id': group.id + '_cgw_name'
+					'id': group.id + '_name'
 				}),
 
 				////4. network name

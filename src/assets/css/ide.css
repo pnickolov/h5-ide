@@ -1533,6 +1533,11 @@ td.table-action a.btn {
 	border: none;
 }
 
+.toolbar-btn-group .selection {
+	width  : 40px;
+	height : 40px;
+}
+
 .toolbar-btn-group .dropdown-menu {
 	top: 40px !important;
 	left: -1px !important;

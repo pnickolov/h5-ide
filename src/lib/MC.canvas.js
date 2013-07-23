@@ -1274,15 +1274,15 @@ MC.canvas = {
 					coordinate[0] < end_x)
 					||
 					(coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0] > start_x &&
-					coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][1] < end_x)
+					coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0] < end_x)
 				)
 				&&
 				(
 					(coordinate[1] > start_y &&
 					coordinate[1] < end_y)
 					||
-					(coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID > start_y &&
-					coordinate[1] + MC.canvas.COMPONENT_HEIGHT_GRID < end_y)
+					(coordinate[1] + MC.canvas.COMPONENT_SIZE[ item.type ][1] > start_y &&
+					coordinate[1] + MC.canvas.COMPONENT_SIZE[ item.type ][1] < end_y)
 				)
 			)
 			{

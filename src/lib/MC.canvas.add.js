@@ -6,8 +6,8 @@ MC.canvas.add = function (flag, option, coordinate)
 		class_type = '',
 		component_data = {},
 		component_layout = {},
-		width = 140,
-		height = 120,
+		width = 100,
+		height = 100,
 		pad = 10,
 		top = 0;
 
@@ -474,9 +474,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				icon_volume_status = 'attached-normal';
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, width , height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
@@ -694,9 +697,12 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			icon_scheme = component_data.resource.Scheme === 'internal' ? 'internal' : 'internet';
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
@@ -797,9 +803,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.y = component_layout.coordinate[1];
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 80, 80).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
@@ -913,9 +922,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.y = component_layout.coordinate[1];
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 80, 80).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
@@ -1003,9 +1015,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.y = component_layout.coordinate[1];
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 80, 80).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
@@ -1083,9 +1098,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.networkName = component_layout.networkName;
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 200, 100).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
@@ -1170,9 +1188,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.y = component_layout.coordinate[1];
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5

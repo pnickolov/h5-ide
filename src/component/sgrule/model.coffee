@@ -7,8 +7,27 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
     SGRulePopupModel = Backbone.Model.extend {
 
         defaults :
-            'set_xxx'    : null
-            'get_xxx'    : null
+            inward   :
+                name : "instance"
+                sg   : ["DefaultSG", "CustomSG"]
+                connection : ["eni", "eni-1"]
+ 
+            outward  :
+                name : "eni"
+                sg   : ["DefaultSG", "CustomSG"]
+                connection : ["eni", "eni-1"]
+ 
+            sg_group : [
+                    {
+                        name  : "DefaultSG"
+                        rules : [ {
+                            egress     : true
+                            protocol   : "TCP"
+                            connection : "eni"
+                            port       : "1234"
+                        } ]
+                    }
+                ]
 
         initialize : ->
             #listen

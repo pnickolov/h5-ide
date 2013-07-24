@@ -3,15 +3,14 @@
 #############################
 
 define [ 'event', 'MC',
-         'text!/module/design/property/elb/app_template.html',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC, template ) ->
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
 
     ElbAppView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile template
+        template  : Handlebars.compile $( '#property-elb-app-tmpl' ).html()
 
         render     : () ->
             console.log 'property:elb app render'

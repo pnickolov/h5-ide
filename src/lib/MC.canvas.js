@@ -433,9 +433,15 @@ MC.canvas = {
 			mid_x,
 			mid_y,
 			//start.x>=end.x
-			start_0_90 = end_0_90 = start_180_270 = end_180_270 = false,
+			start_0_90 = false,
+			end_0_90 = false,
+			start_180_270 = false,
+			end_180_270 = false,
 			//start.x<end.x
-			start_0_270 = end_0_270 = start_90_180 = end_90_180 = false;
+			start_0_270 = false,
+			end_0_270 = false,
+			start_90_180 = false,
+			end_90_180 = false;
 
 		//deep copy
 		$.extend(true, start, start0);
@@ -1358,7 +1364,8 @@ MC.canvas.layout = {
 	{
 		var layout_data = MC.canvas.data.get("layout"),
 			connection_target_id,
-			tmp;
+			tmp,
+			sg_uids;
 
 		MC.paper = Canvon('svg_canvas');
 

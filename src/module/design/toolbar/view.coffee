@@ -157,11 +157,15 @@ define [ 'MC', 'event',
 
         clickUndoIcon : ->
             console.log 'clickUndoIcon'
+            #temp
+            require [ 'component/stackrun/main' ], ( stackrun_main ) ->
+                stackrun_main.loadModule()
 
         clickRedoIcon : ->
             console.log 'clickRedoIcon'
-            #
-            this.model.savePNG()
+            #temp
+            require [ 'component/sgrule/main' ], ( sgrule_main ) ->
+                sgrule_main.loadModule()
 
         clickExportPngIcon : ->
             console.log 'clickExportPngIcon'

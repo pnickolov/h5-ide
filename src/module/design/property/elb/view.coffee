@@ -2,7 +2,8 @@
 #  View(UI logic) for design/property/elb
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
+define ['event', 'MC',
+        'backbone', 'jquery', 'handlebars',
         'UI.fixedaccordion',
         'UI.secondarypanel',
         'UI.selectbox',
@@ -15,6 +16,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         el       : $ document
         tagName  : $ '.property-details'
+
+        template : Handlebars.compile $( '#property-elb-tmpl' ).html()
 
         initialize : ->
             #handlebars equal logic
@@ -51,12 +54,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             'change .property-elb-az-checkbox' : 'azCheckChanged'
 
-        render     : ( template, attributes ) ->
-
-            htmlTpl = Handlebars.compile template
+        render     : ( attributes ) ->
 
             console.log 'property:elb render'
-            $( '.property-details' ).html htmlTpl(attributes)
+            $( '.property-details' ).html this.template(attributes)
 
             health_detail = this.model.get('health_detail')
             $('#elb-property-slider-unhealthy').setSliderValue(health_detail.unhealthy_threshold)

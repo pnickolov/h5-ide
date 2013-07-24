@@ -6,8 +6,8 @@ MC.canvas.add = function (flag, option, coordinate)
 		class_type = '',
 		component_data = {},
 		component_layout = {},
-		width = 140,
-		height = 120,
+		width = 100,
+		height = 100,
 		pad = 10,
 		top = 0;
 
@@ -475,9 +475,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				icon_volume_status = 'attached-normal';
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, width , height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
@@ -695,9 +698,12 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			icon_scheme = component_data.resource.Scheme === 'internal' ? 'internal' : 'internet';
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
@@ -798,21 +804,24 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.y = component_layout.coordinate[1];
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 15, 15, 70, 70).attr({
+				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 10, 13, 60, 57).attr({
 					'id': group.id + '_rt_status'
 				}),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-left',
-					'transform': 'translate(15, 37)' + MC.canvas.PORT_LEFT_ROTATE,
+					'transform': 'translate(11, 25)' + MC.canvas.PORT_LEFT_ROTATE,
 					'data-name': 'rtb-tgt-left',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -823,7 +832,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-right',
-					'transform': 'translate(85, 37)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(69, 25)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'rtb-tgt-right',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -834,7 +843,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-top',
-					'transform': 'translate(50, 1)' + MC.canvas.PORT_UP_ROTATE,
+					'transform': 'translate(41, -4)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'top',
 					'data-type': 'association',
@@ -845,7 +854,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-bottom',
-					'transform': 'translate(50, 78)' + MC.canvas.PORT_DOWN_ROTATE,
+					'transform': 'translate(41, 66)' + MC.canvas.PORT_DOWN_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'bottom',
 					'data-type': 'association',
@@ -854,7 +863,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////6. routetable name
-				Canvon.text(50, 33, option.name).attr({
+				Canvon.text(41, 30, option.name).attr({
 					'class': 'node-label name',
 					'id': group.id + '_rt_name'
 				})
@@ -917,19 +926,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.y = component_layout.coordinate[1];
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/igw-canvas.png', 15, 15, 70, 70),
+				Canvon.image('../assets/images/ide/icon/igw-canvas.png', 10, 15, 60, 46),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-igw-unknown',
-					'transform': 'translate(17, 37)' + MC.canvas.PORT_LEFT_ROTATE,
+					'transform': 'translate(12, 25)' + MC.canvas.PORT_LEFT_ROTATE,
 					'data-name': 'igw-unknown',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -940,7 +952,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-igw-tgt',
-					'transform': 'translate(90, 37)' + MC.canvas.PORT_LEFT_ROTATE,
+					'transform': 'translate(76, 25)' + MC.canvas.PORT_LEFT_ROTATE,
 					'data-name': 'igw-tgt',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -949,7 +961,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////4. igw name
-				Canvon.text(50, 90, option.name).attr({
+				Canvon.text(40, 70, option.name).attr({
 					'class': 'node-label name'
 				})
 			).attr({
@@ -1007,19 +1019,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.y = component_layout.coordinate[1];
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/vgw-canvas.png', 15, 15, 70, 70),
+				Canvon.image('../assets/images/ide/icon/vgw-canvas.png', 10, 15, 60, 46),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-vgw-tgt',
-					'transform': 'translate(9, 37)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(4, 25)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'vgw-tgt',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -1030,7 +1045,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-purple port-vgw-vpn',
-					'transform': 'translate(83, 37)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(69, 25)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'vgw-vpn',
 					'data-position': 'right',
 					'data-type': 'vpn',
@@ -1039,7 +1054,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////4. vgw name
-				Canvon.text(50, 90, option.name).attr({
+				Canvon.text(40, 70, option.name).attr({
 					'class': 'node-label name'
 				})
 			).attr({
@@ -1087,19 +1102,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.networkName = component_layout.networkName;
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 200, 100).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/cgw-canvas.png', 13, 10, 173, 76),
+				Canvon.image('../assets/images/ide/icon/cgw-canvas.png', 13, 10, 167, 76),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-purple port-cgw-vpn',
-					'transform': 'translate(7, 37)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(7, 35)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'cgw-vpn',
 					'data-position': 'left',
 					'data-type': 'vpn',
@@ -1174,9 +1192,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.y = component_layout.coordinate[1];
 			}
 
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 			$(group).append(
 				////1. bg
-				Canvon.rectangle(0, 0, 100, 100).attr({
+				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5

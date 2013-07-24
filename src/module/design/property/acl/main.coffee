@@ -12,6 +12,14 @@ define [ 'jquery',
     current_view  = null
     current_model = null
 
+    #add handlebars script
+    template     = '<script type="text/x-handlebars-template" id="property-acl-tmpl">' + template + '</script>'
+    rule_template     = '<script type="text/x-handlebars-template" id="property-acl-rule-tmpl">' + rule_template + '</script>'
+
+    #load remote html template
+    $( 'head' ).append template
+    $( 'head' ).append rule_template
+
     #private
     loadModule = ( uid_parent, expended_accordion_id, uid ) ->
 
@@ -41,7 +49,7 @@ define [ 'jquery',
                 view.refreshRuleList uid, value
 
             #render
-            view.render expended_accordion_id, template, rule_template, model.attributes
+            view.render expended_accordion_id, model.attributes
 
     unLoadModule = () ->
         current_view.off()

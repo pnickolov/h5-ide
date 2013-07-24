@@ -56,15 +56,13 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 #
                 if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
                     #
-                    if type is 'OPEN_STACK' then model.setCanvasData( stack_info.resolved_data[0] )
+                    if type is 'OPEN_STACK'
+                        model.setCanvasData stack_info.resolved_data[0]
+                    else if type is 'OPEN_APP'
+                        model.setCanvasData target.resolved_data[0]
                     #temp
                     ide_event.trigger ide_event.RELOAD_RESOURCE, region_name, type, current_paltform, target
-
-                ###
-                if type is 'OPEN_APP'
-                    #
                 null
-                ###
 
             #listen
             ide_event.onLongListen ide_event.DELETE_TAB_DATA, ( tab_id ) ->
@@ -88,17 +86,18 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
     wrap = () ->
 
         require [ 'resource', 'property', 'toolbar', 'canvas' ], ( resource, property, toolbar, canvas ) ->
-            #load remote design/resource
-            resource.loadModule()
-
-            #load remote design/property
-            property.loadModule()
 
             #load remote design/canvas
             canvas.loadModule()
 
             #load remote design/toolbar
             toolbar.loadModule()
+
+            #load remote design/resource
+            resource.loadModule()
+
+            #load remote design/property
+            property.loadModule()
 
     #public
     loadModule   : loadModule

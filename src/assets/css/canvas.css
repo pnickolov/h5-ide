@@ -1,15 +1,20 @@
 /* Canvas */
+#canvas {
+	margin-top: 43px;
+	top: -6px;
+	z-index: 1;
+	width: 100%;
+	position: absolute;
+}
+
 #canvas_container {
+	padding: 20px;
 	overflow: hidden;
-	width: 1900px;
-	/*padding: 5px;*/
 	background: rgb(237, 237, 237);
-	height: 1430px;
 	position: relative;
 }
 
 #canvas_body {
-	margin: 20px;
 	border: 1px solid #ccc;
 	background: #fff url('../images/ide/grid.png');
 }

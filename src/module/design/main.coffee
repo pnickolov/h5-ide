@@ -88,17 +88,18 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
     wrap = () ->
 
         require [ 'resource', 'property', 'toolbar', 'canvas' ], ( resource, property, toolbar, canvas ) ->
-            #load remote design/resource
-            resource.loadModule()
-
-            #load remote design/property
-            property.loadModule()
 
             #load remote design/canvas
             canvas.loadModule()
 
             #load remote design/toolbar
             toolbar.loadModule()
+
+            #load remote design/resource
+            resource.loadModule()
+
+            #load remote design/property
+            property.loadModule()
 
     #public
     loadModule   : loadModule

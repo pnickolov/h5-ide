@@ -3019,6 +3019,19 @@ MC.canvas.event.groupResize = {
 		}
 
 		if (
+			(
+				(
+					type === 'AWS.VPC.VPC' &&
+					group_top >= 3 &&
+					group_left >= 5
+				)
+				||
+				(
+					type !== 'AWS.VPC.VPC' &&
+					group_top >= 2 &&
+					group_left >= 2
+				)
+			) &&
 			group_width > group_padding &&
 			group_height > group_padding &&
 			event.data.group_child.length === MC.canvas.areaChild(group_id, group_left, group_top, group_left + group_width, group_top + group_height).length
@@ -3029,6 +3042,8 @@ MC.canvas.event.groupResize = {
 				layout_connection_data = MC.canvas.data.get('layout.connection');
 
 				igw_gateway = $('.AWS-VPC-InternetGateway');
+				vgw_gateway = $('.AWS-VPC-VPNGateway');
+
 				if (igw_gateway[0])
 				{
 					igw_gateway_id = igw_gateway.attr('id');
@@ -3062,7 +3077,6 @@ MC.canvas.event.groupResize = {
 					});
 				}
 
-				vgw_gateway = $('.AWS-VPC-VPNGateway');
 				if (vgw_gateway[0])
 				{
 					vgw_gateway_id = vgw_gateway.attr('id');

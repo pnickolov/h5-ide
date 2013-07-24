@@ -814,7 +814,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 10, 13, 60, 57),
+				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 10, 13, 60, 57).attr({
+					'id': group.id + '_rt_status'
+				}),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -862,7 +864,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////6. routetable name
 				Canvon.text(41, 30, option.name).attr({
-					'class': 'node-label name'
+					'class': 'node-label name',
+					'id': group.id + '_rt_name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,

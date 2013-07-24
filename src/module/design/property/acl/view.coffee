@@ -80,8 +80,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             ruleNumber = $('#modal-acl-number').val()
             action = $('#acl-add-model-action-allow').prop('checked')
             inboundDirection = $('#acl-add-model-direction-inbound').prop('checked')
-            source = $.trim($('#acl-add-model-source-select').find('.cur-value').text())
-            protocol = $.trim($('#acl-rule-modal-protocol-select').find('.cur-value').text())
+            source = $.trim($('#acl-add-model-source-select').find('.selection').text())
+            protocol = $.trim($('#acl-rule-modal-protocol-select').find('.selection').text())
             port = $('#acl-rule-modal-port-input').val()
 
             this.trigger 'ADD_RULE_TO_ACL', {

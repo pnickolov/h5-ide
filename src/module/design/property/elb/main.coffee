@@ -3,21 +3,12 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/elb/template.html',
-         'text!/module/design/property/elb/app_template.html',
          'event'
-], ( $, template, app_template, ide_event ) ->
+], ( $, ide_event ) ->
 
     #
     current_view  = null
     current_model = null
-
-    #add handlebars script
-    # template     = '<script type="text/x-handlebars-template" id="property-elb-tmpl">' + template + '</script>'
-    # app_template = '<script type="text/x-handlebars-template" id="property-elb-app-tmpl">' + app_template + '</script>'
-    # #load remote html template
-    # $( 'head' ).append template
-    # $( 'head' ).append app_template
 
     #private
     loadModule = ( uid, current_main, tab_type ) ->
@@ -41,7 +32,6 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
-            #view
             view.model    = model
 
             #event
@@ -92,16 +82,10 @@ define [ 'jquery',
                     view.model.addAZToELB uid, value
 
             #model
-            model.initELB uid
-            attributes = {
-                component : MC.canvas_data.component[uid],
-                health_detail: model.get('health_detail'),
-                elb_detail: model.get('elb_detail'),
-                az_detail: model.get('az_detail')
-            }
+            model.init uid
             
             #render
-            view.render template, attributes
+            view.render model.attributes
 
     unLoadModule = () ->
         current_view.off()

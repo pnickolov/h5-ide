@@ -32,7 +32,7 @@ var Tabbar = {
 		$('#tab-bar ul').append(dragging_tab);
 		target.css('visibility', 'hidden');
 
-		$(document.body).on('mousemove', {
+		$(document).on('mousemove', {
 			'target': target,
 			'dragging_tab': dragging_tab,
 			'offset_left': $('#tab-bar').offset().left + event.pageX - target.offset().left,
@@ -40,7 +40,7 @@ var Tabbar = {
 			'tab_width': tab_list.width()
 		}, Tabbar.mousemove);
 
-		$(document.body).on('mouseup', {
+		$(document).on('mouseup', {
 			'target': target,
 			'dragging_tab': dragging_tab
 		}, Tabbar.mouseup);
@@ -80,7 +80,7 @@ var Tabbar = {
 	{
 		event.data.target.css('visibility', 'visible');
 		event.data.dragging_tab.remove();
-		$(document.body).off({
+		$(document).off({
 			'mousemove': Tabbar.mousemove,
 			'mouseup': Tabbar.mouseup
 		});

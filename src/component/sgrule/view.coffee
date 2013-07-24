@@ -2,7 +2,7 @@
 #  View(UI logic) for component/sgrule
 #############################
 
-define [ 
+define [
          'text!/component/sgrule/template.html',
          'text!/component/sgrule/list_template.html',
          'event', 'backbone', 'jquery', 'handlebars', 'UI.modal' ], ( template, list_template, ide_event ) ->
@@ -24,7 +24,7 @@ define [
             # Update sidebar
             this.updateSidebar()
 
-            self = this;
+            self = this
             # Bind Events
             $modal.on( "click", ".sg-rule-create-add",   ()->
                                                             self.addRule() )
@@ -53,13 +53,13 @@ define [
           # TODO : Insert rule to the sidebar
 
           # Switch to done view.
-          this.$el.animate({left:"+=100px"}, 300).toggleClass('done', true);
+          this.$el.animate({left:"+=100px"}, 300).toggleClass('done', true)
 
           # Update sidebar
           this.updateSidebar()
 
         readdRule : () ->
-          this.$el.animate({left:"-=100px"}, 300).toggleClass('done', false);
+          this.$el.animate({left:"-=100px"}, 300).toggleClass('done', false)
 
         deleteRule : () ->
           # `this` points to the view

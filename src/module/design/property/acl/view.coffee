@@ -2,13 +2,18 @@
 #  View(UI logic) for design/property/acl
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event',
+         'text!/module/design/property/acl/template.html',
+         'text!/module/design/property/acl/rule_item.html',
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, template, rule_template ) ->
 
    ACLView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
-        ruleTpl  : null
+
+        htmlTpl  : Handlebars.compile template
+        ruleTpl  : Handlebars.compile rule_template
 
         initialize : ->
             #handlebars equal logic
@@ -26,13 +31,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         instance_expended_id : 0
 
-        render     : (expended_accordion_id, template, rule_template, attributes) ->
+        render     : (expended_accordion_id, attributes) ->
             console.log 'property:acl render'
-            htmlTpl = Handlebars.compile template
 
-            $('#acl-secondary-panel-wrap').html htmlTpl(attributes)
-
-            this.ruleTpl = Handlebars.compile rule_template
+            $('#acl-secondary-panel-wrap').html this.htmlTpl(attributes)
 
             $('#acl-secondary-panel-wrap .acl-rules').html this.ruleTpl(attributes)
 
@@ -72,6 +74,22 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         showCreateRuleModal : () ->
             modal MC.template.modalAddACL {}, true
+            
+            subnetMap = {}
+
+            # subnet list
+            _.each MC.canvas_data.component, (value, key) ->
+                compType = value.type
+                if compType is 'AWS.VPC.Subnet'
+                    subnetMap[value.name] = value.resource.CidrBlock
+                null
+
+            # load subnet select menu
+            _.each subnetMap, (value, key) ->
+                $('#acl-add-model-source-select .dropdown').empty().append(
+                    '<li class="item tooltip"><div class="main truncate">' + key + '</div></li>'
+                )
+
             scrollbar.init()
             return false
 

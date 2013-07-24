@@ -11,11 +11,15 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'health_detail' : null
             'listener_detail'   :   null
             'az_detail' :   null
+            'component' :   null
 
-        initELB : ( uid ) ->
+        init : ( uid ) ->
             allComp = MC.canvas_data.component
             
             elb_data = MC.canvas_data.component[ uid ]
+
+            this.set 'component', elb_data
+
             scheme = elb_data.resource.Scheme
 
             # have igw ?

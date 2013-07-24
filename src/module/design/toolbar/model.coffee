@@ -364,7 +364,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             is_instance_store = false
 
-            for node in MC.canvas_data.layout.node
+            for node in MC.canvas_data.layout.component.node
                 if node.rootDeviceType == 'instance-store'
                     is_instance_store = true
                     break

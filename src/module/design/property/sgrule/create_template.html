@@ -1,0 +1,384 @@
+<header class="modal-header sg-rule-create-h"><h3>Create Security Group Rule</h3><i class="modal-close">&times;</i></header>
+
+<article class="modal-body" id="sg-rule-create-modal">
+  <section class="sg-rule-create-add-wrap outward">
+    <p>Add rule in security group of:</p>
+    <section class="sg-node-wrap clearfix">
+      <div class="left">
+        <div class="radio">
+          <input type="radio" name="sg-rule-create-tgt" checked="checked" id="sg-rule-create-tgt-o">
+          <label for="sg-rule-create-tgt-o"></label>
+        </div>
+        <label for="sg-rule-create-tgt-o">{{outward.name}}</label>
+      </div>
+      <div class="left">
+        <div class="radio">
+          <input type="radio" name="sg-rule-create-tgt" id="sg-rule-create-tgt-i">
+          <label for="sg-rule-create-tgt-i"></label>
+        </div>
+        <label for="sg-rule-create-tgt-i">{{inward.name}}</label>
+      </div>
+    </section>
+
+    <ul class="sg-rule-create" id="sg-rule-create-outward">
+      <li>
+        <label>Security Group</label>
+        <div class="selectbox">
+          <div class="selection" style="width:300px;height:30px;">{{outward.sg.[0]}}</div>
+          <ul class="dropdown">
+            {{#each outward.sg}}
+              <li class="item">{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </li>
+      
+      <li class="clearfix">
+        <label class="left">Direction</label>
+        <div class="sg-rule-dir">
+          <div class="left">
+            <div class="radio">
+              <input type="radio" name="sg-rule-create-dir1" checked="checked" id="sg-rule-create-dir1-i">
+              <label for="sg-rule-create-dir1-i"></label>
+            </div>
+            <span>Inbound</span>
+          </div>
+          <div class="left">
+            <div class="radio">
+              <input type="radio" name="sg-rule-create-dir1" id="sg-rule-create-dir1-o">
+              <label for="sg-rule-create-dir1-o"></label>
+            </div>
+            <span>Outbound</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="clearfix">
+        <label class="left">Source</label>
+        <div class="selectbox">
+          <div class="selection" style="width:200px;height:30px;">{{outward.connection.[0]}}</div>
+          <ul class="dropdown">
+            {{#each outward.connection}}
+              <li class="item">{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </li>
+
+      <li class="clearfix">
+        <label class="left" >Protocol</label>
+
+        <div class="selectbox sg-proto-option" id="sg-create-proto1" data-protocal-type="tcp">
+          <div class="selection">TCP</div>
+          <ul class="dropdown" tabindex="-1">
+            <li class="selected item" data-id="tcp">TCP</li>
+            <li class="item" data-id="udp">UDP</li>
+            <li class="item" data-id="icmp">ICMP</li>
+            {{#if isclassic}}
+            {{else}}
+            <li class="item" data-id="custom">Custom</li>
+            <li class="item" data-id="all">All</li>
+            {{/if}}
+          </ul>
+        </div>
+
+        <div class="sg-create-proto-inputs">
+          <section class="sg-proto-input show">
+            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+          </section>
+
+          <section class="sg-proto-input">
+            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+          </section>
+
+          <section class="selectbox sg-proto-input">
+            <div class="selection">Echo Reply(0)</div>
+            <div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+              <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+              <ul tabindex="-1">
+                <li class="item selected" data-id="0">Echo Reply(0)</li>
+                <li class="item" data-id="3">Destination Unreachable(3) ...</li>
+                <li class="item" data-id="4">Source Quench(4)</li>
+                <li class="item" data-id="5">Redirect Message(5) ...</li>
+                <li class="item" data-id="6">Alternate Host Address(6)</li>
+                <li class="item" data-id="8">Echo Request(8)</li>
+                <li class="item" data-id="9">Router Advertisement(9)</li>
+                <li class="item" data-id="10">Router Solicitation(10)</li>
+                <li class="item" data-id="11">Time Exceeded(11) ...</li>
+                <li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
+                <li class="item" data-id="13">Timestamp(13)</li>
+                <li class="item" data-id="14">Timestamp Reply(14)</li>
+                <li class="item" data-id="15">Information Request(15)</li>
+                <li class="item" data-id="16">Information Reply(16)</li>
+                <li class="item" data-id="17">Address Mask Request(17)</li>
+                <li class="item" data-id="18">Address Mask Reply(18)</li>
+                <li class="item" data-id="30">Traceroute(30)</li>
+                <li class="item" data-id="31">Datagram Conversion Error(31)</li>
+                <li class="item" data-id="32">Mobile Host Redirect(32)</li>
+                <li class="item" data-id="33">Where Are You(33)</li>
+                <li class="item" data-id="34">Here I Am(34)</li>
+                <li class="item" data-id="35">Mobile Registration Request(35)</li>
+                <li class="item" data-id="36">Mobile Registration Reply(36)</li>
+                <li class="item" data-id="37">Domain Name Request(37)</li>
+                <li class="item" data-id="38">Domain Name Reply(38)</li>
+                <li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
+                <li class="item" data-id="40">Photuris Security Failures(40)</li>
+                <li class="item" data-id="-1">All(-1)</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="selectbox sg-proto-input">
+            <div class="selection">All(-1)</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="item selected" data-id="-1">All(-1)</li>
+              <li class="item" data-id="0">destination network unreachable(0)</li>
+              <li class="item" data-id="1">destination host unreachable(1)</li>
+              <li class="item" data-id="2">destination protocol unreachable(2)</li>
+              <li class="item" data-id="3">destination port unreachable(3)</li>
+              <li class="item" data-id="4">fragmentation required and DF flag set(4)</li>
+              <li class="item" data-id="5">source route failed(5)</li>
+              <li class="item" data-id="6">destination network unknown(6)</li>
+              <li class="item" data-id="7">destination host unknown(7)</li>
+              <li class="item" data-id="8">source host isolated(8)</li>
+              <li class="item" data-id="9">network administratively prohibited(9)</li>
+              <li class="item" data-id="10">host administratively prohibited(10)</li>
+              <li class="item" data-id="11">network unreachable for TOS(11)</li>
+              <li class="item" data-id="12">host unreachable for TOS(12)</li>
+              <li class="item" data-id="13">communication administratively prohibited(13)</li>
+            </ul>
+          </section>
+
+          <section class="selectbox sg-proto-input">
+            <div class="selection">All(-1)</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="selected item" data-id="-1">All(-1)</li>
+              <li class="item" data-id="0">redirect datagram for the network(0)</li>
+              <li class="item" data-id="1">redirect datagram for the host(1)</li>
+              <li class="item" data-id="2">redirect datagram for the TOS & network(2)</li>
+              <li class="item" data-id="3">redirect datagram for the TOS & host(3)</li>
+            </ul>
+          </section>
+
+          <section class="selectbox sg-proto-input">
+            <div class="selection">All(-1)</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="item selected" data-id="-1">All(-1)</li>
+              <li class="item" data-id="0">TTL expired transit(0)</li>
+              <li class="item" data-id="1">fragmentation reasembly time exceeded(1)</li>
+            </ul>
+          </section>
+
+          <section class="selectbox sg-proto-input">
+            <div class="selection">All(-1)</div>
+            <ul class="dropdown" role="menu">
+              <li class="item selected" data-id="-1">All(-1)</li>
+              <li class="item" data-id="0">pointer indicates the error(0)</li>
+              <li class="item" data-id="1">missing a required option(1)</li>
+              <li class="item" data-id="2">bad length(2)</li>
+            </ul>
+          </section>
+
+          <section class="sg-proto-input">
+            <input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="">
+          </section>
+
+          <section class="sg-proto-input">
+            Port Range:<span>0-65535</span>
+          </section>
+
+        </div>
+
+      </li>
+
+      <li>
+        <button class="btn btn-blue sg-rule-create-add">Add Rule</button>
+      </li>
+    </ul>
+
+    <ul class="sg-rule-create" id="sg-rule-create-inward">
+      <li>
+        <label>Security Group</label>
+        <div class="selectbox">
+          <div class="selection" style="width:300px;height:30px;">{{inward.sg.[0]}}</div>
+          <ul class="dropdown">
+            {{#each inward.sg}}
+              <li class="item">{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </li>
+      
+      <li class="clearfix">
+        <label>Direction</label>
+        <div class="sg-rule-dir">
+          <div class="left">
+            <div class="radio">
+              <input type="radio" name="sg-rule-create-dir2" checked="checked" id="sg-rule-create-dir2-i">
+              <label for="sg-rule-create-dir2-i"></label>
+            </div>
+            <span>Inbound</span>
+          </div>
+          <div class="left">
+            <div class="radio">
+              <input type="radio" name="sg-rule-create-dir2" id="sg-rule-create-dir2-o">
+              <label for="sg-rule-create-dir2-o"></label>
+            </div>
+            <span>Outbound</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="clearfix">
+        <label class="left">Source</label>
+        <div class="selectbox">
+          <div class="selection" style="width:200px;height:30px;">{{inward.connection.[0]}}</div>
+          <ul class="dropdown">
+            {{#each inward.connection}}
+              <li class="item">{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </li>
+
+      <li class="clearfix">
+        <label class="left" >Protocol</label>
+
+        <div class="selectbox sg-proto-option" id="sg-create-proto2" data-protocal-type="tcp">
+          <div class="selection">TCP</div>
+          <ul class="dropdown" tabindex="-1">
+            <li class="selected item" data-id="tcp">TCP</li>
+            <li class="item" data-id="udp">UDP</li>
+            <li class="item" data-id="icmp">ICMP</li>
+            {{#if isclassic}}
+            {{else}}
+            <li class="item" data-id="custom">Custom</li>
+            <li class="item" data-id="all">All</li>
+            {{/if}}
+          </ul>
+        </div>
+
+        <div class="sg-create-proto-inputs">
+          <section class="sg-proto-input show">
+            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+          </section>
+
+          <section class="sg-proto-input">
+            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+          </section>
+
+          <section class="selectbox sg-proto-input">
+            <div class="selection">Echo Reply(0)</div>
+            <div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+              <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+              <ul tabindex="-1">
+                <li class="item selected" data-id="0">Echo Reply(0)</li>
+                <li class="item" data-id="3">Destination Unreachable(3) ...</li>
+                <li class="item" data-id="4">Source Quench(4)</li>
+                <li class="item" data-id="5">Redirect Message(5) ...</li>
+                <li class="item" data-id="6">Alternate Host Address(6)</li>
+                <li class="item" data-id="8">Echo Request(8)</li>
+                <li class="item" data-id="9">Router Advertisement(9)</li>
+                <li class="item" data-id="10">Router Solicitation(10)</li>
+                <li class="item" data-id="11">Time Exceeded(11) ...</li>
+                <li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
+                <li class="item" data-id="13">Timestamp(13)</li>
+                <li class="item" data-id="14">Timestamp Reply(14)</li>
+                <li class="item" data-id="15">Information Request(15)</li>
+                <li class="item" data-id="16">Information Reply(16)</li>
+                <li class="item" data-id="17">Address Mask Request(17)</li>
+                <li class="item" data-id="18">Address Mask Reply(18)</li>
+                <li class="item" data-id="30">Traceroute(30)</li>
+                <li class="item" data-id="31">Datagram Conversion Error(31)</li>
+                <li class="item" data-id="32">Mobile Host Redirect(32)</li>
+                <li class="item" data-id="33">Where Are You(33)</li>
+                <li class="item" data-id="34">Here I Am(34)</li>
+                <li class="item" data-id="35">Mobile Registration Request(35)</li>
+                <li class="item" data-id="36">Mobile Registration Reply(36)</li>
+                <li class="item" data-id="37">Domain Name Request(37)</li>
+                <li class="item" data-id="38">Domain Name Reply(38)</li>
+                <li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
+                <li class="item" data-id="40">Photuris Security Failures(40)</li>
+                <li class="item" data-id="-1">All(-1)</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="selectbox sg-proto-input">
+            <div class="selection">All(-1)</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="item selected" data-id="-1">All(-1)</li>
+              <li class="item" data-id="0">destination network unreachable(0)</li>
+              <li class="item" data-id="1">destination host unreachable(1)</li>
+              <li class="item" data-id="2">destination protocol unreachable(2)</li>
+              <li class="item" data-id="3">destination port unreachable(3)</li>
+              <li class="item" data-id="4">fragmentation required and DF flag set(4)</li>
+              <li class="item" data-id="5">source route failed(5)</li>
+              <li class="item" data-id="6">destination network unknown(6)</li>
+              <li class="item" data-id="7">destination host unknown(7)</li>
+              <li class="item" data-id="8">source host isolated(8)</li>
+              <li class="item" data-id="9">network administratively prohibited(9)</li>
+              <li class="item" data-id="10">host administratively prohibited(10)</li>
+              <li class="item" data-id="11">network unreachable for TOS(11)</li>
+              <li class="item" data-id="12">host unreachable for TOS(12)</li>
+              <li class="item" data-id="13">communication administratively prohibited(13)</li>
+            </ul>
+          </section>
+
+          <section class="selectbox sg-proto-input">
+            <div class="selection">All(-1)</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="selected item" data-id="-1">All(-1)</li>
+              <li class="item" data-id="0">redirect datagram for the network(0)</li>
+              <li class="item" data-id="1">redirect datagram for the host(1)</li>
+              <li class="item" data-id="2">redirect datagram for the TOS & network(2)</li>
+              <li class="item" data-id="3">redirect datagram for the TOS & host(3)</li>
+            </ul>
+          </section>
+
+          <section class="selectbox sg-proto-input">
+            <div class="selection">All(-1)</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="item selected" data-id="-1">All(-1)</li>
+              <li class="item" data-id="0">TTL expired transit(0)</li>
+              <li class="item" data-id="1">fragmentation reasembly time exceeded(1)</li>
+            </ul>
+          </section>
+
+          <section class="selectbox sg-proto-input">
+            <div class="selection">All(-1)</div>
+            <ul class="dropdown" role="menu">
+              <li class="item selected" data-id="-1">All(-1)</li>
+              <li class="item" data-id="0">pointer indicates the error(0)</li>
+              <li class="item" data-id="1">missing a required option(1)</li>
+              <li class="item" data-id="2">bad length(2)</li>
+            </ul>
+          </section>
+
+          <section class="sg-proto-input">
+            <input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="">
+          </section>
+
+          <section class="sg-proto-input">
+            Port Range:<span>0-65535</span>
+          </section>
+
+        </div>
+
+      </li>
+
+      <li>
+        <button class="btn btn-blue sg-rule-create-add">Add Rule</button>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sg-rule-create-done-wrap">
+    A security group rule has been created between {{outward.name}} and {{inward.name}}.
+    <button class="btn btn-silver sg-rule-create-readd">Add another rule</button>
+
+    <button class="btn btn-blue modal-close">Close</button>
+  </section>
+</article>
+
+<aside class="sg-rule-create-sidebar"></aside>

@@ -1871,18 +1871,48 @@ MC.canvas.event.dragable = {
 					group_data = layout_group_data[ target_id ],
 					group_coordinate = group_data.coordinate,
 					group_size = group_data.size,
-					match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1]),
-					areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]),
-					parentGroup = MC.canvas.parentGroup(target_id, group_data.type, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]),
 					child_stack = [],
 					unique_stack = [],
 					coordinate_fixed = false,
+					match_place,
+					areaChild,
+					parentGroup,
 					fixed_areaChild,
 					group_offsetX,
 					group_offsetY,
 					matched_child,
 					child_data,
 					child_type;
+
+				if (group_data.type === 'AWS.VPC.VPC')
+				{
+					if ( coordinate.y <= 3)
+					{
+						 coordinate.y = 3;
+					}
+
+					if (coordinate.x <= 5)
+					{
+						coordinate.x = 5;
+					}
+				}
+
+				if (group_data.type !== 'AWS.VPC.VPC')
+				{
+					if (coordinate.y <= 2)
+					{
+						 coordinate.y = 2;
+					}
+
+					if (coordinate.x <= 2)
+					{
+						coordinate.x = 2;
+					}
+				}
+
+				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1]);
+				areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
+				parentGroup = MC.canvas.parentGroup(target_id, group_data.type, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
 
 				$.each(areaChild, function (index, item)
 				{
@@ -1944,31 +1974,15 @@ MC.canvas.event.dragable = {
 
 				if (
 					(
-						(
-							group_data.type === 'AWS.VPC.VPC' &&
-							coordinate.x > 5 &&
-							coordinate.y > 2
-						)
-						||
-						(
-							group_data.type !== 'AWS.VPC.VPC' &&
-							coordinate.x > 1 &&
-							coordinate.y > 1
-						)
+						coordinate_fixed &&
+						event.data.groupChild.length === fixed_areaChild.length
 					)
-					&&
+					||
 					(
-						(
-							coordinate_fixed &&
-							event.data.groupChild.length === fixed_areaChild.length
-						)
-						||
-						(
-							!coordinate_fixed &&
-							match_place.is_matched &&
-							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
-							event.data.groupChild.length === unique_stack.length
-						)
+						!coordinate_fixed &&
+						match_place.is_matched &&
+						MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
+						event.data.groupChild.length === unique_stack.length
 					)
 				)
 				{

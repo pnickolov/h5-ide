@@ -15,11 +15,16 @@ MC.canvas = {
 
 	selected_node: [],
 
+	getState: function ()
+	{
+		return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
+	},
+
 	display: function (id, key, is_visible)
 	{
 		var target = $('#' + id + '_' + key);
 
-		if (is_visible === null || is_visible === undefined )
+		if (is_visible === null || is_visible === undefined)
 		{
 			switch (target.attr('display'))
 			{

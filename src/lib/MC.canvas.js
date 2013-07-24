@@ -3805,6 +3805,62 @@ MC.canvas.event.keyEvent = function (event)
 		return false;
 	}
 
+	if (
+		keyCode === 9 &&
+		MC.canvas.selected_node.length === 1 &&
+		MC.canvas.selected_node[ 0 ].getAttribute('data-type') === 'node'
+	)
+	{
+		var layout_node_data = MC.canvas.data.get('layout.component.node'),
+			current_node_id = MC.canvas.selected_node[ 0 ].id,
+			node_stack = [],
+			index = 0,
+			current_index,
+			next_node,
+			clone_node;
+
+		$.each(layout_node_data, function (key, value)
+		{
+			if (key === current_node_id)
+			{
+				current_index = index;
+			}
+
+			node_stack.push(key);
+
+			index++;
+		});
+
+		if (current_index === node_stack.length - 1)
+		{
+			current_index = 0;
+		}
+		else
+		{
+			current_index++;
+		}
+
+		next_node = $('#' + node_stack[ current_index ]);
+
+		MC.canvas.event.clearSelected();
+
+		next_node.attr('class', function (index, key)
+		{
+			return key + ' selected';
+		});
+
+		// Append to top
+		clone_node = next_node.clone();
+		next_node.remove();
+		$('#node_layer').append(clone_node);
+
+		MC.canvas.selected_node.push(clone_node[0]);
+
+		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+
+		return false;
+	}
+
 	// Move node
 	if (
 		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
@@ -3891,6 +3947,8 @@ MC.canvas.event.keyEvent = function (event)
 				);
 			});
 		}
+
+		return false;
 	}
 };
 

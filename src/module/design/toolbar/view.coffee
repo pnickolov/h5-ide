@@ -27,9 +27,9 @@ define [ 'MC', 'event',
             'click .icon-toolbar-redo'          : 'clickRedoIcon'
             'click #toolbar-export-png'         : 'clickExportPngIcon'
             'click #toolbar-export-json'        : 'clickExportJSONIcon'
-            'click .icon-toolbar-stop'          : 'clickStopApp'
-            'click .icon-toolbar-run'           : 'clickRunApp'
-            'click .icon-toolbar-terminate'     : 'clickTerminateApp'
+            'click #toolbar-stop-app'           : 'clickStopApp'
+            'click #toolbar-start-app'          : 'clickStartApp'
+            'click #toolbar-terminate-app'      : 'clickTerminateApp'
             #for debug
             'click #toolbar-jsondiff'           : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'           : 'clickOpenJSONView'
@@ -38,7 +38,7 @@ define [ 'MC', 'event',
         render   : ( type ) ->
             console.log 'toolbar render'
             #
-            if type is 'OPEN_APP'
+            if type is 'app'
                 $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
             else
                 $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
@@ -59,22 +59,26 @@ define [ 'MC', 'event',
         clickRunIcon : ->
             me = this
 
-            target = $( '#main-toolbar' )
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'clickRunIcon'
+            if not me.model.attributes.is_pending
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'clickRunIcon'
 
-                app_name = $('.modal-input-value').val()
+                    app_name = $('.modal-input-value').val()
 
-                #check app name
-                if not app_name
-                    notification 'error', 'No app name.'
-                    return
-                if app_name in MC.data.app_list[MC.canvas_data.region]
-                    notification 'error', 'Repeated app name.'
-                    return
+                    #check app name
+                    if not app_name
+                        notification 'error', 'No app name.'
+                        return
+                    if app_name in MC.data.app_list[MC.canvas_data.region]
+                        notification 'error', 'Repeated app name.'
+                        return
 
-                me.trigger 'TOOLBAR_RUN_CLICK', app_name
-                modal.close()
+                    me.trigger 'TOOLBAR_RUN_CLICK', app_name
+                    modal.close()
+
+            else
+                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
             true
 
@@ -83,14 +87,17 @@ define [ 'MC', 'event',
 
             name = MC.canvas_data.name
 
-            if not name
-                notification 'error', 'No stack name.'
-            else if name.slice(0, 8) == 'untitled'
-                notification 'error', 'Please modify the initial stack name'
-            else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
-                notification 'error', 'Repeated stack name'
+            if not this.model.attributes.is_pending
+                if not name
+                    notification 'error', 'No stack name.'
+                else if name.slice(0, 8) == 'untitled'
+                    notification 'error', 'Please modify the initial stack name'
+                else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
+                    notification 'error', 'Repeated stack name'
+                else
+                    this.trigger 'TOOLBAR_SAVE_CLICK'
             else
-                this.trigger 'TOOLBAR_SAVE_CLICK'
+                notification 'warn', this.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
             true
 
@@ -99,25 +106,33 @@ define [ 'MC', 'event',
 
             name     = MC.canvas_data.name
             new_name = name + '-copy'
-            #check name
-            if not name
-                notification 'error', 'No stack name.'
-            else if new_name in MC.data.stack_list[MC.canvas_data.region]
-                notification 'error', 'Repeated stack name.'
+
+            if not this.model.attributes.is_pending
+                #check name
+                if not name
+                    notification 'error', 'No stack name.'
+                else if new_name in MC.data.stack_list[MC.canvas_data.region]
+                    notification 'error', 'Repeated stack name.'
+                else
+                    this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name
             else
-                this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name
+                notification 'warn', this.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
             true
 
         clickDeleteIcon : ->
             me = this
 
-            target = $( '#main-toolbar' )
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'clickDeleteIcon'
-                modal.close()
+            if not me.model.attributes.is_pending
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'clickDeleteIcon'
+                    modal.close()
 
-                me.trigger 'TOOLBAR_DELETE_CLICK'
+                    me.trigger 'TOOLBAR_DELETE_CLICK'
+            else
+                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
+
             true
 
         clickNewStackIcon : ->
@@ -126,11 +141,19 @@ define [ 'MC', 'event',
 
         clickZoomInIcon : ->
             console.log 'clickZoomInIcon'
-            this.trigger 'TOOLBAR_ZOOMIN_CLICK'
+
+            if not this.model.attributes.is_pending
+                this.trigger 'TOOLBAR_ZOOMIN_CLICK'
+            else
+                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
         clickZoomOutIcon : ->
             console.log 'clickZoomOutIcon'
-            this.trigger 'TOOLBAR_ZOOMOUT_CLICK'
+
+            if not this.model.attributes.is_pending
+                this.trigger 'TOOLBAR_ZOOMOUT_CLICK'
+            else
+                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
         clickUndoIcon : ->
             console.log 'clickUndoIcon'
@@ -146,12 +169,16 @@ define [ 'MC', 'event',
 
         clickExportJSONIcon : ->
             file_content = MC.canvas.layout.save()
-            this.trigger 'TOOLBAR_EXPORT_MENU_CLICK'
+            #this.trigger 'TOOLBAR_EXPORT_MENU_CLICK'
             $( '#btn-confirm' ).attr {
                 'href'      : "data://text/plain; " + file_content,
                 'download'  : MC.canvas_data.name + '.json',
             }
             $( '#json-content' ).val file_content
+
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'clickExportJSONIcon'
+                    modal.close()
 
         exportPNG : ( base64_image ) ->
             console.log 'exportPNG'
@@ -180,13 +207,41 @@ define [ 'MC', 'event',
             notification type, msg
 
         clickStopApp : (event) ->
+            me = this
             console.log 'click stop app'
 
-        clickRunApp : (event) ->
+            if not me.model.attributes.is_pending
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    me.trigger 'TOOLBAR_STOP_CLICK'
+                    modal.close()
+            else
+                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
+
+        clickStartApp : (event) ->
+            me = this
             console.log 'click run app'
 
+            if not me.model.attributes.is_pending
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    me.trigger 'TOOLBAR_START_CLICK'
+                    modal.close()
+            else
+                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
+
         clickTerminateApp : (event) ->
+            me = this
+
             console.log 'click terminate app'
+
+            if not me.model.attributes.is_pending
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    me.trigger 'TOOLBAR_TERMINATE_CLICK'
+                    modal.close()
+            else
+                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
     }
 

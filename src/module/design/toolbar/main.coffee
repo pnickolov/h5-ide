@@ -33,10 +33,7 @@ define [ 'jquery',
                 else
                     console.log 'toolbar:RELOAD_RESOURCE, stack name = ' + item_name + ', type = ' + type
 
-                #
                 model.setFlag type
-                #
-                #view.render type
 
             #listen toolbar state change
             model.on 'UPDATE_TOOLBAR', (type) ->
@@ -78,10 +75,21 @@ define [ 'jquery',
                 console.log 'design_toolbar_click:exportPngIcon'
                 model.savePNG false
 
-            #
             model.on 'SAVE_PNG_COMPLETE', ( base64_image ) ->
                 console.log 'SAVE_PNG_COMPLETE'
                 view.exportPNG base64_image
+
+            view.once 'TOOLBAR_STOP_CLICK', () ->
+                console.log 'design_toolbar_click:stopApp'
+                model.stopApp()
+
+            view.once 'TOOLBAR_START_CLICK', () ->
+                console.log 'design_toolbar_click:startApp'
+                model.startApp()
+
+            view.once 'TOOLBAR_TERMINATE_CLICK', () ->
+                console.log 'design_toolbar_click:terminateApp'
+                model.terminateApp()
 
             model.once 'TOOLBAR_STACK_RUN_SUCCESS', () ->
                 view.notify 'info', 'Run stack ' + MC.canvas_data.name + ' successfully.'
@@ -89,7 +97,7 @@ define [ 'jquery',
                 view.notify 'error', 'Run stack ' + MC.canvas_data.name + ' failed.'
             model.once 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', () ->
                 view.notify 'info', 'Run stack ' + MC.canvas_data.name + ' request successfully.'
-            model.once 'TOOLBAR_STACK_RUN_REQUEST_ERROR', () ->
+            model.once 'TOOLBAR_STACK_RUN_REQUEST_FAILED', () ->
                 view.notify 'error', 'Run stack ' + MC.canvas_data.name + ' request failed.'
 
             model.once 'TOOLBAR_STACK_SAVE_SUCCESS', () ->
@@ -99,12 +107,12 @@ define [ 'jquery',
 
             model.once 'TOOLBAR_STACK_DUPLICATE_SUCCESS', () ->
                 view.notify 'info', 'Duplicate stack ' + name + ' successfully.'
-            model.once 'TOOLBAR_STACK_DUPLICATE_ERROR', () ->
+            model.once 'TOOLBAR_STACK_DUPLICATE_FAILED', () ->
                 view.notify 'error', 'Duplicate stack ' + name + ' failed.'
 
             model.once 'TOOLBAR_STACK_DELETE_SUCCESS', () ->
                 view.notify 'info', 'Delete stack ' + MC.canvas_data.name + ' successfully.'
-            model.once 'TOOLBAR_STACK_DELETE_ERROR', () ->
+            model.once 'TOOLBAR_STACK_DELETE_FAILED', () ->
                 view.notify 'error', 'Delete stack ' + MC.canvas_data.name + ' failed.'
 
             model.once 'TOOLBAR_APP_START_REQUEST_SUCCESS', () ->

@@ -14,7 +14,7 @@ define [ 'jquery',
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-sgrule-tmpl">' + template + '</script>'
     #load remote html template
-    $( 'head' ).append template
+    $( 'head' ).append( template )
 
     #private
     loadModule = ( uid, type, current_main ) ->
@@ -23,7 +23,7 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #
-        require [ './module/design/property/sgrule/view', './module/design/property/sgrule/model' ], ( view, model ) ->
+        require [ './module/design/property/sgrule/model', './module/design/property/sgrule/view' ], ( model, view ) ->
 
             #
             if current_view then view.delegateEvents view.events
@@ -33,9 +33,13 @@ define [ 'jquery',
             current_model = model
 
             #view
-            view.model    = model
+            view.model = model
             #render
             view.render()
+
+            view.on "EDIT_RULE", () ->
+                # TODO : Show SG Rule Popup
+                null
 
     unLoadModule = () ->
         current_view.off()

@@ -26,10 +26,9 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                                 region: region_name,
                                 platform: current_platform
                             })
-                else if type is 'OPEN_STACK'
+                else if type is 'OPEN_STACK' or type is 'OPEN_APP'
                     require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.init()
                 null
-
 
             #listen CANVAS_NODE_CHANGE_PARENT
             view.on 'CANVAS_NODE_CHANGE_PARENT', ( src_node, tgt_parent ) ->

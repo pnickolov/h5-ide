@@ -21,7 +21,7 @@ Canvon.fn = Canvon.prototype = {
 		{
 			elem = document.getElementById( selector );
 		}
-		else if (selector instanceof SVGGElement)
+		else if (selector instanceof SVGElement)
 		{
 			elem = selector;
 		}
@@ -118,8 +118,9 @@ Canvon.fn = Canvon.prototype = {
 			length = path.length,
 			i;
 
-		for (i = 0; i < length; i++) {
-			points.push(path[i].x + ',' + path[i].y);
+		for (i = 0; i < length; i++)
+		{
+			points.push(path[ i ].x + ',' + path[ i ].y);
 		}
 
 		return this.draw(this, 'polyline').attr({
@@ -133,8 +134,9 @@ Canvon.fn = Canvon.prototype = {
 			length = path.length,
 			i;
 
-		for (i = 0; i < length; i++) {
-			points.push(path[i][0] + ',' + path[i][1]);
+		for (i = 0; i < length; i++)
+		{
+			points.push( path[ i ][0] + ',' + path[ i ][1] );
 		}
 
 		return this.draw(this, 'polygon').attr({
@@ -262,7 +264,7 @@ Canvon.fn = Canvon.prototype = {
 
 	hasClass: function ()
 	{
-		return new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b').test( this.setAttribute('class') );
+		return new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b').test( this.getAttribute('class') );
 	}
 };
 

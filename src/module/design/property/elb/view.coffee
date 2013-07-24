@@ -3,7 +3,6 @@
 #############################
 
 define ['event', 'MC',
-        'text!/module/design/property/elb/template.html'
         'backbone', 'jquery', 'handlebars',
         'UI.fixedaccordion',
         'UI.secondarypanel',
@@ -11,14 +10,14 @@ define ['event', 'MC',
         'UI.tooltip',
         'UI.notification',
         'UI.toggleicon',
-        'UI.slider'], ( ide_event, MC, template ) ->
+        'UI.slider'], ( ide_event, MC ) ->
 
     ElbView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
 
-        htmlTpl  : Handlebars.compile template
+        template : Handlebars.compile $( '#property-elb-tmpl' ).html()
 
         initialize : ->
             #handlebars equal logic
@@ -58,7 +57,7 @@ define ['event', 'MC',
         render     : ( attributes ) ->
 
             console.log 'property:elb render'
-            $( '.property-details' ).html this.htmlTpl(attributes)
+            $( '.property-details' ).html this.template(attributes)
 
             health_detail = this.model.get('health_detail')
             $('#elb-property-slider-unhealthy').setSliderValue(health_detail.unhealthy_threshold)

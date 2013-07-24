@@ -729,6 +729,17 @@ MC.canvas = {
 				{
 					//draw straight line
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
+
+					//draw dash line
+					if ( connection_option.stroke_dasharray  && connection_option.color_dash && connection_option.stroke_dasharray !== '' )
+					{
+						MC.paper.line(start0.x, start0.y, end0.x, end0.y).attr({
+							'stroke': connection_option.color_dash,
+							'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+							'fill': 'none',
+							'stroke-dasharray': connection_option.stroke_dasharray
+						});
+					}
 				}
 				else
 				{
@@ -752,6 +763,7 @@ MC.canvas = {
 						{
 							MC.paper.path(d);
 
+							//draw dash fold line
 							if ( connection_option.stroke_dasharray  && connection_option.color_dash && connection_option.stroke_dasharray !== '' )
 							{
 								MC.paper.path(d,{

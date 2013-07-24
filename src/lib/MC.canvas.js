@@ -865,7 +865,8 @@ MC.canvas = {
 			$.each(line_data.target, function (target_id, target_port)
 			{
 				target_node = $('#' + target_id);
-				target_connection = layout_component_data[ target_node.data('type') ][ target_id ].connection;
+				target_node_type = target_node.data('type');
+				target_connection = layout_component_data[ target_node_type ][ target_id ].connection;
 				new_connection_data = [];
 
 				$.each(target_connection, function (i, option)
@@ -876,7 +877,7 @@ MC.canvas = {
 					}
 				});
 
-				MC.canvas.data.set('layout.component.' + target_node.data('type') + '.' + target_id + '.connection', new_connection_data);
+				MC.canvas.data.set('layout.component.' + target_node_type + '.' + target_id + '.connection', new_connection_data);
 			});
 
 			MC.canvas.data.delete('layout.connection.' + node_id);
@@ -921,7 +922,7 @@ MC.canvas = {
 				MC.canvas.data.delete('layout.connection.' + value.line);
 			});
 
-			MC.canvas.data.delete('layout.component.' + node_type + '.' + node_id);
+			MC.canvas.data.delete('layout.component.' + target_type + '.' + node_id);
 			MC.canvas.data.delete('component.' + node_id);
 		}
 

@@ -3,10 +3,8 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/acl/template.html',
-         'text!/module/design/property/acl/rule_item.html',
          'event'
-], ( $, template, rule_template, ide_event ) ->
+], ( $, ide_event ) ->
 
     #
     current_view  = null
@@ -41,7 +39,7 @@ define [ 'jquery',
                 view.refreshRuleList uid, value
 
             #render
-            view.render expended_accordion_id, template, rule_template, model.attributes
+            view.render expended_accordion_id, model.attributes
 
     unLoadModule = () ->
         current_view.off()

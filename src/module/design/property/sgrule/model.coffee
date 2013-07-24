@@ -7,8 +7,17 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
     SGRuleModel = Backbone.Model.extend {
 
         defaults :
-            'set_xxx'    : null
-            'get_xxx'    : null
+            sg_group : [
+                    {
+                        name  : "DefaultSG"
+                        rules : [ {
+                            egress     : true
+                            protocol   : "TCP"
+                            connection : "eni"
+                            port       : "1234"
+                        } ]
+                    }
+                ]
 
         initialize : ->
             #listen

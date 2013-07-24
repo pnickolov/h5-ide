@@ -157,7 +157,9 @@ MC.canvas = {
 		var sign = 0,
 			delta = 0,
 			cornerRadius = MC.canvas.CORNER_RADIUS, //8
-			closestRange = 2 * MC.canvas.CORNER_RADIUS; //2*cornerRadius
+			closestRange = 2 * MC.canvas.CORNER_RADIUS, //2*cornerRadius
+			p1,
+			p2;
 
 		/*1.above or below*/
 		if (prev.x === current.x)
@@ -1710,7 +1712,7 @@ MC.canvas.event.dragable = {
 
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
-				$(document.body).on({
+				$(document).on({
 					'mousemove': MC.canvas.event.dragable.gatewaymove,
 					'mouseup': MC.canvas.event.dragable.gatewayup
 				}, {
@@ -1727,7 +1729,7 @@ MC.canvas.event.dragable = {
 			}
 			else
 			{
-				$(document.body).on({
+				$(document).on({
 					'mousemove': MC.canvas.event.dragable.mousemove,
 					'mouseup': MC.canvas.event.dragable.mouseup
 				}, {
@@ -2161,7 +2163,7 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.remove();
 
-		$(document.body).off({
+		$(document).off({
 			'mousemove': MC.canvas.event.mousemove,
 			'mouseup': MC.canvas.event.mouseup
 		});
@@ -2258,7 +2260,7 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.remove();
 
-		$(document.body).off({
+		$(document).off({
 			'mousemove': MC.canvas.event.gatewaymove,
 			'mouseup': MC.canvas.event.gatewayup
 		});
@@ -2314,7 +2316,7 @@ MC.canvas.event.drawConnection = {
 					break;
 			}
 
-			$(document.body).on({
+			$(document).on({
 				'mousemove': MC.canvas.event.drawConnection.mousemove,
 				'mouseup': MC.canvas.event.drawConnection.mouseup
 			}, {
@@ -2547,7 +2549,7 @@ MC.canvas.event.drawConnection = {
 				});
 		});
 
-		$(document.body).off({
+		$(document).off({
 			'mousemove': MC.canvas.event.drawConnection.mousemove,
 			'mouseup': MC.canvas.event.drawConnection.mouseup,
 		});
@@ -2634,7 +2636,7 @@ MC.canvas.event.siderbarDrag = {
 
 			shadow.addClass('AWS-EC2-EBS-Volume');
 
-			$(document.body).on({
+			$(document).on({
 				'mousemove': MC.canvas.volume.mousemove,
 				'mouseup': MC.canvas.volume.mouseup
 			}, {
@@ -2646,7 +2648,7 @@ MC.canvas.event.siderbarDrag = {
 		else
 		{
 
-			$(document.body).on({
+			$(document).on({
 				'mousemove': MC.canvas.event.siderbarDrag.mousemove,
 				'mouseup': MC.canvas.event.siderbarDrag.mouseup
 			}, {
@@ -2780,7 +2782,7 @@ MC.canvas.event.siderbarDrag = {
 
 		event.data.shadow.remove();
 
-		$(document.body).off({
+		$(document).off({
 			'mousemove': MC.canvas.event.mousemove,
 			'mouseup': MC.canvas.event.mouseup
 		});
@@ -2817,7 +2819,9 @@ MC.canvas.event.groupResize = {
 		}
 
 		$(document.body)
-			.css('cursor', $(event.target).css('cursor'))
+			.css('cursor', $(event.target).css('cursor'));
+
+		$(document)
 			.on({
 				'mousemove': MC.canvas.event.groupResize.mousemove,
 				'mouseup': MC.canvas.event.groupResize.mouseup
@@ -3317,7 +3321,9 @@ MC.canvas.event.groupResize = {
 		}
 
 		$(document.body)
-			.css('cursor', 'default')
+			.css('cursor', 'default');
+
+		$(document)
 			.off({
 				'mousemove': MC.canvas.event.groupResize.mousemove,
 				'mouseup': MC.canvas.event.groupResize.mouseup
@@ -3547,7 +3553,7 @@ MC.canvas.volume = {
 			return 'attachable ' + key;
 		});
 
-		$(document.body).on({
+		$(document).on({
 			'mousemove': MC.canvas.volume.mousemove,
 			'mouseup': MC.canvas.volume.mouseup
 		}, {
@@ -3719,7 +3725,7 @@ MC.canvas.volume = {
 
 		event.data.shadow.remove();
 
-		$(document.body).off({
+		$(document).off({
 			'mousemove': MC.canvas.volume.mousemove,
 			'mouseup': MC.canvas.volume.mouseup
 		});

@@ -850,9 +850,11 @@ MC.canvas = {
 	remove: function (node)
 	{
 		var node_id = node.id,
-			node_type = $(node).data('type');
+			target = $(node),
+			target_type = target.data('type'),
+			node_type = target.data('class');
 
-		if (node_type === 'line')
+		if (target_type === 'line')
 		{
 			var line_data = MC.canvas.data.get('layout.connection.' + node_id),
 				layout_component_data = MC.canvas.data.get('layout.component'),
@@ -880,7 +882,7 @@ MC.canvas = {
 			MC.canvas.data.delete('layout.connection.' + node_id);
 		}
 
-		if (node_type === 'node')
+		if (target_type === 'node')
 		{
 			var	layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
@@ -923,9 +925,18 @@ MC.canvas = {
 			MC.canvas.data.delete('component.' + node_id);
 		}
 
-		if (node_type === 'group')
+		if (target_type === 'group')
 		{
-			var group_child = MC.canvas.groupChild(node);
+			var group_child = MC.canvas.groupChild(node),
+				group_data = MC.canvas.data.get('layout.component.group.' + node_id);
+
+			if (node_type === 'AWS.VPC.Subnet' && group_data.connection.length > 0)
+			{
+				$.each(group_data.connection, function (index, data)
+				{
+					MC.canvas.remove(document.getElementById(data.line));
+				});
+			}
 
 			$.each(group_child, function (index, item)
 			{
@@ -3805,6 +3816,7 @@ MC.canvas.event.keyEvent = function (event)
 		return false;
 	}
 
+	// Switch node - tab
 	if (
 		keyCode === 9 &&
 		MC.canvas.selected_node.length === 1 &&

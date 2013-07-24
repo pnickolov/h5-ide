@@ -939,15 +939,15 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.image('../assets/images/ide/icon/igw-canvas.png', 10, 15, 60, 46),
 
 				//2 path: left port
-				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-blue port-igw-unknown',
-					'transform': 'translate(12, 25)' + MC.canvas.PORT_LEFT_ROTATE,
-					'data-name': 'igw-unknown',
-					'data-position': 'left',
-					'data-type': 'sg',
-					'data-direction': 'out',
-					'data-angle': MC.canvas.PORT_LEFT_ANGLE
-				}),
+				// Canvon.path(MC.canvas.PATH_D_PORT).attr({
+				// 	'class': 'port port-blue port-igw-unknown',
+				// 	'transform': 'translate(12, 25)' + MC.canvas.PORT_LEFT_ROTATE,
+				// 	'data-name': 'igw-unknown',
+				// 	'data-position': 'left',
+				// 	'data-type': 'sg',
+				// 	'data-direction': 'out',
+				// 	'data-angle': MC.canvas.PORT_LEFT_ANGLE
+				// }),
 
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({

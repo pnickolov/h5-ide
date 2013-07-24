@@ -1,5 +1,7 @@
 MC.canvas = MC.canvas || {};
 
+(function () {
+
 var constant_data = {
 
 	GRID_WIDTH: 10,
@@ -1227,5 +1229,7 @@ var constant_data = {
 
 $.each(constant_data, function (key, value)
 {
-	MC.canvas[key] = value;
+	MC.canvas[ key ] = value;
 });
+
+})();

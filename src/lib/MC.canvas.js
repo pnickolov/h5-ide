@@ -2670,9 +2670,9 @@ MC.canvas.event.siderbarDrag = {
 
 					node_option.groupUId = vpc_id;
 
-					if (coordinate.y > vpc_coordinate[1] + vpc_data.size[1])
+					if (coordinate.y > vpc_coordinate[1] + vpc_data.size[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1])
 					{
-						coordinate.y = vpc_coordinate[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1];
+						coordinate.y = vpc_coordinate[1] + vpc_data.size[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1];
 					}
 					if (coordinate.y < vpc_coordinate[1])
 					{
@@ -3784,19 +3784,9 @@ MC.canvas.event.keyEvent = function (event)
 			coordinate = {'x': node_data.coordinate[0], 'y': node_data.coordinate[1]},
 			match_place;
 
-		if (keyCode === 37)
-		{
-			coordinate.x--;
-		}
-
 		if (keyCode === 38)
 		{
 			coordinate.y--;
-		}
-
-		if (keyCode === 39)
-		{
-			coordinate.x++;
 		}
 
 		if (keyCode === 40)
@@ -3804,15 +3794,40 @@ MC.canvas.event.keyEvent = function (event)
 			coordinate.y++;
 		}
 
-		match_place = MC.canvas.isMatchPlace(
-			target_id,
-			target_type,
-			node_type,
-			coordinate.x,
-			coordinate.y,
-			MC.canvas.COMPONENT_SIZE[ node_type ][0],
-			MC.canvas.COMPONENT_SIZE[ node_type ][1]
-		);
+		if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+		{
+			match_place = {};
+
+			vpc_id = $('.AWS-VPC-VPC').attr('id');
+			vpc_data = MC.canvas.data.get('layout.component.group.' + vpc_id);
+			vpc_coordinate = vpc_data.coordinate;
+
+			match_place.is_matched =
+				coordinate.y <= vpc_coordinate[1] + vpc_data.size[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1] &&
+				coordinate.y >= vpc_coordinate[1];
+		}
+		else
+		{
+			if (keyCode === 37)
+			{
+				coordinate.x--;
+			}
+
+			if (keyCode === 39)
+			{
+				coordinate.x++;
+			}
+
+			match_place = MC.canvas.isMatchPlace(
+				target_id,
+				target_type,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				MC.canvas.COMPONENT_SIZE[ node_type ][0],
+				MC.canvas.COMPONENT_SIZE[ node_type ][1]
+			);
+		}
 		
 		if (
 			coordinate.x > 0 &&

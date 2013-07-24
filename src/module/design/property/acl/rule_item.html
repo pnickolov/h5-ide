@@ -6,7 +6,7 @@
         <a href="#" class="acl-rule-allow-cb tooltip {{#ifCond RuleAction "allow"}}allow{{/ifCond}}" data-tooltip="Allow/Deny"></a>
       </span>
       <span class="acl-rule-col2">
-        <span class="{{#if Egress}}acl-rule-inbound{{else}}acl-rule-outbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
+        <span class="{{#ifCond Egress "false"}}acl-rule-inbound{{else}}acl-rule-outbound{{/ifCond}} tooltip" data-tooltip="Inbound/Outbound"></span>
         <span class="acl-rule-protocol">{{Protocol}}</span>
       </span>
       <span class="acl-rule-col4"><a class="property-rule-delete-btn"></a></span>

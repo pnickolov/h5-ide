@@ -1,12 +1,22 @@
 #############################
-#  View Mode for design/property/sgrule
+#  View Mode for component/sgrule
 #############################
 
 define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
-    SGRuleModel = Backbone.Model.extend {
+    SGRulePopupModel = Backbone.Model.extend {
 
         defaults :
+            inward   :
+                name : "instance"
+                sg   : ["DefaultSG", "CustomSG"]
+                connection : ["eni", "eni-1"]
+ 
+            outward  :
+                name : "eni"
+                sg   : ["DefaultSG", "CustomSG"]
+                connection : ["eni", "eni-1"]
+ 
             sg_group : [
                     {
                         name  : "DefaultSG"
@@ -25,6 +35,4 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
     }
 
-    model = new SGRuleModel()
-
-    return model
+    return SGRulePopupModel

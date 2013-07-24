@@ -3133,14 +3133,14 @@ height: 35px;
 
 .notification-list .notification-item {
 	border-bottom: 1px solid #666;
-	padding: 10px 15px;
+	padding: 13px 15px 10px;
 }
 
 .notification-list > div:last-child {
 	border-bottom: none;
 }
 
-.notification-item.notification-error {
+.notification-list .notification-item.unread {
 	background-color: rgb(255, 221, 239);
 }
 

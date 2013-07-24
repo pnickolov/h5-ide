@@ -2,7 +2,7 @@
 #  Controller for design/canvas module
 ####################################
 
-define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, template, ide_event ) ->
+define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], ( $, template, ide_event, MC ) ->
 
     #private
     loadModule = () ->
@@ -46,13 +46,16 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event' ], ( $, t
             #listen CANVAS_OBJECT_DELETE
             view.on 'CANVAS_OBJECT_DELETE', ( option ) ->
                 console.log 'canvas:CANVAS_OBJECT_DELETE, option = ' + option
+                # remove line
                 model.deleteObject option
+                ide_event.trigger ide_event.CANVAS_DELETE_OBJECT
                 null
 
             #listen CANVAS_LINE_CREATE
             view.on 'CANVAS_LINE_CREATE', ( line_id ) ->
                 console.log 'canvas:CANVAS_LINE_CREATE, line_id = ' + line_id
                 model.createLine line_id
+                ide_event.trigger ide_event.CANVAS_CREATE_LINE
                 null
 
             #listen CANVAS_COMPONENT_CREATE

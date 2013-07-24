@@ -1539,7 +1539,7 @@ MC.canvas.layout = {
 			});
 
 			var node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
-				'name': 'MainRT',
+				'name': 'RT-0',
 				'group' : {
 					'vpcUId' : vpc_group.id
 				},

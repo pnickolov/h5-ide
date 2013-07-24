@@ -2803,7 +2803,7 @@ a.sidebar-hider {
 	display    : inline-block;
 }
 
-.acl-rule-allow-cb.checked {
+.acl-rule-allow-cb.allow {
 	background : green;
 }
 

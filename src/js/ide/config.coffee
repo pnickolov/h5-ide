@@ -232,5 +232,5 @@ require.config {
 
 }
 
-requirejs.onError = ( err ) ->
-    console.log 'error type:', err.requireType, ', modules:', err.requireModules, ', error:', err
+#requirejs.onError = ( err ) ->
+#    console.log 'error type:', err.requireType, ', modules:', err.requireModules, ', error:', err

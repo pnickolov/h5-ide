@@ -189,7 +189,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'STACK_RUN_RETURN'
                 console.log result
 
-                me.set 'is_pending', true
                 me.handleRequest result, 'RUN_STACK'
 
         #zoomin
@@ -265,18 +264,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'APP_START_RETURN'
                 console.log result
 
-                me.set 'is_pending', true
                 me.handleRequest result, 'START_APP'
 
         stopApp : () ->
             me = this
 
-            app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+            app_model.stop { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
             app_model.once 'APP_STOP_RETURN', (result) ->
                 console.log 'APP_STOP_RETURN'
                 console.log result
 
-                me.set 'is_pending', true
                 me.handleRequest result, 'STOP_APP'
 
         terminateApp : () ->
@@ -288,10 +285,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'APP_TERMINATE_RETURN'
                 console.log result
 
-                me.set 'is_pending', true
                 me.handleRequest result, 'TERMINATE_APP'
 
         handleRequest : (result, flag) ->
+            this.set 'is_pending', true
+            this.trigger 'UPDATE_TOOLBAR', this.get 'item_type'
+
             if !result.is_error
                 if flag == 'RUN_STACK'
                     console.log 'run stack request successfully'

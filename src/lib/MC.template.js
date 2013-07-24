@@ -25,7 +25,7 @@ $.get(TEMPLATE_LOCATION, function (data)
 	for (; i < l; i += 2)
 	{
 		space = template;
-		space_labels = data[ i ].split('.'),
+		space_labels = data[ i ].split('.');
 		label_length = space_labels.length - 1;
 
 		$.each(space_labels, function (index, value)

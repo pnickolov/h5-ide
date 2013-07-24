@@ -3,23 +3,39 @@
 // Copyright Angel Lai 2013
 // MIT license
 //
-var Canvon = function (canvas_id)
+
+var Canvon = function (selector)
 {
-	return new Canvon.fn.init(document.getElementById(canvas_id));
+	return new Canvon.fn.init( selector );
 };
 
 Canvon.fn = Canvon.prototype = {
 
 	drawn: null,
 
-	init: function (canvas)
+	init: function (selector)
 	{
+		var elem;
+
+		if (typeof selector === 'string')
+		{
+			elem = document.getElementById( selector );
+		}
+		else if (selector instanceof SVGGElement)
+		{
+			elem = selector;
+		}
+		else
+		{
+			return false;
+		}
+
 		$.each(Canvon.prototype, function (name, fn)
 		{
-			canvas[name] = fn;
+			elem[ name ] = fn;
 		});
 
-		return canvas;
+		return elem;
 	},
 
 	start: function (style)
@@ -194,18 +210,63 @@ Canvon.fn = Canvon.prototype = {
 		return use;
 	},
 
-	group: function (x, y, width, height, style) {
+	group: function (x, y, width, height, style)
+	{
 		return this.draw(this, 'g').attr({
 			'x': x,
 			'y': y,
 			'width': width,
 			'height': height
 		}).css(style || {});
-	}
+	},
 
+	addClass: function (name)
+	{
+		var className = this.getAttribute('class'),
+			nclass = [];
+
+		if (className === '')
+		{
+			this.setAttribute('class', name);
+		}
+		else
+		{
+			$.each(name.split(/\s+/), function (i, item)
+			{
+				if (!new RegExp('\\b(' + item + ')\\b').test(className))
+				{
+					nclass.push(' ' + item);
+				}
+			});
+			className += nclass.join('');
+
+			this.setAttribute('class', className);
+		}
+
+		return this;
+	},
+
+	removeClass: function (name)
+	{
+		this.setAttribute('class', name ?
+			$.trim(
+				this.getAttribute('class').replace(
+					new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b', 'g'), '')
+					.split(/\s+/)
+					.join(' ')
+			) : ''
+		);
+
+		return this;
+	},
+
+	hasClass: function ()
+	{
+		return new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b').test( this.setAttribute('class') );
+	}
 };
 
 $.each(Canvon.prototype, function (name, fn)
 {
-	Canvon[name] = fn;
+	Canvon[ name ] = fn;
 });

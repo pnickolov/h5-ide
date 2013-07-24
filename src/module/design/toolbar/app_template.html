@@ -1,13 +1,13 @@
 <ul class="toolbar-btn-group">
   <li class="btn-toolbar">
 
-    {{#if useAMI}}
-    <a {{#if started}}{{else}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar disabled" id='toolbar-stop-app' data-tooltip="This app cannot be stopped since it uses instance-store AMI"><i class="icon-toolbar-stop"></i></a>
+    {{#if is_use_ami}}
+    <a {{#if is_running}}{{else}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar disabled" id='toolbar-stop-app' data-tooltip="This app cannot be stopped since it uses instance-store AMI"><i class="icon-toolbar-stop"></i></a>
     {{else}}
-    <a {{#if started}}{{else}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar" id='toolbar-stop-app' data-modal-template="modalApp" data-modal-data='{"title":"Confirm to stop app?", "body":"Do you confirm to stop app {{item_name}}?", "confirm":"Stop", "color":"red" }' data-modal-dismiss="true" data-tooltip="Stop this app's resources."><i class="icon-toolbar-stop"></i></a>
+    <a {{#if is_running}}{{else}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar" id='toolbar-stop-app' data-modal-template="modalApp" data-modal-data='{"title":"Confirm to stop app?", "body":"Do you confirm to stop app {{item_name}}?", "confirm":"Stop", "color":"red" }' data-modal-dismiss="true" data-tooltip="Stop this app's resources."><i class="icon-toolbar-stop"></i></a>
     {{/if}}
 
-    <a {{#if started}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar" id='toolbar-start-app' data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app?", "body":"Do you confirm to start app {{item_name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true" data-tooltip="Start this app's resources."><i class="icon-toolbar-run"></i></a>
+    <a {{#if is_running}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar" id='toolbar-start-app' data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app?", "body":"Do you confirm to start app {{item_name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true" data-tooltip="Start this app's resources."><i class="icon-toolbar-run"></i></a>
 
   </li>
   <li class="btn-toolbar">

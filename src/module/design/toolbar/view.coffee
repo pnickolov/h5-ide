@@ -59,26 +59,22 @@ define [ 'MC', 'event',
         clickRunIcon : ->
             me = this
 
-            if not me.model.attributes.is_pending
-                target = $( '#main-toolbar' )
-                $('#btn-confirm').on 'click', { target : this }, (event) ->
-                    console.log 'clickRunIcon'
+            target = $( '#main-toolbar' )
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'clickRunIcon'
 
-                    app_name = $('.modal-input-value').val()
+                app_name = $('.modal-input-value').val()
 
-                    #check app name
-                    if not app_name
-                        notification 'error', 'No app name.'
-                        return
-                    if app_name in MC.data.app_list[MC.canvas_data.region]
-                        notification 'error', 'Repeated app name.'
-                        return
+                #check app name
+                if not app_name
+                    notification 'error', 'No app name.'
+                    return
+                if app_name in MC.data.app_list[MC.canvas_data.region]
+                    notification 'error', 'Repeated app name.'
+                    return
 
-                    me.trigger 'TOOLBAR_RUN_CLICK', app_name
-                    modal.close()
-
-            else
-                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
+                me.trigger 'TOOLBAR_RUN_CLICK', app_name
+                modal.close()
 
             true
 

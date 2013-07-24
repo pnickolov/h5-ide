@@ -16,6 +16,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             'item_type'     : null
             'is_running'    : null
             'is_pending'    : null
+            'is_use_ami'    : null
 
         setFlag : (type, value) ->
             me = this
@@ -45,6 +46,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 toolbar_flag_list.zoomout    = value
             else if type is 'OPEN_APP'
                 me.set 'item_type', 'app'
+                
+                if MC.canvas_data.state == 'Stopped'
+                    me.set 'is_running', false
+                else if MC.canvas_data.state == 'Running'
+                    me.set 'is_running', true
+
+                me.set 'is_use_ami', me.isInstanceStore()
+
                 toolbar_flag_list.start = true
             else if type is 'START_APP'
                 toolbar_flag_list.start = false
@@ -332,7 +341,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                     this.trigger 'TOOLBAR_APP_TERMINATE_FAILED'
 
                             if flag is 'TERMINATE_APP' and is_success
-                                ide_event.trigger ide_event.TERMINATE_APP_TAB, MC.canvas_data.name, MC.canvas_data.id
+                                ide_event.trigger ide_event.APP_TERMINATE, MC.canvas_data.name, MC.canvas_data.id
                             else
                                 this.setFlag flag, is_success
 
@@ -350,6 +359,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     this.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED'
 
             this.set 'is_pending', false
+
+        isInstanceStore : () ->
+
+            is_instance_store = false
+
+            for node in MC.canvas_data.layout.node
+                if node.rootDeviceType == 'instance-store'
+                    is_instance_store = true
+                    break
+
+            is_instance_store
 
     }
 

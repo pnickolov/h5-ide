@@ -216,15 +216,13 @@ a {
 }
 
 /*AWSCredential-setting*/
-#AWSCredential-form {
-	display: none;
-}
-
-#AWSCredentials-submiting {
-	display: none;
-}
-
+#AWSCredentials-submiting,
+#AWSCredentials-success,
 #AWSCredentials-update {
+	display: none;
+}
+
+#AWSCredential-failed {
 	display: none;
 }
 

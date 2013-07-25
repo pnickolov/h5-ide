@@ -25,8 +25,8 @@ define [
 
             # In case there's two modal dialog in the page, although it is ALMOST
             # not possible
-            # And `closed` event is send to "#modal-wrap"
-            this.setElement $("#sg-rule-create-modal").closest "#modal-wrap"
+            # And `closed` event is send to '#modal-wrap'
+            this.setElement $('#sg-rule-create-modal').closest '#modal-wrap'
 
             # Update sidebar
             this.updateSidebar()
@@ -36,7 +36,7 @@ define [
           this.trigger 'CLOSE_POPUP'
 
         switchNode : () ->
-          this.$el.find(".sg-rule-create-add-wrap").toggleClass( "outward", $("#sg-rule-create-tgt-o").is(":checked") )
+          this.$el.find('.sg-rule-create-add-wrap').toggleClass( 'outward', $('#sg-rule-create-tgt-o').is(':checked') )
           null
 
         addRule : () ->
@@ -45,14 +45,14 @@ define [
           # TODO : Insert rule to the sidebar
 
           # Switch to done view.
-          #this.$el.animate({left:"+=100px"}, 300).toggleClass('done', true)
-          this.$el.find('#modal-box').animate({left:"+=100px"}, 300).toggleClass('done', true)
+          #this.$el.animate({left:'+=100px'}, 300).toggleClass('done', true)
+          this.$el.find('#modal-box').animate({left:'+=100px'}, 300).toggleClass('done', true)
 
           # Update sidebar
           this.updateSidebar()
 
         readdRule : () ->
-          this.$el.animate({left:"-=100px"}, 300).toggleClass('done', false)
+          this.$el.animate({left:'-=100px'}, 300).toggleClass('done', false)
 
         deleteRule : () ->
           # TODO : Tell model to delete rule

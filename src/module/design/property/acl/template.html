@@ -17,7 +17,7 @@
       <section class="accordion-group expanded">
         <div class="fixedaccordion-head acl-header">
             <span class="name">Rule</span>
-            <span class="count">(<span id="acl-rule-count">{{rules.length}}</span>)</span>
+            <span class="count">(<span id="acl-rule-count">{{component.resource.entrySet.length}}</span>)</span>
             <a href="#" class="acl-icon-add tooltip" id="acl-add-rule-icon" data-tooltip="Create new Network ACL Rule"></a>
         </div>
 
@@ -43,17 +43,18 @@
       </section>
 
       <section class="accordion-group">
-        <div class="fixedaccordion-head sg-header">
+        <div class="fixedaccordion-head acl-header">
             <span class="name">Associations</span>
             <span class="count">(<span id="acl-assn-count">{{associations.length}}</span>)</span>
         </div>
 
         <ul class="accordion-body">
           {{#each associations}}
-            <li class="property-acl-assn">{{name}} ({{ip}})</li>
+            <li class="property-acl-assn">{{subnet_name}} ({{subnet_cidr}})</li>
           {{/each}}
         </ul>
       </section>
 
     </div>
+
 </div>

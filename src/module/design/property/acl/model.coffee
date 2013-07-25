@@ -8,6 +8,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
         defaults :
             'component'    : null
+            'associations' : null
 
         initialize : ->
             #listen
@@ -17,10 +18,28 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             allComp = MC.canvas_data.component
             aclObj = MC.canvas_data.component[uid]
-            aclObj.name = 'sadasdsadsadsad'
             this.set 'component', aclObj
 
+            that = this
+
+            associationsAry = []
+            _.each aclObj.resource.AssociationSet, (value, key) ->
+                subnetInfo = that.getSubnetInfo(value)
+                associationsAry.push(subnetInfo)
+                null
+
+            this.set 'associations', associationsAry
+
             null
+
+        getSubnetInfo : (associationObj) ->
+            subnetUID = associationObj.SubnetId
+            subnetUID = subnetUID.slice(1).split('.')[0]
+            subnetComp = MC.canvas_data.component[subnetUID]
+            return {
+                subnet_name: subnetComp.name,
+                subnet_cidr: subnetComp.resource.CidrBlock
+            }
 
         addRuleToACL : (uid, ruleObj) ->
             newEntrySet = []
@@ -35,6 +54,19 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                     addToACL = false
                 null
 
+            ruleAction = ''
+            if ruleObj.action
+                ruleAction = 'allow'
+            else
+                ruleAction = 'deny'
+
+            egress = ''
+            if ruleObj.inbound
+                egress = 'false'
+            else
+                egress = 'true'
+
+
             if addToACL
                 newEntrySet.push {
                     "RuleNumber": ruleObj.rule,
@@ -48,8 +80,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                     },
                     "CidrBlock": ruleObj.source,
                     "Protocol": ruleObj.protocol,
-                    "RuleAction": ruleObj.action,
-                    "Egress": !ruleObj.inbound
+                    "RuleAction": ruleAction,
+                    "Egress": egress
                 }
 
                 newEntrySet = originEntrySet.concat newEntrySet
@@ -58,6 +90,20 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
                 this.trigger 'REFRESH_RULE_LIST', MC.canvas_data.component[uid]
 
+            null
+
+        removeRuleFromACL : (uid, ruleNum, ruleEngress) ->
+            currentEntrySet = MC.canvas_data.component[uid].resource.EntrySet
+            newEntrySet = _.filter currentEntrySet, (ruleObj) ->
+                if ruleObj.RuleNumber is ruleNum and ruleEngress is ruleObj.Egress
+                    return false
+                else
+                    return true
+            MC.canvas_data.component[uid].resource.EntrySet = newEntrySet
+            null
+
+        setACLName : (uid, aclName) ->
+            MC.canvas_data.component[uid].name = aclName
             null
     }
 

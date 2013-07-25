@@ -40,6 +40,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                         rule   : component.resource.EntrySet.length
                         name   : component.name
                         association : component.resource.AssociationSet.length
+                        isUsed  : false
 
                     for asscn in component.resource.AssociationSet
                         if asscn.SubnetId.indexOf( uid ) != -1
@@ -61,8 +62,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             else
                 defaultACL = networkACLs[ 0 ]
 
-            if linkToDefault
-                defaultACL.isUsed = true
+            # if linkToDefault
+            #     defaultACL.isUsed = true
 
             this.set data
             null
@@ -102,6 +103,20 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 NetworkAclAssociationId : ""
                 NetworkAclId : ""
             null
+
+        getNewACLName : () ->
+            maxNum = 0
+            _.each MC.canvas_data.component, (compObj) ->
+                compType = compObj.type
+                if compType is 'AWS.VPC.NetworkAcl'
+                    aclName = compObj.name
+                    if aclName.slice(0, 10) is 'CustomACL-'
+                        currentNum = Number(aclName.slice(10))
+                        if currentNum > maxNum
+                            maxNum = currentNum
+                null
+            maxNum++
+            return 'CustomACL-' + maxNum
     }
 
     model = new SubnetModel()

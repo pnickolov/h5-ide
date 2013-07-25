@@ -109,10 +109,8 @@ var selectbox = {
 
         // Set the value to select and close dropdown
         var $selectbox = $this.closest(".selectbox").removeClass('open');
-        var value = $this.attr("data-value");
-        if ( !value ) { value = $this.html(); }
 
-        $selectbox.find(".selection").html( value );
+        $selectbox.find(".selection").html( $this.html() );
 
         // TODO : OPTION_CHANGE's parameter no long is array.
         $selectbox.trigger( "OPTION_CHANGE", $this.attr('data-id') );

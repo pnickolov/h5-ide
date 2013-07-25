@@ -75,6 +75,9 @@ define [ 'underscore', 'backbone' ], () ->
         #navigation to dashboard - region
         NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
 
+        #property event
+        RETURN_SUBNET_PROPERTY_FROM_ACL : 'RETURN_SUBNET_PROPERTY_FROM_ACL'
+
         constructor : ->
             _.extend this, Backbone.Events
 

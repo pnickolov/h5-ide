@@ -11,12 +11,20 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         template : Handlebars.compile $( '#property-subnet-tmpl' ).html()
 
+        acl_template: Handlebars.compile $( '#property-subnet-acl-tmpl' ).html()
+
         events   :
-            'click #networkacl-create': 'openAclPanel'
+            'click #networkacl-create': 'openCreateAclPanel'
+            'click .networkacl-edit': 'openEditAclPanel'
             "change #property-subnet-name" : 'onChangeName'
             "change #property-cidr-block"  : 'onChangeCIDR'
             "click .item-networkacl input" : 'onChangeACL'
             "change #networkacl-create"    : 'onCreateACL'
+
+        initialize : () ->
+            that = this
+            ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, () ->
+                that.refreshACLList()
 
         render     : () ->
             console.log 'property:subnet render'
@@ -31,7 +39,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             $( '.property-details' ).html this.template data
 
-        openAclPanel : ( event ) ->
+            this.refreshACLList()
+
+        openCreateAclPanel : ( event ) ->
             source = $(event.target)
             if(source.hasClass('secondary-panel'))
                 target = source
@@ -43,8 +53,26 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             aclUID = MC.guid()
             aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
+            aclObj.name = this.model.getNewACLName()
             aclObj.uid = aclUID
+
             MC.canvas_data.component[aclUID] = aclObj
+
+            this.trigger 'SET_NEW_ACL', aclUID
+
+            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
+
+        openEditAclPanel : ( event ) ->
+            source = $(event.target)
+            if(source.hasClass('secondary-panel'))
+                target = source
+            else
+                target = source.parents('.secondary-panel').first()
+
+            accordion = $( '#instance-accordion' )
+            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
+
+            aclUID = source.attr('acl-uid')
 
             ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
 
@@ -76,11 +104,17 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             this.trigger "CHANGE_ACL", change
 
+            this.refreshACLList()
+
         onViewACL : () ->
             null
 
         onCreateACL : () ->
             null
+
+        refreshACLList : () ->
+            this.model.setId(this.model.get('uid'))
+            $('#networkacl-list').html this.acl_template(this.model.attributes)
 
     }
 

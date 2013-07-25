@@ -12,16 +12,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         tagName  : $ '.property-details'
 
         template : Handlebars.compile $( '#property-stack-tmpl' ).html()
+        acl_template : Handlebars.compile $( '#property-stack-acl-tmpl' ).html()
 
         events   :
             'change #property-stack-name'   : 'stackNameChanged'
             'click #add-sg-btn'             : 'createSecurityGroup'
             'click .deleteSG'               : 'deleteSecurityGroup'
             'click .resetSG'                : 'resetSecurityGroup'
+            'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
             
         render     : () ->
             console.log 'property:stack render'
             $( '.property-details' ).html this.template this.model.attributes
+            this.refreshACLList()
 
         stackNameChanged : () ->
             me = this
@@ -71,6 +74,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             null
 
+        deleteNetworkAcl : (event) ->
+            aclUID = $(event.target).attr('acl-uid')
+            delete MC.canvas_data.component[aclUID]
+            this.refreshACLList()
+
+        refreshACLList : () ->
+            this.model.getNetworkACL()
+            $('.stack-property-acl-list').html this.acl_template this.model.attributes
     }
 
     view = new StackView()

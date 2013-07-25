@@ -32,11 +32,19 @@ define [ 'jquery',
             #view
             view.model    = model
 
+            view.off()
+
             view.on 'ADD_RULE_TO_ACL', (value) ->
                 view.model.addRuleToACL uid, value
 
             model.on 'REFRESH_RULE_LIST', (value) ->
-                view.refreshRuleList uid, value
+                view.refreshRuleList value
+
+            view.on 'REMOVE_RULE_FROM_ACL', (ruleNum, ruleEngress) ->
+                view.model.removeRuleFromACL uid, ruleNum, ruleEngress
+
+            view.on 'ACL_NAME_CHANGED', (aclName) ->
+                view.model.setACLName uid, aclName
 
             #render
             view.render expended_accordion_id, model.attributes

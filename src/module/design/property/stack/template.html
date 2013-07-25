@@ -61,7 +61,7 @@
 	{{#if stack_detail.is_vpc}}
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
-			Network ACL({{stack_detail.acl_list.length}})
+			Network ACL({{network_acl.length}})
 		</div>
 		<button class="create-acl btn btn-primary btn-region-dashboard" title="Create New Network ACL">+</button>
 		<!--div class="selectbox security-group-select" id="security-group-select">
@@ -72,15 +72,8 @@
 				<li id="show-newsg-panel" class="item secondary-panel" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data="{}" data-id="" href="#">New Security Group</li>
 			</ul>
 		</div-->
-		<div class="accordion-body">
-			{{#each stack_detail.acl_list}}
-				<div class="property-item">
-					<p class="sig"><span></span></p>
-					<p class="title">Default SG</p>	
-					<p class="description">Description1</p>	
-					<p class="info">59 rules,23 members</p>	
-				</div>
-			{{/each}}
+		<div class="accordion-body stack-property-acl-list">
+
 		</div>
 	</div>
 	{{/if}}

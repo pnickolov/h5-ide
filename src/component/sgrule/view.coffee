@@ -33,7 +33,7 @@ define [
               "click .sg-rule-create-readd" : "readdRule"
               "click .sg-rule-delete"       : "deleteRule"
 
-            this.delegateEvents();
+            this.delegateEvents()
 
             $modal.closest("#modal-wrap").on("closed", this.onClose)
 

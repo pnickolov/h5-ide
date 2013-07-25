@@ -2,7 +2,7 @@
 #  View Mode for header module
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'constant' ], (constant) ->
+define [ 'backbone', 'jquery', 'underscore', 'constant' ], (Backbone, $, _, constant) ->
 
     ws = MC.data.websocket
 
@@ -18,14 +18,14 @@ define [ 'backbone', 'jquery', 'underscore', 'constant' ], (constant) ->
             info_list = me.get 'info_list'
             unread_num = me.get 'unread_num'
 
-            #if not info_list
-                ## get from ws
-                #info_list = me.queryRequest()
+            if not info_list
+                #get from ws
+                info_list = me.queryRequest()
 
             if not unread_num
                 unread_num = 0
 
-            #me.set 'info_list', info_list
+            me.set 'info_list', info_list
             me.set 'unread_num', unread_num
 
             # listen
@@ -40,8 +40,8 @@ define [ 'backbone', 'jquery', 'underscore', 'constant' ], (constant) ->
             item.id = req.id
             item.rid = req.rid
             item.time = req.time_end
-            item.time_str = req.time_str
-            item.region = req.region
+            item.time_str = MC.dateFormat(new Date(item.time*1000), "hh:mm yyyy-MM-dd")
+            item.region = constant.REGION_LABEL[req.region]
             item.is_readed = true
             item.is_error = false
             item.is_request = false
@@ -64,12 +64,19 @@ define [ 'backbone', 'jquery', 'underscore', 'constant' ], (constant) ->
                     item.is_complete = true
                 else
                     return
+
+                if item.rid.search('stack') == 0 and not item.is_error
+                    lst = req.data.split ' '
+                    item.rid = lst[lst.length-1]
+                    item.name = item.rid
             else
                 return
 
             item
 
         queryRequest : () ->
+            me = this
+
             info_list = []
 
             # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete}]
@@ -78,6 +85,10 @@ define [ 'backbone', 'jquery', 'underscore', 'constant' ], (constant) ->
 
                 if item
                     info_list.push item
+
+
+            info_list.sort (a, b) ->
+                return if a.time <= b.time then 1 else -1
 
             info_list
 

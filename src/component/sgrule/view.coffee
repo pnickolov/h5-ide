@@ -31,22 +31,6 @@ define [
             # Update sidebar
             this.updateSidebar()
 
-<<<<<<< HEAD
-            self = this
-            # Bind Events
-            $modal.on( "click", ".sg-rule-create-add",   ()->
-                                                            self.addRule() )
-                  .on( "click", ".sg-node-wrap input",   ()->
-                                                            self.switchNode() )
-                  .on( "click", ".sg-rule-create-readd", ()->
-                                                            self.readdRule() )
-                  .on( "click", ".sg-rule-delete",       ()->
-                                                            self.deleteRule() )
-
-            $modal.closest("#closed").on("closed", this.onClose)
-
-=======
->>>>>>> origin/develop
         onClose : () ->
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.
           this.trigger 'CLOSE_POPUP'
@@ -61,22 +45,17 @@ define [
           # TODO : Insert rule to the sidebar
 
           # Switch to done view.
-<<<<<<< HEAD
-          this.$el.animate({left:"+=100px"}, 300).toggleClass('done', true)
-=======
+
           #this.$el.animate({left:'+=100px'}, 300).toggleClass('done', true)
           this.$el.find('#modal-box').animate({left:'+=100px'}, 300).toggleClass('done', true)
->>>>>>> origin/develop
+
 
           # Update sidebar
           this.updateSidebar()
 
         readdRule : () ->
-<<<<<<< HEAD
-          this.$el.animate({left:"-=100px"}, 300).toggleClass('done', false)
-=======
+
           this.$el.animate({left:'-=100px'}, 300).toggleClass('done', false)
->>>>>>> origin/develop
 
         deleteRule : () ->
           # TODO : Tell model to delete rule

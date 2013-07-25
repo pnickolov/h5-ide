@@ -16,15 +16,25 @@ define [ 'jquery', 'text!/module/header/template.html' ], ( $, template ) ->
         $( template ).appendTo '#header'
 
         #load remote module1.js
-        require [ './module/header/view' ], ( View ) ->
+        require [ './module/header/view', './module/header/model' ], ( View, model ) ->
 
             #view
             view       = new View()
+            view.model = model
 
-            #view.on 'complete', () ->
-            #    console.log 'complete'
+            model.getInfoList()
 
             view.render()
+
+            model.on 'change:info_list', () ->
+                console.log 'header_change:info_list'
+
+                view.render()
+
+            model.on 'change:unread_num', () ->
+                console.log 'header_change:unread_num'
+
+                view.render()
 
     unLoadModule = () ->
         #

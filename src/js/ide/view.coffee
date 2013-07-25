@@ -12,7 +12,7 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             $( window ).on "resize", this.resizeEvent
 
         resizeEvent : ->
-            $( '.main-content' ).height window.innerHeight - 92
+            $( '.main-content' ).height window.innerHeight - 42
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'

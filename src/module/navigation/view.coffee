@@ -115,23 +115,23 @@ define [ 'event',  'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( id
                     $( this ).removeClass 'collapsed-show'
             }
 
-        hideNavigation :  ->
-            console.log 'hideNavigation'
-            nav      = $ '#navigation'
-            main     = $ '#main'
+        # hideNavigation :  ->
+        #     console.log 'hideNavigation'
+        #     nav      = $ '#navigation'
+        #     main     = $ '#main'
 
-            nav.addClass 'collapsed'
-            nav.removeClass 'scroll-wrap'
-            main.addClass 'wide'
+        #     nav.addClass 'collapsed'
+        #     nav.removeClass 'scroll-wrap'
+        #     main.addClass 'wide'
 
-            $( '#first-level-nav' ).removeClass 'accordion'
-            $( '.nav-head').removeClass 'accordion-group'
-            $( '.sub-menu-wrapper').removeClass 'accordion-body'
+        #     $( '#first-level-nav' ).removeClass 'accordion'
+        #     $( '.nav-head').removeClass 'accordion-group'
+        #     $( '.sub-menu-wrapper').removeClass 'accordion-body'
 
-            if nav.hasClass( 'collapsed' )
-                $( '.sub-menu-wrapper' ).each () ->
-                    this.style.cssText = ''
-                    null
+        #     if nav.hasClass( 'collapsed' )
+        #         $( '.sub-menu-wrapper' ).each () ->
+        #             this.style.cssText = ''
+        #             null
 
         checkDesignLoadComplete : ( type, tab_name, region_name, tab_id ) ->
             console.log 'checkDesignLoadComplete'

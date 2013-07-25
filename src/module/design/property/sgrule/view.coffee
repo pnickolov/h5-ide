@@ -17,8 +17,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         render     : () ->
             console.log 'property:sgrule render'
 
+            ###
             attributes =
                 sg_group : []
+            ###
 
             $( '.property-details' ).html this.template this.model.attributes
 

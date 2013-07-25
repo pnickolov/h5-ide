@@ -1,1 +1,102 @@
-loading...
+<div class="sidebar-title">
+  <span class="sidebar-title-text">{{component.name}}</span>
+</div>
+<div class="fixedaccordion accordion-default" data-sub="43">
+  <div class="accordion-group expanded">
+    <div class="fixedaccordion-head">Load Balancer Details</div>
+    <div class="accordion-body">
+      <div class="property-control-group clearfix">
+        <dl class="dl-vertical">
+          {{#if component.resource.VpcId}}
+          <dt>Scheme</dt>
+          <dd>{{#if elb_detail.isInternal}}Internal{{else}}Internet Facing{{/if}}</dd>
+          {{/if}}
+          <dt>DNS Name</dt>
+          <dd>TODO!!!!!!</dd>
+          <dt>Hosted Zone ID</dt>
+          <dd>TODO!!!!!!</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="fixedaccordion-head">Listener Configuration</div>
+    <div class="accordion-body">
+      <ul>
+        {{#each listener_detail.listenerAry}}
+          <li class="app-panel-li">
+            <div class="app-panel-li-col2-1">
+              <p>Load Balancer <span>Protocol</span></p>
+              <p>{{Protocol}}</p>
+            </div>
+
+            <div class="app-panel-li-col2-2">
+              <p><span>Port</span></p>
+              <p>{{LoadBalancerPort}}</p>
+            </div>
+
+            <div class="app-panel-li-col2-1">
+              <p>Instance <span>Protocol</span></p>
+              <p>{{InstanceProtocol}}</p>
+            </div>
+
+            <div class="app-panel-li-col2-2">
+              <p><span>Port</span></p>
+              <p>{{InstancePort}}</p>
+            </div>
+          </li>
+        {{/each}}
+        <li class="app-panel-li">
+          <p class="app-panel-li-main">Server Certificate</p>
+          <p class="app-panel-li-sub">TODO!!!!!!</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-group">
+    <div class="fixedaccordion-head">Health Check Configuration</div>
+    <div class="accordion-body">
+
+      <div class="property-control-group clearfix">
+        <dl class="dl-vertical">
+          <dt>Ping Protocol</dt>
+          <dd>{{health_detail.protocol}}</dd>
+          <dt>Ping Port</dt>
+          <dd>{{health_detail.port}}</dd>
+          <dt>Ping Path</dt>
+          <dd>{{health_detail.path}}</dd>
+          <dt>Health Check Interval</dt>
+          <dd>{{health_detail.interval}} Seconds</dd>
+          <dt>Response Timeout</dt>
+          <dd>{{health_detail.timeout}} Seconds</dd>
+          <dt>Unhealthy Threshold</dt>
+          <dd>{{health_detail.unhealthy_threshold}}</dd>
+          <dt>Healthy Threshold</dt>
+          <dd>{{health_detail.healthy_threshold}}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-group">
+    <div class="fixedaccordion-head">Distribution</div>
+    <ul class="accordion-body">
+      {{#each az_detail}}
+      {{#if selected}}
+      <li class="app-panel-li status-{{#if goodStatus}}good{{else}}bad{{/if}}">
+        <p class="app-panel-li-main">{{az_name}} <span class="sub">- {{vpc}}</span> </p>
+        <p class="app-panel-li-sub"> {{health_instance_num}}/{{instance_num}} instances are healthy </p>
+      </li>
+      {{/if}}
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="accordion-group">
+    <div class="fixedaccordion-head">Security Groups</div>
+    <ul class="accordion-body">
+      TODO!!!!!!!!!!!!!
+    </ul>
+  </div>
+</div>

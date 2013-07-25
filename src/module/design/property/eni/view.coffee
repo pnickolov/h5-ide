@@ -28,19 +28,6 @@ define [ 'event',
 
         render     : () ->
             console.log 'property:eni render'
-
-            attributes =
-                name     : "ENI-1"
-                attached : true
-
-                eni_display :
-                    description : "My Network interface description"
-                    sourceCheck : true
-
-                sg_display :
-                    total : 1
-
-
             $('.property-details').html this.template this.model.attributes
 
         setEniDesc : ( event ) ->

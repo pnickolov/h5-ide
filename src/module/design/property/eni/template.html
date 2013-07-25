@@ -1,5 +1,5 @@
 <header class="sidebar-title">
-  <span class="sidebar-title-text" id='property-title'>{{name}}</span>
+  <span class="sidebar-title-text" id='property-title'>{{eni_display.name}}</span>
 </header>
 
 <section class="property-control-group clearfix" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
@@ -49,7 +49,7 @@
 						{{/each}}
           </ul>
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -95,7 +95,7 @@
               </ul>
             </div>
           </div>
-          
+
           <ul class="sg-rule-list">
             {{#each sg_display.rules_detail_ingress}}
             <li data-inbound="true">
@@ -108,7 +108,7 @@
               <div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
             </li>
             {{/each}}
-            
+
             {{#each sg_display.rules_detail_egress}}
             <li data-inbound="true">
               <div class='rule-direction-icon tooltip' data-tooltip="outbound"></div>

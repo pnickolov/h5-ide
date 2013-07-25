@@ -19,13 +19,16 @@ define [ 'jquery',
     $( 'head' ).append template
 
     #private
-    loadModule = ( uid, instance_expended_id, current_main ) ->
+    loadModule = ( uid, instance_expended_id, current_main, tab_type ) ->
 
         #
         MC.data.current_sub_main = current_main
 
+        #set view_type
+        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+
         #
-        require [ './module/design/property/instance/view',
+        require [ './module/design/property/instance/' + view_type,
                   './module/design/property/instance/model',
                   './module/design/property/sglist/main'
         ], ( view, model, sglist_main ) ->

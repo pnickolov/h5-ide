@@ -1,5 +1,5 @@
 #############################
-#  View(UI logic) for design/property/eni(app)
+#  View(UI logic) for design/property/volume(app)
 #############################
 
 define [ 'event', 'MC',
@@ -10,10 +10,10 @@ define [ 'event', 'MC',
         el       : $ document
         tagName  : $ '.property-details'
 
-        template  : Handlebars.compile $( '#property-eni-app-tmpl' ).html()
+        template  : Handlebars.compile $( '#property-volume-app-tmpl' ).html()
 
         render     : () ->
-            console.log 'property:eni app render', this.model.attributes
+            console.log 'property:volume app render', this.model.attributes
             $( '.property-details' ).html this.template this.model.attributes
 
 

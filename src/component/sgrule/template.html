@@ -9,14 +9,14 @@
           <input type="radio" name="sg-rule-create-tgt" checked="checked" id="sg-rule-create-tgt-o">
           <label for="sg-rule-create-tgt-o"></label>
         </div>
-        <label for="sg-rule-create-tgt-o">{{outward.name}}</label>
+        <label for="sg-rule-create-tgt-o">{{sg_detail.[0].name}}</label>
       </div>
       <div class="left">
         <div class="radio">
           <input type="radio" name="sg-rule-create-tgt" id="sg-rule-create-tgt-i">
           <label for="sg-rule-create-tgt-i"></label>
         </div>
-        <label for="sg-rule-create-tgt-i">{{inward.name}}</label>
+        <label for="sg-rule-create-tgt-i">{{sg_detail.[1].name}}</label>
       </div>
     </section>
 
@@ -24,10 +24,10 @@
       <li>
         <label>Security Group</label>
         <div class="selectbox">
-          <div class="selection" style="width:300px;height:30px;">{{outward.sg.[0]}}</div>
+          <div class="selection" style="width:300px;height:30px;">{{sg_detail.[1].sg.[0].name}}</div>
           <ul class="dropdown">
-            {{#each outward.sg}}
-              <li class="item">{{this}}</li>
+            {{#each sg_detail.[1].sg}}
+              <li class="item" data-uid="{{uid}}">{{name}}</li>
             {{/each}}
           </ul>
         </div>
@@ -56,10 +56,10 @@
       <li class="clearfix">
         <label class="left">Source</label>
         <div class="selectbox">
-          <div class="selection" style="width:200px;height:30px;">{{outward.connection.[0]}}</div>
+          <div class="selection" style="width:200px;height:30px;">{{sg_detail.[1].sg.[0].name}}</div>
           <ul class="dropdown">
-            {{#each outward.connection}}
-              <li class="item">{{this}}</li>
+            {{#each sg_detail.[1].sg}}
+              <li class="item" data-uid="{{uid}}">{{name}}</li>
             {{/each}}
           </ul>
         </div>
@@ -200,10 +200,10 @@
       <li>
         <label>Security Group</label>
         <div class="selectbox">
-          <div class="selection" style="width:300px;height:30px;">{{inward.sg.[0]}}</div>
+          <div class="selection" style="width:300px;height:30px;">{{sg_detail.[1].sg.[0].name}}</div>
           <ul class="dropdown">
-            {{#each inward.sg}}
-              <li class="item">{{this}}</li>
+            {{#each sg_detail.[1].sg}}
+              <li class="item" data-uid="{{uid}}">{{name}}</li>
             {{/each}}
           </ul>
         </div>
@@ -232,10 +232,10 @@
       <li class="clearfix">
         <label class="left">Source</label>
         <div class="selectbox">
-          <div class="selection" style="width:200px;height:30px;">{{inward.connection.[0]}}</div>
+          <div class="selection" style="width:200px;height:30px;">{{sg_detail.[0].sg.[0].name}}</div>
           <ul class="dropdown">
-            {{#each inward.connection}}
-              <li class="item">{{this}}</li>
+            {{#each sg_detail.[0].sg}}
+              <li class="item" data-uid="{{uid}}">{{name}}</li>
             {{/each}}
           </ul>
         </div>

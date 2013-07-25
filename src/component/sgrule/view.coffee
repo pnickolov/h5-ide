@@ -40,7 +40,7 @@ define [
           this.$el.find('.sg-rule-create-add-wrap').toggleClass( 'outward', $('#sg-rule-create-tgt-o').is(':checked') )
           null
 
-        addRule : () ->
+        addRule : ( event ) ->
           # TODO : Tell model to add rule.
 
           # TODO : Insert rule to the sidebar

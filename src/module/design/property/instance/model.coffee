@@ -60,6 +60,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
         setName  : () ->
             console.log 'setName'
+
+            uid = this.get 'get_uid'
+
             MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
             this.set 'update_instance_title', this.get 'name'
 

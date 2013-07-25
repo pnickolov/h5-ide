@@ -17,7 +17,7 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             #view
             view.model    = model
 
-            model.getSgData line_id
+            model.getSgRuleDetail line_id
             #
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model

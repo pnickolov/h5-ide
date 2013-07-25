@@ -1,1 +1,27 @@
-sgrule loading...
+<header class="sidebar-title">
+  <span class="sidebar-title-text" id='property-title'>The selected connection reflects following security group rule(s):</span>
+</header>
+
+<section class="property-info" id="property-sgrule">
+
+  {{#each sg_group}}
+    <h3 class="sg-create-group">{{name}}</h3>
+    <ul>
+      {{#each rules}}
+        <li class="clearfix sg-create-rule-item">
+          <span class="sg-rule-col1">
+            <span class="{{#if Egress}}sg-rule-inbound{{else}}sg-rule-outbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
+            <span class="sg-rule-protocol">{{protocol}}</span>
+          </span>
+          <div class="sg-rule-col2">
+            <div class="sg-rule-connnection">{{connection}}</div>
+            <div class="sg-rule-port">{{port}}</div>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  {{/each}}
+
+  <button class="btn btn-red" id="sg-edit-rule-button">Edit Related Rule</button>
+
+</section>

@@ -40,6 +40,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                         rule   : component.resource.EntrySet.length
                         name   : component.name
                         association : component.resource.AssociationSet.length
+                        isUsed  : false
 
                     for asscn in component.resource.AssociationSet
                         if asscn.SubnetId.indexOf( uid ) != -1
@@ -61,8 +62,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             else
                 defaultACL = networkACLs[ 0 ]
 
-            if linkToDefault
-                defaultACL.isUsed = true
+            # if linkToDefault
+            #     defaultACL.isUsed = true
 
             this.set data
             null

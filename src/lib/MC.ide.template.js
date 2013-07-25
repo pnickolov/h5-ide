@@ -11,14 +11,16 @@
 
 MC.IDEcompile = function( suffix, template_data, compile_obj ) {
     
-    var data  = template_data.split( /\<!--{{ (.*) }}--\>/ig )
-    data      = _.difference( data, _.keys( compile_obj ))
-    data      = _.rest( data )
-    data      = _.object( _.values( compile_obj ), data )
+    var data  = template_data.split( /\<!--{{ (.*) }}--\>/ig ),
+    	tmp;
+    	
+    data      = _.difference( data, _.keys( compile_obj ));
+    data      = _.rest( data );
+    data      = _.object( _.values( compile_obj ), data );
 
     //
     _.each( data, function( value, key ) {
-        tmp = '<script type="text/x-handlebars-template" id="' + key + '">' + value + '</script>'
-        $( tmp ).appendTo( 'head' )
+        tmp = '<script type="text/x-handlebars-template" id="' + key + '">' + value + '</script>';
+        $( tmp ).appendTo( 'head' );
     });
 }

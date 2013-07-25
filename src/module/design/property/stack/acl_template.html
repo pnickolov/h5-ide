@@ -1,0 +1,7 @@
+{{#each network_acl}}
+	<div class="property-item">
+		<p class="title">{{name}}</p>	
+		<p class="info">{{rule}} rules,{{association}} association</p>
+		<p class="delete {{#unless isUsed}}used{{/unless}}" acl-uid="{{uid}}">Delete</p>
+	</div>
+{{/each}}

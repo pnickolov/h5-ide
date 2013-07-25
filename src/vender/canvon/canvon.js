@@ -3,23 +3,39 @@
 // Copyright Angel Lai 2013
 // MIT license
 //
-var Canvon = function (canvas_id)
+
+var Canvon = function (selector)
 {
-	return new Canvon.fn.init(document.getElementById(canvas_id));
+	return new Canvon.fn.init( selector );
 };
 
 Canvon.fn = Canvon.prototype = {
 
 	drawn: null,
 
-	init: function (canvas)
+	init: function (selector)
 	{
+		var elem;
+
+		if (typeof selector === 'string')
+		{
+			elem = document.getElementById( selector );
+		}
+		else if (selector instanceof SVGElement)
+		{
+			elem = selector;
+		}
+		else
+		{
+			return false;
+		}
+
 		$.each(Canvon.prototype, function (name, fn)
 		{
-			canvas[name] = fn;
+			elem[ name ] = fn;
 		});
 
-		return canvas;
+		return elem;
 	},
 
 	start: function (style)
@@ -32,6 +48,8 @@ Canvon.fn = Canvon.prototype = {
 		}
 		$(this).append(group);
 		this.drewGroup = group;
+
+		return group;
 	},
 
 	draw: function (canvas, type)
@@ -66,6 +84,7 @@ Canvon.fn = Canvon.prototype = {
 	save: function ()
 	{
 		var data = this.drewGroup;
+
 		if (data)
 		{
 			this.drewGroup = null;
@@ -82,7 +101,10 @@ Canvon.fn = Canvon.prototype = {
 			{
 				this.drewGroup = null;
 			}
+
 			this.removeChild(elem);
+
+			return true;
 		}
 	},
 
@@ -102,8 +124,9 @@ Canvon.fn = Canvon.prototype = {
 			length = path.length,
 			i;
 
-		for (i = 0; i < length; i++) {
-			points.push(path[i].x + ',' + path[i].y);
+		for (i = 0; i < length; i++)
+		{
+			points.push(path[ i ].x + ',' + path[ i ].y);
 		}
 
 		return this.draw(this, 'polyline').attr({
@@ -117,8 +140,9 @@ Canvon.fn = Canvon.prototype = {
 			length = path.length,
 			i;
 
-		for (i = 0; i < length; i++) {
-			points.push(path[i][0] + ',' + path[i][1]);
+		for (i = 0; i < length; i++)
+		{
+			points.push( path[ i ][0] + ',' + path[ i ][1] );
 		}
 
 		return this.draw(this, 'polygon').attr({
@@ -194,18 +218,68 @@ Canvon.fn = Canvon.prototype = {
 		return use;
 	},
 
-	group: function (x, y, width, height, style) {
+	group: function (x, y, width, height, style)
+	{
 		return this.draw(this, 'g').attr({
 			'x': x,
 			'y': y,
 			'width': width,
 			'height': height
 		}).css(style || {});
-	}
+	},
 
+	addClass: function (name)
+	{
+		var className = this.getAttribute('class'),
+			nclass = [];
+
+		if (className === '')
+		{
+			this.setAttribute('class', name);
+		}
+		else
+		{
+			$.each(name.split(/\s+/), function (i, item)
+			{
+				if (!new RegExp('\\b(' + item + ')\\b').test(className))
+				{
+					nclass.push(' ' + item);
+				}
+			});
+			className += nclass.join('');
+
+			this.setAttribute('class', className);
+		}
+
+		return this;
+	},
+
+	removeClass: function (name)
+	{
+		this.setAttribute('class', name ?
+			$.trim(
+				this.getAttribute('class').replace(
+					new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b', 'g'), '')
+					.split(/\s+/)
+					.join(' ')
+			) : ''
+		);
+
+		return this;
+	},
+
+	hasClass: function ()
+	{
+		return new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b').test( this.getAttribute('class') );
+	},
+
+	offset: function ()
+	{
+		return this.getBoundingClientRect();
+	}
 };
 
 $.each(Canvon.prototype, function (name, fn)
 {
-	Canvon[name] = fn;
+	Canvon[ name ] = fn;
 });

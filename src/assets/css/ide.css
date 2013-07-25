@@ -190,7 +190,7 @@ a {
 }
 
 #notification-panel-wrapper {
-	width: 680px;
+	width: 300px;
 }
 
 #notification-panel-wrapper tbody tr td:first-child {
@@ -3024,4 +3024,216 @@ height: 35px;
 
 .acl-rules li:hover {
 	background-color: #fff;
+}
+
+#modal-acl-source-input {
+	display: none;
+}
+
+.stack-property-acl-list .delete {
+	color: #aaa;
+	cursor: pointer;
+	float: left;
+	display: none;
+	margin-left: 10px;
+}
+
+.stack-property-acl-list .info {
+	float: left;
+}
+
+.stack-property-acl-list .delete.used {
+	display: block;
+}
+
+.stack-property-acl-list .property-item {
+	height: 30px;
+}
+
+/* SG Rule Create Dialog */
+.sg-rule-create-h, #sg-rule-create-modal {
+	position : relative;
+	left : 0;
+	-webkit-transition: left .3s ease-in-out;
+	   -moz-transition: left .3s ease-in-out;
+	    -ms-transition: left .3s ease-in-out;
+	     -o-transition: left .3s ease-in-out;
+	        transition: left .3s ease-in-out;
+}
+
+#sg-rule-create-modal {
+	height : 420px;
+	width  : 350px;
+}
+
+.sg-rule-create-done-wrap {
+	display : none;
+}
+
+.done .sg-rule-create-done-wrap {
+	display : block;
+}
+
+.done .sg-rule-create-add-wrap {
+	display : none;
+}
+
+#sg-rule-create-outward {
+	display : none;
+}
+
+.outward #sg-rule-create-inward {
+	display : none;	
+}
+.outward #sg-rule-create-outward {
+	display : block;
+}
+
+.sg-rule-create-sidebar {
+	height     : 100%;
+	position   : absolute;
+	width      : 200px;
+	top        : 0;
+	z-index    : -1;
+	padding    : 20px 0;
+
+	-webkit-transition: left .3s ease-in-out;
+	   -moz-transition: left .3s ease-in-out;
+	    -ms-transition: left .3s ease-in-out;
+	     -o-transition: left .3s ease-in-out;
+	        transition: left .3s ease-in-out;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+.done .sg-rule-create-sidebar {
+	left : -200px;
+}
+
+.sidebar-wrap {
+	height : 100%;
+	background : #c8c8c8;
+}
+
+.sg-create-sb-h {
+	background : #333;
+	padding : 5px;
+}
+
+.sg-create-group {
+	background : #777;
+}
+
+.sg-create-rule-item {
+	border-bottom : 1px solid #555;
+}
+
+.sg-proto-option {
+	width : 80px;
+	float : left;
+}
+
+.sg-create-proto-inputs {
+	width : 100px;
+	float : left;
+}
+
+.sg-create-proto-inputs .sg-proto-input {
+	display : none;
+}
+
+.sg-create-proto-inputs .show {
+	display : block;
+}
+
+/* Notification Dropdown */
+.notification-list {
+	line-height: normal;
+	background-color: #fff;
+	border: 1px solid #666;
+	font-size: 12px;
+}
+
+.notification-list .notification-item {
+	border-bottom: 1px solid #666;
+	padding: 13px 15px 10px;
+}
+
+.notification-list > div:last-child {
+	border-bottom: none;
+}
+
+.notification-list .notification-item.unread {
+	background-color: rgb(255, 221, 239);
+}
+
+.notification-list .notification-message {
+
+}
+
+.notification-list .notification-message .content {
+	padding-left: 21px;
+}
+
+#header .notification-list .notification-message .content a {
+	color: #0088cc;
+	display: inline;
+	padding: 0;
+}
+
+.notification-list .notification-details {
+	padding-top: 5px;
+	border: 1px solid rgb(190, 188, 189);
+	margin-top: 15px;
+	padding: 5px;
+	background-color: #fff;
+}
+
+.notification-list .notification-details p {
+	margin: 2px 0;
+}
+
+.notification-list .notification-stamp {
+	text-align: right;
+	color: rgb(153, 153, 153);
+	padding-top: 5px;
+}
+
+.notification-list [class^="icon-"], .notification-list [class*=" icon-"] {
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: left;
+}
+
+.icon-success {
+	background-image: url(../images/ide/icon/icon-success.png);
+}
+
+.icon-fail {
+	background-image: url(../images/ide/icon/icon-fail.png);
+}
+
+.icon-processing {
+	background-image: url(../images/ide/icon/icon-processing.png);
+}
+
+.icon-sending {
+	background-image: url(../images/ide/icon/icon-sending.png);
+}
+
+.notification-empty {
+	padding: 10px 15px;	
+	text-align: center;
+}
+
+.notification-empty .title {
+	font-size: 16px;
+	color: #000;
+	padding-bottom: 10px;
+}
+
+.notification-empty .description {
+	color: rgb(153, 153, 153);
 }

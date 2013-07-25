@@ -2,9 +2,7 @@
 #  View Mode for canvas
 #############################
 define [ 'constant',
-		'canvas_handle_elb',
-		'canvas_handle_vpn',
-		'backbone', 'jquery', 'underscore' ], ( constant, canvas_handle_elb, canvas_handle_vpn ) ->
+		'backbone', 'jquery', 'underscore' ], ( constant ) ->
 
 	CanvasModel = Backbone.Model.extend {
 
@@ -270,7 +268,7 @@ define [ 'constant',
 
 				#delete line between elb and instance
 				if portMap['elb-sg-out'] and portMap['instance-sg-in']
-					canvas_handle_elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
+					MC.aws.elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
 
 				if portMap['instance-attach'] and portMap['eni-attach']
 
@@ -364,7 +362,7 @@ define [ 'constant',
 						MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet.splice v, 1
 
 				if portMap['vgw-vpn'] and portMap['cgw-vpn']
-					canvas_handle_vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+					MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
 
 
@@ -455,7 +453,7 @@ define [ 'constant',
 
 				#connect elb and instance
 				if portMap['instance-sg-in'] and portMap['elb-sg-out']
-					canvas_handle_elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
+					MC.aws.elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
 
 				if portMap['instance-attach'] and portMap['eni-attach']
 
@@ -638,7 +636,7 @@ define [ 'constant',
 
 				#connect vgw and cgw
 				if portMap['vgw-vpn'] and portMap['cgw-vpn']
-					canvas_handle_vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+					MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
 
 			null
@@ -657,10 +655,10 @@ define [ 'constant',
 				componentType = constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
 			
 			if componentType is constant.AWS_RESOURCE_TYPE.AWS_ELB
-				canvas_handle_elb.init(uid)
+				MC.aws.elb.init(uid)
 
 			if componentType is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
-				canvas_handle_elb.setAllELBSchemeAsInternal()
+				MC.aws.elb.setAllELBSchemeAsInternal()
 
 			#to-do
 

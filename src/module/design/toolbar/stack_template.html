@@ -1,6 +1,6 @@
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
-		<a href="#" class="btn-toolbar tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{stack_name}}"}' data-modal-dismiss="true"><i class="icon-toolbar-run"></i></a>
+		<a href="#" class="btn-toolbar tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_name}}"}' data-modal-dismiss="true"><i class="icon-toolbar-run"></i></a>
 	</li>
 	<li class="btn-toolbar">
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Save stack"><i class="icon-toolbar-save"></i></a>
@@ -10,17 +10,9 @@
 			<span class="icon-toolbar-more-action"></span>
 		</div>
 		<ul class="dropdown" tabindex="-1">
-			{{#if toolbar_flag.duplicate}}
 			<li class="btn-toolbar" id="toolbar-duplicate" data-tooltip="Duplicate stack"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</li>
-			{{else}}
-			<li class="btn-toolbar disabled" id="toolbar-duplicate" data-tooltip="Duplicate stack"><i class="icon-toolbar-duplicate"></i>Duplicate</li>
-			{{/if}}
 
-			{{#if toolbar_flag.delete}}
-			<li class="btn-toolbar modal" id="toolbar-delete" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{stack_name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</li>
-			{{else}}
-			<li class="btn-toolbar" id="toolbar-delete" data-tooltip="Delete"><i class="icon-toolbar-delete"></i>Delete</li>
-			{{/if}}
+			<li class="btn-toolbar modal" id="toolbar-delete" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</li>
 
 			<li class="btn-toolbar" id="toolbar-new" data-tooltip="Create new stack"><i class="icon-toolbar-new-stack"></i>New Stack</li>
 		</ul>
@@ -36,18 +28,10 @@
 </ul>
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
-		{{#if toolbar_flag.zoomin}}
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom In"><i class="icon-toolbar-zoom-in"></i></a>
-		{{else}}
-		<a href="#" class="btn-toolbar tooltip disabled" data-tooltip="Zoom In"><i class="icon-toolbar-zoom-in"></i></a>
-		{{/if}}
 	</li>
 	<li class="btn-toolbar">
-		{{#if toolbar_flag.zoomout}}
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom Out"><i class="icon-toolbar-zoom-out"></i></a>
-		{{else}}
-		<a href="#" class="btn-toolbar tooltip disabled" data-tooltip="Zoom Out"><i class="icon-toolbar-zoom-out"></i></a>
-		{{/if}}
 	</li>
 </ul>
 <ul class="toolbar-btn-group">

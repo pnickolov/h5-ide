@@ -15,11 +15,16 @@ MC.canvas = {
 
 	selected_node: [],
 
+	getState: function ()
+	{
+		return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
+	},
+
 	display: function (id, key, is_visible)
 	{
 		var target = $('#' + id + '_' + key);
 
-		if (is_visible === null || is_visible === undefined )
+		if (is_visible === null || is_visible === undefined)
 		{
 			switch (target.attr('display'))
 			{
@@ -157,7 +162,9 @@ MC.canvas = {
 		var sign = 0,
 			delta = 0,
 			cornerRadius = MC.canvas.CORNER_RADIUS, //8
-			closestRange = 2 * MC.canvas.CORNER_RADIUS; //2*cornerRadius
+			closestRange = 2 * MC.canvas.CORNER_RADIUS, //2*cornerRadius
+			p1,
+			p2;
 
 		/*1.above or below*/
 		if (prev.x === current.x)
@@ -433,9 +440,15 @@ MC.canvas = {
 			mid_x,
 			mid_y,
 			//start.x>=end.x
-			start_0_90 = end_0_90 = start_180_270 = end_180_270 = false,
+			start_0_90 = false,
+			end_0_90 = false,
+			start_180_270 = false,
+			end_180_270 = false,
 			//start.x<end.x
-			start_0_270 = end_0_270 = start_90_180 = end_90_180 = false;
+			start_0_270 = false,
+			end_0_270 = false,
+			start_90_180 = false,
+			end_90_180 = false;
 
 		//deep copy
 		$.extend(true, start, start0);
@@ -725,10 +738,25 @@ MC.canvas = {
 					'fill': 'none'
 				});
 
-				if ( start0.x === end0.x || start0.y === end0.y )
+				if (start0.x === end0.x || start0.y === end0.y)
 				{
 					//draw straight line
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
+
+					//draw dash line
+					if (
+						connection_option.stroke_dasharray &&
+						connection_option.color_dash &&
+						connection_option.stroke_dasharray !== ''
+					)
+					{
+						MC.paper.line(start0.x, start0.y, end0.x, end0.y).attr({
+							'stroke': connection_option.color_dash,
+							'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+							'fill': 'none',
+							'stroke-dasharray': connection_option.stroke_dasharray
+						});
+					}
 				}
 				else
 				{
@@ -752,9 +780,14 @@ MC.canvas = {
 						{
 							MC.paper.path(d);
 
-							if ( connection_option.stroke_dasharray  && connection_option.color_dash && connection_option.stroke_dasharray !== '' )
+							//draw dash fold line
+							if (
+								connection_option.stroke_dasharray  &&
+								connection_option.color_dash &&
+								connection_option.stroke_dasharray !== ''
+							)
 							{
-								MC.paper.path(d,{
+								MC.paper.path(d, {
 									'stroke': connection_option.color_dash,
 									'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
 									'fill': 'none',
@@ -830,9 +863,11 @@ MC.canvas = {
 	remove: function (node)
 	{
 		var node_id = node.id,
-			node_type = $(node).data('type');
+			target = $(node),
+			target_type = target.data('type'),
+			node_type = target.data('class');
 
-		if (node_type === 'line')
+		if (target_type === 'line')
 		{
 			var line_data = MC.canvas.data.get('layout.connection.' + node_id),
 				layout_component_data = MC.canvas.data.get('layout.component'),
@@ -843,7 +878,8 @@ MC.canvas = {
 			$.each(line_data.target, function (target_id, target_port)
 			{
 				target_node = $('#' + target_id);
-				target_connection = layout_component_data[ target_node.data('type') ][ target_id ].connection;
+				target_node_type = target_node.data('type');
+				target_connection = layout_component_data[ target_node_type ][ target_id ].connection;
 				new_connection_data = [];
 
 				$.each(target_connection, function (i, option)
@@ -854,13 +890,13 @@ MC.canvas = {
 					}
 				});
 
-				MC.canvas.data.set('layout.component.' + target_node.data('type') + '.' + target_id + '.connection', new_connection_data);
+				MC.canvas.data.set('layout.component.' + target_node_type + '.' + target_id + '.connection', new_connection_data);
 			});
 
 			MC.canvas.data.delete('layout.connection.' + node_id);
 		}
 
-		if (node_type === 'node')
+		if (target_type === 'node')
 		{
 			var	layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
@@ -899,13 +935,22 @@ MC.canvas = {
 				MC.canvas.data.delete('layout.connection.' + value.line);
 			});
 
-			MC.canvas.data.delete('layout.component.' + node_type + '.' + node_id);
+			MC.canvas.data.delete('layout.component.' + target_type + '.' + node_id);
 			MC.canvas.data.delete('component.' + node_id);
 		}
 
-		if (node_type === 'group')
+		if (target_type === 'group')
 		{
-			var group_child = MC.canvas.groupChild(node);
+			var group_child = MC.canvas.groupChild(node),
+				group_data = MC.canvas.data.get('layout.component.group.' + node_id);
+
+			if (node_type === 'AWS.VPC.Subnet' && group_data.connection.length > 0)
+			{
+				$.each(group_data.connection, function (index, data)
+				{
+					MC.canvas.remove(document.getElementById(data.line));
+				});
+			}
 
 			$.each(group_child, function (index, item)
 			{
@@ -1345,7 +1390,9 @@ MC.canvas.layout = {
 	init: function ()
 	{
 		var layout_data = MC.canvas.data.get("layout"),
-			connection_target_id;
+			connection_target_id,
+			tmp,
+			sg_uids;
 
 		MC.paper = Canvon('svg_canvas');
 
@@ -1383,11 +1430,18 @@ MC.canvas.layout = {
 				});
 				MC.canvas_property.sg_list.push(tmp);
 			}
-			if (value.type === "AWS.VPC.RouteTable" && value.resource.AssociationSet.length > 0 && value.resource.AssociationSet[0].Main === "true")
+			if (
+				value.type === "AWS.VPC.RouteTable" &&
+				value.resource.AssociationSet.length > 0 &&
+				value.resource.AssociationSet[0].Main === true
+			)
 			{
 				MC.canvas_property.main_route = value.uid;
 			}
-			if (value.type === "AWS.VPC.NetworkAcl" && value.resource.Default === "true")
+			if (
+				value.type === "AWS.VPC.NetworkAcl" &&
+				value.resource.Default === true
+			)
 			{
 				MC.canvas_property.default_acl = value.uid;
 			}
@@ -1411,6 +1465,7 @@ MC.canvas.layout = {
 				tmp = value;
 				MC.canvas_property.kp_list.splice(key, 1);
 				MC.canvas_property.kp_list.unshift(value);
+
 				return false;
 			}
 		});
@@ -1560,7 +1615,6 @@ MC.canvas.layout = {
 			MC.canvas_property.default_acl = acl.uid;
 
 			sg.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
-
 		}
 
 		$('#svg_canvas').attr({
@@ -1683,7 +1737,7 @@ MC.canvas.event.dragable = {
 
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
-				$(document.body).on({
+				$(document).on({
 					'mousemove': MC.canvas.event.dragable.gatewaymove,
 					'mouseup': MC.canvas.event.dragable.gatewayup
 				}, {
@@ -1700,7 +1754,7 @@ MC.canvas.event.dragable = {
 			}
 			else
 			{
-				$(document.body).on({
+				$(document).on({
 					'mousemove': MC.canvas.event.dragable.mousemove,
 					'mouseup': MC.canvas.event.dragable.mouseup
 				}, {
@@ -1857,24 +1911,54 @@ MC.canvas.event.dragable = {
 			{
 				var coordinate = MC.canvas.pixelToGrid(
 						shadow_offset.left - canvas_offset.left,
-						shadow_offset.top - canvas_offset.top// + (parseInt(target.find('.group').css('stroke-width')) * 1)
+						shadow_offset.top - canvas_offset.top
 					),
 					layout_group_data = MC.canvas.data.get('layout.component.group'),
 					group_data = layout_group_data[ target_id ],
 					group_coordinate = group_data.coordinate,
 					group_size = group_data.size,
-					match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1]),
-					areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]),
-					parentGroup = MC.canvas.parentGroup(target_id, group_data.type, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]),
 					child_stack = [],
 					unique_stack = [],
 					coordinate_fixed = false,
+					match_place,
+					areaChild,
+					parentGroup,
 					fixed_areaChild,
 					group_offsetX,
 					group_offsetY,
 					matched_child,
 					child_data,
 					child_type;
+
+				if (group_data.type === 'AWS.VPC.VPC')
+				{
+					if ( coordinate.y <= 3)
+					{
+						 coordinate.y = 3;
+					}
+
+					if (coordinate.x <= 5)
+					{
+						coordinate.x = 5;
+					}
+				}
+
+				if (group_data.type !== 'AWS.VPC.VPC')
+				{
+					if (coordinate.y <= 2)
+					{
+						 coordinate.y = 2;
+					}
+
+					if (coordinate.x <= 2)
+					{
+						coordinate.x = 2;
+					}
+				}
+
+				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1]);
+				areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
+				parentGroup = MC.canvas.parentGroup(target_id, group_data.type, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
 
 				$.each(areaChild, function (index, item)
 				{
@@ -1921,7 +2005,13 @@ MC.canvas.event.dragable = {
 
 					if (coordinate_fixed)
 					{
-						fixed_areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
+						fixed_areaChild = MC.canvas.areaChild(
+							target_id,
+							coordinate.x,
+							coordinate.y,
+							coordinate.x + group_size[0],
+							coordinate.y + group_size[1]
+						);
 					}
 				}
 
@@ -1930,31 +2020,15 @@ MC.canvas.event.dragable = {
 
 				if (
 					(
-						(
-							group_data.type === 'AWS.VPC.VPC' &&
-							coordinate.x > 5 &&
-							coordinate.y > 2
-						)
-						||
-						(
-							group_data.type !== 'AWS.VPC.VPC' &&
-							coordinate.x > 1 &&
-							coordinate.y > 1
-						)
+						coordinate_fixed &&
+						event.data.groupChild.length === fixed_areaChild.length
 					)
-					&&
+					||
 					(
-						(
-							coordinate_fixed &&
-							event.data.groupChild.length === fixed_areaChild.length
-						)
-						||
-						(
-							!coordinate_fixed &&
-							match_place.is_matched &&
-							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
-							event.data.groupChild.length === unique_stack.length
-						)
+						!coordinate_fixed &&
+						match_place.is_matched &&
+						MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
+						event.data.groupChild.length === unique_stack.length
 					)
 				)
 				{
@@ -2029,6 +2103,63 @@ MC.canvas.event.dragable = {
 						});
 					}
 
+					var group_left = coordinate.x,
+						group_top = coordinate.y,
+						group_width = group_size[0],
+						group_height = group_size[1];
+
+					if (group_data.type === 'AWS.VPC.VPC')
+					{
+						igw_gateway = $('.AWS-VPC-InternetGateway');
+						vgw_gateway = $('.AWS-VPC-VPNGateway');
+
+						if (igw_gateway[0])
+						{
+							igw_gateway_id = igw_gateway.attr('id');
+							igw_gateway_data = layout_node_data[ igw_gateway_id ];
+							igw_top = igw_gateway_data.coordinate[1] + group_offsetY;
+
+							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
+							MC.canvas.position(igw_gateway[0],  (group_left - 4) * MC.canvas_property.SCALE_RATIO, igw_top * MC.canvas_property.SCALE_RATIO);
+
+							$.each(igw_gateway_data.connection, function (index, value)
+							{
+								line_connection = layout_connection_data[ value.line ];
+
+								line_layer.removeChild(document.getElementById( value.line ));
+
+								MC.canvas.connect(
+									$('#' + igw_gateway_id), line_connection['target'][ igw_gateway_id ],
+									$('#' + value.target), line_connection['target'][ value.target ],
+									{'line_uid': value['line']}
+								);
+							});
+						}
+
+						if (vgw_gateway[0])
+						{
+							vgw_gateway_id = vgw_gateway.attr('id');
+							vgw_gateway_data = layout_node_data[ vgw_gateway_id ];
+							vgw_top = vgw_gateway_data.coordinate[1] + group_offsetY;
+
+							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
+							MC.canvas.position(vgw_gateway[0],  (group_left + group_width - 4) * MC.canvas_property.SCALE_RATIO, vgw_top * MC.canvas_property.SCALE_RATIO);
+
+							$.each(vgw_gateway_data.connection, function (index, value)
+							{
+								line_connection = layout_connection_data[ value.line ];
+
+								line_layer.removeChild(document.getElementById( value.line ));
+
+								MC.canvas.connect(
+									$('#' + vgw_gateway_id), line_connection['target'][ vgw_gateway_id ],
+									$('#' + value.target), line_connection['target'][ value.target ],
+									{'line_uid': value['line']}
+								);
+							});
+						}
+					}
+
 					target.attr('class', function (index, key)
 					{
 						return key + ' selected';
@@ -2057,7 +2188,7 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.remove();
 
-		$(document.body).off({
+		$(document).off({
 			'mousemove': MC.canvas.event.mousemove,
 			'mouseup': MC.canvas.event.mouseup
 		});
@@ -2067,17 +2198,19 @@ MC.canvas.event.dragable = {
 		event.preventDefault();
 		event.stopPropagation();
 
-		var gateway_top = Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO));
+		var gateway_top = Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)),
+			vpc_coordinate = event.data.vpc_data.coordinate,
+			vpc_size = event.data.vpc_data.size;
 
-		// MC.canvas.COMPONENT_SIZE for AWS.VPC.InternetGateway and AWS.VPC.VPNGateway = 10
-		if (gateway_top > event.data.vpc_data.coordinate[1] + event.data.vpc_data.size[1] - 8)
+		// MC.canvas.COMPONENT_SIZE for AWS.VPC.InternetGateway and AWS.VPC.VPNGateway = 8
+		if (gateway_top > vpc_coordinate[1] + vpc_size[1] - 8)
 		{
-			gateway_top = event.data.vpc_data.coordinate[1] + event.data.vpc_data.size[1] - 8;
+			gateway_top = vpc_coordinate[1] + vpc_size[1] - 8;
 		}
 
-		if (gateway_top < event.data.vpc_data.coordinate[1])
+		if (gateway_top < vpc_coordinate[1])
 		{
-			gateway_top = event.data.vpc_data.coordinate[1];
+			gateway_top = vpc_coordinate[1];
 		}
 
 		if (event.data.node_type === 'AWS.VPC.InternetGateway')
@@ -2085,7 +2218,7 @@ MC.canvas.event.dragable = {
 			event.data.shadow.attr('transform',
 				'translate(' +
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					(event.data.vpc_data.coordinate[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
+					(vpc_coordinate[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
 					gateway_top * MC.canvas.GRID_HEIGHT +
 				')'
 			);
@@ -2096,7 +2229,7 @@ MC.canvas.event.dragable = {
 			event.data.shadow.attr('transform',
 				'translate(' +
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					(event.data.vpc_data.coordinate[0] + event.data.vpc_data.size[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
+					(vpc_coordinate[0] + vpc_size[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
 					gateway_top * MC.canvas.GRID_HEIGHT +
 				')'
 			);
@@ -2152,7 +2285,7 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.remove();
 
-		$(document.body).off({
+		$(document).off({
 			'mousemove': MC.canvas.event.gatewaymove,
 			'mouseup': MC.canvas.event.gatewayup
 		});
@@ -2208,7 +2341,7 @@ MC.canvas.event.drawConnection = {
 					break;
 			}
 
-			$(document.body).on({
+			$(document).on({
 				'mousemove': MC.canvas.event.drawConnection.mousemove,
 				'mouseup': MC.canvas.event.drawConnection.mouseup
 			}, {
@@ -2261,7 +2394,6 @@ MC.canvas.event.drawConnection = {
 							{
 								is_connected = false;
 
-								//target_data = layout_node_data[ item.id ];
 								target_data = layout_component_data[ item.getAttribute('data-type') ][ item.id ];
 								target_connection_option = MC.canvas.CONNECTION_OPTION[ target_data.type ][ node_type ];
 
@@ -2442,7 +2574,7 @@ MC.canvas.event.drawConnection = {
 				});
 		});
 
-		$(document.body).off({
+		$(document).off({
 			'mousemove': MC.canvas.event.drawConnection.mousemove,
 			'mouseup': MC.canvas.event.drawConnection.mouseup,
 		});
@@ -2529,7 +2661,7 @@ MC.canvas.event.siderbarDrag = {
 
 			shadow.addClass('AWS-EC2-EBS-Volume');
 
-			$(document.body).on({
+			$(document).on({
 				'mousemove': MC.canvas.volume.mousemove,
 				'mouseup': MC.canvas.volume.mouseup
 			}, {
@@ -2541,7 +2673,7 @@ MC.canvas.event.siderbarDrag = {
 		else
 		{
 
-			$(document.body).on({
+			$(document).on({
 				'mousemove': MC.canvas.event.siderbarDrag.mousemove,
 				'mouseup': MC.canvas.event.siderbarDrag.mouseup
 			}, {
@@ -2598,9 +2730,9 @@ MC.canvas.event.siderbarDrag = {
 
 					node_option.groupUId = vpc_id;
 
-					if (coordinate.y > vpc_coordinate[1] + vpc_data.size[1])
+					if (coordinate.y > vpc_coordinate[1] + vpc_data.size[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1])
 					{
-						coordinate.y = vpc_coordinate[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1];
+						coordinate.y = vpc_coordinate[1] + vpc_data.size[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1];
 					}
 					if (coordinate.y < vpc_coordinate[1])
 					{
@@ -2620,7 +2752,15 @@ MC.canvas.event.siderbarDrag = {
 				}
 				else
 				{
-					match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_SIZE[ node_type ][0], MC.canvas.COMPONENT_SIZE[ node_type ][1]);
+					match_place = MC.canvas.isMatchPlace(
+						null,
+						target_type,
+						node_type,
+						coordinate.x,
+						coordinate.y,
+						MC.canvas.COMPONENT_SIZE[ node_type ][0],
+						MC.canvas.COMPONENT_SIZE[ node_type ][1]
+					);
 
 					if (match_place.is_matched)
 					{
@@ -2642,7 +2782,15 @@ MC.canvas.event.siderbarDrag = {
 			if (target_type === 'group')
 			{
 				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
-				match_place = MC.canvas.isMatchPlace(null, target_type, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]);
+				match_place = MC.canvas.isMatchPlace(
+					null,
+					target_type,
+					node_type,
+					coordinate.x,
+					coordinate.y,
+					default_group_size[0],
+					default_group_size[1]
+				);
 
 				if (match_place.is_matched)
 				{
@@ -2659,7 +2807,7 @@ MC.canvas.event.siderbarDrag = {
 
 		event.data.shadow.remove();
 
-		$(document.body).off({
+		$(document).off({
 			'mousemove': MC.canvas.event.mousemove,
 			'mouseup': MC.canvas.event.mouseup
 		});
@@ -2696,7 +2844,9 @@ MC.canvas.event.groupResize = {
 		}
 
 		$(document.body)
-			.css('cursor', $(event.target).css('cursor'))
+			.css('cursor', $(event.target).css('cursor'));
+
+		$(document)
 			.on({
 				'mousemove': MC.canvas.event.groupResize.mousemove,
 				'mouseup': MC.canvas.event.groupResize.mouseup
@@ -3018,6 +3168,36 @@ MC.canvas.event.groupResize = {
 			}
 		}
 
+		if (type === 'AWS.VPC.VPC')
+		{
+			if (group_top <= 3)
+			{
+				group_height = group_height + group_top - 3;
+				group_top = 3;
+			}
+
+			if (group_left <= 5)
+			{
+				group_width = group_width + group_left - 5;
+				group_left = 5;
+			}
+		}
+
+		if (type !== 'AWS.VPC.VPC')
+		{
+			if (group_top <= 2)
+			{
+				group_height = group_height + group_top - 2;
+				group_top = 2;
+			}
+
+			if (group_left <= 2)
+			{
+				group_width = group_width + group_left - 2;
+				group_left = 2;
+			}
+		}
+
 		if (
 			group_width > group_padding &&
 			group_height > group_padding &&
@@ -3029,6 +3209,8 @@ MC.canvas.event.groupResize = {
 				layout_connection_data = MC.canvas.data.get('layout.connection');
 
 				igw_gateway = $('.AWS-VPC-InternetGateway');
+				vgw_gateway = $('.AWS-VPC-VPNGateway');
+
 				if (igw_gateway[0])
 				{
 					igw_gateway_id = igw_gateway.attr('id');
@@ -3062,7 +3244,6 @@ MC.canvas.event.groupResize = {
 					});
 				}
 
-				vgw_gateway = $('.AWS-VPC-VPNGateway');
 				if (vgw_gateway[0])
 				{
 					vgw_gateway_id = vgw_gateway.attr('id');
@@ -3165,7 +3346,9 @@ MC.canvas.event.groupResize = {
 		}
 
 		$(document.body)
-			.css('cursor', 'default')
+			.css('cursor', 'default');
+
+		$(document)
 			.off({
 				'mousemove': MC.canvas.event.groupResize.mousemove,
 				'mouseup': MC.canvas.event.groupResize.mouseup
@@ -3395,7 +3578,7 @@ MC.canvas.volume = {
 			return 'attachable ' + key;
 		});
 
-		$(document.body).on({
+		$(document).on({
 			'mousemove': MC.canvas.volume.mousemove,
 			'mouseup': MC.canvas.volume.mouseup
 		}, {
@@ -3567,7 +3750,7 @@ MC.canvas.volume = {
 
 		event.data.shadow.remove();
 
-		$(document.body).off({
+		$(document).off({
 			'mousemove': MC.canvas.volume.mousemove,
 			'mouseup': MC.canvas.volume.mouseup
 		});
@@ -3582,28 +3765,26 @@ MC.canvas.event.selectLine = function (event)
 	event.stopPropagation();
 
 	MC.canvas.event.clearSelected();
+	Canvon(this).addClass('selected');
 
 	var line = $(this),
-		clone = line.attr('class', function (index, key)
-		{
-			return key + ' selected';
-		});
+		clone = line.clone()[0];
 
 	line.remove();
 	$('#line_layer').append(clone);
 
-	MC.canvas.selected_node.push(this);
+	MC.canvas.selected_node.push(clone);
 
 	//trigger event when selecte line
-	$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", this.id);
+	$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", clone.id);
 
 };
 
 MC.canvas.event.clearSelected = function ()
 {
-	$('#svg_canvas .selected').attr('class', function (index, key)
+	$('#svg_canvas .selected').each(function (index, item)
 	{
-		return key.replace(' selected', '');
+		Canvon(item).removeClass('selected');
 	});
 
 	MC.canvas.selected_node = [];
@@ -3647,6 +3828,60 @@ MC.canvas.event.keyEvent = function (event)
 		return false;
 	}
 
+	// Switch node - tab
+	if (
+		keyCode === 9 &&
+		MC.canvas.selected_node.length === 1 &&
+		MC.canvas.selected_node[ 0 ].getAttribute('data-type') === 'node'
+	)
+	{
+		var layout_node_data = MC.canvas.data.get('layout.component.node'),
+			current_node_id = MC.canvas.selected_node[ 0 ].id,
+			node_stack = [],
+			index = 0,
+			current_index,
+			next_node,
+			clone_node;
+
+		$.each(layout_node_data, function (key, value)
+		{
+			if (key === current_node_id)
+			{
+				current_index = index;
+			}
+
+			node_stack.push(key);
+
+			index++;
+		});
+
+		if (current_index === node_stack.length - 1)
+		{
+			current_index = 0;
+		}
+		else
+		{
+			current_index++;
+		}
+
+		next_node = $('#' + node_stack[ current_index ]);
+
+		MC.canvas.event.clearSelected();
+
+		Canvon(next_node[0]).addClass('selected');
+
+		// Append to top
+		clone_node = next_node.clone();
+		next_node.remove();
+		$('#node_layer').append(clone_node);
+
+		MC.canvas.selected_node.push(clone_node[0]);
+
+		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+
+		return false;
+	}
+
 	// Move node
 	if (
 		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
@@ -3665,19 +3900,9 @@ MC.canvas.event.keyEvent = function (event)
 			coordinate = {'x': node_data.coordinate[0], 'y': node_data.coordinate[1]},
 			match_place;
 
-		if (keyCode === 37)
-		{
-			coordinate.x--;
-		}
-
 		if (keyCode === 38)
 		{
 			coordinate.y--;
-		}
-
-		if (keyCode === 39)
-		{
-			coordinate.x++;
 		}
 
 		if (keyCode === 40)
@@ -3685,15 +3910,40 @@ MC.canvas.event.keyEvent = function (event)
 			coordinate.y++;
 		}
 
-		match_place = MC.canvas.isMatchPlace(
-			target_id,
-			target_type,
-			node_type,
-			coordinate.x,
-			coordinate.y,
-			MC.canvas.COMPONENT_SIZE[ node_type ][0],
-			MC.canvas.COMPONENT_SIZE[ node_type ][1]
-		);
+		if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+		{
+			match_place = {};
+
+			vpc_id = $('.AWS-VPC-VPC').attr('id');
+			vpc_data = MC.canvas.data.get('layout.component.group.' + vpc_id);
+			vpc_coordinate = vpc_data.coordinate;
+
+			match_place.is_matched =
+				coordinate.y <= vpc_coordinate[1] + vpc_data.size[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1] &&
+				coordinate.y >= vpc_coordinate[1];
+		}
+		else
+		{
+			if (keyCode === 37)
+			{
+				coordinate.x--;
+			}
+
+			if (keyCode === 39)
+			{
+				coordinate.x++;
+			}
+
+			match_place = MC.canvas.isMatchPlace(
+				target_id,
+				target_type,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				MC.canvas.COMPONENT_SIZE[ node_type ][0],
+				MC.canvas.COMPONENT_SIZE[ node_type ][1]
+			);
+		}
 		
 		if (
 			coordinate.x > 0 &&
@@ -3718,6 +3968,8 @@ MC.canvas.event.keyEvent = function (event)
 				);
 			});
 		}
+
+		return false;
 	}
 };
 

@@ -3,12 +3,22 @@
 ####################################
 
 define [ 'jquery',
+         'text!/module/design/property/acl/template.html',
+         'text!/module/design/property/acl/rule_item.html',
          'event'
-], ( $, ide_event ) ->
+], ( $, template, rule_template, ide_event ) ->
 
     #
     current_view  = null
     current_model = null
+
+    #add handlebars script
+    template     = '<script type="text/x-handlebars-template" id="property-acl-tmpl">' + template + '</script>'
+    rule_template     = '<script type="text/x-handlebars-template" id="property-acl-rule-tmpl">' + rule_template + '</script>'
+
+    #load remote html template
+    $( 'head' ).append template
+    $( 'head' ).append rule_template
 
     #private
     loadModule = ( uid_parent, expended_accordion_id, uid ) ->
@@ -32,11 +42,19 @@ define [ 'jquery',
             #view
             view.model    = model
 
+            view.off()
+
             view.on 'ADD_RULE_TO_ACL', (value) ->
                 view.model.addRuleToACL uid, value
 
             model.on 'REFRESH_RULE_LIST', (value) ->
-                view.refreshRuleList uid, value
+                view.refreshRuleList value
+
+            view.on 'REMOVE_RULE_FROM_ACL', (ruleNum, ruleEngress) ->
+                view.model.removeRuleFromACL uid, ruleNum, ruleEngress
+
+            view.on 'ACL_NAME_CHANGED', (aclName) ->
+                view.model.setACLName uid, aclName
 
             #render
             view.render expended_accordion_id, model.attributes

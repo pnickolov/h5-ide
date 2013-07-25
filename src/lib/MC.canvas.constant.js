@@ -1,5 +1,7 @@
 MC.canvas = MC.canvas || {};
 
+(function () {
+
 var constant_data = {
 
 	GRID_WIDTH: 10,
@@ -253,13 +255,20 @@ var constant_data = {
 		},
 		'AWS.ELB':
 		{
-			'AWS.EC2.Instance':
-			{
-				from: 'elb-sg-out',
-				to: 'instance-sg-in',
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
-			},
+			'AWS.EC2.Instance':[
+				{
+					from: 'elb-sg-out',
+					to: 'instance-sg-in',
+					relation: 'multiple',
+					color: '#6DAEFE' //blue
+				},
+				{
+					from: 'elb-sg-in',
+					to: 'instance-sg-out',
+					relation: 'multiple',
+					color: '#6DAEFE' //blue
+				}
+			],
 			'AWS.VPC.Subnet':
 			{
 				from: 'elb-assoc',
@@ -1227,5 +1236,7 @@ var constant_data = {
 
 $.each(constant_data, function (key, value)
 {
-	MC.canvas[key] = value;
+	MC.canvas[ key ] = value;
 });
+
+})();

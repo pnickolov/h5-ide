@@ -2,16 +2,16 @@
   <li class="btn-toolbar">
 
     {{#if is_use_ami}}
-    <a {{#if is_running}}{{else}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar disabled" id='toolbar-stop-app' data-tooltip="This app cannot be stopped since it uses instance-store AMI"><i class="icon-toolbar-stop"></i></a>
+    <a {{#if is_running}}{{else}}style="display:none;"{{/if}} href="#" {{#if is_pending}}class="tooltip btn-toolbar"{{else}}class="modal tooltip btn-toolbar disabled"{{/if}} id="toolbar-stop-app" data-tooltip="This app cannot be stopped since it uses instance-store AMI"><i class="icon-toolbar-stop"></i></a>
     {{else}}
-    <a {{#if is_running}}{{else}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar" id='toolbar-stop-app' data-modal-template="modalApp" data-modal-data='{"title":"Confirm to stop app?", "body":"Do you confirm to stop app {{item_name}}?", "confirm":"Stop", "color":"red" }' data-modal-dismiss="true" data-tooltip="Stop this app's resources."><i class="icon-toolbar-stop"></i></a>
+    <a {{#if is_running}}{{else}}style="display:none;"{{/if}} href="#"  {{#if is_pending}}class="tooltip btn-toolbar"{{else}} class="modal tooltip btn-toolbar" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to stop app?", "body":"Do you confirm to stop app {{item_name}}?", "confirm":"Stop", "color":"red" }' data-modal-dismiss="true"{{/if}} id="toolbar-stop-app" data-tooltip="Stop this app's resources."><i class="icon-toolbar-stop"></i></a>
     {{/if}}
 
-    <a {{#if is_running}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar" id='toolbar-start-app' data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app?", "body":"Do you confirm to start app {{item_name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true" data-tooltip="Start this app's resources."><i class="icon-toolbar-run"></i></a>
+    <a {{#if is_running}}style="display:none;"{{/if}} href="#" {{#if is_pending}}class="tooltip btn-toolbar" {{else}}class="modal tooltip btn-toolbar"  data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app?", "body":"Do you confirm to start app {{item_name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true"{{/if}} data-tooltip="Start this app's resources." id="toolbar-start-app"><i class="icon-toolbar-run"></i></a>
 
   </li>
   <li class="btn-toolbar">
-    <a href="#" class="btn-toolbar tooltip modal" id='toolbar-terminate-app' data-modal-template="modalApp" data-modal-data='{"title":"Confirm to terminate app {{item_name}}?", "body":"Do you confirm to terminate app?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true" data-tooltip="Permanently terminate this app's resources"><i class="icon-toolbar-terminate"></i></a>
+    <a href="#" {{#if is_pending}}class="btn-toolbar tooltip" {{else}}class="btn-toolbar tooltip modal" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to terminate app {{item_name}}?", "body":"Do you confirm to terminate app?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true"{{/if}} data-tooltip="Permanently terminate this app's resources" id="toolbar-terminate-app"><i class="icon-toolbar-terminate"></i></a>
   </li>
 </ul>
 <ul class="toolbar-btn-group">
@@ -27,17 +27,14 @@
     <div class="selection tooltip" data-tooltip="Export..." id="toolbar-export">
       <span class="icon-toolbar-export"></span>
     </div>
-    <ul class="dropdown-menu" tabindex="-1">
-      <li class="btn-toolbar" id="toolbar-export-png">
-        <i class="icon-toolbar-export-png"></i>Export as PNG
-      </li>
-      <li class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
-        <i class="icon-toolbar-export-json"></i>Export as Json
-      </li>
+    <ul class="dropdown" tabindex="-1">
+      <li class="btn-toolbar" id="toolbar-export-png"><i class="icon-toolbar-export-png"></i>Export as PNG</li>
+      <li class="btn-toolbar modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
+        <i class="icon-toolbar-export-json"></i>Export as Json</li>
       <!-- for debug -->
       <li class="btn-toolbar" id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
-      <li class="btn-toolbar" id="toolbar-jsoncopy" data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
-      <li class="btn-toolbar" id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</a></li>
+      <li class="btn-toolbar" id="toolbar-jsoncopy"  data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
+      <li class="btn-toolbar" id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</li>
     </ul>
   </li>
 </ul>

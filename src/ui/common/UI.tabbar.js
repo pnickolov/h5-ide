@@ -58,7 +58,7 @@ var Tabbar = {
 
 		var left = event.pageX - event.data.offset_left,
 			tabbar_offsetLeft = event.data.tabbar_offsetLeft,
-			index = Math.round(left / event.data.tab_width),
+			index = Math.round((left - tabbar_offsetLeft) / event.data.tab_width),
 			length = event.data.tab_list.length;
 
 		left = left > tabbar_offsetLeft ? left : tabbar_offsetLeft;
@@ -76,12 +76,15 @@ var Tabbar = {
 				event.data.tab_list.eq(index).before(event.data.target);
 			}
 		}
+
+		return false;
 	},
 
 	mouseup: function (event)
 	{
 		event.data.target.css('visibility', 'visible');
 		event.data.dragging_tab.remove();
+
 		$(document).off({
 			'mousemove': Tabbar.mousemove,
 			'mouseup': Tabbar.mouseup
@@ -112,10 +115,11 @@ var Tabbar = {
 			original_tab_id = null;
 
 		//add by kenshin
-		if ( !original_tab && event ) {
-			$( tab_bar ).find( 'ul' ).append( event.data.target );
-			original_tab = $( '#tab-bar').find( '.active' )[0];
-			tab_item     = $( '#tab-bar-' + tab_id );
+		if (!original_tab && event)
+		{
+			tab_bar.find( 'ul' ).append( event.data.target );
+			original_tab = $('#tab-bar').find( '.active' )[0];
+			tab_item = $('#tab-bar-' + tab_id);
 		}
 
 		if (!tab_item[0])
@@ -160,6 +164,8 @@ var Tabbar = {
 
 		tab_item_width = tab_item_width > 180 ? 180 : tab_item_width;
 		tabs.css('width', tab_item_width);
+
+		return true;
 	}
 };
 

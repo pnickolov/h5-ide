@@ -1,0 +1,64 @@
+<div class="sidebar-title">
+  <span class="sidebar-title-text">{{name}}</span>
+</div>
+<div class="fixedaccordion accordion-default" data-sub="43">
+  <div class="accordion-group expanded">
+    <div class="fixedaccordion-head">Network Interface Details</div>
+    <div class="accordion-body">
+      <div class="property-control-group clearfix">
+        <dl class="dl-vertical">
+          <dt>Device Name</dt>
+          <dd>{{name}}</dd>
+          <dt>Network Interface ID</dt>
+          <dd>TODO!!!!!!</dd>
+          <dt>State</dt>
+          <dd>TODO!!!!!!</dd>
+          <dt>Description</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>Source/Destination Check</dt>
+          <dd>{{#if eni_display.resource.SourceDestCheck}}enabled{{else}}{{/if}}</dd>
+        </dl>
+        <dl class="dl-vertical">
+          <dt>VPC ID</dt>
+          <dd>TODO!!!!!!</dd>
+          <dt>Subnet</dt>
+          <dd>TODO!!!!!!</dd>
+          <dt>Attachment ID</dt>
+          <dd>TODO!!!!!!</dd>
+          <dt>Attachment Owner</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>Attachment Status</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>Mac Address</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>Public DNS</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>Private DNS</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>IP Owner</dt>
+          <dd>TODO!!!!!!!!</dd>
+        </dl>
+      </div>
+      <div class="property-control-group clearfix">
+        <table>
+          <tr>
+            <th>IP Address</th>
+            <th>Public IP</th>
+          </tr>
+          {{#each ips}}
+          <tr>
+            <td>{{ip}}</td>
+            <td>{{public}}</td>
+          </tr>
+          {{/tr}}
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="fixedaccordion-head">Security Groups</div>
+    <ul class="accordion-body">
+      TODO!!!!!!!!!!!!!
+    </ul>
+  </div>
+</div>

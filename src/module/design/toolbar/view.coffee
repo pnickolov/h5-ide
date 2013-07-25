@@ -51,7 +51,7 @@ define [ 'MC', 'event',
             console.log 're-toolbar render'
             if $.trim( $( '#main-toolbar' ).html() ) is 'loading...'
                 #
-                if type is 'OPEN_STACK'
+                if type is 'stack'
                     $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
                 else
                     $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
@@ -76,6 +76,8 @@ define [ 'MC', 'event',
                 me.trigger 'TOOLBAR_RUN_CLICK', app_name
                 modal.close()
 
+                MC.data.app_list[MC.canvas_data.region].push app_name
+
             true
 
         clickSaveIcon : ->
@@ -83,17 +85,14 @@ define [ 'MC', 'event',
 
             name = MC.canvas_data.name
 
-            if not this.model.attributes.is_pending
-                if not name
-                    notification 'error', 'No stack name.'
-                else if name.slice(0, 8) == 'untitled'
-                    notification 'error', 'Please modify the initial stack name'
-                else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
-                    notification 'error', 'Repeated stack name'
-                else
-                    this.trigger 'TOOLBAR_SAVE_CLICK'
+            if not name
+                notification 'error', 'No stack name.'
+            else if name.slice(0, 8) == 'untitled'
+                notification 'error', 'Please modify the initial stack name'
+            else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
+                notification 'error', 'Repeated stack name'
             else
-                notification 'warn', this.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
+                this.trigger 'TOOLBAR_SAVE_CLICK'
 
             true
 
@@ -103,31 +102,27 @@ define [ 'MC', 'event',
             name     = MC.canvas_data.name
             new_name = name + '-copy'
 
-            if not this.model.attributes.is_pending
-                #check name
+            #check name
+            if this.model.attributes.is_duplicate
                 if not name
                     notification 'error', 'No stack name.'
                 else if new_name in MC.data.stack_list[MC.canvas_data.region]
                     notification 'error', 'Repeated stack name.'
                 else
                     this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name
-            else
-                notification 'warn', this.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
             true
 
         clickDeleteIcon : ->
             me = this
 
-            if not me.model.attributes.is_pending
+            if this.model.attributes.is_delete
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
                     console.log 'clickDeleteIcon'
                     modal.close()
 
                     me.trigger 'TOOLBAR_DELETE_CLICK'
-            else
-                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
             true
 
@@ -138,18 +133,18 @@ define [ 'MC', 'event',
         clickZoomInIcon : ->
             console.log 'clickZoomInIcon'
 
-            if not this.model.attributes.is_pending
+            if this.model.attributes.is_zoomin
                 this.trigger 'TOOLBAR_ZOOMIN_CLICK'
             else
-                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
+                notification 'warning', 'Cannot zoom in now.'
 
         clickZoomOutIcon : ->
             console.log 'clickZoomOutIcon'
 
-            if not this.model.attributes.is_pending
+            if this.model.attributes.is_zoomout
                 this.trigger 'TOOLBAR_ZOOMOUT_CLICK'
             else
-                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
+                notification 'warning', 'Cannot zoom out now.'
 
         clickUndoIcon : ->
             console.log 'clickUndoIcon'
@@ -216,7 +211,7 @@ define [ 'MC', 'event',
                     me.trigger 'TOOLBAR_STOP_CLICK'
                     modal.close()
             else
-                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
+                notification 'warning', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
         clickStartApp : (event) ->
             me = this
@@ -228,7 +223,7 @@ define [ 'MC', 'event',
                     me.trigger 'TOOLBAR_START_CLICK'
                     modal.close()
             else
-                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
+                notification 'warning', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
         clickTerminateApp : (event) ->
             me = this
@@ -241,7 +236,7 @@ define [ 'MC', 'event',
                     me.trigger 'TOOLBAR_TERMINATE_CLICK'
                     modal.close()
             else
-                notification 'warn', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
+                notification 'warning', me.model.attributes.item_type + ' ' + MC.canvas_data.name + ' is pending.'
 
     }
 

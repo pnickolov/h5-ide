@@ -31,19 +31,6 @@ define [
             # Update sidebar
             this.updateSidebar()
 
-            self = this
-            # Bind Events
-            $modal.on( "click", ".sg-rule-create-add",   ()->
-                                                            self.addRule() )
-                  .on( "click", ".sg-node-wrap input",   ()->
-                                                            self.switchNode() )
-                  .on( "click", ".sg-rule-create-readd", ()->
-                                                            self.readdRule() )
-                  .on( "click", ".sg-rule-delete",       ()->
-                                                            self.deleteRule() )
-
-            $modal.closest("#closed").on("closed", this.onClose)
-
 
         onClose : () ->
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.
@@ -59,6 +46,7 @@ define [
           # TODO : Insert rule to the sidebar
 
           # Switch to done view.
+
           #this.$el.animate({left:'+=100px'}, 300).toggleClass('done', true)
           this.$el.find('#modal-box').animate({left:'+=100px'}, 300).toggleClass('done', true)
 

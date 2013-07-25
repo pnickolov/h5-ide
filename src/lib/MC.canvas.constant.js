@@ -255,13 +255,20 @@ var constant_data = {
 		},
 		'AWS.ELB':
 		{
-			'AWS.EC2.Instance':
-			{
-				from: 'elb-sg-out',
-				to: 'instance-sg-in',
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
-			},
+			'AWS.EC2.Instance':[
+				{
+					from: 'elb-sg-out',
+					to: 'instance-sg-in',
+					relation: 'multiple',
+					color: '#6DAEFE' //blue
+				},
+				{
+					from: 'elb-sg-in',
+					to: 'instance-sg-out',
+					relation: 'multiple',
+					color: '#6DAEFE' //blue
+				}
+			],
 			'AWS.VPC.Subnet':
 			{
 				from: 'elb-assoc',

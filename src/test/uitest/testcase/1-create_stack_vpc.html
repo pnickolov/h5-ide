@@ -4,53 +4,14 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://192.168.64.128:3000/ide.html" />
-<title>New Test</title>
+<title>1-create_stack_vpc</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">New Test</td></tr>
+<tr><td rowspan="1" colspan="3">1-create_stack_vpc</td></tr>
 </thead><tbody>
-<tr>
-	<td>open</td>
-	<td>http://localhost:3000/login.html</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=login-user</td>
-	<td>xjimmy</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=login-password</td>
-	<td>aaa123aa</td>
-</tr>
-<tr>
-	<td>pause</td>
-	<td>500</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForElementPresent</td>
-	<td>//input[contains(@class,'btn-primary')]</td>
-	<td>10000</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=login-btn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td>10000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForElementPresent</td>
-	<td>//a[contains(@class,'disabled')]</td>
-	<td>10000</td>
-</tr>
+<!--create vpc stack-->
 <tr>
 	<td>waitForElementPresent</td>
 	<td>//a[contains(@class,'btn-primary')]</td>
@@ -66,7 +27,45 @@
 	<td>//div[@id='createNewStack_wrap']/ul/li[1]/a/p</td>
 	<td></td>
 </tr>
-<!--drag az1-->
+<!--resize vpc-->
+<tr>
+	<td>mouseDown</td>
+	<td>css=.AWS-VPC-VPC &gt; g.resizer-wrap &gt; rect.group-resizer.resizer-bottomright</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>+100,-100</td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td></td>
+</tr>
+<!--move RT0-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//*[name()='g' and contains(@class, 'AWS-VPC-RouteTable')]</td>
+	<td>1000</td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//*[name()='g' and contains(@class, 'AWS-VPC-RouteTable')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>-150,-100</td>
+</tr>
+<tr>
+	<td>mouseUpAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>-150,-100</td>
+</tr>
+<!--------------------------------------->
+<!--drag az1 to vpc-->
 <tr>
 	<td>waitForElementPresent</td>
 	<td>//div[contains(@data-type,'AWS.EC2.AvailabilityZone')&nbsp;&nbsp;and not(contains(@class,'resource-disabled'))]&nbsp;&nbsp;</td>
@@ -80,12 +79,12 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>500,150</td>
+	<td>500,250</td>
 </tr>
 <tr>
 	<td>mouseUpAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>500,150</td>
+	<td>500,250</td>
 </tr>
 <!--resize az1-->
 <tr>
@@ -96,12 +95,12 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>+50,+10</td>
+	<td>+100,-110</td>
 </tr>
 <tr>
-	<td>mouseUp</td>
+	<td>mouseUpAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td></td>
+	<td>+100,-110</td>
 </tr>
 <!--drag subnet1 to az1-->
 <tr>
@@ -122,7 +121,7 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>530,170</td>
+	<td>520,270</td>
 </tr>
 <tr>
 	<td>mouseUp</td>
@@ -138,7 +137,7 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>+50,+10</td>
+	<td>+110,-90</td>
 </tr>
 <tr>
 	<td>mouseUp</td>
@@ -159,7 +158,7 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>550,200</td>
+	<td>530,300</td>
 </tr>
 <tr>
 	<td>mouseUp</td>
@@ -175,7 +174,7 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>670,300</td>
+	<td>700,300</td>
 </tr>
 <tr>
 	<td>mouseUp</td>
@@ -198,116 +197,8 @@
 	<td>//div[@id='resource-panel'] </td>
 	<td>680,310</td>
 </tr>
-<!--add RouteTable-->
-<tr>
-	<td>click</td>
-	<td>css=div.resource-vpc-list.accordion-group &gt; div.fixedaccordion-head</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForElementPresent</td>
-	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;RT&quot;}')]&nbsp;&nbsp;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseDown</td>
-	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;RT&quot;}')]&nbsp;&nbsp;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseMoveAt</td>
-	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;RT&quot;}')]</td>
-	<td>750,180</td>
-</tr>
-<tr>
-	<td>mouseUp</td>
-	<td>//*[name()='g' and contains(@class, 'AWS-VPC-VPC')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseDown</td>
-	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;IGW&quot;}')]&nbsp;&nbsp;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseMoveAt</td>
-	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;IGW&quot;}')]&nbsp;&nbsp;</td>
-	<td>500,180</td>
-</tr>
-<tr>
-	<td>mouseUp</td>
-	<td>//*[name()='g' and contains(@class, 'AWS-VPC-VPC')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseDown</td>
-	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;VGW&quot;}')]&nbsp;&nbsp;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseMoveAt</td>
-	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;VGW&quot;}')]</td>
-	<td>750,180</td>
-</tr>
-<tr>
-	<td>mouseUp</td>
-	<td>//*[name()='g' and contains(@class, 'AWS-VPC-VPC')]</td>
-	<td></td>
-</tr>
-<!--connect igw and route-->
-<tr>
-	<td>mouseDown</td>
-	<td>//*[name()='path' and contains(@class, 'port-igw-tgt')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseMoveAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>850,400</td>
-</tr>
-<tr>
-	<td>mouseUpAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>850,400</td>
-</tr>
-<!--connect routetable and instance-->
-<tr>
-	<td>mouseDown</td>
-	<td>//*[name()='path' and contains(@class, 'port-rtb-tgt-left')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseMoveAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>580,230</td>
-</tr>
-<tr>
-	<td>mouseUpAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>580,230</td>
-</tr>
-<!--connect vgw and routetable-->
-<tr>
-	<td>mouseDown</td>
-	<td>//*[name()='path' and contains(@class, 'port-vgw-tgt')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseMoveAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>830,400</td>
-</tr>
-<tr>
-	<td>mouseUpAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>830,400</td>
-</tr>
-<!--drag another az and subnet-->
-<tr>
-	<td>click</td>
-	<td>css=div.fixedaccordion-head</td>
-	<td></td>
-</tr>
+<!---------------------------------->
+<!--drag az2 to vpc-->
 <tr>
 	<td>waitForElementPresent</td>
 	<td>//div[contains(@data-type,'AWS.EC2.AvailabilityZone')&nbsp;&nbsp;and not(contains(@class,'resource-disabled'))]&nbsp;&nbsp;</td>
@@ -337,14 +228,14 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>+50,+10</td>
+	<td>+100,-110</td>
 </tr>
 <tr>
-	<td>mouseUp</td>
+	<td>mouseUpAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td></td>
+	<td>+100,-110</td>
 </tr>
-<!--add subnet2 to az2-->
+<!--drag subnet2 to az2-->
 <tr>
 	<td>click</td>
 	<td>css=div.resource-vpc-list.accordion-group &gt; div.fixedaccordion-head</td>
@@ -363,7 +254,7 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>530,470</td>
+	<td>520,470</td>
 </tr>
 <tr>
 	<td>mouseUp</td>
@@ -379,7 +270,7 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>+40,+10</td>
+	<td>+110,-90</td>
 </tr>
 <tr>
 	<td>mouseUp</td>
@@ -400,14 +291,14 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>660,500</td>
+	<td>700,490</td>
 </tr>
 <tr>
 	<td>mouseUp</td>
 	<td>//div[@id='resource-panel'] </td>
 	<td></td>
 </tr>
-<!--drag a eni-->
+<!--add eni to subnet2-->
 <tr>
 	<td>mouseDown</td>
 	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;eni&quot;}')]&nbsp;&nbsp;</td>
@@ -416,30 +307,30 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>550,500</td>
+	<td>530,490</td>
 </tr>
 <tr>
 	<td>mouseUp</td>
 	<td>//div[@id='resource-panel'] </td>
 	<td></td>
 </tr>
-<!--connect eni to instance(attach)-->
+<!--connect instance1 to eni (attach)-->
 <tr>
 	<td>mouseDown</td>
-	<td>//*[name()='path' and contains(@class, 'port-eni-attach')]</td>
+	<td>//*[name()='path' and contains(@class, 'port-instance-attach')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>580,220</td>
+	<td>530,490</td>
 </tr>
 <tr>
 	<td>mouseUpAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>580,220</td>
+	<td>530,490</td>
 </tr>
-<!--connect eni to instance(sg)-->
+<!--connect eni to instance3(sg)-->
 <tr>
 	<td>mouseDown</td>
 	<td>//*[name()='path' and contains(@class, 'port-eni-sg-out')]</td>
@@ -448,76 +339,170 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>660,500</td>
+	<td>700,490</td>
 </tr>
 <tr>
 	<td>mouseUpAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>660,500</td>
+	<td>700,490</td>
 </tr>
-<!--associate rt and subnet-->
+<!--------------------------------->
+<!--add RT to vpc-->
+<tr>
+	<td>click</td>
+	<td>css=div.resource-vpc-list.accordion-group &gt; div.fixedaccordion-head</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;RT&quot;}')]&nbsp;&nbsp;</td>
+	<td></td>
+</tr>
 <tr>
 	<td>mouseDown</td>
-	<td>//*[name()='path' and contains(@class, 'port-rtb-src-bottom')]</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;RT&quot;}')]&nbsp;&nbsp;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>mouseMoveAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>620,210</td>
-</tr>
-<tr>
-	<td>mouseUpAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>620,210</td>
-</tr>
-<tr>
-	<td>mouseDown</td>
-	<td>//*[name()='g' and contains(@class, 'AWS-VPC-RouteTable')][2]/*[name()='path' and contains(@class, 'port-rtb-src-bottom')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseMoveAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>670,450</td>
-</tr>
-<tr>
-	<td>mouseUpAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>670,450</td>
-</tr>
-<!--cgw and vpn-->
-<tr>
-	<td>mouseDown</td>
-	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;CGW&quot;}')]&nbsp;&nbsp;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseMoveAt</td>
-	<td>//div[@id='resource-panel'] </td>
-	<td>1000,470</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;RT&quot;}')]</td>
+	<td>500,400</td>
 </tr>
 <tr>
 	<td>mouseUp</td>
-	<td>//div[@id='resource-panel'] </td>
+	<td>//*[name()='g' and contains(@class, 'AWS-VPC-VPC')]</td>
+	<td></td>
+</tr>
+<!--add igw to vpc-->
+<tr>
+	<td>mouseDown</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;IGW&quot;}')]&nbsp;&nbsp;</td>
 	<td></td>
 </tr>
 <tr>
+	<td>mouseMoveAt</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;IGW&quot;}')]&nbsp;&nbsp;</td>
+	<td>400,-100</td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//*[name()='g' and contains(@class, 'AWS-VPC-VPC')]</td>
+	<td></td>
+</tr>
+<!--add vgw to vpc-->
+<tr>
 	<td>mouseDown</td>
-	<td>//*[name()='path' and contains(@class, 'port-cgw-vpn')]</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;VGW&quot;}')]&nbsp;&nbsp;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;VGW&quot;}')]</td>
+	<td>700,-100</td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//*[name()='g' and contains(@class, 'AWS-VPC-VPC')]</td>
+	<td></td>
+</tr>
+<!--connect igw to RT0-->
+<tr>
+	<td>mouseDown</td>
+	<td>//*[name()='path' and contains(@class, 'port-igw-tgt')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>920,520</td>
+	<td>700,150</td>
 </tr>
 <tr>
 	<td>mouseUpAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>920,520</td>
+	<td>700,150</td>
 </tr>
-<!--drag elb-->
+<!--connect vgw to RT0-->
+<tr>
+	<td>mouseDown</td>
+	<td>//*[name()='path' and contains(@class, 'port-vgw-tgt')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>700,150</td>
+</tr>
+<tr>
+	<td>mouseUpAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>700,150</td>
+</tr>
+<!--connect igw to RT-->
+<tr>
+	<td>mouseDown</td>
+	<td>//*[name()='path' and contains(@class, 'port-igw-tgt')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>600,650</td>
+</tr>
+<tr>
+	<td>mouseUpAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>600,650</td>
+</tr>
+<!--connect vgw to RT-->
+<tr>
+	<td>mouseDown</td>
+	<td>//*[name()='path' and contains(@class, 'port-vgw-tgt')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>600,650</td>
+</tr>
+<tr>
+	<td>mouseUpAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>600,650</td>
+</tr>
+<!--move az1-->
+<tr>
+	<td>mouseDown</td>
+	<td>//*[name()='g' and contains(@class, 'AWS-EC2-AvailabilityZone')][1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>+50,-90</td>
+</tr>
+<tr>
+	<td>mouseUpAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>+50,-90</td>
+</tr>
+<!--move az2-->
+<tr>
+	<td>mouseDown</td>
+	<td>//*[name()='g' and contains(@class, 'AWS-EC2-AvailabilityZone')][2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>+50,-90</td>
+</tr>
+<tr>
+	<td>mouseUpAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>+50,-90</td>
+</tr>
+<!------------------------------------>
+<!--drag elb1-->
 <tr>
 	<td>click</td>
 	<td>//div[@id='resource-panel']/div[2]/div[4]/div</td>
@@ -536,13 +521,14 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>380,270</td>
+	<td>450,400</td>
 </tr>
 <tr>
 	<td>mouseUp</td>
 	<td>//div[@id='resource-panel'] </td>
 	<td></td>
 </tr>
+<!--connect elb1 to subnet1-->
 <tr>
 	<td>mouseDown</td>
 	<td>//*[name()='path' and contains(@class, 'port-elb-assoc')]</td>
@@ -551,13 +537,14 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>500,220</td>
+	<td>570,300</td>
 </tr>
 <tr>
 	<td>mouseUpAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>500,220</td>
+	<td>570,300</td>
 </tr>
+<!--connect elb1 to subnet2-->
 <tr>
 	<td>mouseDown</td>
 	<td>//*[name()='path' and contains(@class, 'port-elb-assoc')]</td>
@@ -566,13 +553,14 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>500,520</td>
+	<td>570,500</td>
 </tr>
 <tr>
 	<td>mouseUpAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>500,520</td>
+	<td>570,500</td>
 </tr>
+<!--connect elb1 to instance1-->
 <tr>
 	<td>mouseDown</td>
 	<td>//*[name()='path' and contains(@class, 'port-elb-sg-out')]</td>
@@ -581,54 +569,122 @@
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>670,300</td>
+	<td>630,300</td>
 </tr>
 <tr>
 	<td>mouseUpAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>670,300</td>
+	<td>630,300</td>
 </tr>
-<!--volume-->
+<!------------------------------>
+<!--drag elb2-->
 <tr>
 	<td>click</td>
-	<td>//div[@id='resource-panel']/div[2]/div[3]/div</td>
+	<td>//div[@id='resource-panel']/div[2]/div[4]/div</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>//div[contains(@data-type,'AWS.EC2.EBS.Volume')]&nbsp;&nbsp;</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;elb&quot;}')]&nbsp;&nbsp;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>mouseDown</td>
-	<td>//div[contains(@data-type,'AWS.EC2.EBS.Volume') and not(contains(@data-bubble-template,'bubbleSnapshotInfo') )]&nbsp;&nbsp;</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;elb&quot;}')]&nbsp;&nbsp;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>550,220</td>
+	<td>950,400</td>
 </tr>
 <tr>
-	<td>mouseUpAt</td>
+	<td>mouseUp</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>550,220</td>
+	<td></td>
 </tr>
+<!--connect elb2 to instance2-->
 <tr>
 	<td>mouseDown</td>
-	<td>//div[contains(@data-type,'AWS.EC2.EBS.Volume') and contains(@data-bubble-template,'bubbleSnapshotInfo')]&nbsp;&nbsp;</td>
+	<td>//*[name()='g' and contains(@class, 'AWS-ELB')][2]/*[name()='path' and contains(@class, 'port-elb-sg-in')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>mouseMoveAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>550,220</td>
+	<td>800,300</td>
 </tr>
 <tr>
 	<td>mouseUpAt</td>
 	<td>//div[@id='resource-panel'] </td>
-	<td>550,220</td>
+	<td>800,300</td>
 </tr>
+<!----------------------------->
+<!--drag cgw1-->
+<tr>
+	<td>mouseDown</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;CGW&quot;}')]&nbsp;&nbsp;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>1200,150</td>
+</tr>
+<tr>
+	<td>mouseUpAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>1200,150</td>
+</tr>
+<!--drag cgw2-->
+<tr>
+	<td>mouseDown</td>
+	<td>//div[contains(@data-option,'{&quot;name&quot;: &quot;CGW&quot;}')]&nbsp;&nbsp;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>1200,350</td>
+</tr>
+<tr>
+	<td>mouseUpAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>1200,350</td>
+</tr>
+<!--connect vgw and cgw1-->
+<tr>
+	<td>mouseDown</td>
+	<td>//*[name()='path' and contains(@class, 'port-vgw-vpn')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>1200,180</td>
+</tr>
+<tr>
+	<td>mouseUpAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>1200,180</td>
+</tr>
+<!--connect vgw and cgw2-->
+<tr>
+	<td>mouseDown</td>
+	<td>//*[name()='path' and contains(@class, 'port-vgw-vpn')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseMoveAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>1200,350</td>
+</tr>
+<tr>
+	<td>mouseUpAt</td>
+	<td>//div[@id='resource-panel'] </td>
+	<td>1200,350</td>
+</tr>
+<!---->
 </tbody></table>
 </body>
 </html>

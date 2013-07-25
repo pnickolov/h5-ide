@@ -1,0 +1,86 @@
+<div class="sidebar-title"><span class="sidebar-title-text">{{component.name}}</span></div>
+
+<div class="fixedaccordion accordion-default" data-sub="43">
+  <section class="accordion-group expanded">
+    <header class="fixedaccordion-head">VPC Details</header>
+
+    <article class="accordion-body">
+      <dl class="dl-vertical">
+        <dt>VPC ID</dt>
+        <dd>TODO!!!!!!</dd>
+
+        <dt>State</dt>
+        <dd>TODO!!!!!!</dd>
+
+        <dt>CIDR</dt>
+        <dd>{{component.resource.CidrBlock}}</dd>
+
+        <dt>Tenancy</dt>
+        <dd>{{#if defaultTenancy}}Default{{else}}Dedicated{{/if}}</dd>
+
+        <dt>Main Route Table</dt>
+        <dd>TODO!!!!!!!!</dd>
+
+        <dt>Default Network ACL</dt>
+        <dd>TODO!!!!!!!!</dd>
+      </dl>
+    </article>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">DHCP Options</header>
+    <article class="accordion-body">
+    {{#if noneDhcp}}
+    <p>None</p>
+    {{else}}
+    <div class="property-control-group">
+      <dl class="dl-vertical">
+        <dt>DHCP Options Set ID</dt>
+        <dd>TODO!!!!!!</dd>
+
+        <dt>Domain Name</dt>
+        <dd>{{dhcp.domainName}}</dd>
+
+        {{#if dhcp.useAmazonDns}}
+        <dt>Domain Name Server</dt>
+        <dd>
+          <p>AmazonProvidedDNS</p>
+        {{#each dhcp.domainServers}}
+          <p>{{this}}</p>
+        {{/each}}
+        </dd>
+        {{else}}
+        {{#if dhcp.domainServers.length}}
+        <dt>Domain Name Server</dt>
+        <dd>
+        {{#each dhcp.domainServers}}
+          <p>{{this}}</p>
+        {{/each}}
+        </dd>
+        {{/if}}
+        {{/if}}
+
+        {{#if dhcp.netbiosServers.length}}
+        <dt>NetBIOS Name Server</dt>
+        <dd>
+          {{#each dhcp.netbiosServers}}
+          <p>{{this}}</p>
+          {{/each}}
+        </dd>
+        {{/if}}
+
+        {{#if dhcp.netbiosTypes.length}}
+        <dt>NetBIOS Node Type</dt>
+        <dd>
+          {{#each dhcp.netbiosTypes}}
+          {{#if selected}}{{value}}{{/if}}
+          {{/each}}
+        </dd>
+        {{/if}}
+
+      </dl>
+    </div>
+    {{/if}}
+    </article>
+  </section>
+</div>

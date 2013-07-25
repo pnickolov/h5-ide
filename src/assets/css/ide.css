@@ -2929,6 +2929,21 @@ height: 35px;
 	padding-top: 5px;
 }
 
+/* App Property Panel, Mostly Read-Only Elements */
+.dl-vertical {}
+.app-panel-li {}
+.app-panel-li-main {}
+.app-panel-li-sub  {}
+
+.status-good, .status-bad {
+	padding-left : 30px;
+}
+.status-good:before, .status-bad:before {
+	
+}
+.status-bad  {}
+
+
 
 /* ACL Property Panel */
 #acl-secondary-panel-wrap {

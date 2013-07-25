@@ -19,23 +19,23 @@ define [
             console.log 'Showing Security Group Rule Create Dialog'
 
             modal template( this.model.attributes ), true
+
+            # Backbone is going to bind events to this.$el
             this.$el = $modal = $("#sg-rule-create-modal").closest "#modal-box"
 
             # Update sidebar
             this.updateSidebar()
 
-            self = this
             # Bind Events
-            $modal.on( "click", ".sg-rule-create-add",   ()->
-                                                            self.addRule() )
-                  .on( "click", ".sg-node-wrap input",   ()->
-                                                            self.switchNode() )
-                  .on( "click", ".sg-rule-create-readd", ()->
-                                                            self.readdRule() )
-                  .on( "click", ".sg-rule-delete",       ()->
-                                                            self.deleteRule() )
+            this.events =
+              "click .sg-rule-create-add"   : "addRule"
+              "click .sg-rule-wrap-input"   : "switchNode"
+              "click .sg-rule-create-readd" : "readdRule"
+              "click .sg-rule-delete"       : "deleteRule"
 
-            $modal.closest("#closed").on("closed", this.onClose)
+            this.delegateEvents();
+
+            $modal.closest("#modal-wrap").on("closed", this.onClose)
 
         onClose : () ->
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.

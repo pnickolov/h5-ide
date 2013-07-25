@@ -3836,7 +3836,8 @@ MC.canvas.event.clearSelected = function ()
 
 MC.canvas.event.keyEvent = function (event)
 {
-	var keyCode = event.which;
+	var keyCode = event.which,
+		canvas_status = MC.canvas.getState();
 
 	// Delete resource - delete/backspace
 	if (
@@ -3845,6 +3846,7 @@ MC.canvas.event.keyEvent = function (event)
 			// For Mac
 			keyCode === 8
 		) &&
+		canvas_status === 'stack' &&
 		MC.canvas.selected_node.length > 0 &&
 		event.target === document.body
 	)
@@ -3924,6 +3926,7 @@ MC.canvas.event.keyEvent = function (event)
 	// Move node
 	if (
 		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
+		canvas_status === 'stack' &&
 		MC.canvas.selected_node.length === 1 &&
 		MC.canvas.selected_node[ 0 ].getAttribute('data-type') === 'node'
 	)

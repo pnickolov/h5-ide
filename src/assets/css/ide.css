@@ -215,6 +215,41 @@ a {
 	display: block;
 }
 
+/*AWSCredential-setting*/
+#AWSCredential-wall {
+	padding: 15px;
+	background-color: #E0EBF3;
+	color: #333;
+}
+
+#AWSCredential-setting .modal-body {
+	padding-top: 15px;
+}
+
+#AWSCredential-setting li {
+	position: relative;
+}
+
+#AWSCredential-setting .icon-label {
+	position: absolute;
+	right: 0;
+	top: 4px;
+	margin-right: 0;
+	color: #0096FF;
+	font-size: 13px;
+}
+
+#AWSCredential-setting label {
+	display: block;
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+
+#AWSCredential-setting .input {
+	width: 390px;
+	margin-bottom: 10px;
+}
+
 /* Wrapper */
 #wrapper {
 	position: fixed;

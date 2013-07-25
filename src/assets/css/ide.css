@@ -174,10 +174,25 @@ a {
 }
 
 /*AWSCredential-setting*/
-#AWSCredential-wall {
+#AWSCredentials-submiting,
+#AWSCredentials-success,
+#AWSCredentials-update {
+	display: none;
+}
+
+#AWSCredential-failed {
+	display: none;
+}
+
+.AWSCredential-wall {
 	padding: 15px;
 	background-color: #E0EBF3;
-	color: #333;
+	color: #555;
+}
+
+#AWSCredential-failed {
+	background-color: #FF7E79;
+	color: #f3f3f3;
 }
 
 #AWSCredential-setting .modal-body {
@@ -206,6 +221,48 @@ a {
 #AWSCredential-setting .input {
 	width: 390px;
 	margin-bottom: 10px;
+}
+
+#AWSCredentials-submiting-body {
+	background-color: #fff;
+	position: relative;
+	padding: 80px 0 80px 100px;
+}
+
+#AWSCredentials-loading {
+	margin-right: 10px;
+}
+
+.AWSCredentials-body-info {
+	padding: 35px 20px;
+	background-color: #fff;
+}
+
+.AWSCredentials-account-info {
+	padding: 20px;
+	background-color: #E0EBF3;
+	border-radius: 4px;
+	margin: 40px 0;
+}
+
+.AWSCredentials-account-update {
+	color: #2ECBF4;
+	float: right;
+}
+
+.AWSCredentials-account-update:hover {
+	text-decoration: underline;
+}
+
+#AWSCredentials-link {
+	float: left;
+	margin: 7px 0 0 15px;
+	font-size: 12px;
+	color: #399EFF;
+}
+
+#AWSCredentials-link:hover {
+	text-decoration: underline;
 }
 
 /* Wrapper */

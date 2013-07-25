@@ -20,13 +20,17 @@ define [ 'jquery',
     console.log 'volume loaded'
 
     #private
-    loadModule = ( uid, current_main ) ->
+    loadModule = ( uid, current_main, tab_type ) ->
 
-        #
         MC.data.current_sub_main = current_main
 
+        #set view_type
+        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+
         #
-        require [ './module/design/property/volume/view', './module/design/property/volume/model' ], ( view, model ) ->
+        require [ './module/design/property/volume/' + view_type,
+                  './module/design/property/volume/model'
+        ], ( view, model ) ->
 
             #
             if current_view then view.delegateEvents view.events

@@ -1,8 +1,8 @@
-<div class="sidebar-title"><span class="sidebar-title-text" id='property-title'>{{component.name}}</span></div>
+<div class="sidebar-title"><span class="sidebar-title-text">{{component.name}}</span></div>
 
 <div class="fixedaccordion accordion-default" data-sub="43">
   <section class="accordion-group expanded">
-    <header class="fixedaccordion-head" id="vpc-property-detail">VPC Details</header>
+    <header class="fixedaccordion-head">VPC Details</header>
 
     <article class="accordion-body">
       <dl class="dl-vertical">
@@ -27,7 +27,8 @@
     </article>
   </section>
 
-  <section class="accordion-group" id="dhcp-property-detail">
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">DHCP Options</header>
     <article class="accordion-body">
     {{#if noneDhcp}}
     <p>None</p>

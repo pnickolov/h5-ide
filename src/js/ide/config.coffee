@@ -90,6 +90,8 @@ require.config {
 		'event'        : 'event/ide_event'
 
 		#model
+		'session_model'   : 'model/session_model'
+
 		'favorite_model' : 'model/favorite_model'
 		'app_model'    : 'model/app_model'
 		'stack_model'  : 'model/stack_model'

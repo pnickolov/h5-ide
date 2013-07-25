@@ -1,7 +1,7 @@
 define [ 'MC' ], ( MC ) ->
 
 	#private
-	getNewACLName = () ->
+	getNewName = () ->
 		maxNum = 0
 		_.each MC.canvas_data.component, (compObj) ->
 			compType = compObj.type
@@ -16,4 +16,4 @@ define [ 'MC' ], ( MC ) ->
 		return 'CustomACL-' + maxNum
 
 	#public
-	getNewACLName	: getNewACLName
+	getNewName	: getNewName

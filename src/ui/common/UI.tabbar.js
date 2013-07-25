@@ -84,10 +84,7 @@ var Tabbar = {
 	{
 		event.data.target.css('visibility', 'visible');
 		event.data.dragging_tab.remove();
-<<<<<<< HEAD
-
-=======
->>>>>>> bac2020b9318ba8abd41915950b5ecd4076e5c9b
+		
 		$(document).off({
 			'mousemove': Tabbar.mousemove,
 			'mouseup': Tabbar.mouseup

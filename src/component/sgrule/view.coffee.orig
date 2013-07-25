@@ -23,14 +23,33 @@ define [
 
             modal template( this.model.attributes ), true
 
+<<<<<<< HEAD
+            # Backbone is going to bind events to this.$el
+            this.$el = $modal = $("#sg-rule-create-modal").closest "#modal-box"
+=======
             # In case there's two modal dialog in the page, although it is ALMOST
             # not possible
             # And `closed` event is send to '#modal-wrap'
             this.setElement $('#sg-rule-create-modal').closest '#modal-wrap'
+>>>>>>> feature/modify-sgrule-ks
 
             # Update sidebar
             this.updateSidebar()
 
+<<<<<<< HEAD
+            # Bind Events
+            this.events =
+              "click .sg-rule-create-add"   : "addRule"
+              "click .sg-rule-wrap-input"   : "switchNode"
+              "click .sg-rule-create-readd" : "readdRule"
+              "click .sg-rule-delete"       : "deleteRule"
+
+            this.delegateEvents()
+
+            $modal.closest("#modal-wrap").on("closed", this.onClose)
+
+=======
+>>>>>>> feature/modify-sgrule-ks
         onClose : () ->
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.
           this.trigger 'CLOSE_POPUP'

@@ -38,7 +38,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.mul
 
                 me.trigger 'VPN_ADD_IP', new_ip
             else
-                notification 'warn', 'Must be a valid IPv4 CIDR Address'
+                notification 'warning', 'Must be a valid IPv4 CIDR Address'
 
             #console.log ips
 

@@ -83,9 +83,8 @@ require.config {
 		'canvas'       : 'module/design/canvas/main'
 		'toolbar'      : 'module/design/toolbar/main'
 
-		#canvas event logic handler
-		'canvas_handle_elb'   : 'module/design/canvas/aws/elb/elb'
-		'canvas_handle_vpn'   : 'module/design/canvas/aws/vpn/vpn'
+		#aws logic handler
+		'aws_handle'   : 'lib/aws/main'
 
 		#events
 		'event'        : 'event/ide_event'

@@ -1,0 +1,16 @@
+{{#each networkACL}}
+  <li class="clearfix item-networkacl">
+    <div class="col1">
+      <div class="radio">
+        <input id="property-acl-{{@index}}" type="radio" name="networkacl" {{#if isUsed}}checked="checked"{{/if}} value="{{name}}" data-uid="{{uid}}"/>
+        <label for="property-acl-{{@index}}"></label>
+      </div>
+    </div>
+    <div class="col3 btn-to-secondary-panel secondary-panel networkacl-edit" acl-uid="{{uid}}"></div>
+    <div class="col2">
+      <div class="col2-1 truncate">{{name}}</div>
+      <div class="col2-2 truncate">{{rule}} rules, {{association}} association</div>
+    </div>
+    
+  </li>
+{{/each}}

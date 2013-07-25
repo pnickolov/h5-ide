@@ -131,7 +131,7 @@ define [ 'jquery',
                         if line_option.length == 2
 
                             console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
-                    
+
                             key = line_option[0].port + '>' + line_option[1].port
 
 
@@ -147,12 +147,12 @@ define [ 'jquery',
 
                             else if '|instance-sg-in>instance-sg-out|instance-sg-out>instance-sg-in|'.indexOf( key ) >0
                                 #select line between instance and instance
-                                sgrule_main.loadModule line_option, 'line', sgrule_main
+                                sgrule_main.loadModule uid, 'line', sgrule_main
 
                             else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
                                 #select line between vgw and  cgw
                                 vpn_main.loadModule line_option, 'line', vpn_main
-                    
+
 
                 #temp
                 # setTimeout () ->

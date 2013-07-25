@@ -5,7 +5,7 @@
 define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
     #private
-    loadModule = () ->
+    loadModule = ( line_id ) ->
 
         #
         require [ './component/sgrule/view', './component/sgrule/model' ], ( View, Model ) ->
@@ -16,6 +16,8 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
             #view
             view.model    = model
+
+            model.getSgData line_id
             #
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model

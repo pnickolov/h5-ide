@@ -23,7 +23,7 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #
-        require [ './module/design/property/sgrule/model', './module/design/property/sgrule/view' ], ( model, view ) ->
+        require [ './module/design/property/sgrule/model', './module/design/property/sgrule/view', './component/sgrule/main' ], ( model, view, sgrule_main ) ->
 
             #
             if current_view then view.delegateEvents view.events
@@ -34,12 +34,14 @@ define [ 'jquery',
 
             #view
             view.model = model
+
+            model.setLineId uid
             #render
             view.render()
 
-            view.on "EDIT_RULE", () ->
+            view.on "EDIT_RULE", ( line_id ) ->
                 # TODO : Show SG Rule Popup
-                null
+                sgrule_main.loadModule( line_id )
 
     unLoadModule = () ->
         current_view.off()

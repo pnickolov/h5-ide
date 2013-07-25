@@ -21,7 +21,7 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
                 unLoadModule view, model
 
             #render
-            view.render
+            view.render()
 
     unLoadModule = ( view, model ) ->
         console.log 'sgrule unLoadModule'

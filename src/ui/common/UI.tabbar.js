@@ -98,6 +98,8 @@ var Tabbar = {
 		);
 		Tabbar.open(tab_id, tab_name);
 
+		Tabbar.resize($('#tab-bar').width());
+
 		$('#tab-bar').trigger('NEW_TAB', tab_id);
 		return tab_id;
 	},
@@ -154,10 +156,12 @@ var Tabbar = {
 	resize: function (tabbar_width)
 	{
 		var tabs = $('#tab-bar li'),
+			tabs_link = $('#tab-bar li a.tab-bar-truncate'),
 			tab_item_width = (tabbar_width - (tabs.length * 5)) / tabs.length;
 
 		tab_item_width = tab_item_width > 180 ? 180 : tab_item_width;
 		tabs.css('width', tab_item_width);
+		tabs_link.css('width', tab_item_width - 20);
 	}
 };
 

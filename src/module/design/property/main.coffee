@@ -85,7 +85,7 @@ define [ 'jquery',
                         #components except AvailabilityZone
                         switch MC.canvas_data.component[ uid ].type
                             #show instance property
-                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid, instance_expended_id, instance_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid, instance_expended_id, instance_main, tab_type
                             #show volume/snapshot property
                             when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid, volume_main
                             #show elb property

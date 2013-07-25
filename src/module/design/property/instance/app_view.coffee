@@ -1,5 +1,5 @@
 #############################
-#  View(UI logic) for design/property/elb(app)
+#  View(UI logic) for design/property/instance(app)
 #############################
 
 define [ 'event', 'MC',

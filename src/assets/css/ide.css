@@ -2329,7 +2329,7 @@ a.sidebar-hider {
 .btn-to-secondary-panel:before {
 	content     : "\f105";
 	font-family : 'MC-ide';
-	font-size   : 20px;	
+	font-size   : 20px;
 }
 
 .item-line-button {
@@ -2461,7 +2461,7 @@ a.sidebar-hider {
 	line-height : 30px;
 	color       : #999;
 	text-align  : center;
-	
+
 	cursor : pointer;
 }
 .sg-wrapper .tab .active {
@@ -2883,7 +2883,7 @@ a.sidebar-hider {
 	color      : #fff;
 	text-align : center;
 	cursor: pointer;
-	
+
 }
 .property-rule-delete-btn:before {
 	content : "x";
@@ -3157,7 +3157,7 @@ height: 35px;
 }
 
 .outward #sg-rule-create-inward {
-	display : none;	
+	display : none;
 }
 .outward #sg-rule-create-outward {
 	display : block;
@@ -3298,7 +3298,7 @@ height: 35px;
 }
 
 .notification-empty {
-	padding: 10px 15px;	
+	padding: 10px 15px;
 	text-align: center;
 }
 
@@ -3310,4 +3310,87 @@ height: 35px;
 
 .notification-empty .description {
 	color: rgb(153, 153, 153);
+}
+
+/* property-app-instance */
+.property-app-instance {
+	font-size: 12px;
+}
+
+.accordion-default.property-app-instance .accordion-body {
+	padding: 0;
+}
+
+.property-app-instance .property-control-group {
+	padding: 2px 0;
+}
+
+.property-app-instance .item-wrap > div {
+	padding: 10px;
+	background-color: #fefefe;
+}
+
+.property-app-instance .item-wrap > p.showorhide {
+	padding: 10px 10px 0;
+	margin-bottom: 0;
+	background-color: #fefefe;
+}
+
+.property-app-instance .item-wrap > div:nth-of-type(2n+1) {
+	background-color: #f6f5f5;
+}
+
+.property-readonly-value {
+	display: block;
+	padding-left: 12px;
+	padding-top: 5px;
+}
+
+.property-app-instance a {
+	color: #0088cc;
+}
+
+.property-app-instance a i {
+	color: #666;
+}
+
+.property-readonly-value i {
+	margin-right: 5px;
+}
+
+.property-app-instance .arrow-showorhide {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	vertical-align: middle;
+	padding-bottom: 10px;
+	transform:rotate(90deg);
+	-moz-transform:rotate(90deg);
+    -webkit-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+}
+
+.property-app-instance .show-detail-button a {
+	display: block;
+}
+
+.property-app-instance .ipaddress .property-readonly-value {
+	padding-left: 2px;
+}
+
+.property-app-instance .ipaddress .right {
+	padding-right: 56px;
+}
+
+
+.property-app-instance .ipaddress [class^="ipaddress-"], .property-app-instance .ipaddress [class*=" ipaddress-"] {
+	float: left;
+}
+
+.property-app-instance .ipaddress .ipaddress-left {
+	width: 60%;
+}
+
+.property-app-instance .ipaddress .ipaddress-right {
+	width: 40%;
 }

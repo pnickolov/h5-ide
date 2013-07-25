@@ -92,7 +92,7 @@ define [ 'jquery',
 
             #model
             model.init uid
-            
+
             #render
             view.render model.attributes
 

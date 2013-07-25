@@ -83,6 +83,7 @@ define ['event', 'MC',
             this.trigger 'ELB_NAME_CHANGED', value
 
             MC.canvas.update cid, 'text', 'elb_name', value
+            $("#property-title").html value
 
         schemeSelectChange : ( event ) ->
             console.log 'schemeSelectChange'

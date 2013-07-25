@@ -1,5 +1,5 @@
 #############################
-#  View(UI logic) for design/property/elb(app)
+#  View(UI logic) for design/property/eni(app)
 #############################
 
 define [ 'event', 'MC',
@@ -10,7 +10,7 @@ define [ 'event', 'MC',
         el       : $ document
         tagName  : $ '.property-details'
 
-        template  : Handlebars.compile $( '#property-elb-app-tmpl' ).html()
+        template  : Handlebars.compile $( '#property-eni-app-tmpl' ).html()
 
         render     : () ->
             console.log 'property:elb app render', this.model.attributes
@@ -18,7 +18,7 @@ define [ 'event', 'MC',
 
 
     }
-    
+
     view = new ElbAppView()
 
     return view

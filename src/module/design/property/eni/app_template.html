@@ -1,20 +1,42 @@
 <div class="sidebar-title">
-  <span class="sidebar-title-text" id='property-title'>{{component.name}}</span>
+  <span class="sidebar-title-text" id='property-title'>{{name}}</span>
 </div>
 <div class="fixedaccordion accordion-default" data-sub="43">
   <div class="accordion-group expanded">
-    <div class="fixedaccordion-head">Load Balancer Details</div>
+    <div class="fixedaccordion-head">Network Interface Details</div>
     <div class="accordion-body">
       <div class="property-control-group clearfix">
         <dl class="dl-vertical">
-          {{#if component.resource.VpcId}}
-          <dt>Scheme</dt>
-          <dd>{{#if elb_detail.isInternal}}Internal{{else}}Internet Facing{{/if}}</dd>
-          {{/if}}
-          <dt>DNS Name</dt>
+          <dt>Device Name</dt>
+          <dd>{{name}}</dd>
+          <dt>Network Interface ID</dt>
           <dd>TODO!!!!!!</dd>
-          <dt>Hosted Zone ID</dt>
+          <dt>State</dt>
           <dd>TODO!!!!!!</dd>
+          <dt>Description</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>Source/Destination Check</dt>
+          <dd>{{#if eni_display.resource.SourceDestCheck}}enabled{{else}}{{/if}}</dd>
+        </dl>
+        <dl class="dl-vertical">
+          <dt>VPC ID</dt>
+          <dd>TODO!!!!!!</dd>
+          <dt>Subnet</dt>
+          <dd>TODO!!!!!!</dd>
+          <dt>Attachment ID</dt>
+          <dd>TODO!!!!!!</dd>
+          <dt>Attachment Owner</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>Attachment Status</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>Mac Address</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>Public DNS</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>Private DNS</dt>
+          <dd>TODO!!!!!!!!</dd>
+          <dt>IP Owner</dt>
+          <dd>TODO!!!!!!!!</dd>
         </dl>
       </div>
     </div>

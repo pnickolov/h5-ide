@@ -82,7 +82,7 @@ define [ 'constant',
 
 					when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
-					
+
 						$.each MC.canvas_data.component, ( index, comp ) ->
 
 							# remove instance relate sg rule or sg
@@ -134,7 +134,7 @@ define [ 'constant',
 							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
 								me._removeGatewayIdFromRT comp.uid, option.id
-					
+
 					# remove rt
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
@@ -154,9 +154,9 @@ define [ 'constant',
 								me._removeGatewayIdFromRT comp.uid, option.id
 
 						$.each $(".resource-item"), ( idx, item) ->
-					
+
 							data = $(item).data()
-							
+
 							if data.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 
 								tmp = {
@@ -166,7 +166,7 @@ define [ 'constant',
 								$(item)
 									.data(tmp)
 									.removeClass('resource-disabled')
-								
+
 								return false
 
 					# remove vgw
@@ -185,9 +185,9 @@ define [ 'constant',
 									delete MC.canvas_data.component[index]
 
 						$.each $(".resource-item"), ( idx, item) ->
-					
+
 							data = $(item).data()
-							
+
 							if data.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
 
 								tmp = {
@@ -197,7 +197,7 @@ define [ 'constant',
 								$(item)
 									.data(tmp)
 									.removeClass('resource-disabled')
-								
+
 								return false
 
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
@@ -235,9 +235,9 @@ define [ 'constant',
 					az_name = $("#" + option.id).text()
 
 					$.each $(".resource-item"), ( idx, item) ->
-					
+
 						data = $(item).data()
-						
+
 						if data.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and data.option.name == az_name
 
 							tmp = {
@@ -248,10 +248,10 @@ define [ 'constant',
 								.data(tmp)
 								.removeClass('resource-disabled')
 								.addClass("tooltip")
-							
+
 							return false
-								
-					
+
+
 
 
 			# remove line
@@ -287,11 +287,11 @@ define [ 'constant',
 						if route.GatewayId and route.GatewayId.split('.')[0][1...] == portMap['igw-tgt']
 
 							remove_index.push index
-					
+
 					$.each remove_index.sort().reverse(), ( i, v) ->
 
 						MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet.splice v, 1
-							
+
 				# remove line between subnet and rt
 				if portMap['subnet-association-out'] and portMap['rtb-src']
 
@@ -323,7 +323,7 @@ define [ 'constant',
 							remove_index.push index
 
 					$.each remove_index.sort().reverse(), ( i, v) ->
-						
+
 						MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
 
 				# remove line between eni and rt
@@ -344,7 +344,7 @@ define [ 'constant',
 					$.each remove_index.sort().reverse(), ( i, v) ->
 
 						MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
-							
+
 
 				# remove line between vgw and rt
 				if portMap['vgw-tgt'] and portMap['rtb-tgt-right']
@@ -363,6 +363,7 @@ define [ 'constant',
 
 				if portMap['vgw-vpn'] and portMap['cgw-vpn']
 					MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+
 
 
 
@@ -436,7 +437,7 @@ define [ 'constant',
 
 		#after connect two port
 		createLine : ( line_id ) ->
-			
+
 			me = this
 
 			line_option = MC.canvas.lineTarget line_id
@@ -512,7 +513,7 @@ define [ 'constant',
 					if MC.canvas_data.component[rt_uid].resource.AssociationSet.length == 0 or MC.canvas_data.component[rt_uid].resource.AssociationSet[0].Main != 'true'
 
 						asso = {}
-						
+
 						asso.SubnetId = '@' + portMap['subnet-association-out'] + '.resource.SubnetId'
 
 						asso.Main = 'false'
@@ -545,7 +546,7 @@ define [ 'constant',
 								if map['rtb-src-bottom'] then preview_rt_uid = map['rtb-src-bottom'] else preview_rt_uid = map['rtb-src-top']
 
 								if MC.canvas_data.component[preview_rt_uid].resource.AssociationSet != 0 and MC.canvas_data.component[preview_rt_uid].resource.AssociationSet[0].Main != 'true'
-									
+
 									$.each MC.canvas_data.component[preview_rt_uid].resource.AssociationSet, ( index, assoset ) ->
 
 										if assoset.SubnetId.split('.')[0][1...] == map['subnet-association-out']
@@ -564,7 +565,7 @@ define [ 'constant',
 					rt_uid = null
 
 					if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
-					
+
 					igw_route = {
 						'DestinationCidrBlock'		:	'0.0.0.0/0',
 						'GatewayId'					:	'@' + portMap['igw-tgt'] + '.resource.InternetGatewayId',
@@ -583,7 +584,7 @@ define [ 'constant',
 					rt_uid = null
 
 					if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
-					
+
 					instance_route = {
 						'DestinationCidrBlock'		:	'0.0.0.0/0',
 						'GatewayId'					:	'',
@@ -602,7 +603,7 @@ define [ 'constant',
 					rt_uid = null
 
 					if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
-					
+
 					vgw_route = {
 						'DestinationCidrBlock'		:	'0.0.0.0/0',
 						'GatewayId'					:	'@' + portMap['vgw-tgt'] + '.resource.VpnGatewayId',
@@ -621,7 +622,7 @@ define [ 'constant',
 					rt_uid = null
 
 					if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
-					
+
 					instance_route = {
 						'DestinationCidrBlock'		:	'0.0.0.0/0',
 						'GatewayId'					:	'',
@@ -638,6 +639,9 @@ define [ 'constant',
 				if portMap['vgw-vpn'] and portMap['cgw-vpn']
 					MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
+				if portMap['instance-sg-in'] and portMap['instance-sg-out']
+
+					this.trigger 'CREATE_SG_CONNECTION', line_id
 
 			null
 
@@ -653,7 +657,7 @@ define [ 'constant',
 				componentType = MC.canvas_data.component[uid].type
 			else
 				componentType = constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
-			
+
 			if componentType is constant.AWS_RESOURCE_TYPE.AWS_ELB
 				MC.aws.elb.init(uid)
 

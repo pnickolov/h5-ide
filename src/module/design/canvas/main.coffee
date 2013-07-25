@@ -8,7 +8,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
     loadModule = () ->
 
         #load remote module1.js
-        require [ './module/design/canvas/view', './module/design/canvas/model' ], ( View, model ) ->
+        require [ './module/design/canvas/view', './module/design/canvas/model', './component/sgrule/main' ], ( View, model, sgrule_main ) ->
 
             #view
             view       = new View()
@@ -67,6 +67,10 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
             model.on 'ENI_REACH_MAX', ()->
                 console.log 'ENI reach limit'
                 view.showEniReachMax()
+
+            model.on 'CREATE_SG_CONNECTION', ( line_id ) ->
+
+                sgrule_main.loadModule line_id
 
             null
 

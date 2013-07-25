@@ -20,6 +20,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             'click .deleteSG'               : 'deleteSecurityGroup'
             'click .resetSG'                : 'resetSecurityGroup'
             'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
+            'click #stack-property-add-new-acl' : 'openCreateAclPanel'
             
         render     : () ->
             console.log 'property:stack render'
@@ -82,6 +83,25 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         refreshACLList : () ->
             this.model.getNetworkACL()
             $('.stack-property-acl-list').html this.acl_template this.model.attributes
+
+        openCreateAclPanel : ( event ) ->
+            source = $(event.target)
+            if(source.hasClass('secondary-panel'))
+                target = source
+            else
+                target = source.parents('.secondary-panel').first()
+
+            accordion = $( '#instance-accordion' )
+            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
+
+            aclUID = MC.guid()
+            aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
+            # aclObj.name = this.model.getNewACLName()
+            aclObj.uid = aclUID
+
+            MC.canvas_data.component[aclUID] = aclObj
+
+            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
     }
 
     view = new StackView()

@@ -21,6 +21,19 @@ a {
 	background: #4c494c;
 }
 
+/* generic class */
+.dis-blk   { display : block !important; }
+.dis-inblk { display : inline-block !important; }
+
+.mgl80 { margin-left  : 80px; }
+.mgr10 { margin-right : 10px; }
+
+.lh30  { line-height : 30px; }
+
+.hide  { display: none; }
+.left  { float: left; }
+.right { float: right; }
+
 .truncate {
 	/*width: 250px;*/
 	white-space: nowrap;
@@ -2237,7 +2250,7 @@ a.sidebar-hider {
 .btn-to-secondary-panel:before {
 	content     : "\f105";
 	font-family : 'MC-ide';
-	font-size   : 20px;	
+	font-size   : 20px;
 }
 
 .item-line-button {
@@ -2369,7 +2382,7 @@ a.sidebar-hider {
 	line-height : 30px;
 	color       : #999;
 	text-align  : center;
-	
+
 	cursor : pointer;
 }
 .sg-wrapper .tab .active {
@@ -2791,7 +2804,7 @@ a.sidebar-hider {
 	color      : #fff;
 	text-align : center;
 	cursor: pointer;
-	
+
 }
 .property-rule-delete-btn:before {
 	content : "x";
@@ -3018,6 +3031,10 @@ height: 35px;
 }
 
 /* SG Rule Create Dialog */
+#sg-rule-create-modal {
+	width  : 500px;
+}
+
 .sg-rule-create-h, #sg-rule-create-modal {
 	position : relative;
 	left : 0;
@@ -3028,9 +3045,62 @@ height: 35px;
 	        transition: left .3s ease-in-out;
 }
 
-#sg-rule-create-modal {
-	height : 420px;
-	width  : 350px;
+.sg-rule-create-add-wrap {
+	position : relative;
+}
+
+.sg-rule-create-node {
+	width       : 50%;
+	height      : 40px;
+	float       : left;
+	padding-top : 10px;
+	cursor      : pointer;
+}
+
+.sg-rule-create-node.selected {
+	background : #e1e1e1;
+	border-radius : 4px 4px 0 0;
+	color : black;
+}
+
+.sg-rule-create-node .radio {
+	margin : 0px 0 0 10px;
+}
+
+.sg-rule-create-node > label {
+	margin-left : 10px;
+}
+
+.sg-rule-create {
+	background : #e1e1e1;
+	height     : 300px;
+	padding    : 10px;
+}
+
+.sg-rule-create > li {
+	margin-bottom : 8px;
+}
+
+.sg-rule-create > li > label {
+	width       : 80px;
+	height      : 35px;
+	line-height : 35px;
+}
+
+.sg-rule-create .selection {
+	height      : 30px;
+	line-height : 30px;
+	padding     : 0 10px;
+}
+
+.sg-rule-create-add {
+	position : absolute;
+	right    : 10px;
+	bottom   : 10px;
+}
+
+.sg-rule-create-in {
+	display : none;
 }
 
 .sg-rule-create-done-wrap {
@@ -3050,7 +3120,7 @@ height: 35px;
 }
 
 .outward #sg-rule-create-inward {
-	display : none;	
+	display : none;
 }
 .outward #sg-rule-create-outward {
 	display : block;
@@ -3099,6 +3169,7 @@ height: 35px;
 .sg-proto-option {
 	width : 80px;
 	float : left;
+	margin-right : 10px;
 }
 
 .sg-create-proto-inputs {
@@ -3191,7 +3262,7 @@ height: 35px;
 }
 
 .notification-empty {
-	padding: 10px 15px;	
+	padding: 10px 15px;
 	text-align: center;
 }
 

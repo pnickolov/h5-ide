@@ -4,8 +4,9 @@
 
 define [ 'jquery',
          'text!/module/design/property/rtb/template.html',
+         'text!/module/design/property/rtb/app_template.html',
          'event'
-], ( $, template, ide_event ) ->
+], ( $, template, app_template, ide_event ) ->
 
     #
     current_view  = null
@@ -13,8 +14,9 @@ define [ 'jquery',
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-rtb-tmpl">' + template + '</script>'
+    app_template = '<script type="text/x-handlebars-template" id="property-rtb-app-tmpl">' + app_template + '</script>'
     #load remote html template
-    $( 'head' ).append template
+    $( 'head' ).append( template ).append( app_template )
 
     #private
     loadModule = ( uid, type, current_main ) ->

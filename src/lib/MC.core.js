@@ -3,13 +3,13 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system 
-#* Date: 20130706
+#* Date: 20130724
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var MC = {
-	version: '0.2.2',
+	version: '0.2.3',
 
 	// Global Variable 
 	API_URL: 'https://api.madeiracloud.com/',
@@ -313,6 +313,16 @@ var MC = {
 	rand: function (min, max)
 	{
 		return Math.floor(Math.random() * (max - min + 1) + min);
+	},
+
+	base64Encode: function (string)
+	{
+		return window.btoa(unescape(encodeURIComponent( string )));
+	},
+
+	base64Decode: function (string)
+	{
+		return decodeURIComponent(escape(window.atob( string )));
 	}
 };
 
@@ -365,6 +375,7 @@ var returnTrue = function () {return true},
  * jQuery plugin to convert a given $.ajax response xml object to json.
  *
  * @example var json = $.xml2json(response);
+ * modified by Angel
  */
 (function ()
 {
@@ -383,7 +394,6 @@ var returnTrue = function () {return true},
 
 					child = child == null ? {} : child;
 
-					//console.info(child);
 					if (node.nextElementSibling && node.nextElementSibling.nodeName === node.nodeName)
 					{
 						if ($.type(result[node.nodeName]) === 'undefined')
@@ -425,7 +435,7 @@ var returnTrue = function () {return true},
 					if (
 						node.childElementCount === 0 &&
 						node.textContent != null &&
-						node.textContent !== ""
+						node.textContent !== ''
 					)
 					{
 						if (result[node.nodeName] instanceof Array)

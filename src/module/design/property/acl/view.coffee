@@ -3,8 +3,6 @@
 #############################
 
 define [ 'event',
-         'text!/module/design/property/acl/template.html',
-         'text!/module/design/property/acl/rule_item.html',
          'backbone', 'jquery', 'handlebars' ], ( ide_event, template, rule_template ) ->
 
    ACLView = Backbone.View.extend {
@@ -12,8 +10,8 @@ define [ 'event',
         el       : $ document
         tagName  : $ '.property-details'
 
-        htmlTpl  : Handlebars.compile template
-        ruleTpl  : Handlebars.compile rule_template
+        htmlTpl  : Handlebars.compile $('#property-acl-tmpl').html()
+        ruleTpl  : Handlebars.compile $('#property-acl-rule-tmpl').html()
 
         initialize : ->
             #handlebars equal logic

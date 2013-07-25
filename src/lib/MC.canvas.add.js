@@ -814,14 +814,14 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 11, 11, 58, 58).attr({
+				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 10, 13, 60, 57).attr({
 					'id': group.id + '_rt_status'
 				}),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-left',
-					'transform': 'translate(10, 25)' + MC.canvas.PORT_LEFT_ROTATE,
+					'transform': 'translate(11, 25)' + MC.canvas.PORT_LEFT_ROTATE,
 					'data-name': 'rtb-tgt-left',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -832,7 +832,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-right',
-					'transform': 'translate(70, 25)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(69, 25)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'rtb-tgt-right',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -843,7 +843,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-top',
-					'transform': 'translate(41, -7)' + MC.canvas.PORT_UP_ROTATE,
+					'transform': 'translate(41, -4)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'top',
 					'data-type': 'association',
@@ -854,7 +854,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-bottom',
-					'transform': 'translate(41, 69)' + MC.canvas.PORT_DOWN_ROTATE,
+					'transform': 'translate(41, 66)' + MC.canvas.PORT_DOWN_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'bottom',
 					'data-type': 'association',
@@ -939,15 +939,15 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.image('../assets/images/ide/icon/igw-canvas.png', 10, 15, 60, 46),
 
 				//2 path: left port
-				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-blue port-igw-unknown',
-					'transform': 'translate(12, 25)' + MC.canvas.PORT_LEFT_ROTATE,
-					'data-name': 'igw-unknown',
-					'data-position': 'left',
-					'data-type': 'sg',
-					'data-direction': 'out',
-					'data-angle': MC.canvas.PORT_LEFT_ANGLE
-				}),
+				// Canvon.path(MC.canvas.PATH_D_PORT).attr({
+				// 	'class': 'port port-blue port-igw-unknown',
+				// 	'transform': 'translate(12, 25)' + MC.canvas.PORT_LEFT_ROTATE,
+				// 	'data-name': 'igw-unknown',
+				// 	'data-position': 'left',
+				// 	'data-type': 'sg',
+				// 	'data-direction': 'out',
+				// 	'data-angle': MC.canvas.PORT_LEFT_ANGLE
+				// }),
 
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({

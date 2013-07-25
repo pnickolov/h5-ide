@@ -3,12 +3,21 @@
 ####################################
 
 define [ 'jquery',
+         'text!/module/design/property/elb/template.html',
+         'text!/module/design/property/elb/app_template.html',
          'event'
-], ( $, ide_event ) ->
+], ( $, template, app_template, ide_event ) ->
 
     #
     current_view  = null
     current_model = null
+
+    #add handlebars script
+    template     = '<script type="text/x-handlebars-template" id="property-elb-tmpl">' + template + '</script>'
+    app_template = '<script type="text/x-handlebars-template" id="property-elb-app-tmpl">' + app_template + '</script>'
+    #load remote html template
+    $( 'head' ).append template
+    $( 'head' ).append app_template
 
     #private
     loadModule = ( uid, current_main, tab_type ) ->

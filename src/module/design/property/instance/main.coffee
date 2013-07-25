@@ -4,9 +4,10 @@
 
 define [ 'jquery',
          'text!/module/design/property/instance/template.html',
-         'event'
+         'text!/module/design/property/instance/app_template.html',
+         'event',
          'UI.notification'
-], ( $, template, ide_event ) ->
+], ( $, template, app_template, ide_event ) ->
 
     #
     current_view     = null
@@ -15,8 +16,10 @@ define [ 'jquery',
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-instance-tmpl">' + template + '</script>'
+    app_template = '<script type="text/x-handlebars-template" id="property-instance-app-tmpl">' + app_template + '</script>'
     #load remote html template
     $( 'head' ).append template
+    $( 'head' ).append app_template
 
     #private
     loadModule = ( uid, instance_expended_id, current_main, tab_type ) ->
@@ -69,7 +72,7 @@ define [ 'jquery',
                 sglist_main.loadModule model
 
                 ide_event.trigger ide_event.RELOAD_PROPERTY
-                
+
             ide_event.trigger ide_event.RELOAD_PROPERTY
 
             ###
@@ -88,7 +91,7 @@ define [ 'jquery',
             #render
             view.render( attributes, instance_expended_id )
 
-            
+
 
             view.on 'RE_RENDER', ( uid ) ->
 

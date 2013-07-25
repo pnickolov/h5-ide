@@ -738,13 +738,17 @@ MC.canvas = {
 					'fill': 'none'
 				});
 
-				if ( start0.x === end0.x || start0.y === end0.y )
+				if (start0.x === end0.x || start0.y === end0.y)
 				{
 					//draw straight line
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
 
 					//draw dash line
-					if ( connection_option.stroke_dasharray  && connection_option.color_dash && connection_option.stroke_dasharray !== '' )
+					if (
+						connection_option.stroke_dasharray &&
+						connection_option.color_dash &&
+						connection_option.stroke_dasharray !== ''
+					)
 					{
 						MC.paper.line(start0.x, start0.y, end0.x, end0.y).attr({
 							'stroke': connection_option.color_dash,
@@ -777,9 +781,13 @@ MC.canvas = {
 							MC.paper.path(d);
 
 							//draw dash fold line
-							if ( connection_option.stroke_dasharray  && connection_option.color_dash && connection_option.stroke_dasharray !== '' )
+							if (
+								connection_option.stroke_dasharray  &&
+								connection_option.color_dash &&
+								connection_option.stroke_dasharray !== ''
+							)
 							{
-								MC.paper.path(d,{
+								MC.paper.path(d, {
 									'stroke': connection_option.color_dash,
 									'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
 									'fill': 'none',
@@ -3757,28 +3765,26 @@ MC.canvas.event.selectLine = function (event)
 	event.stopPropagation();
 
 	MC.canvas.event.clearSelected();
+	Canvon(this).addClass('selected');
 
 	var line = $(this),
-		clone = line.attr('class', function (index, key)
-		{
-			return key + ' selected';
-		});
+		clone = line.clone()[0];
 
 	line.remove();
 	$('#line_layer').append(clone);
 
-	MC.canvas.selected_node.push(this);
+	MC.canvas.selected_node.push(clone);
 
 	//trigger event when selecte line
-	$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", this.id);
+	$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", clone.id);
 
 };
 
 MC.canvas.event.clearSelected = function ()
 {
-	$('#svg_canvas .selected').attr('class', function (index, key)
+	$('#svg_canvas .selected').each(function (index, item)
 	{
-		return key.replace(' selected', '');
+		Canvon(item).removeClass('selected');
 	});
 
 	MC.canvas.selected_node = [];
@@ -3862,10 +3868,7 @@ MC.canvas.event.keyEvent = function (event)
 
 		MC.canvas.event.clearSelected();
 
-		next_node.attr('class', function (index, key)
-		{
-			return key + ' selected';
-		});
+		Canvon(next_node[0]).addClass('selected');
 
 		// Append to top
 		clone_node = next_node.clone();

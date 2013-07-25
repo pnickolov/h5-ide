@@ -10,54 +10,25 @@ var
 			panel_width = resource_panel.width(),
 			main = $('#main'),
 			nav = $('#navigation'),
+			nav_sub = $('.sub-menu-scroll-wrap'),
 			nav_left = nav.css('left'),
 			nav_width = nav.width(),
 			win_width = $(window).width();
 
 		main_middle.width(win_width - nav_width - nav_left - panel_width * 2 - resource_panel_marginLeft - property_panel_marginRight);
 		main_middle.height(main.height() - $('#tab-bar').height());
-		nav.height(window.innerHeight - 50 + 50);
+		nav.height(window.innerHeight);
+		nav_sub.height(window.innerHeight - 100);
 	},
 
 	mainContentResize = function()
 	{
-		$('.main-content').height(window.innerHeight - 92 + 50);
+		$('.main-content').height(window.innerHeight - 42);
 		// console.log('mainContentResize');
 	}
 ;
 
 var ready = function () {
-
-	// Hide Left Menu
-	// $('#view-toggle-navigation').on('click', function (event)
-	// {
-	// 	var nav = $('#navigation'),
-	// 		main = $('#main'),
-	// 		first_level_nav = $('#first-level-nav');
-
-	// 	nav.toggleClass('collapsed');
-	// 	$(this).toggleClass('active');
-	// 	main.toggleClass('wide');
-	// 	canvasPanelResize();
-
-	// 	Tabbar.resize(nav.hasClass('collapsed') ? $('#tab-bar').width() + 180 : $('#tab-bar').width() - 180);
-
-	// 	nav.toggleClass('scroll-wrap');
-
-	// 	first_level_nav[0].style.cssText = '';
-	// 	first_level_nav.toggleClass('accordion');
-
-	// 	$('.nav-head').toggleClass('accordion-group');
-	// 	$('.sub-menu-wrapper').toggleClass('accordion-body');
-
-	// 	if (nav.hasClass('collapsed'))
-	// 	{
-	// 		$('.sub-menu-wrapper').each(function() {
-	// 			this.style.cssText = '';
-	// 		});
-	// 	}
-	// });
-
 
 	canvasPanelResize();
 	mainContentResize();

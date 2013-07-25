@@ -12,16 +12,20 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         tagName  : $ '.property-details'
 
         template : Handlebars.compile $( '#property-stack-tmpl' ).html()
+        acl_template : Handlebars.compile $( '#property-stack-acl-tmpl' ).html()
 
         events   :
             'change #property-stack-name'   : 'stackNameChanged'
             'click #add-sg-btn'             : 'createSecurityGroup'
             'click .deleteSG'               : 'deleteSecurityGroup'
             'click .resetSG'                : 'resetSecurityGroup'
+            'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
+            'click #stack-property-add-new-acl' : 'openCreateAclPanel'
             
         render     : () ->
             console.log 'property:stack render'
             $( '.property-details' ).html this.template this.model.attributes
+            this.refreshACLList()
 
         stackNameChanged : () ->
             me = this
@@ -71,6 +75,33 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             null
 
+        deleteNetworkAcl : (event) ->
+            aclUID = $(event.target).attr('acl-uid')
+            delete MC.canvas_data.component[aclUID]
+            this.refreshACLList()
+
+        refreshACLList : () ->
+            this.model.getNetworkACL()
+            $('.stack-property-acl-list').html this.acl_template this.model.attributes
+
+        openCreateAclPanel : ( event ) ->
+            source = $(event.target)
+            if(source.hasClass('secondary-panel'))
+                target = source
+            else
+                target = source.parents('.secondary-panel').first()
+
+            accordion = $( '#instance-accordion' )
+            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
+
+            aclUID = MC.guid()
+            aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
+            # aclObj.name = this.model.getNewACLName()
+            aclObj.uid = aclUID
+
+            MC.canvas_data.component[aclUID] = aclObj
+
+            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
     }
 
     view = new StackView()

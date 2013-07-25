@@ -2993,6 +2993,30 @@ height: 35px;
 	background-color: #fff;
 }
 
+#modal-acl-source-input {
+	display: none;
+}
+
+.stack-property-acl-list .delete {
+	color: #aaa;
+	cursor: pointer;
+	float: left;
+	display: none;
+	margin-left: 10px;
+}
+
+.stack-property-acl-list .info {
+	float: left;
+}
+
+.stack-property-acl-list .delete.used {
+	display: block;
+}
+
+.stack-property-acl-list .property-item {
+	height: 30px;
+}
+
 /* SG Rule Create Dialog */
 .sg-rule-create-h, #sg-rule-create-modal {
 	position : relative;
@@ -3180,9 +3204,3 @@ height: 35px;
 .notification-empty .description {
 	color: rgb(153, 153, 153);
 }
-
-
-
-
-
-

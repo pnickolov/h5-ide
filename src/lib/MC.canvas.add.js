@@ -394,7 +394,8 @@ MC.canvas.add = function (flag, option, coordinate)
 			var os_type = 'ami-unknown',
 				volume_number = 0,
 				icon_volume_status = 'not-attached',
-				eni = null;
+				eni = null,
+				eip_icon = MC.canvas.IMAGE.EIP_OFF;
 
 			if (create_mode)
 			{//write
@@ -453,7 +454,22 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
-
+				
+				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+					$.each(MC.canvas_data.component, function ( key, val ){
+						
+						if(val.type === 'AWS.VPC.NetworkInterface' && val.resource.Attachment.InstanceId.split(".")[0].slice(1) === component_data.uid && val.resource.Attachment.DeviceIndex === '0'){
+							
+							$.each(MC.canvas_data.component, function ( k, v ){
+								if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + val.uid + '.resource.NetworkInterfaceId'){
+									eip_icon = MC.canvas.IMAGE.EIP_ON;
+								}
+							});
+						}
+					});
+				}
+                	
+                
 				component_layout = layout.node[group.id];
 
 				coordinate.x = component_layout.coordinate[0];
@@ -542,7 +558,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////7. eip
-				Canvon.image(MC.canvas.IMAGE.EIP_OFF, 58, 49, 14, 17).attr({
+				Canvon.image(eip_icon, 58, 49, 14, 17).attr({
 					'id': group.id + '_eip_status'
 				}),
 

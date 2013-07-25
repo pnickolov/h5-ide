@@ -33,13 +33,20 @@
             <a href="#" id="property-eni-ip-add" class="right btn btn-silver btn-small" title="Add IP Address">Add IP</a>
           </div>
           <ul class="network-list" id="property-eni-list">
-            <li>
-              <div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
-                <label for="eni-instance-ip-1">10.0.0.</label>
-                <input type="text" class="input input-ip" value="x" id="eni-instance-ip-1">
-              </div>
-              <div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-            </li>
+           {{#each eni_display.resource.PrivateIpAddressSet}}
+						<li>
+							<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
+								<label for="instance-ip-1">10.0.0.</label>
+								<input type="text" class="input input-ip" value="x" id="instance-ip-1">
+							</div>
+							{{#if has_eip}}
+							<div class="toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+							{{else}}
+							<div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+							{{/if}}
+						</li>
+						
+						{{/each}}
           </ul>
         </div>
         

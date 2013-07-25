@@ -3,7 +3,7 @@
 #* Filename: UI.tabbar
 #* Creator: Angel
 #* Description: UI.tabbar
-#* Date: 20130719
+#* Date: 20130725
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -35,9 +35,10 @@ var Tabbar = {
 		$(document).on('mousemove', {
 			'target': target,
 			'dragging_tab': dragging_tab,
-			'offset_left': $('#tab-bar').offset().left + event.pageX - target.offset().left,
+			'offset_left': event.pageX - target.offset().left,
 			'tab_list': tab_list,
-			'tab_width': tab_list.width()
+			'tab_width': tab_list.width(),
+			'tabbar_offsetLeft': $('#tab-bar').offset().left
 		}, Tabbar.mousemove);
 
 		$(document).on('mouseup', {
@@ -56,10 +57,11 @@ var Tabbar = {
 		event.stopPropagation();
 
 		var left = event.pageX - event.data.offset_left,
+			tabbar_offsetLeft = event.data.tabbar_offsetLeft,
 			index = Math.round(left / event.data.tab_width),
 			length = event.data.tab_list.length;
 
-		left = left > 0 ? left : 0;
+		left = left > tabbar_offsetLeft ? left : tabbar_offsetLeft;
 
 		event.data.dragging_tab.css('left', left);
 

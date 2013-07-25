@@ -14,13 +14,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         events   :
             "click #sg-edit-rule-button" : "onEditRule"
 
-        render     : ( attributes ) ->
+        render     : () ->
             console.log 'property:sgrule render'
 
+            ###
             attributes =
                 sg_group : []
+            ###
 
-            $( '.property-details' ).html this.template attributes
+            $( '.property-details' ).html this.template this.model.attributes
 
         onEditRule : ( event ) ->
             this.trigger "EDIT_RULE"

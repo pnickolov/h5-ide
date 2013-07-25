@@ -51,68 +51,14 @@ a {
 
 #header {
 	background: #312d31;
-	height: 52px;
+	height: 50px;
 	z-index: 3;
 	position: absolute;
 	right: 0;
 }
 
-#view-toggle-navigation {
-	display: inline-block;
-	text-align: center;
-	float: left;
-	border-right: 1px solid #252225;
-}
-
-#view-toggle-navigation a {
-	display: block;
-	width: 45px;
-	line-height: 52px;
-}
-
-#view-toggle-navigation:hover, #view-toggle-navigation.active {
-	background-color: #171517;
-	color: #fff;
-}
-
-#region-selector {
-	float: left;
-	display: inline-block;
-	z-index: 100;
-	box-shadow: 0 2px 5px rgba(0,0,0,.2);
-	border-bottom: 1px solid #333;
-	height: 50px;
-}
-
-#region-selector a {
-	display: block;
-	margin-left: 15px;
-}
-
-#region-selector .dropdown-toggle {
-	width: 120px;
-	line-height: 50px;
-}
-
-#region-selector .dropdown-menu {
-	color: #ccc;
-	font-size: 12px;
-	background: #3F3A3F;
-	position: absolute;
-	left: 45px;
-	width: 180px;
-}
-
-#region-selector .dropdown-menu li {
-	padding: 8px 13px;
-}
-
-#region-selector .dropdown-menu li:first-child {
-	border-bottom: 1px solid #333;
-}
-
 .logo {
-	margin: 5px 10px 5px 5px;
+	margin: 10px 10px 10px 5px;
 	height: 30px;
 	position: absolute;
 	left: 0;
@@ -126,7 +72,7 @@ a {
 .header-menu .dropdown {
 	position: relative;
 	float: left;
-	line-height: 52px;
+	line-height: 50px;
 	border-left: 1px solid #252225;
 	-webkit-transition: background-color 0.2s;
 	-moz-transition: background-color 0.2s;
@@ -480,7 +426,7 @@ a {
 
 #tab-bar {
 	font-size: 13px;
-	padding: 15px 20px 0 0;
+	padding: 23px 20px 0 0;
 	width: 100%;
 	height: 40px;
 }
@@ -506,8 +452,8 @@ a {
 .tab-bar-truncate {
 	display: block;
 	width: 180px;
-	height: 17px;
-	padding: 10px 12px 10px 5px;
+	height: 15px;
+	padding: 6px 12px 6px 5px;
 	color: #666;
 }
 

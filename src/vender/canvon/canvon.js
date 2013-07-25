@@ -48,6 +48,8 @@ Canvon.fn = Canvon.prototype = {
 		}
 		$(this).append(group);
 		this.drewGroup = group;
+
+		return group;
 	},
 
 	draw: function (canvas, type)
@@ -82,6 +84,7 @@ Canvon.fn = Canvon.prototype = {
 	save: function ()
 	{
 		var data = this.drewGroup;
+
 		if (data)
 		{
 			this.drewGroup = null;
@@ -98,7 +101,10 @@ Canvon.fn = Canvon.prototype = {
 			{
 				this.drewGroup = null;
 			}
+
 			this.removeChild(elem);
+
+			return true;
 		}
 	},
 
@@ -265,6 +271,11 @@ Canvon.fn = Canvon.prototype = {
 	hasClass: function ()
 	{
 		return new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b').test( this.getAttribute('class') );
+	},
+
+	offset: function ()
+	{
+		return this.getBoundingClientRect();
 	}
 };
 

@@ -1,0 +1,46 @@
+<div class="sidebar-title"><span class="sidebar-title-text">{{name}}</span></div>
+
+<div class="fixedaccordion accordion-default" data-sub="43">
+  <section class="accordion-group expanded">
+    <header class="fixedaccordion-head">Subnet Details</header>
+
+    <article class="accordion-body">
+      <dl class="dl-vertical">
+        <dt>Subnet ID</dt>
+        <dd>TODO!!!!!!</dd>
+
+        <dt>State</dt>
+        <dd>TODO!!!!!!</dd>
+
+        <dt>CIDR</dt>
+        <dd>{{CIDR}}</dd>
+
+        <dt>Available IPs</dt>
+        <dd>TODO!!!!!!</dd>
+
+        <dt>VPC ID</dt>
+        <dd>TODO!!!!!!!!</dd>
+
+        <dt>Route Table</dt>
+        <dd>TODO!!!!!!!!</dd>
+      </dl>
+    </article>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">Associated Network ACL</header>
+    <article class="accordion-body">
+      <ul class="property-control-group">
+        {{#each networkACL}}
+          <li class="clearfix item-networkacl">
+            <div class="col3 btn-to-secondary-panel secondary-panel" data-secondarypanel-template="subnetSecondaryPanel" data-secondarypanel-data="{{panelData}}"></div>
+            <div class="col2">
+              <div class="col2-1 truncate">{{name}}</div>
+              <div class="col2-2 truncate">{{rule}} rules, {{association}} association</div>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </article>
+  </section>
+</div>

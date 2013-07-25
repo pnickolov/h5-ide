@@ -27,7 +27,7 @@ var fixedaccordion = {
                     expanded_height :
                     fixedaccordion.min_height;
 
-            $(expanded_body).outerHeight(expanded_height);
+            //$(expanded_body).outerHeight(expanded_height);
             me.data('bodyHeight', expanded_height);
         });
     },

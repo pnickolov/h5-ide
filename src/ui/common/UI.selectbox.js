@@ -109,6 +109,7 @@ var selectbox = {
 
         // Set the value to select and close dropdown
         var $selectbox = $this.closest(".selectbox").removeClass('open');
+
         $selectbox.find(".selection").html( $this.html() );
 
         // TODO : OPTION_CHANGE's parameter no long is array.
@@ -118,12 +119,6 @@ var selectbox = {
     }
 
     function keydown ( event ) {
-
-        if ( !window.dddddd ) {
-            window.dddddd = 1;
-        } else {
-            ++window.dddddd;window
-        }
 
         if( !/(38|40|13|27)/.test(event.which) )
             return;

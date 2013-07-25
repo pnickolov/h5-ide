@@ -3778,7 +3778,45 @@ MC.canvas.event.selectLine = function (event)
 
 	//trigger event when selecte line
 	$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", clone.id);
+};
 
+MC.canvas.event.selectNode = function (event)
+{
+	if (event.which === 1)
+	{
+		event.preventDefault();
+		event.stopPropagation();
+
+		MC.canvas.event.clearSelected();
+		Canvon(this).addClass('selected');
+
+		var target = $(this),
+			target_type = target.data('type'),
+			clone_node;
+
+		if (target_type === 'node')
+		{
+			Canvon(this).addClass('selected');
+
+			// Append to top
+			clone_node = target.clone();
+			target.remove();
+			$('#node_layer').append(clone_node);
+
+			MC.canvas.selected_node.push(clone_node[0]);
+
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+		}
+		
+		if (target_type === 'group')
+		{
+			Canvon(this).addClass('selected');
+
+			MC.canvas.selected_node.push(target[0]);
+
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
+		}
+	}
 };
 
 MC.canvas.event.clearSelected = function ()

@@ -27,7 +27,7 @@
 						<div class="selection"></div>	
 						<ul class="dropdown">
 							{{#each instance_type}}
-							<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}">
+							<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
 								<div class="main  truncate">{{main}}</div>
 								<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
 							</li>

@@ -639,9 +639,16 @@ define [ 'constant',
 				if portMap['vgw-vpn'] and portMap['cgw-vpn']
 					MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
-				if portMap['instance-sg-in'] and portMap['instance-sg-out']
+				$.each portMap, ( key, value ) ->
 
-					this.trigger 'CREATE_SG_CONNECTION', line_id
+					if key.indexOf 'sg-in' >= 0 or key.indexOf 'sg-out' >= 0
+
+						me.trigger 'CREATE_SG_CONNECTION', line_id
+
+						return false
+				#if (portMap['instance-sg-in'] and portMap['instance-sg-out']) or (portMap['eni-sg-in'] and portMap['instance-sg-out']) or (portMap['instance-sg-in'] and portMap['eni-sg-out']) or (portMap['eni-sg-in'] and portMap['eni-sg-out'])
+
+				#	this.trigger 'CREATE_SG_CONNECTION', line_id
 
 			null
 

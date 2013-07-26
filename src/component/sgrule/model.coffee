@@ -62,7 +62,62 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                                     both_side.push side_sg
 
+                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+
+                        side_sg = {}
+
+                        side_sg.name = MC.canvas_data.component[connection_obj.uid].name
+
+                        side_sg.sg = ({uid:sg.GroupId.split('.')[0][1...],name:MC.canvas_data.component[sg.GroupId.split('.')[0][1...]].name} for sg in MC.canvas_data.component[connection_obj.uid].resource.GroupSet)
+
+                        both_side.push side_sg
+
+                    when constant.AWS_RESOURCE_TYPE.AWS_ELB
+
+                        side_sg = {}
+
+                        side_sg.name = MC.canvas_data.component[connection_obj.uid].name
+
+                        side_sg.sg = ({uid:sg.split('.')[0][1...],name:MC.canvas_data.component[sg.split('.')[0][1...]].name} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroups)
+
+                        both_side.push side_sg
+
             this.set 'sg_detail', both_side
+
+
+        addSGRule : ( rule_data ) ->
+
+            sg_id = rule_data.sgId
+
+            from_port = null
+
+            to_port = null
+
+            if '-' in rule_data.protocolValue
+
+                from_port = rule_data.protocolValue.split('-')[0]
+
+                to_port = rule_data.protocolValue.split('-')[1]
+
+            else
+                from_port = to_port = rule_data.protocolValue
+
+
+            sg_rule = {
+                "IpProtocol": rule_data.protocol
+                "IpRanges": '@' + rule_data.direction + '.resource.GroupId'
+                "FromPort": from_port
+                "ToPort": to_port
+                "Groups": [{
+                    "GroupId": ""
+                    "UserId": ""
+                    "GroupName": ""
+                }]
+            }
+
+            if rule_data.isInbound then MC.canvas_data.component[sg_id].resource.IpPermissions.push sg_rule else MC.canvas_data.component[sg_id].resource.IpPermissionsEgress.push sg_rule
+
+
 
     }
 

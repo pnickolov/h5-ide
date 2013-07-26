@@ -56,6 +56,7 @@ define [
           data = this.extractRuleData()
           console.log data
 
+          this.trigger 'ADD_SG_RULE', data
           # TODO : Tell model to add rule.
 
           # TODO : Insert rule to the sidebar

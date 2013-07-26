@@ -22,6 +22,10 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
 
+            view.on 'ADD_SG_RULE', ( rule_data ) ->
+
+                model.addSGRule rule_data
+
             #render
             view.render()
 

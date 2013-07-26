@@ -817,7 +817,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.data);
 				component_data.name = option.name;
 				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
-					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';					
+					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				}
 				if(option.main){
 					main_icon = "main-";
@@ -877,7 +877,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-gray port-rtb-src port-rtb-src',
+					'class': 'port port-gray port-rtb-src port-rtb-src-top',
 					'transform': 'translate(41, -4)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'top',
@@ -888,7 +888,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-gray port-rtb-src port-rtb-src',
+					'class': 'port port-gray port-rtb-src port-rtb-src-bottom',
 					'transform': 'translate(41, 66)' + MC.canvas.PORT_DOWN_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'bottom',

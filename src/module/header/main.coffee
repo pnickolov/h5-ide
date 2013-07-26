@@ -20,24 +20,33 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
 
             #view
             view       = new View()
+            view.model = model
+            view.render()
 
             #event
             view.on 'BUTTON_LOGOUT_CLICK', () ->
-
                 model.logout()
-
-            view.render()
 
             ide_event.onListen ide_event.DESIGN_COMPLETE, (result) ->
                 model.getInfoList()
-
-            model.on 'change:info_list', () ->
-                console.log 'header_change:info_list'
                 view.render()
 
-            model.on 'change:unread_num', () ->
-                console.log 'header_change:unread_num'
+            model.once 'UPDATE_HEADER', () ->
+                console.log 'UPDATE_HEADER'
                 view.render()
+
+            ide_event.onListen ide_event.SWITCH_DASHBOARD, () ->
+                console.log 'SWITCH_DASHBOARD'
+                model.setFlag(true)
+
+            ide_event.onListen ide_event.SWITCH_TAB, () ->
+                console.log 'SWITCH_TAB'
+                model.setFlag(false)
+
+            view.once 'DROPDOWN_APP_NAME_CLICK', (req_id) ->
+                console.log 'design_header:DROPDOWN_APP_NAME_CLICK'
+                model.openApp(req_id)
+
 
     unLoadModule = () ->
         #

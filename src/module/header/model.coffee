@@ -2,7 +2,7 @@
 #  View Mode for header module
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant' ], (Backbone, $, _, session_model, constant) ->
+define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event' ], (Backbone, $, _, session_model, constant, ide_event) ->
 
     ws = MC.data.websocket
 
@@ -11,6 +11,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant' ], (Bac
         defaults:
             'info_list'     : null    # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete}]
             'unread_num'    : null
+            'in_dashboard'  : true
 
         getInfoList : () ->
             me = this
@@ -66,9 +67,8 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant' ], (Bac
                     return
 
                 if item.rid.search('stack') == 0 and not item.is_error
-                    lst = req.data.split ' '
-                    item.rid = lst[lst.length-1]
-                    item.name = item.rid
+                    item.rid = req.data.split(' ')[lst.length-1]
+                    item.name = req.brief.split(' ')[2]
             else
                 return
 
@@ -98,27 +98,53 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant' ], (Bac
             if ws
                 query = ws.collection.request.find()
                 handle = query.observeChanges {
-                    changed : (id, req) ->
+                    changed : (id, request) ->
 
-                        item = me.parseInfo req
+                        req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
 
-                        if item
-                            info_list = me.get 'info_list'
-                            unread_num = me.get 'unread_num'
+                        if req_list
 
-                            if item.rid != MC.canvas_data.id
-                                item.is_readed = false
+                            item = me.parseInfo req_list[0]
 
-                                unread_num += 1
-                                me.set 'unread_num', unread_num
+                            if item
+                                info_list = me.get 'info_list'
+                                unread_num = me.get 'unread_num'
+                                in_dashboard = me.get 'in_dashboard'
 
-                            # remove the old request and new to the header
-                            info_list.splice info_list.indexOf i for i in info_list when i.id == item.id
+                                if in_dashboard or item.rid != MC.canvas_data.id
+                                    item.is_readed = false
 
-                            info_list.splice 0, 1, item
+                                    unread_num += 1
+                                    me.set 'unread_num', unread_num
 
-                            me.set 'info_list', info_list
+                                # remove the old request and new to the header
+                                info_list.splice(info_list.indexOf(i), 1) for i in info_list when i.id == item.id
+
+                                info_list.splice 0, 0, item
+
+                                me.set 'info_list', info_list
+
+                                me.trigger 'UPDATE_HEADER'
                 }
+
+                null
+
+        setFlag : (flag) ->
+            me = this
+
+            me.set 'in_dashboard', flag
+
+        openApp : (req_id) ->
+            me = this
+
+            info_list = me.get 'info_list'
+
+            req = i for i in info_list when i.id == req_id
+
+            # if req
+            #     ide_event.trigger ide_event.OPEN_APP_TAB, req.name, req.region, req.rid
+
+            null
 
         logout : () ->
 
@@ -145,8 +171,6 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant' ], (Bac
                 window.location.href = 'login.html'
 
                 return false
-
-            null
 
     }
 

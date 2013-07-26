@@ -81,9 +81,16 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             MC.data.last_open_property = last_open_property
             #temp
             if !MC.data.last_open_property
-                MC.data.last_open_property = { 'type' : 'component', 'uid' : '', 'instance_expended_id' : '' }
+                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : 'component', 'uid' : '', 'instance_expended_id' : '' }
             #
-            ide_event.trigger ide_event.OPEN_PROPERTY, MC.data.last_open_property.type, MC.data.last_open_property.uid, MC.data.last_open_property.instance_expended_id
+            if MC.data.last_open_property.event_type is 'OPEN_PROPERTY'
+                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.type, MC.data.last_open_property.uid, MC.data.last_open_property.instance_expended_id, this.get( 'snapshot' ).property
+            else if MC.data.last_open_property.event_type is 'OPEN_SG'
+                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.uid_parent, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property
+            else if MC.data.last_open_property.event_type is 'OPEN_ACL'
+                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.uid_parent, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property
+            else if MC.data.last_open_property.event_type is 'OPEN_INSTANCE'
+                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property
             null
 
         getLastOpenProperty : () ->

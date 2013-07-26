@@ -22,7 +22,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( i
 
         render     : () ->
             console.log 'property:volume render'
+            #
+            this.undelegateEvents()
+            #
             $( '.property-details' ).html this.template this.model.attributes
+            #
+            this.delegateEvents this.events
 
         volumeTypeChecked : ( event ) ->
             if($('#volume-type-radios input:checked').val() is 'radio-standard')

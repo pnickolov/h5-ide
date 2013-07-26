@@ -13,9 +13,13 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 
         #events   :
 
-        render     : () ->
+        render     : ( isStackView ) ->
             console.log 'property:sg list render'
-            $( '.sg-group' ).html this.template this.model.attributes
+
+            data = this.model.attributes
+            data.isStackView = isStackView
+
+            $( '.sg-group' ).html this.template data
 
     }
 

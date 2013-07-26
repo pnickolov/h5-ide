@@ -10,7 +10,7 @@ define [ './temp_view',
 
     PropertyView = Backbone.View.extend {
 
-        el                  : $ '#property-panel'
+        el         : '#property-panel'
 
         initialize : ->
             #listen
@@ -21,7 +21,7 @@ define [ './temp_view',
 
         render     : ( template ) ->
             console.log 'property render'
-            $( this.el ).html template
+            this.$el.html template
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
@@ -39,6 +39,12 @@ define [ './temp_view',
             console.log 'refresh'
             selectbox.init()
             temp_view.ready()
+
+        updateHtml : ( back_dom ) ->
+            console.log 'update property html'
+            $( '#property-panel' ).html back_dom
+            null
+
 
     }
 

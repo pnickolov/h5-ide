@@ -21,7 +21,7 @@ var zeroclipboard, clip, element;
       clip = new ZeroClipboard( element , { moviePath: "vender/zeroclipboard/ZeroClipboard.swf" });
       //
       clip.on( 'complete', complete );
-      clip.on( 'mouseup',  mouseup  );
+      clip.on( 'mousedown',  mousedown );
     }
   };
 
@@ -30,7 +30,7 @@ var zeroclipboard, clip, element;
     element.trigger( 'COPY_TO_CLIP_COMPLETE', [ id, args.text.length ] );
    }
 
-  function mouseup( client ) {
+  function mousedown( client ) {
     clip.setText( JSON.stringify(MC.canvas_data ) );
   }
 

@@ -21,11 +21,17 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             'click .resetSG'                : 'resetSecurityGroup'
             'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
             'click #stack-property-add-new-acl' : 'openCreateAclPanel'
-            
+            'click .stack-property-acl-list .edit' : 'openEditAclPanel'
+
         render     : () ->
             console.log 'property:stack render'
+            #
+            this.undelegateEvents()
+            #
             $( '.property-details' ).html this.template this.model.attributes
             this.refreshACLList()
+            #
+            this.delegateEvents this.events
 
         stackNameChanged : () ->
             me = this
@@ -70,7 +76,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             target = $(event.target).parents('div:eq(0)')
             uid = target.attr('uid')
-            
+
             me.trigger 'RESET_STACK_SG', uid
 
             null
@@ -96,10 +102,24 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             aclUID = MC.guid()
             aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
-            # aclObj.name = this.model.getNewACLName()
+            aclObj.name = MC.aws.acl.getNewName()
             aclObj.uid = aclUID
 
             MC.canvas_data.component[aclUID] = aclObj
+
+            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
+
+        openEditAclPanel : ( event ) ->
+            source = $(event.target)
+            if(source.hasClass('secondary-panel'))
+                target = source
+            else
+                target = source.parents('.secondary-panel').first()
+
+            accordion = $( '#instance-accordion' )
+            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
+
+            aclUID = source.attr('acl-uid')
 
             ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
     }

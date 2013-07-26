@@ -23,8 +23,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         initialize : () ->
             that = this
-            ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, () ->
-                that.refreshACLList()
+            null
 
         render     : () ->
             console.log 'property:subnet render'

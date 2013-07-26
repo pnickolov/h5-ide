@@ -141,6 +141,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                             route.isVgw = true
 
+                            route.vgw = route.GatewayId.split('.')[0][1...]
+
                             if route.GatewayId in rt.resource.PropagatingVgwSet
 
                                 route.isProp = true
@@ -157,6 +159,20 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             this.set 'route_table', rt
 
+        setPropagation : ( uid, value ) ->
+
+            vgw_set = MC.canvas_data.component[uid].resource.PropagatingVgwSet
+
+            vgw_ref = '@' + value + '.resource.VpnGatewayId'
+
+            if vgw_set.length == 0
+
+                vgw_set.push vgw_ref
+
+            else
+                MC.canvas_data.component[uid].resource.PropagatingVgwSet = []
+
+            null
 
         setRoutes : ( uid, data, routes ) ->
 

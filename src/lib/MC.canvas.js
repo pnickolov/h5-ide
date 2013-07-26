@@ -688,8 +688,8 @@ MC.canvas = {
 					(to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable') ||
 
 					// AWS.EC2.Instance to AWS.VPC.NetworkInterface
-					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.VPC.NetworkInterface') ||
-					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.VPC.NetworkInterface') ||
+					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.VPC.NetworkInterface' && from_target_port === 'instance-sg' && to_target_port === 'eni-sg') ||
+					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.VPC.NetworkInterface' && to_target_port === 'instance-sg' && from_target_port === 'eni-sg') ||
 
 					// AWS.EC2.Instance to AWS.ELB
 					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB') ||

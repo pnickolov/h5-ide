@@ -13,7 +13,7 @@ define [ 'event', 'MC',
         template  : Handlebars.compile $( '#property-elb-app-tmpl' ).html()
 
         render     : () ->
-            console.log 'property:elb app render'
+            console.log 'property:elb app render', this.model.attributes
             $( '.property-details' ).html this.template this.model.attributes
 
 

@@ -85,19 +85,19 @@ define [ 'jquery',
                         #components except AvailabilityZone
                         switch MC.canvas_data.component[ uid ].type
                             #show instance property
-                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid, instance_expended_id, instance_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid, instance_expended_id, instance_main, tab_type
                             #show volume/snapshot property
-                            when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid, volume_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid, volume_main, tab_type
                             #show elb property
                             when constant.AWS_RESOURCE_TYPE.AWS_ELB                  then elb_main.loadModule uid, elb_main, tab_type
                             #show subnet property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet           then subnet_main.loadModule uid, subnet_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet           then subnet_main.loadModule uid, subnet_main, tab_type
                             #show vpc property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC              then vpc_main.loadModule uid, vpc_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC              then vpc_main.loadModule uid, vpc_main, tab_type
                             #show dhcp property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions      then dhcp_main.loadModule uid, dhcp_main
                             #show rtb property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid, 'component', rtb_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid, rtb_main, tab_type
                             #show igw property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway  then igw_main.loadModule uid, igw_main
                             #show vgw property
@@ -107,7 +107,7 @@ define [ 'jquery',
                             #show vpn property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection    then vpn_main.loadModule uid, null, vpn_main
                             #show eni property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid, eni_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid, eni_main, tab_type
                             #show acl property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl       then acl_main.loadModule uid, acl_main
 
@@ -131,7 +131,7 @@ define [ 'jquery',
                         if line_option.length == 2
 
                             console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
-                    
+
                             key = line_option[0].port + '>' + line_option[1].port
 
 
@@ -152,7 +152,7 @@ define [ 'jquery',
                             else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
                                 #select line between vgw and  cgw
                                 vpn_main.loadModule line_option, 'line', vpn_main
-                    
+
 
                 #temp
                 # setTimeout () ->

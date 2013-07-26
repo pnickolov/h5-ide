@@ -9,6 +9,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
         defaults :
             'stack_detail'  : null
             'sg_display'    : null
+            'network_acl'   : null
 
         initialize : ->
             #listen
@@ -29,6 +30,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             stack_detail.cost = me.getStackCost()
 
             me.set 'stack_detail', stack_detail
+
+            me.getNetworkACL()
 
         getStackType : ->
             type = MC.canvas_data.platform
@@ -131,6 +134,44 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
 
         getNetworkACL : ->
+
+            networkACLs = []
+
+            ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+
+            linkToDefault = true
+            defaultACLIdx = -1
+
+            for id, component of MC.canvas_data.component
+                if component.type == ACL_TYPE
+                    acl =
+                        uid    : component.uid
+                        rule   : component.resource.EntrySet.length
+                        name   : component.name
+                        association : component.resource.AssociationSet.length
+                        isUsed : false
+
+                    if component.resource.AssociationSet.length isnt 0
+                        acl.isUsed = true
+
+                    if component.name == "DefaultACL"
+                        acl.isUsed = true
+                        defaultACLIdx = networkACLs.length
+
+                    networkACLs.push acl
+
+            if defaultACLIdx == -1
+                console.log "[Warning] Cannot find DefaultACL!!!"
+
+            if defaultACLIdx != 0
+                defaultACL = networkACLs.splice defaultACLIdx, 1
+                networkACLs.splice 0, 0, defaultACL
+            else
+                defaultACL = networkACLs[ 0 ]
+
+            this.set 'network_acl', networkACLs
+
+            null
 
         getStackCost : ->
 

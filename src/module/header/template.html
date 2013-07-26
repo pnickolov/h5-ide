@@ -1,5 +1,3 @@
-<!-- <div id="view-toggle-navigation" class="active"><a href="javascrip:void(0)"><i class="icon-list-3"></i></a></div> -->
-<img src="./assets/images/ide/logo-t.png" alt="" class="logo">
 <ul class="header-menu">
 	<li class="dropdown">
 		<a href="#" id="header--notification" class="dropdown-toggle" data-toggle="dropdown" role="button">
@@ -7,7 +5,7 @@
 		</a>
 		<div id="notification-panel-wrapper" class="dropdown-menu" role="menu">
 			<div class="notification-list">
-				
+
 				{{#each info_list}}
 				<!-- success notification item begin -->
 				<div class="notification-item {{#if is_readed}}{{else}}unread{{/if}}">
@@ -68,7 +66,10 @@
 					<a href="javascript:void(0)"><i class="icon-question-sign icon-label"></i>Documetation</a>
 				</li>
 				<li>
-					<a href="javascript:void(0)"><i class="icon-user-2 icon-label"></i>Logout</a>
+					<a href="javascript:void(0)" class="modal" data-modal-template="AWSCredential" data-modal-data='{"title":"Modal title"}'><i class="icon-question-sign icon-label"></i>AWS Credential</a>
+				</li>
+				<li>
+					<a id="btn-logout" href="javascript:void(0)"><i class="icon-user-2 icon-label"></i>Logout</a>
 				</li>
 			</ul>
 		</div>

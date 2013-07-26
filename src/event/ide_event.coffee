@@ -30,6 +30,7 @@ define [ 'underscore', 'backbone' ], () ->
         RELOAD_RESOURCE     : 'RELOAD_RESOURCE'
         OPEN_PROPERTY       : 'OPEN_PROPERTY'
         OPEN_SG             : 'OPEN_SG'
+        OPEN_ACL            : 'OPEN_ACL'
         OPEN_INSTANCE       : 'OPEN_INSTANCE'
         RELOAD_PROPERTY     : 'RELOAD_PROPERTY'
         RELOAD_AZ           : 'RELOAD_AZ'
@@ -74,6 +75,9 @@ define [ 'underscore', 'backbone' ], () ->
 
         #navigation to dashboard - region
         NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
+
+        #property event
+        RETURN_SUBNET_PROPERTY_FROM_ACL : 'RETURN_SUBNET_PROPERTY_FROM_ACL'
 
         constructor : ->
             _.extend this, Backbone.Events

@@ -20,7 +20,11 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
 
             #view
             view       = new View()
-            view.model = model
+
+            #event
+            view.on 'BUTTON_LOGOUT_CLICK', () ->
+
+                model.logout()
 
             view.render()
 

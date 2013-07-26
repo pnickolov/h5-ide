@@ -9,16 +9,16 @@ define [ 'event',
 
     StackRunView = Backbone.View.extend {
 
-        el       : $ document
-        tagName  : $ '.stack-run-popup'
-
         events   :
             'click .stack-run-click' : 'stackRunClickEvent'
             'closed'                 : 'closedStackRunPopup'
 
         render     : ( template ) ->
             console.log 'pop-up:stack run render'
+            #
             modal template, true
+            #
+            this.setElement $( '#stack-run-modal' ).closest '#modal-wrap'
 
         stackRunClickEvent : ->
             console.log 'stackRunClickEvent'

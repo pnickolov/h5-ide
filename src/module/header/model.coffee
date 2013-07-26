@@ -2,7 +2,7 @@
 #  View Mode for header module
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'constant' ], (Backbone, $, _, constant) ->
+define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant' ], (Backbone, $, _, session_model, constant) ->
 
     ws = MC.data.websocket
 
@@ -119,6 +119,32 @@ define [ 'backbone', 'jquery', 'underscore', 'constant' ], (Backbone, $, _, cons
 
                             me.set 'info_list', info_list
                 }
+
+        logout : () ->
+
+            #invoke session.logout api
+            session_model.logout {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' )
+
+            #logout return handler (dispatch from service/session/session_model)
+            session_model.once 'SESSION_LOGOUT_RETURN', ( forge_result ) ->
+
+                if !forge_result.is_error
+                    #logout succeed
+
+                    result = forge_result.resolved_data
+
+                #delete cookies
+                $.cookie 'userid',      null, { expires: 0 }
+                $.cookie 'usercode',    null, { expires: 0 }
+                $.cookie 'session_id',  null, { expires: 0 }
+                $.cookie 'region_name', null, { expires: 0 }
+                $.cookie 'email',       null, { expires: 0 }
+                $.cookie 'has_cred',    null, { expires: 0 }
+
+                #redirect to page login.html
+                window.location.href = 'login.html'
+
+                return false
 
             null
 

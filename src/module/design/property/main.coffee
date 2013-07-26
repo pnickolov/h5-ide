@@ -141,7 +141,8 @@ define [ 'jquery',
 
                                     if value.port.indexOf('rtb') >=0
 
-                                        rtb_main.loadModule value.uid, 'component', rtb_main
+                                        #rtb_main.loadModule value.uid, 'component', rtb_main
+                                        rtb_main.loadModule value.uid, rtb_main, tab_type
 
                                         return false
 

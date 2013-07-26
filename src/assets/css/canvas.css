@@ -55,6 +55,11 @@
 	opacity: 0.6;
 }
 
+.shadow .node-background {
+	fill: #F2F8FF !important;
+	fill-opacity: 1;
+}
+
 #canvas_select_ranger {
 	position: absolute;
 	background: rgba(255, 255, 255, 0.5);

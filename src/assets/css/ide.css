@@ -40,6 +40,11 @@ a {
 	/*display: inline-block;*/
 }
 
+.fitfloat {
+	display  : block;
+	overflow : hidden;
+}
+
 /* Header */
 #header-wrapper {
 	border-top: 4px solid #B25B91;
@@ -3039,7 +3044,7 @@ a.sidebar-hider {
 	padding-left : 30px;
 }
 .status-good:before, .status-bad:before {
-	
+
 }
 .status-bad  {}
 

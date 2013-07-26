@@ -37,7 +37,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select' : "tenancySelect"
-            'EDIT_EMPTY #keypair-select' : "addEmptyKP"
             'OPTION_CHANGE #keypair-select' : "addtoKPList"
             'EDIT_UPDATE #keypair-select' : "createtoKPList"
             'click #security-group-select li' : "removeSGfromSelectbox"

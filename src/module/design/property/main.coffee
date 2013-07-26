@@ -108,8 +108,7 @@ define [ 'jquery',
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection    then vpn_main.loadModule uid, null, vpn_main
                             #show eni property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid, eni_main, tab_type
-                            #show acl property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl       then acl_main.loadModule uid, acl_main
+                            # Acl Property is not loaded in such a way.
 
                             #
                             else
@@ -175,7 +174,7 @@ define [ 'jquery',
                 #
                 MC.data.last_open_property = { 'event_type' : ide_event.OPEN_ACL, 'uid' : uid_parent, 'expended_accordion_id' : expended_accordion_id, 'acl_uid' : acl_uid }
                 #
-                acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid )
+                acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid, tab_type )
                 #
                 if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null

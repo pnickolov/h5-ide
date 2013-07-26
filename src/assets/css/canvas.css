@@ -58,6 +58,8 @@
 .shadow .node-background {
 	fill: #F2F8FF !important;
 	fill-opacity: 1;
+	stroke-width: 2;
+	stroke: #659FFF;
 }
 
 #canvas_select_ranger {

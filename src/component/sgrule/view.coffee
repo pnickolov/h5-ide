@@ -5,10 +5,12 @@
 define [
          'text!/component/sgrule/template.html',
          'text!/component/sgrule/list_template.html',
-         'event', 'backbone', 'jquery', 'handlebars', 'UI.modal' ], ( template, list_template, ide_event ) ->
+         'text!/component/sgrule/delete_rule_dialog.html',
+         'event', 'backbone', 'jquery', 'handlebars', 'UI.modal' ], ( template, list_template, delete_template, ide_event ) ->
 
     template      = Handlebars.compile template
     list_template = Handlebars.compile list_template
+    delete_template = Handlebars.compile delete_template
 
     SGRulePopupView = Backbone.View.extend {
 
@@ -36,7 +38,7 @@ define [
 
         renderDeleteModule : () ->
 
-            modal list_template( this.model.attributes ), true
+            modal delete_template( this.model.attributes ), true
 
         onClose : () ->
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.

@@ -55,23 +55,23 @@
 		<div class="modal-body">
 			<ul>
 				<li>
-					<i class="icon-question-sign icon-label tooltip" data-tooltip="Your AWS account number is shown in the upper-left 
-	area of your browser window when you're logged into 
+					<i class="icon-question-sign icon-label tooltip" data-tooltip="Your AWS account number is shown in the upper-left
+	area of your browser window when you're logged into
 	your AWS Account. e.g., 123456789000"></i>
 					<label>Account Number</label>
 					<input class="input" type="text" />
 				</li>
 				<li>
-					<i class="icon-question-sign icon-label tooltip" data-tooltip="You will ﬁnd those keys in Account > Security 
-	Credentials menu under Access Keys tab in the box at 
-	the middle of the page. e.g., 
+					<i class="icon-question-sign icon-label tooltip" data-tooltip="You will ﬁnd those keys in Account > Security
+	Credentials menu under Access Keys tab in the box at
+	the middle of the page. e.g.,
 	ABCDEFGHIJ1LMNOPQR2S"></i>
 					<label>Access Key ID</label>
 					<input class="input" type="text" />
 				</li>
 				<li>
-					<i class="icon-question-sign icon-label tooltip" data-tooltip="You will ﬁnd those keys in Account > Security 
-	Credentials menu under Access Keys tab in the box at 
+					<i class="icon-question-sign icon-label tooltip" data-tooltip="You will ﬁnd those keys in Account > Security
+	Credentials menu under Access Keys tab in the box at
 	the middle of the page. e.g., aBCDefgH/
 	Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"></i>
 					<label>Secret Key</label>
@@ -1127,38 +1127,6 @@ Additional Notes and Questions
 			<input class="input elb-property-listener-instance-port-input" type="text" required="required" value="{{InstancePort}}"/>
 		</div>
 	</div>
-</div>
-
-<!-- deleteSGRuleDialog -->
-<div style="width:420px">
-  <div class="modal-header">
-    <h3>{{title}}</h3>
-    <i class="modal-close">&times;</i>
-  </div>
-  <div class="modal-body">
-    <p>Following rules(rule) will be deleted from their(its) security group:</p>
-    {{#each sg_group}}
-    <h3 class="sg-create-group">{{name}}</h3>
-    <ul>
-      {{#each rules}}
-        <li class="clearfix sg-create-rule-item">
-          <span class="sg-rule-col1">
-            <span class="{{#if egress}}sg-rule-inbound{{else}}sg-rule-outbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
-            <span class="sg-rule-protocol">{{protocol}}</span>
-          </span>
-          <div class="sg-rule-col2">
-            <div class="sg-rule-connnection">{{connection}}</div>
-            <div class="sg-rule-port">{{port}}</div>
-          </div>
-        </li>
-      {{/each}}
-    </ul>
-    {{/each}}
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-red">Delete</button>
-    <button class="btn modal-close">Cancel</button>
-  </div>
 </div>
 
 <!-- sgRuleItem -->

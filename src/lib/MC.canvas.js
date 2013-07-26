@@ -78,6 +78,17 @@ MC.canvas = {
 
 			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
 		}
+
+		if (MC.canvas_property.SCALE_RATIO === 1)
+		{
+			$('#canvas_body')
+				.removeClass('canvas_zoomed')
+				.off('mousedown', '.dragable', MC.canvas.event.selectNode)
+				.on('mousedown', '.instance-volume', MC.canvas.volume.show)
+				.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
+				.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
+				.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
+		}
 	},
 
 	zoomOut: function ()
@@ -92,6 +103,14 @@ MC.canvas = {
 
 			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
 		}
+
+		$('#canvas_body')
+			.addClass('canvas_zoomed')
+			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
+			.off('mousedown', '.instance-volume', MC.canvas.volume.show)
+			.off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
+			.off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
+			.off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
 	},
 
 	screenshotInit: function ()
@@ -3564,6 +3583,13 @@ MC.canvas.volume = {
 			shadow,
 			clone_node;
 
+		if (MC.canvas.getState() === 'app')
+		{
+			MC.canvas.volume.select.call( $('#' + this.id )[0] );
+
+			return false;
+		}
+
 		$(document.body).append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
 		shadow = $('#drag_shadow');
 
@@ -3837,7 +3863,8 @@ MC.canvas.event.clearSelected = function ()
 MC.canvas.event.keyEvent = function (event)
 {
 	var keyCode = event.which,
-		canvas_status = MC.canvas.getState();
+		canvas_status = MC.canvas.getState(),
+		is_zoomed = $('#canvas_body').hasClass('canvas_zoomed');
 
 	// Delete resource - delete/backspace
 	if (
@@ -3847,6 +3874,7 @@ MC.canvas.event.keyEvent = function (event)
 			keyCode === 8
 		) &&
 		canvas_status === 'stack' &&
+		!is_zoomed &&
 		MC.canvas.selected_node.length > 0 &&
 		event.target === document.body
 	)
@@ -3927,6 +3955,7 @@ MC.canvas.event.keyEvent = function (event)
 	if (
 		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
 		canvas_status === 'stack' &&
+		!is_zoomed &&
 		MC.canvas.selected_node.length === 1 &&
 		MC.canvas.selected_node[ 0 ].getAttribute('data-type') === 'node'
 	)

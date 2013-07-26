@@ -30,6 +30,19 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                     require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.init()
                 null
 
+
+            ide_event.onLongListen ide_event.CREATE_LINE_TO_CANVAS, ( from_node, from_target_port, to_node, to_target_port, line_option ) ->
+
+                MC.canvas.connect $("#" + from_node), from_target_port, $("#" + to_node), to_target_port, line_option
+
+            ide_event.onLongListen ide_event.DELETE_LINE_TO_CANVAS, ( line_id ) ->
+
+                MC.canvas.remove $("#" + line_id)[0]
+
+            ide_event.onLongListen ide_event.REDRAW_SG_LINE, () ->
+
+                model.reDrawSgLine()
+
             #listen CANVAS_NODE_CHANGE_PARENT
             view.on 'CANVAS_NODE_CHANGE_PARENT', ( src_node, tgt_parent ) ->
                 console.log 'canvas:CANVAS_NODE_CHANGE_PARENT, src_node = ' + src_node + ', tgt_parent = ' + tgt_parent

@@ -40,6 +40,11 @@ define [ 'underscore', 'backbone' ], () ->
 
         CANVAS_CREATE_LINE  : 'CANVAS_CREATE_LINE'
         CANVAS_DELETE_OBJECT: 'CANVAS_DELETE_OBJECT'
+
+        CREATE_LINE_TO_CANVAS:'CREATE_LINE_TO_CANVAS'
+        DELETE_LINE_TO_CANVAS:'DELETE_LINE_TO_CANVAS'
+
+        REDRAW_SG_LINE      : 'REDRAW_SG_LINE'
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'
         OPEN_STACK_TAB      : 'OPEN_STACK_TAB'

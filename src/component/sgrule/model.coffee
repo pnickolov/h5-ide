@@ -22,11 +22,20 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     }
                 ]
 
+            line_id : null
+
         initialize : ->
             #listen
-            #this.listenTo this, 'change:get_host', this.getHost
+        #     this.listenTo ide_event, 'SWITCH_TAB', this.updateUID
+
+        # updateUID : ( type ) ->
+        #     console.log 'updateUID'
+        #     if type is 'OLD_APP' or  type is 'OLD_STACK'
+        #         this.set 'get_uid', $( '#instance-property-detail' ).data 'uid'
 
         getSgRuleDetail : ( line_id ) ->
+
+            this.set 'line_id', line_id
 
             both_side = []
 
@@ -83,6 +92,61 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                         both_side.push side_sg
 
             this.set 'sg_detail', both_side
+
+        checkRuleExisting : () ->
+
+            me = this
+
+            sg_detail = this.get 'sg_detail'
+
+
+            existing = false
+
+            $.each sg_detail[0].sg, ( i, from_sg ) ->
+
+                $.each sg_detail[1].sg, ( j, to_sg ) ->
+
+                    result = me._checkRule from_sg, to_sg
+
+                    if result
+
+                        existing = result
+
+                        return false
+
+                if existing
+
+                    return false
+
+            if not existing
+
+                this.trigger 'DELETE_LINE', this.get('line_id')
+
+
+        _checkRule : ( from_sg, to_sg) ->
+
+            existing = false
+
+            $.each MC.canvas_data.component[from_sg.uid].resource.IpPermissions, ( idx, rule ) ->
+
+                if rule.IpRanges.indexOf('@') >= 0 and rule.IpRanges.split('.')[0][1...] == to_sg.uid
+
+                    existing = true
+
+                    return false
+
+            if not existing
+
+                $.each MC.canvas_data.component[from_sg.uid].resource.IpPermissionsEgress, ( idx, rule ) ->
+
+                    if rule.IpRanges.indexOf('@') >= 0 and rule.IpRanges.split('.')[0][1...] == to_sg.uid
+
+                        existing = true
+
+                        return false
+
+
+            existing
 
 
         addSGRule : ( rule_data ) ->

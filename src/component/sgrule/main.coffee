@@ -20,11 +20,20 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             model.getSgRuleDetail line_id
             #
             view.on 'CLOSE_POPUP', () ->
+
+                model.checkRuleExisting()
+
                 unLoadModule view, model
 
             view.on 'ADD_SG_RULE', ( rule_data ) ->
 
                 model.addSGRule rule_data
+
+                ide_event.trigger ide_event.REDRAW_SG_LINE
+
+            model.on 'DELETE_LINE', ( line_id ) ->
+
+                ide_event.trigger ide_event.DELETE_LINE_TO_CANVAS, line_id
 
             #render
             view.render()

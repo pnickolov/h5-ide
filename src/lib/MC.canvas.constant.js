@@ -205,12 +205,19 @@ var constant_data = {
 			{
 				type: 'sg',
 				from: 'instance-sg',
-				to: 'elb-sg-in',
+				to: 'elb-sg-out',
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
 			{
 				type: 'sg',
+				from: 'instance-sg',
+				to: 'elb-sg-in',
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
+			},
+			{
+				type: 'attachment',
 				from: 'instance-elb-attach',
 				to: 'elb-attach',
 				relation: 'multiple',

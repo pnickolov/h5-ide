@@ -731,7 +731,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 15, 28, 70, 53).attr({
+				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 15, 24, 70, 53).attr({
 					'id' : group.id + '_elb_scheme'
 				}),
 
@@ -739,7 +739,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_sg_in',
 					'class': 'port port-blue port-elb-sg-in',
-					'transform': 'translate(8, 43)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(8, 39)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-in',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -751,7 +751,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_sg_out',
 					'class': 'port port-blue port-elb-sg-out',
-					'transform': 'translate(84, 30)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-out',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -762,7 +762,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port -> instance attach
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-elb-attach',
-					'transform': 'translate(84, 46)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 42)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-attach',
 					'data-position': 'right',
 					'data-type': 'attachment',
@@ -774,7 +774,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_assoc',
 					'class': 'port port-gray port-elb-assoc',
-					'transform': 'translate(84, 61)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 57)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-assoc',
 					'data-position': 'right',
 					'data-type': 'association',
@@ -784,7 +784,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 				////6. elb_name
-				Canvon.text(50, 90, option.name).attr({
+				Canvon.text(50, 86, option.name).attr({
 					'class': 'node-label name',
 					'id' : group.id + '_elb_name'
 				})

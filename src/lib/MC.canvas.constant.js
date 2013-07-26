@@ -186,8 +186,8 @@ var constant_data = {
 			'AWS.EC2.Instance':
 			{
 				type: 'sg',
-				from: 'instance-sg-out',
-				to: 'instance-sg-in',
+				from: 'instance-sg',
+				to: 'instance-sg',
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -202,7 +202,7 @@ var constant_data = {
 			'AWS.ELB':
 			{
 				type: 'sg',
-				from: 'instance-sg-out',
+				from: 'instance-sg',
 				to: 'elb-sg-in',
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
@@ -217,22 +217,15 @@ var constant_data = {
 			},
 			{
 				type: 'sg',
-				from: 'instance-sg-out',
-				to: 'eni-sg-in',
-				color: '#6DAEFE',
-				relation: 'unique'
-			},
-			{
-				type: 'sg',
-				from: 'instance-sg-in',
-				to: 'eni-sg-out',
+				from: 'instance-sg',
+				to: 'eni-sg',
 				color: '#6DAEFE',
 				relation: 'multiple'
 			}],
 			'AWS.VPC.RouteTable': [
 			{
 				type: 'rtb_target',
-				from: 'instance-sg-in',
+				from: 'instance-sg',
 				to: 'rtb-tgt-left',
 				relation: 'multiple', //a instance can only connect to one routetable
 				color: '#6DAEFE', //blue
@@ -242,7 +235,7 @@ var constant_data = {
 			},
 			{
 				type: 'sg',
-				from: 'instance-sg-in',
+				from: 'instance-sg',
 				to: 'rtb-tgt-right',
 				relation: 'unique', //a instance can only connect to one routetable
 				color: '#6DAEFE', //blue
@@ -268,14 +261,14 @@ var constant_data = {
 				{
 					type: 'sg',
 					from: 'elb-sg-out',
-					to: 'instance-sg-in',
+					to: 'instance-sg',
 					relation: 'multiple',
 					color: '#6DAEFE' //blue
 				},
 				{
 					type: 'sg',
 					from: 'elb-sg-in',
-					to: 'instance-sg-out',
+					to: 'instance-sg',
 					relation: 'multiple',
 					color: '#6DAEFE' //blue
 				}
@@ -294,15 +287,9 @@ var constant_data = {
 			'AWS.EC2.Instance': [
 			{
 				type: 'sg',
-				from: 'eni-sg-in',
-				to: 'instance-sg-out',
-				color: '#6DAEFE', //blue
-				relation: 'multiple'
-			},
-			{
-				type: 'sg',
-				from: 'eni-sg-out',
-				to: 'instance-sg-in',
+				from: 'eni-sg',
+				to: 'instance-sg',
+
 				color: '#6DAEFE', //blue
 				relation: 'multiple'
 			},
@@ -313,26 +300,17 @@ var constant_data = {
 				relation: 'unique', //an eni can only connect to one instance
 				color: '#12CD4F' //green
 			}],
-			'AWS.VPC.RouteTable':[
+			'AWS.VPC.RouteTable':
 			{
 				type: 'sg',
-				from: 'eni-sg-in',
+				from: 'eni-sg',
 				to: 'rtb-tgt-left',
 				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
-			},
-			{
-				type: 'sg',
-				from: 'eni-sg-in',
-				to: 'rtb-tgt-right',
-				color: '#6DAEFE', //blue
-				relation: 'multiple',
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
+
 			}
-			]
 		},
 		'AWS.VPC.RouteTable':
 		{
@@ -356,7 +334,7 @@ var constant_data = {
 			{
 				type: 'rtb_target',
 				from: 'rtb-tgt-left',
-				to: 'instance-sg-in',
+				to: 'instance-sg',
 				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				//dash line
@@ -366,34 +344,25 @@ var constant_data = {
 			{
 				type: 'rtb_target',
 				from: 'rtb-tgt-right',
-				to: 'instance-sg-in',
+				to: 'instance-sg',
 				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				//dash line
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			}],
-			'AWS.VPC.NetworkInterface': [
+			'AWS.VPC.NetworkInterface':
 			{
 				type: 'rtb_target',
 				from: 'rtb-tgt-left',
-				to: 'eni-sg-in',
+				to: 'eni-sg',
 				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				//dash line
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			},
-			{
 				type: 'rtb_target',
-				from: 'rtb-tgt-right',
-				to: 'eni-sg-in',
-				color: '#6DAEFE', //blue
-				relation: 'multiple',
-				//dash line
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
-			}],
 			'AWS.VPC.InternetGateway':
 			{
 				type: 'rtb_target',
@@ -486,8 +455,7 @@ var constant_data = {
 		sg_list: [],
 		kp_list: [],
 		original_json: '',
-		SCALE_RATIO: 1,
-		sg_line_list: []
+		SCALE_RATIO: 1
 	},
 
 	//json data for stack

@@ -489,9 +489,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-blue port-instance-sg-in',
+					'class': 'port port-blue port-instance-sg port-instance-sg-left',
 					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
-					'data-name': 'instance-sg-in', //for identify port
+					'data-name': 'instance-sg', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
 					'data-type': 'sg', //color of line
 					'data-direction': 'in', //direction
@@ -500,9 +500,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-blue port-instance-sg-out',
+					'class': 'port port-blue port-instance-sg port-instance-sg-right',
 					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'instance-sg-out',
+					'data-name': 'instance-sg',
 					'data-position': 'right',
 					'data-type': 'sg',
 					'data-direction': 'out',
@@ -1213,9 +1213,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-blue port-eni-sg-in',
+					'class': 'port port-blue port-eni-sg port-eni-sg-left',
 					'transform': 'translate(7, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'eni-sg-in',
+					'data-name': 'eni-sg',
 					'data-position': 'left',
 					'data-type': 'sg',
 					'data-direction': "in",
@@ -1235,9 +1235,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-blue port-eni-sg-out',
+					'class': 'port port-blue port-eni-sg port-eni-sg-right',
 					'transform': 'translate(85, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'eni-sg-out',
+					'data-name': 'eni-sg',
 					'data-position': 'right',
 					'data-type': 'sg',
 					'data-direction': 'out',

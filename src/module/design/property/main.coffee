@@ -141,7 +141,8 @@ define [ 'jquery',
 
                                     if value.port.indexOf('rtb') >=0
 
-                                        rtb_main.loadModule value.uid, 'component', rtb_main
+                                        #rtb_main.loadModule value.uid, 'component', rtb_main
+                                        rtb_main.loadModule value.uid, rtb_main, tab_type
 
                                         return false
 
@@ -163,7 +164,7 @@ define [ 'jquery',
                 #
                 MC.data.last_open_property = { 'event_type' : ide_event.OPEN_SG, 'uid_parent' : uid_parent, 'expended_accordion_id' : expended_accordion_id }
                 #
-                sg_main.loadModule( uid_parent, expended_accordion_id, sg_main )
+                sg_main.loadModule( uid_parent, expended_accordion_id, sg_main, tab_type )
                 #
                 if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null

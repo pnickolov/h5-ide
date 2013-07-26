@@ -52,7 +52,7 @@ define [ 'jquery',
                 model.getStack()
                 model.getSecurityGroup()
                 view.render()
-                sglist_main.loadModule model
+                sglist_main.loadModule model, true
 
             renderPropertyPanel()
 

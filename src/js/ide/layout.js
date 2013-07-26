@@ -71,7 +71,7 @@ var ready = function () {
 //});
 };
 
-define( [ 'jquery', 'UI.scrollbar', 'bootstrap-dropdown' ], function() {
+define( [ 'jquery', 'UI.scrollbar', 'UI.selectbox' ], function() {
 
 	return {
 		ready : ready

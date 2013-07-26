@@ -48,7 +48,6 @@ a {
 	height: 50px;
 }
 
-
 #header {
 	background: #312d31;
 	height: 50px;
@@ -274,24 +273,24 @@ a {
 }
 
 /* Left Nav */
+
 #navigation {
-	/*overflow: hidden;*/
 	width: 45px;
 	height: 100%;
-	background-color: #2b2d32;
+	background-color: #434043;
 	box-shadow: 1px 0 0 rgba(0,0,0,.15);
 	border: solid 1px #2d292d;
 	border-left: none;
-	border-right: none;
+	/*border-right: none;*/
 	position: fixed;
-	top: 52px;
+	top: 53px;
 	z-index: 3;
 }
 
 #navigation .sub-menu-wrapper {
-
 	background: #505050;
 	border: solid 1px #434343;
+
 	opacity: 0;
 
 	width: 240px;
@@ -309,20 +308,20 @@ a {
 	transition: left .1s;
 }
 
-#navigation li.nav-head.collapsed-show .sub-menu-wrapper {
+#navigation .nav-head.collapsed-show .sub-menu-wrapper {
 	display: block;
 	opacity: 1;
-	/*opacity: 0;*/
-	left: 45px;
+	left: 46px;
 }
 
-#navigation .first-level-nav-label {
+.first-level-nav-label {
 	display: block;
 	background: #4c494c;
 	width: 212px;
-	height: 16px;
+	height: 18px;
+	font-size: 18px;
 	border: solid 1px #434343;
-	padding: 14px 13px;
+	padding: 12px 13px 16px 13px;
 	color: #fff;
 }
 
@@ -344,7 +343,7 @@ a {
 }
 
 .sub-menu li > a {
-	padding: 8px 17px;
+	padding: 10px 17px;
 	display: block;
 }
 
@@ -393,9 +392,11 @@ a {
 	width: 206px;
 }
 
+.nav-head:hover,
 #nav-dashboard-region li a:hover,
 .nav-region-list-items li a:hover {
-	background-color: #0066C3;
+	box-shadow: inset 0 1px 0 rgba(0,0,0,.5);
+	background-color: #343034;
 	color: #fff;
 }
 
@@ -407,10 +408,6 @@ a {
 	left: 0;
 	z-index: -10;
 	width: 64px;
-}
-
-.nav-region-list-items li:hover span {
-	left: 180px;
 }
 
 .nav-action {
@@ -460,14 +457,6 @@ a {
 	z-index: 3;
 }
 
-#navigation #first-level-nav > li:hover {
-	background-color: #0066C3;
-	color: #fff;
-}
-
-/* Menu Accordion */
-
-
 /* Main */
 #main {
 	position: relative;
@@ -483,7 +472,7 @@ a {
 
 /* Main Tab Bar */
 #tabbar-wrapper {
-	padding-left: 192px;
+	padding-left: 162px;
 	padding-right: 180px;
 	height: 50px;
 }
@@ -1656,7 +1645,7 @@ td.table-action a.btn {
 
 .sidebar-title {
 	font-size: 16px;
-	background-color: #373f49;
+	background-color: #4A464A;
 	border-bottom: 1px solid #262a2e;
 	color: #e9edf2;
 	padding: 12px 10px;

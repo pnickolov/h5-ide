@@ -185,8 +185,8 @@ var constant_data = {
 		{
 			'AWS.EC2.Instance':
 			{
-				from: 'instance-sg-out',
-				to: 'instance-sg-in',
+				from: 'instance-sg',
+				to: 'instance-sg',
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -212,14 +212,8 @@ var constant_data = {
 				relation: 'multiple'
 			},
 			{
-				from: 'instance-sg-out',
-				to: 'eni-sg-in',
-				color: '#6DAEFE',
-				relation: 'unique'
-			},
-			{
-				from: 'instance-sg-in',
-				to: 'eni-sg-out',
+				from: 'instance-sg',
+				to: 'eni-sg',
 				color: '#6DAEFE',
 				relation: 'multiple'
 			}],
@@ -281,14 +275,8 @@ var constant_data = {
 		{
 			'AWS.EC2.Instance': [
 			{
-				from: 'eni-sg-in',
-				to: 'instance-sg-out',
-				color: '#6DAEFE', //blue
-				relation: 'multiple'
-			},
-			{
-				from: 'eni-sg-out',
-				to: 'instance-sg-in',
+				from: 'eni-sg',
+				to: 'instance-sg',
 				color: '#6DAEFE', //blue
 				relation: 'multiple'
 			},
@@ -298,24 +286,15 @@ var constant_data = {
 				relation: 'unique', //an eni can only connect to one instance
 				color: '#12CD4F' //green
 			}],
-			'AWS.VPC.RouteTable':[
+			'AWS.VPC.RouteTable':
 			{
-				from: 'eni-sg-in',
+				from: 'eni-sg',
 				to: 'rtb-tgt-left',
 				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
-			},
-			{
-				from: 'eni-sg-in',
-				to: 'rtb-tgt-right',
-				color: '#6DAEFE', //blue
-				relation: 'multiple',
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
 			}
-			]
 		},
 		'AWS.VPC.RouteTable':
 		{
@@ -352,25 +331,16 @@ var constant_data = {
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			}],
-			'AWS.VPC.NetworkInterface': [
+			'AWS.VPC.NetworkInterface':
 			{
 				from: 'rtb-tgt-left',
-				to: 'eni-sg-in',
+				to: 'eni-sg',
 				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				//dash line
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			},
-			{
-				from: 'rtb-tgt-right',
-				to: 'eni-sg-in',
-				color: '#6DAEFE', //blue
-				relation: 'multiple',
-				//dash line
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
-			}],
 			'AWS.VPC.InternetGateway':
 			{
 				from: 'rtb-tgt-left',

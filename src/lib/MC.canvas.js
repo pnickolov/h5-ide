@@ -684,7 +684,10 @@ MC.canvas = {
 				// Special for AWS.VPC.Subnet and AWS.VPC.RouteTable
 				if (
 					(from_type === 'AWS.VPC.Subnet' && to_type === 'AWS.VPC.RouteTable') ||
-					(to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable')
+					(to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable') ||
+					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.VPC.NetworkInterface') ||
+					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.VPC.NetworkInterface') ||
+					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
 				)
 				{
 					if (from_type === 'AWS.VPC.Subnet')
@@ -719,6 +722,57 @@ MC.canvas = {
 						}
 
 						from_port_offset = from_port[0].getBoundingClientRect();
+					}
+
+					if (from_type === 'AWS.VPC.NetworkInterface')
+					{
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							from_port = from_node.find('.port-eni-sg-left');
+							to_port = to_node.find('.port-instance-sg-right');
+						}
+						else
+						{
+							from_port = from_node.find('.port-eni-sg-right');
+							to_port = to_node.find('.port-instance-sg-left');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+						to_port_offset = to_port[0].getBoundingClientRect();
+					}
+
+					if (to_type === 'AWS.VPC.NetworkInterface')
+					{
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							from_port = from_node.find('.port-instance-sg-left');
+							to_port = to_node.find('.port-eni-sg-right');
+						}
+						else
+						{
+							from_port = from_node.find('.port-instance-sg-right');
+							to_port = to_node.find('.port-eni-sg-left');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+						to_port_offset = to_port[0].getBoundingClientRect();
+					}
+
+					if (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
+					{
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							from_port = from_node.find('.port-instance-sg-left');
+							to_port = to_node.find('.port-instance-sg-right');
+						}
+						else
+						{
+							from_port = from_node.find('.port-instance-sg-right');
+							to_port = to_node.find('.port-instance-sg-left');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+						to_port_offset = to_port[0].getBoundingClientRect();
 					}
 				}
 				else

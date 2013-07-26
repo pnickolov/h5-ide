@@ -73,6 +73,9 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_STACK_LIST   : 'UPDATE_STACK_LIST'
         STACK_DELETE        : 'STACK_DELETE'
 
+        #canvas event
+        CANVAS_SAVE         : 'CANVAS_SAVE' #save stack/app by ctrl+s
+
         #navigation to dashboard - region
         NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
 

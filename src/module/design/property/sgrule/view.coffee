@@ -31,6 +31,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         setAppView : ( isAppView ) ->
             this.isAppView = isAppView
+            null
 
 
     }

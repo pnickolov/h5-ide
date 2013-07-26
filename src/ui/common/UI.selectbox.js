@@ -80,7 +80,7 @@ var selectbox = {
 
         // Close other opened dropdown
         $(".selectbox.open").removeClass('open');
-        
+
         var $dropdown  = $selectbox.addClass('open')
                                    .find(".dropdown");
 
@@ -113,7 +113,18 @@ var selectbox = {
         $selectbox.find(".selection").html( $this.html() );
 
         // TODO : OPTION_CHANGE's parameter no long is array.
-        $selectbox.trigger( "OPTION_CHANGE", $this.attr('data-id') );
+        var value = $this.attr('data-id');
+        if ( value == "true" ) {
+            value = true;
+        } else if ( value == "false" ) {
+            value = false;
+        } else {
+            var intValue = parseInt( value, 10 );
+            if ( "" + intValue == value ) {
+                value = intValue;
+            }
+        }
+        $selectbox.trigger( "OPTION_CHANGE", value );
 
         return false;
     }

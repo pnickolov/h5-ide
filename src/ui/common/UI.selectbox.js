@@ -10,6 +10,7 @@
 */
 
 /* A modified version to reduce redundant html code by Morris */
+/* In-coporate the toggle-dropdown functions from bootstrap-dropdown */
 
 // var selectbox = {
 
@@ -80,7 +81,7 @@ var selectbox = {
 
         // Close other opened dropdown
         $(".selectbox.open").removeClass('open');
-        
+
         var $dropdown  = $selectbox.addClass('open')
                                    .find(".dropdown");
 
@@ -171,7 +172,66 @@ var selectbox = {
             .on('click',   ".selectbox .dropdown .item", select)
             .on('click',   ".selectbox .editor",         add)
             .on('click',   ".selectbox .editor .btn",    edit)
-            .on('keydown', ".selectbox.open .dropdown",  keydown);
+            .on('keydown', ".selectbox.open .dropdown",  keydown)
+
+        /* Below are functions that's in bootstrap-dropdown */
+            .on('click',   ".js-toggle-dropdown",        toggleDropdown)
     });
+
+    var dropDownBound = false;
+    function toggleDropdown ( event ) {
+
+        var $target = $( event.currentTarget );
+
+        if ( $target.is('.disabled, :disabled') ) return;
+
+        var $dropdown = $target.attr( "data-target" );
+        if ( $dropdown ) {
+            $dropdown = $( $dropdown );
+        }
+        if ( !$dropdown ) {
+            $dropdown = $target.parent();
+        }
+        var opened    = $dropdown.hasClass("open");
+
+        if ( opened ) {
+            $dropdown.removeClass("open");
+            $target.trigger("DROPDOWN_CLOSE");
+        } else {
+            // Bind click event to close popup
+            // Close other dropdown and fires event
+            if ( !dropDownBound ) {
+                closeDropdown();
+                dropDownBound = true;
+                $( document.body ).one("click", closeDropdown);
+            } else {
+                closeDropdown();
+            }
+
+            $dropdown.addClass("open");
+            $target.trigger("DROPDOWN_OPEN");
+        }
+
+        return false;
+    }
+
+    function closeDropdown() {
+        var $dropdownBtn = $(".js-toggle-dropdown");
+        $dropdownBtn.each(function(){
+            var $this = $(this);
+            var $dropdown = $this.attr( "data-target" );
+            if ( $dropdown ) {
+                $dropdown = $( $dropdown );
+            }
+            if ( !$dropdown ) {
+                $dropdown = $this.parent();
+            }
+            if ( $dropdown.hasClass("open") ) {
+                $dropdown.removeClass("open");
+                $this.trigger("DROPDOWN_CLOSE");
+            }
+        });
+        dropDownBound = false;
+    }
 
 })();

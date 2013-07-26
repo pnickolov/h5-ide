@@ -70,7 +70,6 @@ var listen = function ()
 			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
 			.on('selectstart', returnFalse);
 
-
 		$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
 
 		$('#resource-panel').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);

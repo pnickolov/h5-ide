@@ -78,6 +78,17 @@ MC.canvas = {
 
 			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
 		}
+
+		if (MC.canvas_property.SCALE_RATIO === 1)
+		{
+			$('#canvas_body')
+				.removeClass('canvas_zoomed')
+				.off('mousedown', '.dragable', MC.canvas.event.selectNode)
+				.on('mousedown', '.instance-volume', MC.canvas.volume.show)
+				.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
+				.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
+				.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
+		}
 	},
 
 	zoomOut: function ()
@@ -92,6 +103,14 @@ MC.canvas = {
 
 			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
 		}
+
+		$('#canvas_body')
+			.addClass('canvas_zoomed')
+			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
+			.off('mousedown', '.instance-volume', MC.canvas.volume.show)
+			.off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
+			.off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
+			.off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
 	},
 
 	screenshotInit: function ()
@@ -662,10 +681,26 @@ MC.canvas = {
 
 			if (is_connected === false || line_option)
 			{
-				// Special for AWS.VPC.Subnet and AWS.VPC.RouteTable
+				// Special connection
 				if (
+					// AWS.VPC.Subnet to AWS.VPC.RouteTable
 					(from_type === 'AWS.VPC.Subnet' && to_type === 'AWS.VPC.RouteTable') ||
-					(to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable')
+					(to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable') ||
+
+					// AWS.EC2.Instance to AWS.VPC.NetworkInterface
+					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.VPC.NetworkInterface' && from_target_port === 'instance-sg' && to_target_port === 'eni-sg') ||
+					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.VPC.NetworkInterface' && to_target_port === 'instance-sg' && from_target_port === 'eni-sg') ||
+
+					// AWS.EC2.Instance to AWS.ELB
+					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-out') ||
+					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-out') ||
+
+					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-in') ||
+					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-in') ||
+
+
+					// AWS.EC2.Instance to AWS.EC2.Instance
+					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
 				)
 				{
 					if (from_type === 'AWS.VPC.Subnet')
@@ -675,11 +710,11 @@ MC.canvas = {
 
 						if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
 						{
-							to_port = to_node.find('.port-rtb-src-bottom');
+							to_port = to_node.find('.port-rtb-src');
 						}
 						else
 						{
-							to_port = to_node.find('.port-rtb-src-top');
+							to_port = to_node.find('.port-rtb-src');
 						}
 
 						to_port_offset = to_port[0].getBoundingClientRect();
@@ -692,14 +727,99 @@ MC.canvas = {
 
 						if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
 						{
-							from_port = from_node.find('.port-rtb-src-bottom');
+							from_port = from_node.find('.port-rtb-src');
 						}
 						else
 						{
-							from_port = from_node.find('.port-rtb-src-top');
+							from_port = from_node.find('.port-rtb-src');
 						}
 
 						from_port_offset = from_port[0].getBoundingClientRect();
+					}
+
+					if (from_type === 'AWS.VPC.NetworkInterface')
+					{
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							from_port = from_node.find('.port-eni-sg-left');
+							to_port = to_node.find('.port-instance-sg-right');
+						}
+						else
+						{
+							from_port = from_node.find('.port-eni-sg-right');
+							to_port = to_node.find('.port-instance-sg-left');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+						to_port_offset = to_port[0].getBoundingClientRect();
+					}
+
+					if (to_type === 'AWS.VPC.NetworkInterface')
+					{
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							from_port = from_node.find('.port-instance-sg-left');
+							to_port = to_node.find('.port-eni-sg-right');
+						}
+						else
+						{
+							from_port = from_node.find('.port-instance-sg-right');
+							to_port = to_node.find('.port-eni-sg-left');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+						to_port_offset = to_port[0].getBoundingClientRect();
+					}
+
+					if (from_type === 'AWS.ELB')
+					{
+						from_port = from_node.find('.port-' + from_target_port);
+
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							to_port = to_node.find('.port-instance-sg-right');
+						}
+						else
+						{
+							to_port = to_node.find('.port-instance-sg-left');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+						to_port_offset = to_port[0].getBoundingClientRect();
+					}
+
+					if (to_type === 'AWS.ELB')
+					{
+						to_port = to_node.find('.port-' + to_target_port);
+
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							from_port = from_node.find('.port-instance-sg-left');
+						}
+						else
+						{
+							from_port = from_node.find('.port-instance-sg-right');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+						to_port_offset = to_port[0].getBoundingClientRect();
+					}
+
+					if (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
+					{
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							from_port = from_node.find('.port-instance-sg-left');
+							to_port = to_node.find('.port-instance-sg-right');
+						}
+						else
+						{
+							from_port = from_node.find('.port-instance-sg-right');
+							to_port = to_node.find('.port-instance-sg-left');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+						to_port_offset = to_port[0].getBoundingClientRect();
 					}
 				}
 				else
@@ -709,7 +829,7 @@ MC.canvas = {
 					to_port = to_node.find('.port-' + to_target_port);
 					to_port_offset = to_port[0].getBoundingClientRect();
 				}
-			
+
 				startX = (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
 				startY = (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
 				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
@@ -842,7 +962,8 @@ MC.canvas = {
 					layout_connection_data = {
 						'target': connection_target_data,
 						'auto': true,
-						'point': []
+						'point': [],
+						'type': connection_option.type
 					};
 				}
 				MC.canvas.data.set('layout.connection.' + svg_line.id, layout_connection_data);
@@ -1400,7 +1521,7 @@ MC.canvas.layout = {
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
 		components = MC.canvas.data.get("component");
-		
+
 		$.each(components, function (key, value)
 		{
 			if (value.type === 'AWS.EC2.KeyPair')
@@ -1471,6 +1592,7 @@ MC.canvas.layout = {
 			}
 		});
 
+
 		$('#svg_canvas').attr({
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
@@ -1509,6 +1631,7 @@ MC.canvas.layout = {
 		{
 			$.each(layout_data.connection, function (line, data)
 			{
+
 				connection_target_id = [];
 
 				$.each(data.target, function (key, value)
@@ -1554,7 +1677,7 @@ MC.canvas.layout = {
 		MC.canvas_data.platform = option.platform;
 
 		var canvas_size = MC.canvas.data.get('layout.size');
-		
+
 		uid = MC.guid();
 		kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
 		kp.uid = uid;
@@ -1821,7 +1944,7 @@ MC.canvas.event.dragable = {
 
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 			}
-			
+
 			if (event.data.target_type === 'group')
 			{
 				var target = event.data.target;
@@ -1857,7 +1980,7 @@ MC.canvas.event.dragable = {
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
 				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_SIZE[ node_type ][0], MC.canvas.COMPONENT_SIZE[ node_type ][1]);
-				
+
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
@@ -1903,7 +2026,7 @@ MC.canvas.event.dragable = {
 						$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_PARENT", {
 							src_node: target_id,
 							tgt_parent: parentGroup.id
-						});	
+						});
 					}
 				}
 			}
@@ -2236,7 +2359,7 @@ MC.canvas.event.dragable = {
 			);
 		}
 
-		return false;	
+		return false;
 	},
 	gatewayup: function (event)
 	{
@@ -2878,7 +3001,7 @@ MC.canvas.event.groupResize = {
 					Math.ceil((group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH),
 					Math.ceil((group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
 				),
-				'group_port': type === 'AWS.VPC.Subnet' ? [parent.find('.port-subnet-association-in').first(), parent.find('.port-subnet-association-out').first()] : null
+				'group_port': type === 'AWS.VPC.Subnet' ? [parent.find('.port-subnet-assoc-in').first(), parent.find('.port-subnet-assoc-out').first()] : null
 			});
 	},
 	mousemove: function (event)
@@ -3327,7 +3450,7 @@ MC.canvas.event.groupResize = {
 		if (type === 'AWS.VPC.Subnet')
 		{
 			event.data.group_port[0].attr('transform', 'translate(-12, ' + ((group_height * MC.canvas.GRID_HEIGHT / 2) - 13) + ')').show();
-			
+
 			event.data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + ((group_height * MC.canvas.GRID_HEIGHT / 2) - 13) + ')').show();
 
 			// Re-draw group connection
@@ -3406,7 +3529,7 @@ MC.canvas.volume = {
 			target_offset = target[0].getBoundingClientRect();
 			target_width = target_offset.width;
 			target_height = target_offset.height;
-			
+
 			width = bubble_box.width();
 			height = bubble_box.height();
 
@@ -3450,7 +3573,7 @@ MC.canvas.volume = {
 		else
 		{
 			bubble_target_id = bubble_box.data('target-id');
-			
+
 			MC.canvas.volume.close();
 
 			if (target_id !== bubble_target_id)
@@ -3530,7 +3653,7 @@ MC.canvas.volume = {
 				target_node = $('#' + target_id),
 				target_offset = target_node[0].getBoundingClientRect(),
 				volume_id = $('#instance_volume_list').find('.selected').attr('id');
-			
+
 			target_volume_data.splice(
 				target_volume_data.indexOf(
 					volume_id
@@ -3564,6 +3687,13 @@ MC.canvas.volume = {
 			shadow,
 			clone_node;
 
+		if (MC.canvas.getState() === 'app')
+		{
+			MC.canvas.volume.select.call( $('#' + this.id )[0] );
+
+			return false;
+		}
+
 		$(document.body).append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
 		shadow = $('#drag_shadow');
 
@@ -3592,7 +3722,7 @@ MC.canvas.volume = {
 		});
 
 		MC.canvas.volume.select.call( $('#' + this.id )[0] );
-		
+
 		return false;
 	},
 
@@ -3807,7 +3937,7 @@ MC.canvas.event.selectNode = function (event)
 
 			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 		}
-		
+
 		if (target_type === 'group')
 		{
 			Canvon(this).addClass('selected');
@@ -3837,9 +3967,10 @@ MC.canvas.event.clearSelected = function ()
 MC.canvas.event.keyEvent = function (event)
 {
 	var keyCode = event.which,
-		canvas_status = MC.canvas.getState();
+		canvas_status = MC.canvas.getState(),
+		is_zoomed = $('#canvas_body').hasClass('canvas_zoomed');
 
-	// Delete resource - delete/backspace
+	// Delete resource - [delete/backspace]
 	if (
 		(
 			keyCode === 46 ||
@@ -3847,6 +3978,7 @@ MC.canvas.event.keyEvent = function (event)
 			keyCode === 8
 		) &&
 		canvas_status === 'stack' &&
+		!is_zoomed &&
 		MC.canvas.selected_node.length > 0 &&
 		event.target === document.body
 	)
@@ -3869,7 +4001,7 @@ MC.canvas.event.keyEvent = function (event)
 		return false;
 	}
 
-	// Switch node - tab
+	// Switch node - [tab]
 	if (
 		keyCode === 9 &&
 		MC.canvas.selected_node.length === 1 &&
@@ -3923,10 +4055,11 @@ MC.canvas.event.keyEvent = function (event)
 		return false;
 	}
 
-	// Move node
+	// Move node - [up, down, left, right]
 	if (
 		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
 		canvas_status === 'stack' &&
+		!is_zoomed &&
 		MC.canvas.selected_node.length === 1 &&
 		MC.canvas.selected_node[ 0 ].getAttribute('data-type') === 'node'
 	)
@@ -3986,7 +4119,7 @@ MC.canvas.event.keyEvent = function (event)
 				MC.canvas.COMPONENT_SIZE[ node_type ][1]
 			);
 		}
-		
+
 		if (
 			coordinate.x > 0 &&
 			coordinate.y > 0 &&
@@ -4010,6 +4143,18 @@ MC.canvas.event.keyEvent = function (event)
 				);
 			});
 		}
+
+		return false;
+	}
+
+	// Save stack - [Ctrl + S]
+	if (
+		event.ctrlKey && event.which === 83 &&
+		canvas_status === 'stack' &&
+		!is_zoomed
+	)
+	{
+		$("#svg_canvas").trigger("CANVAS_SAVE");
 
 		return false;
 	}

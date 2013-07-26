@@ -3173,16 +3173,20 @@ height: 35px;
 }
 
 .sg-create-proto-inputs {
-	width : 100px;
-	float : left;
+	margin-left : 170px;
 }
 
 .sg-create-proto-inputs .sg-proto-input {
 	display : none;
 }
 
-.sg-create-proto-inputs .show {
-	display : block;
+.sg-proto-input .selectbox {
+	margin-bottom : 10px;
+	display    : block;
+}
+
+.sg-proto-input .sg-proto-input-sub {
+	display : none;
 }
 
 /* Notification Dropdown */

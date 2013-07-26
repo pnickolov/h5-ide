@@ -13,12 +13,13 @@ define [
     SGRulePopupView = Backbone.View.extend {
 
         events    :
-          'closed'                         : 'onClose'
-          'click .sg-rule-create-add'      : 'addRule'
-          'click .sg-rule-create-node'     : 'switchNode'
-          'click .sg-rule-create-readd'    : 'readdRule'
-          'OPTION_CHANGE #sg-create-proto' : 'onProtocolChange'
-          'click .sg-rule-create'          : 'onDirChange'
+          'closed'                           : 'onClose'
+          'click .sg-rule-create-add'        : 'addRule'
+          'click .sg-rule-create-node'       : 'switchNode'
+          'click .sg-rule-create-readd'      : 'readdRule'
+          'OPTION_CHANGE #sg-create-proto'   : 'onProtocolChange'
+          'click .sg-rule-create'            : 'onDirChange'
+          'OPTION_CHANGE #sg-proto-icmp-sel' : 'onICMPChange'
 
         render   : () ->
             console.log 'Showing Security Group Rule Create Dialog'
@@ -86,6 +87,10 @@ define [
           $(".sg-proto-input").hide()
           $("#sg-proto-ipt-" + id).show()
 
+        onICMPChange : ( event, id ) ->
+          $(".sg-proto-input-sub").hide()
+          $("#sg-proto-input-sub-" + id).show()
+
         updateSidebar : () ->
           this.$el.find( '.sg-rule-create-sidebar' ).html( list_template( this.model.attributes ) )
 
@@ -100,10 +105,17 @@ define [
 
           $protoIptWrap = $("#sg-proto-ipt-"+data.protocol)
           $protoIpt     = $protoIptWrap.find("input")
+
           if $protoIpt.length
-            data.protocolValue = $protoIpt.val()
+            protocolValue = $protoIpt.val()
           else
-            data.protocolValue.find(".selected").attr("data-id")
+            protocolValue = $protoIptWrap.find(".selected").attr("data-id")
+
+          data.protocolValue = protocolValue
+
+          if data.protocol is "icmp"
+            if protocolValue == "3" || protocolValue == "5" || protocolValue == "11" || protocolValue == "12"
+              data.protocolSubValue = $("#sg-proto-input-sub-" + protocolValue).find(".selected").attr("data-id")
 
           data
     }

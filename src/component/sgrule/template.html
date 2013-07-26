@@ -108,7 +108,7 @@
         </div>
 
         <div class="sg-create-proto-inputs">
-          <section class="sg-proto-input show" id="sg-proto-ipt-tcp">
+          <section class="sg-proto-input" id="sg-proto-ipt-tcp" style="display:block;">
             <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
           </section>
 
@@ -116,42 +116,93 @@
             <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
           </section>
 
-          <section class="selectbox sg-proto-input" id="sg-proto-ipt-icmp">
-            <div class="selection">Echo Reply(0)</div>
-            <div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
-              <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-              <ul tabindex="-1">
-                <li class="item selected" data-id="0">Echo Reply(0)</li>
-                <li class="item" data-id="3">Destination Unreachable(3) ...</li>
-                <li class="item" data-id="4">Source Quench(4)</li>
-                <li class="item" data-id="5">Redirect Message(5) ...</li>
-                <li class="item" data-id="6">Alternate Host Address(6)</li>
-                <li class="item" data-id="8">Echo Request(8)</li>
-                <li class="item" data-id="9">Router Advertisement(9)</li>
-                <li class="item" data-id="10">Router Solicitation(10)</li>
-                <li class="item" data-id="11">Time Exceeded(11) ...</li>
-                <li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
-                <li class="item" data-id="13">Timestamp(13)</li>
-                <li class="item" data-id="14">Timestamp Reply(14)</li>
-                <li class="item" data-id="15">Information Request(15)</li>
-                <li class="item" data-id="16">Information Reply(16)</li>
-                <li class="item" data-id="17">Address Mask Request(17)</li>
-                <li class="item" data-id="18">Address Mask Reply(18)</li>
-                <li class="item" data-id="30">Traceroute(30)</li>
-                <li class="item" data-id="31">Datagram Conversion Error(31)</li>
-                <li class="item" data-id="32">Mobile Host Redirect(32)</li>
-                <li class="item" data-id="33">Where Are You(33)</li>
-                <li class="item" data-id="34">Here I Am(34)</li>
-                <li class="item" data-id="35">Mobile Registration Request(35)</li>
-                <li class="item" data-id="36">Mobile Registration Reply(36)</li>
-                <li class="item" data-id="37">Domain Name Request(37)</li>
-                <li class="item" data-id="38">Domain Name Reply(38)</li>
-                <li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
-                <li class="item" data-id="40">Photuris Security Failures(40)</li>
-                <li class="item" data-id="-1">All(-1)</li>
+          <section class="sg-proto-input" id="sg-proto-ipt-icmp">
+            <div class="selectbox" id="sg-proto-icmp-sel">
+              <div class="selection">Echo Reply(0)</div>
+              <div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                <ul tabindex="-1">
+                  <li class="item selected" data-id="0">Echo Reply(0)</li>
+                  <li class="item" data-id="3">Destination Unreachable(3) ...</li>
+                  <li class="item" data-id="4">Source Quench(4)</li>
+                  <li class="item" data-id="5">Redirect Message(5) ...</li>
+                  <li class="item" data-id="6">Alternate Host Address(6)</li>
+                  <li class="item" data-id="8">Echo Request(8)</li>
+                  <li class="item" data-id="9">Router Advertisement(9)</li>
+                  <li class="item" data-id="10">Router Solicitation(10)</li>
+                  <li class="item" data-id="11">Time Exceeded(11) ...</li>
+                  <li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
+                  <li class="item" data-id="13">Timestamp(13)</li>
+                  <li class="item" data-id="14">Timestamp Reply(14)</li>
+                  <li class="item" data-id="15">Information Request(15)</li>
+                  <li class="item" data-id="16">Information Reply(16)</li>
+                  <li class="item" data-id="17">Address Mask Request(17)</li>
+                  <li class="item" data-id="18">Address Mask Reply(18)</li>
+                  <li class="item" data-id="30">Traceroute(30)</li>
+                  <li class="item" data-id="31">Datagram Conversion Error(31)</li>
+                  <li class="item" data-id="32">Mobile Host Redirect(32)</li>
+                  <li class="item" data-id="33">Where Are You(33)</li>
+                  <li class="item" data-id="34">Here I Am(34)</li>
+                  <li class="item" data-id="35">Mobile Registration Request(35)</li>
+                  <li class="item" data-id="36">Mobile Registration Reply(36)</li>
+                  <li class="item" data-id="37">Domain Name Request(37)</li>
+                  <li class="item" data-id="38">Domain Name Reply(38)</li>
+                  <li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
+                  <li class="item" data-id="40">Photuris Security Failures(40)</li>
+                  <li class="item" data-id="-1">All(-1)</li>
+                </ul>
+              </div>
+            </div>
+            <div class="selectbox sg-proto-input-sub" id="sg-proto-input-sub-3">
+              <div class="selection">All(-1</div>
+              <ul class="dropdown" tabindex="-1">
+                <li class="item selected" data-id="-1">All(-1)</li>
+                <li class="item" data-id="0">destination network unreachable(0)</li>
+                <li class="item" data-id="1">destination host unreachable(1)</li>
+                <li class="item" data-id="2">destination protocol unreachable(2)</li>
+                <li class="item" data-id="3">destination port unreachable(3)</li>
+                <li class="item" data-id="4">fragmentation required and DF flag set(4)</li>
+                <li class="item" data-id="5">source route failed(5)</li>
+                <li class="item" data-id="6">destination network unknown(6)</li>
+                <li class="item" data-id="7">destination host unknown(7)</li>
+                <li class="item" data-id="8">source host isolated(8)</li>
+                <li class="item" data-id="9">network administratively prohibited(9)</li>
+                <li class="item" data-id="10">host administratively prohibited(10)</li>
+                <li class="item" data-id="11">network unreachable for TOS(11)</li>
+                <li class="item" data-id="12">host unreachable for TOS(12)</li>
+                <li class="item" data-id="13">communication administratively prohibited(13)</li>
+              </ul>
+            </div>
+            <div class="selectbox sg-proto-input-sub" id="sg-proto-input-sub-5">
+              <div class="selection">All(-1)</div>
+              <ul class="dropdown" tabindex="-1">
+                <li class="selected item" data-id="-1">All(-1)</li>
+                <li class="item" data-id="0">redirect datagram for the network(0)</li>
+                <li class="item" data-id="1">redirect datagram for the host(1)</li>
+                <li class="item" data-id="2">redirect datagram for the TOS & network(2)</li>
+                <li class="item" data-id="3">redirect datagram for the TOS & host(3)</li>
+              </ul>
+            </div>
+            <div class="selectbox sg-proto-input-sub" id="sg-proto-input-sub-11">
+              <div class="selection">All(-1)</div>
+              <ul class="dropdown" tabindex="-1">
+                <li class="item selected" data-id="-1">All(-1)</li>
+                <li class="item" data-id="0">TTL expired transit(0)</li>
+                <li class="item" data-id="1">fragmentation reasembly time exceeded(1)</li>
+              </ul>
+            </div>
+            <div class="selectbox sg-proto-input-sub" id="sg-proto-input-sub-12">
+              <div class="selection">All(-1)</div>
+              <ul class="dropdown" role="menu">
+                <li class="item selected" data-id="-1">All(-1)</li>
+                <li class="item" data-id="0">pointer indicates the error(0)</li>
+                <li class="item" data-id="1">missing a required option(1)</li>
+                <li class="item" data-id="2">bad length(2)</li>
               </ul>
             </div>
           </section>
+
+
 
           <section class="sg-proto-input" id="sg-proto-ipt-custom">
             <input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="">

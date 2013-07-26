@@ -295,13 +295,6 @@ var constant_data = {
 				to: 'instance-elb-attach',
 				relation: 'multiple',
 				color: '#12CD4F' //green
-			},
-			{
-				type: 'association',
-				from: 'elb-assoc',
-				to: 'subnet-assoc-in',
-				relation: 'multiple',
-				color: '#d8d7d6' //green
 			}
 			],
 			'AWS.VPC.Subnet':

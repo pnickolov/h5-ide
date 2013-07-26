@@ -29,6 +29,7 @@ define [ 'underscore', 'backbone' ], () ->
         #
         RELOAD_RESOURCE     : 'RELOAD_RESOURCE'
         OPEN_PROPERTY       : 'OPEN_PROPERTY'
+        UPDATE_PROPERTY     : 'UPDATE_PROPERTY'
         OPEN_SG             : 'OPEN_SG'
         OPEN_ACL            : 'OPEN_ACL'
         OPEN_INSTANCE       : 'OPEN_INSTANCE'

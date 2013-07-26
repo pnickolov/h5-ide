@@ -59,10 +59,10 @@ define [ 'jquery',
                 stack_main.loadModule stack_main
 
             #listen OPEN_PROPERTY
-            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id ) ->
+            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom )  ->
 
                 #
-                MC.data.last_open_property = { 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
+                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
 
                 if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
 
@@ -131,7 +131,7 @@ define [ 'jquery',
                         if line_option.length == 2
 
                             console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
-                    
+
                             key = line_option[0].port + '>' + line_option[1].port
 
 
@@ -152,48 +152,55 @@ define [ 'jquery',
                             else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
                                 #select line between vgw and  cgw
                                 vpn_main.loadModule line_option, 'line', vpn_main
-                    
 
-                #temp
-                # setTimeout () ->
-                #    view.refresh()
-                # , 2000
-
+                #
+                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
 
             #listen OPEN_SG
-            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id ) ->
+            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id, back_dom ) ->
                 console.log 'OPEN_SG'
+                #
+                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_SG, 'uid_parent' : uid_parent, 'expended_accordion_id' : expended_accordion_id }
+                #
                 sg_main.loadModule( uid_parent, expended_accordion_id, sg_main )
-                #temp
-                # setTimeout () ->
-                #    view.refresh()
-                # , 2000
-
+                #
+                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
 
             #listen OPEN_ACL
-            ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid ) ->
+            ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid, back_dom ) ->
                 console.log 'OPEN_ACL'
+                #
+                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_ACL, 'uid' : uid_parent, 'expended_accordion_id' : expended_accordion_id, 'acl_uid' : acl_uid }
+                #
                 acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid )
-
+                #
+                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
 
             #listen OPEN_INSTANCE
-            ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id) ->
+            ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id, back_dom) ->
                 console.log 'OPEN_INSTANCE'
                 #
+                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_INSTANCE, 'expended_accordion_id' : expended_accordion_id }
+                #
                 instance_main.loadModule uid, expended_accordion_id, instance_main
-                #temp
-                # setTimeout () ->
-                #    view.refresh()
-                # , 2000
-
+                #
+                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
 
             ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->
 
                 view.refresh()
+
+            ide_event.onLongListen ide_event.UPDATE_PROPERTY, ( back_dom ) ->
+                console.log 'UPDATE_PROPERTY'
+                setTimeout () ->
+                    #$( '#property-panel' ).html back_dom
+                    view.updateHtml back_dom
+                , 500
+
 
     unLoadModule = () ->
         #view.remove()

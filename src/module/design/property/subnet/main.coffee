@@ -5,9 +5,9 @@
 define [ 'jquery',
          'text!/module/design/property/subnet/template.html',
          'text!/module/design/property/subnet/acl_template.html',
+         'text!/module/design/property/subnet/app_template.html',
          'event'
-], ( $, template, acl_template, ide_event ) ->
-
+], ( $, template, acl_template, app_template, ide_event ) ->
     #
     current_view  = null
     current_model = null
@@ -15,18 +15,22 @@ define [ 'jquery',
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-subnet-tmpl">' + template + '</script>'
     acl_template = '<script type="text/x-handlebars-template" id="property-subnet-acl-tmpl">' + acl_template + '</script>'
+    app_template = '<script type="text/x-handlebars-template" id="property-subnet-app-tmpl">' + app_template + '</script>'
     #load remote html template
-    $( 'head' ).append template
-    $( 'head' ).append acl_template
+    $( 'head' ).append( template ).append( acl_template ).append( app_template )
 
     #private
-    loadModule = ( uid, current_main ) ->
+    loadModule = ( uid, current_main, tab_type ) ->
 
-        #
         MC.data.current_sub_main = current_main
 
+        #set view_type
+        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+
         #
-        require [ './module/design/property/subnet/view', './module/design/property/subnet/model' ], ( view, model ) ->
+        require [ './module/design/property/subnet/' + view_type,
+                  './module/design/property/subnet/model'
+        ], ( view, model ) ->
 
             #
             if current_view then view.delegateEvents view.events
@@ -37,6 +41,10 @@ define [ 'jquery',
 
             model.setId uid
             view.model = model
+
+            ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, (mainModule) ->
+                view.refreshACLList()
+                mainModule.unLoadModule()
 
             #render
             view.render()
@@ -61,12 +69,11 @@ define [ 'jquery',
                 model.setACL acl_uid
                 null
 
-            
-
     unLoadModule = () ->
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
+        ide_event.offListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 

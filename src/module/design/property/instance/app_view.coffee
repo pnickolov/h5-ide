@@ -1,24 +1,24 @@
 #############################
-#  View(UI logic) for design/property/elb(app)
+#  View(UI logic) for design/property/instance(app)
 #############################
 
 define [ 'event', 'MC',
          'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
 
-    ElbAppView = Backbone.View.extend {
+    InstanceAppView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
 
-        template  : Handlebars.compile $( '#property-elb-app-tmpl' ).html()
+        template  : Handlebars.compile $( '#property-instance-app-tmpl' ).html()
 
         render     : () ->
-            console.log 'property:elb app render', this.model.attributes
+            console.log 'property:elb app render'
             $( '.property-details' ).html this.template this.model.attributes
 
 
     }
     
-    view = new ElbAppView()
+    view = new InstanceAppView()
 
     return view

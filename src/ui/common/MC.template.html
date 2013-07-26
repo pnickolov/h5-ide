@@ -39,6 +39,93 @@
 	</div>
 </div>
 
+<!-- AWSCredential -->
+<div id="AWSCredential-setting" style="width: 450px">
+	<div class="modal-header">
+		<h3>AWS Credentials</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div id="AWSCredential-form">
+		<div id="AWSCredential-info" class="AWSCredential-wall">
+			<p>To launch and manage AWS resources, please provide your AWS account credentials.</p>
+		</div>
+		<div id="AWSCredential-failed" class="AWSCredential-wall">
+			<p>Authentication failed. Please check your AWS Credentials and try again.</p>
+		</div>
+		<div class="modal-body">
+			<ul>
+				<li>
+					<i class="icon-question-sign icon-label tooltip" data-tooltip="Your AWS account number is shown in the upper-left 
+	area of your browser window when you're logged into 
+	your AWS Account. e.g., 123456789000"></i>
+					<label>Account Number</label>
+					<input class="input" type="text" />
+				</li>
+				<li>
+					<i class="icon-question-sign icon-label tooltip" data-tooltip="You will ﬁnd those keys in Account > Security 
+	Credentials menu under Access Keys tab in the box at 
+	the middle of the page. e.g., 
+	ABCDEFGHIJ1LMNOPQR2S"></i>
+					<label>Access Key ID</label>
+					<input class="input" type="text" />
+				</li>
+				<li>
+					<i class="icon-question-sign icon-label tooltip" data-tooltip="You will ﬁnd those keys in Account > Security 
+	Credentials menu under Access Keys tab in the box at 
+	the middle of the page. e.g., aBCDefgH/
+	Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"></i>
+					<label>Secret Key</label>
+					<input class="input" type="text" />
+				</li>
+			</ul>
+		</div>
+		<div class="modal-footer">
+			<a href="/help" id="AWSCredentials-link">Need help?</a>
+			<button class="btn btn-blue">Submit</button>
+		</div>
+	</div>
+
+	<div id="AWSCredentials-submiting">
+		<div id="AWSCredentials-submiting-body">
+			<img id="AWSCredentials-loading" src="../assets/images/ide/loading.png" alt="loading"/>
+			<span id="AWSCredentials-loading-text">Connecting to AWS account</span>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-silver" disabled>Loading...</button>
+		</div>
+	</div>
+
+	<div id="AWSCredentials-success">
+		<div class="AWSCredentials-body-info">
+			<h5>You have connected with following AWS account:</h5>
+			<div class="AWSCredentials-account-info">
+				<span>%account-number%</span>
+				<a class="AWSCredentials-account-update" href="javascript:void(0)">update</a>
+			</div>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-silver">Done</button>
+		</div>
+	</div>
+
+	<div id="AWSCredentials-update">
+		<div class="AWSCredentials-body-info">
+			<h5>You have connected with following AWS account:</h5>
+			<div class="AWSCredentials-account-info">
+				<span>%account-number%</span>
+				<a class="AWSCredentials-account-update" href="javascript:void(0)">update</a>
+			</div>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-silver">Done</button>
+		</div>
+	</div>
+</div>
+
+
 <!-- modalApp -->
 <div style="width:420px">
        <div class="modal-header">
@@ -653,83 +740,6 @@ Additional Notes and Questions
 		<button disabled class="btn btn-red tooltip" data-tooltip="Please fix error first and try to run the stack again.">Proceed</button>
 		<button class="btn btn-silver modal-close">Run Later</button>
 	</div>
-</div>
-
-<!-- modalAddACL -->
-<div id="modal-run-stack">
-  <div class="modal-header"><h3>Add Network ACL Rule</h3><i class="modal-close">&times;</i></div>
-  <div class="modal-body">
-    <div class="modal-row">
-      <label for="modal-acl-number">Rule Number</label>
-      <input class="input" type="text" maxLength="5" id="modal-acl-number">
-    </div>
-    <div class="modal-row acl-modal-one-row-left">
-        <label>Action</label>
-        <div class="modal-acl-source-wrapper">
-            <div class="radio acl-float-left">
-                <input type="radio" id="acl-add-model-action-allow" checked="checked" name="acl-add-model-action-select"/>
-                <label for="acl-add-model-action-allow"></label>
-            </div>
-            <label class="radio-label acl-float-left" for="acl-add-model-action-allow">Allow</label>
-            <div></div>
-            <div class="radio">
-                <input type="radio" id="acl-add-model-action-deny" name="acl-add-model-action-select"/>
-                <label for="acl-add-model-action-deny"></label>
-            </div>
-            <label class="radio-label" for="acl-add-model-action-deny">Deny</label>
-        </div>
-    </div>
-    <div class="modal-row acl-modal-one-row-left">
-        <label>Direction</label>
-        <div class="modal-acl-source-wrapper">
-            <div class="radio acl-float-left">
-                <input type="radio" id="acl-add-model-direction-inbound" checked="checked" name="acl-add-model-direction-select"/>
-                <label for="acl-add-model-direction-inbound"></label>
-            </div>
-            <label class="radio-label acl-float-left" for="acl-add-model-direction-inbound">Inbound</label>
-            <div></div>
-            <div class="radio">
-                <input type="radio" id="acl-add-model-direction-outbound" name="acl-add-model-direction-select"/>
-                <label for="acl-add-model-direction-outbound"></label>
-            </div>
-            <label class="radio-label" for="acl-add-model-direction-outbound">Outbound</label>
-        </div>
-    </div>
-    <div class="modal-row">
-      <label>Source</label>
-      <div class="modal-acl-source-wrapper property-control-group">
-		<div class="selectbox selectbox-mega" id="acl-add-model-source-select">
-			<div class="selection"></div>
-			<ul class="dropdown">
-
-			</ul>
-		</div>
-      </div>
-      <input class="input" type="text" maxLength="5" id="modal-acl-source-input">
-    </div>
-    <div class="modal-row">
-      <label for="Source">Protocol</label>
-		<div class="modal-acl-source-wrapper property-control-group">
-			<div class="selectbox selectbox-mega" id="acl-add-model-protocol-select">
-				<div class="selection">TCP</div>
-				<ul class="dropdown">
-					<li class="item tooltip selected" data-value="6"><div class="main truncate">TCP</div></li>
-					<li class="item tooltip" data-value="17"><div class="main truncate">UDP</div></li>
-					<li class="item tooltip" data-value="1"><div class="main truncate">ICMP</div></li>
-					<li class="item tooltip" data-value="5"><div class="main truncate">Custom</div></li>
-					<li class="item tooltip" data-value="-1"><div class="main truncate">All</div></li>
-				</ul>
-			</div>
-		</div>
-		<div>
-			<input class="input" id="acl-rule-modal-port-input" type="text" placeholder="Port Range e.g.80 or 49152-65535" required="required" value="{{LoadBalancerPort}}"/>
-		</div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-blue" id="acl-modal-rule-save-btn">Save</button>
-    <button class="btn btn-silver modal-close">Cancel</button>
-  </div>
 </div>
 
 <!-- sgListItem -->

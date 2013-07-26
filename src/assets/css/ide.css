@@ -173,6 +173,98 @@ a {
 	display: block;
 }
 
+/*AWSCredential-setting*/
+#AWSCredentials-submiting,
+#AWSCredentials-success,
+#AWSCredentials-update {
+	display: none;
+}
+
+#AWSCredential-failed {
+	display: none;
+}
+
+.AWSCredential-wall {
+	padding: 15px;
+	background-color: #E0EBF3;
+	color: #555;
+}
+
+#AWSCredential-failed {
+	background-color: #FF7E79;
+	color: #f3f3f3;
+}
+
+#AWSCredential-setting .modal-body {
+	padding-top: 15px;
+}
+
+#AWSCredential-setting li {
+	position: relative;
+}
+
+#AWSCredential-setting .icon-label {
+	position: absolute;
+	right: 0;
+	top: 4px;
+	margin-right: 0;
+	color: #0096FF;
+	font-size: 13px;
+}
+
+#AWSCredential-setting label {
+	display: block;
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+
+#AWSCredential-setting .input {
+	width: 390px;
+	margin-bottom: 10px;
+}
+
+#AWSCredentials-submiting-body {
+	background-color: #fff;
+	position: relative;
+	padding: 80px 0 80px 100px;
+}
+
+#AWSCredentials-loading {
+	margin-right: 10px;
+}
+
+.AWSCredentials-body-info {
+	padding: 35px 20px;
+	background-color: #fff;
+}
+
+.AWSCredentials-account-info {
+	padding: 20px;
+	background-color: #E0EBF3;
+	border-radius: 4px;
+	margin: 40px 0;
+}
+
+.AWSCredentials-account-update {
+	color: #2ECBF4;
+	float: right;
+}
+
+.AWSCredentials-account-update:hover {
+	text-decoration: underline;
+}
+
+#AWSCredentials-link {
+	float: left;
+	margin: 7px 0 0 15px;
+	font-size: 12px;
+	color: #399EFF;
+}
+
+#AWSCredentials-link:hover {
+	text-decoration: underline;
+}
+
 /* Wrapper */
 #wrapper {
 	position: fixed;
@@ -2237,7 +2329,7 @@ a.sidebar-hider {
 .btn-to-secondary-panel:before {
 	content     : "\f105";
 	font-family : 'MC-ide';
-	font-size   : 20px;	
+	font-size   : 20px;
 }
 
 .item-line-button {
@@ -2369,7 +2461,7 @@ a.sidebar-hider {
 	line-height : 30px;
 	color       : #999;
 	text-align  : center;
-	
+
 	cursor : pointer;
 }
 .sg-wrapper .tab .active {
@@ -2791,10 +2883,18 @@ a.sidebar-hider {
 	color      : #fff;
 	text-align : center;
 	cursor: pointer;
-	
+
 }
 .property-rule-delete-btn:before {
 	content : "x";
+}
+
+#modal-acl-rule .sg-protocol-option-input.show {
+	display: block;
+}
+
+#modal-acl-rule .sg-protocol-option-input {
+	display: none;
 }
 
 /* property-stack */
@@ -2883,8 +2983,8 @@ a.sidebar-hider {
 }
 
 .property-stack .create-sg {
-top: 2px;
-height: 35px;
+	top: 2px;
+	height: 35px;
 }
 
 /* property-rt */
@@ -2928,6 +3028,21 @@ height: 35px;
 .property-routetable .allow-checkbox {
 	padding-top: 5px;
 }
+
+/* App Property Panel, Mostly Read-Only Elements */
+.dl-vertical {}
+.app-panel-li {}
+.app-panel-li-main {}
+.app-panel-li-sub  {}
+
+.status-good, .status-bad {
+	padding-left : 30px;
+}
+.status-good:before, .status-bad:before {
+	
+}
+.status-bad  {}
+
 
 
 /* ACL Property Panel */
@@ -3017,6 +3132,21 @@ height: 35px;
 	height: 30px;
 }
 
+.stack-property-acl-list .edit {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 30px;
+	text-align: center;
+	line-height: 50px;
+	background-color: #ddd;
+	cursor: pointer;
+}
+
+.stack-property-acl-list .edit:hover {
+	background-color: #000;
+}
+
 /* SG Rule Create Dialog */
 .sg-rule-create-h, #sg-rule-create-modal {
 	position : relative;
@@ -3050,7 +3180,7 @@ height: 35px;
 }
 
 .outward #sg-rule-create-inward {
-	display : none;	
+	display : none;
 }
 .outward #sg-rule-create-outward {
 	display : block;
@@ -3191,7 +3321,7 @@ height: 35px;
 }
 
 .notification-empty {
-	padding: 10px 15px;	
+	padding: 10px 15px;
 	text-align: center;
 }
 
@@ -3203,4 +3333,87 @@ height: 35px;
 
 .notification-empty .description {
 	color: rgb(153, 153, 153);
+}
+
+/* property-app-instance */
+.property-app-instance {
+	font-size: 12px;
+}
+
+.accordion-default.property-app-instance .accordion-body {
+	padding: 0;
+}
+
+.property-app-instance .property-control-group {
+	padding: 2px 0;
+}
+
+.property-app-instance .item-wrap > div {
+	padding: 10px;
+	background-color: #fefefe;
+}
+
+.property-app-instance .item-wrap > p.showorhide {
+	padding: 10px 10px 0;
+	margin-bottom: 0;
+	background-color: #fefefe;
+}
+
+.property-app-instance .item-wrap > div:nth-of-type(2n+1) {
+	background-color: #f6f5f5;
+}
+
+.property-readonly-value {
+	display: block;
+	padding-left: 12px;
+	padding-top: 5px;
+}
+
+.property-app-instance a {
+	color: #0088cc;
+}
+
+.property-app-instance a i {
+	color: #666;
+}
+
+.property-readonly-value i {
+	margin-right: 5px;
+}
+
+.property-app-instance .arrow-showorhide {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	vertical-align: middle;
+	padding-bottom: 10px;
+	transform:rotate(90deg);
+	-moz-transform:rotate(90deg);
+    -webkit-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+}
+
+.property-app-instance .show-detail-button a {
+	display: block;
+}
+
+.property-app-instance .ipaddress .property-readonly-value {
+	padding-left: 2px;
+}
+
+.property-app-instance .ipaddress .right {
+	padding-right: 56px;
+}
+
+
+.property-app-instance .ipaddress [class^="ipaddress-"], .property-app-instance .ipaddress [class*=" ipaddress-"] {
+	float: left;
+}
+
+.property-app-instance .ipaddress .ipaddress-left {
+	width: 60%;
+}
+
+.property-app-instance .ipaddress .ipaddress-right {
+	width: 40%;
 }

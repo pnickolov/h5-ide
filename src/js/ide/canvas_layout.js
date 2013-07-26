@@ -39,24 +39,42 @@ var
 // Dom Ready
 var listen = function ()
 {
+	var canvas_state = MC.canvas.getState();
+
 	MC.paper = Canvon('svg_canvas');
 
-	$('#canvas_body')
-		.on('mousedown', '.instance-volume', MC.canvas.volume.show)
-		.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
-		.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
-		.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
-		.on('click', '.line', MC.canvas.event.selectLine)
-		.on('mousedown', MC.canvas.event.clearSelected)
-		.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
-		.on('selectstart', returnFalse);
+	if (canvas_state === 'app')
+	{
+		$('#canvas_body')
+			.addClass('canvas_state_' + canvas_state)
+			.on('mousedown', '.instance-volume', MC.canvas.volume.show)
+			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
+			.on('click', '.line', MC.canvas.event.selectLine)
+			.on('mousedown', MC.canvas.event.clearSelected)
+			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
+			.on('selectstart', returnFalse);
 
-	//canvas_body.on('mousedown', MC.canvas.selection.mousedown);
+		$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
+	}
 
-	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
+	if (canvas_state === 'stack')
+	{
+		$('#canvas_body')
+			.addClass('canvas_state_' + canvas_state)
+			.on('mousedown', '.instance-volume', MC.canvas.volume.show)
+			.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
+			.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
+			.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
+			.on('click', '.line', MC.canvas.event.selectLine)
+			.on('mousedown', MC.canvas.event.clearSelected)
+			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
+			.on('selectstart', returnFalse);
 
-	$('#resource-panel').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);
 
+		$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
+
+		$('#resource-panel').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);
+	}
 };
 
 // Dom Ready

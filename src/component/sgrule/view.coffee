@@ -13,10 +13,12 @@ define [
     SGRulePopupView = Backbone.View.extend {
 
         events    :
-          'closed'                      : 'onClose'
-          'click .sg-rule-create-add'   : 'addRule'
-          'click .sg-node-wrap input'   : 'switchNode'
-          'click .sg-rule-create-readd' : 'readdRule'
+          'closed'                         : 'onClose'
+          'click .sg-rule-create-add'      : 'addRule'
+          'click .sg-rule-create-node'     : 'switchNode'
+          'click .sg-rule-create-readd'    : 'readdRule'
+          'OPTION_CHANGE #sg-create-proto' : 'onProtocolChange'
+          'click .sg-rule-create'          : 'onDirChange'
 
         render   : () ->
             console.log 'Showing Security Group Rule Create Dialog'
@@ -36,11 +38,24 @@ define [
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.
           this.trigger 'CLOSE_POPUP'
 
-        switchNode : () ->
+        switchNode : ( event ) ->
+
+          $node = $( event.currentTarget ).toggleClass "selected", true
+          $node.siblings().removeClass "selected"
+          $node.find("input").prop 'checked', true
+
+          outward = $("#sg-rule-create-tgt-o").is(":checked")
+          $(".sg-rule-create-out").toggle( outward )
+          $(".sg-rule-create-in").toggle( !outward)
+
           this.$el.find('.sg-rule-create-add-wrap').toggleClass( 'outward', $('#sg-rule-create-tgt-o').is(':checked') )
           null
 
         addRule : ( event ) ->
+          # Extract the data from the view
+          data = this.extractRuleData()
+          console.log data
+
           # TODO : Tell model to add rule.
 
           # TODO : Insert rule to the sidebar
@@ -51,11 +66,12 @@ define [
           this.$el.find('#modal-box').animate({left:'+=100px'}, 300).toggleClass('done', true)
 
 
+
           # Update sidebar
           this.updateSidebar()
 
         readdRule : () ->
-          this.$el.animate({left:'-=100px'}, 300).toggleClass('done', false)
+          this.$el.animate({left:'-=100px'}, 300).find("#modal-box").toggleClass('done', false)
 
 
         deleteRule : () ->
@@ -63,9 +79,33 @@ define [
 
           # TODO : Remove dom element.
 
+        onDirChange : () ->
+          $(".sg-rule-direction").html( if $("#sg-rule-create-dir-i").is(":checked") then "Source" else "Destination" )
+
+        onProtocolChange : ( event, id ) ->
+          $(".sg-proto-input").hide()
+          $("#sg-proto-ipt-" + id).show()
+
         updateSidebar : () ->
           this.$el.find( '.sg-rule-create-sidebar' ).html( list_template( this.model.attributes ) )
 
+        extractRuleData : () ->
+          outward = if $("#sg-rule-create-tgt-o").find("input").is(":checked") then "out" else "in"
+
+          data =
+            sgId      : $("#sg-create-sg-" + outward).find( ".selected" ).attr("data-id")
+            isInbound : $("#sg-rule-create-dir-i").is(":checked")
+            direction : $("#sg-create-dir-"+ outward).find( ".selected" ).attr("data-id")
+            protocol  : $("#sg-create-proto").find( ".selected" ).attr("data-id")
+
+          $protoIptWrap = $("#sg-proto-ipt-"+data.protocol)
+          $protoIpt     = $protoIptWrap.find("input")
+          if $protoIpt.length
+            data.protocolValue = $protoIpt.val()
+          else
+            data.protocolValue.find(".selected").attr("data-id")
+
+          data
     }
 
     SGRulePopupView

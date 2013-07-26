@@ -12,58 +12,18 @@
 /* A modified version to reduce redundant html code by Morris */
 /* In-coporate the toggle-dropdown functions from bootstrap-dropdown */
 
-// var selectbox = {
-
-//     add: function (event) {
-//         var me = $(this),
-//             label = me.find('.label'),
-//             edit = me.find('.edit');
-
-//         label.hide();
-//         edit.show();
-//         edit.find('input').focus();
-
-//         return false;
-//     },
-
-//     edit: function (event) {
-//         var me = $(this),
-//             editableoption = me.parents('.editableoption').first(),
-//             selectbox = me.parents('.selectbox').first(),
-//             cur_text = selectbox.find('input').val(),
-//             label = editableoption.find('.label'),
-//             edit = editableoption.find('.edit'),
-//             input = edit.find('input'),
-//             cur_value = selectbox.find('.cur-value'),
-//             dropdown_menu = selectbox.find('.dropdown-menu'),
-//             pre_selected = dropdown_menu.find('.selected');
-
-//         if (!cur_text || cur_text.length == 0) {
-//             selectbox.trigger("EDIT_EMPTY");
-//         } else {
-//             input.val('');
-//             label.show();
-//             edit.hide();
-//             pre_selected.removeClass('selected');
-//             if(cur_value) {
-//                 cur_value.html(cur_text);
-//             }
-//             dropdown_menu.append('<li class="selected" tabindex="-1"><a data-id="'+ cur_text + '" href="#">'+ cur_text + '</a></li>');
-
-//             me.trigger("EDIT_UPDATE", [cur_text]);
-
-//             selectbox
-//                 .trigger("OPTION_CHANGE", [cur_text])
-//                 .removeClass('open');
-//         }
-//     }
-// };
-
 var selectbox = {
     init : function () {
         $(".selectbox").each(function () {
             var $this = $(this);
-            $this.find(".selection").html( $this.find(".selected").html () );
+            var $selected = $this.find(".selected");
+
+            // If there's no item selected, select the first one.
+            if ( $selected.length == 0 ) {
+                $selected = $this.find(".item:first-child").addClass("selected");
+            }
+
+            $this.find(".selection").html( $selected.html() );
         });
     }
 };
@@ -113,7 +73,6 @@ var selectbox = {
 
         $selectbox.find(".selection").html( $this.html() );
 
-        // TODO : OPTION_CHANGE's parameter no long is array.
         $selectbox.trigger( "OPTION_CHANGE", $this.attr('data-id') );
 
         return false;
@@ -156,28 +115,54 @@ var selectbox = {
         return false;
     }
 
-
-    function add () {
-
+    function edit () {
+        $(this).hide().siblings(".edit").show();
+        return false;
     }
 
-    function edit () {
+    function submit ( event ) {
+        var $edit      = $( event.currentTarget ).closest(".edit");
+        var $selectbox = $edit.closest(".selectbox");
+        var $input     = $edit.find(".input");
+        var newValue   = $input.val();
 
+        if ( !newValue || newValue.length == 0 ) {
+            $selectbox.trigger("EDIT_UPDATE", "");
+            return;
+        }
+
+        // Reset Editor
+        $input.val("");
+        $edit.hide().siblings(".editbtn").show();
+
+        // Add Entry to Dropdown List
+        $selectbox.find(".selection").html( newValue );
+        var $lastSelection = $selectbox.find(".dropdown")
+                                       .find(".selected").removeClass("selected");
+        $lastSelection.parent().append('<li class="item selected" data-id="' + newValue + '">' + newValue + '</li>');
+
+        $selectbox.trigger("EDIT_UPDATE", newValue)
+                  .trigger("OPTION_CHANGE", newValue)
+                  .removeClass("open");
     }
 
     $(function(){
         selectbox.init();
         $(document.body)
-            .on('click',   ".selectbox .selection",      toggle)
-            .on('click',   ".selectbox .dropdown .item", select)
-            .on('click',   ".selectbox .editor",         add)
-            .on('click',   ".selectbox .editor .btn",    edit)
-            .on('keydown', ".selectbox.open .dropdown",  keydown)
+            .on('click',   ".selectbox .editor .editbtn", edit)
+            .on('click',   ".selectbox .editor .btn",     submit)
+            .on('click',   ".selectbox .editor",          function(e){ e.stopPropagation(); })
+            .on('click',   ".selectbox .selection",       toggle)
+            .on('click',   ".selectbox .dropdown .item",  select)
+            .on('keydown', ".selectbox.open .dropdown",   keydown)
 
         /* Below are functions that's in bootstrap-dropdown */
             .on('click',   ".js-toggle-dropdown",        toggleDropdown)
     });
 
+
+
+    /* Functions took from bootstrap-dropdown, it simple toggles "open" class */
     var dropDownBound = false;
     function toggleDropdown ( event ) {
 

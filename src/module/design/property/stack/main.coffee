@@ -41,6 +41,10 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
+            ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, (mainModule) ->
+                view.refreshACLList()
+                mainModule.unLoadModule()
+
             #view
             view.model    = model
             #render

@@ -5,7 +5,7 @@
 define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
     #private
-    loadModule = ( line_id ) ->
+    loadModule = ( line_id, delete_module ) ->
 
         #
         require [ './component/sgrule/view', './component/sgrule/model' ], ( View, Model ) ->
@@ -36,7 +36,10 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
                 ide_event.trigger ide_event.DELETE_LINE_TO_CANVAS, line_id
 
             #render
-            view.render()
+            if delete_module
+                view.renderDeleteModule()
+            else
+                view.render()
 
     unLoadModule = ( view, model ) ->
         console.log 'sgrule unLoadModule'

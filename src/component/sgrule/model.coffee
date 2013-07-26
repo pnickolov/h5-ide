@@ -2,7 +2,7 @@
 #  View Mode for component/sgrule
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant, ide_event ) ->
 
     SGRulePopupModel = Backbone.Model.extend {
 
@@ -24,18 +24,30 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             line_id : null
 
+            isnt_classic : true
+
         initialize : ->
             #listen
-        #     this.listenTo ide_event, 'SWITCH_TAB', this.updateUID
+            this.listenTo ide_event, 'SWITCH_TAB', this.updatePlatform
 
-        # updateUID : ( type ) ->
-        #     console.log 'updateUID'
-        #     if type is 'OLD_APP' or  type is 'OLD_STACK'
-        #         this.set 'get_uid', $( '#instance-property-detail' ).data 'uid'
+        updatePlatform : ( type ) ->
+
+            if type is 'OLD_APP' or  type is 'OLD_STACK'
+
+                if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+
+                    this.set 'isnt_classic', false
+
+                else
+                    this.set 'isnt_classic', true
 
         getSgRuleDetail : ( line_id ) ->
 
             this.set 'line_id', line_id
+
+            if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+
+                this.set 'isnt_classic', false
 
             both_side = []
 
@@ -153,18 +165,25 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             sg_id = rule_data.sgId
 
-            from_port = null
+            from_port = ''
 
-            to_port = null
+            to_port = ''
 
-            if '-' in rule_data.protocolValue
+            if rule_data.protocol == 'icmp'
 
-                from_port = rule_data.protocolValue.split('-')[0]
+                from_port = rule_data.protocolValue
 
-                to_port = rule_data.protocolValue.split('-')[1]
+                if rule_data.protocolSubValue then to_port = rule_data.protocolSubValue
 
             else
-                from_port = to_port = rule_data.protocolValue
+                if '-' in rule_data.protocolValue
+
+                    from_port = rule_data.protocolValue.split('-')[0]
+
+                    to_port = rule_data.protocolValue.split('-')[1]
+
+                else
+                    from_port = to_port = rule_data.protocolValue
 
 
             sg_rule = {

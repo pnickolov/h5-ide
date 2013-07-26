@@ -56,6 +56,7 @@
             </div>
             <span>Inbound</span>
           </div>
+          {{#if isnt_classic}}
           <div class="left lh30">
             <div class="radio">
               <input type="radio" name="sg-rule-create-dir" id="sg-rule-create-dir-o">
@@ -63,6 +64,7 @@
             </div>
             <span>Outbound</span>
           </div>
+          {{/if}}
         </div>
       </li>
 
@@ -99,8 +101,7 @@
             <li class="selected item" data-id="tcp">TCP</li>
             <li class="item" data-id="udp">UDP</li>
             <li class="item" data-id="icmp">ICMP</li>
-            {{#if isclassic}}
-            {{else}}
+            {{#if isnt_classic}}
             <li class="item" data-id="custom">Custom</li>
             <li class="item" data-id="all">All</li>
             {{/if}}
@@ -202,7 +203,8 @@
             </div>
           </section>
 
-
+			
+		{{#if isnt_classic}}
 
           <section class="sg-proto-input" id="sg-proto-ipt-custom">
             <input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="">
@@ -211,7 +213,7 @@
           <section class="sg-proto-input" id="sg-proto-ipt-all">
             Port Range:<span>0-65535</span>
           </section>
-
+		{{/if}}
         </div>
 
       </li>

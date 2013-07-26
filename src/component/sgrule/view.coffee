@@ -34,6 +34,9 @@ define [
             # Update sidebar
             this.updateSidebar()
 
+        renderDeleteModule : () ->
+
+            modal list_template( this.model.attributes ), true
 
         onClose : () ->
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.

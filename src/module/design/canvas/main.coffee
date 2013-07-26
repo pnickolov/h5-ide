@@ -77,6 +77,10 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 null
 
 
+            model.on 'SHOW_SG_LIST', ( line_id ) ->
+
+                sgrule_main.loadModule line_id, 'delete'
+
             model.on 'ENI_REACH_MAX', ()->
                 console.log 'ENI reach limit'
                 view.showEniReachMax()

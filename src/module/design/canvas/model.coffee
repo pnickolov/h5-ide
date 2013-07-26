@@ -364,6 +364,12 @@ define [ 'constant',
 				if portMap['vgw-vpn'] and portMap['cgw-vpn']
 					MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
+				if portMap['instance-sg-in'] and portMap['instance-sg-out']
+
+					this.trigger 'SHOW_SG_LIST', option.id
+
+					return false
+
 
 
 
@@ -696,6 +702,20 @@ define [ 'constant',
 							if (from_key not in sg_refs) and (to_key not in sg_refs)
 
 								sg_refs.push from_key
+
+					$.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
+
+						if rule.IpRanges.indexOf('@') >= 0
+
+							to_sg_uid = rule.IpRanges.split('.')[0][1...]
+
+							from_key = comp.uid + '|' + to_sg_uid
+
+							to_key = to_sg_uid + '|' + comp.uid
+
+							if (from_key not in sg_refs) and (to_key not in sg_refs)
+
+								sg_refs.push to_key
 
 			$.each sg_refs, ( i, val ) ->
 

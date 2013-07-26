@@ -172,6 +172,10 @@ define [ 'jquery',
 
                 null
 
+            ide_event.onLongListen ide_event.SHOW_SG_LIST, ( line_id )->
+
+                sgrule_main.loadModule uid, 'delete'
+
             #listen OPEN_ACL
             ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid ) ->
                 console.log 'OPEN_ACL'

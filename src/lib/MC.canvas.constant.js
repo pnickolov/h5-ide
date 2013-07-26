@@ -18,7 +18,7 @@ var constant_data = {
 		'AWS.EC2.Instance': [10, 10],
 		'AWS.EC2.EBS.Volume': [10, 10],
 		'AWS.VPC.NetworkInterface': [10, 10],
-		'AWS.VPC.CustomerGateway': [20, 10],
+		'AWS.VPC.CustomerGateway': [17, 10],
 		'AWS.VPC.RouteTable': [8, 8],
 		'AWS.VPC.InternetGateway': [8, 8],
 		'AWS.VPC.VPNGateway': [8, 8]
@@ -71,8 +71,8 @@ var constant_data = {
 	LINE_STROKE_WIDTH: 4,
 
 	//constant for MC.canvas.add
-	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 14 l 2 0 l 6 -6 z", //triangle
-	PATH_D_PORT2: "M 12 8 l -6 -8 l -6 8 l 6 8 l 6 -8 z", //diamond
+	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 12 l 2 0 l 6 -6 z", //triangle
+	PATH_D_PORT2: "M 10 8 l -6 -6 l -6 6 l 6 6 l 6 -6 z", //diamond
 
 
 	PORT_PADDING: 4, //port padding (to point of junction)

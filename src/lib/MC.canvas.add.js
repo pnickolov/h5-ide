@@ -485,9 +485,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/Instance-Canvas.png', 15, 8, 70, 70),
+				Canvon.image('../assets/images/ide/icon/Instance-Canvas.png', 15, 11, 70, 70),
 
-				//2 path: left port
+				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-left',
 					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
@@ -498,7 +498,18 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-angle': MC.canvas.PORT_LEFT_ANGLE //port angle: right:0 top:90 left:180 bottom:270
 				}),
 
-				//3 path: right port
+				//3 path: left port(green)
+				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+					'class': 'port port-green port-instance-elb-attach',
+					'transform': 'translate(8, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'instance-elb-attach',
+					'data-position': 'left',
+					'data-type': 'attachment',
+					'data-direction': 'in',
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE
+				}),
+
+				//4 path: right port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-right',
 					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
@@ -509,7 +520,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
-				//4 path: right port
+				//5 path: right port(green)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-instance-attach',
 					'transform': 'translate(84, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
@@ -520,33 +531,44 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
-				////5. os_type
+				//6 path: top port(blue)
+				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+					'class': 'port port-blue port-instance-rtb',
+					'transform': 'translate(50, -6)' + MC.canvas.PORT_UP_ROTATE,
+					'data-name': 'instance-rtb',
+					'data-position': 'top',
+					'data-type': 'sg',
+					'data-direction': 'in',
+					'data-angle': MC.canvas.PORT_UP_ANGLE
+				}),
+
+				////7. os_type
 				Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30, 15, 39, 27),
 
-				////6.1 volume-attached
+				////8.1 volume-attached
 				Canvon.image('../assets/images/ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 48, 29, 24).attr({
 					'id': group.id + '_volume_status'
 				}),
 
-				//6.2 volume number
+				//8.2 volume number
 				Canvon.text(35, 60, volume_number).attr({
 					'class': 'node-label volume-number',
 					'id': group.id + '_volume_number'
 				}),
 
-				//6.3 hot area for volume
+				//8.3 hot area for volume
 				Canvon.rectangle(21, 48, 29, 24).attr({
 					'class': 'instance-volume',
 					'data-target-id': group.id,
 					'fill': 'none'
 				}),
 
-				////7. eip
+				////9. eip
 				Canvon.image(MC.canvas.IMAGE.EIP_OFF, 58, 49, 14, 17).attr({
 					'id': group.id + '_eip_status'
 				}),
 
-				////8. hostname
+				////10. hostname
 				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name',
 					'id': group.id + '_hostname'
@@ -664,6 +686,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ELB_JSON.data);
+				option.name = 'load-balancer-1';
 				component_data.name = option.name;
 				component_data.resource.LoadBalancerName = option.name;
 
@@ -675,7 +698,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}else if (MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
 					component_data.resource.SecurityGroups.push('@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId');
 				}else {
-					component_data.resource.Scheme = 'internet-facing'
+					component_data.resource.Scheme = 'internet-facing';
 				}
 
 				component_layout = $.extend(true, {}, MC.canvas.ELB_JSON.layout);
@@ -716,7 +739,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_sg_in',
 					'class': 'port port-blue port-elb-sg-in',
-					'transform': 'translate(7, 45)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(8, 43)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-in',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -728,7 +751,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_sg_out',
 					'class': 'port port-blue port-elb-sg-out',
-					'transform': 'translate(85, 56)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 30)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-out',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -738,9 +761,20 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+					'class': 'port port-green port-instance-attach',
+					'transform': 'translate(84, 46)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'instance-attach',
+					'data-position': 'right',
+					'data-type': 'attachment',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
+				}),
+
+				//5 path: right port
+				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_assoc',
 					'class': 'port port-gray port-elb-assoc',
-					'transform': 'translate(85, 32)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 61)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-assoc',
 					'data-position': 'right',
 					'data-type': 'association',
@@ -748,7 +782,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
-				////5. elb_name
+
+				////6. elb_name
 				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name',
 					'id' : group.id + '_elb_name'
@@ -863,7 +898,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////6. routetable name
-				Canvon.text(41, 30, option.name).attr({
+				Canvon.text(41, 28, option.name).attr({
 					'class': 'node-label name',
 					'id': group.id + '_rt_name'
 				})
@@ -894,6 +929,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.IGW_JSON.data);
+				option.name = 'Internet-gateway';
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
 
@@ -928,6 +964,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
 			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
 
 			$(group).append(
 				////1. bg
@@ -1084,6 +1121,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.CGW_JSON.data);
+				option.name = 'customer-gateway-1';
 				component_data.name = option.name;
 
 				component_layout = $.extend(true, {}, MC.canvas.CGW_JSON.layout);
@@ -1112,7 +1150,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/cgw-canvas.png', 13, 10, 167, 76),
+				Canvon.image('../assets/images/ide/icon/cgw-canvas.png', 13, 10, 153, 76),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -1244,7 +1282,19 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
-				////5. eni_name
+				//5 path: top port(blue)
+				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+					'class': 'port port-blue port-eni-rtb',
+					'transform': 'translate(46, 15)' + MC.canvas.PORT_UP_ROTATE,
+					'data-name': 'instance-eni',
+					'data-position': 'top',
+					'data-type': 'sg',
+					'data-direction': 'in',
+					'data-angle': MC.canvas.PORT_UP_ANGLE
+				}),
+
+
+				////6. eni_name
 				Canvon.text(43, 85, option.name, {
 					'text-anchor': 'start' // start, middle(default), end, inherit
 				}).attr({

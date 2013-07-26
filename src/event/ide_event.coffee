@@ -80,6 +80,9 @@ define [ 'underscore', 'backbone' ], () ->
         #property event
         RETURN_SUBNET_PROPERTY_FROM_ACL : 'RETURN_SUBNET_PROPERTY_FROM_ACL'
 
+        #websocket meteor collection
+        WS_COLLECTION_READY_REQUEST : 'WS_COLLECTION_READY_REQUEST'
+
         constructor : ->
             _.extend this, Backbone.Events
 

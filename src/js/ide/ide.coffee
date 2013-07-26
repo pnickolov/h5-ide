@@ -71,8 +71,14 @@ define [ 'MC', 'event',
 			#redirect to page ide.html
 			window.location.href = 'login.html'
 			null
+
+		subRequestReady = () ->
+			console.log 'collection request ready'
+
+			ide_event.trigger ide_event.WS_COLLECTION_READY_REQUEST
+
 		#
-		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, subScriptionError
+		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, subRequestReady, subScriptionError
 		#
 		websocket.sub "stack", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 

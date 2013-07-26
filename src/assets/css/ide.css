@@ -511,7 +511,7 @@ a {
 }
 
 #tab-bar li.active {
-	background-color: #e9e9e9;
+	background-color: #E8E6E7;
 	box-shadow: inset 0 1px #fff;
 }
 
@@ -541,12 +541,9 @@ a {
 /* Main Content */
 .main-content {
 	display: none;
-	background: #e9e9e9;
+	background: #E8E6E7;
 	height: 100%;
 	width: 100%;
-	/*overflow: hidden;*/
-	/*position: absolute;*/
-	/*top: 0;*/
 }
 
 .main-content.active {
@@ -734,7 +731,7 @@ a {
 #dashboard-map {
 	background: url("../images/ide/world.jpg") center 80% no-repeat;
 	background-size: auto 480px;
-	background-color: #f8f8f8;
+	background-color: #EFF8FD;
 	min-height: 360px;
 	border-right: 1px solid #ccc;
 	overflow: hidden;
@@ -765,7 +762,8 @@ a {
 }
 
 .icon-map-spot {
-	border-radius: 5px;
+	border-radius: 50%;
+	border: 1px solid #fff;
 	width: 10px;
 	height: 10px;
 	background: #FF8B00;
@@ -862,7 +860,7 @@ a {
 }
 
 #us-east-1 .map-tooltip {
-	left: 90px;
+	left: 83px;
 	top: -10px;
 }
 
@@ -873,7 +871,7 @@ a {
 
 #us-west-1 .map-tooltip {
 	top: 20px;
-	left: -71px;
+	left: -66px;
 }
 
 #us-west-2 {
@@ -883,7 +881,7 @@ a {
 
 #us-west-2 .map-tooltip {
 	top: -42px;
-	left: -71px;
+	left: -66px;
 }
 
 #eu-west-1 {
@@ -893,7 +891,7 @@ a {
 
 #eu-west-1 .map-tooltip {
 	top: -42px;
-	left: -71px;
+	left: -66px;
 }
 
 #sa-east-1 {
@@ -911,7 +909,7 @@ a {
 #ap-southeast-2 .map-tooltip,
 #ap-northeast-1 .map-tooltip {
 	top: -41px;
-	left: -71px;
+	left: -66px;
 }
 
 #ap-southeast-2 {

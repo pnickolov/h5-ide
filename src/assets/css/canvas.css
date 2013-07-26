@@ -168,7 +168,9 @@
 /* highlight connnectable*/
 .connectable-port {
 	display: inline;
-	fill: red;
+	fill: #fff;
+	stroke: #6DAEFE;
+	stroke-width: 2;
 }
 
 /* highlight connnectable node */

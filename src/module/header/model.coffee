@@ -65,15 +65,12 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                     item.is_process = true
                 else if req.state is 'Done'
                     item.is_complete = true
-
-                    # filter terminated app
-                    if item.name not in MC.data.app_list[req.region]
-                        item.is_terminated = true
                 else
                     return
 
                 if item.rid.search('stack') == 0 and not item.is_error
-                    item.rid = req.data.split(' ')[lst.length-1]
+                    lst = req.data.split(' ')
+                    item.rid = lst[lst.length-1]
                     item.name = req.brief.split(' ')[2]
 
             else
@@ -93,6 +90,10 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 if item
                     info_list.push item
 
+            # filter done and terminated app
+            terminated_list = []
+            terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
+            info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
 
             info_list.sort (a, b) ->
                 return if a.time <= b.time then 1 else -1
@@ -131,7 +132,9 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
                                 me.set 'info_list', info_list
 
-                                me.trigger 'UPDATE_HEADER'
+                                me.trigger 'HEADER_UPDATE'
+
+                                null
                 }
 
                 null
@@ -154,6 +157,10 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
             me.set 'info_list', info_list
             me.set 'unread_num', 0
+
+            me.trigger 'HEADER_UPDATE'
+
+            null
 
         openApp : (req_id) ->
             me = this

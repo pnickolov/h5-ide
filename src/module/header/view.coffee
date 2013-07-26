@@ -21,16 +21,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
             $( this.el ).html this.template this.model.attributes
             event.trigger event.HEADER_COMPLETE
 
-        reRender : () ->
-            console.log 'header rerender'
-            $( this.el ).html this.template this.model.attributes
-
         clickLogout : () ->
             this.trigger 'BUTTON_LOGOUT_CLICK'
 
         dropdownClosed : () ->
             console.log 'dropdown closed'
-            this.trigger 'DROPDOWN_CLOSED'
+            this.trigger 'DROPDOWN_MENU_CLOSED'
 
         clickAppName : (event) ->
             console.log 'click dropdown app name'

@@ -27,9 +27,17 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
                 model.getInfoList()
                 view.render()
 
-            model.once 'UPDATE_HEADER', () ->
-                console.log 'UPDATE_HEADER'
+            model.on 'HEADER_UPDATE', () ->
+                console.log 'HEADER_UPDATE'
                 view.render()
+
+            # model.on 'change:info_list', () ->
+            #     console.log 'header update info_list'
+            #     view.render()
+
+            # model.on 'change:unread_num', () ->
+            #     console.log 'header update unread_num'
+            #     view.render()
 
             ide_event.onListen ide_event.SWITCH_DASHBOARD, () ->
                 console.log 'SWITCH_DASHBOARD'
@@ -39,8 +47,8 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
                 console.log 'RELOAD_RESOURCE'
                 model.setFlag(false)
 
-            view.once 'DROPDOWN_CLOSED', () ->
-                console.log 'DROPDOWN_CLOSED'
+            view.on 'DROPDOWN_MENU_CLOSED', () ->
+                console.log 'DROPDOWN_MENU_CLOSED'
                 model.resetInfoList()
 
             view.once 'DROPDOWN_APP_NAME_CLICK', (req_id) ->

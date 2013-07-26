@@ -71,16 +71,16 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.name = option.name;
 
 				$.each($(".resource-item"), function ( idx, item){
-					
+
 					var data = $(item).data();
-					
+
 					if(data.type === 'AWS.EC2.AvailabilityZone' && data.option.name === option.name){
 						$(item)
 							.data('enable', false)
 							.addClass('resource-disabled')
 							.removeClass("tooltip");
 						return false;
-					}					
+					}
 				});
 
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
@@ -405,11 +405,11 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.InstanceType = 'm1.small';
 				component_data.resource.Placement.AvailabilityZone = option.group.availableZoneName;
 
-				// if not kp				
+				// if not kp
 				if(MC.canvas_property.kp_list.length === 0){
 
 					//default kp
-					
+
 				}
 
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
@@ -417,7 +417,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				MC.canvas_property.sg_list[0].member.push(group.id);
 
 				// if subnet
-				if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){					
+				if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 
 					//default eni
 					eni = $.extend(true, {}, MC.canvas.ENI_JSON.data);
@@ -429,16 +429,16 @@ MC.canvas.add = function (flag, option, coordinate)
 					eni.resource.AvailabilityZone = component_data.resource.Placement.AvailabilityZone;
 					var sg_group = {};
 					sg_group.GroupId = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId';
-					sg_group.GroupName = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupName';	
+					sg_group.GroupName = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupName';
 					eni.resource.GroupSet.push(sg_group);
-					
+
 					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
 						component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 						component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 						eni.resource.SubnetId = component_data.resource.SubnetId;
 						eni.resource.VpcId = component_data.resource.VpcId;
 					}
-					
+
 				}
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
@@ -488,7 +488,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.image('../assets/images/ide/icon/Instance-Canvas.png', 15, 8, 70, 70),
 
 				//2 path: left port
-				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-left',
 					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
 					'data-name': 'instance-sg', //for identify port
@@ -499,7 +499,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				//3 path: right port
-				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-right',
 					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'instance-sg',
@@ -593,7 +593,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					device_name = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'];
 				}
 
-					
+
 				$.each(ami_info.blockDeviceMapping, function (key, value){
 					if(key.slice(0,4) == '/dev/'){
 						k = key.slice(-1);
@@ -617,17 +617,17 @@ MC.canvas.add = function (flag, option, coordinate)
 					notification('warning', 'No valid device name to assign,cancel!', false);
 					return null;
 				}
-				
+
 				if(ami_info.virtualizationType != 'hvm'){
 					option.name = '/dev/sd' + device_name[0];
 				}else{
 					option.name = 'xvd' + device_name[0];
 				}
-				
+
 
 				component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
 				component_data.name = option.name;
-				component_data.resource.Size = option.volumeSize;				
+				component_data.resource.Size = option.volumeSize;
 				component_data.resource.AttachmentSet.InstanceId = '@' + option.instance_id + '.resource.InstanceId';
 				component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone;
 				component_data.resource.SnapshotId = option.snapshotId;
@@ -666,18 +666,18 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.ELB_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.LoadBalancerName = option.name;
-				
+
 				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
-					
+
 					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
 					component_data.resource.SecurityGroups.push('@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId');
-					
+
 				}else if (MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
 					component_data.resource.SecurityGroups.push('@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId');
 				}else {
-					component_data.resource.Scheme = 'internet-facing'	
+					component_data.resource.Scheme = 'internet-facing'
 				}
-				
+
 				component_layout = $.extend(true, {}, MC.canvas.ELB_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 
@@ -782,12 +782,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.data);
 				component_data.name = option.name;
 				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
-					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpdId';					
+					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
 				}
 				if(option.main){
 					main_icon = "main-";
 				}
-				
+
 				component_layout = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}
@@ -896,22 +896,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.IGW_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
-				
+
 				// disable drag when add one
-				
+
 				$.each($(".resource-item"), function ( idx, item){
-					
+
 					var data = $(item).data();
-					
+
 					if(data.type === 'AWS.VPC.InternetGateway'){
 						$(item)
 							.data('enable', false)
 							.addClass('resource-disabled')
 							.data("tooltip", "VPC can only have one IGW. There is already one IGW in current VPC.");
 						return false;
-					}					
+					}
 				});
-				
+
 				component_layout = $.extend(true, {}, MC.canvas.IGW_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}
@@ -994,16 +994,16 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				component_data.resource.Attachments[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
 				$.each($(".resource-item"), function ( idx, item){
-					
+
 					var data = $(item).data();
-					
+
 					if(data.type === 'AWS.VPC.VPNGateway'){
 						$(item)
 							.data('enable', false)
 							.addClass('resource-disabled')
 							.data("tooltip", "VPC can only have one VGW. There is already one VGW in current VPC.");
 						return false;
-					}					
+					}
 				});
 				component_layout = $.extend(true, {}, MC.canvas.VGW_JSON.layout);
 				component_layout.groupUId = option.groupUId;
@@ -1160,7 +1160,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 		//***** eni begin *****//
 		case 'AWS.VPC.NetworkInterface':
-			
+
 			var attached = 'unattached';
 			if (create_mode)
 			{//write
@@ -1171,9 +1171,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				var sg_group = {};
 				sg_group.GroupId = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId';
-				sg_group.GroupName = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupName';	
+				sg_group.GroupName = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupName';
 				component_data.resource.GroupSet.push(sg_group);
-				
+
 				component_layout = $.extend(true, {}, MC.canvas.ENI_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}
@@ -1181,7 +1181,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
-				
+
 				if(component_data.resource.Attachment.InstanceId){
 					attached = 'attached'
 				}
@@ -1212,7 +1212,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				//2 path: left port
-				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-eni-sg port-eni-sg-left',
 					'transform': 'translate(7, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg',
@@ -1234,7 +1234,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				//4 path: right port
-				Canvon.path(MC.canvas.PATH_D_PORT).attr({
+				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-eni-sg port-eni-sg-right',
 					'transform': 'translate(85, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg',

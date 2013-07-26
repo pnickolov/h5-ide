@@ -71,7 +71,9 @@ var constant_data = {
 	LINE_STROKE_WIDTH: 4,
 
 	//constant for MC.canvas.add
-	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 14 l 2 0 l 6 -6 z", //new style
+	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 14 l 2 0 l 6 -6 z", //triangle
+	PATH_D_PORT2: "M 12 8 l -6 -8 l -6 8 l 6 8 l 6 -8 z", //diamond
+
 
 	PORT_PADDING: 4, //port padding (to point of junction)
 	CORNER_RADIUS: 8, //cornerRadius of fold line

@@ -38,6 +38,10 @@ define [ 'jquery',
             model.setId uid
             view.model = model
 
+            ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, (mainModule) ->
+                view.refreshACLList()
+                mainModule.unLoadModule()
+
             #render
             view.render()
 
@@ -67,6 +71,7 @@ define [ 'jquery',
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
+        ide_event.offListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 

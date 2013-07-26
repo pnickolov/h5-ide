@@ -23,11 +23,7 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
             view.model = model
             view.render()
 
-            #event
-            view.on 'BUTTON_LOGOUT_CLICK', () ->
-                model.logout()
-
-            ide_event.onListen ide_event.DESIGN_COMPLETE, (result) ->
+            ide_event.onListen ide_event.WS_COLLECTION_READY_REQUEST, (result) ->
                 model.getInfoList()
                 view.render()
 
@@ -39,13 +35,21 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
                 console.log 'SWITCH_DASHBOARD'
                 model.setFlag(true)
 
-            ide_event.onListen ide_event.SWITCH_TAB, () ->
-                console.log 'SWITCH_TAB'
+            ide_event.onListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, item_name ) ->
+                console.log 'RELOAD_RESOURCE'
                 model.setFlag(false)
+
+            view.once 'DROPDOWN_CLOSED', () ->
+                console.log 'DROPDOWN_CLOSED'
+                model.resetInfoList()
 
             view.once 'DROPDOWN_APP_NAME_CLICK', (req_id) ->
                 console.log 'design_header:DROPDOWN_APP_NAME_CLICK'
                 model.openApp(req_id)
+
+            #event
+            view.on 'BUTTON_LOGOUT_CLICK', () ->
+                model.logout()
 
             view.on 'AWSCREDENTIAL_CLICK', () ->
                 console.log 'AWSCREDENTIAL_CLICK'

@@ -13,7 +13,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
         events   :
             'click #btn-logout'                     : 'clickLogout'
             'click #awscredential-modal'            : 'clickOpenAWSCredential'
-            'DROPDOWN_CLOSED #header--notification' : 'dropdownClosed'
+            'DROPDOWN_CLOSE #header--notification' : 'dropdownClosed'
             'click .dropdown-app-name'              : 'clickAppName'
 
         render   : () ->
@@ -30,6 +30,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
 
         dropdownClosed : () ->
             console.log 'dropdown closed'
+            this.trigger 'DROPDOWN_CLOSED'
 
         clickAppName : (event) ->
             console.log 'click dropdown app name'

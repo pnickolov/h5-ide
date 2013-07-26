@@ -9,7 +9,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
     HeaderModel = Backbone.Model.extend {
 
         defaults:
-            'info_list'     : null    # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete}]
+            'info_list'     : null    # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
             'unread_num'    : null
             'in_dashboard'  : true
 
@@ -42,16 +42,18 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             item.rid = req.rid
             item.time = req.time_end
             item.time_str = MC.dateFormat(new Date(item.time*1000), "hh:mm yyyy-MM-dd")
-            item.region = constant.REGION_LABEL[req.region]
+            item.region = req.region
+            item.region_label = constant.REGION_LABEL[req.region]
             item.is_readed = true
             item.is_error = false
             item.is_request = false
             item.is_process = false
             item.is_complete = false
+            item.is_terminated = false
 
             if req.brief
                 lst = req.brief.split ' '
-                item.operation = lst[0]
+                item.operation = lst[0].toLowerCase()
                 item.name = lst[lst.length-1]
 
                 if req.state is 'Failed'
@@ -63,12 +65,17 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                     item.is_process = true
                 else if req.state is 'Done'
                     item.is_complete = true
+
+                    # filter terminated app
+                    if item.name not in MC.data.app_list[req.region]
+                        item.is_terminated = true
                 else
                     return
 
                 if item.rid.search('stack') == 0 and not item.is_error
                     item.rid = req.data.split(' ')[lst.length-1]
                     item.name = req.brief.split(' ')[2]
+
             else
                 return
 
@@ -134,6 +141,20 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
             me.set 'in_dashboard', flag
 
+        resetInfoList : () ->
+            me = this
+
+            info_list = me.get 'info_list'
+
+            $.each info_list, (id, req) ->
+                if not req.is_readed
+                    info_list[id].is_readed = true
+
+                null
+
+            me.set 'info_list', info_list
+            me.set 'unread_num', 0
+
         openApp : (req_id) ->
             me = this
 
@@ -142,6 +163,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             req = i for i in info_list when i.id == req_id
 
             if req
+
                 ide_event.trigger ide_event.OPEN_APP_TAB, req.name, req.region, req.rid
 
             null

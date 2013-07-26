@@ -23,9 +23,11 @@ define [ 'jquery', 'text!/module/header/template.html' ], ( $, template ) ->
 
             #event
             view.on 'BUTTON_LOGOUT_CLICK', () ->
-
                 model.logout()
 
+            view.on 'AWSCREDENTIAL_CLICK', () ->
+                console.log 'AWSCREDENTIAL_CLICK'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             view.render()
 

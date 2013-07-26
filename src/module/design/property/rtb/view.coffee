@@ -17,6 +17,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             'REMOVE_ROW  .multi-input' : 'removeIp'
             'change #rt-name' : 'changeName'
             'click #set-main-rt' : 'setMainRT'
+            'change #checkbox_id' : 'changePropagation'
 
         render     : () ->
             console.log 'property:rtb render'
@@ -55,6 +56,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
             this.trigger 'SET_MAIN_RT', uid
 
+        changePropagation : ( event ) ->
+
+            console.log event
+            uid = $("#rt-name").data 'uid'
+            this.trigger 'SET_PROPAGATION', uid, event.target.dataset.uid
 
     }
 

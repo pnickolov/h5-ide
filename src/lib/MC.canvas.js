@@ -31,6 +31,7 @@ MC.canvas = {
 				case 'none':
 					is_visible = false;
 					break;
+
 				default:
 					is_visible = true;
 					break;
@@ -1158,7 +1159,7 @@ MC.canvas = {
 				match[2] &&
 				match[2].is_matched &&
 				match[3] &&
-				match[3].is_matched ? true : false;
+				match[3].is_matched;
 
 			if (
 				!is_matched &&
@@ -1703,7 +1704,7 @@ MC.canvas.event.dragable = {
 			event.stopPropagation();
 
 			var target = $(this),
-				target_offset = this.getBoundingClientRect(),
+				target_offset = Canvon(this).offset(),
 				target_type = target.data('type'),
 				node_type = target.data('class'),
 				canvas_offset = $('#svg_canvas').offset(),
@@ -1841,7 +1842,7 @@ MC.canvas.event.dragable = {
 				target_id = target.attr('id'),
 				target_type = event.data.target_type,
 				canvas_offset = $('#svg_canvas').offset(),
-				shadow_offset = event.data.shadow[0].getBoundingClientRect(),
+				shadow_offset = Canvon(event.data.shadow[0]).offset(),
 				layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				node_type = target.data('class'),
@@ -2243,7 +2244,7 @@ MC.canvas.event.dragable = {
 			target_id = target.attr('id'),
 			target_type = event.data.target_type,
 			canvas_offset = $('#svg_canvas').offset(),
-			shadow_offset = event.data.shadow[0].getBoundingClientRect(),
+			shadow_offset = Canvon(event.data.shadow[0]).offset(),
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			node_type = target.data('class'),
@@ -2301,7 +2302,7 @@ MC.canvas.event.drawConnection = {
 
 			var canvas_offset = $('#svg_canvas').offset(),
 				target = $(this),
-				target_offset = this.getBoundingClientRect(),
+				target_offset = Canvon(this).offset(),
 				parent = target.parent(),
 				node_id = parent.attr('id'),
 				node_type = parent.data('class'),
@@ -3777,7 +3778,45 @@ MC.canvas.event.selectLine = function (event)
 
 	//trigger event when selecte line
 	$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", clone.id);
+};
 
+MC.canvas.event.selectNode = function (event)
+{
+	if (event.which === 1)
+	{
+		event.preventDefault();
+		event.stopPropagation();
+
+		MC.canvas.event.clearSelected();
+		Canvon(this).addClass('selected');
+
+		var target = $(this),
+			target_type = target.data('type'),
+			clone_node;
+
+		if (target_type === 'node')
+		{
+			Canvon(this).addClass('selected');
+
+			// Append to top
+			clone_node = target.clone();
+			target.remove();
+			$('#node_layer').append(clone_node);
+
+			MC.canvas.selected_node.push(clone_node[0]);
+
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+		}
+		
+		if (target_type === 'group')
+		{
+			Canvon(this).addClass('selected');
+
+			MC.canvas.selected_node.push(target[0]);
+
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
+		}
+	}
 };
 
 MC.canvas.event.clearSelected = function ()
@@ -3797,7 +3836,8 @@ MC.canvas.event.clearSelected = function ()
 
 MC.canvas.event.keyEvent = function (event)
 {
-	var keyCode = event.which;
+	var keyCode = event.which,
+		canvas_status = MC.canvas.getState();
 
 	// Delete resource - delete/backspace
 	if (
@@ -3806,6 +3846,7 @@ MC.canvas.event.keyEvent = function (event)
 			// For Mac
 			keyCode === 8
 		) &&
+		canvas_status === 'stack' &&
 		MC.canvas.selected_node.length > 0 &&
 		event.target === document.body
 	)
@@ -3885,6 +3926,7 @@ MC.canvas.event.keyEvent = function (event)
 	// Move node
 	if (
 		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
+		canvas_status === 'stack' &&
 		MC.canvas.selected_node.length === 1 &&
 		MC.canvas.selected_node[ 0 ].getAttribute('data-type') === 'node'
 	)

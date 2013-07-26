@@ -159,11 +159,10 @@
 	stroke-width: 0;
 }
 
-.port:hover {
+.canvas_state_stack .port:hover {
 	fill: #F2F8FF;
 	stroke-width: 2;
 	cursor  : pointer;
-	/*opacity : 0.7;*/
 }
 
 /* highlight connnectable*/
@@ -451,4 +450,9 @@
 
 .bubble-content {
 	font-size: 12px;
+}
+
+/*special style for app state*/
+.canvas_state_app .resizer-wrap {
+	display: none;
 }

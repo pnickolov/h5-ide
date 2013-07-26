@@ -669,7 +669,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				
 				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
 					
-					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
+					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 					component_data.resource.SecurityGroups.push('@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId');
 					
 				}else if (MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
@@ -782,7 +782,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.data);
 				component_data.name = option.name;
 				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
-					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpdId';					
+					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';					
 				}
 				if(option.main){
 					main_icon = "main-";
@@ -895,7 +895,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.IGW_JSON.data);
 				component_data.name = option.name;
-				component_data.resource.AttachmentSet[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
+				component_data.resource.AttachmentSet[0].VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				
 				// disable drag when add one
 				
@@ -992,7 +992,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.VGW_JSON.data);
 				component_data.name = option.name;
-				component_data.resource.Attachments[0].VpcId = '@' + option.group.vpcUId + '.resource.VpdId';
+				component_data.resource.Attachments[0].VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				$.each($(".resource-item"), function ( idx, item){
 					
 					var data = $(item).data();

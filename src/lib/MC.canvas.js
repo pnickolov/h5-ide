@@ -695,6 +695,10 @@ MC.canvas = {
 					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-out') ||
 					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-out') ||
 
+					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-in') ||
+					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-in') ||
+
+
 					// AWS.EC2.Instance to AWS.EC2.Instance
 					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
 				)
@@ -706,11 +710,11 @@ MC.canvas = {
 
 						if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
 						{
-							to_port = to_node.find('.port-rtb-src-bottom');
+							to_port = to_node.find('.port-rtb-src');
 						}
 						else
 						{
-							to_port = to_node.find('.port-rtb-src-top');
+							to_port = to_node.find('.port-rtb-src');
 						}
 
 						to_port_offset = to_port[0].getBoundingClientRect();
@@ -723,11 +727,11 @@ MC.canvas = {
 
 						if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
 						{
-							from_port = from_node.find('.port-rtb-src-bottom');
+							from_port = from_node.find('.port-rtb-src');
 						}
 						else
 						{
-							from_port = from_node.find('.port-rtb-src-top');
+							from_port = from_node.find('.port-rtb-src');
 						}
 
 						from_port_offset = from_port[0].getBoundingClientRect();
@@ -2997,7 +3001,7 @@ MC.canvas.event.groupResize = {
 					Math.ceil((group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH),
 					Math.ceil((group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
 				),
-				'group_port': type === 'AWS.VPC.Subnet' ? [parent.find('.port-subnet-association-in').first(), parent.find('.port-subnet-association-out').first()] : null
+				'group_port': type === 'AWS.VPC.Subnet' ? [parent.find('.port-subnet-assoc-in').first(), parent.find('.port-subnet-assoc-out').first()] : null
 			});
 	},
 	mousemove: function (event)

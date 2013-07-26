@@ -277,17 +277,31 @@ var constant_data = {
 			},
 			{
 				type: 'sg',
+				from: 'elb-sg-in',
+				to: 'instance-sg',
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
+			},
+			{
+				type: 'attachment',
 				from: 'elb-attach',
 				to: 'instance-elb-attach',
 				relation: 'multiple',
 				color: '#12CD4F' //green
+			},
+			{
+				type: 'association',
+				from: 'elb-assoc',
+				to: 'subnet-assoc-in',
+				relation: 'multiple',
+				color: '#d8d7d6' //green
 			}
 			],
 			'AWS.VPC.Subnet':
 			{
 				type: 'association',
 				from: 'elb-assoc',
-				to: 'subnet-association-in',
+				to: 'subnet-assoc-in',
 				relation: 'multiple',
 				color: '#d8d7d6' //gray
 			}
@@ -346,7 +360,7 @@ var constant_data = {
 			{
 				type: 'association',
 				from: 'rtb-src',
-				to: 'subnet-association-out',
+				to: 'subnet-assoc-out',
 				relation: 'multiple',
 				color: '#d8d7d6'
 			},
@@ -463,7 +477,7 @@ var constant_data = {
 			'AWS.VPC.RouteTable':
 			{
 				type: 'association',
-				from: 'subnet-association-out',
+				from: 'subnet-assoc-out',
 				to: 'rtb-src',
 				relation: 'multiple',
 				color: '#d8d7d6'
@@ -471,7 +485,7 @@ var constant_data = {
 			'AWS.ELB':
 			{
 				type: 'association',
-				from: 'subnet-association-in',
+				from: 'subnet-assoc-in',
 				to: 'elb-assoc',
 				relation: 'unique',
 				color: '#d8d7d6' //gray

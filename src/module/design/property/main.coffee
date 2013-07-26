@@ -145,7 +145,7 @@ define [ 'jquery',
 
                                         return false
 
-                            else if '|instance-sg-in>instance-sg-out|instance-sg-out>instance-sg-in|'.indexOf( key ) >0
+                            else if '|instance-sg>instance-sg|'.indexOf( key ) >0
                                 #select line between instance and instance
                                 sgrule_main.loadModule line_option, 'line', sgrule_main
 

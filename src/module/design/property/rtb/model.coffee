@@ -49,8 +49,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                             if rt_uid == comp.uid
 
                                 asso = {}
-                        
-                                asso.SubnetId = '@' + map['subnet-association-out'] + '.resource.SubnetId'
+
+                                asso.SubnetId = '@' + map['subnet-assoc-out'] + '.resource.SubnetId'
 
                                 asso.Main = 'false'
 
@@ -82,11 +82,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         getRoute : ( uid ) ->
 
             rt = $.extend true, {}, MC.canvas_data.component[uid]
-            
+
             if rt.resource.AssociationSet.length != 0 and rt.resource.AssociationSet[0].Main == 'true'
 
                 rt.isMain = true
-            
+
             route_set = []
 
             $.each rt.resource.RouteSet, ( idx, route ) ->
@@ -98,7 +98,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 $.each route_set, ( i, r ) ->
 
                     if (r.InstanceId and r.InstanceId == route.InstanceId) or (r.NetworkInterfaceId and r.NetworkInterfaceId == route.NetworkInterfaceId) or (r.GatewayId and r.GatewayId == route.GatewayId)
-                        
+
                         existing = true
 
                         r.cidr_set.push route.DestinationCidrBlock
@@ -238,7 +238,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
 
 
-            
+
     }
 
     model = new RTBModel()

@@ -340,9 +340,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//3 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-gray port-subnet-association-in',
+					'class': 'port port-gray port-subnet-assoc-in',
 					'transform': 'translate(-12, ' + ((height / 2) - 13) + ')', //port position: right:0 top:-90 left:-180 bottom:-270
-					'data-name': 'subnet-association-in', //for identify port
+					'data-name': 'subnet-assoc-in', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
 					'data-type': 'association', //color of line
 					'data-direction': 'in', //direction
@@ -351,9 +351,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-gray port-subnet-association-out',
+					'class': 'port port-gray port-subnet-assoc-out',
 					'transform': 'translate(' + (width + 4) + ', ' + ((height / 2) - 13) + ')',
-					'data-name': 'subnet-association-out',
+					'data-name': 'subnet-assoc-out',
 					'data-position': 'right',
 					'data-type': 'association',
 					'data-direction': 'out',
@@ -877,7 +877,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-gray port-rtb-src port-rtb-src-top',
+					'class': 'port port-gray port-rtb-src port-rtb-src',
 					'transform': 'translate(41, -4)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'top',
@@ -888,7 +888,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-gray port-rtb-src port-rtb-src-bottom',
+					'class': 'port port-gray port-rtb-src port-rtb-src',
 					'transform': 'translate(41, 66)' + MC.canvas.PORT_DOWN_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'bottom',

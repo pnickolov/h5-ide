@@ -1028,6 +1028,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.VGW_JSON.data);
+				option.name = 'VPN-gateway';
 				component_data.name = option.name;
 				component_data.resource.Attachments[0].VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				$.each($(".resource-item"), function ( idx, item){
@@ -1164,15 +1165,15 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3. cgw name
-				Canvon.text(50, 90, option.name).attr({
+				Canvon.text(100, 95, option.name).attr({
 					'class': 'node-label name',
 					'id': group.id + '_name'
-				}),
-
-				////4. network name
-				Canvon.text(100, 95, option.networkName).attr({
-					'class': 'node-label network-name'
 				})
+
+				// ////4. network name
+				// Canvon.text(100, 95, option.networkName).attr({
+				// 	'class': 'node-label network-name'
+				// })
 
 			).attr({
 				'class': 'dragable node ' + class_type,

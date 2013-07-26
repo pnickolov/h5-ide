@@ -3047,6 +3047,7 @@ height: 35px;
 
 .sg-rule-create-add-wrap {
 	position : relative;
+	height   : 400px;
 }
 
 .sg-rule-create-node {
@@ -3104,7 +3105,15 @@ height: 35px;
 }
 
 .sg-rule-create-done-wrap {
-	display : none;
+	display  : none;
+	height   : 400px;
+	position : relative;
+}
+
+.sg-rule-create-done-wrap .modal-close {
+	position : absolute;
+	right    : 10px;
+	bottom   : 10px;
 }
 
 .done .sg-rule-create-done-wrap {
@@ -3159,11 +3168,48 @@ height: 35px;
 }
 
 .sg-create-group {
-	background : #777;
+	background  : #777;
+	font-size   : 14px;
+	padding     : 5px;
+	line-height : 1em;
 }
 
 .sg-create-rule-item {
 	border-bottom : 1px solid #555;
+	padding       : 5px 20px;
+	position      : relative;
+}
+
+.sg-rule-col1 {
+	width : 50px;
+	border-right : 1px solid #999;
+	float : left;
+	margin-right : 10px;
+}
+
+.sg-rule-delete {
+	position    : absolute;
+	right       : 10px;
+	bottom      : 10px;
+	background  : red;
+	width       : 16px;
+	height      : 16px;
+	text-align  : center;
+	line-height : 16px;
+}
+
+.sg-rule-inbound, .sg-rule-outbound {
+	width   : 16px;
+	height  : 16px;
+	display : block;
+}
+
+.sg-rule-inbound:before {
+	content : ">";
+}
+
+.sg-rule-outbound:before {
+	content : ">";
 }
 
 .sg-proto-option {

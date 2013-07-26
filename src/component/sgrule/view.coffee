@@ -48,8 +48,6 @@ define [
           outward = $("#sg-rule-create-tgt-o").is(":checked")
           $(".sg-rule-create-out").toggle( outward )
           $(".sg-rule-create-in").toggle( !outward)
-
-          this.$el.find('.sg-rule-create-add-wrap').toggleClass( 'outward', $('#sg-rule-create-tgt-o').is(':checked') )
           null
 
         addRule : ( event ) ->
@@ -72,7 +70,7 @@ define [
           this.updateSidebar()
 
         readdRule : () ->
-          this.$el.animate({left:'-=100px'}, 300).find("#modal-box").toggleClass('done', false)
+          this.$el.find('#modal-box').animate({left:'-=100px'}, 300).toggleClass('done', false)
 
 
         deleteRule : () ->

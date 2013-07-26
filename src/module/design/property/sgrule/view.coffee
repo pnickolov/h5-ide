@@ -17,16 +17,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         render     : () ->
             console.log 'property:sgrule render'
 
-            attributes =
-                sg_group : []
+            data = this.model.attributes
+            data.isAppView = this.isAppView
 
-            $( '.property-details' ).html this.template this.model.attributes
+            $( '.property-details' ).html this.template data
 
         onEditRule : ( event ) ->
 
             line_id = $("#property-sgrule").data('line')
 
             this.trigger "EDIT_RULE", line_id
+
+        setAppView : ( isAppView ) ->
+            this.isAppView = isAppView
 
 
     }

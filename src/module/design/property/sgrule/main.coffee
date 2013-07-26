@@ -17,7 +17,7 @@ define [ 'jquery',
     $( 'head' ).append( template )
 
     #private
-    loadModule = ( uid, type, current_main ) ->
+    loadModule = ( uid, type, current_main, tab_type ) ->
 
         #
         MC.data.current_sub_main = current_main
@@ -34,6 +34,7 @@ define [ 'jquery',
 
             #view
             view.model = model
+            view.setAppView = if tab_type is 'OPEN_APP' then true else false
 
             model.setLineId uid
             #render

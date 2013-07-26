@@ -731,7 +731,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 15, 28, 70, 53).attr({
+				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 15, 24, 70, 53).attr({
 					'id' : group.id + '_elb_scheme'
 				}),
 
@@ -739,7 +739,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_sg_in',
 					'class': 'port port-blue port-elb-sg-in',
-					'transform': 'translate(8, 43)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(8, 39)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-in',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -751,7 +751,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_sg_out',
 					'class': 'port port-blue port-elb-sg-out',
-					'transform': 'translate(84, 30)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-out',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -762,7 +762,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port -> instance attach
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-elb-attach',
-					'transform': 'translate(84, 46)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 42)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-attach',
 					'data-position': 'right',
 					'data-type': 'attachment',
@@ -774,7 +774,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_assoc',
 					'class': 'port port-gray port-elb-assoc',
-					'transform': 'translate(84, 61)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 57)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-assoc',
 					'data-position': 'right',
 					'data-type': 'association',
@@ -784,7 +784,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 				////6. elb_name
-				Canvon.text(50, 90, option.name).attr({
+				Canvon.text(50, 86, option.name).attr({
 					'class': 'node-label name',
 					'id' : group.id + '_elb_name'
 				})
@@ -817,7 +817,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.data);
 				component_data.name = option.name;
 				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
-					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';					
+					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				}
 				if(option.main){
 					main_icon = "main-";
@@ -877,7 +877,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-gray port-rtb-src port-rtb-src',
+					'class': 'port port-gray port-rtb-src port-rtb-src-top',
 					'transform': 'translate(41, -4)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'top',
@@ -888,7 +888,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-gray port-rtb-src port-rtb-src',
+					'class': 'port port-gray port-rtb-src port-rtb-src-bottom',
 					'transform': 'translate(41, 66)' + MC.canvas.PORT_DOWN_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'bottom',
@@ -1028,6 +1028,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.VGW_JSON.data);
+				option.name = 'VPN-gateway';
 				component_data.name = option.name;
 				component_data.resource.Attachments[0].VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				$.each($(".resource-item"), function ( idx, item){
@@ -1164,15 +1165,15 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3. cgw name
-				Canvon.text(50, 90, option.name).attr({
+				Canvon.text(100, 95, option.name).attr({
 					'class': 'node-label name',
 					'id': group.id + '_name'
-				}),
-
-				////4. network name
-				Canvon.text(100, 95, option.networkName).attr({
-					'class': 'node-label network-name'
 				})
+
+				// ////4. network name
+				// Canvon.text(100, 95, option.networkName).attr({
+				// 	'class': 'node-label network-name'
+				// })
 
 			).attr({
 				'class': 'dragable node ' + class_type,

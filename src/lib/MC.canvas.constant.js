@@ -205,12 +205,19 @@ var constant_data = {
 			{
 				type: 'sg',
 				from: 'instance-sg',
-				to: 'elb-sg-in',
+				to: 'elb-sg-out',
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
 			{
 				type: 'sg',
+				from: 'instance-sg',
+				to: 'elb-sg-in',
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
+			},
+			{
+				type: 'attachment',
 				from: 'instance-elb-attach',
 				to: 'elb-attach',
 				relation: 'multiple',
@@ -288,13 +295,6 @@ var constant_data = {
 				to: 'instance-elb-attach',
 				relation: 'multiple',
 				color: '#12CD4F' //green
-			},
-			{
-				type: 'association',
-				from: 'elb-assoc',
-				to: 'subnet-assoc-in',
-				relation: 'multiple',
-				color: '#d8d7d6' //green
 			}
 			],
 			'AWS.VPC.Subnet':

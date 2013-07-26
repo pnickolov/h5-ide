@@ -710,11 +710,11 @@ MC.canvas = {
 
 						if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
 						{
-							to_port = to_node.find('.port-rtb-src');
+							to_port = to_node.find('.port-rtb-src-bottom');
 						}
 						else
 						{
-							to_port = to_node.find('.port-rtb-src');
+							to_port = to_node.find('.port-rtb-src-top');
 						}
 
 						to_port_offset = to_port[0].getBoundingClientRect();
@@ -727,11 +727,11 @@ MC.canvas = {
 
 						if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
 						{
-							from_port = from_node.find('.port-rtb-src');
+							from_port = from_node.find('.port-rtb-src-bottom');
 						}
 						else
 						{
-							from_port = from_node.find('.port-rtb-src');
+							from_port = from_node.find('.port-rtb-src-top');
 						}
 
 						from_port_offset = from_port[0].getBoundingClientRect();

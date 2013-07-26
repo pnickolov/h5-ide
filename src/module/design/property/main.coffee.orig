@@ -152,6 +152,15 @@ define [ 'jquery',
                             else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
                                 #select line between vgw and  cgw
                                 vpn_main.loadModule line_option, 'line', vpn_main
+<<<<<<< HEAD
+
+
+                #temp
+                # setTimeout () ->
+                #    view.refresh()
+                # , 2000
+=======
+>>>>>>> feature/optimization-property-event-ks
 
                 #
                 if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom

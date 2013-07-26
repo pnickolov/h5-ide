@@ -51,7 +51,7 @@ require.config {
 
 		#bootstrap
 		#'bootstrap-tab'     : 'ui/common/bootstrap-tab'
-		'bootstrap-dropdown' : 'ui/common/bootstrap-dropdown'
+		#'bootstrap-dropdown' : 'ui/common/bootstrap-dropdown'
 
 		#ide
 		'router'       : 'js/ide/router'

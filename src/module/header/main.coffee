@@ -47,6 +47,9 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
                 console.log 'design_header:DROPDOWN_APP_NAME_CLICK'
                 model.openApp(req_id)
 
+            view.on 'AWSCREDENTIAL_CLICK', () ->
+                console.log 'AWSCREDENTIAL_CLICK'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
     unLoadModule = () ->
         #

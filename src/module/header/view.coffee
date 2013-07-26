@@ -6,12 +6,13 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
 
     HeaderView = Backbone.View.extend {
 
-        el       : $( '#header' )
+        el       : '#header'
 
         template : Handlebars.compile $( '#header-tmpl' ).html()
 
         events   :
             'click #btn-logout'                     : 'clickLogout'
+            'click #awscredential-modal'            : 'clickOpenAWSCredential'
             'DROPDOWN_CLOSED #header--notification' : 'dropdownClosed'
             'click .dropdown-app-name'              : 'clickAppName'
 
@@ -25,7 +26,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
             $( this.el ).html this.template this.model.attributes
 
         clickLogout : () ->
-
             this.trigger 'BUTTON_LOGOUT_CLICK'
 
         dropdownClosed : () ->
@@ -35,6 +35,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
             console.log 'click dropdown app name'
 
             this.trigger 'DROPDOWN_APP_NAME_CLICK', event.currentTarget.id
+
+        clickOpenAWSCredential : () ->
+            this.trigger 'AWSCREDENTIAL_CLICK'
 
     }
 

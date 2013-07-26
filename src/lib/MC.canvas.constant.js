@@ -385,7 +385,7 @@ var constant_data = {
 			{
 				from: 'rtb-tgt-right',
 				to: 'vgw-tgt',
-				relation: 'unique', //a rt can only connect to one vgw
+				relation: 'multiple', //a rt can only connect to one vgw
 				color: '#6DAEFE', //blue
 				
 				color_dash: '#9FC9FD', //dash color

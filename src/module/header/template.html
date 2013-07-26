@@ -1,6 +1,6 @@
 <ul class="header-menu">
 	<li class="dropdown">
-		<a href="#" id="header--notification" class="dropdown-toggle" data-toggle="dropdown" role="button">
+		<a href="#" id="header--notification" class="js-toggle-dropdown" role="button">
 			<i class="icon-bell"></i><span class="notification-counter">{{unread_num}}</span>
 		</a>
 		<div id="notification-panel-wrapper" class="dropdown-menu" role="menu">
@@ -54,7 +54,7 @@
 		</div>
 	</li>
 	<li class="dropdown">
-		<a href="#" id="header--user" class="dropdown-toggle" data-toggle="dropdown" role="button">
+		<a href="#" id="header--user" class="js-toggle-dropdown" role="button">
 			<img src="./assets/images/ide/dummy/face-30x30.jpg" alt="" class="avatar" width="30" height="30"><i class="icon-caret-down"></i>
 		</a>
 		<div id="user-dropdown-wrapper" class="dropdown-menu" role="menu">
@@ -66,7 +66,7 @@
 					<a href="javascript:void(0)"><i class="icon-question-sign icon-label"></i>Documetation</a>
 				</li>
 				<li>
-					<a href="javascript:void(0)" class="modal" data-modal-template="AWSCredential" data-modal-data='{"title":"Modal title"}'><i class="icon-question-sign icon-label"></i>AWS Credential</a>
+					<a href="javascript:void(0)" id="awscredential-modal"><i class="icon-question-sign icon-label"></i>AWS Credential</a>
 				</li>
 				<li>
 					<a id="btn-logout" href="javascript:void(0)"><i class="icon-user-2 icon-label"></i>Logout</a>

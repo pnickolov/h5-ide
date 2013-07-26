@@ -141,8 +141,8 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
             req = i for i in info_list when i.id == req_id
 
-            # if req
-            #     ide_event.trigger ide_event.OPEN_APP_TAB, req.name, req.region, req.rid
+            if req
+                ide_event.trigger ide_event.OPEN_APP_TAB, req.name, req.region, req.rid
 
             null
 

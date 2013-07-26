@@ -201,7 +201,7 @@ var constant_data = {
 				relation: 'multiple',
 				color: '#12CD4F' //green
 			},
-			'AWS.ELB':
+			'AWS.ELB': [
 			{
 				type: 'sg',
 				from: 'instance-sg',
@@ -209,6 +209,14 @@ var constant_data = {
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
+			{
+				type: 'sg',
+				from: 'instance-elb-attach',
+				to: 'elb-attach',
+				relation: 'multiple',
+				color: '#12CD4F' //green
+			}
+			],
 			'AWS.VPC.NetworkInterface': [
 			{
 				type: 'attachment',
@@ -227,7 +235,7 @@ var constant_data = {
 			'AWS.VPC.RouteTable': [
 			{
 				type: 'rtb_target',
-				from: 'instance-sg',
+				from: 'instance-rtb',
 				to: 'rtb-tgt-left',
 				relation: 'multiple', //a instance can only connect to one routetable
 				color: '#6DAEFE', //blue
@@ -237,7 +245,7 @@ var constant_data = {
 			},
 			{
 				type: 'sg',
-				from: 'instance-sg',
+				from: 'instance-rtb',
 				to: 'rtb-tgt-right',
 				relation: 'unique', //a instance can only connect to one routetable
 				color: '#6DAEFE', //blue
@@ -259,7 +267,7 @@ var constant_data = {
 		},
 		'AWS.ELB':
 		{
-			'AWS.EC2.Instance':
+			'AWS.EC2.Instance': [
 			{
 				type: 'sg',
 				from: 'elb-sg-out',
@@ -267,6 +275,14 @@ var constant_data = {
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
+			{
+				type: 'sg',
+				from: 'elb-attach',
+				to: 'instance-elb-attach',
+				relation: 'multiple',
+				color: '#12CD4F' //green
+			}
+			],
 			'AWS.VPC.Subnet':
 			{
 				type: 'association',
@@ -294,17 +310,27 @@ var constant_data = {
 				relation: 'unique', //an eni can only connect to one instance
 				color: '#12CD4F' //green
 			}],
-			'AWS.VPC.RouteTable':
+			'AWS.VPC.RouteTable': [
 			{
 				type: 'sg',
-				from: 'eni-sg',
+				from: 'eni-rtb',
 				to: 'rtb-tgt-left',
 				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 
+			},
+			{
+				type: 'sg',
+				from: 'eni-rtb',
+				to: 'rtb-tgt-right',
+				color: '#6DAEFE', //blue
+				relation: 'multiple',
+				color_dash: '#9FC9FD', //dash color
+				stroke_dasharray: '10, 10'
 			}
+			]
 		},
 		'AWS.VPC.RouteTable':
 		{
@@ -328,7 +354,7 @@ var constant_data = {
 			{
 				type: 'rtb_target',
 				from: 'rtb-tgt-left',
-				to: 'instance-sg',
+				to: 'instance-rtb',
 				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				//dash line
@@ -338,25 +364,35 @@ var constant_data = {
 			{
 				type: 'rtb_target',
 				from: 'rtb-tgt-right',
-				to: 'instance-sg',
+				to: 'instance-rtb',
 				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				//dash line
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			}],
-			'AWS.VPC.NetworkInterface':
+			'AWS.VPC.NetworkInterface': [
 			{
 				type: 'rtb_target',
 				from: 'rtb-tgt-left',
-				to: 'eni-sg',
+				to: 'eni-rtb',
 				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				//dash line
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			},
+			{
 				type: 'rtb_target',
+				from: 'rtb-tgt-right',
+				to: 'eni-rtb',
+				color: '#6DAEFE', //blue
+				relation: 'multiple',
+				//dash line
+				color_dash: '#9FC9FD', //dash color
+				stroke_dasharray: '10, 10'
+			}
+			],
 			'AWS.VPC.InternetGateway':
 			{
 				type: 'rtb_target',

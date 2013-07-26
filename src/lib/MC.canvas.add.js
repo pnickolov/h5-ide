@@ -747,7 +747,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-angle': MC.canvas.PORT_LEFT_ANGLE
 				}),
 
-				//3 path: right port
+				//3 path: right port -> instance sg
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_sg_out',
 					'class': 'port port-blue port-elb-sg-out',
@@ -759,18 +759,18 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
-				//4 path: right port
+				//4 path: right port -> instance attach
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-green port-instance-attach',
+					'class': 'port port-green port-elb-attach',
 					'transform': 'translate(84, 46)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'instance-attach',
+					'data-name': 'elb-attach',
 					'data-position': 'right',
 					'data-type': 'attachment',
 					'data-direction': 'out',
 					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
-				//5 path: right port
+				//5 path: right port -> subnet
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_assoc',
 					'class': 'port port-gray port-elb-assoc',
@@ -1285,8 +1285,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				//5 path: top port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-rtb',
-					'transform': 'translate(46, 15)' + MC.canvas.PORT_UP_ROTATE,
-					'data-name': 'instance-eni',
+					'transform': 'translate(48, 10)' + MC.canvas.PORT_UP_ROTATE,
+					'data-name': 'eni-rtb',
 					'data-position': 'top',
 					'data-type': 'sg',
 					'data-direction': 'in',

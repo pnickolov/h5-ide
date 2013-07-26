@@ -3866,7 +3866,7 @@ MC.canvas.event.keyEvent = function (event)
 		canvas_status = MC.canvas.getState(),
 		is_zoomed = $('#canvas_body').hasClass('canvas_zoomed');
 
-	// Delete resource - delete/backspace
+	// Delete resource - [delete/backspace]
 	if (
 		(
 			keyCode === 46 ||
@@ -3897,7 +3897,7 @@ MC.canvas.event.keyEvent = function (event)
 		return false;
 	}
 
-	// Switch node - tab
+	// Switch node - [tab]
 	if (
 		keyCode === 9 &&
 		MC.canvas.selected_node.length === 1 &&
@@ -3951,7 +3951,7 @@ MC.canvas.event.keyEvent = function (event)
 		return false;
 	}
 
-	// Move node
+	// Move node - [up, down, left, right]
 	if (
 		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
 		canvas_status === 'stack' &&
@@ -4039,6 +4039,18 @@ MC.canvas.event.keyEvent = function (event)
 				);
 			});
 		}
+
+		return false;
+	}
+
+	// Save stack - [Ctrl + S]
+	if (
+		event.ctrlKey && event.which === 83 &&
+		canvas_status === 'stack' &&
+		!is_zoomed
+	)
+	{
+		$("#svg_canvas").trigger("CANVAS_SAVE");
 
 		return false;
 	}

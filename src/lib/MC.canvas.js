@@ -681,12 +681,21 @@ MC.canvas = {
 
 			if (is_connected === false || line_option)
 			{
-				// Special for AWS.VPC.Subnet and AWS.VPC.RouteTable
+				// Special connection
 				if (
+					// AWS.VPC.Subnet to AWS.VPC.RouteTable
 					(from_type === 'AWS.VPC.Subnet' && to_type === 'AWS.VPC.RouteTable') ||
 					(to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable') ||
+
+					// AWS.EC2.Instance to AWS.VPC.NetworkInterface
 					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.VPC.NetworkInterface') ||
 					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.VPC.NetworkInterface') ||
+
+					// AWS.EC2.Instance to AWS.ELB
+					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB') ||
+					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB') ||
+
+					// AWS.EC2.Instance to AWS.EC2.Instance
 					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
 				)
 				{
@@ -752,6 +761,40 @@ MC.canvas = {
 						{
 							from_port = from_node.find('.port-instance-sg-right');
 							to_port = to_node.find('.port-eni-sg-left');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+						to_port_offset = to_port[0].getBoundingClientRect();
+					}
+
+					if (from_type === 'AWS.ELB')
+					{
+						from_port = from_node.find('.port-' + from_target_port);
+
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							to_port = to_node.find('.port-instance-sg-right');
+						}
+						else
+						{
+							to_port = to_node.find('.port-instance-sg-left');
+						}
+
+						from_port_offset = from_port[0].getBoundingClientRect();
+						to_port_offset = to_port[0].getBoundingClientRect();
+					}
+
+					if (to_type === 'AWS.ELB')
+					{
+						to_port = to_node.find('.port-' + to_target_port);
+
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							from_port = from_node.find('.port-instance-sg-left');
+						}
+						else
+						{
+							from_port = from_node.find('.port-instance-sg-right');
 						}
 
 						from_port_offset = from_port[0].getBoundingClientRect();

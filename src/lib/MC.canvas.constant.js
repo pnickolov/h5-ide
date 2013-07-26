@@ -257,22 +257,14 @@ var constant_data = {
 		},
 		'AWS.ELB':
 		{
-			'AWS.EC2.Instance':[
-				{
-					type: 'sg',
-					from: 'elb-sg-out',
-					to: 'instance-sg',
-					relation: 'multiple',
-					color: '#6DAEFE' //blue
-				},
-				{
-					type: 'sg',
-					from: 'elb-sg-in',
-					to: 'instance-sg',
-					relation: 'multiple',
-					color: '#6DAEFE' //blue
-				}
-			],
+			'AWS.EC2.Instance':
+			{
+				type: 'sg',
+				from: 'elb-sg-out',
+				to: 'instance-sg',
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
+			},
 			'AWS.VPC.Subnet':
 			{
 				type: 'association',

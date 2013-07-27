@@ -28,7 +28,7 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             #
             this.setPropertyPanel     MC.tab[ tab_id ].property_panel
             #
-            this.setLastOpenProperty  MC.tab[ tab_id ].last_open_property
+            this.setLastOpenProperty  MC.tab[ tab_id ].last_open_property, tab_id
             null
 
         updateTab : ( old_tab_id, tab_id ) ->
@@ -75,22 +75,24 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             #
             MC.data.current_sub_main
 
-        setLastOpenProperty : ( last_open_property ) ->
-            console.log 'setLastOpenProperty'
+        setLastOpenProperty : ( last_open_property, tab_id ) ->
+            console.log 'setLastOpenProperty, tab_id = ' + tab_id
+            console.log tab_id.indexOf( 'app' )
+            if tab_id.indexOf( 'app' ) isnt -1 then tab_type = 'OPEN_APP' else tab_type = 'OPEN_STACK'
             #
             MC.data.last_open_property = last_open_property
             #temp
             if !MC.data.last_open_property
-                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : 'component', 'uid' : '', 'instance_expended_id' : '' }
+                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : 'component', 'uid' : '', 'instance_expended_id' : '', 'tab_type' : tab_type }
             #
             if MC.data.last_open_property.event_type is 'OPEN_PROPERTY'
-                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.type, MC.data.last_open_property.uid, MC.data.last_open_property.instance_expended_id, this.get( 'snapshot' ).property
+                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.type, MC.data.last_open_property.uid, MC.data.last_open_property.instance_expended_id, this.get( 'snapshot' ).property, tab_type
             else if MC.data.last_open_property.event_type is 'OPEN_SG'
-                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.uid_parent, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property
+                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.uid_parent, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property, tab_type
             else if MC.data.last_open_property.event_type is 'OPEN_ACL'
-                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.uid_parent, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property
+                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.uid_parent, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property, tab_type
             else if MC.data.last_open_property.event_type is 'OPEN_INSTANCE'
-                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property
+                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property, tab_type
             null
 
         getLastOpenProperty : () ->

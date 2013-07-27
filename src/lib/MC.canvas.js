@@ -2593,17 +2593,25 @@ MC.canvas.event.drawConnection = {
 			}
 		}
 
-		$.each(event.data.option, function (type, value)
+		$.each(event.data.option, function (type, option)
 		{
-			$('.' + type.replace(/\./ig, '-'))
-				.attr('class', function (index, key)
-				{
-					return key.replace('connectable ', '');
-				})
-				.find('.connectable-port').attr("class", function (index, key)
-				{
-					return key.replace('connectable-port ', '');
-				});
+			if ($.type(option) !== 'array')
+			{
+				option = [option];
+			}
+
+			$.each(option, function (index, value)
+			{
+				$('.' + type.replace(/\./ig, '-'))
+					.attr('class', function (index, key)
+					{
+						return key.replace('connectable ', '');
+					})
+					.find('.connectable-port').attr("class", function (index, key)
+					{
+						return key.replace('connectable-port ', '');
+					});
+			});
 		});
 
 		$(document.body).removeClass('disable-event');

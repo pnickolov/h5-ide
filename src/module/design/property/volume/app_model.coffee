@@ -13,6 +13,17 @@ define [ 'backbone', 'MC' ], () ->
 
         init : ( volume_uid )->
 
+          myVolumeComponent = MC.canvas_data.component[ volume_uid ]
+
+          appData = MC.data.resource_list[ MC.canvas_data.region ]
+
+          volume = $.extend true, {}, appData[ myVolumeComponent.resource.VolumeId ]
+          volume.name = myVolumeComponent.name
+
+          if volume.status == "in-use"
+            volume.isInUse = true
+
+          this.set volume
 
     }
 

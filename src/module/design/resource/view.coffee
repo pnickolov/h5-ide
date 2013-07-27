@@ -18,7 +18,7 @@ define [ 'event',
         favorite_ami_tmpl      : Handlebars.compile $( '#favorite-ami-tmpl' ).html()
         community_ami_tmpl     : Handlebars.compile $( '#community-ami-tmpl' ).html()
         resource_vpc_tmpl      : Handlebars.compile $( '#resource-vpc-tmpl' ).html()
-        
+
 
         initialize : ->
             #listen
@@ -50,7 +50,7 @@ define [ 'event',
                 .on( 'click',            '#btn-search-ami',             this, this.searchCommunityAmiCurrent )
                 .on( 'click',            '#community_ami_page_preview', this, this.searchCommunityAmiPreview )
                 .on( 'click',            '#community_ami_page_next',    this, this.searchCommunityAmiNext )
-            
+
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideResourcePanel
 
@@ -121,14 +121,14 @@ define [ 'event',
         hideResourcePanel : ( type ) ->
             console.log 'hideResourcePanel = ' + type
 
-            if type is 'OPEN_APP'
+            if type is 'OPEN_APP' or type is 'OLD_APP'
                 $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).hide()
             else
                 #
                 fixedaccordion.resize()
 
-            if type is 'OPEN_STACK' or type is 'NEW_STACK'
+            if type is 'OPEN_STACK' or type is 'NEW_STACK' or type is 'OLD_STACK'
                 if $( '#resource-panel' ).attr( 'class' ).indexOf( 'hide' ) isnt -1 then $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
 
@@ -256,7 +256,7 @@ define [ 'event',
         searchCommunityAmiPreview : ( event ) ->
 
             event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, -1
-            
+
             # modal(MC.template.browseCommunityAmi(this.model.attributes), false)
             # $($('#selectbox-ami-platform').find('.selection')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html())
             # $('#community-ami-input').on 'keyup', (event)->
@@ -269,7 +269,7 @@ define [ 'event',
             #             platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
             #         }
             #     }
-                
+
             # $('#filter-ami-public-private').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
 
             #         result_set = {
@@ -285,7 +285,7 @@ define [ 'event',
             #         filter.update($('#community-ami-filter'), result_set)
 
             # $('#filter-ami-EBS-Instance').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
-                
+
             #         result_set = {
             #             value:$('#community-ami-input').val(),
             #             type:{

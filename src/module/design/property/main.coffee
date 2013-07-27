@@ -50,19 +50,21 @@ define [ 'jquery',
 
             #show stack property
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
-                console.log 'property:RELOAD_RESOURCE'
+                console.log 'property:RELOAD_RESOURCE, type = ' + type
                 #check re-render
                 view.reRender template
                 #
                 tab_type = type
                 #
                 stack_main.loadModule stack_main
+                null
 
             #listen OPEN_PROPERTY
-            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom )  ->
-
+            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
                 #
                 MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
+                #
+                if bak_tab_type then tab_type = bak_tab_type
 
                 if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
 
@@ -158,10 +160,12 @@ define [ 'jquery',
                 null
 
             #listen OPEN_SG
-            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id, back_dom ) ->
+            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id, back_dom, bak_tab_type ) ->
                 console.log 'OPEN_SG'
                 #
                 MC.data.last_open_property = { 'event_type' : ide_event.OPEN_SG, 'uid_parent' : uid_parent, 'expended_accordion_id' : expended_accordion_id }
+                #
+                if bak_tab_type then tab_type = bak_tab_type
                 #
                 sg_main.loadModule( uid_parent, expended_accordion_id, sg_main, tab_type )
                 #
@@ -169,10 +173,12 @@ define [ 'jquery',
                 null
 
             #listen OPEN_ACL
-            ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid, back_dom ) ->
+            ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid, back_dom, bak_tab_type ) ->
                 console.log 'OPEN_ACL'
                 #
                 MC.data.last_open_property = { 'event_type' : ide_event.OPEN_ACL, 'uid' : uid_parent, 'expended_accordion_id' : expended_accordion_id, 'acl_uid' : acl_uid }
+                #
+                if bak_tab_type then tab_type = bak_tab_type
                 #
                 acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid, tab_type )
                 #
@@ -180,10 +186,12 @@ define [ 'jquery',
                 null
 
             #listen OPEN_INSTANCE
-            ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id, back_dom) ->
+            ide_event.onLongListen ide_event.OPEN_INSTANCE, ( expended_accordion_id, back_dom, bak_tab_type ) ->
                 console.log 'OPEN_INSTANCE'
                 #
                 MC.data.last_open_property = { 'event_type' : ide_event.OPEN_INSTANCE, 'expended_accordion_id' : expended_accordion_id }
+                #
+                if bak_tab_type then tab_type = bak_tab_type
                 #
                 instance_main.loadModule uid, expended_accordion_id, instance_main
                 #
@@ -197,7 +205,6 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.UPDATE_PROPERTY, ( back_dom ) ->
                 console.log 'UPDATE_PROPERTY'
                 setTimeout () ->
-                    #$( '#property-panel' ).html back_dom
                     view.updateHtml back_dom
                 , 500
 

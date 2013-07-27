@@ -14,8 +14,9 @@ define [ 'event',
             'click #awsredentials-submit'           : 'onSubmit'
             'click #AWSCredentials-account-update'  : 'onSubmit'
             'click #awsredentials-update-done'      : 'onDone'
+            'click #AWSCredentials-account-update'  : 'updateAccount'
 
-        render     : ( template ) ->
+        render     : (template) ->
             console.log 'pop-up:awscredential render'
             #
             modal template, false
@@ -25,6 +26,8 @@ define [ 'event',
         reRender : () ->
             me = this
             console.log 'pop-up:awscredential rerender'
+
+            this.$el.html this.model.attributes
 
             if me.model.attributes.is_authenticated
                 $('#AWSCredentials-submiting').hide()
@@ -41,6 +44,9 @@ define [ 'event',
             console.log 'onDone'
             modal.close()
             this.trigger 'CLOSE_POPUP'
+
+        updateAccount : ->
+            console.log 'updateAccount'
 
         onSubmit : () ->
             console.log 'onSubmit'

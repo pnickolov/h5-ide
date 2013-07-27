@@ -6,6 +6,10 @@ define [ 'jquery', 'event',
          'text!/component/awscredential/template.html'
 ], ( $, ide_event, template ) ->
 
+
+    #template = '<script type="text/x-handlebars-template" id="aws-credential-tmpl">' + template + '</script>'
+    #$( 'head' ).append template
+
     #private
     loadModule = () ->
 

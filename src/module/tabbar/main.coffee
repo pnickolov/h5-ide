@@ -89,13 +89,14 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 ide_event.trigger ide_event.SAVE_DESIGN_MODULE, tab_id
 
             #listen new_stack
-            model.on 'NEW_STACK', ( result ) ->
+            model.on 'NEW_STACK', ( tab_id ) ->
                 console.log 'NEW_STACK'
                 console.log model.get 'stack_region_name'
                 console.log model.get 'current_platform'
                 console.log model.get 'tab_name'
+                console.log tab_id
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ), model.get( 'stack_region_name' ), null, model.get 'current_platform'
+                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
 
             #listen open_stack
             model.on 'OPEN_STACK', ( tab_id ) ->

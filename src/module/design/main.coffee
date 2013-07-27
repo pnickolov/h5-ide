@@ -56,12 +56,11 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 #
                 if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
                     #
-                    if type is 'OPEN_STACK'
-                        model.setCanvasData result.resolved_data[0]
-                    else if type is 'OPEN_APP'
+                    if type is 'OPEN_STACK' or type is 'OPEN_APP'
                         model.setCanvasData result.resolved_data[0]
                     #temp
-                    ide_event.trigger ide_event.RELOAD_RESOURCE, region_name, type, current_paltform, tab_id
+                    #when NEW_STACK result is tab_id
+                    ide_event.trigger ide_event.RELOAD_RESOURCE, region_name, type, current_paltform, tab_id, result
                 null
 
             #listen

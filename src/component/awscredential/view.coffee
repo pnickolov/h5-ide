@@ -10,8 +10,10 @@ define [ 'event',
     AWSCredentialView = Backbone.View.extend {
 
         events   :
-            'closed'                      : 'onClose'
-            'click #awsredentials-submit' : 'onSubmit'
+            'closed'                                : 'onClose'
+            'click #awsredentials-submit'           : 'onSubmit'
+            'click #AWSCredentials-account-update'  : 'onSubmit'
+            'click #awsredentials-update-done'      : 'onDone'
 
         render     : ( template ) ->
             console.log 'pop-up:awscredential render'
@@ -20,8 +22,24 @@ define [ 'event',
             #
             this.setElement $( '#AWSCredential-setting' ).closest '#modal-wrap'
 
+        reRender : () ->
+            me = this
+            console.log 'pop-up:awscredential rerender'
+
+            if me.model.attributes.is_authenticated
+                $('#AWSCredentials-submiting').hide()
+                $('#AWSCredentials-update').show()
+            else
+                $('#AWSCredential-info').hide()
+                $('#AWSCredential-failed').show()
+
         onClose : ->
             console.log 'onClose'
+            this.trigger 'CLOSE_POPUP'
+
+        onDone : ->
+            console.log 'onDone'
+            modal.close()
             this.trigger 'CLOSE_POPUP'
 
         onSubmit : () ->
@@ -37,6 +55,10 @@ define [ 'event',
                 notification 'error', 'Invalid access key.'
             else if not secret_key
                 notification 'error', 'Invalid secret key.'
+
+            # hide AWSCredential-form and show AWSCredentials-submiting
+            $('#AWSCredential-form').hide()
+            $('#AWSCredentials-submiting').show()
 
             this.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
 

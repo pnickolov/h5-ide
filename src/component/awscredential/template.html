@@ -56,31 +56,17 @@
 		</div>
 	</div>
 
-	<div id="AWSCredentials-success">
-		<div class="AWSCredentials-body-info">
-			<h5>You have connected with following AWS account:</h5>
-			<div class="AWSCredentials-account-info">
-				<span>%account-number%</span>
-				<a class="AWSCredentials-account-update" href="javascript:void(0)">update</a>
-			</div>
-		</div>
-
-		<div class="modal-footer">
-			<button class="btn btn-silver">Done</button>
-		</div>
-	</div>
-
 	<div id="AWSCredentials-update">
 		<div class="AWSCredentials-body-info">
 			<h5>You have connected with following AWS account:</h5>
 			<div class="AWSCredentials-account-info">
-				<span>%account-number%</span>
+				<span>{{account_id}}</span>
 				<a class="AWSCredentials-account-update" href="javascript:void(0)">update</a>
 			</div>
 		</div>
 
 		<div class="modal-footer">
-			<button class="btn btn-silver">Done</button>
+			<button class="btn btn-silver" id="awsredentials-update-done">Done</button>
 		</div>
 	</div>
 </div>

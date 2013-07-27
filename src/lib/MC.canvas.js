@@ -2413,6 +2413,8 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.remove();
 
+		$(document.body).removeClass('disable-event');
+
 		$(document).off({
 			'mousemove': MC.canvas.event.gatewaymove,
 			'mouseup': MC.canvas.event.gatewayup

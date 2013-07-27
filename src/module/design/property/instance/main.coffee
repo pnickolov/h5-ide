@@ -121,8 +121,6 @@ define [ 'jquery',
 
     loadAppModule = ( uid, instance_expended_id, current_main ) ->
 
-        MC.data.current_sub_main = current_main
-
         require [ './module/design/property/instance/app_view',
                   './module/design/property/instance/app_model',
                   './module/design/property/sglist/main'

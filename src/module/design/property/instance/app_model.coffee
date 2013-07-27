@@ -2,28 +2,17 @@
 #  View Mode for design/property/instance (app)
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
+define ['backbone', 'MC' ], () ->
 
     AppInstanceModel = Backbone.Model.extend {
 
         ###
         defaults :
-            'instance' :
-                'uid'            : ""
-                'name'           : ""
-                'running'        : false
-                'launchTiem'     : ""
-                'publicIP'       : ""
-                'publicDNS'      : ""
-                'privateIP'      : ""
-                'privateDNS'     : ""
-                'AMI'            : ""
-                'keypair'        : ""
-                'keypairURL'     : ""
-                'EBS'            : false
-                'tenancy'        : ""
-                'rootDeviceType' : ""
-                'blockDevice'    : ""
+            'instance' : # ( Extra Propeties )
+                isRunning   : false
+                isPending   : false
+                blockDevice : ""
+
         ###
 
 

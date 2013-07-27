@@ -34,25 +34,17 @@
         <div class="context" id="volume-type-radios">
             <div>
             <div class="radio">
-            	{{#if volume_detail.isStandard}}
-                <input id="radio-standard" type="radio" name="volume-type" checked="checked" value="radio-standard" />
-                {{else}}
-                <input id="radio-standard" type="radio" name="volume-type" value="radio-standard"/>
-                {{/if}}
+                <input id="radio-standard" type="radio" name="volume-type" {{#if volume_detail.isStandard}}checked="checked"{{/if}} value="radio-standard"/>
                 <label for="radio-standard"></label>
             </div>
-            <label for="volume-property-type" >Standard</label>
+            <label for="radio-standard">Standard</label>
             </div>
             <div>
             <div class="radio">
-            	{{#if volume_detail.isStandard}}
-                <input id="radio-iops" type="radio" name="volume-type" value="radio-iops"/>
-                {{else}}
-                <input id="radio-iops" type="radio" name="volume-type" checked="checked" value="radio-iops"/>
-                {{/if}}
+                <input id="radio-iops" type="radio" name="volume-type" {{#if volume_detail.isStandard}}{{else}}checked="checked"{{/if}} value="radio-iops"/>
                 <label for="radio-iops"></label>
             </div>
-            <label for="volume-property-type" >Provisioned IOPS</label>
+            <label for="radio-iops">Provisioned IOPS</label>
             </div>
         </div>
     </div>

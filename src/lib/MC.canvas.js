@@ -1672,6 +1672,10 @@ MC.canvas.layout = {
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
 		//set region and platform
+		if (option.id)
+		{
+			MC.canvas_data.id = option.id; //tab_id (temp for new stack)
+		}
 		MC.canvas_data.name = option.name;
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
@@ -1858,6 +1862,8 @@ MC.canvas.event.dragable = {
 					});
 				});
 			}
+
+			$(document.body).addClass('disable-event');
 
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
@@ -2312,6 +2318,8 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.remove();
 
+		$(document.body).removeClass('disable-event');
+
 		$(document).off({
 			'mousemove': MC.canvas.event.mousemove,
 			'mouseup': MC.canvas.event.mouseup
@@ -2409,6 +2417,8 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.remove();
 
+		$(document.body).removeClass('disable-event');
+
 		$(document).off({
 			'mousemove': MC.canvas.event.gatewaymove,
 			'mouseup': MC.canvas.event.gatewayup
@@ -2464,6 +2474,8 @@ MC.canvas.event.drawConnection = {
 					offset.top  = target_offset.top + 8;
 					break;
 			}
+
+			$(document.body).addClass('disable-event');
 
 			$(document).on({
 				'mousemove': MC.canvas.event.drawConnection.mousemove,
@@ -2698,6 +2710,8 @@ MC.canvas.event.drawConnection = {
 				});
 		});
 
+		$(document.body).removeClass('disable-event');
+
 		$(document).off({
 			'mousemove': MC.canvas.event.drawConnection.mousemove,
 			'mouseup': MC.canvas.event.drawConnection.mouseup,
@@ -2805,6 +2819,8 @@ MC.canvas.event.siderbarDrag = {
 				'shadow': shadow
 			});
 		}
+
+		$(document.body).addClass('disable-event');
 
 		MC.canvas.event.clearSelected();
 
@@ -2931,6 +2947,8 @@ MC.canvas.event.siderbarDrag = {
 
 		event.data.shadow.remove();
 
+		$(document.body).removeClass('disable-event');
+
 		$(document).off({
 			'mousemove': MC.canvas.event.mousemove,
 			'mouseup': MC.canvas.event.mouseup
@@ -2941,68 +2959,72 @@ MC.canvas.event.siderbarDrag = {
 MC.canvas.event.groupResize = {
 	mousedown: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
-		var target = event.target,
-			parent = $(target.parentNode.parentNode),
-			group = parent.find('.group'),
-			group_offset = group[0].getBoundingClientRect(),
-			canvas_offset = $('#svg_canvas').offset(),
-			group_left = group_offset.left - canvas_offset.left,
-			group_top = group_offset.top - canvas_offset.top,
-			type = parent.data('class'),
-			node_connections;
-
-		if (type === 'AWS.VPC.Subnet')
+		if (event.which === 1)
 		{
-			parent.find('.port').hide();
+			event.preventDefault();
+			event.stopPropagation();
 
-			// Re-draw group connection
-			node_connections = MC.canvas.data.get('layout.component.group.' + parent.attr('id') + '.connection') || {};
+			var target = event.target,
+				parent = $(target.parentNode.parentNode),
+				group = parent.find('.group'),
+				group_offset = group[0].getBoundingClientRect(),
+				canvas_offset = $('#svg_canvas').offset(),
+				group_left = group_offset.left - canvas_offset.left,
+				group_top = group_offset.top - canvas_offset.top,
+				type = parent.data('class'),
+				node_connections;
 
-			$.each(node_connections, function (index, value)
+			if (type === 'AWS.VPC.Subnet')
 			{
-				line_layer.removeChild(document.getElementById( value.line ));
-			});
+				parent.find('.port').hide();
+
+				// Re-draw group connection
+				node_connections = MC.canvas.data.get('layout.component.group.' + parent.attr('id') + '.connection') || {};
+
+				$.each(node_connections, function (index, value)
+				{
+					line_layer.removeChild(document.getElementById( value.line ));
+				});
+			}
+
+			$(document.body)
+				.addClass('disable-event')
+				.css('cursor', $(event.target).css('cursor'));
+
+			$(document)
+				.on({
+					'mousemove': MC.canvas.event.groupResize.mousemove,
+					'mouseup': MC.canvas.event.groupResize.mouseup
+				}, {
+					'parent': parent,
+					'resizer': target,
+					'group_title': parent.find('.group-label'),
+					'target': group,
+					'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
+					'originalX': event.pageX,
+					'originalY': event.pageY,
+					'originalWidth': group_offset.width,
+					'originalHeight': group_offset.height,
+					'originalTop': group_offset.top,
+					'originalLeft': group_offset.left,
+					'originalTranslate': parent.attr('transform'),
+					'canvas_offset': canvas_offset,
+					'offsetX': event.pageX - canvas_offset.left,
+					'offsetY': event.pageY - canvas_offset.top,
+					'direction': $(target).data('direction'),
+					'group_border': parseInt(group.css('stroke-width'),10),
+					'group_type': type,
+					'parentGroup': MC.canvas.parentGroup(
+						parent.attr('id'),
+						parent.data('class'),
+						Math.ceil(group_left / MC.canvas.GRID_WIDTH),
+						Math.ceil(group_top / MC.canvas.GRID_HEIGHT),
+						Math.ceil((group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH),
+						Math.ceil((group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
+					),
+					'group_port': type === 'AWS.VPC.Subnet' ? [parent.find('.port-subnet-assoc-in').first(), parent.find('.port-subnet-assoc-out').first()] : null
+				});
 		}
-
-		$(document.body)
-			.css('cursor', $(event.target).css('cursor'));
-
-		$(document)
-			.on({
-				'mousemove': MC.canvas.event.groupResize.mousemove,
-				'mouseup': MC.canvas.event.groupResize.mouseup
-			}, {
-				'parent': parent,
-				'resizer': target,
-				'group_title': parent.find('.group-label'),
-				'target': group,
-				'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
-				'originalX': event.pageX,
-				'originalY': event.pageY,
-				'originalWidth': group_offset.width,
-				'originalHeight': group_offset.height,
-				'originalTop': group_offset.top,
-				'originalLeft': group_offset.left,
-				'originalTranslate': parent.attr('transform'),
-				'canvas_offset': canvas_offset,
-				'offsetX': event.pageX - canvas_offset.left,
-				'offsetY': event.pageY - canvas_offset.top,
-				'direction': $(target).data('direction'),
-				'group_border': parseInt(group.css('stroke-width'),10),
-				'group_type': type,
-				'parentGroup': MC.canvas.parentGroup(
-					parent.attr('id'),
-					parent.data('class'),
-					Math.ceil(group_left / MC.canvas.GRID_WIDTH),
-					Math.ceil(group_top / MC.canvas.GRID_HEIGHT),
-					Math.ceil((group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH),
-					Math.ceil((group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
-				),
-				'group_port': type === 'AWS.VPC.Subnet' ? [parent.find('.port-subnet-assoc-in').first(), parent.find('.port-subnet-assoc-out').first()] : null
-			});
 	},
 	mousemove: function (event)
 	{
@@ -3101,6 +3123,8 @@ MC.canvas.event.groupResize = {
 		{
 			event.data.group_title.attr('y', prop.y + label_offset[1]);
 		}
+
+		return false;
 	},
 	mouseup: function (event)
 	{
@@ -3470,6 +3494,7 @@ MC.canvas.event.groupResize = {
 		}
 
 		$(document.body)
+			.removeClass('disable-event')
 			.css('cursor', 'default');
 
 		$(document)
@@ -3694,7 +3719,10 @@ MC.canvas.volume = {
 			return false;
 		}
 
-		$(document.body).append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
+		$(document.body)
+			.addClass('disable-event')
+			.append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
+		
 		shadow = $('#drag_shadow');
 
 		shadow
@@ -3880,6 +3908,8 @@ MC.canvas.volume = {
 		}
 
 		event.data.shadow.remove();
+
+		$(document.body).removeClass('disable-event');
 
 		$(document).off({
 			'mousemove': MC.canvas.volume.mousemove,

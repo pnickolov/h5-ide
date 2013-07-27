@@ -3,7 +3,7 @@
 #* Filename: UI.modal
 #* Creator: Angel
 #* Description: UI.modal
-#* Date: 20130623
+#* Date: 20130727
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -32,6 +32,9 @@ var modal = function (template, dismiss, callback)
 	}
 
 	$(window).on('resize', modal.position);
+
+	$('#wrapper').addClass('blur-effect');
+
 	$(document)
 		.on('click', '.modal-close', modal.close)
 		.on('mousedown', '.modal-header', modal.drag.mousedown);
@@ -90,6 +93,8 @@ modal.dismiss = function (event)
 modal.close = function ()
 {
 	$(window).off('resize', modal.position);
+
+	$('#wrapper').removeClass('blur-effect');
 
 	$(document)
 		.off('click', '.modal-close', modal.close)

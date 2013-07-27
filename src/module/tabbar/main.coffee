@@ -89,13 +89,14 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 ide_event.trigger ide_event.SAVE_DESIGN_MODULE, tab_id
 
             #listen new_stack
-            model.on 'NEW_STACK', ( result ) ->
+            model.on 'NEW_STACK', ( tab_id ) ->
                 console.log 'NEW_STACK'
                 console.log model.get 'stack_region_name'
                 console.log model.get 'current_platform'
                 console.log model.get 'tab_name'
+                console.log tab_id
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ), model.get( 'stack_region_name' ), null, model.get 'current_platform'
+                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
 
             #listen open_stack
             model.on 'OPEN_STACK', ( tab_id ) ->
@@ -109,33 +110,40 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 model.getStackInfo tab_id
 
             #listen old_stack
-            model.on 'OLD_STACK', ( result ) ->
+            model.on 'OLD_STACK', ( tab_id ) ->
                 console.log 'OLD_STACK'
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_STACK', result
+                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_STACK', tab_id
 
             #listen open_app
-            model.on 'OPEN_APP', ( result ) ->
+            model.on 'OPEN_APP', ( tab_id ) ->
                 console.log 'OPEN_APP'
                 #call getAppInfo
                 model.once 'GET_APP_COMPLETE', ( result ) ->
                     console.log 'GET_APP_COMPLETE'
+                    console.log result
                     #push event
-                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', result
+                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result
                 #
-                model.getAppInfo result
+                model.getAppInfo tab_id
 
             #listen old_stack
-            model.on 'OLD_APP', ( result ) ->
+            model.on 'OLD_APP', ( tab_id ) ->
                 console.log 'OLD_APP'
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_APP', result
+                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_APP', tab_id
 
             #listen old_stack
             model.on 'SWITCH_DASHBOARD', ( result ) ->
                 console.log 'SWITCH_DASHBOARD'
                 #push event
                 ide_event.trigger ide_event.SWITCH_DASHBOARD, null
+
+            #listen open dashboard
+            ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, () ->
+                console.log 'NAVIGATION_TO_DASHBOARD_REGION'
+                Tabbar.open 'dashboard'
+                null
 
             #listen open stack tab
             ide_event.onLongListen ide_event.OPEN_STACK_TAB, ( tab_name, region_name, stack_id ) ->
@@ -221,7 +229,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 console.log 'UPDATE_TABBAR, tab_id = ' + tab_id + ', tab_name = ' + tab_name
                 original_tab_id = view.updateCurrentTab tab_id, tab_name
                 console.log original_tab_id
-                ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
+                if original_tab_id isnt tab_id then ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
 
             #render
             view.render()

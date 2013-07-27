@@ -1,88 +1,64 @@
-<!-- <div id="view-toggle-navigation" class="active"><a href="javascrip:void(0)"><i class="icon-list-3"></i></a></div> -->
-<img src="./assets/images/ide/logo-t.png" alt="" class="logo">
 <ul class="header-menu">
 	<li class="dropdown">
-		<a href="#" id="header--notification" class="dropdown-toggle" data-toggle="dropdown" role="button">
-			<i class="icon-bell"></i><span class="notification-counter">32</span>
+		<a href="#" id="header--notification" class="js-toggle-dropdown" role="button">
+			<i class="icon-bell"></i><span class="notification-counter">{{unread_num}}</span>
 		</a>
 		<div id="notification-panel-wrapper" class="dropdown-menu" role="menu">
 			<div class="notification-list">
 
+				{{#each info_list}}
 				<!-- success notification item begin -->
-				<div class="notification-item">
+				<div class="notification-item {{#if is_readed}}{{else}}unread{{/if}}">
 					<div class="notification-message">
-						<i class="icon-success"></i>
-						<div class="content"><a href="###">%app-name%</a> launched successfully in US West-N. California.</div>
-					</div>
-					<div class="notification-stamp">
-						19:23 2013-4-30
+						{{#if is_error}}
+							<i class="icon-fail"></i>
+							<div class="content">{{name}} failed to {{operation}} in {{region_label}}.</div>
+						{{else}}
+							{{#if is_request}}
+								<i class="icon-sending"></i>
+								<div class="content">Sending request to {{operation}} {{name}} in {{region_label}}.</div>
+							{{else}}
+								{{#if is_process}}
+									<i class="icon-processing"></i>
+									<div class="content">Processing request to {{operation}} {{name}} in {{region_label}}.</div>
+								{{else}}
+									<i class="icon-success"></i>
+									{{#if is_terminated}}
+										<div class="content">{{name}} {{operation}} successfully in {{region_label}}.</div>
+									{{else}}
+										<div class="content"><a href="javascript:void(0);" class="dropdown-app-name" id="{{id}}">{{name}}</a> {{operation}} successfully in {{region_label}}.</div>
+									{{/if}}
+								{{/if}}
+							{{/if}}
+						{{/if}}
 					</div>
 
+					{{#if is_error}}
+					<div class="notification-details">
+						<p> {{error}}
+					</div>
+					{{/if}}
+
+					<div class="notification-stamp">
+						{{time_str}}
+					</div>
 				</div>
 				<!-- success notification item end -->
 
-				<!-- failed notification item begin -->
-				<div class="notification-item notification-error">
-					<div class="notification-message">
-						<i class="icon-fail"></i>
-						<div class="content">%app-name-blah-blah-blah-blah-blah%failed to launch.</div>
-					</div>
-					<div class="notification-details">
-						<p> Error DetailsError DetailsError DetailsError 
-						<p> DetailsError DetailsError DetailsError 
-						<p> Something has wrong
-						<p> Something has wrong, you have to resolve it.
-					</div>
-					<div class="notification-stamp">
-						19:23 2013-4-30
-					</div>
-
-				</div>
-				<!-- failed notification item end -->
-
-				<!-- processing notification item begin -->
-				<div class="notification-item">
-					<div class="notification-message">
-						<i class="icon-processing"></i>
-						<div class="content">Processing request to launch %app_name% ...</div>
-					</div>
-					<div class="notification-stamp">
-						19:23 2013-4-30
-					</div>
-
-				</div>
-				<!-- processing notification item end -->
-
-				<!-- sending notification item begin -->
-				<div class="notification-item">
-					<div class="notification-message">
-						<i class="icon-sending"></i>
-						<div class="content">Sending request to stop %app_name% ...</div>
-					</div>
-					<div class="notification-stamp">
-						19:23 2013-4-30
-					</div>
-
-				</div>
-				<!-- sending notification item end -->
-
+				{{else}}
 				<!-- empty notification item begin -->
 				<div class="notification-empty">
 					<div class="title">No news is good news.</div>
-					<div class="description">Results of running, stopping or terminating apps will 
-show up here</div>
-
+					<div class="description">Results of running, stopping or terminating apps will show up here</div>
 				</div>
 				<!-- empty notification item end -->
-
-
-
+				{{/each}}
 
 			</div>
 		</div>
 	</li>
 	<li class="dropdown">
-		<a href="#" id="header--user" class="dropdown-toggle" data-toggle="dropdown" role="button">
+		<a href="#" id="header--user" class="js-toggle-dropdown" role="button">
 			<img src="./assets/images/ide/dummy/face-30x30.jpg" alt="" class="avatar" width="30" height="30"><i class="icon-caret-down"></i>
 		</a>
 		<div id="user-dropdown-wrapper" class="dropdown-menu" role="menu">
@@ -94,7 +70,10 @@ show up here</div>
 					<a href="javascript:void(0)"><i class="icon-question-sign icon-label"></i>Documetation</a>
 				</li>
 				<li>
-					<a href="javascript:void(0)"><i class="icon-user-2 icon-label"></i>Logout</a>
+					<a href="javascript:void(0)" id="awscredential-modal"><i class="icon-question-sign icon-label"></i>AWS Credential</a>
+				</li>
+				<li>
+					<a id="btn-logout" href="javascript:void(0)"><i class="icon-user-2 icon-label"></i>Logout</a>
 				</li>
 			</ul>
 		</div>

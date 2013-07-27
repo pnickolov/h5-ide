@@ -29,7 +29,9 @@ define [ 'underscore', 'backbone' ], () ->
         #
         RELOAD_RESOURCE     : 'RELOAD_RESOURCE'
         OPEN_PROPERTY       : 'OPEN_PROPERTY'
+        UPDATE_PROPERTY     : 'UPDATE_PROPERTY'
         OPEN_SG             : 'OPEN_SG'
+        OPEN_ACL            : 'OPEN_ACL'
         OPEN_INSTANCE       : 'OPEN_INSTANCE'
         RELOAD_PROPERTY     : 'RELOAD_PROPERTY'
         RELOAD_AZ           : 'RELOAD_AZ'
@@ -72,8 +74,17 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_STACK_LIST   : 'UPDATE_STACK_LIST'
         STACK_DELETE        : 'STACK_DELETE'
 
+        #canvas event
+        CANVAS_SAVE         : 'CANVAS_SAVE' #save stack/app by ctrl+s
+
         #navigation to dashboard - region
         NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
+
+        #property event
+        RETURN_SUBNET_PROPERTY_FROM_ACL : 'RETURN_SUBNET_PROPERTY_FROM_ACL'
+
+        #websocket meteor collection
+        WS_COLLECTION_READY_REQUEST : 'WS_COLLECTION_READY_REQUEST'
 
         constructor : ->
             _.extend this, Backbone.Events

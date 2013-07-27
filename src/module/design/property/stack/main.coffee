@@ -4,8 +4,9 @@
 
 define [ 'jquery',
          'text!/module/design/property/stack/template.html',
+         'text!/module/design/property/stack/acl_template.html',
          'event'
-], ( $, template, ide_event ) ->
+], ( $, template, acl_template, ide_event ) ->
 
     #
     current_view  = null
@@ -14,8 +15,10 @@ define [ 'jquery',
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-stack-tmpl">' + template + '</script>'
+    acl_template = '<script type="text/x-handlebars-template" id="property-stack-acl-tmpl">' + acl_template + '</script>'
     #load remote html template
     $( 'head' ).append template
+    $( 'head' ).append acl_template
 
     #private
     loadModule = ( current_main ) ->
@@ -38,6 +41,10 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
+            ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, (mainModule) ->
+                view.refreshACLList()
+                mainModule.unLoadModule()
+
             #view
             view.model    = model
             #render
@@ -45,7 +52,7 @@ define [ 'jquery',
                 model.getStack()
                 model.getSecurityGroup()
                 view.render()
-                sglist_main.loadModule model
+                sglist_main.loadModule model, true
 
             renderPropertyPanel()
 

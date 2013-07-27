@@ -11,11 +11,22 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         template : Handlebars.compile $( '#property-sgrule-tmpl' ).html()
 
-        #events   :
+        events   :
+            "click #sg-edit-rule-button" : "onEditRule"
 
-        render     : ( attributes ) ->
+        render     : () ->
             console.log 'property:sgrule render'
-            $( '.property-details' ).html this.template attributes
+
+            ###
+            attributes =
+                sg_group : []
+            ###
+
+            $( '.property-details' ).html this.template this.model.attributes
+
+        onEditRule : ( event ) ->
+            this.trigger "EDIT_RULE"
+
 
     }
 

@@ -12,6 +12,7 @@ define [ 'event',
 
         htmlTpl  : Handlebars.compile $('#property-acl-tmpl').html()
         ruleTpl  : Handlebars.compile $('#property-acl-rule-tmpl').html()
+        rulePopupTpl : Handlebars.compile $('#property-acl-rule-popup-tmpl').html()
 
         initialize : ->
             #handlebars equal logic
@@ -20,21 +21,32 @@ define [ 'event',
                     return options.fn this
                 options.inverse this
 
+            $('#sg-protocol-udp').hide()
+            $('#sg-protocol-icmp').hide()
+            $('#sg-protocol-custom').hide()
+            $('#sg-protocol-all').hide()
+            $('.protocol-icmp-sub-select').hide()
+
             null
 
         events   :
             'click .secondary-panel .back' : 'returnMainPanel'
             'click #acl-add-rule-icon' : 'showCreateRuleModal'
             'click #acl-modal-rule-save-btn' : 'saveRule'
+            'OPTION_CHANGE #acl-add-model-source-select' : 'modalRuleSourceSelected'
+            'OPTION_CHANGE #modal-protocol-select' : 'modalRuleProtocolSelected'
+            'OPTION_CHANGE #protocol-icmp-main-select' : 'modalRuleICMPSelected'
+            'click .property-rule-delete-btn' : 'removeRuleClicked'
+            'blur #property-acl-name' : 'aclNameChanged'
 
         instance_expended_id : 0
 
-        render     : (expended_accordion_id, attributes) ->
+        render     : (expended_accordion_id) ->
             console.log 'property:acl render'
 
-            $('#acl-secondary-panel-wrap').html this.htmlTpl(attributes)
+            $('#acl-secondary-panel-wrap').html this.htmlTpl(this.model.attributes)
 
-            $('#acl-secondary-panel-wrap .acl-rules').html this.ruleTpl(attributes)
+            this.refreshRuleList this.model.attributes.component
 
             this.instance_expended_id = expended_accordion_id
 
@@ -69,9 +81,10 @@ define [ 'event',
                     # ide_event.trigger ide_event.OPEN_PROPERTY, 'component', $('#sg-secondary-panel').attr('parent'), me.instance_expended_id
                 }
             )
+            view.trigger ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL
 
         showCreateRuleModal : () ->
-            modal MC.template.modalAddACL {}, true
+            modal this.rulePopupTpl({}, true)
             
             subnetMap = {}
 
@@ -83,11 +96,19 @@ define [ 'event',
                 null
 
             # load subnet select menu
+            selectboxContainer = $('#acl-add-model-source-select .dropdown').empty()
+            selected = ''
             _.each subnetMap, (value, key) ->
-                $('#acl-add-model-source-select .dropdown').empty().append(
-                    '<li class="item tooltip"><div class="main truncate">' + key + '</div></li>'
+                if !selected
+                    selected = 'selected'
+                    $('#acl-add-model-source-select .selection').text(key)
+
+                selectboxContainer.append(
+                    '<li class="item tooltip ' + selected + '" data-value="' + value + '"><div class="main truncate">' + key + '</div></li>'
                 )
 
+            selectboxContainer.append('<li class="item tooltip" data-value="custom"><div class="main truncate">Custom</div></li>')
+                
             scrollbar.init()
             return false
 
@@ -96,8 +117,12 @@ define [ 'event',
             ruleNumber = $('#modal-acl-number').val()
             action = $('#acl-add-model-action-allow').prop('checked')
             inboundDirection = $('#acl-add-model-direction-inbound').prop('checked')
-            source = $.trim($('#acl-add-model-source-select').find('.selection').text())
-            protocol = $.trim($('#acl-rule-modal-protocol-select').find('.selection').text())
+            source = $.trim($('#acl-add-model-source-select').find('.selected').attr('data-value'))
+
+            if $('#modal-acl-source-input').is(':visible')
+                source = $('#modal-acl-source-input').val()
+
+            protocol = $.trim($('#acl-rule-modal-protocol-select').find('.selected').attr('data-value'))
             port = $('#acl-rule-modal-port-input').val()
 
             this.trigger 'ADD_RULE_TO_ACL', {
@@ -113,10 +138,87 @@ define [ 'event',
 
             null
 
-        refreshRuleList : (uid, value) ->
+        refreshRuleList : (value) ->
+            entrySet = value.resource.EntrySet
+
+            newEntrySet = []
+            _.each entrySet, (value, key) ->
+                newRuleObj = {}
+
+                newRuleObj.ruleAction = value.RuleAction
+                newRuleObj.cidrBlock = value.CidrBlock
+                newRuleObj.egress = value.Egress
+
+                if value.RuleNumber is '32767'
+                    newRuleObj.ruleNumber = '*'
+                else
+                    newRuleObj.ruleNumber = value.RuleNumber
+
+                if value.Protocol is '-1'
+                    newRuleObj.protocol = 'All'
+                else
+                    newRuleObj.protocol = value.Protocol
+
+                newRuleObj.port = ''
+
+                if value.Protocol is '1'
+                    newRuleObj.port = value.IcmpTypeCode.Type + '/' + value.IcmpTypeCode.Code
+                else
+                    newRuleObj.port = value.PortRange.To
+
+                    if (value.PortRange.To is '') and (value.PortRange.From is '')
+                        newRuleObj.port = 'All'
+
+                newEntrySet.push newRuleObj
+
+                null
+
             $('#acl-secondary-panel-wrap .acl-rules').html this.ruleTpl({
-                component: value
+                content: newEntrySet
             })
+
+            $('#acl-rule-count').text(newEntrySet.length)
+
+        modalRuleSourceSelected : (event) ->
+            value = $.trim($(event.target).find('.selected').attr('data-value'))
+
+            if value is 'custom'
+                $('#modal-acl-source-input').show()
+            else
+                $('#modal-acl-source-input').hide()
+
+        removeRuleClicked : (event) ->
+            parentElem = $(event.target).parents('li')
+            currentRuleNumber = parentElem.attr('rule-num')
+            if currentRuleNumber is '*'
+                currentRuleNumber = '32767'
+            currentRuleEngress = parentElem.attr('rule-engress')
+            this.trigger 'REMOVE_RULE_FROM_ACL', currentRuleNumber, currentRuleEngress
+            this.refreshRuleList this.model.attributes.component
+
+        aclNameChanged : (event) ->
+            aclName = $('#property-acl-name').val()
+            this.trigger 'ACL_NAME_CHANGED', aclName
+
+        modalRuleProtocolSelected : (event) ->
+            protocolSelectElem = $(event.target)
+            selectedValue = protocolSelectElem.find('.selected').attr('data-id')
+            $('#sg-protocol-select-result .sg-protocol-option-input').hide()
+            $('#sg-protocol-' + selectedValue).show()
+
+            icmpSelectElem = $('#protocol-icmp-main-select')
+            icmpSelectedValue = icmpSelectElem.find('.selected').attr('data-id')
+            if icmpSelectedValue isnt '3' and icmpSelectedValue isnt '5' and icmpSelectedValue isnt '11' and icmpSelectedValue isnt '12'
+                $('.protocol-icmp-sub-select').hide()
+            null
+
+        modalRuleICMPSelected : (event) ->
+            icmpSelectElem = $(event.target)
+            selectedValue = icmpSelectElem.find('.selected').attr('data-id')
+            subSelectElem = $('#protocol-icmp-sub-select-' + selectedValue)
+            $('.protocol-icmp-sub-select').hide()
+            subSelectElem.show()
+            null
     }
 
     view = new ACLView()

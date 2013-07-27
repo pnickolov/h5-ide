@@ -50,19 +50,21 @@ define [ 'jquery',
 
             #show stack property
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
-                console.log 'property:RELOAD_RESOURCE'
+                console.log 'property:RELOAD_RESOURCE, type = ' + type
                 #check re-render
                 view.reRender template
                 #
                 tab_type = type
                 #
                 stack_main.loadModule stack_main
+                null
 
             #listen OPEN_PROPERTY
-            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id ) ->
-
+            ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
                 #
-                MC.data.last_open_property = { 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
+                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
+                #
+                if bak_tab_type then tab_type = bak_tab_type
 
                 if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
 
@@ -85,19 +87,19 @@ define [ 'jquery',
                         #components except AvailabilityZone
                         switch MC.canvas_data.component[ uid ].type
                             #show instance property
-                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid, instance_expended_id, instance_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance         then instance_main.loadModule uid, instance_expended_id, instance_main, tab_type
                             #show volume/snapshot property
-                            when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid, volume_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume           then volume_main.loadModule uid, volume_main, tab_type
                             #show elb property
                             when constant.AWS_RESOURCE_TYPE.AWS_ELB                  then elb_main.loadModule uid, elb_main, tab_type
                             #show subnet property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet           then subnet_main.loadModule uid, subnet_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet           then subnet_main.loadModule uid, subnet_main, tab_type
                             #show vpc property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC              then vpc_main.loadModule uid, vpc_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC              then vpc_main.loadModule uid, vpc_main, tab_type
                             #show dhcp property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions      then dhcp_main.loadModule uid, dhcp_main
                             #show rtb property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid, 'component', rtb_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable       then rtb_main.loadModule uid, rtb_main, tab_type
                             #show igw property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway  then igw_main.loadModule uid, igw_main
                             #show vgw property
@@ -107,9 +109,8 @@ define [ 'jquery',
                             #show vpn property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection    then vpn_main.loadModule uid, null, vpn_main
                             #show eni property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid, eni_main
-                            #show acl property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl       then acl_main.loadModule uid, acl_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid, eni_main, tab_type
+                            # Acl Property is not loaded in such a way.
 
                             #
                             else
@@ -131,7 +132,7 @@ define [ 'jquery',
                         if line_option.length == 2
 
                             console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
-                    
+
                             key = line_option[0].port + '>' + line_option[1].port
 
 
@@ -141,59 +142,72 @@ define [ 'jquery',
 
                                     if value.port.indexOf('rtb') >=0
 
-                                        rtb_main.loadModule value.uid, 'component', rtb_main
+                                        #rtb_main.loadModule value.uid, 'component', rtb_main
+                                        rtb_main.loadModule value.uid, rtb_main, tab_type
 
                                         return false
 
-                            else if '|instance-sg-in>instance-sg-out|instance-sg-out>instance-sg-in|'.indexOf( key ) >0
+                            else if '|instance-sg>instance-sg|'.indexOf( key ) >0
                                 #select line between instance and instance
                                 sgrule_main.loadModule line_option, 'line', sgrule_main
 
                             else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
                                 #select line between vgw and  cgw
                                 vpn_main.loadModule line_option, 'line', vpn_main
-                    
 
-                #temp
-                # setTimeout () ->
-                #    view.refresh()
-                # , 2000
-
+                #
+                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
 
             #listen OPEN_SG
-            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id ) ->
+            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id, back_dom, bak_tab_type ) ->
                 console.log 'OPEN_SG'
-                sg_main.loadModule( uid_parent, expended_accordion_id, sg_main )
-                #temp
-                # setTimeout () ->
-                #    view.refresh()
-                # , 2000
-
+                #
+                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_SG, 'uid_parent' : uid_parent, 'expended_accordion_id' : expended_accordion_id }
+                #
+                if bak_tab_type then tab_type = bak_tab_type
+                #
+                sg_main.loadModule( uid_parent, expended_accordion_id, sg_main, tab_type )
+                #
+                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
 
             #listen OPEN_ACL
-            ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid ) ->
+            ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid, back_dom, bak_tab_type ) ->
                 console.log 'OPEN_ACL'
-                acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid )
-
+                #
+                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_ACL, 'uid' : uid_parent, 'expended_accordion_id' : expended_accordion_id, 'acl_uid' : acl_uid }
+                #
+                if bak_tab_type then tab_type = bak_tab_type
+                #
+                acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid, tab_type )
+                #
+                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
 
             #listen OPEN_INSTANCE
-            ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id) ->
+            ide_event.onLongListen ide_event.OPEN_INSTANCE, ( expended_accordion_id, back_dom, bak_tab_type ) ->
                 console.log 'OPEN_INSTANCE'
                 #
+                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_INSTANCE, 'expended_accordion_id' : expended_accordion_id }
+                #
+                if bak_tab_type then tab_type = bak_tab_type
+                #
                 instance_main.loadModule uid, expended_accordion_id, instance_main
-                #temp
-                # setTimeout () ->
-                #    view.refresh()
-                # , 2000
-
+                #
+                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
 
             ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->
 
                 view.refresh()
+
+            ide_event.onLongListen ide_event.UPDATE_PROPERTY, ( back_dom ) ->
+                console.log 'UPDATE_PROPERTY'
+                setTimeout () ->
+                    view.updateHtml back_dom
+                , 500
+
 
     unLoadModule = () ->
         #view.remove()

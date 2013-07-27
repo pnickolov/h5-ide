@@ -5,7 +5,7 @@
 define [ 'MC', 'event',
          'view', 'layout', 'canvas_layout',
          'header', 'navigation', 'tabbar', 'dashboard', 'design',
-         'WS', 'constant'
+         'WS', 'constant', 'aws_handle'
 ], ( MC, ide_event, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, WS, constant ) ->
 
 	console.info canvas_layout
@@ -37,6 +37,10 @@ define [ 'MC', 'event',
 		#global app name list
 		MC.data.app_list = {}
 		MC.data.app_list[r] = [] for r in constant.REGION_KEYS
+
+		#global resource data (Describe* return)
+		MC.data.resourc_list = {}
+		MC.data.resourc_list[r] = {} for r in constant.REGION_KEYS
 
 		#set untitled
 		MC.data.untitled = 0
@@ -71,8 +75,14 @@ define [ 'MC', 'event',
 			#redirect to page ide.html
 			window.location.href = 'login.html'
 			null
+
+		subRequestReady = () ->
+			console.log 'collection request ready'
+
+			ide_event.trigger ide_event.WS_COLLECTION_READY_REQUEST
+
 		#
-		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, subScriptionError
+		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, subRequestReady, subScriptionError
 		#
 		websocket.sub "stack", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 

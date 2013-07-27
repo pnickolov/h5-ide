@@ -71,6 +71,8 @@ define [ 'jquery',
                 MC.data.supported_platforms = model.get 'region_classic_list'
                 #refresh view
                 view.renderPlatformAttrs()
+                #
+                if region_view then region_view.checkCreateStack MC.data.supported_platforms
 
             model.on 'change:recent_edited_stacks', () ->
                 console.log 'dashboard_change:recent_eidted_stacks'
@@ -152,7 +154,7 @@ define [ 'jquery',
                 if region_view isnt null
 
                     region_view.region = current_region
-                    
+
                     region_view.model.resetData()
                     region_view.model.describeAWSResourcesService region
                     region_view.model.describeRegionAccountAttributesService region
@@ -201,6 +203,7 @@ define [ 'jquery',
                         console.log 'dashboard_region_change:cur_stack_list'
                         #model.get 'cur_stack_list'
                         region_view.renderRegionStatStack()
+                        region_view.checkCreateStack MC.data.supported_platforms
 
                     model.on 'change:region_resource_list', () ->
                         console.log 'dashboard_region_resource_list'

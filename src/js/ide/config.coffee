@@ -60,7 +60,7 @@ require.config {
 
 		#bootstrap
 		#'bootstrap-tab'     : 'ui/common/bootstrap-tab'
-		'bootstrap-dropdown' : 'ui/common/bootstrap-dropdown'
+		#'bootstrap-dropdown' : 'ui/common/bootstrap-dropdown'
 
 		#ide
 		'router'       : 'js/ide/router'
@@ -83,14 +83,15 @@ require.config {
 		'canvas'       : 'module/design/canvas/main'
 		'toolbar'      : 'module/design/toolbar/main'
 
-		#canvas event logic handler
-		'canvas_handle_elb'   : 'module/design/canvas/aws/elb/elb'
-		'canvas_handle_vpn'   : 'module/design/canvas/aws/vpn/vpn'
+		#aws logic handler
+		'aws_handle'   : 'lib/aws/main'
 
 		#events
 		'event'        : 'event/ide_event'
 
 		#model
+		'session_model'   : 'model/session_model'
+
 		'favorite_model' : 'model/favorite_model'
 		'app_model'    : 'model/app_model'
 		'stack_model'  : 'model/stack_model'

@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130723
+#* Date: 20130724
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -14,13 +14,16 @@ var scrollbar = {
 		var style = document.documentElement.style,
 			doc_scroll_wrap = document.getElementsByClassName('scroll-wrap');
 
-		scrollbar.isTransform = (style.webkitTransform !== undefined || style.MozTransform !== undefined || style.OTransform !== undefined || style.Transform !== undefined);
+		scrollbar.isTransform = (
+			style.webkitTransform !== undefined ||
+			style.MozTransform !== undefined ||
+			style.OTransform !== undefined ||
+			style.Transform !== undefined
+		);
 
 		$(document)
 			.on('mousewheel', '.scroll-wrap', scrollbar.wheel)
-			.on('DOMMouseScroll', '.scroll-wrap', scrollbar.wheel);
-
-		$(document.body)
+			.on('DOMMouseScroll', '.scroll-wrap', scrollbar.wheel)
 			.on('mousedown', '.scrollbar-veritical-thumb', {'direction': 'veritical'}, scrollbar.mousedown)
 			.on('mousedown', '.scrollbar-horizontal-thumb', {'direction': 'horizontal'}, scrollbar.mousedown);
 
@@ -122,7 +125,7 @@ var scrollbar = {
 
 		event = scrollbar.isTouch ? event.originalEvent.touches[0] : event;
 
-		$(document.body)
+		$(document)
 			.on({
 				'mousemove': scrollbar.mousemove,
 				'mouseup': scrollbar.mouseup
@@ -163,7 +166,7 @@ var scrollbar = {
 	{
 		event.data.scroll_target.removeClass('scrolling');
 
-		$(document.body)
+		$(document)
 			.off(scrollbar.isTouch ? {
 				'touchmove': scrollbar.mousemove,
 				'touchend': scrollbar.mouseup

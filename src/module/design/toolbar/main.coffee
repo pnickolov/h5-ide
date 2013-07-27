@@ -27,11 +27,13 @@ define [ 'jquery',
             view.render()
 
             #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, item_name ) ->
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
+                ###
                 if type.search('APP') >= 0
                     console.log 'toolbar:RELOAD_RESOURCE, app name = ' + item_name + ', type = ' + type
                 else
                     console.log 'toolbar:RELOAD_RESOURCE, stack name = ' + item_name + ', type = ' + type
+                ###
 
                 model.setFlag type
 
@@ -90,6 +92,10 @@ define [ 'jquery',
             view.once 'TOOLBAR_TERMINATE_CLICK', () ->
                 console.log 'design_toolbar_click:terminateApp'
                 model.terminateApp()
+
+            ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
+                console.log 'design_toolbar_click:saveStack'
+                model.saveStack()
 
             model.once 'TOOLBAR_STACK_RUN_SUCCESS', () ->
                 view.notify 'info', 'Run stack ' + MC.canvas_data.name + ' successfully.'

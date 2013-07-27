@@ -871,6 +871,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             #cache aws resource data to MC.data.reosurce_list
 
+            #vpc
+            if resources.DescribeVpcs
+                _.map resources.DescribeVpcs, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.vpcId] = res
+                    null
+
             #instance
             if resources.DescribeInstances
                 _.map resources.DescribeInstances, ( res, i ) ->
@@ -897,73 +903,67 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             #eip
             if resources.DescribeAddresses
-                _.map resources.DescribeAddresses, ( res, i ) ->
+                _.map resources.DescribeAddresses.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.privateIpAddress] = res
                     null
 
             #elb
             if resources.DescribeLoadBalancers
-                _.map resources.DescribeLoadBalancers, ( res, i ) ->
+                _.map resources.DescribeLoadBalancers.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.loadBalancerName] = res
-                    null
-
-            #vpc
-            if resources.DescribeVpcs
-                _.map resources.DescribeVpcs, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.vpcId] = res
                     null
 
             #dhcp
             if resources.DescribeDhcpOptions
-                _.map resources.DescribeDhcpOptions, ( res, i ) ->
+                _.map resources.DescribeDhcpOptions.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.dhcpOptionsId] = res
                     null
 
             #subnet
             if resources.DescribeSubnets
-                _.map resources.DescribeSubnets, ( res, i ) ->
+                _.map resources.DescribeSubnets.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.subnetId] = res
                     null
 
             #routetable
             if resources.DescribeRouteTables
-                _.map resources.DescribeRouteTables, ( res, i ) ->
+                _.map resources.DescribeRouteTables.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.routeTableId] = res
                     null
 
             #acl
             if resources.DescribeNetworkAcls
-                _.map resources.DescribeNetworkAcls, ( res, i ) ->
+                _.map resources.DescribeNetworkAcls.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.networkAclId] = res
                     null
 
             #eni
             if resources.DescribeNetworkInterfaces
-                _.map resources.DescribeNetworkInterfaces, ( res, i ) ->
+                _.map resources.DescribeNetworkInterfaces.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.networkInterfaceId] = res
                     null
 
             #igw
             if resources.DescribeInternetGateways
-                _.map resources.DescribeInternetGateways, ( res, i ) ->
+                _.map resources.DescribeInternetGateways.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.internetGatewayId] = res
                     null
 
             #vgw
             if resources.DescribeVpnGateways
-                _.map resources.DescribeVpnGateways, ( res, i ) ->
+                _.map resources.DescribeVpnGateways.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.vpnGatewayId] = res
                     null
 
             #vpn
             if resources.DescribeVpnConnections
-                _.map resources.DescribeVpnConnections, ( res, i ) ->
+                _.map resources.DescribeVpnConnections.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.vpnConnectionId] = res
                     null
 
             #cgw
             if resources.DescribeCustomerGateways
-                _.map resources.DescribeCustomerGateways, ( res, i ) ->
+                _.map resources.DescribeCustomerGateways.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.customerGatewayId] = res
                     null
 

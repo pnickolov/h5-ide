@@ -41,6 +41,7 @@ define [
         renderDeleteModule : () ->
 
             modal delete_template( this.model.attributes ), true
+            this.setElement $("#confirm-delete-sg-line").closest '.modal-footer'
 
         onClose : () ->
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.
@@ -127,7 +128,7 @@ define [
           data
 
         deleteSGLine : () ->
-
+          console.log "DELETE_SG_LINE"
           this.trigger 'DELETE_SG_LINE'
     }
 

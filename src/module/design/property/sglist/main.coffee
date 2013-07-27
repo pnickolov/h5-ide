@@ -17,7 +17,7 @@ define [ 'jquery',
     $( 'head' ).append template
 
     #private
-    loadModule = ( model ) ->
+    loadModule = ( model, isStackView ) ->
 
         #
         require [ './module/design/property/sglist/view' ], ( view ) ->
@@ -33,7 +33,7 @@ define [ 'jquery',
             view.model    = model
 
             #render
-            view.render()
+            view.render isStackView
 
     unLoadModule = () ->
         current_view.off()

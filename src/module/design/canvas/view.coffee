@@ -21,6 +21,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
                 .on( 'CANVAS_OBJECT_DELETE',        '#svg_canvas', this, this.deleteObject )
                 .on( 'CANVAS_LINE_CREATE',          '#svg_canvas', this, this.createLine )
                 .on( 'CANVAS_COMPONENT_CREATE',     '#svg_canvas', this, this.createComponent )
+                .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -67,6 +68,10 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
 
         showEniReachMax : () ->
             notification 'info', 'The Instance you selected has attach too many eni, please unattach one or change the instance type.'
+
+        save : () ->
+            #save by ctrl+s
+            ide_event.trigger ide_event.CANVAS_SAVE
     }
 
     return CanvasView

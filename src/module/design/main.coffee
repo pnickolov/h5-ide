@@ -57,6 +57,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
                     #
                     if type is 'OPEN_STACK' or type is 'OPEN_APP'
+                        #when OPEN_STACK or OPEN_APP result is resolved_data
                         model.setCanvasData result.resolved_data[0]
                     #temp
                     #when NEW_STACK result is tab_id

@@ -84,6 +84,8 @@ define [
 
         deleteRule : () ->
           console.log "delete"
+
+          this.trigger 'DELETE_PREVIEW_RULE'
           # TODO : Tell model to delete rule
 
           # TODO : Remove dom element.

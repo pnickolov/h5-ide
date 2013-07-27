@@ -22,6 +22,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                     }
                 ]
 
+            preview_rule : null
+
             line_id : null
 
             isnt_classic : true
@@ -202,7 +204,17 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                 }]
             }
 
-            if rule_data.isInbound then MC.canvas_data.component[sg_id].resource.IpPermissions.push sg_rule else MC.canvas_data.component[sg_id].resource.IpPermissionsEgress.push sg_rule
+            if rule_data.isInbound
+
+                index = MC.canvas_data.component[sg_id].resource.IpPermissions.push sg_rule
+
+            else
+
+                index = MC.canvas_data.component[sg_id].resource.IpPermissionsEgress.push sg_rule
+
+            preview_rule = [sg_id, rule_data.isInbound, index-1]
+
+            this.set 'preview_rule', preview_rule
 
         getDeleteSGList : () ->
 
@@ -310,7 +322,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                                     rule_exist = false
 
-                                    new_rule_string = JSON.stringify [to_rule_name, from_rule.FromPort, from_rule.ToPort, from_rule.IpProtocol, idx]
+                                    new_rule_string = JSON.stringify [to_rule_name, from_rule.FromPort, from_rule.ToPort, from_rule.IpProtocol, idx, from_rule.IpRanges]
 
                                     _.map v.rule, ( rule_json ) ->
 
@@ -320,7 +332,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                                     if not rule_exist
 
-                                        v.rule.push [to_rule_name, from_rule.FromPort, from_rule.ToPort, from_rule.IpProtocol, idx]
+                                        v.rule.push [to_rule_name, from_rule.FromPort, from_rule.ToPort, from_rule.IpProtocol, idx, from_rule.IpRanges]
 
 
                             if not existing
@@ -331,7 +343,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                                 tmp.rule = []
 
-                                tmp.rule.push [to_rule_name, from_rule.FromPort, from_rule.ToPort, from_rule.IpProtocol, idx]
+                                tmp.rule.push [to_rule_name, from_rule.FromPort, from_rule.ToPort, from_rule.IpProtocol, idx, from_rule.IpRanges]
 
                                 me.display_rule.push tmp
             
@@ -340,6 +352,36 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
         deleteSGLine : () ->
 
             rule_detail = this.get 'delete_rule_list'
+
+            $.each rule_detail, ( i , rule ) ->
+
+                $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+                    if comp.name == rule.name
+
+                        $.each rule.rule, ( i, delete_rule ) ->
+
+                            permissions = [ comp.resource.IpPermissions, comp.resource.IpPermissionsEgress]
+
+                            $.each permissions, (j, permission) ->
+
+                                $.each permission, ( idx, inbound_rule ) ->
+
+                                    if inbound_rule.IpRanges == delete_rule[5] and inbound_rule.FromPort == delete_rule[1] and inbound_rule.ToPort == delete_rule[2] and inbound_rule.IpProtocol == delete_rule[3]
+
+                                        comp.resource.IpPermissions.splice idx, 1
+
+        deletePriviewRule : () ->
+
+            preview_rule = this.get 'preview_rule'
+
+            if preview_rule[1]
+
+                MC.canvas_data.component[preview_rule[0]].resource.IpPermissions.splice preview_rule[2], 1
+
+            else
+
+                MC.canvas_data.component[preview_rule[0]].resource.IpPermissionsEgress.splice preview_rule[2], 1
 
 
 

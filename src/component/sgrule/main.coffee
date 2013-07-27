@@ -38,7 +38,16 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             view.on 'DELETE_SG_LINE', () ->
 
                 this.model.deleteSGLine()
+
+                ide_event.trigger ide_event.REDRAW_SG_LINE
+
+            view.on 'DELETE_PREVIEW_RULE', () ->
+
+                this.model.deletePriviewRule()
+
+                ide_event.trigger ide_event.REDRAW_SG_LINE
                 
+
             #render
             if delete_module
                 model.getDeleteSGList()

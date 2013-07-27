@@ -27,6 +27,7 @@ define [ 'jquery',
         #set view_type
         if tab_type is 'OPEN_APP'
             loadAppModule uid, current_main
+            return
 
         #
         require [ './module/design/property/volume/view',

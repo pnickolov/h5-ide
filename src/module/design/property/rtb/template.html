@@ -1,7 +1,5 @@
 <!-- title -->
-<div class="sidebar-title">
-	<span class="sidebar-title-text" id='property-title'>{{route_table.name}}</span>
-</div>
+<header class="sidebar-title" id='property-title'>{{route_table.name}}</header>
 
 <!-- body -->
 
@@ -10,10 +8,10 @@
 	<div class="property-control-group clearfix">
 		<label class="left" for="rt-name">Name</label>
 		<input class="input" type="text" required="required" value="{{route_table.name}}" name="rt-name" id="rt-name" data-uid="{{route_table.uid}}">
-	</div>	
+	</div>
 	<div class="property-info-readonly">
 		<!-- If current RT is main route table, show text "Main Route Table" -->
-		
+
 		{{#if route_table.isMain}}
 		<p>Main Route Table</p>
 		{{else}}
@@ -35,11 +33,11 @@
 		Routes
 	</div>
 
-	
+
 	{{#each route_table.route_disp}}
 	<div class="property-item">
 		<p class="target">Target</p>
-		<div class="route-list">			
+		<div class="route-list">
 			<p class="route list-style-square">{{name}}</p>
 		</div>
 		<p class="destination">Destination</p>
@@ -50,7 +48,7 @@
 		 {{#each cidr_set}}
 	      <span class="ipt-wrapper"><input class="input" placeholder="eg. 0.0.0.0/0" type="text" data-old="{{this}}" value="{{this}}"></span>
 	     {{/each}}
-		
+
 	    </div>
 	    {{#if isVgw}}
 	    <div class="allow-checkbox">
@@ -65,5 +63,5 @@
 	</div>
 	{{/each}}
 
-	
+
 </div>

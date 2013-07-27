@@ -35,6 +35,11 @@ define ['backbone', 'MC' ], () ->
 
             this.set "instance", instance
 
+            # Try to get VPC
+            if instance.vpcId
+                vpc = MC.data.resource_list[ instance.vpcId ]
+                this.set "vpc", vpc
+
             null
     }
 

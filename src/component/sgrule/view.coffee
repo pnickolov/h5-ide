@@ -130,8 +130,10 @@ define [
           data
 
         deleteSGLine : () ->
-          console.log "DELETE_SG_LINE"
           this.trigger 'DELETE_SG_LINE'
+          modal.close()
+          null
+
     }
 
     SGRulePopupView

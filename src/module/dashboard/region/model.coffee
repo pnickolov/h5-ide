@@ -866,7 +866,114 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             parse_btns_result
 
+
+        _cacheResource : (resources) ->
+
+            #cache aws resource data to MC.data.reosurce_list
+
+            #vpc
+            if resources.DescribeVpcs
+                _.map resources.DescribeVpcs, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.vpcId] = res
+                    null
+
+            #instance
+            if resources.DescribeInstances
+                _.map resources.DescribeInstances, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.instanceId] = res
+                    null
+
+            #volume
+            if resources.DescribeVolumes
+                _.map resources.DescribeVolumes, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.volumeId] = res
+                    null
+
+            #kp
+            if resources.DescribeKeyPairs
+                _.map resources.DescribeKeyPairs.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.keyFingerprint] = res
+                    null
+
+            #sg
+            if resources.DescribeSecurityGroups
+                _.map resources.DescribeSecurityGroups.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.groupId] = res
+                    null
+
+            #eip
+            if resources.DescribeAddresses
+                _.map resources.DescribeAddresses.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.privateIpAddress] = res
+                    null
+
+            #elb
+            if resources.DescribeLoadBalancers
+                _.map resources.DescribeLoadBalancers.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.loadBalancerName] = res
+                    null
+
+            #dhcp
+            if resources.DescribeDhcpOptions
+                _.map resources.DescribeDhcpOptions.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.dhcpOptionsId] = res
+                    null
+
+            #subnet
+            if resources.DescribeSubnets
+                _.map resources.DescribeSubnets.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.subnetId] = res
+                    null
+
+            #routetable
+            if resources.DescribeRouteTables
+                _.map resources.DescribeRouteTables.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.routeTableId] = res
+                    null
+
+            #acl
+            if resources.DescribeNetworkAcls
+                _.map resources.DescribeNetworkAcls.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.networkAclId] = res
+                    null
+
+            #eni
+            if resources.DescribeNetworkInterfaces
+                _.map resources.DescribeNetworkInterfaces.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.networkInterfaceId] = res
+                    null
+
+            #igw
+            if resources.DescribeInternetGateways
+                _.map resources.DescribeInternetGateways.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.internetGatewayId] = res
+                    null
+
+            #vgw
+            if resources.DescribeVpnGateways
+                _.map resources.DescribeVpnGateways.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.vpnGatewayId] = res
+                    null
+
+            #vpn
+            if resources.DescribeVpnConnections
+                _.map resources.DescribeVpnConnections.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.vpnConnectionId] = res
+                    null
+
+            #cgw
+            if resources.DescribeCustomerGateways
+                _.map resources.DescribeCustomerGateways.item, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.customerGatewayId] = res
+                    null
+
+            null
+
+
         setResource : ( resources ) ->
+
+            #cache aws resource data
+            this._cacheResource resources
 
             me = this
 
@@ -954,9 +1061,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 ami_list = []
 
                 _.map resources.DescribeInstances, ( ins, i ) ->
-
-                    #add by xjimmy
-                    MC.data.resourc_list[current_region][ins.instanceId] = ins
 
                     ami_list.push ins.imageId
 
@@ -1228,6 +1332,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 constant.AWS_RESOURCE.VPC
                 constant.AWS_RESOURCE.VPN
                 constant.AWS_RESOURCE.ELB
+                #
+                constant.AWS_RESOURCE.KP
+                constant.AWS_RESOURCE.SG
+                constant.AWS_RESOURCE.ACL
+                constant.AWS_RESOURCE.CGW
+                constant.AWS_RESOURCE.DHCP
+                constant.AWS_RESOURCE.ENI
+                constant.AWS_RESOURCE.IGW
+                constant.AWS_RESOURCE.RT
+                constant.AWS_RESOURCE.SUBNET
+                constant.AWS_RESOURCE.VGW
             ]
 
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources

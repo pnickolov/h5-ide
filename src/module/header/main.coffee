@@ -51,7 +51,7 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
                 console.log 'DROPDOWN_MENU_CLOSED'
                 model.resetInfoList()
 
-            view.once 'DROPDOWN_APP_NAME_CLICK', (req_id) ->
+            view.on 'DROPDOWN_APP_NAME_CLICK', (req_id) ->
                 console.log 'design_header:DROPDOWN_APP_NAME_CLICK'
                 model.openApp(req_id)
 

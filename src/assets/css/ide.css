@@ -336,10 +336,12 @@ a {
 }
 
 .nav-head > a {
-	padding: 14px 13px;
+	width: 45px;
+	height: 48px;
 	box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
 	border-top: 1px solid #1D1C1F;
 	font-size: 16px;
+	text-align: center;
 	display: block;
 }
 
@@ -634,6 +636,7 @@ a {
 	padding: 1px 4px;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
 	text-align: center;
+	background: #fff;
 }
 
 .region-platform-vpc {
@@ -753,17 +756,12 @@ a {
 #map-region-spot-list > li {
 	display: block;
 	position: absolute;
-	/*width: auto;*/
-	/*height: 20px;*/
 }
 
 #map-region-spot-list > li > a {
-	/*width: 100%;*/
-	/*height: 100%;*/
 	display: block;
 	color: #666;
 	font-size: 12px;
-	/*position: relative;*/
 }
 
 .icon-map-spot {
@@ -773,7 +771,7 @@ a {
 	height: 10px;
 	background: #FF8B00;
 	display: inline-block;
-	margin-right: 5px;
+	margin-right: 1px;
 }
 
 #map-region-spot-list li:hover .icon-map-spot,
@@ -788,19 +786,11 @@ a {
 }
 
 .map-tooltip {
-	background: #333;
-	background: rgba(0, 0, 0, 0.8);
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-	color: #ccc;
-	font-size: 12px;
+	text-align: center;
 	position: absolute;
-	padding: 5px;
-	border-radius: 3px;
-	/*z-index: 99;*/
-	/*width: 100px;*/
-	opacity: 0.6;
+	opacity: 0.8;
 	cursor: pointer;
-	/*margin-left: 50%;*/
+	width: 103px;
 }
 
 #map-region-spot-list li:hover .map-tooltip,
@@ -818,7 +808,7 @@ a {
 }
 
 .map-tooltip-pointer {
-	/*background: #fff;*/
+	border-top: 5px solid #888 !important; 
 	position: absolute;
 	top: 100%;
 	left: 50%;
@@ -826,7 +816,7 @@ a {
 }
 
 .map-tooltip-pointer-up {
-	/*background: #fff;*/
+	border-bottom: 5px solid #888 !important;
 	position: absolute;
 	top: -5px;
 	left: 50%;
@@ -834,6 +824,7 @@ a {
 }
 
 .map-tooltip-pointer-left {
+	border-right: 5px solid #888 !important;
 	position: absolute;
 	top: 50%;
 	left: -5px;
@@ -842,22 +833,17 @@ a {
 
 .map-tooltip-body {
 	width: auto;
-}
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background-color: #fefefe;
+	-webkit-box-shadow: 0 0 12px rgba(154,154,154,.6), inset 0 1px #fff;
+	-moz-box-shadow: 0 0 12px rgba(154,154,154,.6), inset 0 1px #fff;
+	box-shadow: 0 0 12px rgba(154,154,154,.6), inset 0 1px #fff;
+	border: solid 1px #888;
+	padding: 5px;
 
-#map-region-spot-list li .map-tooltip {
-/*	-webkit-transition: margin-top 0.2s;
-	-moz-transition: margin-top 0.2s;
-	-ms-transition: margin-top 0.2s;
-	-o-transition: margin-top 0.2s;
-	transition: margin-top 0.2s;*/
-/*	left: -75px;
-	top: -45px;*/
 }
-
-/*#map-region-spot-list li:hover .map-tooltip,
-#map-region-spot-list li.hover .map-tooltip {
-	margin-top: -2px;
-}*/
 
 #us-east-1 {
 	top: 155px;
@@ -865,6 +851,7 @@ a {
 }
 
 #us-east-1 .map-tooltip {
+	text-align: left;
 	left: 83px;
 	top: -10px;
 }
@@ -876,7 +863,7 @@ a {
 
 #us-west-1 .map-tooltip {
 	top: 20px;
-	left: -66px;
+	left: -43px;
 }
 
 #us-west-2 {
@@ -885,8 +872,8 @@ a {
 }
 
 #us-west-2 .map-tooltip {
-	top: -42px;
-	left: -66px;
+	top: -36px;
+	left: -43px;
 }
 
 #eu-west-1 {
@@ -895,8 +882,8 @@ a {
 }
 
 #eu-west-1 .map-tooltip {
-	top: -42px;
-	left: -66px;
+	top: -36px;
+	left: -43px;
 }
 
 #sa-east-1 {
@@ -913,8 +900,8 @@ a {
 #ap-southeast-1 .map-tooltip,
 #ap-southeast-2 .map-tooltip,
 #ap-northeast-1 .map-tooltip {
-	top: -41px;
-	left: -66px;
+	top: -36px;
+	left: -43px;
 }
 
 #ap-southeast-2 {
@@ -973,25 +960,30 @@ a {
 	display: inline-block;
 	margin-left: 5px;
 	font-size: 16px;
-	/*width: 45px;*/
+	line-height: 16px;
 }
 
 .dashboard-widget-regions-stat li:first-child {
 	margin-left: 0;
-	color: #34E093;
 }
 
-.dashboard-widget-regions-stat li:nth-child(2) {
+.dashboard-running-app-stat {
+	color: #46c189;
+}
+
+.dashboard-stopped-app-stat {
 	color: #9b9b9b;
 }
 
-.dashboard-widget-regions-stat li:last-child {
+.dashboard-stack-stat {
 	color: #D08CDD;
 }
 
 .dashboard-widget-regions-stat li i {
-	font-size: 25px;
+	display: inline-block;
 	margin-right: 4px;
+	width: 16px;
+	height: 12px;
 }
 
 .widget-small .dashboard-widget-body {
@@ -1565,74 +1557,6 @@ td.table-action a.btn {
 	background-color: #eee;
 }
 
-/* Icons Placeholder */
-[class*='icon-toolbar-'] {
-	position: absolute;
-	width: 30px;
-	height: 30px;
-	top: 5px;
-	left: 5px;
-}
-
-.icon-toolbar-run {
-	background: url('../images/ide/icon-run.png') center center no-repeat;
-}
-
-.icon-toolbar-stop {
-	background: url('../images/ide/icon-stop.png') center center no-repeat;
-}
-
-.icon-toolbar-terminate {
-	background: url('../images/ide/icon-terminate.png') center center no-repeat;
-}
-
-.icon-toolbar-save {
-	background: url('../images/ide/icon-save.png') center center no-repeat;
-}
-
-.icon-toolbar-more-action {
-	background: url('../images/ide/icon-more-action.png') center center no-repeat;
-}
-
-.icon-toolbar-duplicate {
-	background: url('../images/ide/icon-duplicate.png') center center no-repeat;
-}
-
-.icon-toolbar-delete {
-	background: url('../images/ide/icon-delete.png') center center no-repeat;
-}
-
-.icon-toolbar-new-stack {
-	background: url('../images/ide/icon-new-stack.png') center center no-repeat;
-}
-
-.icon-toolbar-undo {
-	background: url('../images/ide/icon-undo.png') center center no-repeat;
-}
-
-.icon-toolbar-redo {
-	background: url('../images/ide/icon-redo.png') center center no-repeat;
-}
-
-.icon-toolbar-zoom-in {
-	background: url('../images/ide/icon-zoom-in.png') center center no-repeat;
-}
-
-.icon-toolbar-zoom-out {
-	background: url('../images/ide/icon-zoom-out.png') center center no-repeat;
-}
-
-.icon-toolbar-export {
-	background: url('../images/ide/icon-export.png') center center no-repeat;
-}
-
-.icon-toolbar-export-png {
-	background: url('../images/ide/icon-export-png.png') center center no-repeat;
-}
-
-.icon-toolbar-export-json {
-	background: url('../images/ide/icon-export-json.png') center center no-repeat;
-}
 
 /* Sidebars, including Resource Panle and Property Panel */
 .sidebar {
@@ -3381,3 +3305,100 @@ a.sidebar-hider {
 .property-app-instance .ipaddress .ipaddress-right {
 	width: 40%;
 }
+
+/* Icons Placeholder */
+
+/* Nav Icon */
+
+.icon-stack-nav {
+	background: url('../images/ide/icon-stack-32x32.png') center center no-repeat;
+	display: inline-block;
+	width: 20px;
+	height: 16px;
+}
+
+/* Dashboard Icon */
+
+.icon-app-running-min {
+	background: url('../images/ide/icon-app-running-16x16.png') center center no-repeat;
+}
+
+.icon-app-stopped-min {
+	background: url('../images/ide/icon-app-stopped-16x16.png') center center no-repeat;
+}
+
+.icon-stack-min {
+	background: url('../images/ide/icon-stack-16x16.png') center center no-repeat;
+}
+
+
+/* Toolbar Icon */
+
+[class*='icon-toolbar-'] {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	top: 5px;
+	left: 5px;
+}
+
+.icon-toolbar-run {
+	background: url('../images/ide/icon-run.png') center center no-repeat;
+}
+
+.icon-toolbar-stop {
+	background: url('../images/ide/icon-stop.png') center center no-repeat;
+}
+
+.icon-toolbar-terminate {
+	background: url('../images/ide/icon-terminate.png') center center no-repeat;
+}
+
+.icon-toolbar-save {
+	background: url('../images/ide/icon-save.png') center center no-repeat;
+}
+
+.icon-toolbar-more-action {
+	background: url('../images/ide/icon-more-action.png') center center no-repeat;
+}
+
+.icon-toolbar-duplicate {
+	background: url('../images/ide/icon-duplicate.png') center center no-repeat;
+}
+
+.icon-toolbar-delete {
+	background: url('../images/ide/icon-delete.png') center center no-repeat;
+}
+
+.icon-toolbar-new-stack {
+	background: url('../images/ide/icon-new-stack.png') center center no-repeat;
+}
+
+.icon-toolbar-undo {
+	background: url('../images/ide/icon-undo.png') center center no-repeat;
+}
+
+.icon-toolbar-redo {
+	background: url('../images/ide/icon-redo.png') center center no-repeat;
+}
+
+.icon-toolbar-zoom-in {
+	background: url('../images/ide/icon-zoom-in.png') center center no-repeat;
+}
+
+.icon-toolbar-zoom-out {
+	background: url('../images/ide/icon-zoom-out.png') center center no-repeat;
+}
+
+.icon-toolbar-export {
+	background: url('../images/ide/icon-export.png') center center no-repeat;
+}
+
+.icon-toolbar-export-png {
+	background: url('../images/ide/icon-export-png.png') center center no-repeat;
+}
+
+.icon-toolbar-export-json {
+	background: url('../images/ide/icon-export-json.png') center center no-repeat;
+}
+

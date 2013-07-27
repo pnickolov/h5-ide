@@ -38,6 +38,10 @@ define [ 'MC', 'event',
 		MC.data.app_list = {}
 		MC.data.app_list[r] = [] for r in constant.REGION_KEYS
 
+		#global resource data (Describe* return)
+		MC.data.resourc_list = {}
+		MC.data.resourc_list[r] = {} for r in constant.REGION_KEYS
+
 		#set untitled
 		MC.data.untitled = 0
 		#set tab

@@ -21,6 +21,7 @@ define [
           'click .sg-rule-create-readd'      : 'readdRule'
           'OPTION_CHANGE #sg-create-proto'   : 'onProtocolChange'
           'click .sg-rule-create'            : 'onDirChange'
+          'click .sg-rule-delete'            : 'deleteRule'
           'OPTION_CHANGE #sg-proto-icmp-sel' : 'onICMPChange'
           'click #confirm-delete-sg-line'    : 'deleteSGLine'
 
@@ -81,6 +82,7 @@ define [
 
 
         deleteRule : () ->
+          console.log "delete"
           # TODO : Tell model to delete rule
 
           # TODO : Remove dom element.

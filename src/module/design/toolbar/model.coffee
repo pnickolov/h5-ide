@@ -70,7 +70,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             me = this
 
             id = MC.canvas_data.id
-            if id   #save
+            if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
 
                 stack_model.once 'STACK_SAVE_RETURN', (result) ->

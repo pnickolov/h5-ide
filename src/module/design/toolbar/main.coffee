@@ -27,11 +27,13 @@ define [ 'jquery',
             view.render()
 
             #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, item_name ) ->
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
+                ###
                 if type.search('APP') >= 0
                     console.log 'toolbar:RELOAD_RESOURCE, app name = ' + item_name + ', type = ' + type
                 else
                     console.log 'toolbar:RELOAD_RESOURCE, stack name = ' + item_name + ', type = ' + type
+                ###
 
                 model.setFlag type
 

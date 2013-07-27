@@ -172,7 +172,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             me = this
 
             null
-            
+
         # reset the empty resultset when enter a second region
         resetData : ->
             me = this
@@ -896,7 +896,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     else
 
                         elb_model.DescribeInstanceHealth { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName
-                        
+
                         elb_model.once 'ELB__DESC_INS_HLT_RETURN', ( result ) ->
 
                                 total = result.resolved_data.length
@@ -954,6 +954,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 ami_list = []
 
                 _.map resources.DescribeInstances, ( ins, i ) ->
+
+                    #add by xjimmy
+                    MC.data.resourc_list[current_region][ins.instanceId] = ins
 
                     ami_list.push ins.imageId
 

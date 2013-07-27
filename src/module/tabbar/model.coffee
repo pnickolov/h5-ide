@@ -76,6 +76,9 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
 
         checkPlatform : ( region_name ) ->
             console.log 'checkPlatform'
+            #
+            if !MC.data.supported_platforms then return
+            #
             support_vpc = false
             #
             _.each MC.data.supported_platforms, ( item ) ->

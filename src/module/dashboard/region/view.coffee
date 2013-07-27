@@ -71,7 +71,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $( this.el ).find( '#region-stat-app' ).html this.stat_app this.model.attributes
             null
 
-        renderRegionStatStack : ( is_disabled ) ->
+        renderRegionStatStack : () ->
             console.log 'dashboard region stat stack render'
             $( this.el ).find( '#stat-stack-count' ).html this.stat_stack_count this.model.attributes
             $( this.el ).find( '#region-stat-stack' ).html this.stat_stack this.model.attributes

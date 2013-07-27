@@ -25,6 +25,13 @@ define [ 'jquery', 'event',
             #render
             view.render template
 
+            view.once 'AWS_AUTHENTICATION', (account_id, access_key, secret_key) ->
+                console.log 'AWS_AUTHENTICATION'
+                model.awsAuthenticate access_key, secret_key, account_id
+
+            model.once 'UPDATE_AWS_CREDENTIAL', () ->
+                view.render template
+
     unLoadModule = ( view, model ) ->
         console.log 'awscredential unLoadModule'
         view.off()

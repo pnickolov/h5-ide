@@ -647,8 +647,7 @@ define [ 'constant',
 
 				$.each portMap, ( key, value ) ->
 
-					if key.indexOf('sg-in') >= 0 or key.indexOf('sg-out') >= 0
-
+					if key.indexOf('sg') >= 0
 						me.trigger 'CREATE_SG_CONNECTION', line_id
 
 						return false
@@ -753,11 +752,16 @@ define [ 'constant',
 
 								if sgs.GroupId.split('.')[0][1...] == from_sg_uid
 
-									from_sg_group.push comp.uid
+									if comp.resource.Attachment.DeviceIndex != "0"
+										from_sg_group.push comp.uid
+									else
+										from_sg_group.push comp.resource.Attachment.InstanceId.split('.')[0][1...]
 
 								if sgs.GroupId.split('.')[0][1...] == to_sg_uid
-
-									to_sg_group.push comp.uid
+									if comp.resource.Attachment.DeviceIndex != "0"
+										to_sg_group.push comp.uid
+									else
+										to_sg_group.push comp.resource.Attachment.InstanceId.split('.')[0][1...]
 
 						when constant.AWS_RESOURCE_TYPE.AWS_ELB
 
@@ -813,8 +817,18 @@ define [ 'constant',
 
 							lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 
-			lines
+			$.each MC.canvas_data.layout.connection, ( line_id, line ) ->
 
+				if line.type == 'sg'
+
+					MC.canvas.remove $("#"+line_id)[0]
+
+
+			$.each lines, ( idx, line_data ) ->
+
+				MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
+
+			lines
 	}
 
 	model = new CanvasModel()

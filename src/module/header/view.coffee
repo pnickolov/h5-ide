@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     HeaderView = Backbone.View.extend {
 
@@ -19,7 +19,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( event ) ->
         render   : () ->
             console.log 'header render'
             $( this.el ).html this.template this.model.attributes
-            event.trigger event.HEADER_COMPLETE
+            ide_event.trigger ide_event.HEADER_COMPLETE
 
         clickLogout : () ->
             this.trigger 'BUTTON_LOGOUT_CLICK'

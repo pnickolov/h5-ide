@@ -13,7 +13,7 @@ define [ 'event', 'MC',
         template  : Handlebars.compile $( '#property-instance-app-tmpl' ).html()
 
         render     : () ->
-            console.log 'property:instance app render'
+            console.log 'property:instance app render', this.model.attributes
             $( '.property-details' ).html this.template this.model.attributes
 
     }

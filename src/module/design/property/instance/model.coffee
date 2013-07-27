@@ -71,7 +71,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
             console.log 'getName'
             this.set 'name', MC.canvas_data.component[ this.get( 'get_uid' )].name
             null
-           
+
         setInstanceType  : () ->
 
             uid = this.get 'get_uid'
@@ -97,7 +97,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
                 this.trigger 'EXCEED_ENI_LIMIT', uid, value, max_eni_num
 
             else
-                
+
                 MC.canvas_data.component[ uid ].resource.InstanceType = value
 
             null
@@ -146,7 +146,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
             MC.canvas_data.component[ uid ].resource.UserData.Data = this.get 'user_data'
 
             null
-        
+
         setBase64Encoded : ()->
 
             #console.log 'setBase64Encoded = ' + value
@@ -175,7 +175,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
             #console.log 'setSourceCheck = ' + value
             me = this
-            
+
             uid = this.get 'get_uid'
 
             _.map MC.canvas_data.component, ( val, key ) ->
@@ -384,7 +384,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
                         sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length + MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress.length
 
                         sg_detail.name = MC.canvas_data.component[sg_uid].resource.GroupName
-                        
+
                         sg_detail.desc = MC.canvas_data.component[sg_uid].resource.GroupDescription
 
                         instance_sg.rules_detail_ingress = instance_sg.rules_detail_ingress.concat MC.canvas_data.component[sg_uid].resource.IpPermissions
@@ -394,7 +394,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
                         instance_sg.detail.push sg_detail
 
             _.map MC.canvas_property.sg_list, (sg) ->
-                
+
                 if sg.uid not in sg_id_no_ref
 
                     tmp = {}
@@ -431,9 +431,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
                     if val != tmp[tmp.length - 1]
 
                         tmp.push(val)
-                
 
-                
+
+
                 return (JSON.parse node for node in tmp)
 
 
@@ -458,7 +458,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
                     kp.name = value.resource.KeyName
                     kp.uid = value.uid
-                    
+
                     if MC.canvas_data.component[(current_key_pair.split ".")[0][1...]].resource.KeyName == value.resource.KeyName
 
                         kp.selected = true
@@ -468,7 +468,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
             this.set 'keypair', kp_list
 
         getInstanceType : () ->
-            
+
             uid = this.get 'get_uid'
 
             ami_info = MC.canvas_data.layout.component.node[ uid ]

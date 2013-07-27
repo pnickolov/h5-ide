@@ -438,7 +438,7 @@
             },
             {
               "target": "696C9718-4268-43C0-BEE5-312FBE7849FC",
-              "port": "instance-sg-in",
+              "port": "instance-sg",
               "line": "8AB32AF5-62FA-43E4-B6CC-51BE55CC21C3"
             }
           ]
@@ -461,7 +461,7 @@
           "connection": [
             {
               "target": "374AC8E5-BEA3-4B23-A824-2A7E282C6245",
-              "port": "instance-sg-out",
+              "port": "instance-sg",
               "line": "27A7F25B-3740-4130-AEB6-8F09C1AC0621"
             },
             {
@@ -626,7 +626,7 @@
             },
             {
               "target": "EE3B8DA1-D347-443E-8EEC-B0DF20236E83",
-              "port": "eni-sg-in",
+              "port": "eni-sg",
               "line": "27A7F25B-3740-4130-AEB6-8F09C1AC0621"
             }
           ]
@@ -666,8 +666,8 @@
       },
       "27A7F25B-3740-4130-AEB6-8F09C1AC0621": {
         "target": {
-          "EE3B8DA1-D347-443E-8EEC-B0DF20236E83": "instance-sg-out",
-          "374AC8E5-BEA3-4B23-A824-2A7E282C6245": "eni-sg-in"
+          "EE3B8DA1-D347-443E-8EEC-B0DF20236E83": "instance-sg",
+          "374AC8E5-BEA3-4B23-A824-2A7E282C6245": "eni-sg"
         },
         "auto": true,
         "point": [
@@ -687,7 +687,7 @@
       "8AB32AF5-62FA-43E4-B6CC-51BE55CC21C3": {
         "target": {
           "696C9718-4268-43C0-BEE5-312FBE7849FC": "elb-sg-out",
-          "E24BD807-E17D-441F-A6CF-671F1A4D7E24": "instance-sg-in"
+          "E24BD807-E17D-441F-A6CF-671F1A4D7E24": "instance-sg"
         },
         "auto": true,
         "point": [

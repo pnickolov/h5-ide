@@ -4,8 +4,9 @@
 
 define [ 'jquery',
          'text!/module/design/property/sg/template.html',
+         'text!/module/design/property/sg/app_template.html',
          'event'
-], ( $, template, ide_event ) ->
+], ( $, template, app_template, ide_event ) ->
 
     #
     current_view  = null
@@ -13,17 +14,23 @@ define [ 'jquery',
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-sg-tmpl">' + template + '</script>'
+    app_template = '<script type="text/x-handlebars-template" id="property-sg-app-tmpl">' + app_template + '</script>'
     #load remote html template
-    $( 'head' ).append template
+    $( 'head' ).append( template ).append( app_template )
 
     #private
-    loadModule = ( uid_parent, expended_accordion_id, current_main ) ->
+    loadModule = ( uid_parent, expended_accordion_id, current_main, tab_type ) ->
 
         #
         MC.data.current_sub_main = current_main
 
+        #set view_type
+        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+
         #
-        require [ './module/design/property/sg/view', './module/design/property/sg/model' ], ( view, model ) ->
+        require [ './module/design/property/sg/' + view_type,
+                  './module/design/property/sg/model'
+        ], ( view, model ) ->
 
             #
             if current_view then view.delegateEvents view.events
@@ -49,7 +56,7 @@ define [ 'jquery',
 
             #render
             view.render( expended_accordion_id )
-            
+
             view.on 'SET_SG_NAME', ( uid, value ) ->
 
                 model.setSGName uid, value

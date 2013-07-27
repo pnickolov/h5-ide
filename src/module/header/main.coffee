@@ -16,13 +16,18 @@ define [ 'jquery', 'text!/module/header/template.html' ], ( $, template ) ->
         $( template ).appendTo '#header'
 
         #load remote module1.js
-        require [ './module/header/view' ], ( View ) ->
+        require [ './module/header/view', './module/header/model' ], ( View, model ) ->
 
             #view
             view       = new View()
 
-            #view.on 'complete', () ->
-            #    console.log 'complete'
+            #event
+            view.on 'BUTTON_LOGOUT_CLICK', () ->
+                model.logout()
+
+            view.on 'AWSCREDENTIAL_CLICK', () ->
+                console.log 'AWSCREDENTIAL_CLICK'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             view.render()
 

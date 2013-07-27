@@ -267,8 +267,8 @@ define [ 'constant',
 					null
 
 				#delete line between elb and instance
-				if portMap['elb-sg-out'] and portMap['instance-sg-in']
-					MC.aws.elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
+				if portMap['elb-sg-out'] and portMap['instance-sg']
+					MC.aws.elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg'])
 
 				if portMap['instance-attach'] and portMap['eni-attach']
 
@@ -293,7 +293,7 @@ define [ 'constant',
 						MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet.splice v, 1
 
 				# remove line between subnet and rt
-				if portMap['subnet-association-out'] and portMap['rtb-src']
+				if portMap['subnet-assoc-out'] and portMap['rtb-src']
 
 					rt_uid = portMap['rtb-src']
 
@@ -301,14 +301,14 @@ define [ 'constant',
 
 						$.each MC.canvas_data.component[rt_uid].resource.AssociationSet, ( index, route ) ->
 
-							if route.SubnetId.split('.')[0][1...] == portMap['subnet-association-out']
+							if route.SubnetId.split('.')[0][1...] == portMap['subnet-assoc-out']
 
 								MC.canvas_data.component[rt_uid].resource.AssociationSet.splice index, 1
 
 								return false
 
 				# remove line between instance and rt
-				if portMap['instance-sg-in'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+				if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 					rt_uid = null
 
@@ -318,7 +318,7 @@ define [ 'constant',
 
 					$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
 
-						if route.InstanceId and route.InstanceId.split('.')[0][1...] == portMap['instance-sg-in']
+						if route.InstanceId and route.InstanceId.split('.')[0][1...] == portMap['instance-sg']
 
 							remove_index.push index
 
@@ -327,7 +327,7 @@ define [ 'constant',
 						MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
 
 				# remove line between eni and rt
-				if portMap['eni-sg-in'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+				if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 					rt_uid = null
 
@@ -337,7 +337,7 @@ define [ 'constant',
 
 					$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
 
-						if route.NetworkInterfaceId and route.NetworkInterfaceId.split('.')[0][1...] == portMap['eni-sg-in']
+						if route.NetworkInterfaceId and route.NetworkInterfaceId.split('.')[0][1...] == portMap['eni-sg']
 
 							remove_index.push index
 
@@ -459,8 +459,8 @@ define [ 'constant',
 					null
 
 				#connect elb and instance
-				if portMap['instance-sg-in'] and portMap['elb-sg-out']
-					MC.aws.elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg-in'])
+				if portMap['instance-sg'] and portMap['elb-sg-out']
+					MC.aws.elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg'])
 
 				if portMap['instance-attach'] and portMap['eni-attach']
 
@@ -511,7 +511,7 @@ define [ 'constant',
 
 
 				# routetable to subnet
-				if portMap['subnet-association-out'] and portMap['rtb-src']
+				if portMap['subnet-assoc-out'] and portMap['rtb-src']
 
 					rt_uid = portMap['rtb-src']
 
@@ -520,7 +520,7 @@ define [ 'constant',
 
 						asso = {}
 
-						asso.SubnetId = '@' + portMap['subnet-association-out'] + '.resource.SubnetId'
+						asso.SubnetId = '@' + portMap['subnet-assoc-out'] + '.resource.SubnetId'
 
 						asso.Main = 'false'
 
@@ -543,19 +543,19 @@ define [ 'constant',
 
 								null
 
-							if map['subnet-association-out'] and map['subnet-association-out'] == portMap['subnet-association-out']
+							if map['subnet-assoc-out'] and map['subnet-assoc-out'] == portMap['subnet-assoc-out']
 
 								# remove component data and
 
 								preview_rt_uid = null
 
-								if map['rtb-src-bottom'] then preview_rt_uid = map['rtb-src-bottom'] else preview_rt_uid = map['rtb-src-top']
+								if map['rtb-src'] then preview_rt_uid = map['rtb-src'] else preview_rt_uid = map['rtb-src']
 
 								if MC.canvas_data.component[preview_rt_uid].resource.AssociationSet != 0 and MC.canvas_data.component[preview_rt_uid].resource.AssociationSet[0].Main != 'true'
 
 									$.each MC.canvas_data.component[preview_rt_uid].resource.AssociationSet, ( index, assoset ) ->
 
-										if assoset.SubnetId.split('.')[0][1...] == map['subnet-association-out']
+										if assoset.SubnetId.split('.')[0][1...] == map['subnet-assoc-out']
 
 											MC.canvas_data.component[preview_rt_uid].resource.AssociationSet.splice index, 1
 
@@ -585,7 +585,7 @@ define [ 'constant',
 					MC.canvas_data.component[rt_uid].resource.RouteSet.push igw_route
 
 				# routetable to instance
-				if portMap['instance-sg-in'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+				if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 					rt_uid = null
 
@@ -594,7 +594,7 @@ define [ 'constant',
 					instance_route = {
 						'DestinationCidrBlock'		:	'0.0.0.0/0',
 						'GatewayId'					:	'',
-						'InstanceId'				:	'@' + portMap['instance-sg-in'] + '.resource.InstanceId',
+						'InstanceId'				:	'@' + portMap['instance-sg'] + '.resource.InstanceId',
 						'InstanceOwnerId'			:	'',
 						'NetworkInterfaceId'		:	'',
 						'State'						:	'',
@@ -623,7 +623,7 @@ define [ 'constant',
 					MC.canvas_data.component[rt_uid].resource.RouteSet.push vgw_route
 
 				# routetable to eni
-				if portMap['eni-sg-in'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+				if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 					rt_uid = null
 
@@ -634,7 +634,7 @@ define [ 'constant',
 						'GatewayId'					:	'',
 						'InstanceId'				:	'',
 						'InstanceOwnerId'			:	'',
-						'NetworkInterfaceId'		:	'@' + portMap['eni-sg-in'] + '.resource.NetworkInterfaceId',
+						'NetworkInterfaceId'		:	'@' + portMap['eni-sg'] + '.resource.NetworkInterfaceId',
 						'State'						:	'',
 						'Origin'					:	''
 					}

@@ -53,6 +53,11 @@ a {
 	/*display: inline-block;*/
 }
 
+.fitfloat {
+	display  : block;
+	overflow : hidden;
+}
+
 /* Header */
 #header-wrapper {
 	border-top: 4px solid #B25B91;
@@ -2902,6 +2907,14 @@ a.sidebar-hider {
 	content : "x";
 }
 
+#modal-acl-rule .sg-protocol-option-input.show {
+	display: block;
+}
+
+#modal-acl-rule .sg-protocol-option-input {
+	display: none;
+}
+
 /* property-stack */
 .property-info {
 	padding: 0 10px
@@ -2988,8 +3001,8 @@ a.sidebar-hider {
 }
 
 .property-stack .create-sg {
-top: 2px;
-height: 35px;
+	top: 2px;
+	height: 35px;
 }
 
 /* property-rt */
@@ -3044,7 +3057,7 @@ height: 35px;
 	padding-left : 30px;
 }
 .status-good:before, .status-bad:before {
-	
+
 }
 .status-bad  {}
 
@@ -3135,6 +3148,21 @@ height: 35px;
 
 .stack-property-acl-list .property-item {
 	height: 30px;
+}
+
+.stack-property-acl-list .edit {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 30px;
+	text-align: center;
+	line-height: 50px;
+	background-color: #ddd;
+	cursor: pointer;
+}
+
+.stack-property-acl-list .edit:hover {
+	background-color: #000;
 }
 
 /* SG Rule Create Dialog */

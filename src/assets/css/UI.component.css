@@ -1109,6 +1109,7 @@ textarea {
 	border-radius : 2px;
 	font-size     : 12px;
 	cursor        : pointer;
+	padding       : 5px;
 }
 
 .selectbox .selection:before {
@@ -1147,6 +1148,7 @@ textarea {
 	color       : #333333;
 	white-space : nowrap;
 	cursor      : pointer;
+	padding     : 5px;
 }
 
 .selectbox .dropdown .item:hover,
@@ -1157,36 +1159,18 @@ textarea {
 }
 
 .selectbox.open .dropdown,
-.selectbox.open .editableoption {
+.selectbox.open .editor {
 	display: block;
 }
 
 /* Selectbox Legacy */
-.selectbox .dropdown-menu,
-.selectbox-editable .scroll-wrap {
-	border: 1px solid #ccc;
-	box-shadow: 0 8px 10px rgba(0,0,0,.3);
-}
-
-.selectbox-editable .dropdown-menu {
-	border: none;
-}
-
-.selectbox .dropdown-menu li a {
-	padding: 8px 20px 8px 8px;
-}
-
-.selectbox.selectbox-editable .dropdown-menu {
-	top: 0;
-}
-
 .selectbox.open .dropdown-menu,
-.selectbox.open .editableoption {
+.selectbox.open .editor {
 	display: block;
 	z-index: 50;
 }
 
-.selectbox-editable .editableoption {
+.selectbox > .editor {
 	display: none;
 	position: absolute;
 	top: 153px;
@@ -1198,40 +1182,32 @@ textarea {
 	box-shadow: 0 8px 10px rgba(0,0,0,.3);
 }
 
-.editableoption .label {
+.editor > .editbtn {
 	display: block;
 	color: #0F7BFF;
 }
 
-.editableoption .edit {
+.editor > .edit {
 	display: none;
 }
 
-.editableoption .input {
-	width: 150px;
-	padding: 4px 20px 4px 4px;
+.selectbox .editor .input {
+	width   : 100%;
+	padding : 4px 20px 4px 4px;
+
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
-.editableoption .btn {
-	width: 30px;
-	height: 26px;
-	line-height: 18px;
-	font-size: 12px;
-	padding: 0;
-	margin-left: 5px;
-}
-
-.selectbox .scroll-wrap {
-	display: none;
-	position: absolute;
-	top: 34px;
-	left: 0;
-}
-.selectbox .scroll-wrap ul {
-	position: relative;
-}
-.selectbox.open .scroll-wrap {
-	display: block;
+.editor .btn {
+	width       : 30px;
+	height      : 26px;
+	line-height : 18px;
+	font-size   : 12px;
+	padding     : 0;
+	margin-left : 5px;
+	float       : right;
 }
 
 /* Radio Buttons */

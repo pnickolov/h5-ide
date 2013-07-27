@@ -109,27 +109,28 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 model.getStackInfo tab_id
 
             #listen old_stack
-            model.on 'OLD_STACK', ( result ) ->
+            model.on 'OLD_STACK', ( tab_id ) ->
                 console.log 'OLD_STACK'
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_STACK', result
+                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_STACK', tab_id
 
             #listen open_app
-            model.on 'OPEN_APP', ( result ) ->
+            model.on 'OPEN_APP', ( tab_id ) ->
                 console.log 'OPEN_APP'
                 #call getAppInfo
                 model.once 'GET_APP_COMPLETE', ( result ) ->
                     console.log 'GET_APP_COMPLETE'
+                    console.log result
                     #push event
-                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', result
+                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result
                 #
-                model.getAppInfo result
+                model.getAppInfo tab_id
 
             #listen old_stack
-            model.on 'OLD_APP', ( result ) ->
+            model.on 'OLD_APP', ( tab_id ) ->
                 console.log 'OLD_APP'
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_APP', result
+                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_APP', tab_id
 
             #listen old_stack
             model.on 'SWITCH_DASHBOARD', ( result ) ->

@@ -40,7 +40,7 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform, tab_name ) ->
                 console.log 'resource:RELOAD_RESOURCE'
                 #
-                if type is 'OPEN_APP' then return
+                #if type is 'OPEN_APP' then return
                 #check re-render
                 view.reRender template
                 #

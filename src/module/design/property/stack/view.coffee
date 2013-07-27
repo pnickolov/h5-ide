@@ -22,11 +22,16 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
             'click #stack-property-add-new-acl' : 'openCreateAclPanel'
             'click .stack-property-acl-list .edit' : 'openEditAclPanel'
-            
+
         render     : () ->
             console.log 'property:stack render'
+            #
+            this.undelegateEvents()
+            #
             $( '.property-details' ).html this.template this.model.attributes
             this.refreshACLList()
+            #
+            this.delegateEvents this.events
 
         stackNameChanged : () ->
             me = this
@@ -71,7 +76,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             target = $(event.target).parents('div:eq(0)')
             uid = target.attr('uid')
-            
+
             me.trigger 'RESET_STACK_SG', uid
 
             null

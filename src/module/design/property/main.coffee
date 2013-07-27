@@ -108,8 +108,7 @@ define [ 'jquery',
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection    then vpn_main.loadModule uid, null, vpn_main
                             #show eni property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid, eni_main, tab_type
-                            #show acl property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl       then acl_main.loadModule uid, acl_main
+                            # Acl Property is not loaded in such a way.
 
                             #
                             else
@@ -146,7 +145,7 @@ define [ 'jquery',
 
                                         return false
 
-                            else if '|instance-sg-in>instance-sg-out|instance-sg-out>instance-sg-in|'.indexOf( key ) >0
+                            else if '|instance-sg>instance-sg|'.indexOf( key ) >0
                                 #select line between instance and instance
                                 sgrule_main.loadModule line_option, 'line', sgrule_main
 
@@ -164,7 +163,7 @@ define [ 'jquery',
                 #
                 MC.data.last_open_property = { 'event_type' : ide_event.OPEN_SG, 'uid_parent' : uid_parent, 'expended_accordion_id' : expended_accordion_id }
                 #
-                sg_main.loadModule( uid_parent, expended_accordion_id, sg_main )
+                sg_main.loadModule( uid_parent, expended_accordion_id, sg_main, tab_type )
                 #
                 if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
@@ -175,7 +174,7 @@ define [ 'jquery',
                 #
                 MC.data.last_open_property = { 'event_type' : ide_event.OPEN_ACL, 'uid' : uid_parent, 'expended_accordion_id' : expended_accordion_id, 'acl_uid' : acl_uid }
                 #
-                acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid )
+                acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid, tab_type )
                 #
                 if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null

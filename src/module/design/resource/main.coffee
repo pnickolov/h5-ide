@@ -37,7 +37,7 @@ define [ 'jquery',
             #    #if id is 'favorite-ami' then
 
             #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform, tab_name ) ->
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform ) ->
                 console.log 'resource:RELOAD_RESOURCE'
                 #
                 #if type is 'OPEN_APP' then return

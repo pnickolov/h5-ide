@@ -138,6 +138,12 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 #push event
                 ide_event.trigger ide_event.SWITCH_DASHBOARD, null
 
+            #listen open dashboard
+            ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, () ->
+                console.log 'NAVIGATION_TO_DASHBOARD_REGION'
+                Tabbar.open 'dashboard'
+                null
+
             #listen open stack tab
             ide_event.onLongListen ide_event.OPEN_STACK_TAB, ( tab_name, region_name, stack_id ) ->
                 console.log 'OPEN_STACK_TAB ' + ' tab_name = ' + tab_name + ', region_name = ' + region_name + ', stack_id = ' + stack_id

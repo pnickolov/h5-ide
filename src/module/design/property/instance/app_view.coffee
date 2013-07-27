@@ -13,12 +13,11 @@ define [ 'event', 'MC',
         template  : Handlebars.compile $( '#property-instance-app-tmpl' ).html()
 
         render     : () ->
-            console.log 'property:elb app render'
+            console.log 'property:instance app render'
             $( '.property-details' ).html this.template this.model.attributes
 
-
     }
-    
+
     view = new InstanceAppView()
 
     return view

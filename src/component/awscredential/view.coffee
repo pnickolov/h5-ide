@@ -32,6 +32,7 @@ define [ 'event',
             if me.model.attributes.is_authenticated
                 $('#AWSCredentials-submiting').hide()
                 $('#AWSCredentials-update').show()
+                $('#aws-credential-update-account-id').text = me.attributes.account_id
             else
                 $('#AWSCredential-info').hide()
                 $('#AWSCredential-failed').show()

@@ -364,7 +364,7 @@ define [ 'constant',
 				if portMap['vgw-vpn'] and portMap['cgw-vpn']
 					MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
-				if portMap['instance-sg-in'] and portMap['instance-sg-out']
+				if portMap['instance-sg'] or portMap['eni-sg'] or portMap['elb-sg-in'] or portMap['elb-sg-out']
 
 					this.trigger 'SHOW_SG_LIST', option.id
 

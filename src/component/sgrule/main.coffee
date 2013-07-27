@@ -35,8 +35,13 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
                 ide_event.trigger ide_event.DELETE_LINE_TO_CANVAS, line_id
 
+            view.on 'DELETE_SG_LINE', () ->
+
+                this.model.deleteSGLine()
+                
             #render
             if delete_module
+                model.getDeleteSGList()
                 view.renderDeleteModule()
             else
                 view.render()

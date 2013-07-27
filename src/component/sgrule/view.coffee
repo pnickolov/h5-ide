@@ -22,6 +22,7 @@ define [
           'OPTION_CHANGE #sg-create-proto'   : 'onProtocolChange'
           'click .sg-rule-create'            : 'onDirChange'
           'OPTION_CHANGE #sg-proto-icmp-sel' : 'onICMPChange'
+          'click #confirm-delete-sg-line'    : 'deleteSGLine'
 
         render   : () ->
             console.log 'Showing Security Group Rule Create Dialog'
@@ -122,6 +123,10 @@ define [
               data.protocolSubValue = $("#sg-proto-input-sub-" + protocolValue).find(".selected").attr("data-id")
 
           data
+
+        deleteSGLine : () ->
+
+          this.trigger 'DELETE_SG_LINE'
     }
 
     SGRulePopupView

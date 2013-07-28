@@ -12,9 +12,8 @@ define [ 'event',
         events   :
             'closed'                                : 'onClose'
             'click #awsredentials-submit'           : 'onSubmit'
-            'click #AWSCredentials-account-update'  : 'onSubmit'
             'click #awsredentials-update-done'      : 'onDone'
-            'click #AWSCredentials-account-update'  : 'updateAccount'
+            'click .AWSCredentials-account-update'  : 'onUpdate'
 
         render     : (template) ->
             console.log 'pop-up:awscredential render'
@@ -27,12 +26,12 @@ define [ 'event',
             me = this
             console.log 'pop-up:awscredential rerender'
 
-            this.$el.html this.model.attributes
+            #this.$el.html this.model.attributes
 
             if me.model.attributes.is_authenticated
                 $('#AWSCredentials-submiting').hide()
                 $('#AWSCredentials-update').show()
-                $('#aws-credential-update-account-id').text = me.attributes.account_id
+                $('#aws-credential-update-account-id').text = me.model.attributes.account_id
             else
                 $('#AWSCredential-info').hide()
                 $('#AWSCredential-failed').show()
@@ -46,11 +45,14 @@ define [ 'event',
             modal.close()
             this.trigger 'CLOSE_POPUP'
 
-        updateAccount : ->
-            console.log 'updateAccount'
+        onUpdate : ->
+            console.log 'onUpdate'
+            $('#AWSCredentials-update').hide()
+            $('#AWSCredential-form').show()
 
         onSubmit : () ->
             console.log 'onSubmit'
+
             # input check
             account_id = $('#aws-credential-account-id').val()
             access_key = $('#aws-credential-access-key').val()

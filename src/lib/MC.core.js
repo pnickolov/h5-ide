@@ -3,13 +3,13 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system 
-#* Date: 20130724
+#* Date: 20130729
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var MC = {
-	version: '0.2.3',
+	version: '0.2.4',
 
 	// Global Variable 
 	API_URL: 'https://api.madeiracloud.com/',
@@ -323,6 +323,14 @@ var MC = {
 	base64Decode: function (string)
 	{
 		return decodeURIComponent(escape(window.atob( string )));
+	},
+
+	camelCase: function (string)
+	{
+		return string.replace(/-([a-z])/ig, function (match, letter)
+		{
+			return (letter + '').toUpperCase();
+		});
 	}
 };
 

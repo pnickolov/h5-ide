@@ -6,6 +6,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
     AZModel = Backbone.Model.extend {
 
+        defaults :
+            id : null
+            component : null
+            az_list : null
+
         initialize : ->
             #listen
             #this.listenTo this, 'change:get_host', this.getHost

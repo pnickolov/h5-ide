@@ -2538,6 +2538,14 @@ MC.canvas.event.drawConnection = {
 									}
 								});
 
+								$.each(node_connections, function (index, data)
+								{
+									if (data.port === value.from)
+									{
+										is_connected = true;
+									}
+								});
+
 								if (is_connected)
 								{
 									return;

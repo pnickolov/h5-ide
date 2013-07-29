@@ -374,7 +374,16 @@ a {
 }
 
 .icon-nav-label {
-	margin-right: 15px;
+	display: inline-block;
+	width: 45px;
+	height: 48px;
+}
+
+.icon-sub-nav-label {
+	display: block;
+	float: left;
+	width: 30px;
+	height: 24px;
 }
 
 .icon-nav-status {
@@ -405,6 +414,7 @@ a {
 	font-size: 13px;
 	color: #ccc;
 	width: 206px;
+	line-height: 24px;
 }
 
 .nav-head:hover,
@@ -494,13 +504,21 @@ a {
 
 #tab-bar {
 	font-size: 13px;
-	padding: 23px 20px 0 0;
+	padding: 21px 20px 0 0;
 	width: 100%;
 	height: 40px;
 }
 
 .tabbar-group {
 	float: left;
+}
+
+.icon-tabbar-label {
+	float: left;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin-right: 5px;
 }
 
 #tab-bar li {
@@ -520,9 +538,10 @@ a {
 .tab-bar-truncate {
 	display: block;
 	width: 180px;
-	height: 15px;
-	padding: 6px 12px 6px 5px;
+	height: 19px;
+	padding: 4px 12px 6px 5px;
 	color: #666;
+	line-height: 24px;
 }
 
 #tab-bar li.active {
@@ -531,7 +550,7 @@ a {
 }
 
 #tab-bar li.active a {
-	color: #007dce;
+	color: #3892E3;
 }
 
 .close-tab {
@@ -664,12 +683,13 @@ a {
 
 .dashboard-widget {
 	border-radius: 4px;
-	border: 1px solid #D4D4D4;
+	border: 1px solid #b1b1b1;
 	background: #fff;
+	box-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
 .dashboard-widget:hover {
-	box-shadow: 2px 2px 5px #ddd, -2px -2px 5px #ddd;
+	box-shadow: 0 0 5px rgba(0,0,0,.2);
 }
 
 .dashboard-widget-body a,
@@ -1022,7 +1042,7 @@ a {
 	text-align: center;
 	padding: 80px 0;
 	color: #999;
-	background: #fff;
+	background: #f8f8f8;
 }
 
 .dashboard-widget-body-table.blank-widget {
@@ -1087,7 +1107,7 @@ a {
 }
 
 .dashboard-region-stat-tab-head li {
-	padding: 8px 0 0 10px;
+	/*padding: 8px 0 0 10px;*/
 	font-size: 14px;
 	position: relative;
 	height: 100%;
@@ -1098,6 +1118,7 @@ a {
 	display: inline-block;
 	color: #666;
 	font-size: 14px;
+	line-height: 45px;
 }
 
 .dashboard-region-stat-tab-head > li > a > i {
@@ -1580,9 +1601,10 @@ td.table-action a.btn {
 
 .sidebar-title {
 	font-size: 16px;
-	background-color: #4A464A;
+	background-color: #4d4d4d;
 	border-bottom: 1px solid #262a2e;
 	color: #e9edf2;
+	text-shadow: 0 1px #333;
 	padding: 12px 10px;
 }
 
@@ -3316,13 +3338,26 @@ a.sidebar-hider {
 
 /* Icons Placeholder */
 
+
+/* Tabbar Icon */
+
+.icon-dashboard-tabbar {
+	background: url('../images/ide/icon-dashboard-tabbar.png') center center no-repeat;
+}
+
 /* Nav Icon */
 
+.icon-dashboard-nav {
+	background: url('../images/ide/icon-dashboard-nav.png') center center no-repeat;
+}
+
+.icon-app-nav {
+	background: url('../images/ide/icon-app-nav.png') center center no-repeat;
+}
+
+
 .icon-stack-nav {
-	background: url('../images/ide/icon-stack-32x32.png') center center no-repeat;
-	display: inline-block;
-	width: 20px;
-	height: 16px;
+	background: url('../images/ide/icon-stack-nav.png') center center no-repeat;
 }
 
 /* Dashboard Icon */

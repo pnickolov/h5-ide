@@ -8,7 +8,9 @@ define [ 'backbone', 'MC' ], () ->
 
         init : ( rtb_uid )->
 
-          myRTBComponent = MC.canvas_data.component[ rtb_uid ]
+          components = MC.canvas_data.component
+
+          myRTBComponent = components[ rtb_uid ]
 
           appData = MC.data.resource_list[ MC.canvas_data.region ]
 
@@ -23,6 +25,19 @@ define [ 'backbone', 'MC' ], () ->
           for i in rtb.routeSet.item
             if i.state == "active"
               i.active = true
+
+          propagate = {}
+          uidRegex  = /@([^.]+)\./
+
+          # Find out which route is propagated.
+          for i in myRTBComponent.resource.RouteSet
+            if i.GatewayId in myRTBComponent.resource.PropagatiingVgwSet
+              uid = uidRegex.exec( i.GatewayId )[1]
+              propagate[ components[ uid ].resource.CustomerGatewayId ] = true
+
+          for value, key in rtb.routeSet.item
+            if propagate[ value.gatewayId ]
+              value.propagate = true
 
           this.set rtb
     }

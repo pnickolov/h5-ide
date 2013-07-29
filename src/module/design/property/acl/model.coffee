@@ -41,40 +41,44 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             aclObj.rule_number = aclObj.entrySet.item.length
 
-            $.each aclObj.entrySet.item, ( idx, entry ) ->
+            if aclObj.entrySet.item
 
-                if entry.protocol == -1 or entry.protocol == '-1'
+                $.each aclObj.entrySet.item, ( idx, entry ) ->
 
-                    entry.protocolName = 'All'
+                    if entry.protocol == -1 or entry.protocol == '-1'
 
-                else if entry.protocol == 6 or entry.protocol == '6'
+                        entry.protocolName = 'All'
 
-                    entry.protocolName = 'TCP'
+                    else if entry.protocol == 6 or entry.protocol == '6'
 
-                else if entry.protocol == 17 or entry.protocol == '17'
+                        entry.protocolName = 'TCP'
 
-                    entry.protocolName = 'UDP'
+                    else if entry.protocol == 17 or entry.protocol == '17'
 
-                else if entry.protocol == 1 or entry.protocol == '1'
+                        entry.protocolName = 'UDP'
 
-                    entry.protocolName = 'ICMP'
+                    else if entry.protocol == 1 or entry.protocol == '1'
 
-                else
+                        entry.protocolName = 'ICMP'
 
-                    entry.protocolName = 'Custom'
+                    else
 
-                null
-
-            $.each aclObj.associationSet.item, (i, asso) ->
-
-                $.each MC.canvas_data.component, ( i, comp ) ->
-
-                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet and comp.resource.SubnetId == asso.subnetId
-
-                        asso.subnetDisplay = comp.name + '(' + comp.resource.CidrBlock + ')'
-
+                        entry.protocolName = 'Custom'
 
                     null
+
+            if aclObj.associationSet.item
+
+                $.each aclObj.associationSet.item, (i, asso) ->
+
+                    $.each MC.canvas_data.component, ( i, comp ) ->
+
+                        if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet and comp.resource.SubnetId == asso.subnetId
+
+                            asso.subnetDisplay = comp.name + '(' + comp.resource.CidrBlock + ')'
+
+
+                        null
 
             aclObj.asso_number = aclObj.associationSet.item.length
 

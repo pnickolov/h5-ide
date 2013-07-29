@@ -62,7 +62,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
 
         changeDashboardTabname   : ( tab_name ) ->
             console.log 'changeDashboardTabname'
-            $( '#tab-bar-dashboard' ).children().html '<i class="icon-gauge icon-label"></i>' + tab_name
+            $( '#tab-bar-dashboard' ).children().html '<i class="icon-dashboard-tabbar icon-tabbar-label"></i>' + tab_name
             null
 
         openNewStackDialog : ( event ) ->

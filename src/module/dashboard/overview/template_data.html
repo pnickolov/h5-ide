@@ -8,9 +8,15 @@
         <span class="{{pointer}}"></span>
         <div class="map-tooltip-body truncate">
         <ul class="dashboard-widget-regions-stat">
-            <li><i class="icon-browser tooltip" data-tooltip="Running App"></i>{{ running_app }}</li>
-            <li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>{{ stopped_app }}</li>
-            <li><i class="icon-layers tooltip" data-tooltip="Stack"></i>{{ stack }}</li>
+            {{#if running_app }}
+                <li class="dashboard-running-app-stat tooltip" data-tooltip="Running App"><i class="icon-app-running-min"></i>{{ running_app }}</li>
+            {{/if}}
+            {{#if stopped_app }}
+                <li class="dashboar-stopped-app-stat tooltip" data-tooltip="Stopped App"><i class="icon-app-stopped-min"></i>{{ stopped_app }}</li>
+            {{/if}}
+            {{#if stack }}
+                <li class="dashboard-stack-stat tooltip" data-tooltip="Stack"><i class="icon-stack-min tooltip"></i>{{ stack }}</li>
+            {{/if}}
         </ul>
         </div>
         </div>

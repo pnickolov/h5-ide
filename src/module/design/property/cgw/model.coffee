@@ -6,26 +6,22 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
     CGWModel = Backbone.Model.extend {
 
-        ###
         defaults :
             uid  : null
             name : null
             BGP  : null
             ip   : null
-        ###
-
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
 
         setId : ( uid ) ->
             cgw_component = MC.canvas_data.component[ uid ]
 
-            this.set
+            obj =
                 uid  : uid
                 name : cgw_component.name
                 BGP  : cgw_component.resource.BgpAsn
                 ip   : cgw_component.resource.IpAddress
+
+            this.set obj
 
             null
 

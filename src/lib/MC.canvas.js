@@ -2537,11 +2537,34 @@ MC.canvas.event.drawConnection = {
 
 								target_data = layout_node_data[ item.id ];
 
-								$.each(target_data.connection, function (index, data)
+								target_connection_option = MC.canvas.CONNECTION_OPTION[ target_data.type ][ node_type ];
+
+								if ($.type(target_connection_option) !== 'array')
 								{
-									if (data.port === value.to)
+									target_connection_option = [target_connection_option];
+								}
+
+								$.each(target_connection_option, function (index, option)
+								{
+									if (option.from === value.to)
 									{
-										is_connected = true;
+										$.each(target_data.connection, function (index, data)
+										{
+											if (option.relation === 'unique')
+											{
+												if (data.port === option.from && data.target === node_id)
+												{
+													is_connected = true;
+												}
+											}
+											else
+											{
+												if (data.port === value.to && data.target === node_id)
+												{
+													is_connected = true;
+												}
+											}
+										});
 									}
 								});
 

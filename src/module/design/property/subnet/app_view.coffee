@@ -20,8 +20,10 @@ define [ 'event', 'MC',
 
         showACLDetail : () ->
             acl_uid = $("#property-app-subnet-acl").attr("data-uid")
+            subnet_uid = $("#subnet-property-panel").data('uid')
+            console.log "Show ACL Sub Panel for Subnet", acl_uid, subnet_uid
 
-            console.log "Show ACL Sub Panel for Subnet", acl_uid
+            this.trigger 'OPEN_ACL', acl_uid, subnet_uid
     }
 
     view = new SubnetAppView()

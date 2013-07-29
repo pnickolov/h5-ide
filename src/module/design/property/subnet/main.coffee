@@ -82,6 +82,10 @@ define [ 'jquery',
             #view
             view.model    = model
 
+            view.on 'OPEN_ACL', ( acl_uid, subnet_uid ) ->
+
+                ide_event.trigger ide_event.OPEN_ACL, subnet_uid, 0, acl_uid, null, null
+
             model.init uid
             view.render()
 

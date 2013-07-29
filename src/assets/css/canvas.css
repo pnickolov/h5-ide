@@ -366,6 +366,10 @@
 	cursor: nwse-resize;
 }
 
+.eip-status {
+	cursor: pointer;
+}
+
 #instance_volume_list {
 	padding: 10px;
 	width: 265px;

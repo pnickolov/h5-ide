@@ -2,13 +2,14 @@
 #  View Mode for design/property/acl
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
+define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
     ACLModel = Backbone.Model.extend {
 
         defaults :
             'component'    : null
             'associations' : null
+            'parent'       : null
 
         initialize : ->
             #listen
@@ -31,6 +32,57 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             this.set 'associations', associationsAry
 
             null
+
+        appInit : ( uid ) ->
+
+            aclObj = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.NetworkAclId]
+
+            #aclObj.vpc_id = MC.canvas_data.component[aclObj.resource.vpcId.split('.')[0][1...]].resource.VpcId
+
+            aclObj.rule_number = aclObj.entrySet.item.length
+
+            $.each aclObj.entrySet.item, ( idx, entry ) ->
+
+                if entry.protocol == -1 or entry.protocol == '-1'
+
+                    entry.protocolName = 'All'
+
+                else if entry.protocol == 6 or entry.protocol == '6'
+
+                    entry.protocolName = 'TCP'
+
+                else if entry.protocol == 17 or entry.protocol == '17'
+
+                    entry.protocolName = 'UDP'
+
+                else if entry.protocol == 1 or entry.protocol == '1'
+
+                    entry.protocolName = 'ICMP'
+
+                else
+
+                    entry.protocolName = 'Custom'
+
+                null
+
+            $.each aclObj.associationSet.item, (i, asso) ->
+
+                $.each MC.canvas_data.component, ( i, comp ) ->
+
+                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet and comp.resource.SubnetId == asso.subnetId
+
+                        asso.subnetDisplay = comp.name + '(' + comp.resource.CidrBlock + ')'
+
+
+                    null
+
+            aclObj.asso_number = aclObj.associationSet.item.length
+
+            this.set 'component', aclObj
+
+        setParent : ( parent_uid ) ->
+
+            this.set 'parent', parent_uid
 
         getSubnetInfo : (associationObj) ->
             subnetUID = associationObj.SubnetId

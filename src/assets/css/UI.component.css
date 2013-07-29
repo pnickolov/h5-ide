@@ -918,7 +918,7 @@ textarea {
 .dl-vertical dd {
 	font-size: 12px;
 	color: #666;
-	margin: 5px 0;
+	margin: 5px 0 5px 4px;
 }
 
 /* Horizontal Definition List */

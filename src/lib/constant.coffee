@@ -205,11 +205,11 @@ define [], () ->
 		'elasticbeanstalk-us-east-1', 'import-export', 'management-console', 'opsworks-us-east-1', 'storagegateway-us-east-1'
 	]
 	SERVICE_REGION[ 'us-west-1' ] = [ 'cloudfront', 'cloudsearch-us-west-1', 'cloudwatch-us-west-1', 'dynamodb-us-west-1',
-          'ec2-us-west-1', 'elb-us-west-1', 'emr-us-west-1', 'elastictranscoder-us-west-1', 'elasticache-us-west-1', 'fps',
-          'glacier-us-west-1', 'mturk-requestor', 'mturk-worker', 'rds-us-west-1', 'route53', 'sns-us-west-1','sqs-us-west-1',
-          's3-us-west-1', 's3-us-standard', 'swf-us-west-1', 'simpledb-us-west-1', 'vpc-us-west-1', 'cloudformation-us-west-1',
-          'directconnect-us-west-1','elasticbeanstalk-us-west-1', 'import-export', 'management-console', 'storagegateway-us-west-1'
-     ]
+		'ec2-us-west-1', 'elb-us-west-1', 'emr-us-west-1', 'elastictranscoder-us-west-1', 'elasticache-us-west-1', 'fps',
+		'glacier-us-west-1', 'mturk-requestor', 'mturk-worker', 'rds-us-west-1', 'route53', 'sns-us-west-1','sqs-us-west-1',
+		's3-us-west-1', 's3-us-standard', 'swf-us-west-1', 'simpledb-us-west-1', 'vpc-us-west-1', 'cloudformation-us-west-1',
+		'directconnect-us-west-1','elasticbeanstalk-us-west-1', 'import-export', 'management-console', 'storagegateway-us-west-1'
+	 ]
 	SERVICE_REGION[ 'us-west-2' ] = [
 		'cloudfront', 'cloudsearch-us-west-2', 'cloudwatch-us-west-2', 'dynamodb-us-west-2', 'ec2-us-west-2', 'elb-us-west-2',
 		'emr-us-west-2', 'elastictranscoder-us-west-2', 'elasticache-us-west-2', 'fps', 'glacier-us-west-2', 'mturk-requestor',
@@ -262,6 +262,21 @@ define [], () ->
 		VPC				:	'VPC'
 		VPN				:	'VPC.VPN'
 		ELB				:	'ELB'
+		#
+		AMI					:	'EC2.AMI'
+		SNAPSHOT 			:	'EBS.Snapshot'
+		KP 					:	'EC2.KP'
+		SG 					:	'EC2.SG'
+		ACL 				:	'VPC.ACL'
+		CGW 				:	'VPC.CGW'
+		DHCP 				:	'VPC.DHCP'
+		ENI 				:	'VPC.ENI'
+		IGW 				:	'VPC.IGW'
+		RT 					:	'VPC.RT'
+		SUBNET 				:	'VPC.Subnet'
+		VGW 				:	'VPC.VGW'
+		#
+		AvailabilityZone 	:  'AvailabilityZone'
 	}
 
 

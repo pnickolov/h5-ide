@@ -93,6 +93,10 @@ define [ 'jquery',
                 console.log 'design_toolbar_click:terminateApp'
                 model.terminateApp()
 
+            ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
+                console.log 'design_toolbar_click:saveStack'
+                model.saveStack()
+
             model.once 'TOOLBAR_STACK_RUN_SUCCESS', () ->
                 view.notify 'info', 'Run stack ' + MC.canvas_data.name + ' successfully.'
             model.once 'TOOLBAR_STACK_RUN_FAILED', () ->

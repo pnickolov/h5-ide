@@ -33,7 +33,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             if type is 'NEW_STACK'
                 me.set 'item_type', 'stack'
-                
+
                 me.set 'is_duplicate', false
                 me.set 'is_delete', false
             else if type is 'OPEN_STACK'
@@ -50,7 +50,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 me.set 'is_zoomout', value
             else if type is 'OPEN_APP'
                 me.set 'item_type', 'app'
-                
+
                 if MC.canvas_data.state == 'Stopped'
                     me.set 'is_running', false
                 else if MC.canvas_data.state == 'Running'
@@ -70,7 +70,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             me = this
 
             id = MC.canvas_data.id
-            if id   #save
+            if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data
 
                 stack_model.once 'STACK_SAVE_RETURN', (result) ->
@@ -189,7 +189,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'STACK_RUN_RETURN'
                 console.log result
 
-                me.handleRequest result, 'RUN_STACK', app_name
+                me.handleRequest result, 'RUN_STACK', MC.canvas_data.region, app_name
 
         #zoomin
         zoomIn : () ->
@@ -285,9 +285,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'APP_TERMINATE_RETURN'
                 console.log result
 
-                me.handleRequest result, 'TERMINATE_APP'
+                me.handleRequest result, 'TERMINATE_APP', MC.canvas_data.region, MC.canvas_data.name
 
-        handleRequest : (result, flag, app_name) ->
+        handleRequest : (result, flag, region, app_name) ->
             me = this
 
             me.set 'is_pending', true
@@ -324,6 +324,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                     me.trigger 'TOOLBAR_APP_STOP_SUCCESS'
                                 else if flag == 'TERMINATE_APP'
                                     me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS'
+
+                                    # remove the app name from app_list
+                                    if app_name in MC.data.app_list[region]
+                                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(app_name), 1
 
                                 is_success = true
                                 #push event
@@ -364,7 +368,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     if app_name in MC.data.app_list[MC.canvas_data.region]
                         MC.data.app_list.splice MC.canvas_data.region.indexOf(app_name), 1
-                        
+
                 else if flag == 'START_APP'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED'
                 else if flag == 'STOP_APP'

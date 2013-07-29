@@ -39,8 +39,8 @@ define [ 'MC', 'event',
 		MC.data.app_list[r] = [] for r in constant.REGION_KEYS
 
 		#global resource data (Describe* return)
-		MC.data.resourc_list = {}
-		MC.data.resourc_list[r] = {} for r in constant.REGION_KEYS
+		MC.data.resource_list = {}
+		MC.data.resource_list[r] = {} for r in constant.REGION_KEYS
 
 		#set untitled
 		MC.data.untitled = 0
@@ -75,8 +75,14 @@ define [ 'MC', 'event',
 			#redirect to page ide.html
 			window.location.href = 'login.html'
 			null
+
+		subRequestReady = () ->
+			console.log 'collection request ready'
+
+			ide_event.trigger ide_event.WS_COLLECTION_READY_REQUEST
+
 		#
-		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, subScriptionError
+		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, subRequestReady, subScriptionError
 		#
 		websocket.sub "stack", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 

@@ -7,29 +7,36 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
     StackModel = Backbone.Model.extend {
 
         defaults :
-            'stack_detail'  : null
-            'sg_display'    : null
-            'network_acl'   : null
+            'property_detail'   : null
+            'is_stack'          : null
+            'sg_display'        : null
+            'network_acl'       : null
 
         initialize : ->
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
 
-        getStack : ->
+        getProperty : ->
             me = this
 
-            stack_detail = $.extend true, {}, MC.canvas_data
-            stack_detail.name = MC.canvas_data.name
-            stack_detail.region = constant.REGION_LABEL[MC.canvas_data.region]
-            stack_detail.type = me.getStackType()
-            stack_detail.is_vpc = true if stack_detail.type and stack_detail.type != 'EC2 Classic'
-            
-            if stack_detail.is_vpc
-                stack_detail.acl_list = me.getNetworkACL()
+            is_stack = true
 
-            stack_detail.cost = me.getStackCost()
+            if MC.canvas_data.id.indexOf('app-') == 0
+                is_stack = false
 
-            me.set 'stack_detail', stack_detail
+            property_detail = $.extend true, {}, MC.canvas_data
+            property_detail.name = MC.canvas_data.name
+            property_detail.region = constant.REGION_LABEL[MC.canvas_data.region]
+            property_detail.type = me.getStackType()
+            property_detail.is_vpc = true if property_detail.type and property_detail.type != 'EC2 Classic'
+
+            if property_detail.is_vpc
+                property_detail.acl_list = me.getNetworkACL()
+
+            property_detail.cost = me.getStackCost()
+
+            me.set 'property_detail', property_detail
+            me.set 'is_stack', is_stack
 
             me.getNetworkACL()
 
@@ -62,10 +69,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                 sg_detail.rules = MC.canvas_data.component[sg.uid].resource.IpPermissions.length + MC.canvas_data.component[sg.uid].resource.IpPermissionsEgress.length
                 sg_detail.name = MC.canvas_data.component[sg.uid].resource.GroupName
                 sg_detail.desc = MC.canvas_data.component[sg.uid].resource.GroupDescription
-                
+
                 stack_sg.rules_detail_ingress = stack_sg.rules_detail_ingress.concat MC.canvas_data.component[sg.uid].resource.IpPermissions
                 stack_sg.rules_detail_egress = stack_sg.rules_detail_egress.concat MC.canvas_data.component[sg.uid].resource.IpPermissionsEgress
-                
+
                 stack_sg.detail.push sg_detail
 
             array_unique = ( ori_ary )->
@@ -81,13 +88,13 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                     if str not in tmp
                         tmp.push str
                     null
-                                
+
                 return (JSON.parse item for item in tmp)
 
 
             stack_sg.rules_detail_ingress = array_unique stack_sg.rules_detail_ingress
             stack_sg.rules_detail_egress = array_unique stack_sg.rules_detail_egress
-                          
+
             me.set 'sg_display', stack_sg
 
         deleteSecurityGroup : (uid) ->
@@ -118,17 +125,17 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
         resetSecurityGroup : (uid) ->
             me = this
 
-            stack_detail = me.get 'stack_detail'
+            property_detail = me.get 'property_detail'
 
-            _.map stack_detail.sg_list, (sg) ->
+            _.map property_detail.sg_list, (sg) ->
                 if sg.uid == uid
 
-                    flag = stack_detail.sg_list[ stack_detail.sg_list.indexOf sg ].is_shown
-                    stack_detail.sg_list[ stack_detail.sg_list.indexOf sg ].is_shown = not flag
+                    flag = property_detail.sg_list[ property_detail.sg_list.indexOf sg ].is_shown
+                    property_detail.sg_list[ property_detail.sg_list.indexOf sg ].is_shown = not flag
 
-                    me.set 'stack_detail', stack_detail
+                    me.set 'property_detail', property_detail
 
-            console.log me.get 'stack_detail'
+            console.log me.get 'property_detail'
 
             null
 

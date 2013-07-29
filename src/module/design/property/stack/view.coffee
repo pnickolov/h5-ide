@@ -11,8 +11,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile $( '#property-stack-tmpl' ).html()
-        acl_template : Handlebars.compile $( '#property-stack-acl-tmpl' ).html()
+        stack_template  : Handlebars.compile $( '#property-stack-tmpl' ).html()
+        acl_template    : Handlebars.compile $( '#property-stack-acl-tmpl' ).html()
+        app_template    : Handlebars.compile $( '#property-app-tmpl' ).html()
 
         events   :
             'change #property-stack-name'   : 'stackNameChanged'
@@ -24,11 +25,21 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             'click .stack-property-acl-list .edit' : 'openEditAclPanel'
 
         render     : () ->
-            console.log 'property:stack render'
+            me = this
+
+            if me.model.attributes.is_stack
+                console.log 'property:stack render'
+            else
+                console.log 'property:app render'
+
             #
             this.undelegateEvents()
             #
-            $( '.property-details' ).html this.template this.model.attributes
+            if me.model.attributes.is_stack
+                $( '.property-details' ).html this.stack_template this.model.attributes
+            else
+                $( '.property-details' ).html this.app_template this.model.attributes
+
             this.refreshACLList()
             #
             this.delegateEvents this.events
@@ -43,7 +54,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             else if name.slice(0, 8) == 'untitled'
                 notification 'error', 'Please modify the initial stack name.'
             else if not name
-                $( '#property-stack-name' ).val me.model.attributes.stack_detail.name
+                $( '#property-stack-name' ).val me.model.attributes.property_detail.name
             else if name in MC.data.stack_list[MC.canvas_data.region]
                 notification 'error', 'Stack name \"' + name + '\" is already in using. Please use another one.'
             else

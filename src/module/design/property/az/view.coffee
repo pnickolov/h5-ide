@@ -14,9 +14,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         events   :
             'OPTION_CHANGE #az-quick-select' : "azSelect"
 
-        render     : ( attributes ) ->
-            console.log 'property:az render'
-            $( '.property-details' ).html this.template attributes
+        render     : () ->
+            console.log 'property:az render', this.model.attributes
+            $( '.property-details' ).html this.template this.model.attributes
 
         azSelect   : ( event, newAZName ) ->
             this.trigger "SELECT_AZ", $("#az-quick-select").attr("component"), newAZName

@@ -374,32 +374,32 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             sub_info = popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info
 
-            if dhcp.dhcpConfigurationSet.item.constructor == Array
+            # if dhcp.dhcpConfigurationSet.item.constructor == Array
 
-                _.map dhcp.dhcpConfigurationSet.item, ( item, i ) ->
+            #     _.map dhcp.dhcpConfigurationSet.item, ( item, i ) ->
 
-                    if item.valueSet.item.constructor == Array
+            #         if item.valueSet.item.constructor == Array
 
-                        _.map item.valueSet.item, ( it, j )->
+            #             _.map item.valueSet.item, ( it, j )->
 
-                            sub_info.push { "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', 'item', j, 'value'], "show_key": item.key }
+            #                 sub_info.push { "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', 'item', j, 'value'], "show_key": item.key }
 
-                    else
+            #         else
 
-                        sub_info.push { "key": [ 'dhcpConfigurationSet', 'item', i, 'valueSet', 'item', 'value'], "show_key": item.key }
+            #             sub_info.push { "key": [ 'dhcpConfigurationSet', 'item', i, 'valueSet', 'item', 'value'], "show_key": item.key }
 
-            else
-                item = dhcp.dhcpConfigurationSet.item
+            # else
+            #     item = dhcp.dhcpConfigurationSet.item
 
-                if item.valueSet.item.constructor == Array
+            #     if item.valueSet.item.constructor == Array
 
-                    _.map item.valueSet.item, ( it, i ) ->
+            #         _.map item.valueSet.item, ( it, i ) ->
 
-                        sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', j, 'value'], "show_key": item.key }
+            #             sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', j, 'value'], "show_key": item.key }
 
-                else
+            #     else
 
-                    sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', 'value'], "show_key": item.key }
+            #         sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', 'value'], "show_key": item.key }
 
             me.parseSourceValue 'DescribeDhcpOptions', dhcp, "bubble", null
 
@@ -414,9 +414,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
         _set_app_property : ( resource, resources, i, action) ->
 
 
-            if resource.tagSet != undefined and resource.tagSet.item.constructor == Array
+            if resource.tagSet != undefined
 
-                _.map resource.tagSet.item, ( tag ) ->
+                _.map resource.tagSet, ( tag ) ->
 
                     if tag.key == 'app'
 
@@ -512,7 +512,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
-                regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item.attributeValueSet.item
+                regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item[0].attributeValueSet.item
 
                 if $.type(regionAttrSet) == "array"
                     vpc_attrs_value = { 'classic' : 'Classic', 'vpc' : 'VPC' }
@@ -889,6 +889,24 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     MC.data.resource_list[current_region][res.volumeId] = res
                     null
 
+            #eip
+            if resources.DescribeAddresses
+                _.map resources.DescribeAddresses, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.publicIp] = res
+                    null
+
+            #elb
+            if resources.DescribeLoadBalancers
+                _.map resources.DescribeLoadBalancers, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.LoadBalancerName] = res
+                    null
+
+            #vpn
+            if resources.DescribeVpnConnections
+                _.map resources.DescribeVpnConnections, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.vpnConnectionId] = res
+                    null
+
             #kp
             if resources.DescribeKeyPairs
                 _.map resources.DescribeKeyPairs.item, ( res, i ) ->
@@ -899,18 +917,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             if resources.DescribeSecurityGroups
                 _.map resources.DescribeSecurityGroups.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.groupId] = res
-                    null
-
-            #eip
-            if resources.DescribeAddresses
-                _.map resources.DescribeAddresses.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.privateIpAddress] = res
-                    null
-
-            #elb
-            if resources.DescribeLoadBalancers
-                _.map resources.DescribeLoadBalancers.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.loadBalancerName] = res
                     null
 
             #dhcp
@@ -953,12 +959,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             if resources.DescribeVpnGateways
                 _.map resources.DescribeVpnGateways.item, ( res, i ) ->
                     MC.data.resource_list[current_region][res.vpnGatewayId] = res
-                    null
-
-            #vpn
-            if resources.DescribeVpnConnections
-                _.map resources.DescribeVpnConnections.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.vpnConnectionId] = res
                     null
 
             #cgw
@@ -1078,9 +1078,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     is_managed = false
 
-                    if ins.tagSet != undefined and ins.tagSet.item.constructor == Array
+                    if ins.tagSet != undefined
 
-                        _.map ins.tagSet.item, ( tag )->
+                        _.map ins.tagSet, ( tag )->
 
                             if tag.key == 'app'
 

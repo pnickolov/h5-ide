@@ -39,6 +39,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
                 $( '.property-details' ).html this.stack_template this.model.attributes
             else
                 $( '.property-details' ).html this.app_template this.model.attributes
+                $('#add-sg-btn').hide()
 
             this.refreshACLList()
             #

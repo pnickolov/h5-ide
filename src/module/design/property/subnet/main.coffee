@@ -25,10 +25,12 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #set view_type
-        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+        if tab_type is 'OPEN_APP'
+            loadAppModule uid
+            return
 
         #
-        require [ './module/design/property/subnet/' + view_type,
+        require [ './module/design/property/subnet/view',
                   './module/design/property/subnet/model'
         ], ( view, model ) ->
 
@@ -68,6 +70,21 @@ define [ 'jquery',
             view.on "SET_NEW_ACL", ( acl_uid ) ->
                 model.setACL acl_uid
                 null
+
+    loadAppModule = ( uid )->
+        require [ './module/design/property/subnet/app_view',
+                  './module/design/property/subnet/app_model'
+        ], ( view, model ) ->
+
+            current_view  = view
+            current_model = model
+
+            #view
+            view.model    = model
+
+            model.init uid
+            view.render()
+
 
     unLoadModule = () ->
         current_view.off()

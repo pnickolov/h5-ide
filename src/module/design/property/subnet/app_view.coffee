@@ -11,12 +11,17 @@ define [ 'event', 'MC',
         tagName  : $ '.property-details'
 
         template  : Handlebars.compile $( '#property-subnet-app-tmpl' ).html()
+        events    :
+            "click #property-app-subnet-acl" : 'showACLDetail'
 
         render     : () ->
             console.log 'property:subnet app render', this.model.attributes
             $( '.property-details' ).html this.template this.model.attributes
 
+        showACLDetail : () ->
+            acl_uid = $("#property-app-subnet-acl").attr("data-uid")
 
+            console.log "Show ACL Sub Panel for Subnet", acl_uid
     }
 
     view = new SubnetAppView()

@@ -25,10 +25,12 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #set view_type
-        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+        if tab_type is 'OPEN_APP'
+            loadAppModule uid
+            return
 
         #
-        require [ './module/design/property/volume/' + view_type,
+        require [ './module/design/property/volume/view',
                   './module/design/property/volume/model'
         ], ( view, model ) ->
 
@@ -94,6 +96,19 @@ define [ 'jquery',
 
                 view.render()
 
+    loadAppModule = ( uid ) ->
+        require [ './module/design/property/volume/app_view',
+                  './module/design/property/volume/app_model'
+        ], ( view, model ) ->
+
+            current_view  = view
+            current_model = model
+
+            #view
+            view.model    = model
+
+            model.init uid
+            view.render()
 
     unLoadModule = () ->
         current_view.off()

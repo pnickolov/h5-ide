@@ -105,7 +105,7 @@ define [ 'jquery',
                             #show vgw property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway       then vgw_main.loadModule uid, vgw_main
                             #show cgw property
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway  then cgw_main.loadModule uid, cgw_main
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway  then cgw_main.loadModule uid, cgw_main, tab_type
                             #show vpn property
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection    then vpn_main.loadModule uid, null, vpn_main
                             #show eni property
@@ -120,7 +120,7 @@ define [ 'jquery',
                         #AvailabilityZone
                         if MC.canvas_data.layout.component.group[ uid ] and MC.canvas_data.layout.component.group[ uid ].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
                             console.log 'type = ' + MC.canvas_data.layout.component.group[ uid ].type
-                            az_main.loadModule uid, az_main
+                            az_main.loadModule uid, az_main, tab_type
 
                 else
 

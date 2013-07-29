@@ -14,11 +14,11 @@ a {
 }
 
 .blur-effect {
-	-webkit-filter: blur(3px);
-	-moz-filter: blur(3px);
-	-o-filter: blur(3px);
-	-ms-filter: blur(3px);
-	filter: blur(3px);
+	-webkit-filter: blur(1px);
+	-moz-filter: blur(1px);
+	-o-filter: blur(1px);
+	-ms-filter: blur(1px);
+	filter: blur(1px);
 }
 
 .icon-caret-down {
@@ -2947,12 +2947,6 @@ a.sidebar-hider {
 	padding-top: 5px;
 }
 
-/* App Property Panel, Mostly Read-Only Elements */
-.dl-vertical {}
-.app-panel-li {}
-.app-panel-li-main {}
-.app-panel-li-sub  {}
-
 .status-good, .status-bad {
 	padding-left : 30px;
 }
@@ -3253,86 +3247,116 @@ a.sidebar-hider {
 	color: rgb(153, 153, 153);
 }
 
-/* property-app-instance */
-.property-app-instance {
+/* App Property */
+/* App Property Panel, Mostly Read-Only Elements */
+.app-panel-li {}
+.app-panel-li-main {}
+.app-panel-li-sub  {}
+
+.property-app {
 	font-size: 12px;
 }
 
-.accordion-default.property-app-instance .accordion-body {
+.dl-vertical {
+	padding     : 10px;
+	margin      : 0 0 8px 0;
+	color       : #758694;
+	background  : #fefefe;
+}
+
+.dl-vertical > dt {
+	padding-top : 2px;
+}
+
+.dl-vertical > dd {
+	padding : 5px 0 0 12px;
+	margin  : 0;
+}
+
+.dl-vertical > dd > .status {
+	margin-right : 5px;
+}
+
+.dl-vertical:nth-of-type(2n+1) {
+	background : #f6f5f5;
+}
+
+.dl-vertical:last-child {
+	margin : 0;
+}
+
+.accordion-default.property-app .accordion-body {
 	padding: 0;
 }
 
-.property-app-instance .property-control-group {
+.property-app .property-control-group {
 	padding: 2px 0;
 }
 
-.property-app-instance .item-wrap > div {
-	padding: 10px;
-	background-color: #fefefe;
+.hidden-details > .dl-vertical {
+	display : none;
 }
 
-.property-app-instance .item-wrap > p.showorhide {
-	padding: 10px 10px 0;
-	margin-bottom: 0;
-	background-color: #fefefe;
+.hidden-details .details-on {
+	display : none;
 }
 
-.property-app-instance .item-wrap > div:nth-of-type(2n+1) {
-	background-color: #f6f5f5;
+.hidden-details.open .details-off {
+	display : none;
 }
 
-.property-readonly-value {
-	display: block;
-	padding-left: 12px;
-	padding-top: 5px;
+.hidden-details.open .details-on {
+	display : inline;
 }
 
-.property-app-instance a {
+.hidden-details.open > .dl-vertical {
+	display : block;
+}
+
+.toggle-details {
+	padding   : 10px;
+	font-size : 14px;
+}
+
+.property-app a {
 	color: #0088cc;
 }
 
-.property-app-instance a i {
-	color: #666;
+.property-app-table {
+	width   : 100%;
+	padding : 5px;
+
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
-.property-readonly-value i {
-	margin-right: 5px;
+.property-app-table-h {
+	font-size   : 14px;
+	height      : 30px;
+	line-height : 30px;
+	text-align  : center;
+	background  : gray;
 }
 
-.property-app-instance .arrow-showorhide {
-	width: 10px;
-	height: 10px;
-	display: inline-block;
-	vertical-align: middle;
-	padding-bottom: 10px;
-	transform:rotate(90deg);
-	-moz-transform:rotate(90deg);
-    -webkit-transform:rotate(90deg);
-    -o-transform:rotate(90deg);
-}
-
-.property-app-instance .show-detail-button a {
-	display: block;
-}
-
-.property-app-instance .ipaddress .property-readonly-value {
+.property-app .ipaddress .property-readonly-value {
 	padding-left: 2px;
 }
 
-.property-app-instance .ipaddress .right {
+.property-app .ipaddress .right {
 	padding-right: 56px;
 }
 
 
-.property-app-instance .ipaddress [class^="ipaddress-"], .property-app-instance .ipaddress [class*=" ipaddress-"] {
+.property-app .ipaddress [class^="ipaddress-"], .property-app .ipaddress [class*=" ipaddress-"] {
 	float: left;
 }
 
-.property-app-instance .ipaddress .ipaddress-left {
+.property-app .ipaddress .ipaddress-left {
 	width: 60%;
 }
 
-.property-app-instance .ipaddress .ipaddress-right {
+.property-app .ipaddress .ipaddress-right {
 	width: 40%;
 }
 
@@ -3443,5 +3467,58 @@ a.sidebar-hider {
 
 .icon-toolbar-export-json {
 	background: url('../images/ide/icon-export-json.png') center center no-repeat;
+}
+
+
+/*app-vpn-cgw*/
+#app-cgw-vpn-accordion .dl-vertical {
+	padding: 10px;
+}
+
+#download-vpn-cgw-conf {
+	display: block;
+	width: 220px;
+	margin: 10px auto;
+}
+
+#app-cgw-vpn-accordion .accordion-sub-head {
+	padding: 10px;
+	background-color: #ECECEC;
+	color: #A5A5A5;
+}
+
+#app-cgw-vpn-accordion .accordion-sub-head h5 {
+	font-size: 13px;
+}
+
+#app-vpn-body .table {
+	text-align: center;
+	font-size: 12px;
+}
+
+#app-vpn-body tr,
+#app-vpn-body td,
+#app-vpn-body th {
+	text-align: center;
+	background-color: #f3f3f3;
+	border: 1px solid #ccc;
+	color: #666;
+}
+
+#app-vpn-body th {
+	font-weight: 500;
+}
+
+#app-vpn-body tbody td {
+	background-color: #fcfcfc;
+}
+
+#app-vpn-connection-body {
+	padding: 10px;
+}
+
+#app-cgw-body .status,
+#app-vpn-body .status {
+	margin: 0 5px 0 0;
 }
 

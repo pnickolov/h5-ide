@@ -1,5 +1,5 @@
 #############################
-#  View(UI logic) for design/property/instance(app)
+#  View(UI logic) for design/property/stack(app)
 #############################
 
 define [ 'event', 'MC',
@@ -10,10 +10,10 @@ define [ 'event', 'MC',
         el       : $ document
         tagName  : $ '.property-details'
 
-        template  : Handlebars.compile $( '#property-instance-app-tmpl' ).html()
+        template  : Handlebars.compile $( '#property-stack-app-tmpl' ).html()
 
         render     : () ->
-            console.log 'property:instance app render', this.model.attributes
+            console.log 'property:instance app render'
             $( '.property-details' ).html this.template this.model.attributes
 
     }

@@ -3,13 +3,13 @@
 <div class="property-control-group">
   <dl class="dl-vertical">
     <dt>Route Table ID</dt>
-    <dd>{{route_table.resource.RouteTableId}}</dd>
+    <dd>{{route_table.routeTableId}}</dd>
 
     <dt>Main</dt>
     <dd>{{#if route_table.isMain}}Yes{{else}}No{{/if}}</dd>
 
     <dt>VPC ID</dt>
-    <dd>{{route_table.vpc_id}}</dd>
+    <dd>{{route_table.vpcId}}</dd>
   </dl>
 </div>
 
@@ -25,20 +25,15 @@
           <th>Target</th>
           <th></th>
         </tr>
-        <tr>
-          <th class="status-good tooltip" data-tooltip="Active"></th>
-          <th>{{route_table.local_cidr}}</th>
-          <th>local</th>
-        </tr>
-        {{#each route_table.resource.RouteSet}}
+        {{#each route_table.routeSet.item}}
         <tr>
         	{{#if isActive}}
           		<th class="status-good tooltip" data-tooltip="Active"></th>
           	{{else}}
           		<th class="status-grey tooltip" data-tooltip="Blackhole"></th>
           	{{/if}}
-          <th>{{DestinationCidrBlock}}</th>
-          <th>{{name}}</th>
+          <th>{{destinationCidrBlock}}</th>
+          <th>{{#if gatewayId}}{{gatewayId}}{{/if}} {{#if instanceId}}{{instanceId}}{{/if}} {{#if networkInterfaceId}}{{networkInterfaceId}}{{/if}}</th>
           {{#if isProp}}
           <th class="icon-propagated tooltip" data-tooltip="Propagated"></th>
           {{/if}}

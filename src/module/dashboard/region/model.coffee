@@ -1081,20 +1081,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     if ins.tagSet != undefined
 
                         _.map ins.tagSet, ( tag )->
+                            if tag
+                                if tag.key == 'app'
 
-                            if tag.key == 'app'
+                                    is_managed = true
 
-                                is_managed = true
+                                    resources.DescribeInstances[i].app = tag.value
 
-                                resources.DescribeInstances[i].app = tag.value
+                                if tag.key == 'name'
 
-                            if tag.key == 'name'
+                                    resources.DescribeInstances[i].host = tag.value
 
-                                resources.DescribeInstances[i].host = tag.value
+                                if tag.key == 'Created by' and tag.value == owner
 
-                            if tag.key == 'Created by' and tag.value == owner
-
-                                resources.DescribeInstances[i].owner = tag.value
+                                    resources.DescribeInstances[i].owner = tag.value
 
                             null
 

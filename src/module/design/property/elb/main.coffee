@@ -102,6 +102,9 @@ define [ 'jquery',
                   './module/design/property/elb/app_model'
         ], ( view, model ) ->
 
+            #
+            if current_view then view.delegateEvents view.events
+
             current_view  = view
             current_model = model
 

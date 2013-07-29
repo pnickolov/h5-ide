@@ -8,13 +8,13 @@
 <div class="property-control-group">
   <dl class="dl-vertical">
     <dt>Network ACL ID</dt>
-    <dd>{{component.resource.NetworkAclId}}</dd>
+    <dd>{{component.networkAclId}}</dd>
 
     <dt>Default</dt>
-    <dd>{{component.resource.Default}}</dd>
+    <dd>{{component.default}}</dd>
 
     <dt>VPC ID</dt>
-    <dd>{{component.vpc_id}}</dd>
+    <dd>{{component.vpcId}}</dd>
   </dl>
 </div>
 
@@ -38,20 +38,20 @@
       </div>
 
       <ul class="acl-rules">
-        {{#each component.resource.EntrySet}}
-          <li rule-num="{{RuleAction}}" rule-engress="{{Egress}}">
-            <h5 class="tooltip" data-tooltip="Rule Number">{{RuleNumber}}</h5>
+        {{#each component.entrySet.item}}
+          <li rule-num="{{ruleAction}}" rule-engress="{{egress}}">
+            <h5 class="tooltip" data-tooltip="Rule Number">{{ruleNumber}}</h5>
             <div class="clearfix">
               <span class="acl-rule-col1">
-                <a href="#" class="acl-rule-allow-cb tooltip {{RuleAction}}" data-tooltip="Allow/Deny"></a>
+                <a href="#" class="acl-rule-allow-cb tooltip {{ruleAction}}" data-tooltip="Allow/Deny"></a>
               </span>
               <span class="acl-rule-col2">
-                <span class="{{#if Egress}}acl-rule-outbound{{else}}acl-rule-inbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
-                <span class="acl-rule-protocol tooltip" data-tooltip="Protocol">{{ProtocolName}}({{Protocol}})</span>
+                <span class="{{#if egress}}acl-rule-outbound{{else}}acl-rule-inbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
+                <span class="acl-rule-protocol tooltip" data-tooltip="Protocol">{{protocolName}}({{protocol}})</span>
               </span>
               <div class="acl-rule-col3">
-                <div class="acl-rule-source tooltip" data-tooltip="CidrBlock">{{CidrBlock}}</div>
-                <div class="acl-rule-port tooltip" data-tooltip="Port">{{PortRange.To}}-{{PortRange.From}}</div>
+                <div class="acl-rule-source tooltip" data-tooltip="CidrBlock">{{cidrBlock}}</div>
+                <div class="acl-rule-port tooltip" data-tooltip="Port">{{portRange.to}}-{{portRange.from}}</div>
               </div>
             </div>
           </li>
@@ -61,11 +61,11 @@
   </section>
 
   <section class="accordion-group expanded">
-    <header class="fixedaccordion-head">Association<span class="count">({{associations.length}})</span></header>
+    <header class="fixedaccordion-head">Association<span class="count">({{component.asso_number}})</span></header>
 
     <ul class="accordion-body">
-      {{#each associations}}
-        <li class="property-acl-assn">{{subnet_name}} ({{subnet_cidr}})</li>
+      {{#each component.associationSet.item}}
+        <li class="property-acl-assn">{{subnetDisplay}}</li>
       {{/each}}
     </ul>
   </section>

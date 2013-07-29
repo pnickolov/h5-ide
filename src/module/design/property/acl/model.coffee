@@ -35,50 +35,50 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
         appInit : ( uid ) ->
 
-            aclObj = $.extend true, {}, MC.canvas_data.component[uid]
+            aclObj = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.NetworkAclId]
 
-            aclObj.vpc_id = MC.canvas_data.component[aclObj.resource.VpcId.split('.')[0][1...]].resource.VpcId
+            #aclObj.vpc_id = MC.canvas_data.component[aclObj.resource.vpcId.split('.')[0][1...]].resource.VpcId
 
-            aclObj.rule_number = aclObj.resource.EntrySet.length
+            aclObj.rule_number = aclObj.entrySet.item.length
 
-            $.each aclObj.resource.EntrySet, ( idx, entry ) ->
+            $.each aclObj.entrySet.item, ( idx, entry ) ->
 
-                if entry.Protocol == -1 or entry.Protocol == '-1'
+                if entry.protocol == -1 or entry.protocol == '-1'
 
-                    entry.ProtocolName = 'All'
+                    entry.protocolName = 'All'
 
-                else if entry.Protocol == 6 or entry.Protocol == '6'
+                else if entry.protocol == 6 or entry.protocol == '6'
 
-                    entry.ProtocolName = 'TCP'
+                    entry.protocolName = 'TCP'
 
-                else if entry.Protocol == 17 or entry.Protocol == '17'
+                else if entry.protocol == 17 or entry.protocol == '17'
 
-                    entry.ProtocolName = 'UDP'
+                    entry.protocolName = 'UDP'
 
-                else if entry.Protocol == 1 or entry.Protocol == '1'
+                else if entry.protocol == 1 or entry.protocol == '1'
 
-                    entry.ProtocolName = 'ICMP'
+                    entry.protocolName = 'ICMP'
 
                 else
 
-                    entry.ProtocolName = 'Custom'
+                    entry.protocolName = 'Custom'
 
                 null
 
+            $.each aclObj.associationSet.item, (i, asso) ->
+
+                $.each MC.canvas_data.component, ( i, comp ) ->
+
+                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet and comp.resource.SubnetId == asso.subnetId
+
+                        asso.subnetDisplay = comp.name + '(' + comp.resource.CidrBlock + ')'
+
+
+                    null
+
+            aclObj.asso_number = aclObj.associationSet.item.length
+
             this.set 'component', aclObj
-
-
-        getDefaultAclSubnetInfo :() ->
-
-            associate_subnet_set = []
-
-            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
-                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl and comp.resource.Default != false
-
-                    $.each comp.resource.AssociationSet, ( idx, asso ) ->
-
-                        associate_subnet_set.push asso.SubnetId.split('.')[0][1...]
 
         setParent : ( parent_uid ) ->
 

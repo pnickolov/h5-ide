@@ -2552,7 +2552,7 @@ MC.canvas.event.drawConnection = {
 										{
 											if (option.relation === 'unique')
 											{
-												if (data.port === option.from && data.target === node_id)
+												if (data.port === option.from)
 												{
 													is_connected = true;
 												}
@@ -2601,14 +2601,14 @@ MC.canvas.event.drawConnection = {
 										{
 											if (option.relation === 'unique')
 											{
-												if (data.port === option.from && data.target === node_id)
+												if (data.port === option.from)
 												{
 													is_connected = true;
 												}
 											}
 											else
 											{
-												if (data.port === value.to && data.target === node_id)
+												if (data.port === value.to)
 												{
 													is_connected = true;
 												}

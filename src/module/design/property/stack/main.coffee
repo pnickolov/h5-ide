@@ -24,13 +24,17 @@ define [ 'jquery',
     $( 'head' ).append acl_template
 
     #private
-    loadModule = ( current_main ) ->
+    loadModule = ( current_main, tab_type ) ->
+        console.log 'elb main, tab_type = ' + tab_type
 
         #
         MC.data.current_sub_main = current_main
 
+        #set view_type
+        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+
         #
-        require [ './module/design/property/stack/view',
+        require [ './module/design/property/stack/' + view_type,
                   './module/design/property/stack/model',
                   './module/design/property/sglist/main'
         ], ( view, model, sglist_main ) ->

@@ -17,7 +17,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
         events   :
             'change #property-stack-name'   : 'stackNameChanged'
-            'click #add-sg-btn'             : 'createSecurityGroup'
+            'click #add-sg-btn'             : 'openSecurityGroup'
+            'click #sg-info-list .sg-edit-icon' : 'openSecurityGroup'
             'click .deleteSG'               : 'deleteSecurityGroup'
             'click .resetSG'                : 'resetSecurityGroup'
             'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
@@ -27,19 +28,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         render     : () ->
             me = this
 
-            if me.model.attributes.is_stack
-                console.log 'property:stack render'
-            else
-                console.log 'property:app render'
+            console.log 'property:stack render'
 
             #
             this.undelegateEvents()
             #
-            if me.model.attributes.is_stack
-                $( '.property-details' ).html this.stack_template this.model.attributes
-            else
-                $( '.property-details' ).html this.app_template this.model.attributes
-                $('#add-sg-btn').hide()
+            $( '.property-details' ).html this.stack_template this.model.attributes
 
             this.refreshACLList()
             #
@@ -62,9 +56,17 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
                 me.trigger 'STACK_NAME_CHANGED', name
                 ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, name + ' - stack'
 
-        createSecurityGroup : (event) ->
+        openSecurityGroup : (event) ->
+            source = $(event.target)
+            if(source.hasClass('secondary-panel'))
+                target = source
+            else
+                target = source.parents('.secondary-panel').first()
 
-            ide_event.trigger ide_event.OPEN_SG
+            accordion = $( '.property-stack' )
+            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
+
+            ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data'), cur_expanded_id
 
         deleteSecurityGroup : (event) ->
             me = this

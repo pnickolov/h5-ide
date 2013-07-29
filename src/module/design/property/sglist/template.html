@@ -22,7 +22,15 @@
 					</li>
 					{{/each}}
 				</ul>
+
+				{{#if isStackView}}
+					{{#if is_stack}}
+					<div class="btn btn-silver secondary-panel" id="add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"parent":"{{component.uid}}"}'>Create new Security Group</div>
+					{{/if}}
+				{{else}}
 				<div class="btn btn-silver secondary-panel" id="add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"parent":"{{component.uid}}"}'>Create new Security Group</div>
+				{{/if}}
+
 			</div>
 			{{#if isStackView}}{{else}}
 			<div id="item-rule" class="tab-item">

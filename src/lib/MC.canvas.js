@@ -1937,7 +1937,8 @@ MC.canvas.event.dragable = {
 				target_offset = Canvon(this).offset(),
 				target_type = target.data('type'),
 				node_type = target.data('class'),
-				canvas_offset = $('#svg_canvas').offset(),
+				svg_canvas = $('#svg_canvas'),
+				canvas_offset = svg_canvas.offset(),
 				shadow,
 				platform,
 				target_group_type;
@@ -1950,7 +1951,7 @@ MC.canvas.event.dragable = {
 			shadow = target.clone();
 
 			shadow.attr('class', shadow.attr('class') + ' shadow');
-			$('#svg_canvas').append(shadow);
+			svg_canvas.append(shadow);
 
 			if (target_type === 'node')
 			{
@@ -1975,6 +1976,7 @@ MC.canvas.event.dragable = {
 					'mouseup': MC.canvas.event.dragable.gatewayup
 				}, {
 					'target': target,
+					'canvas_body': $('#canvas_body'),
 					'target_type': target_type,
 					'node_type': node_type,
 					'vpc_data': MC.canvas.data.get('layout.component.group.' + $('.AWS-VPC-VPC').attr('id')),
@@ -1992,6 +1994,7 @@ MC.canvas.event.dragable = {
 					'mouseup': MC.canvas.event.dragable.mouseup
 				}, {
 					'target': target,
+					'canvas_body': $('#canvas_body'),
 					'target_type': target_type,
 					'shadow': $(shadow),
 					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
@@ -2011,6 +2014,8 @@ MC.canvas.event.dragable = {
 	{
 		event.preventDefault();
 		event.stopPropagation();
+
+		event.data.canvas_body.addClass('node-dragging');
 
 		event.data.shadow.attr('transform',
 			'translate(' +
@@ -2348,6 +2353,8 @@ MC.canvas.event.dragable = {
 		});
 
 		event.data.shadow.remove();
+
+		event.data.canvas_body.removeClass('node-dragging');
 
 		$(document.body).removeClass('disable-event');
 

@@ -246,7 +246,7 @@
 }
 
 .AWS-VPC-VPC:hover .group-vpc,
-.dropable-group .group-vpc {
+.node-dragging .dropable-group .group-vpc {
 	stroke: #C6C4C4;
 }
 
@@ -268,7 +268,7 @@
 }
 
 .AWS-EC2-AvailabilityZone:hover .group-az,
-.dropable-group .group-az {
+.node-dragging .dropable-group .group-az {
 	stroke: #F69722;
 }
 
@@ -290,7 +290,7 @@
 }
 
 .AWS-VPC-Subnet:hover .group-subnet,
-.dropable-group .group-subnet {
+.node-dragging .dropable-group .group-subnet {
 	stroke: #C6C4C4;
 }
 
@@ -308,17 +308,17 @@
 	fill-opacity: 0;
 }
 
-.dropable-group .group-resizer {
+.node-dragging .dropable-group .group-resizer {
 	fill-opacity: 1;
 	fill: rgba(252, 190, 23, 0.15);
 }
 
-.dropable-group .group-resizer {
+.node-dragging .dropable-group .group-resizer {
 	fill-opacity: 1;
 	fill: rgba(238, 238, 238, 0.5);
 }
 
-.dropable-group .group-resizer {
+.node-dragging .dropable-group .group-resizer {
 	fill-opacity: 1;
 	fill: rgba(238, 238, 238, 0.5);
 }

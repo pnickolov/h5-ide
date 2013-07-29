@@ -8,7 +8,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
     loadModule = () ->
 
         #load remote module1.js
-        require [ './module/design/canvas/view', './module/design/canvas/model' ], ( View, model ) ->
+        require [ './module/design/canvas/view', './module/design/canvas/model', './component/sgrule/main' ], ( View, model, sgrule_main ) ->
 
             #view
             view       = new View()
@@ -30,6 +30,19 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 else if type is 'OPEN_STACK' or type is 'OPEN_APP'
                     require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.init()
                 null
+
+
+            ide_event.onLongListen ide_event.CREATE_LINE_TO_CANVAS, ( from_node, from_target_port, to_node, to_target_port, line_option ) ->
+
+                MC.canvas.connect $("#" + from_node), from_target_port, $("#" + to_node), to_target_port, line_option
+
+            ide_event.onLongListen ide_event.DELETE_LINE_TO_CANVAS, ( line_id ) ->
+
+                MC.canvas.remove $("#" + line_id)[0]
+
+            ide_event.onLongListen ide_event.REDRAW_SG_LINE, () ->
+
+                model.reDrawSgLine()
 
             #listen CANVAS_NODE_CHANGE_PARENT
             view.on 'CANVAS_NODE_CHANGE_PARENT', ( src_node, tgt_parent ) ->
@@ -68,9 +81,17 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
             view.on 'CANVAS_EIP_STATE_CHANGE', (id, eip_state) ->
                 console.log 'EIP STATE CHANGED: instance: ' + id + ', eip_state:' + eip_state
 
+            model.on 'SHOW_SG_LIST', ( line_id ) ->
+
+                sgrule_main.loadModule line_id, 'delete'
+
             model.on 'ENI_REACH_MAX', ()->
                 console.log 'ENI reach limit'
                 view.showEniReachMax()
+
+            model.on 'CREATE_SG_CONNECTION', ( line_id ) ->
+
+                sgrule_main.loadModule line_id
 
             null
 

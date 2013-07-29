@@ -55,6 +55,20 @@ define [ 'jquery',
 
                 model.setSourceDestCheck uid, check
 
+            view.on 'ADD_NEW_IP', ( uid ) ->
+
+                model.addNewIP uid
+
+            view.on 'ATTACH_EIP', ( uid, index, attach ) ->
+
+                model.attachEIP uid, index, attach
+
+            view.on 'REMOVE_IP', ( uid, index ) ->
+
+                model.removeIP uid, index
+
+
+
     unLoadModule = () ->
         current_view.off()
         current_model.off()

@@ -73,7 +73,23 @@ var selectbox = {
 
         $selectbox.find(".selection").html( $this.html() );
 
-        $selectbox.trigger( "OPTION_CHANGE", $this.attr('data-id') );
+
+        // TODO : OPTION_CHANGE's parameter no long is array.
+        var value = $this.attr('data-id');
+        if ( value == "true" ) {
+            value = true;
+        } else if ( value == "false" ) {
+            value = false;
+        } else {
+            var intValue = parseInt( value, 10 );
+            if ( "" + intValue == value ) {
+                value = intValue;
+            }
+        }
+        $selectbox.trigger( "OPTION_CHANGE", value );
+
+        //$selectbox.trigger( "OPTION_CHANGE", $this.attr('data-id') );
+
 
         return false;
     }
@@ -183,14 +199,17 @@ var selectbox = {
             $dropdown.removeClass("open");
             $target.trigger("DROPDOWN_CLOSE");
         } else {
-            // Bind click event to close popup
-            // Close other dropdown and fires event
-            if ( !dropDownBound ) {
-                closeDropdown();
-                dropDownBound = true;
-                $( document.body ).one("click", closeDropdown);
-            } else {
-                closeDropdown();
+
+            if ( $target.attr("data-toggle") != "self-only") {
+                // Bind click event to close popup
+                // Close other dropdown and fires event
+                if ( !dropDownBound ) {
+                    closeDropdown();
+                    dropDownBound = true;
+                    $( document.body ).one("click", closeDropdown);
+                } else {
+                    closeDropdown();
+                }
             }
 
             $dropdown.addClass("open");
@@ -204,6 +223,10 @@ var selectbox = {
         var $dropdownBtn = $(".js-toggle-dropdown");
         $dropdownBtn.each(function(){
             var $this = $(this);
+
+            if ($this.attr("data-toggle") == "self-only")
+                return;
+
             var $dropdown = $this.attr( "data-target" );
             if ( $dropdown ) {
                 $dropdown = $( $dropdown );

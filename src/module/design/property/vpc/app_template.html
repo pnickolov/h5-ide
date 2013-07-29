@@ -1,28 +1,23 @@
-<div class="sidebar-title"><span class="sidebar-title-text">{{component.name}}</span></div>
+<div class="sidebar-title">{{name}}</div>
 
-<div class="fixedaccordion accordion-default" data-sub="43">
+<div class="fixedaccordion accordion-default property-app">
   <section class="accordion-group expanded">
     <header class="fixedaccordion-head">VPC Details</header>
 
     <article class="accordion-body">
       <dl class="dl-vertical">
         <dt>VPC ID</dt>
-        <dd>TODO!!!!!!</dd>
-
+        <dd>{{vpcId}}</dd>
         <dt>State</dt>
-        <dd>TODO!!!!!!</dd>
-
+        <dd><i class="status status-{{#if available}}green{{else}}orange{{/if}}"></i>{{state}}</dd>
         <dt>CIDR</dt>
-        <dd>{{component.resource.CidrBlock}}</dd>
-
+        <dd>{{cidrBlock}}</dd>
         <dt>Tenancy</dt>
-        <dd>{{#if defaultTenancy}}Default{{else}}Dedicated{{/if}}</dd>
-
+        <dd>{{instanceTenancy}}</dd>
         <dt>Main Route Table</dt>
-        <dd>TODO!!!!!!!!</dd>
-
+        <dd>{{mainRTB}}</dd>
         <dt>Default Network ACL</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{defaultACL}}</dd>
       </dl>
     </article>
   </section>
@@ -30,56 +25,45 @@
   <section class="accordion-group">
     <header class="fixedaccordion-head">DHCP Options</header>
     <article class="accordion-body">
-    {{#if noneDhcp}}
-    <p>None</p>
-    {{else}}
+    {{#if dhcp}}
     <div class="property-control-group">
       <dl class="dl-vertical">
         <dt>DHCP Options Set ID</dt>
-        <dd>TODO!!!!!!</dd>
+        <dd>{{dhcpOptionsId}}</dd>
 
+        {{#if dhcp.domainName}}
         <dt>Domain Name</dt>
-        <dd>{{dhcp.domainName}}</dd>
-
-        {{#if dhcp.useAmazonDns}}
-        <dt>Domain Name Server</dt>
-        <dd>
-          <p>AmazonProvidedDNS</p>
-        {{#each dhcp.domainServers}}
-          <p>{{this}}</p>
-        {{/each}}
-        </dd>
-        {{else}}
-        {{#if dhcp.domainServers.length}}
-        <dt>Domain Name Server</dt>
-        <dd>
-        {{#each dhcp.domainServers}}
-          <p>{{this}}</p>
-        {{/each}}
-        </dd>
-        {{/if}}
+        <dd>{{dhcp.domainName.[0]}}</dd>
         {{/if}}
 
-        {{#if dhcp.netbiosServers.length}}
+        {{#if dhcp.domainNameServers.length}}
+        <dt>Domain Name Server</dt>
+        <dd>{{#each dhcp.domainNameServers}}<p>{{this}}</p>{{/each}}
+        </dd>
+        {{/if}}
+
+        {{#if dhcp.ntpServers.length}}
+        <dt>NTP Server</dt>
+        <dd>{{#each dhcp.ntpServers}}<p>{{this}}</p>{{/each}}
+        </dd>
+        {{/if}}
+
+
+        {{#if dhcp.netbiosNameServers.length}}
         <dt>NetBIOS Name Server</dt>
-        <dd>
-          {{#each dhcp.netbiosServers}}
-          <p>{{this}}</p>
-          {{/each}}
+        <dd>{{#each dhcp.netbiosNameServers}}<p>{{this}}</p>{{/each}}
         </dd>
         {{/if}}
 
-        {{#if dhcp.netbiosTypes.length}}
+        {{#if dhcp.netbiosNodeType}}
         <dt>NetBIOS Node Type</dt>
-        <dd>
-          {{#each dhcp.netbiosTypes}}
-          {{#if selected}}{{value}}{{/if}}
-          {{/each}}
-        </dd>
+        <dd>{{dhcp.netbiosNodeType.[0]}}</dd>
         {{/if}}
 
       </dl>
     </div>
+    {{else}}
+    <p>None</p>
     {{/if}}
     </article>
   </section>

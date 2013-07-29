@@ -178,7 +178,7 @@
 }
 
 .selected .node-background {
-	fill-opacity: 1;
+	fill-opacity: 0.6;
 	fill: #F2F8FF;
 	stroke-width: 1;
 	stroke: #659FFF;
@@ -204,10 +204,20 @@
 	fill: rgba(255, 255, 255, 0);
 }
 
+#line_layer g.line {
+	opacity: .6;
+}
+
 /* line connection */
 .line.selected,
 .line.selected path {
-	stroke: #666 !important;
+	opacity: 1 !important;
+	stroke-width: 4px !important;
+}
+
+.line:hover {
+	opacity: .8 !important;
+	stroke-width: 4px !important;
 }
 
 /* node label */

@@ -16,7 +16,7 @@ define [ 'jquery',
     template = '<script type="text/x-handlebars-template" id="property-vpc-tmpl">' + template + '</script>'
     app_template = '<script type="text/x-handlebars-template" id="property-vpc-app-tmpl">' + app_template + '</script>'
     #load remote html template
-    $( 'head' ).append( template ).append( template )
+    $( 'head' ).append( template ).append( app_template )
 
     #private
     loadModule = ( uid, current_main, tab_type ) ->
@@ -24,10 +24,12 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #set view_type
-        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+        if tab_type is 'OPEN_APP'
+            loadAppModule uid
+            return
 
         #
-        require [ './module/design/property/vpc/' + view_type,
+        require [ './module/design/property/vpc/view',
                   './module/design/property/vpc/model'
         ], ( view, model ) ->
 
@@ -49,6 +51,24 @@ define [ 'jquery',
                 MC.canvas.update uid, "text", "name", newName
                 null
         null
+
+    loadAppModule = ( uid ) ->
+        require [ './module/design/property/vpc/app_view',
+                  './module/design/property/vpc/app_model'
+        ], ( view, model ) ->
+
+            #
+            if current_view then view.delegateEvents view.events
+
+            current_view  = view
+            current_model = model
+
+            #view
+            view.model    = model
+
+            model.init uid
+            view.render()
+
 
     unLoadModule = () ->
         current_view.off()

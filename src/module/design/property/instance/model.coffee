@@ -60,6 +60,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
         setName  : () ->
             console.log 'setName'
+
+            uid = this.get 'get_uid'
+
             MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
             this.set 'update_instance_title', this.get 'name'
 
@@ -71,7 +74,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
             console.log 'getName'
             this.set 'name', MC.canvas_data.component[ this.get( 'get_uid' )].name
             null
-           
+
         setInstanceType  : () ->
 
             uid = this.get 'get_uid'
@@ -97,7 +100,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
                 this.trigger 'EXCEED_ENI_LIMIT', uid, value, max_eni_num
 
             else
-                
+
                 MC.canvas_data.component[ uid ].resource.InstanceType = value
 
             null
@@ -146,7 +149,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
             MC.canvas_data.component[ uid ].resource.UserData.Data = this.get 'user_data'
 
             null
-        
+
         setBase64Encoded : ()->
 
             #console.log 'setBase64Encoded = ' + value
@@ -175,7 +178,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
             #console.log 'setSourceCheck = ' + value
             me = this
-            
+
             uid = this.get 'get_uid'
 
             _.map MC.canvas_data.component, ( val, key ) ->
@@ -240,6 +243,76 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
             null
 
+        addNewIP : () ->
+
+            instance_uid = this.get 'get_uid'
+
+            $.each MC.canvas_data.component, ( key, val ) ->
+
+                if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_uid and val.resource.Attachment.DeviceIndex == '0'
+
+                    ip_detail = {
+                        "Association" : {
+                                "AssociationID": ""
+                                "PublicDnsName": ""
+                                "AllocationID": ""
+                                "InstanceId": ""
+                                "IpOwnerId": ""
+                                "PublicIp": ""
+                            }
+                        "PrivateIpAddress": "10.0.0.1"
+                        "AutoAssign": "false"
+                        "Primary": "false"
+                    }
+                    val.resource.PrivateIpAddressSet.push ip_detail
+
+                    return false
+
+        removeIP : ( index ) ->
+
+            instance_uid = this.get 'get_uid'
+
+            $.each MC.canvas_data.component, ( key, val ) ->
+
+                if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_uid and val.resource.Attachment.DeviceIndex == '0'
+
+                    ip_ref = '@' + val.uid + '.resource.PrivateIpAddressSet.' + index + '.PrivateIpAddress'
+
+                    eni_ref = '@' + val.uid + '.resource.NetworkInterfaceId'
+
+                    max_index = val.resource.PrivateIpAddressSet.length - 1
+
+                    modify_index_refs = []
+
+                    min_index = index + 1
+
+                    $.each [min_index..max_index], ( i, index_value ) ->
+
+                        modify_index_refs.push '@' + val.uid + '.resource.PrivateIpAddressSet.' + index_value + '.PrivateIpAddress'
+
+                    val.resource.PrivateIpAddressSet.splice index, 1
+
+                    remove_uid = null
+
+                    $.each MC.canvas_data.component, ( k, v ) ->
+
+                        if v.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and v.resource.NetworkInterfaceId == eni_ref
+
+                            if v.resource.PrivateIpAddress in modify_index_refs
+
+                                v.resource.PrivateIpAddress = '@' + val.uid + '.resource.PrivateIpAddressSet.' + (parseInt(v.resource.PrivateIpAddress.split('.')[3],10)-1) + '.PrivateIpAddress'
+
+                            if v.resource.PrivateIpAddress == ip_ref
+
+                                remove_uid = v.uid
+
+                            null
+
+
+                    delete MC.canvas_data.component[remove_uid]
+
+                    return false
+
         addSGtoInstance : () ->
 
             instance_uid = this.get 'get_uid'
@@ -295,6 +368,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
             eni_detail = {}
 
+            eni_detail.eni_ips = []
+
             _.map MC.canvas_data.component, ( val, key ) ->
 
                 if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
@@ -302,6 +377,23 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
                     eni_detail.description = val.resource.Description
 
                     eni_detail.sourceCheck = true if val.resource.SourceDestCheck == 'true' or val.resource.SourceDestCheck == true
+
+                    eni_detail.eni_ips = $.extend true, {}, val.resource.PrivateIpAddressSet
+
+                    $.each eni_detail.eni_ips, ( idx, ip_detail) ->
+
+                        ip_ref = '@' + val.uid + '.resource.PrivateIpAddressSet.' + idx + '.PrivateIpAddress'
+
+                        ip_detail.index = idx
+
+                        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+                            if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
+
+                                ip_detail.has_eip = true
+
+                                return false
+
 
                 null
 
@@ -384,7 +476,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
                         sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length + MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress.length
 
                         sg_detail.name = MC.canvas_data.component[sg_uid].resource.GroupName
-                        
+
                         sg_detail.desc = MC.canvas_data.component[sg_uid].resource.GroupDescription
 
                         instance_sg.rules_detail_ingress = instance_sg.rules_detail_ingress.concat MC.canvas_data.component[sg_uid].resource.IpPermissions
@@ -394,7 +486,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
                         instance_sg.detail.push sg_detail
 
             _.map MC.canvas_property.sg_list, (sg) ->
-                
+
                 if sg.uid not in sg_id_no_ref
 
                     tmp = {}
@@ -431,9 +523,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
                     if val != tmp[tmp.length - 1]
 
                         tmp.push(val)
-                
 
-                
+
+
                 return (JSON.parse node for node in tmp)
 
 
@@ -458,7 +550,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
                     kp.name = value.resource.KeyName
                     kp.uid = value.uid
-                    
+
                     if MC.canvas_data.component[(current_key_pair.split ".")[0][1...]].resource.KeyName == value.resource.KeyName
 
                         kp.selected = true
@@ -468,7 +560,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
             this.set 'keypair', kp_list
 
         getInstanceType : () ->
-            
+
             uid = this.get 'get_uid'
 
             ami_info = MC.canvas_data.layout.component.node[ uid ]
@@ -508,6 +600,66 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
             instance_type = instance_type[ami.virtualizationType]
 
             instance_type
+
+        attachEIP : ( eip_index, attach ) ->
+
+            instance_uid = this.get 'get_uid'
+
+            $.each MC.canvas_data.component, ( key, val ) ->
+
+                if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_uid and val.resource.Attachment.DeviceIndex == '0'
+
+                    if attach
+
+                        eip_component = $.extend true, {}, MC.canvas.EIP_JSON.data
+
+                        eip_uid = MC.guid()
+
+                        eip_component.uid = eip_uid
+
+                        eip_component.resource.PrivateIpAddress = '@' + val.uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
+
+                        eip_component.resource.NetworkInterfaceId = '@' +  val.uid + '.resource.NetworkInterfaceId'
+
+                        eip_component.resource.Domain = 'vpc'
+
+                        data = MC.canvas.data.get('component')
+
+                        data[eip_uid] = eip_component
+
+                        MC.canvas.data.set('component', data)
+
+                        MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
+
+                    else
+
+                        ip_ref = '@' + val.uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
+
+                        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+                            if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
+
+                                delete MC.canvas_data.component[comp_uid]
+
+                                #determine whether all eip are detach
+
+                                existing = false
+
+                                $.each MC.canvas_data.component, ( k, v ) ->
+
+                                    if v.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and v.resource.NetworkInterfaceId == '@' +  val.uid + '.resource.NetworkInterfaceId'
+
+                                        existing = true
+
+                                        return false
+
+                                if not existing
+
+                                    MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
+
+
+
+                    return false
 
         removeSG : () ->
 

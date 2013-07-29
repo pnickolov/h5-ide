@@ -59,7 +59,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             this.trigger 'SET_NEW_ACL', aclUID
 
-            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
+            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID, 'subnet:' + this.model.get('uid') )
 
         openEditAclPanel : ( event ) ->
             source = $(event.target)
@@ -73,7 +73,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             aclUID = source.attr('acl-uid')
 
-            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
+            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID, 'subnet:' + this.model.get('uid') )
 
         onChangeName : ( event ) ->
             # TODO : Validate newName

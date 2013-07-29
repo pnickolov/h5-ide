@@ -27,11 +27,12 @@ define [ 'jquery',
         #
         MC.data.current_sub_main = current_main
 
-        #set view_type
-        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+        if tab_type is 'OPEN_APP'
+            loadAppModule uid, instance_expended_id, current_main
+            return
 
         #
-        require [ './module/design/property/instance/' + view_type,
+        require [ './module/design/property/instance/view',
                   './module/design/property/instance/model',
                   './module/design/property/sglist/main'
         ], ( view, model, sglist_main ) ->
@@ -75,6 +76,17 @@ define [ 'jquery',
 
             ide_event.trigger ide_event.RELOAD_PROPERTY
 
+            view.on 'ATTACH_EIP', ( eip_index, attach ) ->
+
+                model.attachEIP eip_index, attach
+
+            view.on 'ADD_NEW_IP', () ->
+
+                model.addNewIP()
+
+            view.on 'REMOVE_IP', ( index ) ->
+
+                model.removeIP index
             ###
             #model
             #model.setHost uid
@@ -116,6 +128,32 @@ define [ 'jquery',
                 notification 'error', 'Instance Type: '+ instance_type + ' only support at most ' + eni_number + ' Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type'
 
                 view.trigger 'RE_RENDER', uid
+
+
+    loadAppModule = ( uid, instance_expended_id, current_main ) ->
+
+        require [ './module/design/property/instance/app_view',
+                  './module/design/property/instance/app_model',
+                  './module/design/property/sglist/main'
+        ], ( view, model, sglist_main ) ->
+
+            #
+            if current_view then view.delegateEvents view.events
+
+            #
+            current_sub_main = sglist_main
+
+            #
+            current_view  = view
+            current_model = model
+
+            view.model    = model
+
+            model.init( uid )
+            view.render()
+
+            console.log( uid, instance_expended_id )
+
 
     unLoadModule = () ->
         current_view.off()

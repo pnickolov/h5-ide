@@ -1,20 +1,17 @@
-<div class="sidebar-title">
-  <span class="sidebar-title-text">{{component.name}}</span>
-</div>
-<div class="fixedaccordion accordion-default" data-sub="43">
+<header class="sidebar-title">{{name}}</header>
+
+<article class="fixedaccordion accordion-default property-app">
   <div class="accordion-group expanded">
     <div class="fixedaccordion-head">Load Balancer Details</div>
     <div class="accordion-body">
       <div class="property-control-group clearfix">
         <dl class="dl-vertical">
-          {{#if component.resource.VpcId}}
           <dt>Scheme</dt>
-          <dd>{{#if elb_detail.isInternal}}Internal{{else}}Internet Facing{{/if}}</dd>
-          {{/if}}
+          <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
           <dt>DNS Name</dt>
           <dd>TODO!!!!!!</dd>
           <dt>Hosted Zone ID</dt>
-          <dd>TODO!!!!!!</dd>
+          <dd>{{CanonicalHostedZoneNameID}}<dd>
         </dl>
       </div>
     </div>
@@ -61,19 +58,23 @@
       <div class="property-control-group clearfix">
         <dl class="dl-vertical">
           <dt>Ping Protocol</dt>
-          <dd>{{health_detail.protocol}}</dd>
+          <dd>{{HealthCheck.protocol}}</dd>
           <dt>Ping Port</dt>
-          <dd>{{health_detail.port}}</dd>
+          <dd>{{HealthCheck.port}}</dd>
+
+          {{#if HealthCheck.Path}}
           <dt>Ping Path</dt>
-          <dd>{{health_detail.path}}</dd>
+          <dd>{{HealthCheck.Path}}</dd>
+          {{/if}}
+
           <dt>Health Check Interval</dt>
-          <dd>{{health_detail.interval}} Seconds</dd>
+          <dd>{{HealthCheck.Interval}} Seconds</dd>
           <dt>Response Timeout</dt>
-          <dd>{{health_detail.timeout}} Seconds</dd>
+          <dd>{{HealthCheck.Timeout}} Seconds</dd>
           <dt>Unhealthy Threshold</dt>
-          <dd>{{health_detail.unhealthy_threshold}}</dd>
+          <dd>{{HealthCheck.UnhealthyThreshold}}</dd>
           <dt>Healthy Threshold</dt>
-          <dd>{{health_detail.healthy_threshold}}</dd>
+          <dd>{{HealthCheck.HealthyThreshold}}</dd>
         </dl>
       </div>
     </div>
@@ -99,4 +100,4 @@
       TODO!!!!!!!!!!!!!
     </ul>
   </div>
-</div>
+</article>

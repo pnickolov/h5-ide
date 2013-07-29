@@ -68,7 +68,7 @@ var constant_data = {
 	STOKE_WIDTH_VPC: 4,
 
 	//strok width of line
-	LINE_STROKE_WIDTH: 4,
+	LINE_STROKE_WIDTH: 2,
 
 	//constant for MC.canvas.add
 	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 12 l 2 0 l 6 -6 z", //triangle

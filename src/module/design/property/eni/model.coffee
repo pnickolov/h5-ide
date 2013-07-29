@@ -22,6 +22,20 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             if eni_component.resource.SourceDestCheck == 'true' or eni_component.resource.SourceDestCheck == true then eni_component.resource.SourceDestCheck = true else eni_component.resource.SourceDestCheck = false
 
+            $.each eni_component.resource.PrivateIpAddressSet, ( idx, ip_detail) ->
+
+                ip_ref = '@' + uid + '.resource.PrivateIpAddressSet.' + idx + '.PrivateIpAddress'
+
+                ip_detail.index = idx
+
+                $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
+
+                        ip_detail.has_eip = true
+
+                        return false
+
             me.set 'eni_display', eni_component
 
             eni_sg = {}
@@ -59,7 +73,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                         sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length + MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress.length
 
                         sg_detail.name = MC.canvas_data.component[sg_uid].resource.GroupName
-                        
+
                         sg_detail.desc = MC.canvas_data.component[sg_uid].resource.GroupDescription
 
                         eni_sg.rules_detail_ingress = eni_sg.rules_detail_ingress.concat MC.canvas_data.component[sg_uid].resource.IpPermissions
@@ -69,7 +83,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                         eni_sg.detail.push sg_detail
 
             _.map MC.canvas_property.sg_list, (sg) ->
-                
+
                 if sg.uid not in sg_id_no_ref
 
                     tmp = {}
@@ -106,9 +120,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     if val != tmp[tmp.length - 1]
 
                         tmp.push(val)
-                
 
-                
+
+
                 return (JSON.parse node for node in tmp)
 
 
@@ -128,6 +142,111 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             MC.canvas_data.component[uid].resource.SourceDestCheck = value
 
             null
+
+        addNewIP : ( eni_uid ) ->
+
+
+            ip_detail = {
+                "Association" : {
+                        "AssociationID": ""
+                        "PublicDnsName": ""
+                        "AllocationID": ""
+                        "InstanceId": ""
+                        "IpOwnerId": ""
+                        "PublicIp": ""
+                    }
+                "PrivateIpAddress": "10.0.0.1"
+                "AutoAssign": "false"
+                "Primary": "false"
+            }
+            MC.canvas_data.component[eni_uid].resource.PrivateIpAddressSet.push ip_detail
+
+        attachEIP : ( eni_uid, eip_index, attach ) ->
+
+            if attach
+
+                eip_component = $.extend true, {}, MC.canvas.EIP_JSON.data
+
+                eip_uid = MC.guid()
+
+                eip_component.uid = eip_uid
+
+                eip_component.resource.PrivateIpAddress = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
+
+                eip_component.resource.NetworkInterfaceId = '@' +  eni_uid + '.resource.NetworkInterfaceId'
+
+                eip_component.resource.Domain = 'vpc'
+
+                data = MC.canvas.data.get('component')
+
+                data[eip_uid] = eip_component
+
+                MC.canvas.data.set('component', data)
+
+                MC.canvas.update eni_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
+
+            else
+
+                ip_ref = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
+
+                $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
+
+                        delete MC.canvas_data.component[comp_uid]
+
+                        #determine whether all eip are detach
+
+                        existing = false
+
+                        $.each MC.canvas_data.component, ( k, v ) ->
+
+                            if v.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and v.resource.NetworkInterfaceId == '@' +  eni_uid + '.resource.NetworkInterfaceId'
+
+                                existing = true
+
+                                return false
+
+                        if not existing
+
+                            MC.canvas.update eni_uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
+
+        removeIP : ( eni_uid, index ) ->
+
+            ip_ref = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + index + '.PrivateIpAddress'
+
+            eni_ref = '@' + eni_uid + '.resource.NetworkInterfaceId'
+
+            max_index = MC.canvas_data.component[eni_uid].resource.PrivateIpAddressSet.length - 1
+
+            modify_index_refs = []
+
+            min_index = index + 1
+
+            $.each [min_index..max_index], ( i, index_value ) ->
+
+                modify_index_refs.push '@' + eni_uid + '.resource.PrivateIpAddressSet.' + index_value + '.PrivateIpAddress'
+
+            MC.canvas_data.component[eni_uid].resource.PrivateIpAddressSet.splice index, 1
+
+            remove_uid = null
+
+            $.each MC.canvas_data.component, ( k, v ) ->
+
+                if v.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and v.resource.NetworkInterfaceId == eni_ref
+
+                    if v.resource.PrivateIpAddress in modify_index_refs
+
+                        v.resource.PrivateIpAddress = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + (parseInt(v.resource.PrivateIpAddress.split('.')[3],10)-1) + '.PrivateIpAddress'
+
+                    if v.resource.PrivateIpAddress == ip_ref
+
+                        remove_uid = v.uid
+
+                    null
+
+            delete MC.canvas_data.component[remove_uid]
+
     }
 
     model = new ENIModel()

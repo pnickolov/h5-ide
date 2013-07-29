@@ -1,36 +1,36 @@
-<div class="sidebar-title">
-  <span class="sidebar-title-text">{{volume_detail.name}}</span>
-</div>
-<div class="panel-single-wrap">
-  <div class="property-control-group">
-    <dl class="dl-vertical">
-      <dt>Volume ID</dt>
-      <dd>TODO!!!!!!</dd>
-      <dt>Device Name</dt>
-      <dd>{{volume_detail.name}}</dd>
-      <dt>State</dt>
-      <dd>TODO!!!!!!</dd>
-      <dt>Create Time</dt>
-      <dd>TODO!!!!!!!!</dd>
-      <dt>Volume Type</dt>
-      <dd>TODO!!!!!!!!</dd>
-      {{#if volume_detail.resource.SnapshotId}}
-      <dt>Snapshot ID</dt>
-      <dd>{{volume_detail.resource.SnapshotId}}</dd>
-      {{/if}}
-      <dt>Volume Size</dt>
-      <dd>{{volume_detail.resource.Size}} GB</dd>
-      <dt>IOPS</dt>
-      <dd>TODO!!!!!!!!</dd>
-    </dl>
-    <dl class="dl-vertical"></dl>
-      <dt>Attachment Status</dt>
-      <dd>TODO!!!!!!!!</dd>
-      <dt>Instance ID</dt>
-      <dd>TODO!!!!!!!!</dd>
-      <dt>Attach Time</dt>
-      <dd>TODO!!!!!!!!</dd>
-    </dl>
-  </div>
-</div>
+<header class="sidebar-title">{{name}}</header>
+<article class="property-app">
+  <dl class="dl-vertical">
+    <dt>Volume ID</dt>
+    <dd>{{volumeId}}</dd>
+    <dt>Device Name</dt>
+    <dd>{{name}}</dd>
+    <dt>State</dt>
+    <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
+    <dt>Create Time</dt>
+    <dd>{{createTime}}</dd>
+  </dl>
+  <dl class="dl-vertical">
+    <dt>Volume Type</dt>
+    <dd>{{volumeType}}</dd>
+    {{#if snapshotId}}
+    <dt>Snapshot ID</dt>
+    <dd>{{snapshotId}}</dd>
+    {{/if}}
+    <dt>Volume Size</dt>
+    <dd>{{size}} GB</dd>
+    {{#if IOPS}}
+    <dt>IOPS</dt>
+    <dd>{{IOPS}}</dd>
+    {{/if}}
+  </dl>
+  <dl class="dl-vertical">
+    <dt>Attachment Status</dt>
+    <dd>{{attachmentSet.item.0.status}}</dd>
+    <dt>Instance ID</dt>
+    <dd>{{attachmentSet.item.0.instanceId}}</dd>
+    <dt>Attach Time</dt>
+    <dd>{{attachmentSet.item.0.attachTime}}</dd>
+  </dl>
+</article>
 

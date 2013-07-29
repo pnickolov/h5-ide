@@ -1,25 +1,25 @@
-<div class="sidebar-title"><span class="sidebar-title-text">{{name}}</span></div>
+<header class="sidebar-title" id="subnet-property-panel" data-uid="{{uid}}">{{name}}</header>
 
-<div class="fixedaccordion accordion-default" data-sub="43">
+<div class="fixedaccordion accordion-default property-app">
   <section class="accordion-group expanded">
     <header class="fixedaccordion-head">Subnet Details</header>
 
     <article class="accordion-body">
       <dl class="dl-vertical">
         <dt>Subnet ID</dt>
-        <dd>TODO!!!!!!</dd>
+        <dd>{{subnetId}}</dd>
 
         <dt>State</dt>
-        <dd>TODO!!!!!!</dd>
+        <dd><i class="status status-{{#if available}}green{{else}}orange{{/if}}"></i>{{state}}</dd>
 
         <dt>CIDR</dt>
-        <dd>{{CIDR}}</dd>
+        <dd>{{cidrBlock}}</dd>
 
         <dt>Available IPs</dt>
-        <dd>TODO!!!!!!</dd>
+        <dd>{{availableIpAddressCount}}</dd>
 
         <dt>VPC ID</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{vpcId}}</dd>
 
         <dt>Route Table</dt>
         <dd>TODO!!!!!!!!</dd>
@@ -30,17 +30,11 @@
   <section class="accordion-group">
     <header class="fixedaccordion-head">Associated Network ACL</header>
     <article class="accordion-body">
-      <ul class="property-control-group">
-        {{#each networkACL}}
-          <li class="clearfix item-networkacl">
-            <div class="col3 btn-to-secondary-panel secondary-panel" data-secondarypanel-template="subnetSecondaryPanel" data-secondarypanel-data="{{panelData}}"></div>
-            <div class="col2">
-              <div class="col2-1 truncate">{{name}}</div>
-              <div class="col2-2 truncate">{{rule}} rules, {{association}} association</div>
-            </div>
-          </li>
-        {{/each}}
-      </ul>
+      <div class="col3 btn-to-secondary-panel secondary-panel" data-secondarypanel-template="subnetSecondaryPanel" data-uid="{{acl.uid}}" id="property-app-subnet-acl"></div>
+      <div class="col2">
+        <div class="col2-1 truncate">{{acl.name}}</div>
+        <div class="col2-2 truncate">{{acl.rule}} rules, {{acl.association}} association</div>
+      </div>
     </article>
   </section>
 </div>

@@ -1,7 +1,6 @@
-<div class="sidebar-title">
-	<span class="sidebar-title-text" id='property-title'>{{name}}</span>
-</div>
-<div class="fixedaccordion accordion-default" data-sub="43" id="instance-accordion">
+<header class="sidebar-title" id='property-title'>{{name}}</header>
+
+<article class="fixedaccordion accordion-default" data-sub="43" id="instance-accordion">
 	<div class="accordion-group  expanded" >
 		<div class="fixedaccordion-head" id="instance-property-detail" data-uid="{{component.uid}}">
 			Instance Details
@@ -157,13 +156,20 @@
 						<a href="#" id="instance-ip-add" class="right btn btn-silver btn-small" title="Add IP Address">Add IP</a>
 					</div>
 					<ul class="network-list" id="property-network-list">
+						{{#each eni_display.eni_ips}}
 						<li>
 							<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
 								<label for="instance-ip-1">10.0.0.</label>
 								<input type="text" class="input input-ip" value="x" id="instance-ip-1">
 							</div>
-							<div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+							{{#if has_eip}}
+							<div class="toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+							{{else}}
+							<div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+							{{/if}}
 						</li>
+						
+						{{/each}}
 					</ul>
 				</div>
 			</div>
@@ -237,6 +243,6 @@
 		</div>
 		-->
 	</div>
-</div>
+</article>
 <div id="sg-secondary-panel-wrap">
 </div>

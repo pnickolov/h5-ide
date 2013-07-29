@@ -25,10 +25,12 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #set view_type
-        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+        if tab_type is 'OPEN_APP'
+            loadAppModule uid
+            return
 
         #
-        require [ './module/design/property/subnet/' + view_type,
+        require [ './module/design/property/subnet/view',
                   './module/design/property/subnet/model'
         ], ( view, model ) ->
 
@@ -42,9 +44,11 @@ define [ 'jquery',
             model.setId uid
             view.model = model
 
+            ###
             ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, (mainModule) ->
                 view.refreshACLList()
                 mainModule.unLoadModule()
+            ###
 
             #render
             view.render()
@@ -69,11 +73,33 @@ define [ 'jquery',
                 model.setACL acl_uid
                 null
 
+    loadAppModule = ( uid )->
+        require [ './module/design/property/subnet/app_view',
+                  './module/design/property/subnet/app_model'
+        ], ( view, model ) ->
+
+            #
+            if current_view then view.delegateEvents view.events
+
+            current_view  = view
+            current_model = model
+
+            #view
+            view.model    = model
+
+            view.on 'OPEN_ACL', ( acl_uid, subnet_uid ) ->
+
+                ide_event.trigger ide_event.OPEN_ACL, subnet_uid, 0, acl_uid, null, null
+
+            model.init uid
+            view.render()
+
+
     unLoadModule = () ->
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
-        ide_event.offListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL
+        #ide_event.offListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 

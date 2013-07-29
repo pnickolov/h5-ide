@@ -19,7 +19,7 @@
 	area of your browser window when you're logged into
 	your AWS Account. e.g., 123456789000"></i>
 					<label>Account Number</label>
-					<input class="input" type="text" />
+					<input class="input" id="aws-credential-account-id" type="text" />
 				</li>
 				<li>
 					<i class="icon-question-sign icon-label tooltip" data-tooltip="You will ﬁnd those keys in Account > Security
@@ -27,7 +27,7 @@
 	the middle of the page. e.g.,
 	ABCDEFGHIJ1LMNOPQR2S"></i>
 					<label>Access Key ID</label>
-					<input class="input" type="text" />
+					<input class="input" id="aws-credential-access-key" type="text" />
 				</li>
 				<li>
 					<i class="icon-question-sign icon-label tooltip" data-tooltip="You will ﬁnd those keys in Account > Security
@@ -35,7 +35,7 @@
 	the middle of the page. e.g., aBCDefgH/
 	Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"></i>
 					<label>Secret Key</label>
-					<input class="input" type="text" />
+					<input class="input" id="aws-credential-secret-key" type="text" />
 				</li>
 			</ul>
 		</div>
@@ -56,31 +56,17 @@
 		</div>
 	</div>
 
-	<div id="AWSCredentials-success">
-		<div class="AWSCredentials-body-info">
-			<h5>You have connected with following AWS account:</h5>
-			<div class="AWSCredentials-account-info">
-				<span>%account-number%</span>
-				<a class="AWSCredentials-account-update" href="javascript:void(0)">update</a>
-			</div>
-		</div>
-
-		<div class="modal-footer">
-			<button class="btn btn-silver">Done</button>
-		</div>
-	</div>
-
 	<div id="AWSCredentials-update">
 		<div class="AWSCredentials-body-info">
 			<h5>You have connected with following AWS account:</h5>
 			<div class="AWSCredentials-account-info">
-				<span>%account-number%</span>
+				<span id="aws-credential-update-account-id">{{account_id}}</span>
 				<a class="AWSCredentials-account-update" href="javascript:void(0)">update</a>
 			</div>
 		</div>
 
 		<div class="modal-footer">
-			<button class="btn btn-silver">Done</button>
+			<button class="btn btn-silver" id="awsredentials-update-done">Done</button>
 		</div>
 	</div>
 </div>

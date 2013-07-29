@@ -47,7 +47,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'click #instance-ip-add' : "addIPtoList"
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
-
+            'click .toggle-eip' : 'addEIP'
 
         render     : ( attributes, instance_expended_id ) ->
             console.log 'property:instance render'
@@ -108,11 +108,30 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             notification('info', (id + ' created'), false)
 
         addIPtoList: (event) ->
-            $('#property-network-list').append MC.template.networkListItem()
+
+            tmpl = $(MC.template.networkListItem())
+
+            index = $('#property-network-list').children().length
+
+            tmpl.children()[1] = $(tmpl.children()[1]).data("index", index).attr('data-index', index)[0]
+
+            $('#property-network-list').append tmpl
+            this.trigger 'ADD_NEW_IP'
             false
 
         removeIPfromList: (event, id) ->
+
+            index = $($(event.target).parents('li').first().children()[1]).data().index
+
             $(event.target).parents('li').first().remove()
+
+            $.each $("#property-network-list").children(), (idx, val) ->
+
+                $($(val).children()[1]).data('index', idx)
+
+                $($(val).children()[1]).attr('data-index', idx)
+
+            this.trigger 'REMOVE_IP', index
 
         openSgPanel : ( event ) ->
             source = $(event.target)
@@ -162,6 +181,13 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         toggleSGfromList: (event, id) ->
             notification 'info', id, false
+
+        addEIP : ( event ) ->
+
+            # todo, need a index of eip
+            index = parseInt event.target.dataset.index, 10
+            if event.target.className.indexOf('associated') >= 0 then attach = true else attach = false
+            this.trigger 'ATTACH_EIP', index, attach
     }
 
     view = new InstanceView()

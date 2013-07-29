@@ -364,6 +364,13 @@ define [ 'constant',
 				if portMap['vgw-vpn'] and portMap['cgw-vpn']
 					MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
+				if portMap['instance-sg'] or portMap['eni-sg'] or portMap['elb-sg-in'] or portMap['elb-sg-out']
+
+					this.trigger 'SHOW_SG_LIST', option.id
+
+					return false
+
+
 
 
 			MC.canvas.remove $("#" + option.id)[0]
@@ -638,6 +645,15 @@ define [ 'constant',
 				if portMap['vgw-vpn'] and portMap['cgw-vpn']
 					MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
+				$.each portMap, ( key, value ) ->
+
+					if key.indexOf('sg') >= 0
+						me.trigger 'CREATE_SG_CONNECTION', line_id
+
+						return false
+				#if (portMap['instance-sg-in'] and portMap['instance-sg-out']) or (portMap['eni-sg-in'] and portMap['instance-sg-out']) or (portMap['instance-sg-in'] and portMap['eni-sg-out']) or (portMap['eni-sg-in'] and portMap['eni-sg-out'])
+
+				#	this.trigger 'CREATE_SG_CONNECTION', line_id
 
 			null
 
@@ -662,6 +678,157 @@ define [ 'constant',
 
 			#to-do
 
+		reDrawSgLine : () ->
+
+			lines = []
+
+			sg_refs = []
+
+			$.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+				if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+
+					$.each comp.resource.IpPermissions, ( i, rule ) ->
+
+						if rule.IpRanges.indexOf('@') >= 0
+
+							to_sg_uid = rule.IpRanges.split('.')[0][1...]
+
+							from_key = comp.uid + '|' + to_sg_uid
+
+							to_key = to_sg_uid + '|' + comp.uid
+
+							if (from_key not in sg_refs) and (to_key not in sg_refs)
+
+								sg_refs.push from_key
+
+					$.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
+
+						if rule.IpRanges.indexOf('@') >= 0
+
+							to_sg_uid = rule.IpRanges.split('.')[0][1...]
+
+							from_key = comp.uid + '|' + to_sg_uid
+
+							to_key = to_sg_uid + '|' + comp.uid
+
+							if (from_key not in sg_refs) and (to_key not in sg_refs)
+
+								sg_refs.push to_key
+
+			$.each sg_refs, ( i, val ) ->
+
+				uids = val.split('|')
+
+				from_sg_uid = uids[0]
+
+				to_sg_uid = uids[1]
+
+				from_sg_group = []
+
+				to_sg_group = []
+
+				$.each MC.canvas_data.component, ( comp_uid, comp )->
+
+					switch comp.type
+
+						when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+							if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+
+								$.each comp.resource.SecurityGroupId, ( idx, sgs )->
+
+									if sgs.split('.')[0][1...] == from_sg_uid
+
+										from_sg_group.push comp.uid
+
+									if sgs.split('.')[0][1...] == to_sg_uid
+
+										to_sg_group.push comp.uid
+
+						when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+
+							$.each comp.resource.GroupSet, ( idx, sgs )->
+
+								if sgs.GroupId.split('.')[0][1...] == from_sg_uid
+
+									if comp.resource.Attachment.DeviceIndex != "0"
+										from_sg_group.push comp.uid
+									else
+										from_sg_group.push comp.resource.Attachment.InstanceId.split('.')[0][1...]
+
+								if sgs.GroupId.split('.')[0][1...] == to_sg_uid
+									if comp.resource.Attachment.DeviceIndex != "0"
+										to_sg_group.push comp.uid
+									else
+										to_sg_group.push comp.resource.Attachment.InstanceId.split('.')[0][1...]
+
+						when constant.AWS_RESOURCE_TYPE.AWS_ELB
+
+							if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+
+								$.each comp.resource.SecurityGroups, ( idx, sgs )->
+
+									if sgs.split('.')[0][1...] == from_sg_uid
+
+										from_sg_group.push comp.uid
+
+									if sgs.split('.')[0][1...] == to_sg_uid
+
+										to_sg_group.push comp.uid
+
+				$.each from_sg_group, ( i, from_comp_uid ) ->
+
+					$.each to_sg_group, (i, to_comp_uid) ->
+
+						if from_comp_uid != to_comp_uid
+
+							from_port = null
+
+							to_port = null
+
+							switch MC.canvas_data.component[from_comp_uid].type
+
+								when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+									from_port = 'instance-sg'
+
+								when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+
+									from_port = 'eni-sg'
+
+								when constant.AWS_RESOURCE_TYPE.AWS_ELB
+
+									from_port = 'elb-sg-out'
+
+							switch MC.canvas_data.component[to_comp_uid].type
+
+								when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+									to_port = 'instance-sg'
+
+								when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+
+									to_port = 'eni-sg'
+
+								when constant.AWS_RESOURCE_TYPE.AWS_ELB
+
+									to_port = 'elb-sg-in'
+
+							lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+
+			$.each MC.canvas_data.layout.connection, ( line_id, line ) ->
+
+				if line.type == 'sg'
+
+					MC.canvas.remove $("#"+line_id)[0]
+
+
+			$.each lines, ( idx, line_data ) ->
+
+				MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
+
+			lines
 	}
 
 	model = new CanvasModel()

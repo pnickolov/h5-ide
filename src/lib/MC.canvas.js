@@ -4010,6 +4010,7 @@ MC.canvas.event.clearSelected = function ()
 MC.canvas.event.keyEvent = function (event)
 {
 	var keyCode = event.which,
+		nodeName = event.target.nodeName.toLowerCase(),
 		canvas_status = MC.canvas.getState(),
 		is_zoomed = $('#canvas_body').hasClass('canvas_zoomed');
 
@@ -4041,6 +4042,16 @@ MC.canvas.event.keyEvent = function (event)
 		});
 		MC.canvas.selected_node = [];
 
+		return false;
+	}
+
+	// Disable backspace
+	if (
+		keyCode === 8 &&
+		nodeName !== 'input' &&
+		nodeName !== 'textarea'
+	)
+	{
 		return false;
 	}
 

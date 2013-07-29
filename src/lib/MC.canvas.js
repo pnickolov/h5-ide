@@ -252,7 +252,8 @@ MC.canvas = {
 	{
 		//add by xjimmy, draw round corner of fold line
 
-		var last_p = {},
+		var d = '',
+			last_p = {},
 			prev_p = {},
 			next_p = {};
 
@@ -293,6 +294,123 @@ MC.canvas = {
 
 		return d;
 	},
+
+	_bezier_corner: function(controlPoints)
+	{
+		var d = '';
+
+		if (controlPoints.length>=6)
+		{
+			var start0 = controlPoints[0],
+				start = controlPoints[1],
+				end = controlPoints[controlPoints.length-2],
+				end0 = controlPoints[controlPoints.length-1],
+				mid,
+				c2,
+				c3;
+
+				/*
+				mid = {
+					x: (start.x + end.x)/2,
+					y: (start.y + end.y)/2
+				};
+
+				c2 = {
+					x: mid.x,
+					y: start.y
+				};
+
+				c3 = {
+					x: mid.x,
+					y: mid.y
+				};
+
+				d = 'M ' + start0.x + ' ' + start0.y + ' L ' + start.x + ' ' + start.y
+					+ ' Q ' + c2.x + ' ' + c2.y + ' ' + c3.x + ' ' + c3.y
+					+ ' T ' + end.x + ' ' + end.y
+					+ ' L ' + end0.x + ' ' + end0.y;
+				*/
+
+				/*
+				//method 1
+				mid = {
+					x: (start.x + end.x)/2,
+					y: (start.y + end.y)/2
+				};
+
+				c2 = {
+					x: mid.x,
+					y: start.y
+				};
+
+				c3 = {
+					x: mid.x,
+					y: end.y
+				};
+
+				d = 'M ' + start0.x + ' ' + start0.y + ' L ' + start.x + ' ' + start.y
+					+ ' C ' + c2.x + ' ' + c2.y + ' ' + c3.x + ' ' + c3.y
+					+ ' ' + end.x + ' ' + end.y
+					+ ' L ' + end0.x + ' ' + end0.y;
+				*/
+
+				//method 2
+				mid = {
+					x: (start.x + end.x)/2,
+					y: (start.y + end.y)/2
+				};
+
+				c2 = controlPoints[2];
+
+				c3 = controlPoints[controlPoints.length - 3];
+
+				d = 'M ' + start0.x + ' ' + start0.y + ' L ' + start.x + ' ' + start.y
+					+ ' C ' + c2.x + ' ' + c2.y + ' ' + c3.x + ' ' + c3.y
+					+ ' ' + end.x + ' ' + end.y
+					+ ' L ' + end0.x + ' ' + end0.y;
+
+		}
+		else
+		{
+			$.each(controlPoints, function (idx, value)
+			{
+				if (idx === 0)
+				{
+					//start0 point
+					d = 'M ' + value.x + " " + value.y;
+				}
+				else if (idx === (controlPoints.length - 1))
+				{
+					//end0 point
+					d += ' L ' + value.x + ' ' + value.y;
+				}
+				else
+				{
+					//middle point
+					prev_p = controlPoints[idx - 1]; //prev point
+					next_p = controlPoints[idx + 1]; //next point
+
+					if (
+						(prev_p.x === value.x && next_p.x === value.x) ||
+						(prev_p.y === value.y && next_p.y === value.y)
+					)
+					{
+						//three point one line
+						d += ' L ' + value.x + ' ' + value.y;
+					}
+					else
+					{
+						//fold line
+						d += MC.canvas._getPath(prev_p, value, next_p);
+					}
+				}
+				last_p = value;
+			});
+		}
+
+		return d;
+	},
+
 
 	_route: function(controlPoints, fromPt, fromDir, toPt, toDir)
 	{
@@ -896,7 +1014,8 @@ MC.canvas = {
 						//MC.paper.polyline(controlPoints);
 
 						/////draw round corner line /////
-						var d = MC.canvas._round_corner( controlPoints );
+						var d = MC.canvas._round_corner( controlPoints );    //method 1
+						//var d = MC.canvas._bezier_corner( controlPoints ); //method 2
 						if (d !== "")
 						{
 							MC.paper.path(d);
@@ -3604,7 +3723,7 @@ MC.canvas.volume = {
 		$(document.body)
 			.addClass('disable-event')
 			.append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
-		
+
 		shadow = $('#drag_shadow');
 
 		shadow

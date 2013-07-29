@@ -2530,9 +2530,9 @@ MC.canvas.event.drawConnection = {
 
 								target_data = layout_node_data[ item.id ];
 
-								$.each(node_connections, function (index, data)
+								$.each(target_data.connection, function (index, data)
 								{
-									if (data.port === value.from)
+									if (data.port === value.to)
 									{
 										is_connected = true;
 									}

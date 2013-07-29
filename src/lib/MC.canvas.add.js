@@ -565,6 +565,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////9. eip
 				Canvon.image(MC.canvas.IMAGE.EIP_OFF, 58, 49, 14, 17).attr({
+					'class': 'eip-status',
 					'id': group.id + '_eip_status'
 				}),
 

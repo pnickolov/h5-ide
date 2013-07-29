@@ -36,11 +36,10 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
         resizeCanvasPanel : ( type ) ->
             console.log 'resizeCanvasPanel = ' + type
             #temp resize canvas panel
-            canvasPanelResize()
+            #canvasPanelResize()
+            canvas_resize()
             #temp
             require [ 'canvas_layout' ], ( canvas_layout ) -> canvas_layout.listen()
-
-
 
         showProperty : ( event, uid ) ->
             console.log 'showProperty, uid = ' + uid
@@ -48,8 +47,6 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
 
         lineSelected : ( event, line_id ) ->
             ide_event.trigger ide_event.OPEN_PROPERTY, 'line', line_id
-
-
 
         changeNodeParent : ( event, option ) ->
             event.data.trigger 'CANVAS_NODE_CHANGE_PARENT', option.src_node, option.tgt_parent

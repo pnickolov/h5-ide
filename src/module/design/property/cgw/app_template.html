@@ -1,0 +1,146 @@
+<header class="sidebar-title">
+  <span class="sidebar-title-text" id='property-title'>vpn:customer-gateway-1</span>
+</header>
+
+<div class="fixedaccordion" data-sub="43" id="app-cgw-vpn-accordion">
+  <div class="accordion-group">
+    <div class="fixedaccordion-head">
+      <span>Customer Gateway</span>
+    </div>
+
+    <div class="accordion-body" id="app-cgw-body">
+      <dl class="dl-vertical">
+        <dt>ID</dt>
+        <dd>%id%</dd>
+
+        <dt>State</dt>
+        <dd><i class="status status-green"></i>Available</dd>
+
+        <dt>IP</dt>
+        <dd>%ipAddress%</dd>
+
+        <dt>Type</dt>
+        <dd>%type%</dd>
+
+        <dt>BGP ASN</dt>
+        <dd>%BGP_ASN%</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="accordion-group">
+    <div class="fixedaccordion-head">
+      <span>VPN Connection</span>
+    </div>
+
+    <div class="accordion-body scroll-wrap"  id="app-vpn-body" style="height: 450px;">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="scroll-content">
+        <dl class="dl-vertical">
+          <dt>ID</dt>
+          <dd>%id%</dd>
+
+          <dt>State</dt>
+          <dd><i class="status status-green"></i>Available</dd>
+
+          <dt>IP</dt>
+          <dd>%ipAddress%</dd>
+
+          <dt>Type</dt>
+          <dd>%type%</dd>
+
+          <dt>Routing</dt>
+          <dd>%Routing%</dd>
+        </dl>
+
+        <div class="accordion-sub-head">
+          <h5>VPN Tunnels</h5>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+            <th style="width:20px">Tunnel</th>
+            <th style="width:100px">IP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><i class="status status-green"></i>1</td>
+              <td>192.168.1.1</td>
+            </tr>
+            <tr>
+              <td><i class="status status-green"></i>2</td>
+              <td>192.168.1.1</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="accordion-sub-head">
+          <h5>Status Routes</h5>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+            <th style="width:100px">Status</th>
+            <th style="width:100px">Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><i class="status status-green"></i>192.168.1.1/16</td>
+              <td>Static</td>
+            </tr>
+            <tr>
+              <td><i class="status status-green"></i>192.168.1.1/16</td>
+              <td>Static</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="fixedaccordion-head">
+      <span>Download Configuration</span>
+    </div>
+
+    <div class="accordion-body" id="app-vpn-connection-body">
+      <div class="property-control-group clearfix">
+        <label>Vendor</label>
+        <div class="selectbox" id="tenancy-select">
+          <div class="selection">Cisco Systems, Inc.</div>
+          <ul class="dropdown" tabindex="-1">
+            <li class="item selected focused" data-id="default">Cisco Systems, Inc.</li>
+            <li class="item" data-id="dedicated">Delicated</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="property-control-group clearfix">
+        <label>Platform</label>
+        <div class="selectbox" id="tenancy-select">
+          <div class="selection">ISR Series Routers</div>
+          <ul class="dropdown" tabindex="-1">
+            <li class="item selected focused" data-id="default">ISR Series Routers</li>
+            <li class="item" data-id="dedicated">Delicated</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="property-control-group clearfix">
+        <label>Softerware</label>
+        <div class="selectbox" id="tenancy-select">
+          <div class="selection">IOS 2.4+</div>
+          <ul class="dropdown" tabindex="-1">
+            <li class="item selected focused" data-id="default">IOS 2.4+</li>
+            <li class="item" data-id="dedicated">Delicated</li>
+          </ul>
+        </div>
+      </div>
+
+      <a id="download-vpn-cgw-conf" href="javascript:void(0)" class="btn btn-primary">Download Configuration</a>
+    </div>
+  </div>
+</div>

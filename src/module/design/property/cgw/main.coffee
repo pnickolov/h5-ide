@@ -4,26 +4,35 @@
 
 define [ 'jquery',
          'text!/module/design/property/cgw/template.html',
+         'text!/module/design/property/cgw/app_template.html',
          'event'
-], ( $, template, ide_event ) ->
+], ( $, template, app_template, ide_event ) ->
 
     #
     current_view  = null
     current_model = null
 
     #add handlebars script
-    template = '<script type="text/x-handlebars-template" id="property-cgw-tmpl">' + template + '</script>'
+    template     = '<script type="text/x-handlebars-template" id="property-cgw-tmpl">' + template + '</script>'
+    app_template = '<script type="text/x-handlebars-template" id="property-cgw-app-tmpl">' + app_template + '</script>'
     #load remote html template
-    $( 'head' ).append template
+    $( 'head' ).append( template ).append( app_template )
 
     #private
-    loadModule = ( uid, current_main ) ->
+    loadModule = ( uid, current_main, tab_type ) ->
+
+        console.log 'tab_type = ' + tab_type
 
         #
         MC.data.current_sub_main = current_main
 
+        #set view_type
+        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+
         #
-        require [ './module/design/property/cgw/view', './module/design/property/cgw/model' ], ( view, model ) ->
+        require [ './module/design/property/cgw/' + view_type,
+                  './module/design/property/cgw/model'
+        ], ( view, model ) ->
 
             #
             if current_view then view.delegateEvents view.events

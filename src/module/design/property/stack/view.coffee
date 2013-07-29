@@ -107,7 +107,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             MC.canvas_data.component[aclUID] = aclObj
 
-            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
+            ide_event.trigger ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID, 'stack'
 
         openEditAclPanel : ( event ) ->
             source = $(event.target)

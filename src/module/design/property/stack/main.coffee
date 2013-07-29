@@ -16,12 +16,12 @@ define [ 'jquery',
 
     #add handlebars script
     stack_template = '<script type="text/x-handlebars-template" id="property-stack-tmpl">' + stack_template + '</script>'
-    acl_template = '<script type="text/x-handlebars-template" id="property-stack-acl-tmpl">' + acl_template + '</script>'
     app_template = '<script type="text/x-handlebars-template" id="property-app-tmpl">' + app_template + '</script>'
+    acl_template = '<script type="text/x-handlebars-template" id="property-stack-acl-tmpl">' + acl_template + '</script>'
     #load remote html template
     $( 'head' ).append stack_template
-    $( 'head' ).append acl_template
     $( 'head' ).append app_template
+    $( 'head' ).append acl_template
 
     #private
     loadModule = ( current_main ) ->

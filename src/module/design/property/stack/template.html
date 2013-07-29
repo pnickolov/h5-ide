@@ -1,21 +1,21 @@
 <!-- title -->
-<header class="sidebar-title" id='property-title'>Stack - {{stack_detail.name}}</header>
+<header class="sidebar-title" id='property-title'>Stack - {{property_detail.name}}</header>
 
 <!-- body -->
 <div class="property-info">
 	<div class="property-control-group clearfix">
 		<label class="left" for="property-stack-name">Stack Name</label>
-		<input class="input" type="text" required="required" value="{{stack_detail.name}}" name="property-stack-name" id="property-stack-name">
+		<input class="input" type="text" required="required" value="{{property_detail.name}}" name="property-stack-name" id="property-stack-name">
 	</div>
 	<div class="property-info-readonly">
 		<div class="property-control-group clearfix">
 			<label class="left">Region</label>
-			<span class="property-info-value">{{stack_detail.region}}</span>
+			<span class="property-info-value">{{property_detail.region}}</span>
 		</div>
 
 		<div class="property-control-group clearfix">
 			<label class="left">Type</label>
-			<span class="property-info-value">{{stack_detail.type}}</span>
+			<span class="property-info-value">{{property_detail.type}}</span>
 		</div>
 	</div>
 </div>
@@ -28,15 +28,13 @@
 		<div class="sg-group">loading...</div>
 	</div>
 
-	{{#if stack_detail.is_vpc}}
+	{{#if property_detail.is_vpc}}
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
 			Network ACL({{network_acl.length}})
 		</div>
 		<button class="create-acl btn btn-primary btn-region-dashboard" id="stack-property-add-new-acl" title="Create New Network ACL">+</button>
-		<div class="accordion-body stack-property-acl-list">
-
-		</div>
+		<div class="accordion-body stack-property-acl-list"></div>
 	</div>
 	{{/if}}
 

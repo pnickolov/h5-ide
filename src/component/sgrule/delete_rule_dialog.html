@@ -1,0 +1,30 @@
+<div style="width:420px">
+  <div class="modal-header">
+    <h3>{{title}}</h3>
+    <i class="modal-close">&times;</i>
+  </div>
+  <div class="modal-body">
+    <p>Following rules(rule) will be deleted from their(its) security group:</p>
+    {{#each delete_rule_list}}
+    <h3 class="sg-create-group">{{name}}</h3>
+    <ul>
+      {{#each rule}}
+        <li class="clearfix sg-create-rule-item">
+          <span class="sg-rule-col1">
+            <span class="{{#if this.[4]}}sg-rule-inbound{{else}}sg-rule-outbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
+            <span class="sg-rule-protocol">{{this.[3]}}</span>
+          </span>
+          <div class="sg-rule-col2">
+            <div class="sg-rule-connnection">{{this.[0]}}</div>
+            <div class="sg-rule-port">{{this.[1]}}-{{this.[2]}}</div>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+    {{/each}}
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-red" id="confirm-delete-sg-line">Delete</button>
+    <button class="btn modal-close">Cancel</button>
+  </div>
+</div>

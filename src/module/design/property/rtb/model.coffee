@@ -78,6 +78,51 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             null
 
+        getAppRoute : ( uid ) ->
+
+            rt = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.RouteTableId]
+
+            $.each MC.canvas_data.component, (comp_uid, comp) ->
+
+                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable and comp.resource.RouteTableId == rt.routeTableId
+
+                    rt.name = comp.name
+
+                    return false
+
+            if rt.associationSet.item.length != 0 and rt.associationSet.item[0].main == 'true'
+
+                rt.isMain = true
+
+            $.each rt.routeSet.item, ( idx, route ) ->
+
+                existing = false
+
+                tmp_r = {}
+
+                if route.state == 'active'
+
+                    route.isActive = true
+
+                else
+                    route.isActive = false
+
+
+                if route.gatewayId
+
+                    if rt.propagatingVgwSet.item
+
+                        $.each rt.propagatingVgwSet.item, ( i, prop ) ->
+
+                            if prop.gatewayId == route.gatewayId
+
+                                route.isProp = true
+
+                                return false
+
+            this.set 'route_table', rt
+
+
 
         getRoute : ( uid ) ->
 
@@ -94,6 +139,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 existing = false
 
                 tmp_r = {}
+
+                if route.state == 'active'
+
+                    route.isActive = true
+
+                else
+                    route.isActive = false
 
                 $.each route_set, ( i, r ) ->
 
@@ -156,6 +208,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             rt.route_disp = route_set
 
+            if rt.resource.VpcId
+                rt.local_cidr = MC.canvas_data.component[rt.resource.VpcId.split('.')[0][1...]].resource.CidrBlock
+                rt.vpc_id = MC.canvas_data.component[rt.resource.VpcId.split('.')[0][1...]].resource.VpcId
 
             this.set 'route_table', rt
 

@@ -81,11 +81,11 @@ define [ 'event',
                     # ide_event.trigger ide_event.OPEN_PROPERTY, 'component', $('#sg-secondary-panel').attr('parent'), me.instance_expended_id
                 }
             )
-            view.trigger ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL
+            this.trigger ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL
 
         showCreateRuleModal : () ->
             modal this.rulePopupTpl({}, true)
-            
+
             subnetMap = {}
 
             # subnet list
@@ -108,7 +108,7 @@ define [ 'event',
                 )
 
             selectboxContainer.append('<li class="item tooltip" data-value="custom"><div class="main truncate">Custom</div></li>')
-                
+
             scrollbar.init()
             return false
 

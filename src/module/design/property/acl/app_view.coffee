@@ -1,22 +1,23 @@
 #############################
-#  View(UI logic) for design/property/cgw(app)
+#  View(UI logic) for design/property/acl(app)
 #############################
 
 define [ 'event', 'MC',
          'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
 
-    CGWAppView = Backbone.View.extend {
+    ACLAppView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile $( '#property-cgw-app-tmpl' ).html()
+        template  : Handlebars.compile $( '#property-acl-app-tmpl' ).html()
 
         render     : () ->
-            console.log 'property:cgw app render'
+            console.log 'property:acl app render'
             $( '.property-details' ).html this.template this.model.attributes
+
     }
 
-    view = new CGWAppView()
+    view = new ACLAppView()
 
     return view

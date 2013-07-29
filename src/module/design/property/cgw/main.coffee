@@ -27,10 +27,12 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #set view_type
-        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+        if tab_type is 'OPEN_APP'
+            loadAppModule uid
+            return
 
         #
-        require [ './module/design/property/cgw/' + view_type,
+        require [ './module/design/property/cgw/view',
                   './module/design/property/cgw/model'
         ], ( view, model ) ->
 
@@ -62,6 +64,24 @@ define [ 'jquery',
                 null
 
             null
+
+    loadAppModule = (uid) ->
+        require [ './module/design/property/cgw/app_view',
+                  './module/design/property/cgw/app_model'
+        ], ( view, model ) ->
+
+            #
+            if current_view then view.delegateEvents view.events
+
+            current_view  = view
+            current_model = model
+
+            #view
+            view.model    = model
+
+            model.init uid
+            view.render()
+
 
 
     unLoadModule = () ->

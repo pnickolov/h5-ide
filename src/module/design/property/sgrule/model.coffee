@@ -18,10 +18,15 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                         } ]
                     }
                 ]
+            line_id : null
 
         initialize : ->
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
+
+        setLineId : ( line_id ) ->
+
+            this.set 'line_id', line_id
 
     }
 

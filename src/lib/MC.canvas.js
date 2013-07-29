@@ -85,6 +85,7 @@ MC.canvas = {
 				.removeClass('canvas_zoomed')
 				.off('mousedown', '.dragable', MC.canvas.event.selectNode)
 				.on('mousedown', '.instance-volume', MC.canvas.volume.show)
+				.on('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
 				.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 				.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 				.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
@@ -108,6 +109,7 @@ MC.canvas = {
 			.addClass('canvas_zoomed')
 			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
 			.off('mousedown', '.instance-volume', MC.canvas.volume.show)
+			.off('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
 			.off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 			.off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 			.off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
@@ -3921,6 +3923,16 @@ MC.canvas.volume = {
 	}
 };
 
+MC.canvas.event.EIPstatus = function ()
+{
+	$("#svg_canvas").trigger("CANVAS_EIP_STATE_CHANGE", {
+		id: this.parentNode.id,
+		eip_state: this.getAttribute('data-eip-state')
+	});
+
+	return false;
+};
+
 MC.canvas.event.selectLine = function (event)
 {
 	event.preventDefault();
@@ -3975,7 +3987,7 @@ MC.canvas.event.selectNode = function (event)
 
 			MC.canvas.selected_node.push(target[0]);
 
-			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
 		}
 	}
 };

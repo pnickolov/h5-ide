@@ -394,6 +394,8 @@ MC.canvas.add = function (flag, option, coordinate)
 			var os_type = 'ami-unknown',
 				volume_number = 0,
 				icon_volume_status = 'not-attached',
+				icon_eip_state = MC.canvas.IMAGE.EIP_OFF,
+				data_eip_state = 'off', //on | off
 				eni = null;
 
 			if (create_mode)
@@ -564,7 +566,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////9. eip
-				Canvon.image(MC.canvas.IMAGE.EIP_OFF, 58, 49, 14, 17).attr({
+				Canvon.image(icon_eip_state, 58, 49, 14, 17).attr({
+					'class': 'eip-status',
+					'data-eip-state': data_eip_state,
 					'id': group.id + '_eip_status'
 				}),
 

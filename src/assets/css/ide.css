@@ -3445,3 +3445,56 @@ a.sidebar-hider {
 	background: url('../images/ide/icon-export-json.png') center center no-repeat;
 }
 
+
+/*app-vpn-cgw*/
+#app-cgw-vpn-accordion .dl-vertical {
+	padding: 10px;
+}
+
+#download-vpn-cgw-conf {
+	display: block;
+	width: 220px;
+	margin: 10px auto;
+}
+
+#app-cgw-vpn-accordion .accordion-sub-head {
+	padding: 10px;
+	background-color: #ECECEC;
+	color: #A5A5A5;
+}
+
+#app-cgw-vpn-accordion .accordion-sub-head h5 {
+	font-size: 13px;
+}
+
+#app-vpn-body .table {
+	text-align: center;
+	font-size: 12px;
+}
+
+#app-vpn-body tr,
+#app-vpn-body td,
+#app-vpn-body th {
+	text-align: center;
+	background-color: #f3f3f3;
+	border: 1px solid #ccc;
+	color: #666;
+}
+
+#app-vpn-body th {
+	font-weight: 500;
+}
+
+#app-vpn-body tbody td {
+	background-color: #fcfcfc;
+}
+
+#app-vpn-connection-body {
+	padding: 10px;
+}
+
+#app-cgw-body .status,
+#app-vpn-body .status {
+	margin: 0 5px 0 0;
+}
+

@@ -95,6 +95,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                 tmp_r = {}
 
+                if route.state == 'active'
+
+                    route.isActive = true
+
+                else
+                    route.isActive = false
+
                 $.each route_set, ( i, r ) ->
 
                     if (r.InstanceId and r.InstanceId == route.InstanceId) or (r.NetworkInterfaceId and r.NetworkInterfaceId == route.NetworkInterfaceId) or (r.GatewayId and r.GatewayId == route.GatewayId)
@@ -156,6 +163,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             rt.route_disp = route_set
 
+            if rt.resource.VpcId
+                rt.local_cidr = MC.canvas_data.component[rt.resource.VpcId.split('.')[0][1...]].resource.CidrBlock
+                rt.vpc_id = MC.canvas_data.component[rt.resource.VpcId.split('.')[0][1...]].resource.VpcId
 
             this.set 'route_table', rt
 

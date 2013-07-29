@@ -3,13 +3,13 @@
 <div class="property-control-group">
   <dl class="dl-vertical">
     <dt>Route Table ID</dt>
-    <dd>TODO!!!!!!</dd>
+    <dd>{{route_table.resource.RouteTableId}}</dd>
 
     <dt>Main</dt>
     <dd>{{#if route_table.isMain}}Yes{{else}}No{{/if}}</dd>
 
     <dt>VPC ID</dt>
-    <dd>TODO!!!!!!!!</dd>
+    <dd>{{route_table.vpc_id}}</dd>
   </dl>
 </div>
 
@@ -19,18 +19,31 @@
 
     <article class="accordion-body">
       <table>
-        <td>
+        <tr>
           <th></th>
           <th>Destination</th>
           <th>Target</th>
           <th></th>
-        </td>
-        <td>
+        </tr>
+        <tr>
           <th class="status-good tooltip" data-tooltip="Active"></th>
-          <th>10.0.0.16</th>
+          <th>{{route_table.local_cidr}}</th>
           <th>local</th>
+        </tr>
+        {{#each route_table.resource.RouteSet}}
+        <tr>
+        	{{#if isActive}}
+          		<th class="status-good tooltip" data-tooltip="Active"></th>
+          	{{else}}
+          		<th class="status-grey tooltip" data-tooltip="Blackhole"></th>
+          	{{/if}}
+          <th>{{DestinationCidrBlock}}</th>
+          <th>{{name}}</th>
+          {{#if isProp}}
           <th class="icon-propagated tooltip" data-tooltip="Propagated"></th>
-        </td>
+          {{/if}}
+        </tr>
+        {{/each}}
       </table>
     </article>
   </section>

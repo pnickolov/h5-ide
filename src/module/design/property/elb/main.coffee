@@ -25,12 +25,13 @@ define [ 'jquery',
 
         MC.data.current_sub_main = current_main
 
-        #set view_type
-        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+
+        if tab_type is 'OPEN_APP'
+            loadAppModule uid
+            return
 
         #
-        require [ './module/design/property/elb/' + view_type,
-
+        require [ './module/design/property/elb/view',
                   './module/design/property/elb/model'
         ], ( view, model ) ->
 
@@ -95,6 +96,23 @@ define [ 'jquery',
 
             #render
             view.render model.attributes
+
+    loadAppModule = ( uid ) ->
+        require [ './module/design/property/elb/app_view',
+                  './module/design/property/elb/app_model'
+        ], ( view, model ) ->
+
+            #
+            if current_view then view.delegateEvents view.events
+
+            current_view  = view
+            current_model = model
+
+            #view
+            view.model    = model
+
+            model.init uid
+            view.render()
 
     unLoadModule = () ->
         current_view.off()

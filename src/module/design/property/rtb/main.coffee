@@ -24,10 +24,12 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #set view_type
-        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+        if tab_type is 'OPEN_APP'
+            loadAppModule uid
+            return
 
         #
-        require [ './module/design/property/rtb/' + view_type,
+        require [ './module/design/property/rtb/view',
                   './module/design/property/rtb/model'
         ], ( view, model ) ->
 
@@ -83,6 +85,24 @@ define [ 'jquery',
                 model.getRoute( uid )
 
                 view.render()
+
+
+    loadAppModule = ( uid ) ->
+        require [ './module/design/property/rtb/app_view',
+                  './module/design/property/rtb/app_model'
+        ], ( view, model ) ->
+
+            #
+            if current_view then view.delegateEvents view.events
+
+            current_view  = view
+            current_model = model
+
+            #view
+            view.model    = model
+
+            model.init uid
+            view.render()
 
 
     unLoadModule = () ->

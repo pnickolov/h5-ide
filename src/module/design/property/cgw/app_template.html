@@ -1,34 +1,27 @@
-<header class="sidebar-title">
-  <span class="sidebar-title-text" id='property-title'>vpn:customer-gateway-1</span>
-</header>
+<header class="sidebar-title">vpn:{{name}}</header>
 
-<div class="fixedaccordion" data-sub="43" id="app-cgw-vpn-accordion">
-  <div class="accordion-group">
-    <div class="fixedaccordion-head">
-      <span>Customer Gateway</span>
-    </div>
+<article class="fixedaccordion property-panel property-app">
 
-    <div class="accordion-body" id="app-cgw-body">
+  <section class="accordion-group expanded">
+    <div class="fixedaccordion-head">Customer Gateway</div>
+
+    <div class="accordion-body">
       <dl class="dl-vertical">
         <dt>ID</dt>
-        <dd>%id%</dd>
-
+        <dd>{{customerGatewayId}}</dd>
         <dt>State</dt>
-        <dd><i class="status status-green"></i>Available</dd>
-
+        <dd><i class="status status-{{#if available}}green{{else}}orange{{/if}}"></i>{{state}}</dd>
         <dt>IP</dt>
-        <dd>%ipAddress%</dd>
-
+        <dd>{{ipAddress}}</dd>
         <dt>Type</dt>
-        <dd>%type%</dd>
-
+        <dd>{{type}}</dd>
         <dt>BGP ASN</dt>
-        <dd>%BGP_ASN%</dd>
+        <dd>{{bgpAsn}}</dd>
       </dl>
     </div>
-  </div>
+  </section>
 
-  <div class="accordion-group">
+  <section class="accordion-group">
     <div class="fixedaccordion-head">
       <span>VPN Connection</span>
     </div>
@@ -99,9 +92,9 @@
         </table>
       </div>
     </div>
-  </div>
-  
-  <div class="accordion-group">
+  </section>
+
+  <section class="accordion-group">
     <div class="fixedaccordion-head">
       <span>Download Configuration</span>
     </div>
@@ -142,5 +135,5 @@
 
       <a id="download-vpn-cgw-conf" href="javascript:void(0)" class="btn btn-primary">Download Configuration</a>
     </div>
-  </div>
-</div>
+  </section>
+</article>

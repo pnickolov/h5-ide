@@ -3522,3 +3522,40 @@ a.sidebar-hider {
 	margin: 0 5px 0 0;
 }
 
+/* stack and app property sgrule */
+.property-subhead {
+	padding: 10px;
+}
+
+#property-sgrule .sg-info-list .col1 {
+	margin-right: 5px;
+}
+
+#property-sgrule .sg-info-list .col2 .col2-2 {
+	color: #000;
+}
+
+#property-sgrule .sg-info-list .col2 .col2-2 {
+	color: #000;
+}
+
+[class^="icon-rule-"], [class*=" icon-rule-"] {
+	background-repeat: no-repeat;
+	background-position: center;
+	display: inline-block;
+	width: 22px;
+	height: 13px;
+	float: left;
+}
+
+.icon-rule-inbound {
+	background-image: url('../images/ide/icon/icon-rule-inbound.png');
+}
+
+.icon-rule-outbound {
+	background-image: url('../images/ide/icon/icon-rule-outbound.png');
+}
+
+#property-sgrule [class^="icon-rule-"], #property-sgrule [class*=" icon-rule-"] {
+	margin-right: 10px;
+}

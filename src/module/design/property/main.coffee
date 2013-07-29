@@ -147,9 +147,10 @@ define [ 'jquery',
 
                                         return false
 
-                            else if '|instance-sg>instance-sg|'.indexOf( key ) >0
+                            else if key.indexOf('sg') >=0
+
                                 #select line between instance and instance
-                                sgrule_main.loadModule line_option, 'line', sgrule_main
+                                sgrule_main.loadModule uid, 'line', sgrule_main, tab_type
 
                             else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
                                 #select line between vgw and  cgw
@@ -171,6 +172,10 @@ define [ 'jquery',
                 #
                 if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
+
+            ide_event.onLongListen ide_event.SHOW_SG_LIST, ( line_id )->
+
+                sgrule_main.loadModule uid, 'delete'
 
             #listen OPEN_ACL
             ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid, back_dom, bak_tab_type ) ->

@@ -17,13 +17,13 @@ define [ 'jquery',
     $( 'head' ).append( template )
 
     #private
-    loadModule = ( uid, type, current_main ) ->
+    loadModule = ( uid, type, current_main, tab_type ) ->
 
         #
         MC.data.current_sub_main = current_main
 
         #
-        require [ './module/design/property/sgrule/model', './module/design/property/sgrule/view' ], ( model, view ) ->
+        require [ './module/design/property/sgrule/model', './module/design/property/sgrule/view', './component/sgrule/main' ], ( model, view, sgrule_main ) ->
 
             #
             if current_view then view.delegateEvents view.events
@@ -34,12 +34,15 @@ define [ 'jquery',
 
             #view
             view.model = model
+            view.setAppView = if tab_type is 'OPEN_APP' then true else false
+
+            model.setLineId uid
             #render
             view.render()
 
-            view.on "EDIT_RULE", () ->
+            view.on "EDIT_RULE", ( line_id ) ->
                 # TODO : Show SG Rule Popup
-                null
+                sgrule_main.loadModule( line_id )
 
     unLoadModule = () ->
         current_view.off()

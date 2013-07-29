@@ -76,6 +76,17 @@ define [ 'jquery',
 
             ide_event.trigger ide_event.RELOAD_PROPERTY
 
+            view.on 'ATTACH_EIP', ( eip_index, attach ) ->
+
+                model.attachEIP eip_index, attach
+
+            view.on 'ADD_NEW_IP', () ->
+
+                model.addNewIP()
+
+            view.on 'REMOVE_IP', ( index ) ->
+
+                model.removeIP index
             ###
             #model
             #model.setHost uid

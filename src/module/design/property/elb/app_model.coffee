@@ -17,7 +17,8 @@ define [ 'backbone', 'MC' ], () ->
 
           elb.isInternet = elb.Scheme == "internet-facing"
           elb.HealthCheck.protocol = elb.HealthCheck.Target.split(":")[0]
-          elb.HealthCheck.port     = elb.HealthCheck.Target.split(":")[1]
+          elb.HealthCheck.port     = elb.HealthCheck.Target.split(":")[1].split("/")[0]
+          elb.HealthCheck.path     = elb.HealthCheck.Target.split("/")[1]
 
           this.set elb
     }

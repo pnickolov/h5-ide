@@ -2,7 +2,7 @@
 #**********************************************************
 #* Filename: MC.core.js
 #* Creator: Angel
-#* Description: The core of the whole system 
+#* Description: The core of the whole system
 #* Date: 20130729
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
@@ -11,7 +11,7 @@
 var MC = {
 	version: '0.2.5',
 
-	// Global Variable 
+	// Global Variable
 	API_URL: 'https://api.madeiracloud.com/',
 	IMG_URL: '../assets/images/',
 
@@ -102,7 +102,7 @@ var MC = {
 			};
 
 		MC.api_queue[guid] = option;
-		
+
 		if (!api_frame[0])
 		{
 			$(document.body).append('<iframe id="api-frame" src="https://api.madeiracloud.com/api.html" style="display:none;"></iframe>');
@@ -135,6 +135,11 @@ var MC = {
 		$(document.body).addClass(name);
 
 		MC.browser = name;
+	},
+
+	capitalize: function (string)
+	{
+	    return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 
 	/*
@@ -337,15 +342,15 @@ var MC = {
 /*
 * Storage
 * Author: Angel
-* 
+*
 * Save data into local computer via HTML5 localStorage, up to 10MB storage capacity.
-* 
+*
 * Saving data
 * MC.storage.set(name, value)
-* 
+*
 * Getting data
 * MC.storage.get(name)
-* 
+*
 * Remove data
 * MC.storage.remove(name)
 */

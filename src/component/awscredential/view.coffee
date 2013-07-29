@@ -31,10 +31,19 @@ define [ 'event',
             if me.model.attributes.is_authenticated
                 $('#AWSCredentials-submiting').hide()
                 $('#AWSCredentials-update').show()
-                $('#aws-credential-update-account-id').text = me.model.attributes.account_id
+                $('#aws-credential-update-account-id').text me.model.attributes.account_id
             else
+                $('#AWSCredentials-submiting').hide()
+
+                $('#AWSCredential-form').show()
                 $('#AWSCredential-info').hide()
                 $('#AWSCredential-failed').show()
+
+                # clear the input values
+                $('#aws-credential-account-id').val(' ')
+                $('#aws-credential-access-key').val(' ')
+                $('#aws-credential-secret-key').val(' ')
+
 
         onClose : ->
             console.log 'onClose'
@@ -48,7 +57,12 @@ define [ 'event',
         onUpdate : ->
             console.log 'onUpdate'
             $('#AWSCredentials-update').hide()
+
             $('#AWSCredential-form').show()
+            # clear the access key and secret key
+            $('#aws-credential-access-key').val(' ')
+            $('#aws-credential-secret-key').val(' ')
+
 
         onSubmit : () ->
             console.log 'onSubmit'

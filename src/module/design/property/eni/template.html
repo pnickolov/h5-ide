@@ -1,6 +1,4 @@
-<header class="sidebar-title">
-  <span class="sidebar-title-text" id='property-title'>{{eni_display.name}}</span>
-</header>
+<header class="sidebar-title" id='property-title'>{{eni_display.name}}</header>
 
 <section class="property-control-group clearfix" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
   Attach the Netowrk Interface to an instance.

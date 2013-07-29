@@ -1,276 +1,141 @@
-<!-- title -->
-<div class="sidebar-title">
-	<span class="sidebar-title-text" id='property-title'>instance-1</span>
-</div>
+<header class="sidebar-title">{{instance.name}}</header>
 
-<!-- body -->
+<article class="fixedaccordion accordion-default property-app">
+  <section class="accordion-group expanded">
+    <div class="fixedaccordion-head">Instance Details</div>
 
+    <div class="accordion-body">
+      <dl class="dl-vertical">
+        <dt>Instance ID</dt>
+        <dd>{{instance.instanceId}}</dd>
 
-<div class="fixedaccordion accordion-default property-app property-app-instance">
-	<div class="accordion-group">
-		<div class="fixedaccordion-head" id="instance-property-detail">
-			Instance Details
-		</div>
-		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
-			<div class="item-wrap scroll-content" style="-webkit-transform: translate3d(0, 0, 0);">
-				<div>
-					<div class="property-control-group clearfix">
-						<label>Instance ID</label>
-						<span class="property-readonly-value">i-jfdajfkj12</span>
-					</div>
-					<div class="property-control-group clearfix">
-						<label>State</label>
-						<span class="property-readonly-value"><i class="status status-green"></i> Running</span>
-					</div>
+        <dt>State</dt>
+        <dd><i class="status status-{{#if instance.isRunning}}green{{else}}{{#if instance.isPending}}orange{{else}}red{{/if}}{{/if}}"></i>{{instance.instanceState.name}}</dd>
 
-					<div class="property-control-group clearfix">
-						<label>Launch Time</label>
-						<span class="property-readonly-value">GMT 2013-07-19 14:08</span>
-					</div>
-				</div>
+        <dt>Launch Time</dt>
+        <dd>{{instance.launchTime}}</dd>
+      </dl>
 
-				<div>
-					<div class="property-control-group clearfix">
-						<label>Primary Public IP</label>
-						<span class="property-readonly-value">54.232.12.1</span>
-					</div>
+      <dl class="dl-vertical">
+        <dt>Primary Public IP</dt>
+        <dd>{{instance.ipAddress}}</dd>
 
-					<div class="property-control-group clearfix">
-						<label>Public DNS</label>
-						<span class="property-readonly-value">54.232.12.1</span>
-					</div>
+        <dt>Public DNS</dt>
+        <dd>{{instance.dnsName}}</dd>
 
-					<div class="property-control-group clearfix">
-						<label>Primary Private IP</label>
-						<span class="property-readonly-value">10.0.1.12</span>
-					</div>
+        <dt>Primary Private IP</dt>
+        <dd>{{instance.privateIpAddress}}</dd>
 
-					<div class="property-control-group clearfix">
-						<label>Private DNS</label>
-						<span class="property-readonly-value">10.0.1.11</span>
-					</div>
-				</div>
+        <dt>Private DNS</dt>
+        <dd>{{instance.privateDnsName}}</dd>
+      </dl>
 
-				<div>
-					<div class="property-control-group clearfix">
-						<label>AMI</label>
-						<span class="property-readonly-value"><a href="###">ami-348h343</a></span>
-					</div>
+      <dl class="dl-vertical">
+        <dt>AMI</dt>
+        <dd>{{instance.imageId}}<dd>
 
-					<div class="property-control-group clearfix">
-						<label>Instance Type</label>
-						<span class="property-readonly-value">t1.large</span>
-					</div>
+        <dt>Instance Type</dt>
+        <dd>{{instance.instanceType}}</dd>
 
-					<div class="property-control-group clearfix">
-						<label>Key Pair</label>
-						<span class="property-readonly-value">
-							<a href="###"><i class="icon-download"></i> DefaultKP-2323232</a>
-						</span>
-					</div>
-				</div>
+        <dt>Key Pair</dt>
+        <dd><a href="????????" class="icon-download">{{instance.keyName}}</a></dd>
 
-				<div>
-					<div class="property-control-group clearfix">
-						<label>EBS Optimized</label>
-						<span class="property-readonly-value">false</span>
-					</div>
+      </dl>
 
-					<div class="property-control-group clearfix">
-						<label>Tenancy</label>
-						<span class="property-readonly-value">-</span>
-					</div>
+      <dl class="dl-vertical">
+        <dt>EBS Optimized</dt>
+        <dd>{{instance.ebsOptimized}}<dd>
 
-					<div class="property-control-group clearfix">
-						<label>Root Device Type</label>
-						<span class="property-readonly-value">ebs</span>
-					</div>
+        <dt>Tenancy</dt>
+        <dd>{{instance.placement.tenancy}}</dd>
 
-					<div class="property-control-group clearfix">
-						<label>Block Device</label>
-						<span class="property-readonly-value">/dev/sda1, /dev/sdf</span>
-					</div>
-				</div>
+        <dt>Root Device Type</dt>
+        <dd>{{instance.rootDeviceType}}</dd>
 
-			</div>
-		</div>
-	</div>
+        <dt>Block Device</dt>
+        <dd>{{instance.blockDevice}}</dd>
+      </dl>
+    </div>
+  </section>
 
-	<div class="accordion-group expanded">
-		<div class="fixedaccordion-head" id="instance-property-detail">
-			Network Interface Details
-		</div>
-		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
-			<div class="item-wrap scroll-content" style="-webkit-transform: translate3d(0, 0, 0);">
-				<div>
-					<div class="property-control-group clearfix">
-						<label>Device Name</label>
-						<span class="property-readonly-value">eth-0</span>
-					</div>
-					<div class="property-control-group clearfix">
-						<label>Network Interface ID</label>
-						<span class="property-readonly-value">eni-8e9e71e0</span>
-					</div>
+  {{#if vpc}}
+  <section class="accordion-group">
+    <div class="fixedaccordion-head">Network Interface Details</div>
 
-					<div class="property-control-group clearfix">
-						<label>State</label>
-						<span class="property-readonly-value"><i class="status status-green"></i> in-use</span>
-					</div>
+    <div class="accordion-body">
+      <dl class="dl-vertical">
+        <dt>Device Name</dt>
+        <dd>TODO!!!!!!</dd>
 
-					<div class="property-control-group clearfix">
-						<label>Description</label>
-						<span class="property-readonly-value">blahblahblahblahblahblahblahblahblah
-							blahblahblahblahblahblahblahblah</span>
-						</div>
+        <dt>Network Interface ID</dt>
+        <dd>TODO!!!!!!</dd>
 
-						<div class="property-control-group clearfix">
-							<label>Source/Destination Check</label>
-							<span class="property-readonly-value">enabled</span>
-						</div>
-					</div>
+        <dt>State</dt>
+        <dd><i class="status status-{{#if instance.isRunning}}green{{else}}{{#if instance.isPending}}orange{{else}}red{{/if}}{{/if}}"></i>TODO!!!!!</dd>
 
-					<p class="showorhide">
-						<label class="show-more"><a href="###"><span class="arrow-showorhide">&gt;</span> Show details</a></label>
-						<label class="hide-details"><a href="###"><span class="arrow-showorhide">&lt;</span> Hide details</a></label>
-					</p>
+        <dt>Description</dt>
+        <dd>TODO!!!!!!</dd>
 
-					<div>
-						<div class="property-control-group clearfix">
-							<label>VPC ID</label>
-							<span class="property-readonly-value">vpc-8e9e71e0</span>
-						</div>
-						<div class="property-control-group clearfix">
-							<label>Subnet</label>
-							<span class="property-readonly-value">subnet-b32jfk32</span>
-						</div>
+        <dt>Source/Destination Check</dt>
+        <dd>TODO!!!!!!</dd>
+      </dl>
 
-						<div class="property-control-group clearfix">
-							<label>Attachment ID</label>
-							<span class="property-readonly-value">eni-attach-8e9e71e0</span>
-						</div>
+      <div class="hidden-details">
+        <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">⇲ Show details</span><span class="details-on">⇱ Hide details</span></a>
 
-						<div class="property-control-group clearfix">
-							<label>Attachment Owner</label>
-							<span class="property-readonly-value">99348293420893298</span>
-						</div>
+        <dl class="dl-vertical">
+          <dt>VPC ID</dt>
+          <dd>TODO!!!!!!</dd>
 
-						<div class="property-control-group clearfix">
-							<label>Source/Destination Check</label>
-							<span class="property-readonly-value">enabled</span>
-						</div>
+          <dt>Subnet</dt>
+          <dd>TODO!!!!!!</dd>
 
-					</div>
+          <dt>Attachment ID</dt>
+          <dd>TODO!!!!!!</dd>
 
-					<div>
-						<div class="property-control-group clearfix">
-							<label>Mac Address</label>
-							<span class="property-readonly-value">vpc-22:67:c7:6f:7c:6b</span>
-						</div>
-						<div class="property-control-group clearfix">
-							<label>Public DNS</label>
-							<span class="property-readonly-value">ip.public.dns</span>
-						</div>
+          <dt>Attachment Owner</dt>
+          <dd>TODO!!!!!!</dd>
 
-						<div class="property-control-group clearfix">
-							<label>Private DNS</label>
-							<span class="property-readonly-value">ip.public.dns</span>
-						</div>
+          <dt>Attachment Status</dt>
+          <dd>TODO!!!!!!</dd>
+        </dl>
+        <dl class="dl-vertical">
+          <dt>Mac Address</dt>
+          <dd>TODO!!!!!!</dd>
 
-						<div class="property-control-group clearfix">
-							<label>IP Owner</label>
-							<span class="property-readonly-value">99348293420893298</span>
-						</div>
-					</div>
+          <dt>Public DNS</dt>
+          <dd>TODO!!!!!!</dd>
 
+          <dt>Private DNS</dt>
+          <dd>TODO!!!!!!</dd>
 
+          <dt>IP Owner</dt>
+          <dd>TODO!!!!!!</dd>
+        </dl>
+      </div>
 
-				</div>
-			</div>
-		</div>
+      <table class="property-app-table">
+        <thead class="property-app-table-h">
+          <tr>
+            <th>IP Address</th>
+            <th>Public IP</th>
+          </tr>
+        </thead>
+        {{#each ips}}
+        <tr>
+          <td>{{ip}}</td>
+          <td>{{public}}</td>
+        </tr>
+        {{/each}}
+      </table>
 
-		<div class="accordion-group ipaddress">
-			<div class="fixedaccordion-head" id="instance-property-detail">
-				IP Address <span class="right">Public IP</span>
-			</div>
-			<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
-				<div class="item-wrap scroll-content" style="-webkit-transform: translate3d(0, 0, 0);">
-					<div class="clearfix">
-						<div class="ipaddress-left">
-							<span class="property-readonly-value">222.222.222.222<b>(Primary)</b></span>
-							<span class="property-readonly-value">10.0.1.13</span>
-						</div>
-						<div class="ipaddress-right">
-							<span class="property-readonly-value">222.222.222.222</span>
-						</div>
+    </div>
+  </section>
+  {{/if}}
 
-					</div>
+  <section class="accordion-group">
+    <div class="fixedaccordion-head">Security Group</div>
+    <div class="sg-rule"></div>
+  </section>
 
-				</div>
-			</div>
-		</div>
-
-		<div class="accordion-group expanded">
-			<div class="fixedaccordion-head">
-				Security Group(1)
-			</div>
-
-			<div class="sg-group"><div class="accordion-body scroll-wrap scrollbar-auto-hide sg-wrapper">
-				<div class="scrollbar-veritical-wrap" style="display: none;"><div class="scrollbar-veritical-thumb" style="top: 0px;"></div></div>
-				<div class="item-wrap scroll-content" style="-webkit-transform: translate3d(0, 0, 0);">
-					<ul class="tab">
-						<li data-tab-target="#item-group" class="active">Group</li>
-						<li data-tab-target="#item-rule">Rule</li>
-					</ul>
-					<div class="tab-content">
-						<div id="item-group" class="active tab-item">
-							<ul class="sg-info-list" id="sg-info-list">
-
-								<li class="clearfix" href="#">
-									<div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div>
-									<div class="col2">
-										<div class="col2-1 truncate">DefaultSG</div>
-										<div class="col2-2 truncate">vpc default security group</div>
-										<div class="col2-3 truncate">1 rules, 0 members</div>
-									</div>
-									<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip="Edit SG" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data="{&quot;uid&quot;:&quot;E40FA3A2-82FE-465A-8654-3F7DD6408D73&quot;, &quot;parent&quot;:&quot;E40FA3A2-82FE-465A-8654-3F7DD6408D73&quot;}" data-sgid="E40FA3A2-82FE-465A-8654-3F7DD6408D73">&gt;</div>
-								</li>
-
-							</ul>
-
-						</div>
-						<div id="item-rule" class="tab-item">
-							<div class="sg-rule-filter">
-								<h5>Sort by</h5>
-								<div class="selectbox" id="sg-rule-filter-select">
-									<div class="selection"></div>
-									<ul class="dropdown" tabindex="-1">
-										<li class="item selected" data-id="1">Direction</li>
-										<li class="item" data-id="2">Source/Destination</li>
-										<li class="item" data-id="3">Protocol</li>
-									</ul>
-								</div>
-							</div>
-							<ul class="sg-rule-list">
-
-								<li data-inbound="true">
-									<div class="rule-direction-icon tooltip" data-tooltip="inbound"></div>
-									<div class="rule-protocol">tcp</div>
-									<div class="rule-source">
-										<div class="rule-source-icon"></div>
-										<span>0.0.0.0/0</span>
-									</div>
-									<div class="rule-port" title="port message">22-22</div>
-								</li>
-
-
-
-
-							</ul></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		<!--div class="accordion-body">
-
-	</div-->
-</div>
+</article>

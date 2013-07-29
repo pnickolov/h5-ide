@@ -31,9 +31,6 @@ define [ 'constant', 'backbone', 'MC' ], ( constant ) ->
 
             ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
 
-            defaultACL
-            linkedACL
-
             for id, component of MC.canvas_data.component
                 if component.type == ACL_TYPE
                     acl =

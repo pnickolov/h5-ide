@@ -3975,7 +3975,7 @@ MC.canvas.event.selectNode = function (event)
 
 			MC.canvas.selected_node.push(target[0]);
 
-			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
 		}
 	}
 };

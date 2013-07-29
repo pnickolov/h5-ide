@@ -414,7 +414,7 @@ var returnTrue = function () {return true},
 							}
 							if (!$.isEmptyObject(child))
 							{
-								result[ key ] = child.value;
+								result[ child.key ] = child.value;
 							}
 						}
 						else
@@ -431,7 +431,14 @@ var returnTrue = function () {return true},
 					}
 					else
 					{
-						if (node.nextElementSibling && node.nextElementSibling.nodeName === node.nodeName)
+						if (
+							(
+								node.nextElementSibling &&
+								node.nextElementSibling.nodeName === node.nodeName
+							)
+							||
+							node.nodeName === 'item'
+						)
 						{
 							if ($.type(result[ node.nodeName ]) === 'undefined')
 							{

@@ -19,6 +19,7 @@ define [ 'backbone', 'MC' ], () ->
 
           volume = $.extend true, {}, appData[ myVolumeComponent.resource.VolumeId ]
           volume.name = myVolumeComponent.name
+          volume.IOPS = myVolumeComponent.resource.Iops
 
           if volume.status == "in-use"
             volume.isInUse = true

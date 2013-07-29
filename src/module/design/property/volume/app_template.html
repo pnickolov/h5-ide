@@ -6,7 +6,7 @@
     <dt>Device Name</dt>
     <dd>{{name}}</dd>
     <dt>State</dt>
-    <dd><i class="status status-{{#if instance.isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
+    <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
     <dt>Create Time</dt>
     <dd>{{createTime}}</dd>
   </dl>
@@ -21,7 +21,7 @@
     <dd>{{size}} GB</dd>
     {{#if IOPS}}
     <dt>IOPS</dt>
-    <dd>TODO!!!!!!!!</dd>
+    <dd>{{IOPS}}</dd>
     {{/if}}
   </dl>
   <dl class="dl-vertical">

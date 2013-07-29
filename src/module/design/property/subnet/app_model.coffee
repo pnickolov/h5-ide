@@ -25,6 +25,8 @@ define [ 'constant', 'backbone', 'MC' ], ( constant ) ->
 
           subnet.acl = this.getACL subnet_uid
 
+          subnet.uid = subnet_uid
+
           this.set subnet
 
         getACL : ( uid ) ->

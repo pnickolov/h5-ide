@@ -46,8 +46,12 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
+            model.setParent uid_parent
             #model
-            model.init uid
+            if tab_type is 'OPEN_APP'
+                model.appInit uid
+            else
+                model.init uid
 
             #view
             view.model    = model

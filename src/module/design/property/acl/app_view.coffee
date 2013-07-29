@@ -5,12 +5,12 @@
 define [ 'event', 'MC',
          'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
 
-    InstanceAppView = Backbone.View.extend {
+    ACLAppView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
 
-        template  : Handlebars.compile $( '#acl-secondary-panel' ).html()
+        template  : Handlebars.compile $( '#property-acl-app-tmpl' ).html()
 
         render     : () ->
             console.log 'property:acl app render'

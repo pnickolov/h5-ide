@@ -17,7 +17,11 @@ define [ 'jquery',
     $( 'head' ).append template
 
     #private
-    loadModule = ( uid, current_main ) ->
+    loadModule = ( uid, current_main, tab_type ) ->
+
+        if tab_type is "OPEN_APP"
+            # Do nothing
+            return
 
         #
         MC.data.current_sub_main = current_main
@@ -45,7 +49,7 @@ define [ 'jquery',
                     # If we can't find a az panel with the same uid,
                     # then the panel is removed.
                     unloaded = !view.isPanelVisible( uid )
-                    
+
                     # The fetch fails, wait for next fetch.
                     if !new_az_data && !unloaded
                         return
@@ -75,7 +79,7 @@ define [ 'jquery',
                 # We might want to listen ide_event.RELOAD_RESOURCE
                 # so that we can update the list
                 ide_event.onLongListen ide_event.RELOAD_AZ, refreshList
-                
+
             else
                 data.az_list = model.possibleAZList( data.az_list, data.component.name )
 

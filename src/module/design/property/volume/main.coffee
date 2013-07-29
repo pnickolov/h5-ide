@@ -26,7 +26,7 @@ define [ 'jquery',
 
         #set view_type
         if tab_type is 'OPEN_APP'
-            loadAppModule uid, current_main
+            loadAppModule uid
             return
 
         #
@@ -96,7 +96,7 @@ define [ 'jquery',
 
                 view.render()
 
-    loadAppModule = ( uid, current_main ) ->
+    loadAppModule = ( uid ) ->
         require [ './module/design/property/volume/app_view',
                   './module/design/property/volume/app_model'
         ], ( view, model ) ->

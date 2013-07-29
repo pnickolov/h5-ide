@@ -78,7 +78,9 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 null
 
             #listen CANVAS_EIP_STATE_CHANGE
-            view.on 'CANVAS_EIP_STATE_CHANGE', (id, eip_state) ->
+            view.on 'CANVAS_EIP_STATE_CHANGE', (uid, eip_state) ->
+
+                model.setEip uid, eip_state
                 console.log 'EIP STATE CHANGED: instance: ' + id + ', eip_state:' + eip_state
 
             model.on 'SHOW_SG_LIST', ( line_id ) ->

@@ -1222,7 +1222,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 		//***** eni begin *****//
 		case 'AWS.VPC.NetworkInterface':
-
+			data_eip_state = 'off';
 			var attached = 'unattached';
 			if (create_mode)
 			{//write
@@ -1270,7 +1270,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				Canvon.image(MC.canvas.IMAGE.EIP_OFF, 46, 50, 14, 17).attr({
-					'id': group.id + '_eip_status'
+					'id': group.id + '_eip_status',
+					'class': 'eip-status',
+					'data-eip-state': data_eip_state,
 				}),
 
 				//2 path: left port

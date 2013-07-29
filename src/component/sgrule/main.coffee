@@ -5,7 +5,7 @@
 define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
     #private
-    loadModule = () ->
+    loadModule = ( line_id, delete_module ) ->
 
         #
         require [ './component/sgrule/view', './component/sgrule/model' ], ( View, Model ) ->
@@ -16,12 +16,44 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
             #view
             view.model    = model
+
+            model.getSgRuleDetail line_id
             #
             view.on 'CLOSE_POPUP', () ->
+
+                model.checkRuleExisting()
+
                 unLoadModule view, model
 
+            view.on 'ADD_SG_RULE', ( rule_data ) ->
+
+                model.addSGRule rule_data
+
+                ide_event.trigger ide_event.REDRAW_SG_LINE
+
+            model.on 'DELETE_LINE', ( line_id ) ->
+
+                ide_event.trigger ide_event.DELETE_LINE_TO_CANVAS, line_id
+
+            view.on 'DELETE_SG_LINE', () ->
+
+                this.model.deleteSGLine()
+
+                ide_event.trigger ide_event.REDRAW_SG_LINE
+
+            view.on 'DELETE_PREVIEW_RULE', () ->
+
+                this.model.deletePriviewRule()
+
+                ide_event.trigger ide_event.REDRAW_SG_LINE
+                
+
             #render
-            view.render()
+            if delete_module
+                model.getDeleteSGList()
+                view.renderDeleteModule()
+            else
+                view.render()
 
     unLoadModule = ( view, model ) ->
         console.log 'sgrule unLoadModule'

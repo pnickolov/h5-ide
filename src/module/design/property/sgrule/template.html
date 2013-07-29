@@ -1,6 +1,6 @@
 <header class="sidebar-title" id='property-title'>The selected connection reflects following security group rule(s):</header>
 
-<section class="property-info" id="property-sgrule">
+<section class="property-info" id="property-sgrule" data-line="{{line_id}}">
 
   {{#each sg_group}}
     <h3 class="sg-create-group">{{name}}</h3>
@@ -20,6 +20,9 @@
     </ul>
   {{/each}}
 
+  {{#if isAppView}}
+  {{else}}
   <button class="btn btn-red" id="sg-edit-rule-button">Edit Related Rule</button>
+  {{/if}}
 
 </section>

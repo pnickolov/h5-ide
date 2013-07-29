@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130724
+#* Date: 20130729
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -259,37 +259,87 @@ var scrollbar = {
 	wheel: function (event, delta)
 	{
 		var target = $(this),
-			delta = event.originalEvent.wheelDelta ? event.originalEvent.wheelDelta / 120 : event.originalEvent.wheelDeltaY ? event.originalEvent.wheelDeltaY / 120 : -event.originalEvent.detail / 3,
+			originalEvent = event.originalEvent,
+			scroll_content = target.find('.scroll-content').first(),
+			delta,
+			thumb,
+			scrollbar_wrap,
+			wrap_height,
+			scrollTop,
+			max_scroll,
+			scale,
+			thumb_max;
+
+		if (originalEvent.wheelDeltaX)
+		{
+			delta = originalEvent.wheelDeltaX / 120;
+
+			thumb = target.find('.scrollbar-horizontal-thumb').first(),
+			scrollbar_wrap = target.find('.scrollbar-horizontal-wrap').first(),
+			wrap_width = target.width(),
+			scrollLeft = thumb[0].offsetLeft - (delta * 12),
+			max_scroll = scroll_content[0].scrollWidth - wrap_width,
+			scale = scroll_content[0].scrollWidth / wrap_width,
+			thumb_max = max_scroll / scale;
+
+			if (scrollbar_wrap.css('display') === 'block')
+			{
+				scrollbar.scroll_to_left({
+					'scroll_content': scroll_content,
+					'scrollbar_wrap': scrollbar_wrap,
+					'thumb': thumb,
+					'scroll_target': target
+				}, target, scrollLeft);
+
+				if (scrollLeft < 0 || scrollLeft > thumb_max)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+		if (originalEvent.wheelDeltaY || originalEvent.wheelDelta || originalEvent.detail)
+		{
+			delta = originalEvent.wheelDelta ? originalEvent.wheelDelta / 120 : originalEvent.wheelDeltaY ? originalEvent.wheelDeltaY / 120 : -originalEvent.detail / 3;
+
 			thumb = target.find('.scrollbar-veritical-thumb').first(),
 			scrollbar_wrap = target.find('.scrollbar-veritical-wrap').first(),
-			scroll_content = target.find('.scroll-content').first(),
 			wrap_height = target.height(),
 			scrollTop = thumb[0].offsetTop - (delta * 12),
 			max_scroll = scroll_content[0].scrollHeight - wrap_height,
 			scale = scroll_content[0].scrollHeight / wrap_height,
 			thumb_max = max_scroll / scale;
 
-		if (scrollbar_wrap.css('display') === 'block')
-		{
-			scrollbar.scroll_to_top({
-				'scroll_content': scroll_content,
-				'scrollbar_wrap': scrollbar_wrap,
-				'thumb': thumb,
-				'scroll_target': target
-			}, target, scrollTop);
-
-			if (scrollTop < 0 || scrollTop > thumb_max)
+			if (scrollbar_wrap.css('display') === 'block')
 			{
-				return true;
+				scrollbar.scroll_to_top({
+					'scroll_content': scroll_content,
+					'scrollbar_wrap': scrollbar_wrap,
+					'thumb': thumb,
+					'scroll_target': target
+				}, target, scrollTop);
+
+				if (scrollTop < 0 || scrollTop > thumb_max)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
 			else
 			{
-				event.preventDefault();
+				return false;
 			}
-		}
-		else
-		{
-			return true;
 		}
 	}
 };

@@ -3925,10 +3925,10 @@ MC.canvas.volume = {
 
 MC.canvas.event.EIPstatus = function ()
 {
-	$("#svg_canvas").trigger("CANVAS_EIP_STATE_CHANGE", [
-		this.parentNode.id,
-		this.getAttribute('data-eip-state')
-	]);
+	$("#svg_canvas").trigger("CANVAS_EIP_STATE_CHANGE", {
+		id: this.parentNode.id,
+		eip_state: this.getAttribute('data-eip-state')
+	});
 
 	return false;
 };

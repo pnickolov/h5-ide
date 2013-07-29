@@ -1,25 +1,38 @@
-<header class="sidebar-title" id='property-title'>The selected connection reflects following security group rule(s):</header>
+<div class="sidebar-title">
+  <span class="sidebar-title-text" id='property-title'>Security Group Rule</span>
+</div>
 
-<section class="property-info" id="property-sgrule">
+<div class="property-subhead">
+  The selected connection reflects following security group rule(s):
+</div>
 
-  {{#each sg_group}}
-    <h3 class="sg-create-group">{{name}}</h3>
-    <ul>
-      {{#each rules}}
-        <li class="clearfix sg-create-rule-item">
-          <span class="sg-rule-col1">
-            <span class="{{#if Egress}}sg-rule-inbound{{else}}sg-rule-outbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
-            <span class="sg-rule-protocol">{{protocol}}</span>
-          </span>
-          <div class="sg-rule-col2">
-            <div class="sg-rule-connnection">{{connection}}</div>
-            <div class="sg-rule-port">{{port}}</div>
-          </div>
-        </li>
-      {{/each}}
-    </ul>
-  {{/each}}
+{{#each sg_group}}
+<section id="property-sgrule">
+
+  <header class="fixedaccordion-head">{{name}}</header>
+  <div class="item-wrap scroll-content" style="-webkit-transform: translate3d(0, 0, 0);">
+
+    <div class="tab-content">
+      <div id="item-group" class="active tab-item">
+        <ul class="sg-info-list" id="sg-info-list">
+          {{#each rules}}
+          <li class="clearfix" href="#">
+            <i class="{{#if Egress}}icon-rule-inbound{{else}}icon-rule-outbound{{/if}}"></i>
+            <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div>
+
+            <div class="col2">
+              <div class="col2-1 truncate">{{connection}}</div>
+              <div class="col2-2 truncate"><div class="rule-protocol">{{protocol}}</div>{{port}}</div>
+            </div>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+      
+    </div>
+  </div>
 
   <button class="btn btn-red" id="sg-edit-rule-button">Edit Related Rule</button>
 
 </section>
+{{/each}}

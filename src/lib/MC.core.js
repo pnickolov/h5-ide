@@ -2,16 +2,16 @@
 #**********************************************************
 #* Filename: MC.core.js
 #* Creator: Angel
-#* Description: The core of the whole system
-#* Date: 20130724
+#* Description: The core of the whole system 
+#* Date: 20130729
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var MC = {
-	version: '0.2.3',
+	version: '0.2.5',
 
-	// Global Variable
+	// Global Variable 
 	API_URL: 'https://api.madeiracloud.com/',
 	IMG_URL: '../assets/images/',
 
@@ -102,7 +102,7 @@ var MC = {
 			};
 
 		MC.api_queue[guid] = option;
-
+		
 		if (!api_frame[0])
 		{
 			$(document.body).append('<iframe id="api-frame" src="https://api.madeiracloud.com/api.html" style="display:none;"></iframe>');
@@ -135,11 +135,6 @@ var MC = {
 		$(document.body).addClass(name);
 
 		MC.browser = name;
-	},
-
-	capitalize: function (string)
-	{
-	    return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 
 	/*
@@ -328,21 +323,29 @@ var MC = {
 	base64Decode: function (string)
 	{
 		return decodeURIComponent(escape(window.atob( string )));
+	},
+
+	camelCase: function (string)
+	{
+		return string.replace(/-([a-z])/ig, function (match, letter)
+		{
+			return (letter + '').toUpperCase();
+		});
 	}
 };
 
 /*
 * Storage
 * Author: Angel
-*
+* 
 * Save data into local computer via HTML5 localStorage, up to 10MB storage capacity.
-*
+* 
 * Saving data
 * MC.storage.set(name, value)
-*
+* 
 * Getting data
 * MC.storage.get(name)
-*
+* 
 * Remove data
 * MC.storage.remove(name)
 */
@@ -393,35 +396,72 @@ var returnTrue = function () {return true},
 			for (var i in xml.childNodes)
 			{
 				var node = xml.childNodes[ i ];
+
 				if (node.nodeType === 1)
 				{
 					var child = node.hasChildNodes() ? xml2json(node) : node.nodevalue;
 
 					child = child == null ? {} : child;
 
-					if (node.nextElementSibling && node.nextElementSibling.nodeName === node.nodeName)
+					// Special for "item"
+					if (node.nodeName === 'item' && child.value)
 					{
-						if ($.type(result[node.nodeName]) === 'undefined')
+						if (child.key)
 						{
-							result[node.nodeName] = [];
-						}
-						if (!$.isEmptyObject(child))
-						{
-							result[node.nodeName].push(child);
-						}
-					}
-					else
-					{
-						if (node.previousElementSibling && node.previousElementSibling.nodeName === node.nodeName)
-						{
+							if ($.type(result) !== 'object')
+							{
+								result = {};
+							}
 							if (!$.isEmptyObject(child))
 							{
-								result[node.nodeName].push(child);
+								result[ child.key ] = child.value;
 							}
 						}
 						else
 						{
-							result[node.nodeName] = child;
+							if ($.type(result) !== 'array')
+							{
+								result = [];
+							}
+							if (!$.isEmptyObject(child))
+							{
+								result.push(child.value);
+							}
+						}
+					}
+					else
+					{
+						if (
+							(
+								node.nextElementSibling &&
+								node.nextElementSibling.nodeName === node.nodeName
+							)
+							||
+							node.nodeName === 'item'
+						)
+						{
+							if ($.type(result[ node.nodeName ]) === 'undefined')
+							{
+								result[ node.nodeName ] = [];
+							}
+							if (!$.isEmptyObject(child))
+							{
+								result[ node.nodeName ].push(child);
+							}
+						}
+						else
+						{
+							if (node.previousElementSibling && node.previousElementSibling.nodeName === node.nodeName)
+							{
+								if (!$.isEmptyObject(child))
+								{
+									result[ node.nodeName ].push(child);
+								}
+							}
+							else
+							{
+								result[ node.nodeName ] = child;
+							}
 						}
 					}
 
@@ -432,7 +472,7 @@ var returnTrue = function () {return true},
 						for (var j in node.attributes)
 						{
 							var attribute = node.attributes.item(j);
-							result[node.nodeName]['@attributes'][attribute.nodeName] = attribute.nodeValue;
+							result[ node.nodeName ]['@attributes'][attribute.nodeName] = attribute.nodeValue;
 						}
 					}
 
@@ -443,13 +483,13 @@ var returnTrue = function () {return true},
 						node.textContent !== ''
 					)
 					{
-						if (result[node.nodeName] instanceof Array)
+						if (result[ node.nodeName ] instanceof Array)
 						{
-							result[node.nodeName].push(node.textContent.trim());
+							result[ node.nodeName ].push(node.textContent.trim());
 						}
 						else
 						{
-							result[node.nodeName] = node.textContent.trim();
+							result[ node.nodeName ] = node.textContent.trim();
 						}
 					}
 				}

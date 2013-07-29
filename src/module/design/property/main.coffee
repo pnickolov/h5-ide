@@ -215,9 +215,9 @@ define [ 'jquery',
                 #
                 if bak_tab_type then tab_type = bak_tab_type
                 #
-                if !current_uid and return_type isnt 'stack' then current_uid = return_type.split(':')[1]
+                if return_type isnt 'stack' then uid = return_type.split(':')[1]
                 #
-                if return_type is 'stack' then stack_main.loadModule stack_main else subnet_main.loadModule current_uid, subnet_main, tab_type
+                if return_type is 'stack' then stack_main.loadModule stack_main else subnet_main.loadModule uid, subnet_main, tab_type
                 #
                 if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
 

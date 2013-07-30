@@ -3656,6 +3656,8 @@ MC.canvas.volume = {
 
 	select: function ()
 	{
+		MC.canvas.event.clearSelected();
+
 		$('#instance_volume_list').find('.selected').removeClass('selected');
 
 		$(this).addClass('selected');
@@ -4039,11 +4041,6 @@ MC.canvas.event.clearSelected = function ()
 	});
 
 	MC.canvas.selected_node = [];
-
-	if ($('#volume-bubble-box')[0])
-	{
-		MC.canvas.volume.close();
-	}
 };
 
 MC.canvas.event.keyEvent = function (event)

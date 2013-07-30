@@ -80,7 +80,7 @@ var listen = function ()
 // Dom Ready
 var ready = function ()
 {
-	$(document).on('keyup', MC.canvas.event.keyEvent);
+	$(document).on('keydown', MC.canvas.event.keyEvent);
 
 	$('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close);
 

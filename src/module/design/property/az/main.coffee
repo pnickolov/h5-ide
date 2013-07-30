@@ -35,15 +35,10 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
-            data = model.getRenderData( uid )
+            model.setId uid
+            data = model.attributes
 
-            if !data.az_list or data.az_list.length == 0
-
-                data.az_list = [
-                    name      : data.component.name
-                    selected  : true
-                    available : true
-                ]
+            if data.needRefresh
 
                 refreshList = ( new_az_data ) ->
                     # If we can't find a az panel with the same uid,
@@ -67,10 +62,8 @@ define [ 'jquery',
                         if ( new_az_data.item.length == 0 )
                             return
 
-                        new_data = model.getRenderData uid
-                        new_data.az_list = model.possibleAZList( new_az_data.item, new_data.component.name )
-
-                        view.render( new_data )
+                        model.setId uid
+                        view.render()
 
                     setTimeout doRefresh, 0
                     null
@@ -80,11 +73,9 @@ define [ 'jquery',
                 # so that we can update the list
                 ide_event.onLongListen ide_event.RELOAD_AZ, refreshList
 
-            else
-                data.az_list = model.possibleAZList( data.az_list, data.component.name )
 
             view.model = model
-            view.render ( data )
+            view.render()
 
             view.on "SELECT_AZ", ( oldZoneID, newZone ) ->
                 # Set data
@@ -92,7 +83,7 @@ define [ 'jquery',
                 # Update Canvas
                 MC.canvas.update oldZoneID, "text", "name", newZone
 
-                ide_event.trigger ide_event.CHANGE_AZ, MC.canvas_data.layout.group[oldZoneID].name, newZone
+                #ide_event.trigger ide_event.CHANGE_AZ, MC.canvas_data.layout.group[oldZoneID].name, newZone
 
             null
 

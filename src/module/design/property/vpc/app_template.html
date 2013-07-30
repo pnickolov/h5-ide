@@ -8,21 +8,16 @@
       <dl class="dl-vertical">
         <dt>VPC ID</dt>
         <dd>{{vpcId}}</dd>
-
         <dt>State</dt>
         <dd><i class="status status-{{#if available}}green{{else}}orange{{/if}}"></i>{{state}}</dd>
-
         <dt>CIDR</dt>
         <dd>{{cidrBlock}}</dd>
-
         <dt>Tenancy</dt>
         <dd>{{instanceTenancy}}</dd>
-
         <dt>Main Route Table</dt>
-        <dd>TODO!!!!!!!!</dd>
-
+        <dd>{{mainRTB}}</dd>
         <dt>Default Network ACL</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{defaultACL}}</dd>
       </dl>
     </article>
   </section>
@@ -34,28 +29,35 @@
     <div class="property-control-group">
       <dl class="dl-vertical">
         <dt>DHCP Options Set ID</dt>
-        <dd>{{dhcp.dhcpOptionsId}}</dd>
+        <dd>{{dhcpOptionsId}}</dd>
 
         {{#if dhcp.domainName}}
         <dt>Domain Name</dt>
-        <dd>{{dhcp.domainName}}</dd>
+        <dd>{{dhcp.domainName.[0]}}</dd>
         {{/if}}
 
-        {{#if dhcp.domainServers.length}}
+        {{#if dhcp.domainNameServers.length}}
         <dt>Domain Name Server</dt>
-        <dd>{{#each dhcp.domainServers}}<p>{{this}}</p>{{/each}}
+        <dd>{{#each dhcp.domainNameServers}}<p>{{this}}</p>{{/each}}
         </dd>
         {{/if}}
 
-        {{#if dhcp.netbiosServers.length}}
+        {{#if dhcp.ntpServers.length}}
+        <dt>NTP Server</dt>
+        <dd>{{#each dhcp.ntpServers}}<p>{{this}}</p>{{/each}}
+        </dd>
+        {{/if}}
+
+
+        {{#if dhcp.netbiosNameServers.length}}
         <dt>NetBIOS Name Server</dt>
-        <dd>{{#each dhcp.netbiosServers}}<p>{{this}}</p>{{/each}}
+        <dd>{{#each dhcp.netbiosNameServers}}<p>{{this}}</p>{{/each}}
         </dd>
         {{/if}}
 
-        {{#if dhcp.netbiosType}}
+        {{#if dhcp.netbiosNodeType}}
         <dt>NetBIOS Node Type</dt>
-        <dd>{{dhcp.netbiosType}}</dd>
+        <dd>{{dhcp.netbiosNodeType.[0]}}</dd>
         {{/if}}
 
       </dl>

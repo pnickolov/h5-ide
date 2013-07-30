@@ -15,9 +15,12 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
             elb = $.extend true, {}, appData[ myElbComponent.resource.LoadBalancerName ]
             elb.name = myElbComponent.name
 
+
             elb.isInternet = elb.Scheme == "internet-facing"
             elb.HealthCheck.protocol = elb.HealthCheck.Target.split(":")[0]
-            elb.HealthCheck.port     = elb.HealthCheck.Target.split(":")[1]
+            elb.HealthCheck.port     = elb.HealthCheck.Target.split(":")[1].split("/")[0]
+            elb.HealthCheck.path     = elb.HealthCheck.Target.split("/")[1]
+
 
             elb.listenerDisplay = []
 

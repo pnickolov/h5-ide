@@ -36,20 +36,20 @@ define [ 'jquery',
             view.model    = model
             #render
             renderVPNPanel = (line_option) ->
-                view.model.getVPN line_option
+                model.getVPN line_option
                 view.render()
 
             renderVPNPanel line_option
 
-            view.once 'VPN_DELETE_IP', (ip) ->
+            view.on 'VPN_DELETE_IP', (ip) ->
                 console.log "VPN_DELETE_IP:" + ip
                 model.delIP ip
-                
-            view.once 'VPN_ADD_IP', (new_ip) ->
+
+            view.on 'VPN_ADD_IP', (new_ip) ->
                 console.log "VPN_ADD_IP:" + new_ip
                 model.addIP new_ip
 
-            model.once 'UPDATE_VPN_DATA', () ->
+            model.on 'UPDATE_VPN_DATA', () ->
                 console.log 'update vpn panel'
                 view.render()
 

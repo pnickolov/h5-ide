@@ -202,6 +202,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 zoomin_flag = false
 
             me.setFlag('ZOOM_IN', zoomin_flag)
+            me.setFlag('ZOOM_OUT', true)
 
             null
 
@@ -216,6 +217,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 zoomout_flag = false
 
             me.setFlag('ZOOM_OUT', zoomout_flag)
+            me.setFlag('ZOOM_IN', true)
 
             null
 

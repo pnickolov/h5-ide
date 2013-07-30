@@ -26,7 +26,8 @@ define [ 'jquery',
         #
         MC.data.current_sub_main = current_main
 
-        onViewModelLoaded = ( view, model ) ->
+        #
+        require [ './module/design/property/az/view', './module/design/property/az/model' ], ( view, model ) ->
 
             #
             if current_view then view.delegateEvents view.events
@@ -87,8 +88,6 @@ define [ 'jquery',
 
             null
 
-        #
-        require [ './module/design/property/az/view', './module/design/property/az/model' ], onViewModelLoaded
         null
 
 

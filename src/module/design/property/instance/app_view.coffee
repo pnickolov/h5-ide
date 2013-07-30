@@ -29,6 +29,10 @@ define [ 'event', 'MC',
             false
 
         updateKPModal : ( data ) ->
+            if not data
+                modal.close()
+                return
+
             $saveBtn = $("#property-app-save-kp")
             $model   = $saveBtn.closest "#modal-box"
             $model.find(".modal-body").html("Keypair data is ready. Please click save button.")

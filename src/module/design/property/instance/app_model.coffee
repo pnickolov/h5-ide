@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance (app)
 #############################
 
-define ['constant', 'backbone', 'MC' ], ( constant ) ->
+define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, constant ) ->
 
     AppInstanceModel = Backbone.Model.extend {
 
@@ -77,6 +77,24 @@ define ['constant', 'backbone', 'MC' ], ( constant ) ->
                 i.primary = i.primary == "true"
 
             data
+
+        downloadKP : ( keypairname ) ->
+            username = $.cookie "usercode"
+            session  = $.cookie "session_id"
+
+            keypair_model.download {sender:this}, username, session, MC.canvas_data.region, keypairname
+
+            self = this
+            keypair_model.once 'EC2_KPDOWNLOAD_RETURN', ( data )->
+
+                if data.is_error
+                    notification 'error', "Cannot download keypair: " + keypairname
+                    data = null
+                else
+                    data = data.resolved_data
+                self.trigger "KP_DOWNLOADED", data
+
+
     }
 
     new AppInstanceModel()

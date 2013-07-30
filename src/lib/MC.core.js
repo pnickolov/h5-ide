@@ -3,7 +3,7 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system 
-#* Date: 20130729
+#* Date: 20130730
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -396,7 +396,8 @@ var returnTrue = function () {return true},
 	{
 		xml2json: function xml2json(xml)
 		{
-			var result = {};
+			var result = {},
+				content;
 
 			for (var i in xml.childNodes)
 			{
@@ -406,7 +407,7 @@ var returnTrue = function () {return true},
 				{
 					var child = node.hasChildNodes() ? xml2json(node) : node.nodevalue;
 
-					child = child == null ? {} : child;
+					child = child == null ? null : child;
 
 					// Special for "item"
 					if (node.nodeName === 'item' && child.value)
@@ -488,13 +489,26 @@ var returnTrue = function () {return true},
 						node.textContent !== ''
 					)
 					{
+						content = node.textContent.trim();
+
+						switch (content)
+						{
+							case 'true':
+								content = true;
+								break;
+
+							case 'false':
+								content = false;
+								break;
+						}
+
 						if (result[ node.nodeName ] instanceof Array)
 						{
-							result[ node.nodeName ].push(node.textContent.trim());
+							result[ node.nodeName ].push(content);
 						}
 						else
 						{
-							result[ node.nodeName ] = node.textContent.trim();
+							result[ node.nodeName ] = content;
 						}
 					}
 				}

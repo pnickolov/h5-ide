@@ -293,6 +293,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             me.set 'is_pending', true
             me.trigger 'UPDATE_TOOLBAR', me.get 'item_type'
 
+            region = MC.canvas_data.region
+
             if !result.is_error
                 if flag == 'RUN_STACK'
                     console.log 'run stack request successfully'
@@ -338,7 +340,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                     me.trigger 'TOOLBAR_STACK_RUN_FAILED'
 
                                     if app_name in MC.data.app_list[MC.canvas_data.region]
-                                        MC.data.app_list.splice MC.canvas_data.region.indexOf(app_name), 1
+                                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(app_name), 1
 
                                 else if flag == 'START_APP'
                                     me.trigger 'TOOLBAR_APP_START_FAILED'
@@ -351,8 +353,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                 ide_event.trigger ide_event.APP_TERMINATE, MC.canvas_data.name, MC.canvas_data.id
                             else
                                 me.setFlag flag, is_success
-
-                            ide_event.trigger ide_event.UPDATE_APP_LIST
 
                             console.log 'stop handle'
                             handle.stop()
@@ -367,7 +367,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     me.trigger 'TOOLBAR_STACK_RUN_REQUEST_FAILED'
 
                     if app_name in MC.data.app_list[MC.canvas_data.region]
-                        MC.data.app_list.splice MC.canvas_data.region.indexOf(app_name), 1
+                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(app_name), 1
 
                 else if flag == 'START_APP'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED'

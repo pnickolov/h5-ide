@@ -1,45 +1,48 @@
-<header class="sidebar-title">{{route_table.name}}</header>
+<header class="sidebar-title">{{name}}</header>
 
-<div class="property-control-group">
-  <dl class="dl-vertical">
-    <dt>Route Table ID</dt>
-    <dd>{{route_table.routeTableId}}</dd>
+<dl class="dl-vertical">
+  <dt>Route Table ID</dt>
+  <dd>{{routeTableId}}</dd>
 
-    <dt>Main</dt>
-    <dd>{{#if route_table.isMain}}Yes{{else}}No{{/if}}</dd>
+  <dt>Main</dt>
+  <dd>{{main}}</dd>
 
-    <dt>VPC ID</dt>
-    <dd>{{route_table.vpcId}}</dd>
-  </dl>
-</div>
+  <dt>VPC ID</dt>
+  <dd>{{vpcId}}</dd>
+</dl>
 
-<div class="fixedaccordion accordion-default" data-sub="43">
+<div class="fixedaccordion accordion-default property-app">
   <section class="accordion-group expanded">
     <header class="fixedaccordion-head">Routes</header>
 
     <article class="accordion-body">
-      <table>
+      <table class="property-app-table">
+        <thead class="property-app-table-h">
+          <tr>
+            <th></th>
+            <th>Destination</th>
+            <th>Target</th>
+            <th></th>
+          </tr>
+        </thead>
+        {{#each routeSet.item}}
         <tr>
-          <th></th>
-          <th>Destination</th>
-          <th>Target</th>
-          <th></th>
-        </tr>
-        {{#each route_table.routeSet.item}}
-        <tr>
-        	{{#if isActive}}
-          		<th class="status-good tooltip" data-tooltip="Active"></th>
-          	{{else}}
-          		<th class="status-grey tooltip" data-tooltip="Blackhole"></th>
-          	{{/if}}
-          <th>{{destinationCidrBlock}}</th>
-          <th>{{#if gatewayId}}{{gatewayId}}{{/if}} {{#if instanceId}}{{instanceId}}{{/if}} {{#if networkInterfaceId}}{{networkInterfaceId}}{{/if}}</th>
-          {{#if isProp}}
-          <th class="icon-propagated tooltip" data-tooltip="Propagated"></th>
+          {{#if active}}
+          <td><i class="status status-green tooltip" data-tooltip="Active"></i></td>
+          {{else}}
+          <td><i class="status status-orange tooltip" data-tooltip="Not Active"></i></td>
+          {{/if}}
+          <td>{{destinationCidrBlock}}</td>
+          <td>{{gatewayId}}</td>
+          {{#if propagate}}
+          <td><i class="icon-propagated tooltip" data-tooltip="Propagated"></i></td>
+          {{else}}
+          <td></td>
           {{/if}}
         </tr>
         {{/each}}
       </table>
+
     </article>
   </section>
 </div>

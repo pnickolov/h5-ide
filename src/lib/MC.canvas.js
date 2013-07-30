@@ -61,6 +61,10 @@ MC.canvas = {
 			case 'image':
 				target.attr('href', value);
 				break;
+				
+			case 'eip':
+				target.attr('data-eip-state', value);
+				break
 		}
 
 		return true;

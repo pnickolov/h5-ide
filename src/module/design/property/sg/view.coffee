@@ -38,6 +38,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 
         render     : ( expended_accordion_id ) ->
             console.log 'property:sg render'
+            #
+            this.undelegateEvents()
+            #
             if this.model.attributes.sg_detail.component.name == 'DefaultSG'
                 this.model.attributes.isDefault = true
             else
@@ -61,7 +64,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
                     $('#sg-secondary-panel .sg-title input').focus()
                 }
             )
-
+            #
+            this.delegateEvents this.events
 
         openInstance : () ->
             me = this

@@ -52,7 +52,7 @@ var scrollbar = {
 						scrollbar_height = offsetHeight * offsetHeight / scroll_content_elem.scrollHeight;
 						scrollbar_width = offsetWidth * offsetWidth / scroll_content_elem.scrollWidth;
 
-						if (veritical_thumb.hasClass('scrollbar-veritical-thumb'))
+						if (veritical_thumb && veritical_thumb.hasClass('scrollbar-veritical-thumb'))
 						{
 							if (scrollbar_height <= offsetHeight * 2 - scroll_content_elem.scrollHeight || scrollbar_height > wrap.height())
 							{
@@ -76,7 +76,7 @@ var scrollbar = {
 							}
 						}
 
-						if (horizontal_thumb.hasClass('scrollbar-horizontal-thumb'))
+						if (horizontal_thumb && horizontal_thumb.hasClass('scrollbar-horizontal-thumb'))
 						{
 							if (scrollbar_width <=  offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap.width())
 							{

@@ -51,6 +51,12 @@ define [ 'jquery',
             #view
             view.model    = model
 
+            view.on 'REFRESH_KEYPAIR', () ->
+                model.getKerPair()
+                view.render()
+                sglist_main.loadModule model
+                ide_event.trigger ide_event.RELOAD_PROPERTY
+
             model.getUID  uid
             model.getName()
             model.getInstanceType()
@@ -58,7 +64,7 @@ define [ 'jquery',
             model.getAmi()
             model.getComponent()
             model.getKerPair()
-            model.getSgDisp()
+            # model.getSgDisp()
             model.getCheckBox()
             model.getEni()
             #
@@ -75,7 +81,7 @@ define [ 'jquery',
                 ide_event.trigger ide_event.RELOAD_PROPERTY
 
             ide_event.trigger ide_event.RELOAD_PROPERTY
-
+            
             view.on 'ATTACH_EIP', ( eip_index, attach ) ->
 
                 model.attachEIP eip_index, attach
@@ -87,47 +93,9 @@ define [ 'jquery',
             view.on 'REMOVE_IP', ( index ) ->
 
                 model.removeIP index
-            ###
-            #model
-            #model.setHost uid
-            attributes = {
-                instance_type : model.getInstanceType uid
-                component : MC.canvas_data.component[uid]
-                keypair : model.getKerPair uid
-                ami_string : model.getAmi uid
-                ami_display : model.getAmiDisp uid
-                sg_display : model.getSgDisp uid
-                checkbox_display: model.getCheckBox uid
-                eni_display : model.getEni uid
-            }
-            #render
-            view.render( attributes, instance_expended_id )
-
-
-
-            view.on 'RE_RENDER', ( uid ) ->
-
-                attributes = {
-                    instance_type : model.getInstanceType uid
-                    component : MC.canvas_data.component[uid]
-                    keypair : model.getKerPair uid
-                    ami_string : model.getAmi uid
-                    ami_display : model.getAmiDisp uid
-                    sg_display : model.getSgDisp uid
-                    checkbox_display: model.getCheckBox uid
-                    eni_display : model.getEni uid
-                }
-
-                view.render( attributes )
-
-                ide_event.trigger ide_event.RELOAD_PROPERTY
-            ###
-
             model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
 
                 notification 'error', 'Instance Type: '+ instance_type + ' only support at most ' + eni_number + ' Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type'
-
-                view.trigger 'RE_RENDER', uid
 
 
     loadAppModule = ( uid, instance_expended_id, current_main ) ->
@@ -161,7 +129,6 @@ define [ 'jquery',
         current_view.undelegateEvents()
         #
         current_sub_main.unLoadModule()
-        #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public

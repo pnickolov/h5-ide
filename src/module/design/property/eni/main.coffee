@@ -30,8 +30,9 @@ define [ 'jquery',
 
         #
         require [ './module/design/property/eni/' + view_type,
-                  './module/design/property/eni/model'
-        ], ( view, model ) ->
+                  './module/design/property/eni/model',
+                  './module/design/property/sglist/main'
+        ], ( view, model, sglist_main ) ->
 
             #
             if current_view then view.delegateEvents view.events
@@ -43,9 +44,13 @@ define [ 'jquery',
             #view
             view.model    = model
 
+            model.set 'uid', uid
+
             model.getENIDisplay uid
             #render
             view.render()
+
+            sglist_main.loadModule model
 
             view.on 'SET_ENI_DESC', ( uid, value ) ->
 

@@ -28,12 +28,11 @@ define [ 'jquery',
 
         if tab_type is 'OPEN_APP'
             loadAppModule uid
-            return
 
-        #
         require [ './module/design/property/elb/view',
-                  './module/design/property/elb/model'
-        ], ( view, model ) ->
+                  './module/design/property/elb/model',
+                  './module/design/property/sglist/main'
+                  ], ( view, model, sglist_main ) ->
 
             #
             if current_view then view.delegateEvents view.events
@@ -49,47 +48,47 @@ define [ 'jquery',
                 #app view to do
             else
                 view.on 'ELB_NAME_CHANGED', ( value ) ->
-                    view.model.setELBName uid, value
+                    model.setELBName uid, value
 
                 view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
-                    view.model.setScheme uid, value
+                    model.setScheme uid, value
 
                 view.on 'HEALTH_PROTOCOL_SELECTED', ( value ) ->
-                    view.model.setHealthProtocol uid, value
+                    model.setHealthProtocol uid, value
 
                 view.on 'HEALTH_PORT_CHANGED', ( value ) ->
-                    view.model.setHealthPort uid, value
+                    model.setHealthPort uid, value
 
                 view.on 'HEALTH_PATH_CHANGED', ( value ) ->
-                    view.model.setHealthPath uid, value
+                    model.setHealthPath uid, value
 
                 view.on 'HEALTH_INTERVAL_CHANGED', ( value ) ->
-                    view.model.setHealthInterval uid, value
+                    model.setHealthInterval uid, value
 
                 view.on 'HEALTH_TIMEOUT_CHANGED', ( value ) ->
-                    view.model.setHealthTimeout uid, value
+                    model.setHealthTimeout uid, value
 
                 view.on 'UNHEALTHY_SLIDER_CHANGE', ( value ) ->
-                    view.model.setHealthUnhealth uid, value
+                    model.setHealthUnhealth uid, value
 
                 view.on 'HEALTHY_SLIDER_CHANGE', ( value ) ->
-                    view.model.setHealthHealth uid, value
+                    model.setHealthHealth uid, value
 
                 view.on 'LISTENER_ITEM_CHANGE', ( value ) ->
-                    view.model.setListenerAry uid, value
+                    model.setListenerAry uid, value
 
                 view.on 'LISTENER_CERT_CHANGED', ( value ) ->
-                    view.model.setListenerCert uid, value
+                    model.setListenerCert uid, value
 
                 view.on 'REFRESH_CERT_PANEL_DATA', ( value ) ->
                     currentCert = view.model.getCurrentCert uid
                     currentCert && view.refreshCertPanel currentCert
 
                 view.on 'REMOVE_AZ_FROM_ELB', ( value ) ->
-                    view.model.removeAZFromELB uid, value
+                    model.removeAZFromELB uid, value
 
                 view.on 'ADD_AZ_TO_ELB', ( value ) ->
-                    view.model.addAZToELB uid, value
+                    model.addAZToELB uid, value
 
             #model
             model.init uid
@@ -97,7 +96,8 @@ define [ 'jquery',
             #render
             view.render model.attributes
 
-    loadAppModule = ( uid ) ->
+            sglist_main.loadModule model
+            
         require [ './module/design/property/elb/app_view',
                   './module/design/property/elb/app_model'
         ], ( view, model ) ->

@@ -157,69 +157,91 @@ define [ 'jquery',
                 if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
                 null
 
+            # #listen OPEN_SG
+            # ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id, back_dom, bak_tab_type ) ->
+            #     console.log 'OPEN_SG'
+            #     #
+            #     if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
+            #     #
+            #     MC.data.last_open_property = { 'event_type' : ide_event.OPEN_SG, 'uid_parent' : uid_parent, 'expended_accordion_id' : expended_accordion_id }
+            #     #
+            #     if bak_tab_type then tab_type = bak_tab_type
+            #     #
+            #     sg_main.loadModule( uid_parent, expended_accordion_id, sg_main, tab_type )
+            #     #
+            #     if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
+            #     null
+
+            # ide_event.onLongListen ide_event.SHOW_SG_LIST, ( line_id )->
+
+            #     sgrule_main.loadModule uid, 'delete'
+
+            # #listen OPEN_ACL
+            # ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid, return_type, back_dom, bak_tab_type ) ->
+            #     console.log 'OPEN_ACL, return_type = ' + return_type
+            #     #
+            #     if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
+            #     #
+            #     MC.data.last_open_property = { 'event_type' : ide_event.OPEN_ACL, 'uid' : uid_parent, 'expended_accordion_id' : expended_accordion_id, 'acl_uid' : acl_uid, 'return_type' : return_type }
+            #     #
+            #     if bak_tab_type then tab_type = bak_tab_type
+            #     #
+            #     acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid, return_type, tab_type )
+            #     #
+            #     if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
+            #     null
+
+            # #listen OPEN_INSTANCE
+            # ide_event.onLongListen ide_event.OPEN_INSTANCE, ( expended_accordion_id, back_dom, bak_tab_type ) ->
+            #     console.log 'OPEN_INSTANCE'
+            #     #
+            #     if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
+            #     #
+            #     MC.data.last_open_property = { 'event_type' : ide_event.OPEN_INSTANCE, 'expended_accordion_id' : expended_accordion_id }
+            #     #
+            #     if bak_tab_type then tab_type = bak_tab_type
+            #     #
+            #     instance_main.loadModule current_uid, expended_accordion_id, instance_main
+            #     #
+            #     if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
+            #     null
+
+            # ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, ( return_type, back_dom, bak_tab_type ) ->
+            #     console.log 'RETURN_SUBNET_PROPERTY_FROM_ACL, return_type = ' + return_type
+            #     #
+            #     if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
+            #     #
+            #     MC.data.last_open_property = { 'event_type' : ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, 'return_type' : return_type }
+            #     #
+            #     if bak_tab_type then tab_type = bak_tab_type
+            #     #
+            #     if return_type isnt 'stack' then uid = return_type.split(':')[1]
+            #     #
+            #     if return_type is 'stack' then stack_main.loadModule stack_main else subnet_main.loadModule uid, subnet_main, tab_type
+            #     #
+            #     if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
+
             #listen OPEN_SG
-            ide_event.onLongListen ide_event.OPEN_SG, ( uid_parent, expended_accordion_id, back_dom, bak_tab_type ) ->
+            ide_event.onLongListen ide_event.OPEN_SG, ( sg_uid, parent_main ) ->
+
                 console.log 'OPEN_SG'
-                #
-                if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
-                #
-                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_SG, 'uid_parent' : uid_parent, 'expended_accordion_id' : expended_accordion_id }
-                #
-                if bak_tab_type then tab_type = bak_tab_type
-                #
-                sg_main.loadModule( uid_parent, expended_accordion_id, sg_main, tab_type )
-                #
-                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
+                sg_main.loadModule( sg_uid, parent_main, sg_main )
+
                 null
 
-            ide_event.onLongListen ide_event.SHOW_SG_LIST, ( line_id )->
-
-                sgrule_main.loadModule uid, 'delete'
-
             #listen OPEN_ACL
-            ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid, return_type, back_dom, bak_tab_type ) ->
-                console.log 'OPEN_ACL, return_type = ' + return_type
-                #
-                if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
-                #
-                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_ACL, 'uid' : uid_parent, 'expended_accordion_id' : expended_accordion_id, 'acl_uid' : acl_uid, 'return_type' : return_type }
-                #
-                if bak_tab_type then tab_type = bak_tab_type
-                #
-                acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid, return_type, tab_type )
-                #
-                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
+            ide_event.onLongListen ide_event.OPEN_ACL, ( uid_parent, expended_accordion_id, acl_uid ) ->
+
+                console.log 'OPEN_ACL'
+                acl_main.loadModule( uid_parent, expended_accordion_id, acl_uid )
                 null
 
             #listen OPEN_INSTANCE
-            ide_event.onLongListen ide_event.OPEN_INSTANCE, ( expended_accordion_id, back_dom, bak_tab_type ) ->
-                console.log 'OPEN_INSTANCE'
-                #
-                if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
-                #
-                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_INSTANCE, 'expended_accordion_id' : expended_accordion_id }
-                #
-                if bak_tab_type then tab_type = bak_tab_type
-                #
-                instance_main.loadModule current_uid, expended_accordion_id, instance_main
-                #
-                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
-                null
+            ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id) ->
 
-            ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, ( return_type, back_dom, bak_tab_type ) ->
-                console.log 'RETURN_SUBNET_PROPERTY_FROM_ACL, return_type = ' + return_type
-                #
-                if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
-                #
-                MC.data.last_open_property = { 'event_type' : ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, 'return_type' : return_type }
-                #
-                if bak_tab_type then tab_type = bak_tab_type
-                #
-                if return_type isnt 'stack' then uid = return_type.split(':')[1]
-                #
-                if return_type is 'stack' then stack_main.loadModule stack_main else subnet_main.loadModule uid, subnet_main, tab_type
-                #
-                if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
+                console.log 'OPEN_INSTANCE'
+                instance_main.loadModule uid, expended_accordion_id, instance_main
+                null
 
             ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->
 

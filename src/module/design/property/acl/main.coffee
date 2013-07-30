@@ -56,6 +56,9 @@ define [ 'jquery',
             #view
             view.model    = model
 
+            if view.hasOwnProperty('events')
+                return
+
             view.on 'ADD_RULE_TO_ACL', (value) ->
                 model.addRuleToACL uid, value
 
@@ -77,9 +80,9 @@ define [ 'jquery',
             view.render expended_accordion_id
 
     unLoadModule = () ->
-        current_view.off()
-        current_model.off()
-        current_view.undelegateEvents()
+        # current_view.off()
+        # current_model.off()
+        # current_view.undelegateEvents()
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 

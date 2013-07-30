@@ -110,34 +110,21 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     addToACL = false
                 null
 
-            ruleAction = ''
-            if ruleObj.action
-                ruleAction = 'allow'
-            else
-                ruleAction = 'deny'
-
-            egress = ''
-            if ruleObj.inbound
-                egress = 'false'
-            else
-                egress = 'true'
-
-
             if addToACL
                 newEntrySet.push {
                     "RuleNumber": ruleObj.rule,
                     "IcmpTypeCode": {
-                        "Type": "",
-                        "Code": ""
+                        "Type": ruleObj.type,
+                        "Code": ruleObj.code
                     },
                     "PortRange": {
-                        "To": "",
-                        "From": ""
+                        "To": ruleObj.portTo,
+                        "From": ruleObj.portFrom
                     },
                     "CidrBlock": ruleObj.source,
                     "Protocol": ruleObj.protocol,
-                    "RuleAction": ruleAction,
-                    "Egress": egress
+                    "RuleAction": ruleObj.action,
+                    "Egress": ruleObj.egress
                 }
 
                 newEntrySet = originEntrySet.concat newEntrySet

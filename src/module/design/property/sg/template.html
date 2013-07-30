@@ -86,7 +86,7 @@
 	<div class="accordion-group" >
 			<div class="fixedaccordion-head sg-header">
 				<span class="name">Member</span>
-				<span class="count">({{sg_detail.members}})</span>
+				<span class="count">({{sg_detail.members.length}})</span>
 			</div>
 			<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
 				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
@@ -97,10 +97,10 @@
 							<img src="" title="screenshot for instruction"/>
 						</div>
 						<ul class="sg-member-list">
-							{{#each sg_detail.member_names}}
+							{{#each sg_detail.members}}
 							<li>
 								<div class="sg-member-icon"></div>
-								<div class="sg-member-name">{{this}}</div>
+								<div class="sg-member-name">{{name}}</div>
 							</li>
 							{{/each}}
 						</ul>

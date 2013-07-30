@@ -1659,6 +1659,7 @@ a.sidebar-hider {
 	-o-transition: margin-left 0.1s;
 	transition: margin-left 0.1s;
 	border-right: 1px solid #d1d1d1;
+	background-color: #5D5F65;
 	/*border-right: 1px solid #666;*/
 }
 
@@ -1831,6 +1832,15 @@ a.sidebar-hider {
 	position: absolute;
 	top: 0;
 	right: 0;
+}
+
+#resource-select .selection {
+	background: rgba(93, 95, 101, 0.41);
+	color: #F3F3F3;
+	height: 18px;
+	border-top: none;
+	border-bottom: none;
+	padding: 10px 20px 10px 10px;
 }
 
 #resource-select .dropdown-toggle {

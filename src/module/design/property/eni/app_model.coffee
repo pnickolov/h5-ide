@@ -17,7 +17,7 @@ define [ 'backbone', 'MC' ], () ->
 
           appData = MC.data.resource_list[ MC.canvas_data.region ]
 
-          eni = $.extend true, {}, appData[ myEniComponent.resource.NetworkInterfaceId || "eni-cbcc18a5" ]
+          eni = $.extend true, {}, appData[ myEniComponent.resource.NetworkInterfaceId ]
           eni.name = myEniComponent.name
 
           if eni.status == "in-use"

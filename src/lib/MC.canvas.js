@@ -3636,6 +3636,10 @@ MC.canvas.volume = {
 					document.getElementById( target_id )
 				);
 			}
+			else
+			{
+				MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+			}
 		}
 		else
 		{
@@ -3696,7 +3700,7 @@ MC.canvas.volume = {
 			target_id = bubble_box.data('target-id');
 			bubble_box.remove();
 
-			MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_NORMAL);
+			MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
 
 			$(document)
 				.off('keyup', MC.canvas.volume.remove)

@@ -179,8 +179,6 @@ define [ 'jquery',
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
-        keypair_model.off 'EC2_KPDOWNLOAD_RETURN'
-
     #public
     loadModule   : loadModule
     unLoadModule : unLoadModule

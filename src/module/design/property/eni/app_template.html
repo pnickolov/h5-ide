@@ -21,20 +21,28 @@
         <dd>{{vpcId}}</dd>
         <dt>Subnet ID</dt>
         <dd>{{subnetId}}</dd>
+        {{#if attachment}}
         <dt>Attachment ID</dt>
         <dd>{{attachment.attachmentId}}</dd>
         <dt>Attachment Owner</dt>
-        <dd>{{ownerId}}</dd>
+        <dd>{{attachment.instanceOwnerId}}</dd>
         <dt>Attachment Status</dt>
         <dd>{{attachment.status}}</dd>
+        {{/if}}
         <dt>Mac Address</dt>
         <dd>{{macAddress}}</dd>
+        {{#if association.publicDnsName}}
         <dt>Public DNS</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{association.publicDnsName}}</dd>
+        {{/if}}
+        {{#if privateDnsName}}
         <dt>Private DNS</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{privateDnsName}}</dd>
+        {{/if}}
+        {{#if ownerId}}
         <dt>IP Owner</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{ownerId}}</dd>
+        {{/if}}
       </dl>
       <table class="property-app-table">
         <tr class="property-app-table-h">

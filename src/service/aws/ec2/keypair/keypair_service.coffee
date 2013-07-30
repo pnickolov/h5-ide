@@ -126,7 +126,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	parserUploadReturn = ( result, return_code, param ) ->
 
 		#1.resolve return_code
-		aws_result = result_vo.processAWSReturnHandler result, return_code, param
+		aws_result = result_vo.processForgeReturnHandler result, return_code, param
 
 		#2.return vo
 		aws_result
@@ -139,7 +139,8 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	parserDownloadReturn = ( result, return_code, param ) ->
 
 		#1.resolve return_code
-		aws_result = result_vo.processAWSReturnHandler result, return_code, param
+		aws_result = result_vo.processForgeReturnHandler result, return_code, param
+		aws_result.resolved_data = result
 
 		#2.return vo
 		aws_result

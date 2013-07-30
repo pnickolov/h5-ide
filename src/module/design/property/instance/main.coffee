@@ -6,8 +6,9 @@ define [ 'jquery',
          'text!/module/design/property/instance/template.html',
          'text!/module/design/property/instance/app_template.html',
          'event',
+         'keypair_model',
          'UI.notification'
-], ( $, template, app_template, ide_event ) ->
+], ( $, template, app_template, ide_event, keypair_model ) ->
 
     #
     current_view     = null
@@ -154,6 +155,20 @@ define [ 'jquery',
 
             console.log( uid, instance_expended_id )
 
+            view.on 'REQUEST_KEYPAIR', ( keypairname ) ->
+                username = $.cookie "usercode"
+                session  = $.cookie "session_id"
+
+                keypair_model.download {sender:this}, username, session, MC.canvas_data.region, keypairname
+
+                keypair_model.once 'EC2_KPDOWNLOAD_RETURN', ( data )->
+                    if data.is_error
+                        notification 'error', "Cannot download keypair: " + keypairname
+                        modal.close()
+                    else
+                        view.updateKPModal data.resolved_data
+
+
 
     unLoadModule = () ->
         current_view.off()
@@ -163,6 +178,8 @@ define [ 'jquery',
         current_sub_main.unLoadModule()
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+
+        keypair_model.off 'EC2_KPDOWNLOAD_RETURN'
 
     #public
     loadModule   : loadModule

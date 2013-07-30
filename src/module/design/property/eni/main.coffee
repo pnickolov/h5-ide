@@ -26,10 +26,12 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #set view_type
-        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+        if tab_type is 'OPEN_APP'
+            loadAppModule uid
+            return
 
         #
-        require [ './module/design/property/eni/' + view_type,
+        require [ './module/design/property/eni/view',
                   './module/design/property/eni/model'
         ], ( view, model ) ->
 
@@ -66,6 +68,24 @@ define [ 'jquery',
             view.on 'REMOVE_IP', ( uid, index ) ->
 
                 model.removeIP uid, index
+
+
+    loadAppModule = ( uid ) ->
+        require [ './module/design/property/eni/app_view',
+                  './module/design/property/eni/app_model'
+        ], ( view, model ) ->
+
+            #
+            if current_view then view.delegateEvents view.events
+
+            current_view  = view
+            current_model = model
+
+            #view
+            view.model    = model
+
+            model.init uid
+            view.render()
 
 
 

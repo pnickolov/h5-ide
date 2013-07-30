@@ -230,7 +230,7 @@ var constant_data = {
 				from: 'instance-attach',
 				to: 'eni-attach',
 				color: '#12CD4F',
-				relation: 'unique'
+				relation: 'multiple'
 			},
 			{
 				type: 'sg',

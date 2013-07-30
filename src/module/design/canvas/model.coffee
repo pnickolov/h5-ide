@@ -834,7 +834,7 @@ define [ 'constant',
 
 			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-				if state == 'off'
+				if state == 'on'
 
 					$.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
@@ -844,7 +844,7 @@ define [ 'constant',
 
 							return false
 
-				else if state == 'on'
+				else if state == 'off'
 
 					eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
 
@@ -862,38 +862,78 @@ define [ 'constant',
 
 			else
 
-				switch MC.canvas_data.component[uid].type
+				existing_eip_ref = []
 
-					when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+				# collect all reference
+				$.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-						$.each MC.canvas_data.component, ( comp_uid, comp ) ->
+					if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress
 
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid and comp.resource.Attachment.DeviceIndex == '0'
+						existing_eip_ref.push comp.resource.PrivateIpAddress
 
-								ip_number = comp.resource.PrivateIpAddressSet.length
+				eni = null
 
-								_.map [0...ip_number], ( index ) ->
+				if MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
-									eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
+					$.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-									gen_uid = MC.guid()
+						if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid and comp.resource.Attachment.DeviceIndex == '0'
 
-									eip_json.resource.NetworkInterfaceId = '@' + uid + '.resource.NetworkInterfaceId'
+							eni = comp
 
-									eip_json.uid = gen_uid
+						null
 
-									eip_json.resource.PrivateIpAddress = '@' + comp_uid + '.resource.PrivateIpAddressSet.' + index + '.PrivateIpAddress'
+				else
 
-									eip_json.resource.Domain = 'vpc'
+					eni = MC.canvas_data.component[uid]
 
-									data = MC.canvas.data.get('component')
+				ip_number = eni.resource.PrivateIpAddressSet.length
 
-									data[gen_uid] = eip_json
+				_.map [0...ip_number], ( index ) ->
 
-									MC.canvas.data.set('component', data)
+					eip_ref = '@' + eni.uid + '.resource.PrivateIpAddressSet.' + index + '.PrivateIpAddress'
+
+					if state == 'off' and (eip_ref not in existing_eip_ref)
+
+						eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
+
+						gen_uid = MC.guid()
+
+						eip_json.resource.NetworkInterfaceId = '@' + eni.uid + '.resource.NetworkInterfaceId'
+
+						eip_json.uid = gen_uid
+
+						eip_json.resource.PrivateIpAddress = eip_ref
+
+						eip_json.resource.Domain = 'vpc'
+
+						data = MC.canvas.data.get('component')
+
+						data[gen_uid] = eip_json
+
+						MC.canvas.data.set('component', data)
+
+					else if state == 'on' and eip_ref in existing_eip_ref
+
+						$.each MC.canvas_data.component, ( k, c ) ->
+
+							if c.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and c.resource.PrivateIpAddress == eip_ref
+
+								delete MC.canvas_data.component[k]
+
+								return false
 
 
+				if state == 'off'
 
+					MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
+
+					MC.canvas.update uid,'eip','eip_status', 'on'
+
+				else
+					MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
+
+					MC.canvas.update uid,'eip','eip_status', 'off'
 
 	}
 

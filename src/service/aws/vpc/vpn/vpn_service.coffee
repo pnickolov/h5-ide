@@ -56,13 +56,13 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 	resolvedObjectToArray = ( objs ) ->
 
-		if objs.constructor == Array
+		if $.type(objs)  == "array"
 
 			for obj in objs
 
 				obj = resolvedObjectToArray obj
 
-		if objs.constructor == Object
+		if $.type(objs)  == "object"
 
 			if $.isEmptyObject objs
 
@@ -70,7 +70,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 			for key, value of objs
 
-				if key == 'item' and value.constructor == Object
+				if key == 'item' and $.type(value)  == "object"
 
 					tmp = []
 
@@ -78,7 +78,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 					objs[key] = tmp
 
-				else if value.constructor == Object or value.constructor == Array
+				else if $.type(value)  == "object" or $.type(value)  == "array"
 
 					objs[key] = resolvedObjectToArray value
 

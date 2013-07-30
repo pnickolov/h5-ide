@@ -33,7 +33,7 @@ var
 	{
 		//$('#main_body_content').css('height', window.innerHeight - 60);
 
-		$('#canvas').css('height', window.innerHeight - 129);
+		$('#canvas').css('height', window.innerHeight - 91);
 	};
 
 // Dom Ready

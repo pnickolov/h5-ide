@@ -9,7 +9,7 @@
           <dt>Scheme</dt>
           <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
           <dt>DNS Name</dt>
-          <dd>TODO!!!!!!</dd>
+          <dd>{{DNSName}}</dd>
           <dt>Hosted Zone ID</dt>
           <dd>{{CanonicalHostedZoneNameID}}<dd>
         </dl>
@@ -20,26 +20,26 @@
     <div class="fixedaccordion-head">Listener Configuration</div>
     <div class="accordion-body">
       <ul>
-        {{#each listener_detail.listenerAry}}
+        {{#each listenerDisplay}}
           <li class="app-panel-li">
             <div class="app-panel-li-col2-1">
               <p>Load Balancer <span>Protocol</span></p>
-              <p>{{Protocol}}</p>
+              <p>{{Listener.Protocol}}</p>
             </div>
 
             <div class="app-panel-li-col2-2">
               <p><span>Port</span></p>
-              <p>{{LoadBalancerPort}}</p>
+              <p>{{Listener.LoadBalancerPort}}</p>
             </div>
 
             <div class="app-panel-li-col2-1">
               <p>Instance <span>Protocol</span></p>
-              <p>{{InstanceProtocol}}</p>
+              <p>{{Listener.InstanceProtocol}}</p>
             </div>
 
             <div class="app-panel-li-col2-2">
               <p><span>Port</span></p>
-              <p>{{InstancePort}}</p>
+              <p>{{Listener.InstancePort}}</p>
             </div>
           </li>
         {{/each}}
@@ -61,11 +61,8 @@
           <dd>{{HealthCheck.protocol}}</dd>
           <dt>Ping Port</dt>
           <dd>{{HealthCheck.port}}</dd>
-
-          {{#if HealthCheck.Path}}
           <dt>Ping Path</dt>
-          <dd>{{HealthCheck.Path}}</dd>
-          {{/if}}
+          <dd>{{HealthCheck.path}}</dd>
 
           <dt>Health Check Interval</dt>
           <dd>{{HealthCheck.Interval}} Seconds</dd>
@@ -83,13 +80,11 @@
   <div class="accordion-group">
     <div class="fixedaccordion-head">Distribution</div>
     <ul class="accordion-body">
-      {{#each az_detail}}
-      {{#if selected}}
-      <li class="app-panel-li status-{{#if goodStatus}}good{{else}}bad{{/if}}">
-        <p class="app-panel-li-main">{{az_name}} <span class="sub">- {{vpc}}</span> </p>
-        <p class="app-panel-li-sub"> {{health_instance_num}}/{{instance_num}} instances are healthy </p>
+      {{#each distribution}}
+      <li class="app-panel-li status-{{#if health}}good{{else}}bad{{/if}}">
+        <p class="app-panel-li-main">{{zone}} {{#if subnet}}<span class="sub">- {{subnet}}</span>{{/if}} </p>
+        <p class="app-panel-li-sub"> {{health_instance}}/{{total_instance}} instances are healthy </p>
       </li>
-      {{/if}}
       {{/each}}
     </ul>
   </div>

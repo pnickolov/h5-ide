@@ -61,6 +61,10 @@ MC.canvas = {
 			case 'image':
 				target.attr('href', value);
 				break;
+				
+			case 'eip':
+				target.attr('data-eip-state', value);
+				break
 		}
 
 		return true;
@@ -3358,13 +3362,13 @@ MC.canvas.event.groupResize = {
 
 			if (group_left < parent_coordinate[0])
 			{
-				group_width = group_left + group_width - parent_coordinate[0];
+				group_width = group_left + group_width - parent_coordinate[0] - group_padding;
 				group_left = parent_coordinate[0] + group_padding;
 			}
 
 			if (group_top < parent_coordinate[1])
 			{
-				group_height = group_top + group_height - parent_coordinate[1];
+				group_height = group_top + group_height - parent_coordinate[1] - group_padding;
 				group_top = parent_coordinate[1] + group_padding;
 			}
 
@@ -3379,6 +3383,7 @@ MC.canvas.event.groupResize = {
 			}
 		}
 
+		// Top coordinate fix
 		if (type === 'AWS.VPC.VPC')
 		{
 			if (group_top <= 3)
@@ -3635,6 +3640,10 @@ MC.canvas.volume = {
 					document.getElementById( target_id )
 				);
 			}
+			else
+			{
+				MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+			}
 		}
 		else
 		{
@@ -3655,6 +3664,8 @@ MC.canvas.volume = {
 
 	select: function ()
 	{
+		MC.canvas.event.clearSelected();
+
 		$('#instance_volume_list').find('.selected').removeClass('selected');
 
 		$(this).addClass('selected');
@@ -3693,7 +3704,7 @@ MC.canvas.volume = {
 			target_id = bubble_box.data('target-id');
 			bubble_box.remove();
 
-			MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_NORMAL);
+			MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
 
 			$(document)
 				.off('keyup', MC.canvas.volume.remove)
@@ -4038,11 +4049,6 @@ MC.canvas.event.clearSelected = function ()
 	});
 
 	MC.canvas.selected_node = [];
-
-	if ($('#volume-bubble-box')[0])
-	{
-		MC.canvas.volume.close();
-	}
 };
 
 MC.canvas.event.keyEvent = function (event)

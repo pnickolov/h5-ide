@@ -1018,6 +1018,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                                         resources.DescribeLoadBalancers[i].state = "#{health} of #{total} instances in service"
 
+                                        resources.DescribeLoadBalancers[i].instance_state = result.resolved_data
+
                                     null
 
                                 me.reRenderRegionResource()

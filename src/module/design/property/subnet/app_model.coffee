@@ -13,21 +13,34 @@ define [ 'constant', 'backbone', 'MC' ], ( constant ) ->
 
         init : ( subnet_uid )->
 
-          mySubnetComponent = MC.canvas_data.component[ subnet_uid ]
+            mySubnetComponent = MC.canvas_data.component[ subnet_uid ]
 
-          appData = MC.data.resource_list[ MC.canvas_data.region ]
+            appData = MC.data.resource_list[ MC.canvas_data.region ]
 
-          subnet = $.extend true, {}, appData[ mySubnetComponent.resource.SubnetId ]
-          subnet.name = mySubnetComponent.name
+            subnet = $.extend true, {}, appData[ mySubnetComponent.resource.SubnetId ]
+            subnet.name = mySubnetComponent.name
 
-          if subnet.state == "available"
-            subnet.available = true
+            if subnet.state == "available"
+                subnet.available = true
 
-          subnet.acl = this.getACL subnet_uid
+            subnet.acl = this.getACL subnet_uid
 
-          subnet.uid = subnet_uid
+            subnet.uid = subnet_uid
 
-          this.set subnet
+            # Get RouteTable ID
+            ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+            for key, value of MC.canvas_data.component
+                if value.type == ACL_TYPE
+
+                    for i in value.resource.AssociationSet
+                        if i.SubnetId.indexOf( subnet_uid ) != -1
+                            linkedRT = value.resource.RouteTableId
+                        if i.Main == "true"
+                            defaultRT = value.resource.RouteTableId
+
+            subnet.routeTable = if linkedRT then linkedRT else defaultRT
+
+            this.set subnet
 
         getACL : ( uid ) ->
 

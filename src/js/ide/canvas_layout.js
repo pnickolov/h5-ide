@@ -62,6 +62,7 @@ var listen = function ()
 		$('#canvas_body')
 			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown', '.instance-volume', MC.canvas.volume.show)
+			.on('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
 			.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 			.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 			.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
@@ -79,7 +80,7 @@ var listen = function ()
 // Dom Ready
 var ready = function ()
 {
-	$(document).on('keyup', MC.canvas.event.keyEvent);
+	$(document).on('keydown', MC.canvas.event.keyEvent);
 
 	$('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close);
 

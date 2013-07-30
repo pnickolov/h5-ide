@@ -7,25 +7,33 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
     AZModel = Backbone.Model.extend {
 
         defaults :
-            'set_availability_zone'    : null
-            'get_availability_zone'    : null
+            id : null
+            component : null
+            az_list : null
 
         initialize : ->
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
 
-        getRenderData : ( uid ) ->
+        setId : ( uid ) ->
             data =
                 id        : uid
                 component : MC.canvas_data.layout.component.group[uid]
                 az_list   : MC.data.config[ MC.canvas_data.region ]
 
             if data.az_list && data.az_list.zone
-                data.az_list = data.az_list.zone.item
+                data.az_list = this.possibleAZList( data.az_list.zone.item, data.component.name )
+                data.needRefresh = false
             else
-                data.az_list = null
+                data.needRefresh = true
 
-            data
+                data.az_list = [
+                    name      : data.component.name
+                    selected  : true
+                    available : true
+                ]
+
+            this.set data
 
         possibleAZList : ( datalist, selectedItemName ) ->
             if !datalist

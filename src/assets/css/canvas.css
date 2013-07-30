@@ -178,7 +178,7 @@
 }
 
 .selected .node-background {
-	fill-opacity: 1;
+	fill-opacity: 0.6;
 	fill: #F2F8FF;
 	stroke-width: 1;
 	stroke: #659FFF;
@@ -204,10 +204,20 @@
 	fill: rgba(255, 255, 255, 0);
 }
 
+#line_layer g.line {
+	opacity: .6;
+}
+
 /* line connection */
 .line.selected,
 .line.selected path {
-	stroke: #666 !important;
+	opacity: 1 !important;
+	stroke-width: 4px !important;
+}
+
+.line:hover {
+	opacity: .8 !important;
+	stroke-width: 4px !important;
 }
 
 /* node label */
@@ -246,7 +256,7 @@
 }
 
 .AWS-VPC-VPC:hover .group-vpc,
-.dropable-group .group-vpc {
+.node-dragging .dropable-group .group-vpc {
 	stroke: #C6C4C4;
 }
 
@@ -268,7 +278,7 @@
 }
 
 .AWS-EC2-AvailabilityZone:hover .group-az,
-.dropable-group .group-az {
+.node-dragging .dropable-group .group-az {
 	stroke: #F69722;
 }
 
@@ -290,7 +300,7 @@
 }
 
 .AWS-VPC-Subnet:hover .group-subnet,
-.dropable-group .group-subnet {
+.node-dragging .dropable-group .group-subnet {
 	stroke: #C6C4C4;
 }
 
@@ -308,17 +318,17 @@
 	fill-opacity: 0;
 }
 
-.dropable-group .group-resizer {
+.node-dragging .dropable-group .group-resizer {
 	fill-opacity: 1;
 	fill: rgba(252, 190, 23, 0.15);
 }
 
-.dropable-group .group-resizer {
+.node-dragging .dropable-group .group-resizer {
 	fill-opacity: 1;
 	fill: rgba(238, 238, 238, 0.5);
 }
 
-.dropable-group .group-resizer {
+.node-dragging .dropable-group .group-resizer {
 	fill-opacity: 1;
 	fill: rgba(238, 238, 238, 0.5);
 }
@@ -354,6 +364,10 @@
 
 .resizer-bottomright {
 	cursor: nwse-resize;
+}
+
+.eip-status {
+	cursor: pointer;
 }
 
 #instance_volume_list {

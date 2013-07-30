@@ -22,6 +22,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
                 .on( 'CANVAS_LINE_CREATE',          '#svg_canvas', this, this.createLine )
                 .on( 'CANVAS_COMPONENT_CREATE',     '#svg_canvas', this, this.createComponent )
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
+                .on( 'CANVAS_EIP_STATE_CHANGE',     '#svg_canvas', this, this.changeEipState )
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -69,6 +70,10 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
         save : () ->
             #save by ctrl+s
             ide_event.trigger ide_event.CANVAS_SAVE
+
+        changeEipState : (event, option) ->
+            console.info 'changeEipState:' + option.id + ',' + option.eip_state
+            event.data.trigger 'CANVAS_EIP_STATE_CHANGE', option.id, option.eip_state
     }
 
     return CanvasView

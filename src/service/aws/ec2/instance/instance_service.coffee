@@ -225,11 +225,11 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 		if not $.isEmptyObject reservationSet
 
-			if reservationSet.item.constructor == Array
+			if $.type(reservationSet.item) == "array"
 
 				for item in reservationSet.item
 
-					if item.instancesSet.item.constructor == Array
+					if $.type(item.instancesSet.item) == "array"
 
 						for i in item.instancesSet.item
 
@@ -240,7 +240,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 						instance_list.push item.instancesSet.item
 			else
 
-				if reservationSet.item.instancesSet.item.constructor == Array
+				if reservationSet.$.type(item.instancesSet.item) == "array"
 
 					instance_list = reservationSet.item.instancesSet.item
 
@@ -252,13 +252,13 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 	resolvedObjectToArray = ( objs ) ->
 
-		if objs.constructor == Array
+		if $.type(objs)  == "array"
 
 			for obj in objs
 
 				obj = resolvedObjectToArray obj
 
-		if objs.constructor == Object
+		if $.type(objs)  == "object"
 
 			if $.isEmptyObject objs
 
@@ -266,7 +266,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 			for key, value of objs
 
-				if key == 'item' and value.constructor == Object
+				if key == 'item' and $.type(value)  == "object"
 
 					tmp = []
 
@@ -274,7 +274,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 					objs[key] = tmp
 
-				else if value.constructor == Object or value.constructor == Array
+				else if $.type(value)  == "object" or $.type(value)  == "array"
 
 					objs[key] = resolvedObjectToArray value
 

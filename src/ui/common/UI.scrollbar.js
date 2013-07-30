@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130729
+#* Date: 20130730
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -52,7 +52,7 @@ var scrollbar = {
 						scrollbar_height = offsetHeight * offsetHeight / scroll_content_elem.scrollHeight;
 						scrollbar_width = offsetWidth * offsetWidth / scroll_content_elem.scrollWidth;
 
-						if (veritical_thumb.hasClass('scrollbar-veritical-thumb'))
+						if (veritical_thumb && veritical_thumb.hasClass('scrollbar-veritical-thumb'))
 						{
 							if (scrollbar_height <= offsetHeight * 2 - scroll_content_elem.scrollHeight || scrollbar_height > wrap.height())
 							{
@@ -76,7 +76,7 @@ var scrollbar = {
 							}
 						}
 
-						if (horizontal_thumb.hasClass('scrollbar-horizontal-thumb'))
+						if (horizontal_thumb && horizontal_thumb.hasClass('scrollbar-horizontal-thumb'))
 						{
 							if (scrollbar_width <=  offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap.width())
 							{
@@ -261,7 +261,6 @@ var scrollbar = {
 		var target = $(this),
 			originalEvent = event.originalEvent,
 			scroll_content = target.find('.scroll-content').first(),
-			delta,
 			thumb,
 			scrollbar_wrap,
 			wrap_height,
@@ -270,7 +269,7 @@ var scrollbar = {
 			scale,
 			thumb_max;
 
-		if (originalEvent.wheelDeltaX)
+		if (originalEvent.wheelDeltaX !== 0)
 		{
 			delta = originalEvent.wheelDeltaX / 120;
 
@@ -306,7 +305,7 @@ var scrollbar = {
 			}
 		}
 
-		if (originalEvent.wheelDeltaY || originalEvent.wheelDelta || originalEvent.detail)
+		if (originalEvent.wheelDeltaY !== 0 || originalEvent.wheelDelta !== 0 || originalEvent.detail !== 0)
 		{
 			delta = originalEvent.wheelDelta ? originalEvent.wheelDelta / 120 : originalEvent.wheelDeltaY ? originalEvent.wheelDeltaY / 120 : -originalEvent.detail / 3;
 

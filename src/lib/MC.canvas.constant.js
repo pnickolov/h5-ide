@@ -37,8 +37,8 @@ var constant_data = {
 	{
 		//volume icon of instance
 		INSTANCE_VOLUME_ATTACHED_ACTIVE: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
-		INSTANCE_VOLUME_ATTACHED_NORMAL: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
-		INSTANCE_VOLUME_NOT_ATTACHED: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
+		INSTANCE_VOLUME_ATTACHED_NORMAL: MC.IMG_URL + 'ide/icon/instance-volume-attached-normal.png',
+		INSTANCE_VOLUME_NOT_ATTACHED: MC.IMG_URL + 'ide/icon/instance-volume-not-attached.png',
 		//eip icon of instance/eni
 		EIP_ON: MC.IMG_URL + 'ide/icon/eip-on.png',
 		EIP_OFF: MC.IMG_URL + 'ide/icon/eip-off.png',

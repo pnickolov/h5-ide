@@ -43,52 +43,48 @@ define [ 'jquery',
 
             view.model    = model
 
-            #event
-            if tab_type is 'OPEN_APP'
-                #app view to do
-            else
-                view.on 'ELB_NAME_CHANGED', ( value ) ->
-                    model.setELBName uid, value
+            view.on 'ELB_NAME_CHANGED', ( value ) ->
+                model.setELBName uid, value
 
-                view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
-                    model.setScheme uid, value
+            view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
+                model.setScheme uid, value
 
-                view.on 'HEALTH_PROTOCOL_SELECTED', ( value ) ->
-                    model.setHealthProtocol uid, value
+            view.on 'HEALTH_PROTOCOL_SELECTED', ( value ) ->
+                model.setHealthProtocol uid, value
 
-                view.on 'HEALTH_PORT_CHANGED', ( value ) ->
-                    model.setHealthPort uid, value
+            view.on 'HEALTH_PORT_CHANGED', ( value ) ->
+                model.setHealthPort uid, value
 
-                view.on 'HEALTH_PATH_CHANGED', ( value ) ->
-                    model.setHealthPath uid, value
+            view.on 'HEALTH_PATH_CHANGED', ( value ) ->
+                model.setHealthPath uid, value
 
-                view.on 'HEALTH_INTERVAL_CHANGED', ( value ) ->
-                    model.setHealthInterval uid, value
+            view.on 'HEALTH_INTERVAL_CHANGED', ( value ) ->
+                model.setHealthInterval uid, value
 
-                view.on 'HEALTH_TIMEOUT_CHANGED', ( value ) ->
-                    model.setHealthTimeout uid, value
+            view.on 'HEALTH_TIMEOUT_CHANGED', ( value ) ->
+                model.setHealthTimeout uid, value
 
-                view.on 'UNHEALTHY_SLIDER_CHANGE', ( value ) ->
-                    model.setHealthUnhealth uid, value
+            view.on 'UNHEALTHY_SLIDER_CHANGE', ( value ) ->
+                model.setHealthUnhealth uid, value
 
-                view.on 'HEALTHY_SLIDER_CHANGE', ( value ) ->
-                    model.setHealthHealth uid, value
+            view.on 'HEALTHY_SLIDER_CHANGE', ( value ) ->
+                model.setHealthHealth uid, value
 
-                view.on 'LISTENER_ITEM_CHANGE', ( value ) ->
-                    model.setListenerAry uid, value
+            view.on 'LISTENER_ITEM_CHANGE', ( value ) ->
+                model.setListenerAry uid, value
 
-                view.on 'LISTENER_CERT_CHANGED', ( value ) ->
-                    model.setListenerCert uid, value
+            view.on 'LISTENER_CERT_CHANGED', ( value ) ->
+                model.setListenerCert uid, value
 
-                view.on 'REFRESH_CERT_PANEL_DATA', ( value ) ->
-                    currentCert = view.model.getCurrentCert uid
-                    currentCert && view.refreshCertPanel currentCert
+            view.on 'REFRESH_CERT_PANEL_DATA', ( value ) ->
+                currentCert = model.getCurrentCert uid
+                currentCert && view.refreshCertPanel currentCert
 
-                view.on 'REMOVE_AZ_FROM_ELB', ( value ) ->
-                    model.removeAZFromELB uid, value
+            view.on 'REMOVE_AZ_FROM_ELB', ( value ) ->
+                model.removeAZFromELB uid, value
 
-                view.on 'ADD_AZ_TO_ELB', ( value ) ->
-                    model.addAZToELB uid, value
+            view.on 'ADD_AZ_TO_ELB', ( value ) ->
+                model.addAZToELB uid, value
 
             #model
             model.init uid

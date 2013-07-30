@@ -3,7 +3,7 @@
 
 define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 
-	host = "211.98.26.7:3000"
+	host = "api.madeiracloud.com:3000"
 
 	websocketInit = () ->
 

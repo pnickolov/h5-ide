@@ -849,7 +849,7 @@ a {
 }
 
 .map-tooltip-pointer {
-	border-top: 5px solid #888 !important; 
+	border-top: 5px solid #888 !important;
 	position: absolute;
 	top: 100%;
 	left: 50%;
@@ -3399,34 +3399,6 @@ a.sidebar-hider {
 
 .property-app {
 	font-size: 12px;
-}
-
-.dl-vertical {
-	padding     : 10px;
-	margin      : 0 0 8px 0;
-	color       : #758694;
-	background  : #fefefe;
-}
-
-.dl-vertical > dt {
-	padding-top : 2px;
-}
-
-.dl-vertical > dd {
-	padding : 5px 0 0 12px;
-	margin  : 0;
-}
-
-.dl-vertical > dd > .status {
-	margin-right : 5px;
-}
-
-.dl-vertical:nth-of-type(2n+1) {
-	background : #f6f5f5;
-}
-
-.dl-vertical:last-child {
-	margin : 0;
 }
 
 .accordion-default.property-app .accordion-body {

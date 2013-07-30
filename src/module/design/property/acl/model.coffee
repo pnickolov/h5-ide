@@ -80,7 +80,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                         null
 
-            aclObj.asso_number = aclObj.associationSet.item.length
+            if aclObj.associationSet.item
+
+                aclObj.asso_number = aclObj.associationSet.item.length
+
+            else
+                aclObj.asso_number = 0
 
             this.set 'component', aclObj
 

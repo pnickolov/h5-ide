@@ -42,8 +42,10 @@ define [ 'jquery',
 
             #view
             view.model    = model
-            #render
+            #model
+            model.getRoute( uid )
 
+            ###
             if tab_type is 'OPEN_APP'
 
                 model.getAppRoute uid
@@ -51,7 +53,9 @@ define [ 'jquery',
             else
 
                 model.getRoute( uid )
+            ###
 
+            #render
             view.render()
 
             view.on 'SET_ROUTE', ( uid, data, routes ) ->

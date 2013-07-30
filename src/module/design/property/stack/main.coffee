@@ -83,6 +83,15 @@ define [ 'jquery',
 
                 sglist_main.loadModule model
 
+            ide_event.onLongListen ide_event.RESOURCE_QUICKSTART_READY, () ->
+                console.log 'resource quickstart return'
+
+                model.getStackCost()
+
+            model.on 'change:cost_list', () ->
+                console.log 'rerender property'
+
+                renderPropertyPanel()
 
     unLoadModule = () ->
         current_view.off()

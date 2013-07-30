@@ -17,7 +17,7 @@ define [ 'backbone', 'MC' ], () ->
           rtb = $.extend true, {}, appData[ myRTBComponent.resource.RouteTableId ]
           rtb.name = myRTBComponent.name
 
-          if rtb.associationSet.item.main == "true"
+          if rtb.associationSet.item && rtb.associationSet.item[0].main == "true"
             rtb.main = "Yes"
           else
             rtb.main = "No"
@@ -31,7 +31,7 @@ define [ 'backbone', 'MC' ], () ->
 
           # Find out which route is propagated.
           for i in myRTBComponent.resource.RouteSet
-            if i.GatewayId in myRTBComponent.resource.PropagatiingVgwSet
+            if i.GatewayId in myRTBComponent.resource.PropagatingVgwSet
               uid = uidRegex.exec( i.GatewayId )[1]
               propagate[ components[ uid ].resource.CustomerGatewayId ] = true
 

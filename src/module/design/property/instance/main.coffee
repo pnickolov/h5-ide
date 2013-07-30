@@ -149,10 +149,11 @@ define [ 'jquery',
 
             view.model    = model
 
+            model.on "KP_DOWNLOADED", (data)-> view.updateKPModal(data)
+            view.on "REQUEST_KEYPAIR", (name)-> model.downloadKP(name)
+
             model.init( uid )
             view.render()
-
-            console.log( uid, instance_expended_id )
 
 
     unLoadModule = () ->

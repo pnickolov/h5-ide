@@ -8,43 +8,51 @@
         <dt>Device Name</dt>
         <dd>{{name}}</dd>
         <dt>Network Interface ID</dt>
-        <dd>TODO!!!!!!</dd>
+        <dd>{{networkInterfaceId}}</dd>
         <dt>State</dt>
-        <dd>TODO!!!!!!</dd>
+        <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
         <dt>Description</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{description}}</dd>
         <dt>Source/Destination Check</dt>
-        <dd>{{#if eni_display.resource.SourceDestCheck}}enabled{{else}}{{/if}}</dd>
+        <dd>{{sourceDestCheck}}</dd>
       </dl>
       <dl class="dl-vertical">
         <dt>VPC ID</dt>
-        <dd>TODO!!!!!!</dd>
-        <dt>Subnet</dt>
-        <dd>TODO!!!!!!</dd>
+        <dd>{{vpcId}}</dd>
+        <dt>Subnet ID</dt>
+        <dd>{{subnetId}}</dd>
+        {{#if attachment}}
         <dt>Attachment ID</dt>
-        <dd>TODO!!!!!!</dd>
+        <dd>{{attachment.attachmentId}}</dd>
         <dt>Attachment Owner</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{attachment.instanceOwnerId}}</dd>
         <dt>Attachment Status</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{attachment.status}}</dd>
+        {{/if}}
         <dt>Mac Address</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{macAddress}}</dd>
+        {{#if association.publicDnsName}}
         <dt>Public DNS</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{association.publicDnsName}}</dd>
+        {{/if}}
+        {{#if privateDnsName}}
         <dt>Private DNS</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{privateDnsName}}</dd>
+        {{/if}}
+        {{#if ownerId}}
         <dt>IP Owner</dt>
-        <dd>TODO!!!!!!!!</dd>
+        <dd>{{ownerId}}</dd>
+        {{/if}}
       </dl>
-      <table>
-        <tr>
+      <table class="property-app-table">
+        <tr class="property-app-table-h">
           <th>IP Address</th>
           <th>Public IP</th>
         </tr>
-        {{#each ips}}
+        {{#each privateIpAddressesSet.item}}
         <tr>
-          <td>{{ip}}</td>
-          <td>{{public}}</td>
+          <td>{{privateIpAddress}}{{#if primary}}<span>(Primary)</span>{{/if}}</td>
+          <td>{{#if association.publicIp}}{{association.publicIp}}{{else}}-{{/if}}</td>
         </tr>
         {{/each}}
       </table>

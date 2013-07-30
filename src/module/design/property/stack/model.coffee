@@ -11,6 +11,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             'is_stack'          : null
             'sg_display'        : null
             'network_acl'       : null
+            'cost_list'         : null
 
         initialize : ->
             #listen
@@ -33,7 +34,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             if property_detail.is_vpc
                 property_detail.acl_list = me.getNetworkACL()
 
-            property_detail.cost = me.getStackCost()
+            #property_detail.cost = me.getStackCost()
 
             me.set 'property_detail', property_detail
             me.set 'is_stack', is_stack
@@ -139,7 +140,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
             null
 
-
         getNetworkACL : ->
 
             networkACLs = []
@@ -181,7 +181,57 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             null
 
         getStackCost : ->
+            me = this
 
+            cost_list = []
+            total_fee = 0
+
+            region = MC.canvas_data.region
+            feeMap = MC.data.config[region]
+
+            _.map MC.canvas_data.component, (item) ->
+                uid = item.uid
+                name = item.name
+
+                if item.type is 'AWS.EC2.Instance'
+                    size = item.resource.InstanceType
+                    imageId = item.resource.ImageId
+
+                    fee = ''
+                    unit = ''
+
+                    ami = null
+                    ami = i for i in feeMap.ami when i.imageId == imageId
+
+                    _.map feeMap.ami, (ami) ->
+                        if ami.imageId == imageId
+                            os = ''
+                            if feeMap.ami[imageId].osType is 'win'
+                                os = 'windows'
+                            else
+                                os = 'linux-other'
+
+                            size_list = size.split('.')
+                            fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
+                            unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
+
+                            cost_list.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + '/' + unit }
+
+                #else if item.type is 'AWS.ELB'
+                #    fee = feeMap.price.elb
+
+                #    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : fee }
+
+                #else if item.type is 'AWS.EC2.EBS.Volume'
+                #    fee = feeMap.price.ebs.ebsVols
+
+                #    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : fee }
+
+                null
+
+            me.set 'cost_list', cost_list
+
+            null
 
     }
 

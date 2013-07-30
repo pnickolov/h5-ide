@@ -16,14 +16,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         app_template    : Handlebars.compile $( '#property-app-tmpl' ).html()
 
         events   :
-            'change #property-stack-name'   : 'stackNameChanged'
-            'click #add-sg-btn'             : 'openSecurityGroup'
-            'click #sg-info-list .sg-edit-icon' : 'openSecurityGroup'
-            'click .deleteSG'               : 'deleteSecurityGroup'
-            'click .resetSG'                : 'resetSecurityGroup'
-            'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
-            'click #stack-property-add-new-acl' : 'openCreateAclPanel'
-            'click .stack-property-acl-list .edit' : 'openEditAclPanel'
+            'change #property-stack-name'           : 'stackNameChanged'
+            'click #add-sg-btn'                     : 'openSecurityGroup'
+            'click #sg-info-list .sg-edit-icon'     : 'openSecurityGroup'
+            'click .deleteSG'                       : 'deleteSecurityGroup'
+            'click .resetSG'                        : 'resetSecurityGroup'
+            'click .stack-property-acl-list .delete': 'deleteNetworkAcl'
+            'click #stack-property-add-new-acl'     : 'openCreateAclPanel'
+            'click .stack-property-acl-list .edit'  : 'openEditAclPanel'
 
         render     : () ->
             me = this

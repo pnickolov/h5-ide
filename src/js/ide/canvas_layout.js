@@ -33,7 +33,7 @@ var
 	{
 		//$('#main_body_content').css('height', window.innerHeight - 60);
 
-		$('#canvas').css('height', window.innerHeight - 129);
+		$('#canvas').css('height', window.innerHeight - 91);
 	};
 
 // Dom Ready
@@ -80,7 +80,7 @@ var listen = function ()
 // Dom Ready
 var ready = function ()
 {
-	$(document).on('keyup', MC.canvas.event.keyEvent);
+	$(document).on('keydown', MC.canvas.event.keyEvent);
 
 	$('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close);
 

@@ -53,18 +53,17 @@
 						<th style="">Fee($)</th>
 					</tr>
 				</thead>
+
+
+				{{#each cost_list}}
 				<tbody>
 					<tr>
-						<td>instance111..</td>
-						<td>m2.large</td>
-						<td>0.2/hr</td>
-					</tr>
-					<tr>
-						<td>instance111..</td>
-						<td>m2.large</td>
-						<td>0.2/hr</td>
+						<td>{{resource}}</td>
+						<td>{{size}}</td>
+						<td>{{fee}}</td>
 					</tr>
 				</tbody>
+				{{/each}}
 			</table>
 
 		</div>

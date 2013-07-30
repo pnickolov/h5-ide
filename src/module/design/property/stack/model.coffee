@@ -183,7 +183,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
         getStackCost : ->
             me = this
 
-            cost = []
+            cost_list = []
             total_fee = 0
 
             region = MC.canvas_data.region
@@ -194,33 +194,42 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                 name = item.name
 
                 if item.type is 'AWS.EC2.Instance'
-                    size = item.resource.InstanceType.split('.')
+                    size = item.resource.InstanceType
                     imageId = item.resource.ImageId
 
                     fee = ''
                     unit = ''
-                    if imageId in feeMap.ami  # quickstart
-                        os = ''
-                        if feeMap.ami[imageId].osType is 'win'
-                            os = 'windows'
-                        else
-                            os = 'linux-other'
 
-                        fee = feeMap.ami[imageId].price[os][size[0]][size[1]].fee
-                        unit = feeMap.ami[imageId].price[os][size[0]][size[1]].unit
-                    ##else
+                    ami = null
+                    ami = i for i in feeMap.ami when i.imageId == imageId
 
-                    cost.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + '/' + unit }
+                    _.map feeMap.ami, (ami) ->
+                        if ami.imageId == imageId
+                            os = ''
+                            if feeMap.ami[imageId].osType is 'win'
+                                os = 'windows'
+                            else
+                                os = 'linux-other'
+
+                            size_list = size.split('.')
+                            fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
+                            unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
+
+                            cost_list.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + '/' + unit }
 
                 #else if item.type is 'AWS.ELB'
                 #    fee = feeMap.price.elb
 
-                #    cost.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : fee }
+                #    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : fee }
 
                 #else if item.type is 'AWS.EC2.EBS.Volume'
                 #    fee = feeMap.price.ebs.ebsVols
 
-                #    cost.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : fee }
+                #    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : fee }
+
+                null
+
+            me.set 'cost_list', cost_list
 
             null
 

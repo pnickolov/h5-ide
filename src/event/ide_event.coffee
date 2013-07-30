@@ -91,6 +91,9 @@ define [ 'underscore', 'backbone' ], () ->
         #websocket meteor collection
         WS_COLLECTION_READY_REQUEST : 'WS_COLLECTION_READY_REQUEST'
 
+        #quickstart data ready
+        RESOURCE_QUICKSTART_READY : 'RESOURCE_QUICKSTART_READY'
+
         constructor : ->
             _.extend this, Backbone.Events
 

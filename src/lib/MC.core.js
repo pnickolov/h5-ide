@@ -3,7 +3,7 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system 
-#* Date: 20130730
+#* Date: 201307302
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -394,10 +394,10 @@ var returnTrue = function () {return true},
 {
 	jQuery.extend(
 	{
+
 		xml2json: function xml2json(xml)
 		{
-			var result = {},
-				content;
+			var result = {};
 
 			for (var i in xml.childNodes)
 			{
@@ -489,26 +489,13 @@ var returnTrue = function () {return true},
 						node.textContent !== ''
 					)
 					{
-						content = node.textContent.trim();
-
-						switch (content)
-						{
-							case 'true':
-								content = true;
-								break;
-
-							case 'false':
-								content = false;
-								break;
-						}
-
 						if (result[ node.nodeName ] instanceof Array)
 						{
-							result[ node.nodeName ].push(content);
+							result[ node.nodeName ].push(node.textContent.trim());
 						}
 						else
 						{
-							result[ node.nodeName ] = content;
+							result[ node.nodeName ] = node.textContent.trim();
 						}
 					}
 				}
@@ -516,6 +503,130 @@ var returnTrue = function () {return true},
 
 			return result;
 		}
+
+		//new version
+		// xml2json2: function xml2json2(xml)
+		// {
+		// 	var result = {},
+		// 		content;
+
+		// 	for (var i in xml.childNodes)
+		// 	{
+		// 		var node = xml.childNodes[ i ];
+
+		// 		if (node.nodeType === 1)
+		// 		{
+		// 			var child = node.hasChildNodes() ? xml2json(node) : node.nodevalue;
+
+		// 			child = child == null ? null : child;
+
+		// 			// Special for "item"
+		// 			if (node.nodeName === 'item' && child.value)
+		// 			{
+		// 				if (child.key)
+		// 				{
+		// 					if ($.type(result) !== 'object')
+		// 					{
+		// 						result = {};
+		// 					}
+		// 					if (!$.isEmptyObject(child))
+		// 					{
+		// 						result[ child.key ] = child.value;
+		// 					}
+		// 				}
+		// 				else
+		// 				{
+		// 					if ($.type(result) !== 'array')
+		// 					{
+		// 						result = [];
+		// 					}
+		// 					if (!$.isEmptyObject(child))
+		// 					{
+		// 						result.push(child.value);
+		// 					}
+		// 				}
+		// 			}
+		// 			else
+		// 			{
+		// 				if (
+		// 					(
+		// 						node.nextElementSibling &&
+		// 						node.nextElementSibling.nodeName === node.nodeName
+		// 					)
+		// 					||
+		// 					node.nodeName === 'item'
+		// 				)
+		// 				{
+		// 					if ($.type(result[ node.nodeName ]) === 'undefined')
+		// 					{
+		// 						result[ node.nodeName ] = [];
+		// 					}
+		// 					if (!$.isEmptyObject(child))
+		// 					{
+		// 						result[ node.nodeName ].push(child);
+		// 					}
+		// 				}
+		// 				else
+		// 				{
+		// 					if (node.previousElementSibling && node.previousElementSibling.nodeName === node.nodeName)
+		// 					{
+		// 						if (!$.isEmptyObject(child))
+		// 						{
+		// 							result[ node.nodeName ].push(child);
+		// 						}
+		// 					}
+		// 					else
+		// 					{
+		// 						result[ node.nodeName ] = child;
+		// 					}
+		// 				}
+		// 			}
+
+		// 			// Add attributes if any
+		// 			if (node.attributes.length > 0)
+		// 			{
+		// 				result[ node.nodeName ][ '@attributes' ] = {};
+		// 				for (var j in node.attributes)
+		// 				{
+		// 					var attribute = node.attributes.item(j);
+		// 					result[ node.nodeName ]['@attributes'][attribute.nodeName] = attribute.nodeValue;
+		// 				}
+		// 			}
+
+		// 			// Add element value
+		// 			if (
+		// 				node.childElementCount === 0 &&
+		// 				node.textContent != null &&
+		// 				node.textContent !== ''
+		// 			)
+		// 			{
+		// 				content = node.textContent.trim();
+
+		// 				switch (content)
+		// 				{
+		// 					case 'true':
+		// 						content = true;
+		// 						break;
+
+		// 					case 'false':
+		// 						content = false;
+		// 						break;
+		// 				}
+
+		// 				if (result[ node.nodeName ] instanceof Array)
+		// 				{
+		// 					result[ node.nodeName ].push(content);
+		// 				}
+		// 				else
+		// 				{
+		// 					result[ node.nodeName ] = content;
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+
+		// 	return result;
+		// }
 	});
 })();
 

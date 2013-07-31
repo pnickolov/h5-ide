@@ -256,7 +256,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 interval = value.time_update
 
             if interval
-                return { 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval_date': MC.intervalDate(interval), 'interval' : interval }
+                return { 'id' : value.id, 'region' : value.region, 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval_date': MC.intervalDate(interval), 'interval' : interval }
 
     }
 

@@ -19,8 +19,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         recent_stopped_app : Handlebars.compile $( '#recent-stopped-app-tmpl' ).html()
 
         events   :
-            'click #map-region-spot-list > li' : 'mapRegionClick'
-            'click #dashboard-create-stack-list > li' : 'createStackClick'
+            'click #map-region-spot-list > li'          : 'mapRegionClick'
+            'click #dashboard-create-stack-list > li'   : 'createStackClick'
+            'click .dashboard-recent-list > li'         : 'openItem'
 
         renderMapResult : ->
             console.log 'dashboard overview-result render'
@@ -82,6 +83,21 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             console.log 'dashboard overview render'
 
             $( this.el ).html template
+
+        openItem : (event) ->
+            console.log 'click item'
+
+            me = this
+
+            id = event.target.id
+
+            if id.indexOf('app-') == 0
+                ide_event.trigger ide_event.OPEN_APP_TAB, event.target.text, event.target.region, event.target.id
+            else if id.indexOf('stack-') == 0
+                ide_event.trigger ide_event.OPEN_STACK_TAB, event.target.text, event.target.region, event.target.id
+
+            null
+            
     }
 
     return OverviewView

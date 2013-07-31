@@ -30,8 +30,9 @@ a {
 }
 
 /* generic class */
-.dis-blk   { display : block !important; }
-.dis-inblk { display : inline-block !important; }
+.dis-blk   { display  : block !important; }
+.dis-inblk { display  : inline-block !important; }
+.pos-r     { position : relative; }
 
 .mgl80 { margin-left  : 80px; }
 .mgr10 { margin-right : 10px; }
@@ -3370,9 +3371,27 @@ a.sidebar-hider {
 
 /* App Property */
 /* App Property Panel, Mostly Read-Only Elements */
-.app-panel-li {}
-.app-panel-li-main {}
-.app-panel-li-sub  {}
+.app-panel-li {
+	background    : #fcfcfc;
+	border-bottom : 1px solid #BBB;
+	padding       : 10px;
+}
+.app-panel-li:after {
+	display : block;
+	content : " ";
+	clear   : both;
+}
+.app-panel-li:hover {
+	background : #f7f7f7;
+}
+.app-panel-li-col2-1 {
+	float : left;
+	width : 60%;
+}
+.app-panel-li-col2-2  {
+	float : left;
+	width : 40%;
+}
 
 .property-app {
 	font-size: 12px;

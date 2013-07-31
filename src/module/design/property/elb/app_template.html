@@ -9,7 +9,11 @@
           <dt>Scheme</dt>
           <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
           <dt>DNS Name</dt>
-          <dd>{{DNSName}}</dd>
+          <dd id="property-app-elb-dnss">
+            <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{DNSName}}">(A){{DNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{DNSName}}"></i></div>
+            <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{AAAADNSName}}">(AAAA){{AAAADNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{AAAADNSName}}"></i></div>
+            <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{ADNSName}}">(A/AAAA){{ADNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{ADNSName}}"></i></div>
+          </dd>
           <dt>Hosted Zone ID</dt>
           <dd>{{CanonicalHostedZoneNameID}}<dd>
         </dl>
@@ -23,23 +27,23 @@
         {{#each listenerDisplay}}
           <li class="app-panel-li">
             <div class="app-panel-li-col2-1">
-              <p>Load Balancer <span>Protocol</span></p>
-              <p>{{Listener.Protocol}}</p>
+              <div>Load Balancer <span>Protocol</span></div>
+              <div>{{Listener.Protocol}}</div>
             </div>
 
             <div class="app-panel-li-col2-2">
-              <p><span>Port</span></p>
-              <p>{{Listener.LoadBalancerPort}}</p>
+              <div>Port</div>
+              <div>{{Listener.LoadBalancerPort}}</div>
             </div>
 
             <div class="app-panel-li-col2-1">
-              <p>Instance <span>Protocol</span></p>
-              <p>{{Listener.InstanceProtocol}}</p>
+              <div>Instance <span>Protocol</span></div>
+              <div>{{Listener.InstanceProtocol}}</div>
             </div>
 
             <div class="app-panel-li-col2-2">
-              <p><span>Port</span></p>
-              <p>{{Listener.InstancePort}}</p>
+              <div>Port</div>
+              <div>{{Listener.InstancePort}}</div>
             </div>
           </li>
         {{/each}}
@@ -81,7 +85,8 @@
     <div class="fixedaccordion-head">Distribution</div>
     <ul class="accordion-body">
       {{#each distribution}}
-      <li class="app-panel-li status-{{#if health}}good{{else}}bad{{/if}}">
+      <li class="app-panel-li">
+        <i class="status status-{{#if health}}green{{else}}red{{/if}}"></i>
         <p class="app-panel-li-main">{{zone}} {{#if subnet}}<span class="sub">- {{subnet}}</span>{{/if}} </p>
         <p class="app-panel-li-sub"> {{health_instance}}/{{total_instance}} instances are healthy </p>
       </li>

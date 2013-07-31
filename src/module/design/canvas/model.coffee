@@ -74,6 +74,7 @@ define [ 'constant',
 
 			#to-do
 			me = this
+			is_delete = false
 
 			if option.type == 'node'
 
@@ -120,6 +121,8 @@ define [ 'constant',
 
 								me._removeGatewayIdFromRT comp.uid, option.id
 
+						is_delete = true
+
 					# remove node volume just use mc.canvas.remove
 
 					# remove node eni
@@ -129,11 +132,14 @@ define [ 'constant',
 
 							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.NetworkInterfaceId.split('.')[0][1...] == option.id
 
-								delete MC.canvas_data.componentreturn[index]
+								delete MC.canvas_data.component[index]
 
 							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
 								me._removeGatewayIdFromRT comp.uid, option.id
+
+						is_delete = true
+
 
 					# remove rt
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
@@ -169,6 +175,9 @@ define [ 'constant',
 
 								return false
 
+						is_delete = true
+
+
 					# remove vgw
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
 
@@ -200,6 +209,9 @@ define [ 'constant',
 
 								return false
 
+						is_delete = true
+
+
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
 
 						$.each MC.canvas_data.component, ( index, comp ) ->
@@ -212,6 +224,7 @@ define [ 'constant',
 
 									return false
 
+						is_delete = true
 
 			# remove group
 			else if option.type == 'group'
@@ -227,6 +240,8 @@ define [ 'constant',
 					me.deleteObject op
 
 				delete MC.canvas_data.component[option.id]
+
+				is_delete = true
 
 
 				# recover az dragable
@@ -268,13 +283,26 @@ define [ 'constant',
 
 				#delete line between elb and instance
 				if portMap['elb-sg-out'] and portMap['instance-sg']
+
 					MC.aws.elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg'])
+
+					is_delete = true
+
+
+				#connect elb and subnet
+				if portMap['elb-assoc'] and portMap['subnet-assoc-in']
+
+					deleteE_SLen = MC.aws.elb.removeSubnetFromELB portMap['elb-assoc'], portMap['subnet-assoc-in']
+
+					is_delete = true
 
 				if portMap['instance-attach'] and portMap['eni-attach']
 
 					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 
 					MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
+
+					is_delete = true
 
 
 				# remove line between igw and rt
@@ -292,6 +320,9 @@ define [ 'constant',
 
 						MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet.splice v, 1
 
+					is_delete = true
+
+
 				# remove line between subnet and rt
 				if portMap['subnet-assoc-out'] and portMap['rtb-src']
 
@@ -306,6 +337,9 @@ define [ 'constant',
 								MC.canvas_data.component[rt_uid].resource.AssociationSet.splice index, 1
 
 								return false
+
+					is_delete = true
+
 
 				# remove line between instance and rt
 				if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
@@ -326,6 +360,9 @@ define [ 'constant',
 
 						MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
 
+					is_delete = true
+
+
 				# remove line between eni and rt
 				if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
@@ -345,6 +382,8 @@ define [ 'constant',
 
 						MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
 
+					is_delete = true
+
 
 				# remove line between vgw and rt
 				if portMap['vgw-tgt'] and portMap['rtb-tgt-right']
@@ -361,8 +400,15 @@ define [ 'constant',
 
 						MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet.splice v, 1
 
+					is_delete = true
+
+
 				if portMap['vgw-vpn'] and portMap['cgw-vpn']
+
 					MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+
+					is_delete = true
+
 
 				if portMap['instance-sg'] or portMap['eni-sg'] or portMap['elb-sg-in'] or portMap['elb-sg-out']
 
@@ -374,6 +420,14 @@ define [ 'constant',
 
 
 			MC.canvas.remove $("#" + option.id)[0]
+
+
+
+
+			if is_delete
+
+				this.trigger 'DELETE_OBJECT_COMPLETE'
+
 
 			null
 
@@ -460,7 +514,30 @@ define [ 'constant',
 
 				#connect elb and instance
 				if portMap['instance-sg'] and portMap['elb-sg-out']
-					MC.aws.elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg'])
+					linkSubnetID = MC.aws.elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg'])
+
+					if linkSubnetID
+						# We need to link subnet to the elb.
+						MC.canvas.connect portMap['elb-sg-out'], "elb-assoc", linkSubnetID, "subnet-assoc-in"
+
+
+				#connect elb and subnet
+				if portMap['elb-assoc'] and portMap['subnet-assoc-in']
+					elbUid       = portMap['elb-assoc']
+					deleteE_SLen = MC.aws.elb.addSubnetToELB elbUid, portMap['subnet-assoc-in']
+					# Connecting Elb to Subnet might need to disconnect Elb from another Subnet
+					if deleteE_SLen
+						subnetLayout = MC.canvas_data.layout.component.group[deleteE_SLen]
+						if subnetLayout
+							for i in subnetLayout.connection
+								if i.target == elbUid
+									# Delete line
+									this.deleteObject {
+										type : "line"
+										id   : i.line
+									}
+									break
+
 
 				if portMap['instance-attach'] and portMap['eni-attach']
 
@@ -675,6 +752,9 @@ define [ 'constant',
 
 			if componentType is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 				MC.aws.elb.setAllELBSchemeAsInternal()
+
+			#
+			this.trigger 'CREATE_COMPONENT_COMPLETE'
 
 			#to-do
 

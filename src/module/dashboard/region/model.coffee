@@ -602,7 +602,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                             cur_value
 
                 if cur_value
-                    if cur_value.constructor == Object or cur_value.constructor == Array
+                    if $.type(cur_value) == 'object' or $.type(cur_value) == 'array'
                         cur_value = me._genBubble cur_value, show_key, true
 
                     parse_sub_info += ( '"<dt>' + show_key + ': </dt><dd>' + cur_value + '</dd>", ')
@@ -652,13 +652,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 return ""
 
-            if source.constructor == Object
+            if $.type(source) == 'object'
                 tmp = []
                 _.map source, ( value, key )->
 
                     if value != null
 
-                        if value.constructor == String
+                        if $.type(value) == 'string'
 
                             tmp.push ( '\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\"')
 
@@ -674,7 +674,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     parse_sub_info  = " &apos;{\\\"title\\\": \\\"" +title + '\\\" , \\\"sub_info\\\":[' + parse_sub_info + "]}&apos; "
                     parse_sub_info  = bubble_front + parse_sub_info + bubble_end
 
-            if source.constructor == Array
+            if $.type(source) == 'array'
 
                 tmp = []
 
@@ -708,7 +708,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     if value != null
 
-                        if value.constructor == String
+                        if $.type(value) == 'string'
 
                             is_str = true
 
@@ -1125,7 +1125,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                         region_ami_list = {}
 
-                        if result.resolved_data.item.constructor == Array
+                        if $.type(result.resolved_data.item) == 'array'
 
                             _.map result.resolved_data.item, ( ami ) ->
 
@@ -1213,7 +1213,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                                 vpc.dhcp = '{"title": "default", "sub_info" : ["<dt>DhcpOptionsId: </dt><dd>None</dd>"]}'
 
-                            if dhcp_set.constructor == Object
+                            if $.type(dhcp_set) == 'object'
 
                                 if vpc.dhcpOptionsId == dhcp_set.dhcpOptionsId
 
@@ -1270,7 +1270,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                         _.map resources.DescribeVpnConnections, ( vpn ) ->
 
-                            if cgw_set.constructor == Object
+                            if $.type(cgw_set) == 'object'
 
                                 vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw_set, "bubble", null
 
@@ -1299,7 +1299,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                         _.map resources.DescribeVpnConnections, ( vpn ) ->
 
-                            if vgw_set.constructor == Object
+                            if $.type(vgw_set) == 'object'
 
                                 vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw_set, "bubble", null
 

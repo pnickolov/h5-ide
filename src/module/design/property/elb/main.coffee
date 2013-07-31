@@ -28,6 +28,7 @@ define [ 'jquery',
 
         if tab_type is 'OPEN_APP'
             loadAppModule uid
+            return
 
         require [ './module/design/property/elb/view',
                   './module/design/property/elb/model',
@@ -93,6 +94,8 @@ define [ 'jquery',
             view.render model.attributes
 
             sglist_main.loadModule model
+
+    loadAppModule = ( uid ) ->
             
         require [ './module/design/property/elb/app_view',
                   './module/design/property/elb/app_model'

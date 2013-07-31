@@ -56,7 +56,7 @@ define [ 'jquery',
                 #
                 tab_type = type
                 #
-                stack_main.loadModule stack_main
+                stack_main.loadModule stack_main, type
                 null
 
             #listen OPEN_PROPERTY
@@ -75,7 +75,7 @@ define [ 'jquery',
 
                     #show stack property
                     if uid is ''
-                        stack_main.loadModule stack_main
+                        stack_main.loadModule stack_main, tab_type
 
                     #show az property
                     if MC.canvas_data.component[ uid ]

@@ -92,6 +92,9 @@ define [ 'underscore', 'backbone' ], () ->
         #websocket meteor collection
         WS_COLLECTION_READY_REQUEST : 'WS_COLLECTION_READY_REQUEST'
 
+        #quickstart data ready
+        RESOURCE_QUICKSTART_READY : 'RESOURCE_QUICKSTART_READY'
+
         #trigger property view's undelegateEvents
         UNDELEGATE_PROPERTY_DOM_EVENTS : 'UNDELEGATE_PROPERTY_DOM_EVENTS'
 

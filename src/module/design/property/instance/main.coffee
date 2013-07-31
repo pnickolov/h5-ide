@@ -120,9 +120,10 @@ define [ 'jquery',
             model.on "KP_DOWNLOADED", (data)-> view.updateKPModal(data)
             view.on "REQUEST_KEYPAIR", (name)-> model.downloadKP(name)
 
-            model.init( uid )
-            view.render()
+            model.init(uid)
 
+            view.render()
+            sglist_main.loadModule model, true
 
     unLoadModule = () ->
         current_view.off()

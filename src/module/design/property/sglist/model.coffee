@@ -12,6 +12,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			'sg_list' : null
 			'is_stack_sg' : null
 			'sg_rule_list' : null
+			'app_view' : null
 
 		initialize : ->
 			null

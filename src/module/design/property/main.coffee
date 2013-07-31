@@ -147,7 +147,12 @@ define [ 'jquery',
                             else if key.indexOf('sg') >=0
 
                                 #select line between instance and instance
-                                sgrule_main.loadModule uid, 'line', sgrule_main, tab_type
+                                currentState = MC.canvas.getState()
+
+                                if currentState is 'app'
+                                    sgrule_main.loadAppModule uid
+                                else
+                                    sgrule_main.loadModule uid, 'line', sgrule_main, tab_type
 
                             else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
                                 #select line between vgw and  cgw

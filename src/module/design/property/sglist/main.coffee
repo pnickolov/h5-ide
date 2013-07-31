@@ -47,7 +47,7 @@ define [ 'jquery',
                 model.deleteSGFromComp sgUID
 
             view.on 'OPEN_SG', (sgUID) ->
-                ide_event.trigger ide_event.OPEN_SG, sgUID, current_main
+                ide_event.trigger ide_event.OPEN_SG, sgUID, is_app_view
 
             #render
             view.render()

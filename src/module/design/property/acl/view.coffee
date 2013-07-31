@@ -39,6 +39,8 @@ define [ 'event',
             'click .property-rule-delete-btn' : 'removeRuleClicked'
             'blur #property-acl-name' : 'aclNameChanged'
 
+            'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
+
         instance_expended_id : 0
 
         render     : (expended_accordion_id) ->
@@ -215,6 +217,12 @@ define [ 'event',
 
             $('#acl-rule-count').text(newEntrySet.length)
 
+            #sort acl list
+            sg_rule_list = $('#acl-rule-list')
+            sorted_items = $('#acl-rule-list li')
+            orted_items = sorted_items.sort(this._sortNumber)
+            sg_rule_list.html sorted_items
+
         modalRuleSourceSelected : (event) ->
             value = $.trim($(event.target).find('.selected').attr('data-id'))
 
@@ -255,6 +263,40 @@ define [ 'event',
             $('.protocol-icmp-sub-select').hide()
             subSelectElem.show()
             null
+
+        sortACLRule : ( event ) ->
+            sg_rule_list = $('#acl-rule-list')
+
+            sortType = $(event.target).find('.selected').attr('data-id')
+
+            sorted_items = $('#acl-rule-list li')
+
+            if sortType is 'number'
+                sorted_items = sorted_items.sort(this._sortNumber)
+            else if sortType is 'action'
+                sorted_items = sorted_items.sort(this._sortAction)
+            else if sortType is 'direction'
+                sorted_items = sorted_items.sort(this._sortDirection)
+            else if sortType is 'source/destination'
+                sorted_items = sorted_items.sort(this._sortSource)
+
+            sg_rule_list.html sorted_items
+
+        _sortNumber : ( a, b) ->
+            return $(a).find('.acl-rule-number').attr('data-id') >
+                $(b).find('.acl-rule-number').attr('data-id')
+
+        _sortAction : ( a, b) ->
+            return $(a).find('.acl-rule-action').attr('data-id') >
+                $(b).find('.acl-rule-action').attr('data-id')
+
+        _sortDirection : ( a, b) ->
+            return $(a).find('.acl-rule-direction').attr('data-id') >
+                $(b).find('.acl-rule-direction').attr('data-id')
+
+        _sortSource : ( a, b) ->
+            return $(a).find('.acl-rule-source').attr('data-id') >
+                $(b).find('.acl-rule-source').attr('data-id')
     }
 
     view = new ACLView()

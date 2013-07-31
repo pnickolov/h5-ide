@@ -19,20 +19,12 @@
 							<div class="col2-2 truncate">{{sgDesc}}</div>
 							<div class="col2-3 truncate">{{sgRuleNum}} rules, {{sgMemberNum}} members</div>
 						</div>
-						<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip="Edit SG" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"uid":"{{sgUID}}", "parent":"{{parent}}"}' data-sgid="{{sgUID}}">&gt;</div>
+						<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip={{#if app_view}}"View SG"{{else}}"Edit SG"{{/if}} data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"uid":"{{sgUID}}", "parent":"{{parent}}"}' data-sgid="{{sgUID}}">&gt;</div>
 						{{#unless sgIsDefault}}{{#unless sgMemberNum}}<div class="sg-list-delete-btn">Delete</div>{{/unless}}{{/unless}}
 					</li>
 					{{/each}}
 				</ul>
-
-				{{#if isStackView}}
-					{{#if is_stack}}
-					<div class="btn btn-silver secondary-panel" id="add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"parent":"{{component.uid}}"}'>Create new Security Group</div>
-					{{/if}}
-				{{else}}
-				<div class="btn btn-silver secondary-panel" id="add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"parent":"{{component.uid}}"}'>Create new Security Group</div>
-				{{/if}}
-
+				<div class="btn btn-silver secondary-panel {{#if app_view}}hide{{/if}}" id="add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"parent":"{{sgUID}}"}'>Create new Security Group</div>
 			</div>
 			<div id="item-rule" class="tab-item">
 				<div class="sg-rule-filter">

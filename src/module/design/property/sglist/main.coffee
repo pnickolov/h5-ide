@@ -17,7 +17,7 @@ define [ 'jquery',
     $( 'head' ).append template
 
     #private
-    loadModule = ( parent_model ) ->
+    loadModule = ( parent_model, is_app_view ) ->
 
         current_main = this
 
@@ -36,8 +36,8 @@ define [ 'jquery',
                 view.render()
 
             #init model
+            model.set 'app_view', is_app_view
             model.getSGInfoList()
-
             model.getRuleInfoList()
 
             view.on 'ASSIGN_SG_TOCOMP', (sgUID, sgChecked) ->

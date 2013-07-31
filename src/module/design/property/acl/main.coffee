@@ -56,6 +56,13 @@ define [ 'jquery',
             #view
             view.model    = model
 
+            #render
+            view.render expended_accordion_id
+
+            #temp hack
+            if view._events
+                return
+
             view.on 'ADD_RULE_TO_ACL', (value) ->
                 model.addRuleToACL uid, value
 
@@ -73,13 +80,10 @@ define [ 'jquery',
                 #ide_event.trigger ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, that
                 ide_event.trigger ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, return_type
 
-            #render
-            view.render expended_accordion_id
-
     unLoadModule = () ->
-        current_view.off()
-        current_model.off()
-        current_view.undelegateEvents()
+        # current_view.off()
+        # current_model.off()
+        # current_view.undelegateEvents()
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 

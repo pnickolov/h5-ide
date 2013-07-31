@@ -1,7 +1,8 @@
-<header class="sidebar-title">vpn:{{name}}</header>
+<header class="sidebar-title">vpn:{{cgw.name}}</header>
 
 <article class="fixedaccordion property-panel property-app">
 
+  {{#with cgw}}
   <section class="accordion-group expanded">
     <div class="fixedaccordion-head">Customer Gateway</div>
 
@@ -10,7 +11,7 @@
         <dt>ID</dt>
         <dd>{{customerGatewayId}}</dd>
         <dt>State</dt>
-        <dd><i class="status status-{{#if available}}green{{else}}orange{{/if}}"></i>{{state}}</dd>
+        <dd class="capitalize"><i class="status status-{{stateColor}}"></i>{{state}}</dd>
         <dt>IP</dt>
         <dd>{{ipAddress}}</dd>
         <dt>Type</dt>
@@ -20,7 +21,9 @@
       </dl>
     </div>
   </section>
+  {{/with}}
 
+  {{#with vpn}}
   <section class="accordion-group">
     <div class="fixedaccordion-head">
       <span>VPN Connection</span>
@@ -31,109 +34,109 @@
       <div class="scroll-content">
         <dl class="dl-vertical">
           <dt>ID</dt>
-          <dd>%id%</dd>
+          <dd>{{vpnConnectionId}}</dd>
 
           <dt>State</dt>
-          <dd><i class="status status-green"></i>Available</dd>
-
-          <dt>IP</dt>
-          <dd>%ipAddress%</dd>
+          <dd class="capitalize"><i class="status status-green"></i>{{state}}</dd>
 
           <dt>Type</dt>
-          <dd>%type%</dd>
+          <dd>{{type}}</dd>
 
           <dt>Routing</dt>
-          <dd>%Routing%</dd>
+          <dd>{{routing}}</dd>
         </dl>
 
-        <div class="accordion-sub-head">
-          <h5>VPN Tunnels</h5>
-        </div>
-        <table class="table">
-          <thead>
-            <tr>
-            <th style="width:20px">Tunnel</th>
-            <th style="width:100px">IP</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><i class="status status-green"></i>1</td>
-              <td>192.168.1.1</td>
-            </tr>
-            <tr>
-              <td><i class="status status-green"></i>2</td>
-              <td>192.168.1.1</td>
-            </tr>
-          </tbody>
-        </table>
+        {{#if vgwTelemetry.item}}
+          <div class="accordion-sub-head">
+            <h5>VPN Tunnels</h5>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+              <th style="width:20px">Tunnel</th>
+              <th style="width:100px">IP</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each vgwTelemetry.item}}
+                <tr>
+                  <td><i class="status status-{{stateColor}} tooltip" data-tooltip="{{status}} since {{lastStatusChange}} because {{statusMessage}}"></i>{{acceptedRouteCount}}</td>
+                  <td>{{outsideIpAddress}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{/if}}
 
-        <div class="accordion-sub-head">
-          <h5>Status Routes</h5>
-        </div>
+        {{#if routes.item}}
+          <div class="accordion-sub-head">
+            <h5>Status Routes</h5>
+          </div>
 
-        <table class="table">
-          <thead>
-            <tr>
-            <th style="width:100px">Status</th>
-            <th style="width:100px">Source</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><i class="status status-green"></i>192.168.1.1/16</td>
-              <td>Static</td>
-            </tr>
-            <tr>
-              <td><i class="status status-green"></i>192.168.1.1/16</td>
-              <td>Static</td>
-            </tr>
-          </tbody>
-        </table>
+          <table class="table">
+            <thead>
+              <tr>
+              <th style="width:100px">Status</th>
+              <th style="width:100px">Source</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each routes.item}}
+              <tr>
+                <td><i class="status status-{{stateColor}} tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
+                <td>{{source}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{/if}}
       </div>
     </div>
   </section>
+  {{/with}}
 
-  <section class="accordion-group">
-    <div class="fixedaccordion-head">
-      <span>Download Configuration</span>
-    </div>
-
-    <div class="accordion-body" id="app-vpn-connection-body">
-      <div class="property-control-group clearfix">
-        <label>Vendor</label>
-        <div class="selectbox" id="tenancy-select">
-          <div class="selection">Cisco Systems, Inc.</div>
-          <ul class="dropdown" tabindex="-1">
-            <li class="item selected focused" data-id="default">Cisco Systems, Inc.</li>
-            <li class="item" data-id="dedicated">Delicated</li>
-          </ul>
-        </div>
+  {{#if vpn.available}}
+    <section class="accordion-group">
+      <div class="fixedaccordion-head">
+        <span>Download Configuration</span>
       </div>
 
-      <div class="property-control-group clearfix">
-        <label>Platform</label>
-        <div class="selectbox" id="tenancy-select">
-          <div class="selection">ISR Series Routers</div>
-          <ul class="dropdown" tabindex="-1">
-            <li class="item selected focused" data-id="default">ISR Series Routers</li>
-            <li class="item" data-id="dedicated">Delicated</li>
-          </ul>
-        </div>
-      </div>
+      <div class="accordion-body" id="app-vpn-connection-body">
+        <div class="property-control-group clearfix">
+          <label>Vendor</label>
+          <div class="selectbox" id="tenancy-select">
+            <div class="selection">Generic</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="item selected focused" data-id="default">Generic</li>
+            </ul>
+          </div>
+        </div >
 
-      <div class="property-control-group clearfix">
-        <label>Softerware</label>
-        <div class="selectbox" id="tenancy-select">
-          <div class="selection">IOS 2.4+</div>
-          <ul class="dropdown" tabindex="-1">
-            <li class="item selected focused" data-id="default">IOS 2.4+</li>
-            <li class="item" data-id="dedicated">Delicated</li>
-          </ul>
+        <div class="property-control-group clearfix">
+          <label>Platform</label>
+          <div class="selectbox" id="tenancy-select">
+            <div class="selection">Generic</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="item selected focused" data-id="default">Generic</li>
+            </ul>
+          </div>
         </div>
-      </div>
 
-      <a id="download-vpn-cgw-conf" href="javascript:void(0)" class="btn btn-primary">Download Configuration</a>
-    </div>
-  </section>
+        <div class="property-control-group clearfix">
+          <label>Softerware</label>
+          <div class="selectbox" id="tenancy-select">
+            <div class="selection">Vendor Agnostic</div>
+            <ul class="dropdown" tabindex="-1">
+              <li class="item selected focused" data-id="default">Vendor Agnostic</li>
+            </ul>
+          </div>
+        </div>
+        {{#with vpn.detail}}
+          {{#each btns}}
+          <a id="download-vpn-cgw-conf" class="btn btn-primary" {{#if download}}href="data://text/plain;base64,{{filecontent}}" download="{{filename}}.txt"{{/if}}>{{btnname}}</a>
+          {{/each}}
+        {{/with}}
+      </div>
+    </section>
+  {{/if}}
 </article>

@@ -9,6 +9,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         defaults :
             'sg_display'     : null
             'eni_display'    : null
+            'uid'            : null
 
         initialize : ->
             #listen
@@ -140,6 +141,61 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         setSourceDestCheck : ( uid, value ) ->
 
             MC.canvas_data.component[uid].resource.SourceDestCheck = value
+
+            null
+
+        getSGList : () ->
+
+            uid = this.get 'uid'
+            sgAry = MC.canvas_data.component[uid].resource.GroupSet
+
+            sgUIDAry = []
+            _.each sgAry, (value) ->
+                sgUID = value.GroupId.slice(1).split('.')[0]
+                sgUIDAry.push sgUID
+                null
+
+            return sgUIDAry
+
+        unAssignSGToComp : (sg_uid) ->
+
+            eniUID = this.get 'uid'
+
+            originSGAry = MC.canvas_data.component[eniUID].resource.GroupSet
+
+            currentSG = '@' + sg_uid + '.resource.GroupName'
+            currentSGId = '@' + sg_uid + '.resource.GroupId'
+
+            originSGAry = _.filter originSGAry, (value) ->
+                value.GroupId isnt currentSGId
+
+            MC.canvas_data.component[eniUID].resource.GroupSet = originSGAry
+
+            null
+
+        assignSGToComp : (sg_uid) ->
+
+            eniUID = this.get 'uid'
+
+            originSGAry = MC.canvas_data.component[eniUID].resource.GroupSet
+
+            currentSG = '@' + sg_uid + '.resource.GroupName'
+            currentSGId = '@' + sg_uid + '.resource.GroupId'
+
+            isInGroup = false
+
+            _.each originSGAry, (value) ->
+                if value.GroupId is currentSGId
+                    isInGroup = true
+                null
+
+            if !isInGroup
+                originSGAry.push {
+                    GroupName: currentSG
+                    GroupId: currentSGId
+                }
+
+            MC.canvas_data.component[eniUID].resource.GroupSet = originSGAry
 
             null
 

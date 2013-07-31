@@ -24,7 +24,7 @@
 <div class="fixedaccordion accordion-default property-stack" data-sub="68">
 	<div class="accordion-group expanded">
 		<div class="fixedaccordion-head">
-			Security Group({{sg_display.detail.length}})
+			Security Groups (<span id="property-head-sg-num"></span>)
 		</div>
 		<div class="sg-group">loading...</div>
 	</div>
@@ -42,7 +42,7 @@
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
 			Cost Estimation <a href="###"><i class="icon-question-sign"></i></a>
-			$37.8/month
+			{{#if total_fee}} ${{total_fee}}/month {{/if}}
 		</div>
 		<div class="accordion-body">
 
@@ -54,21 +54,23 @@
 						<th style="">Fee($)</th>
 					</tr>
 				</thead>
+
+				{{#each cost_list}}
 				<tbody>
 					<tr>
-						<td>instance111..</td>
-						<td>m2.large</td>
-						<td>0.2/hr</td>
-					</tr>
-					<tr>
-						<td>instance111..</td>
-						<td>m2.large</td>
-						<td>0.2/hr</td>
+						<td>{{resource}}</td>
+						<td>{{size}}</td>
+						<td>{{fee}}</td>
 					</tr>
 				</tbody>
+				{{/each}}
 			</table>
 
 		</div>
 	</div>
 </div>
-<a href="" class="goto-outsite">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+
+<a href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+
+<div id="sg-secondary-panel-wrap"></div>
+<div id="acl-secondary-panel-wrap"></div>

@@ -9,9 +9,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
         defaults :
             'property_detail'   : null
             'is_stack'          : null
-            'sg_display'        : null
+            #'sg_display'        : null
             'network_acl'       : null
             'cost_list'         : null
+            'type'              : 'stack'
+            'total_fee'         : null
 
         initialize : ->
             #listen
@@ -34,8 +36,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             if property_detail.is_vpc
                 property_detail.acl_list = me.getNetworkACL()
 
-            #property_detail.cost = me.getStackCost()
-
             me.set 'property_detail', property_detail
             me.set 'is_stack', is_stack
 
@@ -53,92 +53,114 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             else if type == 'custom-vpc'
                 return 'Custom VPC'
 
-        getSecurityGroup : ->
-            me = this
+        # getSecurityGroup : ->
+        #     me = this
 
-            stack_sg = {}
-            stack_sg.detail = []
-            stack_sg.rules_detail_ingress = []
-            stack_sg.rules_detail_egress = []
+        #     stack_sg = {}
+        #     stack_sg.detail = []
+        #     stack_sg.rules_detail_ingress = []
+        #     stack_sg.rules_detail_egress = []
 
-            _.map MC.canvas_property.sg_list, ( sg ) ->
-                sg_detail = {}
+        #     _.map MC.canvas_property.sg_list, ( sg ) ->
+        #         sg_detail = {}
 
-                sg_detail.uid = sg.uid
-                sg_detail.parent = sg.uid
-                sg_detail.members = if 'member' in sg then sg.member.length else 0
-                sg_detail.rules = MC.canvas_data.component[sg.uid].resource.IpPermissions.length + MC.canvas_data.component[sg.uid].resource.IpPermissionsEgress.length
-                sg_detail.name = MC.canvas_data.component[sg.uid].resource.GroupName
-                sg_detail.desc = MC.canvas_data.component[sg.uid].resource.GroupDescription
+                # sg_detail.uid = sg.uid
+                # sg_detail.parent = sg.uid
+                # sg_detail.members = if 'member' in sg then sg.member.length else 0
+                # sg_detail.rules = MC.canvas_data.component[sg.uid].resource.IpPermissions.length + MC.canvas_data.component[sg.uid].resource.IpPermissionsEgress.length
+                # sg_detail.name = MC.canvas_data.component[sg.uid].resource.GroupName
+                # sg_detail.desc = MC.canvas_data.component[sg.uid].resource.GroupDescription
 
-                stack_sg.rules_detail_ingress = stack_sg.rules_detail_ingress.concat MC.canvas_data.component[sg.uid].resource.IpPermissions
-                stack_sg.rules_detail_egress = stack_sg.rules_detail_egress.concat MC.canvas_data.component[sg.uid].resource.IpPermissionsEgress
+                # stack_sg.rules_detail_ingress = stack_sg.rules_detail_ingress.concat MC.canvas_data.component[sg.uid].resource.IpPermissions
+                # stack_sg.rules_detail_egress = stack_sg.rules_detail_egress.concat MC.canvas_data.component[sg.uid].resource.IpPermissionsEgress
 
-                stack_sg.detail.push sg_detail
+                # stack_sg.detail.push sg_detail
 
-            array_unique = ( ori_ary )->
+        #     array_unique = ( ori_ary )->
 
-                if ori_ary.length == 0
-                    return []
+        #         if ori_ary.length == 0
+        #             return []
 
-                ary = ori_ary.slice 0
-                tmp = []
+        #         ary = ori_ary.slice 0
+        #         tmp = []
 
-                $.each ary, (idx, value)->
-                    str = JSON.stringify value
-                    if str not in tmp
-                        tmp.push str
-                    null
+                # $.each ary, (idx, value)->
+                #     str = JSON.stringify value
+                #     if str not in tmp
+                #         tmp.push str
+                #     null
 
-                return (JSON.parse item for item in tmp)
+                # return (JSON.parse item for item in tmp)
+
+        #         $.each ary, (idx, value)->
+        #             str = JSON.stringify value
+        #             if str not in tmp
+        #                 tmp.push str
+        #             null
+
+        #         return (JSON.parse item for item in tmp)
 
 
-            stack_sg.rules_detail_ingress = array_unique stack_sg.rules_detail_ingress
-            stack_sg.rules_detail_egress = array_unique stack_sg.rules_detail_egress
+        #     stack_sg.rules_detail_ingress = array_unique stack_sg.rules_detail_ingress
+        #     stack_sg.rules_detail_egress = array_unique stack_sg.rules_detail_egress
 
-            me.set 'sg_display', stack_sg
+        #     me.set 'sg_display', stack_sg
 
-        deleteSecurityGroup : (uid) ->
-            me = this
+        # deleteSecurityGroup : (uid) ->
+        #     me = this
 
-            #delete sg from MC.canvas_property.sg_list
-            $.each MC.canvas_property.sg_list, ( key, sg ) ->
+        #     #delete sg from MC.canvas_property.sg_list
+        #     $.each MC.canvas_property.sg_list, ( key, sg ) ->
 
-                if sg and sg.uid == uid
+        #         if sg and sg.uid == uid
 
-                    #update instance
-                    _.map sg.member, (iid) ->
+        #             #update instance
+        #             _.map sg.member, (iid) ->
 
-                        sg_id_ref = "@"+uid+'.resource.GroupId'
+        #                 sg_id_ref = "@"+uid+'.resource.GroupId'
 
-                        sg_ids = MC.canvas_data.component[ iid ].resource.SecurityGroupId
+        #                 sg_ids = MC.canvas_data.component[ iid ].resource.SecurityGroupId
 
-                        if sg_ids.length != 1
+        #                 if sg_ids.length != 1
 
-                            MC.canvas_data.component[ iid ].resource.SecurityGroupId.splice sg_ids.indexOf sg_id_ref, 1
+        #                     MC.canvas_data.component[ iid ].resource.SecurityGroupId.splice sg_ids.indexOf sg_id_ref, 1
 
-                    MC.canvas_property.sg_list.splice key, 1
+        #             MC.canvas_property.sg_list.splice key, 1
 
-                    delete MC.canvas_data.component[uid]
+        #             delete MC.canvas_data.component[uid]
 
-            null
+        #     null
 
-        resetSecurityGroup : (uid) ->
-            me = this
+        # resetSecurityGroup : (uid) ->
+        #     me = this
 
-            property_detail = me.get 'property_detail'
+            # property_detail = me.get 'property_detail'
 
-            _.map property_detail.sg_list, (sg) ->
-                if sg.uid == uid
+            # _.map property_detail.sg_list, (sg) ->
+            #     if sg.uid == uid
 
-                    flag = property_detail.sg_list[ property_detail.sg_list.indexOf sg ].is_shown
-                    property_detail.sg_list[ property_detail.sg_list.indexOf sg ].is_shown = not flag
+            #         flag = property_detail.sg_list[ property_detail.sg_list.indexOf sg ].is_shown
+            #         property_detail.sg_list[ property_detail.sg_list.indexOf sg ].is_shown = not flag
 
-                    me.set 'property_detail', property_detail
+            #         me.set 'property_detail', property_detail
 
-            console.log me.get 'property_detail'
+            # console.log me.get 'property_detail'
 
-            null
+        #     null
+
+        getSGList : ->
+
+            allComp = MC.canvas_data.component
+
+            sgUIDAry = []
+            # _.each allComp, (comp) ->
+            #     compType = comp.type
+            #     compUID = comp.uid
+            #     if compType is 'AWS.EC2.SecurityGroup'
+            #         sgUIDAry.push compUID
+            #     null
+
+            return sgUIDAry
 
         getNetworkACL : ->
 
@@ -180,7 +202,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
             null
 
-        getStackCost : ->
+        getCost : ->
             me = this
 
             cost_list = []
@@ -197,39 +219,48 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                     size = item.resource.InstanceType
                     imageId = item.resource.ImageId
 
-                    fee = ''
-                    unit = ''
+                    ami = v for k,v of feeMap.ami when v.imageId == imageId
 
-                    ami = null
-                    ami = i for i in feeMap.ami when i.imageId == imageId
+                    if feeMap.ami[imageId].osType is 'win'
+                        os = 'windows'
+                    else
+                        os = 'linux-other'
 
-                    _.map feeMap.ami, (ami) ->
-                        if ami.imageId == imageId
-                            os = ''
-                            if feeMap.ami[imageId].osType is 'win'
-                                os = 'windows'
-                            else
-                                os = 'linux-other'
+                    size_list = size.split('.')
+                    fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
+                    unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
 
-                            size_list = size.split('.')
-                            fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
-                            unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
+                    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + '/hr' }
 
-                            cost_list.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + '/' + unit }
+                    total_fee += fee * 24 * 30
 
-                #else if item.type is 'AWS.ELB'
-                #    fee = feeMap.price.elb
+                else if item.type is 'AWS.ELB'
+                    elb = i for i in feeMap.price.elb when i.unit is 'perELBHour'
 
-                #    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : fee }
+                    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : elb.fee + '/hr' }
 
-                #else if item.type is 'AWS.EC2.EBS.Volume'
-                #    fee = feeMap.price.ebs.ebsVols
+                    total_fee += elb.fee * 24 * 30
 
-                #    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : fee }
+                else if item.type is 'AWS.EC2.EBS.Volume'
+                    if item.resource.VolumeType is 'standard'
+                        vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
+                    else
+                        vol = i for i in feeMap.price.ebs.ebsPIOPSVols when i.unit is 'perGBmoProvStorage'
+
+                    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : vol.fee + '/mo' }
+
+                    total_fee += parseInt(vol.fee, 0)
 
                 null
 
+            # sort with type
+            cost_list.sort (a, b) ->
+                return if a.type <= b.type then 1 else -1
             me.set 'cost_list', cost_list
+
+            if total_fee > 0 then me.set 'total_fee', parseFloat(total_fee).toFixed(2)
+
+            me.trigger 'UPDATE_COST_LIST'
 
             null
 

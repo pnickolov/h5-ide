@@ -30,10 +30,10 @@ define [ 'jquery',
             loadAppModule uid
             return
 
-        #
         require [ './module/design/property/elb/view',
-                  './module/design/property/elb/model'
-        ], ( view, model ) ->
+                  './module/design/property/elb/model',
+                  './module/design/property/sglist/main'
+                  ], ( view, model, sglist_main ) ->
 
             #
             if current_view then view.delegateEvents view.events
@@ -93,7 +93,10 @@ define [ 'jquery',
             #render
             view.render model.attributes
 
+            sglist_main.loadModule model
+
     loadAppModule = ( uid ) ->
+            
         require [ './module/design/property/elb/app_view',
                   './module/design/property/elb/app_model'
         ], ( view, model ) ->

@@ -4,7 +4,7 @@
 
 define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
-    InstanceModel = Backbone.Model.extend {
+    SgModel = Backbone.Model.extend {
 
         defaults :
             'sg_detail'    : null
@@ -20,25 +20,29 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             sg_detail = {}
 
-            sg_detail.parent = parent
+            # sg_detail.parent = parent
 
             sg_detail.component = MC.canvas_data.component[uid]
 
-            _.map MC.canvas_property.sg_list, ( value ) ->
+            sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
 
-                if value.uid == uid
+            sg_detail.members = MC.aws.sg.getAllRefComp(uid)
 
-                    sg_detail.members = value.member.length
+            # _.map MC.canvas_property.sg_list, ( value ) ->
 
-                    sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
+            #     if value.uid == uid
+
+            #         sg_detail.members = value.member.length
+
+            #         sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
                     
-                    sg_detail.member_names = []
+            #         sg_detail.member_names = []
 
-                    _.map value.member, ( instance_uid ) ->
+            #         _.map value.member, ( instance_uid ) ->
 
-                        sg_detail.member_names.push MC.canvas_data.component[instance_uid].name
+            #             sg_detail.member_names.push MC.canvas_data.component[instance_uid].name
 
-                null
+            #     null
 
             me.set 'sg_detail', sg_detail
 
@@ -78,8 +82,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     tmp.uid = uid
                     tmp.name = sg_name
 
-                    if parent
-                        tmp.member = [ parent ]
+                    # if parent
+                    #     tmp.member = [ parent ]
 
                     MC.canvas_property.sg_list.push tmp
 
@@ -102,28 +106,28 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             sg_detail.rules = 1
 
-            if parent
+            # if parent
 
-                sg_detail.parent = parent
+            #     sg_detail.parent = parent
 
-                sg_detail.member_names = [ MC.canvas_data.component[parent].name ]
+            #     sg_detail.member_names = [ MC.canvas_data.component[parent].name ]
 
-                if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+            #     if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-                    $.each MC.canvas_data.component, ( key, comp ) ->
+            #         $.each MC.canvas_data.component, ( key, comp ) ->
 
-                        if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == parent and comp.resource.Attachment.DeviceIndex == '0'
+            #             if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == parent and comp.resource.Attachment.DeviceIndex == '0'
 
-                            group = {
-                                GroupId : '@' + uid + '.resource.GroupId'
-                                GroupName : '@' +  uid + '.resource.GroupName'
-                            }
+            #                 group = {
+            #                     GroupId : '@' + uid + '.resource.GroupId'
+            #                     GroupName : '@' +  uid + '.resource.GroupName'
+            #                 }
 
-                            MC.canvas_data.component[ comp.uid ].resource.GroupSet.push group
+            #                 MC.canvas_data.component[ comp.uid ].resource.GroupSet.push group
 
-                            return false
-                else
-                    MC.canvas_data.component[parent].resource.SecurityGroupId.push '@'+uid+'.resource.GroupId'
+            #                 return false
+            #     else
+            #         MC.canvas_data.component[parent].resource.SecurityGroupId.push '@'+uid+'.resource.GroupId'
 
             me.set 'sg_detail', sg_detail
 
@@ -134,6 +138,14 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             MC.canvas_data.component[uid].resource.GroupName = value
 
             MC.canvas_data.component[uid].name = value
+
+            new_sg_detail = this.get 'sg_detail'
+
+            new_sg_detail.component.name = value
+
+            new_sg_detail.component.resource.GroupName = value
+
+            this.set 'sg_detail', new_sg_detail
 
             _.map MC.canvas_property.sg_list, ( sg ) ->
 
@@ -211,6 +223,6 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
     }
 
-    model = new InstanceModel()
+    model = new SgModel()
 
     return model

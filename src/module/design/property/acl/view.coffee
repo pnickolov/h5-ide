@@ -39,6 +39,8 @@ define [ 'event',
             'click .property-rule-delete-btn' : 'removeRuleClicked'
             'blur #property-acl-name' : 'aclNameChanged'
 
+            'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
+
         instance_expended_id : 0
 
         render     : (expended_accordion_id) ->
@@ -104,10 +106,10 @@ define [ 'event',
                     $('#acl-add-model-source-select .selection').text(key)
 
                 selectboxContainer.append(
-                    '<li class="item tooltip ' + selected + '" data-value="' + value + '"><div class="main truncate">' + key + '</div></li>'
+                    '<li class="item tooltip ' + selected + '" data-id="' + value + '"><div class="main truncate">' + key + '</div></li>'
                 )
 
-            selectboxContainer.append('<li class="item tooltip" data-value="custom"><div class="main truncate">Custom</div></li>')
+            selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">Custom</div></li>')
 
             scrollbar.init()
             return false
@@ -117,21 +119,57 @@ define [ 'event',
             ruleNumber = $('#modal-acl-number').val()
             action = $('#acl-add-model-action-allow').prop('checked')
             inboundDirection = $('#acl-add-model-direction-inbound').prop('checked')
-            source = $.trim($('#acl-add-model-source-select').find('.selected').attr('data-value'))
+            source = $.trim($('#acl-add-model-source-select').find('.selected').attr('data-id'))
 
             if $('#modal-acl-source-input').is(':visible')
                 source = $('#modal-acl-source-input').val()
 
-            protocol = $.trim($('#acl-rule-modal-protocol-select').find('.selected').attr('data-value'))
+            protocol = $.trim($('#modal-protocol-select').find('.selected').attr('data-id'))
+
             port = $('#acl-rule-modal-port-input').val()
+
+            icmpType = icmpCode = ''
+            if protocol is 'tcp'
+                protocol = '6'
+                portTo = portFrom = port
+            else if protocol is 'udp'
+                protocol = '17'
+                portTo = portFrom = port
+            else if protocol is 'icmp'
+                protocol = '1'
+                portTo = portFrom = ''
+                icmpType = $('#protocol-icmp-main-select').find('.selected').attr('data-id')
+                icmpCode = $('#protocol-icmp-sub-select-' + icmpType).find('.selected').attr('data-id')
+            else if protocol is 'custom'
+                protocol = port
+                portTo = portFrom = ''
+            else if protocol is 'all'
+                protocol = '-1'
+                portTo = '0'
+                portFrom = '65535'
+
+            ruleAction = ''
+            if action
+                ruleAction = 'allow'
+            else
+                ruleAction = 'deny'
+
+            egress = ''
+            if inboundDirection
+                egress = 'false'
+            else
+                egress = 'true'
 
             this.trigger 'ADD_RULE_TO_ACL', {
                 rule: ruleNumber,
-                action: action,
-                inbound: inboundDirection,
+                action: ruleAction,
+                egress: egress,
                 source: source,
                 protocol: protocol,
-                port: port
+                portTo: portTo
+                portFrom: portFrom
+                type: icmpType
+                code: icmpCode
             }
 
             $('#modal-wrap').trigger('closed').remove()
@@ -164,7 +202,7 @@ define [ 'event',
                 if value.Protocol is '1'
                     newRuleObj.port = value.IcmpTypeCode.Type + '/' + value.IcmpTypeCode.Code
                 else
-                    newRuleObj.port = value.PortRange.To
+                    newRuleObj.port = value.PortRange.From + '-' + value.PortRange.To
 
                     if (value.PortRange.To is '') and (value.PortRange.From is '')
                         newRuleObj.port = 'All'
@@ -179,8 +217,14 @@ define [ 'event',
 
             $('#acl-rule-count').text(newEntrySet.length)
 
+            #sort acl list
+            sg_rule_list = $('#acl-rule-list')
+            sorted_items = $('#acl-rule-list li')
+            orted_items = sorted_items.sort(this._sortNumber)
+            sg_rule_list.html sorted_items
+
         modalRuleSourceSelected : (event) ->
-            value = $.trim($(event.target).find('.selected').attr('data-value'))
+            value = $.trim($(event.target).find('.selected').attr('data-id'))
 
             if value is 'custom'
                 $('#modal-acl-source-input').show()
@@ -219,6 +263,40 @@ define [ 'event',
             $('.protocol-icmp-sub-select').hide()
             subSelectElem.show()
             null
+
+        sortACLRule : ( event ) ->
+            sg_rule_list = $('#acl-rule-list')
+
+            sortType = $(event.target).find('.selected').attr('data-id')
+
+            sorted_items = $('#acl-rule-list li')
+
+            if sortType is 'number'
+                sorted_items = sorted_items.sort(this._sortNumber)
+            else if sortType is 'action'
+                sorted_items = sorted_items.sort(this._sortAction)
+            else if sortType is 'direction'
+                sorted_items = sorted_items.sort(this._sortDirection)
+            else if sortType is 'source/destination'
+                sorted_items = sorted_items.sort(this._sortSource)
+
+            sg_rule_list.html sorted_items
+
+        _sortNumber : ( a, b) ->
+            return $(a).find('.acl-rule-number').attr('data-id') >
+                $(b).find('.acl-rule-number').attr('data-id')
+
+        _sortAction : ( a, b) ->
+            return $(a).find('.acl-rule-action').attr('data-id') >
+                $(b).find('.acl-rule-action').attr('data-id')
+
+        _sortDirection : ( a, b) ->
+            return $(a).find('.acl-rule-direction').attr('data-id') >
+                $(b).find('.acl-rule-direction').attr('data-id')
+
+        _sortSource : ( a, b) ->
+            return $(a).find('.acl-rule-source').attr('data-id') >
+                $(b).find('.acl-rule-source').attr('data-id')
     }
 
     view = new ACLView()

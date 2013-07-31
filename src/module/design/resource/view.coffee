@@ -196,7 +196,10 @@ define [ 'event',
 
             console.log 'openBrowseCommunityAMIsModal'
 
-            modal(MC.template.browseCommunityAmi(''), false)
+            #modal(MC.template.browseCommunityAmi(''), false)
+            #
+            require [ 'component/amis/main' ], ( amis_main ) ->
+                amis_main.loadModule()
 
         communityAmiRender : () ->
 

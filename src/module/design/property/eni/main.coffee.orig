@@ -32,9 +32,14 @@ define [ 'jquery',
 
         #
         require [ './module/design/property/eni/view',
+<<<<<<< HEAD
                   './module/design/property/eni/model',
                   './module/design/property/sglist/main'
         ], ( view, model, sglist_main ) ->
+=======
+                  './module/design/property/eni/model'
+        ], ( view, model ) ->
+>>>>>>> origin/develop
 
             #
             if current_view then view.delegateEvents view.events

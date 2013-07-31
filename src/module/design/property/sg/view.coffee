@@ -36,7 +36,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
             'change #securitygroup-name' : 'setSGName'
             'change #securitygroup-description' : 'setSGDescription'
 
-        render     : ( expended_accordion_id ) ->
+        render     : () ->
             console.log 'property:sg render'
             #
             this.undelegateEvents()
@@ -49,7 +49,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
             $( '#sg-secondary-panel-wrap' ).html this.template this.model.attributes
             fixedaccordion.resize()
 
-            this.instance_expended_id = expended_accordion_id
+            # this.instance_expended_id = expended_accordion_id
             #
             secondary_panel_wrap = $('#sg-secondary-panel-wrap')
             secondary_panel_wrap.animate({
@@ -79,7 +79,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
                     width: 'linear'
                 },
                 complete : () ->
-                    ide_event.trigger ide_event.OPEN_PROPERTY, 'component', $('#sg-secondary-panel').attr('parent'), me.instance_expended_id
+                    ide_event.trigger ide_event.RETURN_PANEL_PROPERTY_FROM_SG
+                    # ide_event.trigger ide_event.OPEN_PROPERTY, 'component', $('#sg-secondary-panel').attr('parent'), me.instance_expended_id
                 }
             )
 

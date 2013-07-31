@@ -11,24 +11,38 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile $( '#property-stack-tmpl' ).html()
-        acl_template : Handlebars.compile $( '#property-stack-acl-tmpl' ).html()
+        stack_template  : Handlebars.compile $( '#property-stack-tmpl' ).html()
+        acl_template    : Handlebars.compile $( '#property-stack-acl-tmpl' ).html()
+        app_template    : Handlebars.compile $( '#property-app-tmpl' ).html()
 
         events   :
+            # 'change #property-stack-name'           : 'stackNameChanged'
+            # 'click #add-sg-btn'                     : 'openSecurityGroup'
+            # 'click #sg-info-list .sg-edit-icon'     : 'openSecurityGroup'
+            # 'click .deleteSG'                       : 'deleteSecurityGroup'
+            # 'click .resetSG'                        : 'resetSecurityGroup'
+            # 'click .stack-property-acl-list .delete': 'deleteNetworkAcl'
+            # 'click #stack-property-add-new-acl'     : 'openCreateAclPanel'
+            # 'click .stack-property-acl-list .edit'  : 'openEditAclPanel'
+
             'change #property-stack-name'   : 'stackNameChanged'
-            'click #add-sg-btn'             : 'createSecurityGroup'
-            'click .deleteSG'               : 'deleteSecurityGroup'
-            'click .resetSG'                : 'resetSecurityGroup'
+            # 'click #add-sg-btn'             : 'createSecurityGroup'
+            # 'click .deleteSG'               : 'deleteSecurityGroup'
+            # 'click .resetSG'                : 'resetSecurityGroup'
             'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
             'click #stack-property-add-new-acl' : 'openCreateAclPanel'
             'click .stack-property-acl-list .edit' : 'openEditAclPanel'
 
         render     : () ->
+            me = this
+
             console.log 'property:stack render'
+
             #
             this.undelegateEvents()
             #
-            $( '.property-details' ).html this.template this.model.attributes
+            $( '.property-details' ).html this.stack_template this.model.attributes
+
             this.refreshACLList()
             #
             this.delegateEvents this.events
@@ -43,43 +57,51 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             else if name.slice(0, 8) == 'untitled'
                 notification 'error', 'Please modify the initial stack name.'
             else if not name
-                $( '#property-stack-name' ).val me.model.attributes.stack_detail.name
+                $( '#property-stack-name' ).val me.model.attributes.property_detail.name
             else if name in MC.data.stack_list[MC.canvas_data.region]
                 notification 'error', 'Stack name \"' + name + '\" is already in using. Please use another one.'
             else
                 me.trigger 'STACK_NAME_CHANGED', name
                 ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, name + ' - stack'
 
-        createSecurityGroup : (event) ->
+        openSecurityGroup : (event) ->
+            source = $(event.target)
+            if(source.hasClass('secondary-panel'))
+                target = source
+            else
+                target = source.parents('.secondary-panel').first()
 
-            ide_event.trigger ide_event.OPEN_SG
+            accordion = $( '.property-stack' )
+            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
 
-        deleteSecurityGroup : (event) ->
-            me = this
+            ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data'), cur_expanded_id
 
-            target = $(event.target).parents('div:eq(0)')
-            uid = target.attr('uid')
-            name = target.children('p.title').text()
+        # deleteSecurityGroup : (event) ->
+        #     me = this
 
-            console.log "Remove sg:" + uid
+        #     target = $(event.target).parents('div:eq(0)')
+        #     uid = target.attr('uid')
+        #     name = target.children('p.title').text()
 
-            me.trigger 'DELETE_STACK_SG', uid
+        #     console.log "Remove sg:" + uid
 
-            target.remove()
+        #     me.trigger 'DELETE_STACK_SG', uid
 
-            notification 'info', name + ' is deleted.'
+        #     target.remove()
 
-            null
+        #     notification 'info', name + ' is deleted.'
 
-        resetSecurityGroup : (event) ->
-            me = this
+        #     null
 
-            target = $(event.target).parents('div:eq(0)')
-            uid = target.attr('uid')
+        # resetSecurityGroup : (event) ->
+        #     me = this
 
-            me.trigger 'RESET_STACK_SG', uid
+        #     target = $(event.target).parents('div:eq(0)')
+        #     uid = target.attr('uid')
 
-            null
+        #     me.trigger 'RESET_STACK_SG', uid
+
+        #     null
 
         deleteNetworkAcl : (event) ->
             aclUID = $(event.target).attr('acl-uid')

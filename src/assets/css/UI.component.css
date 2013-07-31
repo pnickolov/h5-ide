@@ -932,6 +932,11 @@ textarea {
 	background : #f6f5f5;
 }
 
+.dl-vertical .truncate {
+	width : 100%;
+	margin-bottom : 0;
+}
+
 /* Horizontal Definition List */
 .dl-horizontal {
 	line-height: 20px;
@@ -1656,4 +1661,16 @@ textarea {
 .multi-input .icon-add:hover:before,
 .multi-input .icon-add:hover:after {
 	background : #34E093;
+}
+
+
+/* TEMPARORY PROPERTY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+.icon-copy {
+	position   : absolute;
+	right      : -16px;
+	top        : 2px;
+	background : red;
+	width      : 16px;
+	height     : 16px;
+	cursor     : pointer;
 }

@@ -26,12 +26,14 @@ var zeroclipboard, clip, element;
   };
 
   function complete( client, args ) {
-    var id = clip.htmlBridge.title;
-    element.trigger( 'COPY_TO_CLIP_COMPLETE', [ id, args.text.length ] );
+    if( notification )
+      notification("info", clip.htmlBridge.title + " is copied to clipboard");
    }
 
   function mousedown( client ) {
-    clip.setText( JSON.stringify(MC.canvas_data ) );
+    if ( clip.htmlBridge.title == "jsondata" ) {
+      clip.setText( JSON.stringify(MC.canvas_data ) );
+    }
   }
 
 })();

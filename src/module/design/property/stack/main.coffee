@@ -86,9 +86,9 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.RESOURCE_QUICKSTART_READY, () ->
                 console.log 'resource quickstart return'
 
-                model.getStackCost()
+                model.getCost()
 
-            model.on 'change:cost_list', () ->
+            model.on 'UPDATE_COST_LIST', () ->
                 console.log 'rerender property'
 
                 renderPropertyPanel()

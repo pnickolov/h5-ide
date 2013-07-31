@@ -34,8 +34,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             if property_detail.is_vpc
                 property_detail.acl_list = me.getNetworkACL()
 
-            #property_detail.cost = me.getStackCost()
-
             me.set 'property_detail', property_detail
             me.set 'is_stack', is_stack
 
@@ -180,7 +178,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
             null
 
-        getStackCost : ->
+        getCost : ->
             me = this
 
             cost_list = []
@@ -197,39 +195,48 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                     size = item.resource.InstanceType
                     imageId = item.resource.ImageId
 
-                    fee = ''
-                    unit = ''
+                    ami = v for k,v of feeMap.ami when v.imageId == imageId
 
-                    ami = null
-                    ami = i for i in feeMap.ami when i.imageId == imageId
+                    if feeMap.ami[imageId].osType is 'win'
+                        os = 'windows'
+                    else
+                        os = 'linux-other'
 
-                    _.map feeMap.ami, (ami) ->
-                        if ami.imageId == imageId
-                            os = ''
-                            if feeMap.ami[imageId].osType is 'win'
-                                os = 'windows'
-                            else
-                                os = 'linux-other'
+                    size_list = size.split('.')
+                    fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
+                    unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
 
-                            size_list = size.split('.')
-                            fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
-                            unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
+                    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + '/hr' }
 
-                            cost_list.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + '/' + unit }
+                    total_fee += fee * 24 * 30
 
-                #else if item.type is 'AWS.ELB'
-                #    fee = feeMap.price.elb
+                else if item.type is 'AWS.ELB'
+                    elb = i for i in feeMap.price.elb when i.unit is 'perELBHour'
 
-                #    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : fee }
+                    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : elb.fee + '/hr' }
 
-                #else if item.type is 'AWS.EC2.EBS.Volume'
-                #    fee = feeMap.price.ebs.ebsVols
+                    total_fee += elb.fee * 24 * 30
 
-                #    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : fee }
+                else if item.type is 'AWS.EC2.EBS.Volume'
+                    if item.resource.VolumeType is 'standard'
+                        vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
+                    else
+                        vol = i for i in feeMap.price.ebs.ebsPIOPSVols when i.unit is 'perGBmoProvStorage'
+
+                    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : vol.fee + '/mo' }
+
+                    total_fee += vol.fee
 
                 null
 
+            # sort with type
+            cost_list.sort (a, b) ->
+                return if a.type <= b.type then 1 else -1
             me.set 'cost_list', cost_list
+
+            if total_fee > 0 then me.set 'total_fee', parseFloat(total_fee).toFixed(2)
+
+            me.trigger 'UPDATE_COST_LIST'
 
             null
 

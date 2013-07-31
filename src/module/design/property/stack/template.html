@@ -41,7 +41,7 @@
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
 			Cost Estimation <a href="###"><i class="icon-question-sign"></i></a>
-			$37.8/month
+			{{#if total_fee}}${{total_fee}}/month{{/if}}
 		</div>
 		<div class="accordion-body">
 
@@ -68,7 +68,8 @@
 		</div>
 	</div>
 </div>
-<a href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
-<div id="sg-secondary-panel-wrap"></div>
 
+<a href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+
+<div id="sg-secondary-panel-wrap"></div>
 <div id="acl-secondary-panel-wrap"></div>

@@ -2739,8 +2739,10 @@ MC.canvas.event.drawConnection = {
 				if (
 					item.type === 'AWS.VPC.Subnet' &&
 					group_coordinate &&
-					group_coordinate[0] < coordinate.x &&
-					group_coordinate[0] + group_size[0] > coordinate.x &&
+
+					// Extend subnet area
+					group_coordinate[0] - 2 < coordinate.x &&
+					group_coordinate[0] + group_size[0] + 2 > coordinate.x &&
 					group_coordinate[1] < coordinate.y &&
 					group_coordinate[1] + group_size[1] > coordinate.y
 				)

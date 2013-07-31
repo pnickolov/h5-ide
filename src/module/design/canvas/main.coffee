@@ -75,6 +75,9 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
             view.on 'CANVAS_COMPONENT_CREATE', ( uid ) ->
                 console.log 'canvas:CANVAS_COMPONENT_CREATE, uid = ' + uid
                 model.createComponent uid
+
+                ide_event.trigger ide_event.UPDATE_COST_ESTIMATE
+
                 null
 
             #listen CANVAS_EIP_STATE_CHANGE

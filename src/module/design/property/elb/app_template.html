@@ -47,10 +47,12 @@
             </div>
           </li>
         {{/each}}
+        {{#if server_certificate}}
         <li class="app-panel-li">
           <p class="app-panel-li-main">Server Certificate</p>
-          <p class="app-panel-li-sub">TODO!!!!!!</p>
+          <p class="app-panel-li-sub">{{server_certificate}}</p>
         </li>
+        {{/if}}
       </ul>
     </div>
   </div>

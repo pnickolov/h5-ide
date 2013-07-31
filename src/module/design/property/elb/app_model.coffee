@@ -34,6 +34,12 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
 
                 elb.listenerDisplay.push listener
 
+                if listener.Listener.SSLCertificateId
+
+                  elb.server_certificate = listener.Listener.SSLCertificateId.split('/')[1]
+
+                  null
+
             if elb.Subnets
 
               elb.isClassic = false

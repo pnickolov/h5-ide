@@ -59,6 +59,7 @@ define [ 'jquery',
             #render
             view.render expended_accordion_id
 
+            #temp hack
             if view._events
                 return
 

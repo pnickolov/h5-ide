@@ -73,8 +73,10 @@
         <dt>State</dt>
         <dd><i class="status status-{{#if eni.isInUse}}green{{else}}orange{{/if}}"></i>{{eni.status}}</dd>
 
+        {{#if eni.description}}
         <dt>Description</dt>
         <dd>{{eni.description}}</dd>
+        {{/if}}
 
         <dt>Source/Destination Check</dt>
         <dd>{{eni.sourceDestCheck}}</dd>

@@ -11,8 +11,10 @@
         <dd>{{networkInterfaceId}}</dd>
         <dt>State</dt>
         <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
+        {{#if description}}
         <dt>Description</dt>
         <dd>{{description}}</dd>
+        {{/if}}
         <dt>Source/Destination Check</dt>
         <dd>{{sourceDestCheck}}</dd>
       </dl>

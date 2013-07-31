@@ -133,7 +133,7 @@
         </div>
         {{#with vpn.detail}}
           {{#each btns}}
-          <a id="download-vpn-cgw-conf" class="btn btn-primary" {{#if download}}href="{{filecontent}}" download="{{filename}}"{{/if}}>{{btnname}}</a>
+          <a id="download-vpn-cgw-conf" class="btn btn-primary" {{#if download}}href="data://text/plain;base64,{{filecontent}}" download="{{filename}}.txt"{{/if}}>{{btnname}}</a>
           {{/each}}
         {{/with}}
       </div>

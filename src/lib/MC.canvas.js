@@ -2143,57 +2143,60 @@ MC.canvas.volume = {
 
 	mousedown: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
-		var target = $(this),
-			target_offset = target.offset(),
-			canvas_offset = $('#svg_canvas').offset(),
-			node_type = target.data('type'),
-			target_component_type = target.data('component-type'),
-			shadow,
-			clone_node;
-
-		if (MC.canvas.getState() === 'app')
+		if (event.which === 1)
 		{
+			event.preventDefault();
+			event.stopPropagation();
+
+			var target = $(this),
+				target_offset = target.offset(),
+				canvas_offset = $('#svg_canvas').offset(),
+				node_type = target.data('type'),
+				target_component_type = target.data('component-type'),
+				shadow,
+				clone_node;
+
+			if (MC.canvas.getState() === 'app')
+			{
+				MC.canvas.volume.select.call( $('#' + this.id )[0] );
+
+				return false;
+			}
+
+			$(document.body)
+				.addClass('disable-event')
+				.append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
+
+			shadow = $('#drag_shadow');
+
+			shadow
+				.addClass('AWS-EC2-EBS-Volume')
+				.css({
+					'top': event.pageY - 50,
+					'left': event.pageX - 50
+				});
+
+			$('.AWS-EC2-Instance').attr('class', function (index, key)
+			{
+				return 'attachable ' + key;
+			});
+
+			$(document).on({
+				'mousemove': MC.canvas.volume.mousemove,
+				'mouseup': MC.canvas.volume.mouseup
+			}, {
+				'target': target,
+				'canvas_offset': $('#svg_canvas').offset(),
+				'shadow': shadow,
+				'originalPageX': event.pageX,
+				'originalPageY': event.pageY,
+				'action': 'move'
+			});
+
 			MC.canvas.volume.select.call( $('#' + this.id )[0] );
 
 			return false;
 		}
-
-		$(document.body)
-			.addClass('disable-event')
-			.append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
-
-		shadow = $('#drag_shadow');
-
-		shadow
-			.addClass('AWS-EC2-EBS-Volume')
-			.css({
-				'top': event.pageY - 50,
-				'left': event.pageX - 50
-			});
-
-		$('.AWS-EC2-Instance').attr('class', function (index, key)
-		{
-			return 'attachable ' + key;
-		});
-
-		$(document).on({
-			'mousemove': MC.canvas.volume.mousemove,
-			'mouseup': MC.canvas.volume.mouseup
-		}, {
-			'target': target,
-			'canvas_offset': $('#svg_canvas').offset(),
-			'shadow': shadow,
-			'originalPageX': event.pageX,
-			'originalPageY': event.pageY,
-			'action': 'move'
-		});
-
-		MC.canvas.volume.select.call( $('#' + this.id )[0] );
-
-		return false;
 	},
 
 	mousemove: function (event)
@@ -4031,22 +4034,25 @@ MC.canvas.event.EIPstatus = function ()
 
 MC.canvas.event.selectLine = function (event)
 {
-	event.preventDefault();
-	event.stopPropagation();
+	if (event.which === 1)
+	{
+		event.preventDefault();
+		event.stopPropagation();
 
-	MC.canvas.event.clearSelected();
-	Canvon(this).addClass('selected');
+		MC.canvas.event.clearSelected();
+		Canvon(this).addClass('selected');
 
-	var line = $(this),
-		clone = line.clone()[0];
+		var line = $(this),
+			clone = line.clone()[0];
 
-	line.remove();
-	$('#line_layer').append(clone);
+		line.remove();
+		$('#line_layer').append(clone);
 
-	MC.canvas.selected_node.push(clone);
+		MC.canvas.selected_node.push(clone);
 
-	//trigger event when selecte line
-	$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", clone.id);
+		//trigger event when selecte line
+		$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", clone.id);
+	}
 };
 
 MC.canvas.event.selectNode = function (event)

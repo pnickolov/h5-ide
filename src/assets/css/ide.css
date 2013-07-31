@@ -42,6 +42,8 @@ a {
 .left  { float: left; }
 .right { float: right; }
 
+.capitalize { text-transform: capitalize;}
+
 .truncate {
 	/*width: 250px;*/
 	white-space: nowrap;

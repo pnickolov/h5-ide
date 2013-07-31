@@ -83,8 +83,45 @@ define [ 'MC' ], ( MC ) ->
 			null
 		null
 
+	addSubnetToELB = ( elb_uid, subnet_uid ) ->
+		elb = MC.canvas_data.component[ elb_uid ]
+		extractRegex = /@([^.]+)\./
+
+		az_subnet_map = {}
+
+		newSubnetAZ   = MC.canvas_data.component[ subnet_uid ].resource.AvailabilityZone
+
+		subnet_uid = "@" + subnet_uid + ".resource.SubnetId"
+
+		for subnet, i in elb.resource.Subnets
+			extractID      = extractRegex.exec( subnet )
+			linkedSubnetID = if extractID then extractID[1] else subnet
+			linkedSubnet   = MC.canvas_data.component[ linkedSubnetID ]
+
+			if linkedSubnet.resource.AvailabilityZone == newSubnetAZ
+				replacedSubnet = linkedSubnetID
+				elb.resource.Subnets[i] = subnet_uid
+
+		if not replacedSubnet
+			elb.resource.Subnets.push subnet_uid
+
+		replacedSubnet
+
+	removeSubnetFromELB = ( elb_uid, subnet_uid ) ->
+		elb = MC.canvas_data.component[ elb_uid ]
+
+		for subnet, i in elb.resource.Subnets
+			if subnet.indexOf( subnet_uid ) != -1
+				elb.resource.Subnets.splice i, 1
+				break
+
+		null
+
+
 	#public
-	init : init
-	addInstanceAndAZToELB : addInstanceAndAZToELB
-	removeInstanceFromELB : removeInstanceFromELB
+	init                      : init
+	addInstanceAndAZToELB     : addInstanceAndAZToELB
+	removeInstanceFromELB     : removeInstanceFromELB
 	setAllELBSchemeAsInternal : setAllELBSchemeAsInternal
+	addSubnetToELB            : addSubnetToELB
+	removeSubnetFromELB       : removeSubnetFromELB

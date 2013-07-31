@@ -289,6 +289,13 @@ define [ 'constant',
 					is_delete = true
 
 
+				#connect elb and subnet
+				if portMap['elb-assoc'] and portMap['subnet-assoc-in']
+
+					deleteE_SLen = MC.aws.elb.removeSubnetFromELB portMap['elb-assoc'], portMap['subnet-assoc-in']
+
+					is_delete = true
+
 				if portMap['instance-attach'] and portMap['eni-attach']
 
 					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
@@ -504,6 +511,24 @@ define [ 'constant',
 				#connect elb and instance
 				if portMap['instance-sg'] and portMap['elb-sg-out']
 					MC.aws.elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg'])
+
+				#connect elb and subnet
+				if portMap['elb-assoc'] and portMap['subnet-assoc-in']
+					elbUid       = portMap['elb-assoc']
+					deleteE_SLen = MC.aws.elb.addSubnetToELB elbUid, portMap['subnet-assoc-in']
+					# Connecting Elb to Subnet might need to disconnect Elb from another Subnet
+					if deleteE_SLen
+						subnetLayout = MC.canvas_data.layout.component.group[deleteE_SLen]
+						if subnetLayout
+							for i in subnetLayout.connection
+								if i.target == elbUid
+									# Delete line
+									this.deleteObject {
+										type : "line"
+										id   : i.line
+									}
+									break
+
 
 				if portMap['instance-attach'] and portMap['eni-attach']
 

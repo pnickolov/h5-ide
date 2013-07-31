@@ -5,11 +5,7 @@
 MC.canvas_data = {};
 
 //variable for current tab
-MC.canvas_property = {
-	// sg_list: [],
-	// kp_list: [],
-	// SCALE_RATIO: 1
-};
+MC.canvas_property = {};
 
 MC.canvas = {
 
@@ -698,18 +694,18 @@ MC.canvas = {
 		{
 			//D
 			mid_x = (start.x + end.x) / 2;
-			if (to_type == 'AWS.VPC.RouteTable' && to_type != from_type)
+			if (to_type === 'AWS.VPC.RouteTable' && to_type !== from_type)
 			{
 				if (Math.abs(start.x - mid_x) > 5)
 				{
 					mid_x = MC.canvas._adjustMidX(to_port_name, mid_x, start, 1);
 				}
 			}
-			else if (from_type == 'AWS.VPC.RouteTable' && to_type != from_type)
+			else if (from_type == 'AWS.VPC.RouteTable' && to_type !== from_type)
 			{
 				if (Math.abs(mid_x - end.x) > 5)
 				{
-					if (to_type == 'AWS.VPC.InternetGateway' || to_type == 'AWS.VPC.VPNGateway' )
+					if (to_type === 'AWS.VPC.InternetGateway' || to_type === 'AWS.VPC.VPNGateway')
 					{
 						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
 					}
@@ -719,16 +715,15 @@ MC.canvas = {
 					}
 				}
 			}
-			controlPoints.push( { 'x': mid_x, 'y': start.y });
-			controlPoints.push( { 'x': mid_x, 'y': end.y });
+			controlPoints.push({'x': mid_x, 'y': start.y});
+			controlPoints.push({'x': mid_x, 'y': end.y});
 		}
 
 		//3.end point
-		controlPoints.push( { 'x': end.x, 'y': end.y });
-		controlPoints.push( { 'x': end0.x, 'y': end0.y });
+		controlPoints.push({'x': end.x, 'y': end.y});
+		controlPoints.push({'x': end0.x, 'y': end0.y});
 
 		return controlPoints;
-
 	},
 
 	updateResizer: function(node, width, height)
@@ -768,8 +763,10 @@ MC.canvas = {
 			to_uid = to_node.attr('id'),
 			layout_component_data = MC.canvas.data.get('layout.component'),
 			layout_node_data = layout_component_data.node,
-			from_data = layout_component_data[ from_node.data('type') ][ from_uid ],
-			to_data = layout_component_data[ to_node.data('type') ][ to_uid ],
+			from_node_type = from_node.data('type'),
+			to_node_type = to_node.data('type'),
+			from_data = layout_component_data[ from_node_type ][ from_uid ],
+			to_data = layout_component_data[ to_node_type ][ to_uid ],
 			from_type = from_data.type,
 			to_type = to_data.type,
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
@@ -1083,8 +1080,8 @@ MC.canvas = {
 						'line': svg_line.id
 					});
 
-					MC.canvas.data.set('layout.component.' + from_node.data('type') + '.' + from_uid + '.connection', from_node_connection_data);
-					MC.canvas.data.set('layout.component.' + to_node.data('type') + '.' + to_uid + '.connection', to_node_connection_data);
+					MC.canvas.data.set('layout.component.' + from_node_type + '.' + from_uid + '.connection', from_node_connection_data);
+					MC.canvas.data.set('layout.component.' + to_node_type + '.' + to_uid + '.connection', to_node_connection_data);
 				}
 
 				layout_connection_data = MC.canvas.data.get('layout.connection.' + svg_line.id) || {};
@@ -1138,6 +1135,8 @@ MC.canvas = {
 
 		MC.canvas.data.set('layout.component.' + node.getAttribute('data-type') + '.' + node.id + '.coordinate', [x, y]);
 		node.setAttribute('transform', 'translate(' + (x * MC.canvas.GRID_WIDTH) + ',' + (y * MC.canvas.GRID_HEIGHT) + ')');
+
+		return true;
 	},
 
 	remove: function (node)
@@ -1180,7 +1179,7 @@ MC.canvas = {
 		{
 			var	layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
-				line_layer = $("#line_layer")[0],
+				line_layer = document.getElementById('line_layer'),
 				connections = layout_node_data[ node_id ].connection,
 				new_connection_data,
 				connection_data,
@@ -1240,7 +1239,9 @@ MC.canvas = {
 			MC.canvas.data.delete('layout.component.group.' + node_id);
 		}
 
-		$(node).remove();
+		target.remove();
+
+		return true;
 	},
 
 	pixelToGrid: function (x, y)
@@ -4304,4 +4305,6 @@ MC.canvas.event.clickBlank = function (event)
 		//dispatch event when click blank area in canvas
 		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
 	}
+
+	return true;
 };

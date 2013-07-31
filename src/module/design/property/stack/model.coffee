@@ -13,6 +13,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             'network_acl'       : null
             'cost_list'         : null
             'type'              : 'stack'
+            'total_fee'         : null
 
         initialize : ->
             #listen
@@ -248,7 +249,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : vol.fee + '/mo' }
 
-                    total_fee += vol.fee
+                    total_fee += parseInt(vol.fee, 0)
 
                 null
 

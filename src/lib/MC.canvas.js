@@ -753,6 +753,16 @@ MC.canvas = {
 
 	connect: function (from_node, from_target_port, to_node, to_target_port, line_option)
 	{
+		if (typeof from_node === 'string')
+		{
+			from_node = $('#' + from_node);
+		}
+
+		if (typeof to_node === 'string')
+		{
+			to_node = $('#' + to_node);
+		}
+
 		var canvas_offset = $('#svg_canvas').offset(),
 			from_uid = from_node.attr('id'),
 			to_uid = to_node.attr('id'),
@@ -1107,13 +1117,13 @@ MC.canvas = {
 
 		$.each(node_connections, function (index, value)
 		{
-			line_connection = layout_connection_data[ value.line ];
+			line_target = layout_connection_data[ value.line ][ 'target' ];
 
-			line_layer.removeChild(document.getElementById( value.line ));
+			line_layer.removeChild( document.getElementById( value.line ) );
 
 			MC.canvas.connect(
-				node, line_connection['target'][ node_id ],
-				$('#' + value.target), line_connection['target'][ value.target ],
+				node_id, line_target[ node_id ],
+				value.target, line_target[ value.target ],
 				{'line_uid': value['line']}
 			);
 		});

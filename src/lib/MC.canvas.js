@@ -1255,19 +1255,21 @@ MC.canvas = {
 	{
 		var children = MC.canvas.data.get('layout.component.node'),
 			coordinate = MC.canvas.pixelToGrid(x, y),
+			component_size,
 			matched,
 			node_coordinate;
 
 		$.each(children, function (key, item)
 		{
 			node_coordinate = item.coordinate;
+			component_size = MC.canvas.COMPONENT_SIZE[ item.type ];
 
 			if (
 				node_coordinate &&
 				node_coordinate[0] < coordinate.x &&
-				node_coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0] > coordinate.x &&
+				node_coordinate[0] + component_size[0] > coordinate.x &&
 				node_coordinate[1] < coordinate.y &&
-				node_coordinate[1] + MC.canvas.COMPONENT_SIZE[ item.type ][1] > coordinate.y
+				node_coordinate[1] + component_size[1] > coordinate.y
 			)
 			{
 				matched = document.getElementById( key );
@@ -1463,6 +1465,7 @@ MC.canvas = {
 	isBlank: function (type, target_id, x, y, width, height)
 	{
 		var children = MC.canvas.data.get('layout.component.' + type),
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			isBlank = true,
 			start_x,
 			start_y,
@@ -1473,10 +1476,10 @@ MC.canvas = {
 
 		if (type === 'group')
 		{
-			start_x = x * MC.canvas_property.SCALE_RATIO;
-			start_y = y * MC.canvas_property.SCALE_RATIO;
-			end_x = (x + width) * MC.canvas_property.SCALE_RATIO;
-			end_y = (y + height) * MC.canvas_property.SCALE_RATIO;
+			start_x = x * scale_ratio;
+			start_y = y * scale_ratio;
+			end_x = (x + width) * scale_ratio;
+			end_y = (y + height) * scale_ratio;
 			target_type = children[ target_id ].type;
 
 			$.each(children, function (key, item)
@@ -3363,6 +3366,7 @@ MC.canvas.event.siderbarDrag = {
 			shadow_offset = event.data.shadow.position(),
 			node_option = target.data('option'),
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
+			component_size,
 			match_place,
 			default_group_width,
 			default_group_height,
@@ -3375,6 +3379,8 @@ MC.canvas.event.siderbarDrag = {
 		{
 			if (target_type === 'node')
 			{
+				component_size = MC.canvas.COMPONENT_SIZE[ node_type ];
+
 				if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 				{
 					vpc_id = $('.AWS-VPC-VPC').attr('id');
@@ -3383,9 +3389,9 @@ MC.canvas.event.siderbarDrag = {
 
 					node_option.groupUId = vpc_id;
 
-					if (coordinate.y > vpc_coordinate[1] + vpc_data.size[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1])
+					if (coordinate.y > vpc_coordinate[1] + vpc_data.size[1] - component_size[1])
 					{
-						coordinate.y = vpc_coordinate[1] + vpc_data.size[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1];
+						coordinate.y = vpc_coordinate[1] + vpc_data.size[1] - component_size[1];
 					}
 					if (coordinate.y < vpc_coordinate[1])
 					{
@@ -3394,11 +3400,11 @@ MC.canvas.event.siderbarDrag = {
 
 					if (node_type === 'AWS.VPC.InternetGateway')
 					{
-						coordinate.x = vpc_coordinate[0] - (MC.canvas.COMPONENT_SIZE[ node_type ][1] / 2);
+						coordinate.x = vpc_coordinate[0] - (component_size[1] / 2);
 					}
 					if (node_type === 'AWS.VPC.VPNGateway')
 					{
-						coordinate.x = vpc_coordinate[0] + vpc_data.size[0] - (MC.canvas.COMPONENT_SIZE[ node_type ][1] / 2);
+						coordinate.x = vpc_coordinate[0] + vpc_data.size[0] - (component_size[1] / 2);
 					}
 
 					MC.canvas.add(node_type, node_option, coordinate);
@@ -3411,8 +3417,8 @@ MC.canvas.event.siderbarDrag = {
 						node_type,
 						coordinate.x,
 						coordinate.y,
-						MC.canvas.COMPONENT_SIZE[ node_type ][0],
-						MC.canvas.COMPONENT_SIZE[ node_type ][1]
+						component_size[0],
+						component_size[1]
 					);
 
 					if (match_place.is_matched)

@@ -33,7 +33,6 @@ define [ 'MC', 'event',
             #for debug
             'click #toolbar-jsondiff'           : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'           : 'clickOpenJSONView'
-            'COPY_TO_CLIP_COMPLETE'             : 'copytoClipComplete'
 
         render   : ( type ) ->
             console.log 'toolbar render'
@@ -191,11 +190,6 @@ define [ 'MC', 'event',
 
         clickOpenJSONView : ->
             window.open 'http://jsonviewer.stack.hu/'
-            null
-
-        copytoClipComplete : ( event, id, length ) ->
-            console.log 'copytoClipComplete'
-            notification 'info', 'Copied ' + id + ' to clipboard: ' + length + ' bytes'
             null
 
         notify : (type, msg) ->

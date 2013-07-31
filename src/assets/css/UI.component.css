@@ -932,6 +932,11 @@ textarea {
 	background : #f6f5f5;
 }
 
+.dl-vertical .truncate {
+	width : 100%;
+	margin-bottom : 0;
+}
+
 /* Horizontal Definition List */
 .dl-horizontal {
 	line-height: 20px;
@@ -977,7 +982,7 @@ textarea {
 	font-size: 12px;
 	position: absolute;
 	border-radius: 4px;
-	z-index: 60;
+	z-index: 85;
 	min-width: 250px;
 	max-width: 400px;
 }
@@ -1138,6 +1143,10 @@ textarea {
 	font-size     : 12px;
 	cursor        : pointer;
 	padding       : 5px;
+
+	-webkit-user-select : none;
+     -moz-user-select : none;
+	        user-select : none;
 }
 
 .selectbox .selection:before {
@@ -1163,7 +1172,7 @@ textarea {
 	width      : 100%;
 	min-width  : 160px;
 	background : #fff;
-	margin-top : 10px;
+	margin-top : 1px;
 	z-index    : 50;
 	border     : 1px solid #ccc;
 	box-shadow : 0 8px 10px rgba(0,0,0,.3);
@@ -1216,7 +1225,7 @@ textarea {
 }
 
 .editor > .edit {
-/*	display: none;*/
+	display: none;
 }
 
 .selectbox .editor .input {
@@ -1656,4 +1665,16 @@ textarea {
 .multi-input .icon-add:hover:before,
 .multi-input .icon-add:hover:after {
 	background : #34E093;
+}
+
+
+/* TEMPARORY PROPERTY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+.icon-copy {
+	position   : absolute;
+	right      : -16px;
+	top        : 2px;
+	background : red;
+	width      : 16px;
+	height     : 16px;
+	cursor     : pointer;
 }

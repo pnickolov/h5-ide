@@ -220,9 +220,6 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 		reservationSet = ($.xml2json xml).DescribeInstancesResponse.reservationSet
 
-		reservationSet = resolvedObjectToArray reservationSet
-
-
 		if not $.isEmptyObject reservationSet
 
 			if $.type(reservationSet.item) == "array"
@@ -249,36 +246,6 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 					instance_list.push reservationSet.item.instancesSet.item
 
 		instance_list
-
-	resolvedObjectToArray = ( objs ) ->
-
-		if $.type(objs)  == "array"
-
-			for obj in objs
-
-				obj = resolvedObjectToArray obj
-
-		if $.type(objs)  == "object"
-
-			if $.isEmptyObject objs
-
-				objs = null
-
-			for key, value of objs
-
-				if key == 'item' and $.type(value)  == "object"
-
-					tmp = []
-
-					tmp.push resolvedObjectToArray value
-
-					objs[key] = tmp
-
-				else if $.type(value)  == "object" or $.type(value)  == "array"
-
-					objs[key] = resolvedObjectToArray value
-
-		objs
 
 	#private (parser DescribeInstances return)
 	parserDescribeInstancesReturn = ( result, return_code, param ) ->

@@ -984,7 +984,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             owner = atob $.cookie( 'usercode' )
 
             # elb
-            if resources.DescribeLoadBalancers != null
+            if resources.DescribeLoadBalancers
 
                 lists.ELB = resources.DescribeLoadBalancers.length
 
@@ -1033,7 +1033,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     null
 
             # eip
-            if resources.DescribeAddresses != null
+            if resources.DescribeAddresses
 
                 _.map resources.DescribeAddresses, ( eip, i )->
 
@@ -1056,7 +1056,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             manage_instances_app    =   {}
 
             # instance
-            if resources.DescribeInstances != null
+            if resources.DescribeInstances
 
                 lists.Instance = resources.DescribeInstances.length
 
@@ -1100,7 +1100,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                             null
 
-                    if resources.DescribeInstances[i].host == undefined
+                    if not resources.DescribeInstances[i].host
 
                         resources.DescribeInstances[i].host = ''
 
@@ -1143,7 +1143,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                         null
             # volume
-            if resources.DescribeVolumes != null
+            if resources.DescribeVolumes
 
                 lists.Volume = resources.DescribeVolumes.length
 
@@ -1178,7 +1178,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     null
 
             # vpc
-            if resources.DescribeVpcs != null
+            if resources.DescribeVpcs
 
                 lists.VPC = resources.DescribeVpcs.length
 
@@ -1238,7 +1238,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                         null
 
             # vpn
-            if resources.DescribeVpnConnections != null
+            if resources.DescribeVpnConnections
                 lists.VPN = resources.DescribeVpnConnections.length
 
                 _.map resources.DescribeVpnConnections, ( vpn, i )->

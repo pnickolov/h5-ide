@@ -1143,6 +1143,10 @@ textarea {
 	font-size     : 12px;
 	cursor        : pointer;
 	padding       : 5px;
+
+	-webkit-user-select : none;
+     -moz-user-select : none;
+	        user-select : none;
 }
 
 .selectbox .selection:before {
@@ -1221,7 +1225,7 @@ textarea {
 }
 
 .editor > .edit {
-/*	display: none;*/
+	display: none;
 }
 
 .selectbox .editor .input {

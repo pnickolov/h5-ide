@@ -1307,7 +1307,7 @@ MC.canvas = {
 				}
 			],
 			match_option = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ],
-			is_option_canvas = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ][ 0 ] === 'Canvas',
+			is_option_canvas = match_option[ 0 ] === 'Canvas',
 			ignore_stack = [],
 			match = [],
 			result = {},
@@ -1548,6 +1548,7 @@ MC.canvas = {
 		$.each(children, function (key, item)
 		{
 			coordinate = item.coordinate;
+			size = MC.canvas.COMPONENT_SIZE[ item.type ];
 
 			if (
 				node_id !== key &&
@@ -1557,16 +1558,16 @@ MC.canvas = {
 					(coordinate[0] > start_x &&
 					coordinate[0] < end_x)
 					||
-					(coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0] > start_x &&
-					coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0] < end_x)
+					(coordinate[0] + size[0] > start_x &&
+					coordinate[0] + size[0] < end_x)
 				)
 				&&
 				(
 					(coordinate[1] > start_y &&
 					coordinate[1] < end_y)
 					||
-					(coordinate[1] + MC.canvas.COMPONENT_SIZE[ item.type ][1] > start_y &&
-					coordinate[1] + MC.canvas.COMPONENT_SIZE[ item.type ][1] < end_y)
+					(coordinate[1] + size[1] > start_y &&
+					coordinate[1] + size[1] < end_y)
 				)
 			)
 			{
@@ -1597,14 +1598,15 @@ MC.canvas = {
 
 	groupChild: function (group_node)
 	{
-		var group_data = MC.canvas.data.get('layout.component.group.' + group_node.id);
+		var group_data = MC.canvas.data.get('layout.component.group.' + group_node.id),
+			coordinate = group_data.coordinate;
 
 		return MC.canvas.areaChild(
 			group_node.id,
-			group_data.coordinate[0],
-			group_data.coordinate[1],
-			group_data.coordinate[0] + group_data.size[0],
-			group_data.coordinate[1] + group_data.size[1]
+			coordinate[0],
+			coordinate[1],
+			coordinate[0] + group_data.size[0],
+			coordinate[1] + group_data.size[1]
 		);
 	},
 
@@ -2574,12 +2576,16 @@ MC.canvas.event.dragable = {
 					group_data = layout_group_data[ target_id ],
 					group_coordinate = group_data.coordinate,
 					group_size = group_data.size,
+					group_padding = MC.canvas.GROUP_PADDING,
 					child_stack = [],
 					unique_stack = [],
 					coordinate_fixed = false,
 					match_place,
 					areaChild,
 					parentGroup,
+					parent_data,
+					parent_coordinate,
+					parent_size,
 					fixed_areaChild,
 					group_offsetX,
 					group_offsetY,
@@ -2638,25 +2644,27 @@ MC.canvas.event.dragable = {
 				if (parentGroup)
 				{
 					parent_data = layout_group_data[ parentGroup.id ];
+					parent_coordinate = parent_data.coordinate;
+					parent_size = parent_data.size;
 
-					if (parent_data.coordinate[0] + MC.canvas.GROUP_PADDING > coordinate.x)
+					if (parent_coordinate[0] + group_padding > coordinate.x)
 					{
-						coordinate.x = parent_data.coordinate[0] + MC.canvas.GROUP_PADDING;
+						coordinate.x = parent_coordinate[0] + group_padding;
 						coordinate_fixed = true;
 					}
-					if (parent_data.coordinate[0] + parent_data.size[0] - MC.canvas.GROUP_PADDING < coordinate.x + group_size[0])
+					if (parent_coordinate[0] + parent_size[0] - group_padding < coordinate.x + group_size[0])
 					{
-						coordinate.x = parent_data.coordinate[0] + parent_data.size[0] - MC.canvas.GROUP_PADDING - group_size[0];
+						coordinate.x = parent_coordinate[0] + parent_size[0] - group_padding - group_size[0];
 						coordinate_fixed = true;
 					}
-					if (parent_data.coordinate[1] + MC.canvas.GROUP_PADDING > coordinate.y)
+					if (parent_coordinate[1] + group_padding > coordinate.y)
 					{
-						coordinate.y = parent_data.coordinate[1] + MC.canvas.GROUP_PADDING;
+						coordinate.y = parent_coordinate[1] + group_padding;
 						coordinate_fixed = true;
 					}
-					if (parent_data.coordinate[1] + parent_data.size[1] - MC.canvas.GROUP_PADDING < coordinate.y + group_size[1])
+					if (parent_coordinate[1] + parent_size[1] - group_padding < coordinate.y + group_size[1])
 					{
-						coordinate.y = parent_data.coordinate[1] + parent_data.size[1] - MC.canvas.GROUP_PADDING - group_size[1];
+						coordinate.y = parent_coordinate[1] + parent_size[1] - group_padding - group_size[1];
 						coordinate_fixed = true;
 					}
 

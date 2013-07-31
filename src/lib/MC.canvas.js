@@ -1815,7 +1815,6 @@ MC.canvas.layout = {
 		MC.canvas_property.sg_list.push(tmp);
 		data = MC.canvas.data.get('component');
 		data[kp.uid] = kp;
-		MC.canvas.data.set('component', data);
 		data[sg.uid] = sg;
 		MC.canvas.data.set('component', data);
 
@@ -1937,6 +1936,426 @@ MC.canvas.data = {
 	}
 };
 
+MC.canvas.volume = {
+	bubble: function (node)
+	{
+		if (!$('#volume-bubble-box')[0])
+		{
+			var target = $(node),
+				component_data = MC.canvas.data.get('component'),
+				node_volume_data = component_data[ node.id ].resource.BlockDeviceMapping,
+				data = {'list': []},
+				coordinate = {},
+				volume_id,
+				width,
+				height,
+				target_offset,
+				target_width,
+				target_height;
+
+			$(document.body).append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
+			bubble_box = $('#volume-bubble-box');
+
+			$.each(node_volume_data, function (index, item)
+			{
+				volume_id = item.replace('#', '');
+				volume_data = component_data[ volume_id ];
+
+				data.list.push({
+					'volume_id': volume_id,
+					'name': volume_data.name,
+					'size': volume_data.resource.Size,
+					'snapshotId': volume_data.resource.SnapshotId,
+					'json': JSON.stringify({
+						'instance_id': node.id,
+						'id': volume_id,
+						'name': volume_data.name,
+						'snapshotId': volume_data.resource.SnapshotId,
+						'volumeSize': volume_data.resource.Size
+					})
+				});
+			});
+
+			data.volumeLength = node_volume_data.length;
+
+			$('#volume-bubble-content').html(
+				MC.template.instanceVolume( data )
+			);
+
+			target_offset = target[0].getBoundingClientRect();
+			target_width = target_offset.width;
+			target_height = target_offset.height;
+
+			width = bubble_box.width();
+			height = bubble_box.height();
+
+			if (target_offset.left + target_width + width - document.body.scrollLeft > window.innerWidth)
+			{
+				coordinate.left = target_offset.left - width - 15;
+				bubble_box.addClass('bubble-right');
+			}
+			else
+			{
+				coordinate.left = target_offset.left + target_width + 15;
+				bubble_box.addClass('bubble-left');
+			}
+
+			coordinate.top = target_offset.top - ((height - target_height) / 2);
+
+			bubble_box
+				.data('target-id', node.id)
+				.css(coordinate)
+				.show();
+
+			MC.canvas.update(node.id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_ACTIVE);
+		}
+	},
+
+	show: function ()
+	{
+		var bubble_box = $('#volume-bubble-box'),
+			target_id = $(this).data('target-id'),
+			bubble_target_id;
+
+		if (!bubble_box[0])
+		{
+			if (MC.canvas.data.get('component.' + target_id  + '.resource.BlockDeviceMapping').length > 0)
+			{
+				MC.canvas.volume.bubble(
+					document.getElementById( target_id )
+				);
+			}
+			else
+			{
+				MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+			}
+		}
+		else
+		{
+			bubble_target_id = bubble_box.data('target-id');
+
+			MC.canvas.volume.close();
+
+			if (target_id !== bubble_target_id)
+			{
+				MC.canvas.volume.bubble(
+					document.getElementById( target_id )
+				);
+			}
+		}
+
+		return false;
+	},
+
+	select: function ()
+	{
+		MC.canvas.event.clearSelected();
+
+		$('#instance_volume_list').find('.selected').removeClass('selected');
+
+		$(this).addClass('selected');
+
+		$(document).on('keyup', MC.canvas.volume.remove);
+
+		//dispatch event when select volume node
+		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
+
+		return false;
+	},
+
+	close: function (event)
+	{
+		var bubble_box = $('#volume-bubble-box'),
+			target;
+
+		if (event)
+		{
+			target = $(event.target);
+
+			if (
+				target.attr('class') === 'instance-volume' ||
+				target.is('.snapshot_item') ||
+				target.parent().is('.snapshot_item') ||
+				target.is('.volume_item') ||
+				target.parent().is('.volume_item')
+			)
+			{
+				return false;
+			}
+		}
+
+		if (bubble_box[0])
+		{
+			target_id = bubble_box.data('target-id');
+			bubble_box.remove();
+
+			MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+
+			$(document)
+				.off('keyup', MC.canvas.volume.remove)
+				.off('click', ':not(.instance-volume, #volume-bubble-box)', MC.canvas.volume.close);
+		}
+	},
+
+	remove: function (event)
+	{
+		if (
+			(
+				event.which === 46 ||
+				// For Mac
+				event.which === 8
+			)
+			&&
+			event.target === document.body
+		)
+		{
+			var bubble_box = $('#volume-bubble-box'),
+				target_id = bubble_box.data('target-id'),
+				target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping'),
+				target_node = $('#' + target_id),
+				target_offset = target_node[0].getBoundingClientRect(),
+				volume_id = $('#instance_volume_list').find('.selected').attr('id');
+
+			target_volume_data.splice(
+				target_volume_data.indexOf(
+					volume_id
+				), 1
+			);
+
+			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+
+			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+			MC.canvas.data.delete('component.' + volume_id);
+
+			$('#' + volume_id).parent().remove();
+
+			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
+
+			$(document).off('keyup', MC.canvas.volume.remove);
+		}
+	},
+
+	mousedown: function (event)
+	{
+		event.preventDefault();
+		event.stopPropagation();
+
+		var target = $(this),
+			target_offset = target.offset(),
+			canvas_offset = $('#svg_canvas').offset(),
+			node_type = target.data('type'),
+			target_component_type = target.data('component-type'),
+			shadow,
+			clone_node;
+
+		if (MC.canvas.getState() === 'app')
+		{
+			MC.canvas.volume.select.call( $('#' + this.id )[0] );
+
+			return false;
+		}
+
+		$(document.body)
+			.addClass('disable-event')
+			.append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
+
+		shadow = $('#drag_shadow');
+
+		shadow
+			.addClass('AWS-EC2-EBS-Volume')
+			.css({
+				'top': event.pageY - 50,
+				'left': event.pageX - 50
+			});
+
+		$('.AWS-EC2-Instance').attr('class', function (index, key)
+		{
+			return 'attachable ' + key;
+		});
+
+		$(document).on({
+			'mousemove': MC.canvas.volume.mousemove,
+			'mouseup': MC.canvas.volume.mouseup
+		}, {
+			'target': target,
+			'canvas_offset': $('#svg_canvas').offset(),
+			'shadow': shadow,
+			'originalPageX': event.pageX,
+			'originalPageY': event.pageY,
+			'action': 'move'
+		});
+
+		MC.canvas.volume.select.call( $('#' + this.id )[0] );
+
+		return false;
+	},
+
+	mousemove: function (event)
+	{
+		event.preventDefault();
+		event.stopPropagation();
+
+		if (
+			event.data.originalX !== event.pageX ||
+			event.data.originalY !== event.pageY
+		)
+		{
+			event.data.shadow
+				.css({
+					'top': event.pageY - 50,
+					'left': event.pageX - 50
+				})
+				.show();
+		}
+
+		match_node = MC.canvas.matchPoint(
+			event.pageX - event.data.canvas_offset.left,
+			event.pageY - event.data.canvas_offset.top
+		);
+
+		if (match_node && match_node.getAttribute('data-class') === 'AWS.EC2.Instance')
+		{
+			MC.canvas.volume.bubble(match_node);
+		}
+		else
+		{
+			MC.canvas.volume.close();
+		}
+
+		return false;
+	},
+
+	mouseup: function (event)
+	{
+		event.preventDefault();
+		event.stopPropagation();
+
+		var target = $(event.data.target),
+			target_component_type = target.data('component-type'),
+			node_option = target.data('option'),
+			bubble_box = $('#volume-bubble-box'),
+			volume_type,
+			target_id,
+			volume_id,
+			target_volume_data,
+			new_volume,
+			data_option,
+			original_node_id,
+			original_node_volume_data;
+
+		$('.AWS-EC2-Instance').attr('class', function (index, key)
+		{
+			return key.replace('attachable ', '');
+		});
+
+		if (bubble_box[0])
+		{
+			target_id = bubble_box.data('target-id');
+			target_node = $('#' + target_id);
+			target_offset = target_node[0].getBoundingClientRect();
+			target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping');
+
+			if (event.data.action === 'move')
+			{
+				volume_id = target.attr('id');
+				data_option = target.data('json');
+			}
+			else
+			{
+				data_option = target.data('option');
+				data_option['instance_id'] = target_id;
+				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
+				if (new_volume === null)
+				{
+					event.data.action = 'cancel';
+				}
+				else
+				{
+					volume_id = new_volume.id;
+					data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
+				}
+			}
+
+			if (event.data.action === 'move')
+			{
+				if (data_option.instance_id !== target_id)
+				{
+					data_json = JSON.stringify({
+						'instance_id': target_id,
+						'id': volume_id,
+						'name': data_option.name,
+						'snapshotId': data_option.snapshotId,
+						'volumeSize': data_option.volumeSize
+					});
+
+					volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
+
+					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+
+					target_volume_data.push('#' + volume_id);
+
+					$('#instance_volume_number').text(target_volume_data.length);
+
+					MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
+
+					MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+					MC.canvas.volume.select.call( document.getElementById( volume_id ) );
+
+					// Update original data
+					original_node_id = data_option.instance_id;
+					original_node_volume_data = MC.canvas.data.get('component.' + original_node_id + '.resource.BlockDeviceMapping');
+
+					original_node_volume_data.splice(
+						original_node_volume_data.indexOf('#' + volume_id), 1
+					);
+
+					MC.canvas.data.set('component.' + original_node_id + '.resource.BlockDeviceMapping', original_node_volume_data);
+
+					MC.canvas.update(original_node_id, 'text', 'volume_number', original_node_volume_data.length);
+				}
+			}
+			else if (!event.data.action)
+			{
+				data_json = JSON.stringify({
+					'instance_id': target_id,
+					'id': volume_id,
+					'name': data_option.name,
+					'snapshotId': data_option.snapshotId,
+					'volumeSize': data_option.volumeSize
+				});
+
+				volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
+
+				$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+
+				target_volume_data.push('#' + volume_id);
+
+				$('#instance_volume_number').text(target_volume_data.length);
+
+				MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
+
+				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+				MC.canvas.volume.select.call( document.getElementById( volume_id ) );
+			}
+
+			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
+		}
+
+		event.data.shadow.remove();
+
+		$(document.body).removeClass('disable-event');
+
+		$(document).off({
+			'mousemove': MC.canvas.volume.mousemove,
+			'mouseup': MC.canvas.volume.mouseup
+		});
+
+		return false;
+	}
+};
 
 MC.canvas.event = {};
 MC.canvas.event.dragable = {
@@ -2111,7 +2530,6 @@ MC.canvas.event.dragable = {
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
-					//MC.canvas.isBlank("node", target_id, coordinate.x, coordinate.y) &&
 					match_place.is_matched
 				)
 				{
@@ -2135,6 +2553,7 @@ MC.canvas.event.dragable = {
 
 					//after change node to another group, trigger event
 					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_SIZE[ node_type ][0], coordinate.y + MC.canvas.COMPONENT_SIZE[ node_type ][1]);
+					
 					if (parentGroup)
 					{
 						$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_PARENT", {
@@ -3583,427 +4002,6 @@ MC.canvas.event.groupResize = {
 				'mousemove': MC.canvas.event.groupResize.mousemove,
 				'mouseup': MC.canvas.event.groupResize.mouseup
 			});
-	}
-};
-
-MC.canvas.volume = {
-	bubble: function (node)
-	{
-		if (!$('#volume-bubble-box')[0])
-		{
-			var target = $(node),
-				component_data = MC.canvas.data.get('component'),
-				node_volume_data = component_data[ node.id ].resource.BlockDeviceMapping,
-				data = {'list': []},
-				coordinate = {},
-				volume_id,
-				width,
-				height,
-				target_offset,
-				target_width,
-				target_height;
-
-			$(document.body).append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
-			bubble_box = $('#volume-bubble-box');
-
-			$.each(node_volume_data, function (index, item)
-			{
-				volume_id = item.replace('#', '');
-				volume_data = component_data[ volume_id ];
-
-				data.list.push({
-					'volume_id': volume_id,
-					'name': volume_data.name,
-					'size': volume_data.resource.Size,
-					'snapshotId': volume_data.resource.SnapshotId,
-					'json': JSON.stringify({
-						'instance_id': node.id,
-						'id': volume_id,
-						'name': volume_data.name,
-						'snapshotId': volume_data.resource.SnapshotId,
-						'volumeSize': volume_data.resource.Size
-					})
-				});
-			});
-
-			data.volumeLength = node_volume_data.length;
-
-			$('#volume-bubble-content').html(
-				MC.template.instanceVolume( data )
-			);
-
-			target_offset = target[0].getBoundingClientRect();
-			target_width = target_offset.width;
-			target_height = target_offset.height;
-
-			width = bubble_box.width();
-			height = bubble_box.height();
-
-			if (target_offset.left + target_width + width - document.body.scrollLeft > window.innerWidth)
-			{
-				coordinate.left = target_offset.left - width - 15;
-				bubble_box.addClass('bubble-right');
-			}
-			else
-			{
-				coordinate.left = target_offset.left + target_width + 15;
-				bubble_box.addClass('bubble-left');
-			}
-
-			coordinate.top = target_offset.top - ((height - target_height) / 2);
-
-			bubble_box
-				.data('target-id', node.id)
-				.css(coordinate)
-				.show();
-
-			MC.canvas.update(node.id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_ACTIVE);
-		}
-	},
-
-	show: function ()
-	{
-		var bubble_box = $('#volume-bubble-box'),
-			target_id = $(this).data('target-id'),
-			bubble_target_id;
-
-		if (!bubble_box[0])
-		{
-			if (MC.canvas.data.get('component.' + target_id  + '.resource.BlockDeviceMapping').length > 0)
-			{
-				MC.canvas.volume.bubble(
-					document.getElementById( target_id )
-				);
-			}
-			else
-			{
-				MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
-			}
-		}
-		else
-		{
-			bubble_target_id = bubble_box.data('target-id');
-
-			MC.canvas.volume.close();
-
-			if (target_id !== bubble_target_id)
-			{
-				MC.canvas.volume.bubble(
-					document.getElementById( target_id )
-				);
-			}
-		}
-
-		return false;
-	},
-
-	select: function ()
-	{
-		MC.canvas.event.clearSelected();
-
-		$('#instance_volume_list').find('.selected').removeClass('selected');
-
-		$(this).addClass('selected');
-
-		$(document).on('keyup', MC.canvas.volume.remove);
-
-		//dispatch event when select volume node
-		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
-
-		return false;
-	},
-
-	close: function (event)
-	{
-		var bubble_box = $('#volume-bubble-box'),
-			target;
-
-		if (event)
-		{
-			target = $(event.target);
-
-			if (
-				target.attr('class') === 'instance-volume' ||
-				target.is('.snapshot_item') ||
-				target.parent().is('.snapshot_item') ||
-				target.is('.volume_item') ||
-				target.parent().is('.volume_item')
-			)
-			{
-				return false;
-			}
-		}
-
-		if (bubble_box[0])
-		{
-			target_id = bubble_box.data('target-id');
-			bubble_box.remove();
-
-			MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
-
-			$(document)
-				.off('keyup', MC.canvas.volume.remove)
-				.off('click', ':not(.instance-volume, #volume-bubble-box)', MC.canvas.volume.close);
-		}
-	},
-
-	remove: function (event)
-	{
-		if (
-			(
-				event.which === 46 ||
-				// For Mac
-				event.which === 8
-			)
-			&&
-			event.target === document.body
-		)
-		{
-			var bubble_box = $('#volume-bubble-box'),
-				target_id = bubble_box.data('target-id'),
-				target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping'),
-				target_node = $('#' + target_id),
-				target_offset = target_node[0].getBoundingClientRect(),
-				volume_id = $('#instance_volume_list').find('.selected').attr('id');
-
-			target_volume_data.splice(
-				target_volume_data.indexOf(
-					volume_id
-				), 1
-			);
-
-			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
-
-			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
-
-			MC.canvas.data.delete('component.' + volume_id);
-
-			$('#' + volume_id).parent().remove();
-
-			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
-
-			$(document).off('keyup', MC.canvas.volume.remove);
-		}
-	},
-
-	mousedown: function (event)
-	{
-		event.preventDefault();
-		event.stopPropagation();
-
-		var target = $(this),
-			target_offset = target.offset(),
-			canvas_offset = $('#svg_canvas').offset(),
-			node_type = target.data('type'),
-			target_component_type = target.data('component-type'),
-			shadow,
-			clone_node;
-
-		if (MC.canvas.getState() === 'app')
-		{
-			MC.canvas.volume.select.call( $('#' + this.id )[0] );
-
-			return false;
-		}
-
-		$(document.body)
-			.addClass('disable-event')
-			.append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
-
-		shadow = $('#drag_shadow');
-
-		shadow
-			.addClass('AWS-EC2-EBS-Volume')
-			.css({
-				'top': event.pageY - 50,
-				'left': event.pageX - 50
-			});
-
-		$('.AWS-EC2-Instance').attr('class', function (index, key)
-		{
-			return 'attachable ' + key;
-		});
-
-		$(document).on({
-			'mousemove': MC.canvas.volume.mousemove,
-			'mouseup': MC.canvas.volume.mouseup
-		}, {
-			'target': target,
-			'canvas_offset': $('#svg_canvas').offset(),
-			'shadow': shadow,
-			'originalPageX': event.pageX,
-			'originalPageY': event.pageY,
-			'action': 'move'
-		});
-
-		MC.canvas.volume.select.call( $('#' + this.id )[0] );
-
-		return false;
-	},
-
-	mousemove: function (event)
-	{
-		event.preventDefault();
-		event.stopPropagation();
-
-		if (
-			event.data.originalX !== event.pageX ||
-			event.data.originalY !== event.pageY
-		)
-		{
-			event.data.shadow
-				.css({
-					'top': event.pageY - 50,
-					'left': event.pageX - 50
-				})
-				.show();
-		}
-
-		match_node = MC.canvas.matchPoint(
-			event.pageX - event.data.canvas_offset.left,
-			event.pageY - event.data.canvas_offset.top
-		);
-
-		if (match_node && match_node.getAttribute('data-class') === 'AWS.EC2.Instance')
-		{
-			MC.canvas.volume.bubble(match_node);
-		}
-		else
-		{
-			MC.canvas.volume.close();
-		}
-
-		return false;
-	},
-
-	mouseup: function (event)
-	{
-		event.preventDefault();
-		event.stopPropagation();
-
-		var target = $(event.data.target),
-			target_component_type = target.data('component-type'),
-			node_option = target.data('option'),
-			bubble_box = $('#volume-bubble-box'),
-			volume_type,
-			target_id,
-			volume_id,
-			target_volume_data,
-			new_volume,
-			data_option,
-			original_node_id,
-			original_node_volume_data;
-
-		$('.AWS-EC2-Instance').attr('class', function (index, key)
-		{
-			return key.replace('attachable ', '');
-		});
-
-		if (bubble_box[0])
-		{
-			target_id = bubble_box.data('target-id');
-			target_node = $('#' + target_id);
-			target_offset = target_node[0].getBoundingClientRect();
-			target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping');
-
-			if (event.data.action === 'move')
-			{
-				volume_id = target.attr('id');
-				data_option = target.data('json');
-			}
-			else
-			{
-				data_option = target.data('option');
-				data_option['instance_id'] = target_id;
-				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
-				if (new_volume === null)
-				{
-					event.data.action = 'cancel';
-				}
-				else
-				{
-					volume_id = new_volume.id;
-					data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
-				}
-			}
-
-			if (event.data.action === 'move')
-			{
-				if (data_option.instance_id !== target_id)
-				{
-					data_json = JSON.stringify({
-						'instance_id': target_id,
-						'id': volume_id,
-						'name': data_option.name,
-						'snapshotId': data_option.snapshotId,
-						'volumeSize': data_option.volumeSize
-					});
-
-					volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
-
-					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
-
-					target_volume_data.push('#' + volume_id);
-
-					$('#instance_volume_number').text(target_volume_data.length);
-
-					MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
-
-					MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
-
-					MC.canvas.volume.select.call( document.getElementById( volume_id ) );
-
-					// Update original data
-					original_node_id = data_option.instance_id;
-					original_node_volume_data = MC.canvas.data.get('component.' + original_node_id + '.resource.BlockDeviceMapping');
-
-					original_node_volume_data.splice(
-						original_node_volume_data.indexOf('#' + volume_id), 1
-					);
-
-					MC.canvas.data.set('component.' + original_node_id + '.resource.BlockDeviceMapping', original_node_volume_data);
-
-					MC.canvas.update(original_node_id, 'text', 'volume_number', original_node_volume_data.length);
-				}
-			}
-			else if (!event.data.action)
-			{
-				data_json = JSON.stringify({
-					'instance_id': target_id,
-					'id': volume_id,
-					'name': data_option.name,
-					'snapshotId': data_option.snapshotId,
-					'volumeSize': data_option.volumeSize
-				});
-
-				volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
-
-				$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
-
-				target_volume_data.push('#' + volume_id);
-
-				$('#instance_volume_number').text(target_volume_data.length);
-
-				MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
-
-				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
-
-				MC.canvas.volume.select.call( document.getElementById( volume_id ) );
-			}
-
-			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
-		}
-
-		event.data.shadow.remove();
-
-		$(document.body).removeClass('disable-event');
-
-		$(document).off({
-			'mousemove': MC.canvas.volume.mousemove,
-			'mouseup': MC.canvas.volume.mouseup
-		});
-
-		return false;
 	}
 };
 

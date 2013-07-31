@@ -57,7 +57,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     me.set 'is_running', true
                 else
                     me.set 'is_pending', true
-                    me.set 'is_running', true
+                    me.set 'is_running', false
 
                 me.set 'is_use_ami', me.isInstanceStore()
 
@@ -307,15 +307,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 else if flag == 'START_APP'
                     console.log 'start app request successfully'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS'
-                    MC.canvas_data.state = 'Starting'
                 else if flag == 'STOP_APP'
                     console.log 'stop app request successfully'
                     me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS'
-                    MC.canvas_data.state = 'Stopping'
                 else if flag == 'TERMINATE_APP'
                     console.log 'terminate app request successfully'
                     me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS'
-                    MC.canvas_data.state = 'Terminating'
 
                 if ws
                     req_id = result.resolved_data.id
@@ -323,6 +320,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     query = ws.collection.request.find({id:req_id})
                     handle = query.observeChanges {
                         changed : (id, req) ->
+
+                            console.log 'request ' + req.data + "," + req.state
+                            handle.stop()
+
                             is_success = false
 
                             if req.state == "Done"
@@ -359,15 +360,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                 else if flag == 'TERMINATE_APP'
                                     me.trigger 'TOOLBAR_APP_TERMINATE_FAILED'
 
+                            me.set 'is_pending', false
+
                             if flag is 'TERMINATE_APP' and is_success
                                 ide_event.trigger ide_event.APP_TERMINATE, MC.canvas_data.name, MC.canvas_data.id
                             else
                                 me.setFlag flag, is_success
-
-                            console.log 'stop handle'
-                            handle.stop()
-
-                            me.set 'is_pending', false
+                          
                     }
 
                     null
@@ -387,8 +386,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     MC.canvas_data.state = 'Running'
                 else if flag == 'TERMINATE_APP'
                     me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED'
+                    MC.canvas_data.state = 'Stopped'
 
                 me.set 'is_pending', false
+                me.trigger 'UPDATE_TOOLBAR', me.get 'item_type'
 
         isInstanceStore : () ->
 

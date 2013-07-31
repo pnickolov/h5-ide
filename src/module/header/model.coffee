@@ -107,6 +107,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 query = ws.collection.request.find()
                 handle = query.observeChanges {
                     changed : (id, request) ->
+                        console.log 'request ' + request.data + "," + request.state
 
                         req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
 

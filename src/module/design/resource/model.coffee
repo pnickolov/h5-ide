@@ -2,9 +2,9 @@
 #  View Mode for design/resource
 #############################
 
-define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant'
+define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event',
          'backbone', 'jquery', 'underscore'
-], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model, MC, constant ) ->
+], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event ) ->
 
     #private
     ami_instance_type = null
@@ -70,7 +70,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                                     res.item[idx].isUsed = true
 
                                     null
-                                
+
 
                     me.set 'availability_zone', res
 
@@ -105,7 +105,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
             #check cached data
             if (MC.data.config[region_name] and MC.data.config[region_name].ami_list )
-                
+
                 me.set 'quickstart_ami', MC.data.config[region_name].ami_list
 
                 #get my AMI
@@ -116,6 +116,8 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
                 #describe ami in stack
                 me.describeStackAmiService region_name
+
+                ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY
 
             else
                 #get service(model)
@@ -129,11 +131,11 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                     else
                         MC.data.instance_type = {}
                         MC.data.instance_type[result.param[3]] = ami_instance_type
-                        
+
                     _.map result.resolved_data.ami, ( value, key ) ->
 
                         value.imageId = key
-                        
+
                         _.map value, ( val, key ) ->
                             if val == ''
                                 value[key] = 'None'
@@ -175,7 +177,9 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                     #describe ami in stack
                     me.describeStackAmiService region_name
 
-                null
+                    ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY
+
+            null
 
         #call service
         myAmiService : ( region_name ) ->
@@ -187,14 +191,14 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
             #check cached data
             if MC.data.config[region_name] and MC.data.config[region_name].my_ami
-                
+
                 me.set 'my_ami', MC.data.config[region_name].my_ami
 
             else
                 #get service(model)
                 ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, null
                 ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
-                    
+
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN'
 
                     #cache my ami to my_ami
@@ -219,7 +223,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
         describeStackAmiService : ( region_name )->
 
             me = this
-            
+
             stack_ami_list = []
 
             _.map MC.canvas_data.component, (value)->
@@ -317,7 +321,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
             #                 value.platform = 'debian'
             #             else
             #                 value.platform = 'otherlinux'
-                        
+
             #             value.id = key
             #             value.instance_type = me._getInstanceType value
 
@@ -327,9 +331,9 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
             #                     value[k] = 'None'
 
             #                 null
-                        
+
             #             ami_list.push value
-                    
+
             #         community_ami[region_name] = ami_list
             #         me.set 'community_ami', ami_list
             #         null
@@ -347,7 +351,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
             #check cached data
             if MC.data.config[region_name] and MC.data.config[region_name].favorite_ami
-                
+
                 me.set 'favorite_ami', MC.data.config[region_name].favorite_ami
 
             else
@@ -366,7 +370,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                                 value.resource_info[key] = 'None'
                             else
                             null
-                        
+
                         #cache favorite ami item to MC.data.dict_ami
                         value.resource_info.instanceType = me._getInstanceType value.resource_info
                         MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
@@ -430,9 +434,9 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
         _getOSType : ( ami ) ->
 
             #return osType by ami.name | ami.description | ami.imageLocation
-            
+
             osTypeList = ['centos', 'redhat', 'redhat', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensus', 'suse','amazon', 'amazon']
-            
+
             osType = 'linux-other'
 
             if  ami.platform and ami.platform == 'windows'

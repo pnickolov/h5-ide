@@ -466,6 +466,7 @@ MC.canvas.add = function (flag, option, coordinate)
 							$.each(MC.canvas_data.component, function ( k, v ){
 								if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + val.uid + '.resource.NetworkInterfaceId'){
 									eip_icon = MC.canvas.IMAGE.EIP_ON;
+									data_eip_state = 'on'
 								}
 							});
 						}
@@ -1222,14 +1223,16 @@ MC.canvas.add = function (flag, option, coordinate)
 
 		//***** eni begin *****//
 		case 'AWS.VPC.NetworkInterface':
-			data_eip_state = 'off';
-			var attached = 'unattached';
+			var data_eip_state = 'off',
+				attached = 'unattached',
+				eip_icon = MC.canvas.IMAGE.EIP_OFF;
+				
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ENI_JSON.data);
 				component_data.name = option.name;
 				component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
-				component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.SubnetId';
+				component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 
 				var sg_group = {};
 				sg_group.GroupId = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId';
@@ -1247,6 +1250,17 @@ MC.canvas.add = function (flag, option, coordinate)
 				if(component_data.resource.Attachment.InstanceId){
 					attached = 'attached'
 				}
+				
+
+						
+				$.each(MC.canvas_data.component, function ( k, v ){
+					if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + component_data.uid + '.resource.NetworkInterfaceId'){
+						eip_icon = MC.canvas.IMAGE.EIP_ON;
+						data_eip_state = 'on'
+					}
+				});
+
+					
 
 				component_layout = layout.node[group.id];
 
@@ -1269,7 +1283,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'id': group.id + '_eni_status'
 				}),
 
-				Canvon.image(MC.canvas.IMAGE.EIP_OFF, 46, 50, 14, 17).attr({
+				Canvon.image(eip_icon, 46, 50, 14, 17).attr({
 					'id': group.id + '_eip_status',
 					'class': 'eip-status',
 					'data-eip-state': data_eip_state,

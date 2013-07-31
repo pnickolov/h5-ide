@@ -117,7 +117,7 @@ define [ 'jquery',
                         #AvailabilityZone
                         if MC.canvas_data.layout.component.group[ uid ] and MC.canvas_data.layout.component.group[ uid ].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
                             console.log 'type = ' + MC.canvas_data.layout.component.group[ uid ].type
-                            az_main.loadModule uid, az_main, tab_type
+                            if tab_type is 'OPEN_APP' then stack_main.loadModule stack_main else az_main.loadModule uid, az_main, tab_type
 
                 else
 

@@ -514,7 +514,12 @@ define [ 'constant',
 
 				#connect elb and instance
 				if portMap['instance-sg'] and portMap['elb-sg-out']
-					MC.aws.elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg'])
+					linkSubnetID = MC.aws.elb.addInstanceAndAZToELB(portMap['elb-sg-out'], portMap['instance-sg'])
+
+					if linkSubnetID
+						# We need to link subnet to the elb.
+						MC.canvas.connect portMap['elb-sg-out'], "elb-assoc", linkSubnetID, "subnet-assoc-in"
+
 
 				#connect elb and subnet
 				if portMap['elb-assoc'] and portMap['subnet-assoc-in']

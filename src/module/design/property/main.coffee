@@ -237,18 +237,20 @@ define [ 'jquery',
                 null
 
             #listen OPEN_INSTANCE
+            ###
             ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id) ->
 
                 console.log 'OPEN_INSTANCE'
                 instance_main.loadModule uid, expended_accordion_id, instance_main
                 null
+            ###
 
             ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->
-
                 view.refresh()
 
             ide_event.onLongListen ide_event.UPDATE_PROPERTY, ( back_dom ) ->
                 console.log 'UPDATE_PROPERTY'
+                #temp
                 setTimeout () ->
                     view.updateHtml back_dom
                 , 500

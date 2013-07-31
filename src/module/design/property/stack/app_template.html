@@ -54,21 +54,20 @@
 						<th style="">Fee($)</th>
 					</tr>
 				</thead>
+
+				{{#each cost_list}}
 				<tbody>
 					<tr>
-						<td>instance111..</td>
-						<td>m2.large</td>
-						<td>0.2/hr</td>
-					</tr>
-					<tr>
-						<td>instance111..</td>
-						<td>m2.large</td>
-						<td>0.2/hr</td>
+						<td>{{resource}}</td>
+						<td>{{size}}</td>
+						<td>{{fee}}</td>
 					</tr>
 				</tbody>
+				{{/each}}
 			</table>
 
 		</div>
 	</div>
 </div>
-<a href="" class="goto-outsite">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+
+<a href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>

@@ -39,9 +39,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             #aclObj.vpc_id = MC.canvas_data.component[aclObj.resource.vpcId.split('.')[0][1...]].resource.VpcId
 
-            aclObj.rule_number = aclObj.entrySet.item.length
+            aclObj.rule_number = 0
+            aclObj.asso_number = 0
 
-            if aclObj.entrySet.item
+            if aclObj.entrySet and aclObj.entrySet.item
+
+                aclObj.rule_number = aclObj.entrySet.item.length
 
                 $.each aclObj.entrySet.item, ( idx, entry ) ->
 
@@ -67,7 +70,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                     null
 
-            if aclObj.associationSet.item
+            if aclObj.associationSet and aclObj.associationSet.item
+
+                aclObj.asso_number = aclObj.associationSet.item.length
 
                 $.each aclObj.associationSet.item, (i, asso) ->
 
@@ -80,12 +85,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                         null
 
-            if aclObj.associationSet.item
-
-                aclObj.asso_number = aclObj.associationSet.item.length
-
-            else
-                aclObj.asso_number = 0
 
             this.set 'component', aclObj
 

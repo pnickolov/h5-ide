@@ -117,7 +117,7 @@ define [ 'jquery',
                         #AvailabilityZone
                         if MC.canvas_data.layout.component.group[ uid ] and MC.canvas_data.layout.component.group[ uid ].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
                             console.log 'type = ' + MC.canvas_data.layout.component.group[ uid ].type
-                            az_main.loadModule uid, az_main, tab_type
+                            if tab_type is 'OPEN_APP' then stack_main.loadModule stack_main else az_main.loadModule uid, az_main, tab_type
 
                 else
 
@@ -237,18 +237,20 @@ define [ 'jquery',
                 null
 
             #listen OPEN_INSTANCE
+            ###
             ide_event.onLongListen ide_event.OPEN_INSTANCE, (expended_accordion_id) ->
 
                 console.log 'OPEN_INSTANCE'
                 instance_main.loadModule uid, expended_accordion_id, instance_main
                 null
+            ###
 
             ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->
-
                 view.refresh()
 
             ide_event.onLongListen ide_event.UPDATE_PROPERTY, ( back_dom ) ->
                 console.log 'UPDATE_PROPERTY'
+                #temp
                 setTimeout () ->
                     view.updateHtml back_dom
                 , 500

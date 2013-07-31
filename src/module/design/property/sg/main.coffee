@@ -4,9 +4,8 @@
 
 define [ 'jquery',
          'text!/module/design/property/sg/template.html',
-         'text!/module/design/property/sg/app_template.html',
          'event'
-], ( $, template, app_template, ide_event ) ->
+], ( $, template, ide_event ) ->
 
     #
     current_view  = null
@@ -14,74 +13,59 @@ define [ 'jquery',
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-sg-tmpl">' + template + '</script>'
-    app_template = '<script type="text/x-handlebars-template" id="property-sg-app-tmpl">' + app_template + '</script>'
     #load remote html template
-    $( 'head' ).append( template ).append( app_template )
+    $( 'head' ).append template
 
     #private
-    loadModule = ( uid_parent, expended_accordion_id, current_main, tab_type ) ->
+    loadModule = ( sg_uid, parent_main, current_main ) ->
 
         #
-        MC.data.current_sub_main = current_main
-
-        #set view_type
-        if tab_type is 'OPEN_APP' then view_type = 'app_view' else view_type = 'view'
+        # MC.data.current_sub_main = current_main
 
         #
-        require [ './module/design/property/sg/' + view_type,
-                  './module/design/property/sg/model'
-        ], ( view, model ) ->
+        require [ './module/design/property/sg/view', './module/design/property/sg/model' ], ( view, model ) ->
 
             #
-            if current_view then view.delegateEvents view.events
+
+            # if current_view view.delegateEvents view.events
 
             #
             current_view  = view
             current_model = model
+            parent_main.sg_main = current_main
 
             #view
             view.model    = model
 
-            if uid_parent
-                if uid_parent.uid
-
-                    view.model.getSG uid_parent.uid, uid_parent.parent
-
-                else
-
-                    view.model.addSG uid_parent.parent
+            if sg_uid
+                view.model.getSG sg_uid
             else
-
                 view.model.addSG()
 
             #render
-            view.render( expended_accordion_id )
+            view.render()
 
-            view.on 'SET_SG_NAME', ( uid, value ) ->
+            #temp hack
+            if view._events
+                return
 
-                model.setSGName uid, value
+            view.on 'SET_SG_NAME', ( sg_uid, value ) ->
+                model.setSGName sg_uid, value
 
-                view.render()
+            view.on 'REMOVE_SG_RULE', ( sg_uid, rule )->
 
-            view.on 'REMOVE_SG_RULE', ( uid, rule )->
+                model.removeSGRule sg_uid, rule
 
-                model.removeSGRule uid, rule
+            view.on 'SET_SG_RULE', ( sg_uid, rule ) ->
 
-            view.on 'SET_SG_RULE', ( uid, rule ) ->
+                model.setSGRule sg_uid, rule
 
-                model.setSGRule uid, rule
+            view.on 'SET_SG_DESC', ( sg_uid, value ) ->
 
-            view.on 'SET_SG_DESC', ( uid, value ) ->
-
-                model.setSGDescription uid, value
+                model.setSGDescription sg_uid, value
 
 
     unLoadModule = () ->
-        current_view.off()
-        current_model.off()
-        current_view.undelegateEvents()
-        #ide_event.offListen ide_event.<EVENT_TYPE>
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public
     loadModule   : loadModule

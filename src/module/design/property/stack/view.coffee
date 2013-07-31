@@ -16,14 +16,22 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         app_template    : Handlebars.compile $( '#property-app-tmpl' ).html()
 
         events   :
-            'change #property-stack-name'           : 'stackNameChanged'
-            'click #add-sg-btn'                     : 'openSecurityGroup'
-            'click #sg-info-list .sg-edit-icon'     : 'openSecurityGroup'
-            'click .deleteSG'                       : 'deleteSecurityGroup'
-            'click .resetSG'                        : 'resetSecurityGroup'
-            'click .stack-property-acl-list .delete': 'deleteNetworkAcl'
-            'click #stack-property-add-new-acl'     : 'openCreateAclPanel'
-            'click .stack-property-acl-list .edit'  : 'openEditAclPanel'
+            # 'change #property-stack-name'           : 'stackNameChanged'
+            # 'click #add-sg-btn'                     : 'openSecurityGroup'
+            # 'click #sg-info-list .sg-edit-icon'     : 'openSecurityGroup'
+            # 'click .deleteSG'                       : 'deleteSecurityGroup'
+            # 'click .resetSG'                        : 'resetSecurityGroup'
+            # 'click .stack-property-acl-list .delete': 'deleteNetworkAcl'
+            # 'click #stack-property-add-new-acl'     : 'openCreateAclPanel'
+            # 'click .stack-property-acl-list .edit'  : 'openEditAclPanel'
+
+            'change #property-stack-name'   : 'stackNameChanged'
+            # 'click #add-sg-btn'             : 'createSecurityGroup'
+            # 'click .deleteSG'               : 'deleteSecurityGroup'
+            # 'click .resetSG'                : 'resetSecurityGroup'
+            'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
+            'click #stack-property-add-new-acl' : 'openCreateAclPanel'
+            'click .stack-property-acl-list .edit' : 'openEditAclPanel'
 
         render     : () ->
             me = this
@@ -68,32 +76,32 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data'), cur_expanded_id
 
-        deleteSecurityGroup : (event) ->
-            me = this
+        # deleteSecurityGroup : (event) ->
+        #     me = this
 
-            target = $(event.target).parents('div:eq(0)')
-            uid = target.attr('uid')
-            name = target.children('p.title').text()
+        #     target = $(event.target).parents('div:eq(0)')
+        #     uid = target.attr('uid')
+        #     name = target.children('p.title').text()
 
-            console.log "Remove sg:" + uid
+        #     console.log "Remove sg:" + uid
 
-            me.trigger 'DELETE_STACK_SG', uid
+        #     me.trigger 'DELETE_STACK_SG', uid
 
-            target.remove()
+        #     target.remove()
 
-            notification 'info', name + ' is deleted.'
+        #     notification 'info', name + ' is deleted.'
 
-            null
+        #     null
 
-        resetSecurityGroup : (event) ->
-            me = this
+        # resetSecurityGroup : (event) ->
+        #     me = this
 
-            target = $(event.target).parents('div:eq(0)')
-            uid = target.attr('uid')
+        #     target = $(event.target).parents('div:eq(0)')
+        #     uid = target.attr('uid')
 
-            me.trigger 'RESET_STACK_SG', uid
+        #     me.trigger 'RESET_STACK_SG', uid
 
-            null
+        #     null
 
         deleteNetworkAcl : (event) ->
             aclUID = $(event.target).attr('acl-uid')

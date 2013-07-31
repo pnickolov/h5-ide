@@ -66,6 +66,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
             )
             #
             this.delegateEvents this.events
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/develop
 
         openInstance : () ->
             me = this

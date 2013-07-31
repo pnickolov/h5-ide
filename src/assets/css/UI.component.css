@@ -1216,7 +1216,7 @@ textarea {
 }
 
 .editor > .edit {
-	display: none;
+/*	display: none;*/
 }
 
 .selectbox .editor .input {

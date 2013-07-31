@@ -87,12 +87,16 @@ define [ 'underscore', 'backbone' ], () ->
 
         #property event
         RETURN_SUBNET_PROPERTY_FROM_ACL : 'RETURN_SUBNET_PROPERTY_FROM_ACL'
+        RETURN_PANEL_PROPERTY_FROM_SG : 'RETURN_PANEL_PROPERTY_FROM_SG'
 
         #websocket meteor collection
         WS_COLLECTION_READY_REQUEST : 'WS_COLLECTION_READY_REQUEST'
 
         #quickstart data ready
         RESOURCE_QUICKSTART_READY : 'RESOURCE_QUICKSTART_READY'
+
+        #trigger property view's undelegateEvents
+        UNDELEGATE_PROPERTY_DOM_EVENTS : 'UNDELEGATE_PROPERTY_DOM_EVENTS'
 
         constructor : ->
             _.extend this, Backbone.Events

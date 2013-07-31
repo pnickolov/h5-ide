@@ -104,10 +104,10 @@ define [ 'event',
                     $('#acl-add-model-source-select .selection').text(key)
 
                 selectboxContainer.append(
-                    '<li class="item tooltip ' + selected + '" data-value="' + value + '"><div class="main truncate">' + key + '</div></li>'
+                    '<li class="item tooltip ' + selected + '" data-id="' + value + '"><div class="main truncate">' + key + '</div></li>'
                 )
 
-            selectboxContainer.append('<li class="item tooltip" data-value="custom"><div class="main truncate">Custom</div></li>')
+            selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">Custom</div></li>')
 
             scrollbar.init()
             return false
@@ -117,21 +117,57 @@ define [ 'event',
             ruleNumber = $('#modal-acl-number').val()
             action = $('#acl-add-model-action-allow').prop('checked')
             inboundDirection = $('#acl-add-model-direction-inbound').prop('checked')
-            source = $.trim($('#acl-add-model-source-select').find('.selected').attr('data-value'))
+            source = $.trim($('#acl-add-model-source-select').find('.selected').attr('data-id'))
 
             if $('#modal-acl-source-input').is(':visible')
                 source = $('#modal-acl-source-input').val()
 
-            protocol = $.trim($('#acl-rule-modal-protocol-select').find('.selected').attr('data-value'))
+            protocol = $.trim($('#modal-protocol-select').find('.selected').attr('data-id'))
+
             port = $('#acl-rule-modal-port-input').val()
+
+            icmpType = icmpCode = ''
+            if protocol is 'tcp'
+                protocol = '6'
+                portTo = portFrom = port
+            else if protocol is 'udp'
+                protocol = '17'
+                portTo = portFrom = port
+            else if protocol is 'icmp'
+                protocol = '1'
+                portTo = portFrom = ''
+                icmpType = $('#protocol-icmp-main-select').find('.selected').attr('data-id')
+                icmpCode = $('#protocol-icmp-sub-select-' + icmpType).find('.selected').attr('data-id')
+            else if protocol is 'custom'
+                protocol = port
+                portTo = portFrom = ''
+            else if protocol is 'all'
+                protocol = '-1'
+                portTo = '0'
+                portFrom = '65535'
+
+            ruleAction = ''
+            if action
+                ruleAction = 'allow'
+            else
+                ruleAction = 'deny'
+
+            egress = ''
+            if inboundDirection
+                egress = 'false'
+            else
+                egress = 'true'
 
             this.trigger 'ADD_RULE_TO_ACL', {
                 rule: ruleNumber,
-                action: action,
-                inbound: inboundDirection,
+                action: ruleAction,
+                egress: egress,
                 source: source,
                 protocol: protocol,
-                port: port
+                portTo: portTo
+                portFrom: portFrom
+                type: icmpType
+                code: icmpCode
             }
 
             $('#modal-wrap').trigger('closed').remove()
@@ -164,7 +200,7 @@ define [ 'event',
                 if value.Protocol is '1'
                     newRuleObj.port = value.IcmpTypeCode.Type + '/' + value.IcmpTypeCode.Code
                 else
-                    newRuleObj.port = value.PortRange.To
+                    newRuleObj.port = value.PortRange.From + '-' + value.PortRange.To
 
                     if (value.PortRange.To is '') and (value.PortRange.From is '')
                         newRuleObj.port = 'All'
@@ -180,7 +216,7 @@ define [ 'event',
             $('#acl-rule-count').text(newEntrySet.length)
 
         modalRuleSourceSelected : (event) ->
-            value = $.trim($(event.target).find('.selected').attr('data-value'))
+            value = $.trim($(event.target).find('.selected').attr('data-id'))
 
             if value is 'custom'
                 $('#modal-acl-source-input').show()

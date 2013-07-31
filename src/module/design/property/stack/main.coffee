@@ -60,7 +60,7 @@ define [ 'jquery',
             #render
             renderPropertyPanel = () ->
                 model.getProperty()
-                model.getSecurityGroup()
+                #model.getSecurityGroup()
 
                 view.render()
 

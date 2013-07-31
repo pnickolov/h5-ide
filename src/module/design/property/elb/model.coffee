@@ -12,8 +12,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'listener_detail'   :   null
             'az_detail' :   null
             'component' :   null
+            'uid'       :   null
 
         init : ( uid ) ->
+
+            this.set 'uid', uid
+
             allComp = MC.canvas_data.component
             
             elb_data = MC.canvas_data.component[ uid ]
@@ -311,6 +315,48 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
+        getSGList : () ->
+
+            uid = this.get 'uid'
+            sgAry = MC.canvas_data.component[uid].resource.SecurityGroups
+
+            sgUIDAry = []
+            _.each sgAry, (value) ->
+                sgUID = value.slice(1).split('.')[0]
+                sgUIDAry.push sgUID
+                null
+
+            return sgUIDAry
+
+        unAssignSGToComp : (sg_uid) ->
+
+            elbUID = this.get 'uid'
+
+            originSGAry = MC.canvas_data.component[elbUID].resource.SecurityGroups
+
+            currentSGId = '@' + sg_uid + '.resource.GroupId'
+
+            originSGAry = _.filter originSGAry, (value) ->
+                value isnt currentSGId
+
+            MC.canvas_data.component[elbUID].resource.SecurityGroups = originSGAry
+
+            null
+
+        assignSGToComp : (sg_uid) ->
+
+            elbUID = this.get 'uid'
+
+            originSGAry = MC.canvas_data.component[elbUID].resource.SecurityGroups
+
+            currentSGId = '@' + sg_uid + '.resource.GroupId'
+
+            if !Boolean(currentSGId in originSGAry)
+                originSGAry.push currentSGId
+
+            MC.canvas_data.component[elbUID].resource.SecurityGroups = originSGAry
+
+            null
     }
 
     model = new ElbModel()

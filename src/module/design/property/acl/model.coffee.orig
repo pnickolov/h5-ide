@@ -85,12 +85,15 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                         null
 
+<<<<<<< HEAD
             if aclObj.associationSet.item
 
                 aclObj.asso_number = aclObj.associationSet.item.length
 
             else
                 aclObj.asso_number = 0
+=======
+>>>>>>> origin/develop
 
             this.set 'component', aclObj
 

@@ -421,9 +421,13 @@ define [ 'constant',
 
 			MC.canvas.remove $("#" + option.id)[0]
 
+
+
+
 			if is_delete
-				#show property panel after remove resource
-				ide_event.trigger ide_event.OPEN_PROPERTY, 'component', ''
+
+				this.trigger 'DELETE_OBJECT_COMPLETE'
+
 
 			null
 
@@ -743,6 +747,9 @@ define [ 'constant',
 
 			if componentType is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 				MC.aws.elb.setAllELBSchemeAsInternal()
+
+			#
+			this.trigger 'CREATE_COMPONENT_COMPLETE'
 
 			#to-do
 

@@ -57,6 +57,9 @@ define [ 'jquery',
             #view
             view.model    = model
 
+            #re calc cost when load module
+            model.getCost()
+
             #render
             renderPropertyPanel = () ->
                 model.getProperty()

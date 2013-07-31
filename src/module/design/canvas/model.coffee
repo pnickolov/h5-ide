@@ -132,7 +132,7 @@ define [ 'constant',
 
 							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.NetworkInterfaceId.split('.')[0][1...] == option.id
 
-								delete MC.canvas_data.componentreturn[index]
+								delete MC.canvas_data.component[index]
 
 							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 

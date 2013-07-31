@@ -3022,7 +3022,21 @@ MC.canvas.event.siderbarDrag = {
 			return key.replace('dropable-group ', '');
 		});
 
-		event.data.shadow.remove();
+		if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+		{
+			event.data.shadow.animate({
+				'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
+				'top': coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
+				'opacity': 0
+			}, function ()
+			{
+				event.data.shadow.remove();
+			});
+		}
+		else
+		{
+			event.data.shadow.remove();
+		}
 
 		$(document.body).removeClass('disable-event');
 

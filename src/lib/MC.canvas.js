@@ -753,6 +753,16 @@ MC.canvas = {
 
 	connect: function (from_node, from_target_port, to_node, to_target_port, line_option)
 	{
+		if (typeof from_node === 'string')
+		{
+			from_node = $('#' + from_node);
+		}
+
+		if (typeof to_node === 'string')
+		{
+			to_node = $('#' + to_node);
+		}
+
 		var canvas_offset = $('#svg_canvas').offset(),
 			from_uid = from_node.attr('id'),
 			to_uid = to_node.attr('id'),
@@ -1107,13 +1117,13 @@ MC.canvas = {
 
 		$.each(node_connections, function (index, value)
 		{
-			line_connection = layout_connection_data[ value.line ];
+			line_target = layout_connection_data[ value.line ][ 'target' ];
 
-			line_layer.removeChild(document.getElementById( value.line ));
+			line_layer.removeChild( document.getElementById( value.line ) );
 
 			MC.canvas.connect(
-				node, line_connection['target'][ node_id ],
-				$('#' + value.target), line_connection['target'][ value.target ],
+				node_id, line_target[ node_id ],
+				value.target, line_target[ value.target ],
 				{'line_uid': value['line']}
 			);
 		});
@@ -2362,6 +2372,8 @@ MC.canvas.event.dragable = {
 
 		$(document.body).removeClass('disable-event');
 
+		MC.canvas.volume.close();
+
 		$(document).off({
 			'mousemove': MC.canvas.event.mousemove,
 			'mouseup': MC.canvas.event.mouseup
@@ -2729,8 +2741,10 @@ MC.canvas.event.drawConnection = {
 				if (
 					item.type === 'AWS.VPC.Subnet' &&
 					group_coordinate &&
-					group_coordinate[0] < coordinate.x &&
-					group_coordinate[0] + group_size[0] > coordinate.x &&
+
+					// Extend subnet area
+					group_coordinate[0] - 2 < coordinate.x &&
+					group_coordinate[0] + group_size[0] + 2 > coordinate.x &&
 					group_coordinate[1] < coordinate.y &&
 					group_coordinate[1] + group_size[1] > coordinate.y
 				)
@@ -3012,7 +3026,21 @@ MC.canvas.event.siderbarDrag = {
 			return key.replace('dropable-group ', '');
 		});
 
-		event.data.shadow.remove();
+		if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+		{
+			event.data.shadow.animate({
+				'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
+				'top': coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
+				'opacity': 0
+			}, function ()
+			{
+				event.data.shadow.remove();
+			});
+		}
+		else
+		{
+			event.data.shadow.remove();
+		}
 
 		$(document.body).removeClass('disable-event');
 

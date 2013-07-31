@@ -395,7 +395,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				volume_number = 0,
 				icon_volume_status = 'not-attached',
 				eni = null,
-				eip_icon = MC.canvas.IMAGE.EIP_OFF,				
+				eip_icon = MC.canvas.IMAGE.EIP_OFF,
 				data_eip_state = 'off'; //on | off
 
 
@@ -457,12 +457,12 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
-				
+
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					$.each(MC.canvas_data.component, function ( key, val ){
-						
+
 						if(val.type === 'AWS.VPC.NetworkInterface' && val.resource.Attachment.InstanceId.split(".")[0].slice(1) === component_data.uid && val.resource.Attachment.DeviceIndex === '0'){
-							
+
 							$.each(MC.canvas_data.component, function ( k, v ){
 								if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + val.uid + '.resource.NetworkInterfaceId'){
 									eip_icon = MC.canvas.IMAGE.EIP_ON;
@@ -471,8 +471,8 @@ MC.canvas.add = function (flag, option, coordinate)
 						}
 					});
 				}
-                	
-                
+
+
 				component_layout = layout.node[group.id];
 
 				coordinate.x = component_layout.coordinate[0];
@@ -518,15 +518,15 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				//3 path: left port(green)
-				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-green port-instance-elb-attach',
-					'transform': 'translate(8, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'instance-elb-attach',
-					'data-position': 'left',
-					'data-type': 'attachment',
-					'data-direction': 'in',
-					'data-angle': MC.canvas.PORT_LEFT_ANGLE
-				}),
+				// Canvon.path(MC.canvas.PATH_D_PORT).attr({
+				// 	'class': 'port port-green port-instance-elb-attach',
+				// 	'transform': 'translate(8, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
+				// 	'data-name': 'instance-elb-attach',
+				// 	'data-position': 'left',
+				// 	'data-type': 'attachment',
+				// 	'data-direction': 'in',
+				// 	'data-angle': MC.canvas.PORT_LEFT_ANGLE
+				// }),
 
 				//4 path: right port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
@@ -782,16 +782,16 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 				}),
 
-				//4 path: right port -> instance attach
-				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-green port-elb-attach',
-					'transform': 'translate(84, 42)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'elb-attach',
-					'data-position': 'right',
-					'data-type': 'attachment',
-					'data-direction': 'out',
-					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
-				}),
+				// //4 path: right port -> instance attach
+				// Canvon.path(MC.canvas.PATH_D_PORT).attr({
+				// 	'class': 'port port-green port-elb-attach',
+				// 	'transform': 'translate(84, 42)' + MC.canvas.PORT_RIGHT_ROTATE,
+				// 	'data-name': 'elb-attach',
+				// 	'data-position': 'right',
+				// 	'data-type': 'attachment',
+				// 	'data-direction': 'out',
+				// 	'data-angle': MC.canvas.PORT_RIGHT_ANGLE
+				// }),
 
 				//5 path: right port -> subnet
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({

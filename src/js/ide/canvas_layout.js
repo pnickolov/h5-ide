@@ -1,4 +1,4 @@
-var 
+var
 	hide_siderbar = function ()
 	{
 		$('#siderbar_body_main').hide();
@@ -73,7 +73,6 @@ var listen = function ()
 
 		$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
 
-		$('#resource-panel').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);
 	}
 };
 
@@ -83,6 +82,8 @@ var ready = function ()
 	$(document).on('keydown', MC.canvas.event.keyEvent);
 
 	$('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close);
+
+	$('#tab-content-design').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);
 
 	$(document.body)
 		.on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown);

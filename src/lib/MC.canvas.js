@@ -2372,6 +2372,8 @@ MC.canvas.event.dragable = {
 
 		$(document.body).removeClass('disable-event');
 
+		MC.canvas.volume.close();
+
 		$(document).off({
 			'mousemove': MC.canvas.event.mousemove,
 			'mouseup': MC.canvas.event.mouseup

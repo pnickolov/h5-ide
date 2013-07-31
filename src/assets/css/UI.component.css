@@ -977,7 +977,7 @@ textarea {
 	font-size: 12px;
 	position: absolute;
 	border-radius: 4px;
-	z-index: 60;
+	z-index: 85;
 	min-width: 250px;
 	max-width: 400px;
 }
@@ -1163,7 +1163,7 @@ textarea {
 	width      : 100%;
 	min-width  : 160px;
 	background : #fff;
-	margin-top : 10px;
+	margin-top : 1px;
 	z-index    : 50;
 	border     : 1px solid #ccc;
 	box-shadow : 0 8px 10px rgba(0,0,0,.3);

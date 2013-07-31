@@ -54,44 +54,12 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		true
 	# end of send_request
 
-	resolvedObjectToArray = ( objs ) ->
-
-		if $.type(objs)  == "array"
-
-			for obj in objs
-
-				obj = resolvedObjectToArray obj
-
-		if $.type(objs)  == "object"
-
-			if $.isEmptyObject objs
-
-				objs = null
-
-			for key, value of objs
-
-				if key == 'item' and $.type(value)  == "object"
-
-					tmp = []
-
-					tmp.push resolvedObjectToArray value
-
-					objs[key] = tmp
-
-				else if $.type(value)  == "object" or $.type(value)  == "array"
-
-					objs[key] = resolvedObjectToArray value
-
-		objs
-
 	#///////////////// Parser for DescribeInstanceHealth return (need resolve) /////////////////
 	#private (resolve result to vo )
 	resolveDescribeInstanceHealthResult = ( result ) ->
 		#resolve result
 		#return vo
 		result_set = ($.xml2json ($.parseXML result[1])).DescribeInstanceHealthResponse.DescribeInstanceHealthResult.InstanceStates.member
-
-		result_set = resolvedObjectToArray result_set
 
 		if $.type(result_set) == "object"
 
@@ -185,8 +153,6 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#resolve result
 		#return vo
 		result_set = ($.xml2json ($.parseXML result[1])).DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions
-
-		result_set = resolvedObjectToArray result_set
 
 		if result_set
 

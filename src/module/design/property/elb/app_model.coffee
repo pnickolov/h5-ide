@@ -21,6 +21,10 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
             elb.HealthCheck.port     = elb.HealthCheck.Target.split(":")[1].split("/")[0]
             elb.HealthCheck.path     = elb.HealthCheck.Target.split("/")[1]
 
+            # DNS
+            elb.AAAADNSName = "ipv6." + elb.DNSName
+            elb.ADNSName    = "dualstack." + elb.DNSName
+
 
             elb.listenerDisplay = []
 
@@ -29,6 +33,12 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
               $.each elb.ListenerDescriptions.member, (i, listener) ->
 
                 elb.listenerDisplay.push listener
+
+                if listener.Listener.SSLCertificateId
+
+                  elb.server_certificate = listener.Listener.SSLCertificateId.split('/')[1]
+
+                  null
 
             if elb.Subnets
 

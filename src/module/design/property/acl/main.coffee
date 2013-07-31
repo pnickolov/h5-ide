@@ -56,7 +56,10 @@ define [ 'jquery',
             #view
             view.model    = model
 
-            if view.hasOwnProperty('events')
+            #render
+            view.render expended_accordion_id
+
+            if view._events
                 return
 
             view.on 'ADD_RULE_TO_ACL', (value) ->
@@ -75,9 +78,6 @@ define [ 'jquery',
                 console.log 'return_type = ' + return_type
                 #ide_event.trigger ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, that
                 ide_event.trigger ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, return_type
-
-            #render
-            view.render expended_accordion_id
 
     unLoadModule = () ->
         # current_view.off()

@@ -42,14 +42,13 @@ define [ 'jquery',
             else
                 view.model.addSG()
 
-            if view.hasOwnProperty('events')
-                return
-
             #render
             view.render()
+
+            if view._events
+                return
             
             view.on 'SET_SG_NAME', ( sg_uid, value ) ->
-
                 model.setSGName sg_uid, value
 
             view.on 'REMOVE_SG_RULE', ( sg_uid, rule )->

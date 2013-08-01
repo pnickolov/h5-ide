@@ -2317,6 +2317,8 @@ MC.canvas.volume = {
 
 					MC.canvas.data.set('component.' + volume_id + '.resource.AvailabilityZone', target_az);
 
+					MC.canvas.data.set('component.' + volume_id + '.resource.AttachmentSet.InstanceId', '@' + target_id + '.resource.InstanceId');
+
 					// Update original data
 					original_node_id = data_option.instance_id;
 					original_node_volume_data = MC.canvas.data.get('component.' + original_node_id + '.resource.BlockDeviceMapping');

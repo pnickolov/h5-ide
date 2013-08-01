@@ -374,36 +374,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             sub_info = popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info
 
-            # if dhcp.dhcpConfigurationSet.item.constructor == Array
+            if dhcp.dhcpConfigurationSet
 
-            #     _.map dhcp.dhcpConfigurationSet.item, ( item, i ) ->
+                _.map dhcp.dhcpConfigurationSet.item, ( item, i ) ->
 
-            #         if item.valueSet.item.constructor == Array
+                    _.map item.valueSet, ( it, j )->
 
-            #             _.map item.valueSet.item, ( it, j )->
-
-            #                 sub_info.push { "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', 'item', j, 'value'], "show_key": item.key }
-
-            #         else
-
-            #             sub_info.push { "key": [ 'dhcpConfigurationSet', 'item', i, 'valueSet', 'item', 'value'], "show_key": item.key }
-
-            # else
-            #     item = dhcp.dhcpConfigurationSet.item
-
-            #     if item.valueSet.item.constructor == Array
-
-            #         _.map item.valueSet.item, ( it, i ) ->
-
-            #             sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', j, 'value'], "show_key": item.key }
-
-            #     else
-
-            #         sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', 'value'], "show_key": item.key }
+                        sub_info.push { "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', j], "show_key": item.key }
 
             me.parseSourceValue 'DescribeDhcpOptions', dhcp, "bubble", null
-
-                #sub_info.push { "key": [ dhcp.dhcpConfigurationSet.item.value], "show_key": dhcp.dhcpConfigurationSet.item.key }
 
         reRenderRegionResource : () ->
 
@@ -999,6 +978,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     if not elb.Instances
 
                         elb.state = '0 of 0 instances in service'
+
+                        elb.instance_state = []
 
                     else
 

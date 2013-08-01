@@ -21,6 +21,7 @@ require.config {
 		'text'         : 'vender/requirejs/text'
 
 		'zeroclipboard': 'vender/zeroclipboard/ZeroClipboard'
+		'jqpagination' : 'vender/jqpagination/jquery.jqpagination'
 
 		#core lib
 		'MC'                 : 'lib/MC.core'

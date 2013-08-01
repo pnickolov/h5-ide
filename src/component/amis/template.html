@@ -45,11 +45,12 @@
 				<div id="ami-count">
 				  Total: 0
 				</div>
-				<div id="btn-search-ami" class="btn btn-silver">Search</div>
+				<div id="btn-search-ami" class="btn btn-silver" disabled>Searching...</div>
 			</div>
 			<div class="ami-right-col scroll-wrap scrollbar-auto-hide" style="height:450px; width:580px; float:left;">
 				<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-				<div class="scroll-content">
+				<div class="show-loading"><div class="loading-spinner"></div></div>
+				<div class="scroll-content" style="display:none;">
 					<table id="community-ami-filter" class="table filter table-light">
 						<thead>
 							<tr>
@@ -60,6 +61,7 @@
 							</tr>
 						</thead>
 						<tbody id="community_ami_table">
+							<!--
 							{{#each community_ami}}
 							<tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
 								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
@@ -71,6 +73,7 @@
 								<td>32</td>
 							</tr>
 							{{/each}}
+							-->
 
 							<!--<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
 								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
@@ -84,21 +87,20 @@
 
 
 						</tbody>
-						<div id="community_ami_page">
-							<div id="community_ami_page_preview">
-								Preview Page
-							</div>
-
-							<div id="community_ami_page_current" page="0", totalPage="1">
-								Current Page
-							</div>
-
-							<div id="community_ami_page_next">
-								Next Page
-							</div>
-						</div>
 					</table>
 				</div>
+
+				<div id="community-ami-page">
+					<div class="page-tip" style="display: none;"></div>
+					<div class="pagination" style="display: none;">
+					    <a href="#" class="first" data-action="first">&laquo;</a>
+					    <a href="#" class="previous" data-action="previous">&lsaquo;</a>
+					    <input type="text" readonly="readonly" data-max-page="40" />
+					    <a href="#" class="next" data-action="next">&rsaquo;</a>
+					    <a href="#" class="last" data-action="last">&raquo;</a>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>

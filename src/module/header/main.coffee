@@ -29,7 +29,8 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
 
             model.on 'HEADER_UPDATE', () ->
                 console.log 'HEADER_UPDATE'
-                view.render()
+                #view.render()
+                view.resetAlert()
 
             # model.on 'change:info_list', () ->
             #     console.log 'header update info_list'

@@ -146,6 +146,23 @@ var selectbox = {
                   .removeClass("open");
     }
 
+    function dropdown( event ) {
+        var $self = $( event.currentTarget ).find('div');
+        if ( $self.attr( 'style' ) && $self.attr( 'style' ).indexOf( 'none' ) === -1 ) {
+            $self.hide();
+        }
+        else {
+            $self.show();
+        }
+
+        $(document.body).one('click', function( event ){
+            $self.hide();
+            //if header--notification is push DROPDOWN_CLOSE
+            $( $self.closest("li").children()[0] ).trigger( "DROPDOWN_CLOSE" )
+        });
+
+    }
+
     $(function(){
         selectbox.init();
         $(document.body)
@@ -155,14 +172,16 @@ var selectbox = {
             .on('click',   ".selectbox .selection",       toggle)
             .on('click',   ".selectbox .dropdown .item",  select)
             .on('keydown', ".selectbox.open .dropdown",   keydown)
+            .on('click',   ".dropdown",                  dropdown);
 
-        /* Below are functions that's in bootstrap-dropdown */
-            .on('click',   ".js-toggle-dropdown",        toggleDropdown)
+            /* Below are functions that's in bootstrap-dropdown */
+            //.on('click',   ".js-toggle-dropdown",        toggleDropdown)
     });
 
 
 
     /* Functions took from bootstrap-dropdown, it simple toggles "open" class */
+    /*
     var dropDownBound = false;
     function toggleDropdown ( event ) {
 
@@ -218,5 +237,6 @@ var selectbox = {
         });
         dropDownBound = false;
     }
+    */
 
 })();

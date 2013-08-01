@@ -6,9 +6,9 @@
   The selected connection reflects following security group rule(s):
 </div>
 
-{{#each sg_group}}
-<section id="property-sgrule" data-line="{{line_id}}">
 
+<section id="property-sgrule" data-line="{{line_id}}">
+	{{#each sg_group}}
   <header class="fixedaccordion-head">{{name}}</header>
   <div class="item-wrap scroll-content" style="-webkit-transform: translate3d(0, 0, 0);">
 
@@ -31,11 +31,11 @@
       
     </div>
   </div>
-
+{{/each}}
   {{#if isAppView}}
   {{else}}
   <button class="btn btn-red" id="sg-edit-rule-button">Edit Related Rule</button>
   {{/if}}
 
 </section>
-{{/each}}
+

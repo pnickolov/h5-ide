@@ -144,7 +144,7 @@ define [ 'constant',
 					# remove rt
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
-						if MC.canvas_data.component[option.id].name == 'MainRT'
+						if MC.canvas_data.component[option.id].resource.AssociationSet.length > 0 and MC.canvas_data.component[option.id].resource.AssociationSet[0].Main == 'true'
 
 							console.log 'Can not delete main routetable'
 

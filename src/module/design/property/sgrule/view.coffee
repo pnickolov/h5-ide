@@ -18,13 +18,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         render     : (is_app_view) ->
             console.log 'property:sgrule render'
 
+            this.model.attributes.isAppView = this.isAppView
+
             data = this.model.attributes
             data.isAppView = this.isAppView
 
             if is_app_view
-                $( '.property-details' ).html this.template data
-            else
                 $( '.property-details' ).html this.app_template data
+            else
+                $( '.property-details' ).html this.template data
 
 
         onEditRule : ( event ) ->

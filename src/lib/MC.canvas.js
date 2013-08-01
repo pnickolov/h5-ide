@@ -2916,7 +2916,8 @@ MC.canvas.event.drawConnection = {
 		{
 			event.preventDefault();
 
-			var canvas_offset = $('#svg_canvas').offset(),
+			var svg_canvas = $('#svg_canvas'),
+				canvas_offset = svg_canvas.offset(),
 				target = $(this),
 				target_offset = Canvon(this).offset(),
 				parent = target.parent(),
@@ -2929,6 +2930,7 @@ MC.canvas.event.drawConnection = {
 				port_type = target.data('type'),
 				port_name = target.data('name'),
 				connection_option = MC.canvas.CONNECTION_OPTION[ node_type ],
+				CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
 				offset = {},
 				target_connection_option,
 				target_data,
@@ -2976,7 +2978,7 @@ MC.canvas.event.drawConnection = {
 
 			MC.canvas.event.clearSelected();
 
-			// Highlight connectable node
+			// Highlight connectable port
 			$.each(connection_option, function (type, option)
 			{
 				if ($.type(option) !== 'array')
@@ -3081,15 +3083,21 @@ MC.canvas.event.drawConnection = {
 									return;
 								}
 							}
-							$(this)
-								.attr("class", function (index, key)
-								{
-									return "connectable " + key;
-								})
-								.find('.port-' + value.to).attr("class", function (index, key)
-								{
-									return "connectable-port " + key;
-								});
+
+							svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, [node_id, value.from, item.id, value.to]);
+
+							if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
+							{
+								$(this)
+									.attr("class", function (index, key)
+									{
+										return "connectable " + key;
+									})
+									.find('.port-' + value.to).attr("class", function (index, key)
+									{
+										return "connectable-port " + key;
+									});
+							}
 						});
 					}
 				});
@@ -3144,9 +3152,11 @@ MC.canvas.event.drawConnection = {
 				event.pageX - event.data.canvas_offset.left,
 				event.pageY - event.data.canvas_offset.top
 			),
+			svg_canvas = $('#svg_canvas'),
 			from_node = event.data.originalTarget,
 			port_name = event.data.port_name,
 			from_type = from_node.data('class'),
+			CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
 			layout_group_data,
 			to_node,
 			port_name,
@@ -3154,27 +3164,21 @@ MC.canvas.event.drawConnection = {
 			line_id,
 			coordinate,
 			group_coordinate,
-			group_size,
-			matched;
+			group_size;
 
-		if (match_node)
-		{
-			to_node = $(match_node);
-			to_port_name = to_node.find('.connectable-port').data('name');
-
-			if (!from_node.is(to_node) && to_port_name !== undefined)
-			{
-				line_id = MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
-
-				//trigger event when connect two port
-				$("#svg_canvas").trigger("CANVAS_LINE_CREATE", line_id);
-			}
-		}
-		else if (from_type === 'AWS.VPC.RouteTable' || from_type === 'AWS.ELB')
+		if (
+			(
+				from_type === 'AWS.VPC.RouteTable' || from_type === 'AWS.ELB'
+			)
+			&&
+			!match_node
+		)
 		{
 			layout_group_data = MC.canvas.data.get('layout.component.group');
 
 			coordinate = MC.canvas.pixelToGrid(event.pageX - event.data.canvas_offset.left, event.pageY - event.data.canvas_offset.top);
+
+			match_node = null;
 
 			$.each(layout_group_data, function (key, item)
 			{
@@ -3185,30 +3189,35 @@ MC.canvas.event.drawConnection = {
 					item.type === 'AWS.VPC.Subnet' &&
 					group_coordinate &&
 
-					// Extend subnet area
+					// Specially extend subnet area
 					group_coordinate[0] - 2 < coordinate.x &&
 					group_coordinate[0] + group_size[0] + 2 > coordinate.x &&
 					group_coordinate[1] < coordinate.y &&
 					group_coordinate[1] + group_size[1] > coordinate.y
 				)
 				{
-					matched = document.getElementById( key );
+					match_node = document.getElementById( key );
 
 					return false;
 				}
 			});
+		}
 
-			if (matched)
+		if (match_node)
+		{
+			to_node = $(match_node);
+			to_port_name = to_node.find('.connectable-port').data('name');
+
+			if (!from_node.is(to_node) && to_port_name !== undefined)
 			{
-				to_node = $(matched);
-				to_port_name = to_node.find('.connectable-port').data('name');
+				svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, [from_node.attr('id'), port_name, to_node.attr('id'), to_port_name]);
 
-				if (!from_node.is(to_node) && to_port_name !== undefined)
+				if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
 				{
-					line_id = MC.canvas.connect(event.data.originalTarget, port_name, to_node, to_port_name);
+					line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
 
 					//trigger event when connect two port
-					$("#svg_canvas").trigger("CANVAS_LINE_CREATE", line_id);
+					svg_canvas.trigger("CANVAS_LINE_CREATE", line_id);
 				}
 			}
 		}

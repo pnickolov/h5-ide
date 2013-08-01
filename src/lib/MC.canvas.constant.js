@@ -499,7 +499,8 @@ var constant_data = {
 		sg_list: [],
 		kp_list: [],
 		original_json: '',
-		SCALE_RATIO: 1
+		SCALE_RATIO: 1,
+		selected_node: []
 		//resource_list: [] //aws resource list by Describe* return
 	},
 

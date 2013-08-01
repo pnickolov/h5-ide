@@ -9,7 +9,7 @@ MC.canvas_property = {};
 
 MC.canvas = {
 
-	selected_node: [],
+	//selected_node: [],
 
 	getState: function ()
 	{
@@ -2496,7 +2496,7 @@ MC.canvas.event.dragable = {
 				target.remove();
 				$('#node_layer').append(clone_node);
 
-				MC.canvas.selected_node.push(clone_node[0]);
+				MC.canvas_property.selected_node.push(clone_node[0]);
 
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 			}
@@ -2510,7 +2510,7 @@ MC.canvas.event.dragable = {
 					return key + ' selected';
 				});
 
-				MC.canvas.selected_node.push(target[0]);
+				MC.canvas_property.selected_node.push(target[0]);
 
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 			}
@@ -2556,7 +2556,7 @@ MC.canvas.event.dragable = {
 					target.remove();
 					$('#node_layer').append(clone_node);
 
-					MC.canvas.selected_node.push(clone_node[0]);
+					MC.canvas_property.selected_node.push(clone_node[0]);
 
 					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 
@@ -2779,7 +2779,7 @@ MC.canvas.event.dragable = {
 						return key + ' selected';
 					});
 
-					MC.canvas.selected_node.push(target[0]);
+					MC.canvas_property.selected_node.push(target[0]);
 
 					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 
@@ -2880,7 +2880,7 @@ MC.canvas.event.dragable = {
 			return key + ' selected';
 		});
 
-		MC.canvas.selected_node.push(event.data.target[0]);
+		MC.canvas_property.selected_node.push(event.data.target[0]);
 
 		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", target_id);
 
@@ -3435,7 +3435,7 @@ MC.canvas.event.siderbarDrag = {
 							return key + ' selected';
 						});
 
-						MC.canvas.selected_node = [new_node];
+						MC.canvas_property.selected_node = [new_node];
 
 						$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", new_node.id);
 					}
@@ -4049,7 +4049,7 @@ MC.canvas.event.selectLine = function (event)
 		line.remove();
 		$('#line_layer').append(clone);
 
-		MC.canvas.selected_node.push(clone);
+		MC.canvas_property.selected_node.push(clone);
 
 		//trigger event when selecte line
 		$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", clone.id);
@@ -4079,7 +4079,7 @@ MC.canvas.event.selectNode = function (event)
 			target.remove();
 			$('#node_layer').append(clone_node);
 
-			MC.canvas.selected_node.push(clone_node[0]);
+			MC.canvas_property.selected_node.push(clone_node[0]);
 
 			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 		}
@@ -4088,7 +4088,7 @@ MC.canvas.event.selectNode = function (event)
 		{
 			Canvon(this).addClass('selected');
 
-			MC.canvas.selected_node.push(target[0]);
+			MC.canvas_property.selected_node.push(target[0]);
 
 			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
 		}
@@ -4102,7 +4102,7 @@ MC.canvas.event.clearSelected = function ()
 		Canvon(item).removeClass('selected');
 	});
 
-	MC.canvas.selected_node = [];
+	MC.canvas_property.selected_node = [];
 };
 
 MC.canvas.event.keyEvent = function (event)
@@ -4121,11 +4121,11 @@ MC.canvas.event.keyEvent = function (event)
 		) &&
 		canvas_status === 'stack' &&
 		!is_zoomed &&
-		MC.canvas.selected_node.length > 0 &&
+		MC.canvas_property.selected_node.length > 0 &&
 		event.target === document.body
 	)
 	{
-		$.each(MC.canvas.selected_node, function (i, node)
+		$.each(MC.canvas_property.selected_node, function (i, node)
 		{
 			if (node.getAttribute('data-class') !== 'AWS.VPC.VPC')
 			{
@@ -4138,7 +4138,7 @@ MC.canvas.event.keyEvent = function (event)
 				});
 			}
 		});
-		MC.canvas.selected_node = [];
+		MC.canvas_property.selected_node = [];
 
 		return false;
 	}
@@ -4156,12 +4156,12 @@ MC.canvas.event.keyEvent = function (event)
 	// Switch node - [tab]
 	if (
 		keyCode === 9 &&
-		MC.canvas.selected_node.length === 1 &&
-		MC.canvas.selected_node[ 0 ].getAttribute('data-type') === 'node'
+		MC.canvas_property.selected_node.length === 1 &&
+		MC.canvas_property.selected_node[ 0 ].getAttribute('data-type') === 'node'
 	)
 	{
 		var layout_node_data = MC.canvas.data.get('layout.component.node'),
-			current_node_id = MC.canvas.selected_node[ 0 ].id,
+			current_node_id = MC.canvas_property.selected_node[ 0 ].id,
 			node_stack = [],
 			index = 0,
 			current_index,
@@ -4200,7 +4200,7 @@ MC.canvas.event.keyEvent = function (event)
 		next_node.remove();
 		$('#node_layer').append(clone_node);
 
-		MC.canvas.selected_node.push(clone_node[0]);
+		MC.canvas_property.selected_node.push(clone_node[0]);
 
 		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 
@@ -4212,11 +4212,11 @@ MC.canvas.event.keyEvent = function (event)
 		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
 		canvas_status === 'stack' &&
 		!is_zoomed &&
-		MC.canvas.selected_node.length === 1 &&
-		MC.canvas.selected_node[ 0 ].getAttribute('data-type') === 'node'
+		MC.canvas_property.selected_node.length === 1 &&
+		MC.canvas_property.selected_node[ 0 ].getAttribute('data-type') === 'node'
 	)
 	{
-		var target = $(MC.canvas.selected_node[ 0 ]),
+		var target = $(MC.canvas_property.selected_node[ 0 ]),
 			target_id = target.attr('id'),
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),

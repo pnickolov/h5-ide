@@ -2496,7 +2496,7 @@ MC.canvas.event.dragable = {
 				target.remove();
 				$('#node_layer').append(clone_node);
 
-				MC.canvas_property.selected_node.push(clone_node[0]);
+				MC.canvas_property.selected_node.push(clone_node[0].id);
 
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 			}
@@ -2510,7 +2510,7 @@ MC.canvas.event.dragable = {
 					return key + ' selected';
 				});
 
-				MC.canvas_property.selected_node.push(target[0]);
+				MC.canvas_property.selected_node.push(target[0].id);
 
 				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 			}
@@ -2556,7 +2556,7 @@ MC.canvas.event.dragable = {
 					target.remove();
 					$('#node_layer').append(clone_node);
 
-					MC.canvas_property.selected_node.push(clone_node[0]);
+					MC.canvas_property.selected_node.push(clone_node[0].id);
 
 					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 
@@ -2779,7 +2779,7 @@ MC.canvas.event.dragable = {
 						return key + ' selected';
 					});
 
-					MC.canvas_property.selected_node.push(target[0]);
+					MC.canvas_property.selected_node.push(target[0].id);
 
 					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 
@@ -2880,7 +2880,7 @@ MC.canvas.event.dragable = {
 			return key + ' selected';
 		});
 
-		MC.canvas_property.selected_node.push(event.data.target[0]);
+		MC.canvas_property.selected_node.push(target_id);
 
 		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", target_id);
 
@@ -3435,7 +3435,7 @@ MC.canvas.event.siderbarDrag = {
 							return key + ' selected';
 						});
 
-						MC.canvas_property.selected_node = [new_node];
+						MC.canvas_property.selected_node = [new_node.id];
 
 						$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", new_node.id);
 					}
@@ -3636,9 +3636,6 @@ MC.canvas.event.groupResize = {
 					'x': left > max_left ? max_left : left,
 					'width': event.data.originalWidth - left
 				};
-				break;
-			default :
-				//console.info('unknown direction:' + direction);
 				break;
 		}
 
@@ -4049,7 +4046,7 @@ MC.canvas.event.selectLine = function (event)
 		line.remove();
 		$('#line_layer').append(clone);
 
-		MC.canvas_property.selected_node.push(clone);
+		MC.canvas_property.selected_node.push(clone.id);
 
 		//trigger event when selecte line
 		$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", clone.id);
@@ -4079,7 +4076,7 @@ MC.canvas.event.selectNode = function (event)
 			target.remove();
 			$('#node_layer').append(clone_node);
 
-			MC.canvas_property.selected_node.push(clone_node[0]);
+			MC.canvas_property.selected_node.push(clone_node[0].id);
 
 			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 		}
@@ -4088,7 +4085,7 @@ MC.canvas.event.selectNode = function (event)
 		{
 			Canvon(this).addClass('selected');
 
-			MC.canvas_property.selected_node.push(target[0]);
+			MC.canvas_property.selected_node.push(this.id);
 
 			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
 		}
@@ -4110,7 +4107,8 @@ MC.canvas.event.keyEvent = function (event)
 	var keyCode = event.which,
 		nodeName = event.target.nodeName.toLowerCase(),
 		canvas_status = MC.canvas.getState(),
-		is_zoomed = $('#canvas_body').hasClass('canvas_zoomed');
+		is_zoomed = $('#canvas_body').hasClass('canvas_zoomed'),
+		selected_node;
 
 	// Delete resource - [delete/backspace]
 	if (
@@ -4125,16 +4123,18 @@ MC.canvas.event.keyEvent = function (event)
 		event.target === document.body
 	)
 	{
-		$.each(MC.canvas_property.selected_node, function (i, node)
+		$.each(MC.canvas_property.selected_node, function (index, id)
 		{
-			if (node.getAttribute('data-class') !== 'AWS.VPC.VPC')
+			selected_node = $('#' + id);
+
+			if (selected_node.data('class') !== 'AWS.VPC.VPC')
 			{
 				//MC.canvas.remove(node);
 
 				//trigger event when delete component
 				$("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {
-					'id': node.id,
-					'type': $(node).data('type')
+					'id': id,
+					'type': selected_node.data('type')
 				});
 			}
 		});
@@ -4156,17 +4156,22 @@ MC.canvas.event.keyEvent = function (event)
 	// Switch node - [tab]
 	if (
 		keyCode === 9 &&
-		MC.canvas_property.selected_node.length === 1 &&
-		MC.canvas_property.selected_node[ 0 ].getAttribute('data-type') === 'node'
+		MC.canvas_property.selected_node.length === 1
 	)
 	{
-		var layout_node_data = MC.canvas.data.get('layout.component.node'),
-			current_node_id = MC.canvas_property.selected_node[ 0 ].id,
+		var selected_node = $('#' + MC.canvas_property.selected_node[ 0 ]),
+			layout_node_data = MC.canvas.data.get('layout.component.node'),
+			current_node_id = MC.canvas_property.selected_node[ 0 ],
 			node_stack = [],
 			index = 0,
 			current_index,
 			next_node,
 			clone_node;
+
+		if (selected_node.data('type') !== 'node')
+		{
+			return false;
+		}
 
 		$.each(layout_node_data, function (key, value)
 		{
@@ -4200,7 +4205,7 @@ MC.canvas.event.keyEvent = function (event)
 		next_node.remove();
 		$('#node_layer').append(clone_node);
 
-		MC.canvas_property.selected_node.push(clone_node[0]);
+		MC.canvas_property.selected_node.push(clone_node[0].id);
 
 		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 
@@ -4212,12 +4217,11 @@ MC.canvas.event.keyEvent = function (event)
 		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
 		canvas_status === 'stack' &&
 		!is_zoomed &&
-		MC.canvas_property.selected_node.length === 1 &&
-		MC.canvas_property.selected_node[ 0 ].getAttribute('data-type') === 'node'
+		MC.canvas_property.selected_node.length === 1
 	)
 	{
-		var target = $(MC.canvas_property.selected_node[ 0 ]),
-			target_id = target.attr('id'),
+		var target = $('#' + MC.canvas_property.selected_node[ 0 ]),
+			target_id = MC.canvas_property.selected_node[ 0 ],
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			node_data = layout_node_data[ target_id ],
@@ -4225,6 +4229,11 @@ MC.canvas.event.keyEvent = function (event)
 			target_type = target.data('type'),
 			coordinate = {'x': node_data.coordinate[0], 'y': node_data.coordinate[1]},
 			match_place;
+
+		if (target.data('type') !== 'node')
+		{
+			return false;
+		}
 
 		if (keyCode === 38)
 		{

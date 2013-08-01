@@ -2275,7 +2275,7 @@ MC.canvas.volume = {
 			{
 				data_option = target.data('option');
 				data_option['instance_id'] = target_id;
-				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {'instance_id': target_id});
+				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
 				if (new_volume === null)
 				{
 					event.data.action = 'cancel';

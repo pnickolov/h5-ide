@@ -185,13 +185,15 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 regionAttrSet = result.resolved_data
 
                 _.map constant.REGION_KEYS, ( value ) ->
-                    cur_attr = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
 
-                    if $.type(cur_attr) == "array"
-                        region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
-                    else
-                        region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
-                    null
+                    if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
+
+                        cur_attr = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
+                        if $.type(cur_attr) == "array"
+                            region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
+                        else
+                            region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
+                        null
 
                 me.set 'region_classic_list', region_classic_vpc_result
                 null

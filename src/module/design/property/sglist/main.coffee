@@ -17,7 +17,7 @@ define [ 'jquery',
     $( 'head' ).append template
 
     #private
-    loadModule = ( parent_model, is_app_view ) ->
+    loadModule = ( parent_model ) ->
 
         current_main = this
 
@@ -35,10 +35,21 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.RETURN_PANEL_PROPERTY_FROM_SG, () ->
                 view.render()
 
+            is_app_view = false
+            currentState = MC.canvas.getState()
+            if currentState is 'app'
+                is_app_view = true
+
             #init model
             model.set 'app_view', is_app_view
             model.getSGInfoList()
             model.getRuleInfoList()
+
+            #render
+            view.render()
+
+            if view._events and (_.keys(view._events).length isnt 0)
+                return
 
             view.on 'ASSIGN_SG_TOCOMP', (sgUID, sgChecked) ->
                 model.assignSGToComp sgUID, sgChecked
@@ -47,10 +58,9 @@ define [ 'jquery',
                 model.deleteSGFromComp sgUID
 
             view.on 'OPEN_SG', (sgUID) ->
-                ide_event.trigger ide_event.OPEN_SG, sgUID, is_app_view
+                ide_event.trigger ide_event.OPEN_SG, sgUID
 
-            #render
-            view.render()
+            null
 
     unLoadModule = () ->
         current_view.off()

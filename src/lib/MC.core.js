@@ -3,13 +3,13 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system 
-#* Date: 201307302
+#* Date: 201307303
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var MC = {
-	version: '0.2.5',
+	version: '0.2.6',
 
 	// Global Variable
 	API_URL: 'https://api.madeiracloud.com/',
@@ -397,20 +397,29 @@ var returnTrue = function () {return true},
 
 		xml2json: function xml2json(xml)
 		{
-			var result = {};
+			var result = {},
+				attribute,
+				content,
+				node,
+				child,
+				i,
+				j;
 
-			for (var i in xml.childNodes)
+			for (i in xml.childNodes)
 			{
-				var node = xml.childNodes[ i ];
+				node = xml.childNodes[ i ];
 
 				if (node.nodeType === 1)
 				{
-					var child = node.hasChildNodes() ? xml2json(node) : node.nodevalue;
+					child = node.hasChildNodes() ? xml2json(node) : node.nodevalue;
 
 					child = child == null ? null : child;
 
-					// Special for "item"
-					if (node.nodeName === 'item' && child.value)
+					// Special for "item" & "member"
+					if (
+						(node.nodeName === 'item' || node.nodeName === 'member') &&
+						child.value
+					)
 					{
 						if (child.key)
 						{
@@ -443,7 +452,8 @@ var returnTrue = function () {return true},
 								node.nextElementSibling.nodeName === node.nodeName
 							)
 							||
-							node.nodeName === 'item'
+							node.nodeName === 'item' ||
+							node.nodeName === 'member'
 						)
 						{
 							if ($.type(result[ node.nodeName ]) === 'undefined')
@@ -475,9 +485,9 @@ var returnTrue = function () {return true},
 					if (node.attributes.length > 0)
 					{
 						result[ node.nodeName ][ '@attributes' ] = {};
-						for (var j in node.attributes)
+						for (j in node.attributes)
 						{
-							var attribute = node.attributes.item(j);
+							attribute = node.attributes.item(j);
 							result[ node.nodeName ]['@attributes'][attribute.nodeName] = attribute.nodeValue;
 						}
 					}
@@ -489,13 +499,26 @@ var returnTrue = function () {return true},
 						node.textContent !== ''
 					)
 					{
+						content = node.textContent.trim();
+
+						// switch (content)
+						// {
+						// 	case 'true':
+						// 		content = true;
+						// 		break;
+
+						// 	case 'false':
+						// 		content = false;
+						// 		break;
+						// }
+
 						if (result[ node.nodeName ] instanceof Array)
 						{
-							result[ node.nodeName ].push(node.textContent.trim());
+							result[ node.nodeName ].push(content);
 						}
 						else
 						{
-							result[ node.nodeName ] = node.textContent.trim();
+							result[ node.nodeName ] = content;
 						}
 					}
 				}
@@ -503,130 +526,6 @@ var returnTrue = function () {return true},
 
 			return result;
 		}
-
-		//new version
-		// xml2json2: function xml2json2(xml)
-		// {
-		// 	var result = {},
-		// 		content;
-
-		// 	for (var i in xml.childNodes)
-		// 	{
-		// 		var node = xml.childNodes[ i ];
-
-		// 		if (node.nodeType === 1)
-		// 		{
-		// 			var child = node.hasChildNodes() ? xml2json(node) : node.nodevalue;
-
-		// 			child = child == null ? null : child;
-
-		// 			// Special for "item"
-		// 			if (node.nodeName === 'item' && child.value)
-		// 			{
-		// 				if (child.key)
-		// 				{
-		// 					if ($.type(result) !== 'object')
-		// 					{
-		// 						result = {};
-		// 					}
-		// 					if (!$.isEmptyObject(child))
-		// 					{
-		// 						result[ child.key ] = child.value;
-		// 					}
-		// 				}
-		// 				else
-		// 				{
-		// 					if ($.type(result) !== 'array')
-		// 					{
-		// 						result = [];
-		// 					}
-		// 					if (!$.isEmptyObject(child))
-		// 					{
-		// 						result.push(child.value);
-		// 					}
-		// 				}
-		// 			}
-		// 			else
-		// 			{
-		// 				if (
-		// 					(
-		// 						node.nextElementSibling &&
-		// 						node.nextElementSibling.nodeName === node.nodeName
-		// 					)
-		// 					||
-		// 					node.nodeName === 'item'
-		// 				)
-		// 				{
-		// 					if ($.type(result[ node.nodeName ]) === 'undefined')
-		// 					{
-		// 						result[ node.nodeName ] = [];
-		// 					}
-		// 					if (!$.isEmptyObject(child))
-		// 					{
-		// 						result[ node.nodeName ].push(child);
-		// 					}
-		// 				}
-		// 				else
-		// 				{
-		// 					if (node.previousElementSibling && node.previousElementSibling.nodeName === node.nodeName)
-		// 					{
-		// 						if (!$.isEmptyObject(child))
-		// 						{
-		// 							result[ node.nodeName ].push(child);
-		// 						}
-		// 					}
-		// 					else
-		// 					{
-		// 						result[ node.nodeName ] = child;
-		// 					}
-		// 				}
-		// 			}
-
-		// 			// Add attributes if any
-		// 			if (node.attributes.length > 0)
-		// 			{
-		// 				result[ node.nodeName ][ '@attributes' ] = {};
-		// 				for (var j in node.attributes)
-		// 				{
-		// 					var attribute = node.attributes.item(j);
-		// 					result[ node.nodeName ]['@attributes'][attribute.nodeName] = attribute.nodeValue;
-		// 				}
-		// 			}
-
-		// 			// Add element value
-		// 			if (
-		// 				node.childElementCount === 0 &&
-		// 				node.textContent != null &&
-		// 				node.textContent !== ''
-		// 			)
-		// 			{
-		// 				content = node.textContent.trim();
-
-		// 				switch (content)
-		// 				{
-		// 					case 'true':
-		// 						content = true;
-		// 						break;
-
-		// 					case 'false':
-		// 						content = false;
-		// 						break;
-		// 				}
-
-		// 				if (result[ node.nodeName ] instanceof Array)
-		// 				{
-		// 					result[ node.nodeName ].push(content);
-		// 				}
-		// 				else
-		// 				{
-		// 					result[ node.nodeName ] = content;
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-
-		// 	return result;
-		// }
 	});
 })();
 

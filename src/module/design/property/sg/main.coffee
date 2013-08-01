@@ -20,10 +20,15 @@ define [ 'jquery',
 	$( 'head' ).append app_template
 
 	#private
-	loadModule = ( sg_uid, is_app_view ) ->
+	loadModule = ( sg_uid ) ->
 
 		#
 		# MC.data.current_sub_main = current_main
+
+		is_app_view = false
+		currentState = MC.canvas.getState()
+		if currentState is 'app'
+			is_app_view = true
 
 		if !is_app_view
 			require [ './module/design/property/sg/view', './module/design/property/sg/model' ], ( view, model ) ->
@@ -31,7 +36,7 @@ define [ 'jquery',
 				#
 
 				# if current_view view.delegateEvents view.events
-
+				debugger
 				#
 				current_view  = view
 				current_model = model

@@ -57,6 +57,9 @@ define [ 'jquery',
             #view
             view.model    = model
 
+            #re calc cost when load module
+            model.getCost()
+
             #render
             renderPropertyPanel = () ->
                 model.getProperty()
@@ -92,6 +95,11 @@ define [ 'jquery',
                 console.log 'rerender property'
 
                 renderPropertyPanel()
+
+            #refresh cost after add/remove resource
+            ide_event.onLongListen ide_event.UPDATE_COST_ESTIMATE, () ->
+
+                model.getCost()
 
     unLoadModule = () ->
         current_view.off()

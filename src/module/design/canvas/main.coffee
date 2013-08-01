@@ -95,6 +95,24 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
 
                 sgrule_main.loadModule line_id
 
+            #after delete object complete
+            model.on 'DELETE_OBJECT_COMPLETE', () ->
+
+                #show property panel after remove resource
+                ide_event.trigger ide_event.OPEN_PROPERTY, 'component', ''
+
+                #re calc cost after add component
+                ide_event.trigger ide_event.UPDATE_COST_ESTIMATE
+
+
+            #after create component complete
+            model.on 'CREATE_COMPONENT_COMPLETE', () ->
+
+                #re calc cost after add component
+                ide_event.trigger ide_event.UPDATE_COST_ESTIMATE
+
+
+
             null
 
     unLoadModule = () ->

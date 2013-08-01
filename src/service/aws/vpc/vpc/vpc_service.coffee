@@ -54,35 +54,6 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		true
 	# end of send_request
 
-	resolvedObjectToArray = ( objs ) ->
-
-		if $.type(objs)  == "array"
-
-			for obj in objs
-
-				obj = resolvedObjectToArray obj
-
-		if $.type(objs)  == "object"
-
-			if $.isEmptyObject objs
-
-				objs = null
-
-			for key, value of objs
-
-				if key == 'item' and $.type(value)  == "object"
-
-					tmp = []
-
-					tmp.push resolvedObjectToArray value
-
-					objs[key] = tmp
-
-				else if $.type(value)  == "object" or $.type(value)  == "array"
-
-					objs[key] = resolvedObjectToArray value
-
-		objs
 
 	#///////////////// Parser for DescribeVpcs return (need resolve) /////////////////
 	#private (resolve result to vo )
@@ -90,8 +61,6 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#return
 
 		result_set = ($.xml2json ($.parseXML result[1])).DescribeVpcsResponse.vpcSet
-
-		result = resolvedObjectToArray result_set
 
 		if result?.item?
 

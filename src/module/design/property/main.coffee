@@ -227,10 +227,10 @@ define [ 'jquery',
 			#     if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
 
 			#listen OPEN_SG
-			ide_event.onLongListen ide_event.OPEN_SG, ( sg_uid, is_app_view ) ->
+			ide_event.onLongListen ide_event.OPEN_SG, ( sg_uid ) ->
 
 				console.log 'OPEN_SG'
-				sg_main.loadModule( sg_uid, is_app_view )
+				sg_main.loadModule( sg_uid )
 
 				null
 

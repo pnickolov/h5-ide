@@ -11,7 +11,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
     ToolbarModel = Backbone.Model.extend {
 
         defaults :
-            'toolbar_flag'  : null
             'item_name'     : null
             'item_type'     : null
 
@@ -23,6 +22,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             'is_running'    : null
             'is_pending'    : null
             'is_use_ami'    : null
+            'app_ori_state' : null
 
         setFlag : (type, value) ->
             me = this
@@ -54,6 +54,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if MC.canvas_data.state == 'Stopped'
                     me.set 'is_running', false
                 else if MC.canvas_data.state == 'Running'
+                    me.set 'is_running', true
+                else
+                    me.set 'is_pending', true
                     me.set 'is_running', true
 
                 me.set 'is_use_ami', me.isInstanceStore()
@@ -304,12 +307,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 else if flag == 'START_APP'
                     console.log 'start app request successfully'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS'
+                    MC.canvas_data.state = 'Starting'
                 else if flag == 'STOP_APP'
                     console.log 'stop app request successfully'
                     me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS'
+                    MC.canvas_data.state = 'Stopping'
                 else if flag == 'TERMINATE_APP'
                     console.log 'terminate app request successfully'
                     me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS'
+                    MC.canvas_data.state = 'Terminating'
 
                 if ws
                     req_id = result.resolved_data.id
@@ -324,8 +330,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                     me.trigger 'TOOLBAR_STACK_RUN_SUCCESS'
                                 else if flag == 'START_APP'
                                     me.trigger 'TOOLBAR_APP_START_SUCCESS'
+                                    MC.canvas_data.state = 'Running'
                                 else if flag == 'STOP_APP'
                                     me.trigger 'TOOLBAR_APP_STOP_SUCCESS'
+                                    MC.canvas_data.state = 'Stopped'
                                 else if flag == 'TERMINATE_APP'
                                     me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS'
 
@@ -373,8 +381,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 else if flag == 'START_APP'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED'
+                    MC.canvas_data.state = 'Stopped'
                 else if flag == 'STOP_APP'
                     me.trigger 'TOOLBAR_APP_STOP_REQUEST_FAILED'
+                    MC.canvas_data.state = 'Running'
                 else if flag == 'TERMINATE_APP'
                     me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED'
 

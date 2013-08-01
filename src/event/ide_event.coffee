@@ -98,6 +98,9 @@ define [ 'underscore', 'backbone' ], () ->
         #trigger property view's undelegateEvents
         UNDELEGATE_PROPERTY_DOM_EVENTS : 'UNDELEGATE_PROPERTY_DOM_EVENTS'
 
+        #update cost list after add/remove resource
+        UPDATE_COST_ESTIMATE: 'UPDATE_COST_ESTIMATE'
+
         constructor : ->
             _.extend this, Backbone.Events
 

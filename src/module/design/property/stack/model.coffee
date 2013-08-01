@@ -211,6 +211,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             region = MC.canvas_data.region
             feeMap = MC.data.config[region]
 
+            #no config data load
+            if not feeMap
+
+                return false
+
             _.map MC.canvas_data.component, (item) ->
                 uid = item.uid
                 name = item.name

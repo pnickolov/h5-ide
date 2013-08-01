@@ -27,12 +27,11 @@ define [ 'backbone', 'MC' ], () ->
               i.active = true
 
           propagate = {}
-          uidRegex  = /@([^.]+)\./
 
           # Find out which route is propagated.
           for i in myRTBComponent.resource.RouteSet
             if i.GatewayId in myRTBComponent.resource.PropagatingVgwSet
-              uid = uidRegex.exec( i.GatewayId )[1]
+              uid = MC.extractID( i.GatewayId )
               propagate[ components[ uid ].resource.CustomerGatewayId ] = true
 
           for value, key in rtb.routeSet.item

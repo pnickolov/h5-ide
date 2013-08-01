@@ -2,7 +2,7 @@
 #**********************************************************
 #* Filename: MC.core.js
 #* Creator: Angel
-#* Description: The core of the whole system 
+#* Description: The core of the whole system
 #* Date: 201307303
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
@@ -14,6 +14,8 @@ var MC = {
 	// Global Variable
 	API_URL: 'https://api.madeiracloud.com/',
 	IMG_URL: '../assets/images/',
+
+	_extractIDRegex : /@([^.]+)\./,
 
 	// Global data
 	data: {},
@@ -186,6 +188,12 @@ var MC = {
 				item.attr('href', item.attr('href').replace(/\.css(\?d=[0-9]*)?/ig, '.css?d=' + date_query));
 			};
 		});
+	},
+
+	extractID : function ( uid )
+	{
+		var result = MC._extractIDRegex.exec( uid );
+		return result ? result[1] : uid;
 	},
 
 	/**

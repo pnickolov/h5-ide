@@ -15,14 +15,10 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
             #bind event
             $( document )
                 .on( 'CANVAS_NODE_SELECTED',        '#svg_canvas', this.showProperty )
-                .on( 'CANVAS_NODE_CHANGE_PARENT',   '#svg_canvas', this, this.changeNodeParent )
-                .on( 'CANVAS_GROUP_CHANGE_PARENT',  '#svg_canvas', this, this.changeGroupParent )
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
-                .on( 'CANVAS_OBJECT_DELETE',        '#svg_canvas', this, this.deleteObject )
-                .on( 'CANVAS_LINE_CREATE',          '#svg_canvas', this, this.createLine )
-                .on( 'CANVAS_COMPONENT_CREATE',     '#svg_canvas', this, this.createComponent )
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
-                .on( 'CANVAS_EIP_STATE_CHANGE',     '#svg_canvas', this, this.changeEipState )
+
+                .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP',   '#svg_canvas', _.bind( this.route, this ) )
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -49,20 +45,9 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
         lineSelected : ( event, line_id ) ->
             ide_event.trigger ide_event.OPEN_PROPERTY, 'line', line_id
 
-        changeNodeParent : ( event, option ) ->
-            event.data.trigger 'CANVAS_NODE_CHANGE_PARENT', option.src_node, option.tgt_parent
-
-        changeGroupParent : ( event, option ) ->
-            event.data.trigger 'CANVAS_GROUP_CHANGE_PARENT', option.src_group, option.tgt_parent
-
-        deleteObject : ( event, option ) ->
-            event.data.trigger 'CANVAS_OBJECT_DELETE', option
-
-        createLine : ( event, line_id ) ->
-            event.data.trigger 'CANVAS_LINE_CREATE', line_id
-
-        createComponent : ( event, uid ) ->
-             event.data.trigger 'CANVAS_COMPONENT_CREATE', uid
+        route : ( event, option ) ->
+            # Dispatch the event to model
+            this.trigger event.type, event, option
 
         showEniReachMax : () ->
             notification 'info', 'The Instance you selected has attach too many eni, please unattach one or change the instance type.'
@@ -70,10 +55,6 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
         save : () ->
             #save by ctrl+s
             ide_event.trigger ide_event.CANVAS_SAVE
-
-        changeEipState : (event, option) ->
-            console.info 'changeEipState:' + option.id + ',' + option.eip_state
-            event.data.trigger 'CANVAS_EIP_STATE_CHANGE', option.id, option.eip_state
     }
 
     return CanvasView

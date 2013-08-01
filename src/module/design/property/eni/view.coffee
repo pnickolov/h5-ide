@@ -26,6 +26,8 @@ define [ 'event',
 
             'click .toggle-eip' : 'addEIP'
 
+            'blur .input-ip' : 'updateEIPList'
+
         render     : () ->
             console.log 'property:eni render'
             $('.property-details').html this.template this.model.attributes

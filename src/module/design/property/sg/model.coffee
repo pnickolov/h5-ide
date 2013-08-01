@@ -8,6 +8,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
         defaults :
             'sg_detail'    : null
+            'sg_app_detail' : null
             'get_xxx'    : null
 
         initialize : ->
@@ -28,23 +29,30 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             sg_detail.members = MC.aws.sg.getAllRefComp(uid)
 
-            # _.map MC.canvas_property.sg_list, ( value ) ->
-
-            #     if value.uid == uid
-
-            #         sg_detail.members = value.member.length
-
-            #         sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
-                    
-            #         sg_detail.member_names = []
-
-            #         _.map value.member, ( instance_uid ) ->
-
-            #             sg_detail.member_names.push MC.canvas_data.component[instance_uid].name
-
-            #     null
-
             me.set 'sg_detail', sg_detail
+
+        getAppSG : ( sg_uid ) ->
+
+            # get sg obj
+            currentRegion = MC.canvas_data.region
+            currentSGComp = MC.canvas_data.component[sg_uid]
+            currentSGID = currentSGComp.resource.GroupId
+            currentAppSG = MC.data.resource_list[currentRegion][currentSGID]
+
+            members = MC.aws.sg.getAllRefComp sg_uid
+            rules = MC.aws.sg.getAllRule currentAppSG
+
+            #get sg name
+            sg_app_detail =
+                groupName : currentAppSG.groupName
+                groupDescription : currentAppSG.groupDescription
+                groupId : currentAppSG.groupId
+                ownerId : currentAppSG.ownerId
+                vpcId : currentAppSG.vpcId
+                members : members
+                rules : rules
+
+            this.set 'sg_app_detail', sg_app_detail
 
         addSG : ( parent )->
 

@@ -22,11 +22,19 @@
 
 
 <div class="fixedaccordion accordion-default property-stack" data-sub="68">
+<<<<<<< HEAD
 	<div class="accordion-group">
 	<div class="fixedaccordion-head" id="sg-head">
 	  Security Groups (<span id="property-head-sg-num"></span>)
 	</div>
 	<div class="sg-group">loading...</div>
+=======
+	<div class="accordion-group expanded">
+		<div class="fixedaccordion-head">
+			Security Groups (<span id="property-head-sg-num"></span>)
+		</div>
+		<div class="sg-group">loading...</div>
+>>>>>>> origin/develop
 	</div>
 
 	{{#if property_detail.is_vpc}}

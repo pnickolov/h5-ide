@@ -28,6 +28,7 @@ define [ 'jquery',
 
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
+                console.log 'toolbar:RELOAD_RESOURCE, region_name = ' + region_name + ', type = ' + type
                 ###
                 if type.search('APP') >= 0
                     console.log 'toolbar:RELOAD_RESOURCE, app name = ' + item_name + ', type = ' + type
@@ -35,7 +36,10 @@ define [ 'jquery',
                     console.log 'toolbar:RELOAD_RESOURCE, stack name = ' + item_name + ', type = ' + type
                 ###
 
-                model.setFlag type
+                #temp
+                setTimeout () ->
+                    model.setFlag type
+                , 500
 
             #listen toolbar state change
             model.on 'UPDATE_TOOLBAR', (type) ->

@@ -2786,7 +2786,7 @@ MC.canvas.event.dragable = {
 							igw_top = igw_gateway_data.coordinate[1] + group_offsetY;
 
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-							MC.canvas.position(igw_gateway[0],  (group_left - 4) * MC.canvas_property.SCALE_RATIO, igw_top * MC.canvas_property.SCALE_RATIO);
+							MC.canvas.position(igw_gateway[0],  (group_left - 4) * scale_ratio, igw_top * scale_ratio);
 
 							MC.canvas.reConnect(igw_gateway_id);
 						}
@@ -2798,7 +2798,7 @@ MC.canvas.event.dragable = {
 							vgw_top = vgw_gateway_data.coordinate[1] + group_offsetY;
 
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-							MC.canvas.position(vgw_gateway[0],  (group_left + group_width - 4) * MC.canvas_property.SCALE_RATIO, vgw_top * MC.canvas_property.SCALE_RATIO);
+							MC.canvas.position(vgw_gateway[0],  (group_left + group_width - 4) * scale_ratio, vgw_top * scale_ratio);
 
 							MC.canvas.reConnect(vgw_gateway_id);
 						}
@@ -3723,14 +3723,18 @@ MC.canvas.event.groupResize = {
 			node_minY = [],
 			node_maxX = [],
 			node_maxY = [],
+			component_size = MC.canvas.COMPONENT_SIZE,
 			group_padding = MC.canvas.GROUP_PADDING,
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			parentGroup = event.data.parentGroup,
+			label_coordinate = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 			layout_connection_data,
 			parent_data,
 			parent_size,
 			parent_coordinate,
-			node_data,
-			group_node_data,
+			item_data,
+			item_coordinate,
+			item_size,
 			group_maxX,
 			group_maxY,
 			group_minX,
@@ -3743,6 +3747,7 @@ MC.canvas.event.groupResize = {
 			vgw_gateway_id,
 			vgw_gateway_data,
 			vgw_top,
+			port_top,
 			line_connection;
 
 		//adjust group_left
@@ -3772,22 +3777,26 @@ MC.canvas.event.groupResize = {
 		{
 			if (layout_node_data[ item.id ])
 			{
-				node_data = layout_node_data[ item.id ];
+				item_data = layout_node_data[ item.id ];
+				item_size = component_size[ node_data.type ];
+				item_coordinate = item_data.coordinate;
 
-				node_minX.push(node_data.coordinate[0]);
-				node_minY.push(node_data.coordinate[1]);
-				node_maxX.push(node_data.coordinate[0] + MC.canvas.COMPONENT_SIZE[ node_data.type ][0]);
-				node_maxY.push(node_data.coordinate[1] + MC.canvas.COMPONENT_SIZE[ node_data.type ][1]);
+				node_minX.push(item_coordinate[0]);
+				node_minY.push(item_coordinate[1]);
+				node_maxX.push(item_coordinate[0] + item_size[0]);
+				node_maxY.push(item_coordinate[1] + item_size[1]);
 			}
 
 			if (layout_group_data[ item.id ])
 			{
-				group_node_data = layout_group_data[ item.id ];
+				item_data = layout_group_data[ item.id ];
+				item_size = item_data.size;
+				item_coordinate = node_data.coordinate;
 
-				node_minX.push(group_node_data.coordinate[0]);
-				node_minY.push(group_node_data.coordinate[1]);
-				node_maxX.push(group_node_data.coordinate[0] + group_node_data.size[0]);
-				node_maxY.push(group_node_data.coordinate[1] + group_node_data.size[1]);
+				node_minX.push(item_coordinate[0]);
+				node_minY.push(item_coordinate[1]);
+				node_maxX.push(item_coordinate[0] + item_size[0]);
+				node_maxY.push(item_coordinate[1] + item_size[1]);
 			}
 		});
 
@@ -3925,7 +3934,14 @@ MC.canvas.event.groupResize = {
 		if (
 			group_width > group_padding &&
 			group_height > group_padding &&
-			event.data.group_child.length === MC.canvas.areaChild(group_id, group_left, group_top, group_left + group_width, group_top + group_height).length
+			
+			event.data.group_child.length === MC.canvas.areaChild(
+					group_id,
+					group_left,
+					group_top,
+					group_left + group_width,
+					group_top + group_height
+				).length
 		)
 		{
 			if (type === 'AWS.VPC.VPC')
@@ -3952,7 +3968,7 @@ MC.canvas.event.groupResize = {
 					}
 
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					MC.canvas.position(igw_gateway[0],  (group_left - 4) * MC.canvas_property.SCALE_RATIO, igw_top * MC.canvas_property.SCALE_RATIO);
+					MC.canvas.position(igw_gateway[0],  (group_left - 4) * scale_ratio, igw_top * scale_ratio);
 
 					MC.canvas.reConnect(igw_gateway_id);
 				}
@@ -3974,7 +3990,11 @@ MC.canvas.event.groupResize = {
 					}
 
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					MC.canvas.position(vgw_gateway[0],  (group_left + group_width - 4) * MC.canvas_property.SCALE_RATIO, vgw_top * MC.canvas_property.SCALE_RATIO);
+					MC.canvas.position(
+						vgw_gateway[0],
+						(group_left + group_width - 4) * scale_ratio,
+						vgw_top * scale_ratio
+					);
 
 					MC.canvas.reConnect(vgw_gateway_id);
 				}
@@ -3995,8 +4015,8 @@ MC.canvas.event.groupResize = {
 			});
 
 			group_title.attr({
-				'x': MC.canvas.GROUP_LABEL_COORDINATE[ type ][0],
-				'y': MC.canvas.GROUP_LABEL_COORDINATE[ type ][1]
+				'x': label_coordinate[0],
+				'y': label_coordinate[1]
 			});
 
 			MC.canvas.data.set('layout.component.group.' + group_id + '.coordinate', [group_left, group_top]);
@@ -4020,16 +4040,18 @@ MC.canvas.event.groupResize = {
 			});
 
 			group_title.attr({
-				'x': MC.canvas.GROUP_LABEL_COORDINATE[ type ][0],
-				'y': MC.canvas.GROUP_LABEL_COORDINATE[ type ][1]
+				'x': label_coordinate[0],
+				'y': label_coordinate[1]
 			});
 		}
 
 		if (type === 'AWS.VPC.Subnet')
 		{
-			event.data.group_port[0].attr('transform', 'translate(-12, ' + ((group_height * MC.canvas.GRID_HEIGHT / 2) - 13) + ')').show();
+			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
 
-			event.data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + ((group_height * MC.canvas.GRID_HEIGHT / 2) - 13) + ')').show();
+			event.data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')').show();
+
+			event.data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')').show();
 
 			// Re-draw group connection
 			layout_connection_data = MC.canvas.data.get('layout.connection');
@@ -4044,7 +4066,7 @@ MC.canvas.event.groupResize = {
 					$('#' + value.target), line_connection['target'][ value.target ],
 					{'line_uid': value['line']}
 				);
-			});
+			});			
 		}
 
 		$(document.body)

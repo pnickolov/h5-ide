@@ -21,7 +21,7 @@
 
 <div class="fixedaccordion accordion-default" data-sub="43">
   <section class="accordion-group expanded">
-    <header class="fixedaccordion-head">Rule<span class="count">({{sg_app_detail.rules}})</span></header>
+    <header class="fixedaccordion-head">Rule<span class="count">({{sg_app_detail.rules.length}})</span></header>
 
     <article class="accordion-body">
       <div class="sg-rule-filter">
@@ -29,17 +29,18 @@
         <div class="selectbox" id="sg-rule-filter-select">
           <div class="selection"></div>
           <ul class="dropdown" tabindex="-1">
-            <li class="item selected" data-id="2">Direction</li>
-            <li class="item" data-id="2">Source/Destination</li>
-            <li class="item" data-id="3">Protocol</li>
+            <li class="item selected" data-id="direction">Direction</li>
+            <li class="item" data-id="source/destination">Source/Destination</li>
+            <li class="item" data-id="protocol">Protocol</li>
           </ul>
         </div>
       </div>
 
       <ul class="sg-rule-list" id="sg-rule-list">
         {{#each sg_app_detail.rules}}
-        <li data-inbound="true" data-protocol="{{ipProtocol}}" data-fromport="{{fromPort}}" data-toport="{{toPort}}" data-iprange="{{ipRanges}}">
-          <div class='rule-direction-icon tooltip' data-tooltip="{{direction}}"></div>
+        <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
+          <i class="icon-rule-{{direction}}" data-tooltip="{{direction}}"></i>
+          <!-- <div class='rule-direction-icon tooltip' data-tooltip="{{direction}}"></div> -->
           <div class='rule-protocol'>{{ipProtocol}}</div>
           <div class='rule-source'>
             <div class="rule-source-icon"></div>

@@ -78,7 +78,8 @@ define [ 'jquery',
     loadAppModule = ( uid ) ->
         require [ './module/design/property/eni/app_view',
                   './module/design/property/eni/app_model'
-        ], ( view, model ) ->
+                  './module/design/property/sglist/main'
+        ], ( view, model, sglist_main ) ->
 
             #
             if current_view then view.delegateEvents view.events
@@ -92,7 +93,7 @@ define [ 'jquery',
             model.init uid
             view.render()
 
-
+            sglist_main.loadModule model, true
 
     unLoadModule = () ->
         current_view.off()

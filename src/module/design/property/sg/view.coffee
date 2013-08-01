@@ -38,6 +38,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 			'change #securitygroup-name' : 'setSGName'
 			'change #securitygroup-description' : 'setSGDescription'
 
+			'OPTION_CHANGE #sg-rule-filter-select' : 'sortSgRule'
+
 		render     : (is_app_view) ->
 
 			if is_app_view
@@ -53,7 +55,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 				else
 					this.model.attributes.isDefault = false
 
-				$( '#sg-secondary-panel-wrap' ).html this.app_template this.model.attributes
+				$( '#sg-secondary-panel-wrap' ).html this.template this.model.attributes
 
 			fixedaccordion.resize()
 			secondary_panel_wrap = $('#sg-secondary-panel-wrap')
@@ -209,6 +211,33 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 		customValueChange : ( event ) ->
 			#protocol_val = $( '#sg-protocol-custom input' ).val()
 			null
+
+		sortSgRule : ( event ) ->
+			sg_rule_list = $('#sg-rule-list')
+
+			sortType = $(event.target).find('.selected').attr('data-id')
+
+			sorted_items = $('#sg-rule-list li')
+			if sortType is 'direction'
+				sorted_items = sorted_items.sort(this._sortDirection)
+			else if sortType is 'source/destination'
+				sorted_items = sorted_items.sort(this._sortSource)
+			else if sortType is 'protocol'
+				sorted_items = sorted_items.sort(this._sortProtocol)
+
+			sg_rule_list.html sorted_items
+
+		_sortDirection : ( a, b) ->
+			return $(a).attr('data-direction') >
+				$(b).attr('data-direction')
+
+		_sortProtocol : ( a, b) ->
+			return $(a).attr('data-protocol') >
+				$(b).attr('data-protocol')
+
+		_sortSource : ( a, b) ->
+			return $(a).attr('data-iprange') >
+				$(b).attr('data-iprange')
 	}
 
 	view = new InstanceView()

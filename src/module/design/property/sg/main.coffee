@@ -20,7 +20,7 @@ define [ 'jquery',
 	$( 'head' ).append app_template
 
 	#private
-	loadModule = ( sg_uid, is_app_view, current_main ) ->
+	loadModule = ( sg_uid, is_app_view ) ->
 
 		#
 		# MC.data.current_sub_main = current_main

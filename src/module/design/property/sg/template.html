@@ -54,7 +54,8 @@
 					<ul class="sg-rule-list" id="sg-rule-list">
 						{{#each sg_detail.component.resource.IpPermissions}}
 						<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}">
-							<div class='rule-direction-icon tooltip' data-tooltip="inbound"></div>
+							<i class="icon-rule-inbound" data-tooltip="inbound"></i>
+							<!-- <div class='rule-direction-icon tooltip' data-tooltip="inbound"></div> -->
 							<div class='rule-protocol'>{{IpProtocol}}</div>
 							<div class='rule-source'>
 								<div class="rule-source-icon"></div>
@@ -67,7 +68,8 @@
 						{{/each}}
 						{{#each sg_detail.component.resource.IpPermissionsEgress}}
 						<li data-inbound="false" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}">
-							<div class='rule-direction-icon tooltip' data-tooltip="outbound"></div>
+							<!-- <div class='rule-direction-icon tooltip' data-tooltip="outbound"></div> -->
+							<i class="icon-rule-outbound" data-tooltip="outbound"></i>
 							<div class='rule-protocol'>{{IpProtocol}}</div>
 							<div class='rule-source'>
 								<div class="rule-source-icon"></div>

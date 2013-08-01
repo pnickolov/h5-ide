@@ -2525,6 +2525,7 @@ MC.canvas.event.dragable = {
 				layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				node_type = target.data('class'),
+				BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
 				match_place,
 				coordinate,
 				clone_node,
@@ -2536,12 +2537,17 @@ MC.canvas.event.dragable = {
 
 				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_SIZE[ node_type ][0], MC.canvas.COMPONENT_SIZE[ node_type ][1]);
 
+				parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_SIZE[ node_type ][0], coordinate.y + MC.canvas.COMPONENT_SIZE[ node_type ][1]);
+
+				$("#svg_canvas").trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup.id});
+
 				if (
+					!BEFORE_DROP_EVENT.isDefaultPrevented() &&
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
 					match_place.is_matched
 				)
-				{
+				{					
 					MC.canvas.position(target[0], coordinate.x  * MC.canvas_property.SCALE_RATIO, coordinate.y * MC.canvas_property.SCALE_RATIO);
 
 					MC.canvas.reConnect(target_id);
@@ -2561,8 +2567,6 @@ MC.canvas.event.dragable = {
 					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 
 					//after change node to another group, trigger event
-					parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_SIZE[ node_type ][0], coordinate.y + MC.canvas.COMPONENT_SIZE[ node_type ][1]);
-					
 					if (parentGroup)
 					{
 						$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_PARENT", {
@@ -2690,17 +2694,22 @@ MC.canvas.event.dragable = {
 				group_offsetX = coordinate.x - group_coordinate[0];
 				group_offsetY = coordinate.y - group_coordinate[1];
 
+				$("#svg_canvas").trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup.id});
+
 				if (
+					!BEFORE_DROP_EVENT.isDefaultPrevented() &&
 					(
-						coordinate_fixed &&
-						event.data.groupChild.length === fixed_areaChild.length
-					)
-					||
-					(
-						!coordinate_fixed &&
-						match_place.is_matched &&
-						MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
-						event.data.groupChild.length === unique_stack.length
+						(
+							coordinate_fixed &&
+							event.data.groupChild.length === fixed_areaChild.length
+						)
+						||
+						(
+							!coordinate_fixed &&
+							match_place.is_matched &&
+							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
+							event.data.groupChild.length === unique_stack.length
+						)
 					)
 				)
 				{

@@ -2464,12 +2464,16 @@ MC.canvas.event.dragable = {
 		event.preventDefault();
 		event.stopPropagation();
 
+		var grid_width = MC.canvas.GRID_WIDTH,
+			grid_height = MC.canvas.GRID_HEIGHT,
+			scale_ratio = MC.canvas_property.SCALE_RATIO;
+
 		event.data.canvas_body.addClass('node-dragging');
 
 		event.data.shadow.attr('transform',
 			'translate(' +
-				Math.round((event.pageX - event.data.offsetX) / (MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO)) * MC.canvas.GRID_WIDTH + ',' +
-				Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)) * MC.canvas.GRID_HEIGHT +
+				Math.round((event.pageX - event.data.offsetX) / (grid_width / scale_ratio)) * grid_width + ',' +
+				Math.round((event.pageY - event.data.offsetY) / (grid_height / scale_ratio)) * grid_height +
 			')'
 		);
 
@@ -2557,7 +2561,7 @@ MC.canvas.event.dragable = {
 					coordinate.y > 0 &&
 					match_place.is_matched &&
 					(
-						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup.id}) &&
+						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : null}) &&
 						!BEFORE_DROP_EVENT.isDefaultPrevented()
 					)
 				)
@@ -3086,7 +3090,7 @@ MC.canvas.event.drawConnection = {
 											}
 											else
 											{
-												if (data.port === value.to)
+												if (data.port === value.to && data.target === node_id)
 												{
 													is_connected = true;
 												}

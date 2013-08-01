@@ -2,26 +2,26 @@
 
 <header class="sidebar-title">
   <a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
-  <span class="sidebar-title-text">{{component.name}}</span>
+  <span class="sidebar-title-text">{{sg_app_detail.groupName}}</span>
 </header>
 
 <div class="property-control-group">
   <dl class="dl-vertical">
     <dt>Security Group ID</dt>
-    <dd>TODO!!!!!!</dd>
+    <dd>{{sg_app_detail.groupId}}</dd>
 
     <dt>Description</dt>
-    <dd>{{sg_detail.component.resource.GroupDescription}}</dd>
+    <dd>{{sg_app_detail.groupDescription}}</dd>
 
     <dt>VPC ID</dt>
-    <dd>TODO!!!!!!!!</dd>
+    <dd>{{sg_app_detail.vpcId}}</dd>
   </dl>
 </div>
 
 
 <div class="fixedaccordion accordion-default" data-sub="43">
   <section class="accordion-group expanded">
-    <header class="fixedaccordion-head">Rule<span class="count">({{sg_detail.rules}})</span></header>
+    <header class="fixedaccordion-head">Rule<span class="count">({{sg_app_detail.rules.length}})</span></header>
 
     <article class="accordion-body">
       <div class="sg-rule-filter">
@@ -29,38 +29,24 @@
         <div class="selectbox" id="sg-rule-filter-select">
           <div class="selection"></div>
           <ul class="dropdown" tabindex="-1">
-            <li class="item selected" data-id="2">Direction</li>
-            <li class="item" data-id="2">Source/Destination</li>
-            <li class="item" data-id="3">Protocol</li>
+            <li class="item selected" data-id="direction">Direction</li>
+            <li class="item" data-id="source/destination">Source/Destination</li>
+            <li class="item" data-id="protocol">Protocol</li>
           </ul>
         </div>
       </div>
 
       <ul class="sg-rule-list" id="sg-rule-list">
-        {{#each sg_detail.component.resource.IpPermissions}}
-        <li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}">
-          <div class='rule-direction-icon tooltip' data-tooltip="inbound"></div>
-          <div class='rule-protocol'>{{IpProtocol}}</div>
+        {{#each sg_app_detail.rules}}
+        <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
+          <i class="icon-rule-{{direction}}" data-tooltip="{{direction}}"></i>
+          <!-- <div class='rule-direction-icon tooltip' data-tooltip="{{direction}}"></div> -->
+          <div class='rule-protocol'>{{ipProtocol}}</div>
           <div class='rule-source'>
             <div class="rule-source-icon"></div>
-            <span>{{IpRanges}}</span>
+            <span>{{ipRanges}}</span>
           </div>
-          <div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
-          <div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
-          <div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
-        </li>
-        {{/each}}
-        {{#each sg_detail.component.resource.IpPermissionsEgress}}
-        <li data-inbound="false" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}">
-          <div class='rule-direction-icon tooltip' data-tooltip="outbound"></div>
-          <div class='rule-protocol'>{{IpProtocol}}</div>
-          <div class='rule-source'>
-            <div class="rule-source-icon"></div>
-            <span>{{IpRanges}}</span>
-          </div>
-          <div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
-          <div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
-          <div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
+          <div class='rule-port' title="port message">{{fromPort}}-{{toPort}}</div>
         </li>
         {{/each}}
       </ul>
@@ -69,14 +55,14 @@
   </section>
 
   <section class="accordion-group expanded">
-    <header class="fixedaccordion-head">Member<span class="count">({{sg_detail.members}})</span></header>
+    <header class="fixedaccordion-head">Member<span class="count">({{sg_app_detail.members.length}})</span></header>
 
     <article class="accordion-body">
       <ul class="sg-member-list">
-        {{#each sg_detail.member_names}}
+        {{#each sg_app_detail.members}}
         <li>
           <div class="sg-member-icon"></div>
-          <div class="sg-member-name">{{this}}</div>
+          <div class="sg-member-name">{{name}}</div>
         </li>
         {{/each}}
       </ul>

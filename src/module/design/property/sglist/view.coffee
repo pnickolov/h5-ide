@@ -4,90 +4,76 @@
 
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( ide_event ) ->
 
-    SGListView = Backbone.View.extend {
+	SGListView = Backbone.View.extend {
 
-        el       : $ document
-        tagName  : $ '#sg-secondary-panel-wrap'
+		el       : $ document
+		tagName  : $ '#sg-secondary-panel-wrap'
 
-        template : Handlebars.compile $( '#property-sg-list-tmpl' ).html()
+		template : Handlebars.compile $( '#property-sg-list-tmpl' ).html()
 
-        events   :
-            'click #sg-info-list .sg-edit-icon' : 'openSgPanel'
-            'click #add-sg-btn' : 'openSgPanel'
-            'click .sg-list-association-check' : 'assignSGToComp'
-            'click .sg-list-delete-btn' : 'deleteSGFromComp'
-            'OPTION_CHANGE #sg-rule-filter-select' : 'sortSgRule'
+		events   :
+			'click #sg-info-list .sg-edit-icon' : 'openSgPanel'
+			'click #add-sg-btn' : 'openSgPanel'
+			'click .sg-list-association-check' : 'assignSGToComp'
+			'click .sg-list-delete-btn' : 'deleteSGFromComp'
+			'OPTION_CHANGE #sg-rule-filter-select' : 'sortSgRule'
 
-        render     : () ->
-            console.log 'property:sg list render'
-            this.model.getSGInfoList()
-            this.model.getRuleInfoList()
-            $( '.sg-group' ).html this.template this.model.attributes
-            $('#property-head-sg-num').text(this.model.attributes.sg_list.length)
+		render     : () ->
+			console.log 'property:sg list render'
+			this.model.getSGInfoList()
+			this.model.getRuleInfoList()
+			$( '.sg-group' ).html this.template this.model.attributes
+			$('#property-head-sg-num').text(this.model.attributes.sg_list.length)
 
-        openSgPanel : ( event ) ->
-            source = $(event.target)
-            sgUID = source.parents('li').attr('sg-uid')
-            accordion = $( '#instance-accordion' )
-            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
-            this.trigger 'OPEN_SG', sgUID
+		openSgPanel : ( event ) ->
+			source = $(event.target)
+			sgUID = source.parents('li').attr('sg-uid')
+			accordion = $( '#instance-accordion' )
+			cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
+			this.trigger 'OPEN_SG', sgUID
 
-        refreshSGList: () ->
-            this.render()
+		refreshSGList: () ->
+			this.render()
 
-        assignSGToComp: (event) ->
-            sgUID = $(event.target).attr('sg-uid')
-            sgChecked = $(event.target).prop('checked')
-            this.trigger 'ASSIGN_SG_TOCOMP', sgUID, sgChecked
-            this.render()
+		assignSGToComp: (event) ->
+			sgUID = $(event.target).attr('sg-uid')
+			sgChecked = $(event.target).prop('checked')
+			this.trigger 'ASSIGN_SG_TOCOMP', sgUID, sgChecked
+			this.render()
 
-        deleteSGFromComp : (event) ->
-            sgUID = $(event.target).parents('li').attr('sg-uid')
-            this.trigger 'DELETE_SG_FROM_COMP', sgUID
-            this.render()
+		deleteSGFromComp : (event) ->
+			sgUID = $(event.target).parents('li').attr('sg-uid')
+			this.trigger 'DELETE_SG_FROM_COMP', sgUID
+			this.render()
 
-        # sortSgRule : (event) ->
-        #     sortType = $(event.target).find('.selected').attr('data-id')
-        #     sgRuleList = this.get 'sg_rule_list'
+		sortSgRule : ( event ) ->
+			sg_rule_list = $('#sglist-rule-list')
 
-        #     if sortType is 'direction'
+			sortType = $(event.target).find('.selected').attr('data-id')
 
-        #     else if sortType is 'source/destination'
+			sorted_items = $('#sglist-rule-list li')
+			if sortType is 'direction'
+				sorted_items = sorted_items.sort(this._sortDirection)
+			else if sortType is 'source/destination'
+				sorted_items = sorted_items.sort(this._sortSource)
+			else if sortType is 'protocol'
+				sorted_items = sorted_items.sort(this._sortProtocol)
 
-        #     else if sortType is 'protocol'
-        #         sgRuleList = sgRuleList.sort (a, b) ->
-        #                 return a.IpProtocol > b.IpProtocol
+			sg_rule_list.html sorted_items
 
-        #     this.set 'sg_rule_list', sgRuleList
+		_sortDirection : ( a, b) ->
+			return $(a).find('.rule-direction-icon').attr('data-id') >
+				$(b).find('.rule-direction-icon').attr('data-id')
 
-        sortSgRule : ( event ) ->
-            sg_rule_list = $('#sglist-rule-list')
+		_sortProtocol : ( a, b) ->
+			return $(a).find('.rule-protocol').attr('data-id') >
+				$(b).find('.rule-protocol').attr('data-id')
 
-            sortType = $(event.target).find('.selected').attr('data-id')
+		_sortSource : ( a, b) ->
+			return $(a).find('.rule-source').attr('data-id') >
+				$(b).find('.rule-source').attr('data-id')
+	}
 
-            sorted_items = $('#sglist-rule-list li')
-            if sortType is 'direction'
-                sorted_items = sorted_items.sort(this._sortDirection)
-            else if sortType is 'source/destination'
-                sorted_items = sorted_items.sort(this._sortSource)
-            else if sortType is 'protocol'
-                sorted_items = sorted_items.sort(this._sortProtocol)
+	view = new SGListView()
 
-            sg_rule_list.html sorted_items
-
-        _sortDirection : ( a, b) ->
-            return $(a).find('.rule-direction-icon').attr('data-id') >
-                $(b).find('.rule-direction-icon').attr('data-id')
-
-        _sortProtocol : ( a, b) ->
-            return $(a).find('.rule-protocol').attr('data-id') >
-                $(b).find('.rule-protocol').attr('data-id')
-
-        _sortSource : ( a, b) ->
-            return $(a).find('.rule-source').attr('data-id') >
-                $(b).find('.rule-source').attr('data-id')
-    }
-
-    view = new SGListView()
-
-    return view
+	return view

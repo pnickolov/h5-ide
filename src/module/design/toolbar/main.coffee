@@ -27,18 +27,12 @@ define [ 'jquery',
             view.render()
 
             #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
+            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform, tab_name, tab_id ) ->
                 console.log 'toolbar:RELOAD_RESOURCE, region_name = ' + region_name + ', type = ' + type
-                ###
-                if type.search('APP') >= 0
-                    console.log 'toolbar:RELOAD_RESOURCE, app name = ' + item_name + ', type = ' + type
-                else
-                    console.log 'toolbar:RELOAD_RESOURCE, stack name = ' + item_name + ', type = ' + type
-                ###
 
                 #temp
                 setTimeout () ->
-                    model.setFlag type
+                    model.setFlag tab_id, type
                 , 500
 
             #listen toolbar state change

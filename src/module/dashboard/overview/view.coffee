@@ -79,25 +79,22 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             ide_event.trigger ide_event.ADD_STACK_TAB, ($(event.currentTarget).data 'region')
 
         render : ( template ) ->
-
             console.log 'dashboard overview render'
-
             $( this.el ).html template
 
         openItem : (event) ->
             console.log 'click item'
 
             me = this
-
             id = event.target.id
 
             if id.indexOf('app-') == 0
-                ide_event.trigger ide_event.OPEN_APP_TAB, event.target.text, event.target.region, event.target.id
+                ide_event.trigger ide_event.OPEN_APP_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, event.target.id
             else if id.indexOf('stack-') == 0
-                ide_event.trigger ide_event.OPEN_STACK_TAB, event.target.text, event.target.region, event.target.id
+                ide_event.trigger ide_event.OPEN_STACK_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, event.target.id
 
             null
-            
+
     }
 
     return OverviewView

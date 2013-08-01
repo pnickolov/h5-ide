@@ -67,7 +67,7 @@
 {{#if recent_edited_stacks}}
 <ul class="dashboard-recent-list">
     {{#each recent_edited_stacks }}
-    <li><a href="" id={{id}} name={{name}} region="{{region}}">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    <li><a href="" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}'>{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
     {{/each}}
 </ul>
 {{else}}
@@ -78,7 +78,7 @@
 {{#if recent_launched_apps}}
 <ul class="dashboard-recent-list">
     {{#each recent_launched_apps}}
-    <li><a href="" id={{id}} name={{name}} region="{{region}}">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    <li><a href="" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}' >{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
     {{/each}}
 </ul>
 {{else}}
@@ -89,7 +89,7 @@
 {{#if recent_stoped_apps}}
 <ul class="dashboard-recent-list">
     {{#each recent_stoped_apps}}
-    <li><a href="" id={{id}} name={{name}} region="{{region}}">{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
+    <li><a href="" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}'>{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
     {{/each}}
 </ul>
 {{else}}

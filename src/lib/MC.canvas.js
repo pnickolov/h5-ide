@@ -2247,6 +2247,7 @@ MC.canvas.volume = {
 			volume_type,
 			target_id,
 			volume_id,
+			target_az,
 			target_volume_data,
 			new_volume,
 			data_option,
@@ -2274,7 +2275,7 @@ MC.canvas.volume = {
 			{
 				data_option = target.data('option');
 				data_option['instance_id'] = target_id;
-				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
+				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {'instance_id': target_id});
 				if (new_volume === null)
 				{
 					event.data.action = 'cancel';
@@ -2311,6 +2312,10 @@ MC.canvas.volume = {
 					MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
 					MC.canvas.volume.select.call( document.getElementById( volume_id ) );
+
+					target_az = MC.canvas.data.get('component.' + target_id + '.resource.Placement.AvailabilityZone');
+
+					MC.canvas.data.set('component.' + volume_id + '.resource.AvailabilityZone', target_az);
 
 					// Update original data
 					original_node_id = data_option.instance_id;
@@ -2520,12 +2525,15 @@ MC.canvas.event.dragable = {
 			var target = event.data.target,
 				target_id = target.attr('id'),
 				target_type = event.data.target_type,
+				svg_canvas = $("#svg_canvas"),
 				canvas_offset = $('#svg_canvas').offset(),
 				shadow_offset = Canvon(event.data.shadow[0]).offset(),
 				layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				node_type = target.data('class'),
 				BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
+				scale_ratio = MC.canvas_property.SCALE_RATIO,
+				component_size,
 				match_place,
 				coordinate,
 				clone_node,
@@ -2533,22 +2541,26 @@ MC.canvas.event.dragable = {
 
 			if (target_type === 'node')
 			{
+				component_size = MC.canvas.COMPONENT_SIZE[ node_type ];
+
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, MC.canvas.COMPONENT_SIZE[ node_type ][0], MC.canvas.COMPONENT_SIZE[ node_type ][1]);
+				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, component_size[0], component_size[1]);
 
-				parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + MC.canvas.COMPONENT_SIZE[ node_type ][0], coordinate.y + MC.canvas.COMPONENT_SIZE[ node_type ][1]);
-
-				$("#svg_canvas").trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup.id});
+				parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + component_size[0], coordinate.y + component_size[1]);
 
 				if (
 					!BEFORE_DROP_EVENT.isDefaultPrevented() &&
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
-					match_place.is_matched
+					match_place.is_matched &&
+					(
+						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup.id}) &&
+						!BEFORE_DROP_EVENT.isDefaultPrevented()
+					)
 				)
-				{					
-					MC.canvas.position(target[0], coordinate.x  * MC.canvas_property.SCALE_RATIO, coordinate.y * MC.canvas_property.SCALE_RATIO);
+				{
+					MC.canvas.position(target[0], coordinate.x  * scale_ratio, coordinate.y * scale_ratio);
 
 					MC.canvas.reConnect(target_id);
 
@@ -2564,12 +2576,12 @@ MC.canvas.event.dragable = {
 
 					MC.canvas_property.selected_node.push(clone_node[0].id);
 
-					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+					svg_canvas.trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
 
 					//after change node to another group, trigger event
 					if (parentGroup)
 					{
-						$("#svg_canvas").trigger("CANVAS_NODE_CHANGE_PARENT", {
+						svg_canvas.trigger("CANVAS_NODE_CHANGE_PARENT", {
 							src_node: target_id,
 							tgt_parent: parentGroup.id
 						});
@@ -2584,6 +2596,7 @@ MC.canvas.event.dragable = {
 						shadow_offset.top - canvas_offset.top
 					),
 					layout_group_data = MC.canvas.data.get('layout.component.group'),
+					svg_canvas = $('#svg_canvas'),
 					group_data = layout_group_data[ target_id ],
 					group_coordinate = group_data.coordinate,
 					group_size = group_data.size,
@@ -2694,10 +2707,7 @@ MC.canvas.event.dragable = {
 				group_offsetX = coordinate.x - group_coordinate[0];
 				group_offsetY = coordinate.y - group_coordinate[1];
 
-				$("#svg_canvas").trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup.id});
-
 				if (
-					!BEFORE_DROP_EVENT.isDefaultPrevented() &&
 					(
 						(
 							coordinate_fixed &&
@@ -2710,6 +2720,11 @@ MC.canvas.event.dragable = {
 							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
 							event.data.groupChild.length === unique_stack.length
 						)
+					)
+					&&
+					(
+						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup.id}) &&
+						!BEFORE_DROP_EVENT.isDefaultPrevented()
 					)
 				)
 				{
@@ -2790,12 +2805,12 @@ MC.canvas.event.dragable = {
 
 					MC.canvas_property.selected_node.push(target[0].id);
 
-					$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
+					svg_canvas.trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
 
 					//after change node to another group,trigger event
 					if (parentGroup)
 					{
-						$("#svg_canvas").trigger("CANVAS_GROUP_CHANGE_PARENT", {
+						svg_canvas.trigger("CANVAS_GROUP_CHANGE_PARENT", {
 							src_group: target_id,
 							tgt_parent: parentGroup.id
 						});

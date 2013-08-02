@@ -49,65 +49,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
             this.set 'line_id', line_id
 
-            if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-
-                this.set 'isnt_classic', false
-
-            both_side = []
-
-            options = MC.canvas.lineTarget line_id
-
-            $.each options, ( i, connection_obj ) ->
-
-                switch MC.canvas_data.component[connection_obj.uid].type
-
-                    when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-
-                        if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-
-                            side_sg = {}
-
-                            side_sg.name = MC.canvas_data.component[connection_obj.uid].name
-
-                            side_sg.sg = ({uid:sg.split('.')[0][1...],name:MC.canvas_data.component[sg.split('.')[0][1...]].name} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroupId)
-
-                            both_side.push side_sg
-
-                        else
-
-                            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
-                                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (comp.resource.Attachment.InstanceId.split ".")[0][1...] == connection_obj.uid and comp.resource.Attachment.DeviceIndex == '0'
-
-                                    side_sg = {}
-
-                                    side_sg.name = MC.canvas_data.component[connection_obj.uid].name
-
-                                    side_sg.sg = ({name:MC.canvas_data.component[sg.GroupId.split('.')[0][1...]].name, uid:sg.GroupId.split('.')[0][1...]} for sg in comp.resource.GroupSet)
-
-                                    both_side.push side_sg
-
-                                    return false
-
-                    when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-
-                        side_sg = {}
-
-                        side_sg.name = MC.canvas_data.component[connection_obj.uid].name
-
-                        side_sg.sg = ({uid:sg.GroupId.split('.')[0][1...],name:MC.canvas_data.component[sg.GroupId.split('.')[0][1...]].name} for sg in MC.canvas_data.component[connection_obj.uid].resource.GroupSet)
-
-                        both_side.push side_sg
-
-                    when constant.AWS_RESOURCE_TYPE.AWS_ELB
-
-                        side_sg = {}
-
-                        side_sg.name = MC.canvas_data.component[connection_obj.uid].name
-
-                        side_sg.sg = ({uid:sg.split('.')[0][1...],name:MC.canvas_data.component[sg.split('.')[0][1...]].name} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroups)
-
-                        both_side.push side_sg
+            both_side = MC.aws.sg.getSgRuleDetail line_id
 
             this.set 'sg_detail', both_side
 

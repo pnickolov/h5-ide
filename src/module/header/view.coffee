@@ -36,6 +36,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         clickOpenAWSCredential : () ->
             this.trigger 'AWSCREDENTIAL_CLICK'
 
+        resetAlert : ->
+            console.log 'resetAlert'
+            this.$el.find('#header--notification').find('span').text(0)
+
     }
 
     return HeaderView

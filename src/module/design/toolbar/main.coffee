@@ -36,9 +36,9 @@ define [ 'jquery',
                 , 500
 
             #listen toolbar state change
-            model.on 'UPDATE_TOOLBAR', (type) ->
+            model.on 'UPDATE_TOOLBAR', (id, attrs) ->
                 console.log 'update toolbar status'
-                view.render type
+                view.render id, attrs
 
             #save
             view.on 'TOOLBAR_SAVE_CLICK', () ->

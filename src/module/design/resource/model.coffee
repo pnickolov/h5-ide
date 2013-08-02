@@ -360,38 +360,40 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                 favorite_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
                 favorite_model.once 'FAVORITE_INFO_RETURN', ( result ) ->
                     console.log 'FAVORITE_INFO_RETURN'
-                    _.map result.resolved_data, ( value, key ) ->
+                    legalData = _.filter result.resolved_data, (value, key) ->
+                        return value.resource_info
 
-                        if value.resource_info
-                            value.resource_info = JSON.parse value.resource_info
+                    _.map legalData, ( value, key ) ->
 
-                            _.map value.resource_info, ( val, key ) ->
-                                if val == ''
-                                    value.resource_info[key] = 'None'
+                        value.resource_info = JSON.parse value.resource_info
 
-                                null
+                        _.map value.resource_info, ( val, key ) ->
+                            if val == ''
+                                value.resource_info[key] = 'None'
 
-                            #cache favorite ami item to MC.data.dict_ami
+                            null
+
+                        #cache favorite ami item to MC.data.dict_ami
 
 
-                            value.resource_info.instanceType = me._getInstanceType value.resource_info
-                            MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
+                        value.resource_info.instanceType = me._getInstanceType value.resource_info
+                        MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
 
                         null
 
-                    me.set 'favorite_ami', result.resolved_data
+                    me.set 'favorite_ami', legalData
 
                     #cache favorite_ami
                     MC.data.config[region_name].favorite_ami = {}
-                    MC.data.config[region_name].favorite_ami = result.resolved_data
+                    MC.data.config[region_name].favorite_ami = legalData
 
                     null
             null
 
         addFav: ( region_name, amiId ) ->
             # temp hack
-            amiV0 = JSON.stringify @get( 'community_ami' ).result[ amiId ]
-            amiId = { amiV0: amiV0, id: amiId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
+            amiVO = JSON.stringify @get( 'community_ami' ).result[ amiId ]
+            amiId = { amiVO: amiVO, id: amiId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
 
             favorite_model.once 'FAVORITE_ADD_RETURN', ( result ) =>
                 if result.return_code is 0

@@ -52,12 +52,10 @@ define [ 'MC' ], ( MC ) ->
 			MC.canvas_data.component[elbUID].resource.AvailabilityZones.push(currentInstanceAZ)
 
 		# If current AZ has no subnet connects to the elb. connect the subnet to elb
-		extractRegex = /@([^.]+)\./
 		subnet_uid = "@" + subnet_uid + ".resource.SubnetId"
 
 		for subnet, i in elbComp.resource.Subnets
-			extractID      = extractRegex.exec( subnet )
-			linkedSubnetID = if extractID then extractID[1] else subnet
+			linkedSubnetID = MC.extractID( subnet )
 			linkedSubnet   = MC.canvas_data.component[ linkedSubnetID ]
 
 			if linkedSubnet.resource.AvailabilityZone == currentInstanceAZ
@@ -65,9 +63,8 @@ define [ 'MC' ], ( MC ) ->
 				break
 
 		if !alreadyLinkedSubnet && instanceComp.resource.SubnetId
-			extractID = extractRegex.exec instanceComp.resource.SubnetId
 			elbComp.resource.Subnets.push instanceComp.resource.SubnetId
-			return extractID[1]
+			return MC.extractID( instanceComp.resource.SubnetId )
 
 		null
 
@@ -103,7 +100,6 @@ define [ 'MC' ], ( MC ) ->
 
 	addSubnetToELB = ( elb_uid, subnet_uid ) ->
 		elb = MC.canvas_data.component[ elb_uid ]
-		extractRegex = /@([^.]+)\./
 
 		az_subnet_map = {}
 
@@ -112,8 +108,7 @@ define [ 'MC' ], ( MC ) ->
 		subnet_uid = "@" + subnet_uid + ".resource.SubnetId"
 
 		for subnet, i in elb.resource.Subnets
-			extractID      = extractRegex.exec( subnet )
-			linkedSubnetID = if extractID then extractID[1] else subnet
+			linkedSubnetID = MC.extractID( subnet )
 			linkedSubnet   = MC.canvas_data.component[ linkedSubnetID ]
 
 			if linkedSubnet.resource.AvailabilityZone == newSubnetAZ

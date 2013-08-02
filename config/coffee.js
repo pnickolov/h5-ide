@@ -2,6 +2,20 @@ module.exports = {
 
     compile_fast: {
         options: {
+            sourceMap: false
+        },
+        files: [{
+            expand : true,
+            cwd    : '<%= src %>/',
+            src    : [ '**/*.coffee', '!service/**/**/*.coffee', '!test/**/**/*.coffee' ],
+            dest   : '<%= src %>/',
+            ext    : '.js'
+        }]
+
+    },
+
+    compile_normal: {
+        options: {
             sourceMap: true
         },
         files: [{
@@ -16,7 +30,7 @@ module.exports = {
 
     compile_all: {
         options: {
-            sourceMap: true
+            sourceMap: false
         },
         files: [{
             expand : true,
@@ -29,9 +43,6 @@ module.exports = {
     },
 
     changed: {
-        options: {
-            sourceMap: true
-        },
         files: [{
             expand : true,
             src    : '<%= grunt.regarde.changed %>',

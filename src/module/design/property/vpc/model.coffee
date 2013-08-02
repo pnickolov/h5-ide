@@ -70,16 +70,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             component.resource.EnableDnsHostnames = if enable then "true" else "false"
             null
 
-        parseDhcpId : ( dhcpid ) ->
-            extract = /@([^.]+)\./.exec( dhcpid )
-            if extract
-                extract[1]
-            else
-                dhcpid
-
         getDHCPComponent : ( vpcUid ) ->
             vpc    = MC.canvas_data.component[ vpcUid ]
-            dhcpid = this.parseDhcpId( vpc.resource.DhcpOptionsId )
+            dhcpid = MC.extractID( vpc.resource.DhcpOptionsId )
 
             if dhcpid == "default"
                 return null
@@ -112,7 +105,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 if component.resource.DhcpOptionsId == "default"
                     component.resource.DhcpOptionsId = ""
             else
-                dhcpid = this.parseDhcpId component.resource.DhcpOptionsId
+                dhcpid = MC.extractID component.resource.DhcpOptionsId
                 noDHCP = dhcpid == ""
 
                 component.resource.DhcpOptionsId = "default"
@@ -179,7 +172,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             "XXXXXXXXXX"
 
         getDHCPOptions : ( vpcUid ) ->
-            dhcpid = this.parseDhcpId MC.canvas_data.component[ vpcUid ].resource.DhcpOptionsId
+            dhcpid = MC.extractID MC.canvas_data.component[ vpcUid ].resource.DhcpOptionsId
             dhcp   = MC.canvas_data.component[ dhcpid ]
 
             config = dhcp.resource.DhcpConfigurationSet

@@ -45,6 +45,20 @@ a {
 
 .capitalize { text-transform: capitalize;}
 
+.loading-spinner {
+  -webkit-animation: loading-spinner .8s infinite linear;
+  -moz-animation: loading-spinner .8s infinite linear;
+  -o-animation: loading-spinner .8s infinite linear;
+  width: 45px;
+  height: 45px;
+  background: url("../images/ide/loading-spinner.png") no-repeat center;
+}
+
+@-webkit-keyframes loading-spinner {
+   0% { -webkit-transform: rotate(0deg); }
+   100% { -webkit-transform: rotate(360deg); }
+}
+
 .truncate {
 	/*width: 250px;*/
 	white-space: nowrap;
@@ -1426,6 +1440,19 @@ td.table-action a.btn {
 	width: 100%;
 }
 
+#modal-browse-community-ami .show-loading {
+	position: relative;
+	height: 100%;
+}
+
+#modal-browse-community-ami .show-loading .loading-spinner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -22.25px;
+	margin-top: -47.25px;
+}
+
 .ami-left-col {
 	height: 100%;
 	width: 239px;
@@ -1532,9 +1559,25 @@ td.table-action a.btn {
 }
 
 #community-ami-page {
-	position: fixed;
-	bottom: 0
+	position: absolute;
+	bottom: 0;
+	height: 50px;
+	background-color: #dde0e2;
+	width: 100%;
 }
+
+#community-ami-page .pagination {
+	float: right;
+	margin-top: 15px;
+	margin-right: 15px;
+}
+
+#community-ami-page .page-tip {
+	float: left;
+	margin-top: 15px;
+	margin-left: 10px;
+}
+
 
 /* App/Stack Toolbar */
 #main-toolbar {

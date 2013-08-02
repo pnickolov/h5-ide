@@ -34,7 +34,7 @@ define [ 'event',
             $( document ).delegate '#resource-panel',     'SEARCHBAR_HIDE', this.searchBarHideEvent
             $( document ).delegate '#resource-panel',   'SEARCHBAR_CHANGE', this.searchBarChangeEvent
             $( document ).delegate '#btn-browse-community-ami',   'click' , this, this.openBrowseCommunityAMIsModal
-            $( document ).delegate '#btn-search-ami',   'click'  , this, this.searchCommunityAmiCurrent
+            $( document ).delegate '#btn-search-ami',   'click'  , this, this.searchCommunityAmi
             $( document ).delegate '#community_ami_page_preview',   'click'  , this, this.searchCommunityAmiPreview
             $( document ).delegate '#community_ami_page_next',   'click'  , this, this.searchCommunityAmiNext
             ###
@@ -50,6 +50,8 @@ define [ 'event',
                 .on( 'click',            '#btn-search-ami',             this, this.searchCommunityAmiCurrent )
                 .on( 'click',            '#community_ami_page_preview', this, this.searchCommunityAmiPreview )
                 .on( 'click',            '#community_ami_page_next',    this, this.searchCommunityAmiNext )
+                .on( 'click',            '.toggle-fav',                 this, this.toggleFav )
+
 
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideResourcePanel
@@ -110,6 +112,18 @@ define [ 'event',
         searchBarChangeEvent : ( event, value ) ->
             console.log 'searchBarChangeEvent'
             filter.update($($(this).find('.search-panel')[0]), value)
+
+        toggleFav : ( event ) ->
+            resourceView = event.data
+            # remove
+            if $( @ ).hasClass( 'faved' )
+                resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'remove', $( @ ).data( 'id' )
+            else
+                resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'add', $( @ ).data( 'id' )
+
+            ( $ ( @ ) ).toggleClass( 'faved' )
+
+
 
         toggleResourcePanel : ( event ) ->
             console.log 'toggleResourcePanel'
@@ -196,15 +210,53 @@ define [ 'event',
 
             console.log 'openBrowseCommunityAMIsModal'
 
+            resourceView = event.data
+
             #modal(MC.template.browseCommunityAmi(''), false)
             #
             require [ 'component/amis/main' ], ( amis_main ) ->
                 amis_main.loadModule()
+                resourceView.searchCommunityAmi {data: resourceView}
+
+        # todo
+        communityShowLoading: () ->
+            $( ".scroll-content" ).hide()
+            $( ".show-loading" ).show()
+            $( "#btn-search-ami" ).text( "Searching..." ).attr( "disabled", "" )
+            $( "#community-ami-page>div" ).hide()
+            $("#ami-count").empty().html("Total: 0")
+
+        # todo
+        communityShowContent: () ->
+            $( ".show-loading" ).hide()
+            $( ".scroll-content" ).show()
+            $( "#btn-search-ami" ).text( "Search" ).removeAttr( "disabled" )
+            $( "#community-ami-page>div" ).show()
+
+        communityPagerRender: ( current_page, max_page, total ) ->
+            resourceView = @
+            $( '.page-tip' ).text "Showing #{if total > 50 then 50 else total} of #{total} results"
+
+            pagination = $ '.pagination'
+
+            if pagination.data 'jqPagination'
+                pagination.jqPagination 'destroy'
+            pagination.jqPagination({
+                current_page: current_page,
+                max_page: max_page,
+                page_string: '{current_page} of {max_page}'
+                paged: ((current_page, max_page) ->
+                    (page) ->
+                        if page isnt current_page and max_page >= page > 0
+                            resourceView.searchCommunityAmi {data: resourceView}, page
+                    )(current_page, max_page)
+
+            })
 
         communityAmiRender : () ->
+            @communityShowContent()
 
             totalNum = 0
-            $("#ami-count").empty().html("Total: 0")
             if this.model.attributes.community_ami
                  this_tr = ""
                 _.map this.model.attributes.community_ami.result, ( value, key ) ->
@@ -230,18 +282,10 @@ define [ 'event',
                 totalNum = this.model.attributes.community_ami.totalNum
                 totalPageNum = this.model.attributes.community_ami.totalPageNum
                 $("#ami-count").empty().html("Total: #{totalNum}")
+
+
+                @communityPagerRender currentPageNum, totalPageNum, totalNum
                 $("#community_ami_table").empty().html(this_tr)
-                #$("#community_ami_page").empty().html(page)
-                $('#community_ami_page_current').attr("totalPage", totalPageNum)
-                $('#community_ami_page_current').attr("page", currentPageNum)
-                if currentPageNum == 1
-                    $("#community_ami_page_preview").hide()
-                else
-                    $("#community_ami_page_preview").show()
-                if currentPageNum == totalPageNum
-                    $("#community_ami_page_next").hide()
-                else
-                     $("#community_ami_page_next").show()
 
         resourceVpcRender : ( current_platform, type ) ->
             data = {}
@@ -272,7 +316,19 @@ define [ 'event',
 
             $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
 
+        searchCommunityAmi : ( event, pageNum) ->
+            if not pageNum
+                pageNum = 1
+
+            resourceView = event.data
+            resourceView.communityShowLoading()
+
+            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, pageNum
+
+
         searchCommunityAmiCurrent : ( event ) ->
+            resourceView = event.data
+            resourceView.communityShowLoading()
 
             event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, 0
 

@@ -118,17 +118,17 @@ module.exports = function( grunt ) {
 	});
 
 	/* task of use as make(compiler) */
-	grunt.registerTask( 'make', function() {
-		grunt.task.run([
-			'coffeelint:files',
-			'coffee:compile_fast',
-			'jshint',
-			'csslint'
-		]);
-	});
 	grunt.registerTask( 'make_fast', function() {
 		grunt.task.run([
 			'coffee:compile_fast'
+		]);
+	});
+	grunt.registerTask( 'make', function() {
+		grunt.task.run([
+			'coffeelint:files',
+			'coffee:compile_normal',
+			'jshint',
+			'csslint'
 		]);
 	});
 	grunt.registerTask( 'make_all', function() {
@@ -141,15 +141,15 @@ module.exports = function( grunt ) {
 	});
 
 	/* task of use as develop */
-	grunt.registerTask( 'develop', [
-									'make',
-									'livereload-start',
-									'connect:develop',
-									'open:develop',/*modify by xjimmy*/
-									'watch'
-	]);
 	grunt.registerTask( 'dev_fast', [
 									'make_fast',
+									'livereload-start',
+									'connect:develop',
+									'open:develop',
+									'watch'
+	]);
+	grunt.registerTask( 'develop', [
+									'make',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',

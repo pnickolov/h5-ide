@@ -1822,6 +1822,18 @@ MC.canvas.layout = {
 
 	create: function (option)
 	{
+		var canvas_size = MC.canvas.data.get('layout.size'),
+			data = MC.canvas.data.get('component'),
+			uid = MC.guid(),
+			vpc_group,
+			node_rt,
+			main_asso,
+			sg_uid,
+			acl,
+			sg,
+			kp,
+			tmp;
+
 		MC.paper = Canvon('svg_canvas');
 
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
@@ -1839,14 +1851,12 @@ MC.canvas.layout = {
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 
-		var canvas_size = MC.canvas.data.get('layout.size');
-
-		uid = MC.guid();
 		kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
 		kp.uid = uid;
 		tmp = {};
 		tmp[kp.name] = kp.uid;
 		MC.canvas_property.kp_list.push(tmp);
+
 		sg_uid = MC.guid();
 		sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
 		sg.uid = sg_uid;
@@ -1855,7 +1865,7 @@ MC.canvas.layout = {
 		tmp.name = sg.name;
 		tmp.member = [];
 		MC.canvas_property.sg_list.push(tmp);
-		data = MC.canvas.data.get('component');
+
 		data[kp.uid] = kp;
 		data[sg.uid] = sg;
 		MC.canvas.data.set('component', data);
@@ -1870,7 +1880,7 @@ MC.canvas.layout = {
 				'y': 3
 			});
 
-			var node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
+			node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
 				'name': 'RT-0',
 				'group' : {
 					'vpcUId' : vpc_group.id

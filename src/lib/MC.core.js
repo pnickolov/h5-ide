@@ -17,6 +17,8 @@ var MC = {
 	WS_URL: 'http://api.madeiracloud.com:8300',//-> 8300
 	SAVEPNG_URL: 'http://api.madeiracloud.com:8320/savepng',
 
+	current_module : {},
+
 	_extractIDRegex : /@([^.]+)\./,
 
 	// Global data
@@ -338,6 +340,35 @@ var MC = {
 	base64Decode: function (string)
 	{
 		return decodeURIComponent(escape(window.atob( string )));
+	},
+
+	log: function (module_name, log_level, content)
+	{
+		//log_level  info|log|debug|warn|error
+
+		if (MC.current_module !== module_name)
+		{
+			return;
+		}
+
+		switch (log_level)
+		{
+			case 'info':
+				console.info('[', module_name, ']', content);
+				break;
+			case 'log':
+				console.log('[', module_name, ']', content);
+				break;
+			case 'error':
+				console.error('[', module_name, ']', content);
+				break;
+			case 'warn':
+				console.warn('[', module_name, ']', content);
+				break;
+			case 'debug':
+				console.debug('[', module_name, ']', content);
+				break;
+		}
 	},
 
 	camelCase: function (string)

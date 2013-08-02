@@ -1715,7 +1715,6 @@ MC.canvas.layout = {
 			}
 		});
 
-
 		$('#svg_canvas').attr({
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
@@ -3393,6 +3392,7 @@ MC.canvas.event.siderbarDrag = {
 			$('#canvas_body').addClass('node-dragging');
 		}
 
+		MC.canvas.volume.close();
 		MC.canvas.event.clearSelected();
 
 		return false;
@@ -3423,8 +3423,7 @@ MC.canvas.event.siderbarDrag = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			component_size,
 			match_place,
-			default_group_width,
-			default_group_height,
+			default_group_size,
 			new_node,
 			vpc_id,
 			vpc_data,

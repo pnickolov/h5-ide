@@ -42,10 +42,24 @@ define [ 'jquery',
                 console.log 'update toolbar status'
                 view.render type
 
-            ide_event.onListen ide_event.SWITCH_DASHBOARD, () ->
+            ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
                 console.log 'SWITCH_DASHBOARD'
-                model.attributes.is_tab = false
+                model.setTabFlag(false)
+                null
 
+            ide_event.onLongListen ide_event.SWITCH_TAB, () ->
+                console.log 'SWITCH_TAB'
+                model.setTabFlag(true)
+                null
+
+            ide_event.onLongListen ide_event.SWITCH_APP_TAB, () ->
+                console.log 'SWITCH_APP_TAB'
+                model.setTabFlag(true)
+                null
+
+            ide_event.onLongListen ide_event.SWITCH_STACK_TAB, () ->
+                console.log 'SWITCH_STACK_TAB'
+                model.setTabFlag(true)
                 null
 
             #save

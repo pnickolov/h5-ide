@@ -107,16 +107,22 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     me.trigger 'UPDATE_TOOLBAR', 'stack'
 
         setTabFlag : (flag) ->
+            me = this
+
             is_tab = flag
 
             if flag
                 id = MC.canvas_data.id
-                me.set 'item_flags', item_state_map[id]
 
-                if id.indexOf('app-') == 0
-                    me.trigger 'UPDATE_TOOLBAR', 'app'
-                else
-                    me.trigger 'UPDATE_TOOLBAR', 'stack'
+                rid = k for k,v of item_state_map when id == k
+
+                if rid
+                    me.set 'item_flags', item_state_map[id]
+
+                    if id.indexOf('app-') == 0
+                        me.trigger 'UPDATE_TOOLBAR', 'app'
+                    else
+                        me.trigger 'UPDATE_TOOLBAR', 'stack'
 
             null
 
@@ -371,7 +377,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     console.log 'request id:' + req_id
                     query = ws.collection.request.find({id:req_id})
                     handle = query.observeChanges {
-                        changed : (id, req) ->
+                        changed : (idx, req) ->
 
                             console.log 'request ' + req.data + "," + req.state
                             handle.stop()
@@ -415,6 +421,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                             if flag is 'TERMINATE_APP' and is_success
                                 ide_event.trigger ide_event.APP_TERMINATE, MC.canvas_data.name, MC.canvas_data.id
                             else if flag isnt 'RUN_STACK'
+                                #rid = MC.data.websocket.collection.request.find({'_id':id}).fetch()[0].rid
                                 me.setFlag id, flag, if is_success then 'done' else 'failed'
 
                     }

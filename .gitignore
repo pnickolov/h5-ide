@@ -51,4 +51,5 @@ util/gen_apilist/**/*.js
 #ignore event
 src/event/*.js
 
+#ignore *.map
 *.map

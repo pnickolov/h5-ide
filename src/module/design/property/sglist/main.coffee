@@ -16,6 +16,9 @@ define [ 'jquery',
     #load remote html template
     $( 'head' ).append template
 
+    refresh = () ->
+        current_view.render()
+
     #private
     loadModule = ( parent_model ) ->
 
@@ -72,4 +75,5 @@ define [ 'jquery',
     #public
     loadModule   : loadModule
     unLoadModule : unLoadModule
+    refresh      : refresh
     sg_main      : null

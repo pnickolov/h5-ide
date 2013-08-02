@@ -303,6 +303,15 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             delete MC.canvas_data.component[remove_uid]
 
+        setIPList : (inputIPAry) ->
+
+            # get all other ip in cidr
+            eniUID = this.get 'uid'
+
+            realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
+
+            MC.aws.eni.saveIPList eniUID, realIPAry
+
     }
 
     model = new ENIModel()

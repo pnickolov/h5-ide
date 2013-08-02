@@ -46,15 +46,24 @@ define [ 'constant',
 				error = handler.call( this, component, tgt_parent )
 				if error
 					event.preventDefault()
+					notification "error", error
 			else
 				console.log "No handler for validate dragging node:", component
 			null
 
-		validateD_Instance : ( component, tgt_parent ) ->
-			null
 		validateD_Subnet : ( component, tgt_parent ) ->
 			null
+
+		validateD_Instance : ( component, tgt_parent ) ->
+			for key, value of MC.canvas_data.component
+				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+					if value.resource.Attachment.InstanceId.indexOf( component.uid ) != -1
+						return "Network Interface must be attached to instance within the same availability zone."
+			null
+
 		validateD_Eni : ( component, tgt_parent ) ->
+			if component.resource.Attachment.InstanceId
+				return "Network Interface must be attached to instance within the same availability zone."
 			null
 
 		#change node from one parent to another parent

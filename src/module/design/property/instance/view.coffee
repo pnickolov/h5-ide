@@ -35,6 +35,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'click #instance-ip-add' : "addIPtoList"
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
+            'blur .input-ip' : 'updateEIPList'
+            'click .toggle-eip' : 'addEIP'
+
         render     : ( attributes, instance_expended_id ) ->
             console.log 'property:instance render'
             #
@@ -104,6 +107,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             $('#property-network-list').append tmpl
             this.trigger 'ADD_NEW_IP'
+
+            this.updateEIPList()
+
             false
 
         removeIPfromList: (event, id) ->
@@ -120,6 +126,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             this.trigger 'REMOVE_IP', index
 
+            this.updateEIPList()
+
         openAmiPanel : ( event ) ->
             target = $('#property-ami')
             secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
@@ -132,6 +140,25 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             index = parseInt event.target.dataset.index, 10
             if event.target.className.indexOf('associated') >= 0 then attach = true else attach = false
             this.trigger 'ATTACH_EIP', index, attach
+
+            this.updateEIPList()
+
+        updateEIPList: (event) ->
+
+            currentAvailableIPAry = []
+            ipInuptListItem = $('#property-network-list li')
+
+            _.each ipInuptListItem, (ipInputItem) ->
+                inputValuePrefix = $(ipInputItem).find('.input-ip-prefix').text()
+                inputValue = $(ipInputItem).find('.input-ip').val()
+                inputHaveEIP = $(ipInputItem).find('.input-ip-eip-btn').hasClass('associated')
+                currentAvailableIPAry.push({
+                    ip: inputValuePrefix + inputValue,
+                    eip: inputHaveEIP
+                })
+                null
+
+            this.trigger 'SET_IP_LIST', currentAvailableIPAry
     }
 
     view = new InstanceView()

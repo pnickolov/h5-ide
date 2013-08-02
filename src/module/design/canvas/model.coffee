@@ -17,9 +17,9 @@ define [ 'constant',
 
 			resource_map = {
 				'AWS_EC2_Instance'         : 'Instance'
-				'AWS_EBS_Volume'           : 'Volume'
 				'AWS_VPC_Subnet'           : 'Subnet'
 				'AWS_VPC_NetworkInterface' : 'Eni'
+				#'AWS_EBS_Volume'           : 'Volume'
 			}
 
 			this.changeParentMap = {}
@@ -34,6 +34,28 @@ define [ 'constant',
 		# An object is about to be dropped. Test if the object can be dropped
 		onBeforeDrop : ( event, src_node, tgt_parent ) ->
 			debugger
+			node = MC.canvas_data.layout.component.group[src_node]
+			if !node
+				node = MC.canvas_data.layout.component.node[src_node]
+			if !node || !node.groupUId || node.groupUId == tgt_parent
+				return
+
+			# Dispatch the event-handling to real handler
+			component = MC.canvas_data.component[ src_node ]
+			handler   = this.validateDropMap[ component.type ]
+			if handler
+				error = handler.call( this, component, tgt_parent )
+				if error
+					event.preventDefault()
+			else
+				console.log "No handler for validate dragging node:", component
+			null
+
+		validateD_Instance : ( component, tgt_parent ) ->
+			null
+		validateD_Subnet : ( component, tgt_parent ) ->
+			null
+		validateD_Eni : ( component, tgt_parent ) ->
 			null
 
 		#change node from one parent to another parent
@@ -49,7 +71,7 @@ define [ 'constant',
 			component = MC.canvas_data.component[ src_node ]
 			handler   = this.changeParentMap[ component.type ]
 			if handler
-				handler component, tgt_parent
+				handler.call( this, component, tgt_parent )
 			else
 				console.log "No handler for dragging node:", component
 			null
@@ -62,7 +84,6 @@ define [ 'constant',
 			# Parent can be AvailabilityZone or Subnet
 			if parent.type == resource_type.AWS_VPC_Subnet
 				parent = MC.canvas_data.component[ tgt_parent ]
-				console.log "Instance:", src_node, "dragged from subnet:", component.resource.SubnetId, "to:", tgt_parent
 
 				# Nothing is changed
 				if component.resource.SubnetId.indexOf( tgt_parent ) != -1
@@ -72,7 +93,6 @@ define [ 'constant',
 				# Update instance's subnet
 				component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
 			else
-				console.log "Instance:", src_node, "dragged from:", component.resource.Placement.AvailabilityZone, "to:", parent.name
 
 				# Nothing is changed
 				if parent.name == component.resource.Placement.AvailabilityZone
@@ -82,7 +102,19 @@ define [ 'constant',
 
 			component.resource.Placement.AvailabilityZone = newAZ
 
-			#We should also update those Volumes that are attached to this Instance.
+			# Update ELB's AZ property
+			console.log("morris", component);
+			components = MC.canvas_data.component
+			for key, value of components
+				if value.type == resource_type.AWS_ELB
+					azs = []
+					for i in value.resource.Instances
+						azs.push( components[ MC.extractID( i.InstanceId ) ].resource.Placement.AvailabilityZone )
+					value.resource.AvailabilityZones = azs
+
+			console.log "morris", components
+
+			# We should also update those Volumes that are attached to this Instance.
 			updateVolume = ( component ) ->
 				if component.type == resource_type.AWS_EBS_Volume and
 				component.resource.AttachmentSet.InstanceId.indexOf( this )
@@ -90,9 +122,6 @@ define [ 'constant',
 				null
 
 			_.each MC.canvas_data.component, updateVolume, component.uid
-			null
-
-		changeP_Volume : () ->
 			null
 
 		changeP_Subnet : ( component, tgt_parent ) ->
@@ -109,14 +138,15 @@ define [ 'constant',
 
 				if value.type == resource_type.AWS_EC2_Instance
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
-						value.resource.Placement.AvailabilityZone = component.resource.AvailabilityZone
-						for key2, volume of MC.canvas_data.component
-							if volume.type == resource_type.AWS_EBS_Volume && volume.resource.AttachmentSet.InstanceId.indexOf( value.uid ) != -1
-								volume.resource.AvailabilityZone = component.resource.AvailabilityZone
+						value.resource.Placement.AvailabilityZone = "1" # Set the Instance's subnet to something else, so we can change it.
+						this.changeP_Instance value, component.uid
 
 				else if value.type == resource_type.AWS_VPC_NetworkInterface
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.AvailabilityZone = component.resource.AvailabilityZone
+
+			# Disconnect ELB and Subnet, if the newly moved to AZ has a subnet which is connected to the same ELB.
+
 			null
 
 		changeP_Eni : ( component, tgt_parent ) ->

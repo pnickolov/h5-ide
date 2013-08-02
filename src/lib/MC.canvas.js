@@ -2358,7 +2358,7 @@ MC.canvas.volume = {
 				MC.canvas.volume.select.call( document.getElementById( volume_id ) );
 			}
 
-			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
+			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 		}
 
 		event.data.shadow.remove();

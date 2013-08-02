@@ -9,8 +9,6 @@ MC.canvas_property = {};
 
 MC.canvas = {
 
-	//selected_node: [],
-
 	getState: function ()
 	{
 		return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
@@ -1124,6 +1122,45 @@ MC.canvas = {
 				{'line_uid': value['line']}
 			);
 		});
+
+		return true;
+	},
+
+	select: function (id)
+	{
+		var target = $('#' + id),
+			target_type = target.data('type'),
+			svg_canvas = $("#svg_canvas"),
+			clone_node;
+
+		Canvon(target[0]).addClass('selected');
+
+		if (target_type === 'line')
+		{
+			clone = target.clone();
+
+			target.remove();
+			$('#line_layer').append(clone);
+
+			svg_canvas.trigger("CANVAS_LINE_SELECTED", id);
+		}
+
+		if (target_type === 'node')
+		{
+			clone = target.clone();
+
+			target.remove();
+			$('#node_layer').append(clone);
+
+			svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
+		}
+
+		if (target_type === 'group')
+		{
+			svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
+		}
+
+		MC.canvas_property.selected_node.push(id);
 
 		return true;
 	},
@@ -2493,39 +2530,7 @@ MC.canvas.event.dragable = {
 			event.pageY === event.data.originalPageY
 		)
 		{
-			if (event.data.target_type === 'node')
-			{
-				var target = event.data.target,
-					clone_node;
-
-				target.attr('class', function (index, key)
-				{
-					return key + ' selected';
-				});
-
-				// Append to top
-				clone_node = target.clone();
-				target.remove();
-				$('#node_layer').append(clone_node);
-
-				MC.canvas_property.selected_node.push(clone_node[0].id);
-
-				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
-			}
-
-			if (event.data.target_type === 'group')
-			{
-				var target = event.data.target;
-
-				target.attr('class', function (index, key)
-				{
-					return key + ' selected';
-				});
-
-				MC.canvas_property.selected_node.push(target[0].id);
-
-				$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
-			}
+			MC.canvas.select( event.data.target.attr('id') );
 		}
 		else
 		{
@@ -2571,19 +2576,7 @@ MC.canvas.event.dragable = {
 
 					MC.canvas.reConnect(target_id);
 
-					target.attr('class', function (index, key)
-					{
-						return key + ' selected';
-					});
-
-					// Append to top
-					clone_node = target.clone();
-					target.remove();
-					$('#node_layer').append(clone_node);
-
-					MC.canvas_property.selected_node.push(clone_node[0].id);
-
-					svg_canvas.trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+					MC.canvas.select(target_id);
 
 					//after change node to another group, trigger event
 					if (parentGroup)
@@ -2827,14 +2820,7 @@ MC.canvas.event.dragable = {
 						}
 					}
 
-					target.attr('class', function (index, key)
-					{
-						return key + ' selected';
-					});
-
-					MC.canvas_property.selected_node.push(target[0].id);
-
-					svg_canvas.trigger("CANVAS_NODE_SELECTED", event.data.target.attr('id'));
+					MC.canvas.select(target_id);
 
 					//after change node to another group,trigger event
 					if (parentGroup)
@@ -2929,14 +2915,7 @@ MC.canvas.event.dragable = {
 
 		MC.canvas.reConnect(target_id);
 
-		target.attr('class', function (index, key)
-		{
-			return key + ' selected';
-		});
-
-		MC.canvas_property.selected_node.push(target_id);
-
-		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", target_id);
+		MC.canvas.select(target_id);
 
 		$('.dropable-group').attr('class', function (index, key)
 		{
@@ -3482,14 +3461,7 @@ MC.canvas.event.siderbarDrag = {
 						node_option.groupUId = match_place.target;
 						new_node = MC.canvas.add(node_type, node_option, coordinate);
 
-						$(new_node).attr('class', function (index, key)
-						{
-							return key + ' selected';
-						});
-
-						MC.canvas_property.selected_node = [new_node.id];
-
-						$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", new_node.id);
+						MC.canvas.select(new_node.id);
 					}
 				}
 			}
@@ -4112,18 +4084,8 @@ MC.canvas.event.selectLine = function (event)
 		event.stopPropagation();
 
 		MC.canvas.event.clearSelected();
-		Canvon(this).addClass('selected');
 
-		var line = $(this),
-			clone = line.clone()[0];
-
-		line.remove();
-		$('#line_layer').append(clone);
-
-		MC.canvas_property.selected_node.push(clone.id);
-
-		//trigger event when selecte line
-		$("#svg_canvas").trigger("CANVAS_LINE_SELECTED", clone.id);
+		MC.canvas.select(this.id);
 	}
 };
 
@@ -4135,34 +4097,8 @@ MC.canvas.event.selectNode = function (event)
 		event.stopPropagation();
 
 		MC.canvas.event.clearSelected();
-		Canvon(this).addClass('selected');
 
-		var target = $(this),
-			target_type = target.data('type'),
-			clone_node;
-
-		if (target_type === 'node')
-		{
-			Canvon(this).addClass('selected');
-
-			// Append to top
-			clone_node = target.clone();
-			target.remove();
-			$('#node_layer').append(clone_node);
-
-			MC.canvas_property.selected_node.push(clone_node[0].id);
-
-			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
-		}
-
-		if (target_type === 'group')
-		{
-			Canvon(this).addClass('selected');
-
-			MC.canvas_property.selected_node.push(this.id);
-
-			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
-		}
+		MC.canvas.select(this.id);
 	}
 };
 
@@ -4203,8 +4139,6 @@ MC.canvas.event.keyEvent = function (event)
 
 			if (selected_node.data('class') !== 'AWS.VPC.VPC')
 			{
-				//MC.canvas.remove(node);
-
 				//trigger event when delete component
 				$("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {
 					'id': id,
@@ -4272,16 +4206,7 @@ MC.canvas.event.keyEvent = function (event)
 
 		MC.canvas.event.clearSelected();
 
-		Canvon(next_node[0]).addClass('selected');
-
-		// Append to top
-		clone_node = next_node.clone();
-		next_node.remove();
-		$('#node_layer').append(clone_node);
-
-		MC.canvas_property.selected_node.push(clone_node[0].id);
-
-		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", clone_node.attr('id'));
+		MC.canvas.select(next_node.attr('id'));
 
 		return false;
 	}
@@ -4372,7 +4297,7 @@ MC.canvas.event.keyEvent = function (event)
 
 	// Save stack - [Ctrl + S]
 	if (
-		event.ctrlKey && event.which === 83 &&
+		event.ctrlKey && keyCode === 83 &&
 		canvas_status === 'stack' &&
 		!is_zoomed
 	)
@@ -4384,7 +4309,7 @@ MC.canvas.event.keyEvent = function (event)
 
 	// ZoomIn - [Ctrl + +]
 	if (
-		event.ctrlKey && event.which === 187
+		event.ctrlKey && keyCode === 187
 	)
 	{
 		MC.canvas.zoomIn();
@@ -4394,7 +4319,7 @@ MC.canvas.event.keyEvent = function (event)
 
 	// ZoomIn - [Ctrl + -]
 	if (
-		event.ctrlKey && event.which === 189
+		event.ctrlKey && keyCode === 189
 	)
 	{
 		MC.canvas.zoomOut();

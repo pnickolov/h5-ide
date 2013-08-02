@@ -410,6 +410,10 @@
 	border: none;
 }
 
+#instance_volume_wrap {
+	max-height: 175px;
+}
+
 #instance_volume_list .selected {
 	border: 2px solid #0096FF;
 }

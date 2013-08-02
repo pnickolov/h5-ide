@@ -10,18 +10,24 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         tagName  : $ '.property-details'
 
         template : Handlebars.compile $( '#property-sgrule-tmpl' ).html()
+        app_template : Handlebars.compile $( '#property-sgrule-app-tmpl' ).html()
 
         events   :
             "click #sg-edit-rule-button" : "onEditRule"
 
-        render     : () ->
+        render     : (is_app_view) ->
             console.log 'property:sgrule render'
 
+            this.model.attributes.isAppView = this.isAppView
 
             data = this.model.attributes
             data.isAppView = this.isAppView
 
-            $( '.property-details' ).html this.template data
+            if is_app_view
+                $( '.property-details' ).html this.app_template data
+            else
+                $( '.property-details' ).html this.template data
+
 
         onEditRule : ( event ) ->
 
@@ -32,7 +38,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         setAppView : ( isAppView ) ->
             this.isAppView = isAppView
             null
-
 
     }
 

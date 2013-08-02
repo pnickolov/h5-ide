@@ -1,7 +1,9 @@
 module.exports = {
 
     compile_fast: {
-
+        options: {
+            sourceMap: true
+        },
         files: [{
             expand : true,
             cwd    : '<%= src %>/',
@@ -13,7 +15,9 @@ module.exports = {
     },
 
     compile_all: {
-
+        options: {
+            sourceMap: true
+        },
         files: [{
             expand : true,
             cwd    : '<%= src %>/',
@@ -25,7 +29,9 @@ module.exports = {
     },
 
     changed: {
-
+        options: {
+            sourceMap: true
+        },
         files: [{
             expand : true,
             src    : '<%= grunt.regarde.changed %>',

@@ -229,6 +229,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             id          = item.id
             name        = item.name
             create_time = item.time_create
+            id_code     = MC.base64Encode(id)
 
             status      = "play"
             isrunning   = true
@@ -245,6 +246,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 status = "pending"
 
             if flag == 'app'
+                id_code     = MC.base64Encode(item.stack_id) #temp
                 date = new Date()
                 start_time = null
                 stop_time = null
@@ -255,7 +257,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     date.setTime(item.last_stop*1000)
                     stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
 
-            return { 'id' : id, 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'status' : status, 'cost' : "$0/month" }
+            return { 'id' : id, 'code' : id_code, 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'status' : status, 'cost' : "$0/month" }
 
         runApp : (region, app_id) ->
             me = this
@@ -374,36 +376,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             sub_info = popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info
 
-            # if dhcp.dhcpConfigurationSet.item.constructor == Array
+            if dhcp.dhcpConfigurationSet
 
-            #     _.map dhcp.dhcpConfigurationSet.item, ( item, i ) ->
+                _.map dhcp.dhcpConfigurationSet.item, ( item, i ) ->
 
-            #         if item.valueSet.item.constructor == Array
+                    _.map item.valueSet, ( it, j )->
 
-            #             _.map item.valueSet.item, ( it, j )->
-
-            #                 sub_info.push { "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', 'item', j, 'value'], "show_key": item.key }
-
-            #         else
-
-            #             sub_info.push { "key": [ 'dhcpConfigurationSet', 'item', i, 'valueSet', 'item', 'value'], "show_key": item.key }
-
-            # else
-            #     item = dhcp.dhcpConfigurationSet.item
-
-            #     if item.valueSet.item.constructor == Array
-
-            #         _.map item.valueSet.item, ( it, i ) ->
-
-            #             sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', j, 'value'], "show_key": item.key }
-
-            #     else
-
-            #         sub_info.push { "key": ['dhcpConfigurationSet', 'item', 'valueSet', 'item', 'value'], "show_key": item.key }
+                        sub_info.push { "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', j], "show_key": item.key }
 
             me.parseSourceValue 'DescribeDhcpOptions', dhcp, "bubble", null
-
-                #sub_info.push { "key": [ dhcp.dhcpConfigurationSet.item.value], "show_key": dhcp.dhcpConfigurationSet.item.key }
 
         reRenderRegionResource : () ->
 
@@ -999,6 +980,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     if not elb.Instances
 
                         elb.state = '0 of 0 instances in service'
+
+                        elb.instance_state = []
 
                     else
 

@@ -237,6 +237,9 @@ var selectbox = {
         });
         dropDownBound = false;
     }
+<<<<<<< HEAD
+    */
+=======
     var dropDownBound = false;
     function toggleDropdown ( event ) {
 
@@ -299,6 +302,6 @@ var selectbox = {
         });
         dropDownBound = false;
     }
-    */
+>>>>>>> origin/develop
 
 })();

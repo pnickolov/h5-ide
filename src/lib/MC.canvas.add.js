@@ -711,7 +711,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ELB_JSON.data);
-				option.name = 'load-balancer-1';
+				option.name = 'load-balancer-0';
 				component_data.name = option.name;
 				component_data.resource.LoadBalancerName = option.name;
 

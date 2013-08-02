@@ -87,6 +87,9 @@ define [ 'jquery',
             view.on 'ADD_AZ_TO_ELB', ( value ) ->
                 model.addAZToELB uid, value
 
+            view.on 'REFRESH_SG_LIST', () ->
+                sglist_main.refresh()
+
             #model
             model.init uid
 

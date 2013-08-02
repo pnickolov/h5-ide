@@ -670,14 +670,14 @@ MC.canvas = {
 		{
 			//C
 			mid_y = (start.y + end.y) / 2;
-			if (to_type === "AWS.VPC.RouteTable" && to_type != from_type)
+			if (to_type === "AWS.VPC.RouteTable" && to_type !== from_type)
 			{
 				if (Math.abs(mid_y - end.y) > 5)
 				{
 					mid_y = MC.canvas._adjustMidY(to_port_name, mid_y, end, 1);
 				}
 			}
-			else if (from_type == "AWS.VPC.RouteTable" && to_type != from_type)
+			else if (from_type === "AWS.VPC.RouteTable" && to_type !== from_type)
 			{
 				if (Math.abs(start.y - mid_y) > 5)
 				{
@@ -701,7 +701,7 @@ MC.canvas = {
 					mid_x = MC.canvas._adjustMidX(to_port_name, mid_x, start, 1);
 				}
 			}
-			else if (from_type == 'AWS.VPC.RouteTable' && to_type !== from_type)
+			else if (from_type === 'AWS.VPC.RouteTable' && to_type !== from_type)
 			{
 				if (Math.abs(mid_x - end.x) > 5)
 				{
@@ -1616,10 +1616,10 @@ MC.canvas = {
 
 	lineTarget: function (line_id)
 	{
-		var data = MC.canvas.data.get('layout.connection.' + line_id),
+		var data = MC.canvas.data.get('layout.connection.' + line_id + '.target'),
 			result = [];
 
-		$.each(data.target, function (key, value)
+		$.each(data, function (key, value)
 		{
 			result.push({
 				'uid': key,
@@ -2429,7 +2429,7 @@ MC.canvas.event.dragable = {
 					'target_type': target_type,
 					'node_type': node_type,
 					'vpc_data': MC.canvas.data.get('layout.component.group.' + $('.AWS-VPC-VPC').attr('id')),
-					'shadow': $(shadow),
+					'shadow': shadow,
 					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
 					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
 					'originalPageX': event.pageX,
@@ -2445,7 +2445,7 @@ MC.canvas.event.dragable = {
 					'target': target,
 					'canvas_body': $('#canvas_body'),
 					'target_type': target_type,
-					'shadow': $(shadow),
+					'shadow': shadow,
 					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
 					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
 					'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
@@ -2532,7 +2532,7 @@ MC.canvas.event.dragable = {
 				target_id = target.attr('id'),
 				target_type = event.data.target_type,
 				svg_canvas = $("#svg_canvas"),
-				canvas_offset = $('#svg_canvas').offset(),
+				canvas_offset = svg_canvas.offset(),
 				shadow_offset = Canvon(event.data.shadow[0]).offset(),
 				layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
@@ -2602,7 +2602,6 @@ MC.canvas.event.dragable = {
 						shadow_offset.top - canvas_offset.top
 					),
 					layout_group_data = MC.canvas.data.get('layout.component.group'),
-					svg_canvas = $('#svg_canvas'),
 					group_data = layout_group_data[ target_id ],
 					group_coordinate = group_data.coordinate,
 					group_size = group_data.size,
@@ -2649,9 +2648,32 @@ MC.canvas.event.dragable = {
 					}
 				}
 
-				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, group_size[0], group_size[1]);
-				areaChild = MC.canvas.areaChild(target_id, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
-				parentGroup = MC.canvas.parentGroup(target_id, group_data.type, coordinate.x, coordinate.y, coordinate.x + group_size[0], coordinate.y + group_size[1]);
+				match_place = MC.canvas.isMatchPlace(
+					target_id,
+					target_type,
+					node_type,
+					coordinate.x,
+					coordinate.y,
+					group_size[0],
+					group_size[1]
+				);
+
+				areaChild = MC.canvas.areaChild(
+					target_id,
+					coordinate.x,
+					coordinate.y,
+					coordinate.x + group_size[0],
+					coordinate.y + group_size[1]
+				);
+
+				parentGroup = MC.canvas.parentGroup(
+					target_id,
+					group_data.type,
+					coordinate.x,
+					coordinate.y,
+					coordinate.x + group_size[0],
+					coordinate.y + group_size[1]
+				);
 
 				$.each(areaChild, function (index, item)
 				{
@@ -2897,11 +2919,12 @@ MC.canvas.event.dragable = {
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			node_type = target.data('class'),
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			coordinate;
 
 		coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-		MC.canvas.position(target[0], coordinate.x  * MC.canvas_property.SCALE_RATIO, coordinate.y * MC.canvas_property.SCALE_RATIO);
+		MC.canvas.position(target[0], coordinate.x  * scale_ratio, coordinate.y * scale_ratio);
 
 		MC.canvas.reConnect(target_id);
 
@@ -2961,7 +2984,7 @@ MC.canvas.event.drawConnection = {
 			switch (position)
 			{
 				case 'left':
-					offset.left = target_offset.left - 0;
+					offset.left = target_offset.left;
 					offset.top  = target_offset.top  + 8;
 					break;
 
@@ -2972,7 +2995,7 @@ MC.canvas.event.drawConnection = {
 
 				case 'top':
 					offset.left = target_offset.left + 8;
-					offset.top  = target_offset.top - 0;
+					offset.top  = target_offset.top;
 					break;
 
 				case 'bottom':
@@ -3243,25 +3266,14 @@ MC.canvas.event.drawConnection = {
 			}
 		}
 
-		$.each(event.data.option, function (type, option)
+		$('#svg_canvas .connectable').each(function (index, item)
 		{
-			if ($.type(option) !== 'array')
-			{
-				option = [option];
-			}
+			Canvon(item).removeClass('connectable');
+		});
 
-			$.each(option, function (index, value)
-			{
-				$('.' + type.replace(/\./ig, '-'))
-					.attr('class', function (index, key)
-					{
-						return key.replace('connectable ', '');
-					})
-					.find('.connectable-port').attr("class", function (index, key)
-					{
-						return key.replace('connectable-port ', '');
-					});
-			});
+		$('#svg_canvas .connectable-port').each(function (index, item)
+		{
+			Canvon(item).removeClass('connectable-port');
 		});
 
 		$(document.body).removeClass('disable-event');

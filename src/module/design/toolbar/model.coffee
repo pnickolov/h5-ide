@@ -145,7 +145,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                         me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS'
 
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST
+                        ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
                         #call save png
                         me.savePNG true
@@ -173,7 +173,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                         me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS'
 
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST
+                        ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK'
 
                         ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, MC.canvas_data.name + ' - stack'
 

@@ -4,7 +4,7 @@
 
 define [ 'event',
          'backbone', 'jquery', 'handlebars',
-         'UI.modal'
+         'UI.modal', 'jqpagination'
 ], ( ide_event ) ->
 
     AMIsView = Backbone.View.extend {
@@ -18,6 +18,14 @@ define [ 'event',
             modal template, true
             #
             this.setElement $( '#modal-browse-community-ami' ).closest '#modal-wrap'
+
+        showLoading: ->
+            this.$( '.scroll-content' ).hide()
+            this.$( '.show-loading' ).show()
+
+        showContent: ->
+            this.$( '.show-loading' ).hide()
+            this.$( '.scroll-content' ).show()
 
         closedAMIsPopup : ->
             console.log 'closedAMIsPopup'

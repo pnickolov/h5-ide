@@ -12,61 +12,177 @@ define [ 'constant',
 
 		initialize : ->
 			#listen
-			null
 
-
-		#change node from one parent to another parent
-		changeNodeParent : ( src_node, tgt_parent ) ->
-			#to-do
-			component     = MC.canvas_data.component[ src_node ]
 			resource_type = constant.AWS_RESOURCE_TYPE
 
-			# Deal with dragging "Instance" to different AvailabilityZone
-			if component.type == resource_type.AWS_EC2_Instance
-				parent = MC.canvas_data.layout.component.group[ tgt_parent ]
+			resource_map = {
+				'AWS_EC2_Instance'         : 'Instance'
+				'AWS_VPC_Subnet'           : 'Subnet'
+				'AWS_VPC_NetworkInterface' : 'Eni'
+				#'AWS_EBS_Volume'           : 'Volume'
+			}
 
-				# Parent can be AvailabilityZone or Subnet
-				if parent.type == resource_type.AWS_VPC_Subnet
-					parent = MC.canvas_data.component[ tgt_parent ]
-					console.log "Instance:", src_node, "dragged from subnet:", component.resource.SubnetId, "to:", tgt_parent
+			this.changeParentMap = {}
+			this.validateDropMap = {}
 
-					# Nothing is changed
-					if component.resource.SubnetId.indexOf( tgt_parent ) != -1
-						return
-
-					newAZ = parent.resource.AvailabilityZone
-					# Update instance's subnet
-					component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
-				else
-					console.log "Instance:", src_node, "dragged from:", component.resource.Placement.AvailabilityZone, "to:", parent.name
-
-					# Nothing is changed
-					if parent.name == component.resource.Placement.AvailabilityZone
-						return
-
-					newAZ = parent.name
-
-				component.resource.Placement.AvailabilityZone = newAZ
-
-				#We should also update those Volumes that are attached to this Instance.
-				updateVolume = ( component, id ) ->
-					if component.type == resource_type.AWS_EBS_Volume and component.resource.AttachmentSet.InstanceId.indexOf( this )
-						 component.resource.AvailabilityZone = newAZ
-					null
-
-				_.each MC.canvas_data.component, updateVolume, component.uid
-			# end of dragging "Instance" to different AvailabilityZone
+			for key, value of resource_map
+				this.changeParentMap[ resource_type[key] ] = this['changeP_'   + value]
+				this.validateDropMap[ resource_type[key] ] = this['validateD_' + value]
 
 			null
 
-		#change group from one parent to another parent
-		changeGroupParent : ( src_group, tgt_parent ) ->
-			#to-do
+		# An object is about to be dropped. Test if the object can be dropped
+		onBeforeDrop : ( event, src_node, tgt_parent ) ->
+			node = MC.canvas_data.layout.component.group[src_node]
+			if !node
+				node = MC.canvas_data.layout.component.node[src_node]
+			if !node || !node.groupUId || node.groupUId == tgt_parent
+				return
 
+			# Dispatch the event-handling to real handler
+			component = MC.canvas_data.component[ src_node ]
+			handler   = this.validateDropMap[ component.type ]
+			if handler
+				error = handler.call( this, component, tgt_parent )
+				if error
+					event.preventDefault()
+					notification "error", error
+			else
+				console.log "No handler for validate dragging node:", component
+			null
+
+		validateD_Subnet : ( component, tgt_parent ) ->
+			null
+
+		validateD_Instance : ( component, tgt_parent ) ->
+			for key, value of MC.canvas_data.component
+				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+					attachment = value.resource.Attachment
+					if "" + attachment.DeviceIndex != "0" && attachment.InstanceId.indexOf( component.uid ) != -1
+						return "Network Interface must be attached to instance within the same availability zone."
+			null
+
+		validateD_Eni : ( component, tgt_parent ) ->
+			if component.resource.Attachment.InstanceId
+				return "Network Interface must be attached to instance within the same availability zone."
+			null
+
+		#change node from one parent to another parent
+		changeNodeParent : ( event, src_node, tgt_parent ) ->
+			node = MC.canvas_data.layout.component.group[src_node]
+			if !node
+				node = MC.canvas_data.layout.component.node[src_node]
+			if !node || !node.groupUId || node.groupUId == tgt_parent
+				return
+
+			# Dispatch the event-handling to real handler
+			component = MC.canvas_data.component[ src_node ]
+			handler   = this.changeParentMap[ component.type ]
+			if handler
+				handler.call( this, component, tgt_parent )
+			else
+				console.log "No handler for dragging node:", component
+			null
+
+		changeP_Instance : ( component, tgt_parent ) ->
+
+			resource_type = constant.AWS_RESOURCE_TYPE
+			parent        = MC.canvas_data.layout.component.group[ tgt_parent ]
+
+			# Parent can be AvailabilityZone or Subnet
+			if parent.type == resource_type.AWS_VPC_Subnet
+				parent = MC.canvas_data.component[ tgt_parent ]
+
+				# Nothing is changed
+				if component.resource.SubnetId.indexOf( tgt_parent ) != -1
+					return
+
+				newAZ = parent.resource.AvailabilityZone
+				# Update instance's subnet
+				component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
+			else
+
+				# Nothing is changed
+				if parent.name == component.resource.Placement.AvailabilityZone
+					return
+
+				newAZ = parent.name
+
+			component.resource.Placement.AvailabilityZone = newAZ
+
+			# Update ELB's AZ property
+			console.log("morris", component)
+			components = MC.canvas_data.component
+			for key, value of components
+				if value.type == resource_type.AWS_ELB
+					azs = []
+					for i in value.resource.Instances
+						azs.push( components[ MC.extractID( i.InstanceId ) ].resource.Placement.AvailabilityZone )
+					value.resource.AvailabilityZones = azs
+
+			console.log "morris", components
+
+			# We should also update those Volumes that are attached to this Instance.
+			updateVolume = ( component ) ->
+				if component.type == resource_type.AWS_EBS_Volume and
+				component.resource.AttachmentSet.InstanceId.indexOf( this )
+					 component.resource.AvailabilityZone = newAZ
+				null
+
+			_.each MC.canvas_data.component, updateVolume, component.uid
+			null
+
+		changeP_Subnet : ( component, tgt_parent ) ->
+
+			parent        = MC.canvas_data.layout.component.group[ tgt_parent ]
+			resource_type = constant.AWS_RESOURCE_TYPE
+
+			component.resource.AvailabilityZone = parent.name
+
+			# Update Subnet's children's AZ
+			for key, value of MC.canvas_data.component
+
+				if value.type == resource_type.AWS_EC2_Instance
+					if value.resource.SubnetId.indexOf( component.uid ) != -1
+						value.resource.Placement.AvailabilityZone = "1" # Set the Instance's subnet to something else, so we can change it.
+						this.changeP_Instance value, component.uid
+
+				else if value.type == resource_type.AWS_VPC_NetworkInterface
+					if value.resource.SubnetId.indexOf( component.uid ) != -1
+						value.resource.AvailabilityZone = component.resource.AvailabilityZone
+
+				# Disconnect ELB and Subnet, if the newly moved to AZ has a subnet which is connected to the same ELB.
+				else if value.type == resource_type.AWS_ELB
+				  linkedELBIndex = undefined
+				  linkedELB      = false
+				  for sb, key in value.resource.Subnets
+				  	if sb.indexOf( component.uid ) != -1
+				  		linkedELBIndex = key
+				  	else if MC.canvas_data.component[ MC.extractID( sb ) ].resource.AvailabilityZone == parent.name
+				  	  linkedELB = true
+
+				  # Disconnect
+				  if linkedELBIndex != undefined && linkedELB
+				  	value.resource.Subnets.splice linkedELBIndex, 1
+				  	subnetLayout = MC.canvas_data.layout.component.group[ component.uid ]
+						if subnetLayout
+							for i in subnetLayout.connection
+								if i.target == value.uid
+									# Delete line
+									this.deleteObject {
+										type : "line"
+										id   : i.line
+									}
+									break
+			null
+
+		changeP_Eni : ( component, tgt_parent ) ->
+			component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
+			component.resource.AvailabilityZone = MC.canvas_data.component[tgt_parent].resource.AvailabilityZone
 			null
 
 		#delete component
-		deleteObject : ( option ) ->
+		deleteObject : ( event, option ) ->
 
 			# type: line | node | group
 
@@ -496,7 +612,7 @@ define [ 'constant',
 					return false
 
 		#after connect two port
-		createLine : ( line_id ) ->
+		createLine : ( event, line_id ) ->
 
 			me = this
 
@@ -736,7 +852,7 @@ define [ 'constant',
 
 
 		#after drag component from resource panel to canvas
-		createComponent : ( uid ) ->
+		createComponent : ( event, uid ) ->
 
 			compObj = MC.canvas_data.component[uid]
 

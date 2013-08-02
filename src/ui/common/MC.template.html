@@ -858,23 +858,26 @@ Additional Notes and Questions
 
 <!-- instanceVolume -->
 <div class="bubble-head">Attached volume (<span id="instance_volume_number">{{volumeLength}}</span>)</div>
-<div class="bubble-content">
-	<ul id="instance_volume_list" class="clearfix">
-		{{#each list}}
-		<li>
-			<a href="#" id="{{volume_id}}" class="
-			{{#if snapshotId}}
-				snapshot_item
-			{{else}}
-				volume_item
-			{{/if}}
-			" data-json="{{json}}">
-				<span class="volume_name">{{name}}</span>
-				<span class="volume_size">{{size}}GB</span>
-			</a>
-		</li>
-		{{/each}}
-	</ul>
+<div id="instance_volume_wrap" class="scroll-wrap">
+	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+	<div class="bubble-content scroll-content">
+		<ul id="instance_volume_list" class="clearfix">
+			{{#each list}}
+			<li>
+				<a href="#" id="{{volume_id}}" class="
+				{{#if snapshotId}}
+					snapshot_item
+				{{else}}
+					volume_item
+				{{/if}}
+				" data-json="{{json}}">
+					<span class="volume_name">{{name}}</span>
+					<span class="volume_size">{{size}}GB</span>
+				</a>
+			</li>
+			{{/each}}
+		</ul>
+	</div>
 </div>
 
 <!-- aimSecondaryPanel -->

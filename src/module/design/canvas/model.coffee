@@ -57,7 +57,8 @@ define [ 'constant',
 		validateD_Instance : ( component, tgt_parent ) ->
 			for key, value of MC.canvas_data.component
 				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-					if value.resource.Attachment.InstanceId.indexOf( component.uid ) != -1
+					attachment = value.resource.Attachment
+					if "" + attachment.DeviceIndex != "0" && attachment.InstanceId.indexOf( component.uid ) != -1
 						return "Network Interface must be attached to instance within the same availability zone."
 			null
 

@@ -17,6 +17,8 @@ var MC = {
 	WS_URL: 'http://api.madeiracloud.com:8300',//-> 8300
 	SAVEPNG_URL: 'http://api.madeiracloud.com:8320/savepng',
 
+	_extractIDRegex : /@([^.]+)\./,
+
 	// Global data
 	data: {},
 
@@ -188,6 +190,12 @@ var MC = {
 				item.attr('href', item.attr('href').replace(/\.css(\?d=[0-9]*)?/ig, '.css?d=' + date_query));
 			};
 		});
+	},
+
+	extractID : function ( uid )
+	{
+		var result = MC._extractIDRegex.exec( uid );
+		return result ? result[1] : uid;
 	},
 
 	/**

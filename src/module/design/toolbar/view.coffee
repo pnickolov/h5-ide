@@ -174,6 +174,13 @@ define [ 'MC', 'event',
         exportPNG : ( base64_image ) ->
             console.log 'exportPNG'
             #$( 'body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
+            modal MC.template.exportpng {"title":"Export PNG", "confirm":"Download", "color":"blue" }, true
+            $( '.modal-body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
+            $( '#btn-confirm' ).attr {
+                'href'      : "data:image/png;base64, " + base64_image,
+                'download'  : MC.canvas_data.name + '.png',
+            }
+            $('#btn-confirm').one 'click', { target : this }, () -> modal.close()
 
         #for debug
         clickOpenJSONDiff : ->

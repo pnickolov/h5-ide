@@ -34,7 +34,7 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
             instance.blockDevice = ( i.deviceName for i in instance.blockDeviceMapping.item ).join ", "
 
             # Keypair Component
-            keypairUid = /@([^.]+)\./.exec( myInstanceComponent.resource.KeyName )[1]
+            keypairUid = MC.extractID( myInstanceComponent.resource.KeyName )
             myKeypairComponent = MC.canvas_data.component[ keypairUid ]
 
             instance.keyName = myKeypairComponent.resource.KeyName

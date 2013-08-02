@@ -54,23 +54,21 @@ define [ 'jquery',
                 view.resourceVpcRender( current_platform, type )
                 null
 
-            view.on 'LOADING_COMMUNITY_AMI', ( region_name, state ) ->
+            view.on 'LOADING_COMMUNITY_AMI', ( region_name, pageNum ) ->
                 name = $('#community-ami-input').val()
                 platform = $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
                 architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
                 rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
                 page = parseInt $('#community_ami_page_current').attr("page"), 10
                 totalPage = parseInt $('#community_ami_page_current').attr("totalPage"), 10
-                if state == 0
-                    pageNum = 1
-                    model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
-                if state == -1 and page>1
-                    pageNum = page-1
-                    model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
 
-                if state == 1 and totalPage> page
-                    pageNum = page+1
-                    model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
+                model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
+
+            view.on 'TOGGLE_FAV', ( region_name, action, amiId ) ->
+                if action is 'add'
+                    model.addFav region_name, amiId
+                else if action is 'remove'
+                    model.removeFav region_name, amiId
 
             model.on 'change:availability_zone', () ->
                 ide_event.trigger ide_event.RELOAD_AZ, model.get 'availability_zone'

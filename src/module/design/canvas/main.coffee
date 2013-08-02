@@ -44,56 +44,58 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
 
                 model.reDrawSgLine()
 
+            #listen CANVAS_BEFORE_DROP
+            view.on "CANVAS_BEFORE_DROP", ( event, option ) ->
+                model.onBeforeDrop event, option.src_node, option.tgt_parent
+                null
+
             #listen CANVAS_NODE_CHANGE_PARENT
-            view.on 'CANVAS_NODE_CHANGE_PARENT', ( src_node, tgt_parent ) ->
-                console.log 'canvas:CANVAS_NODE_CHANGE_PARENT, src_node = ' + src_node + ', tgt_parent = ' + tgt_parent
-                model.changeNodeParent src_node, tgt_parent
+            view.on 'CANVAS_NODE_CHANGE_PARENT', ( event, option ) ->
+                model.changeNodeParent event, option.src_node, option.tgt_parent
                 null
 
             #listen CANVAS_GROUP_CHANGE_PARENT
-            view.on 'CANVAS_GROUP_CHANGE_PARENT', ( src_group, tgt_parent ) ->
-                console.log 'canvas:CANVAS_GROUP_CHANGE_PARENT, src_group = ' + src_group + ', tgt_parent = ' + tgt_parent
-                model.changeGroupParent src_group, tgt_parent
+            view.on 'CANVAS_GROUP_CHANGE_PARENT', ( event, option ) ->
+                model.changeNodeParent event, option.src_group, option.tgt_parent
                 null
 
             #listen CANVAS_OBJECT_DELETE
-            view.on 'CANVAS_OBJECT_DELETE', ( option ) ->
-                console.log 'canvas:CANVAS_OBJECT_DELETE, option = ' + option
-                # remove line
-                model.deleteObject option
+            view.on 'CANVAS_OBJECT_DELETE', ( event, option ) ->
+                model.deleteObject event, option
                 ide_event.trigger ide_event.CANVAS_DELETE_OBJECT
                 null
 
             #listen CANVAS_LINE_CREATE
-            view.on 'CANVAS_LINE_CREATE', ( line_id ) ->
-                console.log 'canvas:CANVAS_LINE_CREATE, line_id = ' + line_id
-                model.createLine line_id
+            view.on 'CANVAS_LINE_CREATE', ( event, option ) ->
+                model.createLine event, option
                 ide_event.trigger ide_event.CANVAS_CREATE_LINE
                 null
 
             #listen CANVAS_COMPONENT_CREATE
-            view.on 'CANVAS_COMPONENT_CREATE', ( uid ) ->
-                console.log 'canvas:CANVAS_COMPONENT_CREATE, uid = ' + uid
-                model.createComponent uid
+            view.on 'CANVAS_COMPONENT_CREATE', ( event, option ) ->
+                model.createComponent event, option
                 null
 
             #listen CANVAS_EIP_STATE_CHANGE
-            view.on 'CANVAS_EIP_STATE_CHANGE', (uid, eip_state) ->
+            view.on 'CANVAS_EIP_STATE_CHANGE', ( event, option ) ->
+                model.setEip option.id, option.eip_state
+                console.log 'EIP STATE CHANGED: instance: ' + option.id + ', eip_state:' + option.eip_state
+                null
 
-                model.setEip uid, eip_state
-                console.log 'EIP STATE CHANGED: instance: ' + uid + ', eip_state:' + eip_state
+
 
             model.on 'SHOW_SG_LIST', ( line_id ) ->
-
                 sgrule_main.loadModule line_id, 'delete'
+                null
 
             model.on 'ENI_REACH_MAX', ()->
                 console.log 'ENI reach limit'
                 view.showEniReachMax()
+                null
 
             model.on 'CREATE_SG_CONNECTION', ( line_id ) ->
-
                 sgrule_main.loadModule line_id
+                null
 
             #after delete object complete
             model.on 'DELETE_OBJECT_COMPLETE', () ->
@@ -103,6 +105,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
 
                 #re calc cost after add component
                 ide_event.trigger ide_event.UPDATE_COST_ESTIMATE
+                null
 
 
             #after create component complete
@@ -110,6 +113,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
 
                 #re calc cost after add component
                 ide_event.trigger ide_event.UPDATE_COST_ESTIMATE
+                null
 
 
 

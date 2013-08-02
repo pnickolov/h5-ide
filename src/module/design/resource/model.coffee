@@ -20,6 +20,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
             'favorite_ami'       : null
             'community_ami'      : null
 
+
         #call service
         describeAvailableZonesService : ( region_name, type ) ->
 
@@ -286,9 +287,8 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                 aws_model.Public { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, filters
                 aws_model.once 'AWS__PUBLIC_RETURN', ( result ) ->
                     console.log 'AWS__PUBLIC_RETURN'
-                    console.log result
                     if result.resolved_data
-                        me.set 'community_ami', result.resolved_data.ami
+                        me.set 'community_ami', _.extend result.resolved_data.ami, {timestamp: ( new Date() ).getTime()}
                     else
                         me.set 'community_ami', null
 
@@ -360,20 +360,23 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                 favorite_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
                 favorite_model.once 'FAVORITE_INFO_RETURN', ( result ) ->
                     console.log 'FAVORITE_INFO_RETURN'
+                    _.map result.resolved_data, ( value, key ) ->
 
-                    _.map result.resolved_data, ( value ) ->
+                        if value.resource_info
+                            value.resource_info = JSON.parse value.resource_info
 
-                        value.resource_info = $.parseJSON value.resource_info
+                            _.map value.resource_info, ( val, key ) ->
+                                if val == ''
+                                    value.resource_info[key] = 'None'
 
-                        _.map value.resource_info, ( val, key ) ->
-                            if val == ''
-                                value.resource_info[key] = 'None'
-                            else
-                            null
+                                null
 
-                        #cache favorite ami item to MC.data.dict_ami
-                        value.resource_info.instanceType = me._getInstanceType value.resource_info
-                        MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
+                            #cache favorite ami item to MC.data.dict_ami
+
+
+                            value.resource_info.instanceType = me._getInstanceType value.resource_info
+                            MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
+
                         null
 
                     me.set 'favorite_ami', result.resolved_data
@@ -384,6 +387,28 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
                     null
             null
+
+        addFav: ( region_name, amiId ) ->
+            # temp hack
+            amiV0 = JSON.stringify @get( 'community_ami' ).result[ amiId ]
+            amiId = { amiV0: amiV0, id: amiId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
+
+            favorite_model.once 'FAVORITE_ADD_RETURN', ( result ) =>
+                if result.return_code is 0
+                    delete MC.data.config[region_name].favorite_ami
+                    @favoriteAmiService region_name
+
+            favorite_model.add { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, amiId
+
+        removeFav: ( region_name, amiId ) ->
+            favorite_model.once 'FAVORITE_REMOVE_RETURN', ( result ) =>
+                if result.return_code is 0
+                    delete MC.data.config[region_name].favorite_ami
+                    @favoriteAmiService region_name
+
+            amiId = [ amiId ]
+
+            favorite_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, amiId
 
         getIgwStatus : ->
 

@@ -77,6 +77,21 @@
        </div>
 </div>
 
+<!-- exportpng -->
+<div style="width:420px">
+       <div class="modal-header">
+            <h3>{{title}}</h3>
+            <i class="modal-close">&times;</i>
+       </div>
+       <div class="modal-body">
+
+       </div>
+       <div class="modal-footer">
+            <a id="btn-confirm" class="btn btn-{{color}}" >{{confirm}}</a>
+            <button class="btn modal-close btn-silver">Cancel</button>
+       </div>
+</div>
+
 <!-- modalResourceInstanceDetail -->
 <div class="modal-resource-instance-detail" style="width:420px">
        <div class="modal-header">
@@ -670,12 +685,12 @@ Additional Notes and Questions
 </li>
 
 <!-- networkListItem -->
-<li>
+<li class="input-ip-item">
     <div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
-    <label for="instance-ip-1">10.0.0.</label>
+    <label for="instance-ip-1" class="input-ip-prefix">10.0.0.</label>
     <input type="text" class="input input-ip" value="x" id="instance-ip-1">
     </div>
-    <div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+    <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
     <div class="network-remove-icon"></div>
 </li>
 
@@ -858,23 +873,26 @@ Additional Notes and Questions
 
 <!-- instanceVolume -->
 <div class="bubble-head">Attached volume (<span id="instance_volume_number">{{volumeLength}}</span>)</div>
-<div class="bubble-content">
-	<ul id="instance_volume_list" class="clearfix">
-		{{#each list}}
-		<li>
-			<a href="#" id="{{volume_id}}" class="
-			{{#if snapshotId}}
-				snapshot_item
-			{{else}}
-				volume_item
-			{{/if}}
-			" data-json="{{json}}">
-				<span class="volume_name">{{name}}</span>
-				<span class="volume_size">{{size}}GB</span>
-			</a>
-		</li>
-		{{/each}}
-	</ul>
+<div id="instance_volume_wrap" class="scroll-wrap">
+	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+	<div class="bubble-content scroll-content">
+		<ul id="instance_volume_list" class="clearfix">
+			{{#each list}}
+			<li>
+				<a href="#" id="{{volume_id}}" class="
+				{{#if snapshotId}}
+					snapshot_item
+				{{else}}
+					volume_item
+				{{/if}}
+				" data-json="{{json}}">
+					<span class="volume_name">{{name}}</span>
+					<span class="volume_size">{{size}}GB</span>
+				</a>
+			</li>
+			{{/each}}
+		</ul>
+	</div>
 </div>
 
 <!-- aimSecondaryPanel -->

@@ -2555,11 +2555,29 @@ MC.canvas.event.dragable = {
 			{
 				component_size = MC.canvas.COMPONENT_SIZE[ node_type ];
 
-				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
+				coordinate = MC.canvas.pixelToGrid(
+					shadow_offset.left - canvas_offset.left,
+					shadow_offset.top - canvas_offset.top
+				);
 
-				match_place = MC.canvas.isMatchPlace(target_id, target_type, node_type, coordinate.x, coordinate.y, component_size[0], component_size[1]);
+				match_place = MC.canvas.isMatchPlace(
+					target_id,
+					target_type,
+					node_type,
+					coordinate.x,
+					coordinate.y,
+					component_size[0],
+					component_size[1]
+				);
 
-				parentGroup = MC.canvas.parentGroup(target_id, layout_node_data[target_id].type, coordinate.x, coordinate.y, coordinate.x + component_size[0], coordinate.y + component_size[1]);
+				parentGroup = MC.canvas.parentGroup(
+					target_id,
+					layout_node_data[target_id].type,
+					coordinate.x,
+					coordinate.y,
+					coordinate.x + component_size[0],
+					coordinate.y + component_size[1]
+				);
 
 				if (
 					!BEFORE_DROP_EVENT.isDefaultPrevented() &&

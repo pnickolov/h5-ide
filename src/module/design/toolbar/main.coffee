@@ -46,11 +46,10 @@ define [ 'jquery',
                 null
 
             ide_event.onLongListen ide_event.SWITCH_TAB, () ->
-                console.log 'SWITCH_TAB toolbar id:' + MC.canvas_data.id
-
-                model.setTabFlag(true)
-
-                null
+                setTimeout () ->
+                    console.log 'SWITCH_TAB toolbar id:' + MC.canvas_data.id
+                    model.setTabFlag(true)
+                , 500
 
             # ide_event.onLongListen ide_event.SWITCH_APP_TAB, () ->
             #     console.log 'SWITCH_APP_TAB'

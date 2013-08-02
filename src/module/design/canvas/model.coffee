@@ -33,7 +33,6 @@ define [ 'constant',
 
 		# An object is about to be dropped. Test if the object can be dropped
 		onBeforeDrop : ( event, src_node, tgt_parent ) ->
-			debugger
 			node = MC.canvas_data.layout.component.group[src_node]
 			if !node
 				node = MC.canvas_data.layout.component.node[src_node]
@@ -60,7 +59,6 @@ define [ 'constant',
 
 		#change node from one parent to another parent
 		changeNodeParent : ( event, src_node, tgt_parent ) ->
-			debugger
 			node = MC.canvas_data.layout.component.group[src_node]
 			if !node
 				node = MC.canvas_data.layout.component.node[src_node]
@@ -103,7 +101,7 @@ define [ 'constant',
 			component.resource.Placement.AvailabilityZone = newAZ
 
 			# Update ELB's AZ property
-			console.log("morris", component);
+			console.log("morris", component)
 			components = MC.canvas_data.component
 			for key, value of components
 				if value.type == resource_type.AWS_ELB
@@ -126,8 +124,6 @@ define [ 'constant',
 
 		changeP_Subnet : ( component, tgt_parent ) ->
 
-			debugger
-
 			parent        = MC.canvas_data.layout.component.group[ tgt_parent ]
 			resource_type = constant.AWS_RESOURCE_TYPE
 
@@ -145,8 +141,29 @@ define [ 'constant',
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.AvailabilityZone = component.resource.AvailabilityZone
 
-			# Disconnect ELB and Subnet, if the newly moved to AZ has a subnet which is connected to the same ELB.
+				# Disconnect ELB and Subnet, if the newly moved to AZ has a subnet which is connected to the same ELB.
+				else if value.type == resource_type.AWS_ELB
+				  linkedELBIndex = undefined
+				  linkedELB      = false
+				  for sb, key in value.resource.Subnets
+				  	if sb.indexOf( component.uid ) != -1
+				  		linkedELBIndex = key
+				  	else if MC.canvas_data.component[ MC.extractID( sb ) ].resource.AvailabilityZone == parent.name
+				  	  linkedELB = true
 
+				  # Disconnect
+				  if linkedELBIndex != undefined && linkedELB
+				  	value.resource.Subnets.splice linkedELBIndex, 1
+				  	subnetLayout = MC.canvas_data.layout.component.group[ component.uid ]
+						if subnetLayout
+							for i in subnetLayout.connection
+								if i.target == value.uid
+									# Delete line
+									this.deleteObject {
+										type : "line"
+										id   : i.line
+									}
+									break
 			null
 
 		changeP_Eni : ( component, tgt_parent ) ->

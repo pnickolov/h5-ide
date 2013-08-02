@@ -241,6 +241,10 @@ define [ 'event',
 
             if pagination.data 'jqPagination'
                 pagination.jqPagination 'destroy'
+                # init page num
+                pagination.find( 'input' ).data('current-page', current_page)
+
+
             pagination.jqPagination({
                 current_page: current_page,
                 max_page: max_page,
@@ -282,7 +286,6 @@ define [ 'event',
                 totalNum = this.model.attributes.community_ami.totalNum
                 totalPageNum = this.model.attributes.community_ami.totalPageNum
                 $("#ami-count").empty().html("Total: #{totalNum}")
-
 
                 @communityPagerRender currentPageNum, totalPageNum, totalNum
                 $("#community_ami_table").empty().html(this_tr)

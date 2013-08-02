@@ -58,6 +58,8 @@ define [ 'event',
 
             this.trigger 'ADD_NEW_IP', uid
 
+            this.updateEIPList()
+
         addEIP : ( event ) ->
 
             # todo, need a index of eip
@@ -68,6 +70,8 @@ define [ 'event',
             uid = $("#property-eni-attach-info").attr "component"
 
             this.trigger 'ATTACH_EIP', uid, index, attach
+
+            this.updateEIPList()
 
         removeIPfromList: (event) ->
 
@@ -84,6 +88,25 @@ define [ 'event',
             uid = $("#property-eni-attach-info").attr "component"
 
             this.trigger 'REMOVE_IP', uid, index
+
+            this.updateEIPList()
+
+        updateEIPList: (event) ->
+
+            currentAvailableIPAry = []
+            ipInuptListItem = $('#property-eni-list li')
+
+            _.each ipInuptListItem, (ipInputItem) ->
+                inputValuePrefix = $(ipInputItem).find('.input-ip-prefix').text()
+                inputValue = $(ipInputItem).find('.input-ip').val()
+                inputHaveEIP = $(ipInputItem).find('.input-ip-eip-btn').hasClass('associated')
+                currentAvailableIPAry.push({
+                    ip: inputValuePrefix + inputValue,
+                    eip: inputHaveEIP
+                })
+                null
+
+            this.trigger 'SET_IP_LIST', currentAvailableIPAry
 
     }
 

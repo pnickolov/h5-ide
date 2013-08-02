@@ -14,7 +14,7 @@ var MC = {
 	// Global Variable
 	API_URL: 'https://api.madeiracloud.com/',
 	IMG_URL: '../assets/images/',
-	WS_URL: 'http://api.madeiracloud.com:3000',//-> 8300
+	WS_URL: 'http://api.madeiracloud.com:8300',//-> 8300
 	SAVEPNG_URL: 'http://api.madeiracloud.com:8320/savepng',
 
 	// Global data

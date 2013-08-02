@@ -34,13 +34,13 @@ define [ 'MC', 'event',
             'click #toolbar-jsondiff'           : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'           : 'clickOpenJSONView'
 
-        render   : ( id, attrs ) ->
+        render   : ( type ) ->
             console.log 'toolbar render'
             #
-            if id.indexOf('app-') == 0
-                $( '#main-toolbar' ).html this.app_tmpl attrs
+            if type is 'app'
+                $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
             else
-                $( '#main-toolbar' ).html this.stack_tmpl attrs
+                $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
             #

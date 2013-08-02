@@ -34,31 +34,39 @@ define [ 'jquery',
                 setTimeout () ->
                     model.setFlag tab_id, type
                 , 500
+                #open stack:id.resolved_data[0].id
+                #new stack:tab_id
 
             #listen toolbar state change
-            model.on 'UPDATE_TOOLBAR', (id, attrs) ->
+            model.on 'UPDATE_TOOLBAR', (type) ->
                 console.log 'update toolbar status'
-                view.render id, attrs
+                view.render type
+
+            ide_event.onListen ide_event.SWITCH_DASHBOARD, () ->
+                console.log 'SWITCH_DASHBOARD'
+                model.attributes.is_tab = false
+
+                null
 
             #save
-            view.on 'TOOLBAR_SAVE_CLICK', () ->
+            view.on 'TOOLBAR_SAVE_CLICK', (region, id, data) ->
                 console.log 'design_toolbar_click:saveStack'
-                model.saveStack()
+                model.saveStack(region, id, data)
 
             #duplicate
-            view.on 'TOOLBAR_DUPLICATE_CLICK', (new_name) ->
+            view.on 'TOOLBAR_DUPLICATE_CLICK', (region, id, new_name, name) ->
                 console.log 'design_toolbar_click:duplicateStack'
-                model.duplicateStack(new_name)
+                model.duplicateStack(region, id, new_name, name)
 
             #delete
-            view.on 'TOOLBAR_DELETE_CLICK', () ->
+            view.on 'TOOLBAR_DELETE_CLICK', (region, id, name) ->
                 console.log 'design_toolbar_click:deleteStack'
-                model.deleteStack()
+                model.deleteStack(region, id, name)
 
             #run
-            view.on 'TOOLBAR_RUN_CLICK', (app_name) ->
+            view.on 'TOOLBAR_RUN_CLICK', (region, id, app_name) ->
                 console.log 'design_toolbar_click:runStack'
-                model.runStack(app_name)
+                model.runStack(region, id, app_name)
 
             #zoomin
             view.on 'TOOLBAR_ZOOMIN_CLICK', () ->
@@ -79,17 +87,17 @@ define [ 'jquery',
                 console.log 'SAVE_PNG_COMPLETE'
                 view.exportPNG base64_image
 
-            view.once 'TOOLBAR_STOP_CLICK', () ->
+            view.once 'TOOLBAR_STOP_CLICK', (region, id, name) ->
                 console.log 'design_toolbar_click:stopApp'
-                model.stopApp()
+                model.stopApp(region, id, name)
 
-            view.once 'TOOLBAR_START_CLICK', () ->
+            view.once 'TOOLBAR_START_CLICK', (region, id, name) ->
                 console.log 'design_toolbar_click:startApp'
-                model.startApp()
+                model.startApp(region, id, name)
 
-            view.once 'TOOLBAR_TERMINATE_CLICK', () ->
+            view.once 'TOOLBAR_TERMINATE_CLICK', (region, id, name) ->
                 console.log 'design_toolbar_click:terminateApp'
-                model.terminateApp()
+                model.terminateApp(region, id, name)
 
             ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
                 console.log 'design_toolbar_click:saveStack'

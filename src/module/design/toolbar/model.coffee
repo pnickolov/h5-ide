@@ -8,8 +8,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
     #item state map
     # {app_id:{'name':name, 'state':state, 'is_running':true|false, 'is_pending':true|false, 'is_use_ami':true|false},
-    #  stack_id:{'name':name, 'is_duplicate':true|false, 'is_delete':true|false}}
+    #  stack_id:{'name':name, 'is_run':true|false, 'is_duplicate':true|false, 'is_delete':true|false}}
     item_state_map = {}
+    is_tab = true
 
     #websocket
     ws = MC.data.websocket
@@ -21,23 +22,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             'item_name'     : null
             'item_type'     : null
 
-            'is_duplicate'  : null
-            'is_delete'     : null
-            'is_zoomin'     : true
-            'is_zoomout'    : true
-
-            'is_running'    : null
-            'is_pending'    : null
-            'is_use_ami'    : null
+            'item_flags'    : null
 
         setFlag : (id, flag, value) ->
             me = this
 
             if flag is 'NEW_STACK'
                 item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':false, 'is_duplicate':false, 'is_delete':false}
+                is_tab = true
 
             else if flag is 'OPEN_STACK'
+                id = id.resolved_data[0].id
                 item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
+                is_tab = true
 
             else if flag is 'SAVE_STACK'
                 item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
@@ -61,7 +58,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     is_running = false
                     is_pending = true
 
+                id = id.resolved_data[0].id
                 item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_use_ami':me.isInstanceStore() }
+
+                is_tab = true
 
             else if flag is 'START_APP'
                 if value is 'done'
@@ -98,8 +98,27 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 else
                     item_state_map[id].is_pending = true
 
-            if id == MC.canvas_data.id
-                me.trigger 'UPDATE_TOOLBAR', id, app_state_map[id]
+            if id == MC.canvas_data.id and is_tab
+                me.set 'item_flags', item_state_map[id]
+
+                if id.indexOf('app-') == 0
+                    me.trigger 'UPDATE_TOOLBAR', 'app'
+                else
+                    me.trigger 'UPDATE_TOOLBAR', 'stack'
+
+        setTabFlag : (flag) ->
+            is_tab = flag
+
+            if flag
+                id = MC.canvas_data.id
+                me.set 'item_flags', item_state_map[id]
+
+                if id.indexOf('app-') == 0
+                    me.trigger 'UPDATE_TOOLBAR', 'app'
+                else
+                    me.trigger 'UPDATE_TOOLBAR', 'stack'
+
+            null
 
         #save stack
         saveStack : (region, id, data) ->

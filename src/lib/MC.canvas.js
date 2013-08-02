@@ -1947,6 +1947,8 @@ MC.canvas.volume = {
 		if (!$('#volume-bubble-box')[0])
 		{
 			var target = $(node),
+				canvas_container = $('#canvas_container'),
+				canvas_offset = canvas_container.offset(),
 				component_data = MC.canvas.data.get('component'),
 				node_volume_data = component_data[ node.id ].resource.BlockDeviceMapping,
 				data = {'list': []},
@@ -1958,7 +1960,7 @@ MC.canvas.volume = {
 				target_width,
 				target_height;
 
-			$(document.body).append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
+			canvas_container.append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
 			bubble_box = $('#volume-bubble-box');
 
 			$.each(node_volume_data, function (index, item)
@@ -1994,18 +1996,18 @@ MC.canvas.volume = {
 			width = bubble_box.width();
 			height = bubble_box.height();
 
-			if (target_offset.left + target_width + width - document.body.scrollLeft > window.innerWidth)
-			{
-				coordinate.left = target_offset.left - width - 15;
-				bubble_box.addClass('bubble-right');
-			}
-			else
-			{
-				coordinate.left = target_offset.left + target_width + 15;
-				bubble_box.addClass('bubble-left');
-			}
+			//if (target_offset.left + target_width + width - document.body.scrollLeft > window.innerWidth)
+			//{
+				// coordinate.left = target_offset.left - width - 15 - canvas_offset.left;
+				// bubble_box.addClass('bubble-right');
+			// }
+			// else
+			// {
+			coordinate.left = target_offset.left + target_width + 15 - canvas_offset.left;
+			bubble_box.addClass('bubble-left');
+			// }
 
-			coordinate.top = target_offset.top - ((height - target_height) / 2);
+			coordinate.top = target_offset.top - canvas_offset.top - ((height - target_height) / 2);
 
 			bubble_box
 				.data('target-id', node.id)

@@ -79,7 +79,7 @@ MC.canvas = {
 			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
 		}
 
-		if (MC.canvas_property.SCALE_RATIO === 1)
+		if (MC.canvas_property.SCALE_RATIO === 1 && $('#canvas_body').hasClass('canvas_zoomed'))
 		{
 			$('#canvas_body')
 				.removeClass('canvas_zoomed')

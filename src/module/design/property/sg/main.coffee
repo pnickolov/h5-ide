@@ -36,7 +36,6 @@ define [ 'jquery',
 				#
 
 				# if current_view view.delegateEvents view.events
-				debugger
 				#
 				current_view  = view
 				current_model = model

@@ -74,6 +74,10 @@ define [ 'jquery',
 
                 model.removeIP uid, index
 
+            view.on 'SET_IP_LIST', (inputIPAry) ->
+
+                model.setIPList inputIPAry
+
 
     loadAppModule = ( uid ) ->
         require [ './module/design/property/eni/app_view',

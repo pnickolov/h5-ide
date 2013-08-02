@@ -157,15 +157,16 @@
 					</div>
 					<ul class="network-list" id="property-network-list">
 						{{#each eni_display.eni_ips}}
-						<li>
+						<li class="input-ip-item">
 							<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
-								<label for="instance-ip-1">10.0.0.</label>
+								<label for="instance-ip-1" class="input-ip-prefix">10.0.0.</label>
 								<input type="text" class="input input-ip" value="x" id="instance-ip-1">
 							</div>
+							{{#unless Primary}}<div class="network-remove-icon"></div>{{/unless}}
 							{{#if has_eip}}
-							<div class="toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+							<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
 							{{else}}
-							<div class="toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+							<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
 							{{/if}}
 						</li>
 						

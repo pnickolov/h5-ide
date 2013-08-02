@@ -361,16 +361,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             if !result.is_error
                 if flag == 'RUN_STACK'
                     console.log 'run stack request successfully'
-                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS'
+                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', name
                 else if flag == 'START_APP'
                     console.log 'start app request successfully'
-                    me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS'
+                    me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS', name
                 else if flag == 'STOP_APP'
                     console.log 'stop app request successfully'
-                    me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS'
+                    me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS', name
                 else if flag == 'TERMINATE_APP'
                     console.log 'terminate app request successfully'
-                    me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS'
+                    me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS', name
 
                 if ws
                     req_id = result.resolved_data.id
@@ -386,15 +386,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                             if req.state == "Done"
                                 if flag == 'RUN_STACK'
-                                    me.trigger 'TOOLBAR_STACK_RUN_SUCCESS'
+                                    me.trigger 'TOOLBAR_STACK_RUN_SUCCESS', name
                                 else if flag == 'START_APP'
-                                    me.trigger 'TOOLBAR_APP_START_SUCCESS'
+                                    me.trigger 'TOOLBAR_APP_START_SUCCESS', name
                                     MC.canvas_data.state = 'Running'
                                 else if flag == 'STOP_APP'
-                                    me.trigger 'TOOLBAR_APP_STOP_SUCCESS'
+                                    me.trigger 'TOOLBAR_APP_STOP_SUCCESS', name
                                     MC.canvas_data.state = 'Stopped'
                                 else if flag == 'TERMINATE_APP'
-                                    me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS'
+                                    me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS', name
 
                                     # remove the app name from app_list
                                     if app_name in MC.data.app_list[region]
@@ -406,17 +406,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                             else if req.state == "Failed"
                                 if flag == 'RUN_STACK'
-                                    me.trigger 'TOOLBAR_STACK_RUN_FAILED'
+                                    me.trigger 'TOOLBAR_STACK_RUN_FAILED', name
 
                                     if app_name in MC.data.app_list[MC.canvas_data.region]
                                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(app_name), 1
 
                                 else if flag == 'START_APP'
-                                    me.trigger 'TOOLBAR_APP_START_FAILED'
+                                    me.trigger 'TOOLBAR_APP_START_FAILED', name
                                 else if flag == 'STOP_APP'
-                                    me.trigger 'TOOLBAR_APP_STOP_FAILED'
+                                    me.trigger 'TOOLBAR_APP_STOP_FAILED', name
                                 else if flag == 'TERMINATE_APP'
-                                    me.trigger 'TOOLBAR_APP_TERMINATE_FAILED'
+                                    me.trigger 'TOOLBAR_APP_TERMINATE_FAILED', name
 
                             if flag is 'TERMINATE_APP' and is_success
                                 ide_event.trigger ide_event.APP_TERMINATE, MC.canvas_data.name, MC.canvas_data.id
@@ -430,19 +430,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             else
                 if flag == 'RUN_STACK'
-                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_FAILED'
+                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_FAILED', name
 
                     if app_name in MC.data.app_list[MC.canvas_data.region]
                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(app_name), 1
 
                 else if flag == 'START_APP'
-                    me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED'
+                    me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED', name
                     MC.canvas_data.state = 'Stopped'
                 else if flag == 'STOP_APP'
-                    me.trigger 'TOOLBAR_APP_STOP_REQUEST_FAILED'
+                    me.trigger 'TOOLBAR_APP_STOP_REQUEST_FAILED', name
                     MC.canvas_data.state = 'Running'
                 else if flag == 'TERMINATE_APP'
-                    me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED'
+                    me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', name
                     MC.canvas_data.state = 'Stopped'
 
                 if flag isnt 'RUN_STACK'

@@ -39,9 +39,16 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
             #     console.log 'header update unread_num'
             #     view.render()
 
-            ide_event.onListen ide_event.SWITCH_DASHBOARD, () ->
+            ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
                 console.log 'SWITCH_DASHBOARD'
                 model.setFlag(true)
+
+            ide_event.onLongListen ide_event.SWITCH_TAB, () ->
+                #temp
+                setTimeout () ->
+                    console.log 'SWITCH_TAB header id:' + MC.canvas_data.id
+                    model.setFlag(false)
+                , 500
 
             ide_event.onListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, item_name ) ->
                 console.log 'RELOAD_RESOURCE'

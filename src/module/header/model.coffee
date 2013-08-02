@@ -145,6 +145,23 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
             me.set 'in_dashboard', flag
 
+            unread_num = me.get 'unread_num'
+            info_list = me.get 'info_list'
+
+            if not flag and unread_num > 0 # in tab and update unread number when on the updating tab
+                for info in info_list
+                    if info.rid == MC.canvas_data.id and not info.is_readed
+                        info_list[info_list.indexOf(info)].is_readed = true
+                        unread_num = unread_num - 1
+
+                        me.set 'unread_num', unread_num
+                        me.set 'info_list', info_list
+
+                        me.trigger 'HEADER_UPDATE'
+
+                        break
+            null
+
         resetInfoList : () ->
             me = this
 

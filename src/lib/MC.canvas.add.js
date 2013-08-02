@@ -505,7 +505,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/Instance-Canvas.png', 15, 11, 70, 70),
+				Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15, 11, 70, 70),
 
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
@@ -874,7 +874,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/RT-'+main_icon+'canvas.png', 10, 13, 60, 57).attr({
+				Canvon.image('../assets/images/ide/icon/rt-'+main_icon+'canvas.png', 10, 13, 60, 57).attr({
 					'id': group.id + '_rt_status'
 				}),
 
@@ -1227,7 +1227,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			var data_eip_state = 'off',
 				attached = 'unattached',
 				eip_icon = MC.canvas.IMAGE.EIP_OFF;
-				
+
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ENI_JSON.data);
@@ -1251,9 +1251,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				if(component_data.resource.Attachment.InstanceId){
 					attached = 'attached'
 				}
-				
 
-						
+
+
 				$.each(MC.canvas_data.component, function ( k, v ){
 					if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + component_data.uid + '.resource.NetworkInterfaceId'){
 						eip_icon = MC.canvas.IMAGE.EIP_ON;
@@ -1261,7 +1261,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					}
 				});
 
-					
+
 
 				component_layout = layout.node[group.id];
 

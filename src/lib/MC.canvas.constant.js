@@ -49,8 +49,8 @@ var constant_data = {
 		ENI_CANVAS_ATTACHED: MC.IMG_URL + 'ide/icon/eni-canvas-attached.png',
 		ENI_CANVAS_UNATTACHED: MC.IMG_URL + 'ide/icon/eni-canvas-unattached.png',
 
-		RT_CANVAS_MAIN: MC.IMG_URL + 'ide/icon/RT-main-canvas.png',
-		RT_CANVAS_NOT_MAIN: MC.IMG_URL + 'ide/icon/RT-canvas.png'
+		RT_CANVAS_MAIN: MC.IMG_URL + 'ide/icon/rt-main-canvas.png',
+		RT_CANVAS_NOT_MAIN: MC.IMG_URL + 'ide/icon/rt-canvas.png'
 	},
 
 	//constant for _route()

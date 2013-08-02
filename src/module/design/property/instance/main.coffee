@@ -93,6 +93,11 @@ define [ 'jquery',
             view.on 'REMOVE_IP', ( index ) ->
 
                 model.removeIP index
+
+            view.on 'SET_IP_LIST', (inputIPAry) ->
+
+                model.setIPList inputIPAry
+
             model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
 
                 notification 'error', 'Instance Type: '+ instance_type + ' only support at most ' + eni_number + ' Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type'

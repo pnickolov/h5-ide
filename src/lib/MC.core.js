@@ -2,7 +2,7 @@
 #**********************************************************
 #* Filename: MC.core.js
 #* Creator: Angel
-#* Description: The core of the whole system 
+#* Description: The core of the whole system
 #* Date: 201307303
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
@@ -14,6 +14,8 @@ var MC = {
 	// Global Variable
 	API_URL: 'https://api.madeiracloud.com/',
 	IMG_URL: '../assets/images/',
+	WS_URL: 'http://api.madeiracloud.com:8300',//-> 8300
+	SAVEPNG_URL: 'http://api.madeiracloud.com:8320/savepng',
 
 	// Global data
 	data: {},

@@ -229,7 +229,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             me = this
             #
             $.ajax {
+<<<<<<< HEAD
+                url  : 'http://localhost:8320/savepng',
+=======
                 url  : MC.SAVEPNG_URL,
+>>>>>>> origin/develop
                 type : 'post',
                 data : {
                     'usercode'   : $.cookie( 'usercode'   ),

@@ -2751,7 +2751,7 @@ MC.canvas.event.dragable = {
 					)
 					&&
 					(
-						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup.id}) &&
+						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : null}) &&
 						!BEFORE_DROP_EVENT.isDefaultPrevented()
 					)
 				)

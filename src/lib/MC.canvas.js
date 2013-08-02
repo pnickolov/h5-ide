@@ -57,7 +57,7 @@ MC.canvas = {
 			case 'image':
 				target.attr('href', value);
 				break;
-				
+
 			case 'eip':
 				target.attr('data-eip-state', value);
 				break
@@ -3778,7 +3778,7 @@ MC.canvas.event.groupResize = {
 			if (layout_node_data[ item.id ])
 			{
 				item_data = layout_node_data[ item.id ];
-				item_size = component_size[ node_data.type ];
+				item_size = component_size[ item_data.type ];
 				item_coordinate = item_data.coordinate;
 
 				node_minX.push(item_coordinate[0]);
@@ -3791,7 +3791,7 @@ MC.canvas.event.groupResize = {
 			{
 				item_data = layout_group_data[ item.id ];
 				item_size = item_data.size;
-				item_coordinate = node_data.coordinate;
+				item_coordinate = item_data.coordinate;
 
 				node_minX.push(item_coordinate[0]);
 				node_minY.push(item_coordinate[1]);
@@ -3934,7 +3934,7 @@ MC.canvas.event.groupResize = {
 		if (
 			group_width > group_padding &&
 			group_height > group_padding &&
-			
+
 			event.data.group_child.length === MC.canvas.areaChild(
 					group_id,
 					group_left,
@@ -4066,7 +4066,7 @@ MC.canvas.event.groupResize = {
 					$('#' + value.target), line_connection['target'][ value.target ],
 					{'line_uid': value['line']}
 				);
-			});			
+			});
 		}
 
 		$(document.body)

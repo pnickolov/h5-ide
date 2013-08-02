@@ -4299,6 +4299,8 @@ MC.canvas.event.keyEvent = function (event)
 			node_data = layout_node_data[ target_id ],
 			node_type = target.data('class'),
 			target_type = target.data('type'),
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			component_size = MC.canvas.COMPONENT_SIZE[ node_type ],
 			coordinate = {'x': node_data.coordinate[0], 'y': node_data.coordinate[1]},
 			match_place;
 
@@ -4326,7 +4328,7 @@ MC.canvas.event.keyEvent = function (event)
 			vpc_coordinate = vpc_data.coordinate;
 
 			match_place.is_matched =
-				coordinate.y <= vpc_coordinate[1] + vpc_data.size[1] - MC.canvas.COMPONENT_SIZE[ node_type ][1] &&
+				coordinate.y <= vpc_coordinate[1] + vpc_data.size[1] - component_size[1] &&
 				coordinate.y >= vpc_coordinate[1];
 		}
 		else
@@ -4347,8 +4349,8 @@ MC.canvas.event.keyEvent = function (event)
 				node_type,
 				coordinate.x,
 				coordinate.y,
-				MC.canvas.COMPONENT_SIZE[ node_type ][0],
-				MC.canvas.COMPONENT_SIZE[ node_type ][1]
+				component_size[0],
+				component_size[1]
 			);
 		}
 
@@ -4358,7 +4360,7 @@ MC.canvas.event.keyEvent = function (event)
 			match_place.is_matched
 		)
 		{
-			MC.canvas.position(target[0], coordinate.x  * MC.canvas_property.SCALE_RATIO, coordinate.y * MC.canvas_property.SCALE_RATIO);
+			MC.canvas.position(target[0], coordinate.x  * scale_ratio, coordinate.y * scale_ratio);
 
 			MC.canvas.reConnect(target_id);
 		}
@@ -4374,6 +4376,26 @@ MC.canvas.event.keyEvent = function (event)
 	)
 	{
 		$("#svg_canvas").trigger("CANVAS_SAVE");
+
+		return false;
+	}
+
+	// ZoomIn - [Ctrl + +]
+	if (
+		event.ctrlKey && event.which === 187
+	)
+	{
+		MC.canvas.zoomIn();
+
+		return false;
+	}
+
+	// ZoomIn - [Ctrl + -]
+	if (
+		event.ctrlKey && event.which === 189
+	)
+	{
+		MC.canvas.zoomOut();
 
 		return false;
 	}

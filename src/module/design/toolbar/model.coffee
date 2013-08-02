@@ -143,7 +143,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         #update initial data
                         MC.canvas_property.original_json = JSON.stringify( MC.canvas_data )
 
-                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS'
+                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', MC.canvas_data.name
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
@@ -171,7 +171,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         #update initial data
                         MC.canvas_property.original_json = JSON.stringify( MC.canvas_data )
 
-                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS'
+                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', MC.canvas_data.name
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK'
 
@@ -305,6 +305,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     if res.status is 'success'
                         if res.thumbnail is 'true'
                             console.log 's3 url = ' + res.result
+                            ide_event.trigger ide_event.UPDATE_STACK_LIST
                         else
                             me.trigger 'SAVE_PNG_COMPLETE', res.result
                     else

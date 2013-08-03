@@ -22,6 +22,8 @@
 #screenshot_canvas_body {
 	padding: 10px;
 	background: #FFF url('../images/ide/grid.png');
+	min-width: 800px;
+	min-height: 600px;
 }
 
 #screenshot_canvas_header {
@@ -30,6 +32,7 @@
 	height: 50px;
 	padding: 0 10px;
 	position: relative;
+	min-width: 800px;
 }
 
 #screenshot_canvas_header img {

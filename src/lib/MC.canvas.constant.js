@@ -153,7 +153,7 @@ var constant_data = {
 		},
 		'custom-vpc':
 		{
-			'AWS.ELB': ['AWS.VPC.VPC', 'Canvas'],
+			'AWS.ELB': ['AWS.VPC.VPC'],
 			'AWS.EC2.Instance': ['AWS.VPC.Subnet'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
@@ -167,7 +167,7 @@ var constant_data = {
 		},
 		'ec2-vpc':
 		{
-			'AWS.ELB': ['AWS.VPC.VPC', 'Canvas'],
+			'AWS.ELB': ['AWS.VPC.VPC'],
 			'AWS.EC2.Instance': ['AWS.VPC.Subnet'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],

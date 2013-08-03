@@ -769,6 +769,7 @@ MC.canvas = {
 			to_type = to_data.type,
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			layout_connection_data,
 			from_port,
 			to_port,
@@ -959,10 +960,10 @@ MC.canvas = {
 					to_port_offset = to_port[0].getBoundingClientRect();
 				}
 
-				startX = (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
-				startY = (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
-				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * MC.canvas_property.SCALE_RATIO;
-				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * MC.canvas_property.SCALE_RATIO;
+				startX = (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio;
+				startY = (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio;
+				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio;
+				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio;
 
 				//add by xjimmy
 				var controlPoints = [],
@@ -2608,14 +2609,12 @@ MC.canvas.event.dragable = {
 
 					MC.canvas.select(target_id);
 
-					//after change node to another group, trigger event
-					if (parentGroup)
-					{
-						svg_canvas.trigger("CANVAS_NODE_CHANGE_PARENT", {
-							src_node: target_id,
-							tgt_parent: parentGroup.id
-						});
-					}
+					MC.canvas.data.set('layout.component.node.' + target_id + '.groupUId', parentGroup ? parentGroup.id : null);					
+
+					svg_canvas.trigger("CANVAS_NODE_CHANGE_PARENT", {
+						'src_node': target_id,
+						'tgt_parent': parentGroup ? parentGroup.id : null
+					});
 				}
 			}
 

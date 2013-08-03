@@ -273,6 +273,11 @@ define [ 'jquery',
 
                         null
 
+                    ide_event.onLongListen ide_event.UPDATE_STACK_THUMBNAIL, () ->
+                        console.log 'UPDATE_STACK_THUMBNAIL'
+                        region_view.renderRegionStatStack()
+                        region_view.checkCreateStack MC.data.supported_platforms
+
     unLoadModule = () ->
         #view.remove()
 

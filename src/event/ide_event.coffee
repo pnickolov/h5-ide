@@ -101,6 +101,9 @@ define [ 'underscore', 'backbone' ], () ->
         #update cost list after add/remove resource
         UPDATE_COST_ESTIMATE: 'UPDATE_COST_ESTIMATE'
 
+        #toolbar save stack and generate png successfully
+        UPDATE_STACK_THUMBNAIL : 'UPDATE_STACK_THUMBNAIL'
+
         constructor : ->
             _.extend this, Backbone.Events
 

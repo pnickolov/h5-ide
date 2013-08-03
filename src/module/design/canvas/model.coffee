@@ -55,6 +55,19 @@ define [ 'constant',
 			null
 
 		validateD_Instance : ( component, tgt_parent ) ->
+			resource_type = constant.AWS_RESOURCE_TYPE
+			parent = MC.canvas_data.layout.component.group[ tgt_parent ]
+
+			if component.type == resource_type.AWS_EC2_AvailabilityZone
+				check = true
+			else if MC.canvas_data.component[ tgt_parent ].resource.AvailabilityZone != component.resource.Placement.AvailabilityZone
+				check = true
+
+			if !check
+				return
+
+			# Only detect when the component's az is changed.
+
 			for key, value of MC.canvas_data.component
 				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 					attachment = value.resource.Attachment
@@ -63,6 +76,10 @@ define [ 'constant',
 			null
 
 		validateD_Eni : ( component, tgt_parent ) ->
+			# Eni can only be in subnet
+			if MC.canvas_data.component[ tgt_parent ].resource.AvailabilityZone == component.resource.AvailabilityZone
+				return
+
 			if component.resource.Attachment.InstanceId
 				return "Network Interface must be attached to instance within the same availability zone."
 			null

@@ -62,24 +62,24 @@ define [ 'jquery',
             #     null
 
             #save
-            view.on 'TOOLBAR_SAVE_CLICK', (region, id, data) ->
+            view.on 'TOOLBAR_SAVE_CLICK', (data) ->
                 console.log 'design_toolbar_click:saveStack'
-                model.saveStack(region, id, data)
+                model.saveStack(data)
 
             #duplicate
-            view.on 'TOOLBAR_DUPLICATE_CLICK', (region, id, new_name, name) ->
+            view.on 'TOOLBAR_DUPLICATE_CLICK', (new_name, data) ->
                 console.log 'design_toolbar_click:duplicateStack'
-                model.duplicateStack(region, id, new_name, name)
+                model.duplicateStack(new_name, data)
 
             #delete
-            view.on 'TOOLBAR_DELETE_CLICK', (region, id, name) ->
+            view.on 'TOOLBAR_DELETE_CLICK', (data) ->
                 console.log 'design_toolbar_click:deleteStack'
-                model.deleteStack(region, id, name)
+                model.deleteStack(data)
 
             #run
-            view.on 'TOOLBAR_RUN_CLICK', (region, id, app_name) ->
+            view.on 'TOOLBAR_RUN_CLICK', (app_name, data) ->
                 console.log 'design_toolbar_click:runStack'
-                model.runStack(region, id, app_name)
+                model.runStack(app_name, data)
 
             #zoomin
             view.on 'TOOLBAR_ZOOMIN_CLICK', () ->
@@ -100,17 +100,17 @@ define [ 'jquery',
                 console.log 'SAVE_PNG_COMPLETE'
                 view.exportPNG base64_image
 
-            view.on 'TOOLBAR_STOP_CLICK', (region, id, name) ->
+            view.on 'TOOLBAR_STOP_CLICK', (data) ->
                 console.log 'design_toolbar_click:stopApp'
-                model.stopApp(region, id, name)
+                model.stopApp(data)
 
-            view.on 'TOOLBAR_START_CLICK', (region, id, name) ->
+            view.on 'TOOLBAR_START_CLICK', (data) ->
                 console.log 'design_toolbar_click:startApp'
-                model.startApp(region, id, name)
+                model.startApp(data)
 
-            view.on 'TOOLBAR_TERMINATE_CLICK', (region, id, name) ->
+            view.on 'TOOLBAR_TERMINATE_CLICK', (data) ->
                 console.log 'design_toolbar_click:terminateApp'
-                model.terminateApp(region, id, name)
+                model.terminateApp(data)
 
             ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
                 console.log 'design_toolbar_click:saveStack'
@@ -127,7 +127,7 @@ define [ 'jquery',
 
             model.on 'TOOLBAR_STACK_SAVE_SUCCESS', (name) ->
                 view.notify 'info', 'Save stack ' + name + ' successfully.'
-            model.on 'TOOLBAR_STACK_SAVE_ERROR', (name) ->
+            model.on 'TOOLBAR_STACK_SAVE_FAILED', (name) ->
                 view.notify 'error', 'Save stack ' + name + ' failed.'
 
             model.on 'TOOLBAR_STACK_DUPLICATE_SUCCESS', (name) ->

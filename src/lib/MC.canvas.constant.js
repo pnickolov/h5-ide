@@ -999,6 +999,7 @@ var constant_data = {
 			"type": "AWS.VPC.CustomerGateway",
 			"networkName": "",
 			"coordinate": [0, 0],
+			"groupUId": "",
 			"connection": []
 		},
 		data:

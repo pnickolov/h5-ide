@@ -1884,9 +1884,7 @@ MC.canvas.layout = {
 
 			node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
 				'name': 'RT-0',
-				'group' : {
-					'vpcUId' : vpc_group.id
-				},
+				'groupUId': vpc_group.id,
 				'main' : true
 			},{
 				'x': 50,

@@ -37,7 +37,3 @@
   });
 
 }).call(this);
-
-/*
-//@ sourceMappingURL=config.js.map
-*/

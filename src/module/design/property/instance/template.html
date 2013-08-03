@@ -159,7 +159,7 @@
 						{{#each eni_display.eni_ips}}
 						<li class="input-ip-item">
 							<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
-								<label for="instance-ip-1" class="input-ip-prefix">10.0.0.</label>
+								<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}.</label>
 								<input type="text" class="input input-ip" value="x" id="instance-ip-1">
 							</div>
 							{{#unless Primary}}<div class="network-remove-icon"></div>{{/unless}}

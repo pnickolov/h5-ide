@@ -371,9 +371,12 @@ define [ 'constant',
 
 			null
 
-		deleteR_VGW : ( component ) ->
+		deleteR_CGW : ( component ) ->
 			for key, value of MC.canvas_data.component
-				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+					continue
+
+				if MC.extractID( value.resource.CustomerGatewayId ) is component.id
 					delete MC.canvas_data.component[ key ]
 					break
 
@@ -455,71 +458,90 @@ define [ 'constant',
 			null
 
 		deleteLine : ( option ) ->
-			me = this
-			connectionObj =  MC.canvas_data.layout.connection[option.id]
 
-			targetObj = connectionObj.target
-			portMap   = $.extend true, {}, targetObj
+			portMap   = {}
+			for id, port of MC.canvas_data.layout.connection[option.id].target
+				portMap[ port ] = id
 
-			#delete line between elb and instance
+			# ELB <==> Instance
 			if portMap['elb-sg-out'] and portMap['instance-sg']
-				MC.aws.elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg'])
+				MC.aws.elb.removeInstanceFromELB portMap['elb-sg-out'], portMap['instance-sg']
+				return
 
-			#connect elb and subnet
+			# ELB <==> Subnet
 			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
-				deleteE_SLen = MC.aws.elb.removeSubnetFromELB portMap['elb-assoc'], portMap['subnet-assoc-in']
+				MC.aws.elb.removeSubnetFromELB portMap['elb-assoc'], portMap['subnet-assoc-in']
+				return
 
+			# Eni <==> Instance
 			if portMap['instance-attach'] and portMap['eni-attach']
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
+				return
 
-			# remove line between igw and rt
+			# IGW <==> RouteTable
 			if portMap['igw-tgt'] and portMap['rtb-tgt-left']
 
-				remove_index = []
+				keepArray = []
+				component_resource = MC.canvas_data.component[portMap['rtb-tgt-left']].resource
 
-				$.each MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet, ( index, route ) ->
-					if route.GatewayId and route.GatewayId.split('.')[0][1...] == portMap['igw-tgt']
-						remove_index.push index
+				for i in component_resource.RouteSet
+					if MC.extractID( i.GatewayId ) isnt portMap['igw-tgt']
+						keepArray.push i
 
-				$.each remove_index.sort().reverse(), ( i, v) ->
-					MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet.splice v, 1
+				component_resource.RouteSet = keepArray
+				return
 
 
-			# remove line between subnet and rt
+			# Subnet <==> RouteTable
 			if portMap['subnet-assoc-out'] and portMap['rtb-src']
 
 				rt_uid = portMap['rtb-src']
+				sb_uid = portMap['subnet-assoc-out']
 
-				if MC.canvas_data.component[rt_uid].resource.AssociationSet != 0 and MC.canvas_data.component[rt_uid].resource.AssociationSet[0].Main != 'true'
+				component_resource = MC.canvas_data.component[rt_uid].resource
 
-					$.each MC.canvas_data.component[rt_uid].resource.AssociationSet, ( index, route ) ->
+				# Do nothing if the RT is main RT
+				if component_resource.AssociationSet.length and "" + component_resource.AssociationSet[0].Main == 'true'
+					return false
 
-						if route.SubnetId.split('.')[0][1...] == portMap['subnet-assoc-out']
+				# Disconnect
+				for i, index in component_resource.AssociationSet
+					if MC.extractID( i.SubnetId ) is sb_uid
+						component_resource.AssociationSet.splice index, 1
+						break
 
-							MC.canvas_data.component[rt_uid].resource.AssociationSet.splice index, 1
+				# Connect to Main
+				for key, value of MC.canvas_data.component
+					if value.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+						if value.resource.AssociationSet.length and "" + value.resource.AssociationSet[0].Main is 'true'
+							mainRT_Id = key
+							break
 
-							return false
+				if mainRT_Id
+					MC.canvas.connect sb_uid, 'subnet-assoc-out', mainRT_Id, 'rtb-src'
+
+				return
 
 
-			# remove line between instance and rt
+			# Instance <==> RouteTable
 			if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 				rt_uid = null
 
 				if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
 
-				remove_index = []
+				keepArray = []
+				component_resource = MC.canvas_data.component[ rt_uid ].resource
 
-				$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
-					if route.InstanceId and route.InstanceId.split('.')[0][1...] == portMap['instance-sg']
-						remove_index.push index
+				for i in component_resource.RouteSet
+					if MC.extractID( i.InstanceId ) isnt portMap['instance-sg']
+						keepArray.push i
 
-				$.each remove_index.sort().reverse(), ( i, v) ->
-					MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
+				component_resource.RouteSet = keepArray
+				return
 
-
-			# remove line between eni and rt
+			# Eni <==> RouteTable
 			if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 				rt_uid = null
@@ -527,35 +549,38 @@ define [ 'constant',
 				if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
 
 				remove_index = []
+				keepArray = []
+				component_resource = MC.canvas_data.component[rt_uid].resource
 
-				$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
-					if route.NetworkInterfaceId and route.NetworkInterfaceId.split('.')[0][1...] == portMap['eni-sg']
-						remove_index.push index
+				for i in component_resource.RouteSet
+					if MC.extractID( i.NetworkInterfaceId ) isnt portMap['eni-sg']
+						keepArray.push i
 
-				$.each remove_index.sort().reverse(), ( i, v) ->
-					MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
+				component_resource.RouteSet = keepArray
+				return
 
-
-
-			# remove line between vgw and rt
+			# VGW <==> RouteTable
 			if portMap['vgw-tgt'] and portMap['rtb-tgt-right']
 
-				remove_index = []
+				component_resource = MC.canvas_data.component[portMap['rtb-tgt-right']].resource
+				keepArray = []
 
-				$.each MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet, ( index, route ) ->
-					if route.GatewayId and route.GatewayId.split('.')[0][1...] == portMap['vgw-tgt']
-						remove_index.push index
+				for i in component_resource.RouteSet
+					if MC.extractID( i.GatewayId ) != portMap['vgw-tgt']
+						keepArray.push i
 
-				$.each remove_index.sort().reverse(), ( i, v) ->
-					MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet.splice v, 1
+				component_resource.RouteSet = keepArray
+				return
 
+			# VGW <==> CGW
 			if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+				return
 
-
+			# Instance/ENI SG
 			if portMap['instance-sg'] or portMap['eni-sg'] or portMap['elb-sg-in'] or portMap['elb-sg-out']
 				this.trigger 'SHOW_SG_LIST', option.id
-				return false
+				return
 
 			null
 

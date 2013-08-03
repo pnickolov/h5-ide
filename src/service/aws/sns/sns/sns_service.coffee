@@ -62,7 +62,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).GetSubscriptionAttributesResponse
 
     #private (parser GetSubscriptionAttributes return)
     parserGetSubscriptionAttributesReturn = ( result, return_code, param ) ->
@@ -91,7 +91,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).GetTopicAttributesResponse
 
     #private (parser GetTopicAttributes return)
     parserGetTopicAttributesReturn = ( result, return_code, param ) ->
@@ -120,7 +120,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).ListSubscriptionsResponse
 
     #private (parser ListSubscriptions return)
     parserListSubscriptionsReturn = ( result, return_code, param ) ->
@@ -149,7 +149,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).ListSubscriptionsByTopicResponse
 
     #private (parser ListSubscriptionsByTopic return)
     parserListSubscriptionsByTopicReturn = ( result, return_code, param ) ->
@@ -178,7 +178,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         #TO-DO
 
         #return vo
-        #TO-DO
+        ($.xml2json ($.parseXML result[1])).ListTopicsResponse
 
     #private (parser ListTopics return)
     parserListTopicsReturn = ( result, return_code, param ) ->

@@ -1108,7 +1108,8 @@ MC.canvas = {
 		var node = $('#' + node_id),
 			node_connections = MC.canvas.data.get('layout.component.' + node.data('type') + '.' + node_id + '.connection') || {},
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
-			line_layer = document.getElementById('line_layer');
+			line_layer = document.getElementById('line_layer'),
+			line_target;
 
 		$.each(node_connections, function (index, value)
 		{
@@ -1348,6 +1349,7 @@ MC.canvas = {
 			],
 			match_option = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ],
 			is_option_canvas = match_option[ 0 ] === 'Canvas',
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			ignore_stack = [],
 			match = [],
 			result = {},
@@ -1377,8 +1379,8 @@ MC.canvas = {
 			}
 		}
 
-		x = x * MC.canvas_property.SCALE_RATIO;
-		y = y * MC.canvas_property.SCALE_RATIO;
+		x = x * scale_ratio;
+		y = y * scale_ratio;
 
 		if (is_option_canvas)
 		{
@@ -2816,7 +2818,9 @@ MC.canvas.event.dragable = {
 					var group_left = coordinate.x,
 						group_top = coordinate.y,
 						group_width = group_size[0],
-						group_height = group_size[1];
+						group_height = group_size[1],
+						igw_gateway,
+						vgw_gateway;
 
 					if (group_data.type === 'AWS.VPC.VPC')
 					{
@@ -4257,7 +4261,10 @@ MC.canvas.event.keyEvent = function (event)
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			component_size = MC.canvas.COMPONENT_SIZE[ node_type ],
 			coordinate = {'x': node_data.coordinate[0], 'y': node_data.coordinate[1]},
-			match_place;
+			match_place,
+			vpc_id,
+			vpc_data
+			vpc_coordinate;
 
 		if (target.data('type') !== 'node')
 		{

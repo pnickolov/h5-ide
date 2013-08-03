@@ -2,13 +2,9 @@
 #  View Mode for canvas
 #############################
 define [ 'constant',
-		'backbone', 'jquery', 'underscore' ], ( constant ) ->
+		'backbone', 'jquery', 'underscore', 'UI.modal' ], ( constant ) ->
 
 	CanvasModel = Backbone.Model.extend {
-
-		defaults : {
-
-		}
 
 		initialize : ->
 			#listen
@@ -19,20 +15,29 @@ define [ 'constant',
 				'AWS_EC2_Instance'         : 'Instance'
 				'AWS_VPC_Subnet'           : 'Subnet'
 				'AWS_VPC_NetworkInterface' : 'Eni'
+				'AWS_VPC_RouteTable'       : 'RouteTable'
+				'AWS_VPC_InternetGateway'  : 'IGW'
+				'AWS_VPC_VPNGateway'       : 'VGW'
+				'AWS_VPC_CustomerGateway'  : 'CGW'
+				'AWS_EC2_AvailabilityZone' : 'AZ'
 				#'AWS_EBS_Volume'           : 'Volume'
 			}
 
 			this.changeParentMap = {}
 			this.validateDropMap = {}
+			this.deleteResMap    = {}
+			this.beforeDeleteMap = {}
 
 			for key, value of resource_map
 				this.changeParentMap[ resource_type[key] ] = this['changeP_'   + value]
-				this.validateDropMap[ resource_type[key] ] = this['validateD_' + value]
+				this.validateDropMap[ resource_type[key] ] = this['beforeD_'   + value]
+				this.deleteResMap[    resource_type[key] ] = this['deleteR_'   + value]
+				this.beforeDeleteMap[ resource_type[key] ] = this['beforeDel_' + value]
 
 			null
 
 		# An object is about to be dropped. Test if the object can be dropped
-		onBeforeDrop : ( event, src_node, tgt_parent ) ->
+		beforeDrop : ( event, src_node, tgt_parent ) ->
 			node = MC.canvas_data.layout.component.group[src_node]
 			if !node
 				node = MC.canvas_data.layout.component.node[src_node]
@@ -48,13 +53,13 @@ define [ 'constant',
 					event.preventDefault()
 					notification "error", error
 			else
-				console.log "No handler for validate dragging node:", component
+				console.log "Morris : No handler for validate dragging node:", component
 			null
 
-		validateD_Subnet : ( component, tgt_parent ) ->
+		beforeD_Subnet : ( component, tgt_parent ) ->
 			null
 
-		validateD_Instance : ( component, tgt_parent ) ->
+		beforeD_Instance : ( component, tgt_parent ) ->
 			resource_type = constant.AWS_RESOURCE_TYPE
 			parent = MC.canvas_data.layout.component.group[ tgt_parent ]
 
@@ -75,7 +80,7 @@ define [ 'constant',
 						return "Network Interface must be attached to instance within the same availability zone."
 			null
 
-		validateD_Eni : ( component, tgt_parent ) ->
+		beforeD_Eni : ( component, tgt_parent ) ->
 			# Eni can only be in subnet
 			if MC.canvas_data.component[ tgt_parent ].resource.AvailabilityZone == component.resource.AvailabilityZone
 				return
@@ -85,7 +90,7 @@ define [ 'constant',
 			null
 
 		#change node from one parent to another parent
-		changeNodeParent : ( event, src_node, tgt_parent ) ->
+		changeParent : ( event, src_node, tgt_parent ) ->
 			node = MC.canvas_data.layout.component.group[src_node]
 			if !node
 				node = MC.canvas_data.layout.component.node[src_node]
@@ -186,7 +191,7 @@ define [ 'constant',
 							for i in subnetLayout.connection
 								if i.target == value.uid
 									# Delete line
-									this.deleteObject {
+									this.deleteObject null, {
 										type : "line"
 										id   : i.line
 									}
@@ -198,369 +203,359 @@ define [ 'constant',
 			component.resource.AvailabilityZone = MC.canvas_data.component[tgt_parent].resource.AvailabilityZone
 			null
 
-		#delete component
 		deleteObject : ( event, option ) ->
 
-			# type: line | node | group
-
-			console.info 'type:' + option.type + 'id' + option.id
-
-			#to-do
-			me = this
-			is_delete = false
-
-			if option.type == 'node'
-
-				# remove node instance
-				switch MC.canvas_data.component[option.id].type
-
-					when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-
-
-						$.each MC.canvas_data.component, ( index, comp ) ->
-
-							# remove instance relate sg rule or sg
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-
-								me._removeInstnceFromSG comp.uid, option.id
-
-
-							# remove instance relate eni
-
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == option.id
-
-								# reset eni after disconnect instance
-								comp.resource.Attachment.InstanceId = ''
-
-								if comp.resource.Attachment.DeviceIndex == "0"
-
-									delete MC.canvas_data.component[index]
-
-							# remove instance relate volume
-
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume and comp.resource.AttachmentSet.InstanceId.split('.')[0][1...] == option.id
-
-								delete MC.canvas_data.component[index]
-
-
-							# remove instance relate eip
-
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.InstanceId.split('.')[0][1...] == option.id
-
-								delete MC.canvas_data.component[index]
-
-							# remove instance relate routetable
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-
-								me._removeGatewayIdFromRT comp.uid, option.id
-
-						is_delete = true
-
-					# remove node volume just use mc.canvas.remove
-
-					# remove node eni
-					when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-
-						$.each MC.canvas_data.component, ( index, comp ) ->
-
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.NetworkInterfaceId.split('.')[0][1...] == option.id
-
-								delete MC.canvas_data.component[index]
-
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-
-								me._removeGatewayIdFromRT comp.uid, option.id
-
-						is_delete = true
-
-
-					# remove rt
-					when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-
-						if MC.canvas_data.component[option.id].resource.AssociationSet.length > 0 and MC.canvas_data.component[option.id].resource.AssociationSet[0].Main == 'true'
-
-							console.log 'Can not delete main routetable'
-
-							return false
-
-					# remove igw
-					when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
-
-						$.each MC.canvas_data.component, ( index, comp ) ->
-
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-
-								me._removeGatewayIdFromRT comp.uid, option.id
-
-						$.each $(".resource-item"), ( idx, item) ->
-
-							data = $(item).data()
-
-							if data.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
-
-								tmp = {
-									enable : true
-									tooltip: "Drag and drop to canvas to create a new Internet Gateway."
-								}
-								$(item)
-									.data(tmp)
-									.removeClass('resource-disabled')
-
-								return false
-
-						is_delete = true
-
-
-					# remove vgw
-					when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
-
-						$.each MC.canvas_data.component, ( index, comp ) ->
-
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-
-								me._removeGatewayIdFromRT comp.uid, option.id
-
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
-
-								if comp.resource.VpnGatewayId.split('.')[0][1...] == option.id
-
-									delete MC.canvas_data.component[index]
-
-						$.each $(".resource-item"), ( idx, item) ->
-
-							data = $(item).data()
-
-							if data.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
-
-								tmp = {
-									enable : true
-									tooltip: "Drag and drop to canvas to create a new VPN Gateway."
-								}
-								$(item)
-									.data(tmp)
-									.removeClass('resource-disabled')
-
-								return false
-
-						is_delete = true
-
-
-					when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
-
-						$.each MC.canvas_data.component, ( index, comp ) ->
-
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
-
-								if comp.resource.CustomerGatewayId.split('.')[0][1...] == option.id
-
-									delete MC.canvas_data.component[index]
-
-									return false
-
-						is_delete = true
-
-			# remove group
-			else if option.type == 'group'
-
-				nodes = MC.canvas.groupChild($("#" + option.id)[0])
-
-				$.each nodes, ( index, node ) ->
-
-					op = {}
-					op.type = $(node).data().type
-					op.id = node.id
-
-					me.deleteObject op
-
-				delete MC.canvas_data.component[option.id]
-
-				is_delete = true
-
-
-				# recover az dragable
-				if $("#" + option.id).data().class == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
-
-					az_name = $("#" + option.id).text()
-
-					$.each $(".resource-item"), ( idx, item) ->
-
-						data = $(item).data()
-
-						if data.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and data.option.name == az_name
-
-							tmp = {
-								enable : true
-								tooltip: "Drag and drop to canvas"
-							}
-							$(item)
-								.data(tmp)
-								.removeClass('resource-disabled')
-								.addClass("tooltip")
-
-							return false
-
-
-
-
-			# remove line
-			else if option.type == 'line'
-
-				connectionObj =  MC.canvas_data.layout.connection[option.id]
-
-				targetObj = connectionObj.target
-				portMap = {}
-
-				_.each targetObj, (value, key) ->
-					portMap[value] = key
-					null
-
-				#delete line between elb and instance
-				if portMap['elb-sg-out'] and portMap['instance-sg']
-
-					MC.aws.elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg'])
-
-					is_delete = true
-
-
-				#connect elb and subnet
-				if portMap['elb-assoc'] and portMap['subnet-assoc-in']
-
-					deleteE_SLen = MC.aws.elb.removeSubnetFromELB portMap['elb-assoc'], portMap['subnet-assoc-in']
-
-					is_delete = true
-
-				if portMap['instance-attach'] and portMap['eni-attach']
-
-					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
-
-					MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
-
-					is_delete = true
-
-
-				# remove line between igw and rt
-				if portMap['igw-tgt'] and portMap['rtb-tgt-left']
-
-					remove_index = []
-
-					$.each MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet, ( index, route ) ->
-
-						if route.GatewayId and route.GatewayId.split('.')[0][1...] == portMap['igw-tgt']
-
-							remove_index.push index
-
-					$.each remove_index.sort().reverse(), ( i, v) ->
-
-						MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet.splice v, 1
-
-					is_delete = true
-
-
-				# remove line between subnet and rt
-				if portMap['subnet-assoc-out'] and portMap['rtb-src']
-
-					rt_uid = portMap['rtb-src']
-
-					if MC.canvas_data.component[rt_uid].resource.AssociationSet != 0 and MC.canvas_data.component[rt_uid].resource.AssociationSet[0].Main != 'true'
-
-						$.each MC.canvas_data.component[rt_uid].resource.AssociationSet, ( index, route ) ->
-
-							if route.SubnetId.split('.')[0][1...] == portMap['subnet-assoc-out']
-
-								MC.canvas_data.component[rt_uid].resource.AssociationSet.splice index, 1
-
-								return false
-
-					is_delete = true
-
-
-				# remove line between instance and rt
-				if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
-
-					rt_uid = null
-
-					if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
-
-					remove_index = []
-
-					$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
-
-						if route.InstanceId and route.InstanceId.split('.')[0][1...] == portMap['instance-sg']
-
-							remove_index.push index
-
-					$.each remove_index.sort().reverse(), ( i, v) ->
-
-						MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
-
-					is_delete = true
-
-
-				# remove line between eni and rt
-				if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
-
-					rt_uid = null
-
-					if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
-
-					remove_index = []
-
-					$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
-
-						if route.NetworkInterfaceId and route.NetworkInterfaceId.split('.')[0][1...] == portMap['eni-sg']
-
-							remove_index.push index
-
-					$.each remove_index.sort().reverse(), ( i, v) ->
-
-						MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
-
-					is_delete = true
-
-
-				# remove line between vgw and rt
-				if portMap['vgw-tgt'] and portMap['rtb-tgt-right']
-
-					remove_index = []
-
-					$.each MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet, ( index, route ) ->
-
-						if route.GatewayId and route.GatewayId.split('.')[0][1...] == portMap['vgw-tgt']
-
-							remove_index.push index
-
-					$.each remove_index.sort().reverse(), ( i, v) ->
-
-						MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet.splice v, 1
-
-					is_delete = true
-
-
-				if portMap['vgw-vpn'] and portMap['cgw-vpn']
-
-					MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
-
-					is_delete = true
-
-
-				if portMap['instance-sg'] or portMap['eni-sg'] or portMap['elb-sg-in'] or portMap['elb-sg-out']
-
-					this.trigger 'SHOW_SG_LIST', option.id
-
-					return false
-
-
-
-
-			MC.canvas.remove $("#" + option.id)[0]
-
-
-
-
-			if is_delete
-
+			component = MC.canvas_data.component[ option.id ]
+
+			switch option.type
+				when 'node'
+					handler = this.deleteResMap[ component.type ]
+				when 'group'
+					result = this.deleteGroup component, option.force
+					if !result
+						handler = this.deleteResMap[ component.type ]
+				when 'line'
+					result = this.deleteLine option
+
+			if handler
+				result = handler.call( this, component, option.force )
+
+
+			if typeof result is "string"
+				# Delete Handler returns a comfirmation string.
+				# TODO : ###########
+				if result[0] == '!'
+					# This is an error, not confimation
+					if event && event.preventDefault
+						event.preventDefault()
+					notification "error", result[1...]
+				else
+					# Confimation
+					self = this
+					template = MC.template[ "canvasDeleteConfirm" ]( {
+						name    : component.name
+						content : result
+					})
+					modal template, true
+					$("#canvas-delete-confirm").one "click", ()->
+						# Do the delete operation
+						opts = $.extend true, { force : true }, option
+						self.deleteObject null, opts
+						modal.close()
+
+			else if result isnt false
+				# MC.canvas.remove actually remove the component from MC.canvas_data.component.
+				# Consider this as bad coding pattern, because its canvas/model's job to do that.
+				MC.canvas.remove $("#" + option.id)[0]
 				this.trigger 'DELETE_OBJECT_COMPLETE'
 
+			else if event && event.preventDefault
+				event.preventDefault()
+
+			result
+
+		deleteR_Instance : ( component ) ->
+
+			resource_type = constant.AWS_RESOURCE_TYPE
+
+			for key, value in MC.canvas_data.component
+
+				# remove instance relate sg rule or sg
+				if value.type == resource_type.AWS_EC2_SecurityGroup
+					this._removeInstanceFromSG key, component.uid
+
+				# remove instance relate eni
+
+				else if value.type == resource_type.AWS_VPC_NetworkInterface
+					if MC.extractID( value.resource.Attachment.InstanceId ) == component.uid
+
+						# reset eni after disconnect instance
+						value.resource.Attachment.InstanceId = ''
+
+						if "" + value.resource.Attachment.DeviceIndex == "0"
+							delete MC.canvas_data.component[index]
+
+				# remove instance relate volume
+
+				else if value.type == resource_type.AWS_EBS_Volume
+					if MC.extractID( value.resource.AttachmentSet.InstanceId ) == component.uid
+						delete MC.canvas_data.component[index]
+
+				# remove instance relate eip
+
+				else if value.type == resource_type.AWS_EC2_EIP
+					if MC.extractID( value.resource.InstanceId ) == component.uid
+						delete MC.canvas_data.component[index]
+
+				# remove instance relate routetable
+				else if value.type == resource_type.AWS_VPC_RouteTable
+
+					this._removeGatewayIdFromRT key, component.uid
+
+			null
+
+		deleteR_Eni : ( component ) ->
+			for key, value of MC.canvas_data.component
+				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+					this._removeGatewayIdFromRT key, component.uid
+				else if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+					if MC.extractID( value.resource.NetworkInterfaceId ) == component.uid
+						delete mc.canvas_data.component[ key ]
+
+			null
+
+		deleteR_RouteTable : ( component ) ->
+			if component.resource.AssociationSet.length > 0 and "" + component.resource.AssociationSet[0].Main == 'true'
+				return '!Main route table #{ component.name } cannot be deleted.'
+			null
+
+		deleteR_IGW : ( component, force ) ->
+
+			resource_type = constant.AWS_RESOURCE_TYPE
+
+			if not force
+				# Deleting IGW when ELB/EIP in VPC, need to be confirmed by user.
+				for key, value of MC.canvas_data.component
+					if value.type == resource_type.AWS_EC2_EIP
+						confirm = true
+						break
+					else if value.type == resource_type.AWS_ELB and value.resource.Scheme == "internet-facing"
+						confirm = true
+						break
+				if confirm
+					return "Internet-facing Load Balancers or Elastic IP will not function without an Internet Gateway, conﬁrm to delete Internet Gateway?"
+				null
+
+			for key, value of MC.canvas_data.component
+				if value.type == resource_type.AWS_VPC_RouteTable
+					this._removeGatewayIdFromRT key, component.uid
+
+			$.each $(".resource-item[data-type='#{resource_type.AWS_VPC_InternetGateway}']"), ( idx, item ) ->
+				data = $(item).data()
+				tmp  =
+					enable  : true
+					tooltip : "Drag and drop to canvas to create a new Internet Gateway."
+
+				$(item)
+					.data(tmp)
+					.removeClass('resource-disabled')
+
+				return false
+
+
+			null
+
+		deleteR_VGW : ( component ) ->
+
+			resource_type = constant.AWS_RESOURCE_TYPE
+
+			for key, value of MC.canvas_data.component
+				if value.type == resource_type.AWS_VPC_RouteTable
+					this._removeGatewayIdFromRT key, component.uid
+
+				else if value.type == resource_type.AWS_VPC_VPNConnection and MC.extractID( value.resource.VpnGatewayId ) == component.uid
+					delete mc.canvas_data.component[ key ]
+
+			$.each $(".resource-item[data-type='#{resource_type.AWS_VPC_VPNGateway}']"), ( idx, item ) ->
+
+				data = $(item).data()
+				tmp  =
+					enable : true
+					tooltip: "Drag and drop to canvas to create a new VPN Gateway."
+
+				$(item)
+					.data(tmp)
+					.removeClass('resource-disabled')
+
+				return false
+
+			null
+
+		deleteR_VGW : ( component ) ->
+			for key, value of MC.canvas_data.component
+				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+					delete MC.canvas_data.component[ key ]
+					break
+
+			null
+
+		deleteGroup : ( component, force ) ->
+			nodes  = MC.canvas.groupChild($("#" + component.uid)[0])
+			result = true
+
+			handler = this.beforeDeleteMap[ component.type ]
+			if handler
+				result = handler.call( this, component )
+
+			# The component prevents deleting
+			if result
+				return result
+
+			# Ask user to confirm delete parent who has children
+			if !force and nodes.length
+				return "Deleting #{component.name} will also remove all resources inside. Do you confirm to delete?"
+
+			# Delete all the children
+			for node, index in nodes
+				op =
+					type : $(node).data().type
+					id   : node.id
+
+				# Recursively delete children in this group
+				# [ @@@ Warning @@@ ] If there's one child that cannot be deleted for any reason. Data is corrupted.
+				this.deleteObject null, op
+
+			null
+
+
+		deleteR_AZ : ( component ) ->
+			# Update resource panel, so that deleted AZ can be drag again
+			# Consider this as bad coding pattern, because it's MC.canvas's job to do that
+			$.each $(".resource-item[data-type='#{constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone}']"), ( idx, item ) ->
+
+				$item = $(item)
+				data  = $item.data()
+				if data.option.name isnt component.name
+					return
+
+				tmp =
+					enable : true
+					tooltip: "Drag and drop to canvas"
+
+				$(item)
+					.data(tmp)
+					.removeClass('resource-disabled')
+					.addClass("tooltip")
+				return false
+			null
+
+		beforeDel_Subnet : ( component ) ->
+			for key, value of MC.canvas_data.component
+				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_ELB
+					continue
+
+				for sb in value.resource.Subnets
+					if sb.indexOf( component.uid ) != -1
+						return "!The subnet cannot be deleted since it has association with load balancer."
+
+		deleteR_Subnet : ( component ) ->
+			# Delete route table connection
+			for key, value of MC.canvas_data.component
+				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+					continue
+
+				if "" + value.resource.AssociationSet[0].Main is 'true'
+					continue
+
+				for i, index in value.resource.AssociationSet
+					if i.SubnetId.indexOf( component.uid ) != -1
+						value.resource.AssociationSet.splice index, 1
+						return
+
+			null
+
+		deleteLine : ( option ) ->
+			me = this
+			connectionObj =  MC.canvas_data.layout.connection[option.id]
+
+			targetObj = connectionObj.target
+			portMap   = $.extend true, {}, targetObj
+
+			#delete line between elb and instance
+			if portMap['elb-sg-out'] and portMap['instance-sg']
+				MC.aws.elb.removeInstanceFromELB(portMap['elb-sg-out'], portMap['instance-sg'])
+
+			#connect elb and subnet
+			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
+				deleteE_SLen = MC.aws.elb.removeSubnetFromELB portMap['elb-assoc'], portMap['subnet-assoc-in']
+
+			if portMap['instance-attach'] and portMap['eni-attach']
+				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
+				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
+
+			# remove line between igw and rt
+			if portMap['igw-tgt'] and portMap['rtb-tgt-left']
+
+				remove_index = []
+
+				$.each MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet, ( index, route ) ->
+					if route.GatewayId and route.GatewayId.split('.')[0][1...] == portMap['igw-tgt']
+						remove_index.push index
+
+				$.each remove_index.sort().reverse(), ( i, v) ->
+					MC.canvas_data.component[portMap['rtb-tgt-left']].resource.RouteSet.splice v, 1
+
+
+			# remove line between subnet and rt
+			if portMap['subnet-assoc-out'] and portMap['rtb-src']
+
+				rt_uid = portMap['rtb-src']
+
+				if MC.canvas_data.component[rt_uid].resource.AssociationSet != 0 and MC.canvas_data.component[rt_uid].resource.AssociationSet[0].Main != 'true'
+
+					$.each MC.canvas_data.component[rt_uid].resource.AssociationSet, ( index, route ) ->
+
+						if route.SubnetId.split('.')[0][1...] == portMap['subnet-assoc-out']
+
+							MC.canvas_data.component[rt_uid].resource.AssociationSet.splice index, 1
+
+							return false
+
+
+			# remove line between instance and rt
+			if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+
+				rt_uid = null
+
+				if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
+
+				remove_index = []
+
+				$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
+					if route.InstanceId and route.InstanceId.split('.')[0][1...] == portMap['instance-sg']
+						remove_index.push index
+
+				$.each remove_index.sort().reverse(), ( i, v) ->
+					MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
+
+
+			# remove line between eni and rt
+			if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+
+				rt_uid = null
+
+				if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
+
+				remove_index = []
+
+				$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
+					if route.NetworkInterfaceId and route.NetworkInterfaceId.split('.')[0][1...] == portMap['eni-sg']
+						remove_index.push index
+
+				$.each remove_index.sort().reverse(), ( i, v) ->
+					MC.canvas_data.component[rt_uid].resource.RouteSet.splice v, 1
+
+
+
+			# remove line between vgw and rt
+			if portMap['vgw-tgt'] and portMap['rtb-tgt-right']
+
+				remove_index = []
+
+				$.each MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet, ( index, route ) ->
+					if route.GatewayId and route.GatewayId.split('.')[0][1...] == portMap['vgw-tgt']
+						remove_index.push index
+
+				$.each remove_index.sort().reverse(), ( i, v) ->
+					MC.canvas_data.component[portMap['rtb-tgt-right']].resource.RouteSet.splice v, 1
+
+			if portMap['vgw-vpn'] and portMap['cgw-vpn']
+				MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+
+
+			if portMap['instance-sg'] or portMap['eni-sg'] or portMap['elb-sg-in'] or portMap['elb-sg-out']
+				this.trigger 'SHOW_SG_LIST', option.id
+				return false
 
 			null
 
@@ -573,7 +568,7 @@ define [ 'constant',
 					MC.canvas_data.component[rt_uid].resource.RouteSet.splice index, 1
 
 
-		_removeInstnceFromSG : ( sg_uid, instance_uid ) ->
+		_removeInstanceFromSG : ( sg_uid, instance_uid ) ->
 
 
 			if MC.canvas_data.component[sg_uid].resource.IpPermissions.length != 0
@@ -665,7 +660,7 @@ define [ 'constant',
 							for i in subnetLayout.connection
 								if i.target == elbUid
 									# Delete line
-									this.deleteObject {
+									this.deleteObject null, {
 										type : "line"
 										id   : i.line
 									}

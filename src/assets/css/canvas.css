@@ -29,11 +29,23 @@
 	background-color: #272127;
 	height: 50px;
 	padding: 0 10px;
+	position: relative;
 }
 
-#screenshot_canvas_footer img {
-	margin: 10px 10px 10px 5px;
+#screenshot_canvas_header img {
+	margin: 8px 10px 0 0;
 	height: 30px;
+	position: absolute;
+	left: 10px;
+}
+
+#screenshot_info {
+	position: absolute;
+	right: 10px;
+	top: 8px;
+	color: #f3f3f3;
+	font-size: 12px;
+	text-align: right;
 }
 
 #canvas_copy {

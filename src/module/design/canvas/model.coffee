@@ -269,6 +269,8 @@ define [ 'constant',
 					# remove igw
 					when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 
+						MC.aws.elb.setAllELBSchemeAsInternal()
+
 						$.each MC.canvas_data.component, ( index, comp ) ->
 
 							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
@@ -866,8 +868,8 @@ define [ 'constant',
 			if componentType is constant.AWS_RESOURCE_TYPE.AWS_ELB
 				MC.aws.elb.init(uid)
 
-			if componentType is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
-				MC.aws.elb.setAllELBSchemeAsInternal()
+			# if componentType is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+			# 	MC.aws.elb.setAllELBSchemeAsInternal()
 
 			#
 			this.trigger 'CREATE_COMPONENT_COMPLETE'

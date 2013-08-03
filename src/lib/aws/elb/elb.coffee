@@ -21,6 +21,8 @@ define [ 'MC' ], ( MC ) ->
 			obj.type is 'AWS.VPC.InternetGateway'
 		if igwCompAry.length isnt 0
 			MC.canvas_data.component[uid].resource.Scheme = 'internet-facing'
+		else
+			MC.canvas_data.component[uid].resource.Scheme = 'internal'
 
 		# create elb default sg
 		sgComp = $.extend(true, {}, MC.canvas.SG_JSON.data)
@@ -33,7 +35,7 @@ define [ 'MC' ], ( MC ) ->
 		MC.canvas_data.component[uid].resource.SecurityGroups.push(sgRef)
 
 		# add rule to default sg
-		MC.aws.elb.addRuleToElbSG uid
+		MC.aws.elb.updateRuleToElbSG uid
 
 		null
 
@@ -166,7 +168,7 @@ define [ 'MC' ], ( MC ) ->
 
 		null
 
-	addRuleToElbSG = (elbUID) ->
+	updateRuleToElbSG = (elbUID) ->
 
 		elbComp = MC.canvas_data.component[elbUID]
 
@@ -187,8 +189,10 @@ define [ 'MC' ], ( MC ) ->
 		elbDefaultSGUID = elbDefaultSG.uid
 		elbDefaultSGInboundRuleAry = elbDefaultSG.resource.IpPermissions
 
+		# add rule to sg
 		_.each listenerAry, (listenerObj) ->
 			addListenerToRule = true
+			removeListenerToRule = true
 			_.each elbDefaultSGInboundRuleAry, (ruleObj) ->
 				protocol = ruleObj.IpProtocol
 				port = ruleObj.FromPort
@@ -212,6 +216,18 @@ define [ 'MC' ], ( MC ) ->
 
 			null
 
+		# remove rule from sg
+		elbDefaultSGInboundRuleAry = _.filter elbDefaultSGInboundRuleAry, (ruleObj) ->
+			protocol = ruleObj.IpProtocol
+			port = ruleObj.FromPort
+			isInListener = false
+			_.each listenerAry, (listenerObj) ->
+				if listenerObj.protocol is protocol and listenerObj.port is port
+					isInListener = true
+				null
+			return isInListener
+
+
 		MC.canvas_data.component[elbDefaultSGUID].resource.IpPermissions = elbDefaultSGInboundRuleAry
 
 	getElbDefaultSG = (elbUID) ->
@@ -229,6 +245,18 @@ define [ 'MC' ], ( MC ) ->
 
 		return MC.canvas_data.component[elbSGUID]
 
+	getAllElbSGUID = () ->
+		
+		elbSGUIDAry = []
+		_.each MC.canvas_data.component, (compObj) ->
+			compType = compObj.type
+			if compType is 'AWS.ELB'
+				elbSGObj = MC.aws.elb.getElbDefaultSG compObj.uid
+				if elbSGObj then elbSGUIDAry.push elbSGObj.uid
+			null
+
+		return elbSGUIDAry
+
 	#public
 	init                      : init
 	addInstanceAndAZToELB     : addInstanceAndAZToELB
@@ -238,4 +266,5 @@ define [ 'MC' ], ( MC ) ->
 	removeSubnetFromELB       : removeSubnetFromELB
 	getNewName                : getNewName
 	getElbDefaultSG           : getElbDefaultSG
-	addRuleToElbSG            : addRuleToElbSG
+	updateRuleToElbSG         : updateRuleToElbSG
+	getAllElbSGUID			  : getAllElbSGUID

@@ -147,6 +147,8 @@ MC.canvas = {
 			'width': screen_maxX,
 			'height': screen_maxY
 		});
+
+		$('#screenshot_canvas_footer').css('width', screen_maxX);
 	},
 
 	_addPad: function (point, adjust)
@@ -1216,10 +1218,11 @@ MC.canvas = {
 
 		if (target_type === 'node')
 		{
-			var	layout_node_data = MC.canvas.data.get('layout.component.node'),
+			var	layout_component_data = MC.canvas.data.get('layout.component'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				line_layer = document.getElementById('line_layer'),
-				connections = layout_node_data[ node_id ].connection,
+				connections = layout_component_data.node.[ node_id ].connection,
+				target_node_type,
 				new_connection_data,
 				connection_data,
 				connected_data;
@@ -1239,7 +1242,8 @@ MC.canvas = {
 					}
 				});
 
-				connected_data = layout_node_data[ connected_node ].connection;
+				target_node_type = $('#' + connected_node).data('type');
+				connected_data = layout_component_data[ target_node_type ][ connected_node ].connection;
 
 				$.each(connected_data, function (i, option)
 				{
@@ -1249,7 +1253,7 @@ MC.canvas = {
 					}
 				});
 
-				MC.canvas.data.set('layout.component.node.' + connected_node + '.connection', new_connection_data);
+				MC.canvas.data.set('layout.component.' + target_node_type + '.' + connected_node + '.connection', new_connection_data);
 				MC.canvas.data.delete('layout.connection.' + value.line);
 			});
 
@@ -3510,7 +3514,7 @@ MC.canvas.event.siderbarDrag = {
 				if (match_place.is_matched)
 				{
 					node_option.groupUId = match_place.target;
-					
+
 					MC.canvas.add(node_type, node_option, coordinate);
 				}
 			}

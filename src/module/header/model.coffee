@@ -41,7 +41,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             item.id = req.id
             item.rid = req.rid
             item.time = req.time_end
-            item.time_str = MC.dateFormat(new Date(item.time*1000), "hh:mm yyyy-MM-dd")
+            item.time_str = MC.dateFormat(new Date(item.time * 1000), "hh:mm yyyy-MM-dd")
             item.region = req.region
             item.region_label = constant.REGION_LABEL[req.region]
             item.is_readed = true
@@ -106,14 +106,17 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             if ws
                 query = ws.collection.request.find()
                 handle = query.observeChanges {
-                    changed : (id, request) ->
-                        console.log 'request ' + request.data + "," + request.state
+                    changed : (id, dag) ->
 
                         req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
 
                         if req_list
 
-                            item = me.parseInfo req_list[0]
+                            req = req_list[0]
+
+                            console.log 'request ' + req.data + "," + req.state
+
+                            item = me.parseInfo req
 
                             if item
                                 info_list = me.get 'info_list'

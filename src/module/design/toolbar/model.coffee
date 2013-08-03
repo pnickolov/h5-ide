@@ -43,6 +43,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 delete item_state_map[id]
                 item_state_map[value.id] = {'name':value.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
 
+                id = value.id
+
             else if flag is 'DELETE_STACK'
                 delete item_state_map[id]
                 return
@@ -90,7 +92,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             else if flag is 'TERMINATE_APP'
                 if value is constant.OPS_STATE.OPS_STATE_DONE
-                    delete app_state_map[id]
+                    delete item_state_map[id]
                     return
                 else if value is constant.OPS_STATE.OPS_STATE_FAILED
                     item_state_map[id].state = constant.APP_STATE.APP_STATE_STOPPED
@@ -321,6 +323,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     if res.data.thumbnail is 'true'
                         console.log 's3 url = ' + res.data.result
                         window.removeEventListener 'message', callback
+
+                        #push event
+                        ide_event.trigger ide_event.UPDATE_STACK_LIST
                     else
                         me.trigger 'SAVE_PNG_COMPLETE', res.data.result
                         window.removeEventListener 'message', callback
@@ -456,9 +461,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                             req = req_list[0]
 
                             console.log 'request ' + req.data + "," + req.state
-                            handle.stop()
 
                             if req.state == "Done"
+                                handle.stop()
+
                                 if flag == 'RUN_STACK'
                                     me.trigger 'TOOLBAR_STACK_RUN_SUCCESS', name
                                 else if flag == 'START_APP'
@@ -469,8 +475,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                     me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS', name
 
                                     # remove the app name from app_list
-                                    if app_name in MC.data.app_list[region]
-                                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(app_name), 1
+                                    if name in MC.data.app_list[region]
+                                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
                                 #push event
                                 ide_event.trigger ide_event.UPDATE_APP_LIST, null
@@ -482,11 +488,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                     me.setFlag id, flag, req.state
 
                             else if req.state == "Failed"
+                                handle.stop()
+
                                 if flag == 'RUN_STACK'
                                     me.trigger 'TOOLBAR_STACK_RUN_FAILED', name
 
-                                    if app_name in MC.data.app_list[MC.canvas_data.region]
-                                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(app_name), 1
+                                    if name in MC.data.app_list[MC.canvas_data.region]
+                                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
                                 else if flag == 'START_APP'
                                     me.trigger 'TOOLBAR_APP_START_FAILED', name
@@ -509,8 +517,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if flag == 'RUN_STACK'
                     me.trigger 'TOOLBAR_STACK_RUN_REQUEST_FAILED', name
 
-                    if app_name in MC.data.app_list[MC.canvas_data.region]
-                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(app_name), 1
+                    if name in MC.data.app_list[region]
+                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
                 else if flag == 'START_APP'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED', name

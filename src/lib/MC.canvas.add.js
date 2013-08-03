@@ -558,6 +558,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//5 path: right port(green)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-instance-attach',
+					'id': group.id + '_instance_attach',
 					'transform': 'translate(84, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'instance-attach',
 					'data-position': 'right',
@@ -569,6 +570,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//6 path: top port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-rtb',
+					'id': group.id + '_instance_rtb',
 					'transform': 'translate(50, -6)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'instance-rtb',
 					'data-position': 'top',
@@ -633,6 +635,20 @@ MC.canvas.add = function (flag, option, coordinate)
 				MC.canvas.data.set('component', data);
 			}
 			$('#node_layer').append(group);
+
+			//hide port by platform
+			switch (MC.canvas.data.get('platform'))
+			{
+				case 'ec2-classic':
+				case 'default-vpc':
+					MC.canvas.display(group.id,'instance_rtb',false);//hide port instance_rtb
+					MC.canvas.display(group.id,'instance_attach',false);//hide port instance_attach
+					break;
+				case 'custom-vpc':
+				case 'ec2-vpc':
+					break;
+			}
+
 
 			break;
 		//***** instance end *****//

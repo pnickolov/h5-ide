@@ -47,6 +47,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             #
             this.delegateEvents this.events
 
+            MC.canvas_data.name = MC.canvas_data.name.replace(/\s+/g, '')
+            $( '#property-stack-name' ).val(MC.canvas_data.name)
+
+            null
+
         stackNameChanged : () ->
             me = this
 

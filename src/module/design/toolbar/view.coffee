@@ -82,14 +82,14 @@ define [ 'MC', 'event',
         clickSaveIcon : ->
             console.log 'clickSaveIcon'
 
-            name = MC.canvas_data.name.replace(/\s+/g, '')
+            name = MC.canvas_data.name
 
             if not name
                 notification 'error', 'No stack name.'
-            # else if name.slice(0, 8) == 'untitled'
-            #     notification 'error', 'Please modify the initial stack name'
+            else if name.indexOf(' ') >= 0
+                notification 'error', 'stack name contains white space.'
             else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
-                notification 'error', 'Repeated stack name'
+                notification 'error', 'Repeated stack name.'
             else
                 MC.canvas_data.name = name
                 this.trigger 'TOOLBAR_SAVE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data

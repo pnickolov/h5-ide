@@ -1825,9 +1825,9 @@ MC.canvas.layout = {
 
 	create: function (option)
 	{
-		var canvas_size = MC.canvas.data.get('layout.size'),
-			data = MC.canvas.data.get('component'),
-			uid = MC.guid(),
+		var uid = MC.guid(),
+			canvas_size,
+			data,
 			vpc_group,
 			node_rt,
 			main_asso,
@@ -1844,6 +1844,10 @@ MC.canvas.layout = {
 
 		//clone MC.canvas.STACK_PROPERTY to MC.canvas_property
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
+
+		canvas_size = MC.canvas.data.get('layout.size');
+
+		data = MC.canvas.data.get('component');
 
 		//set region and platform
 		if (option.id)
@@ -2596,7 +2600,7 @@ MC.canvas.event.dragable = {
 					coordinate.y > 0 &&
 					match_place.is_matched &&
 					(
-						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : null}) &&
+						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
 						!BEFORE_DROP_EVENT.isDefaultPrevented()
 					)
 				)
@@ -2607,11 +2611,9 @@ MC.canvas.event.dragable = {
 
 					MC.canvas.select(target_id);
 
-					MC.canvas.data.set('layout.component.node.' + target_id + '.groupUId', parentGroup ? parentGroup.id : null);					
-
 					svg_canvas.trigger("CANVAS_NODE_CHANGE_PARENT", {
 						'src_node': target_id,
-						'tgt_parent': parentGroup ? parentGroup.id : null
+						'tgt_parent': parentGroup ? parentGroup.id : ''
 					});
 				}
 			}
@@ -2772,7 +2774,7 @@ MC.canvas.event.dragable = {
 					)
 					&&
 					(
-						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : null}) &&
+						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
 						!BEFORE_DROP_EVENT.isDefaultPrevented()
 					)
 				)
@@ -2852,13 +2854,10 @@ MC.canvas.event.dragable = {
 					MC.canvas.select(target_id);
 
 					//after change node to another group,trigger event
-					if (parentGroup)
-					{
-						svg_canvas.trigger("CANVAS_GROUP_CHANGE_PARENT", {
-							src_group: target_id,
-							tgt_parent: parentGroup.id
-						});
-					}
+					svg_canvas.trigger("CANVAS_GROUP_CHANGE_PARENT", {
+						src_group: target_id,
+						tgt_parent: parentGroup ? parentGroup.id : ''
+					});
 				}
 			}
 		}

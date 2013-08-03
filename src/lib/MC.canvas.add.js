@@ -1388,6 +1388,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//5 path: top port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-rtb',
+					'id': group.id + '_eni_rtb',
 					'transform': 'translate(48, 10)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'eni-rtb',
 					'data-position': 'top',
@@ -1420,6 +1421,19 @@ MC.canvas.add = function (flag, option, coordinate)
 			MC.canvas.data.set('component', data);
 
 			$('#node_layer').append(group);
+
+			//hide port by platform
+			switch (MC.canvas.data.get('platform'))
+			{
+				case 'ec2-classic':
+				case 'default-vpc':
+					MC.canvas.display(group.id,'_eni_rtb',false);//hide port eni_rtb
+					break;
+				case 'custom-vpc':
+				case 'ec2-vpc':
+					break;
+			}
+
 
 			break;
 			//***** eni end *****//

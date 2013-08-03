@@ -23,11 +23,28 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             # sg_detail.parent = parent
 
-            sg_detail.component = MC.canvas_data.component[uid]
+            sg_detail.component = $.extend true, {}, MC.canvas_data.component[uid]
 
             sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
 
             sg_detail.members = MC.aws.sg.getAllRefComp(uid)
+
+            permissions = [sg_detail.component.resource.IpPermissions, sg_detail.component.resource.IpPermissionsEgress]
+
+            $.each permissions, (j, permission)->
+
+                $.each permission, ( i, rule ) ->
+
+                    if rule.IpRanges.indexOf('@') >=0
+
+                        rule.ip_display = MC.canvas_data.component[rule.IpRanges.split('.')[0][1...]].name
+
+                    else
+
+                        rule.ip_display = rule.IpRanges
+
+                    null
+
 
             me.set 'sg_detail', sg_detail
 
@@ -96,14 +113,14 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     MC.canvas_property.sg_list.push tmp
 
                     return false
-            
 
-            
+
+
 
             data = MC.canvas.data.get('component')
 
             data[uid] = component_data
-            
+
             MC.canvas.data.set('component', data)
 
             sg_detail = {}

@@ -258,7 +258,7 @@ define [ 'constant',
 
 			resource_type = constant.AWS_RESOURCE_TYPE
 
-			for key, value in MC.canvas_data.component
+			for key, value of MC.canvas_data.component
 
 				# remove instance relate sg rule or sg
 				if value.type == resource_type.AWS_EC2_SecurityGroup
@@ -273,19 +273,19 @@ define [ 'constant',
 						value.resource.Attachment.InstanceId = ''
 
 						if "" + value.resource.Attachment.DeviceIndex == "0"
-							delete MC.canvas_data.component[index]
+							delete MC.canvas_data.component[key]
 
 				# remove instance relate volume
 
 				else if value.type == resource_type.AWS_EBS_Volume
 					if MC.extractID( value.resource.AttachmentSet.InstanceId ) == component.uid
-						delete MC.canvas_data.component[index]
+						delete MC.canvas_data.component[key]
 
 				# remove instance relate eip
 
 				else if value.type == resource_type.AWS_EC2_EIP
 					if MC.extractID( value.resource.InstanceId ) == component.uid
-						delete MC.canvas_data.component[index]
+						delete MC.canvas_data.component[key]
 
 				# remove instance relate routetable
 				else if value.type == resource_type.AWS_VPC_RouteTable
@@ -323,7 +323,7 @@ define [ 'constant',
 						confirm = true
 						break
 				if confirm
-					return "Internet-facing Load Balancers or Elastic IP will not function without an Internet Gateway, conﬁrm to delete Internet Gateway?"
+					return "Internet-facing Load Balancers or Elastic IP will not function without an Internet Gateway, confirm to delete Internet Gateway?"
 
 			for key, value of MC.canvas_data.component
 				if value.type == resource_type.AWS_VPC_RouteTable
@@ -1133,6 +1133,7 @@ define [ 'constant',
 			else
 
 				existing_eip_ref = []
+				instanceId = ""
 
 				# collect all reference
 				$.each MC.canvas_data.component, ( comp_uid, comp ) ->
@@ -1153,6 +1154,8 @@ define [ 'constant',
 
 						null
 
+					instanceId = '@' + uid + '.resource.InstanceId'
+
 				else
 
 					eni = MC.canvas_data.component[uid]
@@ -1168,6 +1171,8 @@ define [ 'constant',
 						eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
 
 						gen_uid = MC.guid()
+
+						eip_json.resource.InstanceId = instanceId
 
 						eip_json.resource.NetworkInterfaceId = '@' + eni.uid + '.resource.NetworkInterfaceId'
 

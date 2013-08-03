@@ -206,15 +206,15 @@ define [ 'constant',
 
 		deleteObject : ( event, option ) ->
 
-			component = MC.canvas_data.component[ option.id ]
+			component = MC.canvas_data.component[ option.id ] ||
+			if not component
+				component = $.extend true, {uid:option.id}, MC.canvas_data.layout.component.group[ option.id ]
 
 			switch option.type
 				when 'node'
 					handler = this.deleteResMap[ component.type ]
 				when 'group'
 					result = this.deleteGroup component, option.force
-					if !result
-						handler = this.deleteResMap[ component.type ]
 				when 'line'
 					result = this.deleteLine option
 
@@ -224,7 +224,6 @@ define [ 'constant',
 
 			if typeof result is "string"
 				# Delete Handler returns a comfirmation string.
-				# TODO : ###########
 				if result[0] == '!'
 					# This is an error, not confimation
 					if event && event.preventDefault
@@ -307,7 +306,7 @@ define [ 'constant',
 
 		deleteR_RouteTable : ( component ) ->
 			if component.resource.AssociationSet.length > 0 and "" + component.resource.AssociationSet[0].Main == 'true'
-				return '!Main route table #{ component.name } cannot be deleted.'
+				return "!Main route table #{component.name} cannot be deleted."
 			null
 
 		deleteR_IGW : ( component, force ) ->
@@ -389,8 +388,7 @@ define [ 'constant',
 			delete MC.canvas_data.component[ sg_uid ]
 
 		deleteGroup : ( component, force ) ->
-			nodes  = MC.canvas.groupChild($("#" + component.uid)[0])
-			result = true
+			nodes  = MC.canvas.groupChild( $("#" + (component.uid) )[0] )
 
 			handler = this.beforeDeleteMap[ component.type ]
 			if handler
@@ -404,6 +402,15 @@ define [ 'constant',
 			if !force and nodes.length
 				return "Deleting #{component.name} will also remove all resources inside. Do you confirm to delete?"
 
+
+			# It's time to delete the resource,
+			# Make sure everything is delete-able at this moment !
+
+			# Delete the parent first
+			handler = this.deleteResMap[ component.type ]
+			if handler
+				handler.call this, component
+
 			# Delete all the children
 			for node, index in nodes
 				op =
@@ -416,8 +423,33 @@ define [ 'constant',
 
 			null
 
-
 		deleteR_AZ : ( component ) ->
+
+			# Although Subnet connected with an ELB cannot be delete
+			# But if we delete the az, then the its subnets can be deleted.
+
+			# Modify the subnet children to bypass their check
+			childSubnetIds = {}
+			for key, value of MC.canvas_data.component
+				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+					continue
+
+				if value.resource.AvailabilityZone isnt component.name
+					continue
+
+				childSubnetIds[ key ] = true
+
+			for key, value of MC.canvas_data.component
+				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_ELB
+					continue
+
+				keepArray = []
+				for i in value.resource.Subnets
+					if not childSubnetIds[ MC.extractID( i ) ]
+						keepArray.push i
+				value.resource.Subnets = keepArray
+
+
 			# Update resource panel, so that deleted AZ can be drag again
 			# Consider this as bad coding pattern, because it's MC.canvas's job to do that
 			$.each $(".resource-item[data-type='#{constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone}']"), ( idx, item ) ->

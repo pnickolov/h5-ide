@@ -288,6 +288,40 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             console.log 'savePNG'
             me = this
             #
+            callback = ( res ) ->
+                console.log 'phantom callback'
+                console.log res.data.status
+                if res.data.status is 'success'
+                    if res.data.thumbnail is 'true'
+                        console.log 's3 url = ' + res.data.result
+                        window.removeEventListener 'message', callback
+                    else
+                        me.trigger 'SAVE_PNG_COMPLETE', res.data.result
+                        window.removeEventListener 'message', callback
+                else
+                    #window.removeEventListener 'message', callback
+            window.addEventListener 'message', callback
+            #
+            data =
+                'origin_host': window.location.origin,
+                'usercode'   : $.cookie( 'usercode'   ),
+                'session_id' : $.cookie( 'session_id' ),
+                'thumbnail'  : is_thumbnail,
+                'json_data'  : MC.canvas.layout.save(),
+                'stack_id'   : MC.canvas_data.id
+            #
+            sendMessage = ->
+                $( '#phantom-frame' )[0].contentWindow.postMessage data, MC.SAVEPNG_URL
+            if $( '#phantom-frame' )[0] is undefined
+                $( 'body' ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
+                setTimeout () ->
+                    sendMessage()
+                , 500
+            else
+                sendMessage()
+            null
+            ###
+            me = this
             $.ajax {
                 url  : MC.SAVEPNG_URL,
                 type : 'post',
@@ -310,6 +344,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     else
                         #
             }
+            ###
 
         isChanged : () ->
             #check if there are changes

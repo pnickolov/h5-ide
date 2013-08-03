@@ -41,7 +41,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             item.id = req.id
             item.rid = req.rid
             item.time = req.time_end
-            item.time_str = MC.dateFormat(new Date(item.time*1000), "hh:mm yyyy-MM-dd")
+            item.time_str = MC.dateFormat(new Date(item.time * 1000), "hh:mm yyyy-MM-dd")
             item.region = req.region
             item.region_label = constant.REGION_LABEL[req.region]
             item.is_readed = true
@@ -56,14 +56,14 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 item.operation = lst[0].toLowerCase()
                 item.name = lst[lst.length-1]
 
-                if req.state is 'Failed'
+                if req.state is constant.OPS_STATE.OPS_STATE_FAILED
                     item.is_error = true
                     item.error = req.data
-                else if req.state is 'Pending'
+                else if req.state is constant.OPS_STATE.OPS_STATE_PENDING
                     item.is_request = true
-                else if req.state is 'InPorcess'
+                else if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
                     item.is_process = true
-                else if req.state is 'Done'
+                else if req.state is constant.OPS_STATE.OPS_STATE_DONE
                     item.is_complete = true
                 else
                     return
@@ -72,6 +72,10 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                     lst = req.data.split(' ')
                     item.rid = lst[lst.length-1]
                     item.name = req.brief.split(' ')[2]
+
+                # filter terminate app
+                if item.operation is 'terminate' and item.is_complete
+                    item.is_terminated = true
 
             else
                 return
@@ -91,9 +95,9 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                     info_list.push item
 
             # filter done and terminated app
-            terminated_list = []
-            terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
-            info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
+            # terminated_list = []
+            # terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
+            # info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
 
             info_list.sort (a, b) ->
                 return if a.time <= b.time then 1 else -1
@@ -106,14 +110,17 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             if ws
                 query = ws.collection.request.find()
                 handle = query.observeChanges {
-                    changed : (id, request) ->
-                        console.log 'request ' + request.data + "," + request.state
+                    changed : (id, dag) ->
 
                         req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
 
                         if req_list
 
-                            item = me.parseInfo req_list[0]
+                            req = req_list[0]
+
+                            console.log 'request ' + req.data + "," + req.state
+
+                            item = me.parseInfo req
 
                             if item
                                 info_list = me.get 'info_list'
@@ -127,7 +134,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                                     me.set 'unread_num', unread_num
 
                                 # remove the old request and new to the header
-                                info_list.splice(info_list.indexOf(i), 1) for i in info_list when i.id == item.id
+                                info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
 
                                 info_list.splice 0, 0, item
 

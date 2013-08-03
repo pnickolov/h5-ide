@@ -1,6 +1,6 @@
 
-define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model', 'request_model', 'app_model', 'favorite_model', 'stack_model', 'aws_model', 'ami_model', 'ebs_model', 'ec2_model', 'eip_model', 'instance_model', 'keypair_model', 'placementgroup_model', 'securitygroup_model', 'elb_model', 'iam_model', 'acl_model', 'customergateway_model', 'dhcp_model', 'eni_model', 'internetgateway_model', 'routetable_model', 'subnet_model', 'vpc_model', 'vpngateway_model', 'vpn_model',],
-( MC, session_model, $, apiList, log_model, public_model, request_model, app_model, favorite_model, stack_model, aws_model, ami_model, ebs_model, ec2_model, eip_model, instance_model, keypair_model, placementgroup_model, securitygroup_model, elb_model, iam_model, acl_model, customergateway_model, dhcp_model, eni_model, internetgateway_model, routetable_model, subnet_model, vpc_model, vpngateway_model, vpn_model ) ->
+define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model', 'request_model', 'app_model', 'favorite_model', 'stack_model', 'aws_model', 'ami_model', 'ebs_model', 'ec2_model', 'eip_model', 'instance_model', 'keypair_model', 'placementgroup_model', 'securitygroup_model', 'elb_model', 'iam_model', 'acl_model', 'customergateway_model', 'dhcp_model', 'eni_model', 'internetgateway_model', 'routetable_model', 'subnet_model', 'vpc_model', 'vpngateway_model', 'vpn_model', 'autoscaling_model', 'cloudwatch_model', 'sns_model'],
+( MC, session_model, $, apiList, log_model, public_model, request_model, app_model, favorite_model, stack_model, aws_model, ami_model, ebs_model, ec2_model, eip_model, instance_model, keypair_model, placementgroup_model, securitygroup_model, elb_model, iam_model, acl_model, customergateway_model, dhcp_model, eni_model, internetgateway_model, routetable_model, subnet_model, vpc_model, vpngateway_model, vpn_model, autoscaling_model, cloudwatch_model, sns_model ) ->
     #session info
 
     session_id   = ""
@@ -1839,6 +1839,49 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             vpn_model.once "VPC_VPN_DESC_VPN_CONNS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
+
+        ########## SNS ##########
+        if current_service.toLowerCase() == "sns" && current_resource.toLowerCase() == "sns" && current_api == "GetSubscriptionAttributes"
+            subscription_arn = if $("#subscription_arn").val() != "null" then $("#subscription_arn").val() else null
+            subscription_arn = if subscription_arn != null and MC.isJSON(subscription_arn)==true then JSON.parse subscription_arn else subscription_arn
+            #sns.GetSubscriptionAttributes
+            sns_model.GetSubscriptionAttributes {sender: me}, username, session_id, region_name, subscription_arn
+            sns_model.once "SNS__GET_SUBSCR_ATTRS_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+        if current_service.toLowerCase() == "sns" && current_resource.toLowerCase() == "sns" && current_api == "GetTopicAttributes"
+            topic_arn = if $("#topic_arn").val() != "null" then $("#topic_arn").val() else null
+            topic_arn = if topic_arn != null and MC.isJSON(topic_arn)==true then JSON.parse topic_arn else topic_arn
+            #sns.GetTopicAttributes
+            sns_model.GetTopicAttributes {sender: me}, username, session_id, region_name, topic_arn
+            sns_model.once "SNS__GET_TOPIC_ATTRS_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+        if current_service.toLowerCase() == "sns" && current_resource.toLowerCase() == "sns" && current_api == "ListSubscriptions"
+            next_token = if $("#next_token").val() != "null" then $("#next_token").val() else null
+            next_token = if next_token != null and MC.isJSON(next_token)==true then JSON.parse next_token else next_token
+            #sns.ListSubscriptions
+            sns_model.ListSubscriptions {sender: me}, username, session_id, region_name, next_token
+            sns_model.once "SNS__LST_SUBSCRS_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+        if current_service.toLowerCase() == "sns" && current_resource.toLowerCase() == "sns" && current_api == "ListSubscriptionsByTopic"
+            topic_arn = if $("#topic_arn").val() != "null" then $("#topic_arn").val() else null
+            topic_arn = if topic_arn != null and MC.isJSON(topic_arn)==true then JSON.parse topic_arn else topic_arn
+            next_token = if $("#next_token").val() != "null" then $("#next_token").val() else null
+            next_token = if next_token != null and MC.isJSON(next_token)==true then JSON.parse next_token else next_token
+            #sns.ListSubscriptionsByTopic
+            sns_model.ListSubscriptionsByTopic {sender: me}, username, session_id, region_name, topic_arn, next_token
+            sns_model.once "SNS__LST_SUBSCRS_BY_TOPIC_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+        if current_service.toLowerCase() == "sns" && current_resource.toLowerCase() == "sns" && current_api == "ListTopics"
+            next_token = if $("#next_token").val() != "null" then $("#next_token").val() else null
+            next_token = if next_token != null and MC.isJSON(next_token)==true then JSON.parse next_token else next_token
+            #sns.ListTopics
+            sns_model.ListTopics {sender: me}, username, session_id, region_name, next_token
+            sns_model.once "SNS__LST_TOPICS_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
 
 
 

@@ -1,9 +1,9 @@
 @charset "utf-8";
 /* CSS Document */
-div.ControlsRow, div.HeadersRow {
+.ControlsRow, .HeadersRow {
 	font-family: Georgia;
 }
-div.Canvas
+.Canvas
 
 {
 
@@ -101,9 +101,9 @@ div.Canvas
 
 PRE.CodeContainer{
 
-  margin-top:0px;
+  margin-top:0;
 
-  margin-bottom:0px;
+  margin-bottom:0;
 
 }
 
@@ -134,7 +134,7 @@ PRE.CodeContainer img{
 }
 #HeaderSubTitle{
   margin-bottom:2px;
-  margin-top:0px
+  margin-top:0;
 }
 #RawJson{
   width:99%;

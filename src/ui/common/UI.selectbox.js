@@ -153,14 +153,12 @@ var selectbox = {
         }
         else {
             $self.show();
+            $(document.body).one('click', function( event ){
+                $self.hide();
+                //if header--notification is push DROPDOWN_CLOSE
+                $( $self.closest("li").children()[0] ).trigger( "DROPDOWN_CLOSE" )
+            });
         }
-
-        $(document.body).one('click', function( event ){
-            $self.hide();
-            //if header--notification is push DROPDOWN_CLOSE
-            $( $self.closest("li").children()[0] ).trigger( "DROPDOWN_CLOSE" )
-        });
-
     }
 
     $(function(){

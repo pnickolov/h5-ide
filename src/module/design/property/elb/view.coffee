@@ -29,7 +29,7 @@ define ['event', 'MC',
             null
 
         events   :
-            'blur #property-elb-name' : 'elbNameChange'
+            'change #property-elb-name' : 'elbNameChange'
             'change #elb-scheme-select1' : "schemeSelectChange"
             'change #elb-scheme-select2' : "schemeSelectChange"
 
@@ -84,6 +84,8 @@ define ['event', 'MC',
 
             MC.canvas.update cid, 'text', 'elb_name', value
             $("#property-title").html value
+
+            this.trigger 'REFRESH_SG_LIST'
 
         schemeSelectChange : ( event ) ->
             console.log 'schemeSelectChange'

@@ -3,8 +3,16 @@ define [ 'MC' ], ( MC ) ->
 	#private
 	init = (uid) ->
 
+		elbComp = MC.canvas_data.component[uid]
+
+		# init
+		newELBName = MC.aws.elb.getNewName()
+		MC.canvas_data.component[uid].resource.LoadBalancerName = newELBName
+		MC.canvas_data.component[uid].name = newELBName
+		MC.canvas.update uid, 'text', 'elb_name', newELBName
+
 		allComp = MC.canvas_data.component
-		haveVPC = allComp[uid].resource.VpcId
+		haveVPC = elbComp.resource.VpcId
 		if !haveVPC
 			MC.canvas_data.component[uid].resource.Scheme = ''
 
@@ -14,7 +22,35 @@ define [ 'MC' ], ( MC ) ->
 		if igwCompAry.length isnt 0
 			MC.canvas_data.component[uid].resource.Scheme = 'internet-facing'
 
+		# create elb default sg
+		sgComp = $.extend(true, {}, MC.canvas.SG_JSON.data)
+		sgComp.uid = MC.guid()
+		sgComp.name = newELBName + '-sg'
+		sgComp.resource.GroupName = sgComp.name
+		MC.canvas_data.component[sgComp.uid] = sgComp
+
+		sgRef = '@' + sgComp.uid + '.resource.GroupId'
+		MC.canvas_data.component[uid].resource.SecurityGroups.push(sgRef)
+
+		# add rule to default sg
+		MC.aws.elb.addRuleToElbSG uid
+
 		null
+
+	getNewName = () ->
+		maxNum = 0
+		namePrefix = 'load-balancer-'
+		_.each MC.canvas_data.component, (compObj) ->
+			compType = compObj.type
+			if compType is 'AWS.ELB'
+				elbName = compObj.name
+				if elbName.slice(0, namePrefix.length) is namePrefix
+					currentNum = Number(elbName.slice(namePrefix.length))
+					if currentNum > maxNum
+						maxNum = currentNum
+			null
+		maxNum++
+		return namePrefix + maxNum
 
 	addInstanceAndAZToELB = (elbUID, instanceUID) ->
 		elbComp = MC.canvas_data.component[elbUID]
@@ -130,6 +166,68 @@ define [ 'MC' ], ( MC ) ->
 
 		null
 
+	addRuleToElbSG = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+
+		elbListenerAry = elbComp.resource.ListenerDescriptions
+
+		listenerAry = []
+		_.each elbListenerAry, (listenerObj) ->
+			protocol = listenerObj.Listener.Protocol.toLowerCase()
+			port = listenerObj.Listener.LoadBalancerPort
+			listenerAry.push {
+				protocol: protocol,
+				port: port
+			}
+			null
+		listenerAry = _.uniq listenerAry
+
+		elbDefaultSG = MC.aws.elb.getElbDefaultSG elbUID
+		elbDefaultSGUID = elbDefaultSG.uid
+		elbDefaultSGInboundRuleAry = elbDefaultSG.resource.IpPermissions
+
+		_.each listenerAry, (listenerObj) ->
+			addListenerToRule = true
+			_.each elbDefaultSGInboundRuleAry, (ruleObj) ->
+				protocol = ruleObj.IpProtocol
+				port = ruleObj.FromPort
+				if listenerObj.protocol is protocol and listenerObj.port is port
+					addListenerToRule = false
+					return
+				null
+
+			if addListenerToRule
+				elbDefaultSGInboundRuleAry.push {
+					FromPort: listenerObj.port,
+					ToPort: listenerObj.port,
+					IpProtocol: listenerObj.protocol,
+					IpRanges: '0.0.0.0/0',
+					Groups: [{
+						GroupId: '',
+						GroupName: '',
+						UserId: ''
+					}]
+				}
+
+			null
+
+		MC.canvas_data.component[elbDefaultSGUID].resource.IpPermissions = elbDefaultSGInboundRuleAry
+
+	getElbDefaultSG = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		elbName = elbComp.resource.LoadBalancerName
+		elbSGName = elbName + '-sg'
+
+		elbSGUID = ''
+		allComp = MC.canvas_data.component
+		_.each allComp, (compObj) ->
+			if compObj.name is elbSGName
+				elbSGUID = compObj.uid
+				return
+
+		return MC.canvas_data.component[elbSGUID]
 
 	#public
 	init                      : init
@@ -138,3 +236,6 @@ define [ 'MC' ], ( MC ) ->
 	setAllELBSchemeAsInternal : setAllELBSchemeAsInternal
 	addSubnetToELB            : addSubnetToELB
 	removeSubnetFromELB       : removeSubnetFromELB
+	getNewName                : getNewName
+	getElbDefaultSG           : getElbDefaultSG
+	addRuleToElbSG            : addRuleToElbSG

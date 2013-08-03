@@ -129,8 +129,18 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
         setELBName  : ( uid, value ) ->
             console.log 'setELBName = ' + value
-            MC.canvas_data.component[ uid ].name = value
-            MC.canvas_data.component[ uid ].LoadBalancerName = value
+
+            # before, modify elb default sg name
+            originELBName = MC.canvas_data.component[uid].resource.LoadBalancerName
+            newSGName = value + '-sg'
+            elbSG = MC.aws.elb.getElbDefaultSG uid
+            elbSGUID = elbSG.uid
+            MC.canvas_data.component[elbSGUID].name = newSGName
+            MC.canvas_data.component[elbSGUID].resource.GroupName = newSGName
+
+            # after, modify elb name
+            MC.canvas_data.component[uid].name = value
+            MC.canvas_data.component[uid].resource.LoadBalancerName = value
 
             null
 
@@ -225,6 +235,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     delete MC.canvas_data.component[currentCertUID]
 
             MC.canvas_data.component[uid].resource.ListenerDescriptions = value
+            MC.aws.elb.addRuleToElbSG uid
 
             null
 

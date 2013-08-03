@@ -1,10 +1,6 @@
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
-		{{#if item_flags.is_run}}
 		<a href="javascript:void(0)" class="btn-toolbar tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_flags.name}}"}' data-modal-dismiss="true"><i class="icon-toolbar-run"></i></a>
-		{{else}}
-		<a href="javascript:void(0)" class="btn-toolbar tooltip" id="toolbar-run" data-tooltip="Run this stack into an app"><i class="icon-toolbar-run"></i></a>
-		{{/if}}
 	</li>
 	<li class="btn-toolbar">
 		<a href="#" class="btn-toolbar tooltip" data-tooltip="Save stack"><i class="icon-toolbar-save"></i></a>

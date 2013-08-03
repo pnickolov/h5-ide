@@ -914,7 +914,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-bottom',
-					'transform': 'translate(41, 66)' + MC.canvas.PORT_DOWN_ROTATE,
+					'transform': 'translate(42, 66)' + MC.canvas.PORT_DOWN_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'bottom',
 					'data-type': 'association',

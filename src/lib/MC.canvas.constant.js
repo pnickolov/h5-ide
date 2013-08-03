@@ -153,7 +153,7 @@ var constant_data = {
 		},
 		'custom-vpc':
 		{
-			'AWS.ELB': ['AWS.VPC.VPC', 'Canvas'],
+			'AWS.ELB': ['AWS.VPC.VPC'],
 			'AWS.EC2.Instance': ['AWS.VPC.Subnet'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
@@ -167,7 +167,7 @@ var constant_data = {
 		},
 		'ec2-vpc':
 		{
-			'AWS.ELB': ['AWS.VPC.VPC', 'Canvas'],
+			'AWS.ELB': ['AWS.VPC.VPC'],
 			'AWS.EC2.Instance': ['AWS.VPC.Subnet'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
@@ -580,7 +580,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.EC2.AvailabilityZone",
 			"coordinate": [0, 0],
 			"size": [480, 240],
@@ -594,7 +593,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.EC2.Instance",
 			"coordinate": [0, 0],
 			"osType": "", //amazon|centos|debian|fedora|gentoo|linux-other|opensuse|redhat|suse|ubuntu|win
@@ -726,7 +724,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.EC2.EBS.Volume",
 			"coordinate": [0, 0],
 			"connection": []
@@ -764,7 +761,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.ELB",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -842,7 +838,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.VPC.VPC",
 			"coordinate": [0, 0],
 			"size": [0, 0],
@@ -872,7 +867,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.VPC.Subnet",
 			"coordinate": [0, 0],
 			"size": [0, 0],
@@ -901,7 +895,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.VPC.InternetGateway",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -929,7 +922,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.VPC.RouteTable",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -964,7 +956,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.VPC.VPNGateway",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -995,10 +986,10 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.VPC.CustomerGateway",
 			"networkName": "",
 			"coordinate": [0, 0],
+			"groupUId": "",
 			"connection": []
 		},
 		data:
@@ -1022,7 +1013,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.VPC.NetworkInterface",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -1086,7 +1076,6 @@ var constant_data = {
 	{
 		layout:
 		{
-			"id": "",
 			"type": "AWS.VPC.DhcpOptions",
 			"coordinate": [0, 0],
 			"groupUId": "",

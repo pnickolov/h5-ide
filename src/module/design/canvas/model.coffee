@@ -232,7 +232,7 @@ define [ 'constant',
 				else
 					# Confimation
 					self = this
-					template = MC.template[ "canvasDeleteConfirm" ]( {
+					template = MC.template.canvasDeleteConfirm( {
 						name    : component.name
 						content : result
 					})
@@ -324,7 +324,6 @@ define [ 'constant',
 						break
 				if confirm
 					return "Internet-facing Load Balancers or Elastic IP will not function without an Internet Gateway, conﬁrm to delete Internet Gateway?"
-				null
 
 			for key, value of MC.canvas_data.component
 				if value.type == resource_type.AWS_VPC_RouteTable

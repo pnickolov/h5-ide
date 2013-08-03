@@ -60,11 +60,16 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				stackType = false
 			this.set 'is_stack_sg', stackType
 
+			isELBParent = parent_model.get 'is_elb'
+
+			allElbSGAry = MC.aws.elb.getAllElbSGUID()
+
 			# get all sg uid
 			allSGUIDAry = []
 			_.each MC.canvas_data.component, (comp, uid) ->
 				if comp.type is 'AWS.EC2.SecurityGroup'
-					allSGUIDAry.push comp.uid
+					if !(!isELBParent and uid in allElbSGAry)
+						allSGUIDAry.push comp.uid
 
 			displaySGAry = []
 

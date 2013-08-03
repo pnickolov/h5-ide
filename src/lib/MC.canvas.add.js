@@ -724,7 +724,19 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** elb begin *****//
 		case 'AWS.ELB':
 
-			var icon_scheme = 'internal';
+			var icon_scheme = '';
+			//init scheme by platform
+			switch (MC.canvas.data.get('platform'))
+			{
+				case 'ec2-classic':
+				case 'default-vpc':
+					icon_scheme = 'internet';
+					break;
+				case 'custom-vpc':
+				case 'ec2-vpc':
+					icon_scheme = 'internal';
+					break;
+			}
 
 			if (create_mode)
 			{//write
@@ -748,6 +760,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.groupUId = option.groupUId;
 
 				component_data.resource.Scheme = icon_scheme;
+
 			}
 			else
 			{//read
@@ -848,6 +861,21 @@ MC.canvas.add = function (flag, option, coordinate)
 			MC.canvas.data.set('component', data);
 
 			$('#node_layer').append(group);
+
+			//hide port by platform
+			switch (MC.canvas.data.get('platform'))
+			{
+				case 'ec2-classic':
+				case 'default-vpc':
+					MC.canvas.display(group.id,'elb_sg_in',false);//hide port elb_sg_in
+					MC.canvas.display(group.id,'elb_assoc',false);//hide port elb_assoc
+					$('#' + group.id + '_elb_sg_out').attr('transform','translate(84, 39)');//move port to middle
+					break;
+				case 'custom-vpc':
+				case 'ec2-vpc':
+					break;
+			}
+
 
 			break;
 		//***** elb end *****//
@@ -1309,6 +1337,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-eni-sg port-eni-sg-left',
+					'display': 'none', //hide
 					'transform': 'translate(7, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg',
 					'data-position': 'left',
@@ -1331,6 +1360,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-eni-sg port-eni-sg-right',
+					'display': 'none', //hide
 					'transform': 'translate(85, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg',
 					'data-position': 'right',

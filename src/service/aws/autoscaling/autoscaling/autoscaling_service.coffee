@@ -12,7 +12,7 @@
 
 define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
-	URL = '/aws/autoscaling/autoscaling/'
+	URL = '/aws/autoscaling/'
 
 	#private
 	send_request =  ( api_name, src, param_ary, parser, callback ) ->

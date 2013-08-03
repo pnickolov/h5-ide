@@ -3603,7 +3603,7 @@ MC.canvas.event.groupResize = {
 					'offsetX': event.pageX - canvas_offset.left,
 					'offsetY': event.pageY - canvas_offset.top,
 					'direction': $(target).data('direction'),
-					'group_border': parseInt(group.css('stroke-width'),10),
+					'group_border': parseInt(group.css('stroke-width'),10) * 2,
 					'group_type': type,
 					'parentGroup': MC.canvas.parentGroup(
 						parent.attr('id'),
@@ -3621,7 +3621,7 @@ MC.canvas.event.groupResize = {
 	{
 		var direction = event.data.direction,
 			type = event.data.group_type,
-			group_border = event.data.group_border * 2,
+			group_border = event.data.group_border,
 			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10,
 			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
 			max_left = event.data.originalWidth - group_min_padding,
@@ -4259,7 +4259,7 @@ MC.canvas.event.keyEvent = function (event)
 			coordinate = {'x': node_data.coordinate[0], 'y': node_data.coordinate[1]},
 			match_place,
 			vpc_id,
-			vpc_data
+			vpc_data,
 			vpc_coordinate;
 
 		if (target.data('type') !== 'node')

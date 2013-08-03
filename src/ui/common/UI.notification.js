@@ -13,7 +13,8 @@ var notification = function (type, template, auto_close) {
 
     if ($.inArray(type, NOTIFICATION_TYPES) >= 0) {
         var notification_wrap = $('#notification_wrap'),
-            should_stay = type === "error" || auto_close;
+            // should_stay = type === "error" || auto_close;
+            should_stay = auto_close;
 
         if (!notification_wrap[0]) {
             $(document.body).append('<div id="notification_wrap"></div>');
@@ -35,15 +36,19 @@ var notification = function (type, template, auto_close) {
 
         if (!should_stay) {
             var item_dom = notification_wrap.find('.notification_item').eq(-1);
-            notification.out($(item_dom));
+            notification.out($(item_dom), type === "error", template.length);
         }
     }
 };
 
-notification.out = function (target_dom) {
+notification.out = function (target_dom, is_error, text_length) {
+    stay_time = text_length * 80;
+    if (is_error) {
+        stay_time = stay_time + 2000
+    }
     setTimeout(function () {
         target_dom.slideUp("fast", function () {
             target_dom.remove();
         })
-    }, 2000);
+    }, stay_time);
 };

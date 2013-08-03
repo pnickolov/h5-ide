@@ -20,6 +20,7 @@ define [ 'constant',
 				'AWS_VPC_VPNGateway'       : 'VGW'
 				'AWS_VPC_CustomerGateway'  : 'CGW'
 				'AWS_EC2_AvailabilityZone' : 'AZ'
+				'AWS_ELB'                  : 'ELB'
 				#'AWS_EBS_Volume'           : 'Volume'
 			}
 
@@ -381,6 +382,11 @@ define [ 'constant',
 					break
 
 			null
+
+		deleteR_ELB : ( component ) ->
+			sg_uid = MC.aws.elb.getElbDefaultSG component.uid
+			delete MC.canvas_data.component[ component.uid ]
+			delete MC.canvas_data.component[ sg_uid ]
 
 		deleteGroup : ( component, force ) ->
 			nodes  = MC.canvas.groupChild($("#" + component.uid)[0])

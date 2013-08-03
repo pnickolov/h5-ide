@@ -13,6 +13,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'az_detail' :   null
             'component' :   null
             'uid'       :   null
+            'is_elb'    :   true
 
         init : ( uid ) ->
 
@@ -38,6 +39,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 'isInternal' : scheme is 'internal',
                 'haveIGW' : haveIGW
             }
+
+            if scheme is 'internal'
+                MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNAL_CANVAS
+            else
+                MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNET_CANVAS
 
             this.set 'elb_detail', elb_detail
 
@@ -88,6 +94,10 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             azObjAry = []
 
             region = MC.canvas_data.region
+
+            if !MC.data.config[region].zone
+                return
+            
             azAry = MC.data.config[region].zone.item
             _.each azAry, (elem) ->
                 azObj[elem.zoneName] = 0
@@ -235,7 +245,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     delete MC.canvas_data.component[currentCertUID]
 
             MC.canvas_data.component[uid].resource.ListenerDescriptions = value
-            MC.aws.elb.addRuleToElbSG uid
+            MC.aws.elb.updateRuleToElbSG uid
 
             null
 

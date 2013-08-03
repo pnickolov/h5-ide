@@ -28,7 +28,7 @@ var constant_data = {
 	{
 		'AWS.VPC.VPC': [60, 60], //[width, height]
 		'AWS.EC2.AvailabilityZone': [20, 20],
-		'AWS.VPC.Subnet': [15, 15]
+		'AWS.VPC.Subnet': [16, 16]
 	},
 
 	GROUP_PADDING: 2,

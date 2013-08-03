@@ -46,17 +46,13 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
 
             #listen CANVAS_BEFORE_DROP
             view.on "CANVAS_BEFORE_DROP", ( event, option ) ->
-                model.onBeforeDrop event, option.src_node, option.tgt_parent
+                model.beforeDrop event, option.src_node, option.tgt_parent
                 null
 
             #listen CANVAS_NODE_CHANGE_PARENT
-            view.on 'CANVAS_NODE_CHANGE_PARENT', ( event, option ) ->
-                model.changeNodeParent event, option.src_node, option.tgt_parent
-                null
-
             #listen CANVAS_GROUP_CHANGE_PARENT
-            view.on 'CANVAS_GROUP_CHANGE_PARENT', ( event, option ) ->
-                model.changeNodeParent event, option.src_group, option.tgt_parent
+            view.on 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT', ( event, option ) ->
+                model.changeParent event, option.src_node, option.tgt_parent
                 null
 
             #listen CANVAS_OBJECT_DELETE

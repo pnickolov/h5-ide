@@ -203,6 +203,7 @@ define ['event', 'MC',
             elem = $(event.target)
             elem.parent('.elb-property-listener-main').remove()
             this.listenerItemChanged()
+            this.trigger 'REFRESH_SG_LIST'
 
         listenerCertChanged : ( event ) ->
             certNameValue = $('#elb-property-cert-name-input').val()

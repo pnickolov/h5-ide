@@ -800,7 +800,7 @@ var API_DATA_LIST = {
   AutoScaling: {
     AutoScaling: {
       DescribeAdjustmentTypes: {
-        method: '/aws/autoscaling/autoscaling:DescribeAdjustmentTypes',
+        method: '/aws/autoscaling/:DescribeAdjustmentTypes',
         param: {
           username: {
             type: 'String',
@@ -817,7 +817,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeAutoScalingGroups: {
-        method: '/aws/autoscaling/autoscaling:DescribeAutoScalingGroups',
+        method: '/aws/autoscaling/:DescribeAutoScalingGroups',
         param: {
           username: {
             type: 'String',
@@ -846,7 +846,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeAutoScalingInstances: {
-        method: '/aws/autoscaling/autoscaling:DescribeAutoScalingInstances',
+        method: '/aws/autoscaling/:DescribeAutoScalingInstances',
         param: {
           username: {
             type: 'String',
@@ -875,7 +875,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeAutoScalingNotificationTypes: {
-        method: '/aws/autoscaling/autoscaling:DescribeAutoScalingNotificationTypes',
+        method: '/aws/autoscaling/:DescribeAutoScalingNotificationTypes',
         param: {
           username: {
             type: 'String',
@@ -892,7 +892,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeLaunchConfigurations: {
-        method: '/aws/autoscaling/autoscaling:DescribeLaunchConfigurations',
+        method: '/aws/autoscaling/:DescribeLaunchConfigurations',
         param: {
           username: {
             type: 'String',
@@ -921,7 +921,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeMetricCollectionTypes: {
-        method: '/aws/autoscaling/autoscaling:DescribeMetricCollectionTypes',
+        method: '/aws/autoscaling/:DescribeMetricCollectionTypes',
         param: {
           username: {
             type: 'String',
@@ -938,7 +938,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeNotificationConfigurations: {
-        method: '/aws/autoscaling/autoscaling:DescribeNotificationConfigurations',
+        method: '/aws/autoscaling/:DescribeNotificationConfigurations',
         param: {
           username: {
             type: 'String',
@@ -967,7 +967,7 @@ var API_DATA_LIST = {
         }
       },
       DescribePolicies: {
-        method: '/aws/autoscaling/autoscaling:DescribePolicies',
+        method: '/aws/autoscaling/:DescribePolicies',
         param: {
           username: {
             type: 'String',
@@ -1000,7 +1000,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeScalingActivities: {
-        method: '/aws/autoscaling/autoscaling:DescribeScalingActivities',
+        method: '/aws/autoscaling/:DescribeScalingActivities',
         param: {
           username: {
             type: 'String',
@@ -1013,7 +1013,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeScalingProcessTypes: {
-        method: '/aws/autoscaling/autoscaling:DescribeScalingProcessTypes',
+        method: '/aws/autoscaling/:DescribeScalingProcessTypes',
         param: {
           username: {
             type: 'String',
@@ -1030,7 +1030,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeScheduledActions: {
-        method: '/aws/autoscaling/autoscaling:DescribeScheduledActions',
+        method: '/aws/autoscaling/:DescribeScheduledActions',
         param: {
           username: {
             type: 'String',
@@ -1043,7 +1043,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeTags: {
-        method: '/aws/autoscaling/autoscaling:DescribeTags',
+        method: '/aws/autoscaling/:DescribeTags',
         param: {
           username: {
             type: 'String',
@@ -1178,7 +1178,7 @@ var API_DATA_LIST = {
   CloudWatch: {
     CloudWatch: {
       GetMetricStatistics: {
-        method: '/aws/cloudwatch/cloudwatch:GetMetricStatistics',
+        method: '/aws/cloudwatch:GetMetricStatistics',
         param: {
           username: {
             type: 'String',
@@ -1191,7 +1191,7 @@ var API_DATA_LIST = {
         }
       },
       ListMetrics: {
-        method: '/aws/cloudwatch/cloudwatch:ListMetrics',
+        method: '/aws/cloudwatch:ListMetrics',
         param: {
           username: {
             type: 'String',
@@ -1204,7 +1204,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeAlarmHistory: {
-        method: '/aws/cloudwatch/cloudwatch:DescribeAlarmHistory',
+        method: '/aws/cloudwatch:DescribeAlarmHistory',
         param: {
           username: {
             type: 'String',
@@ -1217,7 +1217,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeAlarms: {
-        method: '/aws/cloudwatch/cloudwatch:DescribeAlarms',
+        method: '/aws/cloudwatch:DescribeAlarms',
         param: {
           username: {
             type: 'String',
@@ -1230,7 +1230,7 @@ var API_DATA_LIST = {
         }
       },
       DescribeAlarmsForMetric: {
-        method: '/aws/cloudwatch/cloudwatch:DescribeAlarmsForMetric',
+        method: '/aws/cloudwatch:DescribeAlarmsForMetric',
         param: {
           username: {
             type: 'String',
@@ -3727,8 +3727,118 @@ var API_DATA_LIST = {
       }
     }
   },
-  SNS: {
-
+  SNS : {
+      SNS : {
+          GetSubscriptionAttributes : {
+              method  : '/aws/sns:GetSubscriptionAttributes',
+              param   : {
+                  username : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  session_id : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  region_name : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  subscription_arn : {
+                      type   : 'String',
+                      value  : 'null'
+                  }
+              }
+          },
+          GetTopicAttributes : {
+              method  : '/aws/sns:GetTopicAttributes',
+              param   : {
+                  username : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  session_id : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  region_name : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  topic_arn : {
+                      type   : 'String',
+                      value  : 'null'
+                  }
+              }
+          },
+          ListSubscriptions : {
+              method  : '/aws/sns:ListSubscriptions',
+              param   : {
+                  username : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  session_id : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  region_name : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  next_token : {
+                      type   : 'String',
+                      value  : 'null'
+                  }
+              }
+          },
+          ListSubscriptionsByTopic : {
+              method  : '/aws/sns:ListSubscriptionsByTopic',
+              param   : {
+                  username : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  session_id : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  region_name : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  topic_arn : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  next_token : {
+                      type   : 'String',
+                      value  : 'null'
+                  }
+              }
+          },
+          ListTopics : {
+              method  : '/aws/sns:ListTopics',
+              param   : {
+                  username : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  session_id : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  region_name : {
+                      type   : 'String',
+                      value  : 'null'
+                  },
+                  next_token : {
+                      type   : 'String',
+                      value  : 'null'
+                  }
+              }
+          }
+      }
   },
   VPC: {
     ACL: {

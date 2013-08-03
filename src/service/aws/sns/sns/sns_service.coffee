@@ -68,7 +68,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     parserGetSubscriptionAttributesReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        aws_result = processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
         if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
@@ -97,7 +97,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     parserGetTopicAttributesReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        aws_result = processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
         if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
@@ -126,7 +126,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     parserListSubscriptionsReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        aws_result = processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
         if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
@@ -155,7 +155,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     parserListSubscriptionsByTopicReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        aws_result = processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
         if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
@@ -184,7 +184,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     parserListTopicsReturn = ( result, return_code, param ) ->
 
         #1.resolve return_code
-        aws_result = processAWSReturnHandler result, return_code, param
+        aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
         #2.resolve return_data when return_code is E_OK
         if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error

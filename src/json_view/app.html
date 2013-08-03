@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="jquery.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(function(){
+				$('#parent').load(function(){
+					$('#parent')[0].contentWindow.postMessage('{"abc": 456}', '*');
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<iframe src="json_view.html" style="border:0" id="parent"></iframe>
+	</body>
+</html>

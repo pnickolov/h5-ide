@@ -24,8 +24,8 @@
 	background: #FFF url('../images/ide/grid.png');
 }
 
-#screenshot_canvas_footer {
-	border-bottom: 4px solid #B25B91;
+#screenshot_canvas_header {
+	border-top: 4px solid #B25B91;
 	background-color: #272127;
 	height: 50px;
 	padding: 0 10px;

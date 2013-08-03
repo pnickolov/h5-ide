@@ -148,7 +148,7 @@ MC.canvas = {
 			'height': screen_maxY
 		});
 
-		$('#screenshot_canvas_footer').css('width', screen_maxX);
+		$('#screenshot_canvas_header').css('width', screen_maxX);
 	},
 
 	_addPad: function (point, adjust)
@@ -1221,7 +1221,7 @@ MC.canvas = {
 			var	layout_component_data = MC.canvas.data.get('layout.component'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				line_layer = document.getElementById('line_layer'),
-				connections = layout_component_data.node.[ node_id ].connection,
+				connections = layout_component_data.node[ node_id ].connection,
 				target_node_type,
 				new_connection_data,
 				connection_data,

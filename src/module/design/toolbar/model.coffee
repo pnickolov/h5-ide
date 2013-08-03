@@ -28,7 +28,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             me = this
 
             if flag is 'NEW_STACK'
-                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':false, 'is_duplicate':false, 'is_delete':false}
+                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':false, 'is_delete':false}
                 is_tab = true
 
             else if flag is 'OPEN_STACK'
@@ -305,7 +305,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     if res.status is 'success'
                         if res.thumbnail is 'true'
                             console.log 's3 url = ' + res.result
-                            ide_event.trigger ide_event.UPDATE_STACK_LIST
+                            ide_event.trigger ide_event.UPDATE_STACK_THUMBNAIL
                         else
                             me.trigger 'SAVE_PNG_COMPLETE', res.result
                     else

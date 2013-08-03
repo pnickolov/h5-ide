@@ -3,7 +3,7 @@
 #* Filename: MC.template.js
 #* Creator: Angel
 #* Description: The file to storage HTML templates
-#* Date: 20130724
+#* Date: 20130803
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -18,7 +18,7 @@ $.get(TEMPLATE_LOCATION, function (data)
 		template = {},
 		i = 1,
 		l = data.length,
-		space_label,
+		space_labels,
 		space,
 		label_length;
 

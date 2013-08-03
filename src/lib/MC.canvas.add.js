@@ -9,7 +9,9 @@ MC.canvas.add = function (flag, option, coordinate)
 		width = 100,
 		height = 100,
 		pad = 10,
-		top = 0;
+		top = 0,
+		size,
+		platform;
 
 	data = MC.canvas.data.get('component');
 	layout = MC.canvas.data.get('layout.component');
@@ -34,7 +36,7 @@ MC.canvas.add = function (flag, option, coordinate)
 		type = flag; //flag is resource type
 
 		//get parent group
-		if (option.groupUId && option.groupUId != 'Canvas' )
+		if (option.groupUId && option.groupUId !== 'Canvas')
 		{
 			var group_layout = MC.canvas_data.layout.component.group[ option.groupUId ];
 			option.group = {};
@@ -45,12 +47,14 @@ MC.canvas.add = function (flag, option, coordinate)
 					option.group.availableZoneName = group_layout.name;
 					option.group.vpcUId = $(".AWS-VPC-VPC")[0] ? $(".AWS-VPC-VPC")[0].id : '' ;
 					break;
+
 				case 'AWS.VPC.Subnet':
 					var gropu_comp = MC.canvas_data.component[ option.groupUId ];
 					option.group.subnetUId = option.groupUId;
 					option.group.availableZoneName = gropu_comp.resource.AvailabilityZone;
 					option.group.vpcUId = $(".AWS-VPC-VPC")[0].id;
 					break;
+
 				case 'AWS.VPC.VPC':
 					option.group.vpcUId = $(".AWS-VPC-VPC")[0].id;
 					break;
@@ -163,6 +167,22 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$('#az_layer').append(group);
 
+			if (create_mode)
+			{
+				platform = MC.canvas.data.get('platform');
+
+				if (platform === 'custom-vpc' || platform === 'ec2-vpc')
+				{
+					MC.canvas.add('AWS.VPC.Subnet', {
+						'name': 'subnet',
+						'groupUId': group.id
+					}, {
+						'x': coordinate.x + MC.canvas.GROUP_PADDING,
+						'y': coordinate.y + MC.canvas.GROUP_PADDING
+					});
+				}
+			}
+
 			break;
 		//***** az end *****//
 
@@ -194,12 +214,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.height = component_layout.size[1];
 			}
 
-
 			width = option.width * MC.canvas.GRID_WIDTH,
 			height = option.height * MC.canvas.GRID_HEIGHT,
 
 			$(group).append(
-
 				////1. area
 				Canvon.rectangle(0, 0, width, height).attr({
 					'class': 'group group-vpc',
@@ -398,8 +416,6 @@ MC.canvas.add = function (flag, option, coordinate)
 				eip_icon = MC.canvas.IMAGE.EIP_OFF,
 				data_eip_state = 'off'; //on | off
 
-
-
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
@@ -410,10 +426,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.Placement.AvailabilityZone = option.group.availableZoneName;
 
 				// if not kp
-				if(MC.canvas_property.kp_list.length === 0){
-
+				if (MC.canvas_property.kp_list.length === 0)
+				{
 					//default kp
-
 				}
 
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
@@ -461,7 +476,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					$.each(MC.canvas_data.component, function ( key, val ){
 
-						if(val.type === 'AWS.VPC.NetworkInterface' && val.resource.Attachment.InstanceId.split(".")[0].slice(1) === component_data.uid && val.resource.Attachment.DeviceIndex === '0'){
+						if (val.type === 'AWS.VPC.NetworkInterface' && val.resource.Attachment.InstanceId.split(".")[0].slice(1) === component_data.uid && val.resource.Attachment.DeviceIndex === '0'){
 
 							$.each(MC.canvas_data.component, function ( k, v ){
 								if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + val.uid + '.resource.NetworkInterfaceId'){
@@ -583,7 +598,6 @@ MC.canvas.add = function (flag, option, coordinate)
 					'fill': 'none'
 				}),
 
-
 				////7. eip
 				Canvon.image(eip_icon, 58, 49, 14, 17).attr({
 					'class': 'eip-status',
@@ -613,7 +627,8 @@ MC.canvas.add = function (flag, option, coordinate)
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
 
-			if(eni){
+			if (eni)
+			{
 				data[eni.uid] = eni;
 				MC.canvas.data.set('component', data);
 			}
@@ -632,19 +647,21 @@ MC.canvas.add = function (flag, option, coordinate)
 				//set deviceName
 				ami_info = MC.data.config[MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone.slice(0,-1)].ami[MC.canvas_data.component[option.instance_id].resource.ImageId];
 				device_name = null;
-				if(ami_info.virtualizationType != 'hvm'){
+				if (ami_info.virtualizationType !== 'hvm')
+				{
 					device_name = ['f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 				}
-				else{
+				else
+				{
 					device_name = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'];
 				}
 
-
 				$.each(ami_info.blockDeviceMapping, function (key, value){
-					if(key.slice(0,4) == '/dev/'){
+					if(key.slice(0,4) === '/dev/'){
 						k = key.slice(-1);
 						index = device_name.indexOf(k);
-						if(index>=0){
+						if (index >= 0)
+						{
 							device_name.splice(index, 1);
 						}
 					}
@@ -653,7 +670,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					volume_uid = value.slice(1);
 					k = MC.canvas_data.component[volume_uid].name.slice(-1);
 					index = device_name.indexOf(k);
-					if(index>=0){
+					if (index >= 0)
+					{
 						device_name.splice(index, 1);
 					}
 				});
@@ -664,9 +682,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					return null;
 				}
 
-				if(ami_info.virtualizationType != 'hvm'){
+				if (ami_info.virtualizationType !== 'hvm') {
 					option.name = '/dev/sd' + device_name[0];
-				}else{
+				} else {
 					option.name = 'xvd' + device_name[0];
 				}
 
@@ -836,7 +854,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 		//***** routetable begin *****//
 		case 'AWS.VPC.RouteTable':
-			main_icon = '';
+			var main_icon = '';
+
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.data);
@@ -1248,11 +1267,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = data[group.id];
 				option.name = component_data.name;
 
-				if(component_data.resource.Attachment.InstanceId){
+				if (component_data.resource.Attachment.InstanceId)
+				{
 					attached = 'attached'
 				}
-
-
 
 				$.each(MC.canvas_data.component, function ( k, v ){
 					if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + component_data.uid + '.resource.NetworkInterfaceId'){
@@ -1260,8 +1278,6 @@ MC.canvas.add = function (flag, option, coordinate)
 						data_eip_state = 'on'
 					}
 				});
-
-
 
 				component_layout = layout.node[group.id];
 

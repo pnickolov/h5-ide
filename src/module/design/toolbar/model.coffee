@@ -4,7 +4,7 @@
 
 define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_model', 'constant' ], (MC, Backbone, $, _, ide_event, stack_model, app_model, constant) ->
 
-    app_state_list = [ 'request', 'inprocess', 'done', 'failed' ]
+    app_state_list = [ 'Pending', 'InProcess', 'Done', 'Failed' ]
 
     #item state map
     # {app_id:{'name':name, 'state':state, 'is_running':true|false, 'is_pending':true|false, 'is_use_ami':true|false},
@@ -37,12 +37,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 is_tab = true
 
             else if flag is 'SAVE_STACK'
-                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
+                item_state_map[id] = {'name':value, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
 
-                if value
-                    delete item_state_map[value]
+            else if flag is 'CREATE_STACK'
+                delete item_state_map[id]
+                item_state_map[value.id] = {'name':value.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
 
-            else if flag is 'DELETE_STACK' and value
+            else if flag is 'DELETE_STACK'
                 delete item_state_map[id]
                 return
 
@@ -50,9 +51,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 is_running = false
                 is_pending = false
 
-                if MC.canvas_data.state == 'Stopped'
+                if MC.canvas_data.state == constant.APP_STATE.APP_STATE_STOPPED
                     is_running = false
-                else if MC.canvas_data.state == 'Running'
+                else if MC.canvas_data.state == constant.APP_STATE.APP_STATE_RUNNING
                     is_running = true
                 else
                     is_running = false
@@ -64,35 +65,35 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 is_tab = true
 
             else if flag is 'START_APP'
-                if value is 'done'
-                    item_state_map[id].state = 'Running'
+                if value is constant.OPS_STATE.OPS_STATE_DONE
+                    item_state_map[id].state = constant.APP_STATE.APP_STATE_RUNNING
                     item_state_map[id].is_running = true
                     item_state_map[id].is_pending = false
-                else if value is 'failed'
-                    item_state_map[id].state = 'Stopped'
+                else if value is constant.OPS_STATE.OPS_STATE_FAILED
+                    item_state_map[id].state = constant.APP_STATE.APP_STATE_STOPPED
                     item_state_map[id].is_running = false
                     item_state_map[id].is_pending = false
                 else
                     item_state_map[id].is_pending = true
 
             else if flag is 'STOP_APP'
-                if value is 'done'
-                    item_state_map[id].state = 'Stopped'
+                if value is constant.OPS_STATE.OPS_STATE_DONE
+                    item_state_map[id].state = constant.APP_STATE.APP_STATE_STOPPED
                     item_state_map[id].is_running = false
                     item_state_map[id].is_pending = false
-                else if value is 'failed'
-                    item_state_map[id].state = 'Running'
+                else if value is constant.OPS_STATE.OPS_STATE_FAILED
+                    item_state_map[id].state = constant.APP_STATE.APP_STATE_RUNNING
                     item_state_map[id].is_running = true
                     item_state_map[id].is_pending = false
                 else
                     item_state_map[id].is_pending = true
 
             else if flag is 'TERMINATE_APP'
-                if value is 'done'
+                if value is constant.OPS_STATE.OPS_STATE_DONE
                     delete app_state_map[id]
                     return
-                else if value is 'failed'
-                    item_state_map[id].state = 'Stopped'
+                else if value is constant.OPS_STATE.OPS_STATE_FAILED
+                    item_state_map[id].state = constant.APP_STATE.APP_STATE_STOPPED
                     item_state_map[id].is_running = false
                     item_state_map[id].is_pending = false
                 else
@@ -127,8 +128,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             null
 
         #save stack
-        saveStack : (region, id, data) ->
+        saveStack : (data) ->
             me = this
+
+            region = data.region
+            id = data.id
+            name = data.name
 
             if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
@@ -141,19 +146,23 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         console.log 'save stack successfully'
 
                         #update initial data
-                        MC.canvas_property.original_json = JSON.stringify( MC.canvas_data )
+                        MC.canvas_property.original_json = JSON.stringify( data )
 
-                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', MC.canvas_data.name
+                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', name
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
                         #call save png
-                        me.savePNG true
+                        me.savePNG true, id
 
                         #set toolbar flag
-                        me.setFlag id, 'SAVE_STACK'
+                        me.setFlag id, 'SAVE_STACK', name
+
+                        id
                     else
                         me.trigger 'TOOLBAR_STACK_SAVE_FAILED'
+
+                        null
 
             else    #new
                 stack_model.create { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
@@ -166,34 +175,43 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         console.log 'create stack successfully'
 
                         new_id = result.resolved_data
+                        #temp
                         MC.canvas_data.id = new_id
 
                         #update initial data
-                        MC.canvas_property.original_json = JSON.stringify( MC.canvas_data )
+                        MC.canvas_property.original_json = JSON.stringify( data )
 
-                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', MC.canvas_data.name
+                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', name
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK'
 
-                        ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, MC.canvas_data.name + ' - stack'
+                        ide_event.trigger ide_event.UPDATE_TABBAR, id, name + ' - stack'
 
-                        MC.data.stack_list[MC.canvas_data.region].push MC.canvas_data.name
+                        MC.data.stack_list[region].push name
 
                         #call save png
-                        me.savePNG true
+                        me.savePNG true, new_id
 
                         #set toolbar flag
-                        me.setFlag new_id, 'SAVE_STACK', id
+                        me.setFlag id, 'CREATE_STACK', data
+
+                        new_id
 
                     else
                         me.trigger 'TOOLBAR_STACK_SAVE_FAILED'
 
+                        null
+
         #duplicate
-        duplicateStack : (region, id, new_name, name) ->
+        duplicateStack : (new_name, data) ->
             me = this
 
-            if me.isChanged()
-                me.saveStack()
+            region = data.region
+            id = data.id
+            name = data.name
+            if me.isChanged(data)
+                if not me.saveStack(data)
+                   return
 
             stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, new_name, name
             stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
@@ -204,18 +222,22 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     console.log 'save as stack successfully'
 
                     #update stack name list
-                    if new_name not in MC.data.stack_list[MC.canvas_data.region]
-                        MC.data.stack_list[MC.canvas_data.region].push new_name
+                    if new_name not in MC.data.stack_list[region]
+                        MC.data.stack_list[region].push new_name
 
                     #trigger event
-                    me.trigger 'TOOLBAR_STACK_DUPLICATE_SUCCESS'
+                    me.trigger 'TOOLBAR_STACK_DUPLICATE_SUCCESS', name
                     ide_event.trigger ide_event.UPDATE_STACK_LIST
                 else
-                    me.trigger 'TOOLBAR_STACK_DUPLICATE_FAILED'
+                    me.trigger 'TOOLBAR_STACK_DUPLICATE_FAILED', name
 
         #delete
-        deleteStack : (region, id, name) ->
+        deleteStack : (data) ->
             me = this
+
+            region = data.region
+            id = data.id
+            name = data.name
 
             stack_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
             stack_model.once 'STACK_REMOVE_RETURN', (result) ->
@@ -226,25 +248,29 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     console.log 'send delete stack successful message'
 
                     #update stack name list
-                    if MC.canvas_data.name in MC.data.stack_list[MC.canvas_data.region]
-                        index = MC.data.stack_list[MC.canvas_data.region].indexOf(MC.canvas_data.name)
-                        MC.data.stack_list[MC.canvas_data.region].splice(index, 1)
+                    if name in MC.data.stack_list[region]
+                        index = MC.data.stack_list[region].indexOf(name)
+                        MC.data.stack_list[region].splice(index, 1)
 
                     #trigger event
-                    me.trigger 'TOOLBAR_STACK_DELETE_SUCCESS'
-                    ide_event.trigger ide_event.STACK_DELETE, MC.canvas_data.name, MC.canvas_data.id
+                    me.trigger 'TOOLBAR_STACK_DELETE_SUCCESS', name
+                    ide_event.trigger ide_event.STACK_DELETE, name, id
 
                     me.setFlag id, 'DELETE_STACK'
 
                 else
-                    me.trigger 'TOOLBAR_STACK_DELETE_FAILED'
+                    me.trigger 'TOOLBAR_STACK_DELETE_FAILED', name
 
         #run
-        runStack : ( region, id, app_name ) ->
+        runStack : ( app_name, data) ->
             me = this
 
-            if me.isChanged
-                me.saveStack()
+            id = data.id
+            region = data.region
+            if me.isChanged(data) or id.indexOf('stack-') isnt 0
+                id = me.saveStack(region, id, data)
+                if not id
+                    return
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
             stack_model.run { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
@@ -252,7 +278,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'STACK_RUN_RETURN'
                 console.log result
 
-                me.handleRequest result, 'RUN_STACK', MC.canvas_data.region, app_name
+                me.handleRequest result, 'RUN_STACK', region, id, app_name
 
         #zoomin
         zoomIn : () ->
@@ -284,7 +310,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             null
 
-        savePNG : ( is_thumbnail ) ->
+        savePNG : ( is_thumbnail, id ) ->
             console.log 'savePNG'
             me = this
             #
@@ -296,7 +322,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     'session_id' : $.cookie( 'session_id' ),
                     'thumbnail'  : is_thumbnail,
                     'json_data'  : MC.canvas.layout.save(),
-                    'stack_id'   : MC.canvas_data.id
+                    'stack_id'   : id
                 },
                 success : ( res ) ->
                     console.log 'phantom callback'
@@ -312,18 +338,22 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         #
             }
 
-        isChanged : () ->
+        isChanged : (data) ->
             #check if there are changes
             ori_data = MC.canvas_property.original_json
-            new_data = JSON.stringify( MC.canvas_data )
+            new_data = JSON.stringify( data )
 
             if ori_data != new_data
                 return true
             else
                 return false
 
-        startApp : (region, id, name) ->
+        startApp : (data) ->
             me = this
+
+            region = data.region
+            id = data.id
+            name = data.name
 
             app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
             app_model.once 'APP_START_RETURN', (result) ->
@@ -332,8 +362,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 me.handleRequest result, 'START_APP', region, id, name
 
-        stopApp : (region, id, name) ->
+        stopApp : (data) ->
             me = this
+
+            region = data.region
+            id = data.id
+            name = data.name
 
             app_model.stop { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
             app_model.once 'APP_STOP_RETURN', (result) ->
@@ -342,8 +376,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 me.handleRequest result, 'STOP_APP', region, id, name
 
-        terminateApp : (region, id, name) ->
+        terminateApp : (data) ->
             me = this
+
+            region = data.region
+            id = data.id
+            name = data.name
 
             #terminate : ( src, username, session_id, region_name, app_id, app_name=null )
             app_model.terminate { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
@@ -378,22 +416,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     console.log 'request id:' + req_id
                     query = ws.collection.request.find({id:req_id})
                     handle = query.observeChanges {
-                        changed : (idx, req) ->
+                        changed : (idx, dag) ->
+                            req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
+                            req = req_list[0]
 
                             console.log 'request ' + req.data + "," + req.state
                             handle.stop()
-
-                            is_success = false
 
                             if req.state == "Done"
                                 if flag == 'RUN_STACK'
                                     me.trigger 'TOOLBAR_STACK_RUN_SUCCESS', name
                                 else if flag == 'START_APP'
                                     me.trigger 'TOOLBAR_APP_START_SUCCESS', name
-                                    MC.canvas_data.state = 'Running'
                                 else if flag == 'STOP_APP'
                                     me.trigger 'TOOLBAR_APP_STOP_SUCCESS', name
-                                    MC.canvas_data.state = 'Stopped'
                                 else if flag == 'TERMINATE_APP'
                                     me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS', name
 
@@ -401,9 +437,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                     if app_name in MC.data.app_list[region]
                                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(app_name), 1
 
-                                is_success = true
                                 #push event
                                 ide_event.trigger ide_event.UPDATE_APP_LIST, null
+
+                                if flag is 'TERMINATE_APP'
+                                    ide_event.trigger ide_event.APP_TERMINATE, name, id
+
+                                if flag isnt 'RUN_STACK'
+                                    me.setFlag id, flag, req.state
 
                             else if req.state == "Failed"
                                 if flag == 'RUN_STACK'
@@ -419,11 +460,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                 else if flag == 'TERMINATE_APP'
                                     me.trigger 'TOOLBAR_APP_TERMINATE_FAILED', name
 
-                            if flag is 'TERMINATE_APP' and is_success
-                                ide_event.trigger ide_event.APP_TERMINATE, MC.canvas_data.name, MC.canvas_data.id
-                            else if flag isnt 'RUN_STACK'
-                                #rid = MC.data.websocket.collection.request.find({'_id':id}).fetch()[0].rid
-                                me.setFlag id, flag, if is_success then 'done' else 'failed'
+                                if flag is 'TERMINATE_APP' and is_success
+                                    ide_event.trigger ide_event.APP_TERMINATE, name, id
+
+                                if flag isnt 'RUN_STACK'
+                                    me.setFlag id, flag, req.state
 
                     }
 
@@ -438,13 +479,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 else if flag == 'START_APP'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED', name
-                    MC.canvas_data.state = 'Stopped'
+                    #MC.canvas_data.state = 'Stopped'
                 else if flag == 'STOP_APP'
                     me.trigger 'TOOLBAR_APP_STOP_REQUEST_FAILED', name
-                    MC.canvas_data.state = 'Running'
+                    #MC.canvas_data.state = 'Running'
                 else if flag == 'TERMINATE_APP'
                     me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', name
-                    MC.canvas_data.state = 'Stopped'
+                    #MC.canvas_data.state = 'Stopped'
 
                 if flag isnt 'RUN_STACK'
                     me.setFlag id, flag, 'failed'

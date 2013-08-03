@@ -72,7 +72,7 @@ define [ 'MC', 'event',
                     notification 'error', 'Repeated app name.'
                     return
 
-                me.trigger 'TOOLBAR_RUN_CLICK', MC.canvas_data.region, MC.canvas_data.id, app_name
+                me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
                 modal.close()
 
                 MC.data.app_list[MC.canvas_data.region].push app_name
@@ -92,7 +92,7 @@ define [ 'MC', 'event',
                 notification 'error', 'Repeated stack name.'
             else
                 MC.canvas_data.name = name
-                this.trigger 'TOOLBAR_SAVE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data
+                this.trigger 'TOOLBAR_SAVE_CLICK', MC.canvas_data
 
             true
 
@@ -108,7 +108,7 @@ define [ 'MC', 'event',
             else if new_name in MC.data.stack_list[MC.canvas_data.region]
                 notification 'error', 'Repeated stack name.'
             else
-                this.trigger 'TOOLBAR_DUPLICATE_CLICK', MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
+                this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name, MC.canvas_data
 
             true
 
@@ -120,7 +120,7 @@ define [ 'MC', 'event',
                 console.log 'clickDeleteIcon'
                 modal.close()
 
-                me.trigger 'TOOLBAR_DELETE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                me.trigger 'TOOLBAR_DELETE_CLICK', MC.canvas_data
 
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'
@@ -205,7 +205,7 @@ define [ 'MC', 'event',
 
             target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
-                me.trigger 'TOOLBAR_STOP_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                me.trigger 'TOOLBAR_STOP_CLICK', MC.canvas_data
                 modal.close()
 
         clickStartApp : (event) ->
@@ -214,7 +214,7 @@ define [ 'MC', 'event',
 
             target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
-                me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data
                 modal.close()
 
         clickTerminateApp : (event) ->
@@ -224,7 +224,7 @@ define [ 'MC', 'event',
 
             target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
-                me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data
                 modal.close()
 
     }

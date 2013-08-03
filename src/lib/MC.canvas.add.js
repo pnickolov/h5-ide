@@ -10,7 +10,8 @@ MC.canvas.add = function (flag, option, coordinate)
 		height = 100,
 		pad = 10,
 		top = 0,
-		size;
+		size,
+		platform;
 
 	data = MC.canvas.data.get('component');
 	layout = MC.canvas.data.get('layout.component');
@@ -35,7 +36,7 @@ MC.canvas.add = function (flag, option, coordinate)
 		type = flag; //flag is resource type
 
 		//get parent group
-		if (option.groupUId && option.groupUId != 'Canvas' )
+		if (option.groupUId && option.groupUId !== 'Canvas')
 		{
 			var group_layout = MC.canvas_data.layout.component.group[ option.groupUId ];
 			option.group = {};
@@ -165,6 +166,22 @@ MC.canvas.add = function (flag, option, coordinate)
 			MC.canvas.data.set('layout.component.group', layout.group);
 
 			$('#az_layer').append(group);
+
+			if (create_mode)
+			{
+				platform = MC.canvas.data.get('platform');
+
+				if (platform === 'custom-vpc' || platform === 'ec2-vpc')
+				{
+					MC.canvas.add('AWS.VPC.Subnet', {
+						'name': 'subnet',
+						'groupUId': group.id
+					}, {
+						'x': coordinate.x + MC.canvas.GROUP_PADDING,
+						'y': coordinate.y + MC.canvas.GROUP_PADDING
+					});
+				}
+			}
 
 			break;
 		//***** az end *****//

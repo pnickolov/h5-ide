@@ -3510,6 +3510,7 @@ MC.canvas.event.siderbarDrag = {
 				if (match_place.is_matched)
 				{
 					node_option.groupUId = match_place.target;
+					
 					MC.canvas.add(node_type, node_option, coordinate);
 				}
 			}

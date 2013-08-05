@@ -772,6 +772,7 @@ MC.canvas = {
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			direction,
 			layout_connection_data,
 			from_port,
 			to_port,
@@ -815,144 +816,222 @@ MC.canvas = {
 			{
 				// Special connection
 				if (
-					// AWS.VPC.Subnet to AWS.VPC.RouteTable
-					(from_type === 'AWS.VPC.Subnet' && to_type === 'AWS.VPC.RouteTable') ||
-					(to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable') ||
+					connection_option.direction
+					// // AWS.VPC.Subnet to AWS.VPC.RouteTable
+					// (from_type === 'AWS.VPC.Subnet' && to_type === 'AWS.VPC.RouteTable') ||
+					// (to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable') ||
 
-					// AWS.EC2.Instance to AWS.VPC.NetworkInterface
-					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.VPC.NetworkInterface' && from_target_port === 'instance-sg' && to_target_port === 'eni-sg') ||
-					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.VPC.NetworkInterface' && to_target_port === 'instance-sg' && from_target_port === 'eni-sg') ||
+					// // AWS.EC2.Instance to AWS.VPC.NetworkInterface
+					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.VPC.NetworkInterface' && from_target_port === 'instance-sg' && to_target_port === 'eni-sg') ||
+					// (to_type === 'AWS.EC2.Instance' && from_type === 'AWS.VPC.NetworkInterface' && to_target_port === 'instance-sg' && from_target_port === 'eni-sg') ||
 
-					// AWS.EC2.Instance to AWS.ELB
-					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-out') ||
-					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-out') ||
+					// // AWS.EC2.Instance to AWS.ELB
+					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-out') ||
+					// (to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-out') ||
 
-					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-in') ||
-					(to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-in') ||
+					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-in') ||
+					// (to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-in') ||
 
 
-					// AWS.EC2.Instance to AWS.EC2.Instance
-					(from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
+					// // AWS.EC2.Instance to AWS.EC2.Instance
+					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
 				)
 				{
-					if (from_type === 'AWS.VPC.Subnet')
-					{
-						from_port = from_node.find('.port-' + from_target_port);
-						from_port_offset = from_port[0].getBoundingClientRect();
+					direction = connection_option.direction;
 
-						if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
-						{
-							to_port = to_node.find('.port-rtb-src-bottom');
-						}
-						else
-						{
-							to_port = to_node.find('.port-rtb-src-top');
-						}
-
-						to_port_offset = to_port[0].getBoundingClientRect();
-					}
-
-					if (to_type === 'AWS.VPC.Subnet')
-					{
-						to_port = to_node.find('.port-' + to_target_port);
-						to_port_offset = to_port[0].getBoundingClientRect();
-
-						if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
-						{
-							from_port = from_node.find('.port-rtb-src-bottom');
-						}
-						else
-						{
-							from_port = from_node.find('.port-rtb-src-top');
-						}
-
-						from_port_offset = from_port[0].getBoundingClientRect();
-					}
-
-					if (from_type === 'AWS.VPC.NetworkInterface')
+					if (direction.from && direction.to)
 					{
 						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
 						{
-							from_port = from_node.find('.port-eni-sg-left');
-							to_port = to_node.find('.port-instance-sg-right');
+							from_port = from_node.find('.port-' + from_target_port + '-left');
+							to_port = to_node.find('.port-' + to_target_port + '-right');
 						}
 						else
 						{
-							from_port = from_node.find('.port-eni-sg-right');
-							to_port = to_node.find('.port-instance-sg-left');
+							from_port = from_node.find('.port-' + from_target_port + '-right');
+							to_port = to_node.find('.port-' + to_target_port + '-left');
 						}
-
-						from_port_offset = from_port[0].getBoundingClientRect();
-						to_port_offset = to_port[0].getBoundingClientRect();
 					}
-
-					if (to_type === 'AWS.VPC.NetworkInterface')
+					else
 					{
-						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						if (direction.from)
 						{
-							from_port = from_node.find('.port-instance-sg-left');
-							to_port = to_node.find('.port-eni-sg-right');
-						}
-						else
-						{
-							from_port = from_node.find('.port-instance-sg-right');
-							to_port = to_node.find('.port-eni-sg-left');
+							to_port = to_node.find('.port-' + to_target_port);
+							to_port_offset = to_port[0].getBoundingClientRect();
+
+							if (direction.from === 'vertical')
+							{
+								if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
+								{
+									from_port = from_node.find('.port-' + from_target_port + '-bottom');
+								}
+								else
+								{
+									from_port = from_node.find('.port-' + from_target_port + '-top');
+								}
+							}
+
+							if (direction.from === 'horizontal')
+							{
+								if (to_port_offset.left > from_node[0].getBoundingClientRect().left)
+								{
+									from_port = from_node.find('.port-' + from_target_port + '-left');
+								}
+								else
+								{
+									from_port = from_node.find('.port-' + from_target_port + '-right');
+								}
+							}
 						}
 
-						from_port_offset = from_port[0].getBoundingClientRect();
-						to_port_offset = to_port[0].getBoundingClientRect();
+						if (direction.to)
+						{
+							from_port = from_node.find('.port-' + from_target_port);
+							from_port_offset = from_port[0].getBoundingClientRect();
+
+							if (direction.to === 'vertical')
+							{
+								if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
+								{
+									to_port = to_node.find('.port-' + to_target_port + '-bottom');
+								}
+								else
+								{
+									to_port = to_node.find('.port-' + to_target_port + '-top');
+								}
+							}
+
+							if (direction.to === 'horizontal')
+							{
+								if (from_port_offset.left > to_node[0].getBoundingClientRect().left)
+								{
+									to_port = to_node.find('.port-' + to_target_port + '-left');
+								}
+								else
+								{
+									to_port = to_node.find('.port-' + to_target_port + '-right');
+								}
+							}
+						}
 					}
+					// if (from_type === 'AWS.VPC.Subnet')
+					// {
+					// 	from_port = from_node.find('.port-' + from_target_port);
+					// 	from_port_offset = from_port[0].getBoundingClientRect();
 
-					if (from_type === 'AWS.ELB')
-					{
-						from_port = from_node.find('.port-' + from_target_port);
+					// 	if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
+					// 	{
+					// 		to_port = to_node.find('.port-rtb-src-bottom');
+					// 	}
+					// 	else
+					// 	{
+					// 		to_port = to_node.find('.port-rtb-src-top');
+					// 	}
 
-						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-						{
-							to_port = to_node.find('.port-instance-sg-right');
-						}
-						else
-						{
-							to_port = to_node.find('.port-instance-sg-left');
-						}
+					// 	to_port_offset = to_port[0].getBoundingClientRect();
+					// }
 
-						from_port_offset = from_port[0].getBoundingClientRect();
-						to_port_offset = to_port[0].getBoundingClientRect();
-					}
+					// if (to_type === 'AWS.VPC.Subnet')
+					// {
+					// 	to_port = to_node.find('.port-' + to_target_port);
+					// 	to_port_offset = to_port[0].getBoundingClientRect();
 
-					if (to_type === 'AWS.ELB')
-					{
-						to_port = to_node.find('.port-' + to_target_port);
+					// 	if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
+					// 	{
+					// 		from_port = from_node.find('.port-rtb-src-bottom');
+					// 	}
+					// 	else
+					// 	{
+					// 		from_port = from_node.find('.port-rtb-src-top');
+					// 	}
 
-						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-						{
-							from_port = from_node.find('.port-instance-sg-left');
-						}
-						else
-						{
-							from_port = from_node.find('.port-instance-sg-right');
-						}
+					// 	from_port_offset = from_port[0].getBoundingClientRect();
+					// }
 
-						from_port_offset = from_port[0].getBoundingClientRect();
-						to_port_offset = to_port[0].getBoundingClientRect();
-					}
+					// if (from_type === 'AWS.VPC.NetworkInterface')
+					// {
+					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+					// 	{
+					// 		from_port = from_node.find('.port-eni-sg-left');
+					// 		to_port = to_node.find('.port-instance-sg-right');
+					// 	}
+					// 	else
+					// 	{
+					// 		from_port = from_node.find('.port-eni-sg-right');
+					// 		to_port = to_node.find('.port-instance-sg-left');
+					// 	}
 
-					if (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
-					{
-						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-						{
-							from_port = from_node.find('.port-instance-sg-left');
-							to_port = to_node.find('.port-instance-sg-right');
-						}
-						else
-						{
-							from_port = from_node.find('.port-instance-sg-right');
-							to_port = to_node.find('.port-instance-sg-left');
-						}
+					// 	from_port_offset = from_port[0].getBoundingClientRect();
+					// 	to_port_offset = to_port[0].getBoundingClientRect();
+					// }
 
-						from_port_offset = from_port[0].getBoundingClientRect();
-						to_port_offset = to_port[0].getBoundingClientRect();
-					}
+					// if (to_type === 'AWS.VPC.NetworkInterface')
+					// {
+					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+					// 	{
+					// 		from_port = from_node.find('.port-instance-sg-left');
+					// 		to_port = to_node.find('.port-eni-sg-right');
+					// 	}
+					// 	else
+					// 	{
+					// 		from_port = from_node.find('.port-instance-sg-right');
+					// 		to_port = to_node.find('.port-eni-sg-left');
+					// 	}
+
+					// 	from_port_offset = from_port[0].getBoundingClientRect();
+					// 	to_port_offset = to_port[0].getBoundingClientRect();
+					// }
+
+					// if (from_type === 'AWS.ELB')
+					// {
+					// 	from_port = from_node.find('.port-' + from_target_port);
+
+					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+					// 	{
+					// 		to_port = to_node.find('.port-instance-sg-right');
+					// 	}
+					// 	else
+					// 	{
+					// 		to_port = to_node.find('.port-instance-sg-left');
+					// 	}
+
+					// 	from_port_offset = from_port[0].getBoundingClientRect();
+					// 	to_port_offset = to_port[0].getBoundingClientRect();
+					// }
+
+					// if (to_type === 'AWS.ELB')
+					// {
+					// 	to_port = to_node.find('.port-' + to_target_port);
+
+					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+					// 	{
+					// 		from_port = from_node.find('.port-instance-sg-left');
+					// 	}
+					// 	else
+					// 	{
+					// 		from_port = from_node.find('.port-instance-sg-right');
+					// 	}
+
+					// 	from_port_offset = from_port[0].getBoundingClientRect();
+					// 	to_port_offset = to_port[0].getBoundingClientRect();
+					// }
+
+					// if (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
+					// {
+					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+					// 	{
+					// 		from_port = from_node.find('.port-instance-sg-left');
+					// 		to_port = to_node.find('.port-instance-sg-right');
+					// 	}
+					// 	else
+					// 	{
+					// 		from_port = from_node.find('.port-instance-sg-right');
+					// 		to_port = to_node.find('.port-instance-sg-left');
+					// 	}
+
+					from_port_offset = from_port[0].getBoundingClientRect();
+				 	to_port_offset = to_port[0].getBoundingClientRect();
+					// }
 				}
 				else
 				{

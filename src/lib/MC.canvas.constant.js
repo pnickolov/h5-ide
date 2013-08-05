@@ -202,6 +202,12 @@ var constant_data = {
 				type: 'sg',
 				from: 'instance-sg',
 				to: 'instance-sg',
+
+				direction: {
+					from: 'horizontal',
+					to: 'horizontal'
+				},
+
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -373,6 +379,11 @@ var constant_data = {
 				type: 'association',
 				from: 'rtb-src',
 				to: 'subnet-assoc-out',
+
+				direction: {
+					from: 'vertical'
+				},
+
 				relation: 'multiple',
 				color: '#d8d7d6'
 			},

@@ -1751,7 +1751,6 @@ a.sidebar-hider {
 	background: #76777c;
 }
 .resource-item:active {
-	display: none;
 /*	padding: 4px;
 	-webkit-box-shadow: 0 2px 4px rgba(73,75,82,.75);
 	-moz-box-shadow: 0 2px 4px rgba(73,75,82,.75);

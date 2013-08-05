@@ -1,8 +1,8 @@
 #############################
 #  View Mode for canvas
 #############################
-define [ 'constant',
-		'backbone', 'jquery', 'underscore', 'UI.modal' ], ( constant ) ->
+define [ 'constant', 'event'
+		'backbone', 'jquery', 'underscore', 'UI.modal' ], ( constant, ide_event ) ->
 
 	CanvasModel = Backbone.Model.extend {
 
@@ -329,18 +329,8 @@ define [ 'constant',
 				if value.type == resource_type.AWS_VPC_RouteTable
 					this._removeGatewayIdFromRT key, component.uid
 
-			$.each $(".resource-item[data-type='#{resource_type.AWS_VPC_InternetGateway}']"), ( idx, item ) ->
-				data = $(item).data()
-				tmp  =
-					enable  : true
-					tooltip : "Drag and drop to canvas to create a new Internet Gateway."
-
-				$(item)
-					.data(tmp)
-					.removeClass('resource-disabled')
-
-				return false
-
+			# Enable IGW in resource panel
+			ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, resource_type.AWS_VPC_InternetGateway
 
 			null
 
@@ -355,18 +345,9 @@ define [ 'constant',
 				else if value.type == resource_type.AWS_VPC_VPNConnection and MC.extractID( value.resource.VpnGatewayId ) == component.uid
 					delete mc.canvas_data.component[ key ]
 
-			$.each $(".resource-item[data-type='#{resource_type.AWS_VPC_VPNGateway}']"), ( idx, item ) ->
 
-				data = $(item).data()
-				tmp  =
-					enable : true
-					tooltip: "Drag and drop to canvas to create a new VPN Gateway."
-
-				$(item)
-					.data(tmp)
-					.removeClass('resource-disabled')
-
-				return false
+			# Enable VGW in resource panel
+			ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, resource_type.AWS_VPC_VPNGateway
 
 			null
 
@@ -451,22 +432,11 @@ define [ 'constant',
 
 			# Update resource panel, so that deleted AZ can be drag again
 			# Consider this as bad coding pattern, because it's MC.canvas's job to do that
-			$.each $(".resource-item[data-type='#{constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone}']"), ( idx, item ) ->
+			# Enable AZ in resource panel
+			fiter = ( data ) ->
+				data.option.name is component.name
 
-				$item = $(item)
-				data  = $item.data()
-				if data.option.name isnt component.name
-					return
-
-				tmp =
-					enable : true
-					tooltip: "Drag and drop to canvas"
-
-				$(item)
-					.data(tmp)
-					.removeClass('resource-disabled')
-					.addClass("tooltip")
-				return false
+			ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone, filter
 			null
 
 		beforeDel_Subnet : ( component ) ->
@@ -940,6 +910,10 @@ define [ 'constant',
 
 				when resource_type.AWS_VPC_InternetGateway
 					MC.aws.elb.setAllELBSchemeAsInternal()
+					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
+
+				when resource_type.AWS_VPC_VPNGateway
+					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 
 				when resource_type.AWS_VPC_Subnet
 					# Connect to main RT

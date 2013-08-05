@@ -489,8 +489,8 @@ define [ 'constant', 'event'
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
 
 				#hide sg port of eni when delete line
-				MC.canvas.display portMap['eni-attach'], 'eni_sg_left', false
-				MC.canvas.display portMap['eni-attach'], 'eni_sg_right', false
+				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', false
+				#MC.canvas.display portMap['eni-attach'], 'eni_sg_right', false
 				return
 
 			# IGW <==> RouteTable
@@ -764,8 +764,8 @@ define [ 'constant', 'event'
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
 
 				#show sg port of eni when create line
-				MC.canvas.display portMap['eni-attach'], 'eni_sg_left', true
-				MC.canvas.display portMap['eni-attach'], 'eni_sg_right', true
+				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', true
+				#MC.canvas.display portMap['eni-attach'], 'eni_sg_right', true
 
 
 			# Subnet <==> RouteTable

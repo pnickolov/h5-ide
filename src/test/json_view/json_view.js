@@ -1,4 +1,4 @@
-define(['jquery', 'event'], function($, ide_event){
+define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 	if(!$('#json_view_frame').length) {
 		$('body').append('<iframe src="test/json_view/json_view.html" ' +
 			'style="border:0;position:absolute;z-index:9999999;display:none;top:20px;bottom:0;left:20px;"' +
@@ -18,7 +18,15 @@ define(['jquery', 'event'], function($, ide_event){
 		if(compObj) {
 			jsonViewFrame[0].contentWindow.postMessage(JSON.stringify(compObj), '*');
 		}else{
-			jsonViewFrame[0].contentWindow.postMessage('{"none": "none"}', '*');
+			//show all invisible component json
+			invisibleCompAry = [];
+			_.each(MC.canvas_data.component, function(compObj){
+				if(compObj.type == 'AWS.EC2.KeyPair' || compObj.type == 'AWS.EC2.SecurityGroup' || compObj.type == 'AWS.EC2.EIP' || compObj.type == 'AWS.VPC.NetworkInterface' ||
+					compObj.type == 'AWS.VPC.DhcpOptions' || compObj.type == 'AWS.VPC.NetworkAcl' || compObj.type == 'AWS.IAM.ServerCertificate'){
+					invisibleCompAry.push(compObj);
+				}
+			});
+			jsonViewFrame[0].contentWindow.postMessage(JSON.stringify(invisibleCompAry), '*');
 			//jsonViewFrame.hide();
 		}
 	});

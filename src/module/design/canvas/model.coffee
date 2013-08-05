@@ -888,7 +888,6 @@ define [ 'constant', 'event'
 					MC.aws.elb.init(uid)
 
 				when resource_type.AWS_VPC_InternetGateway
-					MC.aws.elb.setAllELBSchemeAsInternal()
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 
 				when resource_type.AWS_VPC_VPNGateway

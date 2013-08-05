@@ -63,9 +63,16 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
     #-----------------------------------------------
     test_GetMetricStatistics = () ->
         asyncTest "/aws/cloudwatch cloudwatch.GetMetricStatistics()", () ->
+            metric_name = null
+            namespace = null
+            start_time = null
+            end_time = null
+            period = null
+            unit = null
+            statistics = null
+            dimensions = null
 
-
-            cloudwatch_service.GetMetricStatistics {sender:this}, username, session_id, ( aws_result ) ->
+            cloudwatch_service.GetMetricStatistics {sender:this}, username, session_id, region_name, metric_name, namespace, start_time, end_time, period, unit, statistics, dimensions, ( aws_result ) ->
                 if !aws_result.is_error
                 #GetMetricStatistics succeed
                     data = aws_result.resolved_data
@@ -73,18 +80,21 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
                 else
                 #GetMetricStatistics failed
                     ok false, "GetMetricStatistics() failed" + aws_result.error_message
-            
+
                 start()
-                
+
 
     #-----------------------------------------------
     #Test ListMetrics()
     #-----------------------------------------------
     test_ListMetrics = () ->
         asyncTest "/aws/cloudwatch cloudwatch.ListMetrics()", () ->
+            metric_name = null
+            namespace = null
+            dimensions = null
+            next_token = null
 
-
-            cloudwatch_service.ListMetrics {sender:this}, username, session_id, ( aws_result ) ->
+            cloudwatch_service.ListMetrics {sender:this}, username, session_id, region_name, metric_name, namespace, dimensions, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #ListMetrics succeed
                     data = aws_result.resolved_data
@@ -92,7 +102,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
                 else
                 #ListMetrics failed
                     ok false, "ListMetrics() failed" + aws_result.error_message
-            
+
                 start()
                 test_GetMetricStatistics()
 
@@ -101,9 +111,14 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
     #-----------------------------------------------
     test_DescribeAlarmHistory = () ->
         asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarmHistory()", () ->
+            alarm_name = null
+            start_date = null
+            end_date = null
+            history_item_type = null
+            max_records = null
+            next_token = null
 
-
-            cloudwatch_service.DescribeAlarmHistory {sender:this}, username, session_id, ( aws_result ) ->
+            cloudwatch_service.DescribeAlarmHistory {sender:this}, username, session_id, region_name, alarm_name, start_date, end_date, history_item_type, max_records, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeAlarmHistory succeed
                     data = aws_result.resolved_data
@@ -111,7 +126,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
                 else
                 #DescribeAlarmHistory failed
                     ok false, "DescribeAlarmHistory() failed" + aws_result.error_message
-            
+
                 start()
                 test_ListMetrics()
 
@@ -120,9 +135,14 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
     #-----------------------------------------------
     test_DescribeAlarms = () ->
         asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarms()", () ->
+            alarm_names = null
+            alarm_name_prefix = null
+            action_prefix = null
+            state_value = null
+            max_records = null
+            next_token = null
 
-
-            cloudwatch_service.DescribeAlarms {sender:this}, username, session_id, ( aws_result ) ->
+            cloudwatch_service.DescribeAlarms {sender:this}, username, session_id, region_name, alarm_names, alarm_name_prefix, action_prefix, state_value, max_records, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeAlarms succeed
                     data = aws_result.resolved_data
@@ -130,7 +150,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
                 else
                 #DescribeAlarms failed
                     ok false, "DescribeAlarms() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeAlarmHistory()
 
@@ -139,9 +159,14 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
     #-----------------------------------------------
     test_DescribeAlarmsForMetric = () ->
         asyncTest "/aws/cloudwatch cloudwatch.DescribeAlarmsForMetric()", () ->
+            metric_name = null
+            namespace = null
+            dimension_names = null
+            period = null
+            statistic = null
+            unit = null
 
-
-            cloudwatch_service.DescribeAlarmsForMetric {sender:this}, username, session_id, ( aws_result ) ->
+            cloudwatch_service.DescribeAlarmsForMetric {sender:this}, username, session_id, region_name, metric_name, namespace, dimension_names, period, statistic, unit, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeAlarmsForMetric succeed
                     data = aws_result.resolved_data
@@ -149,10 +174,9 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'cloudwatch_service'],
                 else
                 #DescribeAlarmsForMetric failed
                     ok false, "DescribeAlarmsForMetric() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeAlarms()
 
 
     test_DescribeAlarmsForMetric()
-

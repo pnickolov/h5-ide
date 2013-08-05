@@ -48,7 +48,12 @@ define [ 'jquery',
                 model.setELBName uid, value
 
             view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
-                model.setScheme uid, value
+                elbComponent = model.setScheme uid, value
+
+                # Trigger an event to tell canvas that we want an IGW
+                if value isnt 'internal'
+                    ide_event.trigger ide_event.NEED_IGW, elbComponent
+
 
             view.on 'HEALTH_PROTOCOL_SELECTED', ( value ) ->
                 model.setHealthProtocol uid, value
@@ -99,7 +104,7 @@ define [ 'jquery',
             sglist_main.loadModule model
 
     loadAppModule = ( uid ) ->
-            
+
         require [ './module/design/property/elb/app_view',
                   './module/design/property/elb/app_model',
                   './module/design/property/sglist/main'

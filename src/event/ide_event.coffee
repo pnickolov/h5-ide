@@ -37,7 +37,9 @@ define [ 'underscore', 'backbone' ], () ->
         RELOAD_AZ           : 'RELOAD_AZ'
 
         # User Input Change Event
-        #CHANGE_AZ           : 'CHANGE_AZ'
+        NEED_IGW              : 'NEED_IGW'
+        ENABLE_RESOURCE_ITEM  : 'ENABLE_RESOURCE_ITEM'
+        DISABLE_RESOURCE_ITEM : 'DISABLE_RESOURCE_ITEM'
 
         CANVAS_CREATE_LINE  : 'CANVAS_CREATE_LINE'
         CANVAS_DELETE_OBJECT: 'CANVAS_DELETE_OBJECT'

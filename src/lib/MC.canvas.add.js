@@ -432,6 +432,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
 				component_data.resource.SecurityGroupId.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
+				component_data.resource.SecurityGroup.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupName");
 				MC.canvas_property.sg_list[0].member.push(group.id);
 
 				// if subnet

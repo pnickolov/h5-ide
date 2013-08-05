@@ -173,8 +173,22 @@ define [ 'MC' ], ( MC ) ->
 
 		return realIPAry
 
+	getInstanceDefaultENI = (instanceUID) ->
+
+		eniComp = null
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface' and
+			compObj.resource.Attachment.DeviceIndex is '0' and
+			compObj.resource.Attachment.InstanceId is ('@' + instanceUID + '.resource.InstanceId')
+				eniComp = compObj
+				return
+			null
+
+		return eniComp
+
 	#public
 	getAvailableIPInCIDR : getAvailableIPInCIDR
 	getAllOtherIPInCIDR : getAllOtherIPInCIDR
 	saveIPList : saveIPList
 	generateIPList : generateIPList
+	getInstanceDefaultENI : getInstanceDefaultENI

@@ -37,6 +37,7 @@ define [ 'underscore', 'backbone' ], () ->
         RELOAD_AZ           : 'RELOAD_AZ'
 
         # User Input Change Event
+        NEED_IGW              : 'NEED_IGW'
         ENABLE_RESOURCE_ITEM  : 'ENABLE_RESOURCE_ITEM'
         DISABLE_RESOURCE_ITEM : 'DISABLE_RESOURCE_ITEM'
 

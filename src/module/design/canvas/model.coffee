@@ -232,12 +232,15 @@ define [ 'constant', 'event'
 				else
 					# Confimation
 					self = this
-					template = MC.template.canvasDeleteConfirm( {
-						name    : component.name
-						content : result
-					})
+					template = MC.template.canvasOpConfirm {
+						operation : "delete #{component.name}"
+						content   : result
+						color     : "red"
+						proceed   : "Delete"
+						cancel    : "Cancel"
+					}
 					modal template, true
-					$("#canvas-delete-confirm").one "click", ()->
+					$("#canvas-op-confirm").one "click", ()->
 						# Do the delete operation
 						opts = $.extend true, { force : true }, option
 						self.deleteObject null, opts
@@ -654,9 +657,25 @@ define [ 'constant', 'event'
 
 					return false
 
+
 		createLine : ( event, line_id ) ->
 
-			me = this
+			result = this.doCreateLine line_id
+			if typeof result is "string"
+				notification "error", result
+
+			# We don't need this line
+			# Currently need to remove the line here.
+			# Because the event cannot be prevented.
+			if typeof result is "string" or result is false
+				if event and event.preventDefault
+					event.preventDefault()
+
+				MC.canvas.remove $("#" + line_id)[0]
+
+
+
+		doCreateLine : ( line_id ) ->
 
 			line_option = MC.canvas.lineTarget line_id
 
@@ -680,7 +699,7 @@ define [ 'constant', 'event'
 
 
 			# ELB <==> Subnet
-			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
+			else if portMap['elb-assoc'] and portMap['subnet-assoc-in']
 				elbUid       = portMap['elb-assoc']
 				deleteE_SLen = MC.aws.elb.addSubnetToELB elbUid, portMap['subnet-assoc-in']
 
@@ -700,7 +719,7 @@ define [ 'constant', 'event'
 					break
 
 			# Instance <==> Eni
-			if portMap['instance-attach'] and portMap['eni-attach']
+			else if portMap['instance-attach'] and portMap['eni-attach']
 
 				# check whether instance has position to add one more eni
 				instance_component 	= 	MC.canvas_data.component[portMap['instance-attach']]
@@ -715,11 +734,10 @@ define [ 'constant', 'event'
 
 				total_device_index  = 	[0...16]
 
-				$.each MC.canvas_data.component, ( uid, comp ) ->
+				for key, value of MC.canvas_data.component
+					if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and portMap['instance-attach'] == MC.extractID( value.resource.Attachment.InstanceId )
 
-					if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == portMap['instance-attach']
-
-						device_index_int = parseInt(comp.resource.Attachment.DeviceIndex, 10)
+						device_index_int = parseInt(value.resource.Attachment.DeviceIndex, 10)
 
 						if device_index_int in total_device_index
 
@@ -728,176 +746,134 @@ define [ 'constant', 'event'
 						current_eni_number += 1
 
 						if current_eni_number >= max_eni_number
-
 							reach_max = true
+							break
 
-							return false
 
 				if reach_max
+					return "#{instance_component.name}'s Instance Type: #{instance_component.resource.InstanceType} only support at most #{max_eni_number} Network Interfaces (including the primary)."
 
-					me.trigger 'ENI_REACH_MAX'
+				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
 
-					MC.canvas.remove $("#" + line_id)[0]
+				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
 
-				else
-
-					MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
-
-					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
-
-					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
+				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
 
 
 			# Subnet <==> RouteTable
-			if portMap['subnet-assoc-out'] and portMap['rtb-src']
+			else if portMap['subnet-assoc-out'] and portMap['rtb-src']
 
 				rt_uid = portMap['rtb-src']
 
 				# add association
-				if MC.canvas_data.component[rt_uid].resource.AssociationSet.length == 0 or MC.canvas_data.component[rt_uid].resource.AssociationSet[0].Main != 'true'
+				assoSet = MC.canvas_data.component[rt_uid].resource.AssociationSet
 
-					asso = {}
+				if assoSet.length == 0 or "" + assoSet[0].Main != 'true'
+					assoSet.push {
+						SubnetId     : "@#{portMap['subnet-assoc-out']}.resource.SubnetId"
+						Main         : "false"
+						RouteTableId : ""
+						RouteTableAssociationId : ""
+					}
 
-					asso.SubnetId = '@' + portMap['subnet-assoc-out'] + '.resource.SubnetId'
+				# remove old connection and data
+				for line_uid, comp of MC.canvas_data.layout.connection
+					if line_uid == line_id
+						continue
 
-					asso.Main = 'false'
+					map = {}
+					for tgt_comp_uid, tgt_comp_port of comp.target
+						map[ tgt_comp_port ] = tgt_comp_uid
 
-					asso.RouteTableId = ''
+					if not map['subnet-assoc-out'] or map['subnet-assoc-out'] isnt portMap['subnet-assoc-out']
+						continue
 
-					asso.RouteTableAssociationId = ''
 
-					MC.canvas_data.component[rt_uid].resource.AssociationSet.push asso
+					# remove component data
+					old_rt_uid = map['rtb-src']
+					assoSet = MC.canvas_data.component[old_rt_uid].resource.AssociationSet
 
-				#remove old connection and data
-				$.each MC.canvas_data.layout.connection, ( line_uid, comp ) ->
+					if not assoSet.length or "" + assoSet[0].Main == 'true'
+						break
 
-					if line_uid != line_id
+					for asso, index in assoSet
+						if MC.extractID( asso.SubnetId ) == map['subnet-assoc-out']
+							assoSet.splice index, 1
+							break
 
-						map = {}
-
-						$.each comp.target, ( component_uid, connection_port ) ->
-
-							map[connection_port] = component_uid
-
-							null
-
-						if map['subnet-assoc-out'] and map['subnet-assoc-out'] == portMap['subnet-assoc-out']
-
-							# remove component data and
-
-							preview_rt_uid = null
-
-							if map['rtb-src'] then preview_rt_uid = map['rtb-src'] else preview_rt_uid = map['rtb-src']
-
-							if MC.canvas_data.component[preview_rt_uid].resource.AssociationSet != 0 and MC.canvas_data.component[preview_rt_uid].resource.AssociationSet[0].Main != 'true'
-
-								$.each MC.canvas_data.component[preview_rt_uid].resource.AssociationSet, ( index, assoset ) ->
-
-									if assoset.SubnetId.split('.')[0][1...] == map['subnet-assoc-out']
-
-										MC.canvas_data.component[preview_rt_uid].resource.AssociationSet.splice index, 1
-
-										return false
-
-							MC.canvas.remove $("#" + line_uid)[0]
-
-							return false
+					MC.canvas.remove $("#" + line_uid)[0]
+					break
 
 			# IGW <==> RouteTable
-			if portMap['igw-tgt'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['igw-tgt'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
-				rt_uid = null
-
-				if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
-
-				igw_route = {
-					'DestinationCidrBlock'		:	'0.0.0.0/0',
-					'GatewayId'					:	'@' + portMap['igw-tgt'] + '.resource.InternetGatewayId',
-					'InstanceId'				:	'',
-					'InstanceOwnerId'			:	'',
-					'NetworkInterfaceId'		:	'',
-					'State'						:	'',
-					'Origin'					:	''
+				rt_uid = if portMap['rtb-tgt-left'] then portMap['rtb-tgt-left'] else portMap['rtb-tgt-right']
+				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
+					'DestinationCidrBlock' : "0.0.0.0/0",
+					'GatewayId'            : "@#{portMap['igw-tgt']}.resource.InternetGatewayId",
+					'InstanceId'           : "",
+					'InstanceOwnerId'      : "",
+					'NetworkInterfaceId'   : "",
+					'State'                : "",
+					'Origin'               : ""
 				}
-				MC.canvas_data.component[rt_uid].resource.RouteSet.push igw_route
 
 
 			# Instance <==> RouteTable
-			if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
-				rt_uid = null
-
-				if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
-
-				instance_route = {
-					'DestinationCidrBlock'		:	'0.0.0.0/0',
-					'GatewayId'					:	'',
-					'InstanceId'				:	'@' + portMap['instance-sg'] + '.resource.InstanceId',
-					'InstanceOwnerId'			:	'',
-					'NetworkInterfaceId'		:	'',
-					'State'						:	'',
-					'Origin'					:	''
+				rt_uid = if portMap['rtb-tgt-left'] then portMap['rtb-tgt-left'] else portMap['rtb-tgt-right']
+				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
+					'DestinationCidrBlock' : "0.0.0.0/0",
+					'GatewayId'            : "",
+					'InstanceId'           : "@#{portMap['instance-sg']}.resource.InstanceId",
+					'InstanceOwnerId'      : "",
+					'NetworkInterfaceId'   : "",
+					'State'                : "",
+					'Origin'               : ""
 				}
-
-				MC.canvas_data.component[rt_uid].resource.RouteSet.push instance_route
-
 
 			# VGW <==> RouteTable
-			if portMap['vgw-tgt'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['vgw-tgt'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
-				rt_uid = null
-
-				if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
-
-				vgw_route = {
-					'DestinationCidrBlock'		:	'0.0.0.0/0',
-					'GatewayId'					:	'@' + portMap['vgw-tgt'] + '.resource.VpnGatewayId',
-					'InstanceId'				:	'',
-					'InstanceOwnerId'			:	'',
-					'NetworkInterfaceId'		:	'',
-					'State'						:	'',
-					'Origin'					:	''
+				rt_uid = if portMap['rtb-tgt-left'] then portMap['rtb-tgt-left'] else portMap['rtb-tgt-right']
+				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
+					'DestinationCidrBlock' : "0.0.0.0/0",
+					'GatewayId'            : "@#{portMap['vgw-tgt']}.resource.VpnGatewayId",
+					'InstanceId'           : "",
+					'InstanceOwnerId'      : "",
+					'NetworkInterfaceId'   : "",
+					'State'                : "",
+					'Origin'               : ""
 				}
-
-				MC.canvas_data.component[rt_uid].resource.RouteSet.push vgw_route
 
 			# Eni <==> RouteTable
-			if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
-				rt_uid = null
-
-				if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
-
-				instance_route = {
-					'DestinationCidrBlock'		:	'0.0.0.0/0',
-					'GatewayId'					:	'',
-					'InstanceId'				:	'',
-					'InstanceOwnerId'			:	'',
-					'NetworkInterfaceId'		:	'@' + portMap['eni-sg'] + '.resource.NetworkInterfaceId',
-					'State'						:	'',
-					'Origin'					:	''
+				rt_uid = if portMap['rtb-tgt-left'] then portMap['rtb-tgt-left'] else portMap['rtb-tgt-right']
+				MC.canvas_data.component[rt_uid].resource.RouteSet.push = {
+					'DestinationCidrBlock' : "0.0.0.0/0",
+					'GatewayId'            : "",
+					'InstanceId'           : "",
+					'InstanceOwnerId'      : "",
+					'NetworkInterfaceId'   : "@#{portMap['eni-sg']}.resource.NetworkInterfaceId",
+					'State'                : "",
+					'Origin'               : ""
 				}
 
-				MC.canvas_data.component[rt_uid].resource.RouteSet.push instance_route
-
 			# VGW <==> CGW
-			if portMap['vgw-vpn'] and portMap['cgw-vpn']
+			else if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
 
 			for key, value of portMap
 				if key.indexOf('sg') >= 0
 					this.trigger 'CREATE_SG_CONNECTION', line_id
-			#if (portMap['instance-sg-in'] and portMap['instance-sg-out']) or (portMap['eni-sg-in'] and portMap['instance-sg-out']) or (portMap['instance-sg-in'] and portMap['eni-sg-out']) or (portMap['eni-sg-in'] and portMap['eni-sg-out'])
-
-			#	this.trigger 'CREATE_SG_CONNECTION', line_id
-
 			null
 
 
 		#after drag component from resource panel to canvas
 		createComponent : ( event, uid ) ->
-
 			resource_type = constant.AWS_RESOURCE_TYPE
 
 			componentType = MC.canvas_data.component[uid]
@@ -1085,115 +1061,129 @@ define [ 'constant', 'event'
 			lines
 
 		setEip : ( uid, state ) ->
-
 			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
 				if state == 'on'
-
-					$.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
-						if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.InstanceId.split('.')[0][1...] == uid
-
-							delete MC.canvas_data.component[comp_uid]
-
-							return false
+					for comp_uid, comp of MC.canvas_data.component
+						if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP or MC.extractID( comp.resource.InstanceId ) isnt uid
+							delete 	MC.canvas_data.component[comp_uid]
+							break
 
 				else if state == 'off'
 
 					eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
+					eip_json.uid = MC.guid()
+					eip_json.resource.InstanceId = "@#{uid}.resource.InstanceId"
 
-					gen_uid = MC.guid()
+					data = MC.canvas.data.get('component')
+					data[ eip_json.uid ] = eip_json
+					MC.canvas.data.set('component', data)
 
-					eip_json.resource.InstanceId = '@' + uid + '.resource.InstanceId'
+				return
 
-					eip_json.uid = gen_uid
+
+			## ## ## ## ## ##
+			# For VPC stack
+			existing_eip_ref = []
+			instanceId = ""
+
+			# collect all reference
+			for comp_uid, comp of MC.canvas_data.component
+				if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress
+					existing_eip_ref.push comp.resource.PrivateIpAddress
+
+			# Find ENI
+			eni = MC.canvas_data.component[uid]
+
+			if eni.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+				eni = null
+				for comp_uid, comp of MC.canvas_data
+					if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+						continue
+
+					if "" + comp.resource.Attachment.DeviceIndex isnt "0"
+						continue
+
+					if MC.extractID( comp.resource.Attachment.InstanceId ) isnt uid
+						continue
+
+					eni = comp
+					break
+
+				instanceId = "@#{uid}.resource.InstanceId"
+
+
+			ip_number = eni.resource.PrivateIpAddressSet.length
+
+			_.map [0...ip_number], ( index ) ->
+
+				eip_ref = "@#{eni.uid}.resource.PrivateIpAddressSet.#{index}.PrivateIpAddress"
+
+				if state == 'off' and (eip_ref not in existing_eip_ref)
+
+					eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
+
+					eip_json.resource.InstanceId = instanceId
+					eip_json.resource.NetworkInterfaceId = "@#{eni.uid}.resource.NetworkInterfaceId"
+					eip_json.uid = MC.guid()
+					eip_json.resource.PrivateIpAddress = eip_ref
+					eip_json.resource.Domain = 'vpc'
 
 					data = MC.canvas.data.get('component')
 
-					data[gen_uid] = eip_json
+					data[eip_json.uid] = eip_json
 
 					MC.canvas.data.set('component', data)
 
+				else if state == 'on' and eip_ref in existing_eip_ref
+
+					for k, c of MC.canvas_data.component
+						if c.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and c.resource.PrivateIpAddress == eip_ref
+							delete MC.canvas_data.component[k]
+							break
+
+			if state == 'off'
+				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
+				MC.canvas.update uid,'eip','eip_status', 'on'
+
+				# Ask the user the add IGW
+				this.askToAddIGW 'EIP'
+
 			else
+				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
+				MC.canvas.update uid,'eip','eip_status', 'off'
 
-				existing_eip_ref = []
-				instanceId = ""
+		askToAddIGW : ( component ) ->
 
-				# collect all reference
-				$.each MC.canvas_data.component, ( comp_uid, comp ) ->
+			resource_type = constant.AWS_RESOURCE_TYPE
 
-					if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress
+			for uid, comp of MC.canvas_data.component
+				if comp.type == resource_type.AWS_VPC_InternetGateway
+					hasIGW = true
+					break
 
-						existing_eip_ref.push comp.resource.PrivateIpAddress
+			if hasIGW
+				return
 
-				eni = null
+			if component.type == resource_type.AWS_ELB
+				res = "internet-facing Load Balancer"
+			else if component.type == resource_type.AWS_EC2_EIP
+				res = "Elastic IP"
 
-				if MC.canvas_data.component[uid].type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-
-					$.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
-						if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid and comp.resource.Attachment.DeviceIndex == '0'
-
-							eni = comp
-
-						null
-
-					instanceId = '@' + uid + '.resource.InstanceId'
-
-				else
-
-					eni = MC.canvas_data.component[uid]
-
-				ip_number = eni.resource.PrivateIpAddressSet.length
-
-				_.map [0...ip_number], ( index ) ->
-
-					eip_ref = '@' + eni.uid + '.resource.PrivateIpAddressSet.' + index + '.PrivateIpAddress'
-
-					if state == 'off' and (eip_ref not in existing_eip_ref)
-
-						eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
-
-						gen_uid = MC.guid()
-
-						eip_json.resource.InstanceId = instanceId
-
-						eip_json.resource.NetworkInterfaceId = '@' + eni.uid + '.resource.NetworkInterfaceId'
-
-						eip_json.uid = gen_uid
-
-						eip_json.resource.PrivateIpAddress = eip_ref
-
-						eip_json.resource.Domain = 'vpc'
-
-						data = MC.canvas.data.get('component')
-
-						data[gen_uid] = eip_json
-
-						MC.canvas.data.set('component', data)
-
-					else if state == 'on' and eip_ref in existing_eip_ref
-
-						$.each MC.canvas_data.component, ( k, c ) ->
-
-							if c.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and c.resource.PrivateIpAddress == eip_ref
-
-								delete MC.canvas_data.component[k]
-
-								return false
-
-
-				if state == 'off'
-
-					MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
-
-					MC.canvas.update uid,'eip','eip_status', 'on'
-
-				else
-					MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
-
-					MC.canvas.update uid,'eip','eip_status', 'off'
-
+			# Confimation
+			self = this
+			template = MC.template.canvasOpConfirm {
+				operation : "add Internet Gateway"
+				content   : "Automatically add an Internet Gateway to allow this #{res} to be addressable?"
+				color     : "blue"
+				proceed   : "Add"
+				cancel    : "Don't Add"
+			}
+			modal template, true
+			$("#canvas-op-confirm").one "click", ()->
+				modal.close()
+				# TODO : Added a IGW
+				throw new Error("Adding IGW is not implemented")
 	}
 
 	model = new CanvasModel()

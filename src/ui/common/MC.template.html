@@ -62,17 +62,17 @@
        </div>
 </div>
 
-<!-- canvasDeleteConfirm -->
+<!-- canvasOpConfirm -->
 <div style="width:420px">
-  <div class="modal-header"> <h3>Confirm to delete {{name}}</h3><i class="modal-close">&times;</i> </div>
+  <div class="modal-header"> <h3>Confirm to {{operation}}</h3><i class="modal-close">&times;</i> </div>
   <div class="modal-body">
     <div class="modal-text-wraper"> <div class="modal-center-align-helper">
       <div class="modal-text">{{content}}</div>
     </div> </div>
   </div>
   <div class="modal-footer">
-    <button id="canvas-delete-confirm" class="btn btn-red">Delete</button>
-    <button class="btn modal-close btn-silver">Cancel</button>
+    <button id="canvas-op-confirm" class="btn btn-{{color}}">{{proceed}}</button>
+    <button class="btn modal-close btn-silver">{{cancel}}</button>
   </div>
 </div>
 

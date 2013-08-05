@@ -49,9 +49,6 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
             # Dispatch the event to model
             this.trigger event.type, event, option
 
-        showEniReachMax : () ->
-            notification 'info', 'The Instance you selected has attach too many eni, please unattach one or change the instance type.'
-
         save : () ->
             #save by ctrl+s
             ide_event.trigger ide_event.CANVAS_SAVE

@@ -229,13 +229,13 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
 
 
         #DescribeScalingActivities api (define function)
-        DescribeScalingActivities : ( src, username, session_id ) ->
+        DescribeScalingActivities : ( src, username, session_id, region_name, group_name=null, activity_ids=null, max_records=null, next_token=null ) ->
 
             me = this
 
             src.model = me
 
-            autoscaling_service.DescribeScalingActivities src, username, session_id, ( aws_result ) ->
+            autoscaling_service.DescribeScalingActivities src, username, session_id, region_name, group_name, activity_ids, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeScalingActivities succeed
@@ -281,13 +281,13 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
 
 
         #DescribeScheduledActions api (define function)
-        DescribeScheduledActions : ( src, username, session_id ) ->
+        DescribeScheduledActions : ( src, username, session_id, region_name, group_name=null, action_names=null, start_time=null, end_time=null, max_records=null, next_token=null ) ->
 
             me = this
 
             src.model = me
 
-            autoscaling_service.DescribeScheduledActions src, username, session_id, ( aws_result ) ->
+            autoscaling_service.DescribeScheduledActions src, username, session_id, region_name, group_name, action_names, start_time, end_time, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeScheduledActions succeed
@@ -330,7 +330,6 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
 
                 #dispatch event (dispatch event whenever login succeed or failed)
                 me.trigger 'ASL__DESC_TAGS_RETURN', aws_result
-
 
 
     }

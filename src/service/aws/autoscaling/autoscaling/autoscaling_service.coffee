@@ -444,9 +444,9 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		send_request "DescribePolicies", src, [ username, session_id, region_name, group_name, policy_names, max_records, next_token ], parserDescribePoliciesReturn, callback
 		true
 
-	#def DescribeScalingActivities(self, username, session_id, region_name,
-	DescribeScalingActivities = ( src, username, session_id, callback ) ->
-		send_request "DescribeScalingActivities", src, [ username, session_id ], parserDescribeScalingActivitiesReturn, callback
+	#def DescribeScalingActivities(self, username, session_id, region_name, group_name=None, activity_ids=None, max_records=None, next_token=None):
+	DescribeScalingActivities = ( src, username, session_id, region_name, group_name=null, activity_ids=null, max_records=null, next_token=null, callback ) ->
+		send_request "DescribeScalingActivities", src, [ username, session_id, region_name, group_name, activity_ids, max_records, next_token ], parserDescribeScalingActivitiesReturn, callback
 		true
 
 	#def DescribeScalingProcessTypes(self, username, session_id, region_name):
@@ -454,15 +454,16 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		send_request "DescribeScalingProcessTypes", src, [ username, session_id, region_name ], parserDescribeScalingProcessTypesReturn, callback
 		true
 
-	#def DescribeScheduledActions(self, username, session_id, region_name,
-	DescribeScheduledActions = ( src, username, session_id, callback ) ->
-		send_request "DescribeScheduledActions", src, [ username, session_id ], parserDescribeScheduledActionsReturn, callback
+	#def DescribeScheduledActions(self, username, session_id, region_name, group_name=None, action_names=None, start_time=None, end_time=None, max_records=None, next_token=None):
+	DescribeScheduledActions = ( src, username, session_id, region_name, group_name=null, action_names=null, start_time=null, end_time=null, max_records=null, next_token=null, callback ) ->
+		send_request "DescribeScheduledActions", src, [ username, session_id, region_name, group_name, action_names, start_time, end_time, max_records, next_token ], parserDescribeScheduledActionsReturn, callback
 		true
 
 	#def DescribeTags(self, username, session_id, region_name, filters=None, max_records=None, next_token=None):
 	DescribeTags = ( src, username, session_id, region_name, filters=null, max_records=null, next_token=null, callback ) ->
 		send_request "DescribeTags", src, [ username, session_id, region_name, filters, max_records, next_token ], parserDescribeTagsReturn, callback
 		true
+
 
 
 	#############################################################

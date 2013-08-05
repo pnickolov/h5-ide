@@ -21,13 +21,13 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
 
         ###### api ######
         #GetMetricStatistics api (define function)
-        GetMetricStatistics : ( src, username, session_id ) ->
+        GetMetricStatistics : ( src, username, session_id, region_name, metric_name, namespace, start_time, end_time, period, unit, statistics, dimensions=null ) ->
 
             me = this
 
             src.model = me
 
-            cloudwatch_service.GetMetricStatistics src, username, session_id, ( aws_result ) ->
+            cloudwatch_service.GetMetricStatistics src, username, session_id, region_name, metric_name, namespace, start_time, end_time, period, unit, statistics, dimensions, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #GetMetricStatistics succeed
@@ -47,13 +47,13 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
 
 
         #ListMetrics api (define function)
-        ListMetrics : ( src, username, session_id ) ->
+        ListMetrics : ( src, username, session_id, region_name, metric_name=null, namespace=null, dimensions=null, next_token=null ) ->
 
             me = this
 
             src.model = me
 
-            cloudwatch_service.ListMetrics src, username, session_id, ( aws_result ) ->
+            cloudwatch_service.ListMetrics src, username, session_id, region_name, metric_name, namespace, dimensions, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #ListMetrics succeed
@@ -73,13 +73,13 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
 
 
         #DescribeAlarmHistory api (define function)
-        DescribeAlarmHistory : ( src, username, session_id ) ->
+        DescribeAlarmHistory : ( src, username, session_id, region_name, alarm_name=null, start_date=null, end_date=null, history_item_type=null, max_records=null, next_token=null ) ->
 
             me = this
 
             src.model = me
 
-            cloudwatch_service.DescribeAlarmHistory src, username, session_id, ( aws_result ) ->
+            cloudwatch_service.DescribeAlarmHistory src, username, session_id, region_name, alarm_name, start_date, end_date, history_item_type, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeAlarmHistory succeed
@@ -99,13 +99,13 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
 
 
         #DescribeAlarms api (define function)
-        DescribeAlarms : ( src, username, session_id ) ->
+        DescribeAlarms : ( src, username, session_id, region_name, alarm_names=null, alarm_name_prefix=null, action_prefix=null, state_value=null, max_records=null, next_token=null ) ->
 
             me = this
 
             src.model = me
 
-            cloudwatch_service.DescribeAlarms src, username, session_id, ( aws_result ) ->
+            cloudwatch_service.DescribeAlarms src, username, session_id, region_name, alarm_names, alarm_name_prefix, action_prefix, state_value, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeAlarms succeed
@@ -125,13 +125,13 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
 
 
         #DescribeAlarmsForMetric api (define function)
-        DescribeAlarmsForMetric : ( src, username, session_id ) ->
+        DescribeAlarmsForMetric : ( src, username, session_id, region_name, metric_name, namespace, dimension_names=null, period=null, statistic=null, unit=null ) ->
 
             me = this
 
             src.model = me
 
-            cloudwatch_service.DescribeAlarmsForMetric src, username, session_id, ( aws_result ) ->
+            cloudwatch_service.DescribeAlarmsForMetric src, username, session_id, region_name, metric_name, namespace, dimension_names, period, statistic, unit, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeAlarmsForMetric succeed

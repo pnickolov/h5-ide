@@ -30,7 +30,6 @@ define [ 'jquery',
 				'./module/design/property/az/main',
 				'./module/design/property/subnet/main',
 				'./module/design/property/vpc/main',
-				'./module/design/property/dhcp/main',
 				'./module/design/property/rtb/main',
 				'./module/design/property/igw/main',
 				'./module/design/property/vgw/main',
@@ -38,7 +37,7 @@ define [ 'jquery',
 				'./module/design/property/vpn/main',
 				'./module/design/property/eni/main',
 				'./module/design/property/acl/main'
-		], ( View, model, stack_main, instance_main, sg_main, sgrule_main, volume_main, elb_main, az_main, subnet_main, vpc_main, dhcp_main, rtb_main, igw_main, vgw_main, cgw_main, vpn_main, eni_main, acl_main ) ->
+		], ( View, model, stack_main, instance_main, sg_main, sgrule_main, volume_main, elb_main, az_main, subnet_main, vpc_main, rtb_main, igw_main, vgw_main, cgw_main, vpn_main, eni_main, acl_main ) ->
 
 			current_uid = null
 			tab_type = null

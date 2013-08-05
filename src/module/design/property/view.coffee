@@ -34,6 +34,7 @@ define [ './temp_view',
             $( '#property-panel' ).toggleClass 'hiden'
             $( event ).children().first().toggleClass('icon-double-angle-left').toggleClass('icon-double-angle-right')
             $( '#canvas-panel' ).toggleClass 'right-hiden'
+            false
 
         refresh : ->
             console.log 'refresh'

@@ -1,189 +1,169 @@
 <header class="sidebar-title" id='property-title'>{{name}}</header>
 
-<article class="fixedaccordion accordion-default" data-sub="43" id="instance-accordion">
-	<div class="accordion-group  expanded" >
-		<div class="fixedaccordion-head" id="instance-property-detail" data-uid="{{component.uid}}">
-			Instance Details
-		</div>
-		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-instance">
-			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-			<div class="item-wrap scroll-content">
-				<div class="property-control-group clearfix">
-					<label class="left" for="property-instance-name" >Name</label>
-					<span class="required-input right">Required</span>
-					<input class="input instance-name"  type="text" required="required" value="{{ name }}" name="property-instance-name" id="property-instance-name"/>
-				</div>
-				<div class="property-control-group clearfix">
-					<label>AMI</label>
-					<div id="property-ami" class="ami-wrap clearfix secondary-panel" data-secondarypanel-data='{{{instance_ami_property}}}'>
-						<img class="icon-property-instance-ami" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
-						<div class="property-label">{{instance_ami.name}}</div>
-					</div>
-				</div>
-				<div class="property-control-group clearfix">
-					<label>Instance Type</label>
-					<div class="selectbox selectbox-mega" id="instance-type-select">
-						<div class="selection"></div>
-						<ul class="dropdown">
-							{{#each instance_type}}
-							<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
-								<div class="main  truncate">{{main}}</div>
-								<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
-							</li>
+<article id="instance-property-detail" data-uid="{{component.uid}}">
+
+	<div class="option-group-head">Instance Details</div>
+	<div class="option-group expanded">
+		<section class="property-control-group">
+			<label class="left" for="property-instance-name" >Name</label>
+			<span class="required-input right">Required</span>
+			<input class="input instance-name"  type="text" required="required" value="{{ name }}" name="property-instance-name" id="property-instance-name"/>
+		</section>
+		<section class="property-control-group">
+			<label>AMI</label>
+			<div id="property-ami" class="ami-wrap clearfix secondary-panel" data-secondarypanel-data='{{{instance_ami_property}}}'>
+				<img class="icon-property-instance-ami" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
+				<div class="property-label">{{instance_ami.name}}</div>
+			</div>
+		</section>
+		<section class="property-control-group">
+			<label>Instance Type</label>
+			<div class="selectbox selectbox-mega" id="instance-type-select">
+				<div class="selection"></div>
+				<ul class="dropdown">
+					{{#each instance_type}}
+					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
+						<div class="main  truncate">{{main}}</div>
+						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
+		</section>
+		<section class="property-control-group">
+			<div class="checkbox">
+				{{#if checkbox_display.ebsOptimized}}
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" checked="true" name="ebs-optimized" />
+				{{else}}
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
+				{{/if}}
+				<label for="property-instance-ebs-optimized"></label>
+			</div>
+			<label for="property-instance-ebs-optimized" >EBS Optimized</label>
+		</section>
+		{{# if component.resource.VpcId}}
+		<section class="property-control-group">
+			<label>Tenancy</label>
+			<div class="selectbox" id="tenancy-select">
+				<div class="selection">{{#if checkbox_display.tenancy}}Default{{else}}Dedicated{{/if}}</div>
+				<ul class="dropdown" tabindex="-1">
+					{{#if checkbox_display.tenancy}}
+					<li class="item selected" data-id="default">Default</li>
+					<li class="item" data-id="dedicated">Delicated</li>
+					{{else}}
+					<li class="item" data-id="default">Default</li>
+					<li class="item selected" data-id="dedicated">Dedicated</li>
+					{{/if}}
+				</ul>
+			</div>
+		</section>
+		{{/if}}
+		<section class="property-control-group">
+			<label>Key Pair</label>
+			<div class="selectbox" id="keypair-select">
+				<div class="selection"></div>
+				<div style="height: 120px; width:228px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<ul tabindex="-1">
+							{{#each keypair}}
+							<li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}">{{name}}</li>
 							{{/each}}
 						</ul>
 					</div>
 				</div>
-				<div class="property-control-group clearfix">
-					<div class="checkbox">
-						{{#if checkbox_display.ebsOptimized}}
-						<input id="property-instance-ebs-optimized" type="checkbox" value="None" checked="true" name="ebs-optimized" />
-						{{else}}
-						<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
-						{{/if}}
-						<label for="property-instance-ebs-optimized"></label>
-					</div>
-					<label for="property-instance-ebs-optimized" >EBS Optimized</label>
-				</div>
-				{{# if component.resource.VpcId}}
-				<div class="property-control-group clearfix">
-					<label>Tenancy</label>
-					<div class="selectbox" id="tenancy-select">
-						<div class="selection">{{#if checkbox_display.tenancy}}Default{{else}}Dedicated{{/if}}</div>
-						<ul class="dropdown" tabindex="-1">
-							{{#if checkbox_display.tenancy}}
-							<li class="item selected" data-id="default">Default</li>
-							<li class="item" data-id="dedicated">Delicated</li>
-							{{else}}
-							<li class="item" data-id="default">Default</li>
-							<li class="item selected" data-id="dedicated">Dedicated</li>
-							{{/if}}
-						</ul>
-					</div>
-				</div>
-				{{/if}}
-				<div class="property-control-group clearfix">
-					<label>Key Pair</label>
-					<div class="selectbox" id="keypair-select">
-						<div class="selection"></div>
-						<div style="height: 120px; width:228px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
-							<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-							<div class="scroll-content">
-								<ul tabindex="-1">
-									{{#each keypair}}
-									<li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}">{{name}}</li>
-									{{/each}}
-								</ul>
-							</div>
-						</div>
 
-						<div class="editor">
-							<a href="#" class="editbtn">Create New Key Pair</a>
-							<div class="edit">
-								<button class="btn btn-blue">OK</button>
-								<span class="fitfloat">
-									<input class="input" type="text" placeholder="Key Pair Name" />
-								</span>
-							</div>
-						</div>
+				<div class="editor">
+					<a href="#" class="editbtn">Create New Key Pair</a>
+					<div class="edit">
+						<button class="btn btn-blue">OK</button>
+						<span class="fitfloat">
+							<input class="input" type="text" placeholder="Key Pair Name" />
+						</span>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	</div>
-	<div class="accordion-group">
-		<div class="fixedaccordion-head">
-			<span>Advanced Details</span>
-		</div>
-		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
-			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-			<div class="item-wrap scroll-content">
-				<div class="property-control-group">
-					<div class="checkbox">
-						{{#if checkbox_display.monitoring}}
-						<input id="property-instance-enable-cloudwatch" type="checkbox" checked="true" value="None" name="property-instance-enable-cloudwatch" />
-						{{else}}
-						<input id="property-instance-enable-cloudwatch" type="checkbox" value="None" name="property-instance-enable-cloudwatch" />
-						{{/if}}
-						<label for="property-instance-enable-cloudwatch"></label>
-					</div>
-					<label for="property-resource-check-1" >Enable CloudWatch</label>
-				</div>
-				<div class="property-control-group">
-					<label class="left" for="property-instance-user-data">User Data</label>
-					<textarea id="property-instance-user-data">{{component.resource.UserData.Data}}</textarea>
-				</div>
-				<div class="property-control-group">
-					<div class="checkbox">
-						{{#if checkbox_display.base64Encoded}}
-						<input id="property-instance-base64" type="checkbox" checked="true" value="None" name="property-instance-base64" />
-						{{else}}
-						<input id="property-instance-base64" type="checkbox" value="None" name="property-instance-base64" />
-						{{/if}}
-						<label for="property-instance-base64"></label>
-					</div>
-					<label for="property-resource-check-1" >base64 encoded</label>
-				</div>
+
+	<div class="option-group-head">Advanced Details</div>
+	<div class="option-group">
+		<section class="property-control-group">
+			<div class="checkbox">
+				{{#if checkbox_display.monitoring}}
+				<input id="property-instance-enable-cloudwatch" type="checkbox" checked="true" value="None" name="property-instance-enable-cloudwatch" />
+				{{else}}
+				<input id="property-instance-enable-cloudwatch" type="checkbox" value="None" name="property-instance-enable-cloudwatch" />
+				{{/if}}
+				<label for="property-instance-enable-cloudwatch"></label>
 			</div>
-		</div>
+			<label for="property-resource-check-1" >Enable CloudWatch</label>
+		</section>
+		<section class="property-control-group">
+			<label class="left" for="property-instance-user-data">User Data</label>
+			<textarea id="property-instance-user-data">{{component.resource.UserData.Data}}</textarea>
+		</section>
+		<section class="property-control-group">
+			<div class="checkbox">
+				{{#if checkbox_display.base64Encoded}}
+				<input id="property-instance-base64" type="checkbox" checked="true" value="None" name="property-instance-base64" />
+				{{else}}
+				<input id="property-instance-base64" type="checkbox" value="None" name="property-instance-base64" />
+				{{/if}}
+				<label for="property-instance-base64"></label>
+			</div>
+			<label for="property-resource-check-1" >base64 encoded</label>
+		</section>
 	</div>
+
 	{{# if component.resource.VpcId}}
-	<div class="accordion-group">
-		<div class="fixedaccordion-head">
-			<span>Network Interface Details</span>
-		</div>
-		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
-			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-			<div class="item-wrap scroll-content">
-				<div class="property-control-group clearfix">
-					<label class="left" for="property-instance-ni-description">Description</label>
-					<textarea id="property-instance-ni-description">{{eni_display.description}}</textarea>
-				</div>
-				<div class="property-control-group clearfix">
-					<div class="checkbox">
-						{{#if eni_display.sourceCheck}}
-						<input id="property-instance-source-check" type="checkbox" checked="true" value="None" name="property-instance-source-check" />
-						{{else}}
-						<input id="property-instance-source-check" type="checkbox" value="None" name="property-instance-source-check" />
-						{{/if}}
-						<label for="property-instance-source-check"></label>
-					</div>
-					<label for="property-resource-check-1">Enable Source/Destination Checking</label>
-				</div>
-				<div class="property-control-group">
-					<div class="network-list-header clearfix">
-						<span class="name">IP Address</span>
-						<a href="#" id="instance-ip-add" class="right btn btn-silver btn-small" title="Add IP Address">Add IP</a>
-					</div>
-					<ul class="network-list" id="property-network-list">
-						{{#each eni_display.eni_ips}}
-						<li class="input-ip-item">
-							<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
-								<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}.</label>
-								<input type="text" class="input input-ip" value="x" id="instance-ip-1">
-							</div>
-							{{#unless Primary}}<div class="network-remove-icon"></div>{{/unless}}
-							{{#if has_eip}}
-							<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-							{{else}}
-							<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-							{{/if}}
-							<div class="network-remove-icon"></div>
-						</li>
-						
-						{{/each}}
-					</ul>
-				</div>
+	<div class="option-group-head">Network Interface Details</div>
+	<div class="option-group">
+		<section class="property-control-group">
+			<label class="left" for="property-instance-ni-description">Description</label>
+			<textarea id="property-instance-ni-description">{{eni_display.description}}</textarea>
+		</section>
+		<section class="property-control-group">
+			<div class="checkbox">
+				{{#if eni_display.sourceCheck}}
+				<input id="property-instance-source-check" type="checkbox" checked="true" value="None" name="property-instance-source-check" />
+				{{else}}
+				<input id="property-instance-source-check" type="checkbox" value="None" name="property-instance-source-check" />
+				{{/if}}
+				<label for="property-instance-source-check"></label>
 			</div>
-		</div>
+			<label for="property-resource-check-1">Enable Source/Destination Checking</label>
+		</section>
+		<section class="property-control-group">
+			<div class="network-list-header clearfix">
+				<span class="name">IP Address</span>
+				<a href="#" id="instance-ip-add" class="right btn btn-silver btn-small" title="Add IP Address">Add IP</a>
+			</div>
+			<ul class="network-list" id="property-network-list">
+				{{#each eni_display.eni_ips}}
+				<li class="input-ip-item">
+					<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
+						<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}.</label>
+						<input type="text" class="input input-ip" value="x" id="instance-ip-1">
+					</div>
+					{{#unless Primary}}<div class="network-remove-icon"></div>{{/unless}}
+					{{#if has_eip}}
+					<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+					{{else}}
+					<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+					{{/if}}
+					<div class="network-remove-icon"></div>
+				</li>
+
+				{{/each}}
+			</ul>
+		</section>
 	</div>
 	{{/if}}
-	<div class="accordion-group">
-		<div class="fixedaccordion-head" id="sg-head">
-			Security Groups (<span id="property-head-sg-num"></span>)
-		</div>
-		<div class="sg-group">loading...</div>
-	</div>
+
+	<div class="option-group-head" id="sg-head">Security Groups (<span id="property-head-sg-num"></span>)</div>
+  <div class="option-group sg-group">Loading...</div>
 </article>
+
 <div id="sg-secondary-panel-wrap">
 </div>

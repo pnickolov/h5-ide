@@ -1,20 +1,12 @@
 <header class="sidebar-title">Availability Zone</header>
-<article class="panel-single-wrap">
-  <div class="panel-single scroll-wrap scrollbar-auto-hide">
-    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-    <div class="item-wrap scroll-content">
-
-    <div class="property-control-group">
-      <label>Quick Switch Availability Zone</label>
-      <div class="selectbox selectbox-mega" id="az-quick-select" component="{{id}}">
-        <div class="selection">{{component.name}}</div>
-        <ul class="dropdown" tabindex="-1">
-          {{#each az_list}}
-            <li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}">{{name}}</li>
-          {{/each}}
-        </ul>
-      </div>
-    </div>
-    </div>
+<section class="property-control-group">
+  <label>Quick Switch Availability Zone</label>
+  <div class="selectbox selectbox-mega" id="az-quick-select" component="{{id}}">
+    <div class="selection">{{component.name}}</div>
+    <ul class="dropdown" tabindex="-1">
+      {{#each az_list}}
+        <li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}">{{name}}</li>
+      {{/each}}
+    </ul>
   </div>
-</article>
+</section>

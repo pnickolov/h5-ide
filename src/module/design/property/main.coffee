@@ -137,7 +137,7 @@ define [ 'jquery',
 								#select line between instance and routetable
 								$.each line_option, ( idx, value ) ->
 
-									if value.port.indexOf('rtb') >=0
+									if value.port.indexOf('rtb-tgt-left') >=0 or value.port.indexOf('rtb-tgt-right') >=0
 
 										#rtb_main.loadModule value.uid, 'component', rtb_main
 										rtb_main.loadModule value.uid, rtb_main, tab_type

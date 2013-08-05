@@ -405,6 +405,76 @@ MC.canvas.add = function (flag, option, coordinate)
 			break;
 		//***** subnet end *****//
 
+		//***** asg begin *****//
+		case 'AWS.AutoScaling.Group':
+
+			if (create_mode)
+			{
+				component_data = $.extend(true, {}, MC.canvas.ASG_JSON.data);
+				component_data.name = option.name;
+				component_data.resource.AvailabilityZones = [option.group.availableZoneName];
+
+				component_layout = $.extend(true, {}, MC.canvas.ASG_JSON.layout);
+				component_layout.groupUId = option.groupUId;
+
+				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
+				option.width = size[0];
+				option.height = size[1];
+			}
+			else
+			{
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.group[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
+
+				option.width = component_layout.size[0];
+				option.height = component_layout.size[1];
+			}
+
+			width = option.width * MC.canvas.GRID_WIDTH,
+			height = option.height * MC.canvas.GRID_HEIGHT,
+
+			$(group).append(
+
+				////1. area
+				Canvon.rectangle(0, 0, width, height).attr({
+					'class': 'group group-asg',
+					'rx': 5,
+					'ry': 5
+				}),
+
+				////5.asg label
+				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
+					'class': 'group-label name',
+					'id': group.id + '_name'
+				})
+
+			).attr({
+				'class': 'dragable ' + class_type,
+				'data-type': 'group',
+				'data-class': type
+			});
+
+			//set layout
+			component_layout.coordinate = [coordinate.x, coordinate.y];
+			component_layout.size = [option.width, option.height];
+			layout.group[group.id] = component_layout;
+			MC.canvas.data.set('layout.component.group', layout.group);
+
+			//set data
+			component_data.uid = group.id;
+			data[group.id] = component_data;
+			MC.canvas.data.set('component', data);
+
+			$('#asg_layer').append(group);
+
+			break;
+		//***** asg end *****//
+
 		//***** instance begin *****//
 		case 'AWS.EC2.Instance':
 

@@ -1324,7 +1324,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-eni-sg port-eni-sg-left',
-					'display': 'none', //hide
+					'id': group.id + '_eni_sg_left',
+					//'display': 'none', //hide
 					'transform': 'translate(7, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg',
 					'data-position': 'left',
@@ -1347,7 +1348,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-eni-sg port-eni-sg-right',
-					'display': 'none', //hide
+					'id': group.id + '_eni_sg_right',
+					//'display': 'none', //hide
 					'transform': 'translate(85, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg',
 					'data-position': 'right',

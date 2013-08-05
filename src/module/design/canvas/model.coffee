@@ -487,6 +487,10 @@ define [ 'constant', 'event'
 			if portMap['instance-attach'] and portMap['eni-attach']
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
+
+				#hide sg port of eni when delete line
+				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', false
+				#MC.canvas.display portMap['eni-attach'], 'eni_sg_right', false
 				return
 
 			# IGW <==> RouteTable
@@ -759,6 +763,10 @@ define [ 'constant', 'event'
 
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
 
+				#show sg port of eni when create line
+				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', true
+				#MC.canvas.display portMap['eni-attach'], 'eni_sg_right', true
+
 
 			# Subnet <==> RouteTable
 			else if portMap['subnet-assoc-out'] and portMap['rtb-src']
@@ -794,10 +802,6 @@ define [ 'constant', 'event'
 					# remove component data
 					old_rt_uid = map['rtb-src']
 					assoSet = MC.canvas_data.component[old_rt_uid].resource.AssociationSet
-
-
-					if not assoSet.length or "" + assoSet[0].Main == 'true'
-						break
 
 					for asso, index in assoSet
 						if MC.extractID( asso.SubnetId ) == map['subnet-assoc-out']
@@ -888,7 +892,6 @@ define [ 'constant', 'event'
 					MC.aws.elb.init(uid)
 
 				when resource_type.AWS_VPC_InternetGateway
-					MC.aws.elb.setAllELBSchemeAsInternal()
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 
 				when resource_type.AWS_VPC_VPNGateway

@@ -1097,7 +1097,7 @@ define [ 'constant', 'event'
 
 			if eni.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 				eni = null
-				for comp_uid, comp of MC.canvas_data
+				for comp_uid, comp of MC.canvas_data.component
 					if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 						continue
 
@@ -1182,8 +1182,25 @@ define [ 'constant', 'event'
 			modal template, true
 			$("#canvas-op-confirm").one "click", ()->
 				modal.close()
-				# TODO : Added a IGW
-				throw new Error("Adding IGW is not implemented")
+
+				# THIS PIECE OF CODE SHOULD NOT EXIST HERE.
+				# BECAUSE THE MODEL DON'T CARE HOW TO CREATE A IGW
+
+				vpc_id   = $('.AWS-VPC-VPC').attr 'id'
+				vpc_data = MC.canvas.data.get "layout.component.group.#{vpc_id}"
+				vpc_coor = vpc_data.coordinate
+
+				component_size = MC.canvas.COMPONENT_SIZE[ resource_type.AWS_VPC_InternetGateway ]
+
+				node_option =
+					groupUId : vpc_id
+					name     : "IGW"
+
+				coordinate =
+					x : vpc_coor[0] - component_size[1] / 2
+					y : vpc_coor[1] + (vpc_data.size[1] - component_size[1]) / 2
+
+				MC.canvas.add resource_type.AWS_VPC_InternetGateway, node_option, coordinate
 	}
 
 	model = new CanvasModel()

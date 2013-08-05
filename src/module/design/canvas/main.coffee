@@ -33,16 +33,16 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
 
 
             ide_event.onLongListen ide_event.CREATE_LINE_TO_CANVAS, ( from_node, from_target_port, to_node, to_target_port, line_option ) ->
-
                 MC.canvas.connect $("#" + from_node), from_target_port, $("#" + to_node), to_target_port, line_option
 
             ide_event.onLongListen ide_event.DELETE_LINE_TO_CANVAS, ( line_id ) ->
-
                 MC.canvas.remove $("#" + line_id)[0]
 
             ide_event.onLongListen ide_event.REDRAW_SG_LINE, () ->
-
                 model.reDrawSgLine()
+
+            ide_event.onLongListen ide_event.NEED_IGW, ( component )->
+                model.askToAddIGW component
 
             #listen CANVAS_BEFORE_DROP
             view.on "CANVAS_BEFORE_DROP", ( event, option ) ->
@@ -82,11 +82,6 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
 
             model.on 'SHOW_SG_LIST', ( line_id ) ->
                 sgrule_main.loadModule line_id, 'delete'
-                null
-
-            model.on 'ENI_REACH_MAX', ()->
-                console.log 'ENI reach limit'
-                view.showEniReachMax()
                 null
 
             model.on 'CREATE_SG_CONNECTION', ( line_id ) ->

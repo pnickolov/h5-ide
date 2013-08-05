@@ -5,7 +5,7 @@
 define [ 'MC', 'event',
          'view', 'layout', 'canvas_layout',
          'header', 'navigation', 'tabbar', 'dashboard', 'design',
-         'WS', 'constant', 'json_view/json_view'
+         'WS', 'constant', 'aws_handle', 'test/json_view/json_view'
 ], ( MC, ide_event, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, WS, constant ) ->
 
 	console.info canvas_layout

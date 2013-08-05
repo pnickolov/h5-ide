@@ -82,8 +82,8 @@ MC.canvas = {
 			$('#canvas_body')
 				.removeClass('canvas_zoomed')
 				.off('mousedown', '.dragable', MC.canvas.event.selectNode)
-				.on('mousedown', '.instance-volume', MC.canvas.volume.show)
-				.on('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
+				//.on('mousedown', '.instance-volume', MC.canvas.volume.show)
+				//.on('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
 				.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 				.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 				.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
@@ -106,8 +106,8 @@ MC.canvas = {
 		$('#canvas_body')
 			.addClass('canvas_zoomed')
 			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
-			.off('mousedown', '.instance-volume', MC.canvas.volume.show)
-			.off('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
+			//.off('mousedown', '.instance-volume', MC.canvas.volume.show)
+			//.off('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
 			.off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 			.off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 			.off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
@@ -2535,7 +2535,6 @@ MC.canvas.event.dragable = {
 
 			shadow = target.clone();
 
-			shadow.attr('class', shadow.attr('class') + ' shadow');
 			svg_canvas.append(shadow);
 
 			if (target_type === 'node')
@@ -2586,7 +2585,8 @@ MC.canvas.event.dragable = {
 					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
 					'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
 					'originalPageX': event.pageX,
-					'originalPageY': event.pageY
+					'originalPageY': event.pageY,
+					'originalTarget': event.target
 				});
 			}
 
@@ -2603,6 +2603,14 @@ MC.canvas.event.dragable = {
 		var grid_width = MC.canvas.GRID_WIDTH,
 			grid_height = MC.canvas.GRID_HEIGHT,
 			scale_ratio = MC.canvas_property.SCALE_RATIO;
+
+		if (
+			event.pageX !== event.data.originalPageX &&
+			event.pageY !== event.data.originalPageY
+		)
+		{
+			Canvon(event.data.shadow[0]).addClass('shadow');
+		}
 
 		event.data.canvas_body.addClass('node-dragging');
 
@@ -2628,7 +2636,25 @@ MC.canvas.event.dragable = {
 			event.pageY === event.data.originalPageY
 		)
 		{
-			MC.canvas.select( event.data.target.attr('id') );
+			var originalTarget = $(event.data.originalTarget);
+
+			if (originalTarget.is('.instance-volume'))
+			{
+				MC.canvas.volume.show.call(event.data.originalTarget);
+			}
+			else
+			{
+				if (originalTarget.is('.eip-status'))
+				{
+					MC.canvas.event.EIPstatus.call(event.data.originalTarget);
+				}
+				else
+				{
+					MC.canvas.select( event.data.target.attr('id') );
+
+					MC.canvas.volume.close();
+				}
+			}
 		}
 		else
 		{
@@ -2945,18 +2971,14 @@ MC.canvas.event.dragable = {
 			}
 		}
 
+		event.data.shadow.remove();
+		event.data.canvas_body.removeClass('node-dragging');
+		$(document.body).removeClass('disable-event');
+
 		$('.dropable-group').attr('class', function (index, key)
 		{
 			return key.replace('dropable-group ', '');
 		});
-
-		event.data.shadow.remove();
-
-		event.data.canvas_body.removeClass('node-dragging');
-
-		$(document.body).removeClass('disable-event');
-
-		MC.canvas.volume.close();
 
 		$(document).off({
 			'mousemove': MC.canvas.event.mousemove,

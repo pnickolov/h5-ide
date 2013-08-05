@@ -803,10 +803,6 @@ define [ 'constant', 'event'
 					old_rt_uid = map['rtb-src']
 					assoSet = MC.canvas_data.component[old_rt_uid].resource.AssociationSet
 
-
-					if not assoSet.length or "" + assoSet[0].Main == 'true'
-						break
-
 					for asso, index in assoSet
 						if MC.extractID( asso.SubnetId ) == map['subnet-assoc-out']
 							assoSet.splice index, 1

@@ -1,6 +1,8 @@
 MC.canvas.add = function (flag, option, coordinate)
 {
-	var group = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
+	var data = MC.canvas.data.get('component'),
+		layout = MC.canvas.data.get('layout.component'),
+		group = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
 		create_mode = true,
 		type = '',
 		class_type = '',
@@ -12,9 +14,6 @@ MC.canvas.add = function (flag, option, coordinate)
 		top = 0,
 		size,
 		platform;
-
-	data = MC.canvas.data.get('component');
-	layout = MC.canvas.data.get('layout.component');
 
 	if (!option && !coordinate)
 	{

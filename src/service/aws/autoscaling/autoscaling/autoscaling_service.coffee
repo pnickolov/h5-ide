@@ -61,7 +61,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAdjustmentTypesResponse
 
 	#private (parser DescribeAdjustmentTypes return)
 	parserDescribeAdjustmentTypesReturn = ( result, return_code, param ) ->
@@ -90,7 +90,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAutoScalingGroupsResponse
 
 	#private (parser DescribeAutoScalingGroups return)
 	parserDescribeAutoScalingGroupsReturn = ( result, return_code, param ) ->
@@ -119,7 +119,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAutoScalingInstancesResponse
 
 	#private (parser DescribeAutoScalingInstances return)
 	parserDescribeAutoScalingInstancesReturn = ( result, return_code, param ) ->
@@ -148,7 +148,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAutoScalingNotificationTypesResponse
 
 	#private (parser DescribeAutoScalingNotificationTypes return)
 	parserDescribeAutoScalingNotificationTypesReturn = ( result, return_code, param ) ->
@@ -177,7 +177,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeLaunchConfigurationsResponse
 
 	#private (parser DescribeLaunchConfigurations return)
 	parserDescribeLaunchConfigurationsReturn = ( result, return_code, param ) ->
@@ -206,7 +206,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeMetricCollectionTypesResponse
 
 	#private (parser DescribeMetricCollectionTypes return)
 	parserDescribeMetricCollectionTypesReturn = ( result, return_code, param ) ->
@@ -235,7 +235,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeNotificationConfigurationsResponse
 
 	#private (parser DescribeNotificationConfigurations return)
 	parserDescribeNotificationConfigurationsReturn = ( result, return_code, param ) ->
@@ -264,7 +264,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribePoliciesResponse
 
 	#private (parser DescribePolicies return)
 	parserDescribePoliciesReturn = ( result, return_code, param ) ->
@@ -293,7 +293,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeScalingActivitiesResponse
 
 	#private (parser DescribeScalingActivities return)
 	parserDescribeScalingActivitiesReturn = ( result, return_code, param ) ->
@@ -322,7 +322,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeScalingProcessTypesResponse
 
 	#private (parser DescribeScalingProcessTypes return)
 	parserDescribeScalingProcessTypesReturn = ( result, return_code, param ) ->
@@ -351,7 +351,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeScheduledActionsResponse
 
 	#private (parser DescribeScheduledActions return)
 	parserDescribeScheduledActionsReturn = ( result, return_code, param ) ->
@@ -380,7 +380,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeTagsResponse
 
 	#private (parser DescribeTags return)
 	parserDescribeTagsReturn = ( result, return_code, param ) ->

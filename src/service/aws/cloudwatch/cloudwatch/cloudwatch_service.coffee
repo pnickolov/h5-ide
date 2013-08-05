@@ -61,7 +61,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).GetMetricStatisticsResponse
 
 	#private (parser GetMetricStatistics return)
 	parserGetMetricStatisticsReturn = ( result, return_code, param ) ->
@@ -90,7 +90,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).ListMetricsResponse
 
 	#private (parser ListMetrics return)
 	parserListMetricsReturn = ( result, return_code, param ) ->
@@ -119,7 +119,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAlarmHistoryResponse
 
 	#private (parser DescribeAlarmHistory return)
 	parserDescribeAlarmHistoryReturn = ( result, return_code, param ) ->
@@ -148,7 +148,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAlarmsResponse
 
 	#private (parser DescribeAlarms return)
 	parserDescribeAlarmsReturn = ( result, return_code, param ) ->
@@ -177,7 +177,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAlarmsForMetricResponse
 
 	#private (parser DescribeAlarmsForMetric return)
 	parserDescribeAlarmsForMetricReturn = ( result, return_code, param ) ->

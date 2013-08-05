@@ -1,6 +1,6 @@
 define(['jquery', 'event'], function($, ide_event){
 	if(!$('#json_view_frame').length) {
-		$('body').append('<iframe src="./json_view/json_view.html" ' +
+		$('body').append('<iframe src="test/json_view/json_view.html" ' +
 			'style="border:0;position:absolute;z-index:9999999;display:none;top:20px;bottom:0;left:20px;"' +
 			' id="json_view_frame"></iframe>');
 	}
@@ -19,6 +19,7 @@ define(['jquery', 'event'], function($, ide_event){
 			jsonViewFrame[0].contentWindow.postMessage(JSON.stringify(compObj), '*');
 		}else{
 			jsonViewFrame[0].contentWindow.postMessage('{"none": "none"}', '*');
+			//jsonViewFrame.hide();
 		}
 	});
 	

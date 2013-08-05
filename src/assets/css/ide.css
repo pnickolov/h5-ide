@@ -3658,6 +3658,13 @@ a.sidebar-hider {
 	background: url('../images/ide/icon-export-json.png') center center no-repeat;
 }
 
+#json-content {
+	margin: 15px 0;
+	width: 645px;
+	display: block;
+	height: 300px;
+	padding: 10px;
+}
 
 /*app-vpn-cgw*/
 #app-cgw-vpn-accordion .dl-vertical {

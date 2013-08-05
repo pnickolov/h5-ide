@@ -852,7 +852,7 @@ define [ 'constant',
 					MC.canvas_data.component[rt_uid].resource.RouteSet.push igw_route
 
 				# routetable to instance
-				if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+				if portMap['instance-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 					rt_uid = null
 
@@ -861,7 +861,7 @@ define [ 'constant',
 					instance_route = {
 						'DestinationCidrBlock'		:	'0.0.0.0/0',
 						'GatewayId'					:	'',
-						'InstanceId'				:	'@' + portMap['instance-sg'] + '.resource.InstanceId',
+						'InstanceId'				:	'@' + portMap['instance-rtb'] + '.resource.InstanceId',
 						'InstanceOwnerId'			:	'',
 						'NetworkInterfaceId'		:	'',
 						'State'						:	'',
@@ -890,7 +890,7 @@ define [ 'constant',
 					MC.canvas_data.component[rt_uid].resource.RouteSet.push vgw_route
 
 				# routetable to eni
-				if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+				if portMap['eni-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 					rt_uid = null
 
@@ -901,7 +901,7 @@ define [ 'constant',
 						'GatewayId'					:	'',
 						'InstanceId'				:	'',
 						'InstanceOwnerId'			:	'',
-						'NetworkInterfaceId'		:	'@' + portMap['eni-sg'] + '.resource.NetworkInterfaceId',
+						'NetworkInterfaceId'		:	'@' + portMap['eni-rtb'] + '.resource.NetworkInterfaceId',
 						'State'						:	'',
 						'Origin'					:	''
 					}

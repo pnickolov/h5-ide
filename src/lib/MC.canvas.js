@@ -1409,6 +1409,7 @@ MC.canvas = {
 		var layout_group_data = MC.canvas.data.get('layout.component.group'),
 			platform = MC.canvas.data.get('platform'),
 			group_stack = [
+				$('#asg_layer').children(),
 				$('#subnet_layer').children(),
 				$('#az_layer').children(),
 				$('#vpc_layer').children()

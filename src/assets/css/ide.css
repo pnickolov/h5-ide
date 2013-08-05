@@ -1841,6 +1841,10 @@ a.sidebar-hider {
 	background: url('../images/ide/icon/cgw-resource.png') center center no-repeat;
 }
 
+.resource-icon-asg {
+	background: url('../images/ide/icon/asg-resource.png') center center no-repeat;
+}
+
 
 .ebs-size {
 	font-size: 12px;

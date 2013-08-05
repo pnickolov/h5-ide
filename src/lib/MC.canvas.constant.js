@@ -116,7 +116,7 @@ var constant_data = {
 
 	GROUP_WEIGHT:
 	{
-		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
+		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet', 'AWS.AutoScaling.Group'],
 		'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet', 'AWS.AutoScaling.Group'],
 		'AWS.VPC.Subnet': ['AWS.AutoScaling.Group'],
 		'AWS.AutoScaling.Group': []
@@ -145,25 +145,23 @@ var constant_data = {
 		{
 			'AWS.ELB': ['Canvas'],
 			'AWS.EC2.AvailabilityZone': ['Canvas'],
-			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone'],
+			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone','AWS.AutoScaling.Group'],
 			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone'],
-			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone'],
-			'AWS.AutoScaling.LaunchConfiguration': ['AWS.AutoScaling.Group']
+			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone']
 		},
 		'default-vpc':
 		{
 			'AWS.ELB': ['Canvas'],
 			'AWS.EC2.AvailabilityZone': ['Canvas'],
-			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone'],
+			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone','AWS.AutoScaling.Group'],
 			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone'],
 			'AWS.VPC.NetworkInterface': ['AWS.EC2.AvailabilityZone'],
-			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone'],
-			'AWS.AutoScaling.LaunchConfiguration': ['AWS.AutoScaling.Group']
+			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone']
 		},
 		'custom-vpc':
 		{
 			'AWS.ELB': ['AWS.VPC.VPC'],
-			'AWS.EC2.Instance': ['AWS.VPC.Subnet'],
+			'AWS.EC2.Instance': ['AWS.VPC.Subnet','AWS.AutoScaling.Group'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
 			'AWS.VPC.CustomerGateway': ['Canvas'],
@@ -173,13 +171,12 @@ var constant_data = {
 			'AWS.EC2.AvailabilityZone': ['AWS.VPC.VPC'],
 			'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
 			'AWS.VPC.VPC': ['Canvas'],
-			'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet'],
-			'AWS.AutoScaling.LaunchConfiguration': ['AWS.AutoScaling.Group']
+			'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet']
 		},
 		'ec2-vpc':
 		{
 			'AWS.ELB': ['AWS.VPC.VPC'],
-			'AWS.EC2.Instance': ['AWS.VPC.Subnet'],
+			'AWS.EC2.Instance': ['AWS.VPC.Subnet','AWS.AutoScaling.Group'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
 			'AWS.VPC.CustomerGateway': ['Canvas'],
@@ -189,8 +186,7 @@ var constant_data = {
 			'AWS.EC2.AvailabilityZone': ['AWS.VPC.VPC'],
 			'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
 			'AWS.VPC.VPC': ['Canvas'],
-			'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet'],
-			'AWS.AutoScaling.LaunchConfiguration': ['AWS.AutoScaling.Group']
+			'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet']
 		}
 	},
 
@@ -1361,6 +1357,16 @@ var constant_data = {
 
 	/*****AWS.AutoScaling.LaunchConfiguration*****/
 	ASL_LC_JSON: {
+		layout:
+		{
+			'type': 'AWS.AutoScaling.LaunchConfiguration',
+			'coordinate': [0, 0],
+			'osType': '', //amazon|centos|debian|fedora|gentoo|linux-other|opensuse|redhat|suse|ubuntu|win
+			'architecture': '', //i386|x86_64
+			'rootDeviceType': '', //ebs|instance-store
+			'groupUId': '',
+			'connection': []
+		},
 		data: {
 			'name': '',
 			'uid': '',

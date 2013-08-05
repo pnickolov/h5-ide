@@ -57,6 +57,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				case 'AWS.VPC.VPC':
 					option.group.vpcUId = $(".AWS-VPC-VPC")[0].id;
 					break;
+				case 'AWS.AutoScaling.Group':
+					option.group.vpcUId = $(".AWS-VPC-VPC")[0].id;
+					type = 'AWS.AutoScaling.LaunchConfiguration';
+					break;
 			}
 		}
 	}
@@ -446,6 +450,34 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
+
+				////2.scale area
+				Canvon.group().append(
+					Canvon.rectangle(
+						0, top, pad, pad
+					).attr({'class': 'group-resizer'}),
+					Canvon.rectangle(
+						pad, top, width - 2 * pad, pad
+					).attr({'class': 'group-resizer'}),
+					Canvon.rectangle(
+						width - pad, top, pad, pad
+					).attr({'class': 'group-resizer'}),
+					Canvon.rectangle(
+						0, top + pad, pad, height - 2 * pad
+					).attr({'class': 'group-resizer'}),
+					Canvon.rectangle(
+						width - pad, top + pad, pad, height - 2 * pad
+					).attr({'class': 'group-resizer'}),
+					Canvon.rectangle(
+						0, height + top - pad, pad, pad
+					).attr({'class': 'group-resizer'}),
+					Canvon.rectangle(
+						pad, height + top - pad, width - 2 * pad, pad
+					).attr({'class': 'group-resizer'}),
+					Canvon.rectangle(
+						width - pad, height + top - pad, pad, pad
+					).attr({'class': 'group-resizer'})
+				),
 
 				////5.asg label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
@@ -1481,6 +1513,154 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			break;
 			//***** eni end *****//
+
+		//***** asl_lc begin *****//
+		case 'AWS.AutoScaling.LaunchConfiguration':
+			var os_type = 'ami-unknown',
+				volume_number = 0,
+				icon_volume_status = 'not-attached',
+				eni = null,
+				eip_icon = MC.canvas.IMAGE.EIP_OFF,
+				data_eip_state = 'off'; //on | off
+
+			if (create_mode)
+			{//write
+				component_data = $.extend(true, {}, MC.canvas.ASL_LC_JSON.data);
+				component_data.name = option.name;
+
+				component_data.resource.ImageId = option.imageId;
+				component_data.resource.InstanceType = 'm1.small';
+
+				// if not kp
+				if (MC.canvas_property.kp_list.length === 0)
+				{
+					//default kp
+				}
+
+				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
+				component_data.resource.SecurityGroups.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
+				MC.canvas_property.sg_list[0].member.push(group.id);
+
+
+				component_layout = $.extend(true, {}, MC.canvas.ASL_LC_JSON.layout);
+				component_layout.groupUId = option.groupUId;
+				component_layout.osType =  option.osType;
+				component_layout.architecture =  option.architecture;
+				component_layout.rootDeviceType =  option.rootDeviceType;
+				component_layout.virtualizationType = option.virtualizationType;
+
+			}
+			else
+			{//read
+				component_data = data[group.id];
+				option.name = component_data.name;
+
+				component_layout = layout.node[group.id];
+
+				coordinate.x = component_layout.coordinate[0];
+				coordinate.y = component_layout.coordinate[1];
+
+				option.osType = component_layout.osType ;
+				option.architecture = component_layout.architecture ;
+				option.rootDeviceType = component_layout.rootDeviceType ;
+				option.virtualizationType = component_layout.virtualizationType;
+			}
+
+			//os type
+			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+
+			//check volume number,set icon
+			volume_number = component_data.resource.BlockDeviceMapping.length;
+			if (volume_number > 0)
+			{
+				icon_volume_status = 'attached-normal';
+			}
+
+			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
+			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
+
+			$(group).append(
+				////1. bg
+				Canvon.rectangle(0, 0, width , height).attr({
+					'class': 'node-background',
+					'rx': 5,
+					'ry': 5
+				}),
+				Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15, 11, 70, 70),
+
+				//2 path: left port(blue)
+				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
+					'class': 'port port-blue port-instance-sg port-instance-sg-left',
+					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
+					'data-name': 'instance-sg', //for identify port
+					'data-position': 'left', //port position: for calc point of junction
+					'data-type': 'sg', //color of line
+					'data-direction': 'in', //direction
+					'data-angle': MC.canvas.PORT_LEFT_ANGLE //port angle: right:0 top:90 left:180 bottom:270
+				}),
+
+				//4 path: right port(blue)
+				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
+					'class': 'port port-blue port-instance-sg port-instance-sg-right',
+					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'data-name': 'instance-sg',
+					'data-position': 'right',
+					'data-type': 'sg',
+					'data-direction': 'out',
+					'data-angle': MC.canvas.PORT_RIGHT_ANGLE
+				}),
+
+				////7. os_type
+				Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30, 15, 39, 27),
+
+				////8.1 volume-attached
+				Canvon.image('../assets/images/ide/icon/instance-volume-' + icon_volume_status + '.png' , 35, 48, 29, 24).attr({
+					'id': group.id + '_volume_status'
+				}),
+
+				//8.2 volume number
+				// Canvon.text(35, 60, volume_number).attr({
+				// 	'class': 'node-label volume-number',
+				// 	'id': group.id + '_volume_number'
+				// }),
+
+				//8.3 hot area for volume
+				Canvon.rectangle(35, 48, 29, 24).attr({
+					'class': 'instance-volume',
+					'data-target-id': group.id,
+					'fill': 'none'
+				}),
+
+				////10. lc name
+				Canvon.text(50, 90, option.name).attr({
+					'class': 'node-label name',
+					'id': group.id + 'name'
+				})
+			).attr({
+				'class': 'dragable node ' + class_type,
+				'data-type': 'node',
+				'data-class': type
+			});
+
+			//set layout
+			component_layout.coordinate = [coordinate.x, coordinate.y];
+			layout.node[group.id] = component_layout;
+			MC.canvas.data.set('layout.component.node', layout.node);
+
+			//set data
+			component_data.uid = group.id;
+			data[group.id] = component_data;
+			MC.canvas.data.set('component', data);
+
+			if (eni)
+			{
+				data[eni.uid] = eni;
+				MC.canvas.data.set('component', data);
+			}
+			$('#node_layer').append(group);
+
+			break;
+			//***** asl_lc end *****//
 	}
 
 	//set the node position

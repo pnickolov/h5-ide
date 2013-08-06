@@ -164,9 +164,6 @@ define [ 'jquery',
 				#
 				if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
 
-				if back_dom
-					debugger
-
 				view.immHideSecondPanel()
 				null
 

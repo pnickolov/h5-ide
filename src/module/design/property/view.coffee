@@ -5,7 +5,7 @@
 define [ './temp_view',
          'event'
          'backbone', 'jquery', 'handlebars'
-         'UI.fixedaccordion', 'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon'
+         'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon'
 ], ( temp_view, ide_event ) ->
 
     PropertyView = Backbone.View.extend {

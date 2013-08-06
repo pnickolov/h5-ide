@@ -369,6 +369,9 @@
 	fill: #999;
 }
 
+.prompt_text {
+	fill: rgba(118, 214, 255, 1);
+}
 
 /*scale area style*/
 .group-resizer {

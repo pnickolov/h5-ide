@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130730
+#* Date: 20130806
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -29,7 +29,7 @@ var scrollbar = {
 
 		setInterval(function ()
 		{
-			if (!$(document.body).hasClass('doc_scrolling'))
+			if (!$(document.body).hasClass('disable-event'))
 			{
 				var length = doc_scroll_wrap.length;
 
@@ -121,7 +121,7 @@ var scrollbar = {
 		event.preventDefault();
 		event.stopPropagation();
 
-		target.addClass('scrolling');
+		$(document.body).addClass('disable-event');
 
 		event = scrollbar.isTouch ? event.originalEvent.touches[0] : event;
 
@@ -136,8 +136,7 @@ var scrollbar = {
 				'scroll_content': target.find('.scroll-content').first(),
 				'thumb': thumb,
 				'thumbPos': direction === 'veritical' ? event.clientY - thumb.offset().top : event.clientX - thumb.offset().left
-			})
-			.addClass('doc_scrolling');
+			});
 	},
 	mousemove: function (event)
 	{
@@ -164,8 +163,6 @@ var scrollbar = {
 	},
 	mouseup: function (event)
 	{
-		event.data.scroll_target.removeClass('scrolling');
-
 		$(document)
 			.off(scrollbar.isTouch ? {
 				'touchmove': scrollbar.mousemove,
@@ -173,8 +170,9 @@ var scrollbar = {
 			} : {
 				'mousemove': scrollbar.mousemove,
 				'mouseup': scrollbar.mouseup
-			})
-			.removeClass('doc_scrolling');
+			});
+
+		$(document.body).removeClass('disable-event');
 	},
 	scroll_to_left: function (data, target, scroll_left)
 	{

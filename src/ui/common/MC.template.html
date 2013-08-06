@@ -674,18 +674,57 @@ Additional Notes and Questions
 <!-- modalRunStack -->
 <div id="modal-run-stack">
 	<div class="modal-header">
-		<h3>{{title}}</h3>
-		<i class="modal-close">&times;</i>
+		<h3>Run Stack</h3>
+		<i class="modal-close">×</i>
 	</div>
 	<div class="modal-body">
-		<input class="modal-input-value" type="text" value="{{name}}" />
+		<div class="bg-blue">
+			<div class="property-control-group clearfix">
+				<label class="left" for="property-resource-name">App Name</label>
+				<input class="input modal-input-value" type="text" value="test">
+			</div>
+		</div>
+		<div class="stack-validation">
+			<details open>
+				<summary>Stack Validation</summary>
+				<div class="validation-content">
+					<ul class="tab">
+						<li class="active" data-tab-target="#item-error"><i class="icon-close"></i> Error (1)</li>
+						<li data-tab-target="#item-warning" class=""><i class="icon-flag"></i> Warning (2)</li>
+						<li data-tab-target="#item-notice"><i class="icon-info-sign"></i> Notice (2)</li>
+					</ul>
+					<div class="content_wrap">
+						<div id="item-error" class="content active">
+							<div class="title">
+								subnet-1 is attached with a load balancer. It must be smaller than /27.
+							</div>
+							<div class="description">
+								some blabla
+							</div>
+						</div>
+						<div id="item-warning" class="content">&nbsp;</div>
+						<div id="item-notice" class="content">&nbsp;</div>
+					</div>
+
+				</div>
+			</details>
+		</div>
+
+		<div class="estimate clearfix">
+			<span class="title">Estimated Cost</span>
+			<span class="price"><b>$32.4</b> / month</span>
+		</div>
+
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-red" id="btn-confirm">Proceed</button>
-		<button disabled class="btn btn-red tooltip" data-tooltip="Please fix error first and try to run the stack again.">Proceed</button>
-		<button class="btn btn-silver modal-close">Run Later</button>
+		<button class="btn btn-blue" id="btn-confirm">Run Stack</button>
+		<!--  If there is error of this stack, disable this button.
+			<button disabled class="btn btn-blue tooltip" data-tooltip="Please fix error first and try to run the stack again.">Run Stack</button>
+		-->
+		<button class="btn btn-silver modal-close">Cancel</button>
 	</div>
 </div>
+
 
 <!-- sgListItem -->
 <li class="clearfix" data-sgid="000">

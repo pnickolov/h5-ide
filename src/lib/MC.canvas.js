@@ -1664,13 +1664,13 @@ MC.canvas = {
 				node_id !== key &&
 				$.inArray(item.type, group_parent_type) > -1 &&
 				(
-					coordinate[0] < start_x &&
-					coordinate[0] + size[0] > start_x
+					coordinate[0] <= start_x &&
+					coordinate[0] + size[0] >= start_x
 				)
 				&&
 				(
-					coordinate[1] < start_y &&
-					coordinate[1] + size[1] > start_y
+					coordinate[1] <= start_y &&
+					coordinate[1] + size[1] >= start_y
 				)
 			)
 			{
@@ -2554,7 +2554,7 @@ MC.canvas.event.dragable = {
 			{
 				MC.canvas.event.clearSelected();
 				MC.canvas.select(this.id);
-				
+
 				return false;
 			}
 
@@ -2740,10 +2740,15 @@ MC.canvas.event.dragable = {
 				);
 
 				if (
-					!BEFORE_DROP_EVENT.isDefaultPrevented() &&
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
 					match_place.is_matched &&
+					// Disallow Instance to ASG
+					!(
+						parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
+						node_type === 'AWS.EC2.Instance'
+					)
+					&&
 					(
 						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
 						!BEFORE_DROP_EVENT.isDefaultPrevented()

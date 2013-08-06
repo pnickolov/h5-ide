@@ -1571,14 +1571,19 @@ MC.canvas = {
 
 			is_matched =
 				match[0] &&
-				match[0].is_matched &&
 				match[1] &&
-				match[1].is_matched &&
 				match[2] &&
-				match[2].is_matched &&
 				match[3] &&
+				
+				match[0].is_matched &&
+				match[1].is_matched &&
+				match[2].is_matched &&
 				match[3].is_matched &&
-				(match[0].target === match[1].target && match[0].target === match[2].target && match[0].target === match[3].target);
+				
+				match[0].target === match[1].target &&
+				match[0].target === match[2].target &&
+				match[0].target === match[3].target
+				;
 
 			if (
 				!is_matched &&

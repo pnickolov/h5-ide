@@ -555,9 +555,16 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
         if current_service.toLowerCase() == "autoscaling" && current_resource.toLowerCase() == "autoscaling" && current_api == "DescribeScalingActivities"
-
+            group_name = if $("#group_name").val() != "null" then $("#group_name").val() else null
+            group_name = if group_name != null and MC.isJSON(group_name)==true then JSON.parse group_name else group_name
+            activity_ids = if $("#activity_ids").val() != "null" then $("#activity_ids").val() else null
+            activity_ids = if activity_ids != null and MC.isJSON(activity_ids)==true then JSON.parse activity_ids else activity_ids
+            max_records = if $("#max_records").val() != "null" then $("#max_records").val() else null
+            max_records = if max_records != null and MC.isJSON(max_records)==true then JSON.parse max_records else max_records
+            next_token = if $("#next_token").val() != "null" then $("#next_token").val() else null
+            next_token = if next_token != null and MC.isJSON(next_token)==true then JSON.parse next_token else next_token
             #autoscaling.DescribeScalingActivities
-            autoscaling_model.DescribeScalingActivities {sender: me}, username, session_id
+            autoscaling_model.DescribeScalingActivities {sender: me}, username, session_id, region_name, group_name, activity_ids, max_records, next_token
             autoscaling_model.once "ASL__DESC_SCALING_ACTIS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
@@ -569,9 +576,20 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
         if current_service.toLowerCase() == "autoscaling" && current_resource.toLowerCase() == "autoscaling" && current_api == "DescribeScheduledActions"
-
+            group_name = if $("#group_name").val() != "null" then $("#group_name").val() else null
+            group_name = if group_name != null and MC.isJSON(group_name)==true then JSON.parse group_name else group_name
+            action_names = if $("#action_names").val() != "null" then $("#action_names").val() else null
+            action_names = if action_names != null and MC.isJSON(action_names)==true then JSON.parse action_names else action_names
+            start_time = if $("#start_time").val() != "null" then $("#start_time").val() else null
+            start_time = if start_time != null and MC.isJSON(start_time)==true then JSON.parse start_time else start_time
+            end_time = if $("#end_time").val() != "null" then $("#end_time").val() else null
+            end_time = if end_time != null and MC.isJSON(end_time)==true then JSON.parse end_time else end_time
+            max_records = if $("#max_records").val() != "null" then $("#max_records").val() else null
+            max_records = if max_records != null and MC.isJSON(max_records)==true then JSON.parse max_records else max_records
+            next_token = if $("#next_token").val() != "null" then $("#next_token").val() else null
+            next_token = if next_token != null and MC.isJSON(next_token)==true then JSON.parse next_token else next_token
             #autoscaling.DescribeScheduledActions
-            autoscaling_model.DescribeScheduledActions {sender: me}, username, session_id
+            autoscaling_model.DescribeScheduledActions {sender: me}, username, session_id, region_name, group_name, action_names, start_time, end_time, max_records, next_token
             autoscaling_model.once "ASL__DESC_SCHD_ACTS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
@@ -633,39 +651,95 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
 
         ########## CloudWatch ##########
         if current_service.toLowerCase() == "cloudwatch" && current_resource.toLowerCase() == "cloudwatch" && current_api == "GetMetricStatistics"
-
+            metric_name = if $("#metric_name").val() != "null" then $("#metric_name").val() else null
+            metric_name = if metric_name != null and MC.isJSON(metric_name)==true then JSON.parse metric_name else metric_name
+            namespace = if $("#namespace").val() != "null" then $("#namespace").val() else null
+            namespace = if namespace != null and MC.isJSON(namespace)==true then JSON.parse namespace else namespace
+            start_time = if $("#start_time").val() != "null" then $("#start_time").val() else null
+            start_time = if start_time != null and MC.isJSON(start_time)==true then JSON.parse start_time else start_time
+            end_time = if $("#end_time").val() != "null" then $("#end_time").val() else null
+            end_time = if end_time != null and MC.isJSON(end_time)==true then JSON.parse end_time else end_time
+            period = if $("#period").val() != "null" then $("#period").val() else null
+            period = if period != null and MC.isJSON(period)==true then JSON.parse period else period
+            unit = if $("#unit").val() != "null" then $("#unit").val() else null
+            unit = if unit != null and MC.isJSON(unit)==true then JSON.parse unit else unit
+            statistics = if $("#statistics").val() != "null" then $("#statistics").val() else null
+            statistics = if statistics != null and MC.isJSON(statistics)==true then JSON.parse statistics else statistics
+            dimensions = if $("#dimensions").val() != "null" then $("#dimensions").val() else null
+            dimensions = if dimensions != null and MC.isJSON(dimensions)==true then JSON.parse dimensions else dimensions
             #cloudwatch.GetMetricStatistics
-            cloudwatch_model.GetMetricStatistics {sender: me}, username, session_id
+            cloudwatch_model.GetMetricStatistics {sender: me}, username, session_id, region_name, metric_name, namespace, start_time, end_time, period, unit, statistics, dimensions
             cloudwatch_model.once "CW__GET_METRIC_STATS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
         if current_service.toLowerCase() == "cloudwatch" && current_resource.toLowerCase() == "cloudwatch" && current_api == "ListMetrics"
-
+            metric_name = if $("#metric_name").val() != "null" then $("#metric_name").val() else null
+            metric_name = if metric_name != null and MC.isJSON(metric_name)==true then JSON.parse metric_name else metric_name
+            namespace = if $("#namespace").val() != "null" then $("#namespace").val() else null
+            namespace = if namespace != null and MC.isJSON(namespace)==true then JSON.parse namespace else namespace
+            dimensions = if $("#dimensions").val() != "null" then $("#dimensions").val() else null
+            dimensions = if dimensions != null and MC.isJSON(dimensions)==true then JSON.parse dimensions else dimensions
+            next_token = if $("#next_token").val() != "null" then $("#next_token").val() else null
+            next_token = if next_token != null and MC.isJSON(next_token)==true then JSON.parse next_token else next_token
             #cloudwatch.ListMetrics
-            cloudwatch_model.ListMetrics {sender: me}, username, session_id
+            cloudwatch_model.ListMetrics {sender: me}, username, session_id, region_name, metric_name, namespace, dimensions, next_token
             cloudwatch_model.once "CW__LST_METRICS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
         if current_service.toLowerCase() == "cloudwatch" && current_resource.toLowerCase() == "cloudwatch" && current_api == "DescribeAlarmHistory"
-
+            alarm_name = if $("#alarm_name").val() != "null" then $("#alarm_name").val() else null
+            alarm_name = if alarm_name != null and MC.isJSON(alarm_name)==true then JSON.parse alarm_name else alarm_name
+            start_date = if $("#start_date").val() != "null" then $("#start_date").val() else null
+            start_date = if start_date != null and MC.isJSON(start_date)==true then JSON.parse start_date else start_date
+            end_date = if $("#end_date").val() != "null" then $("#end_date").val() else null
+            end_date = if end_date != null and MC.isJSON(end_date)==true then JSON.parse end_date else end_date
+            history_item_type = if $("#history_item_type").val() != "null" then $("#history_item_type").val() else null
+            history_item_type = if history_item_type != null and MC.isJSON(history_item_type)==true then JSON.parse history_item_type else history_item_type
+            max_records = if $("#max_records").val() != "null" then $("#max_records").val() else null
+            max_records = if max_records != null and MC.isJSON(max_records)==true then JSON.parse max_records else max_records
+            next_token = if $("#next_token").val() != "null" then $("#next_token").val() else null
+            next_token = if next_token != null and MC.isJSON(next_token)==true then JSON.parse next_token else next_token
             #cloudwatch.DescribeAlarmHistory
-            cloudwatch_model.DescribeAlarmHistory {sender: me}, username, session_id
+            cloudwatch_model.DescribeAlarmHistory {sender: me}, username, session_id, region_name, alarm_name, start_date, end_date, history_item_type, max_records, next_token
             cloudwatch_model.once "CW__DESC_ALM_HIST_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
         if current_service.toLowerCase() == "cloudwatch" && current_resource.toLowerCase() == "cloudwatch" && current_api == "DescribeAlarms"
-
+            alarm_names = if $("#alarm_names").val() != "null" then $("#alarm_names").val() else null
+            alarm_names = if alarm_names != null and MC.isJSON(alarm_names)==true then JSON.parse alarm_names else alarm_names
+            alarm_name_prefix = if $("#alarm_name_prefix").val() != "null" then $("#alarm_name_prefix").val() else null
+            alarm_name_prefix = if alarm_name_prefix != null and MC.isJSON(alarm_name_prefix)==true then JSON.parse alarm_name_prefix else alarm_name_prefix
+            action_prefix = if $("#action_prefix").val() != "null" then $("#action_prefix").val() else null
+            action_prefix = if action_prefix != null and MC.isJSON(action_prefix)==true then JSON.parse action_prefix else action_prefix
+            state_value = if $("#state_value").val() != "null" then $("#state_value").val() else null
+            state_value = if state_value != null and MC.isJSON(state_value)==true then JSON.parse state_value else state_value
+            max_records = if $("#max_records").val() != "null" then $("#max_records").val() else null
+            max_records = if max_records != null and MC.isJSON(max_records)==true then JSON.parse max_records else max_records
+            next_token = if $("#next_token").val() != "null" then $("#next_token").val() else null
+            next_token = if next_token != null and MC.isJSON(next_token)==true then JSON.parse next_token else next_token
             #cloudwatch.DescribeAlarms
-            cloudwatch_model.DescribeAlarms {sender: me}, username, session_id
+            cloudwatch_model.DescribeAlarms {sender: me}, username, session_id, region_name, alarm_names, alarm_name_prefix, action_prefix, state_value, max_records, next_token
             cloudwatch_model.once "CW__DESC_ALMS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
         if current_service.toLowerCase() == "cloudwatch" && current_resource.toLowerCase() == "cloudwatch" && current_api == "DescribeAlarmsForMetric"
-
+            metric_name = if $("#metric_name").val() != "null" then $("#metric_name").val() else null
+            metric_name = if metric_name != null and MC.isJSON(metric_name)==true then JSON.parse metric_name else metric_name
+            namespace = if $("#namespace").val() != "null" then $("#namespace").val() else null
+            namespace = if namespace != null and MC.isJSON(namespace)==true then JSON.parse namespace else namespace
+            dimension_names = if $("#dimension_names").val() != "null" then $("#dimension_names").val() else null
+            dimension_names = if dimension_names != null and MC.isJSON(dimension_names)==true then JSON.parse dimension_names else dimension_names
+            period = if $("#period").val() != "null" then $("#period").val() else null
+            period = if period != null and MC.isJSON(period)==true then JSON.parse period else period
+            statistic = if $("#statistic").val() != "null" then $("#statistic").val() else null
+            statistic = if statistic != null and MC.isJSON(statistic)==true then JSON.parse statistic else statistic
+            unit = if $("#unit").val() != "null" then $("#unit").val() else null
+            unit = if unit != null and MC.isJSON(unit)==true then JSON.parse unit else unit
             #cloudwatch.DescribeAlarmsForMetric
-            cloudwatch_model.DescribeAlarmsForMetric {sender: me}, username, session_id
+            cloudwatch_model.DescribeAlarmsForMetric {sender: me}, username, session_id, region_name, metric_name, namespace, dimension_names, period, statistic, unit
             cloudwatch_model.once "CW__DESC_ALMS_FOR_METRIC_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
+
 
         ########## AMI ##########
         if current_service.toLowerCase() == "ec2" && current_resource.toLowerCase() == "ami" && current_api == "CreateImage"
@@ -1882,7 +1956,6 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             sns_model.ListTopics {sender: me}, username, session_id, region_name, next_token
             sns_model.once "SNS__LST_TOPICS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
-
 
 
 

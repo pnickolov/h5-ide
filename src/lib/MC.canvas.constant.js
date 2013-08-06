@@ -1343,6 +1343,7 @@ var constant_data = {
 				0
 			],
 			"groupUId": "",
+			"originalId": "",
 			"connection": [
 
 			]
@@ -1406,6 +1407,7 @@ var constant_data = {
 			'architecture': '', //i386|x86_64
 			'rootDeviceType': '', //ebs|instance-store
 			'groupUId': '',
+			"originalId": "",
 			'connection': []
 		},
 		data: {

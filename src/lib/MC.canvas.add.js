@@ -512,7 +512,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3.dragger
-				Canvon.image('../assets/images/ide/icon/asg-resource-dragger.png', width - 13 , -13, 27, 27),
+				Canvon.path('M ' + (width - 1) + ' 1 l' + ' 0 20 l -20 -20 z', {}).attr({
+					'class': 'asg-resource-dragger'
+				}),
 
 				////5.asg label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({

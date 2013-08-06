@@ -80,6 +80,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					if(data.type === 'AWS.EC2.AvailabilityZone' && data.option.name === option.name){
 						$(item)
 							.data('enable', false)
+							.attr('data-enable', false)
 							.addClass('resource-disabled')
 							.removeClass("tooltip");
 						return false;

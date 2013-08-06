@@ -49,7 +49,12 @@ define [ 'jquery',
 					view.model.addSG()
 
 				#render
-				view.render()
+				$dom = view.render()
+				ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
+					title : model.attributes.sg_detail.component.resource.GroupName
+					dom   : $dom
+					id    : "SG"
+				}
 
 				#temp hack
 				if view._events
@@ -80,7 +85,12 @@ define [ 'jquery',
 					model.getAppSG sg_uid
 
 				#render
-				view.render(is_app_view)
+				$dom = view.render(is_app_view)
+				ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
+					title : model.attributes.sg_app_detail.groupName
+					dom   : $dom
+					id    : "SG"
+				}
 
 	unLoadModule = () ->
 

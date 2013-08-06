@@ -1,138 +1,54 @@
-<header class="sidebar-title" id='property-title'>{{eni_display.name}}</header>
-
-<section class="property-control-group clearfix" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
+<article class="property-control-group" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
   Attach the Netowrk Interface to an instance.
-</section>
+</article>
 
-<section class="fixedaccordion accordion-default" id="property-eni-wrapper" {{#if eni_display.resource.Attachment.InstanceId}}{{else}}style="display:none;"{{/if}} data-sub="43">
+<article id="property-eni-wrapper" {{#unless eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/unless}}>
 
-  <div class="accordion-group expanded">
-    <div class="fixedaccordion-head">
-      <span>Network Interface Details</span>
-    </div>
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
-      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <div class="item-wrap scroll-content">
-        <div class="property-control-group clearfix">
-          <label class="left" for="property-eni-desc">Description</label>
-          <textarea id="property-eni-desc">{{eni_display.resource.Description}}</textarea>
-        </div>
-        <div class="property-control-group clearfix">
-          <div class="checkbox">
-            <input id="property-eni-source-check" type="checkbox" {{#if eni_display.resource.SourceDestCheck}}checked="true"{{/if}} />
-            <label for="property-eni-source-check"></label>
-          </div>
-          <label for="property-eni-source-check">Enable Source/Destination Checking</label>
-        </div>
+  <div class="option-group-head expand">Network Interface Details</div>
+  <div class="option-group">
+    <section class="property-control-group">
+      <label class="left" for="property-eni-desc">Description</label>
+      <textarea id="property-eni-desc">{{eni_display.resource.Description}}</textarea>
+    </section>
 
-        <div class="property-control-group">
-          <div class="network-list-header clearfix">
-            <span class="name">IP Address</span>
-            <a href="#" id="property-eni-ip-add" class="right btn btn-silver btn-small" title="Add IP Address">Add IP</a>
-          </div>
-          <ul class="network-list" id="property-eni-list">
-           {{#each eni_display.resource.PrivateIpAddressSet}}
-						<li class="input-ip-item">
-							<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
-								<label for="instance-ip-1" class="input-ip-prefix">10.0.0.</label>
-								<input type="text" class="input input-ip" value="x" id="instance-ip-1">
-							</div>
-              {{#unless Primary}}<div class="network-remove-icon"></div>{{/unless}}
-							{{#if has_eip}}
-							<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-							{{else}}
-							<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-							{{/if}}
-							<div class="network-remove-icon"></div>
-						</li>
-						
-						{{/each}}
-          </ul>
-        </div>
-
+    <section class="property-control-group">
+      <div class="checkbox">
+        <input id="property-eni-source-check" type="checkbox" {{#if eni_display.resource.SourceDestCheck}}checked="true"{{/if}} />
+        <label for="property-eni-source-check"></label>
       </div>
-    </div>
+      <label for="property-eni-source-check">Enable Source/Destination Checking</label>
+    </section>
+
+    <section class="property-control-group">
+      <div class="network-list-header">
+        <span class="name">IP Address</span>
+        <a href="#" id="property-eni-ip-add" class="right btn btn-silver btn-small" title="Add IP Address">Add IP</a>
+      </div>
+
+      <ul class="network-list" id="property-eni-list">
+       {{#each eni_display.resource.PrivateIpAddressSet}}
+        <li class="input-ip-item">
+          <div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
+            <label for="instance-ip-1" class="input-ip-prefix">10.0.0.</label>
+            <input type="text" class="input input-ip" value="x" id="instance-ip-1">
+          </div>
+          {{#unless Primary}}<div class="network-remove-icon"></div>{{/unless}}
+          {{#if has_eip}}
+          <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+          {{else}}
+          <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+          {{/if}}
+          <div class="network-remove-icon"></div>
+        </li>
+        {{/each}}
+      </ul>
+    </section>
   </div>
 
-<!--   <div class="accordion-group">
-    <div class="fixedaccordion-head" id="eni-sg-head"> <span>Security Groups({{sg_display.total}})</span> </div>
+  <div class="option-group-head" id="sg-head">Security Groups (<span id="property-head-sg-num"></span>)</div>
+  <div class="option-group sg-group">Loading...</div>
+</article>
 
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide sg-wrapper">
-      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <div class="item-wrap scroll-content">
-        <ul class="tab">
-          <li data-tab-target="#item-group" class="active">Group</li>
-          <li data-tab-target="#item-rule">Rule</li>
-        </ul>
 
-        <div id="item-group" class="active tab-item">
-          <ul class="sg-info-list" id="eni-sgfo-list">
-          {{#each sg_display.detail}}
-            <li class="clearfix" href="#" >
-              <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div>
-              <div class="col2">
-                <div class="col2-1 truncate">{{name}}</div>
-                <div class="col2-2 truncate">{{desc}}</div>
-                <div class="col2-3 truncate">{{rules}} rules, {{members}} members</div>
-              </div>
-              <div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip="Edit SG" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"uid":"{{uid}}", "parent":"{{parent}}"}' data-sgid="{{uid}}">&gt;</div>
-            </li>
-            {{/each}}
-          </ul>
-          <div class="btn btn-silver secondary-panel" id="eni-add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"parent":"{{component.uid}}"}'>Create new Security Group</div>
-        </div>
-
-        <div id="item-rule" class="tab-item">
-
-          <div class="sg-rule-filter">
-            <h5>Sort by</h5>
-            <div class="selectbox" id="sg-rule-filter-select">
-              <div class="selection">Direction</div>
-              <ul class="dropdown" tabindex="-1">
-                <li class="item selected" data-id="1">Direction</li>
-                <li class="item" data-id="2">Source/Destination</li>
-                <li class="item" data-id="3">Protocol</li>
-              </ul>
-            </div>
-          </div>
-
-          <ul class="sg-rule-list">
-            {{#each sg_display.rules_detail_ingress}}
-            <li data-inbound="true">
-              <div class='rule-direction-icon tooltip' data-tooltip="inbound"></div>
-              <div class='rule-protocol'>{{IpProtocol}}</div>
-              <div class='rule-source'>
-                <div class="rule-source-icon"></div>
-                <span>{{IpRanges}}</span>
-              </div>
-              <div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
-            </li>
-            {{/each}}
-
-            {{#each sg_display.rules_detail_egress}}
-            <li data-inbound="true">
-              <div class='rule-direction-icon tooltip' data-tooltip="outbound"></div>
-              <div class='rule-protocol'>{{IpProtocol}}</div>
-              <div class='rule-source'>
-                <div class="rule-source-icon"></div>
-                <span>{{IpRanges}}</span>
-              </div>
-              <div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
-            </li>
-            {{/each}}
-
-          </div>
-
-      </div>
-    </div>
-  </div> -->
-  <div class="accordion-group">
-    <div class="fixedaccordion-head" id="sg-head">
-      Security Groups (<span id="property-head-sg-num"></span>)
-    </div>
-    <div class="sg-group">loading...</div>
-  </div>
-
-</section>
 <div id="sg-secondary-panel-wrap">
 </div>

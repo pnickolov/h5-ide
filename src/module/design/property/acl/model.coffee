@@ -9,7 +9,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         defaults :
             'component'    : null
             'associations' : null
-            'parent'       : null
 
         initialize : ->
             #listen
@@ -93,10 +92,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 aclObj.asso_number = 0
 
             this.set 'component', aclObj
-
-        setParent : ( parent_uid ) ->
-
-            this.set 'parent', parent_uid
 
         getSubnetInfo : (associationObj) ->
             subnetUID = associationObj.SubnetId

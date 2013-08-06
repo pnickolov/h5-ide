@@ -40,10 +40,7 @@ define [ 'event', 'MC',
             else
                 target = source.parents('.secondary-panel').first()
 
-            accordion = $( '.property-stack' )
-            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
-
-            ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data'), cur_expanded_id
+            ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data')
 
         deleteNetworkAcl : (event) ->
             aclUID = $(event.target).attr('acl-uid')
@@ -61,9 +58,6 @@ define [ 'event', 'MC',
             else
                 target = source.parents('.secondary-panel').first()
 
-            accordion = $( '#instance-accordion' )
-            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
-
             aclUID = MC.guid()
             aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
             aclObj.name = MC.aws.acl.getNewName()
@@ -71,7 +65,7 @@ define [ 'event', 'MC',
 
             MC.canvas_data.component[aclUID] = aclObj
 
-            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
+            ide_event.trigger ide_event.OPEN_ACL, aclUID
 
         openEditAclPanel : ( event ) ->
             source = $(event.target)
@@ -80,12 +74,7 @@ define [ 'event', 'MC',
             else
                 target = source.parents('.secondary-panel').first()
 
-            accordion = $( '#instance-accordion' )
-            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
-
-            aclUID = source.attr('acl-uid')
-
-            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID)
+            ide_event.trigger ide_event.OPEN_ACL, source.attr('acl-uid')
 
     }
 

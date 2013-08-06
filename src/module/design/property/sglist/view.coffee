@@ -26,11 +26,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 			$('#property-head-sg-num').text(this.model.attributes.sg_list.length)
 
 		openSgPanel : ( event ) ->
-			source = $(event.target)
-			sgUID = source.parents('li').attr('sg-uid')
-			accordion = $( '#instance-accordion' )
-			cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
-			this.trigger 'OPEN_SG', sgUID
+			this.trigger 'OPEN_SG', $(event.target).parents('li').attr('sg-uid')
 
 		refreshSGList: () ->
 			this.render()

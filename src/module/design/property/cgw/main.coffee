@@ -49,10 +49,17 @@ define [ 'jquery',
             #render
             view.render()
 
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
+
+
             view.on "CHANGE_NAME", ( change ) ->
                 model.setName change.value
                 # Sync the name to canvas
                 MC.canvas.update uid, "text", "name", change.value
+
+                # Set title
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, change.value
                 null
 
             view.on "CHANGE_IP", ( change ) ->
@@ -81,6 +88,9 @@ define [ 'jquery',
 
             model.init uid
             view.render()
+
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "vpn:#{model.attributes.name}"
 
 
 

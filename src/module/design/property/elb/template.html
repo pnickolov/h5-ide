@@ -1,183 +1,156 @@
-<header class="sidebar-title" id='property-title'>{{component.name}}</header>
+<article id="elb-property-detail" component="{{component.uid}}">
 
-<article class="fixedaccordion accordion-default" data-sub="71">
-	<div class="accordion-group  expanded" id="accordion-group-property-elb-detail">
-		<div class="fixedaccordion-head" id="elb-property-detail" component="{{component.uid}}">
-			Load Balancer Details
-		</div>
-		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-elb">
-			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-			<div class="item-wrap scroll-content">
-				<div class="property-control-group clearfix">
-					<label class="left" for="property-elb-name" >Name</label>
-					<span class="required-input right">(Required)</span>
-					<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
-				</div>
-				{{# if component.resource.VpcId}}
-				<div class="property-control-group clearfix" id="property-control-group-elb-scheme">
-			        <label>Scheme</label>
-			        <div class="context">
-			            <div class="radio elb-volume-type-radio">
-			                <input type="radio" {{#unless elb_detail.isInternal}}checked="checked"{{/unless}} name="elb-scheme-select" value="internet" id="elb-scheme-select1"/>
-			                <label for="elb-scheme-select1"></label>
-			            </div>
-			            <label for="elb-scheme-select1" class="elb-volume-type-radio-text">Internet Facing</label>
-			            <div></div>
-			            <div class="radio elb-volume-type-radio">
-			                <input type="radio" {{#if elb_detail.isInternal}}checked="checked"{{/if}} name="elb-scheme-select" value="internal" id="elb-scheme-select2"/>
-			                <label for="elb-scheme-select2"></label>
-			            </div>
-			            <label for="elb-scheme-select2" class="elb-volume-type-radio-text">Internal</label>
-			        </div>
-				</div>
-				{{/if}}
-			</div>
-		</div>
-	</div>
-	<div class="accordion-group" id="accordion-group-elb-property-listener-main">
-		<div class="fixedaccordion-head" component="{{component.uid}}">
-			Listener Configuration
-		</div>
-		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-elb">
-			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-			<div class="item-wrap scroll-content">
-				<div id="accordion-group-elb-property-listener">
-				</div>
-				<div id="elb-property-listener-content-add">
-					+Add listener
-				</div>
-				<div id="elb-property-listener-cert-main">
-					<div class="property-control-group clearfix">
-						<label class="left"  >Add Server Certificate</label>
-					</div>
-					<div class="property-control-group clearfix">
-						<label class="left"  >Name</label>
-						<input class="input"  type="text" id="elb-property-cert-name-input"/>
-					</div>
-					<div class="property-control-group clearfix">
-						<label class="left"  >Private Key</label>
-						<textarea class="input elb-property-cert-input" id="elb-property-cert-privatekey-input"/>
-					</div>
-					<div class="property-control-group clearfix">
-						<label class="left"  >Public Key Certificate</label>
-						<textarea class="input elb-property-cert-input" id="elb-property-cert-publickey-input"/>
-					</div>
-					<div class="property-control-group clearfix">
-						<label class="left"  >Certificate Chain</label>
-						<textarea class="input elb-property-cert-input" id="elb-property-cert-chain-input"/>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="accordion-group" >
-		<div class="fixedaccordion-head" id="elb-property-detail" component="{{component.uid}}">
-			Health Check Configuration
-		</div>
-		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-elb">
-			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-			<div class="item-wrap scroll-content">
-				<div class="property-control-group clearfix">
-					<label>Ping Protocol</label>
-					<div class="selectbox selectbox-mega" id="elb-property-health-protocol-select">
-						<div class="selection">{{health_detail.protocol}}</div>
-						<ul class="dropdown" tabindex="-1">
-							<li class="item{{#ifCond health_detail.protocol 'TCP'}} selected{{/ifCond}}" data-id="TCP">TCP</li>
-							<li class="item{{#ifCond health_detail.protocol 'HTTP'}} selected{{/ifCond}}" data-id="HTTP">HTTP</li>
-							<li class="item{{#ifCond health_detail.protocol 'HTTPS'}} selected{{/ifCond}}" data-id="HTTPS">HTTPS</li>
-							<li class="item{{#ifCond health_detail.protocol 'SSL'}} selected{{/ifCond}}" data-id="SSL">SSL</li>
-						</ul>
-					</div>
-				</div>
-				<div class="property-control-group clearfix">
-					<label class="left" for="property-elb-name" >Ping Port</label>
-					<input class="input elb-name"  type="text" required="required" value="{{ health_detail.port }}" name="property-elb-name" id="property-elb-health-port"/>
-				</div>
-				<div class="property-control-group clearfix">
-					<label class="left" for="property-elb-name" >Ping Path</label>
-					<span class="required-input right">(Required)</span>
-					<input class="input elb-name"  type="text" required="required" value="{{ health_detail.path }}" name="property-elb-name" id="property-elb-health-path"/>
-				</div>
-				<div class="property-control-group clearfix">
-					<label class="left" for="property-elb-name" >Health Check Interval</label>
-					<input class="input elb-name"  type="text" required="required" value="{{ health_detail.interval }}" name="property-elb-name" id="property-elb-health-interval"/>
-					<label class="left elb-property-right-text" for="property-elb-name" >Seconds</label>
-				</div>
-				<div class="property-control-group clearfix">
-					<label class="left" for="property-elb-name" >Response Timeout</label>
-					<input class="input elb-name"  type="text" required="required" value="{{ health_detail.timeout }}" name="property-elb-name" id="property-elb-health-timeout"/>
-					<label class="left elb-property-right-text" for="property-elb-name" >Seconds</label>
-				</div>
+	<div class="option-group-head expand">Load Balancer Details </div>
+	<div class="option-group">
+		<section class="property-control-group">
+			<label class="left" for="property-elb-name" >Name</label>
+			<span class="required-input right">(Required)</span>
+			<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+		</section>
 
-				<div class="property-control-group clearfix">
-					<label class="left" for="property-elb-name" >Unhealthy Threshold</label>
-					<div class="slider-container">
-						<div class="slider" id="elb-property-slider-unhealthy">
-							<a class="slider-controll"></a>
-							<div class="slider-wrap"></div>
-							<ul class="slider-line">
-								<li><span>2</span></li>
-								<li><span>3</span></li>
-								<li><span>4</span></li>
-								<li><span>5</span></li>
-								<li><span>6</span></li>
-								<li><span>7</span></li>
-								<li><span>8</span></li>
-								<li><span>9</span></li>
-								<li><span>10</span></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="property-control-group clearfix">
-					<label class="left" for="property-elb-name" >Healthy Threshold</label>
-					<div class="slider-container">
-						<div class="slider" id="elb-property-slider-healthy">
-							<a class="slider-controll"></a>
-							<div class="slider-wrap"></div>
-							<ul class="slider-line">
-								<li><span>2</span></li>
-								<li><span>3</span></li>
-								<li><span>4</span></li>
-								<li><span>5</span></li>
-								<li><span>6</span></li>
-								<li><span>7</span></li>
-								<li><span>8</span></li>
-								<li><span>9</span></li>
-								<li><span>10</span></li>
-							</ul>
-						</div>
-					</div>
-				</div>
+		{{# if component.resource.VpcId}}
+		<section class="property-control-group" id="property-control-group-elb-scheme">
+      <label>Scheme</label>
+      <div class="context">
+        <div class="radio elb-volume-type-radio">
+            <input type="radio" {{#unless elb_detail.isInternal}}checked="checked"{{/unless}} name="elb-scheme-select" value="internet" id="elb-scheme-select1"/>
+            <label for="elb-scheme-select1"></label>
+        </div>
+        <label for="elb-scheme-select1" class="elb-volume-type-radio-text">Internet Facing</label>
+        <div></div>
+        <div class="radio elb-volume-type-radio">
+            <input type="radio" {{#if elb_detail.isInternal}}checked="checked"{{/if}} name="elb-scheme-select" value="internal" id="elb-scheme-select2"/>
+            <label for="elb-scheme-select2"></label>
+        </div>
+        <label for="elb-scheme-select2" class="elb-volume-type-radio-text">Internal</label>
+      </div>
+		</section>
+		{{/if}}
+	</div>
+
+	<div class="option-group-head"> Listener Configuration </div>
+	<div class="option-group">
+		<div id="accordion-group-elb-property-listener"></div>
+		<div id="elb-property-listener-content-add">
+			+Add listener
+		</div>
+		<div id="elb-property-listener-cert-main">
+			<div class="property-control-group clearfix">
+				<label class="left"  >Add Server Certificate</label>
+			</div>
+			<div class="property-control-group clearfix">
+				<label class="left"  >Name</label>
+				<input class="input"  type="text" id="elb-property-cert-name-input"/>
+			</div>
+			<div class="property-control-group clearfix">
+				<label class="left"  >Private Key</label>
+				<textarea class="input elb-property-cert-input" id="elb-property-cert-privatekey-input"/>
+			</div>
+			<div class="property-control-group clearfix">
+				<label class="left"  >Public Key Certificate</label>
+				<textarea class="input elb-property-cert-input" id="elb-property-cert-publickey-input"/>
+			</div>
+			<div class="property-control-group clearfix">
+				<label class="left"  >Certificate Chain</label>
+				<textarea class="input elb-property-cert-input" id="elb-property-cert-chain-input"/>
 			</div>
 		</div>
 	</div>
-	<div class="accordion-group" id="accordion-group-property-elb-zones">
-		<div class="fixedaccordion-head" id="elb-property-zones">
-			Availability Zones
-		</div>
-		<div class="accordion-body scroll-wrap scrollbar-auto-hide property-elb">
-			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-			<div class="item-wrap scroll-content">
-				{{#each az_detail}}
-				<div class="property-control-group">
-					<div class="checkbox">
-						<input class="property-elb-az-checkbox" type="checkbox" {{#if instance_num}}disabled="disabled"{{/if}} {{#if selected}}checked="checked"{{/if}} name="{{az_name}}" id="property-elb-az-{{az_name}}"/>
-						<label for="property-elb-az-{{az_name}}"></label>
-					</div>
-					<label for="property-elb-az-{{az_name}}" class="checkbox-label-main">{{az_name}}</label>
-					<label for="property-elb-az-{{az_name}}" class="checkbox-label-minor">{{instance_num}} instances</label>
-				</div>
-				{{/each}}
+
+	<div class="option-group-head"> Health Check Configuration </div>
+	<div class="option-group">
+		<section class="property-control-group">
+			<label>Ping Protocol</label>
+			<div class="selectbox selectbox-mega" id="elb-property-health-protocol-select">
+				<div class="selection">{{health_detail.protocol}}</div>
+				<ul class="dropdown" tabindex="-1">
+					<li class="item{{#ifCond health_detail.protocol 'TCP'}} selected{{/ifCond}}" data-id="TCP">TCP</li>
+					<li class="item{{#ifCond health_detail.protocol 'HTTP'}} selected{{/ifCond}}" data-id="HTTP">HTTP</li>
+					<li class="item{{#ifCond health_detail.protocol 'HTTPS'}} selected{{/ifCond}}" data-id="HTTPS">HTTPS</li>
+					<li class="item{{#ifCond health_detail.protocol 'SSL'}} selected{{/ifCond}}" data-id="SSL">SSL</li>
+				</ul>
 			</div>
-		</div>
+		</section>
+		<section class="property-control-group">
+			<label class="left" for="property-elb-name" >Ping Port</label>
+			<input class="input elb-name"  type="text" required="required" value="{{ health_detail.port }}" name="property-elb-name" id="property-elb-health-port"/>
+		</section>
+		<section class="property-control-group">
+			<label class="left" for="property-elb-name" >Ping Path</label>
+			<span class="required-input right">(Required)</span>
+			<input class="input elb-name"  type="text" required="required" value="{{ health_detail.path }}" name="property-elb-name" id="property-elb-health-path"/>
+		</section>
+		<section class="property-control-group">
+			<label class="left" for="property-elb-name" >Health Check Interval</label>
+			<input class="input elb-name"  type="text" required="required" value="{{ health_detail.interval }}" name="property-elb-name" id="property-elb-health-interval"/>
+			<label class="left elb-property-right-text" for="property-elb-name" >Seconds</label>
+		</section>
+		<section class="property-control-group">
+			<label class="left" for="property-elb-name" >Response Timeout</label>
+			<input class="input elb-name"  type="text" required="required" value="{{ health_detail.timeout }}" name="property-elb-name" id="property-elb-health-timeout"/>
+			<label class="left elb-property-right-text" for="property-elb-name" >Seconds</label>
+		</section>
+
+		<section class="property-control-group">
+			<label class="left" for="property-elb-name" >Unhealthy Threshold</label>
+			<div class="slider-container">
+				<div class="slider" id="elb-property-slider-unhealthy">
+					<a class="slider-controll"></a>
+					<div class="slider-wrap"></div>
+					<ul class="slider-line">
+						<li><span>2</span></li>
+						<li><span>3</span></li>
+						<li><span>4</span></li>
+						<li><span>5</span></li>
+						<li><span>6</span></li>
+						<li><span>7</span></li>
+						<li><span>8</span></li>
+						<li><span>9</span></li>
+						<li><span>10</span></li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section class="property-control-group">
+			<label class="left" for="property-elb-name" >Healthy Threshold</label>
+			<div class="slider-container">
+				<div class="slider" id="elb-property-slider-healthy">
+					<a class="slider-controll"></a>
+					<div class="slider-wrap"></div>
+					<ul class="slider-line">
+						<li><span>2</span></li>
+						<li><span>3</span></li>
+						<li><span>4</span></li>
+						<li><span>5</span></li>
+						<li><span>6</span></li>
+						<li><span>7</span></li>
+						<li><span>8</span></li>
+						<li><span>9</span></li>
+						<li><span>10</span></li>
+					</ul>
+				</div>
+			</div>
+		</section>
 	</div>
+
+	{{#if az_detail}}
+	<div class="option-group-head"> Availability Zones </div>
+	<div class="option-group">
+		{{#each az_detail}}
+		<section class="property-control-group">
+			<div class="checkbox">
+				<input class="property-elb-az-checkbox" type="checkbox" {{#if instance_num}}disabled="disabled"{{/if}} {{#if selected}}checked="checked"{{/if}} name="{{az_name}}" id="property-elb-az-{{az_name}}"/>
+				<label for="property-elb-az-{{az_name}}"></label>
+			</div>
+			<label for="property-elb-az-{{az_name}}" class="checkbox-label-main">{{az_name}}</label>
+			<label for="property-elb-az-{{az_name}}" class="checkbox-label-minor">{{instance_num}} instances</label>
+		</section>
+		{{/each}}
+	</div>
+	{{/if}}
+
+	<div class="option-group-head" id="sg-head">Security Groups (<span id="property-head-sg-num"></span>)</div>
+	<div class="option-group sg-group">loading...</div>
+
 </article>
-	<div class="accordion-group">
-	<div class="fixedaccordion-head" id="sg-head">
-	  Security Groups (<span id="property-head-sg-num"></span>)
-	</div>
-	<div class="sg-group">loading...</div>
-	</div>
-</div>
-<div id="sg-secondary-panel-wrap">
+<div id="sg-secondary-panel-wrap"></div>

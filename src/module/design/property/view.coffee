@@ -17,7 +17,11 @@ define [ './temp_view',
             #$( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
             #$( window   ).on 'resize', fixedaccordion.resize
             #listen
-            $( document ).on 'click', '#hide-property-panel', this.togglePropertyPanel
+            $( document.body ).on('click', '#hide-property-panel', this.togglePropertyPanel)
+                              .on('click', ".option-group-head", this.toggleOption)
+                              .on('click', "#hide-second-panel", _.bind( this.hideSecondPanel, this) )
+
+                              .on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', '.option-group', this.optionToggle)
 
         render     : ( template ) ->
             console.log 'property render'
@@ -34,6 +38,7 @@ define [ './temp_view',
             $( '#property-panel' ).toggleClass 'hiden'
             $( event ).children().first().toggleClass('icon-double-angle-left').toggleClass('icon-double-angle-right')
             $( '#canvas-panel' ).toggleClass 'right-hiden'
+            false
 
         refresh : ->
             console.log 'refresh'
@@ -45,7 +50,79 @@ define [ './temp_view',
             $( '#property-panel' ).html back_dom
             null
 
+        toggleOption : ( event ) ->
+            $target = $(event.target)
+            if $target.is("button") or $target.is("a")
+                return
 
+            $toggle = $(this)
+            hide    = $toggle.hasClass("expand")
+            $target = $toggle.next()
+
+            if hide
+                h = $target.innerHeight()
+                $target.css("max-height", h).toggleClass("transition", false)
+                setTimeout ()->
+                    $target.toggleClass("transition", true).css("max-height", 0)
+                , 10
+            else
+                $target.removeClass("transition").css {
+                    position     : "absolute"
+                    visibility   : "hidden"
+                    "max-height" : "100000px"
+                }
+                h = $target.innerHeight()
+                $target.css("max-height", "0")
+                setTimeout () ->
+                    $target.toggleClass("transition", true).css {
+                        position     : ""
+                        visibility   : ""
+                        "max-height" : h
+                    }
+                , 10
+
+            $toggle.toggleClass("expand")
+
+            return false
+
+        optionToggle : ( event ) ->
+            $target = $(this)
+            $toggle = $target.prev()
+            if $toggle.hasClass "expand"
+                $target.removeClass("transition").css("max-height", "100000px");
+
+
+
+        setTitle : ( title ) ->
+            $("#property-title").html( title )
+
+        showSecondPanel : ( data ) ->
+            $("#property-second-title").html( data.title ).attr( "data-id", data.id )
+            $("#property-second-panel .property-content").html data.dom
+            $("#property-panel").addClass "show-second-panel"
+
+        hideSecondPanel : () ->
+            $("#property-panel").removeClass "show-second-panel"
+            this.trigger "HIDE_SUBPANEL", $("#property-second-title").attr( "data-id" )
+            false
+
+        immHideSecondPanel : () ->
+            if not $("#property-panel").hasClass "show-second-panel"
+                return
+
+            # Hide Second Panel immediately
+            setTimeout () ->
+                $("#property-panel").removeClass "transition show-second-panel"
+
+                setTimeout ()->
+                    $("#property-panel").addClass "transition"
+                    null
+                , 10
+
+                null
+            , 10
+
+            null
     }
 
     return PropertyView

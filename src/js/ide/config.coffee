@@ -77,12 +77,14 @@ require.config {
 		'tabbar'       : 'module/tabbar/main'
 		'dashboard'    : 'module/dashboard/main'
 		'design'       : 'module/design/main'
+		'process'      : 'module/process/main'
 
 		#sub module with design
 		'resource'     : 'module/design/resource/main'
 		'property'     : 'module/design/property/main'
 		'canvas'       : 'module/design/canvas/main'
 		'toolbar'      : 'module/design/toolbar/main'
+
 
 		#aws logic handler
 		'aws_handle'   : 'lib/aws/main'

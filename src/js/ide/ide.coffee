@@ -4,9 +4,9 @@
 
 define [ 'MC', 'event',
          'view', 'layout', 'canvas_layout',
-         'header', 'navigation', 'tabbar', 'dashboard', 'design',
+         'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process'
          'WS', 'constant', 'aws_handle'
-], ( MC, ide_event, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, WS, constant ) ->
+], ( MC, ide_event, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant ) ->
 
 	console.info canvas_layout
 
@@ -46,6 +46,8 @@ define [ 'MC', 'event',
 		MC.data.untitled = 0
 		#set tab
 		MC.tab  = {}
+		#set process tab
+		MC.process = {}
 
 		#############################
 		#  WebSocket
@@ -102,6 +104,7 @@ define [ 'MC', 'event',
 		#listen SWITCH_TAB and SWITCH_DASHBOARD
 		ide_event.onLongListen ide_event.SWITCH_TAB,          () -> view.showTab()
 		ide_event.onLongListen ide_event.SWITCH_DASHBOARD,    () -> view.showDashbaordTab()
+		ide_event.onLongListen ide_event.SWITCH_APP_PROCESS,  () -> view.showProcessTab()
 
 		#############################
 		#  load module
@@ -135,6 +138,7 @@ define [ 'MC', 'event',
 		#listen DESIGN_COMPLETE
 		ide_event.onListen ide_event.DESIGN_COMPLETE, () ->
 			console.log 'DESIGN_COMPLETE'
+			process.loadModule()
 
 		#listen RESOURCE_COMPLETE
 		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->

@@ -61,7 +61,12 @@ define [ './temp_view',
 
             if hide
                 h = $target.innerHeight()
-                $target.css("max-height", h).toggleClass("transition", false)
+                $target.css({
+                        "max-height" : h
+                        "overflow"   : "hidden"
+                    })
+                    .toggleClass("transition", false)
+
                 setTimeout ()->
                     $target.toggleClass("transition", true).css("max-height", 0)
                 , 10
@@ -70,6 +75,7 @@ define [ './temp_view',
                     position     : "absolute"
                     visibility   : "hidden"
                     "max-height" : "100000px"
+                    overflow     : "hidden"
                 }
                 h = $target.innerHeight()
                 $target.css("max-height", "0")
@@ -79,9 +85,11 @@ define [ './temp_view',
                         visibility   : ""
                         "max-height" : h
                     }
+
                 , 10
 
             $toggle.toggleClass("expand")
+
 
             return false
 
@@ -89,7 +97,10 @@ define [ './temp_view',
             $target = $(this)
             $toggle = $target.prev()
             if $toggle.hasClass "expand"
-                $target.removeClass("transition").css("max-height", "100000px")
+                $target.removeClass("transition").css({
+                    "max-height" : "100000px"
+                    "overflow"   : "visible"
+                })
 
 
 

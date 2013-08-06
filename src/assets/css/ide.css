@@ -2091,6 +2091,7 @@ a.sidebar-hider {
 
 .expand + .option-group {
 	max-height : inherit;
+	overflow   : visible;
 }
 
 .property-control-group {

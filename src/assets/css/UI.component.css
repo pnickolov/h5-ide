@@ -1169,7 +1169,7 @@ textarea {
 	min-width  : 160px;
 	background : #fff;
 	margin-top : 1px;
-	z-index    : 50;
+	z-index    : 9999;
 	border     : 1px solid #ccc;
 	box-shadow : 0 8px 10px rgba(0,0,0,.3);
 }

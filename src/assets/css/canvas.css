@@ -369,6 +369,11 @@
 	fill: #999;
 }
 
+.prompt_text {
+	fill: #16B4F9;
+	font-size: 12px;
+	cursor: default;
+}
 
 /*scale area style*/
 .group-resizer {

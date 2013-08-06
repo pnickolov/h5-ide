@@ -1536,14 +1536,28 @@ MC.canvas = {
 							if (
 								//target_id !== item.id &&
 								$.inArray(item.id, ignore_stack) === -1 &&
-								data.x > coordinate[0] &&
-								data.x < coordinate[0] + size[0] &&
-								data.y > coordinate[1] &&
-								data.y < coordinate[1] + size[1]
+								(
+									(
+										data.x > coordinate[0] &&
+										data.x < coordinate[0] + size[0] &&
+										data.y > coordinate[1] &&
+										data.y < coordinate[1] + size[1]
+									)
+									||
+									(
+										group_data.type === 'AWS.AutoScaling.Group' &&
+										data.x >= coordinate[0] &&
+										data.x <= coordinate[0] + size[0] &&
+										data.y >= coordinate[1] &&
+										data.y <= coordinate[1] + size[1]
+									)
+								)
 							)
 							{
 								match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
+								match_status['target'] = item.id;
 								match_target = item.id;
+
 								return false;
 							}
 						});
@@ -1559,13 +1573,19 @@ MC.canvas = {
 
 			is_matched =
 				match[0] &&
-				match[0].is_matched &&
 				match[1] &&
-				match[1].is_matched &&
 				match[2] &&
-				match[2].is_matched &&
 				match[3] &&
-				match[3].is_matched;
+
+				match[0].is_matched &&
+				match[1].is_matched &&
+				match[2].is_matched &&
+				match[3].is_matched &&
+				
+				match[0].target === match[1].target &&
+				match[0].target === match[2].target &&
+				match[0].target === match[3].target
+				;
 
 			if (
 				!is_matched &&
@@ -1663,12 +1683,12 @@ MC.canvas = {
 		return matched;
 	},
 
-	areaChild: function (node_id, start_x, start_y, end_x, end_y)
+	areaChild: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
 		var children = MC.canvas.data.get('layout.component.node'),
 			groups = MC.canvas.data.get('layout.component.group'),
 			group_data = groups[ node_id ],
-			group_weight = MC.canvas.GROUP_WEIGHT[ group_data.type ],
+			group_weight = MC.canvas.GROUP_WEIGHT[ node_type ],
 			matched = [],
 			coordinate,
 			size;
@@ -1710,7 +1730,7 @@ MC.canvas = {
 
 			if (
 				node_id !== key &&
-				($.inArray(item.type, group_weight) > -1 || item.type === group_data.type) &&
+				($.inArray(item.type, group_weight) > -1 || item.type === node_type) &&
 				start_x <= coordinate[0] + size[0] &&
 				end_x >= coordinate[0] &&
 				start_y <= coordinate[1] + size[1] &&
@@ -1731,6 +1751,7 @@ MC.canvas = {
 
 		return MC.canvas.areaChild(
 			group_node.id,
+			group_data.type,
 			coordinate[0],
 			coordinate[1],
 			coordinate[0] + group_data.size[0],
@@ -2796,6 +2817,7 @@ MC.canvas.event.dragable = {
 
 				areaChild = MC.canvas.areaChild(
 					target_id,
+					node_type,
 					coordinate.x,
 					coordinate.y,
 					coordinate.x + group_size[0],
@@ -2860,6 +2882,7 @@ MC.canvas.event.dragable = {
 					{
 						fixed_areaChild = MC.canvas.areaChild(
 							target_id,
+							node_type,
 							coordinate.x,
 							coordinate.y,
 							coordinate.x + group_size[0],
@@ -3422,7 +3445,9 @@ MC.canvas.event.siderbarDrag = {
 				default_width,
 				default_height,
 				platform,
-				target_group_type;
+				target_group_type,
+				size,
+				component_size;
 
 			if (target.data('enable') === false)
 			{
@@ -3450,13 +3475,14 @@ MC.canvas.event.siderbarDrag = {
 			{
 				clone_node = target.find('.resource-icon').clone();
 				shadow.append(clone_node);
+				component_size = MC.canvas.COMPONENT_SIZE[ node_type ];
 
 				shadow
 					.css({
 						'top': event.pageY - 50,
 						'left': event.pageX - 50,
-						'width': MC.canvas.COMPONENT_SIZE[ node_type ][0] * MC.canvas.GRID_WIDTH,
-						'height': MC.canvas.COMPONENT_SIZE[ node_type ][1] * MC.canvas.GRID_HEIGHT
+						'width': component_size[0] * MC.canvas.GRID_WIDTH,
+						'height': component_size[1] * MC.canvas.GRID_HEIGHT
 					})
 					.show();
 
@@ -3545,7 +3571,8 @@ MC.canvas.event.siderbarDrag = {
 			new_node,
 			vpc_id,
 			vpc_data,
-			vpc_coordinate;
+			vpc_coordinate,
+			areaChild;
 
 		if (coordinate.x > 0 && coordinate.y > 0)
 		{
@@ -3614,9 +3641,17 @@ MC.canvas.event.siderbarDrag = {
 					coordinate.y,
 					default_group_size[0],
 					default_group_size[1]
+				),
+				areaChild = MC.canvas.areaChild(
+					null,
+					target_type,
+					coordinate.x,
+					coordinate.y,
+					coordinate.x + default_group_size[0],
+					coordinate.y + default_group_size[1]
 				);
 
-				if (match_place.is_matched)
+				if (match_place.is_matched && areaChild.length === 0)
 				{
 					node_option.groupUId = match_place.target;
 
@@ -4059,12 +4094,13 @@ MC.canvas.event.groupResize = {
 			group_height > group_padding &&
 
 			event.data.group_child.length === MC.canvas.areaChild(
-					group_id,
-					group_left,
-					group_top,
-					group_left + group_width,
-					group_top + group_height
-				).length
+				group_id,
+				type,
+				group_left,
+				group_top,
+				group_left + group_width,
+				group_top + group_height
+			).length
 		)
 		{
 			if (type === 'AWS.VPC.VPC')

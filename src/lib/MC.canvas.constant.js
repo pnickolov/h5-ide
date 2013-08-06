@@ -21,14 +21,16 @@ var constant_data = {
 		'AWS.VPC.CustomerGateway': [17, 10],
 		'AWS.VPC.RouteTable': [8, 8],
 		'AWS.VPC.InternetGateway': [8, 8],
-		'AWS.VPC.VPNGateway': [8, 8]
+		'AWS.VPC.VPNGateway': [8, 8],
+		'AWS.AutoScaling.LaunchConfiguration': [10, 10]
 	},
 
 	GROUP_DEFAULT_SIZE:
 	{
 		'AWS.VPC.VPC': [60, 60], //[width, height]
 		'AWS.EC2.AvailabilityZone': [20, 20],
-		'AWS.VPC.Subnet': [16, 16]
+		'AWS.VPC.Subnet': [16, 16],
+		'AWS.AutoScaling.Group' : [12, 12]
 	},
 
 	GROUP_PADDING: 2,
@@ -108,21 +110,24 @@ var constant_data = {
 	{
 		'AWS.VPC.VPC': [6, 16],
 		'AWS.EC2.AvailabilityZone': [4, 14],
-		'AWS.VPC.Subnet': [4, 14]
+		'AWS.VPC.Subnet': [4, 14],
+		'AWS.AutoScaling.Group': [4, 14]
 	},
 
 	GROUP_WEIGHT:
 	{
-		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet'],
-		'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],
-		'AWS.VPC.Subnet': []
+		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet', 'AWS.AutoScaling.Group'],
+		'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet', 'AWS.AutoScaling.Group'],
+		'AWS.VPC.Subnet': ['AWS.AutoScaling.Group'],
+		'AWS.AutoScaling.Group': []
 	},
 
 	GROUP_PARENT:
 	{
 		'AWS.VPC.VPC': '',
 		'AWS.EC2.AvailabilityZone': 'AWS.VPC.VPC',
-		'AWS.VPC.Subnet': 'AWS.EC2.AvailabilityZone'
+		'AWS.VPC.Subnet': 'AWS.EC2.AvailabilityZone',
+		'AWS.AutoScaling.Group' : 'AWS.VPC.Subnet'
 	},
 
 	PLATFORM_TYPE:
@@ -140,21 +145,23 @@ var constant_data = {
 		{
 			'AWS.ELB': ['Canvas'],
 			'AWS.EC2.AvailabilityZone': ['Canvas'],
-			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone'],
-			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone']
+			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone','AWS.AutoScaling.Group'],
+			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone'],
+			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone']
 		},
 		'default-vpc':
 		{
 			'AWS.ELB': ['Canvas'],
 			'AWS.EC2.AvailabilityZone': ['Canvas'],
-			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone'],
+			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone','AWS.AutoScaling.Group'],
 			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone'],
-			'AWS.VPC.NetworkInterface': ['AWS.EC2.AvailabilityZone']
+			'AWS.VPC.NetworkInterface': ['AWS.EC2.AvailabilityZone'],
+			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone']
 		},
 		'custom-vpc':
 		{
 			'AWS.ELB': ['AWS.VPC.VPC'],
-			'AWS.EC2.Instance': ['AWS.VPC.Subnet'],
+			'AWS.EC2.Instance': ['AWS.VPC.Subnet','AWS.AutoScaling.Group'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
 			'AWS.VPC.CustomerGateway': ['Canvas'],
@@ -163,12 +170,13 @@ var constant_data = {
 			'AWS.VPC.VPNGateway': ['AWS.VPC.VPC'],
 			'AWS.EC2.AvailabilityZone': ['AWS.VPC.VPC'],
 			'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
-			'AWS.VPC.VPC': ['Canvas']
+			'AWS.VPC.VPC': ['Canvas'],
+			'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet']
 		},
 		'ec2-vpc':
 		{
 			'AWS.ELB': ['AWS.VPC.VPC'],
-			'AWS.EC2.Instance': ['AWS.VPC.Subnet'],
+			'AWS.EC2.Instance': ['AWS.VPC.Subnet','AWS.AutoScaling.Group'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
 			'AWS.VPC.CustomerGateway': ['Canvas'],
@@ -177,7 +185,8 @@ var constant_data = {
 			'AWS.VPC.VPNGateway': ['AWS.VPC.VPC'],
 			'AWS.EC2.AvailabilityZone': ['AWS.VPC.VPC'],
 			'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
-			'AWS.VPC.VPC': ['Canvas']
+			'AWS.VPC.VPC': ['Canvas'],
+			'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet']
 		}
 	},
 
@@ -190,6 +199,12 @@ var constant_data = {
 				type: 'sg',
 				from: 'instance-sg',
 				to: 'instance-sg',
+
+				direction: {
+					from: 'horizontal',
+					to: 'horizontal'
+				},
+
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -206,6 +221,11 @@ var constant_data = {
 				type: 'sg',
 				from: 'instance-sg',
 				to: 'elb-sg-out',
+
+				direction: {
+					from: 'horizontal'
+				},
+
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -213,6 +233,11 @@ var constant_data = {
 				type: 'sg',
 				from: 'instance-sg',
 				to: 'elb-sg-in',
+
+				direction: {
+					from: 'horizontal'
+				},
+
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -236,6 +261,12 @@ var constant_data = {
 				type: 'sg',
 				from: 'instance-sg',
 				to: 'eni-sg',
+
+				direction: {
+					from: 'horizontal',
+					to: 'horizontal'
+				},
+
 				color: '#6DAEFE',
 				relation: 'multiple'
 			}],
@@ -279,6 +310,11 @@ var constant_data = {
 				type: 'sg',
 				from: 'elb-sg-out',
 				to: 'instance-sg',
+
+				direction: {
+					to: 'horizontal'
+				},
+
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -286,6 +322,11 @@ var constant_data = {
 				type: 'sg',
 				from: 'elb-sg-in',
 				to: 'instance-sg',
+
+				direction: {
+					to: 'horizontal'
+				},
+
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -313,6 +354,11 @@ var constant_data = {
 				type: 'sg',
 				from: 'eni-sg',
 				to: 'instance-sg',
+
+				direction: {
+					from: 'horizontal',
+					to: 'horizontal'
+				},
 
 				color: '#6DAEFE', //blue
 				relation: 'multiple'
@@ -353,6 +399,11 @@ var constant_data = {
 				type: 'association',
 				from: 'rtb-src',
 				to: 'rtb-tgt-left',
+
+				direction: {
+					from: 'vertical'
+				},
+
 				relation: 'multiple',
 				color: '#d8d7d6' //gray
 			},
@@ -361,6 +412,11 @@ var constant_data = {
 				type: 'association',
 				from: 'rtb-src',
 				to: 'subnet-assoc-out',
+
+				direction: {
+					from: 'vertical'
+				},
+
 				relation: 'multiple',
 				color: '#d8d7d6'
 			},
@@ -479,6 +535,11 @@ var constant_data = {
 				type: 'association',
 				from: 'subnet-assoc-out',
 				to: 'rtb-src',
+
+				direction: {
+					to: 'vertical'
+				},
+
 				relation: 'multiple',
 				color: '#d8d7d6'
 			},
@@ -1266,7 +1327,259 @@ var constant_data = {
 				"CertificateChain": ""
 			}
 		}
+	},
+
+
+	/********************************************
+	** AutoScaling **
+	********************************************/
+
+	//*****AWS.AutoScaling.Group*****/
+	ASG_JSON: {
+		layout: {
+			"type": "AWS.AutoScaling.Group",
+			"coordinate": [
+				0,
+				0
+			],
+			"groupUId": "",
+			"connection": [
+
+			]
+		},
+		data: {
+			'type': 'AWS.AutoScaling.Group',
+			'name': '',
+			'uid': '',
+			'resource': {
+				'AutoScalingGroupARN': '',
+				'AutoScalingGroupName': '',
+				'AvailabilityZones': [
+
+				],
+				'CreatedTime': '',
+				'DefaultCooldown': '',
+				'DesiredCapacity': '',
+				'EnabledMetrics': [
+					{
+						'Granularity': '',
+						'Metric': ''
+					}
+				],
+				'HealthCheckGracePeriod': '',
+				'HealthCheckType': '',
+				'Instances': [
+
+				],
+				'LaunchConfigurationName': '',
+				'LoadBalancerNames': [
+
+				],
+				'MaxSize': '',
+				'MinSize': '',
+				'PlacementGroup': '',
+				'Status': '',
+				'SuspendedProcesses': [
+					{
+						'ProcessName': '',
+						'SuspensionReason': ''
+					}
+				],
+				'Tags': '',
+				'TerminationPolicies': [
+
+				],
+				'VPCZoneIdentifier': '',
+				'InstanceId': '',
+				'ShouldDecrementDesiredCapacity': ''
+			}
+		}
+	},
+
+	/*****AWS.AutoScaling.LaunchConfiguration*****/
+	ASL_LC_JSON: {
+		layout:
+		{
+			'type': 'AWS.AutoScaling.LaunchConfiguration',
+			'coordinate': [0, 0],
+			'osType': '', //amazon|centos|debian|fedora|gentoo|linux-other|opensuse|redhat|suse|ubuntu|win
+			'architecture': '', //i386|x86_64
+			'rootDeviceType': '', //ebs|instance-store
+			'groupUId': '',
+			'connection': []
+		},
+		data: {
+			'name': '',
+			'uid': '',
+			'type': 'AWS.AutoScaling.LaunchConfiguration',
+			'resource': {
+				'BlockDeviceMapping': [
+
+				],
+				'CreatedTime': '',
+				'EbsOptimized': '',
+				'IamInstanceProfile': '',
+				'ImageId': '',
+				'InstanceMonitoring': '',
+				'InstanceType': '',
+				'KernelId': '',
+				'KeyName': '',
+				'LaunchConfigurationARN': '',
+				'LaunchConfigurationName': '',
+				'RamdiskId': '',
+				'SecurityGroups': [
+
+				],
+				'SpotPrice': '',
+				'UserData': ''
+			}
+		}
+	},
+
+	/*****volumeinAutoScalingGroup*****/
+	ASL_VOL_JSON: {
+		"DeviceName": "",
+		"Ebs": {
+			"SnapshotId": "",
+			"VolumeSize": 0
+		},
+		"VirtualName": ""
+	},
+
+	/*****AWS.AutoScaling.NotificationConfiguration*****/
+	ASL_NC_JSON: {
+		data: {
+			'type': 'AWS.AutoScaling.NotificationConfiguration',
+			'name': '',
+			'uid': '',
+			'resource': {
+				'AutoScalingGroupName': '',
+				'NotificationType': [
+
+				],
+				'TopicARN': ''
+			}
+		}
+	},
+	/*****AWS.AutoScaling.ScalingPolicy*****/
+	ASL_SP_JSON: {
+		data: {
+			'type': 'AWS.AutoScaling.ScalingPolicy',
+			'name': '',
+			'uid': '',
+			'resource': {
+				'AdjustmentType': "",
+				'Alarms': [
+					{
+						'AlarmARN': '',
+						'AlarmName': ''
+					}
+				],
+				'AutoScalingGroupName': '',
+				'Cooldown': '',
+				'MinAdjustmentStep': '',
+				'PolicyARN': '',
+				'PolicyName': '',
+				'ScalingAdjustment': ''
+			}
+		}
+	},
+
+	/*****AWS.AutoScaling.ScheduledActions*****/
+	ASL_SA_JSON: {
+		data: {
+			'type': 'AWS.AutoScaling.ScheduledActions',
+			'name': '',
+			'uid': '',
+			'resource': {
+				'AutoScalingGroupName': '',
+				'DesiredCapacity': '',
+				'EndTime': '',
+				'MaxSize': '',
+				'MinSize': '',
+				'Recurrence': '',
+				'ScheduledActionName': '',
+				'StartTime': ''
+			}
+		}
+	},
+
+	/*****AWS.CloudWatch.CloudWatch*****/
+	CLW_JSON: {
+		data: {
+			'type': 'AWS.CloudWatch.CloudWatch',
+			'name': '',
+			'uid': '',
+			'resource': {
+				'ActionEnabled': '',
+				'AlarmActions': [
+
+				],
+				'AlarmArn': '',
+				'AlarmConfigurationUpdatedTimestamp': '',
+				'AlarmDescription': '',
+				'AlarmName': '',
+				'ComparisonOperator': '',
+				'Dimensions': [
+					{
+						'name': '',
+						'value': ''
+					}
+				],
+				'EvaluationPeriods': '',
+				'InsufficientDataActions': [
+
+				],
+				'MetricName': '',
+				'Namespace': '',
+				'OKAction': [
+
+				],
+				'Period': '',
+				'StateReason': '',
+				'StateReasonData': '',
+				'StateUpdateTimestamp': '',
+				'StateValue': '',
+				'Statistic': 'Average',
+				'Threshold': '',
+				'Unit': ''
+			}
+		}
+	},
+
+	/*****AWS.SNS.Subscription*****/
+	SNS_SUB_JSON: {
+		data: {
+			'type': 'AWS.SNS.Subscription',
+			'name': '',
+			'uid': '',
+			'resource': {
+				'Endpoint': '',
+				'TopicArn': '',
+				'Protocol': '',
+				'DeliveryPolicy': null,
+				'SubscriptionArn': ''
+			}
+		}
+	},
+
+	/*****AWS.SNS.Topic*****/
+	SNS_TOPIC_JSON: {
+		data: {
+			'type': 'AWS.SNS.Topic',
+			'name': '',
+			'uid': '',
+			'resource': {
+				'Name': '',
+				'TopicArn': '',
+				'Policy': null,
+				'DisplayName': '',
+				'DeliveryPolicy': null
+			}
+		}
 	}
+
+
 };
 
 $.each(constant_data, function (key, value)

@@ -145,6 +145,12 @@
 	border: none;
 }
 
+#drag_shadow.AWS-AutoScaling-Group {
+	background: rgba(118, 214, 255, 0.05);
+	border: 2px dashed #76d6ff;
+}
+
+
 /* port style */
 .port-blue {
 	fill: #6DAEFE;
@@ -267,7 +273,7 @@
 /* group */
 .group-label {
 	font-size: 12px;
-	cursor: default;
+	cursor: pointer;
 }
 
 .az-name {
@@ -339,6 +345,30 @@
 .AWS-VPC-Subnet .group-label {
 	fill: #999;
 }
+
+
+.group-asg {
+	fill: rgba(118, 214, 255, 0.05);
+	stroke: #76d6ff;
+	stroke-linejoin: round;
+	stroke-dasharray: 6, 4;
+	stroke-width: 2;
+}
+
+.AWS-AutoScaling-Group:hover .group-asg,
+.node-dragging .dropable-group .group-asg {
+	stroke: #76d6ff;
+}
+
+.AWS-AutoScaling-Group.selected .group-asg {
+	stroke: #76d6ff;
+	fill: rgba(255, 255, 255, 0);
+}
+
+.AWS-AutoScaling-Group .group-label {
+	fill: #999;
+}
+
 
 /*scale area style*/
 .group-resizer {

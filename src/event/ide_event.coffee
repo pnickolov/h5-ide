@@ -32,7 +32,6 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_PROPERTY     : 'UPDATE_PROPERTY'
         OPEN_SG             : 'OPEN_SG'
         OPEN_ACL            : 'OPEN_ACL'
-        OPEN_INSTANCE       : 'OPEN_INSTANCE'
         RELOAD_PROPERTY     : 'RELOAD_PROPERTY'
         RELOAD_AZ           : 'RELOAD_AZ'
 
@@ -40,6 +39,10 @@ define [ 'underscore', 'backbone' ], () ->
         NEED_IGW              : 'NEED_IGW'
         ENABLE_RESOURCE_ITEM  : 'ENABLE_RESOURCE_ITEM'
         DISABLE_RESOURCE_ITEM : 'DISABLE_RESOURCE_ITEM'
+
+        PROPERTY_TITLE_CHANGE  : 'PROPERTY_TITLE_CHANGE'
+        PROPERTY_OPEN_SUBPANEL : 'PROPERTY_OPEN_SUBPANEL'
+        PROPERTY_HIDE_SUBPANEL : 'PROPERTY_HIDE_SUBPANEL'
 
         CANVAS_CREATE_LINE  : 'CANVAS_CREATE_LINE'
         CANVAS_DELETE_OBJECT: 'CANVAS_DELETE_OBJECT'
@@ -86,10 +89,6 @@ define [ 'underscore', 'backbone' ], () ->
 
         #navigation to dashboard - region
         NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
-
-        #property event
-        RETURN_SUBNET_PROPERTY_FROM_ACL : 'RETURN_SUBNET_PROPERTY_FROM_ACL'
-        RETURN_PANEL_PROPERTY_FROM_SG : 'RETURN_PANEL_PROPERTY_FROM_SG'
 
         #websocket meteor collection
         WS_COLLECTION_READY_REQUEST : 'WS_COLLECTION_READY_REQUEST'

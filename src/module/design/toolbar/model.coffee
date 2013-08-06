@@ -187,7 +187,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK'
 
-                        ide_event.trigger ide_event.UPDATE_TABBAR, id, name + ' - stack'
+                        ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
 
                         MC.data.stack_list[region].push name
 

@@ -1,57 +1,53 @@
-<div class="accordion-body scroll-wrap scrollbar-auto-hide sg-wrapper">
-	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-	<div class="item-wrap scroll-content">
-		{{#unless is_stack_sg}}
-		<ul class="tab">
-			<li data-tab-target="#item-group" class="active">Group</li>
-			<li data-tab-target="#item-rule">Rule</li>
-		</ul>
-		{{/unless}}
-		<div class="tab-content">
-			<div id="item-group" class="active tab-item">
-				<ul class="sg-info-list" id="sg-info-list">
-					{{#each sg_list}}
-					<li class="clearfix" href="#" sg-uid="{{sgUID}}">
-						<input class="col2-1 sg-list-association-check {{#if sgHideCheck}}hide{{/if}}" type="checkbox" {{#if sgChecked}}checked="checked"{{/if}} sg-uid="{{sgUID}}"/>
-						<!-- <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div> -->
-						<div class="col2">
-							<div class="col2-1 truncate">{{sgName}}</div>
-							<div class="col2-2 truncate">{{sgDesc}}</div>
-							<div class="col2-3 truncate">{{sgRuleNum}} rules, {{sgMemberNum}} members</div>
-						</div>
-						<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip={{#if app_view}}"View SG"{{else}}"Edit SG"{{/if}} data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"uid":"{{sgUID}}", "parent":"{{parent}}"}' data-sgid="{{sgUID}}">&gt;</div>
-						{{#unless sgIsDefault}}{{#unless sgMemberNum}}<div class="sg-list-delete-btn">Delete</div>{{/unless}}{{/unless}}
-					</li>
-					{{/each}}
-				</ul>
-				<div class="btn btn-silver secondary-panel {{#if app_view}}hide{{/if}}" id="add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"parent":"{{sgUID}}"}'>Create new Security Group</div>
-			</div>
-			<div id="item-rule" class="tab-item">
-				<div class="sg-rule-filter">
-					<h5>Sort by</h5>
-					<div class="selectbox" id="sg-rule-filter-select">
-						<div class="selection">Direction</div>
-						<ul class="dropdown" tabindex="-1">
-							<li class="item selected" data-id="direction">Direction</li>
-							<li class="item" data-id="source/destination">Source/Destination</li>
-							<li class="item" data-id="protocol">Protocol</li>
-						</ul>
-					</div>
+{{#unless is_stack_sg}}
+<ul class="tab">
+	<li data-tab-target="#item-group" class="active">Group</li>
+	<li data-tab-target="#item-rule">Rule</li>
+</ul>
+{{/unless}}
+
+<div class="tab-content">
+	<div id="item-group" class="active tab-item">
+		<ul class="sg-info-list" id="sg-info-list">
+			{{#each sg_list}}
+			<li class="clearfix" href="#" sg-uid="{{sgUID}}">
+				<input class="col2-1 sg-list-association-check {{#if sgHideCheck}}hide{{/if}}" type="checkbox" {{#if sgChecked}}checked="checked"{{/if}} sg-uid="{{sgUID}}"/>
+				<!-- <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div> -->
+				<div class="col2">
+					<div class="col2-1 truncate">{{sgName}}</div>
+					<div class="col2-2 truncate">{{sgDesc}}</div>
+					<div class="col2-3 truncate">{{sgRuleNum}} rules, {{sgMemberNum}} members</div>
 				</div>
-				<ul class="sg-rule-list" id="sglist-rule-list">
-					{{#each sg_rule_list}}
-					<li data-inbound="true">
-						<div data-id="{{Direction}}" class='rule-direction-icon tooltip' data-tooltip="{{Direction}}">{{Direction}}</div>
-						<div data-id="{{IpProtocol}}" class='rule-protocol'>{{IpProtocol}}</div>
-						<div data-id="{{IpRanges}}" class='rule-source'>
-							<div class="rule-source-icon"></div>
-							<span>{{IpRanges}}</span>
-						</div>
-						<div data-id="{{FromPort}}" class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
-					</li>
-					{{/each}}
+				<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip={{#if app_view}}"View SG"{{else}}"Edit SG"{{/if}} data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"uid":"{{sgUID}}", "parent":"{{parent}}"}' data-sgid="{{sgUID}}">&gt;</div>
+				{{#unless sgIsDefault}}{{#unless sgMemberNum}}<div class="sg-list-delete-btn">Delete</div>{{/unless}}{{/unless}}
+			</li>
+			{{/each}}
+		</ul>
+		<div class="btn btn-silver secondary-panel {{#if app_view}}hide{{/if}}" id="add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"parent":"{{sgUID}}"}'>Create new Security Group</div>
+	</div>
+	<div id="item-rule" class="tab-item">
+		<div class="sg-rule-filter">
+			<h5>Sort by</h5>
+			<div class="selectbox" id="sg-rule-filter-select">
+				<div class="selection">Direction</div>
+				<ul class="dropdown" tabindex="-1">
+					<li class="item selected" data-id="direction">Direction</li>
+					<li class="item" data-id="source/destination">Source/Destination</li>
+					<li class="item" data-id="protocol">Protocol</li>
 				</ul>
 			</div>
 		</div>
+		<ul class="sg-rule-list" id="sglist-rule-list">
+			{{#each sg_rule_list}}
+			<li data-inbound="true">
+				<div data-id="{{Direction}}" class='rule-direction-icon tooltip' data-tooltip="{{Direction}}">{{Direction}}</div>
+				<div data-id="{{IpProtocol}}" class='rule-protocol'>{{IpProtocol}}</div>
+				<div data-id="{{IpRanges}}" class='rule-source'>
+					<div class="rule-source-icon"></div>
+					<span>{{IpRanges}}</span>
+				</div>
+				<div data-id="{{FromPort}}" class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
+			</li>
+			{{/each}}
+		</ul>
 	</div>
 </div>

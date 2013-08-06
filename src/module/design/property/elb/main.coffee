@@ -46,6 +46,8 @@ define [ 'jquery',
 
             view.on 'ELB_NAME_CHANGED', ( value ) ->
                 model.setELBName uid, value
+                # Set title
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, value
 
             view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
                 elbComponent = model.setScheme uid, value
@@ -101,6 +103,9 @@ define [ 'jquery',
             #render
             view.render model.attributes
 
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.component.name
+
             sglist_main.loadModule model
 
     loadAppModule = ( uid ) ->
@@ -121,6 +126,9 @@ define [ 'jquery',
 
             model.init uid
             view.render()
+
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
             sglist_main.loadModule model, true
 

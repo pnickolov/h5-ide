@@ -35,8 +35,9 @@ define [ 'jquery',
             view.model = model
             model.set 'parent_model', parent_model
 
-            ide_event.onLongListen ide_event.RETURN_PANEL_PROPERTY_FROM_SG, () ->
-                view.render()
+            ide_event.onLongListen ide_event.PROPERTY_HIDE_SUBPANEL, (id) ->
+                if id is "SG"
+                    view.render()
 
             is_app_view = false
             currentState = MC.canvas.getState()
@@ -69,7 +70,6 @@ define [ 'jquery',
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
-        ide_event.offListen ide_event.RETURN_PANEL_PROPERTY_FROM_SG
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public

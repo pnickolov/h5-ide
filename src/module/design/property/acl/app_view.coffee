@@ -14,7 +14,7 @@ define [ 'event', 'MC',
 
         render     : () ->
             console.log 'property:acl app render'
-            $( '.property-details' ).html this.template this.model.attributes
+            this.template this.model.attributes
 
     }
 

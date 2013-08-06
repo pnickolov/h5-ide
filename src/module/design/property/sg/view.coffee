@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sg
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 'UI.scrollbar' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( ide_event, MC ) ->
 
 	InstanceView = Backbone.View.extend {
 
@@ -16,94 +16,55 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 		instance_expended_id : 0
 
 		events   :
-			'click .secondary-panel .back' : 'openInstance'
-
 			#for sg rule
-			'click .rule-edit-icon' : 'showEditRuleModal'
+			'click .rule-edit-icon'   : 'showEditRuleModal'
 			'click #sg-add-rule-icon' : 'showCreateRuleModal'
 			'click .rule-remove-icon' : 'removeRulefromList'
 
 			#for sg modal
-			'click #sg-modal-direction input' : 'radioSgModalChange'
-			'OPTION_CHANGE #modal-protocol-select' : 'sgModalSelectboxChange'
+			'click #sg-modal-direction input'          : 'radioSgModalChange'
+			'OPTION_CHANGE #modal-protocol-select'     : 'sgModalSelectboxChange'
 			'OPTION_CHANGE #protocol-icmp-main-select' : 'icmpMainSelect'
-			'OPTION_CHANGE .protocol-icmp-sub-select' : 'icmpSubSelect'
-			'click #sg-modal-save' : 'saveSgModal'
-			'click .editable-label' : 'editablelabelClick'
-			'change #sg-protocol-tcp input' : 'tcpValueChange'
-			'change #sg-protocol-udp input' : 'udpValueChange'
-			'change #sg-protocol-custom input' : 'customValueChange'
+			'OPTION_CHANGE .protocol-icmp-sub-select'  : 'icmpSubSelect'
+			'click #sg-modal-save'                     : 'saveSgModal'
+			'click .editable-label'                    : 'editablelabelClick'
+			'change #sg-protocol-tcp input'            : 'tcpValueChange'
+			'change #sg-protocol-udp input'            : 'udpValueChange'
+			'change #sg-protocol-custom input'         : 'customValueChange'
 
 			#for sg detail
-			'change #securitygroup-name' : 'setSGName'
-			'change #securitygroup-description' : 'setSGDescription'
-
+			'change #securitygroup-name'           : 'setSGName'
+			'change #securitygroup-description'    : 'setSGDescription'
 			'OPTION_CHANGE #sg-rule-filter-select' : 'sortSgRule'
 
 		render     : (is_app_view) ->
 
 			if is_app_view
 
-				$( '#sg-secondary-panel-wrap' ).html this.app_template this.model.attributes
+				$dom = this.app_template this.model.attributes
 
 			else
-			
-				console.log 'property:sg render'
 
 				if this.model.attributes.sg_detail.component.name == 'DefaultSG'
 					this.model.attributes.isDefault = true
 				else
 					this.model.attributes.isDefault = false
 
-				$( '#sg-secondary-panel-wrap' ).html this.template this.model.attributes
+				$dom = this.template this.model.attributes
 
-			fixedaccordion.resize()
-			secondary_panel_wrap = $('#sg-secondary-panel-wrap')
-			secondary_panel_wrap.animate({
-				right: 0
-			}, {
-				duration: 200,
-				specialEasing: {
-					width: 'linear'
-				},
-				complete : () ->
-					selectbox.init()
-					$('#sg-secondary-panel .sg-title input').focus()
-				}
-			)
+			$('#securitygroup-name').focus()
 
-		openInstance : () ->
-			me = this
-			console.log 'openInstance'
-			secondary_panel_wrap = $('#sg-secondary-panel-wrap')
-			secondary_panel_wrap.animate({
-				right: "-280px"
-			}, {
-				duration: 200,
-				specialEasing: {
-					width: 'linear'
-				},
-				complete : () ->
-					ide_event.trigger ide_event.RETURN_PANEL_PROPERTY_FROM_SG
-					# ide_event.trigger ide_event.OPEN_PROPERTY, 'component', $('#sg-secondary-panel').attr('parent'), me.instance_expended_id
-				}
-			)
-
-		securityGroupAddSelect: (event) ->
-			fixedaccordion.show.call $('#sg-head')
-
+			$dom
 
 		#SG SecondaryPanel
 		showEditRuleModal : (event) ->
 			modal MC.template.modalSGRule {isAdd:false}, true
-			scrollbar.init()
 
 		showCreateRuleModal : (event) ->
 			isclassic = false
 			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 				isclassic = true
 			modal MC.template.modalSGRule {isAdd:true, isclassic:isclassic}, true
-			scrollbar.init()
 			return false
 
 		removeRulefromList: (event, id) ->

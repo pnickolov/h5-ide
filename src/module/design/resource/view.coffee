@@ -429,6 +429,7 @@ define [ 'event',
 
                 $item
                     .data("enable", enable)
+                    .attr("data-enable", enable)
                     .toggleClass("resource-disabled", not enable)
 
                 # Update tooltip

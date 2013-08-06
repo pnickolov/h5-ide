@@ -447,8 +447,21 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				//az
 				component_data.resource.AvailabilityZones = [option.group.availableZoneName];
+
+				component_data.resource.MaxSize = 2;
+
+				component_data.resource.MinSize = 1;
+
+				component_data.resource.AutoScalingGroupName = option.name;
+
+				if(option['launch-config']){
+					component_data.resource.LaunchConfigurationName = '@' + option['launch-config'] + '.resource.LaunchConfigurationName';
+				}
+
 				//vpc
-				component_data.resource.VPCZoneIdentifier = option.group.vpcUId;
+				if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+					component_data.resource.VPCZoneIdentifier = '@' + option.group.subnetUId + '.resource.SubnetId';
+				}
 
 				component_layout = $.extend(true, {}, MC.canvas.ASG_JSON.layout);
 				component_layout.groupUId = option.groupUId;
@@ -1575,18 +1588,23 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.name = 'launch-config';
 				component_data = $.extend(true, {}, MC.canvas.ASL_LC_JSON.data);
 				component_data.name = option.name;
+				component_data.resource.LaunchConfigurationName = option.name;
 
+				// create new icon on resource panel
+				$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
+
+				$($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children()
+						.data('option', {"name": "asg", "launch-config": group.id })
+						.attr('data-option',{"name": "asg", "launch-config":"'+group.id+'"});
+
+				$($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
+
+				MC.canvas_data.component[option.groupUId].resource.LaunchConfigurationName = '@' + group.id + '.resource.LaunchConfigurationName';
 				//imageId
 				component_data.resource.ImageId = option.imageId;
 
 				//instanceType
 				component_data.resource.InstanceType = 'm1.small';
-
-				// if not kp
-				if (MC.canvas_property.kp_list.length === 0)
-				{
-					//default kp
-				}
 
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
 				component_data.resource.SecurityGroups.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");

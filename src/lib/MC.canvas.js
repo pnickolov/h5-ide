@@ -1607,15 +1607,16 @@ MC.canvas = {
 		}
 	},
 
-	isBlank: function (type, target_id, x, y, width, height)
+	isBlank: function (type, target_id, target_type, x, y, width, height)
 	{
 		var children = MC.canvas.data.get('layout.component.' + type),
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
 			isBlank = true,
 			start_x,
 			start_y,
 			end_x,
-			end_y
+			end_y,
 			coordinate,
 			size;
 
@@ -1625,7 +1626,6 @@ MC.canvas = {
 			start_y = y * scale_ratio;
 			end_x = (x + width) * scale_ratio;
 			end_y = (y + height) * scale_ratio;
-			target_type = children[ target_id ].type;
 
 			$.each(children, function (key, item)
 			{
@@ -1634,7 +1634,7 @@ MC.canvas = {
 
 				if (
 					key !== target_id &&
-					item.type === target_type &&
+					($.inArray(item.type, group_weight) > -1 || item.type === target_type) &&
 					coordinate[0] < end_x &&
 					coordinate[0] + size[0] > start_x &&
 					coordinate[1] < end_y &&
@@ -2920,7 +2920,7 @@ MC.canvas.event.dragable = {
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&
-							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
+							MC.canvas.isBlank('group', target_id, group_data.type, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
 							event.data.groupChild.length === unique_stack.length
 						)
 					)
@@ -3667,7 +3667,11 @@ MC.canvas.event.siderbarDrag = {
 					coordinate.y + default_group_size[1]
 				);
 
-				if (match_place.is_matched && areaChild.length === 0)
+				if (
+					match_place.is_matched &&
+					areaChild.length === 0 &&
+					MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1])
+				)
 				{
 					node_option.groupUId = match_place.target;
 

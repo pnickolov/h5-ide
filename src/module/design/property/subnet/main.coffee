@@ -44,9 +44,9 @@ define [ 'jquery',
             model.setId uid
             view.model = model
 
-            ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, (mainModule) ->
-                view.refreshACLList()
-                # mainModule.unLoadModule()
+            ide_event.onLongListen ide_event.PROPERTY_HIDE_SUBPANEL, ( id ) ->
+                if id is "ACL"
+                    view.refreshACLList()
 
             #render
             view.render()
@@ -88,9 +88,9 @@ define [ 'jquery',
             #view
             view.model    = model
 
-            view.on 'OPEN_ACL', ( acl_uid, subnet_uid ) ->
+            view.on 'OPEN_ACL', ( acl_uid ) ->
 
-                ide_event.trigger ide_event.OPEN_ACL, subnet_uid, 0, acl_uid, null, null
+                ide_event.trigger ide_event.OPEN_ACL acl_uid
 
             model.init uid
             view.render()
@@ -101,7 +101,7 @@ define [ 'jquery',
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
-        ide_event.offListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL
+        ide_event.offListen ide_event.PROPERTY_HIDE_SUBPANEL
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 

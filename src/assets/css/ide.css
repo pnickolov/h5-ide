@@ -1967,17 +1967,16 @@ a.sidebar-hider {
 
 /* Property Panel */
 #property-panel {
-	right: 0;
-	margin-right: 0;
+	overflow     : hidden;
+	right        : 0;
+	margin-right : 0;
+	border-left  : 1px solid #d1d1d1;
+
 	-webkit-transition: margin-right 0.1s;
 	   -moz-transition: margin-right 0.1s;
 	    -ms-transition: margin-right 0.1s;
 	     -o-transition: margin-right 0.1s;
 	        transition: margin-right 0.1s;
-	border-left: 1px solid #d1d1d1;
-	-webkit-box-shadow: inset 2px 0 6px rgba(60,73,92,.1);
-	   -moz-box-shadow: inset 2px 0 6px rgba(60,73,92,.1);
-	        box-shadow: inset 2px 0 6px rgba(60,73,92,.1);
 }
 
 #property-panel.hiden {
@@ -2000,7 +1999,44 @@ a.sidebar-hider {
 	background-color: #f7f7f7;
 }
 
-.property-details {
+.property-panel-wrapper {
+	height   : 100%;
+	width    : 100%;
+	left     : 0;
+	top      : 0;
+	position : absolute;
+}
+
+.transition .property-panel-wrapper {
+	-webkit-transition: left .2s ease-in-out;
+	   -moz-transition: left .2s ease-in-out;
+	    -ms-transition: left .2s ease-in-out;
+	     -o-transition: left .2s ease-in-out;
+	        transition: left .2s ease-in-out;
+}
+
+#property-second-panel {
+	left : 100%;
+	background : #fff;
+}
+
+.show-second-panel #property-first-panel {
+	left : -30%;
+}
+
+.show-second-panel.transition #property-first-panel {
+	-webkit-transition: left .4s ease-in-out;
+	   -moz-transition: left .4s ease-in-out;
+	    -ms-transition: left .4s ease-in-out;
+	     -o-transition: left .4s ease-in-out;
+	        transition: left .4s ease-in-out;
+}
+
+.show-second-panel #property-second-panel {
+	left : 0;
+}
+
+.property-content {
 	height      : 100%;
 	margin-top  : -44px;
 	padding-top : 44px;
@@ -2040,11 +2076,21 @@ a.sidebar-hider {
 }
 
 .option-group {
-	display : none;
+	max-height : 0;
+	overflow   : hidden;
+	position   : relative;
+}
+
+.option-group.transition {
+	-webkit-transition: max-height .25s ease-in-out;
+	   -moz-transition: max-height .25s ease-in-out;
+	    -ms-transition: max-height .25s ease-in-out;
+	     -o-transition: max-height .25s ease-in-out;
+	        transition: max-height .25s ease-in-out;
 }
 
 .expand + .option-group {
-	display : block;
+	max-height : inherit;
 }
 
 .property-control-group {
@@ -2465,7 +2511,6 @@ a.sidebar-hider {
 	text-align  : center;
 	line-height : 70px;
 	height      : 100%;
-	z-index     : 3;
 }
 
 .btn-to-secondary-panel:hover {
@@ -2620,20 +2665,6 @@ a.sidebar-hider {
 
 .sg-group .tab-item.active {
 	display : block;
-}
-
-#sg-secondary-panel-wrap {
-	position: absolute;
-	width: 280px;
-	right: -280px;
-	height: 100%;
-	top: 0;
-	background-color: #FFF;
-	z-index: 10;
-}
-#sg-secondary-panel {
-	height: 100%;
-	width: 100%;
 }
 
 #add-sg-btn {
@@ -3186,20 +3217,6 @@ a.sidebar-hider {
 
 
 /* ACL Property Panel */
-#acl-secondary-panel-wrap {
-	position: absolute;
-	width: 280px;
-	right: -280px;
-	height: 100%;
-	top: 0;
-	background-color: #FFF;
-	z-index: 10;
-}
-#acl-secondary-panel {
-	height: 100%;
-	width: 100%;
-}
-
 .acl-header .acl-icon-add {
 	width: 36px;
 	height: 36px;

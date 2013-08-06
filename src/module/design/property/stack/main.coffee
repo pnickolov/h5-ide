@@ -48,11 +48,9 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
-            ###
-            ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, (mainModule) ->
-                view.refreshACLList()
-                mainModule.unLoadModule()
-            ###
+            ide_event.onLongListen ide_event.PROPERTY_HIDE_SUBPANEL, ( id ) ->
+                if id is "ACL"
+                    view.refreshACLList()
 
             #view
             view.model    = model

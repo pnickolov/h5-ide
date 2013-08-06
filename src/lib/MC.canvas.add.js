@@ -476,14 +476,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$(group).append(
 
-				////1. area
-				Canvon.rectangle(0, 0, width, height).attr({
-					'class': 'group group-asg',
-					'rx': 5,
-					'ry': 5
-				}),
-
-				////2.scale area
+				////1.scale area
 				Canvon.group().append(
 					Canvon.rectangle(
 						0, top, pad, pad
@@ -511,11 +504,33 @@ MC.canvas.add = function (flag, option, coordinate)
 					).attr({'class': 'group-resizer'})
 				),
 
+				////2. area
+				Canvon.rectangle(0, 0, width, height).attr({
+					'class': 'group group-asg',
+					'rx': 5,
+					'ry': 5
+				}),
+
+				////3.dragger
+				Canvon.image('../assets/images/ide/icon/asg-resource-dragger.png', width - 13 , -13, 27, 27),
+
 				////5.asg label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name',
 					'id': group.id + '_name'
+				}),
+
+				//prompt
+				Canvon.group().append(
+					Canvon.text(20, 35, 'Drop AMI from'),
+					Canvon.text(15, 55, 'resource panel to'),
+					Canvon.text(25, 75, 'create launch'),
+					Canvon.text(25, 95, 'configuration')
+				).attr({
+					'class': 'prompt_text',
+					'id': group.id + '_prompt_text'
 				})
+
 
 			).attr({
 				'class': 'dragable ' + class_type,

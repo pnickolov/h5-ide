@@ -348,14 +348,6 @@ var constant_data = {
 		},
 		'AWS.VPC.RouteTable':
 		{
-			'AWS.VPC.RouteTable':
-			{
-				type: 'association',
-				from: 'rtb-src',
-				to: 'rtb-tgt-left',
-				relation: 'multiple',
-				color: '#d8d7d6' //gray
-			},
 			'AWS.VPC.Subnet':
 			{
 				type: 'association',

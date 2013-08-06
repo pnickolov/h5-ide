@@ -1536,14 +1536,26 @@ MC.canvas = {
 							if (
 								//target_id !== item.id &&
 								$.inArray(item.id, ignore_stack) === -1 &&
-								data.x > coordinate[0] &&
-								data.x < coordinate[0] + size[0] &&
-								data.y > coordinate[1] &&
-								data.y < coordinate[1] + size[1]
+								(
+									data.x > coordinate[0] &&
+									data.x < coordinate[0] + size[0] &&
+									data.y > coordinate[1] &&
+									data.y < coordinate[1] + size[1]
+								)
+								||
+								(
+									group_data.type === 'AWS.AutoScaling.Group' &&
+									data.x >= coordinate[0] &&
+									data.x <= coordinate[0] + size[0] &&
+									data.y >= coordinate[1] &&
+									data.y <= coordinate[1] + size[1]
+								)
 							)
 							{
 								match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
+								match_status['target'] = item.id;
 								match_target = item.id;
+
 								return false;
 							}
 						});
@@ -1565,7 +1577,8 @@ MC.canvas = {
 				match[2] &&
 				match[2].is_matched &&
 				match[3] &&
-				match[3].is_matched;
+				match[3].is_matched &&
+				(match[0].target === match[1].target && match[0].target === match[2].target && match[0].target === match[3].target);
 
 			if (
 				!is_matched &&
@@ -3592,6 +3605,8 @@ MC.canvas.event.siderbarDrag = {
 						component_size[0],
 						component_size[1]
 					);
+
+					console.info(match_place);
 
 					if (match_place.is_matched)
 					{

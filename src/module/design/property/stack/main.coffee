@@ -58,13 +58,18 @@ define [ 'jquery',
             #re calc cost when load module
             model.getCost()
 
+            if tab_type is 'OPEN_APP'
+                title = "APP - "
+            else
+                title = "Stack - "
+
             #render
             renderPropertyPanel = () ->
                 model.getProperty()
                 #model.getSecurityGroup()
 
                 view.render()
-                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "App - #{model.attributes.property_detail.name}"
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, title + model.attributes.property_detail.name
 
                 sglist_main.loadModule model, true
 
@@ -75,7 +80,7 @@ define [ 'jquery',
                 MC.canvas_data.name = name
                 renderPropertyPanel()
 
-                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "Stack - #{name}"
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, title + name
 
             view.on 'DELETE_STACK_SG', (uid) ->
                 model.deleteSecurityGroup uid

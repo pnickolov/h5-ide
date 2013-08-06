@@ -178,7 +178,7 @@ define [ 'event',
 
                 null
 
-            $('#acl-secondary-panel-wrap .acl-rules').html this.ruleTpl({
+            $('.acl-rules').html this.ruleTpl({
                 content: newEntrySet
             })
 

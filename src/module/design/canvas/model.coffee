@@ -310,6 +310,9 @@ define [ 'constant', 'event'
 		deleteR_RouteTable : ( component ) ->
 			if component.resource.AssociationSet.length > 0 and "" + component.resource.AssociationSet[0].Main == 'true'
 				return "!Main route table #{component.name} cannot be deleted."
+
+			if component.resource.AssociationSet.length > 0
+				return "!Subnet must be associated to a route table. "
 			null
 
 		deleteR_IGW : ( component, force ) ->

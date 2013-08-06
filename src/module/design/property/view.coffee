@@ -89,7 +89,7 @@ define [ './temp_view',
             $target = $(this)
             $toggle = $target.prev()
             if $toggle.hasClass "expand"
-                $target.removeClass("transition").css("max-height", "100000px");
+                $target.removeClass("transition").css("max-height", "100000px")
 
 
 

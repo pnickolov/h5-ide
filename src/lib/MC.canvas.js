@@ -1537,18 +1537,20 @@ MC.canvas = {
 								//target_id !== item.id &&
 								$.inArray(item.id, ignore_stack) === -1 &&
 								(
-									data.x > coordinate[0] &&
-									data.x < coordinate[0] + size[0] &&
-									data.y > coordinate[1] &&
-									data.y < coordinate[1] + size[1]
-								)
-								||
-								(
-									group_data.type === 'AWS.AutoScaling.Group' &&
-									data.x >= coordinate[0] &&
-									data.x <= coordinate[0] + size[0] &&
-									data.y >= coordinate[1] &&
-									data.y <= coordinate[1] + size[1]
+									(
+										data.x > coordinate[0] &&
+										data.x < coordinate[0] + size[0] &&
+										data.y > coordinate[1] &&
+										data.y < coordinate[1] + size[1]
+									)
+									||
+									(
+										group_data.type === 'AWS.AutoScaling.Group' &&
+										data.x >= coordinate[0] &&
+										data.x <= coordinate[0] + size[0] &&
+										data.y >= coordinate[1] &&
+										data.y <= coordinate[1] + size[1]
+									)
 								)
 							)
 							{
@@ -1574,7 +1576,7 @@ MC.canvas = {
 				match[1] &&
 				match[2] &&
 				match[3] &&
-				
+
 				match[0].is_matched &&
 				match[1].is_matched &&
 				match[2].is_matched &&

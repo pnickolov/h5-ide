@@ -370,7 +370,9 @@
 }
 
 .prompt_text {
-	fill: rgba(118, 214, 255, 1);
+	fill: #16B4F9;
+	font-size: 12px;
+	cursor: default;
 }
 
 /*scale area style*/

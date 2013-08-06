@@ -273,7 +273,7 @@
 /* group */
 .group-label {
 	font-size: 12px;
-	cursor: default;
+	cursor: pointer;
 }
 
 .az-name {

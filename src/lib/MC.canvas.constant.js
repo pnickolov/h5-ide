@@ -221,6 +221,11 @@ var constant_data = {
 				type: 'sg',
 				from: 'instance-sg',
 				to: 'elb-sg-out',
+
+				direction: {
+					from: 'horizontal'
+				},
+
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -228,6 +233,11 @@ var constant_data = {
 				type: 'sg',
 				from: 'instance-sg',
 				to: 'elb-sg-in',
+
+				direction: {
+					from: 'horizontal'
+				},
+
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -251,6 +261,12 @@ var constant_data = {
 				type: 'sg',
 				from: 'instance-sg',
 				to: 'eni-sg',
+
+				direction: {
+					from: 'horizontal',
+					to: 'horizontal'
+				},
+
 				color: '#6DAEFE',
 				relation: 'multiple'
 			}],
@@ -294,6 +310,11 @@ var constant_data = {
 				type: 'sg',
 				from: 'elb-sg-out',
 				to: 'instance-sg',
+
+				direction: {
+					to: 'horizontal'
+				},
+
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -301,6 +322,11 @@ var constant_data = {
 				type: 'sg',
 				from: 'elb-sg-in',
 				to: 'instance-sg',
+
+				direction: {
+					to: 'horizontal'
+				},
+
 				relation: 'multiple',
 				color: '#6DAEFE' //blue
 			},
@@ -328,6 +354,11 @@ var constant_data = {
 				type: 'sg',
 				from: 'eni-sg',
 				to: 'instance-sg',
+
+				direction: {
+					from: 'horizontal',
+					to: 'horizontal'
+				},
 
 				color: '#6DAEFE', //blue
 				relation: 'multiple'
@@ -368,6 +399,11 @@ var constant_data = {
 				type: 'association',
 				from: 'rtb-src',
 				to: 'rtb-tgt-left',
+
+				direction: {
+					from: 'vertical'
+				},
+
 				relation: 'multiple',
 				color: '#d8d7d6' //gray
 			},
@@ -499,6 +535,11 @@ var constant_data = {
 				type: 'association',
 				from: 'subnet-assoc-out',
 				to: 'rtb-src',
+
+				direction: {
+					to: 'vertical'
+				},
+
 				relation: 'multiple',
 				color: '#d8d7d6'
 			},

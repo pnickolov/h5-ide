@@ -1433,7 +1433,7 @@ MC.canvas = {
 				}
 			],
 			match_option = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ],
-			is_option_canvas = match_option[ 0 ] === 'Canvas',
+			is_option_canvas = match_option ? (match_option[ 0 ] === 'Canvas') : false,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			ignore_stack = [],
 			match = [],
@@ -2543,13 +2543,16 @@ MC.canvas.event.dragable = {
 				platform = MC.canvas.data.get('platform');
 				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
 
-				$.each(target_group_type, function (index, item)
+				if (target_group_type)
 				{
-					$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+					$.each(target_group_type, function (index, item)
 					{
-						return 'dropable-group ' + key;
+						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+						{
+							return 'dropable-group ' + key;
+						});
 					});
-				});
+				}
 			}
 
 			$(document.body).addClass('disable-event');

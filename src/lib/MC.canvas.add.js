@@ -37,7 +37,9 @@ MC.canvas.add = function (flag, option, coordinate)
 		//get parent group
 		if (option.groupUId && option.groupUId !== 'Canvas')
 		{
-			var group_layout = MC.canvas_data.layout.component.group[ option.groupUId ];
+			var group_layout = MC.canvas_data.layout.component.group[ option.groupUId ],
+				group_comp = MC.canvas_data.component[ option.groupUId ];
+
 			option.group = {};
 
 			switch (group_layout.type)
@@ -48,17 +50,43 @@ MC.canvas.add = function (flag, option, coordinate)
 					break;
 
 				case 'AWS.VPC.Subnet':
-					var gropu_comp = MC.canvas_data.component[ option.groupUId ];
 					option.group.subnetUId = option.groupUId;
-					option.group.availableZoneName = gropu_comp.resource.AvailabilityZone;
+					option.group.availableZoneName = group_comp.resource.AvailabilityZone;
 					option.group.vpcUId = $(".AWS-VPC-VPC")[0].id;
 					break;
 
 				case 'AWS.VPC.VPC':
 					option.group.vpcUId = $(".AWS-VPC-VPC")[0].id;
 					break;
+
 				case 'AWS.AutoScaling.Group':
-					option.group.vpcUId = $(".AWS-VPC-VPC")[0].id;
+					// var group_parent = MC.canvas.data.get('layout.component.group')[ option.groupUId ],
+					// 	az = '';
+
+					// switch (group_parent.type)
+					// {
+					// 	case 'AWS.EC2.AvailabilityZone':
+					// 		break;
+
+					// 	case 'AWS.VPC.Subnet':
+					// 		//get parent of subnet
+					// 		group_parent = MC.canvas.data.get('layout.component.group')[ group_parent.groupUId ];
+					// 		break;
+
+					// 	default:
+					// 		group_parent = null;
+					// 		break;
+					// }
+
+					// if (group_parent)
+					// {
+					// 	az = group_parent.name;
+					// }
+
+					// option.group.availableZoneName = az;
+					// option.group.vpcUId = $(".AWS-VPC-VPC")[0] ? $(".AWS-VPC-VPC")[0].id : '' ;
+
+					//change AWS.EC2.Instance to AWS.AutoScaling.LaunchConfiguration
 					type = 'AWS.AutoScaling.LaunchConfiguration';
 					break;
 			}
@@ -415,8 +443,12 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{
 				component_data = $.extend(true, {}, MC.canvas.ASG_JSON.data);
+				//name
 				component_data.name = option.name;
+				//az
 				component_data.resource.AvailabilityZones = [option.group.availableZoneName];
+				//vpc
+				component_data.resource.VPCZoneIdentifier = option.group.vpcUId;
 
 				component_layout = $.extend(true, {}, MC.canvas.ASG_JSON.layout);
 				component_layout.groupUId = option.groupUId;
@@ -1516,17 +1548,23 @@ MC.canvas.add = function (flag, option, coordinate)
 
 		//***** asl_lc begin *****//
 		case 'AWS.AutoScaling.LaunchConfiguration':
+
 			var os_type = 'ami-unknown',
 				volume_number = 0,
 				icon_volume_status = 'not-attached';
 
 			if (create_mode)
 			{//write
+
+
 				option.name = 'launch-config';
 				component_data = $.extend(true, {}, MC.canvas.ASL_LC_JSON.data);
 				component_data.name = option.name;
 
+				//imageId
 				component_data.resource.ImageId = option.imageId;
+
+				//instanceType
 				component_data.resource.InstanceType = 'm1.small';
 
 				// if not kp
@@ -1538,7 +1576,6 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
 				component_data.resource.SecurityGroups.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
 				MC.canvas_property.sg_list[0].member.push(group.id);
-
 
 				component_layout = $.extend(true, {}, MC.canvas.ASL_LC_JSON.layout);
 				component_layout.groupUId = option.groupUId;
@@ -1635,7 +1672,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'id': group.id + 'name'
 				})
 			).attr({
-				'class': 'node ' + class_type,
+				'class': 'dragable node ' + class_type,
 				'data-type': 'node',
 				'data-class': type
 			});

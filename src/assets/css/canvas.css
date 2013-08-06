@@ -145,6 +145,12 @@
 	border: none;
 }
 
+#drag_shadow.AWS-AutoScaling-Group {
+	background: rgba(118, 214, 255, 0.05);
+	border: 2px dashed #76d6ff;
+}
+
+
 /* port style */
 .port-blue {
 	fill: #6DAEFE;

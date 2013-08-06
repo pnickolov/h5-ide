@@ -1518,13 +1518,11 @@ MC.canvas.add = function (flag, option, coordinate)
 		case 'AWS.AutoScaling.LaunchConfiguration':
 			var os_type = 'ami-unknown',
 				volume_number = 0,
-				icon_volume_status = 'not-attached',
-				eni = null,
-				eip_icon = MC.canvas.IMAGE.EIP_OFF,
-				data_eip_state = 'off'; //on | off
+				icon_volume_status = 'not-attached';
 
 			if (create_mode)
 			{//write
+				option.name = 'launch-config';
 				component_data = $.extend(true, {}, MC.canvas.ASL_LC_JSON.data);
 				component_data.name = option.name;
 
@@ -1637,7 +1635,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'id': group.id + 'name'
 				})
 			).attr({
-				'class': 'dragable node ' + class_type,
+				'class': 'node ' + class_type,
 				'data-type': 'node',
 				'data-class': type
 			});
@@ -1652,11 +1650,6 @@ MC.canvas.add = function (flag, option, coordinate)
 			data[group.id] = component_data;
 			MC.canvas.data.set('component', data);
 
-			if (eni)
-			{
-				data[eni.uid] = eni;
-				MC.canvas.data.set('component', data);
-			}
 			$('#node_layer').append(group);
 
 			break;

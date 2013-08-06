@@ -2550,6 +2550,14 @@ MC.canvas.event.dragable = {
 				platform,
 				target_group_type;
 
+			if (node_type === 'AWS.AutoScaling.LaunchConfiguration')
+			{
+				MC.canvas.event.clearSelected();
+				MC.canvas.select(this.id);
+				
+				return false;
+			}
+
 			if (node_type === 'AWS.VPC.Subnet')
 			{
 				target.find('.port').hide();
@@ -2568,10 +2576,13 @@ MC.canvas.event.dragable = {
 				{
 					$.each(target_group_type, function (index, item)
 					{
-						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+						if (item !== 'AWS.AutoScaling.Group')
 						{
-							return 'dropable-group ' + key;
-						});
+							$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+							{
+								return 'dropable-group ' + key;
+							});
+						}
 					});
 				}
 			}

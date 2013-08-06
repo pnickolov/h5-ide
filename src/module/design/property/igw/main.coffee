@@ -37,6 +37,9 @@ define [ 'jquery',
             #render
             view.render()
 
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "Internet-gateway"
+
     unLoadModule = () ->
         current_view.off()
         current_model.off()

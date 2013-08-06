@@ -2001,10 +2001,16 @@ a.sidebar-hider {
 }
 
 .property-details {
-	height : 100%;
+	height      : 100%;
+	margin-top  : -44px;
+	padding-top : 44px;
+
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
-.property-details > .sidebar-title {
+.property-sidebar-title {
 	font-size     : 16px;
 	padding       : 0 10px;
 	height        : 44px;
@@ -2013,6 +2019,7 @@ a.sidebar-hider {
 	color         : #475a71;
 	border-bottom : 1px solid #BDC5CE;
 	text-shadow   : none;
+	cursor        : default;
 }
 
 .option-group-head {
@@ -2036,7 +2043,7 @@ a.sidebar-hider {
 	display : none;
 }
 
-.option-group.expand {
+.expand + .option-group {
 	display : block;
 }
 
@@ -2587,11 +2594,11 @@ a.sidebar-hider {
 	top: 30px;
 }
 
-.sg-wrapper {
+.sg-group {
 	padding : 0 !important;
 }
 
-.sg-wrapper .tab li {
+.sg-group .tab li {
 	width : 50%;
 	float : left;
 
@@ -2603,15 +2610,15 @@ a.sidebar-hider {
 
 	cursor : pointer;
 }
-.sg-wrapper .tab .active {
+.sg-group .tab .active {
 	background : #2E9BFC;
 	color      : #FFF;
 }
-.sg-wrapper .tab-item {
+.sg-group .tab-item {
 	display : none;
 }
 
-.sg-wrapper .tab-item.active {
+.sg-group .tab-item.active {
 	display : block;
 }
 

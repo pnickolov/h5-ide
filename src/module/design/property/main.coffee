@@ -258,6 +258,9 @@ define [ 'jquery',
 					view.updateHtml back_dom
 				, 500
 
+			ide_event.onLongListen ide_event.PROPERTY_TITLE_CHANGE, ( title ) ->
+				view.setTitle title
+
 
 	unLoadModule = () ->
 		#view.remove()

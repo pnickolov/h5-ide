@@ -17,7 +17,8 @@ define [ './temp_view',
             #$( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
             #$( window   ).on 'resize', fixedaccordion.resize
             #listen
-            $( document ).on 'click', '#hide-property-panel', this.togglePropertyPanel
+            $( document.body ).on('click', '#hide-property-panel', this.togglePropertyPanel)
+                              .on('click', ".option-group-head", this.toggleOption)
 
         render     : ( template ) ->
             console.log 'property render'
@@ -46,7 +47,12 @@ define [ './temp_view',
             $( '#property-panel' ).html back_dom
             null
 
+        toggleOption : ( event ) ->
+            $(this).toggleClass("expand")
+            return false
 
+        setTitle : ( title ) ->
+            $("#property-title").html( title )
     }
 
     return PropertyView

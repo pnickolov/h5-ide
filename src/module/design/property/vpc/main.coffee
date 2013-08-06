@@ -44,11 +44,13 @@ define [ 'jquery',
             model.setId uid
             view.model = model
             view.render()
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.component.name
 
             view.on "CHANGE_NAME", ( newName ) ->
                 model.setName newName
                 # Update Canvas
                 MC.canvas.update uid, "text", "name", newName
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, newName
                 null
         null
 
@@ -68,6 +70,7 @@ define [ 'jquery',
 
             model.init uid
             view.render()
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
 
     unLoadModule = () ->

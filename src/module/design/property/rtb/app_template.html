@@ -1,48 +1,43 @@
-<header class="sidebar-title">{{name}}</header>
+<article class="property-app">
 
-<dl class="dl-vertical">
-  <dt>Route Table ID</dt>
-  <dd>{{routeTableId}}</dd>
+  <dl class="dl-vertical">
+    <dt>Route Table ID</dt>
+    <dd>{{routeTableId}}</dd>
 
-  <dt>Main</dt>
-  <dd>{{main}}</dd>
+    <dt>Main</dt>
+    <dd>{{main}}</dd>
 
-  <dt>VPC ID</dt>
-  <dd>{{vpcId}}</dd>
-</dl>
+    <dt>VPC ID</dt>
+    <dd>{{vpcId}}</dd>
+  </dl>
 
-<div class="fixedaccordion accordion-default property-app">
-  <section class="accordion-group expanded">
-    <header class="fixedaccordion-head">Routes</header>
-
-    <article class="accordion-body">
-      <table class="property-app-table">
-        <thead class="property-app-table-h">
-          <tr>
-            <th></th>
-            <th>Destination</th>
-            <th>Target</th>
-            <th></th>
-          </tr>
-        </thead>
-        {{#each routeSet.item}}
+  <div class="option-group-head expand">Routes</div>
+  <div class="option-group">
+    <table class="property-app-table">
+      <thead class="property-app-table-h">
         <tr>
-          {{#if active}}
-          <td><i class="status status-green tooltip" data-tooltip="Active"></i></td>
-          {{else}}
-          <td><i class="status status-orange tooltip" data-tooltip="Not Active"></i></td>
-          {{/if}}
-          <td>{{destinationCidrBlock}}</td>
-          <td>{{gatewayId}}</td>
-          {{#if propagate}}
-          <td><i class="icon-propagated tooltip" data-tooltip="Propagated"></i></td>
-          {{else}}
-          <td></td>
-          {{/if}}
+          <th></th>
+          <th>Destination</th>
+          <th>Target</th>
+          <th></th>
         </tr>
-        {{/each}}
-      </table>
-
-    </article>
-  </section>
-</div>
+      </thead>
+      {{#each routeSet.item}}
+      <tr>
+        {{#if active}}
+        <td><i class="status status-green tooltip" data-tooltip="Active"></i></td>
+        {{else}}
+        <td><i class="status status-orange tooltip" data-tooltip="Not Active"></i></td>
+        {{/if}}
+        <td>{{destinationCidrBlock}}</td>
+        <td>{{gatewayId}}</td>
+        {{#if propagate}}
+        <td><i class="icon-propagated tooltip" data-tooltip="Propagated"></i></td>
+        {{else}}
+        <td></td>
+        {{/if}}
+      </tr>
+      {{/each}}
+    </table>
+  </div>
+</article>

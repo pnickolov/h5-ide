@@ -1,8 +1,6 @@
-<header class="sidebar-title" id='property-title'>{{component.name}}</header>
-
 <article>
-  <div class="option-group-head" id="vpc-property-detail">VPC Details</div>
-  <div class="option-group expand">
+  <div class="option-group-head expand" id="vpc-property-detail">VPC Details</div>
+  <div class="option-group">
     <section class="property-control-group clearfix">
       <label class="left" for="property-vpc-name">Name</label>
       <span class="required-input right">Required</span>
@@ -44,8 +42,8 @@
     </section>
   </div>
 
-  <div class="option-group-head">DHCP Options</div>
-  <div class="option-group expand" id="dhcp-property-detail">
+  <div class="option-group-head expand">DHCP Options</div>
+  <div class="option-group" id="dhcp-property-detail">
     <section class="property-control-group">
       <div class="radio property-dhcp">
         <input id="property-dhcp-none" type="radio" name="dhcp-opts" {{#if noneDhcp}}checked="checked"  {{/if}}value="none" />

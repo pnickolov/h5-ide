@@ -1,13 +1,11 @@
-<header class="sidebar-title" id='property-title'>{{eni_display.name}}</header>
-
 <article class="property-control-group" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
   Attach the Netowrk Interface to an instance.
 </article>
 
 <article id="property-eni-wrapper" {{#unless eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/unless}}>
 
-  <div class="option-group-head">Network Interface Details</div>
-  <div class="option-group expand">
+  <div class="option-group-head expand">Network Interface Details</div>
+  <div class="option-group">
     <section class="property-control-group">
       <label class="left" for="property-eni-desc">Description</label>
       <textarea id="property-eni-desc">{{eni_display.resource.Description}}</textarea>

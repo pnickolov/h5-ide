@@ -66,6 +66,7 @@ define [ 'jquery',
                 #model.getSecurityGroup()
 
                 view.render()
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "App - #{model.attributes.property_detail.name}"
 
                 sglist_main.loadModule model, true
 
@@ -75,6 +76,8 @@ define [ 'jquery',
                 console.log 'stack name changed and refresh'
                 MC.canvas_data.name = name
                 renderPropertyPanel()
+
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "Stack - #{name}"
 
             view.on 'DELETE_STACK_SG', (uid) ->
                 model.deleteSecurityGroup uid

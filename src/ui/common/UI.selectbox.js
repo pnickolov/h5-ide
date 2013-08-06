@@ -174,12 +174,6 @@ var selectbox = {
 
             /* Below are functions that's in bootstrap-dropdown */
             //.on('click',   ".js-toggle-dropdown",        toggleDropdown)
-
-        $(document.body)
-            .on('click', ".option-group-head", function(){
-                $(this).next().toggle();
-                return false;
-            })
     });
 
 

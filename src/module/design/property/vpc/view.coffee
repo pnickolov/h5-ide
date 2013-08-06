@@ -64,8 +64,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
             fixedaccordion.resize()
 
         onChangeName : ( event ) ->
-            # TODO : Valiate Name
-            $( '#property-title' ).html event.target.value
             this.trigger "CHANGE_NAME", event.target.value
             null
 

@@ -50,12 +50,15 @@ define [ 'jquery',
 
             #render
             view.render()
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
             view.on "CHANGE_NAME", ( change ) ->
 
                 model.setName change.value
                 # Sync the name to canvas
                 MC.canvas.update uid, "text", "name", change.value
+
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, change.value
                 null
 
             view.on "CHANGE_CIDR", ( change ) ->
@@ -91,6 +94,7 @@ define [ 'jquery',
 
             model.init uid
             view.render()
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
 
     unLoadModule = () ->

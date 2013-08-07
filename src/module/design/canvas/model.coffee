@@ -439,7 +439,7 @@ define [ 'constant', 'event'
 			# Update resource panel, so that deleted AZ can be drag again
 			# Consider this as bad coding pattern, because it's MC.canvas's job to do that
 			# Enable AZ in resource panel
-			fiter = ( data ) ->
+			filter = ( data ) ->
 				data.option.name is component.name
 
 			ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone, filter

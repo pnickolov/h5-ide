@@ -35,7 +35,7 @@ define [ 'jquery',
 
 				#
 				
-				if current_view view.delegateEvents view.events
+				if current_view then view.delegateEvents view.events
 				#
 				current_view  = view
 				current_model = model

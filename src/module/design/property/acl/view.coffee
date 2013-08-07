@@ -176,7 +176,7 @@ define [ 'event',
 
                 null
 
-            $('.acl-rules').html this.ruleTpl({
+            $('#acl-rule-list').html this.ruleTpl({
                 content: newEntrySet
             })
 
@@ -185,7 +185,7 @@ define [ 'event',
             #sort acl list
             sg_rule_list = $('#acl-rule-list')
             sorted_items = $('#acl-rule-list li')
-            orted_items = sorted_items.sort(this._sortNumber)
+            sorted_items = sorted_items.sort(this._sortNumber)
             sg_rule_list.html sorted_items
 
         modalRuleSourceSelected : (event) ->

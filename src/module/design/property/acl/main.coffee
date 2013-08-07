@@ -63,6 +63,7 @@ define [ 'jquery',
                 id    : "ACL"
             }
 
+            view.refreshRuleList(MC.canvas_data.component[uid])
 
             #temp hack
             view._events = []

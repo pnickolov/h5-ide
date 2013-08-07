@@ -398,11 +398,25 @@ var fitName = function( obj ) {
 }; 
 
 function receiveData(e) {
+  initFilter();
   window.jsonDataStr = e.data;
   showData( window.jsonDataStr );
   showTypes( window.jsonDataStr );
 };
 
+var initFilter = function() {
+  window.jsonType = "";
+  window.jsonName = "";
+  document.forms[ 0 ].name.value = "";
+
+  var select = document.forms[ 0 ].type;
+  var options = select.options;
+  var length = options.length;
+  for ( var i=1; i<length; i++ ) {
+    select.removeChild( options[ 1 ] );
+  }
+
+}
 var showData = function( data ) {
   Process( processData ( data ) );
 }; 
@@ -427,7 +441,6 @@ var processData = function( data ) {
 }
 
 var showTypes = function( data ) {
-  console.log("enter showtypes");
   data = JSON.parse( data );
   var types = [];
   var uniqTypes = [];

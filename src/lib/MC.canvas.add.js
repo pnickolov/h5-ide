@@ -1780,11 +1780,11 @@ MC.canvas.add = function (flag, option, coordinate)
 					'id': group.id + '_volume_status'
 				}),
 
-				//8.2 volume number
-				// Canvon.text(35, 60, volume_number).attr({
-				// 	'class': 'node-label volume-number',
-				// 	'id': group.id + '_volume_number'
-				// }),
+				////8.2 volume number
+				Canvon.text(49, 60, volume_number).attr({
+					'class': 'node-label volume-number',
+					'id': group.id + '_volume_number'
+				}),
 
 				//8.3 hot area for volume
 				Canvon.rectangle(35, 48, 29, 24).attr({

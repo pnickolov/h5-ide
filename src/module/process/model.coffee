@@ -93,6 +93,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                             MC.process[tab_name].flag_list = flag_list
 
                             if MC.data.current_tab_id is 'process-'+app_name   # current tab
+                                console.log 'current prcess tab:' + MC.data.current_tab_id
+
                                 me.set 'flag_list', flag_list
                                 me.trigger 'UPDATE_PROCESS'
 

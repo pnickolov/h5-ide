@@ -544,7 +544,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path('M ' + (width - 1) + ' 1 l' + ' 0 20 l -20 -20 z', {}).attr({
 					'class': 'asg-resource-dragger',
 					'id': group.id + '_asg_resource_dragger',
-					'display': option['launchConfig'] ? 'inline' : 'none'
+					'display': option['launchConfig'] || component_data.resource ? 'inline' : 'none'
 				}),
 
 				////5.asg label
@@ -562,7 +562,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				).attr({
 					'class': 'prompt_text',
 					'id': group.id + '_prompt_text',
-					'display': option['originalId'] || option['launchConfig'] ? 'none' : 'inline'
+					'display': option['originalId'] || option['launchConfig']||component_data.resource.LaunchConfigurationName ? 'none' : 'inline'
 				})
 
 
@@ -1651,8 +1651,6 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_data.name = option.name;
 					component_data.resource.LaunchConfigurationName = option.name;
 
-					//hide prompt text
-					MC.canvas.display(option.groupUId, 'prompt_text', false);
 					//show dragger
 					MC.canvas.display(option.groupUId, 'asg_resource_dragger', true);
 
@@ -1701,7 +1699,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}
 
 
-
+				MC.canvas.display(option.groupUId, 'prompt_text', false);
 			}
 			else
 			{//read
@@ -1796,7 +1794,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				////10. lc name
 				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name',
-					'id': group.id + 'name'
+					'id': group.id + '_lc_name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,

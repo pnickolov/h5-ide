@@ -17,16 +17,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile $( '#property-instance-tmpl' ).html()
+        template : Handlebars.compile $( '#property-launchconfig-tmpl' ).html()
 
         events   :
-            'change .instance-name' : 'instanceNameChange'
+            'change .launch-configuration-name' : 'lcNameChange'
             'change .instance-type-select' : 'instanceTypeSelect'
             'change #property-instance-ebs-optimized' : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-user-data' : 'userdataChange'
-            'change #property-instance-base64' : 'base64Change'
-            'change #property-instance-ni-description' : 'eniDescriptionChange'
             'change #property-instance-source-check' : 'sourceCheckChange'
             'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select' : "tenancySelect"
@@ -44,6 +42,47 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             $( '.property-details' ).html this.template this.model.attributes
 
             this.delegateEvents this.events
+
+        lcNameChange : ( event ) ->
+            this.model.set 'name', event.target.value
+            null
+
+        instanceTypeSelect : ( event, value )->
+            this.model.set 'instance_type', value
+
+        ebsOptimizedSelect : ( event ) ->
+            this.model.set 'ebs_optimized', event.target.checked
+
+        tenancySelect : ( event, value ) ->
+            this.model.set 'tenacy', value
+
+
+        cloudwatchSelect : ( event ) ->
+            this.model.set 'cloudwatch', event.target.checked
+
+        userdataChange : ( event ) ->
+            this.model.set 'user_data', event.target.value
+
+        sourceCheckChange : ( event ) ->
+            this.model.set 'source_check', event.target.checked
+
+        addEmptyKP : ( event ) ->
+            notification('error', 'KeyPair Empty', false)
+
+        addtoKPList : ( event, id ) ->
+            this.model.set 'set_kp', id
+            notification('info', (id + ' added'), false)
+            this.trigger 'REFRESH_KEYPAIR'
+
+        createtoKPList : ( event, id ) ->
+            this.model.set 'add_kp', id
+            notification('info', (id + ' created'), false)
+
+        openAmiPanel : ( event ) ->
+            target = $('#property-ami')
+            secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
+            $(document.body).on 'click', '.back', secondarypanel.close
+
     }
 
     view = new InstanceView()

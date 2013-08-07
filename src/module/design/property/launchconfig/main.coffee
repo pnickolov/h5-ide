@@ -3,7 +3,7 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/launchconfig/app_template.html',
+         'text!/module/design/property/launchconfig/template.html',
          'event'
 ], ( $, template, ide_event ) ->
 
@@ -38,12 +38,25 @@ define [ 'jquery',
             current_view  = view
             current_model = model
             #
+            model.getUID  uid
+            model.getName()
+            model.getInstanceType()
+            model.getAmiDisp()
+            model.getAmi()
+            model.getComponent()
+            model.getKerPair()
+            # model.getSgDisp()
+            model.getCheckBox()
 
             #view
             view.model    = model
             view.render()
 
+            model.listen()
 
+            sglist_main.loadModule model
+
+            ide_event.trigger ide_event.RELOAD_PROPERTY
 
 
     unLoadModule = () ->

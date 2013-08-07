@@ -501,7 +501,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 
 			width = option.width * MC.canvas.GRID_WIDTH,
-			height = option.height * MC.canvas.GRID_HEIGHT,
+			height = option.height * MC.canvas.GRID_HEIGHT;
 
 			$(group).append(
 
@@ -570,6 +570,34 @@ MC.canvas.add = function (flag, option, coordinate)
 				'data-type': 'group',
 				'data-class': type
 			});
+
+			if (option['originalId'])
+			{
+				var orig_asg_comp = data[ option['originalId'] ],
+					lc_comp_id,
+					lc_comp_layout,
+					os_type,
+					lc_name;
+
+				if ( orig_asg_comp && orig_asg_comp.resource.LaunchConfigurationName !== "" )
+				{
+					lc_comp_id = orig_asg_comp.resource.LaunchConfigurationName.split(".")[0].substr(1);
+					lc_comp_layout = layout.node[ lc_comp_id ];
+					os_type = lc_comp_layout.osType + '.' + lc_comp_layout.architecture + '.' + lc_comp_layout.rootDeviceType;
+					lc_name = data[ lc_comp_id ].name;
+
+					$(group).append(
+						////bg
+						Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15 + 10, 11 + 10, 70, 70),
+						////os_type
+						Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30 + 10, 15 + 10, 39, 27),
+						////lc name
+						Canvon.text(50 + 10, 90 + 10, lc_name).attr({
+							'class': 'node-label name'
+						})
+					);
+				}
+			}
 
 			//set layout
 			component_layout.coordinate = [coordinate.x, coordinate.y];

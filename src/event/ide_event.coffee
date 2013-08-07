@@ -55,9 +55,12 @@ define [ 'underscore', 'backbone' ], () ->
         ADD_STACK_TAB       : 'ADD_STACK_TAB'
         OPEN_STACK_TAB      : 'OPEN_STACK_TAB'
         OPEN_APP_TAB        : 'OPEN_APP_TAB'
+        OPEN_APP_PROCESS_TAB: 'OPEN_APP_PROCESS_TAB'
+        PROCESS_RUN_SUCCESS : 'PROCESS_RUN_SUCCESS'
         #
         SWITCH_TAB          : 'SWITCH_TAB'
         SWITCH_DASHBOARD    : 'SWITCH_DASHBOARD'
+        SWITCH_APP_PROCESS  : 'SWITCH_APP_PROCESS'
 
         TERMINATE_APP_TAB   : 'TERMINATE_APP_TAB'
 

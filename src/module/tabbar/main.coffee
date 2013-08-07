@@ -58,6 +58,14 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 model.refresh original_tab_id, tab_id, 'app'
 
             #listen
+            view.on 'SWTICH_PROCESS_TAB', ( original_tab_id, tab_id ) ->
+                console.log 'SWTICH_PROCESS_TAB'
+                console.log 'original_tab_id = ' + original_tab_id
+                console.log 'tab_id          = ' + tab_id
+                #call refresh
+                model.refresh original_tab_id, tab_id, 'process'
+
+            #listen
             view.on 'CLOSE_STACK_TAB', ( tab_id ) ->
                 console.log 'CLOSE_STACK_TAB'
                 console.log 'tab_id          = ' + tab_id
@@ -81,12 +89,11 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 #
                 modal.close()
 
-            #listen
-            model.on 'SAVE_DESIGN_MODULE', ( tab_id ) ->
-                console.log 'SAVE_DESIGN_MODULE'
-                console.log 'tab_id          = ' + tab_id
+            #listen dashboard
+            model.on 'SWITCH_DASHBOARD', ( result ) ->
+                console.log 'SWITCH_DASHBOARD'
                 #push event
-                ide_event.trigger ide_event.SAVE_DESIGN_MODULE, tab_id
+                ide_event.trigger ide_event.SWITCH_DASHBOARD, null
 
             #listen new_stack
             model.on 'NEW_STACK', ( tab_id ) ->
@@ -109,14 +116,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 #
                 model.getStackInfo tab_id
 
-            #listen old_stack
-            model.on 'OLD_STACK', ( tab_id ) ->
-                console.log 'OLD_STACK'
-                #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_STACK', tab_id
-
             #listen open_app
-            model.on 'OPEN_APP', ( tab_id ) ->
+            openApp = ( tab_id ) ->
                 console.log 'OPEN_APP'
                 #call getAppInfo
                 model.once 'GET_APP_COMPLETE', ( result ) ->
@@ -126,18 +127,38 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                     ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result
                 #
                 model.getAppInfo tab_id
+            model.on 'OPEN_APP', openApp
 
-            #listen old_stack
+            #listen open_process
+            model.on 'OPEN_PROCESS', ( tab_id ) ->
+                console.log 'OPEN_PROCESS'
+                #push event
+                ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OPEN_PROCESS', tab_id
+
+            #listen old_app
             model.on 'OLD_APP', ( tab_id ) ->
                 console.log 'OLD_APP'
                 #push event
                 ide_event.trigger ide_event.SWITCH_TAB, 'OLD_APP', tab_id
 
             #listen old_stack
-            model.on 'SWITCH_DASHBOARD', ( result ) ->
-                console.log 'SWITCH_DASHBOARD'
+            model.on 'OLD_STACK', ( tab_id ) ->
+                console.log 'OLD_STACK'
                 #push event
-                ide_event.trigger ide_event.SWITCH_DASHBOARD, null
+                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_STACK', tab_id
+
+            #listen old_process
+            model.on 'OLD_PROCESS', ( tab_id ) ->
+                console.log 'OLD_PROCESS'
+                #push event
+                ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OLD_PROCESS', tab_id
+
+            #listen
+            model.on 'SAVE_DESIGN_MODULE', ( tab_id ) ->
+                console.log 'SAVE_DESIGN_MODULE'
+                console.log 'tab_id          = ' + tab_id
+                #push event
+                ide_event.trigger ide_event.SAVE_DESIGN_MODULE, tab_id
 
             #listen open dashboard
             ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, () ->
@@ -230,6 +251,24 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 original_tab_id = view.updateCurrentTab tab_id, tab_name
                 console.log original_tab_id
                 if original_tab_id isnt tab_id then ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
+
+            #listen
+            ide_event.onLongListen ide_event.OPEN_APP_PROCESS_TAB, ( tab_id, tab_name, region_name, result ) ->
+                console.log 'OPEN_APP_PROCESS_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name + ', region_name = ' + region_name + ', result = ' + result
+                #set vo
+                #model.set 'app_region_name', region_name
+                #
+                MC.process[ 'process-' + tab_name ] = { 'tab_id' : tab_id, 'region_name' : region_name, 'result' : result }
+                #tabbar api
+                Tabbar.add 'process-' + tab_name.toLowerCase(), tab_name + ' - app'
+
+            #listen
+            ide_event.onLongListen ide_event.PROCESS_RUN_SUCCESS, ( tab_id, region_name ) ->
+                console.log 'PROCESS_RUN_SUCCESS'
+                #set vo
+                model.set 'app_region_name', region_name
+                #
+                openApp tab_id
 
             #render
             view.render()

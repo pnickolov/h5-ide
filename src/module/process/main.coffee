@@ -26,7 +26,7 @@ define [ 'event' ], ( ide_event ) ->
             ide_event.onLongListen ide_event.SWITCH_APP_PROCESS, ( type, tab_name ) ->
                 console.log 'process:SWITCH_APP_PROCESS, type = ' + type + ', tab_name = ' + tab_name
 
-                model.getProcess(tab_name)
+                model.getProcess(type, tab_name)
 
             model.on 'UPDATE_PROCESS', () ->
                 console.log 'UPDATE_PROCESS'

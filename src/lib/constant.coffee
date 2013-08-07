@@ -24,6 +24,7 @@ define [], () ->
 		AWS_VPC_VPNConnection     : "AWS.VPC.VPNConnection"
 		AWS_VPC_NetworkAcl        : "AWS.VPC.NetworkAcl"
 		AWS_IAM_ServerCertificate : "AWS.IAM.ServerCertificate"
+		AWS_ASL_LaunchConfiguration: "AWS.AutoScaling.LaunchConfiguration"
 	}
 
 	#private

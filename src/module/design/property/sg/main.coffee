@@ -34,7 +34,7 @@ define [ 'jquery',
 			require [ './module/design/property/sg/view', './module/design/property/sg/model' ], ( view, model ) ->
 
 				#
-
+				
 				# if current_view view.delegateEvents view.events
 				#
 				current_view  = view
@@ -60,19 +60,18 @@ define [ 'jquery',
 				if view._events
 					return
 
-				view.on 'SET_SG_NAME', ( sg_uid, value ) ->
+				view.on 'SET_SG_NAME', ( value ) ->
 					model.setSGName sg_uid, value
 
-				view.on 'REMOVE_SG_RULE', ( sg_uid, rule )->
+				view.on 'REMOVE_SG_RULE', ( rule )->
 
 					model.removeSGRule sg_uid, rule
 
-				view.on 'SET_SG_RULE', ( sg_uid, rule ) ->
+				view.on 'SET_SG_RULE', ( rule ) ->
 
 					model.setSGRule sg_uid, rule
 
-				view.on 'SET_SG_DESC', ( sg_uid, value ) ->
-
+				view.on 'SET_SG_DESC', ( value ) ->
 					model.setSGDescription sg_uid, value
 
 		else

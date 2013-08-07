@@ -439,7 +439,7 @@ define [ 'constant', 'event'
 			# Update resource panel, so that deleted AZ can be drag again
 			# Consider this as bad coding pattern, because it's MC.canvas's job to do that
 			# Enable AZ in resource panel
-			fiter = ( data ) ->
+			filter = ( data ) ->
 				data.option.name is component.name
 
 			ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone, filter
@@ -467,6 +467,13 @@ define [ 'constant', 'event'
 					if i.SubnetId.indexOf( component.uid ) != -1
 						value.resource.AssociationSet.splice index, 1
 						return
+
+			# Delete All Associated ACL
+			_.each MC.canvas_data.component, (compObj) ->
+				compType = compObj.type
+				if compType is 'AWS.VPC.NetworkAcl'
+					MC.aws.acl.removeAssociationFromACL component.uid, compObj.uid
+				null
 
 			null
 
@@ -518,27 +525,7 @@ define [ 'constant', 'event'
 
 				component_resource = MC.canvas_data.component[rt_uid].resource
 
-				# Do nothing if the RT is main RT
-				if component_resource.AssociationSet.length and "" + component_resource.AssociationSet[0].Main == 'true'
-					return false
-
-				# Disconnect
-				for i, index in component_resource.AssociationSet
-					if MC.extractID( i.SubnetId ) is sb_uid
-						component_resource.AssociationSet.splice index, 1
-						break
-
-				# Connect to Main
-				for key, value of MC.canvas_data.component
-					if value.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-						if value.resource.AssociationSet.length and "" + value.resource.AssociationSet[0].Main is 'true'
-							mainRT_Id = key
-							break
-
-				if mainRT_Id
-					MC.canvas.connect sb_uid, 'subnet-assoc-out', mainRT_Id, 'rtb-src'
-
-				return
+				return "!Subnet must be associated to a route table."
 
 
 			# Instance <==> RouteTable
@@ -911,6 +898,10 @@ define [ 'constant', 'event'
 							break
 
 					MC.canvas.connect uid, "subnet-assoc-out", rtId, 'rtb-src'
+
+					# Associate to default acl
+					defaultACLComp = MC.aws.acl.getDefaultACL()
+					MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
 
 			console.log "Morris : #{componentType}"
 

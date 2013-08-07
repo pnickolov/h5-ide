@@ -2,10 +2,10 @@
   <section class="property-control-group">
     <label class="left" for="property-acl-name">Name</label>
     <span class="required-input right">Required</span>
-    <input class="input" type="text" value="{{component.name}}" id="property-acl-name"/>
+    <input class="input" type="text" value="{{component.name}}" {{#if is_default}}disabled="disabled"{{/if}} id="property-acl-name"/>
   </section>
 
-  <div class="option-group-head acl-header">Rule
+  <div class="option-group-head acl-header pos-r">Rule
     <span class="count">(<span id="acl-rule-count">{{component.resource.entrySet.length}}</span>)</span>
     <a href="#" class="acl-icon-add tooltip" id="acl-add-rule-icon" data-tooltip="Create new Network ACL Rule"></a>
   </div>

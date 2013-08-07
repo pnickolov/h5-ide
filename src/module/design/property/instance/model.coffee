@@ -433,6 +433,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			uid = this.get 'get_uid'
 
+			if !MC.canvas_data.component[uid].resource.SubnetId then return
+
 			eni_detail = {}
 
 			eni_detail.eni_ips = []

@@ -474,6 +474,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					if(option['launchConfig']){
 						//use existed launchConfig
 						component_data.resource.LaunchConfigurationName = '@' + option['launchConfig'] + '.resource.LaunchConfigurationName';
+
 					}
 
 					//vpc
@@ -573,7 +574,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			});
 
 			if (option['originalId'])
-			{
+			{//append launchconfiguration to expand asg
 				var orig_asg_comp = data[ option['originalId'] ],
 					offset = 20,
 					lc_comp_id,
@@ -589,13 +590,35 @@ MC.canvas.add = function (flag, option, coordinate)
 					lc_name = data[ lc_comp_id ].name;
 
 					$(group).append(
-						////bg
+						////1bg
 						Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15 + offset, 11 + offset, 70, 70),
-						////os_type
+						////2os_type
 						Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30 + offset, 15 + offset, 39, 27),
-						////lc name
+						////3lc name
 						Canvon.text(50 + offset, 90 + offset, lc_name).attr({
 							'class': 'node-label name'
+						}),
+
+						//4 path: left port(blue)
+						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
+							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-left',
+							'transform': 'translate('+ (8 + offset ) + ', ' + (26 + offset) + ')' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
+							'data-name': 'launchconfig-sg', //for identify port
+							'data-position': 'left', //port position: for calc point of junction
+							'data-type': 'sg', //color of line
+							'data-direction': 'in', //direction
+							'data-angle': MC.canvas.PORT_LEFT_ANGLE //port angle: right:0 top:90 left:180 bottom:270
+						}),
+
+						//5 path: right port(blue)
+						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
+							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-right',
+							'transform': 'translate(' + (84 + offset) +' , ' + (26 + offset) + ')' + MC.canvas.PORT_RIGHT_ROTATE,
+							'data-name': 'launchconfig-sg',
+							'data-position': 'right',
+							'data-type': 'sg',
+							'data-direction': 'out',
+							'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 						})
 					);
 				}
@@ -1752,9 +1775,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-					'class': 'port port-blue port-instance-sg port-instance-sg-left',
+					'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-left',
 					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
-					'data-name': 'instance-sg', //for identify port
+					'data-name': 'launchconfig-sg', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
 					'data-type': 'sg', //color of line
 					'data-direction': 'in', //direction
@@ -1763,9 +1786,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//4 path: right port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-					'class': 'port port-blue port-instance-sg port-instance-sg-right',
+					'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-right',
 					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'instance-sg',
+					'data-name': 'launchconfig-sg',
 					'data-position': 'right',
 					'data-type': 'sg',
 					'data-direction': 'out',

@@ -1200,7 +1200,7 @@ MC.canvas = {
 			});
 
 			MC.canvas.data.delete('layout.component.' + target_type + '.' + node_id);
-			MC.canvas.data.delete('component.' + node_id);
+			//MC.canvas.data.delete('component.' + node_id);
 		}
 
 		if (target_type === 'group')
@@ -2300,7 +2300,7 @@ MC.canvas.volume = {
 				data_option = target.data('option');
 				data_option['instance_id'] = target_id;
 				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
-				
+
 				if (new_volume === null)
 				{
 					event.data.action = 'cancel';
@@ -2580,14 +2580,14 @@ MC.canvas.event.dragable = {
 				}
 				else
 				{
-					if (node_type === 'AWS.AutoScaling.Group' && component_data.originalId !== "")
-					{
-						MC.canvas.select( component_data.originalId );
-					}
-					else
-					{
-						MC.canvas.select( target_id );
-					}
+					// if (node_type === 'AWS.AutoScaling.Group' && component_data.originalId !== "")
+					// {
+					// 	MC.canvas.select( component_data.originalId );
+					// }
+					// else
+					// {
+					MC.canvas.select( target_id );
+					//}
 
 					MC.canvas.volume.close();
 				}

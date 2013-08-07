@@ -194,6 +194,20 @@ var constant_data = {
 	{
 		'AWS.EC2.Instance':
 		{
+			'AWS.AutoScaling.LaunchConfiguration':
+			{
+				type: 'sg',
+				from: 'instance-sg',
+				to: 'launchconfig-sg',
+
+				direction: {
+					from: 'horizontal',
+					to: 'horizontal'
+				},
+
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
+			},
 			'AWS.EC2.Instance':
 			{
 				type: 'sg',
@@ -345,7 +359,33 @@ var constant_data = {
 				to: 'subnet-assoc-in',
 				relation: 'multiple',
 				color: '#d8d7d6' //gray
+			},
+			'AWS.AutoScaling.LaunchConfiguration':[
+			{
+				type: 'sg',
+				from: 'elb-sg-out',
+				to: 'launchconfig-sg',
+
+				direction: {
+					to: 'horizontal'
+				},
+
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
+			},
+			{
+				type: 'sg',
+				from: 'elb-sg-in',
+				to: 'launchconfig-sg',
+
+				direction: {
+					to: 'horizontal'
+				},
+
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
 			}
+			]
 		},
 		'AWS.VPC.NetworkInterface':
 		{
@@ -538,6 +578,50 @@ var constant_data = {
 				relation: 'unique',
 				color: '#d8d7d6' //gray
 			}
+		},
+
+		'AWS.AutoScaling.LaunchConfiguration':
+		{
+			'AWS.EC2.Instance':
+			{
+				type: 'sg',
+				from: 'launchconfig-sg',
+				to: 'instance-sg',
+
+				direction: {
+					from: 'horizontal',
+					to: 'horizontal'
+				},
+
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
+			},
+			'AWS.ELB':[
+			{
+				type: 'sg',
+				from: 'launchconfig-sg',
+				to: 'elb-sg-out',
+
+				direction: {
+					from: 'horizontal'
+				},
+
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
+			},
+			{
+				type: 'sg',
+				from: 'launchconfig-sg',
+				to: 'elb-sg-in',
+
+				direction: {
+					from: 'horizontal'
+				},
+
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
+			}
+			]
 		}
 	},
 

@@ -474,6 +474,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					if(option['launchConfig']){
 						//use existed launchConfig
 						component_data.resource.LaunchConfigurationName = '@' + option['launchConfig'] + '.resource.LaunchConfigurationName';
+
 					}
 
 					//vpc
@@ -573,7 +574,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			});
 
 			if (option['originalId'])
-			{
+			{//append launchconfiguration to expand asg
 				var orig_asg_comp = data[ option['originalId'] ],
 					offset = 20,
 					lc_comp_id,
@@ -589,13 +590,35 @@ MC.canvas.add = function (flag, option, coordinate)
 					lc_name = data[ lc_comp_id ].name;
 
 					$(group).append(
-						////bg
+						////1bg
 						Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15 + offset, 11 + offset, 70, 70),
-						////os_type
+						////2os_type
 						Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30 + offset, 15 + offset, 39, 27),
-						////lc name
+						////3lc name
 						Canvon.text(50 + offset, 90 + offset, lc_name).attr({
 							'class': 'node-label name'
+						}),
+
+						//4 path: left port(blue)
+						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
+							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-left',
+							'transform': 'translate('+ (8 + offset ) + ', ' + (26 + offset) + ')' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
+							'data-name': 'launchconfig-sg', //for identify port
+							'data-position': 'left', //port position: for calc point of junction
+							'data-type': 'sg', //color of line
+							'data-direction': 'in', //direction
+							'data-angle': MC.canvas.PORT_LEFT_ANGLE //port angle: right:0 top:90 left:180 bottom:270
+						}),
+
+						//5 path: right port(blue)
+						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
+							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-right',
+							'transform': 'translate(' + (84 + offset) +' , ' + (26 + offset) + ')' + MC.canvas.PORT_RIGHT_ROTATE,
+							'data-name': 'launchconfig-sg',
+							'data-position': 'right',
+							'data-type': 'sg',
+							'data-direction': 'out',
+							'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 						})
 					);
 				}
@@ -607,10 +630,13 @@ MC.canvas.add = function (flag, option, coordinate)
 			layout.group[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.group', layout.group);
 
-			//set data
-			component_data.uid = group.id;
-			data[group.id] = component_data;
-			MC.canvas.data.set('component', data);
+			if (!option['originalId'])
+			{
+				//set data
+				component_data.uid = group.id;
+				data[group.id] = component_data;
+				MC.canvas.data.set('component', data);
+			}
 
 			$('#asg_layer').append(group);
 
@@ -880,11 +906,15 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** volume begin *****//
 		case 'AWS.EC2.EBS.Volume':
 
+			var ami_info,
+				device_name;
+
 			if (create_mode)
 			{//write
 
+				ami_info = MC.data.config[MC.canvas.data.get('region')].ami[MC.canvas_data.component[option.instance_id].resource.ImageId];
+
 				//set deviceName
-				ami_info = MC.data.config[MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone.slice(0,-1)].ami[MC.canvas_data.component[option.instance_id].resource.ImageId];
 				device_name = null;
 				if (ami_info.virtualizationType !== 'hvm')
 				{
@@ -905,43 +935,87 @@ MC.canvas.add = function (flag, option, coordinate)
 						}
 					}
 				});
-				$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
-					volume_uid = value.slice(1);
-					k = MC.canvas_data.component[volume_uid].name.slice(-1);
-					index = device_name.indexOf(k);
-					if (index >= 0)
+
+				if (data[option.instance_id].type === 'AWS.EC2.Instance' )
+				{//for AWS.EC2.Instance
+
+					$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
+						volume_uid = value.slice(1);
+						k = MC.canvas_data.component[volume_uid].name.slice(-1);
+						index = device_name.indexOf(k);
+						if (index >= 0)
+						{
+							device_name.splice(index, 1);
+						}
+					});
+
+
+					if (device_name.length === 0)
 					{
-						device_name.splice(index, 1);
+						//no valid deviceName
+						notification('warning', 'No valid device name to assign,cancel!', false);
+						return null;
 					}
-				});
-				if (device_name.length === 0)
-				{
-					//no valid deviceName
-					notification('warning', 'No valid device name to assign,cancel!', false);
-					return null;
-				}
 
-				if (ami_info.virtualizationType !== 'hvm') {
-					option.name = '/dev/sd' + device_name[0];
-				} else {
-					option.name = 'xvd' + device_name[0];
-				}
+					if (ami_info.virtualizationType !== 'hvm') {
+						option.name = '/dev/sd' + device_name[0];
+					} else {
+						option.name = 'xvd' + device_name[0];
+					}
 
-
-				component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
-				component_data.name = option.name;
-				component_data.resource.Size = option.volumeSize;
-				component_data.resource.AttachmentSet.InstanceId = '@' + option.instance_id + '.resource.InstanceId';
-				component_data.resource.AttachmentSet.VolumeId = '@' + group.id + '.resource.VolumeId';
-				component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone;
-				component_data.resource.SnapshotId = option.snapshotId;
-
-				component_data.resource.AttachmentSet.Device =  option.name;
-
-				if (option.snapshotId)
-				{
+					component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
+					component_data.name = option.name;
+					component_data.resource.Size = option.volumeSize;
+					component_data.resource.AttachmentSet.InstanceId = '@' + option.instance_id + '.resource.InstanceId';
+					component_data.resource.AttachmentSet.VolumeId = '@' + group.id + '.resource.VolumeId';
+					component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone;
 					component_data.resource.SnapshotId = option.snapshotId;
+
+					component_data.resource.AttachmentSet.Device =  option.name;
+
+					if (option.snapshotId)
+					{
+						component_data.resource.SnapshotId = option.snapshotId;
+					}
+
 				}
+				else
+				{//for AWS.AutoScaling.LaunchConfiguration
+
+					$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
+						index = value.DeviceName.indexOf(k);
+						if (index >= 0)
+						{
+							device_name.splice(index, 1);
+						}
+					});
+
+					if (device_name.length === 0)
+					{
+						//no valid deviceName
+						notification('warning', 'No valid device name to assign,cancel!', false);
+						return null;
+					}
+
+					if (ami_info.virtualizationType !== 'hvm') {
+						option.name = '/dev/sd' + device_name[0];
+					} else {
+						option.name = 'xvd' + device_name[0];
+					}
+
+					component_data = $.extend(true, {}, MC.canvas.ASL_VOL_JSON);
+					component_data.DeviceName = option.name;
+					component_data.Ebs.VolumeSize = option.volumeSize;
+					component_data.VirtualName = option.VirtualName;
+
+					if (option.snapshotId)
+					{
+						component_data.Ebs.SnapshotId = option.snapshotId;
+					}
+
+				}
+
+
 			}
 			else
 			{//read
@@ -1684,6 +1758,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					coordinate.x = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[0] + 2;
 					coordinate.y = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[1] + 2;
 
+					component_layout.originalId = group.id;
+
 				}
 				else{
 
@@ -1696,6 +1772,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					option.virtualizationType = component_layout.virtualizationType;
 					//coordinate.x = component_layout.coordinate[0];
 					//coordinate.y = component_layout.coordinate[1];
+
+					component_layout.originalId = option['launchConfig'];
 				}
 
 
@@ -1750,9 +1828,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-					'class': 'port port-blue port-instance-sg port-instance-sg-left',
+					'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-left',
 					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
-					'data-name': 'instance-sg', //for identify port
+					'data-name': 'launchconfig-sg', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
 					'data-type': 'sg', //color of line
 					'data-direction': 'in', //direction
@@ -1761,9 +1839,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//4 path: right port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-					'class': 'port port-blue port-instance-sg port-instance-sg-right',
+					'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-right',
 					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'instance-sg',
+					'data-name': 'launchconfig-sg',
 					'data-position': 'right',
 					'data-type': 'sg',
 					'data-direction': 'out',
@@ -1778,11 +1856,11 @@ MC.canvas.add = function (flag, option, coordinate)
 					'id': group.id + '_volume_status'
 				}),
 
-				//8.2 volume number
-				// Canvon.text(35, 60, volume_number).attr({
-				// 	'class': 'node-label volume-number',
-				// 	'id': group.id + '_volume_number'
-				// }),
+				////8.2 volume number
+				Canvon.text(49, 60, volume_number).attr({
+					'class': 'node-label volume-number',
+					'id': group.id + '_volume_number'
+				}),
 
 				//8.3 hot area for volume
 				Canvon.rectangle(35, 48, 29, 24).attr({

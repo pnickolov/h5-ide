@@ -461,6 +461,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//vpc
 				if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					component_data.resource.VPCZoneIdentifier = '@' + option.group.subnetUId + '.resource.SubnetId';
+
 				}
 
 				component_layout = $.extend(true, {}, MC.canvas.ASG_JSON.layout);
@@ -525,7 +526,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3.dragger
-				Canvon.image('../assets/images/ide/icon/asg-resource-dragger.png', width - 13 , -13, 27, 27),
+				Canvon.path('M ' + (width - 1) + ' 1 l' + ' 0 20 l -20 -20 z', {}).attr({
+					'class': 'asg-resource-dragger'
+				}),
+
 
 				////5.asg label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
@@ -563,6 +567,18 @@ MC.canvas.add = function (flag, option, coordinate)
 			MC.canvas.data.set('component', data);
 
 			$('#asg_layer').append(group);
+
+			if(option['launch-config']){
+
+				MC.canvas.add('AWS.EC2.Instance', {
+					'name': 'launch-config',
+					'groupUId': group.id,
+					'launch-config' : option['launch-config']
+				}, {
+					'x': coordinate.x+1,
+					'y': coordinate.y+1
+				});
+			}
 
 			break;
 		//***** asg end *****//
@@ -810,7 +826,6 @@ MC.canvas.add = function (flag, option, coordinate)
 				case 'ec2-vpc':
 					break;
 			}
-
 
 			break;
 		//***** instance end *****//
@@ -1584,38 +1599,56 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 
+				if(!option['launch-config']){
+					option.name = 'launch-config';
+					component_data = $.extend(true, {}, MC.canvas.ASL_LC_JSON.data);
+					component_data.name = option.name;
+					component_data.resource.LaunchConfigurationName = option.name;
 
-				option.name = 'launch-config';
-				component_data = $.extend(true, {}, MC.canvas.ASL_LC_JSON.data);
-				component_data.name = option.name;
-				component_data.resource.LaunchConfigurationName = option.name;
+					MC.canvas.display(option.groupUId, 'prompt_text', false);
 
-				// create new icon on resource panel
-				$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
+					// create new icon on resource panel
+					$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
 
-				$($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children()
-						.data('option', {"name": "asg", "launch-config": group.id })
-						.attr('data-option',{"name": "asg", "launch-config":"'+group.id+'"});
+					$($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children()
+							.data('option', {"name": "asg", "launch-config": group.id })
+							.attr('data-option','{"name": "asg", "launch-config":"'+group.id+'"}');
 
-				$($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
+					$($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
 
-				MC.canvas_data.component[option.groupUId].resource.LaunchConfigurationName = '@' + group.id + '.resource.LaunchConfigurationName';
-				//imageId
-				component_data.resource.ImageId = option.imageId;
+					MC.canvas_data.component[option.groupUId].resource.LaunchConfigurationName = '@' + group.id + '.resource.LaunchConfigurationName';
+					//imageId
+					component_data.resource.ImageId = option.imageId;
 
-				//instanceType
-				component_data.resource.InstanceType = 'm1.small';
+					//instanceType
+					component_data.resource.InstanceType = 'm1.small';
 
-				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
-				component_data.resource.SecurityGroups.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
-				MC.canvas_property.sg_list[0].member.push(group.id);
+					component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
+					component_data.resource.SecurityGroups.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
+					MC.canvas_property.sg_list[0].member.push(group.id);
 
-				component_layout = $.extend(true, {}, MC.canvas.ASL_LC_JSON.layout);
-				component_layout.groupUId = option.groupUId;
-				component_layout.osType =  option.osType;
-				component_layout.architecture =  option.architecture;
-				component_layout.rootDeviceType =  option.rootDeviceType;
-				component_layout.virtualizationType = option.virtualizationType;
+					component_layout = $.extend(true, {}, MC.canvas.ASL_LC_JSON.layout);
+					component_layout.groupUId = option.groupUId;
+					component_layout.osType =  option.osType;
+					component_layout.architecture =  option.architecture;
+					component_layout.rootDeviceType =  option.rootDeviceType;
+					component_layout.virtualizationType = option.virtualizationType;
+
+				}
+				else{
+
+					component_data = $.extend(true, {}, MC.canvas_data.component[option['launch-config']]);
+					component_layout = $.extend(true, {}, MC.canvas_data.layout.component.node[option['launch-config']]);
+					component_layout.groupUId = option.groupUId;
+					option.osType = component_layout.osType ;
+					option.architecture = component_layout.architecture ;
+					option.rootDeviceType = component_layout.rootDeviceType ;
+					option.virtualizationType = component_layout.virtualizationType;
+					//coordinate.x = component_layout.coordinate[0];
+					//coordinate.y = component_layout.coordinate[1];
+				}
+
+
 
 			}
 			else
@@ -1623,6 +1656,15 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = data[group.id];
 				option.name = component_data.name;
 
+				if(!option['launch-config']){
+					$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
+
+					$($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children()
+							.data('option', {"name": "asg", "launch-config": group.id })
+							.attr('data-option','{"name": "asg", "launch-config":"'+group.id+'"}');
+
+					$($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
+				}
 				component_layout = layout.node[group.id];
 
 				coordinate.x = component_layout.coordinate[0];
@@ -1716,10 +1758,11 @@ MC.canvas.add = function (flag, option, coordinate)
 			MC.canvas.data.set('layout.component.node', layout.node);
 
 			//set data
-			component_data.uid = group.id;
-			data[group.id] = component_data;
-			MC.canvas.data.set('component', data);
-
+			if(!option['launch-config']){
+				component_data.uid = group.id;
+				data[group.id] = component_data;
+				MC.canvas.data.set('component', data);
+			}
 			$('#node_layer').append(group);
 
 			break;

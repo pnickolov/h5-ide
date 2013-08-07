@@ -1606,7 +1606,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_data.name = option.name;
 					component_data.resource.LaunchConfigurationName = option.name;
 
-					MC.canvas.display(option.groupUId, 'prompt_text', false);
+
 
 					// create new icon on resource panel
 					$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
@@ -1650,7 +1650,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}
 
 
-
+				MC.canvas.display(option.groupUId, 'prompt_text', false);
 			}
 			else
 			{//read

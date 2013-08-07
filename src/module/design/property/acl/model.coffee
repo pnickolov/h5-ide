@@ -9,6 +9,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         defaults :
             'component'    : null
             'associations' : null
+            'is_default'   : null
 
         initialize : ->
             #listen
@@ -18,6 +19,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             allComp = MC.canvas_data.component
             aclObj = MC.canvas_data.component[uid]
+
+            if aclObj.name is 'DefaultACL'
+                this.set 'is_default', true
+            else
+                this.set 'is_default', false
+
             this.set 'component', aclObj
 
             that = this

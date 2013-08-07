@@ -468,6 +468,13 @@ define [ 'constant', 'event'
 						value.resource.AssociationSet.splice index, 1
 						return
 
+			# Delete All Associated ACL
+			_.each MC.canvas_data.component, (compObj) ->
+				compType = compObj.type
+				if compType is 'AWS.VPC.NetworkAcl'
+					MC.aws.acl.removeAssociationFromACL component.uid, compObj.uid
+				null
+
 			null
 
 		deleteLine : ( option ) ->
@@ -911,6 +918,10 @@ define [ 'constant', 'event'
 							break
 
 					MC.canvas.connect uid, "subnet-assoc-out", rtId, 'rtb-src'
+
+					# Associate to default acl
+					defaultACLComp = MC.aws.acl.getDefaultACL()
+					MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
 
 			console.log "Morris : #{componentType}"
 

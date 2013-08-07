@@ -21,13 +21,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             subnet_component = MC.canvas_data.component[ uid ]
             networkACLs = []
 
-            data =
-                uid  : uid
-                name : subnet_component.name
-                CIDR : subnet_component.resource.CidrBlock
-                networkACL : networkACLs
-
-
             ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
 
             linkToDefault = true
@@ -58,12 +51,18 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             if defaultACLIdx != 0
                 defaultACL = networkACLs.splice defaultACLIdx, 1
-                networkACLs.splice 0, 0, defaultACL
+                networkACLs.splice 0, 0, defaultACL[0]
             else
                 defaultACL = networkACLs[ 0 ]
 
             # if linkToDefault
             #     defaultACL.isUsed = true
+
+            data =
+                uid  : uid
+                name : subnet_component.name
+                CIDR : subnet_component.resource.CidrBlock
+                networkACL : networkACLs
 
             this.set data
             null

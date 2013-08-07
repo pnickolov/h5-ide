@@ -75,8 +75,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			rule.fromport = li_dom.data('fromport')
 			rule.toport = li_dom.data('toport')
 			rule.iprange = li_dom.data('iprange')
-			sg_uid = $("#sg-secondary-panel").attr "uid"
-			this.trigger 'REMOVE_SG_RULE', sg_uid, rule
+			# sg_uid = $("#sg-secondary-panel").attr "uid"
+			this.trigger 'REMOVE_SG_RULE', rule
 			$(event.target).parents('li').first().remove()
 
 		radioSgModalChange : (event) ->
@@ -102,12 +102,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			$("#protocol-icmp-main-select").data('protocal-sub', id)
 
 		setSGName : ( event ) ->
-			sg_uid = $("#sg-secondary-panel").attr "uid"
-			this.trigger 'SET_SG_NAME', sg_uid, event.target.value
+			# sg_uid = $("#sg-secondary-panel").attr "uid"
+			this.trigger 'SET_SG_NAME', event.target.value
 
 		setSGDescription : ( event ) ->
-			sg_uid = $("#sg-secondary-panel").attr "uid"
-			this.trigger 'SET_SG_DESC', sg_uid, event.target.value
+			# sg_uid = $("#sg-secondary-panel").attr "uid"
+			this.trigger 'SET_SG_DESC', event.target.value
 
 		saveSgModal : ( event ) ->
 			sg_direction = $('#sg-modal-direction input:checked').val()
@@ -149,13 +149,13 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			rule.direction = sg_direction
 			rule.ipranges = sg_descrition
 
-			sg_uid = $("#sg-secondary-panel").attr "uid"
+			# sg_uid = $("#sg-secondary-panel").attr "uid"
 			cur_count = Number $("#rule-count").text()
 			cur_count = cur_count + 1
 			$("#rule-count").text cur_count
 			$("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
 
-			this.trigger "SET_SG_RULE", sg_uid, rule
+			this.trigger "SET_SG_RULE", rule
 
 
 		editablelabelClick : ( event ) ->

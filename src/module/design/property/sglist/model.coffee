@@ -73,8 +73,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 			displaySGAry = []
 
-			sg_full = { full : false };
-			enabledSGCount = 0;
+			sg_full = { full : false }
+			enabledSGCount = 0
 
 			_.each allSGUIDAry, (uid) ->
 

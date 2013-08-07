@@ -2198,7 +2198,7 @@ MC.canvas.volume = {
 					'left': event.pageX - 50
 				});
 
-			$('.AWS-EC2-Instance').attr('class', function (index, key)
+			$('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').attr('class', function (index, key)
 			{
 				return 'attachable ' + key;
 			});
@@ -2239,12 +2239,15 @@ MC.canvas.volume = {
 				.show();
 		}
 
-		match_node = MC.canvas.matchPoint(
-			event.pageX - event.data.canvas_offset.left,
-			event.pageY - event.data.canvas_offset.top
-		);
+		var match_node = MC.canvas.matchPoint(
+				event.pageX - event.data.canvas_offset.left,
+				event.pageY - event.data.canvas_offset.top
+			);
 
-		if (match_node && match_node.getAttribute('data-class') === 'AWS.EC2.Instance')
+		if (
+			match_node &&
+			$.inArray(match_node.getAttribute('data-class'), ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration']) > -1
+		)
 		{
 			MC.canvas.volume.bubble(match_node);
 		}
@@ -2275,7 +2278,7 @@ MC.canvas.volume = {
 			original_node_id,
 			original_node_volume_data;
 
-		$('.AWS-EC2-Instance').attr('class', function (index, key)
+		$('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').attr('class', function (index, key)
 		{
 			return key.replace('attachable ', '');
 		});
@@ -2297,6 +2300,7 @@ MC.canvas.volume = {
 				data_option = target.data('option');
 				data_option['instance_id'] = target_id;
 				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
+				
 				if (new_volume === null)
 				{
 					event.data.action = 'cancel';
@@ -3456,7 +3460,7 @@ MC.canvas.event.siderbarDrag = {
 
 			if (node_type === 'AWS.EC2.EBS.Volume')
 			{
-				$('.AWS-EC2-Instance').attr('class', function (index, key)
+				$('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').attr('class', function (index, key)
 				{
 					return 'attachable ' + key;
 				});

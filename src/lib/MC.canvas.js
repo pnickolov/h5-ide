@@ -1200,7 +1200,7 @@ MC.canvas = {
 			});
 
 			MC.canvas.data.delete('layout.component.' + target_type + '.' + node_id);
-			MC.canvas.data.delete('component.' + node_id);
+			//MC.canvas.data.delete('component.' + node_id);
 		}
 
 		if (target_type === 'group')

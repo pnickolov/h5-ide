@@ -251,12 +251,17 @@ define [ 'constant', 'event'
 				# MC.canvas.remove actually remove the component from MC.canvas_data.component.
 				# Consider this as bad coding pattern, because its canvas/model's job to do that.
 				MC.canvas.remove $("#" + option.id)[0]
+				delete MC.canvas_data.component[option.id]
 				this.trigger 'DELETE_OBJECT_COMPLETE'
 
 			else if event && event.preventDefault
 				event.preventDefault()
 
 			result
+
+		deleteR_LaunchConfiguration : ( component ) ->
+
+			null
 
 		deleteR_Instance : ( component ) ->
 

@@ -983,7 +983,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				{//for AWS.AutoScaling.LaunchConfiguration
 
 					$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
-						index = value.DeviceName.indexOf(k);
+						index = device_name.indexOf(value.DeviceName.substr(-1,1));
 						if (index >= 0)
 						{
 							device_name.splice(index, 1);
@@ -1024,10 +1024,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.volumeSize = component_data.resource.AttachmentSet.Size;
 			}
 
+
 			//set data
-			component_data.uid = group.id;
-			data[group.id] = component_data;
-			MC.canvas.data.set('component', data);
+			if (data[option.instance_id].type === 'AWS.EC2.Instance' )
+			{//for AWS.EC2.Instance
+				component_data.uid = group.id;
+				data[group.id] = component_data;
+				MC.canvas.data.set('component', data);
+			}
+			else
+			{
+				var lc_comp = data[option.instance_id];
+				if (lc_comp)
+				{
+					lc_comp.resource.BlockDeviceMapping.push(component_data);
+				}
+			}
 
 			return group;
 

@@ -575,6 +575,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (option['originalId'])
 			{
 				var orig_asg_comp = data[ option['originalId'] ],
+					offset = 20,
 					lc_comp_id,
 					lc_comp_layout,
 					os_type,
@@ -589,11 +590,11 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					$(group).append(
 						////bg
-						Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15 + 10, 11 + 10, 70, 70),
+						Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15 + offset, 11 + offset, 70, 70),
 						////os_type
-						Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30 + 10, 15 + 10, 39, 27),
+						Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30 + offset, 15 + offset, 39, 27),
 						////lc name
-						Canvon.text(50 + 10, 90 + 10, lc_name).attr({
+						Canvon.text(50 + offset, 90 + offset, lc_name).attr({
 							'class': 'node-label name'
 						})
 					);
@@ -620,8 +621,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					'groupUId': group.id,
 					'launchConfig' : option['launchConfig']
 				}, {
-					'x': coordinate.x+1,
-					'y': coordinate.y+1
+					'x': coordinate.x + 2,
+					'y': coordinate.y + 2
 				});
 			}
 
@@ -1682,8 +1683,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_layout.rootDeviceType =  option.rootDeviceType;
 					component_layout.virtualizationType = option.virtualizationType;
 
-					coordinate.x = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[0] + 1;
-					coordinate.y = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[1] + 1;
+					coordinate.x = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[0] + 2;
+					coordinate.y = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[1] + 2;
 
 				}
 				else{

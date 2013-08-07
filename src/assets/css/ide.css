@@ -1563,7 +1563,8 @@ td.table-action a.btn {
 	bottom: 0;
 	height: 50px;
 	background-color: #dde0e2;
-	width: 100%;
+	width: 580px;
+	right: 0;
 }
 
 #community-ami-page .pagination {
@@ -2095,6 +2096,7 @@ a.sidebar-hider {
 
 .expand + .option-group {
 	max-height : inherit;
+	overflow   : visible;
 }
 
 .property-control-group {

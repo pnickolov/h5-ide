@@ -64,6 +64,8 @@ define [ 'jquery',
 				if MC.data.last_open_property && MC.data.last_open_property.uid is uid
 					return
 
+				$("input").blur()
+
 				#
 				MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
 				#

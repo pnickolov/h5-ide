@@ -2642,6 +2642,7 @@ MC.canvas.event.dragable = {
 					match_place.is_matched &&
 					// Disallow Instance to ASG
 					!(
+						parentGroup &&
 						parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
 						node_type === 'AWS.EC2.Instance'
 					)

@@ -9,20 +9,31 @@
 	<div id="item-group" class="active tab-item">
 		<ul class="sg-info-list" id="sg-info-list">
 			{{#each sg_list}}
-			<li class="clearfix" href="#" sg-uid="{{sgUID}}">
-				<input class="col2-1 sg-list-association-check {{#if sgHideCheck}}hide{{/if}}" type="checkbox" {{#if sgChecked}}checked="checked"{{/if}} sg-uid="{{sgUID}}"/>
-				<!-- <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div> -->
+			<li class="clearfix" sg-uid="{{sgUID}}">
+				{{#unless sgHideCheck}}
+					{{#if sgFull.full}}
+						{{#if sgChecked}}
+							<input class="col2-1 sg-list-association-check" type="checkbox" checked="checked" sg-uid="{{sgUID}}"/>
+						{{else}}
+							<span class="tooltip col2-1 sg-list-association-check" data-tooltip="Resource can have 5 security groups at most.">
+							<input type="checkbox" disabled="disabled">
+							</span>
+						{{/if}}
+					{{else}}
+						<input class="col2-1 sg-list-association-check" type="checkbox" {{#if sgChecked}}checked="checked"{{/if}} sg-uid="{{sgUID}}"/>
+					{{/if}}
+				{{/unless}}
 				<div class="col2">
 					<div class="col2-1 truncate">{{sgName}}</div>
 					<div class="col2-2 truncate">{{sgDesc}}</div>
 					<div class="col2-3 truncate">{{sgRuleNum}} rules, {{sgMemberNum}} members</div>
 				</div>
-				<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip={{#if app_view}}"View SG"{{else}}"Edit SG"{{/if}} data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"uid":"{{sgUID}}", "parent":"{{parent}}"}' data-sgid="{{sgUID}}">&gt;</div>
-				{{#unless sgIsDefault}}{{#unless sgMemberNum}}<div class="sg-list-delete-btn">Delete</div>{{/unless}}{{/unless}}
+				<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip={{#if app_view}}"View SG"{{else}}"Edit SG"{{/if}} data-sgid="{{sgUID}}">&gt;</div>
+				{{#if is_stack_sg}}{{#unless sgIsDefault}}{{#unless sgMemberNum}}<div class="sg-list-delete-btn">Delete</div>{{/unless}}{{/unless}}{{/if}}
 			</li>
 			{{/each}}
 		</ul>
-		<div class="btn btn-silver secondary-panel {{#if app_view}}hide{{/if}}" id="add-sg-btn" data-secondarypanel-template="sgSecondaryPanel" data-secondarypanel-data='{"parent":"{{sgUID}}"}'>Create new Security Group</div>
+		<div class="btn btn-silver secondary-panel {{#if app_view}}hide{{/if}}" id="add-sg-btn">Create new Security Group</div>
 	</div>
 	<div id="item-rule" class="tab-item">
 		<div class="sg-rule-filter">

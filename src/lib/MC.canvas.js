@@ -2687,13 +2687,19 @@ MC.canvas.event.dragable = {
 			event.data.target.find('.port').show();
 		}
 
+		var target = event.data.target,
+			target_id = target.attr('id'),
+			target_type = event.data.target_type,
+			node_type = target.data('class');
+
 		// Selected
 		if (
 			event.pageX === event.data.originalPageX &&
 			event.pageY === event.data.originalPageY
 		)
 		{
-			var originalTarget = $(event.data.originalTarget);
+			var originalTarget = $(event.data.originalTarget),
+				component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
 
 			if (originalTarget.is('.instance-volume'))
 			{
@@ -2707,7 +2713,14 @@ MC.canvas.event.dragable = {
 				}
 				else
 				{
-					MC.canvas.select( event.data.target.attr('id') );
+					if (node_type === 'AWS.AutoScaling.Group' && component_data.originalId !== "")
+					{
+						MC.canvas.select( component_data.originalId );
+					}
+					else
+					{
+						MC.canvas.select( event.data.target.attr('id') );
+					}
 
 					MC.canvas.volume.close();
 				}
@@ -2715,15 +2728,11 @@ MC.canvas.event.dragable = {
 		}
 		else
 		{
-			var target = event.data.target,
-				target_id = target.attr('id'),
-				target_type = event.data.target_type,
-				svg_canvas = $("#svg_canvas"),
+			var svg_canvas = $("#svg_canvas"),
 				canvas_offset = svg_canvas.offset(),
 				shadow_offset = Canvon(event.data.shadow[0]).offset(),
 				layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
-				node_type = target.data('class'),
 				BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
 				scale_ratio = MC.canvas_property.SCALE_RATIO,
 				component_size,

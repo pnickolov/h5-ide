@@ -1399,22 +1399,10 @@ MC.canvas = {
 							if (
 								//target_id !== item.id &&
 								$.inArray(item.id, ignore_stack) === -1 &&
-								(
-									(
-										data.x > coordinate[0] &&
-										data.x < coordinate[0] + size[0] &&
-										data.y > coordinate[1] &&
-										data.y < coordinate[1] + size[1]
-									)
-									||
-									(
-										group_data.type === 'AWS.AutoScaling.Group' &&
-										data.x >= coordinate[0] &&
-										data.x <= coordinate[0] + size[0] &&
-										data.y >= coordinate[1] &&
-										data.y <= coordinate[1] + size[1]
-									)
-								)
+								data.x > coordinate[0] &&
+								data.x < coordinate[0] + size[0] &&
+								data.y > coordinate[1] &&
+								data.y < coordinate[1] + size[1]
 							)
 							{
 								match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;

@@ -16,8 +16,8 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             null
 
         saveProcessTab : ( tab_id ) ->
-            if !MC.tab[ tab_id ]    then MC.tab[ tab_id ] = MC.process[ tab_id ]
-            if MC.process[ tab_id ] then delete MC.process[ tab_id ]
+            if !MC.tab[ tab_id ]     then MC.tab[ tab_id ] = MC.process[ tab_id ]
+            #if MC.process[ tab_id ] then delete MC.process[ tab_id ]
             null
 
         readTab : ( type, tab_id ) ->

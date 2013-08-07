@@ -2609,21 +2609,42 @@ MC.canvas.event.dragable = {
 			}
 			else
 			{
-				$(document).on({
-					'mousemove': MC.canvas.event.dragable.mousemove,
-					'mouseup': MC.canvas.event.dragable.mouseup
-				}, {
-					'target': target,
-					'canvas_body': $('#canvas_body'),
-					'target_type': target_type,
-					'shadow': shadow,
-					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
-					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
-					'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
-					'originalPageX': event.pageX,
-					'originalPageY': event.pageY,
-					'originalTarget': event.target
-				});
+				if (event.target.getAttribute('class') === 'asg-resource-dragger')
+				{
+					$(document).on({
+						'mousemove': MC.canvas.event.dragable.mousemove,
+						'mouseup': MC.canvas.event.dragable.asgExpandup
+					}, {
+						'target': target,
+						'canvas_body': $('#canvas_body'),
+						'target_type': target_type,
+						'shadow': shadow,
+						'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+						'offsetY': event.pageY - target_offset.top + canvas_offset.top,
+						'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
+						'originalPageX': event.pageX,
+						'originalPageY': event.pageY,
+						'originalTarget': event.target
+					});
+				}
+				else
+				{
+					$(document).on({
+						'mousemove': MC.canvas.event.dragable.mousemove,
+						'mouseup': MC.canvas.event.dragable.mouseup
+					}, {
+						'target': target,
+						'canvas_body': $('#canvas_body'),
+						'target_type': target_type,
+						'shadow': shadow,
+						'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+						'offsetY': event.pageY - target_offset.top + canvas_offset.top,
+						'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
+						'originalPageX': event.pageX,
+						'originalPageY': event.pageY,
+						'originalTarget': event.target
+					});
+				}
 			}
 
 			MC.canvas.event.clearSelected();
@@ -3105,6 +3126,50 @@ MC.canvas.event.dragable = {
 		$(document).off({
 			'mousemove': MC.canvas.event.gatewaymove,
 			'mouseup': MC.canvas.event.gatewayup
+		});
+	},
+	asgExpandup: function (event)
+	{
+		var target = event.data.target,
+			target_id = target.attr('id'),
+			target_type = event.data.target_type,
+			canvas_offset = $('#svg_canvas').offset(),
+			shadow_offset = Canvon(event.data.shadow[0]).offset(),
+			layout_node_data = MC.canvas.data.get('layout.component.node'),
+			layout_connection_data = MC.canvas.data.get('layout.connection'),
+			node_type = target.data('class'),
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
+			component_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
+			match_place = MC.canvas.isMatchPlace(
+				null,
+				target_type,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				component_size[0],
+				component_size[1]
+			);
+
+		if (match_place.is_matched)
+		{
+			new_node = MC.canvas.add(node_type, {'name': 'asg-1', 'groupUId': match_place.target}, coordinate);
+
+			MC.canvas.select(new_node.id);
+		}
+
+		$('.dropable-group').attr('class', function (index, key)
+		{
+			return key.replace('dropable-group ', '');
+		});
+
+		event.data.shadow.remove();
+
+		$(document.body).removeClass('disable-event');
+
+		$(document).off({
+			'mousemove': MC.canvas.event.dragable.mousemove,
+			'mouseup': MC.canvas.event.dragable.asgExpandup
 		});
 	}
 };

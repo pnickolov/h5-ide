@@ -2323,7 +2323,7 @@ MC.canvas.volume = {
 					if (target.attr('class') !== 'AWS.AutoScaling.LaunchConfiguration')
 					{
 						volume_id = new_volume.id;
-						data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
+						//data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
 					}
 				}
 			}
@@ -2387,7 +2387,10 @@ MC.canvas.volume = {
 
 				$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
-				target_volume_data.push('#' + volume_id);
+				if ( MC.canvas.data.get('component.' + target_id).type === 'AWS.EC2.Instance')
+				{
+					target_volume_data.push('#' + volume_id);
+				}
 
 				$('#instance_volume_number').text(target_volume_data.length);
 

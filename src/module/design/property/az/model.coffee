@@ -90,30 +90,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     else
                         console.log "[Warning] component:", component "has the same AZ, but not changed!!!"
 
-            # recover az dragable
-            $.each $(".resource-item"), ( idx, item) ->
-
-                data = $(item).data()
-
-                if data.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and data.option.name == oldZoneName
-
-                    tmp = {
-                        enable : true
-                        tooltip: "Drag and drop to canvas"
-                    }
-                    $(item)
-                        .data(tmp)
-                        .removeClass('resource-disabled')
-                        .addClass("tooltip")
-
-                else if data.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and data.option.name == newZone
-
-                    $(item)
-                        .data('enable', false)
-                        .addClass('resource-disabled')
-                        .removeClass("tooltip")
-
-            true
+            oldZoneName
     }
 
     model = new AZModel()

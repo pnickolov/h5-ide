@@ -61,7 +61,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAdjustmentTypesResponse
 
 	#private (parser DescribeAdjustmentTypes return)
 	parserDescribeAdjustmentTypesReturn = ( result, return_code, param ) ->
@@ -90,7 +90,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAutoScalingGroupsResponse
 
 	#private (parser DescribeAutoScalingGroups return)
 	parserDescribeAutoScalingGroupsReturn = ( result, return_code, param ) ->
@@ -119,7 +119,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAutoScalingInstancesResponse
 
 	#private (parser DescribeAutoScalingInstances return)
 	parserDescribeAutoScalingInstancesReturn = ( result, return_code, param ) ->
@@ -148,7 +148,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeAutoScalingNotificationTypesResponse
 
 	#private (parser DescribeAutoScalingNotificationTypes return)
 	parserDescribeAutoScalingNotificationTypesReturn = ( result, return_code, param ) ->
@@ -177,7 +177,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeLaunchConfigurationsResponse
 
 	#private (parser DescribeLaunchConfigurations return)
 	parserDescribeLaunchConfigurationsReturn = ( result, return_code, param ) ->
@@ -206,7 +206,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeMetricCollectionTypesResponse
 
 	#private (parser DescribeMetricCollectionTypes return)
 	parserDescribeMetricCollectionTypesReturn = ( result, return_code, param ) ->
@@ -235,7 +235,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeNotificationConfigurationsResponse
 
 	#private (parser DescribeNotificationConfigurations return)
 	parserDescribeNotificationConfigurationsReturn = ( result, return_code, param ) ->
@@ -264,7 +264,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribePoliciesResponse
 
 	#private (parser DescribePolicies return)
 	parserDescribePoliciesReturn = ( result, return_code, param ) ->
@@ -293,7 +293,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeScalingActivitiesResponse
 
 	#private (parser DescribeScalingActivities return)
 	parserDescribeScalingActivitiesReturn = ( result, return_code, param ) ->
@@ -322,7 +322,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeScalingProcessTypesResponse
 
 	#private (parser DescribeScalingProcessTypes return)
 	parserDescribeScalingProcessTypesReturn = ( result, return_code, param ) ->
@@ -351,7 +351,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeScheduledActionsResponse
 
 	#private (parser DescribeScheduledActions return)
 	parserDescribeScheduledActionsReturn = ( result, return_code, param ) ->
@@ -380,7 +380,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		#TO-DO
+		($.xml2json ($.parseXML result[1])).DescribeTagsResponse
 
 	#private (parser DescribeTags return)
 	parserDescribeTagsReturn = ( result, return_code, param ) ->
@@ -444,9 +444,9 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		send_request "DescribePolicies", src, [ username, session_id, region_name, group_name, policy_names, max_records, next_token ], parserDescribePoliciesReturn, callback
 		true
 
-	#def DescribeScalingActivities(self, username, session_id, region_name,
-	DescribeScalingActivities = ( src, username, session_id, callback ) ->
-		send_request "DescribeScalingActivities", src, [ username, session_id ], parserDescribeScalingActivitiesReturn, callback
+	#def DescribeScalingActivities(self, username, session_id, region_name, group_name=None, activity_ids=None, max_records=None, next_token=None):
+	DescribeScalingActivities = ( src, username, session_id, region_name, group_name=null, activity_ids=null, max_records=null, next_token=null, callback ) ->
+		send_request "DescribeScalingActivities", src, [ username, session_id, region_name, group_name, activity_ids, max_records, next_token ], parserDescribeScalingActivitiesReturn, callback
 		true
 
 	#def DescribeScalingProcessTypes(self, username, session_id, region_name):
@@ -454,15 +454,16 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		send_request "DescribeScalingProcessTypes", src, [ username, session_id, region_name ], parserDescribeScalingProcessTypesReturn, callback
 		true
 
-	#def DescribeScheduledActions(self, username, session_id, region_name,
-	DescribeScheduledActions = ( src, username, session_id, callback ) ->
-		send_request "DescribeScheduledActions", src, [ username, session_id ], parserDescribeScheduledActionsReturn, callback
+	#def DescribeScheduledActions(self, username, session_id, region_name, group_name=None, action_names=None, start_time=None, end_time=None, max_records=None, next_token=None):
+	DescribeScheduledActions = ( src, username, session_id, region_name, group_name=null, action_names=null, start_time=null, end_time=null, max_records=null, next_token=null, callback ) ->
+		send_request "DescribeScheduledActions", src, [ username, session_id, region_name, group_name, action_names, start_time, end_time, max_records, next_token ], parserDescribeScheduledActionsReturn, callback
 		true
 
 	#def DescribeTags(self, username, session_id, region_name, filters=None, max_records=None, next_token=None):
 	DescribeTags = ( src, username, session_id, region_name, filters=null, max_records=null, next_token=null, callback ) ->
 		send_request "DescribeTags", src, [ username, session_id, region_name, filters, max_records, next_token ], parserDescribeTagsReturn, callback
 		true
+
 
 
 	#############################################################

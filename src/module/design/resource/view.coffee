@@ -3,9 +3,10 @@
 #############################
 
 define [ 'event',
+         'constant'
          'backbone', 'jquery', 'handlebars',
          'UI.fixedaccordion', 'UI.selectbox', 'UI.toggleicon', 'UI.searchbar', 'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
-], ( ide_event, Backbone, $ ) ->
+], ( ide_event, constant, Backbone, $ ) ->
 
     ResourceView = Backbone.View.extend {
 
@@ -239,6 +240,11 @@ define [ 'event',
 
             pagination = $ '.pagination'
 
+            if max_page is 0
+                pagination.hide()
+            else
+                pagination.show()
+
             if pagination.data 'jqPagination'
                 pagination.jqPagination 'destroy'
                 # init page num
@@ -409,6 +415,61 @@ define [ 'event',
             #     filter.update($('#community-ami-filter'), result_set)
             null
 
+        enableItem  : ( type, filterFunc ) ->
+            this.toggleItem type, filterFunc, true
+            null
+
+        disableItem : ( type, filterFunc ) ->
+            this.toggleItem type, filterFunc, false
+            null
+
+        toggleItem : ( type, filterFunc, enable ) ->
+            $(".resource-item[data-type='#{type}']").each ( idx, item )->
+
+                $item = $(item)
+                data  = $item.data()
+
+                if filterFunc and not filterFunc.call $item, data
+                    return
+
+                $item
+                    .data("enable", enable)
+                    .attr("data-enable", enable)
+                    .toggleClass("resource-disabled", not enable)
+
+                # Update tooltip
+                if enable
+                    tooltip = itemEnableToolTip[type]
+                    $item.toggleClass("tooltip", true)
+
+                    if tooltip
+                        $item.data("tooltip", tooltip)
+                else
+                    tooltip = itemDisableToolTip[type]
+
+                    if tooltip
+                        $item.data("tooltip", tooltip)
+                             .toggleClass("tooltip", true)
+                    else
+                        $item.toggleClass("tooltip", false)
+            null
+
     }
+
+    res_type = constant.AWS_RESOURCE_TYPE
+    itemDisableToolTip = {}
+    itemEnableToolTip  = {}
+
+    ###
+
+    # Don't know if we really need to update the tooltip of the item.
+
+    itemEnableToolTip[  res_type.AWS_VPC_InternetGateway ] = "Drag and drop to canvas to create a new Internet Gateway."
+    itemDisableToolTip[ res_type.AWS_VPC_InternetGateway ] = "VPC can only have one IGW. There is already one IGW in current VPC."
+
+    itemEnableToolTip[  res_type.AWS_VPC_VPNGateway ] = "Drag and drop to canvas to create a new VPN Gateway."
+    itemDisableToolTip[ res_type.AWS_VPC_VPNGateway ] = "VPC can only have one IGW. There is already one IGW in current VPC."
+
+    ###
 
     return ResourceView

@@ -34,8 +34,8 @@ define [ 'jquery',
 			require [ './module/design/property/sg/view', './module/design/property/sg/model' ], ( view, model ) ->
 
 				#
-
-				# if current_view view.delegateEvents view.events
+				
+				if current_view then view.delegateEvents view.events
 				#
 				current_view  = view
 				current_model = model
@@ -49,25 +49,28 @@ define [ 'jquery',
 					view.model.addSG()
 
 				#render
-				view.render()
+				$dom = view.render()
+				ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
+					title : model.attributes.sg_detail.component.resource.GroupName
+					dom   : $dom
+					id    : "SG"
+				}
 
 				#temp hack
-				if view._events
-					return
+				view._events = []
 
-				view.on 'SET_SG_NAME', ( sg_uid, value ) ->
+				view.on 'SET_SG_NAME', ( value ) ->
 					model.setSGName sg_uid, value
 
-				view.on 'REMOVE_SG_RULE', ( sg_uid, rule )->
+				view.on 'REMOVE_SG_RULE', ( rule )->
 
 					model.removeSGRule sg_uid, rule
 
-				view.on 'SET_SG_RULE', ( sg_uid, rule ) ->
+				view.on 'SET_SG_RULE', ( rule ) ->
 
 					model.setSGRule sg_uid, rule
 
-				view.on 'SET_SG_DESC', ( sg_uid, value ) ->
-
+				view.on 'SET_SG_DESC', ( value ) ->
 					model.setSGDescription sg_uid, value
 
 		else
@@ -80,7 +83,12 @@ define [ 'jquery',
 					model.getAppSG sg_uid
 
 				#render
-				view.render(is_app_view)
+				$dom = view.render(is_app_view)
+				ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
+					title : model.attributes.sg_app_detail.groupName
+					dom   : $dom
+					id    : "SG"
+				}
 
 	unLoadModule = () ->
 

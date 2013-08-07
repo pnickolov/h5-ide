@@ -46,9 +46,16 @@ define [ 'jquery',
 
             view.on 'ELB_NAME_CHANGED', ( value ) ->
                 model.setELBName uid, value
+                # Set title
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, value
 
             view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
-                model.setScheme uid, value
+                elbComponent = model.setScheme uid, value
+
+                # Trigger an event to tell canvas that we want an IGW
+                if value isnt 'internal'
+                    ide_event.trigger ide_event.NEED_IGW, elbComponent
+
 
             view.on 'HEALTH_PROTOCOL_SELECTED', ( value ) ->
                 model.setHealthProtocol uid, value
@@ -96,10 +103,13 @@ define [ 'jquery',
             #render
             view.render model.attributes
 
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.component.name
+
             sglist_main.loadModule model
 
     loadAppModule = ( uid ) ->
-            
+
         require [ './module/design/property/elb/app_view',
                   './module/design/property/elb/app_model',
                   './module/design/property/sglist/main'
@@ -116,6 +126,9 @@ define [ 'jquery',
 
             model.init uid
             view.render()
+
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
             sglist_main.loadModule model, true
 

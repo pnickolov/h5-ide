@@ -9,7 +9,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         defaults :
             'component'    : null
             'associations' : null
-            'parent'       : null
+            'is_default'   : null
 
         initialize : ->
             #listen
@@ -19,6 +19,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             allComp = MC.canvas_data.component
             aclObj = MC.canvas_data.component[uid]
+
+            if aclObj.name is 'DefaultACL'
+                this.set 'is_default', true
+            else
+                this.set 'is_default', false
+
             this.set 'component', aclObj
 
             that = this
@@ -93,10 +99,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 aclObj.asso_number = 0
 
             this.set 'component', aclObj
-
-        setParent : ( parent_uid ) ->
-
-            this.set 'parent', parent_uid
 
         getSubnetInfo : (associationObj) ->
             subnetUID = associationObj.SubnetId

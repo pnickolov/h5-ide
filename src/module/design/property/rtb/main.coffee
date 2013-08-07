@@ -57,6 +57,8 @@ define [ 'jquery',
 
             #render
             view.render()
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.route_table.name
 
             view.on 'SET_ROUTE', ( uid, data, routes ) ->
 
@@ -65,6 +67,8 @@ define [ 'jquery',
             view.on 'SET_NAME', ( uid, name ) ->
 
                 model.setName uid, name
+                # Set title
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, name
 
             view.on 'SET_MAIN_RT', ( uid ) ->
 
@@ -107,6 +111,8 @@ define [ 'jquery',
 
             model.init uid
             view.render()
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
 
     unLoadModule = () ->

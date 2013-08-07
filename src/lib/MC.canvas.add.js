@@ -903,11 +903,15 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** volume begin *****//
 		case 'AWS.EC2.EBS.Volume':
 
+			var ami_info,
+				device_name;
+
 			if (create_mode)
 			{//write
 
+				ami_info = MC.data.config[MC.canvas.data.get('region')].ami[MC.canvas_data.component[option.instance_id].resource.ImageId];
+
 				//set deviceName
-				ami_info = MC.data.config[MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone.slice(0,-1)].ami[MC.canvas_data.component[option.instance_id].resource.ImageId];
 				device_name = null;
 				if (ami_info.virtualizationType !== 'hvm')
 				{
@@ -928,43 +932,87 @@ MC.canvas.add = function (flag, option, coordinate)
 						}
 					}
 				});
-				$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
-					volume_uid = value.slice(1);
-					k = MC.canvas_data.component[volume_uid].name.slice(-1);
-					index = device_name.indexOf(k);
-					if (index >= 0)
+
+				if (data[option.instance_id].type === 'AWS.EC2.Instance' )
+				{//for AWS.EC2.Instance
+
+					$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
+						volume_uid = value.slice(1);
+						k = MC.canvas_data.component[volume_uid].name.slice(-1);
+						index = device_name.indexOf(k);
+						if (index >= 0)
+						{
+							device_name.splice(index, 1);
+						}
+					});
+
+
+					if (device_name.length === 0)
 					{
-						device_name.splice(index, 1);
+						//no valid deviceName
+						notification('warning', 'No valid device name to assign,cancel!', false);
+						return null;
 					}
-				});
-				if (device_name.length === 0)
-				{
-					//no valid deviceName
-					notification('warning', 'No valid device name to assign,cancel!', false);
-					return null;
-				}
 
-				if (ami_info.virtualizationType !== 'hvm') {
-					option.name = '/dev/sd' + device_name[0];
-				} else {
-					option.name = 'xvd' + device_name[0];
-				}
+					if (ami_info.virtualizationType !== 'hvm') {
+						option.name = '/dev/sd' + device_name[0];
+					} else {
+						option.name = 'xvd' + device_name[0];
+					}
 
-
-				component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
-				component_data.name = option.name;
-				component_data.resource.Size = option.volumeSize;
-				component_data.resource.AttachmentSet.InstanceId = '@' + option.instance_id + '.resource.InstanceId';
-				component_data.resource.AttachmentSet.VolumeId = '@' + group.id + '.resource.VolumeId';
-				component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone;
-				component_data.resource.SnapshotId = option.snapshotId;
-
-				component_data.resource.AttachmentSet.Device =  option.name;
-
-				if (option.snapshotId)
-				{
+					component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
+					component_data.name = option.name;
+					component_data.resource.Size = option.volumeSize;
+					component_data.resource.AttachmentSet.InstanceId = '@' + option.instance_id + '.resource.InstanceId';
+					component_data.resource.AttachmentSet.VolumeId = '@' + group.id + '.resource.VolumeId';
+					component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone;
 					component_data.resource.SnapshotId = option.snapshotId;
+
+					component_data.resource.AttachmentSet.Device =  option.name;
+
+					if (option.snapshotId)
+					{
+						component_data.resource.SnapshotId = option.snapshotId;
+					}
+
 				}
+				else
+				{//for AWS.AutoScaling.LaunchConfiguration
+
+					$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
+						index = value.DeviceName.indexOf(k);
+						if (index >= 0)
+						{
+							device_name.splice(index, 1);
+						}
+					});
+
+					if (device_name.length === 0)
+					{
+						//no valid deviceName
+						notification('warning', 'No valid device name to assign,cancel!', false);
+						return null;
+					}
+
+					if (ami_info.virtualizationType !== 'hvm') {
+						option.name = '/dev/sd' + device_name[0];
+					} else {
+						option.name = 'xvd' + device_name[0];
+					}
+
+					component_data = $.extend(true, {}, MC.canvas.ASL_VOL_JSON);
+					component_data.DeviceName = option.name;
+					component_data.Ebs.VolumeSize = option.volumeSize;
+					component_data.VirtualName = option.VirtualName;
+
+					if (option.snapshotId)
+					{
+						component_data.Ebs.SnapshotId = option.snapshotId;
+					}
+
+				}
+
+
 			}
 			else
 			{//read

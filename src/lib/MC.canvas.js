@@ -2713,7 +2713,7 @@ MC.canvas.event.dragable = {
 				}
 				else
 				{
-					if (node_type === 'AWS.AutoScaling.Group' && component_data.originalId)
+					if (node_type === 'AWS.AutoScaling.Group' && component_data.originalId !== "")
 					{
 						MC.canvas.select( component_data.originalId );
 					}
@@ -2721,7 +2721,7 @@ MC.canvas.event.dragable = {
 					{
 						MC.canvas.select( event.data.target.attr('id') );
 					}
-					
+
 					MC.canvas.volume.close();
 				}
 			}

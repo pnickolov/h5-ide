@@ -1,41 +1,27 @@
-<div class="sidebar-title">
-  <span class="sidebar-title-text" id='property-title'>Security Group Rule</span>
-</div>
+<article id="property-sgrule" data-line="{{line_id}}">
 
-<div class="property-subhead">
-  The selected connection reflects following security group rule(s):
-</div>
+  <div class="property-subhead">The selected connection reflects following security group rule(s):</div>
 
-
-<section id="property-sgrule" data-line="{{line_id}}">
 	{{#each sg_group}}
-  <header class="fixedaccordion-head">{{name}}</header>
-  <div class="item-wrap scroll-content" style="-webkit-transform: translate3d(0, 0, 0);">
+    <div class="option-group-head">{{name}}</div>
+    <ul class="option-group sg-info-list" id="sg-info-list">
+      {{#each rules}}
+      <li class="clearfix" href="#">
+        <i class="{{#if Egress}}icon-rule-inbound{{else}}icon-rule-outbound{{/if}}"></i>
+        <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div>
 
-    <div class="tab-content">
-      <div id="item-group" class="active tab-item">
-        <ul class="sg-info-list" id="sg-info-list">
-          {{#each rules}}
-          <li class="clearfix" href="#">
-            <i class="{{#if Egress}}icon-rule-inbound{{else}}icon-rule-outbound{{/if}}"></i>
-            <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div>
+        <div class="col2">
+          <div class="col2-1 truncate">{{connection}}</div>
+          <div class="col2-2 truncate"><div class="rule-protocol">{{protocol}}</div>{{port}}</div>
+        </div>
+      </li>
+      {{/each}}
+    </ul>
+  {{/each}}
 
-            <div class="col2">
-              <div class="col2-1 truncate">{{connection}}</div>
-              <div class="col2-2 truncate"><div class="rule-protocol">{{protocol}}</div>{{port}}</div>
-            </div>
-          </li>
-          {{/each}}
-        </ul>
-      </div>
-      
-    </div>
-  </div>
-{{/each}}
-  {{#if isAppView}}
-  {{else}}
+  {{#unless isAppView}}
   <button class="btn btn-red" id="sg-edit-rule-button">Edit Related Rule</button>
-  {{/if}}
+  {{/unless}}
 
-</section>
+</article>
 

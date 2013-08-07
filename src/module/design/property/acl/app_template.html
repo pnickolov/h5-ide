@@ -1,74 +1,62 @@
-<div class="secondary-panel" id="acl-secondary-panel" parent="{{parent}}" uid='{{component.uid}}'>
+<article>
 
-<header class="sidebar-title">
-  <a class="back" href="#">&lt;</a>
-  <span class="sidebar-title-text">{{component.name}}</span>
-</header>
+  <section class="property-control-group">
+    <dl class="dl-vertical">
+      <dt>Network ACL ID</dt>
+      <dd>{{component.networkAclId}}</dd>
 
-<div class="property-control-group">
-  <dl class="dl-vertical">
-    <dt>Network ACL ID</dt>
-    <dd>{{component.networkAclId}}</dd>
+      <dt>Default</dt>
+      <dd>{{component.default}}</dd>
 
-    <dt>Default</dt>
-    <dd>{{component.default}}</dd>
-
-    <dt>VPC ID</dt>
-    <dd>{{component.vpcId}}</dd>
-  </dl>
-</div>
-
-<div class="fixedaccordion accordion-default" data-sub="43">
-  <section class="accordion-group expanded">
-    <header class="fixedaccordion-head">Rule<span class="count">({{component.rule_number}})</span></header>
-
-    <article class="accordion-body">
-
-      <div class="acl-sort-rule clearfix">
-        <h5 class="left">Sort by</h5>
-        <div class="selectbox right" id="acl-sort-rule-select">
-          <div class="selection">Rule Number</div>
-          <ul class="dropdown" tabindex="-1">
-            <li data-id="1" class="item selected">Rule Number</li>
-            <li data-id="2" class="item">Action</li>
-            <li data-id="3" class="item">Direction</li>
-            <li data-id="4" class="item">Source/Destination</li>
-          </ul>
-        </div>
-      </div>
-
-      <ul class="acl-rules">
-        {{#each component.entrySet.item}}
-          <li rule-num="{{ruleAction}}" rule-engress="{{egress}}">
-            <h5 class="tooltip" data-tooltip="Rule Number">{{ruleNumber}}</h5>
-            <div class="clearfix">
-              <span class="acl-rule-col1">
-                <a href="#" class="acl-rule-allow-cb tooltip {{ruleAction}}" data-tooltip="Allow/Deny"></a>
-              </span>
-              <span class="acl-rule-col2">
-                <span class="{{#if egress}}acl-rule-outbound{{else}}acl-rule-inbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
-                <span class="acl-rule-protocol tooltip" data-tooltip="Protocol">{{protocolName}}({{protocol}})</span>
-              </span>
-              <div class="acl-rule-col3">
-                <div class="acl-rule-source tooltip" data-tooltip="CidrBlock">{{cidrBlock}}</div>
-                <div class="acl-rule-port tooltip" data-tooltip="Port">{{portRange.to}}-{{portRange.from}}</div>
-              </div>
-            </div>
-          </li>
-        {{/each}}
-      </ul>
-    </article>
+      <dt>VPC ID</dt>
+      <dd>{{component.vpcId}}</dd>
+    </dl>
   </section>
 
-  <section class="accordion-group expanded">
-    <header class="fixedaccordion-head">Association<span class="count">({{component.asso_number}})</span></header>
 
-    <ul class="accordion-body">
-      {{#each component.associationSet.item}}
-        <li class="property-acl-assn">{{subnetDisplay}}</li>
+  <header class="option-group-head">Rule<span class="count">({{component.rule_number}})</span></header>
+  <article class="option-group">
+    <div class="acl-sort-rule clearfix">
+      <h5 class="left">Sort by</h5>
+      <div class="selectbox right" id="acl-sort-rule-select">
+        <div class="selection">Rule Number</div>
+        <ul class="dropdown" tabindex="-1">
+          <li data-id="1" class="item selected">Rule Number</li>
+          <li data-id="2" class="item">Action</li>
+          <li data-id="3" class="item">Direction</li>
+          <li data-id="4" class="item">Source/Destination</li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="acl-rules">
+      {{#each component.entrySet.item}}
+        <li rule-num="{{ruleAction}}" rule-engress="{{egress}}">
+          <h5 class="tooltip" data-tooltip="Rule Number">{{ruleNumber}}</h5>
+          <div class="clearfix">
+            <span class="acl-rule-col1">
+              <a href="#" class="acl-rule-allow-cb tooltip {{ruleAction}}" data-tooltip="Allow/Deny"></a>
+            </span>
+            <span class="acl-rule-col2">
+              <span class="{{#if egress}}acl-rule-outbound{{else}}acl-rule-inbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
+              <span class="acl-rule-protocol tooltip" data-tooltip="Protocol">{{protocolName}}({{protocol}})</span>
+            </span>
+            <div class="acl-rule-col3">
+              <div class="acl-rule-source tooltip" data-tooltip="CidrBlock">{{cidrBlock}}</div>
+              <div class="acl-rule-port tooltip" data-tooltip="Port">{{portRange.to}}-{{portRange.from}}</div>
+            </div>
+          </div>
+        </li>
       {{/each}}
     </ul>
-  </section>
-</div>
+  </article>
 
-</div>
+
+  <header class="option-group-head">Association<span class="count">({{component.asso_number}})</span></header>
+  <ul class="option-group">
+    {{#each component.associationSet.item}}
+      <li class="property-acl-assn">{{subnetDisplay}}</li>
+    {{/each}}
+  </ul>
+
+</article>

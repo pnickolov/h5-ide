@@ -1,60 +1,37 @@
-<div class="secondary-panel" id="acl-secondary-panel" parent="{{parent}}" uid='{{component.uid}}'>
-  <div class="sidebar-title">
-    <a class="back" href="#">&lt;</a>
-    <span class="sidebar-title-text back">{{component.name}}</span>
+<article>
+  <section class="property-control-group">
+    <label class="left" for="property-acl-name">Name</label>
+    <span class="required-input right">Required</span>
+    <input class="input" type="text" value="{{component.name}}" id="property-acl-name"/>
+  </section>
+
+  <div class="option-group-head acl-header">Rule
+    <span class="count">(<span id="acl-rule-count">{{component.resource.entrySet.length}}</span>)</span>
+    <a href="#" class="acl-icon-add tooltip" id="acl-add-rule-icon" data-tooltip="Create new Network ACL Rule"></a>
   </div>
-
-  <div class="property-info">
-    <div class="property-control-group">
-      <label class="left" for="property-acl-name">Name</label>
-      <span class="required-input right">Required</span>
-      <input class="input" type="text" value="{{component.name}}" id="property-acl-name"/>
-    </div>
-  </div>
-
-  <div class="fixedaccordion accordion-default" data-sub="43">
-
-      <section class="accordion-group expanded">
-        <div class="fixedaccordion-head acl-header">
-            <span class="name">Rule</span>
-            <span class="count">(<span id="acl-rule-count">{{component.resource.entrySet.length}}</span>)</span>
-            <a href="#" class="acl-icon-add tooltip" id="acl-add-rule-icon" data-tooltip="Create new Network ACL Rule"></a>
-        </div>
-
-        <div class="accordion-body">
-          <div class="acl-sort-rule clearfix">
-            <h5 class="left">Sort by</h5>
-            <div class="selectbox right" id="acl-sort-rule-select">
-              <div class="selection">Rule Number</div>
-              <ul class="dropdown" tabindex="-1">
-                <li data-id="number" class="item selected">Rule Number</li>
-                <li data-id="action" class="item">Action</li>
-                <li data-id="direction" class="item">Direction</li>
-                <li data-id="source/destination" class="item">Source/Destination</li>
-              </ul>
-            </div>
-          </div>
-
-          <ul class="acl-rules" id="acl-rule-list">
-
-          </ul>
-
-        </div>
-      </section>
-
-      <section class="accordion-group">
-        <div class="fixedaccordion-head acl-header">
-            <span class="name">Associations</span>
-            <span class="count">(<span id="acl-assn-count">{{associations.length}}</span>)</span>
-        </div>
-
-        <ul class="accordion-body">
-          {{#each associations}}
-            <li class="property-acl-assn">{{subnet_name}} ({{subnet_cidr}})</li>
-          {{/each}}
+  <div class="option-group">
+    <div class="acl-sort-rule clearfix">
+      <h5 class="left">Sort by</h5>
+      <div class="selectbox right" id="acl-sort-rule-select">
+        <div class="selection">Rule Number</div>
+        <ul class="dropdown" tabindex="-1">
+          <li data-id="number" class="item selected">Rule Number</li>
+          <li data-id="action" class="item">Action</li>
+          <li data-id="direction" class="item">Direction</li>
+          <li data-id="source/destination" class="item">Source/Destination</li>
         </ul>
-      </section>
-
+      </div>
     </div>
+    <ul class="acl-rules" id="acl-rule-list"> </ul>
+  </div>
 
-</div>
+  <div class="option-group-head acl-header">Associations<span class="count">(<span id="acl-assn-count">{{associations.length}}</span>)</span>
+  </div>
+
+  <ul class="option-group">
+    {{#each associations}}
+    <li class="property-acl-assn">{{subnet_name}} ({{subnet_cidr}})</li>
+    {{/each}}
+  </ul>
+</article>
+

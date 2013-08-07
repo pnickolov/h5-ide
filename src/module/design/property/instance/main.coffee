@@ -69,6 +69,9 @@ define [ 'jquery',
             model.getEni()
             #
             view.render()
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
+
             sglist_main.loadModule model
             #
             model.listen()
@@ -81,7 +84,7 @@ define [ 'jquery',
                 ide_event.trigger ide_event.RELOAD_PROPERTY
 
             ide_event.trigger ide_event.RELOAD_PROPERTY
-            
+
             view.on 'ATTACH_EIP', ( eip_index, attach ) ->
 
                 model.attachEIP eip_index, attach
@@ -128,6 +131,9 @@ define [ 'jquery',
             model.init(uid)
 
             view.render()
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
+
             sglist_main.loadModule model, true
 
     unLoadModule = () ->

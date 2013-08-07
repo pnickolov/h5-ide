@@ -1,11 +1,11 @@
 <article id="instance-property-detail" data-uid="{{component.uid}}">
 
-	<div class="option-group-head expand">Instance Details</div>
+	<div class="option-group-head expand">Launch Configuation</div>
 	<div class="option-group">
 		<section class="property-control-group">
 			<label class="left" for="property-instance-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input class="input instance-name"  type="text" required="required" value="{{ name }}" name="property-instance-name" id="property-instance-name"/>
+			<input class="input instance-name"  type="text" required="required" value="{{name}}" name="property-instance-name" id="property-instance-name"/>
 		</section>
 		<section class="property-control-group">
 			<label>AMI</label>
@@ -39,23 +39,6 @@
 			</div>
 			<label for="property-instance-ebs-optimized" >EBS Optimized</label>
 		</section>
-		{{# if component.resource.VpcId}}
-		<section class="property-control-group">
-			<label>Tenancy</label>
-			<div class="selectbox" id="tenancy-select">
-				<div class="selection">{{#if checkbox_display.tenancy}}Default{{else}}Dedicated{{/if}}</div>
-				<ul class="dropdown" tabindex="-1">
-					{{#if checkbox_display.tenancy}}
-					<li class="item selected" data-id="default">Default</li>
-					<li class="item" data-id="dedicated">Delicated</li>
-					{{else}}
-					<li class="item" data-id="default">Default</li>
-					<li class="item selected" data-id="dedicated">Dedicated</li>
-					{{/if}}
-				</ul>
-			</div>
-		</section>
-		{{/if}}
 		<section class="property-control-group">
 			<label>Key Pair</label>
 			<div class="selectbox" id="keypair-select">
@@ -95,7 +78,9 @@
 				{{/if}}
 				<label for="property-instance-enable-cloudwatch"></label>
 			</div>
-			<label for="property-instance-enable-cloudwatch" >Enable CloudWatch</label>
+			<label for="property-instance-enable-cloudwatch">Enable CloudWatch Detailed Monitoring</label>
+
+			<p class="hide">Data is available in 1-minute periods at an additional cost. For information about pricing, go to the <a href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-instance-user-data">User Data</label>
@@ -113,51 +98,6 @@
 			<label for="property-instance-base64" >Base64 encoded</label>
 		</section>
 	</div>
-
-	{{# if component.resource.VpcId}}
-	<div class="option-group-head">Network Interface Details</div>
-	<div class="option-group">
-		<section class="property-control-group">
-			<label class="left" for="property-instance-ni-description">Description</label>
-			<textarea id="property-instance-ni-description">{{eni_display.description}}</textarea>
-		</section>
-		<section class="property-control-group">
-			<div class="checkbox">
-				{{#if eni_display.sourceCheck}}
-				<input id="property-instance-source-check" type="checkbox" checked="true" value="None" name="property-instance-source-check" />
-				{{else}}
-				<input id="property-instance-source-check" type="checkbox" value="None" name="property-instance-source-check" />
-				{{/if}}
-				<label for="property-instance-source-check"></label>
-			</div>
-			<label for="property-instance-source-check">Enable Source/Destination Checking</label>
-		</section>
-		<section class="property-control-group">
-			<div class="network-list-header clearfix">
-				<span class="name">IP Address</span>
-				<a href="#" id="instance-ip-add" class="right btn btn-silver btn-small" title="Add IP Address">Add IP</a>
-			</div>
-			<ul class="network-list" id="property-network-list">
-				{{#each eni_display.eni_ips}}
-				<li class="input-ip-item">
-					<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
-						<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}.</label>
-						<input type="text" class="input input-ip" value="x" id="instance-ip-1">
-					</div>
-					{{#unless Primary}}<div class="network-remove-icon"></div>{{/unless}}
-					{{#if has_eip}}
-					<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-					{{else}}
-					<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-					{{/if}}
-					<div class="network-remove-icon"></div>
-				</li>
-
-				{{/each}}
-			</ul>
-		</section>
-	</div>
-	{{/if}}
 
 	<div class="option-group-head" id="sg-head">Security Groups (<span id="property-head-sg-num"></span>)</div>
   <div class="option-group sg-group">Loading...</div>

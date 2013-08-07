@@ -79,6 +79,9 @@ define [ 'constant',
             view.model = model
             view.render()
 
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "Availability Zone"
+
             view.on "SELECT_AZ", ( oldZoneID, newZone ) ->
                 # Set data
                 oldZone = model.setNewAZ oldZoneID, newZone

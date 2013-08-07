@@ -1,7 +1,5 @@
-<header class="sidebar-title">{{volume_detail.name}}</header>
-
-<div class="panel-wrap" id='property-panel-volume' uid='{{volume_detail.uid}}'>
-    <div class="property-control-group clearfix">
+<article id='property-panel-volume' uid='{{volume_detail.uid}}'>
+    <section class="property-control-group">
         <label>Device Name</label>
         <div class="name tooltip" data-tooltip="Required">
         	{{#if volume_detail.isWin}}
@@ -11,24 +9,24 @@
         	{{/if}}
             <input type="text" class="input input-device" value="{{volume_detail.editName}}" id="volume-device">
         </div>
-    </div>
-    <div class="property-control-group clearfix">
+    </section>
+    <section class="property-control-group">
         <label>Volume Size</label>
         <div class="ranged-number-input">
             <label for="volume-size-ranged"></label>
             <input id="volume-size-ranged" type="number" value="{{volume_detail.resource.Size}}" name="volume-size-ranged" min="1" max="1024" required="">
         <label for="volume-property-ranged-number" >GB</label>
         </div>
-    </div>
+    </section>
     {{#if volume_detail.resource.SnapshotId}}
-    <div class="property-control-group clearfix">
+    <section class="property-control-group">
         <label>Snapshot</label>
         <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
             <div>{{volume_detail.resource.SnapshotId}}</div>
         </div>
-    </div>
+    </section>
     {{/if}}
-    <div class="property-control-group clearfix">
+    <section class="property-control-group">
         <label>Volume Type</label>
         <div class="context" id="volume-type-radios">
             <div>
@@ -46,12 +44,9 @@
             <label for="radio-iops">Provisioned IOPS</label>
             </div>
         </div>
-    </div>
-    {{#if volume_detail.isStandard}}
-        <div class="property-control-group clearfix" id="iops-group" style="display:none">
-    {{else}}
-        <div class="property-control-group clearfix" id="iops-group" style="display:block">
-    {{/if}}
+    </section>
+
+    <section class="property-control-group" id="iops-group" {{#if volume_detail.isStandard}}style="display:none"{{else}}style="display:block"{{/if}}>
         <label>IOPS</label>
         <div class="ranged-number-input">
             <label for="iops-ranged"></label>
@@ -62,5 +57,5 @@
             {{/if}}
         <label for="volume-property-ranged-number" >GB</label>
         </div>
-    </div>
-</div>
+    </section>
+</article>

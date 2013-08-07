@@ -3055,7 +3055,10 @@ MC.canvas.event.dragable = {
 		{
 			new_node = MC.canvas.add(node_type, {'name': MC.canvas.data.get('component')[target_id].name, 'groupUId': match_place.target, 'originalId': target_id}, coordinate);
 
-			MC.canvas.select(new_node.id);
+			if (new_node)
+			{
+				MC.canvas.select(new_node.id);
+			}
 		}
 
 		$('.dropable-group').attr('class', function (index, key)
@@ -3606,7 +3609,10 @@ MC.canvas.event.siderbarDrag = {
 						node_option.groupUId = match_place.target;
 						new_node = MC.canvas.add(node_type, node_option, coordinate);
 
-						MC.canvas.select(new_node.id);
+						if (new_node)
+						{
+							MC.canvas.select(new_node.id);
+						}
 					}
 				}
 			}

@@ -455,7 +455,27 @@ MC.canvas.add = function (flag, option, coordinate)
 				//init component data
 				if (option['originalId'])
 				{//expand ASG
-					component_layout.originalId = option['originalId'];
+					var target_group = option.groupUId,
+						original_group = layout.group[option.originalId].groupUId;
+					if ( target_group === original_group )
+					{//expand to the same group
+						var groupType = '';
+						switch (layout.group[component_layout.groupUId].type)
+						{
+							case 'AWS.EC2.AvailabilityZone':
+								groupType = 'AvailabilityZone';
+								break;
+							case 'AWS.VPC.Subnet':
+								groupType = 'Subnet';
+								break;
+						}
+						notification('warning', 'Please expand AutoScalingGroup to another ' + groupType + '!', false);
+						return null;
+					}
+					else
+					{
+						component_layout.originalId = option['originalId'];
+					}
 				}
 				else
 				{//create new ASG

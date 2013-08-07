@@ -4,15 +4,21 @@
 			<h1 class="title">Starting your app...</h1>
 		</header>
 		<div id="process-body">
+
+		{{#if flag_list.is_done}}
 		<div class="result-success">
 			<p class="result-title">Everything goes smoothly!</p>
 			<p class="result-sub-title">Your app is starting soon.</p>
 		</div>
-		<!--
+		{{/if}}
+
+		{{#if flag_list.is_pending}}
 		<div class="step-prepare clearfix">
 			<h2>Preparing and Sending Request...</h2><i class="loading-spinner"></i>
 		</div>
+		{{/if}}
 
+		{{#if flag_list.is_failed}}
 		<div class="result-fail">
 			<p class="result-title">The app failed to start.</p>
 			<p class="result-sub-title">You may fix following error and run agian.</p>
@@ -24,19 +30,21 @@
 				<button class="btn btn-silver">Close Tab</button>
 			</div>
 		</div>
+		{{/if}}
 
+		{{#if flag_list.is_inprocess}}
 		<div class="step-request">
 			<h2>Processing Request</h2>
 			<div class="progress">
-				<div class="bar" style="width: 50%;"></div>
+				<div class="bar" style="width: {{flag_list.rate}}%;"></div>
 			</div>
 			<p class="process-info">
-				<span><b class="num">33</b> of</span>
-				<span><b class="total">72</b> tasks</span>
+				<span><b class="num">{{flag_list.dones}}</b> of</span>
+				<span><b class="total">{{flag_list.steps}}</b> tasks</span>
 			</p>
 		</div>
+		{{/if}}
 
-		-->
 		</div>
 	</section>
 </div>

@@ -8,6 +8,15 @@
 <link href="json_view.css" type="text/css" rel="stylesheet"></link>
 </head>
 <body>
+  <form class="filter" style="background-color: #fff;padding: 5px;border: 1px solid #ccc;">
+    <label for="name">Name: </label>
+    <input type="text" placeholder="please enter name." name="name" id="name">
+    <label for="type">Type: </label>
+    <select name="type" id="type">
+      <option value="">All</option>
+    </select>
+    <input type="submit" value="search"/>
+  </form>
 <div id="set_container">
   <div class="HeadersRow">
     <div id="HeaderTitle"> JSON格式化及高亮 &nbsp;&copy;&nbsp;2012&nbsp; &nbsp;<span style='color:#aaa;font-weight:bold;font-style:italic'>Random_Coder</span> </div>

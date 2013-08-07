@@ -110,12 +110,12 @@ define [ './temp_view',
         showSecondPanel : ( data ) ->
             $("#property-second-title").html( data.title ).attr( "data-id", data.id )
             $("#property-second-panel .property-content").html data.dom
-            $("#property-panel").addClass "show-second-panel"
+            $("#property-panel .property-wrap").addClass "show-second-panel"
 
             $("#hide-second-panel").data("tooltip", "Back to" + $("#property-title").text())
 
         hideSecondPanel : () ->
-            $("#property-panel").removeClass "show-second-panel"
+            $("#property-panel .property-wrap").removeClass "show-second-panel"
             this.trigger "HIDE_SUBPANEL", $("#property-second-title").attr( "data-id" )
             false
 

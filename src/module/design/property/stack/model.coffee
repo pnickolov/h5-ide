@@ -93,7 +93,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
             if defaultACLIdx != 0
                 defaultACL = networkACLs.splice defaultACLIdx, 1
-                networkACLs.splice 0, 0, defaultACL
+                networkACLs.splice 0, 0, defaultACL[0]
             else
                 defaultACL = networkACLs[ 0 ]
 

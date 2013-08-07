@@ -630,10 +630,13 @@ MC.canvas.add = function (flag, option, coordinate)
 			layout.group[group.id] = component_layout;
 			MC.canvas.data.set('layout.component.group', layout.group);
 
-			//set data
-			component_data.uid = group.id;
-			data[group.id] = component_data;
-			MC.canvas.data.set('component', data);
+			if (!option['originalId'])
+			{
+				//set data
+				component_data.uid = group.id;
+				data[group.id] = component_data;
+				MC.canvas.data.set('component', data);
+			}
 
 			$('#asg_layer').append(group);
 
@@ -1757,6 +1760,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					coordinate.x = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[0] + 2;
 					coordinate.y = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[1] + 2;
 
+					component_layout.originalId = group.id;
+
 				}
 				else{
 
@@ -1769,6 +1774,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					option.virtualizationType = component_layout.virtualizationType;
 					//coordinate.x = component_layout.coordinate[0];
 					//coordinate.y = component_layout.coordinate[1];
+
+					component_layout.originalId = option['launchConfig'];
 				}
 
 

@@ -7,6 +7,8 @@ require.config {
 
 	deps                  : [ 'js/login/main' ]
 
+	locale                : 'en-us'
+
 	paths                 :
 
 		#vender
@@ -15,6 +17,7 @@ require.config {
 		'backbone'        : 'vender/backbone/backbone'
 
 		'domReady'        : 'vender/requirejs/domReady'
+		'i18n'            : 'vender/requirejs/i18n'
 
 		#core lib
 		'MC'              : 'lib/MC.core'
@@ -52,5 +55,5 @@ require.config {
 
 }
 
-requirejs.onError = ( err ) ->
-    console.log 'error type: ' + err.requireType + ', modules: ' + err.requireModules
+#requirejs.onError = ( err ) ->
+#    console.log 'error type: ' + err.requireType + ', modules: ' + err.requireModules

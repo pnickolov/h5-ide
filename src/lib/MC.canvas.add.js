@@ -443,34 +443,48 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			if (create_mode)
 			{
-				component_data = $.extend(true, {}, MC.canvas.ASG_JSON.data);
-				//name
-				component_data.name = option.name;
-				//az
-				component_data.resource.AvailabilityZones = [option.group.availableZoneName];
 
-				component_data.resource.MaxSize = 2;
-
-				component_data.resource.MinSize = 1;
-
-				component_data.resource.AutoScalingGroupName = option.name;
-
-				if(option['launchConfig']){
-					component_data.resource.LaunchConfigurationName = '@' + option['launchConfig'] + '.resource.LaunchConfigurationName';
-				}
-
-				//vpc
-				if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
-					component_data.resource.VPCZoneIdentifier = '@' + option.group.subnetUId + '.resource.SubnetId';
-
-				}
-
+				//init layout data
 				component_layout = $.extend(true, {}, MC.canvas.ASG_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
 				option.width = size[0];
 				option.height = size[1];
+
+				//init component data
+				if (option['originalId'])
+				{//expand ASG
+					component_layout.originalId = option['originalId'];
+				}
+				else
+				{//create new ASG
+					component_data = $.extend(true, {}, MC.canvas.ASG_JSON.data);
+					//name
+					component_data.name = option.name;
+					//az
+					component_data.resource.AvailabilityZones = [option.group.availableZoneName];
+
+					component_data.resource.MaxSize = 2;
+
+					component_data.resource.MinSize = 1;
+
+					component_data.resource.AutoScalingGroupName = option.name;
+
+					if(option['launchConfig']){
+						//use existed launchConfig
+						component_data.resource.LaunchConfigurationName = '@' + option['launchConfig'] + '.resource.LaunchConfigurationName';
+					}
+
+					//vpc
+					if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+						component_data.resource.VPCZoneIdentifier = '@' + option.group.subnetUId + '.resource.SubnetId';
+
+					}
+				}
+
+
+
 			}
 			else
 			{
@@ -528,9 +542,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////3.dragger
 				Canvon.path('M ' + (width - 1) + ' 1 l' + ' 0 20 l -20 -20 z', {}).attr({
-					'class': 'asg-resource-dragger'
+					'class': 'asg-resource-dragger',
+					'display': option['originalId'] ? 'none' : 'inline'
 				}),
-
 
 				////5.asg label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
@@ -546,7 +560,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					Canvon.text(25, 95, 'configuration')
 				).attr({
 					'class': 'prompt_text',
-					'id': group.id + '_prompt_text'
+					'id': group.id + '_prompt_text',
+					'display': option['originalId'] || option['launchConfig'] ? 'none' : 'inline'
 				})
 
 
@@ -1634,6 +1649,9 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_layout.architecture =  option.architecture;
 					component_layout.rootDeviceType =  option.rootDeviceType;
 					component_layout.virtualizationType = option.virtualizationType;
+
+					coordinate.x = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[0] + 1;
+					coordinate.y = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[1] + 1;
 
 				}
 				else{

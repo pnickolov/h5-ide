@@ -3162,7 +3162,7 @@ MC.canvas.event.dragable = {
 
 		if (match_place.is_matched)
 		{
-			new_node = MC.canvas.add(node_type, {'name': 'asg-1', 'groupUId': match_place.target}, coordinate);
+			new_node = MC.canvas.add(node_type, {'name': MC.canvas.data.get('component')[target_id].name, 'groupUId': match_place.target, 'originalId': target_id}, coordinate);
 
 			MC.canvas.select(new_node.id);
 		}

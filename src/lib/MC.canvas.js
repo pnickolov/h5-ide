@@ -82,8 +82,6 @@ MC.canvas = {
 			$('#canvas_body')
 				.removeClass('canvas_zoomed')
 				.off('mousedown', '.dragable', MC.canvas.event.selectNode)
-				//.on('mousedown', '.instance-volume', MC.canvas.volume.show)
-				//.on('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
 				.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 				.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 				.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
@@ -106,8 +104,6 @@ MC.canvas = {
 		$('#canvas_body')
 			.addClass('canvas_zoomed')
 			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
-			//.off('mousedown', '.instance-volume', MC.canvas.volume.show)
-			//.off('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
 			.off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 			.off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 			.off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
@@ -817,24 +813,6 @@ MC.canvas = {
 				// Special connection
 				if (
 					connection_option.direction
-					// // AWS.VPC.Subnet to AWS.VPC.RouteTable
-					// (from_type === 'AWS.VPC.Subnet' && to_type === 'AWS.VPC.RouteTable') ||
-					// (to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable') ||
-
-					// // AWS.EC2.Instance to AWS.VPC.NetworkInterface
-					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.VPC.NetworkInterface' && from_target_port === 'instance-sg' && to_target_port === 'eni-sg') ||
-					// (to_type === 'AWS.EC2.Instance' && from_type === 'AWS.VPC.NetworkInterface' && to_target_port === 'instance-sg' && from_target_port === 'eni-sg') ||
-
-					// // AWS.EC2.Instance to AWS.ELB
-					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-out') ||
-					// (to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-out') ||
-
-					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-in') ||
-					// (to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-in') ||
-
-
-					// // AWS.EC2.Instance to AWS.EC2.Instance
-					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
 				)
 				{
 					direction = connection_option.direction;
@@ -914,124 +892,9 @@ MC.canvas = {
 							}
 						}
 					}
-					// if (from_type === 'AWS.VPC.Subnet')
-					// {
-					// 	from_port = from_node.find('.port-' + from_target_port);
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-
-					// 	if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
-					// 	{
-					// 		to_port = to_node.find('.port-rtb-src-bottom');
-					// 	}
-					// 	else
-					// 	{
-					// 		to_port = to_node.find('.port-rtb-src-top');
-					// 	}
-
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
-
-					// if (to_type === 'AWS.VPC.Subnet')
-					// {
-					// 	to_port = to_node.find('.port-' + to_target_port);
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-
-					// 	if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
-					// 	{
-					// 		from_port = from_node.find('.port-rtb-src-bottom');
-					// 	}
-					// 	else
-					// 	{
-					// 		from_port = from_node.find('.port-rtb-src-top');
-					// 	}
-
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-					// }
-
-					// if (from_type === 'AWS.VPC.NetworkInterface')
-					// {
-					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-					// 	{
-					// 		from_port = from_node.find('.port-eni-sg-left');
-					// 		to_port = to_node.find('.port-instance-sg-right');
-					// 	}
-					// 	else
-					// 	{
-					// 		from_port = from_node.find('.port-eni-sg-right');
-					// 		to_port = to_node.find('.port-instance-sg-left');
-					// 	}
-
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
-
-					// if (to_type === 'AWS.VPC.NetworkInterface')
-					// {
-					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-left');
-					// 		to_port = to_node.find('.port-eni-sg-right');
-					// 	}
-					// 	else
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-right');
-					// 		to_port = to_node.find('.port-eni-sg-left');
-					// 	}
-
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
-
-					// if (from_type === 'AWS.ELB')
-					// {
-					// 	from_port = from_node.find('.port-' + from_target_port);
-
-					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-					// 	{
-					// 		to_port = to_node.find('.port-instance-sg-right');
-					// 	}
-					// 	else
-					// 	{
-					// 		to_port = to_node.find('.port-instance-sg-left');
-					// 	}
-
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
-
-					// if (to_type === 'AWS.ELB')
-					// {
-					// 	to_port = to_node.find('.port-' + to_target_port);
-
-					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-left');
-					// 	}
-					// 	else
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-right');
-					// 	}
-
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
-
-					// if (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
-					// {
-					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-left');
-					// 		to_port = to_node.find('.port-instance-sg-right');
-					// 	}
-					// 	else
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-right');
-					// 		to_port = to_node.find('.port-instance-sg-left');
-					// 	}
 
 					from_port_offset = from_port[0].getBoundingClientRect();
 				 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
 				}
 				else
 				{
@@ -1581,7 +1444,7 @@ MC.canvas = {
 				match[1].is_matched &&
 				match[2].is_matched &&
 				match[3].is_matched &&
-				
+
 				match[0].target === match[1].target &&
 				match[0].target === match[2].target &&
 				match[0].target === match[3].target
@@ -1607,15 +1470,16 @@ MC.canvas = {
 		}
 	},
 
-	isBlank: function (type, target_id, x, y, width, height)
+	isBlank: function (type, target_id, target_type, x, y, width, height)
 	{
 		var children = MC.canvas.data.get('layout.component.' + type),
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
 			isBlank = true,
 			start_x,
 			start_y,
 			end_x,
-			end_y
+			end_y,
 			coordinate,
 			size;
 
@@ -1625,7 +1489,6 @@ MC.canvas = {
 			start_y = y * scale_ratio;
 			end_x = (x + width) * scale_ratio;
 			end_y = (y + height) * scale_ratio;
-			target_type = children[ target_id ].type;
 
 			$.each(children, function (key, item)
 			{
@@ -1635,10 +1498,10 @@ MC.canvas = {
 				if (
 					key !== target_id &&
 					item.type === target_type &&
-					coordinate[0] <= end_x &&
-					coordinate[0] + size[0] >= start_x &&
-					coordinate[1] <= end_y &&
-					coordinate[1] + size[1] >= start_y
+					coordinate[0] < end_x &&
+					coordinate[0] + size[0] > start_x &&
+					coordinate[1] < end_y &&
+					coordinate[1] + size[1] > start_y
 				)
 				{
 					isBlank = false;
@@ -1664,13 +1527,13 @@ MC.canvas = {
 				node_id !== key &&
 				$.inArray(item.type, group_parent_type) > -1 &&
 				(
-					coordinate[0] < start_x &&
-					coordinate[0] + size[0] > start_x
+					coordinate[0] <= start_x &&
+					coordinate[0] + size[0] >= start_x
 				)
 				&&
 				(
-					coordinate[1] < start_y &&
-					coordinate[1] + size[1] > start_y
+					coordinate[1] <= start_y &&
+					coordinate[1] + size[1] >= start_y
 				)
 			)
 			{
@@ -1730,7 +1593,7 @@ MC.canvas = {
 
 			if (
 				node_id !== key &&
-				($.inArray(item.type, group_weight) > -1 || item.type === node_type) &&
+				$.inArray(item.type, group_weight) > -1 &&
 				start_x <= coordinate[0] + size[0] &&
 				end_x >= coordinate[0] &&
 				start_y <= coordinate[1] + size[1] &&
@@ -2550,6 +2413,14 @@ MC.canvas.event.dragable = {
 				platform,
 				target_group_type;
 
+			if (node_type === 'AWS.AutoScaling.LaunchConfiguration')
+			{
+				MC.canvas.event.clearSelected();
+				MC.canvas.select(this.id);
+
+				return false;
+			}
+
 			if (node_type === 'AWS.VPC.Subnet')
 			{
 				target.find('.port').hide();
@@ -2568,10 +2439,13 @@ MC.canvas.event.dragable = {
 				{
 					$.each(target_group_type, function (index, item)
 					{
-						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+						if (item !== 'AWS.AutoScaling.Group')
 						{
-							return 'dropable-group ' + key;
-						});
+							$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+							{
+								return 'dropable-group ' + key;
+							});
+						}
 					});
 				}
 			}
@@ -2598,21 +2472,42 @@ MC.canvas.event.dragable = {
 			}
 			else
 			{
-				$(document).on({
-					'mousemove': MC.canvas.event.dragable.mousemove,
-					'mouseup': MC.canvas.event.dragable.mouseup
-				}, {
-					'target': target,
-					'canvas_body': $('#canvas_body'),
-					'target_type': target_type,
-					'shadow': shadow,
-					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
-					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
-					'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
-					'originalPageX': event.pageX,
-					'originalPageY': event.pageY,
-					'originalTarget': event.target
-				});
+				if (event.target.getAttribute('class') === 'asg-resource-dragger')
+				{
+					$(document).on({
+						'mousemove': MC.canvas.event.dragable.mousemove,
+						'mouseup': MC.canvas.event.dragable.asgExpandup
+					}, {
+						'target': target,
+						'canvas_body': $('#canvas_body'),
+						'target_type': target_type,
+						'shadow': shadow,
+						'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+						'offsetY': event.pageY - target_offset.top + canvas_offset.top,
+						'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
+						'originalPageX': event.pageX,
+						'originalPageY': event.pageY,
+						'originalTarget': event.target
+					});
+				}
+				else
+				{
+					$(document).on({
+						'mousemove': MC.canvas.event.dragable.mousemove,
+						'mouseup': MC.canvas.event.dragable.mouseup
+					}, {
+						'target': target,
+						'canvas_body': $('#canvas_body'),
+						'target_type': target_type,
+						'shadow': shadow,
+						'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+						'offsetY': event.pageY - target_offset.top + canvas_offset.top,
+						'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
+						'originalPageX': event.pageX,
+						'originalPageY': event.pageY,
+						'originalTarget': event.target
+					});
+				}
 			}
 
 			MC.canvas.event.clearSelected();
@@ -2655,13 +2550,19 @@ MC.canvas.event.dragable = {
 			event.data.target.find('.port').show();
 		}
 
+		var target = event.data.target,
+			target_id = target.attr('id'),
+			target_type = event.data.target_type,
+			node_type = target.data('class');
+
 		// Selected
 		if (
 			event.pageX === event.data.originalPageX &&
 			event.pageY === event.data.originalPageY
 		)
 		{
-			var originalTarget = $(event.data.originalTarget);
+			var originalTarget = $(event.data.originalTarget),
+				component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
 
 			if (originalTarget.is('.instance-volume'))
 			{
@@ -2675,7 +2576,14 @@ MC.canvas.event.dragable = {
 				}
 				else
 				{
-					MC.canvas.select( event.data.target.attr('id') );
+					if (node_type === 'AWS.AutoScaling.Group' && component_data.originalId !== "")
+					{
+						MC.canvas.select( component_data.originalId );
+					}
+					else
+					{
+						MC.canvas.select( target_id );
+					}
 
 					MC.canvas.volume.close();
 				}
@@ -2683,15 +2591,11 @@ MC.canvas.event.dragable = {
 		}
 		else
 		{
-			var target = event.data.target,
-				target_id = target.attr('id'),
-				target_type = event.data.target_type,
-				svg_canvas = $("#svg_canvas"),
+			var svg_canvas = $("#svg_canvas"),
 				canvas_offset = svg_canvas.offset(),
 				shadow_offset = Canvon(event.data.shadow[0]).offset(),
 				layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
-				node_type = target.data('class'),
 				BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
 				scale_ratio = MC.canvas_property.SCALE_RATIO,
 				component_size,
@@ -2729,10 +2633,15 @@ MC.canvas.event.dragable = {
 				);
 
 				if (
-					!BEFORE_DROP_EVENT.isDefaultPrevented() &&
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
 					match_place.is_matched &&
+					// Disallow Instance to ASG
+					!(
+						parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
+						node_type === 'AWS.EC2.Instance'
+					)
+					&&
 					(
 						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
 						!BEFORE_DROP_EVENT.isDefaultPrevented()
@@ -2904,7 +2813,7 @@ MC.canvas.event.dragable = {
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&
-							MC.canvas.isBlank('group', target_id, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
+							MC.canvas.isBlank('group', target_id, group_data.type, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
 							event.data.groupChild.length === unique_stack.length
 						)
 					)
@@ -3089,6 +2998,50 @@ MC.canvas.event.dragable = {
 		$(document).off({
 			'mousemove': MC.canvas.event.gatewaymove,
 			'mouseup': MC.canvas.event.gatewayup
+		});
+	},
+	asgExpandup: function (event)
+	{
+		var target = event.data.target,
+			target_id = target.attr('id'),
+			target_type = event.data.target_type,
+			canvas_offset = $('#svg_canvas').offset(),
+			shadow_offset = Canvon(event.data.shadow[0]).offset(),
+			layout_node_data = MC.canvas.data.get('layout.component.node'),
+			layout_connection_data = MC.canvas.data.get('layout.connection'),
+			node_type = target.data('class'),
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
+			component_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
+			match_place = MC.canvas.isMatchPlace(
+				null,
+				target_type,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				component_size[0],
+				component_size[1]
+			);
+
+		if (match_place.is_matched)
+		{
+			new_node = MC.canvas.add(node_type, {'name': MC.canvas.data.get('component')[target_id].name, 'groupUId': match_place.target, 'originalId': target_id}, coordinate);
+
+			MC.canvas.select(new_node.id);
+		}
+
+		$('.dropable-group').attr('class', function (index, key)
+		{
+			return key.replace('dropable-group ', '');
+		});
+
+		event.data.shadow.remove();
+
+		$(document.body).removeClass('disable-event');
+
+		$(document).off({
+			'mousemove': MC.canvas.event.dragable.mousemove,
+			'mouseup': MC.canvas.event.dragable.asgExpandup
 		});
 	}
 };
@@ -3651,7 +3604,11 @@ MC.canvas.event.siderbarDrag = {
 					coordinate.y + default_group_size[1]
 				);
 
-				if (match_place.is_matched && areaChild.length === 0)
+				if (
+					match_place.is_matched &&
+					areaChild.length === 0 &&
+					MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1])
+				)
 				{
 					node_option.groupUId = match_place.target;
 

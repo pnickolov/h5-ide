@@ -443,34 +443,48 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			if (create_mode)
 			{
-				component_data = $.extend(true, {}, MC.canvas.ASG_JSON.data);
-				//name
-				component_data.name = option.name;
-				//az
-				component_data.resource.AvailabilityZones = [option.group.availableZoneName];
 
-				component_data.resource.MaxSize = 2;
-
-				component_data.resource.MinSize = 1;
-
-				component_data.resource.AutoScalingGroupName = option.name;
-
-				if(option['launch-config']){
-					component_data.resource.LaunchConfigurationName = '@' + option['launch-config'] + '.resource.LaunchConfigurationName';
-				}
-
-				//vpc
-				if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
-					component_data.resource.VPCZoneIdentifier = '@' + option.group.subnetUId + '.resource.SubnetId';
-
-				}
-
+				//init layout data
 				component_layout = $.extend(true, {}, MC.canvas.ASG_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
 				option.width = size[0];
 				option.height = size[1];
+
+				//init component data
+				if (option['originalId'])
+				{//expand ASG
+					component_layout.originalId = option['originalId'];
+				}
+				else
+				{//create new ASG
+					component_data = $.extend(true, {}, MC.canvas.ASG_JSON.data);
+					//name
+					component_data.name = option.name;
+					//az
+					component_data.resource.AvailabilityZones = [option.group.availableZoneName];
+
+					component_data.resource.MaxSize = 2;
+
+					component_data.resource.MinSize = 1;
+
+					component_data.resource.AutoScalingGroupName = option.name;
+
+					if(option['launchConfig']){
+						//use existed launchConfig
+						component_data.resource.LaunchConfigurationName = '@' + option['launchConfig'] + '.resource.LaunchConfigurationName';
+					}
+
+					//vpc
+					if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+						component_data.resource.VPCZoneIdentifier = '@' + option.group.subnetUId + '.resource.SubnetId';
+
+					}
+				}
+
+
+
 			}
 			else
 			{
@@ -487,7 +501,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 
 			width = option.width * MC.canvas.GRID_WIDTH,
-			height = option.height * MC.canvas.GRID_HEIGHT,
+			height = option.height * MC.canvas.GRID_HEIGHT;
 
 			$(group).append(
 
@@ -528,9 +542,10 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////3.dragger
 				Canvon.path('M ' + (width - 1) + ' 1 l' + ' 0 20 l -20 -20 z', {}).attr({
-					'class': 'asg-resource-dragger'
+					'class': 'asg-resource-dragger',
+					'id': group.id + '_asg_resource_dragger',
+					'display': option['launchConfig'] ? 'inline' : 'none'
 				}),
-
 
 				////5.asg label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
@@ -540,13 +555,14 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//prompt
 				Canvon.group().append(
-					Canvon.text(20, 35, 'Drop AMI from'),
-					Canvon.text(15, 55, 'resource panel to'),
-					Canvon.text(25, 75, 'create launch'),
-					Canvon.text(25, 95, 'configuration')
+					Canvon.text(30, 45, 'Drop AMI from'),
+					Canvon.text(25, 65, 'resource panel to'),
+					Canvon.text(35, 85, 'create launch'),
+					Canvon.text(35, 105, 'configuration')
 				).attr({
 					'class': 'prompt_text',
-					'id': group.id + '_prompt_text'
+					'id': group.id + '_prompt_text',
+					'display': option['originalId'] || option['launchConfig'] ? 'none' : 'inline'
 				})
 
 
@@ -555,6 +571,35 @@ MC.canvas.add = function (flag, option, coordinate)
 				'data-type': 'group',
 				'data-class': type
 			});
+
+			if (option['originalId'])
+			{
+				var orig_asg_comp = data[ option['originalId'] ],
+					offset = 20,
+					lc_comp_id,
+					lc_comp_layout,
+					os_type,
+					lc_name;
+
+				if ( orig_asg_comp && orig_asg_comp.resource.LaunchConfigurationName !== "" )
+				{
+					lc_comp_id = orig_asg_comp.resource.LaunchConfigurationName.split(".")[0].substr(1);
+					lc_comp_layout = layout.node[ lc_comp_id ];
+					os_type = lc_comp_layout.osType + '.' + lc_comp_layout.architecture + '.' + lc_comp_layout.rootDeviceType;
+					lc_name = data[ lc_comp_id ].name;
+
+					$(group).append(
+						////bg
+						Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15 + offset, 11 + offset, 70, 70),
+						////os_type
+						Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30 + offset, 15 + offset, 39, 27),
+						////lc name
+						Canvon.text(50 + offset, 90 + offset, lc_name).attr({
+							'class': 'node-label name'
+						})
+					);
+				}
+			}
 
 			//set layout
 			component_layout.coordinate = [coordinate.x, coordinate.y];
@@ -569,15 +614,15 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$('#asg_layer').append(group);
 
-			if(option['launch-config']){
+			if(option['launchConfig']){
 
 				MC.canvas.add('AWS.EC2.Instance', {
-					'name': 'launch-config',
+					'name': 'launchConfig',
 					'groupUId': group.id,
-					'launch-config' : option['launch-config']
+					'launchConfig' : option['launchConfig']
 				}, {
-					'x': coordinate.x+1,
-					'y': coordinate.y+1
+					'x': coordinate.x + 2,
+					'y': coordinate.y + 2
 				});
 			}
 
@@ -1600,20 +1645,21 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 
-				if(!option['launch-config']){
-					option.name = 'launch-config';
+				if(!option['launchConfig']){
+					option.name = 'launchConfig';
 					component_data = $.extend(true, {}, MC.canvas.ASL_LC_JSON.data);
 					component_data.name = option.name;
 					component_data.resource.LaunchConfigurationName = option.name;
 
-
+					//show dragger
+					MC.canvas.display(option.groupUId, 'asg_resource_dragger', true);
 
 					// create new icon on resource panel
 					$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
 
 					$($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children()
-							.data('option', {"name": "asg", "launch-config": group.id })
-							.attr('data-option','{"name": "asg", "launch-config":"'+group.id+'"}');
+							.data('option', {"name": "asg", "launchConfig": group.id })
+							.attr('data-option','{"name": "asg", "launchConfig":"'+group.id+'"}');
 
 					$($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
 
@@ -1635,11 +1681,14 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_layout.rootDeviceType =  option.rootDeviceType;
 					component_layout.virtualizationType = option.virtualizationType;
 
+					coordinate.x = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[0] + 2;
+					coordinate.y = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[1] + 2;
+
 				}
 				else{
 
-					component_data = $.extend(true, {}, MC.canvas_data.component[option['launch-config']]);
-					component_layout = $.extend(true, {}, MC.canvas_data.layout.component.node[option['launch-config']]);
+					component_data = $.extend(true, {}, MC.canvas_data.component[option['launchConfig']]);
+					component_layout = $.extend(true, {}, MC.canvas_data.layout.component.node[option['launchConfig']]);
 					component_layout.groupUId = option.groupUId;
 					option.osType = component_layout.osType ;
 					option.architecture = component_layout.architecture ;
@@ -1657,12 +1706,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = data[group.id];
 				option.name = component_data.name;
 
-				if(!option['launch-config']){
+				if(!option['launchConfig']){
 					$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
 
 					$($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children()
-							.data('option', {"name": "asg", "launch-config": group.id })
-							.attr('data-option','{"name": "asg", "launch-config":"'+group.id+'"}');
+							.data('option', {"name": "asg", "launchConfig": group.id })
+							.attr('data-option','{"name": "asg", "launchConfig":"'+group.id+'"}');
 
 					$($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
 				}
@@ -1759,7 +1808,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			MC.canvas.data.set('layout.component.node', layout.node);
 
 			//set data
-			if(!option['launch-config']){
+			if(!option['launchConfig']){
 				component_data.uid = group.id;
 				data[group.id] = component_data;
 				MC.canvas.data.set('component', data);

@@ -114,7 +114,7 @@ define [ 'jquery',
 							#show eni property
 							when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid, eni_main, tab_type
 							# Acl Property is not loaded in such a way.
-							when constant.AWS_RESOURCE_TYPE.AWS_ASL_LaunchConfiguration then lc_main.loadModule uid, lc_main
+							when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration then lc_main.loadModule uid, lc_main
 
 							#
 							else

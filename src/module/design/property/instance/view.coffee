@@ -38,21 +38,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'blur .input-ip' : 'updateEIPList'
             'click .toggle-eip' : 'addEIP'
 
-        render     : ( attributes, instance_expended_id ) ->
+        render     : ( attributes ) ->
             console.log 'property:instance render'
             #
             this.undelegateEvents()
-
             $( '.property-details' ).html this.template this.model.attributes
-            #
-            if instance_expended_id isnt undefined
-                accordion = $( '#instance-accordion' )
-                cur_id = accordion.find('.accordion-group').index accordion.find('.expanded')
-                if cur_id != instance_expended_id
-                    fixedaccordion.show.call accordion.find('.accordion-group').index instance_expended_id
 
-            fixedaccordion.resize()
-            #
             this.delegateEvents this.events
 
         instanceNameChange : ( event ) ->
@@ -132,7 +123,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             target = $('#property-ami')
             secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
             $(document.body).on 'click', '.back', secondarypanel.close
-            fixedaccordion.resize()
 
         addEIP : ( event ) ->
 

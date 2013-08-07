@@ -1,71 +1,65 @@
 <header class="sidebar-title">{{name}}</header>
 
-<article class="fixedaccordion accordion-default property-app">
-  <div class="accordion-group expanded">
-    <div class="fixedaccordion-head">Network Interface Details</div>
-    <div class="accordion-body">
-      <dl class="dl-vertical">
-        <dt>Device Name</dt>
-        <dd>{{name}}</dd>
-        <dt>Network Interface ID</dt>
-        <dd>{{networkInterfaceId}}</dd>
-        <dt>State</dt>
-        <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
-        {{#if description}}
-        <dt>Description</dt>
-        <dd>{{description}}</dd>
-        {{/if}}
-        <dt>Source/Destination Check</dt>
-        <dd>{{sourceDestCheck}}</dd>
-      </dl>
-      <dl class="dl-vertical">
-        <dt>VPC ID</dt>
-        <dd>{{vpcId}}</dd>
-        <dt>Subnet ID</dt>
-        <dd>{{subnetId}}</dd>
-        {{#if attachment}}
-        <dt>Attachment ID</dt>
-        <dd>{{attachment.attachmentId}}</dd>
-        <dt>Attachment Owner</dt>
-        <dd>{{attachment.instanceOwnerId}}</dd>
-        <dt>Attachment Status</dt>
-        <dd>{{attachment.status}}</dd>
-        {{/if}}
-        <dt>Mac Address</dt>
-        <dd>{{macAddress}}</dd>
-        {{#if association.publicDnsName}}
-        <dt>Public DNS</dt>
-        <dd>{{association.publicDnsName}}</dd>
-        {{/if}}
-        {{#if privateDnsName}}
-        <dt>Private DNS</dt>
-        <dd>{{privateDnsName}}</dd>
-        {{/if}}
-        {{#if ownerId}}
-        <dt>IP Owner</dt>
-        <dd>{{ownerId}}</dd>
-        {{/if}}
-      </dl>
-      <table class="property-app-table">
-        <tr class="property-app-table-h">
-          <th>IP Address</th>
-          <th>Public IP</th>
-        </tr>
-        {{#each privateIpAddressesSet.item}}
-        <tr>
-          <td>{{privateIpAddress}}{{#if primary}}<span>(Primary)</span>{{/if}}</td>
-          <td>{{#if association.publicIp}}{{association.publicIp}}{{else}}-{{/if}}</td>
-        </tr>
-        {{/each}}
-      </table>
-    </div>
+<article class="property-app">
+  <div class="option-group-head expand">Network Interface Details</div>
+  <div class="option-group">
+    <dl class="dl-vertical">
+      <dt>Device Name</dt>
+      <dd>{{name}}</dd>
+      <dt>Network Interface ID</dt>
+      <dd>{{networkInterfaceId}}</dd>
+      <dt>State</dt>
+      <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
+      {{#if description}}
+      <dt>Description</dt>
+      <dd>{{description}}</dd>
+      {{/if}}
+      <dt>Source/Destination Check</dt>
+      <dd>{{sourceDestCheck}}</dd>
+    </dl>
+    <dl class="dl-vertical">
+      <dt>VPC ID</dt>
+      <dd>{{vpcId}}</dd>
+      <dt>Subnet ID</dt>
+      <dd>{{subnetId}}</dd>
+      {{#if attachment}}
+      <dt>Attachment ID</dt>
+      <dd>{{attachment.attachmentId}}</dd>
+      <dt>Attachment Owner</dt>
+      <dd>{{attachment.instanceOwnerId}}</dd>
+      <dt>Attachment Status</dt>
+      <dd>{{attachment.status}}</dd>
+      {{/if}}
+      <dt>Mac Address</dt>
+      <dd>{{macAddress}}</dd>
+      {{#if association.publicDnsName}}
+      <dt>Public DNS</dt>
+      <dd>{{association.publicDnsName}}</dd>
+      {{/if}}
+      {{#if privateDnsName}}
+      <dt>Private DNS</dt>
+      <dd>{{privateDnsName}}</dd>
+      {{/if}}
+      {{#if ownerId}}
+      <dt>IP Owner</dt>
+      <dd>{{ownerId}}</dd>
+      {{/if}}
+    </dl>
+    <table class="property-app-table">
+      <tr class="property-app-table-h">
+        <th>IP Address</th>
+        <th>Public IP</th>
+      </tr>
+      {{#each privateIpAddressesSet.item}}
+      <tr>
+        <td>{{privateIpAddress}}{{#if primary}}<span>(Primary)</span>{{/if}}</td>
+        <td>{{#if association.publicIp}}{{association.publicIp}}{{else}}-{{/if}}</td>
+      </tr>
+      {{/each}}
+    </table>
   </div>
-  <div class="accordion-group">
-    <div class="fixedaccordion-head" id="sg-head">
-      Security Groups (<span id="property-head-sg-num"></span>)
-    </div>
-    <div class="sg-group">loading...</div>
-  </div>
+
+
+  <div class="option-group-head" id="sg-head"> Security Groups (<span id="property-head-sg-num"></span>) </div>
+  <div class="option-group sg-group">Loading...</div>
 </article>
-<div id="sg-secondary-panel-wrap">
-</div>

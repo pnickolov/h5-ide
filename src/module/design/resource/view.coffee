@@ -240,6 +240,11 @@ define [ 'event',
 
             pagination = $ '.pagination'
 
+            if max_page is 0
+                pagination.hide()
+            else
+                pagination.show()
+
             if pagination.data 'jqPagination'
                 pagination.jqPagination 'destroy'
                 # init page num
@@ -429,6 +434,7 @@ define [ 'event',
 
                 $item
                     .data("enable", enable)
+                    .attr("data-enable", enable)
                     .toggleClass("resource-disabled", not enable)
 
                 # Update tooltip

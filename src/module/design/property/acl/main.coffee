@@ -24,7 +24,7 @@ define [ 'jquery',
     $( 'head' ).append( template ).append( app_template ).append( rule_template ).append( acl_popup_template )
 
     #private
-    loadModule = ( uid_parent, expended_accordion_id, uid, return_type, tab_type ) ->
+    loadModule = ( uid, tab_type ) ->
 
         #
         MC.data.current_sub_main = this
@@ -46,7 +46,6 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
-            model.setParent uid_parent
             #model
             if tab_type is 'OPEN_APP'
                 model.appInit uid
@@ -57,7 +56,13 @@ define [ 'jquery',
             view.model    = model
 
             #render
-            view.render expended_accordion_id
+            $dom = view.render()
+            ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
+                title : model.attributes.component.name
+                dom   : $dom
+                id    : "ACL"
+            }
+
 
             #temp hack
             if view._events
@@ -74,11 +79,6 @@ define [ 'jquery',
 
             view.on 'ACL_NAME_CHANGED', (aclName) ->
                 model.setACLName uid, aclName
-
-            view.on ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, () ->
-                console.log 'return_type = ' + return_type
-                #ide_event.trigger ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, that
-                ide_event.trigger ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, return_type
 
     unLoadModule = () ->
         # current_view.off()

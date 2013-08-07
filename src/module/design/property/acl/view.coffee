@@ -30,60 +30,27 @@ define [ 'event',
             null
 
         events   :
-            'click .secondary-panel .back' : 'returnMainPanel'
-            'click #acl-add-rule-icon' : 'showCreateRuleModal'
-            'click #acl-modal-rule-save-btn' : 'saveRule'
+            'click #acl-add-rule-icon'                   : 'showCreateRuleModal'
+            'click #acl-modal-rule-save-btn'             : 'saveRule'
             'OPTION_CHANGE #acl-add-model-source-select' : 'modalRuleSourceSelected'
-            'OPTION_CHANGE #modal-protocol-select' : 'modalRuleProtocolSelected'
-            'OPTION_CHANGE #protocol-icmp-main-select' : 'modalRuleICMPSelected'
-            'click .property-rule-delete-btn' : 'removeRuleClicked'
-            'blur #property-acl-name' : 'aclNameChanged'
+            'OPTION_CHANGE #modal-protocol-select'       : 'modalRuleProtocolSelected'
+            'OPTION_CHANGE #protocol-icmp-main-select'   : 'modalRuleICMPSelected'
+            'click .property-rule-delete-btn'            : 'removeRuleClicked'
+            'blur #property-acl-name'                    : 'aclNameChanged'
 
             'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
 
-        instance_expended_id : 0
-
-        render     : (expended_accordion_id) ->
+        render     : () ->
             console.log 'property:acl render'
 
-            $('#acl-secondary-panel-wrap').html this.htmlTpl(this.model.attributes)
+            $dom = this.htmlTpl this.model.attributes
 
-            this.refreshRuleList this.model.attributes.component
+            self = this
+            setTimeout () ->
+                self.refreshRuleList self.model.attributes.component
+            , 10
 
-            this.instance_expended_id = expended_accordion_id
-
-            secondary_panel_wrap = $('#acl-secondary-panel-wrap')
-
-            fixedaccordion.resize()
-
-            secondary_panel_wrap.animate({
-                right: 0
-            }, {
-                duration: 200,
-                specialEasing: {
-                    width: 'linear'
-                },
-                complete : () ->
-
-                }
-            )
-
-        returnMainPanel : () ->
-            me = this
-            console.log 'returnMainPanel'
-            secondary_panel_wrap = $('#acl-secondary-panel-wrap')
-            secondary_panel_wrap.animate({
-                right: "-280px"
-            }, {
-                duration: 200,
-                specialEasing: {
-                    width: 'linear'
-                },
-                complete : () ->
-                    # ide_event.trigger ide_event.OPEN_PROPERTY, 'component', $('#sg-secondary-panel').attr('parent'), me.instance_expended_id
-                }
-            )
-            this.trigger ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL
+            $dom
 
         showCreateRuleModal : () ->
             modal this.rulePopupTpl({}, true)
@@ -211,7 +178,7 @@ define [ 'event',
 
                 null
 
-            $('#acl-secondary-panel-wrap .acl-rules').html this.ruleTpl({
+            $('.acl-rules').html this.ruleTpl({
                 content: newEntrySet
             })
 

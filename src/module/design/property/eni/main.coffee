@@ -51,6 +51,8 @@ define [ 'jquery',
             model.getENIDisplay uid
             #render
             view.render()
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.eni_display.name
 
             sglist_main.loadModule model
 
@@ -96,6 +98,9 @@ define [ 'jquery',
 
             model.init uid
             view.render()
+
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
             sglist_main.loadModule model, true
 

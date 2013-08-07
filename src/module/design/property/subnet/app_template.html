@@ -1,40 +1,34 @@
-<header class="sidebar-title" id="subnet-property-panel" data-uid="{{uid}}">{{name}}</header>
+<article class="property-app" id="subnet-property-panel" data-uid="{{uid}}">
 
-<div class="fixedaccordion accordion-default property-app">
-  <section class="accordion-group expanded">
-    <header class="fixedaccordion-head">Subnet Details</header>
+  <div class="option-group-head expand">Subnet Details</div>
+  <div class="option-group">
+    <dl class="dl-vertical">
+      <dt>Subnet ID</dt>
+      <dd>{{subnetId}}</dd>
 
-    <article class="accordion-body">
-      <dl class="dl-vertical">
-        <dt>Subnet ID</dt>
-        <dd>{{subnetId}}</dd>
+      <dt>State</dt>
+      <dd><i class="status status-{{#if available}}green{{else}}orange{{/if}}"></i>{{state}}</dd>
 
-        <dt>State</dt>
-        <dd><i class="status status-{{#if available}}green{{else}}orange{{/if}}"></i>{{state}}</dd>
+      <dt>CIDR</dt>
+      <dd>{{cidrBlock}}</dd>
 
-        <dt>CIDR</dt>
-        <dd>{{cidrBlock}}</dd>
+      <dt>Available IPs</dt>
+      <dd>{{availableIpAddressCount}}</dd>
 
-        <dt>Available IPs</dt>
-        <dd>{{availableIpAddressCount}}</dd>
+      <dt>VPC ID</dt>
+      <dd>{{vpcId}}</dd>
 
-        <dt>VPC ID</dt>
-        <dd>{{vpcId}}</dd>
+      <dt>Route Table</dt>
+      <dd>{{routeTable}}</dd>
+    </dl>
+  </div>
 
-        <dt>Route Table</dt>
-        <dd>{{routeTable}}</dd>
-      </dl>
-    </article>
-  </section>
-
-  <section class="accordion-group">
-    <header class="fixedaccordion-head">Associated Network ACL</header>
-    <article class="accordion-body">
-      <div class="col3 btn-to-secondary-panel secondary-panel" data-secondarypanel-template="subnetSecondaryPanel" data-uid="{{acl.uid}}" id="property-app-subnet-acl"></div>
-      <div class="col2">
-        <div class="col2-1 truncate">{{acl.name}}</div>
-        <div class="col2-2 truncate">{{acl.rule}} rules, {{acl.association}} association</div>
-      </div>
-    </article>
-  </section>
-</div>
+  <div class="option-group-head">Associated Network ACL</div>
+  <div class="option-group">
+    <div class="col3 btn-to-secondary-panel secondary-panel" data-secondarypanel-template="subnetSecondaryPanel" data-uid="{{acl.uid}}" id="property-app-subnet-acl"></div>
+    <div class="col2">
+      <div class="col2-1 truncate">{{acl.name}}</div>
+      <div class="col2-2 truncate">{{acl.rule}} rules, {{acl.association}} association</div>
+    </div>
+  </div>
+</article>

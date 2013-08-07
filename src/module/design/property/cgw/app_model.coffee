@@ -73,8 +73,9 @@ define [ 'backbone', 'MC' ], () ->
               item
 
           this.set {
-            cgw: cgw
-            vpn: vpn
+            name : cgw.name
+            cgw  : cgw
+            vpn  : vpn
           }
     }
 

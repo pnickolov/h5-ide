@@ -62,7 +62,7 @@ define [ 'jquery',
 
             view.on 'LOADING_COMMUNITY_AMI', ( region_name, pageNum ) ->
                 name = $('#community-ami-input').val()
-                platform = $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+                platform = $('#selectbox-ami-platform').find('.selected').data('id')
                 architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
                 rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
                 page = parseInt $('#community_ami_page_current').attr("page"), 10

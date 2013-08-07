@@ -82,8 +82,6 @@ MC.canvas = {
 			$('#canvas_body')
 				.removeClass('canvas_zoomed')
 				.off('mousedown', '.dragable', MC.canvas.event.selectNode)
-				//.on('mousedown', '.instance-volume', MC.canvas.volume.show)
-				//.on('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
 				.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 				.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 				.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
@@ -106,8 +104,6 @@ MC.canvas = {
 		$('#canvas_body')
 			.addClass('canvas_zoomed')
 			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
-			//.off('mousedown', '.instance-volume', MC.canvas.volume.show)
-			//.off('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
 			.off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 			.off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 			.off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
@@ -817,24 +813,6 @@ MC.canvas = {
 				// Special connection
 				if (
 					connection_option.direction
-					// // AWS.VPC.Subnet to AWS.VPC.RouteTable
-					// (from_type === 'AWS.VPC.Subnet' && to_type === 'AWS.VPC.RouteTable') ||
-					// (to_type === 'AWS.VPC.Subnet' && from_type === 'AWS.VPC.RouteTable') ||
-
-					// // AWS.EC2.Instance to AWS.VPC.NetworkInterface
-					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.VPC.NetworkInterface' && from_target_port === 'instance-sg' && to_target_port === 'eni-sg') ||
-					// (to_type === 'AWS.EC2.Instance' && from_type === 'AWS.VPC.NetworkInterface' && to_target_port === 'instance-sg' && from_target_port === 'eni-sg') ||
-
-					// // AWS.EC2.Instance to AWS.ELB
-					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-out') ||
-					// (to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-out') ||
-
-					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.ELB' && from_target_port === 'instance-sg' && to_target_port === 'elb-sg-in') ||
-					// (to_type === 'AWS.EC2.Instance' && from_type === 'AWS.ELB' && to_target_port === 'instance-sg' && from_target_port === 'elb-sg-in') ||
-
-
-					// // AWS.EC2.Instance to AWS.EC2.Instance
-					// (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
 				)
 				{
 					direction = connection_option.direction;
@@ -914,124 +892,9 @@ MC.canvas = {
 							}
 						}
 					}
-					// if (from_type === 'AWS.VPC.Subnet')
-					// {
-					// 	from_port = from_node.find('.port-' + from_target_port);
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-
-					// 	if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
-					// 	{
-					// 		to_port = to_node.find('.port-rtb-src-bottom');
-					// 	}
-					// 	else
-					// 	{
-					// 		to_port = to_node.find('.port-rtb-src-top');
-					// 	}
-
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
-
-					// if (to_type === 'AWS.VPC.Subnet')
-					// {
-					// 	to_port = to_node.find('.port-' + to_target_port);
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-
-					// 	if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
-					// 	{
-					// 		from_port = from_node.find('.port-rtb-src-bottom');
-					// 	}
-					// 	else
-					// 	{
-					// 		from_port = from_node.find('.port-rtb-src-top');
-					// 	}
-
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-					// }
-
-					// if (from_type === 'AWS.VPC.NetworkInterface')
-					// {
-					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-					// 	{
-					// 		from_port = from_node.find('.port-eni-sg-left');
-					// 		to_port = to_node.find('.port-instance-sg-right');
-					// 	}
-					// 	else
-					// 	{
-					// 		from_port = from_node.find('.port-eni-sg-right');
-					// 		to_port = to_node.find('.port-instance-sg-left');
-					// 	}
-
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
-
-					// if (to_type === 'AWS.VPC.NetworkInterface')
-					// {
-					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-left');
-					// 		to_port = to_node.find('.port-eni-sg-right');
-					// 	}
-					// 	else
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-right');
-					// 		to_port = to_node.find('.port-eni-sg-left');
-					// 	}
-
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
-
-					// if (from_type === 'AWS.ELB')
-					// {
-					// 	from_port = from_node.find('.port-' + from_target_port);
-
-					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-					// 	{
-					// 		to_port = to_node.find('.port-instance-sg-right');
-					// 	}
-					// 	else
-					// 	{
-					// 		to_port = to_node.find('.port-instance-sg-left');
-					// 	}
-
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
-
-					// if (to_type === 'AWS.ELB')
-					// {
-					// 	to_port = to_node.find('.port-' + to_target_port);
-
-					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-left');
-					// 	}
-					// 	else
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-right');
-					// 	}
-
-					// 	from_port_offset = from_port[0].getBoundingClientRect();
-					// 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
-
-					// if (from_type === 'AWS.EC2.Instance' && to_type === 'AWS.EC2.Instance')
-					// {
-					// 	if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-left');
-					// 		to_port = to_node.find('.port-instance-sg-right');
-					// 	}
-					// 	else
-					// 	{
-					// 		from_port = from_node.find('.port-instance-sg-right');
-					// 		to_port = to_node.find('.port-instance-sg-left');
-					// 	}
 
 					from_port_offset = from_port[0].getBoundingClientRect();
 				 	to_port_offset = to_port[0].getBoundingClientRect();
-					// }
 				}
 				else
 				{
@@ -1634,7 +1497,7 @@ MC.canvas = {
 
 				if (
 					key !== target_id &&
-					($.inArray(item.type, group_weight) > -1 || item.type === target_type) &&
+					item.type === target_type &&
 					coordinate[0] < end_x &&
 					coordinate[0] + size[0] > start_x &&
 					coordinate[1] < end_y &&
@@ -2719,7 +2582,7 @@ MC.canvas.event.dragable = {
 					}
 					else
 					{
-						MC.canvas.select( event.data.target.attr('id') );
+						MC.canvas.select( target_id );
 					}
 
 					MC.canvas.volume.close();

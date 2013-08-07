@@ -455,7 +455,27 @@ MC.canvas.add = function (flag, option, coordinate)
 				//init component data
 				if (option['originalId'])
 				{//expand ASG
-					component_layout.originalId = option['originalId'];
+					var target_group = option.groupUId,
+						original_group = layout.group[option.originalId].groupUId;
+					if ( target_group === original_group )
+					{//expand to the same group
+						var groupType = '';
+						switch (layout.group[component_layout.groupUId].type)
+						{
+							case 'AWS.EC2.AvailabilityZone':
+								groupType = 'AvailabilityZone';
+								break;
+							case 'AWS.VPC.Subnet':
+								groupType = 'Subnet';
+								break;
+						}
+						notification('warning', 'Please expand AutoScalingGroup to another ' + groupType + '!', false);
+						return null;
+					}
+					else
+					{
+						component_layout.originalId = option['originalId'];
+					}
 				}
 				else
 				{//create new ASG
@@ -983,7 +1003,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				{//for AWS.AutoScaling.LaunchConfiguration
 
 					$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
-						index = value.DeviceName.indexOf(k);
+						index = device_name.indexOf(value.DeviceName.substr(-1,1));
 						if (index >= 0)
 						{
 							device_name.splice(index, 1);
@@ -1024,10 +1044,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.volumeSize = component_data.resource.AttachmentSet.Size;
 			}
 
+
 			//set data
-			component_data.uid = group.id;
-			data[group.id] = component_data;
-			MC.canvas.data.set('component', data);
+			if (data[option.instance_id].type === 'AWS.EC2.Instance' )
+			{//for AWS.EC2.Instance
+				component_data.uid = group.id;
+				data[group.id] = component_data;
+				MC.canvas.data.set('component', data);
+			}
+			else
+			{
+				var lc_comp = data[option.instance_id];
+				if (lc_comp)
+				{
+					lc_comp.resource.BlockDeviceMapping.push(component_data);
+				}
+			}
 
 			return group;
 

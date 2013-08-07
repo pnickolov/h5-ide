@@ -36,7 +36,7 @@ define [ 'event',
             'OPTION_CHANGE #modal-protocol-select'       : 'modalRuleProtocolSelected'
             'OPTION_CHANGE #protocol-icmp-main-select'   : 'modalRuleICMPSelected'
             'click .property-rule-delete-btn'            : 'removeRuleClicked'
-            'blur #property-acl-name'                    : 'aclNameChanged'
+            'change #property-acl-name'                    : 'aclNameChanged'
 
             'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
 
@@ -46,9 +46,7 @@ define [ 'event',
             $dom = this.htmlTpl this.model.attributes
 
             self = this
-            setTimeout () ->
-                self.refreshRuleList self.model.attributes.component
-            , 10
+            self.refreshRuleList self.model.attributes.component
 
             $dom
 

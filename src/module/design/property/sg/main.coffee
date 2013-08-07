@@ -35,7 +35,7 @@ define [ 'jquery',
 
 				#
 				
-				# if current_view view.delegateEvents view.events
+				if current_view view.delegateEvents view.events
 				#
 				current_view  = view
 				current_model = model
@@ -57,8 +57,7 @@ define [ 'jquery',
 				}
 
 				#temp hack
-				if view._events
-					return
+				view._events = []
 
 				view.on 'SET_SG_NAME', ( value ) ->
 					model.setSGName sg_uid, value

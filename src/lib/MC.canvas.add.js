@@ -543,7 +543,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				////3.dragger
 				Canvon.path('M ' + (width - 1) + ' 1 l' + ' 0 20 l -20 -20 z', {}).attr({
 					'class': 'asg-resource-dragger',
-					'display': option['originalId'] ? 'none' : 'inline'
+					'id': group.id + '_asg_resource_dragger',
+					'display': option['launchConfig'] ? 'inline' : 'none'
 				}),
 
 				////5.asg label
@@ -1649,7 +1650,10 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_data.name = option.name;
 					component_data.resource.LaunchConfigurationName = option.name;
 
+					//hide prompt text
 					MC.canvas.display(option.groupUId, 'prompt_text', false);
+					//show dragger
+					MC.canvas.display(option.groupUId, 'asg_resource_dragger', true);
 
 					// create new icon on resource panel
 					$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());

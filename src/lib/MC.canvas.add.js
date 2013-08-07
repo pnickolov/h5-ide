@@ -555,10 +555,10 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//prompt
 				Canvon.group().append(
-					Canvon.text(20, 35, 'Drop AMI from'),
-					Canvon.text(15, 55, 'resource panel to'),
-					Canvon.text(25, 75, 'create launch'),
-					Canvon.text(25, 95, 'configuration')
+					Canvon.text(30, 45, 'Drop AMI from'),
+					Canvon.text(25, 65, 'resource panel to'),
+					Canvon.text(35, 85, 'create launch'),
+					Canvon.text(35, 105, 'configuration')
 				).attr({
 					'class': 'prompt_text',
 					'id': group.id + '_prompt_text',

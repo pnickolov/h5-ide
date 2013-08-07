@@ -21,6 +21,7 @@ define [ 'constant', 'event'
 				'AWS_VPC_CustomerGateway'  : 'CGW'
 				'AWS_EC2_AvailabilityZone' : 'AZ'
 				'AWS_ELB'                  : 'ELB'
+				'AWS_AutoScaling_LaunchConfiguration' : 'LaunchConfiguration'
 				#'AWS_EBS_Volume'           : 'Volume'
 			}
 

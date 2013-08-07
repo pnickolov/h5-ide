@@ -7,6 +7,8 @@ require.config {
 
 	deps               : [ 'js/ide/main' ]
 
+	locale             : 'en-us'
+
 	paths              :
 
 		#vender
@@ -19,6 +21,7 @@ require.config {
 
 		'domReady'     : 'vender/requirejs/domReady'
 		'text'         : 'vender/requirejs/text'
+		'i18n'         : 'vender/requirejs/i18n'
 
 		'zeroclipboard': 'vender/zeroclipboard/ZeroClipboard'
 		'jqpagination' : 'vender/jqpagination/jquery.jqpagination'
@@ -84,7 +87,6 @@ require.config {
 		'property'     : 'module/design/property/main'
 		'canvas'       : 'module/design/canvas/main'
 		'toolbar'      : 'module/design/toolbar/main'
-
 
 		#aws logic handler
 		'aws_handle'   : 'lib/aws/main'

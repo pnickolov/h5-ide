@@ -2,11 +2,12 @@
 #  main for ide
 #############################
 
-define [ 'MC', 'event',
+define [ 'MC', 'event', 'handlebars'
+         'i18n!/nls/lang.js',
          'view', 'layout', 'canvas_layout',
          'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process'
          'WS', 'constant', 'aws_handle'
-], ( MC, ide_event, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant ) ->
+], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant ) ->
 
 	console.info canvas_layout
 
@@ -143,3 +144,7 @@ define [ 'MC', 'event',
 		#listen RESOURCE_COMPLETE
 		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
 		#	console.log 'RESOURCE_COMPLETE'
+
+		#i18n
+		Handlebars.registerHelper 'i18n', ( text ) ->
+			new Handlebars.SafeString lang.ide[ text ]

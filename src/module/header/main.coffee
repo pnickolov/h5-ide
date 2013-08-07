@@ -2,7 +2,7 @@
 #  Controller for header module
 ####################################
 
-define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template, ide_event ) ->
+define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang.js' ], ( $, template, ide_event, lang ) ->
 
     view = null
 
@@ -17,6 +17,8 @@ define [ 'jquery', 'text!/module/header/template.html', 'event' ], ( $, template
 
         #load remote module1.js
         require [ './module/header/view', './module/header/model' ], ( View, model ) ->
+
+            #console.log 'asdfasdfasdf = ' + lang.header
 
             #view
             view       = new View()

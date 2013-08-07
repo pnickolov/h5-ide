@@ -2,7 +2,9 @@
 #  View(UI logic) for navigation
 #############################
 
-define [ 'event',  'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event ) ->
+define [ 'event',
+         'backbone', 'jquery', 'handlebars', 'UI.notification'
+], ( ide_event ) ->
 
     NavigationView = Backbone.View.extend {
 
@@ -32,7 +34,8 @@ define [ 'event',  'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( id
             #render html
             console.log 'navigation render'
             #$( this.el ).html this.template this.model.attributes
-            $( this.el ).html template
+            #$( this.el ).html template
+            $( this.el ).html Handlebars.compile template
 
             #Collapsed Navigation Mouse Interaction
             this.hoverIntent()
@@ -114,7 +117,7 @@ define [ 'event',  'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( id
                 out      : () ->
                     $( this ).removeClass 'collapsed-show'
             }
-            
+
         checkDesignLoadComplete : ( type, tab_name, region_name, tab_id ) ->
             console.log 'checkDesignLoadComplete'
             if MC.data.design_submodule_count isnt -1

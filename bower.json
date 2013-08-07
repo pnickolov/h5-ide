@@ -10,7 +10,8 @@
     "requirejs"  : "2.1.8",
     "requirejs-text"      : "2.0.7",
     "requirejs-domready"  : "2.0.1",
-    "qunit"      : "1.11.0", 
-    "zeroclipboard" : "1.2.0-beta.3"
+    "qunit"      : "1.11.0",
+    "zeroclipboard" : "1.2.0-beta.3",
+    "requirejs-i18n": "2.0.3"
   }
 }

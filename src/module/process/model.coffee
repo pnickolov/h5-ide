@@ -67,6 +67,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                                 handle.stop()
 
                                 flag_list.is_failed = true
+                                flag_list.err_detail = req.data
 
                             me.set 'flag_list', flag_list
                             me.trigger 'UPDATE_PROCESS'

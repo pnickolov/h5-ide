@@ -47,9 +47,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             else
                 target = source.parents('.secondary-panel').first()
 
-            accordion = $( '#instance-accordion' )
-            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
-
             aclUID = MC.guid()
             aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
             aclObj.name = MC.aws.acl.getNewName()
@@ -59,7 +56,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             this.trigger 'SET_NEW_ACL', aclUID
 
-            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID, 'subnet:' + this.model.get('uid') )
+            ide_event.trigger ide_event.OPEN_ACL, aclUID
 
         openEditAclPanel : ( event ) ->
             source = $(event.target)
@@ -68,18 +65,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             else
                 target = source.parents('.secondary-panel').first()
 
-            accordion = $( '#instance-accordion' )
-            cur_expanded_id = accordion.find('.accordion-group').index accordion.find('.expanded')
-
-            aclUID = source.attr('acl-uid')
-
-            ide_event.trigger(ide_event.OPEN_ACL, target.data('secondarypanel-data'), cur_expanded_id, aclUID, 'subnet:' + this.model.get('uid') )
+            ide_event.trigger ide_event.OPEN_ACL, source.attr('acl-uid')
 
         onChangeName : ( event ) ->
             # TODO : Validate newName
-
-            # Update title
-            $( '#property-title' ).html event.target.value
 
             # Notify changes
             change.value   = event.target.value

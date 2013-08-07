@@ -50,6 +50,7 @@ define [ 'jquery',
                 #render
                 #view.render( view.model.attributes )
                 view.render()
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.volume_detail.name
 
             renderPropertyPanel( uid )
 
@@ -112,6 +113,7 @@ define [ 'jquery',
 
             model.init uid
             view.render()
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
     unLoadModule = () ->
         current_view.off()

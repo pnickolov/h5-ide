@@ -64,7 +64,7 @@ define ['event', 'MC',
             $('#elb-property-slider-healthy').setSliderValue(health_detail.healthy_threshold)
 
             #Init Listener List
-            
+
             listenerDetail = this.model.get 'listener_detail'
             listenerAry = listenerDetail.listenerAry
 
@@ -72,7 +72,7 @@ define ['event', 'MC',
                 listener = obj.Listener
                 itemTpl = MC.template.elbPropertyListenerItem(listener)
                 $('#accordion-group-elb-property-listener').append itemTpl
-                
+
             this.trigger 'REFRESH_CERT_PANEL_DATA'
 
         elbNameChange : ( event ) ->
@@ -83,7 +83,6 @@ define ['event', 'MC',
             this.trigger 'ELB_NAME_CHANGED', value
 
             MC.canvas.update cid, 'text', 'elb_name', value
-            $("#property-title").html value
 
             this.trigger 'REFRESH_SG_LIST'
 
@@ -249,7 +248,7 @@ define ['event', 'MC',
 
             null
     }
-    
+
     view = new ElbView()
 
     return view

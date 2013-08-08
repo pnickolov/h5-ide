@@ -170,7 +170,7 @@ var scrollbar = {
 				'mouseup': scrollbar.mouseup
 			});
 
-		event.data.scrollbar_wrap.removeClass('scrolling');
+		event.data.scroll_target.removeClass('scrolling');
 		$(document.body).removeClass('disable-event');
 	},
 	scroll_to_left: function (data, target, scroll_left)

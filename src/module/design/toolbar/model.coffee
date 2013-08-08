@@ -19,9 +19,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
     ToolbarModel = Backbone.Model.extend {
 
         defaults :
-            'item_name'     : null
-            'item_type'     : null
-
             'item_flags'    : null
 
         setFlag : (id, flag, value) ->

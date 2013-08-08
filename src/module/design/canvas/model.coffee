@@ -22,7 +22,7 @@ define [ 'constant', 'event'
 				'AWS_EC2_AvailabilityZone' : 'AZ'
 				'AWS_ELB'                  : 'ELB'
 				'AWS_AutoScaling_LaunchConfiguration' : 'LaunchConfiguration'
-				#'AWS_EBS_Volume'           : 'Volume'
+				'AWS_AutoScaling_Group'           : 'ASG'
 			}
 
 			this.changeParentMap = {}
@@ -259,9 +259,60 @@ define [ 'constant', 'event'
 
 			result
 
+		deleteR_ASG : ( component ) ->
+
+			layout_data = MC.canvas_data.layout.component.node[component.uid]
+
+			asg_uid = component.uid
+
+			if component.resource.LaunchConfigurationName
+				lc_uid = component.resource.LaunchConfigurationName.split('.')[0][1...]
+				delete MC.canvas_data.component[lc_uid]
+
+			MC.canvas.remove $("#" + asg_uid)[0]
+
+			$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
+
+				if comp.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId is asg_uid
+
+					MC.canvas.remove $("#" + comp_uid)[0]
+
+				null
+
+			delete MC.canvas_data.component[component.uid]
+
+			false
+
 		deleteR_LaunchConfiguration : ( component ) ->
 
-			null
+			layout_data = MC.canvas_data.layout.component.node[component.uid]
+
+			if layout_data
+
+				asg_uid = layout_data.groupUId
+
+				lc_uid = layout_data.originalId
+
+				MC.canvas.remove $("#" + lc_uid)[0]
+
+				existing = false
+
+				$.each MC.canvas_data.layout.component.node, ( comp_uid, comp ) ->
+
+					if comp.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and comp.originalId is lc_uid
+
+						existing = true
+
+						return false
+
+					null
+
+				if not existing
+
+					delete MC.canvas_data.component[lc_uid]
+
+
+			false
 
 		deleteR_Instance : ( component ) ->
 
@@ -413,7 +464,7 @@ define [ 'constant', 'event'
 				# [ @@@ Warning @@@ ] If there's one child that cannot be deleted for any reason. Data is corrupted.
 				this.deleteObject null, op
 
-			null
+			false
 
 		deleteR_AZ : ( component ) ->
 

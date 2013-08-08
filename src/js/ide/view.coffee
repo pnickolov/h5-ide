@@ -25,7 +25,8 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             #
             $( '#tab-content-dashboard' ).addClass  'active'
             $( '#tab-content-region' ).removeClass  'active'
-            $( '#tab-content-design' ).removeClass 'active'
+            $( '#tab-content-design' ).removeClass  'active'
+            $( '#tab-content-process' ).removeClass 'active'
             #
             this.resizeEvent()
 
@@ -34,16 +35,28 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             #
             $( '#tab-content-region' ).addClass       'active'
             $( '#tab-content-dashboard' ).removeClass 'active'
-            $( '#tab-content-design' ).removeClass   'active'
+            $( '#tab-content-design' ).removeClass    'active'
+            $( '#tab-content-process' ).removeClass   'active'
             #
             this.resizeEvent()
 
         showTab : () ->
             console.log 'showTab'
             #
-            $( '#tab-content-design' ).addClass      'active'
+            $( '#tab-content-design' ).addClass       'active'
             $( '#tab-content-dashboard' ).removeClass 'active'
             $( '#tab-content-region' ).removeClass    'active'
+            $( '#tab-content-process' ).removeClass   'active'
+            #
+            this.resizeEvent()
+
+        showProcessTab : () ->
+            console.log 'showProcessTab'
+            #
+            $( '#tab-content-process' ).addClass      'active'
+            $( '#tab-content-dashboard' ).removeClass 'active'
+            $( '#tab-content-region' ).removeClass    'active'
+            $( '#tab-content-design' ).removeClass    'active'
             #
             this.resizeEvent()
     }

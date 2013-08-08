@@ -51,6 +51,7 @@ a {
   -o-animation: loading-spinner .8s infinite linear;
   width: 45px;
   height: 45px;
+  display: inline-block;
   background: url("../images/ide/loading-spinner.png") no-repeat center;
 }
 
@@ -3265,14 +3266,6 @@ a.sidebar-hider {
 	margin-right: 20px;
 }
 
-#modal-run-stack .modal-body {
-	width: 290px;
-}
-
-#modal-run-stack .selectbox {
-	width: 100px;
-}
-
 .acl-rules li:hover {
 	background-color: #fff;
 }
@@ -3884,6 +3877,15 @@ a.sidebar-hider {
 	margin: 0 5px 0 0;
 }
 
+/* Auto Scaling Group Property */
+.property-asg-ep.http:before {
+	content : "http";
+	display : inline-block;
+}
+.property-asg-ep.https:before {
+	content : "https";
+}
+
 /* stack and app property sgrule */
 .property-subhead {
 	padding: 10px;
@@ -3922,3 +3924,200 @@ a.sidebar-hider {
 	margin-right: 10px;
 }
 
+/* run stack */
+
+#modal-run-stack .modal-body {
+	width: 500px;
+	margin: 0;
+	padding: 0;
+}
+
+#modal-run-stack .modal-body > div {
+	padding: 5px 15px 10px 15px;
+}
+
+#modal-run-stack .modal-body > div.stack-validation {
+	padding: 15px;
+}
+
+.bg-blue {
+	background-color: rgb(229, 243, 254);
+}
+
+#modal-run-stack .selectbox {
+	width: 100px;
+}
+
+#modal-run-stack summary:hover {
+	cursor: pointer;
+}
+
+#modal-run-stack summary:focus {
+	outline: none;
+}
+
+#modal-run-stack .validation-content {
+	margin-top: 10px;
+}
+
+#modal-run-stack .tab {
+	position: relative;
+	height: 30px;
+}
+
+#modal-run-stack .tab li {
+	color: #333;
+	width: 120px;
+	line-height: 30px;
+	text-align: center;
+	display: block;
+	float: left;
+	background: #eee;
+}
+
+#modal-run-stack .tab .active {
+	background: #aaa;
+}
+
+#modal-run-stack .content_wrap {
+	position: relative;
+}
+
+#modal-run-stack .content_wrap .content {
+	display: none;
+	width: 100%;
+	height: 100%;
+	min-height: 50px;
+	border: 1px solid #cfcfcf;
+}
+
+#modal-run-stack .content_wrap .active {
+	display: block;
+}
+
+#modal-run-stack .stack-validation {
+	border-top: 1px solid #cfcfcf;
+}
+
+#modal-run-stack .content_wrap .title {
+	padding: 8px 2px;
+	border-bottom: 1px solid #cfcfcf;
+}
+
+#modal-run-stack .content_wrap .description {
+	padding: 8px 2px;
+	min-height: 80px;
+}
+
+#modal-run-stack .modal-body div.estimate {
+	background-color: rgb(215, 227, 235);
+	padding: 15px;
+}
+
+#modal-run-stack .estimate .title {
+	float: left;
+}
+
+#modal-run-stack .estimate .price {
+	float: right;
+}
+
+#modal-run-stack .estimate .price b {
+	color: rgb(0, 123, 255);
+}
+
+/* run stack into app process panel*/
+#process-panel #process-container {
+	width: 600px;
+	margin: 0 auto;
+	padding-top: 100px;
+}
+
+#process-panel #process-body {
+	min-height: 350px;
+	border: 1px solid #c7c7c7;
+	border-radius: 3px;
+	background-color: #fff;
+}
+
+#process-panel h1.title {
+	font-size: 24px;
+	padding-left: 8px;
+	color: #999;
+}
+
+#process-panel .loading-spinner {
+	vertical-align: middle;
+	float: right;
+	margin-right: 50px;
+}
+
+#process-panel .step-prepare {
+	padding: 140px 0 0 50px;
+	line-height: 45px;
+}
+
+#process-panel #process-body h2 {
+	color: #a55789;
+	font-size: 16px;
+}
+
+#process-panel #process-body .step-prepare h2 {
+	float: left;
+	line-height: 45px;
+}
+
+#process-panel #process-body .step-request {
+	text-align: center;
+	padding-top: 110px;
+}
+
+#process-panel #process-body .step-request .progress {
+	display: inline-block;
+}
+
+#process-panel .process-info span {
+	color: #666;
+}
+
+#process-panel .process-info span:last-child {
+	color: #999;
+}
+
+#process-panel .result-title {
+	font-size: 18px;
+	color: #666;
+	text-align: center;
+}
+
+#process-panel .result-sub-title {
+	font-size: 14px;
+	color: #999;
+	text-align: center;
+}
+
+#process-panel .result-success {
+	padding-top: 130px;
+}
+
+#process-panel .result-fail {
+	padding: 30px 25px;
+}
+
+#process-panel .result-error-info {
+	background-color: #f9f9f9;
+	padding: 10px;
+}
+
+#process-panel .result-error-info .title {
+	color: #999;
+}
+
+#process-panel .result-error-info .detail {
+	color: #ec483a;
+}
+
+#process-panel .action {
+	text-align: right;
+	padding: 15px 0;
+}

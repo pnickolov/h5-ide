@@ -25,23 +25,44 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
         openTabEvent  : ( event, original_tab_id, tab_id ) ->
             console.log 'openTab'
             console.log 'original_tab_id = ' + original_tab_id + ', tab_id = ' + tab_id
-            console.log $( '#tab-bar-' + tab_id ).children().attr 'title'
+            #console.log $( '#tab-bar-' + tab_id ).children().attr 'title'
             #
             if original_tab_id is tab_id then return
             #
+            tab_type = tab_id.split( '-' )[0]
+
+            switch tab_type
+                when 'dashboard'
+                    this.trigger 'SWITCH_DASHBOARD',     original_tab_id, tab_id
+                when 'new'
+                    this.trigger 'SWITCH_NEW_STACK_TAB', original_tab_id, tab_id, $( '#tab-bar-' + tab_id ).find('a').attr('title')
+                when 'stack'
+                    this.trigger 'SWITCH_STACK_TAB',     original_tab_id, tab_id
+                when 'app'
+                    this.trigger 'SWITCH_APP_TAB',       original_tab_id, tab_id
+                when 'process'
+                    this.trigger 'SWTICH_PROCESS_TAB',   original_tab_id, tab_id
+                else
+                    console.log 'no find tab type'
+
+            ###
             if tab_id is 'dashboard'
                 this.trigger 'SWITCH_DASHBOARD', original_tab_id, tab_id
                 return
 
             if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[0] is 'untitled'
-                #push event
+                #NEW_STACK
                 this.trigger 'SWITCH_NEW_STACK_TAB', original_tab_id, tab_id, $( '#tab-bar-' + tab_id ).find('a').attr('title')
             else if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[1] is 'stack'
-                #push event
+                #OPEN_STACK
                 this.trigger 'SWITCH_STACK_TAB', original_tab_id, tab_id
-            else
-                #push event
+            else if tab_id.split( '-' )[0] is 'process'
+                #PROCESS_APP
+                this.trigger 'SWTICH_PROCESS_TAB', original_tab_id, tab_id
+            else if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[1] is 'app'
+                #OPEN_APP
                 this.trigger 'SWITCH_APP_TAB', original_tab_id, tab_id
+            ###
             null
 
         closeTabEvent : ( event, tab_id ) ->

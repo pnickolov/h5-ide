@@ -52,8 +52,8 @@ define [ 'jquery',
             #render
             view.render()
 
-            if view._events and (_.keys(view._events).length isnt 0)
-                return
+            # temp hack
+            view._events = []
 
             view.on 'ASSIGN_SG_TOCOMP', (sgUID, sgChecked) ->
                 model.assignSGToComp sgUID, sgChecked

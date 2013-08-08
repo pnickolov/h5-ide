@@ -1,20 +1,21 @@
 <article>
+  {{#if hasLaunchConfig}}
 	<div class="option-group-head expand">Auto Scaling Group Details</div>
 	<div class="option-group">
 		<section class="property-control-group">
 			<label class="left" for="property-asg-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input class="input"  type="text" required="required" value="{{name}}" id="property-asg-name"/>
+			<input class="input" type="text" required="required" value="{{name}}" id="property-asg-name"/>
 		</section>
 
 		<section class="property-control-group clearfix">
-			<div class="left">
+			<div class="left" style="width:40%;">
 				<label for="property-asg-min">Minimum Size</label>
-				<input type="text" id="property-asg-min" value="{{minimum}}">
+				<input class="input" type="text" id="property-asg-min" value="{{minimum}}">
 			</div>
-			<div class="right">
+			<div class="right" style="width:40%;">
 				<label for="property-asg-max">Maximum Size</label>
-				<input type="text" id="property-asg-max" value="{{maximum}}">
+				<input class="input" type="text" id="property-asg-max" value="{{maximum}}">
 			</div>
 	  </section>
 
@@ -31,19 +32,16 @@
 
 		<section class="property-control-group clearfix">
 			<label>Health Check Type</label>
-			<div class="left">
-				<div class="radio">
-					<input id="property-asg-ec2" type="radio" value="ec2" {{#if ec2}}checked="true"{{/if}} name="property-asg-hc-option" />
-					<label for="property-asg-ec2"></label>
-				</div>
-				<label for="property-asg-ec2">EC2</label>
+			<div class="radio">
+				<input id="property-asg-ec2" type="radio" value="ec2" {{#if ec2}}checked="true"{{/if}} name="property-asg-hc-option" />
+				<label for="property-asg-ec2"></label>
 			</div>
-			<div class="right">
-				<div class="radio">
-					<input id="property-asg-elb" type="radio" value="elb" {{#unless ec2}}checked="true"{{/unless}} name="property-asg-hc-option" />
-					<label for="property-asg-elb">ELB</label>
-				</div>
+			<label for="property-asg-ec2">EC2</label>
+			<div class="radio">
+				<input id="property-asg-elb" type="radio" value="elb" {{#unless ec2}}checked="true"{{/unless}} name="property-asg-hc-option" />
+				<label for="property-asg-elb"></label>
 			</div>
+			<label for="property-asg-elb">ELB</label>
 		</section>
 
 		<section class="property-control-group">
@@ -69,32 +67,37 @@
 	</div>
 
 	<div class="option-group-head">Notification</div>
-	<div class="option-group">
+	<div class="option-group" id="property-asg-sns">
 		<p>Send notification via SNS topic for:</p>
-		<div class="checkbox">
+		<div><div class="checkbox">
 			<input id="property-asg-sns1" type="checkbox"/>
-			<label for="property-asg-sns1">Successful instance launch</label>
+			<label for="property-asg-sns1"></label>
 		</div>
+		<label for="property-asg-sns1">Successful instance launch</label></div>
 
-		<div class="checkbox">
+		<div><div class="checkbox">
 			<input id="property-asg-sns2" type="checkbox"/>
-			<label for="property-asg-sns2">Failed instance launch</label>
+			<label for="property-asg-sns2"></label>
 		</div>
+		<label for="property-asg-sns2">Failed instance launch</label></div>
 
-		<div class="checkbox">
+		<div><div class="checkbox">
 			<input id="property-asg-sns3" type="checkbox"/>
-			<label for="property-asg-sns3">Successful instance termination</label>
+			<label for="property-asg-sns3"></label>
 		</div>
+		<label for="property-asg-sns3">Successful instance termination</label></div>
 
-		<div class="checkbox">
+		<div><div class="checkbox">
 			<input id="property-asg-sns4" type="checkbox"/>
-			<label for="property-asg-sns4">Failed instance termination</label>
+			<label for="property-asg-sns4"></label>
 		</div>
+		<label for="property-asg-sns4">Failed instance termination</label></div>
 
-		<div class="checkbox">
+		<div><div class="checkbox">
 			<input id="property-asg-sns5" type="checkbox"/>
-			<label for="property-asg-sns5">Validating a configuraed SNS Topic</label>
+			<label for="property-asg-sns5"></label>
 		</div>
+		<label for="property-asg-sns5">Validating a configuraed SNS Topic</label></div>
 
 		<section class="hide" id="property-asg-sns-more">
 			<label>Protocol</label>
@@ -111,8 +114,14 @@
       </div>
 
       <label for="property-asg-endpoint">Endpoint</label>
-      <input type="text" id="property-asg-endpoint">
+      <span class="property-asg-ep">
+      	<input type="text" class="input" id="property-asg-endpoint">
+      </span>
+
 		</section>
 
 	</div>
+	{{else}}
+	<p>Drop AMI from Resrouce Panel to create Launch Configuration</p>
+	{{/if}}
 </article>

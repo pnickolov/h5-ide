@@ -36,8 +36,10 @@ define [ 'jquery',
 				'./module/design/property/cgw/main',
 				'./module/design/property/vpn/main',
 				'./module/design/property/eni/main',
-				'./module/design/property/acl/main'
-		], ( View, model, stack_main, instance_main, sg_main, sgrule_main, volume_main, elb_main, az_main, subnet_main, vpc_main, rtb_main, igw_main, vgw_main, cgw_main, vpn_main, eni_main, acl_main ) ->
+				'./module/design/property/acl/main',
+				'./module/design/property/launchconfig/main',
+				'./module/design/property/asg/main'
+		], ( View, model, stack_main, instance_main, sg_main, sgrule_main, volume_main, elb_main, az_main, subnet_main, vpc_main, rtb_main, igw_main, vgw_main, cgw_main, vpn_main, eni_main, acl_main, lc_main, asg_main) ->
 
 			current_uid = null
 			tab_type = null
@@ -60,9 +62,6 @@ define [ 'jquery',
 
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
-
-				if MC.data.last_open_property && MC.data.last_open_property.uid is uid
-					return
 
 				$("input").blur()
 
@@ -113,6 +112,9 @@ define [ 'jquery',
 							#show eni property
 							when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid, eni_main, tab_type
 							# Acl Property is not loaded in such a way.
+							when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration then lc_main.loadModule uid, lc_main
+
+							when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group then asg_main.loadModule uid, asg_main
 
 							#
 							else

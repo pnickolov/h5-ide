@@ -510,7 +510,18 @@ MC.canvas.add = function (flag, option, coordinate)
 			else
 			{
 				component_data = data[group.id];
-				option.name = component_data.name;
+
+				if (component_data)
+				{//original ASG
+					var lc_name = component_data.resource.LaunchConfigurationName;
+					option.name = component_data.name;
+					option['launchConfig'] = (lc_name !== '') ? lc_name.split('.')[0].substr(1) : '' ;
+				}
+				else
+				{//expand ASG
+					option['originalId'] = layout.group[group.id].originalId;
+					component_data = data[layout.group[group.id].originalId];
+				}
 
 				component_layout = layout.group[group.id];
 
@@ -570,7 +581,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				).attr({
 					'class': 'prompt_text',
 					'id': group.id + '_prompt_text',
-					'display': option['originalId'] || option['launchConfig'] ? 'none' : 'inline'
+					'display': option['originalId'] || option['launchConfig']||component_data.resource.LaunchConfigurationName ? 'none' : 'inline'
 				}),
 
 				////title
@@ -1913,7 +1924,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				////10. lc name
 				Canvon.text(50, 90, option.name).attr({
 					'class': 'node-label name',
-					'id': group.id + 'name'
+					'id': group.id + '_lc_name'
 				})
 			).attr({
 				'class': 'dragable node ' + class_type,

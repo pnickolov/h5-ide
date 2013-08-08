@@ -15,6 +15,11 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'last_open_property' : last_open_property }
             null
 
+        saveProcessTab : ( tab_id ) ->
+            if !MC.tab[ tab_id ]     then MC.tab[ tab_id ] = MC.process[ tab_id ]
+            #if MC.process[ tab_id ] then delete MC.process[ tab_id ]
+            null
+
         readTab : ( type, tab_id ) ->
             console.log 'readTab'
             #set snapshot|data vo

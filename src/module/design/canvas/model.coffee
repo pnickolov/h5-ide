@@ -21,7 +21,8 @@ define [ 'constant', 'event'
 				'AWS_VPC_CustomerGateway'  : 'CGW'
 				'AWS_EC2_AvailabilityZone' : 'AZ'
 				'AWS_ELB'                  : 'ELB'
-				#'AWS_EBS_Volume'           : 'Volume'
+				'AWS_AutoScaling_Group'    : 'ASG'
+				'AWS_AutoScaling_LaunchConfiguration' : 'ASG_LC'
 			}
 
 			this.changeParentMap = {}
@@ -206,10 +207,17 @@ define [ 'constant', 'event'
 
 		deleteObject : ( event, option ) ->
 
+			option = $.extend {}, option
+
 			component = MC.canvas_data.component[ option.id ] ||
 			if not component
 				component = $.extend true, {uid:option.id}, MC.canvas_data.layout.component.group[ option.id ]
 
+			# Treat ASG as a node, not a group
+			if component.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+				option.type = 'node'
+
+			# Find Handler to delete the resource
 			switch option.type
 				when 'node'
 					handler = this.deleteResMap[ component.type ]
@@ -218,6 +226,8 @@ define [ 'constant', 'event'
 				when 'line'
 					result = this.deleteLine option
 
+			# If the handler returns false or string,
+			# The delete operation is prevented.
 			if handler
 				result = handler.call( this, component, option.force )
 
@@ -250,12 +260,52 @@ define [ 'constant', 'event'
 				# MC.canvas.remove actually remove the component from MC.canvas_data.component.
 				# Consider this as bad coding pattern, because its canvas/model's job to do that.
 				MC.canvas.remove $("#" + option.id)[0]
+				delete MC.canvas_data.component[option.id]
 				this.trigger 'DELETE_OBJECT_COMPLETE'
 
 			else if event && event.preventDefault
 				event.preventDefault()
 
 			result
+
+		deleteR_ASG : ( component, force ) ->
+			# Ask user to comfirm the delete operation
+			if not force
+				return "Delete this item will delete the entire #{component.name}. Do you confirm to delete?"
+
+			# Delete the component
+			layout_data = MC.canvas_data.layout.component.node[component.uid]
+			asg_uid     = component.uid
+
+			# Delete extentions
+			for comp_uid, comp of MC.canvas_data.layout.component.group
+				if comp.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId is asg_uid
+					MC.canvas.remove $("#" + comp_uid)[0]
+
+			# Delete the component
+			delete MC.canvas_data.component[component.uid]
+
+			if not component.resource.LaunchConfigurationName
+				return
+
+			# Delete the LC if there's only one asg is using.
+			lc_uid    = component.resource.LaunchConfigurationName
+			lc_shared = false
+			for comp_uid, compo of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					if comp.resource.LaunchConfigurationName is lc_uid
+						lc_shared = true
+						break
+
+			if not lc_shared
+				lc_uid = MC.extractID lc_uid
+				delete MC.canvas_data.component[lc_uid]
+				ide_event.trigger ide_event.DELETE_ASG_LC, lc_uid
+
+			null
+
+		deleteR_ASG_LC : ( component ) ->
+			"!Currently changing launch configuration is not supported."
 
 		deleteR_Instance : ( component ) ->
 
@@ -407,7 +457,7 @@ define [ 'constant', 'event'
 				# [ @@@ Warning @@@ ] If there's one child that cannot be deleted for any reason. Data is corrupted.
 				this.deleteObject null, op
 
-			null
+			false
 
 		deleteR_AZ : ( component ) ->
 

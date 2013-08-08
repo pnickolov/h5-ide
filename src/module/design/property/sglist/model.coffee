@@ -73,6 +73,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 			displaySGAry = []
 
+			sg_full = { full : false }
+			enabledSGCount = 0
+
 			_.each allSGUIDAry, (uid) ->
 
 				sgComp = MC.canvas_data.component[uid]
@@ -82,6 +85,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				sgIpPermissionsEgressLength = sgCompRes.IpPermissionsEgress.length
 
 				sgChecked = Boolean(uid in parentSGList)
+				if sgChecked
+					++enabledSGCount
 
 				sgHideCheck = false
 				if parent_model.attributes.type is 'stack'
@@ -101,13 +106,19 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					sgChecked : sgChecked
 					sgHideCheck : sgHideCheck
 					sgIsDefault : sgIsDefault
+					sgFull      : sg_full
 
 				displaySGAry.push sgDisplayObj
 
 				null
 
+			if MC.canvas_data.platform != "ec2-classic" && enabledSGCount >= 5
+				# In VPC, user can only select 5 SG
+				sg_full.full = true
+
+
 			that.set 'sg_list', displaySGAry
-			
+
 			null
 
 		getRuleInfoList : ->

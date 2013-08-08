@@ -29,6 +29,8 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             #
             if original_tab_id is tab_id then return
             #
+            MC.data.current_tab_id = tab_id
+
             tab_type = tab_id.split( '-' )[0]
 
             switch tab_type

@@ -456,7 +456,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				if (option['originalId'])
 				{//expand ASG
 					var target_group = option.groupUId,
-						original_group = layout.group[option.originalId].groupUId;
+						original_group = layout.group[option.originalId].groupUId,
+						component_data = null;
 					if ( target_group === original_group )
 					{//expand to the same group
 						var groupType = '';
@@ -514,14 +515,15 @@ MC.canvas.add = function (flag, option, coordinate)
 				if (component_data)
 				{//original ASG
 					var lc_name = component_data.resource.LaunchConfigurationName;
-					option.name = component_data.name;
-					option['launchConfig'] = (lc_name !== '') ? lc_name.split('.')[0].substr(1) : '' ;
+					//option['launchConfig'] = (lc_name !== '') ? lc_name.split('.')[0].substr(1) : '' ;
 				}
 				else
 				{//expand ASG
 					option['originalId'] = layout.group[group.id].originalId;
 					component_data = data[layout.group[group.id].originalId];
 				}
+
+				option.name = component_data.name;
 
 				component_layout = layout.group[group.id];
 
@@ -581,7 +583,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				).attr({
 					'class': 'prompt_text',
 					'id': group.id + '_prompt_text',
-					'display': option['originalId'] || option['launchConfig']||component_data.resource.LaunchConfigurationName ? 'none' : 'inline'
+					'display': option['originalId'] || option['launchConfig']||  (component_data && component_data.resource.LaunchConfigurationName!=='') ? 'none' : 'inline'
 				}),
 
 				////title
@@ -593,7 +595,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.image('../assets/images/ide/icon/asg-resource-dragger.png', width - 22, 0, 22, 20).attr({
 					'class': 'asg-resource-dragger',
 					'id': group.id + '_asg_resource_dragger',
-					'display': option['launchConfig'] ? 'inline' : 'none'
+					'display': !option['originalId'] && (option['launchConfig'] || (component_data && (component_data.resource.LaunchConfigurationName!==''))) ? 'inline' : 'none'
 				}),
 
 				////5.asg label

@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.toggleicon' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC ) ->
 
     InstanceView = Backbone.View.extend {
 
@@ -11,7 +11,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.toggleicon' ], (
 
         template : Handlebars.compile $( '#property-asg-tmpl' ).html()
 
+        term_template : Handlebars.compile $( '#property-asg-term-tmpl' ).html()
+
         events   :
+            "click #property-asg-term-edit" : "showTermPolicy"
             "click #property-asg-sns input[type=checkbox]" : "updateSNSOption"
             "change #property-asg-endpoint" : "updateSNSOption"
             "OPTION_CHANGE #property-asg-sns-more" : "updateSNSInput"
@@ -19,6 +22,53 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.toggleicon' ], (
         render     : ( attributes ) ->
             console.log 'property:asg render'
             $( '.property-details' ).html this.template this.model.attributes
+
+        showTermPolicy : () ->
+            data = [
+                { name : "Oldest Instance", checked : false }
+                { name : "Newest Instance", checked : true }
+                { name : "Oldest Launch Configuration", checked : false }
+                { name : "Newest Launch Configuration", checked : true }
+            ]
+            data.defaultChecked = true
+
+            template = this.term_template data
+            modal template, true
+
+            self = this
+
+            # Bind event to the popup
+            $("#property-asg-term").on "change", "input", ()->
+                $this = $(this)
+                checked = $this.is(":checked")
+                $this.closest("li").toggleClass("enabled", checked)
+
+            $("#property-asg-term-done").on "click", ()->
+                self.onEditTermPolicy()
+                modal.close()
+
+            # Init drag drop list
+            $("#property-term-list").sortable({ handle : '.drag-handle' })
+
+        onEditTermPolicy : () ->
+            data = []
+
+            $("#property-term-list .list-name").each ()->
+                $this = $(this)
+                data.push {
+                    name    : $this.text()
+                    checked : $this.closest("li").hasClass("enabled")
+                }
+                null
+
+            data.push {
+                name : "Default"
+                checked : $("#property-asg-term-def").is(":checked")
+            }
+
+            console.log "Finish editing termination policy", data
+
+
 
         updateSNSOption : () ->
             checkArray = []
@@ -28,6 +78,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.toggleicon' ], (
                 checkArray.push checked
                 if checked
                     show_more = true
+                null
 
                 null
 

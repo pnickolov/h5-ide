@@ -24,7 +24,14 @@ MC.canvas.add = function (flag, option, coordinate)
 		coordinate = {};
 
 		group.id = flag; //flag is uid
-		type = !data[ group.id ] ? layout.group[ group.id ].type : data[ group.id ].type;
+		if (data[ group.id ])
+		{
+			type = !data[ group.id ] ? layout.group[ group.id ].type : data[ group.id ].type;
+		}
+		else
+		{//ASG_LC, AZ
+			type = !layout.group[ group.id ] ? layout.node[ group.id ].type : layout.group[ group.id ].type;
+		}
 	}
 	else
 	{
@@ -1835,7 +1842,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 			else
 			{//read
-				component_data = data[group.id];
+				component_data = data[layout.node[group.id].originalId];
 				option.name = component_data.name;
 
 				if(!option['launchConfig']){

@@ -1,0 +1,36 @@
+<div style="width:420px">
+   <div class="modal-header">
+      <h3>Edit Termination Policy</h3>
+      <i class="modal-close">&times;</i>
+   </div>
+   <div class="modal-body" id="property-asg-term">
+
+      <p>You can either specify any one of the policies as a standalone policy, or you can list multiple policies in an ordered list. The policies are executed in the order they are listed.</p>
+
+      <ul class="drag-sort-list" id="property-term-list">
+        {{#each this}}
+        <li {{#if checked}}class="enabled"{{/if}}>
+          <div class="checkbox">
+            <input id="property-asg-term{{@index}}" type="checkbox" {{#if checked}}checked="checked"{{/if}}/>
+            <label for="property-asg-term{{@index}}"></label>
+          </div>
+          <span class="list-name">{{name}}</span>
+          <span class="drag-handle tooltip" data-tooltip="Drag to sort policy"></span>
+        </li>
+        {{/each}}
+      </ul>
+      <ul class="drag-sort-list">
+        <li {{#if defaultChecked}}class="enabled"{{/if}}>
+          <div class="checkbox">
+            <input id="property-asg-term-def" type="checkbox" {{#if defaultChecked}}checked="checked"{{/if}}/>
+            <label for="property-asg-term-def"></label>
+          </div>
+          <span>Default</span>
+        </li>
+      </ul>
+   </div>
+   <div class="modal-footer">
+      <button id="property-asg-term-done" class="btn btn-blue">Done</button>
+      <button class="btn modal-close btn-silver">Cancel</button>
+   </div>
+</div>

@@ -3886,6 +3886,59 @@ a.sidebar-hider {
 	content : "https";
 }
 
+.property-details .icon-edit {
+	position   : absolute;
+	top        : 5px;
+	right      : 15px;
+	width      : 16px;
+	height     : 16px;
+	background : green;
+	cursor     : pointer;
+}
+
+.drag-sort-list {
+	width : 300px;
+}
+
+.drag-sort-list li {
+	border : 1px solid #ccc;
+	background : #eee;
+	line-height : 30px;
+	padding-left : 6px;
+	margin-top   : -1px;
+}
+
+.drag-sort-list .checkbox {
+	margin-top : -3px;
+	border-right : 1px solid #ccc;
+	padding-right : 8px;
+}
+
+.drag-sort-list li.enabled {
+	background : none;
+}
+
+.drag-sort-list .drag-handle {
+	width      : 16px;
+	height     : 16px;
+	float      : right;
+	background : red;
+	margin     : 7px 8px 0 0;
+	display    : none;
+}
+
+.drag-sort-list .enabled .drag-handle {
+	display : block;
+}
+
+.drag-sort-list .sortable-placeholder {
+	line-height   : 30px;
+	height        : 30px;
+	background    : #f5f5f5;
+	border        : 1px dotted #ccc;
+	border-bottom : none;
+}
+
 /* stack and app property sgrule */
 .property-subhead {
 	padding: 10px;

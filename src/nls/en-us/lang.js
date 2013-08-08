@@ -12,7 +12,6 @@ define({
 		'login-btn'      : 'Log In'
 	},
 	'ide' : {
-		'header'    : 'I speak Englishseeeeeeeeeeeffesssssssssss',
 		'dashboard' : 'Dashboard',
 		'account-settings' : 'Account Settings'
 	}

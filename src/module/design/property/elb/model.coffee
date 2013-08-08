@@ -20,7 +20,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             this.set 'uid', uid
 
             allComp = MC.canvas_data.component
-            
+
             elb_data = MC.canvas_data.component[ uid ]
 
             this.set 'component', elb_data
@@ -97,7 +97,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             if !MC.data.config[region].zone
                 return
-            
+
             azAry = MC.data.config[region].zone.item
             _.each azAry, (elem) ->
                 azObj[elem.zoneName] = 0
@@ -163,12 +163,14 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
         setScheme   : ( uid, value ) ->
             console.log 'setScheme = ' + value
 
-            if value is 'internal'
-                MC.canvas_data.component[ uid ].resource.Scheme = 'internal'
-            else
-                MC.canvas_data.component[ uid ].resource.Scheme = 'internet-facing'
+            component = MC.canvas_data.component[ uid ]
 
-            null
+            if value is 'internal'
+                component.resource.Scheme = 'internal'
+            else
+                component.resource.Scheme = 'internet-facing'
+
+            component
 
         setHealthProtocol   : ( uid, value ) ->
             console.log 'setHealthProtocol = ' + value

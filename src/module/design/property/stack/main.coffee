@@ -48,11 +48,9 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
-            ###
-            ide_event.onLongListen ide_event.RETURN_SUBNET_PROPERTY_FROM_ACL, (mainModule) ->
-                view.refreshACLList()
-                mainModule.unLoadModule()
-            ###
+            ide_event.onLongListen ide_event.PROPERTY_HIDE_SUBPANEL, ( id ) ->
+                if id is "ACL"
+                    view.refreshACLList()
 
             #view
             view.model    = model
@@ -60,12 +58,18 @@ define [ 'jquery',
             #re calc cost when load module
             model.getCost()
 
+            if tab_type is 'OPEN_APP'
+                title = "APP - "
+            else
+                title = "Stack - "
+
             #render
             renderPropertyPanel = () ->
                 model.getProperty()
                 #model.getSecurityGroup()
 
                 view.render()
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, title + model.attributes.property_detail.name
 
                 sglist_main.loadModule model, true
 
@@ -75,6 +79,8 @@ define [ 'jquery',
                 console.log 'stack name changed and refresh'
                 MC.canvas_data.name = name
                 renderPropertyPanel()
+
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, title + name
 
             view.on 'DELETE_STACK_SG', (uid) ->
                 model.deleteSecurityGroup uid

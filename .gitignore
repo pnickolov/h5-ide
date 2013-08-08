@@ -39,6 +39,7 @@ src/lib/constant.js
 src/test/console/js/*.js
 src/test/**/*.js
 src/test/websocket/request/*.js
+!src/test/json_view/*.js
 
 #ignore util
 util/gen_service/out.tmp

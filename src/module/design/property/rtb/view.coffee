@@ -13,11 +13,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
         events   :
 
-            'change .ipt-wrapper' : 'addIp'
-            'REMOVE_ROW  .multi-input' : 'removeIp'
-            'change #rt-name' : 'changeName'
-            'click #set-main-rt' : 'setMainRT'
-            'change #checkbox_id' : 'changePropagation'
+            'change .ipt-wrapper'             : 'addIp'
+            'REMOVE_ROW  .multi-input'        : 'removeIp'
+            'BEFORE_REMOVE_ROW  .multi-input' : 'beforeRemoveIp'
+            'change #rt-name'                 : 'changeName'
+            'click #set-main-rt'              : 'setMainRT'
+            'change #checkbox_id'             : 'changePropagation'
 
         render     : () ->
             console.log 'property:rtb render'
@@ -33,6 +34,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             uid = $("#rt-name").data 'uid'
 
             this.trigger 'SET_ROUTE', uid, data, children
+
+        beforeRemoveIp : ( event ) ->
+            canDelete = true
+
+            return canDelete
 
         removeIp : ( event ) ->
 

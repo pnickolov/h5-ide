@@ -551,10 +551,6 @@ textarea {
 	overflow: hidden;
 }
 
-.scroll-content {
-	position: relative;
-}
-
 /* webkit scrollbar */
 /*.webkit .scroll-wrap {
 	overflow: auto;
@@ -1173,7 +1169,7 @@ textarea {
 	min-width  : 160px;
 	background : #fff;
 	margin-top : 1px;
-	z-index    : 50;
+	z-index    : 9999;
 	border     : 1px solid #ccc;
 	box-shadow : 0 8px 10px rgba(0,0,0,.3);
 }
@@ -1367,118 +1363,6 @@ textarea {
 	position: absolute;
 	left: 224px;
 	top: 8px;
-}
-
-/* filter */
-.hide {
-	display: none;
-}
-
-/* Form Element */
-
-.left {
-	float: left;
-}
-
-.right {
-	float: right;
-}
-
-.property-control-group {
-	/*background: #ccc;*/
-	padding: 10px 0;
-	width: 260px;
-	position: relative;
-}
-
-.required-input {
-	color: #999;
-	font-size: 12px;
-	line-height: 20px;
-}
-
-.property-control-group label {
-	cursor: pointer;
-}
-
-.property-control-group > label{
-	margin-bottom: 8px;
-	color: #758694;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
-}
-
-.property-control-group .input {
-	width: 220px;
-}
-
-.property-control-group.error > label.left {
-	color: #F74A48;
-}
-
-.property-control-group.error .input {
-	border: 1px solid #F74A48;
-	/*background: #FFD4D3;*/
-	color: #F74A48;
-}
-
-.input-error-icon {
-	color: #fff;
-	position: absolute;
-	right: 0;
-	bottom: 10px;
-	background: #F74A48;
-	display: inline-block;
-	width: 20px;
-	height: 15px;
-	padding: 10px 0;
-	text-align: center;
-}
-
-.property-control-group .radio-group {
-	/*width: 260px;*/
-	float: left;
-}
-
-.property-control-group textarea {
-	width: 250px;
-}
-
-.property-control-group .ranged-input {
-	width: 210px;
-}
-
-.property-control-group .selectbox {
-	width: 250px;
-	margin-top: 10px;
-}
-
-.property-control-group .selectbox .dropdown-toggle {
-	width: 100%;
-	box-sizing: border-box;
-	display: inline-block;
-}
-
-.property-control-group .selectbox .dropdown-toggle {
-	padding: 6px 20px 6px 8px;
-}
-
-.property-control-group .selectbox.selectbox-mega .dropdown-toggle {
-	padding: 6px 20px 6px 8px;
-	width: 100%;
-}
-
-.property-control-group .selectbox.selectbox-mega .dropdown-menu {
-	top: 48px;
-}
-
-.property-control-group .selectbox.selectbox-mega .main {
-	/*width: 230px;*/
-	font-size: 13px;
-}
-
-.property-control-group .selectbox.selectbox-mega .sub span {
-	font-size: 12px;
-	color: #999;
 }
 
 #secondary-panel-wrap {

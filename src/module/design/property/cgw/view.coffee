@@ -38,9 +38,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         onChangeName : ( event ) ->
 
-            # TODO : Validate Name
-            $( '#property-title' ).html event.target.value
-
             change.value = event.target.value
             change.event = "CHANGE_NAME"
 

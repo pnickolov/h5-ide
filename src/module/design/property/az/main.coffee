@@ -2,10 +2,11 @@
 #  Controller for design/property/az module
 ####################################
 
-define [ 'jquery',
+define [ 'constant',
+         'jquery',
          'text!/module/design/property/az/template.html',
          'event'
-], ( $, template, ide_event ) ->
+], ( constant, $, template, ide_event ) ->
 
     #
     current_view  = null
@@ -78,14 +79,29 @@ define [ 'jquery',
             view.model = model
             view.render()
 
+            # Set title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "Availability Zone"
+
             view.on "SELECT_AZ", ( oldZoneID, newZone ) ->
                 # Set data
-                model.setNewAZ oldZoneID, newZone
+                oldZone = model.setNewAZ oldZoneID, newZone
+
+                if !oldZone
+                    return
+
                 # Update Canvas
                 MC.canvas.update oldZoneID, "text", "name", newZone
+                # Update Resource Panel
 
-                #ide_event.trigger ide_event.CHANGE_AZ, MC.canvas_data.layout.group[oldZoneID].name, newZone
+                res_type = constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                filter   = ( data ) ->
+                    return data.option.name == name
 
+                name = oldZone
+                ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, res_type, filter
+
+                name = newZone
+                ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, res_type, filter
             null
 
         null

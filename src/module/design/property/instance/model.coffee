@@ -354,6 +354,22 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
 			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
 
+			# remove from eni sg
+			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
+
+			eniComp = MC.aws.eni.getInstanceDefaultENI instanceUID
+			if !eniComp then return
+
+			eniGroupSet = eniComp.resource.GroupSet
+
+			newGroupSet = _.filter eniGroupSet, (groupObj) ->
+				if groupObj.GroupName is currentSG or groupObj.GroupId is currentSGId
+					return false
+				else
+					return true
+
+			MC.canvas_data.component[eniComp.uid].resource.GroupSet = newGroupSet
+
 			null
 
 		assignSGToComp : (sg_uid) ->
@@ -374,6 +390,26 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
 			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
+
+			# add to eni sg
+			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
+
+			eniComp = MC.aws.eni.getInstanceDefaultENI instanceUID
+			if !eniComp then return
+
+			eniGroupSet = eniComp.resource.GroupSet
+
+			addToENISg = true
+			_.each eniGroupSet, (sgObj) ->
+				if sgObj.GroupName is currentSG or sgObj.GroupId is currentSGId
+					addToENISg = false
+					return
+				null
+			if addToENISg
+				MC.canvas_data.component[eniComp.uid].resource.GroupSet.push {
+					GroupId: currentSGId
+					GroupName: currentSG
+				}
 
 			null
 
@@ -396,6 +432,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 		getEni : () ->
 
 			uid = this.get 'get_uid'
+
+			if !MC.canvas_data.component[uid].resource.SubnetId then return
 
 			eni_detail = {}
 

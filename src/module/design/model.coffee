@@ -92,16 +92,6 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             #
             if MC.data.last_open_property.event_type is 'OPEN_PROPERTY'
                 ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.type, MC.data.last_open_property.uid, MC.data.last_open_property.instance_expended_id, this.get( 'snapshot' ).property, tab_type
-            ###
-            else if MC.data.last_open_property.event_type is 'OPEN_SG'
-                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.uid_parent, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property, tab_type
-            else if MC.data.last_open_property.event_type is 'OPEN_ACL'
-                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.uid_parent, MC.data.last_open_property.expended_accordion_id, MC.data.last_open_property.acl_uid, MC.data.last_open_property.return_type, this.get( 'snapshot' ).property, tab_type
-            else if MC.data.last_open_property.event_type is 'OPEN_INSTANCE'
-                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.expended_accordion_id, this.get( 'snapshot' ).property, tab_type
-            else if MC.data.last_open_property.event_type is 'RETURN_SUBNET_PROPERTY_FROM_ACL'
-                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.return_type, this.get( 'snapshot' ).property, tab_type
-            ###
             null
 
         getLastOpenProperty : () ->

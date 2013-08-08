@@ -42,18 +42,12 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
             console.log 'showProperty, uid = ' + uid
             ide_event.trigger ide_event.OPEN_PROPERTY, 'component', uid
 
-            # added by song, temp
-            if jsonView then jsonView(uid)
-
         lineSelected : ( event, line_id ) ->
             ide_event.trigger ide_event.OPEN_PROPERTY, 'line', line_id
 
         route : ( event, option ) ->
             # Dispatch the event to model
             this.trigger event.type, event, option
-
-        showEniReachMax : () ->
-            notification 'info', 'The Instance you selected has attach too many eni, please unattach one or change the instance type.'
 
         save : () ->
             #save by ctrl+s

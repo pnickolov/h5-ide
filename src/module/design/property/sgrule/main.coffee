@@ -46,6 +46,7 @@ define [ 'jquery',
 			model.setLineId uid
 			#render
 			view.render()
+			ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "Security Group Rule"
 
 			view.on "EDIT_RULE", ( line_id ) ->
 				# TODO : Show SG Rule Popup
@@ -56,9 +57,10 @@ define [ 'jquery',
 		require ['./module/design/property/sgrule/model', './module/design/property/sgrule/app_view'], (model, view) ->
 
 			model.getAppDispSGList line_uid
-			
+
 			view.model = model
 			view.render true
+			ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "Security Group Rule"
 
 	unLoadModule = () ->
 		current_view.off()

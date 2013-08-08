@@ -1,33 +1,27 @@
-<header class="sidebar-title" id='property-title'>vpn:{{vpn_detail.cgw_name}}</header>
+<article class="property-control-group" id="property-vpn-dynamic-info" {{#if vpn_detail.is_dynamic}}{{else}}style="display:none;"{{/if}}>
+  Since the Customer Gateway this VPN is connected to has dynamic routing enabled no configuration is necessary.
+</article>
 
-<section class="property-info">
-  <div class="property-control-group clearfix" id="property-vpn-dynamic-info" {{#if vpn_detail.is_dynamic}}{{else}}style="display:none;"{{/if}}>
-    Since the Customer Gateway this VPN is connected to has dynamic routing enabled no configuration is necessary.
-  </div>
+<article class="property-control-group" id="property-vpn-ips-wrapper" {{#if vpn_detail.is_dynamic}}style="display:none;"{{/if}}>
 
-  <div class="property-control-group clearfix" id="property-vpn-ips-wrapper" {{#if vpn_detail.is_dynamic}}style="display:none;"{{/if}}>
+  <div class="clearfix">
     <label class="left" for="property-vpc-ips">Network IP Prefixes</label>
     <span class="required-input right">Required</span>
-
-    <div class="scroll-wrap scrollbar-auto-hide" style="height:100%;clear:both;">
-      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <div class="item-wrap scroll-content">
-        <div id="property-vpn-ips" class="multi-input" data-max-row="100">
-          {{#each vpn_detail.ips}}
-          <div class="multi-ipt-row">
-            <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" value="{{this}}" type="text"></span>
-          </div>
-          {{else}}
-          <div class="multi-ipt-row">
-            <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" type="text"></span>
-          </div>
-          {{/each}}
-        </div>
-      </div>
-    </div>
   </div>
-</section>
+
+  <div id="property-vpn-ips" class="multi-input" data-max-row="100">
+    {{#each vpn_detail.ips}}
+    <div class="multi-ipt-row">
+      <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+      <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" value="{{this}}" type="text"></span>
+    </div>
+    {{else}}
+    <div class="multi-ipt-row">
+      <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+      <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" type="text"></span>
+    </div>
+    {{/each}}
+  </div>
+</article>
 
 

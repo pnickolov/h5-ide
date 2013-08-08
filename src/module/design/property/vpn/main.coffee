@@ -38,6 +38,7 @@ define [ 'jquery',
             renderVPNPanel = (line_option) ->
                 model.getVPN line_option
                 view.render()
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "vpn:#{model.attributes.vpn_detail.cgw_name}"
 
             renderVPNPanel line_option
 
@@ -52,6 +53,7 @@ define [ 'jquery',
             model.on 'UPDATE_VPN_DATA', () ->
                 console.log 'update vpn panel'
                 view.render()
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "vpn:#{model.attributes.vpn_detail.cgw_name}"
 
     unLoadModule = () ->
         current_view.off()

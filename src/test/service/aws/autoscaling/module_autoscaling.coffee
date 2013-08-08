@@ -73,9 +73,9 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeAdjustmentTypes failed
                     ok false, "DescribeAdjustmentTypes() failed" + aws_result.error_message
-            
+
                 start()
-                
+
 
     #-----------------------------------------------
     #Test DescribeAutoScalingGroups()
@@ -94,7 +94,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeAutoScalingGroups failed
                     ok false, "DescribeAutoScalingGroups() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeAdjustmentTypes()
 
@@ -115,7 +115,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeAutoScalingInstances failed
                     ok false, "DescribeAutoScalingInstances() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeAutoScalingGroups()
 
@@ -134,7 +134,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeAutoScalingNotificationTypes failed
                     ok false, "DescribeAutoScalingNotificationTypes() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeAutoScalingInstances()
 
@@ -155,7 +155,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeLaunchConfigurations failed
                     ok false, "DescribeLaunchConfigurations() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeAutoScalingNotificationTypes()
 
@@ -174,7 +174,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeMetricCollectionTypes failed
                     ok false, "DescribeMetricCollectionTypes() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeLaunchConfigurations()
 
@@ -195,7 +195,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeNotificationConfigurations failed
                     ok false, "DescribeNotificationConfigurations() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeMetricCollectionTypes()
 
@@ -217,7 +217,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribePolicies failed
                     ok false, "DescribePolicies() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeNotificationConfigurations()
 
@@ -226,9 +226,12 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
     #-----------------------------------------------
     test_DescribeScalingActivities = () ->
         asyncTest "/aws/autoscaling autoscaling.DescribeScalingActivities()", () ->
+            group_name = null
+            activity_ids = null
+            max_records = null
+            next_token = null
 
-
-            autoscaling_service.DescribeScalingActivities {sender:this}, username, session_id, ( aws_result ) ->
+            autoscaling_service.DescribeScalingActivities {sender:this}, username, session_id, region_name, group_name, activity_ids, max_records, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeScalingActivities succeed
                     data = aws_result.resolved_data
@@ -236,7 +239,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeScalingActivities failed
                     ok false, "DescribeScalingActivities() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribePolicies()
 
@@ -255,7 +258,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeScalingProcessTypes failed
                     ok false, "DescribeScalingProcessTypes() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeScalingActivities()
 
@@ -264,9 +267,14 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
     #-----------------------------------------------
     test_DescribeScheduledActions = () ->
         asyncTest "/aws/autoscaling autoscaling.DescribeScheduledActions()", () ->
+            group_name = null
+            action_names = null
+            start_time = null
+            end_time = null
+            max_records = null
+            next_token = null
 
-
-            autoscaling_service.DescribeScheduledActions {sender:this}, username, session_id, ( aws_result ) ->
+            autoscaling_service.DescribeScheduledActions {sender:this}, username, session_id, region_name, group_name, action_names, start_time, end_time, max_records, next_token, ( aws_result ) ->
                 if !aws_result.is_error
                 #DescribeScheduledActions succeed
                     data = aws_result.resolved_data
@@ -274,7 +282,7 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeScheduledActions failed
                     ok false, "DescribeScheduledActions() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeScalingProcessTypes()
 
@@ -295,10 +303,9 @@ require [ 'MC', 'jquery', 'test_util', 'session_service', 'autoscaling_service']
                 else
                 #DescribeTags failed
                     ok false, "DescribeTags() failed" + aws_result.error_message
-            
+
                 start()
                 test_DescribeScheduledActions()
 
 
     test_DescribeTags()
-

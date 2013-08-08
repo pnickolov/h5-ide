@@ -1,6 +1,8 @@
 MC.canvas.add = function (flag, option, coordinate)
 {
-	var group = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
+	var data = MC.canvas.data.get('component'),
+		layout = MC.canvas.data.get('layout.component'),
+		group = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
 		create_mode = true,
 		type = '',
 		class_type = '',
@@ -12,9 +14,6 @@ MC.canvas.add = function (flag, option, coordinate)
 		top = 0,
 		size,
 		platform;
-
-	data = MC.canvas.data.get('component');
-	layout = MC.canvas.data.get('layout.component');
 
 	if (!option && !coordinate)
 	{
@@ -81,6 +80,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					if(data.type === 'AWS.EC2.AvailabilityZone' && data.option.name === option.name){
 						$(item)
 							.data('enable', false)
+							.attr('data-enable', false)
 							.addClass('resource-disabled')
 							.removeClass("tooltip");
 						return false;
@@ -433,6 +433,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
 				component_data.resource.SecurityGroupId.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
+				component_data.resource.SecurityGroup.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupName");
 				MC.canvas_property.sg_list[0].member.push(group.id);
 
 				// if subnet
@@ -1020,22 +1021,6 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.name = 'Internet-gateway';
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet[0].VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
-
-				// disable drag when add one
-
-				$.each($(".resource-item"), function ( idx, item){
-
-					var data = $(item).data();
-
-					if(data.type === 'AWS.VPC.InternetGateway'){
-						$(item)
-							.data('enable', false)
-							.addClass('resource-disabled')
-							.data("tooltip", "VPC can only have one IGW. There is already one IGW in current VPC.");
-						return false;
-					}
-				});
-
 				component_layout = $.extend(true, {}, MC.canvas.IGW_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}
@@ -1119,18 +1104,6 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.name = 'VPN-gateway';
 				component_data.name = option.name;
 				component_data.resource.Attachments[0].VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
-				$.each($(".resource-item"), function ( idx, item){
-
-					var data = $(item).data();
-
-					if(data.type === 'AWS.VPC.VPNGateway'){
-						$(item)
-							.data('enable', false)
-							.addClass('resource-disabled')
-							.data("tooltip", "VPC can only have one VGW. There is already one VGW in current VPC.");
-						return false;
-					}
-				});
 				component_layout = $.extend(true, {}, MC.canvas.VGW_JSON.layout);
 				component_layout.groupUId = option.groupUId;
 			}
@@ -1353,7 +1326,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-eni-sg port-eni-sg-left',
-					'display': 'none', //hide
+					'id': group.id + '_eni_sg_left',
+					//'display': 'none', //hide
 					'transform': 'translate(7, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg',
 					'data-position': 'left',
@@ -1376,7 +1350,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-eni-sg port-eni-sg-right',
-					'display': 'none', //hide
+					'id': group.id + '_eni_sg_right',
+					//'display': 'none', //hide
 					'transform': 'translate(85, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg',
 					'data-position': 'right',

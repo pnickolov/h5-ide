@@ -5,9 +5,15 @@
 define [ 'MC', 'event', 'handlebars'
          'i18n!/nls/lang.js',
          'view', 'layout', 'canvas_layout',
-         'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
-         'WS', 'constant', 'aws_handle', 'test/json_view/json_view'
+<<<<<<< HEAD
+         'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process'
+         'WS', 'constant', 'aws_handle'
 ], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant ) ->
+=======
+         'header', 'navigation', 'tabbar', 'dashboard', 'design',
+         'WS', 'constant', 'aws_handle', 'test/json_view/json_view'
+], ( MC, ide_event, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, WS, constant ) ->
+>>>>>>> develop
 
 	console.info canvas_layout
 

@@ -36,6 +36,7 @@ define [ 'jquery',
             view.model    = model
             #render
             view.render()
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "VPN-gateway"
 
     unLoadModule = () ->
         current_view.off()

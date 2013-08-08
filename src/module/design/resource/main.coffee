@@ -54,9 +54,15 @@ define [ 'jquery',
                 view.resourceVpcRender( current_platform, type )
                 null
 
+            ide_event.onLongListen ide_event.ENABLE_RESOURCE_ITEM, ( type, filter ) ->
+                view.enableItem type, filter
+
+            ide_event.onLongListen ide_event.DISABLE_RESOURCE_ITEM, ( type, filter ) ->
+                view.disableItem type, filter
+
             view.on 'LOADING_COMMUNITY_AMI', ( region_name, pageNum ) ->
                 name = $('#community-ami-input').val()
-                platform = $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
+                platform = $('#selectbox-ami-platform').find('.selected').data('id')
                 architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
                 rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
                 page = parseInt $('#community_ami_page_current').attr("page"), 10

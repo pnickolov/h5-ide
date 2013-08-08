@@ -52,11 +52,18 @@ define [ 'jquery',
             view.model    = model
             view.render()
 
+            # Update property title
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
+
             model.listen()
 
             sglist_main.loadModule model
 
             ide_event.trigger ide_event.RELOAD_PROPERTY
+
+            view.on "NAME_CHANGE", ( value ) ->
+                model.set 'name', value
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, value
 
 
     unLoadModule = () ->

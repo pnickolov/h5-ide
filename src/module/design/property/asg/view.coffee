@@ -13,6 +13,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.toggleicon' ], (
 
         events   :
             "click #property-asg-sns input[type=checkbox]" : "updateSNSOption"
+            "change #property-asg-endpoint" : "updateSNSOption"
             "OPTION_CHANGE #property-asg-sns-more" : "updateSNSInput"
 
         render     : ( attributes ) ->
@@ -20,8 +21,19 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.toggleicon' ], (
             $( '.property-details' ).html this.template this.model.attributes
 
         updateSNSOption : () ->
-            $checked = $("#property-asg-sns :checked")
-            (if $checked.length then $.fn.show else $.fn.hide).apply $("#property-asg-sns-more")
+            checkArray = []
+            show_more  = false
+            $("#property-asg-sns input[type=checkbox]").each ()->
+                checked = $(this).is(":checked")
+                checkArray.push checked
+                if checked
+                    show_more = true
+
+            (if show_more then $.fn.show else $.fn.hide).apply $("#property-asg-sns-more")
+
+            endpoint = $("#property-asg-endpoint").val()
+
+            console.log "SNS selection : #{checkArray}, Endpoint Value : #{endpoint}"
 
         updateSNSInput : () ->
 

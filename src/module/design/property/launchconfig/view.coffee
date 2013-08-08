@@ -44,7 +44,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             this.delegateEvents this.events
 
         lcNameChange : ( event ) ->
-            this.model.set 'name', event.target.value
+            this.trigger "NAME_CHANGE", event.target.value
             null
 
         instanceTypeSelect : ( event, value )->

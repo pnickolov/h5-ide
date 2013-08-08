@@ -42,7 +42,11 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 });
 ###
 
-define [ 'MC', 'session_model' ,'jquery', 'i18n!/nls/lang.js', ], ( MC, session_model, $, lang ) ->
+define [ 'jquery', 'handlebars',
+         'MC', 'session_model',
+         'i18n!/nls/lang.js',
+         'text!/js/login/template.html'
+], ( $, Handlebars, MC, session_model, lang, template ) ->
 
 	#private method
 	MC.login = ( event ) ->
@@ -95,6 +99,7 @@ define [ 'MC', 'session_model' ,'jquery', 'i18n!/nls/lang.js', ], ( MC, session_
 
 				return false
 
+	###
 	setLang = () ->
 		$( '#login-title > h2' ).html  lang.login.login
 		$( '#login-register' ).html lang.login[ 'login-register' ] + '<a href="#" id="link-register">Register</a>'
@@ -107,11 +112,18 @@ define [ 'MC', 'session_model' ,'jquery', 'i18n!/nls/lang.js', ], ( MC, session_
 		$( '#login-user' ).attr     'placeholder', lang.login[ "login-user" ]
 		$( '#login-password' ).attr 'placeholder', lang.login[ "login-password" ]
 		null
+	###
 
 	#public object
 	ready : () ->
+		#i18n
+		Handlebars.registerHelper 'i18n', ( text ) ->
+			new Handlebars.SafeString lang.login[ text ]
+		#
+		$( '#container' ).html Handlebars.compile template
+		#
 		$( '#login-btn' ).removeAttr 'disabled'
 		$( '#login-btn' ).addClass 'enabled'
 		$( '#login-form' ).submit( MC.login )
 		#
-		setLang()
+		#setLang()

@@ -28,6 +28,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.toggleicon' ], (
                 checkArray.push checked
                 if checked
                     show_more = true
+                null
 
             (if show_more then $.fn.show else $.fn.hide).apply $("#property-asg-sns-more")
 

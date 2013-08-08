@@ -34,23 +34,23 @@ define ['event', 'MC',
             'change #elb-scheme-select2' : "schemeSelectChange"
 
             'OPTION_CHANGE #elb-property-health-protocol-select' : "healthProtocolSelect"
-            'blur #property-elb-health-port' : 'healthPortChanged'
-            'blur #property-elb-health-path' : 'healthPathChanged'
-            'blur #property-elb-health-interval' : 'healthIntervalChanged'
-            'blur #property-elb-health-timeout' : 'healthTimeoutChanged'
+            'change #property-elb-health-port' : 'healthPortChanged'
+            'change #property-elb-health-path' : 'healthPathChanged'
+            'change #property-elb-health-interval' : 'healthIntervalChanged'
+            'change #property-elb-health-timeout' : 'healthTimeoutChanged'
             'SLIDER_CHANGE .slider' : 'sliderChanged'
 
             'click #elb-property-listener-content-add' : 'listenerItemAddClicked'
             'OPTION_CHANGE .elb-property-listener-elb-protocol-select' : 'listenerItemChanged'
             'OPTION_CHANGE .elb-property-listener-instance-protocol-select' : 'listenerItemChanged'
-            'blur .elb-property-listener-elb-port-input' : 'listenerItemChanged'
-            'blur .elb-property-listener-instance-port-input' : 'listenerItemChanged'
+            'change .elb-property-listener-elb-port-input' : 'listenerItemChanged'
+            'change .elb-property-listener-instance-port-input' : 'listenerItemChanged'
             'click .elb-property-listener-item-remove' : 'listenerItemRemovedClicked'
 
-            'blur #elb-property-cert-name-input' : 'listenerCertChanged'
-            'blur #elb-property-cert-privatekey-input' : 'listenerCertChanged'
-            'blur #elb-property-cert-publickey-input' : 'listenerCertChanged'
-            'blur #elb-property-cert-chain-input' : 'listenerCertChanged'
+            'change #elb-property-cert-name-input' : 'listenerCertChanged'
+            'change #elb-property-cert-privatekey-input' : 'listenerCertChanged'
+            'change #elb-property-cert-publickey-input' : 'listenerCertChanged'
+            'change #elb-property-cert-chain-input' : 'listenerCertChanged'
 
             'change .property-elb-az-checkbox' : 'azCheckChanged'
 

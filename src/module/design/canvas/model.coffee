@@ -22,7 +22,6 @@ define [ 'constant', 'event'
 				'AWS_EC2_AvailabilityZone' : 'AZ'
 				'AWS_ELB'                  : 'ELB'
 				'AWS_AutoScaling_Group'    : 'ASG'
-				'AWS_AutoScaling_Group'           : 'ASG'
 				'AWS_AutoScaling_LaunchConfiguration' : 'ASG_LC'
 			}
 

@@ -53,6 +53,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                             setTimeout () ->
                                 ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
                                 ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, req.region
+                                ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
                             , 2000
 
             null
@@ -100,11 +101,12 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                                 flag_list.is_done = true
 
                                 # if on current tab
-                                if MC.data.current_tab_id is 'process-'+app_name
+                                if MC.data.current_tab_id is 'process-' + app_name
                                     # hold on 2 seconds
                                     setTimeout () ->
                                         ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
                                         ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, req.region
+                                        ide_event.trigger ide_event.DELETE_TAB_DATA, 'process-' + app_name
                                     , 2000
 
                             else if req.state is constant.OPS_STATE.OPS_STATE_FAILED

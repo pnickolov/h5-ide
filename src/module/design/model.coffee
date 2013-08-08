@@ -48,6 +48,8 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
             console.log 'deleteTab'
             delete MC.tab[ tab_id ]
             console.log MC.tab
+            #
+            if MC.process[ tab_id ] then delete MC.process[ tab_id ]
             null
 
         setCanvasData : ( data ) ->

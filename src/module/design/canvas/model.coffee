@@ -269,13 +269,18 @@ define [ 'constant', 'event'
 			result
 
 		deleteR_ASG : ( component, force ) ->
+			layout_data = MC.canvas_data.layout.component.node[component.uid]
+
+			if not layout_data
+				# This is a extended ASG
+				return
+
 			# Ask user to comfirm the delete operation
 			if not force
 				return "Delete this item will delete the entire #{component.name}. Do you confirm to delete?"
 
 			# Delete the component
-			layout_data = MC.canvas_data.layout.component.node[component.uid]
-			asg_uid     = component.uid
+			asg_uid = component.uid
 
 			# Delete extentions
 			for comp_uid, comp of MC.canvas_data.layout.component.group

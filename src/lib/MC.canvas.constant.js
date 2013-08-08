@@ -584,11 +584,25 @@ var constant_data = {
 
 		'AWS.AutoScaling.LaunchConfiguration':
 		{
+			'AWS.AutoScaling.LaunchConfiguration':
+			{
+				type: 'sg',
+				from: 'launchconfig-sg',
+				to: 'launchconfig-sg',
+
+				direction: {
+					from: 'horizontal',
+					to: 'horizontal'
+				},
+
+				relation: 'multiple',
+				color: '#6DAEFE' //blue
+			},
 			'AWS.EC2.Instance':
 			{
 				type: 'sg',
 				from: 'launchconfig-sg',
-				to: 'instance-sg',
+				to: 'launchconfig-sg',
 
 				direction: {
 					from: 'horizontal',

@@ -44,15 +44,14 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                         me.trigger 'UPDATE_PROCESS'
 
                         # if ended then push event
+                        app_name = MC.process[tab_name].app_name
+                        app_id = MC.process[tab_name].flag_list.app_id
+                        region = MC.process[tab_name].region_name
                         if MC.data.current_tab_id is 'process-'+app_name and MC.process[tab_name].flag_list.is_done
-                            app_name = MC.process[tab_name].app_name
-                            app_id = MC.process[tab_name].flag_list.app_id
-                            region = MC.process[tab_name].region_name
-
                             # hold on 2 seconds
                             setTimeout () ->
                                 ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
-                                ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, req.region
+                                ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
                                 ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
                             , 2000
 

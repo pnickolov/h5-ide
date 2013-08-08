@@ -4319,6 +4319,8 @@ MC.canvas.event.keyEvent = function (event)
 		event.target === document.body
 	)
 	{
+		MC.canvas.volume.close();
+		
 		$.each(MC.canvas_property.selected_node, function (index, id)
 		{
 			selected_node = $('#' + id);

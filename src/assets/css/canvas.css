@@ -355,6 +355,15 @@
 	stroke-width: 2;
 }
 
+.asg-title {
+	fill: #83CBF9;
+	stroke: #83CBF9;
+}
+.asg-title:hover {
+	fill: #5dc2f6;
+	stroke: #5dc2f6;
+}
+
 .AWS-AutoScaling-Group:hover .group-asg,
 .node-dragging .dropable-group .group-asg {
 	stroke: #76d6ff;
@@ -366,7 +375,8 @@
 }
 
 .AWS-AutoScaling-Group .group-label {
-	fill: #999;
+	fill: #ffffff;
+	font-size: 13px;
 }
 
 .asg-resource-dragger {
@@ -374,6 +384,7 @@
 	cursor: pointer;
 }
 
+/*when no LaunchConfiguration in asg*/
 .prompt_text {
 	fill: #16B4F9;
 	font-size: 12px;

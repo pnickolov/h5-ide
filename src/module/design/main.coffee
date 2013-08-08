@@ -42,10 +42,13 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 null
 
             #listen SAVE_DESIGN_MODULE
-            ide_event.onLongListen ide_event.SAVE_DESIGN_MODULE, ( target ) ->
-                console.log 'design:SAVE_DESIGN_MODULE = ' + target
+            ide_event.onLongListen ide_event.SAVE_DESIGN_MODULE, ( tab_id ) ->
+                console.log 'design:SAVE_DESIGN_MODULE = ' + tab_id
                 #save tab
-                model.saveTab target, view.html(), model.getCanvasData(), model.getCanvasProperty(), model.getPropertyPanel(), model.getLastOpenProperty()
+                if tab_id.split( '-' )[0] is 'process'
+                    model.saveProcessTab tab_id
+                else
+                    model.saveTab tab_id, view.html(), model.getCanvasData(), model.getCanvasProperty(), model.getPropertyPanel(), model.getLastOpenProperty()
                 null
 
             #listen SWITCH_TAB

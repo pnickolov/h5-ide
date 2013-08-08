@@ -7,6 +7,8 @@ require.config {
 
 	deps               : [ 'js/ide/main' ]
 
+	locale             : 'en-us'
+
 	paths              :
 
 		#vender
@@ -19,6 +21,7 @@ require.config {
 
 		'domReady'     : 'vender/requirejs/domReady'
 		'text'         : 'vender/requirejs/text'
+		'i18n'         : 'vender/requirejs/i18n'
 
 		'zeroclipboard': 'vender/zeroclipboard/ZeroClipboard'
 		'jqpagination' : 'vender/jqpagination/jquery.jqpagination'
@@ -77,6 +80,7 @@ require.config {
 		'tabbar'       : 'module/tabbar/main'
 		'dashboard'    : 'module/dashboard/main'
 		'design'       : 'module/design/main'
+		'process'      : 'module/process/main'
 
 		#sub module with design
 		'resource'     : 'module/design/resource/main'

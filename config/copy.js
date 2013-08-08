@@ -12,6 +12,7 @@ module.exports = {
 			'<%= src %>/<%= vender %>/requirejs/require.js'            : '<%= components %>/requirejs/require.js',
 			'<%= src %>/<%= vender %>/requirejs/domReady.js'           : '<%= components %>/requirejs-domready/domReady.js',
 			'<%= src %>/<%= vender %>/requirejs/text.js'               : '<%= components %>/requirejs-text/text.js',
+			'<%= src %>/<%= vender %>/requirejs/i18n.js'               : '<%= components %>/requirejs-i18n/i18n.js',
 			'<%= src %>/<%= vender %>/qunit/qunit.js'                  : '<%= components %>/qunit/qunit.js',
 			'<%= src %>/<%= vender %>/qunit/qunit.css'                 : '<%= components %>/qunit/qunit.css',
 			'<%= src %>/<%= vender %>/parsleyjs/parsley.js'            : '<%= components %>/parsleyjs/parsley.js',

@@ -398,23 +398,52 @@ var fitName = function( obj ) {
 }; 
 
 function receiveData(e) {
-  initFilter();
   window.jsonDataStr = e.data;
+  initFilter();
   showData( window.jsonDataStr );
-  showTypes( window.jsonDataStr );
 };
 
 var initFilter = function() {
-  window.jsonType = "";
-  window.jsonName = "";
-  document.forms[ 0 ].name.value = "";
-
+  // reset types select
   var select = document.forms[ 0 ].type;
   var options = select.options;
   var length = options.length;
   for ( var i=1; i<length; i++ ) {
     select.removeChild( options[ 1 ] );
   }
+  showTypes( window.jsonDataStr );
+
+  // reset name input
+  document.forms[ 0 ].name.value = "";
+
+  originType = window.jsonType;
+  originName = window.jsonName;
+
+  window.jsonType = "";
+  window.jsonName = "";
+
+  var data = JSON.parse( window.jsonDataStr );
+
+  for ( key in data ) {
+    val = data[ key ];
+    if ( !window.jsonType && originType && val.type === originType ) {
+      window.jsonType = originType;
+
+      for ( var j=1; j<options.length; j++ ) {
+        if ( options[ j ]. value === originType ) {
+          select.selectedIndex = j;
+          break;
+        }
+      }
+
+    }
+
+    if ( !window.jsonName && originName && val.name === originName ) {
+      window.jsonName = originName;
+      document.forms[ 0 ].name.value = originName;
+    }
+  }
+  
 
 }
 var showData = function( data ) {

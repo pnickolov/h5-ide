@@ -63,10 +63,10 @@ define [ 'jquery',
                 id    : "ACL"
             }
 
+            view.refreshRuleList(MC.canvas_data.component[uid])
 
             #temp hack
-            if view._events
-                return
+            view._events = []
 
             view.on 'ADD_RULE_TO_ACL', (value) ->
                 model.addRuleToACL uid, value

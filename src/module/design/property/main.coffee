@@ -62,9 +62,6 @@ define [ 'jquery',
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
 
-				if MC.data.last_open_property && MC.data.last_open_property.uid is uid
-					return
-
 				$("input").blur()
 
 				#

@@ -280,7 +280,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'STACK_RUN_RETURN'
                 console.log result
 
-                me.handleRequest result, 'RUN_STACK', region, id, app_name
+                #add new-app status
+                #me.handleRequest result, 'RUN_STACK', region, id, app_name
+                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
 
         #zoomin
         zoomIn : () ->
@@ -344,10 +346,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage data, MC.SAVEPNG_URL
             if $( '#phantom-frame' )[0] is undefined
-                $( 'body' ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
-                setTimeout () ->
-                    sendMessage()
-                , 500
+                $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
+                $('#phantom-frame').load -> sendMessage()
             else
                 sendMessage()
             null

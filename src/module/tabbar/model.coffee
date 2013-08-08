@@ -13,44 +13,73 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             current_platform  : null
             tab_name          : null
 
-        refresh      : ( old, current, type ) ->
-            console.log 'refresh'
+        refresh      : ( older, newer, type ) ->
+            console.log 'refresh, older = ' + older + ', newer = ' + newer + ', type = ' + type
             #save
-            #if old isnt 'dashboard' then MC.tab[ old ] = { snapshot : null, data : null }
+            #if older isnt 'dashboard' then MC.tab[ older ] = { snapshot : null, data : null }
             #test
-            #if old isnt 'dashboard' and old isnt null then MC.tab[ old ] = { snapshot : old, data : old }
-            if old isnt 'dashboard' and old isnt null then this.trigger 'SAVE_DESIGN_MODULE', old
+            #if older isnt 'dashboard' and older isnt null then MC.tab[ older ] = { snapshot : older, data : older }
+            if older isnt 'dashboard' and older isnt null then this.trigger 'SAVE_DESIGN_MODULE', older
 
-            if MC.tab[ current ] is undefined
-                #call service
-                console.log 'call new|open stack'
-                #push event
-                if type is 'new'
-                    this.trigger 'NEW_STACK',  current
-                else if type is 'stack'
-                    this.trigger 'OPEN_STACK', current
-                else if type is 'app'
-                    this.trigger 'OPEN_APP',   current
-                else if type is 'dashboard'
-                    this.trigger 'SWITCH_DASHBOARD', null
+            if newer is 'dashboard'
+                this.trigger 'SWITCH_DASHBOARD'
+                return
+
+            if MC.tab[ newer ] is undefined
+                console.log 'write newer from MC.tab'
+                suffix = 'OPEN_'
             else
-                #read from MC.tab[ current ]
-                console.log 'read old stack from MC.tab'
-                console.log MC.tab[ current ]
+                console.log 'read older from MC.tab'
+                console.log MC.tab[ newer ]
+                suffix = 'OLD_'
+
+            switch type
+                when 'new'
+                    if suffix is 'OLD_' then event_type = suffix + 'STACK' else event_type = 'NEW_STACK'
+                when 'stack'
+                    event_type = suffix + 'STACK'
+                when 'app'
+                    event_type = suffix + 'APP'
+                when 'process'
+                    event_type = suffix + 'PROCESS'
+                else
+                    console.log 'no find tab type'
+
+            console.log 'event_type = ' + event_type
+            this.trigger event_type, newer
+
+            ###
+            if MC.tab[ newer ] is undefined
+                console.log 'write newer from MC.tab'
                 #push event
                 if type is 'new'
-                    this.trigger 'OLD_STACK', current
+                    this.trigger 'NEW_STACK',    newer
                 else if type is 'stack'
-                    this.trigger 'OLD_STACK', current
+                    this.trigger 'OPEN_STACK',   newer
                 else if type is 'app'
-                    this.trigger 'OLD_APP',   current
+                    this.trigger 'OPEN_APP',     newer
+                else if type is 'process'
+                    this.trigger 'OPEN_PROCESS', newer
+            else
+                console.log 'read older from MC.tab'
+                console.log MC.tab[ newer ]
+                #push event
+                if type is 'new'
+                    this.trigger 'OLD_STACK',   newer
+                else if type is 'stack'
+                    this.trigger 'OLD_STACK',   newer
+                else if type is 'app'
+                    this.trigger 'OLD_APP',     newer
+                else if type is 'process'
+                    this.trigger 'OLD_PROCESS', newer
+            ###
 
             console.log MC.tab
 
         ###
-        delete       : ( current ) ->
+        delete       : ( newer ) ->
             console.log 'delete'
-            delete MC.tab[ current ]
+            delete MC.tab[ newer ]
             console.log MC.tab
         ###
 

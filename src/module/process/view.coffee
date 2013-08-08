@@ -13,9 +13,17 @@ define [ 'event',
 
         template : Handlebars.compile template
 
+        events:
+            'click .btn-close-process'      : 'closeProcess'
+
         render   : ->
             console.log 'process render'
             $( this.el ).html this.template this.model.attributes
+
+        closeProcess : ->
+            console.log 'closeProcess'
+
+            ide_event.trigger ide_event.STACK_DELETE, MC.data.current_tab_id.slice(8), MC.canvas_data.id
 
     }
 

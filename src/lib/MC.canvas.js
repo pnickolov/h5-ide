@@ -853,11 +853,11 @@ MC.canvas = {
 							{
 								if (to_port_offset.left > from_node[0].getBoundingClientRect().left)
 								{
-									from_port = from_node.find('.port-' + from_target_port + '-left');
+									from_port = from_node.find('.port-' + from_target_port + '-right');
 								}
 								else
 								{
-									from_port = from_node.find('.port-' + from_target_port + '-right');
+									from_port = from_node.find('.port-' + from_target_port + '-left');
 								}
 							}
 						}
@@ -883,11 +883,11 @@ MC.canvas = {
 							{
 								if (from_port_offset.left > to_node[0].getBoundingClientRect().left)
 								{
-									to_port = to_node.find('.port-' + to_target_port + '-left');
+									to_port = to_node.find('.port-' + to_target_port + '-right');
 								}
 								else
 								{
-									to_port = to_node.find('.port-' + to_target_port + '-right');
+									to_port = to_node.find('.port-' + to_target_port + '-left');
 								}
 							}
 						}

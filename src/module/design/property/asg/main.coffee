@@ -39,10 +39,15 @@ define [ 'jquery',
             view.model    = model
 
             model.setUID uid
+
+            model.getASGDetail uid
+
             view.render()
 
 
+            view.on 'SET_SNS_OPTION', ( checkArray, endpoint ) ->
 
+                model.setSNSOption checkArray, endpoint
 
     unLoadModule = () ->
         current_view.off()

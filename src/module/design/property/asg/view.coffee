@@ -29,11 +29,15 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.toggleicon' ], (
                 if checked
                     show_more = true
 
+                null
+
             (if show_more then $.fn.show else $.fn.hide).apply $("#property-asg-sns-more")
 
             endpoint = $("#property-asg-endpoint").val()
 
             console.log "SNS selection : #{checkArray}, Endpoint Value : #{endpoint}"
+
+            this.trigger 'SET_SNS_OPTION', checkArray, endpoint
 
         updateSNSInput : () ->
 

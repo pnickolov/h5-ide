@@ -33,7 +33,7 @@
 			</li>
 			{{/each}}
 		</ul>
-		<div class="btn btn-silver secondary-panel {{#if app_view}}hide{{/if}}" id="add-sg-btn">Create new Security Group</div>
+		{{#unless app_view}}<div class="btn btn-silver secondary-panel" id="add-sg-btn">Create new Security Group</div>{{/unless}}
 	</div>
 	<div id="item-rule" class="tab-item">
 		<div class="sg-rule-filter">

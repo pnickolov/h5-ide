@@ -12,7 +12,6 @@ define({
 		'login-btn'      : '登录'
 	},
 	'ide' : {
-		'header   ' : '我是中文',
 		'dashboard' : '仪表盘',
 		'account-settings' : '账户设置'
 	}

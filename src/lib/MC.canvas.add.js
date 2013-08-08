@@ -1060,7 +1060,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					lc_comp.resource.BlockDeviceMapping.push(component_data);
 				}
 
-				return option.instance_id + '_volume_sd' + device_name[0];
+				return option.instance_id + '_volume_' + component_data.DeviceName.replace('/dev/', '');
 			}
 
 			return group;

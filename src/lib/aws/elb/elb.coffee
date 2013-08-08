@@ -12,8 +12,8 @@ define [ 'MC' ], ( MC ) ->
 		MC.canvas.update uid, 'text', 'elb_name', newELBName
 
 		allComp = MC.canvas_data.component
-		haveVPC = elbComp.resource.VpcId
-		if !haveVPC
+		vpcUIDRef = elbComp.resource.VpcId
+		if !vpcUIDRef
 			MC.canvas_data.component[uid].resource.Scheme = ''
 
 		# have igw ?
@@ -29,6 +29,9 @@ define [ 'MC' ], ( MC ) ->
 		sgComp.uid = MC.guid()
 		sgComp.name = newELBName + '-sg'
 		sgComp.resource.GroupName = sgComp.name
+		
+		if vpcUIDRef then sgComp.resource.VpcId = vpcUIDRef
+		
 		MC.canvas_data.component[sgComp.uid] = sgComp
 
 		sgRef = '@' + sgComp.uid + '.resource.GroupId'
@@ -176,10 +179,10 @@ define [ 'MC' ], ( MC ) ->
 
 		listenerAry = []
 		_.each elbListenerAry, (listenerObj) ->
-			protocol = listenerObj.Listener.Protocol.toLowerCase()
+			# protocol = listenerObj.Listener.Protocol.toLowerCase()
 			port = listenerObj.Listener.LoadBalancerPort
 			listenerAry.push {
-				protocol: protocol,
+				protocol: 'tcp',
 				port: port
 			}
 			null
@@ -194,7 +197,7 @@ define [ 'MC' ], ( MC ) ->
 			addListenerToRule = true
 			removeListenerToRule = true
 			_.each elbDefaultSGInboundRuleAry, (ruleObj) ->
-				protocol = ruleObj.IpProtocol
+				protocol = 'tcp' #ruleObj.IpProtocol
 				port = ruleObj.FromPort
 				if listenerObj.protocol is protocol and listenerObj.port is port
 					addListenerToRule = false

@@ -31,6 +31,19 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                 if MC.process[tab_name].flag_list   # processing app
                     me.set 'flag_list', MC.process[tab_name].flag_list
                     me.trigger 'UPDATE_PROCESS'
+
+                    # if ended then push event
+                    if MC.data.current_tab_id is 'process-'+app_name and MC.process[tab_name].flag_list.is_done
+                        app_name = MC.process[tab_name].app_name
+                        app_id = MC.process[tab_name].flag_list.app_id
+                        region = MC.process[tab_name].region_name
+
+                        # hold on 2 seconds
+                        setTimeout () ->
+                            ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name
+                            ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, req.region
+                        , 2000
+
                 else # begin to process
                     me.handleProcess tab_name
 
@@ -72,16 +85,19 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                             else if req.state is constant.OPS_STATE.OPS_STATE_DONE
                                 handle.stop()
 
+                                lst = req.data.split(' ')
+                                app_id = lst[lst.length-1]
+
+                                flag_list.app_id = app_id
                                 flag_list.is_done = true
 
-                                # hold on 2 seconds
-                                setTimeout () ->
-                                    lst = req.data.split(' ')
-                                    app_id = lst[lst.length-1]
-
-                                    ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name
-                                    ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, req.region
-                                , 2000
+                                # if on current tab
+                                if MC.data.current_tab_id is 'process-'+app_name
+                                    # hold on 2 seconds
+                                    setTimeout () ->
+                                        ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name
+                                        ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, req.region
+                                    , 2000
 
                             else if req.state is constant.OPS_STATE.OPS_STATE_FAILED
                                 handle.stop()

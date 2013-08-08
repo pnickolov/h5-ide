@@ -51,7 +51,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                             # hold on 2 seconds
                             setTimeout () ->
-                                ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name
+                                ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
                                 ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, req.region
                             , 2000
 
@@ -103,7 +103,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                                 if MC.data.current_tab_id is 'process-'+app_name
                                     # hold on 2 seconds
                                     setTimeout () ->
-                                        ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name
+                                        ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
                                         ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, req.region
                                     , 2000
 

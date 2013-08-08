@@ -23,7 +23,7 @@ define [ 'event',
         closeProcess : ->
             console.log 'closeProcess'
 
-            ide_event.trigger ide_event.STACK_DELETE, MC.data.current_tab_id.slice(8), MC.canvas_data.id
+            ide_event.trigger ide_event.STACK_DELETE, null, MC.data.current_tab_id
 
     }
 

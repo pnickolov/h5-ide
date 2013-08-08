@@ -1978,14 +1978,16 @@ MC.canvas.volume = {
 			{
 				$.each(node_volume_data, function (index, item)
 				{
+					volume_id = node.id + '-volume-' + item.DeviceName.replace(/\//ig, '');
+
 					data.list.push({
-						'volume_id': item.DeviceName,
+						'volume_id': volume_id,
 						'name': item.DeviceName,
 						'size': item.Ebs.VolumeSize,
 						'snapshotId': item.Ebs.SnapshotId,
 						'json': JSON.stringify({
 							'instance_id': node.id,
-							'id': item.DeviceName,
+							'id': volume_id,
 							'name': item.DeviceName,
 							'snapshotId': item.Ebs.SnapshotId,
 							'volumeSize': item.Ebs.VolumeSize
@@ -2111,7 +2113,6 @@ MC.canvas.volume = {
 		if (event)
 		{
 			target = $(event.target);
-
 			if (
 				target.attr('class') === 'instance-volume' ||
 				target.is('.snapshot_item') ||
@@ -2166,11 +2167,14 @@ MC.canvas.volume = {
 
 			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
-			MC.canvas.data.delete('component.' + volume_id);
+			if (target_node.data('class') === 'AWS.EC2.Instance')
+			{
+				MC.canvas.data.delete('component.' + volume_id);
+			}
 
 			$('#' + volume_id).parent().remove();
 
-			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
+			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 
 			$(document).off('keyup', MC.canvas.volume.remove);
 		}
@@ -2191,7 +2195,10 @@ MC.canvas.volume = {
 				shadow,
 				clone_node;
 
-			if (MC.canvas.getState() === 'app')
+			if (
+				MC.canvas.getState() === 'app' ||
+				$('#' + target.data('json')['instance_id']).data('class') === 'AWS.AutoScaling.LaunchConfiguration'
+			)
 			{
 				MC.canvas.volume.select.call( $('#' + this.id )[0] );
 

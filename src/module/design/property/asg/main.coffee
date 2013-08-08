@@ -19,6 +19,9 @@ define [ 'jquery',
     #private
     loadModule = ( uid, current_main ) ->
 
+        # What does this mean ?
+        MC.data.current_sub_main = current_main
+
 
         require [ './module/design/property/asg/view',
                   './module/design/property/asg/model',
@@ -34,6 +37,8 @@ define [ 'jquery',
 
             #view
             view.model    = model
+
+            model.setUID uid
             view.render()
 
 

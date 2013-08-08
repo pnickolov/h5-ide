@@ -208,10 +208,17 @@ define [ 'constant', 'event'
 
 		deleteObject : ( event, option ) ->
 
+			option = $.extend {}, option
+
 			component = MC.canvas_data.component[ option.id ] ||
 			if not component
 				component = $.extend true, {uid:option.id}, MC.canvas_data.layout.component.group[ option.id ]
 
+			# Treat ASG as a node, not a group
+			if component.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+				option.type = 'node'
+
+			# Find Handler to delete the resource
 			switch option.type
 				when 'node'
 					handler = this.deleteResMap[ component.type ]
@@ -220,6 +227,8 @@ define [ 'constant', 'event'
 				when 'line'
 					result = this.deleteLine option
 
+			# If the handler returns false or string,
+			# The delete operation is prevented.
 			if handler
 				result = handler.call( this, component, option.force )
 
@@ -260,60 +269,44 @@ define [ 'constant', 'event'
 
 			result
 
-		deleteR_ASG : ( component ) ->
+		deleteR_ASG : ( component, force ) ->
+			# Ask user to comfirm the delete operation
+			if not force
+				return "Delete this item will delete the entire #{component.name}. Do you confirm to delete?"
 
+			# Delete the component
 			layout_data = MC.canvas_data.layout.component.node[component.uid]
+			asg_uid     = component.uid
 
-			asg_uid = component.uid
-
-			if component.resource.LaunchConfigurationName
-				lc_uid = component.resource.LaunchConfigurationName.split('.')[0][1...]
-				delete MC.canvas_data.component[lc_uid]
-
-			MC.canvas.remove $("#" + asg_uid)[0]
-
-			$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
-
+			# Delete extentions
+			for comp_uid, comp of MC.canvas_data.layout.component.group
 				if comp.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId is asg_uid
-
 					MC.canvas.remove $("#" + comp_uid)[0]
 
-				null
-
+			# Delete the component
 			delete MC.canvas_data.component[component.uid]
 
-			false
+			if not component.resource.LaunchConfigurationName
+				return
+
+			# Delete the LC if there's only one asg is using.
+			lc_uid    = component.resource.LaunchConfigurationName
+			lc_shared = false
+			for comp_uid, compo of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					if comp.resource.LaunchConfigurationName is lc_uid
+						lc_shared = true
+						break
+
+			if not lc_shared
+				lc_uid = MC.extractID lc_uid
+				delete MC.canvas_data.component[lc_uid]
+				ide_event.trigger ide_event.DELETE_ASG_LC, lc_uid
+
+			null
 
 		deleteR_ASG_LC : ( component ) ->
-
-			layout_data = MC.canvas_data.layout.component.node[component.uid]
-
-			if layout_data
-
-				asg_uid = layout_data.groupUId
-
-				lc_uid = layout_data.originalId
-
-				MC.canvas.remove $("#" + lc_uid)[0]
-
-				existing = false
-
-				$.each MC.canvas_data.layout.component.node, ( comp_uid, comp ) ->
-
-					if comp.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and comp.originalId is lc_uid
-
-						existing = true
-
-						return false
-
-					null
-
-				if not existing
-
-					delete MC.canvas_data.component[lc_uid]
-
-
-			false
+			"!Currently changing launch configuration is not supported."
 
 		deleteR_Instance : ( component ) ->
 

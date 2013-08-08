@@ -1978,7 +1978,7 @@ MC.canvas.volume = {
 			{
 				$.each(node_volume_data, function (index, item)
 				{
-					volume_id = node.id + '-volume-' + item.DeviceName.replace(/\//ig, '');
+					volume_id = node.id + '_volume_' + item.DeviceName.replace('/dev/', '');
 
 					data.list.push({
 						'volume_id': volume_id,
@@ -2100,7 +2100,14 @@ MC.canvas.volume = {
 		$(document).on('keyup', MC.canvas.volume.remove);
 
 		//dispatch event when select volume node
-		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
+		if ($('#' + $('#volume-bubble-box').data('target-id')).data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+		{
+			$("#svg_canvas").trigger("CANVAS_ASG_VOLUME_SELECTED", this.id);
+		}
+		else
+		{
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
+		}
 
 		return false;
 	},
@@ -2327,7 +2334,11 @@ MC.canvas.volume = {
 				}
 				else
 				{
-					if (target.attr('class') !== 'AWS.AutoScaling.LaunchConfiguration')
+					if (target_node.data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+					{
+						volume_id = new_volume;
+					}
+					else
 					{
 						volume_id = new_volume.id;
 						//data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');

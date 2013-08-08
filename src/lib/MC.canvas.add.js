@@ -1046,7 +1046,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 			//set data
-			if (data[option.instance_id].type === 'AWS.EC2.Instance' )
+			if (data[option.instance_id].type === 'AWS.EC2.Instance')
 			{//for AWS.EC2.Instance
 				component_data.uid = group.id;
 				data[group.id] = component_data;
@@ -1059,6 +1059,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				{
 					lc_comp.resource.BlockDeviceMapping.push(component_data);
 				}
+
+				return option.instance_id + '_volume_sd' + device_name[0];
 			}
 
 			return group;

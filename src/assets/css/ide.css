@@ -3877,6 +3877,15 @@ a.sidebar-hider {
 	margin: 0 5px 0 0;
 }
 
+/* Auto Scaling Group Property */
+.property-asg-ep.http:before {
+	content : "http";
+	display : inline-block;
+}
+.property-asg-ep.https:before {
+	content : "https";
+}
+
 /* stack and app property sgrule */
 .property-subhead {
 	padding: 10px;

@@ -2,17 +2,26 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (constant, ide_event) ->
+define [ 'jquery' ], () ->
 
-	LaunchConfigModel = Backbone.Model.extend {
+  ASGConfigModel = Backbone.Model.extend {
 
-		defaults :
-			uid : null
+    defaults :
+      uid : null
+      asg : null
 
-		initialize : ->
-			null
-	}
+    initialize : ->
+      null
 
-	model = new LaunchConfigModel()
+    setUID : ( uid ) ->
 
-	return model
+      data =
+        uid : uid
+
+      this.set data
+      null
+  }
+
+  model = new ASGConfigModel()
+
+  return model

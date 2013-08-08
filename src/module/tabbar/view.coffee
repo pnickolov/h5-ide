@@ -110,7 +110,7 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
                     temp.attr 'title',       tab_name
                     temp.attr 'data-tab-id', tab_id
                     temp.attr 'href',        '#tab-content-' + tab_id
-                    temp.text tab_name
+                    temp.html '<i class="icon-layers icon-label"></i>' + tab_name
                     null
             return original_tab_id
     }

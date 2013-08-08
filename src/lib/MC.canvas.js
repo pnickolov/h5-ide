@@ -1978,14 +1978,16 @@ MC.canvas.volume = {
 			{
 				$.each(node_volume_data, function (index, item)
 				{
+					volume_id = node.id + '_volume_' + item.DeviceName.replace('/dev/', '');
+
 					data.list.push({
-						'volume_id': item.DeviceName,
+						'volume_id': volume_id,
 						'name': item.DeviceName,
 						'size': item.Ebs.VolumeSize,
 						'snapshotId': item.Ebs.SnapshotId,
 						'json': JSON.stringify({
 							'instance_id': node.id,
-							'id': item.DeviceName,
+							'id': volume_id,
 							'name': item.DeviceName,
 							'snapshotId': item.Ebs.SnapshotId,
 							'volumeSize': item.Ebs.VolumeSize
@@ -2098,7 +2100,14 @@ MC.canvas.volume = {
 		$(document).on('keyup', MC.canvas.volume.remove);
 
 		//dispatch event when select volume node
-		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
+		if ($('#' + $('#volume-bubble-box').data('target-id')).data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+		{
+			$("#svg_canvas").trigger("CANVAS_ASG_VOLUME_SELECTED", this.id);
+		}
+		else
+		{
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", this.id);
+		}
 
 		return false;
 	},
@@ -2111,7 +2120,6 @@ MC.canvas.volume = {
 		if (event)
 		{
 			target = $(event.target);
-
 			if (
 				target.attr('class') === 'instance-volume' ||
 				target.is('.snapshot_item') ||
@@ -2166,11 +2174,14 @@ MC.canvas.volume = {
 
 			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
-			MC.canvas.data.delete('component.' + volume_id);
+			if (target_node.data('class') === 'AWS.EC2.Instance')
+			{
+				MC.canvas.data.delete('component.' + volume_id);
+			}
 
 			$('#' + volume_id).parent().remove();
 
-			bubble_box.css('top',  target_offset.top - ((bubble_box.height() - target_offset.height) / 2));
+			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 
 			$(document).off('keyup', MC.canvas.volume.remove);
 		}
@@ -2191,7 +2202,10 @@ MC.canvas.volume = {
 				shadow,
 				clone_node;
 
-			if (MC.canvas.getState() === 'app')
+			if (
+				MC.canvas.getState() === 'app' ||
+				$('#' + target.data('json')['instance_id']).data('class') === 'AWS.AutoScaling.LaunchConfiguration'
+			)
 			{
 				MC.canvas.volume.select.call( $('#' + this.id )[0] );
 
@@ -2320,10 +2334,14 @@ MC.canvas.volume = {
 				}
 				else
 				{
-					if (target.attr('class') !== 'AWS.AutoScaling.LaunchConfiguration')
+					if (target_node.data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+					{
+						volume_id = new_volume;
+					}
+					else
 					{
 						volume_id = new_volume.id;
-						data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
+						//data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
 					}
 				}
 			}
@@ -2387,7 +2405,10 @@ MC.canvas.volume = {
 
 				$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
-				target_volume_data.push('#' + volume_id);
+				if ( MC.canvas.data.get('component.' + target_id).type === 'AWS.EC2.Instance')
+				{
+					target_volume_data.push('#' + volume_id);
+				}
 
 				$('#instance_volume_number').text(target_volume_data.length);
 
@@ -4298,6 +4319,7 @@ MC.canvas.event.keyEvent = function (event)
 		event.target === document.body
 	)
 	{
+		MC.canvas.volume.close();
 		$.each(MC.canvas_property.selected_node, function (index, id)
 		{
 			selected_node = $('#' + id);

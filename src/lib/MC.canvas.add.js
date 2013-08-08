@@ -456,7 +456,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				if (option['originalId'])
 				{//expand ASG
 					var target_group = option.groupUId,
-						original_group = layout.group[option.originalId].groupUId;
+						original_group = layout.group[option.originalId].groupUId,
+						component_data = null;
 					if ( target_group === original_group )
 					{//expand to the same group
 						var groupType = '';
@@ -514,14 +515,15 @@ MC.canvas.add = function (flag, option, coordinate)
 				if (component_data)
 				{//original ASG
 					var lc_name = component_data.resource.LaunchConfigurationName;
-					option.name = component_data.name;
-					option['launchConfig'] = (lc_name !== '') ? lc_name.split('.')[0].substr(1) : '' ;
+					//option['launchConfig'] = (lc_name !== '') ? lc_name.split('.')[0].substr(1) : '' ;
 				}
 				else
 				{//expand ASG
 					option['originalId'] = layout.group[group.id].originalId;
 					component_data = data[layout.group[group.id].originalId];
 				}
+
+				option.name = component_data.name;
 
 				component_layout = layout.group[group.id];
 
@@ -566,23 +568,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				),
 
 				////2. area
-				Canvon.rectangle(0, 0, width, height).attr({
+				Canvon.rectangle(0, 1, width, height - 1).attr({
 					'class': 'group group-asg',
 					'rx': 5,
 					'ry': 5
-				}),
-
-				////3.dragger
-				Canvon.path('M ' + (width - 1) + ' 1 l' + ' 0 20 l -20 -20 z', {}).attr({
-					'class': 'asg-resource-dragger',
-					'id': group.id + '_asg_resource_dragger',
-					'display': option['launchConfig'] || component_data.resource ? 'inline' : 'none'
-				}),
-
-				////5.asg label
-				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
-					'class': 'group-label name',
-					'id': group.id + '_name'
 				}),
 
 				//prompt
@@ -594,9 +583,26 @@ MC.canvas.add = function (flag, option, coordinate)
 				).attr({
 					'class': 'prompt_text',
 					'id': group.id + '_prompt_text',
-					'display': option['originalId'] || option['launchConfig']||component_data.resource.LaunchConfigurationName ? 'none' : 'inline'
-				})
+					'display': option['originalId'] || option['launchConfig']||  (component_data && component_data.resource.LaunchConfigurationName!=='') ? 'none' : 'inline'
+				}),
 
+				////title
+				Canvon.path(MC.canvas.PATH_ASG_TITLE).attr({
+					'class': 'asg-title'
+				}),
+
+				////3.dragger
+				Canvon.image('../assets/images/ide/icon/asg-resource-dragger.png', width - 22, 0, 22, 20).attr({
+					'class': 'asg-resource-dragger',
+					'id': group.id + '_asg_resource_dragger',
+					'display': !option['originalId'] && (option['launchConfig'] || (component_data && (component_data.resource.LaunchConfigurationName!==''))) ? 'inline' : 'none'
+				}),
+
+				////5.asg label
+				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
+					'class': 'group-label name',
+					'id': group.id + '_name'
+				})
 
 			).attr({
 				'class': 'dragable ' + class_type,
@@ -607,7 +613,8 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (option['originalId'])
 			{//append launchconfiguration to expand asg
 				var orig_asg_comp = data[ option['originalId'] ],
-					offset = 20,
+					offset_x = 20,
+					offset_y = 30,
 					lc_comp_id,
 					lc_comp_layout,
 					os_type,
@@ -622,18 +629,18 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					$(group).append(
 						////1bg
-						Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15 + offset, 11 + offset, 70, 70),
+						Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15 + offset_x, 11 + offset_y, 70, 70),
 						////2os_type
-						Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30 + offset, 15 + offset, 39, 27),
+						Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30 + offset_x, 15 + offset_y, 39, 27),
 						////3lc name
-						Canvon.text(50 + offset, 90 + offset, lc_name).attr({
+						Canvon.text(50 + offset_x, 90 + offset_y, lc_name).attr({
 							'class': 'node-label name'
 						}),
 
 						//4 path: left port(blue)
 						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-left',
-							'transform': 'translate('+ (8 + offset ) + ', ' + (26 + offset) + ')' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
+							'transform': 'translate('+ (8 + offset_x ) + ', ' + (26 + offset_y) + ')' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
 							'data-name': 'launchconfig-sg', //for identify port
 							'data-position': 'left', //port position: for calc point of junction
 							'data-type': 'sg', //color of line
@@ -644,7 +651,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						//5 path: right port(blue)
 						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-right',
-							'transform': 'translate(' + (84 + offset) +' , ' + (26 + offset) + ')' + MC.canvas.PORT_RIGHT_ROTATE,
+							'transform': 'translate(' + (84 + offset_x) +' , ' + (26 + offset_y) + ')' + MC.canvas.PORT_RIGHT_ROTATE,
 							'data-name': 'launchconfig-sg',
 							'data-position': 'right',
 							'data-type': 'sg',
@@ -679,7 +686,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'launchConfig' : option['launchConfig']
 				}, {
 					'x': coordinate.x + 2,
-					'y': coordinate.y + 2
+					'y': coordinate.y + 3
 				});
 			}
 
@@ -1057,7 +1064,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 			//set data
-			if (data[option.instance_id].type === 'AWS.EC2.Instance' )
+			if (data[option.instance_id].type === 'AWS.EC2.Instance')
 			{//for AWS.EC2.Instance
 				component_data.uid = group.id;
 				data[group.id] = component_data;
@@ -1070,6 +1077,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				{
 					lc_comp.resource.BlockDeviceMapping.push(component_data);
 				}
+
+				return option.instance_id + '_volume_' + component_data.DeviceName.replace('/dev/', '');
 			}
 
 			return group;
@@ -1768,6 +1777,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_data.name = option.name;
 					component_data.resource.LaunchConfigurationName = option.name;
 
+					//hide prompt text
+					MC.canvas.display(option.groupUId, 'prompt_text', false);
 					//show dragger
 					MC.canvas.display(option.groupUId, 'asg_resource_dragger', true);
 
@@ -1799,7 +1810,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_layout.virtualizationType = option.virtualizationType;
 
 					coordinate.x = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[0] + 2;
-					coordinate.y = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[1] + 2;
+					coordinate.y = MC.canvas.data.get('layout.component.group')[option.groupUId].coordinate[1] + 3;
 
 					component_layout.originalId = group.id;
 
@@ -1820,7 +1831,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}
 
 
-				MC.canvas.display(option.groupUId, 'prompt_text', false);
+
 			}
 			else
 			{//read

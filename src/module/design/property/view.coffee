@@ -4,8 +4,8 @@
 
 define [ './temp_view',
          'event'
-         'backbone', 'jquery', 'handlebars'
-         'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon'
+         'backbone', 'jquery', 'handlebars',
+         'UI.fixedaccordion', 'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon', 'UI.multiinputbox'
 ], ( temp_view, ide_event ) ->
 
     PropertyView = Backbone.View.extend {
@@ -120,12 +120,13 @@ define [ './temp_view',
             false
 
         immHideSecondPanel : () ->
-            if not $("#property-panel").hasClass "show-second-panel"
+            if not $("#property-panel .property-wrap").hasClass "show-second-panel"
                 return
 
             # Hide Second Panel immediately
             setTimeout () ->
-                $("#property-panel").removeClass "transition show-second-panel"
+                $("#property-panel").removeClass "transition"
+                $("#property-panel .property-wrap").removeClass "show-second-panel"
 
                 setTimeout ()->
                     $("#property-panel").addClass "transition"

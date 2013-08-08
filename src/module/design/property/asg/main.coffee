@@ -4,8 +4,9 @@
 
 define [ 'jquery',
          'text!/module/design/property/asg/template.html',
+         'text!/module/design/property/asg/term_template.html',
          'event'
-], ( $, template, ide_event ) ->
+], ( $, template, term_template, ide_event ) ->
 
     #
     current_view     = null
@@ -13,8 +14,9 @@ define [ 'jquery',
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-asg-tmpl">' + template + '</script>'
+    term_template = '<script type="text/x-handlebars-template" id="property-asg-term-tmpl">' + term_template + '</script>'
     #load remote html template
-    $( 'head' ).append template
+    $( 'head' ).append( template ).append( term_template )
 
     #private
     loadModule = ( uid, current_main ) ->
@@ -39,10 +41,15 @@ define [ 'jquery',
             view.model    = model
 
             model.setUID uid
+
+            model.getASGDetail uid
+
             view.render()
 
 
+            view.on 'SET_SNS_OPTION', ( checkArray, endpoint ) ->
 
+                model.setSNSOption checkArray, endpoint
 
     unLoadModule = () ->
         current_view.off()

@@ -26,7 +26,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 			$('#property-head-sg-num').text(this.model.attributes.sg_list.length)
 
 		openSgPanel : ( event ) ->
-			this.trigger 'OPEN_SG', $(event.target).parents('li').attr('sg-uid')
+			sgUID = $(event.target).parents('li').attr('sg-uid')
+			this.trigger 'OPEN_SG', sgUID
 
 		refreshSGList: () ->
 			this.render()

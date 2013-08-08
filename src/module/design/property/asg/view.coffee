@@ -78,7 +78,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 checkArray.push checked
                 if checked
                     show_more = true
-                null
 
                 null
 

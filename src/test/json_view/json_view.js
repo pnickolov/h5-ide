@@ -14,6 +14,16 @@ define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 		jsonViewFrame = $('#json_view_frame');
 		jsonViewFrame.width(650)
 			.height(document.body.clientHeight - 20);
+
+		if (MC.canvas_data.layout.component.node[comp_uid] && MC.canvas_data.layout.component.node[comp_uid].originalId)
+		{
+			comp_uid = MC.canvas_data.layout.component.node[comp_uid].originalId;
+		}
+		else if (MC.canvas_data.layout.component.group[comp_uid] && MC.canvas_data.layout.component.group[comp_uid].originalId)
+		{
+			comp_uid = MC.canvas_data.layout.component.group[comp_uid].originalId;
+		}
+
 		compObj = MC.canvas_data.component[comp_uid];
 		if(compObj) {
 			jsonViewFrame[0].contentWindow.postMessage(JSON.stringify(compObj), '*');
@@ -30,5 +40,5 @@ define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 			//jsonViewFrame.hide();
 		}
 	});
-	
+
 });

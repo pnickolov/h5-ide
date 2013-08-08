@@ -21,8 +21,9 @@ define [ 'constant', 'event'
 				'AWS_VPC_CustomerGateway'  : 'CGW'
 				'AWS_EC2_AvailabilityZone' : 'AZ'
 				'AWS_ELB'                  : 'ELB'
-				'AWS_AutoScaling_LaunchConfiguration' : 'LaunchConfiguration'
+				'AWS_AutoScaling_Group'    : 'ASG'
 				'AWS_AutoScaling_Group'           : 'ASG'
+				'AWS_AutoScaling_LaunchConfiguration' : 'ASG_LC'
 			}
 
 			this.changeParentMap = {}
@@ -283,7 +284,7 @@ define [ 'constant', 'event'
 
 			false
 
-		deleteR_LaunchConfiguration : ( component ) ->
+		deleteR_ASG_LC : ( component ) ->
 
 			layout_data = MC.canvas_data.layout.component.node[component.uid]
 

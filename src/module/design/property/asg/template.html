@@ -1,4 +1,5 @@
 <article>
+  {{#if hasLaunchConfig}}
 	<div class="option-group-head expand">Auto Scaling Group Details</div>
 	<div class="option-group">
 		<section class="property-control-group">
@@ -120,4 +121,7 @@
 		</section>
 
 	</div>
+	{{else}}
+	<p>Drop AMI from Resrouce Panel to create Launch Configuration</p>
+	{{/if}}
 </article>

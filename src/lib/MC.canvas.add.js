@@ -510,7 +510,18 @@ MC.canvas.add = function (flag, option, coordinate)
 			else
 			{
 				component_data = data[group.id];
-				option.name = component_data.name;
+
+				if (component_data)
+				{//original ASG
+					var lc_name = component_data.resource.LaunchConfigurationName;
+					option.name = component_data.name;
+					option['launchConfig'] = (lc_name !== '') ? lc_name.split('.')[0].substr(1) : '' ;
+				}
+				else
+				{//expand ASG
+					option['originalId'] = layout.group[group.id].originalId;
+					component_data = data[layout.group[group.id].originalId];
+				}
 
 				component_layout = layout.group[group.id];
 

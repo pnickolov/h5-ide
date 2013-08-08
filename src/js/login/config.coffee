@@ -7,7 +7,7 @@ require.config {
 
 	deps                  : [ 'js/login/main' ]
 
-	locale                : 'zh-cn'
+	locale                : 'en-us'
 
 	paths                 :
 

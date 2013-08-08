@@ -99,21 +99,6 @@ define [ 'jquery', 'handlebars',
 
 				return false
 
-	###
-	setLang = () ->
-		$( '#login-title > h2' ).html  lang.login.login
-		$( '#login-register' ).html lang.login[ 'login-register' ] + '<a href="#" id="link-register">Register</a>'
-		$( '#link-register' ).html  lang.login[ "link-register" ]
-		$( '#error-msg-1' ).html    lang.login[ "error-msg-1" ]
-		$( '#error-msg-2' ).html    lang.login[ "error-msg-2" ]
-		$( '#link-foget' ).html     lang.login[ "link-foget" ]
-		$( '#footer-info' ).html    lang.login[ "footer-info" ]
-		$( '#login-btn' ).val        lang.login[ "login-btn" ]
-		$( '#login-user' ).attr     'placeholder', lang.login[ "login-user" ]
-		$( '#login-password' ).attr 'placeholder', lang.login[ "login-password" ]
-		null
-	###
-
 	#public object
 	ready : () ->
 		#i18n
@@ -125,5 +110,3 @@ define [ 'jquery', 'handlebars',
 		$( '#login-btn' ).removeAttr 'disabled'
 		$( '#login-btn' ).addClass 'enabled'
 		$( '#login-form' ).submit( MC.login )
-		#
-		#setLang()

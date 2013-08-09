@@ -20,6 +20,16 @@
         {{/each}}
       </ul>
 
+      <ul class="drag-sort-list">
+        <li {{#if useDefault}}class="enabled"{{/if}}>
+          <div class="checkbox">
+            <input id="property-asg-term-def" type="checkbox" {{#if useDefault}}checked="checked"{{/if}}/>
+            <label for="property-asg-term-def"></label>
+          </div>
+          <span>Default</span>
+        </li>
+      </ul>
+
    </div>
    <div class="modal-footer">
       <button id="property-asg-term-done" class="btn btn-blue">Done</button>

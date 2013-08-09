@@ -18,10 +18,42 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             "click #property-asg-sns input[type=checkbox]" : "updateSNSOption"
             "change #property-asg-endpoint" : "updateSNSOption"
             "OPTION_CHANGE #property-asg-sns-more" : "updateSNSInput"
+            "change #property-asg-elb" : "setHealthyCheckELBType"
+            "change #property-asg-ec2" : "setHealthyCheckEC2Type"
+            "change #property-asg-name" : "setASGName"
+            "change #property-asg-min" : "setASGMin"
+            "change #property-asg-max" : "setASGMax"
+            "change #property-asg-capacity" : "setASGDesireCapacity"
+            "change #property-asg-cooldown" : "setASGCoolDown"
+            "change #property-asg-healthcheck" : "setHealthCheckGrace"
 
         render     : ( attributes ) ->
             console.log 'property:asg render'
             $( '.property-details' ).html this.template this.model.attributes
+
+        setASGCoolDown : ( event ) ->
+
+            this.trigger 'SET_COOL_DOWN', event.target.value
+
+        setASGName : ( event ) ->
+
+            this.trigger 'SET_ASG_NAME', event.target.value
+
+        setASGMin : ( event ) ->
+
+            this.trigger 'SET_ASG_MIN', event.target.value
+
+        setASGMax : ( event ) ->
+
+            this.trigger 'SET_ASG_MAX', event.target.value
+
+        setASGDesireCapacity : ( event ) ->
+
+            this.trigger 'SET_DESIRE_CAPACITY', event.target.value
+
+        setHealthCheckGrace : ( event ) ->
+
+            this.trigger 'SET_HEALTH_CHECK_GRACE', event.target.value
 
         showTermPolicy : () ->
             uid = $("#autoscaling-group-property-uid").attr("data-uid")
@@ -137,6 +169,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                     $input.addClass "https"
                     placeholder = "e.g. www.example.com"
             $("#property-asg-endpoint").attr "placeholder", placeholder
+
+        setHealthyCheckELBType :( event ) ->
+
+            this.trigger 'SET_HEALTH_TYPE', 'ELB'
+
+        setHealthyCheckEC2Type :( event ) ->
+
+            this.trigger 'SET_HEALTH_TYPE', 'EC2'
 
     }
 

@@ -55,6 +55,36 @@ define [ 'jquery',
 
                 model.setTerminatePolicy uid, policies
 
+            view.on 'SET_HEALTH_TYPE', ( type ) ->
+
+                model.setHealthCheckType uid, type
+
+            view.on 'SET_ASG_NAME', ( name ) ->
+
+                model.setASGName uid, name
+
+            view.on 'SET_ASG_MIN', ( value ) ->
+
+                model.setASGMin uid, value
+
+            view.on 'SET_ASG_MAX', ( value ) ->
+
+                model.setASGMax uid, value
+
+            view.on 'SET_DESIRE_CAPACITY', ( value ) ->
+
+                model.setASGDesireCapacity uid, value
+
+            view.on 'SET_COOL_DOWN', ( value ) ->
+
+                model.setASGCoolDown uid, value
+
+            view.on 'SET_HEALTH_CHECK_GRACE', ( value ) ->
+
+                model.setHealthCheckGrace uid, value
+
+
+
     unLoadModule = () ->
         current_view.off()
         current_model.off()

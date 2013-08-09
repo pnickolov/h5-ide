@@ -31,7 +31,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         this.set 'uid', uid
 
-    setSNSOption : ( uid, check_array, protocol, endpoint ) ->
+    setSNSOption : ( uid, check_array ) ->
 
       if true in check_array
 

@@ -47,9 +47,9 @@ define [ 'jquery',
             view.render()
 
 
-            view.on 'SET_SNS_OPTION', ( checkArray, endpoint ) ->
+            view.on 'SET_SNS_OPTION', ( checkArray ) ->
 
-                model.setSNSOption uid, checkArray, endpoint
+                model.setSNSOption uid, checkArray
 
             view.on 'SET_TERMINATE_POLICY', ( policies ) ->
 

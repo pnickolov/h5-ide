@@ -1,6 +1,6 @@
 <article>
   {{#if hasLaunchConfig}}
-	<div class="option-group-head expand">Auto Scaling Group Details</div>
+	<div class="option-group-head expand" id="autoscaling-group-property-uid" data-uid="{{uid}}">Auto Scaling Group Details</div>
 	<div class="option-group">
 		<section class="property-control-group">
 			<label class="left" for="property-asg-name" >Name</label>
@@ -106,7 +106,7 @@
         <ul class="dropdown" tabindex="-1">
           <li class="item" data-id="sqa">Amazon SQA</li>
           <li class="selected item" data-id="email">Email</li>
-          <li class="item" data-id="json">Email-JSON</li>
+          <li class="item" data-id="email-json">Email-JSON</li>
           <li class="item" data-id="http">HTTP</li>
           <li class="item" data-id="https">HTTPS</li>
           <li class="item" data-id="sms">SMS</li>

@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'jquery' ], () ->
+define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
   ASGConfigModel = Backbone.Model.extend {
 
@@ -29,12 +29,37 @@ define [ 'jquery' ], () ->
 
         this.set 'hasLaunchConfig', true
 
-    setSNSOption : ( check_array, endpoint ) ->
+        this.set 'uid', uid
+
+    setSNSOption : ( uid, check_array ) ->
 
       if true in check_array
 
         notification_type = []
-        new_notification = $.extend true, {}, MC.canvas.ASL_NC_JSON.data
+
+        new_notification = null
+
+        nc_uid = null
+
+        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.split('.')[0][1...] is uid
+
+            new_notification = $.extend true, {}, comp
+
+            nc_uid = new_notification.uid
+
+            return false
+
+
+
+        if not new_notification
+
+          nc_uid = MC.guid()
+
+          new_notification = $.extend true, {}, MC.canvas.ASL_NC_JSON.data
+
+          new_notification.uid = nc_uid
 
         if check_array[0]
 
@@ -57,6 +82,41 @@ define [ 'jquery' ], () ->
           notification_type.push 'autoscaling:TEST_NOTIFICATION'
 
         new_notification.resource.NotificationType = notification_type
+
+        new_notification.resource.AutoScalingGroupName = '@' + uid + '.resource.AutoScalingGroupName'
+
+        MC.canvas_data.component[nc_uid] = new_notification
+
+      else
+
+        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.split('.')[0][1...] is uid
+
+            delete MC.canvas_data.component[comp_uid]
+
+            return false
+
+      #if new_notification.resource.TopicARN and endpoint
+
+        #$.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+          #if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription and comp.resource.AutoScalingGroupName.split('.')[0][1...] is uid
+
+          #  null
+      null
+
+    setTerminatePolicy : ( uid, policies ) ->
+
+      current_policies = []
+
+      for policy in policies
+
+        if policy.checked
+
+          current_policies.push policy.name
+
+      MC.canvas_data.component[uid].resource.TerminationPolicies = current_policies
 
       null
 

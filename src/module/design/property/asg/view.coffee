@@ -69,6 +69,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 self.onEditTermPolicy()
                 modal.close()
 
+            $("#property-asg-term").on "mousedown", ".drag-handle", ()->
+                $(this).trigger("mouseleave")
+
             # Init drag drop list
             $("#property-term-list").sortable({ handle : '.drag-handle' })
 
@@ -106,6 +109,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 null
 
             (if show_more then $.fn.show else $.fn.hide).apply $("#property-asg-sns-more")
+
+            endpointType = $("#property-asg-sns-more .dropdown .selected").attr("data-id")
 
             endpoint = $("#property-asg-endpoint").val()
 

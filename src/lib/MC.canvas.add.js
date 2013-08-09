@@ -67,40 +67,20 @@ MC.canvas.add = function (flag, option, coordinate)
 					break;
 
 				case 'AWS.AutoScaling.Group':
-					// var group_parent = MC.canvas.data.get('layout.component.group')[ option.groupUId ],
-					// 	az = '';
-
-					// switch (group_parent.type)
-					// {
-					// 	case 'AWS.EC2.AvailabilityZone':
-					// 		break;
-
-					// 	case 'AWS.VPC.Subnet':
-					// 		//get parent of subnet
-					// 		group_parent = MC.canvas.data.get('layout.component.group')[ group_parent.groupUId ];
-					// 		break;
-
-					// 	default:
-					// 		group_parent = null;
-					// 		break;
-					// }
-
-					// if (group_parent)
-					// {
-					// 	az = group_parent.name;
-					// }
-
-					// option.group.availableZoneName = az;
-					// option.group.vpcUId = $(".AWS-VPC-VPC")[0] ? $(".AWS-VPC-VPC")[0].id : '' ;
-
-					//change AWS.EC2.Instance to AWS.AutoScaling.LaunchConfiguration
 					type = 'AWS.AutoScaling.LaunchConfiguration';
 					break;
 			}
 		}
+
+		if ( type !== "AWS.EC2.AvailabilityZone" && type !== "AWS.EC2.EBS.Volume" )
+		{
+			option.name = MC.aws.aws.getNewName(type);//get init name for component
+		}
+
 	}
 
 	class_type = type.replace(/\./ig, '-'); // type is resource type
+
 
 	switch (type) {
 
@@ -230,6 +210,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			if (create_mode)
 			{
+
 				component_data = $.extend(true, {}, MC.canvas.VPC_JSON.data);
 				component_data.name = option.name;
 
@@ -1538,11 +1519,10 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.CGW_JSON.data);
-				option.name = 'customer-gateway-1';
 				component_data.name = option.name;
 
 				component_layout = $.extend(true, {}, MC.canvas.CGW_JSON.layout);
-				component_layout.networkName = option.networkName;
+				component_layout.networkName = option.name;
 			}
 			else
 			{//read
@@ -1779,7 +1759,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 
 				if(!option['launchConfig']){
-					option.name = 'launchConfig';
+
 					component_data = $.extend(true, {}, MC.canvas.ASL_LC_JSON.data);
 					component_data.name = option.name;
 					component_data.resource.LaunchConfigurationName = option.name;

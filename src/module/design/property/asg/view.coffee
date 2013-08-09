@@ -24,13 +24,35 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             $( '.property-details' ).html this.template this.model.attributes
 
         showTermPolicy : () ->
-            data = [
-                { name : "Oldest Instance", checked : false }
-                { name : "Newest Instance", checked : true }
-                { name : "Oldest Launch Configuration", checked : false }
-                { name : "Newest Launch Configuration", checked : true }
-            ]
-            data.defaultChecked = true
+            uid = $("#autoscaling-group-property-uid").attr("data-uid")
+            policies = MC.canvas_data.component[uid].resource.TerminationPolicies
+
+            data = []
+
+            for policy in policies
+
+                data.push { name : policy, checked : true }
+
+            for p in ["OldestInstance", "NewestInstance", "OldestLaunchConfiguration", "ClosestToNextInstanceHour", "Default"]
+
+                existing = false
+
+                for d in data
+
+                    if d.name is p
+
+                        existing = true
+
+                if not existing
+
+                    data.push { name : p, checked : false }
+            # data = [
+            #     { name : "OldestInstance", checked : if 'OldestInstance' in policies then true else false }
+            #     { name : "NewestInstance", checked : true }
+            #     { name : "OldestLaunchConfiguration", checked : false }
+            #     { name : "ClosestToNextInstanceHour", checked : true }
+            # ]
+            #data.defaultChecked = true
 
             template = this.term_template data
             modal template, true
@@ -64,12 +86,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 }
                 null
 
-            data.push {
-                name : "Default"
-                checked : $("#property-asg-term-def").is(":checked")
-            }
+            #data.push {
+            #    name : "Default"
+            #    checked : $("#property-asg-term-def").is(":checked")
+            #}
 
             console.log "Finish editing termination policy", data
+
+            this.trigger 'SET_TERMINATE_POLICY', data
 
 
 
@@ -86,13 +110,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
 
             (if show_more then $.fn.show else $.fn.hide).apply $("#property-asg-sns-more")
 
-            endpointType = $("#property-asg-sns-more .dropdown .selected").attr("data-id")
-
-            endpoint = $("#property-asg-endpoint").val()
-
-            console.log "SNS selection : #{checkArray}, Endpoint Value : #{endpoint}"
-
-            this.trigger 'SET_SNS_OPTION', checkArray, endpoint
+            this.trigger 'SET_SNS_OPTION', checkArray
 
         updateSNSInput : () ->
 

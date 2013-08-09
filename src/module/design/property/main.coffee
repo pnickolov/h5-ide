@@ -63,7 +63,11 @@ define [ 'jquery',
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
 
+				# Cleanup property panel, this shoulde be move to property/view
+				# Trigger blur event to save the currently editing input
 				$("input").blur()
+				# Hide second panel if there's any
+				view.immHideSecondPanel()
 
 				#
 				MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
@@ -75,7 +79,12 @@ define [ 'jquery',
 				current_uid  = uid
 				console.log 'OPEN_PROPERTY, uid = ' + uid
 
-				if type == 'component'
+				if type == 'component_asg_volume'
+					#show asg volume property
+					volume_main.loadModule uid, volume_main, tab_type
+
+
+				else if type == 'component'
 
 					#show stack property
 					if uid is ''
@@ -168,7 +177,6 @@ define [ 'jquery',
 				#
 				if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
 
-				view.immHideSecondPanel()
 				null
 
 			#listen OPEN_SG

@@ -15,13 +15,25 @@ define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 	ide_event.onLongListen(ide_event.OPEN_PROPERTY, function(type, comp_uid){
 		var comp_data = MC.canvas_data.component,
 			comp_layout = MC.canvas_data.layout.component,
-			span_radio = $("#span_radio",document.getElementById("json_view_frame").contentWindow.document);
+			span_radio = $("#span_radio",document.getElementById("json_view_frame").contentWindow.document),
+			compObj,
+			compType;
 
 		jsonViewFrame = $('#json_view_frame');
 		jsonViewFrame.width(650)
 			.height(document.body.clientHeight - 20);
 
 		compObj = comp_layout.group[comp_uid] ? comp_layout.group[comp_uid] : comp_layout.node[comp_uid] ;
+
+		if (compObj)
+		{
+			compType = compObj.type;
+		}
+		else if ( comp_data[comp_uid] )
+		{//Volume
+			compType = comp_data[comp_uid];
+			compObj = comp_data[comp_uid];
+		}
 
 		if(compObj) {
 

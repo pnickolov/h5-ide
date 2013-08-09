@@ -47,6 +47,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 self.onEditTermPolicy()
                 modal.close()
 
+            $("#property-asg-term").on "mousedown", ".drag-handle", ()->
+                $(this).trigger("mouseleave")
+
             # Init drag drop list
             $("#property-term-list").sortable({ handle : '.drag-handle' })
 

@@ -293,248 +293,6 @@ MC.canvas = {
 		return d;
 	},
 
-	_bezier_corner: function(controlPoints)
-	{
-		var d = '';
-
-		if (controlPoints.length>=6)
-		{
-			var start0 = controlPoints[0],
-				start = controlPoints[1],
-				end = controlPoints[controlPoints.length-2],
-				end0 = controlPoints[controlPoints.length-1],
-				mid,
-				c2,
-				c3;
-
-				/*
-				mid = {
-					x: (start.x + end.x)/2,
-					y: (start.y + end.y)/2
-				};
-
-				c2 = {
-					x: mid.x,
-					y: start.y
-				};
-
-				c3 = {
-					x: mid.x,
-					y: mid.y
-				};
-
-				d = 'M ' + start0.x + ' ' + start0.y + ' L ' + start.x + ' ' + start.y
-					+ ' Q ' + c2.x + ' ' + c2.y + ' ' + c3.x + ' ' + c3.y
-					+ ' T ' + end.x + ' ' + end.y
-					+ ' L ' + end0.x + ' ' + end0.y;
-				*/
-
-				/*
-				//method 1
-				mid = {
-					x: (start.x + end.x)/2,
-					y: (start.y + end.y)/2
-				};
-
-				c2 = {
-					x: mid.x,
-					y: start.y
-				};
-
-				c3 = {
-					x: mid.x,
-					y: end.y
-				};
-
-				d = 'M ' + start0.x + ' ' + start0.y + ' L ' + start.x + ' ' + start.y
-					+ ' C ' + c2.x + ' ' + c2.y + ' ' + c3.x + ' ' + c3.y
-					+ ' ' + end.x + ' ' + end.y
-					+ ' L ' + end0.x + ' ' + end0.y;
-				*/
-
-				//method 2
-				mid = {
-					x: (start.x + end.x)/2,
-					y: (start.y + end.y)/2
-				};
-
-				c2 = controlPoints[2];
-
-				c3 = controlPoints[controlPoints.length - 3];
-
-				d = 'M ' + start0.x + ' ' + start0.y + ' L ' + start.x + ' ' + start.y
-					+ ' C ' + c2.x + ' ' + c2.y + ' ' + c3.x + ' ' + c3.y
-					+ ' ' + end.x + ' ' + end.y
-					+ ' L ' + end0.x + ' ' + end0.y;
-
-		}
-		else
-		{
-			$.each(controlPoints, function (idx, value)
-			{
-				if (idx === 0)
-				{
-					//start0 point
-					d = 'M ' + value.x + " " + value.y;
-				}
-				else if (idx === (controlPoints.length - 1))
-				{
-					//end0 point
-					d += ' L ' + value.x + ' ' + value.y;
-				}
-				else
-				{
-					//middle point
-					prev_p = controlPoints[idx - 1]; //prev point
-					next_p = controlPoints[idx + 1]; //next point
-
-					if (
-						(prev_p.x === value.x && next_p.x === value.x) ||
-						(prev_p.y === value.y && next_p.y === value.y)
-					)
-					{
-						//three point one line
-						d += ' L ' + value.x + ' ' + value.y;
-					}
-					else
-					{
-						//fold line
-						d += MC.canvas._getPath(prev_p, value, next_p);
-					}
-				}
-				last_p = value;
-			});
-		}
-
-		return d;
-	},
-
-
-	_route: function(controlPoints, fromPt, fromDir, toPt, toDir)
-	{
-		//add by xjimmy, connection algorithm (from ManhattanConnectionRouter of draw2d)
-
-		var xDiff = fromPt.x - toPt.x;
-		var yDiff = fromPt.y - toPt.y;
-		var point;
-		var dir;
-		var pos;
-
-		if(((xDiff * xDiff) < (this.TOLxTOL)) && ((yDiff * yDiff) < (this.TOLxTOL))) {
-			controlPoints.push({ 'x': toPt.x, 'y': toPt.y });
-			return;
-		}
-		if(fromDir === this.PORT_LEFT_ANGLE) {
-			if((xDiff > 0) && ((yDiff * yDiff) < this.TOL) && (toDir === this.PORT_RIGHT_ANGLE)) {
-				point = toPt;
-				dir = toDir;
-			} else {
-				if(xDiff < 0) {
-					point = { 'x': fromPt.x - this.MINDIST, 'y': fromPt.y };
-				} else {
-					if(((yDiff > 0) && (toDir === this.PORT_DOWN_ANGLE)) || ((yDiff < 0) && (toDir === this.PORT_UP_ANGLE))) {
-						point = { 'x': toPt.x, 'y': fromPt.y };
-					} else {
-						if(fromDir == toDir) {
-							pos = Math.min(fromPt.x, toPt.x) - this.MINDIST;
-							point = { 'x': pos, 'y': fromPt.y };
-						} else {
-							point = { 'x': fromPt.x - (xDiff / 2), 'y': fromPt.y };
-						}
-					}
-				}
-				if(yDiff > 0) {
-					dir = this.PORT_UP_ANGLE;
-				} else {
-					dir = this.PORT_DOWN_ANGLE;
-				}
-			}
-		} else {
-			if(fromDir === this.PORT_RIGHT_ANGLE) {
-				if((xDiff < 0) && ((yDiff * yDiff) < this.TOL) && (toDir === this.PORT_LEFT_ANGLE)) {
-					point = toPt;
-					dir = toDir;
-				} else {
-					if(xDiff > 0) {
-						point = { 'x': fromPt.x + this.MINDIST, 'y': fromPt.y };
-					} else {
-						if(((yDiff > 0) && (toDir === this.PORT_DOWN_ANGLE)) || ((yDiff < 0) && (toDir === this.PORT_UP_ANGLE))) {
-							point = { 'x': toPt.x, 'y': fromPt.y };
-						} else {
-							if(fromDir === toDir) {
-								pos = Math.max(fromPt.x, toPt.x) + this.MINDIST;
-								point = { 'x': pos, 'y': fromPt.y };
-							} else {
-								point = { 'x': fromPt.x - (xDiff / 2), 'y': fromPt.y };
-							}
-						}
-					}
-					if(yDiff > 0) {
-						dir = this.PORT_UP_ANGLE;
-					} else {
-						dir = this.PORT_DOWN_ANGLE;
-					}
-				}
-			} else {
-				if(fromDir === this.PORT_DOWN_ANGLE) {
-					if(((xDiff * xDiff) < this.TOL) && (yDiff < 0) && (toDir === this.PORT_UP_ANGLE)) {
-						point = toPt;
-						dir = toDir;
-					} else {
-						if(yDiff > 0) {
-							point = { 'x': fromPt.x, 'y': fromPt.y + this.MINDIST };
-						} else {
-							if(((xDiff > 0) && (toDir === this.PORT_RIGHT_ANGLE)) || ((xDiff < 0) && (toDir === this.PORT_LEFT_ANGLE))) {
-								point = { 'x': fromPt.x, 'y': toPt.y };
-							} else {
-								if(fromDir === toDir) {
-									pos = Math.max(fromPt.y, toPt.y) + this.MINDIST;
-									point = { 'x': fromPt.x, 'y': pos };
-								} else {
-									point = { 'x': fromPt.x, 'y': fromPt.y - (yDiff / 2) };
-								}
-							}
-						}
-						if(xDiff > 0) {
-							dir = this.PORT_LEFT_ANGLE;
-						} else {
-							dir = this.PORT_RIGHT_ANGLE;
-						}
-					}
-				} else {
-					if(fromDir === this.PORT_UP_ANGLE) {
-						if(((xDiff * xDiff) < this.TOL) && (yDiff > 0) && (toDir === this.PORT_DOWN_ANGLE)) {
-							point = toPt;
-							dir = toDir;
-						} else {
-							if(yDiff < 0) {
-								point = { 'x': fromPt.x, 'y': fromPt.y - this.MINDIST };
-							} else {
-								if(((xDiff > 0) && (toDir === this.PORT_RIGHT_ANGLE)) || ((xDiff < 0) && (toDir === this.PORT_LEFT_ANGLE))) {
-									point = { 'x': fromPt.x, 'y': toPt.y };
-								} else {
-									if(fromDir === toDir) {
-										pos = Math.min(fromPt.y, toPt.y) - this.MINDIST;
-										point = { 'x': fromPt.x, 'y': pos };
-									} else {
-										point = { 'x': fromPt.x, 'y': fromPt.y - (yDiff / 2) };
-									}
-								}
-							}
-							if(xDiff > 0) {
-								dir = this.PORT_LEFT_ANGLE;
-							} else {
-								dir = this.PORT_RIGHT_ANGLE;
-							}
-						}
-					}
-				}
-			}
-		}
-		this._route(controlPoints, point, dir, toPt, toDir);
-		controlPoints.push(fromPt);
-	},
-
 	_adjustMidY: function (port_id, mid_y, point, sign)
 	{
 		switch (port_id)
@@ -567,7 +325,7 @@ MC.canvas = {
 		return mid_x;
 	},
 
-	_route2: function (controlPoints, start0, end0, from_type, to_type, from_port_name, to_port_name)
+	route: function (controlPoints, start0, end0, from_type, to_type, from_port_name, to_port_name)
 	{
 		//add by xjimmy, connection algorithm (xjimmy's algorithm)
 
@@ -768,6 +526,7 @@ MC.canvas = {
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			controlPoints = [],
 			direction,
 			layout_connection_data,
 			from_port,
@@ -781,6 +540,10 @@ MC.canvas = {
 			startY,
 			endX,
 			endY,
+			start0,
+			end0,
+			dash_style,
+			path,
 			svg_line;
 
 		if (connection_option)
@@ -910,17 +673,17 @@ MC.canvas = {
 				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio;
 
 				//add by xjimmy
-				var controlPoints = [],
-					start0 = {
-						x : startX,
-						y : startY,
-						connectionAngle: from_port.data('angle')
-					},
-					end0 = {
-						x: endX,
-						y: endY,
-						connectionAngle: to_port.data('angle')
-					};
+				start0 = {
+					x : startX,
+					y : startY,
+					connectionAngle: from_port.data('angle')
+				};
+
+				end0 = {
+					x: endX,
+					y: endY,
+					connectionAngle: to_port.data('angle')
+				};
 
 				//add pad to start0 and end0
 				MC.canvas._addPad(start0, 1);
@@ -933,62 +696,50 @@ MC.canvas = {
 					'fill': 'none'
 				});
 
+				if (
+					connection_option.stroke_dasharray &&
+					connection_option.color_dash &&
+					connection_option.stroke_dasharray !== ''
+				)
+				{
+					dash_style = {
+						'stroke': connection_option.color_dash,
+						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+						'fill': 'none',
+						'stroke-dasharray': connection_option.stroke_dasharray
+					};
+				}
+
+				// straight line
 				if (start0.x === end0.x || start0.y === end0.y)
 				{
-					//draw straight line
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
 
-					//draw dash line
-					if (
-						connection_option.stroke_dasharray &&
-						connection_option.color_dash &&
-						connection_option.stroke_dasharray !== ''
-					)
+					if (dash_style)
 					{
-						MC.paper.line(start0.x, start0.y, end0.x, end0.y).attr({
-							'stroke': connection_option.color_dash,
-							'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-							'fill': 'none',
-							'stroke-dasharray': connection_option.stroke_dasharray
-						});
+						MC.paper.line(start0.x, start0.y, end0.x, end0.y).attr(dash_style);
 					}
 				}
 				else
 				{
-					//draw fold line
+					// fold line
 
-					///// route 1 (xjimmy's algorithm)/////
-					MC.canvas._route2(controlPoints, start0, end0, from_type, to_type ,from_target_port, to_target_port);
-
-					///// route 2 (ManhattanConnectionRouter, draw2d's algorithm) /////
-					//MC.canvas._route( controlPoints, start0, from_port.data('angle'), end0, to_port.data('angle') );
+					///// route
+					MC.canvas.route(controlPoints, start0, end0, from_type, to_type ,from_target_port, to_target_port);
 
 					///// draw fold line /////
-					if (controlPoints.length>0)
+					if (controlPoints.length > 0)
 					{
-						////// draw polyline /////
-						//MC.paper.polyline(controlPoints);
-
 						/////draw round corner line /////
-						var d = MC.canvas._round_corner( controlPoints );    //method 1
-						//var d = MC.canvas._bezier_corner( controlPoints ); //method 2
-						if (d !== "")
-						{
-							MC.paper.path(d);
+						path = MC.canvas._round_corner( controlPoints );
 
-							//draw dash fold line
-							if (
-								connection_option.stroke_dasharray  &&
-								connection_option.color_dash &&
-								connection_option.stroke_dasharray !== ''
-							)
+						if (path !== "")
+						{
+							MC.paper.path(path);
+
+							if (dash_style)
 							{
-								MC.paper.path(d, {
-									'stroke': connection_option.color_dash,
-									'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-									'fill': 'none',
-									'stroke-dasharray': connection_option.stroke_dasharray
-								});
+								MC.paper.path(path, dash_style);
 							}
 						}
 					}

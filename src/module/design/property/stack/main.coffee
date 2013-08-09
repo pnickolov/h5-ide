@@ -108,11 +108,6 @@ define [ 'jquery',
 
                 renderPropertyPanel()
 
-            #refresh cost after add/remove resource
-            ide_event.onLongListen ide_event.UPDATE_COST_ESTIMATE, () ->
-
-                model.getCost()
-
     unLoadModule = () ->
         current_view.off()
         current_model.off()

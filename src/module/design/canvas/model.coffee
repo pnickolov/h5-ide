@@ -905,9 +905,6 @@ define [ 'constant', 'event'
 
 			console.log "Morris : #{componentType}"
 
-			#
-			this.trigger 'CREATE_COMPONENT_COMPLETE'
-
 		reDrawSgLine : () ->
 
 			lines = []

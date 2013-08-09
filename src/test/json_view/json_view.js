@@ -65,11 +65,19 @@ define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 		}else{
 
 			span_radio.show();
-
 			var show_stack = $("input[name='radio_type']:checked",document.getElementById("json_view_frame").contentWindow.document);
+      var showWhat = show_stack.val() === 'stack' ? 'stack' : 'invisible';
+      showStackorInvisible( showWhat );
+    }
 
-			if (show_stack.val()==="stack")
-			{//show whole stack json
+
+			//jsonViewFrame.hide();
+	});
+
+  var showStackorInvisible = function( what ) {
+
+			if ( what === "stack" )
+ 			{//show whole stack json
 				jsonViewFrame[0].contentWindow.postMessage(JSON.stringify(MC.canvas_data), '*');
 			}
 			else
@@ -90,9 +98,16 @@ define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 				});
 				jsonViewFrame[0].contentWindow.postMessage(JSON.stringify(invisibleComp), '*');
 			}
+  
+  }
 
-			//jsonViewFrame.hide();
-		}
-	});
+  window.addEventListener( 'message', function( event ) {
+    if ( event.data.jsonType ) {
+      showStackorInvisible( event.data.jsonType );
+    }
+    
+  
+  }, false);
+
 
 });

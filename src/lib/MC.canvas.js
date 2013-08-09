@@ -768,6 +768,7 @@ MC.canvas = {
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			controlPoints = [],
 			direction,
 			layout_connection_data,
 			from_port,
@@ -781,6 +782,10 @@ MC.canvas = {
 			startY,
 			endX,
 			endY,
+			start0,
+			end0,
+			dash_style,
+			path,
 			svg_line;
 
 		if (connection_option)
@@ -910,17 +915,17 @@ MC.canvas = {
 				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio;
 
 				//add by xjimmy
-				var controlPoints = [],
-					start0 = {
-						x : startX,
-						y : startY,
-						connectionAngle: from_port.data('angle')
-					},
-					end0 = {
-						x: endX,
-						y: endY,
-						connectionAngle: to_port.data('angle')
-					};
+				start0 = {
+					x : startX,
+					y : startY,
+					connectionAngle: from_port.data('angle')
+				};
+
+				end0 = {
+					x: endX,
+					y: endY,
+					connectionAngle: to_port.data('angle')
+				};
 
 				//add pad to start0 and end0
 				MC.canvas._addPad(start0, 1);
@@ -933,29 +938,33 @@ MC.canvas = {
 					'fill': 'none'
 				});
 
+				if (
+					connection_option.stroke_dasharray &&
+					connection_option.color_dash &&
+					connection_option.stroke_dasharray !== ''
+				)
+				{
+					dash_style = {
+						'stroke': connection_option.color_dash,
+						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+						'fill': 'none',
+						'stroke-dasharray': connection_option.stroke_dasharray
+					};
+				}
+
+				// straight line
 				if (start0.x === end0.x || start0.y === end0.y)
 				{
-					//draw straight line
 					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
 
-					//draw dash line
-					if (
-						connection_option.stroke_dasharray &&
-						connection_option.color_dash &&
-						connection_option.stroke_dasharray !== ''
-					)
+					if (dash_style)
 					{
-						MC.paper.line(start0.x, start0.y, end0.x, end0.y).attr({
-							'stroke': connection_option.color_dash,
-							'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-							'fill': 'none',
-							'stroke-dasharray': connection_option.stroke_dasharray
-						});
+						MC.paper.line(start0.x, start0.y, end0.x, end0.y).attr(dash_style);
 					}
 				}
 				else
 				{
-					//draw fold line
+					// fold line
 
 					///// route 1 (xjimmy's algorithm)/////
 					MC.canvas._route2(controlPoints, start0, end0, from_type, to_type ,from_target_port, to_target_port);
@@ -964,31 +973,21 @@ MC.canvas = {
 					//MC.canvas._route( controlPoints, start0, from_port.data('angle'), end0, to_port.data('angle') );
 
 					///// draw fold line /////
-					if (controlPoints.length>0)
+					if (controlPoints.length > 0)
 					{
 						////// draw polyline /////
 						//MC.paper.polyline(controlPoints);
 
 						/////draw round corner line /////
-						var d = MC.canvas._round_corner( controlPoints );    //method 1
+						path = MC.canvas._round_corner( controlPoints );    //method 1
 						//var d = MC.canvas._bezier_corner( controlPoints ); //method 2
-						if (d !== "")
+						if (path !== "")
 						{
-							MC.paper.path(d);
+							MC.paper.path(path);
 
-							//draw dash fold line
-							if (
-								connection_option.stroke_dasharray  &&
-								connection_option.color_dash &&
-								connection_option.stroke_dasharray !== ''
-							)
+							if (dash_style)
 							{
-								MC.paper.path(d, {
-									'stroke': connection_option.color_dash,
-									'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-									'fill': 'none',
-									'stroke-dasharray': connection_option.stroke_dasharray
-								});
+								MC.paper.path(path, dash_style);
 							}
 						}
 					}

@@ -86,6 +86,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
 
             (if show_more then $.fn.show else $.fn.hide).apply $("#property-asg-sns-more")
 
+            endpointType = $("#property-asg-sns-more .dropdown .selected").attr("data-id")
+
             endpoint = $("#property-asg-endpoint").val()
 
             console.log "SNS selection : #{checkArray}, Endpoint Value : #{endpoint}"

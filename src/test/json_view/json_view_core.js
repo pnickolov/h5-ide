@@ -389,12 +389,13 @@ function LinkToJson(){
 if(window.addEventListener) window.addEventListener("message", receiveData, false);  
 else window.attachEvent("onmessage", receiveData);
 
-var fitType = function( obj) {
+var fitType = function( obj ) {
   return !window.jsonType || obj.type && obj.type === window.jsonType;
 }; 
 
 var fitName = function( obj ) {
-  return !window.jsonName || obj.name && obj.name === window.jsonName;
+  var reg = new RegExp( window.jsonName );
+  return !window.jsonName || obj.name && reg.test( obj.name );
 }; 
 
 function receiveData(e) {
@@ -425,23 +426,29 @@ var initFilter = function() {
   var data = JSON.parse( window.jsonDataStr );
 
   for ( key in data ) {
-    val = data[ key ];
-    if ( !window.jsonType && originType && val.type === originType ) {
-      window.jsonType = originType;
+    for ( index in data[ key ] ) {
+      val = data[ key ][ index ];
+      if ( !window.jsonType && originType && val.type === originType ) {
+        window.jsonType = originType;
 
-      for ( var j=1; j<options.length; j++ ) {
-        if ( options[ j ]. value === originType ) {
-          select.selectedIndex = j;
-          break;
+        for ( var j=1; j<options.length; j++ ) {
+          if ( options[ j ]. value === originType ) {
+            select.selectedIndex = j;
+            break;
+          }
         }
+
       }
 
+      var reg = new RegExp( originName );
+
+      if ( !window.jsonName && originName && reg.test( val.name ) ) {
+        window.jsonName = originName;
+        document.forms[ 0 ].name.value = originName;
+      }
+    
     }
 
-    if ( !window.jsonName && originName && val.name === originName ) {
-      window.jsonName = originName;
-      document.forms[ 0 ].name.value = originName;
-    }
   }
   
 
@@ -455,9 +462,11 @@ var processData = function( data ) {
   if ( window.jsonType || window.jsonName ) {
     data = JSON.parse( data );
     for ( key in data ) {
-      val = data[ key ];
-      if ( fitType( val ) && fitName( val ) ) {
-        jsonDataStr.push( val ) ;
+      for ( index in data[ key ] ) {
+        var val = data[ key ][ index ];
+        if ( fitType( val ) && fitName( val ) ) {
+          jsonDataStr.push( val ) ;
+        }
       }
     }
     jsonDataStr = JSON.stringify( jsonDataStr );
@@ -470,18 +479,13 @@ var processData = function( data ) {
 }
 
 var showTypes = function( data ) {
-  data = JSON.parse( data );
-  var types = [];
-  var uniqTypes = [];
-  for ( k in data ) {
-    if ( data[ k ].type ) {
-      types.push( data[ k ].type );
-    }
+  if ( ! document.forms[ 0 ].radio_type[ 1 ].checked ) {
+    return;
   }
-  for ( k in types ) {
-    if ( uniqTypes.indexOf( types[ k ]) === -1 ) {
-      uniqTypes.push( types[ k ] );
-    }
+  data = JSON.parse( data );
+  var uniqTypes = [];
+  for ( key in data ) {
+    uniqTypes.push( key );
   }
 
   var select = document.forms[ 0 ].type;
@@ -506,5 +510,16 @@ window.addEventListener( 'load', function() {
     showData( window.jsonDataStr )
 
   }, false);
+
+  var radios = document.forms[ 0 ].radio_type;
+
+  
+  for ( var i=0; i<radios.length; i++ ) {
+    radios[ i ].addEventListener( "change", function( e ) {
+      window.parent.postMessage( { jsonType: e.currentTarget.value }, '*' );
+    }, false);
+  }
+
+
 
 }, false )

@@ -36,9 +36,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             this.trigger 'SET_ROUTE', uid, data, children
 
         beforeRemoveIp : ( event ) ->
-            canDelete = true
+            vals = 0
+            $("#property-rtb-ips input").each ()->
+                v = $(this).val()
+                if v
+                    ++vals
 
-            return canDelete
+            # If we only have valid item and user is trying to remove it.
+            # prevent deletion
+            if vals <= 1 and event.value
+                return false
+
+            null
 
         removeIp : ( event ) ->
 

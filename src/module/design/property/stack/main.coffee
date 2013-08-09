@@ -6,8 +6,9 @@ define [ 'jquery',
          'text!/module/design/property/stack/template.html',
          'text!/module/design/property/stack/app_template.html',
          'text!/module/design/property/stack/acl_template.html',
+         'text!/module/design/property/stack/sub_template.html',
          'event'
-], ( $, stack_template, app_template, acl_template, ide_event ) ->
+], ( $, stack_template, app_template, acl_template, sub_template, ide_event ) ->
 
     #
     current_view  = null
@@ -18,10 +19,14 @@ define [ 'jquery',
     stack_template = '<script type="text/x-handlebars-template" id="property-stack-tmpl">' + stack_template + '</script>'
     app_template = '<script type="text/x-handlebars-template" id="property-app-tmpl">' + app_template + '</script>'
     acl_template = '<script type="text/x-handlebars-template" id="property-stack-acl-tmpl">' + acl_template + '</script>'
+
+    sub_template = '<script type="text/x-handlebars-template" id="property-stack-sns-tmpl">' + sub_template + '</script>'
+
     #load remote html template
     $( 'head' ).append stack_template
     $( 'head' ).append app_template
     $( 'head' ).append acl_template
+    $( 'head' ).append sub_template
 
     #private
     loadModule = ( current_main, tab_type ) ->

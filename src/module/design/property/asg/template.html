@@ -99,26 +99,9 @@
 		</div>
 		<label for="property-asg-sns5">Validating a configuraed SNS Topic</label></div>
 
-		<section class="hide" id="property-asg-sns-more">
-			<label>Protocol</label>
-			<div class="selectbox">
-        <div class="selection">Email</div>
-        <ul class="dropdown" tabindex="-1">
-          <li class="item" data-id="sqa">Amazon SQA</li>
-          <li class="selected item" data-id="email">Email</li>
-          <li class="item" data-id="email-json">Email-JSON</li>
-          <li class="item" data-id="http">HTTP</li>
-          <li class="item" data-id="https">HTTPS</li>
-          <li class="item" data-id="sms">SMS</li>
-        </ul>
-      </div>
-
-      <label for="property-asg-endpoint">Endpoint</label>
-      <span class="property-asg-ep">
-      	<input type="text" class="input" id="property-asg-endpoint">
-      </span>
-
-		</section>
+		<p class="property-warning hide" id="property-asg-sns-info">
+    	There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.
+    </p>
 
 	</div>
 	{{else}}

@@ -2609,30 +2609,23 @@ MC.canvas.event.dragable = {
 			event.pageY === event.data.originalPageY
 		)
 		{
-			var originalTarget = $(event.data.originalTarget),
+			var originalTarget = event.data.originalTarget,
+				originalTargetNode = $(originalTarget),
 				component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
 
-			if (originalTarget.is('.instance-volume'))
+			if (originalTargetNode.is('.instance-volume'))
 			{
-				MC.canvas.volume.show.call(event.data.originalTarget);
+				MC.canvas.volume.show.call(originalTarget);
 			}
 			else
 			{
-				if (originalTarget.is('.eip-status'))
+				if (originalTargetNode.is('.eip-status'))
 				{
-					MC.canvas.event.EIPstatus.call(event.data.originalTarget);
+					MC.canvas.event.EIPstatus.call(originalTarget);
 				}
 				else
 				{
-					// if (node_type === 'AWS.AutoScaling.Group' && component_data.originalId !== "")
-					// {
-					// 	MC.canvas.select( component_data.originalId );
-					// }
-					// else
-					// {
 					MC.canvas.select( target_id );
-					//}
-
 					MC.canvas.volume.close();
 				}
 			}
@@ -2862,7 +2855,15 @@ MC.canvas.event.dragable = {
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&
-							MC.canvas.isBlank('group', target_id, group_data.type, coordinate.x, coordinate.y, group_size[0], group_size[1]) &&
+							MC.canvas.isBlank(
+								'group',
+								target_id,
+								group_data.type,
+								coordinate.x,
+								coordinate.y,
+								group_size[0],
+								group_size[1]
+							) &&
 							event.data.groupChild.length === unique_stack.length
 						)
 					)
@@ -2877,28 +2878,24 @@ MC.canvas.event.dragable = {
 
 					$.each(event.data.groupChild, function (index, item)
 					{
-						child_type = $(item).data('type');
+						child_type = item.getAttribute('data-type');
 
 						if (child_type === 'node')
 						{
 							node_data = layout_node_data[ item.id ];
-
-							MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
-
-							MC.canvas.reConnect(item.id);
 						}
 
 						if (child_type === 'group')
 						{
 							node_data = layout_group_data[ item.id ];
+						}
 
-							MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
+						MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
 
-							// Re-draw group connection
-							if (node_data.type === 'AWS.VPC.Subnet')
-							{
-								MC.canvas.reConnect(item.id);
-							}
+						// Re-draw group connection
+						if (node_data.type === 'AWS.VPC.Subnet' || child_type === 'node')
+						{
+							MC.canvas.reConnect(item.id);
 						}
 					});
 
@@ -2913,7 +2910,13 @@ MC.canvas.event.dragable = {
 						group_width = group_size[0],
 						group_height = group_size[1],
 						igw_gateway,
-						vgw_gateway;
+						igw_gateway_id,
+						igw_gateway_data,
+						igw_top,
+						vgw_gateway,
+						vgw_gateway_id,
+						vgw_gateway_data,
+						vgw_top;
 
 					if (group_data.type === 'AWS.VPC.VPC')
 					{

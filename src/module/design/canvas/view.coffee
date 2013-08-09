@@ -15,6 +15,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
             #bind event
             $( document )
                 .on( 'CANVAS_NODE_SELECTED',        '#svg_canvas', this.showProperty )
+                .on( 'CANVAS_ASG_VOLUME_SELECTED',  '#svg_canvas', this.showASGVolumeProperty )
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
 
@@ -41,6 +42,10 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
         showProperty : ( event, uid ) ->
             console.log 'showProperty, uid = ' + uid
             ide_event.trigger ide_event.OPEN_PROPERTY, 'component', uid
+
+        showASGVolumeProperty : ( event, uid ) ->
+            console.log 'showProperty, uid = ' + uid
+            ide_event.trigger ide_event.OPEN_PROPERTY, 'component_asg_volume', uid
 
         lineSelected : ( event, line_id ) ->
             ide_event.trigger ide_event.OPEN_PROPERTY, 'line', line_id

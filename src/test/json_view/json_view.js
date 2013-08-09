@@ -1,5 +1,21 @@
 define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 
+	var visibleCompList = [
+		"AWS.EC2.AvailabilityZone",
+		"AWS.EC2.Instance",
+		"AWS.EC2.EBS.Volume",
+		"AWS.ELB",
+		"AWS.VPC.VPC",
+		"AWS.VPC.Subnet",
+		"AWS.VPC.InternetGateway",
+		"AWS.VPC.RouteTable",
+		"AWS.VPC.VPNGateway",
+		"AWS.VPC.CustomerGateway",
+		"AWS.VPC.NetworkInterface",
+		"AWS.AutoScaling.Group",
+		"AWS.AutoScaling.LaunchConfiguration"
+	];
+
 	if(!$('#json_view_frame').length) {
 		$('body').append('<iframe src="test/json_view/json_view.html" ' +
 			'style="border:0;position:absolute;z-index:9999999;display:none;top:20px;bottom:0;left:20px;"' +
@@ -59,14 +75,20 @@ define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 			else
 			{
 				//show all invisible component json
-				invisibleCompAry = [];
+				invisibleComp = {};
+
 				_.each(MC.canvas_data.component, function(compObj){
-					if(compObj.type == 'AWS.EC2.KeyPair' || compObj.type == 'AWS.EC2.SecurityGroup' || compObj.type == 'AWS.EC2.EIP' || compObj.type == 'AWS.VPC.NetworkInterface' ||
-						compObj.type == 'AWS.VPC.DhcpOptions' || compObj.type == 'AWS.VPC.NetworkAcl' || compObj.type == 'AWS.IAM.ServerCertificate'){
-						invisibleCompAry.push(compObj);
+
+					if($.inArray(compObj.type, visibleCompList) === -1 ){
+						if (!invisibleComp[compObj.type])
+						{
+							invisibleComp[compObj.type] = [];
+						}
+						invisibleComp[compObj.type].push(compObj);
 					}
+
 				});
-				jsonViewFrame[0].contentWindow.postMessage(JSON.stringify(invisibleCompAry), '*');
+				jsonViewFrame[0].contentWindow.postMessage(JSON.stringify(invisibleComp), '*');
 			}
 
 			//jsonViewFrame.hide();

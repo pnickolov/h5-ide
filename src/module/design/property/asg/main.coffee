@@ -49,7 +49,7 @@ define [ 'jquery',
 
             view.on 'SET_SNS_OPTION', ( checkArray, endpoint ) ->
 
-                model.setSNSOption checkArray, endpoint
+                model.setSNSOption uid, checkArray, endpoint
 
     unLoadModule = () ->
         current_view.off()

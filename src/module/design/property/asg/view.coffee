@@ -80,8 +80,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                     show_more = true
                 null
 
-                null
-
             (if show_more then $.fn.show else $.fn.hide).apply $("#property-asg-sns-more")
 
             endpoint = $("#property-asg-endpoint").val()

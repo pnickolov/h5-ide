@@ -51,6 +51,10 @@ define [ 'jquery',
 
                 model.setSNSOption uid, checkArray, endpoint
 
+            view.on 'SET_TERMINATE_POLICY', ( policies ) ->
+
+                model.setTerminatePolicy uid, policies
+
     unLoadModule = () ->
         current_view.off()
         current_model.off()

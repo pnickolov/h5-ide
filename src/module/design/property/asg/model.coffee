@@ -31,7 +31,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         this.set 'uid', uid
 
-    setSNSOption : ( uid, check_array, endpoint ) ->
+    setSNSOption : ( uid, check_array, protocol, endpoint ) ->
 
       if true in check_array
 
@@ -57,9 +57,9 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
           nc_uid = MC.guid()
 
-          new_notification.uid = nc_uid
-
           new_notification = $.extend true, {}, MC.canvas.ASL_NC_JSON.data
+
+          new_notification.uid = nc_uid
 
         if check_array[0]
 
@@ -86,6 +86,37 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
         new_notification.resource.AutoScalingGroupName = '@' + uid + '.resource.AutoScalingGroupName'
 
         MC.canvas_data.component[nc_uid] = new_notification
+
+      else
+
+        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.split('.')[0][1...] is uid
+
+            delete MC.canvas_data.component[comp_uid]
+
+            return false
+
+      #if new_notification.resource.TopicARN and endpoint
+
+        #$.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+          #if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription and comp.resource.AutoScalingGroupName.split('.')[0][1...] is uid
+
+          #  null
+      null
+
+    setTerminatePolicy : ( uid, policies ) ->
+
+      current_policies = []
+
+      for policy in policies
+
+        if policy.checked
+
+          current_policies.push policy.name
+
+      MC.canvas_data.component[uid].resource.TerminationPolicies = current_policies
 
       null
 

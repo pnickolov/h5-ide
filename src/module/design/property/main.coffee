@@ -75,7 +75,13 @@ define [ 'jquery',
 				current_uid  = uid
 				console.log 'OPEN_PROPERTY, uid = ' + uid
 
-				if type == 'component'
+				if type == 'component_asg_volume'
+
+					#show asg volume property
+					#TO-DO
+
+
+				else if type == 'component'
 
 					#show stack property
 					if uid is ''

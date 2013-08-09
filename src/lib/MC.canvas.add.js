@@ -464,6 +464,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					else
 					{
 						component_layout.originalId = option['originalId'];
+						option.name = data[option.originalId].name;//use original name
 					}
 				}
 				else

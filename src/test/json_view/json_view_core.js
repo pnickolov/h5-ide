@@ -450,8 +450,6 @@ var initFilter = function() {
     }
 
   }
-  
-
 }
 var showData = function( data ) {
   Process( processData ( data ) );
@@ -459,7 +457,7 @@ var showData = function( data ) {
 
 var processData = function( data ) {
   var jsonDataStr = [];
-  if ( window.jsonType || window.jsonName ) {
+  if ( document.forms[ 0 ].radio_type[ 1 ].checked && window.jsonType || window.jsonName ) {
     data = JSON.parse( data );
     for ( key in data ) {
       for ( index in data[ key ] ) {

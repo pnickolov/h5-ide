@@ -81,6 +81,7 @@ define [ 'jquery',
                 renderPropertyPanel()
 
                 ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, title + name
+                ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, name
 
             view.on 'DELETE_STACK_SG', (uid) ->
                 model.deleteSecurityGroup uid

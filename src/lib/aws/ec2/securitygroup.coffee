@@ -43,7 +43,9 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 	getAllRule = (sgRes) ->
 
-		inboundRule = sgRes.ipPermissionsEgress.item
+		inboundRule = []
+		if sgRes.ipPermissionsEgress
+			inboundRule = sgRes.ipPermissionsEgress.item
 		outboundRule = sgRes.ipPermissions.item
 
 		inboundRule = _.map inboundRule, (ruleObj) ->
@@ -60,11 +62,17 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		_.each allRuleAry, (ruleObj) ->
 
+			ipRanges = ''
+			if ruleObj.ipRanges
+				ipRanges = ruleObj.ipRanges['item'][0]['cidrIp']
+			else
+				ipRanges = ruleObj.groups.item[0].groupId
+
 			dispSGObj =
 				fromPort : ruleObj.fromPort
 				toPort : ruleObj.toPort
 				ipProtocol : ruleObj.ipProtocol
-				ipRanges : ruleObj.ipRanges['item'][0]['cidrIp']
+				ipRanges : ipRanges
 				direction : ruleObj.direction
 
 			allDispRuleAry.push dispSGObj

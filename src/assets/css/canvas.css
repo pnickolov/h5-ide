@@ -406,11 +406,6 @@
 	fill: rgba(238, 238, 238, 0.5);
 }
 
-.node-dragging .dropable-group .group-resizer {
-	fill-opacity: 1;
-	fill: rgba(238, 238, 238, 0.5);
-}
-
 .resizer-topleft {
 	/*fill:blue;*/
 	cursor: nwse-resize;
@@ -442,6 +437,18 @@
 
 .resizer-bottomright {
 	cursor: nwse-resize;
+}
+
+.resizer-top:hover,
+.resizer-topleft:hover,
+.resizer-topright:hover,
+.resizer-left:hover,
+.resizer-right:hover,
+.resizer-bottom:hover,
+.resizer-bottomleft:hover,
+.resizer-bottomright:hover {
+	fill-opacity: 1;
+	fill: rgba(200, 200, 200, 0.12);
 }
 
 .eip-status {

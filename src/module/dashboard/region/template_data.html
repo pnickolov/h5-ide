@@ -11,7 +11,7 @@ Loading...
 			</li>
 			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-eip">
 				<div class="region-stat-block-wrap">
-					<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">EIP</span>
+					<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">Elastic IP</span>
 					{{#if region_resource_list.Not_Used.EIP}}
 					<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"{{region_resource_list.Not_Used.EIP}} EIP not associated with instance.","description":"This would charge you extra expense."}'>{{region_resource_list.Not_Used.EIP}}</span>
 					{{/if}}
@@ -38,7 +38,24 @@ Loading...
 			</li>
 			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-elb">
 				<div class="region-stat-block-wrap">
-					<i class="icon-image icon-label"></i>{{region_resource_list.ELB}}<span class="label">ELB</span>
+					<i class="icon-image icon-label"></i>{{region_resource_list.ELB}}<span class="label">Load Balancer</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-asg">
+				<div class="region-stat-block-wrap">
+					<i class="icon-hdd icon-label"></i>4<span class="label">Auto Scaling Group</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-cw">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>2<span class="label">CloudWatch Alarm</span>
+					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 alarm in ALARM state.","description":""}'>3</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-sns">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>3<span class="label">SNS Subscription</span>
+					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 subscription not confirmed.","description":""}'>3</span>
 				</div>
 			</li>
 
@@ -325,6 +342,141 @@ Loading...
 					</div>
 				</div>
 		</div>
+		<div id="stat-table-asg" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+
+						<table class="table table-region-stat" id="region-stat-table-asg">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:20%">Name</th>
+								<th class="sortable" style="width:55%">Current/Last Activity</th>
+								<th class="sortable" style="width:15%">Activity Status</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								<tr>
+									<td><a href="" class="table-link table-app-link truncate" title="Open App">[App Name]</a>
+									%asg-name%
+									</td>
+									<td>At 2012-04-12T17:31:30Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 1.  At 2012-04-12T17:32:07Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 to 1.</td>
+									<td>Failed</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+
+							    <!-- Blank Slate -->
+								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no auto scaling group in this region.</p>
+								</div> -->
+
+						</tbody>
+						</table>
+
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-cw" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+
+						<table class="table table-region-stat" id="region-stat-table-cw">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:20%">Name</th>
+								<th class="sortable" style="width:15%">Dimension</th>
+								<th class="sortable" style="width:40%">Threshold</th>
+								<th class="sortable" style="width:15%">State</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								<tr>
+									<td>
+									%cloudwatch-alarm-name%
+									</td>
+									<td>InstanceId = i-fe90d1fc</td>
+									<td>DiskReadBytes >= 2 for 5 minutes</td>
+									<td><i class="status status-red icon-label"></i>ALARM</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								<tr>
+									<td>
+									%cloudwatch-alarm-name%
+									</td>
+									<td>InstanceId = i-fe90d1fc</td>
+									<td>DiskReadBytes >= 2 for 5 minutes</td>
+									<td><i class="status status-green icon-label"></i>OK</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								<tr>
+									<td>
+									%cloudwatch-alarm-name%
+									</td>
+									<td>InstanceId = i-fe90d1fc</td>
+									<td>DiskReadBytes >= 2 for 5 minutes</td>
+									<td><i class="status status-grey icon-label"></i>InsufficientData</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+
+
+							    <!-- Blank Slate -->
+								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no auto scaling group in this region.</p>
+								</div> -->
+
+						</tbody>
+						</table>
+
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-sns" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+
+						<table class="table table-region-stat" id="region-stat-table-sns">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:30%">Topic Name</th>
+								<th class="sortable" style="width:50%">Endpoint and Protocol</th>
+								<th class="sortable" style="width:10%">Confirmation</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								<tr>
+									<td>%topic-name%
+									</td>
+									<td>Email: paula@mc2.com</td>
+									<td><i class="status status-red icon-label"></i>AuthorizationError</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								<tr>
+									<td>%topic-name%
+									</td>
+									<td>Email: paula@mc2.com</td>
+									<td><i class="status status-green icon-label"></i>Success</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+
+							    <!-- Blank Slate -->
+								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no auto scaling group in this region.</p>
+								</div> -->
+
+						</tbody>
+						</table>
+
+					</div>
+				</div>
+		</div>
 	</div>
 {{/if}}
 
@@ -360,6 +512,13 @@ Loading...
                     <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                 </tr>
             {{/each}}
+            	<tr>
+            		<td><i class="icon-{{type}}-mini icon-label"></i>Auto Scaling Group</td>
+            		<td>%asg-name%</td>
+            		<td>5 InService</td>
+            		<td>$45/h</td>
+            		<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+            	</tr>
             </tbody>
         </table>
     </div>

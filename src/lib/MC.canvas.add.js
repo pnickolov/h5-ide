@@ -67,6 +67,11 @@ MC.canvas.add = function (flag, option, coordinate)
 					break;
 
 				case 'AWS.AutoScaling.Group':
+					if (data[option.groupUId].resource.LaunchConfigurationName && !option['launchConfig'] )
+					{
+						notification('AutoScalingGroup already has LaunchConfiguration!', false);
+						return null;
+					}
 					type = 'AWS.AutoScaling.LaunchConfiguration';
 					break;
 			}

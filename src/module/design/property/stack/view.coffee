@@ -166,12 +166,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             # Insert New List
             $template = $list.find(".hide")
-            for uid, sub of snslist_data
+            for sub of snslist_data
                 $clone = $template.clone().appendTo $list
 
-                $clone.data "uid", uid
-                $clone.find(".protocol").html data.protocol
-                $clone.find(".endpoint").html data.endpoint
+                $clone.data "uid", sub.uid
+                $clone.find(".protocol").html sub.protocol
+                $clone.find(".endpoint").html sub.endpoint
 
             null
 
@@ -234,7 +234,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
                         placeholder = "e.g. Amazon ARN"
                     when "email"
                         placeholder = "e.g. exmaple@acme.com"
-                    when "json"
+                    when "email-json"
                         placeholder = "e.g. example@acme.com"
                     when "sms"
                         placeholder = "e.g. 1-343-21-323"
@@ -257,7 +257,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             $("#property-asg-sns-done").on "click", ()->
                 data =
                     uid : $modal.data("uid")
-                    protocol : $modal.find(".selected").html()
+                    protocol : $modal.find(".selected").data("id")
                     endpoint : $("#property-asg-endpoint").val()
 
                 console.log "Save Subscription", data

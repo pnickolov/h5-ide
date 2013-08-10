@@ -63,6 +63,8 @@ define [ 'jquery',
             #re calc cost when load module
             model.getCost()
 
+            model.getSubscription()
+
             if tab_type is 'OPEN_APP'
                 title = "APP - "
             else
@@ -112,6 +114,14 @@ define [ 'jquery',
                 console.log 'rerender property'
 
                 renderPropertyPanel()
+
+            view.on 'SAVE_SUBSCRIPTION', ( data ) ->
+
+                model.addSubscription data
+
+            model.on 'UPDATE_SNS_LIST', ( sns_list, has_asg ) ->
+
+                view.updateSNSList sns_list, has_asg
 
             #refresh cost after add/remove resource
             ide_event.onLongListen ide_event.UPDATE_COST_ESTIMATE, () ->

@@ -272,27 +272,36 @@ define [], () ->
 	}
 
 	AWS_RESOURCE = {
-		INSTANCE 		:	'EC2.Instance'
-		EIP				:	'EC2.EIP'
-		VOLUME			:	'EBS.Volume'
-		VPC				:	'VPC'
-		VPN				:	'VPC.VPN'
-		ELB				:	'ELB'
-		#
-		AMI					:	'EC2.AMI'
-		SNAPSHOT 			:	'EBS.Snapshot'
-		KP 					:	'EC2.KP'
-		SG 					:	'EC2.SG'
-		ACL 				:	'VPC.ACL'
-		CGW 				:	'VPC.CGW'
-		DHCP 				:	'VPC.DHCP'
-		ENI 				:	'VPC.ENI'
-		IGW 				:	'VPC.IGW'
-		RT 					:	'VPC.RT'
-		SUBNET 				:	'VPC.Subnet'
-		VGW 				:	'VPC.VGW'
-		#
-		AvailabilityZone 	:  'AvailabilityZone'
+		AvailabilityZone 	: 	'AWS.EC2.AZone'
+		AMI					:	'AWS.EC2.AMI'
+		VOLUME				:	'AWS.EC2.EBS.Volume'
+		SNAPSHOT 			:	'AWS.EC2.EBS.Snapshot'
+		EIP					:	'AWS.EC2.EIP'
+		INSTANCE 			:	'AWS.EC2.Instance'
+		KP 					:	'AWS.EC2.KeyPair'
+		SG 					:	'AWS.EC2.SecurityGroup'
+
+		ELB					:	'AWS.ELB'
+
+		ACL 				:	'AWS.VPC.NetworkAcl'
+		CGW 				:	'AWS.VPC.CustomerGateway'
+		DHCP 				:	'AWS.VPC.DhcpOptions'
+		ENI 				:	'AWS.VPC.NetworkInterface'
+		IGW 				:	'AWS.VPC.InternetGateway'
+		RT 					:	'AWS.VPC.RouteTable'
+		SUBNET 				:	'AWS.VPC.Subnet'
+		VPC					:	'AWS.VPC.VPC'
+		VPN					:	'AWS.VPC.VPNConnection'
+		VGW 				:	'AWS.VPC.VPNGateway'
+
+		GROUP 				:	'AWS.AutoScaling.Group'
+		LC					:	'AWS.AutoScaling.LaunchConfiguration'
+		NC					:	'AWS.AutoScaling.NotificationConfiguration'
+		POLICY 				:	'AWS.AutoScaling.ScalingPolicy'
+		SA 					:	'AWS.AutoScaling.ScheduledActions'
+		CW					:	'AWS.CloudWatch.CloudWatch'
+		SUBSCRIPTION 		:	'AWS.SNS.Subscription'
+		TOPIC 				:	'AWS.SNS.Topic'
 	}
 
 

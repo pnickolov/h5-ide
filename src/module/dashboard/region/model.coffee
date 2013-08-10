@@ -1343,25 +1343,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             current_region = region
 
-            resources = [
-                constant.AWS_RESOURCE.INSTANCE
-                constant.AWS_RESOURCE.EIP
-                constant.AWS_RESOURCE.VOLUME
-                constant.AWS_RESOURCE.VPC
-                constant.AWS_RESOURCE.VPN
-                constant.AWS_RESOURCE.ELB
-                #
-                constant.AWS_RESOURCE.KP
-                constant.AWS_RESOURCE.SG
-                constant.AWS_RESOURCE.ACL
-                constant.AWS_RESOURCE.CGW
-                constant.AWS_RESOURCE.DHCP
-                constant.AWS_RESOURCE.ENI
-                constant.AWS_RESOURCE.IGW
-                constant.AWS_RESOURCE.RT
-                constant.AWS_RESOURCE.SUBNET
-                constant.AWS_RESOURCE.VGW
-            ]
+            #aws_resource = constant.AWS_RESOURCE
+
+            resources = {}
+            resources[constant.AWS_RESOURCE.INSTANCE]  =   {}
+            resources[constant.AWS_RESOURCE.EIP]       =   {}
+            resources[constant.AWS_RESOURCE.VOLUME]    =   {}
+            resources[constant.AWS_RESOURCE.VPC]       =   {}
+            resources[constant.AWS_RESOURCE.VPN]       =   {}
+            resources[constant.AWS_RESOURCE.ELB]       =   {}
+            resources[constant.AWS_RESOURCE.KP]        =   {}
+            resources[constant.AWS_RESOURCE.SG]        =   {}
+            resources[constant.AWS_RESOURCE.ACL]       =   {}
+            resources[constant.AWS_RESOURCE.CGW]       =   {}
+            resources[constant.AWS_RESOURCE.DHCP]      =   {}
+            resources[constant.AWS_RESOURCE.ENI]       =   {}
+            resources[constant.AWS_RESOURCE.IGW]       =   {}
+            resources[constant.AWS_RESOURCE.RT]        =   {}
+            resources[constant.AWS_RESOURCE.SUBNET]    =   {}
+            resources[constant.AWS_RESOURCE.VGW]       =   {}
 
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 

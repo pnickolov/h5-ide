@@ -135,7 +135,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     null
 
-            this.trigger 'UPDATE_SNS_LIST', sub_list, has_asg
+            this.set 'subscription', sub_list
+            this.set 'has_asg', has_asg
             null
 
         deleteSNS : ( uid ) ->

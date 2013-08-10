@@ -2184,6 +2184,50 @@ MC.canvas.volume = {
 	}
 };
 
+MC.canvas.asgList = {
+	show: function (event)
+	{
+		MC.canvas.asgList.close();
+
+		var target = this.parentNode,
+			target_offset = Canvon(target).offset(),
+			canvas_offset = $('#svg_canvas').offset();
+
+		$('#canvas_container').append( MC.template.asgList() );
+
+		$('#asgList-wrap')
+			.on('click', '.asgList-item', MC.canvas.asgList.select)
+			.css({
+				'top': target_offset.top - canvas_offset.top - 10,
+				'left': target_offset.left - canvas_offset.left
+			});
+
+		MC.canvas.asgList.select.call($('#asgList-wrap .asgList-item').first());
+
+		return true;
+	},
+
+	close: function ()
+	{
+		$('#asgList-wrap').remove();
+
+		return false;
+	},
+
+	select: function (event)
+	{
+		var target = $(this);
+
+		$('#asgList-wrap .selected').removeClass('selected');
+
+		target.addClass('selected');
+
+		$('#svg_canvas').trigger('CANVAS_ASG_SELECTED', target.data('id'));
+
+		return false;
+	}
+};
+
 MC.canvas.event = {};
 MC.canvas.event.dragable = {
 	mousedown: function (event)

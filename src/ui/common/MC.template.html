@@ -932,13 +932,7 @@ Additional Notes and Questions
 		<ul id="instance_volume_list" class="clearfix">
 			{{#each list}}
 			<li>
-				<a href="#" id="{{volume_id}}" class="
-				{{#if snapshotId}}
-					snapshot_item
-				{{else}}
-					volume_item
-				{{/if}}
-				" data-json="{{json}}">
+				<a href="#" id="{{volume_id}}" class="{{#if snapshotId}}snapshot_item{{else}}volume_item{{/if}}" data-json="{{json}}">
 					<span class="volume_name">{{name}}</span>
 					<span class="volume_size">{{size}}GB</span>
 				</a>
@@ -1064,3 +1058,43 @@ Additional Notes and Questions
 		<div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
 	<div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
 </li>
+
+<!-- asgList -->
+<div id="asgList-wrap">
+	<div id="asgList-header">
+		<span id="asgList-title">asg</span>
+		<a id="asgList-close" href="javascrpit:void(0)" onclick="MC.canvas.asgList.close()">&times;</a>
+	</div>
+	<ul id="asgList" class="clearfix">
+		<li>
+			<a href="javascript:void(0)" class="asgList-item" data-id="aa">
+				<i class="asgList-item-status status status-green"></i>
+				<div class="asgList-item-icon"></div>
+				<div class="asgList-item-volume">
+					<span class="asgList-item-number">0</span>
+				</div>
+				<div class="asgList-item-label">launch-config-1</div>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:void(0)" class="asgList-item" data-id="aa">
+				<i class="asgList-item-status status status-green"></i>
+				<div class="asgList-item-icon"></div>
+				<div class="asgList-item-volume">
+					<span class="asgList-item-number">0</span>
+				</div>
+				<div class="asgList-item-label">launch-config-1</div>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:void(0)" class="asgList-item" data-id="aa">
+				<i class="asgList-item-status status status-green"></i>
+				<div class="asgList-item-icon"></div>
+				<div class="asgList-item-volume">
+					<span class="asgList-item-number">0</span>
+				</div>
+				<div class="asgList-item-label">launch-config-1</div>
+			</a>
+		</li>
+	</ul>
+</div>

@@ -1311,25 +1311,34 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             current_region = region
 
-            resources = [
-                constant.AWS_RESOURCE.INSTANCE
-                constant.AWS_RESOURCE.EIP
-                constant.AWS_RESOURCE.VOLUME
-                constant.AWS_RESOURCE.VPC
-                constant.AWS_RESOURCE.VPN
-                constant.AWS_RESOURCE.ELB
-                #
-                constant.AWS_RESOURCE.KP
-                constant.AWS_RESOURCE.SG
-                constant.AWS_RESOURCE.ACL
-                constant.AWS_RESOURCE.CGW
-                constant.AWS_RESOURCE.DHCP
-                constant.AWS_RESOURCE.ENI
-                constant.AWS_RESOURCE.IGW
-                constant.AWS_RESOURCE.RT
-                constant.AWS_RESOURCE.SUBNET
-                constant.AWS_RESOURCE.VGW
-            ]
+            res_type = constant.AWS_RESOURCE
+
+            resources = {}
+            resources[res_type.INSTANCE]  =   {}
+            resources[res_type.EIP]       =   {}
+            resources[res_type.VOLUME]    =   {}
+            resources[res_type.VPC]       =   {}
+            resources[res_type.VPN]       =   {}
+            resources[res_type.ELB]       =   {}
+            resources[res_type.KP]        =   {}
+            resources[res_type.SG]        =   {}
+            resources[res_type.ACL]       =   {}
+            resources[res_type.CGW]       =   {}
+            resources[res_type.DHCP]      =   {}
+            resources[res_type.ENI]       =   {}
+            resources[res_type.IGW]       =   {}
+            resources[res_type.RT]        =   {}
+            resources[res_type.SUBNET]    =   {}
+            resources[res_type.VGW]       =   {}
+            #
+            resources[res_type.ASG]       =   {}
+            resources[res_type.ASL_LC]    =   {}
+            resources[res_type.ASL_NC]    =   {}
+            resources[res_type.ASL_SP]    =   {}
+            resources[res_type.ASL_SA]    =   {}
+            resources[res_type.CLW]       =   {}
+            resources[res_type.SNS_SUB]   =   {}
+            resources[res_type.SNS_TOPIC] =   {}
 
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 

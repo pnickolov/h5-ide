@@ -38,7 +38,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         resetAlert : ->
             console.log 'resetAlert'
-            this.$el.find('#header--notification').find('span').text(0)
+            $('.notification-counter').text("")
 
     }
 

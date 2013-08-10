@@ -108,11 +108,14 @@
 	border: none;
 	border-right: 1px solid #dfdfdf;
 	position: relative;
-	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-o-text-overflow: ellipsis;
 	-ms-text-overflow: ellipsis;
+}
+
+.table.table-region-stat th {
+	white-space: nowrap;
 }
 
 .table.table-light th,

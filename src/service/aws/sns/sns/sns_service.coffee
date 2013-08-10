@@ -233,3 +233,6 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     ListSubscriptions            : ListSubscriptions
     ListSubscriptionsByTopic     : ListSubscriptionsByTopic
     ListTopics                   : ListTopics
+
+    resolveListSubscriptionsResult  : resolveListSubscriptionsResult
+    resolveListTopicsResult         : resolveListTopicsResult

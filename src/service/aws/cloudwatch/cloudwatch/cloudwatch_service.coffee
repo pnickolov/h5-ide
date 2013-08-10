@@ -235,3 +235,4 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	DescribeAlarms               : DescribeAlarms
 	DescribeAlarmsForMetric      : DescribeAlarmsForMetric
 
+	resolveDescribeAlarmsResult  : resolveDescribeAlarmsResult

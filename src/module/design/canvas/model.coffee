@@ -433,7 +433,11 @@ define [ 'constant', 'event'
 				for i in value.resource.Subnets
 					if not childSubnetIds[ MC.extractID( i ) ]
 						keepArray.push i
+
 				value.resource.Subnets = keepArray
+				az_idx = value.resource.AvailabilityZones.indexOf component.name
+				if az_idx != -1
+					value.resource.AvailabilityZones.splice az_idx, 1
 
 
 			# Update resource panel, so that deleted AZ can be drag again
@@ -866,6 +870,7 @@ define [ 'constant', 'event'
 			for key, value of portMap
 				if key.indexOf('sg') >= 0
 					this.trigger 'CREATE_SG_CONNECTION', line_id
+					break
 			null
 
 
@@ -904,9 +909,6 @@ define [ 'constant', 'event'
 					MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
 
 			console.log "Morris : #{componentType}"
-
-			#
-			this.trigger 'CREATE_COMPONENT_COMPLETE'
 
 		reDrawSgLine : () ->
 

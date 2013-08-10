@@ -1045,6 +1045,7 @@ MC.canvas = {
 					'y': y + height
 				}
 			],
+			canvas_size = MC.canvas.data.get('layout.size'),
 			match_option = MC.canvas.MATCH_PLACEMENT[ MC.canvas.data.get('platform') ][ node_type ],
 			is_option_canvas = match_option ? (match_option[ 0 ] === 'Canvas') : false,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
@@ -1126,8 +1127,15 @@ MC.canvas = {
 				}
 			});
 
+			is_matched =
+				$.isEmptyObject(result) &&
+
+				// canvas right offset = 3
+				x + width < canvas_size[0] - 3 &&
+				y + height < canvas_size[1] - 3;
+
 			return {
-				'is_matched': $.isEmptyObject(result),
+				'is_matched': is_matched,
 				'target': result.id === undefined && is_matched ? 'Canvas' : result.id
 			};
 		}
@@ -1185,7 +1193,11 @@ MC.canvas = {
 
 				match[0].target === match[1].target &&
 				match[0].target === match[2].target &&
-				match[0].target === match[3].target;
+				match[0].target === match[3].target &&
+
+				// canvas right offset = 3
+				x + width < canvas_size[0] - 3 &&
+				y + height < canvas_size[1] - 3;
 
 			if (
 				!is_matched &&

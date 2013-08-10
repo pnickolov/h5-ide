@@ -5,24 +5,12 @@ body {
 }
 
 #body {
-	background: #2b2b2b;
-	/*background-image: url('http://farm6.staticflickr.com/5027/5597694660_b212c49604_o.jpg');*/
-	/*background-size: cover;*/
-	color: #eee;
-	text-shadow: 0px 1px 1px rgba(20,20,20,0.50);
-	background-image: -o-linear-gradient(89deg, #9D64AE 0%, #CB89B8 55%, #EA88B2 100%);
-	background-image: -moz-linear-gradient(89deg, #9D64AE 0%, #CB89B8 55%, #EA88B2 100%);
-	background-image: -webkit-linear-gradient(89deg, #9D64AE 0%, #CB89B8 55%, #EA88B2 100%);
-	background-image: -ms-linear-gradient(89deg, #9D64AE 0%, #CB89B8 55%, #EA88B2 100%);
-	background-image: linear-gradient(-1deg, #9D64AE 0%, #CB89B8 55%, #EA88B2 100%);
+	background: #DFDFDF;
+	color: #212021;
 }
 
 a {
-	font-size: 14px;
-	/*color: #55C7FF;*/
-	color: #EB88E2;
-/*	color: #fff;
-	text-decoration: underline;*/
+	color: #5685D3;
 }
 
 header {
@@ -33,7 +21,7 @@ header {
 	top: 0;
 	border-top: 4px solid #b25b91;
 	border-bottom: 1px solid #181818;
-	padding: 8px 0;
+	padding: 5px 0 9px 0;
 }
 
 #logo-link {
@@ -63,12 +51,6 @@ header {
 	margin: 300px auto 0;
 	width: 370px;
 	padding: 20px;
-	border-radius: 4px;
-	background: rgba(100,100,100,.5);
-	border: 1px solid #575257;
-	-moz-box-shadow:    0px 2px 4px 0px rgba(0,0,0,0.30), inset 0px 1px 0px 0px rgba(255,255,255,0.20);
-	-webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.30), inset 0px 1px 0px 0px rgba(255,255,255,0.20);
-	box-shadow:         0px 2px 4px 0px rgba(0,0,0,0.30), inset 0px 1px 0px 0px rgba(255,255,255,0.20);
 }
 
 #login-title {
@@ -79,6 +61,7 @@ header {
 	position: absolute;
 	right: 0;
 	top: 20px;
+	color: #666;
 }
 
 .error-msg {
@@ -107,26 +90,20 @@ header {
 
 .login-input {
 	display: block;
-	margin: 10px 0;
+	margin: 20px 0;
 	padding: 14px 5px 14px 38px;
-	/*border: none;*/
 	border-color: transparent;
 	width: 323px;
 	font-size: 16px;
 	border-radius: 4px;
-	background: #F6F6F6;
-	box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.20);
+	background: #f8f8f8;
+	box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.05);
 	outline: none;
-	-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
-	-moz-transition: border linear 0.2s, box-shadow linear 0.2s;
-	-o-transition: border linear 0.2s, box-shadow linear 0.2s;
-	transition: border linear 0.2s, box-shadow linear 0.2s;
 }
 
 .login-input:focus {
-	border: 2px solid #DA88EB;
 	background: #fff;
-	box-shadow: none;
+	box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.1);
 }
 
 .control-group.error label {
@@ -180,4 +157,14 @@ header {
 	background-color: #666;
 	width: 300px;
 	padding: 10px;
+}
+
+
+
+/* Selection */
+
+::selection {
+	background: #a45686;
+	color: #f8f8f8;
+	text-shadow: none;
 }

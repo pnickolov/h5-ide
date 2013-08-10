@@ -65,9 +65,9 @@ header {
 }
 
 .error-msg {
-	color: #fff;
+	color: #f8f8f8;
 	border-radius: 4px;
-	background: #FF7777;
+	background: #bc5b51;
 	-moz-box-shadow:    0px 2px 2px 0px rgba(0,0,0,0.10);
 	-webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.10);
 	box-shadow:         0px 2px 2px 0px rgba(0,0,0,0.10);
@@ -91,9 +91,9 @@ header {
 .login-input {
 	display: block;
 	margin: 20px 0;
-	padding: 14px 5px 14px 38px;
+	padding: 14px 5px 14px 55px;
 	border-color: transparent;
-	width: 323px;
+	width: 306px;
 	font-size: 16px;
 	border-radius: 4px;
 	background: #f8f8f8;
@@ -107,11 +107,11 @@ header {
 }
 
 .control-group.error label {
-	color: #F74A48;
+	color: #bc5b51;
 }
 
 .control-group.error .login-input {
-	border: 2px solid #F74A48;
+	border: 2px solid #bc5b51;
 }
 
 #login-user {
@@ -126,8 +126,8 @@ header {
 	color: #9B9B9B;
 	font-size: 24px;
 	position: absolute;
-	top: 12px;
-	left: 10px;
+	top: 14px;
+	left: 17px;
 	text-shadow: none;
 }
 

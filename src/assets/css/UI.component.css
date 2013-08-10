@@ -200,16 +200,16 @@ a.table-link {
 }
 
 .btn-primary {
+	background: #B25B91;
+	border: 1px solid #7E1958;
+}
+
+.btn-primary:hover {
 	background-image: -o-linear-gradient(-90deg, #b65f99 0%, #983f7d 100%);
 	background-image: -moz-linear-gradient(-90deg, #b65f99 0%, #983f7d 100%);
 	background-image: -webkit-linear-gradient(-90deg, #b65f99 0%, #983f7d 100%);
 	background-image: -ms-linear-gradient(-90deg, #b65f99 0%, #983f7d 100%);
 	background-image: linear-gradient(-180deg, #b65f99 0%, #983f7d 100%);
-	border: 1px solid #7E1958;
-}
-
-.btn-primary:hover {
-	background: #B25B91;
 }
 
 .btn-blue {

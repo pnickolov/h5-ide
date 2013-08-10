@@ -101,10 +101,11 @@ a {
 }
 
 .logo {
-	margin: 10px 10px 10px 5px;
-	height: 30px;
+	margin: 100px 0;
+	height: 34px;
+	width: 160px;
 	position: absolute;
-	left: 0;
+	left: 8px;
 }
 
 .header-menu {
@@ -532,7 +533,7 @@ a {
 
 /* Main Tab Bar */
 #tabbar-wrapper {
-	padding-left: 162px;
+	padding-left: 193px;
 	padding-right: 180px;
 	height: 50px;
 }

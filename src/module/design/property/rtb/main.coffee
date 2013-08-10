@@ -45,20 +45,10 @@ define [ 'jquery',
             #model
             model.getRoute( uid )
 
-            ###
-            if tab_type is 'OPEN_APP'
-
-                model.getAppRoute uid
-
-            else
-
-                model.getRoute( uid )
-            ###
-
             #render
             view.render()
             # Set title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.route_table.name
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.title
 
             view.on 'SET_ROUTE', ( uid, data, routes ) ->
 

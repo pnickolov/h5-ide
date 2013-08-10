@@ -1328,6 +1328,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             resources[constant.AWS_RESOURCE.RT]        =   {}
             resources[constant.AWS_RESOURCE.SUBNET]    =   {}
             resources[constant.AWS_RESOURCE.VGW]       =   {}
+            resources[constant.AWS_RESOURCE.GROUP]     =   {}
+            resources[constant.AWS_RESOURCE.LC]        =   {}
+            resources[constant.AWS_RESOURCE.NC]        =   {}
+            resources[constant.AWS_RESOURCE.POLICY]    =   {}
+            resources[constant.AWS_RESOURCE.SA]        =   {}
+            resources[constant.AWS_RESOURCE.CW]        =   {}
+            resources[constant.AWS_RESOURCE.SUB]       =   {}
+            resources[constant.AWS_RESOURCE.TOPIC]     =   {}
 
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 

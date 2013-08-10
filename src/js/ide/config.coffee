@@ -111,6 +111,10 @@ require.config {
 		'vpngateway_model'    : 'model/aws/vpc/vpngateway_model'
 		'keypair_model' : 'model/aws/ec2/keypair_model'
 
+		'autoscaling_model' : 'model/aws/autoscaling/autoscaling_model'
+		'cloudwatch_model'  : 'model/aws/cloudwatch/cloudwatch_model'
+		'sns_model'         : 'model/aws/sns/sns_model'
+
 		#result_vo
 		'result_vo'    : 'service/result_vo'
 
@@ -177,6 +181,14 @@ require.config {
 		'elb_service'   : 'service/aws/elb/elb/elb_service'
 
 		'iam_service'   : 'service/aws/iam/iam/iam_service'
+
+		#
+		'autoscaling_service' : 'service/aws/autoscaling/autoscaling/autoscaling_service'
+
+		'cloudwatch_service'  : 'service/aws/cloudwatch/cloudwatch/cloudwatch_service'
+
+		'sns_service'         : 'service/aws/sns/sns/sns_service'
+
 
 	shim               :
 

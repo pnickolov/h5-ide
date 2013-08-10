@@ -146,6 +146,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
 
             console.log "Finish Editing Policy : ", data
 
+            this.trigger 'SET_POLICY', data
+
         updateSNSOption : () ->
             checkArray = []
             hasChecked = false

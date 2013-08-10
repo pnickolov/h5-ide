@@ -7,8 +7,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
     RTBModel = Backbone.Model.extend {
 
         defaults :
-            'set_xxx'    : null
-            'route_table'    : null
+            'route_table' : null
+            'association' : null
+            'title'       : null
 
         initialize : ->
             #listen
@@ -126,6 +127,24 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
         getRoute : ( uid ) ->
 
+            # uid might be a line connecting RTB and Subnet
+            connection = MC.canvas_data.layout.connection[ uid ]
+            if connection
+                data = {}
+                for uid, value of connection.target
+                    component = MC.canvas_data.component[ uid ]
+                    if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+                        data.subnet = component.name
+                    else
+                        data.rtb    = component.name
+
+                this.set 'association', data
+                this.set 'title', 'Subnet-RT Association'
+                return
+
+
+            # This is a route table component
+
             rt = $.extend true, {}, MC.canvas_data.component[uid]
 
             if rt.resource.AssociationSet.length != 0 and rt.resource.AssociationSet[0].Main == 'true'
@@ -213,6 +232,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 rt.vpc_id = MC.canvas_data.component[rt.resource.VpcId.split('.')[0][1...]].resource.VpcId
 
             this.set 'route_table', rt
+            this.set 'association', null
+            this.set 'title', rt.name
 
         setPropagation : ( uid, value ) ->
 

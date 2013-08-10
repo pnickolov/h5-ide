@@ -1,4 +1,7 @@
 <article>
+	{{#if association}}
+	<p>This is an association of {{association.subnet}} to {{association.rtb}}</p>
+	{{else}}
 	<div class="property-control-group">
 		<label class="left" for="rt-name">Name</label>
 		<input class="input" type="text" required="required" value="{{route_table.name}}" name="rt-name" id="rt-name" data-uid="{{route_table.uid}}">
@@ -52,5 +55,6 @@
 		</div>
 		{{/each}}
 	</div>
+	{{/if}}
 	{{/if}}
 </article>

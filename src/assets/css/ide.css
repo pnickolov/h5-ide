@@ -4105,3 +4105,9 @@ a.sidebar-hider {
 	text-align: right;
 	padding: 15px 0;
 }
+
+.export-loading-bar {
+	text-align: center;
+	padding-top: 30px;
+	padding-bottom: 1px;
+}

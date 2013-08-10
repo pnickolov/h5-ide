@@ -347,6 +347,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 $('#phantom-frame').load -> sendMessage()
             else
                 sendMessage()
+            #
+            me.trigger 'SAVE_PNG_COMPLETE', null
             null
             ###
             me = this

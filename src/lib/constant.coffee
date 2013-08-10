@@ -25,14 +25,14 @@ define [], () ->
 		AWS_VPC_NetworkAcl        : "AWS.VPC.NetworkAcl"
 		AWS_IAM_ServerCertificate : "AWS.IAM.ServerCertificate"
 		#
-		AWS_AUTOSCALING_GROUP                      	: 'AWS.AutoScaling.Group'
-		AWS_AUTOSCALING_LAUNCHCONFIGURATION         : 'AWS.AutoScaling.LaunchConfiguration'
-		AWS_AUTOSCALING_NOTIFICATIONCONFIGURATION   : 'AWS.AutoScaling.NotificationConfiguration'
-		AWS_AUTOSCALING_SCALINGPOLICY               : 'AWS.AutoScaling.ScalingPolicy'
-		AWS_AUTOSCALING_SCHEDULEDACTIONS            : 'AWS.AutoScaling.ScheduledActions'
-		AWS_CLOUDWATCH_CLOUDWATCH                  	: 'AWS.CloudWatch.CloudWatch'
-		AWS_SNS_SUBSCRIPTION                        : 'AWS.SNS.Subscription'
-		AWS_SNS_TOPIC                              	: 'AWS.SNS.Topic'
+		AWS_AutoScaling_Group                      	: 'AWS.AutoScaling.Group'
+		AWS_AutoScaling_LaunchConfiguration         : 'AWS.AutoScaling.LaunchConfiguration'
+		AWS_AutoScaling_NotificationConfiguration   : 'AWS.AutoScaling.NotificationConfiguration'
+		AWS_AutoScaling_ScalingPolicy               : 'AWS.AutoScaling.ScalingPolicy'
+		AWS_AutoScaling_ScheduledActions            : 'AWS.AutoScaling.ScheduledActions'
+		AWS_CloudWatch_CloudWatch                  	: 'AWS.CloudWatch.CloudWatch'
+		AWS_SNS_Subscription                        : 'AWS.SNS.Subscription'
+		AWS_SNS_Topic                              	: 'AWS.SNS.Topic'
 	}
 
 	#private

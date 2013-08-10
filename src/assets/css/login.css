@@ -172,15 +172,6 @@ header {
 	clear: both;
 }
 
-footer {
-	position: relative;
-	text-align: center;
-	color:#ccc;
-	font-size: 12px;
-	margin-top: -150px;
-	height: 150px;
-}
-
 .demo-only {
 	border-radius: 5px;
 	position: fixed;

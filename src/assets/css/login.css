@@ -13,6 +13,10 @@ a {
 	color: #5685D3;
 }
 
+a:hover {
+	text-decoration: underline;
+}
+
 header {
 	background: #242224;
 	position: absolute;

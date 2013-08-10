@@ -3900,6 +3900,15 @@ a.sidebar-hider {
 	cursor     : pointer;
 }
 
+.property-details .icon-del {
+	position   : absolute;
+	top        : 30px;
+	right      : 15px;
+	width      : 16px;
+	height     : 16px;
+	background : red;
+}
+
 .drag-sort-list {
 	width : 300px;
 }

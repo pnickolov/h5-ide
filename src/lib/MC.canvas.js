@@ -4102,6 +4102,15 @@ MC.canvas.event.keyEvent = function (event)
 		is_zoomed = $('#canvas_body').hasClass('canvas_zoomed'),
 		selected_node;
 
+	// Disable key event for input & textarea
+	if (
+		nodeName === 'input' ||
+		nodeName === 'textarea'
+	)
+	{
+		return true;
+	}
+
 	// Delete resource - [delete/backspace]
 	if (
 		(

@@ -546,3 +546,94 @@
 .canvas_zoomed .resizer-wrap {
 	display: none;
 }
+
+#asgList-wrap {
+	position: absolute;
+	border: 2px solid #83CBF9;
+	width: 376px;
+	z-index: 30;
+	background: rgba(255, 255, 255, 0.95);
+	border-radius: 4px;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+#asgList-header {
+	background-color: #83CBF9;
+	color: #fff;
+	padding: 0 3px 3px;
+}
+
+#asgList-close {
+	position: absolute;
+	right: 5px;
+	top: -2px;
+	font-style: normal;
+	cursor: pointer;
+	font-size: 18px;
+	color: #fff;
+}
+
+#asgList {
+	padding: 8px 20px 3px;
+}
+
+#asgList li {
+	float: left;
+	margin: 0 10px 10px 0;
+	position: relative;
+}
+
+#asgList .status {
+	position: absolute;
+	right: 22px;
+	top: 17px;
+	width: 8px;
+	height: 8px;
+}
+
+.asgList-item {
+	border-radius: 5px;
+	display: block;
+	border: 2px solid rgba(255, 255, 255, 0);
+	width: 98px;
+	height: 98px;
+	background: url('../images/ide/icon/instance-canvas.png') 15px 10px no-repeat;
+}
+
+.asgList-item.selected {
+	border: 2px solid rgba(101, 159, 255, 0.6);
+	background-color: rgba(242, 248, 255, 0.6);
+}
+
+.asgList-item-icon {
+	position: absolute;
+	top: 15px;
+	left: 32px;
+	width: 39px;
+	height: 27px;
+}
+
+.asgList-item-volume {
+	position: absolute;
+	top: 48px;
+	left: 37px;
+	width: 29px;
+	height: 24px;
+	background: url('../images/ide/icon/instance-volume-not-attached.png') no-repeat;
+	text-align: center;
+}
+
+.asgList-item-number {
+	font-size: 12px;
+	color: #74B1FD;
+}
+
+.asgList-item-label {
+	color: #333;
+	width: 100px;
+	overflow: hidden;
+	font-size: 12px;
+	position: absolute;
+	top: 80px;
+	text-align: center;
+}

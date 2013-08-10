@@ -80,6 +80,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     if placement.AvailabilityZone == oldZoneName
                         placement.AvailabilityZone = newZone
 
+                if component.type == resource_type.AWS_ELB
+                    idx = component.resource.AvailabilityZones.indexOf oldZoneName
+                    if idx != -1
+                        component.resource.AvailabilityZones.splice idx, 1, newZone
+
                 else if component.resource.AvailabilityZone == oldZoneName
 
                     if component.type == resource_type.AWS_EBS_Volume ||

@@ -62,17 +62,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             name = $( '#property-stack-name' ).val()
             #check stack name
-            if name.slice(0,1) == '-'
+            if name[0] == '-'
                 notification 'error', 'Stack name cannot start with dash.'
-            else if name.slice(0, 8) == 'untitled'
-                notification 'error', 'Please modify the initial stack name.'
             else if not name
                 $( '#property-stack-name' ).val me.model.attributes.property_detail.name
             else if name in MC.data.stack_list[MC.canvas_data.region]
                 notification 'error', 'Stack name \"' + name + '\" is already in using. Please use another one.'
             else
                 me.trigger 'STACK_NAME_CHANGED', name
-                ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, name + ' - stack'
 
         openSecurityGroup : (event) ->
             source = $(event.target)

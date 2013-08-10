@@ -1073,54 +1073,8 @@ textarea {
 	height: 100%;
 }
 
-/* Fixedaccordion */
-.fixedaccordion-head {
-	height: 48px;
-	background-color: #3e444c;
-	border-bottom: 1px solid rgba(40,43,50,.75);
-	color: #c5cdd8;
-	text-shadow: 0 1px rgba(30,34,40,.75);
-	box-shadow: 0 1px rgba(255,255,255,.1);
-}
+/* Fixedaccordion - Style moved to ide.css*/
 
-.expanded .fixedaccordion-head {
-/*	background: #0066C3;
-	color: #fff;*/
-}
-
-.fixedaccordion .accordion-body {
-	position: relative;
-	display: none;
-	overflow: hidden;
-	background-color: #5d5f65;
-	-webkit-box-shadow: inset 2px 0 6px rgba(60,73,92,.1);
-	-moz-box-shadow: inset 2px 0 6px rgba(60,73,92,.1);
-	box-shadow: inset 2px 0 6px rgba(60,73,92,.1);
-}
-
-.fixedaccordion .expanded .accordion-body {
-	display: block;
-}
-
-.fixedaccordion-head {
-	cursor: pointer;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
-	overflow: hidden;
-}
-
-.expanded .fixedaccordion-head {
-	cursor: default;
-}
-
-.fixedaccordion-head {
-	height: 37px;
-	line-height: 37px;
-	padding: 0 10px;
-}
 
 /* Selectbox V2 */
 .selectbox {
@@ -1134,7 +1088,7 @@ textarea {
 .selectbox .selection {
 	position      : relative;
 	border        : 1px solid rgba(0, 0, 0, 0.2);
-	box-shadow    : 1px 1px 1px rgba(0, 0, 0, 0.05);
+	/*box-shadow    : 1px 1px 1px rgba(0, 0, 0, 0.05);*/
 	font-size     : 12px;
 	cursor        : pointer;
 	padding       : 5px;

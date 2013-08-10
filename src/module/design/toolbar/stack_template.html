@@ -11,15 +11,15 @@
 		</div>
 		<ul class="dropdown" tabindex="-1">
 			{{#if item_flags.is_duplicate}}
-			<li id="toolbar-duplicate" data-tooltip="Duplicate stack"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</li>
+			<li id="toolbar-duplicate"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</li>
 			{{else}}
-			<li data-tooltip="Duplicate stack"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</li>
+			<li class="disabled"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</li>
 			{{/if}}
 
 			{{#if item_flags.is_delete}}
-			<li class="modal" id="toolbar-delete" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</li>
+			<li class="modal" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</li>
 			{{else}}
-			<li id="toolbar-delete" data-tooltip="Delete stack"><i class="icon-toolbar-delete"></i>Delete Stack</li>
+			<li class="disabled" id="toolbar-delete"><i class="icon-toolbar-delete"></i>Delete Stack</li>
 			{{/if}}
 
 			<li id="toolbar-new" data-tooltip="Create new stack"><i class="icon-toolbar-new-stack"></i>New Stack</li>

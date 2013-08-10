@@ -13,19 +13,23 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
 
         term_template : Handlebars.compile $( '#property-asg-term-tmpl' ).html()
 
+        policy_template : Handlebars.compile $( '#property-asg-policy-tmpl' ).html()
+
         events   :
-            "click #property-asg-term-edit" : "showTermPolicy"
+            "click #property-asg-term-edit"                : "showTermPolicy"
             "click #property-asg-sns input[type=checkbox]" : "updateSNSOption"
-            "change #property-asg-endpoint" : "updateSNSOption"
-            "OPTION_CHANGE #property-asg-sns-more" : "updateSNSInput"
-            "change #property-asg-elb" : "setHealthyCheckELBType"
-            "change #property-asg-ec2" : "setHealthyCheckEC2Type"
-            "change #property-asg-name" : "setASGName"
-            "change #property-asg-min" : "setASGMin"
-            "change #property-asg-max" : "setASGMax"
-            "change #property-asg-capacity" : "setASGDesireCapacity"
-            "change #property-asg-cooldown" : "setASGCoolDown"
-            "change #property-asg-healthcheck" : "setHealthCheckGrace"
+            "change #property-asg-endpoint"                : "updateSNSOption"
+            "OPTION_CHANGE #property-asg-sns-more"         : "updateSNSInput"
+            "change #property-asg-elb"                     : "setHealthyCheckELBType"
+            "change #property-asg-ec2"                     : "setHealthyCheckEC2Type"
+            "change #property-asg-name"                    : "setASGName"
+            "change #property-asg-min"                     : "setASGMin"
+            "change #property-asg-max"                     : "setASGMax"
+            "change #property-asg-capacity"                : "setASGDesireCapacity"
+            "change #property-asg-cooldown"                : "setASGCoolDown"
+            "change #property-asg-healthcheck"             : "setHealthCheckGrace"
+            "click #property-asg-policy-add"               : "showScalingPolicy"
+
 
 
         render     : ( attributes ) ->
@@ -114,7 +118,34 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
 
             this.trigger 'SET_TERMINATE_POLICY', data
 
+        showScalingPolicy : () ->
+            data =
+                title : "Add"
 
+            modal this.policy_template(data), true
+
+            self = this
+            $("#property-asg-policy-done").on "click", ()->
+                self.onEidtPolicy()
+                modal.close()
+
+        onEidtPolicy : () ->
+            data =
+                name   : $("#asg-policy-name").val()
+                metric : $("#asg-policy-metric .selected").data("id")
+                evaluation : $("#asg-policy-eval .selected").data("id")
+                threshold  : $("#asg-policy-threshold").val()
+                periods    : $("#asg-policy-periods").val()
+                second     : $("#asg-policy-second").val()
+                trigger    : $("#asg-policy-trigger .selected").data("id")
+                adjusttype : $("#asg-policy-adjust-type .selected").data("id")
+                adjustment : $("#asg-policy-adjust .selected").data("id")
+                statistics : $("#asg-policy-statistics .selected").data("id")
+                cooldown   : $("#asg-policy-cooldown").val()
+                step       : $("#asg-policy-step").val()
+                notify     : $("#asg-policy-notify").is(":checked")
+
+            console.log "Finish Editing Policy : ", data
 
         updateSNSOption : () ->
             checkArray = []

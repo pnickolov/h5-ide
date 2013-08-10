@@ -55,6 +55,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             MC.canvas_data.name = MC.canvas_data.name.replace(/\s+/g, '')
             $( '#property-stack-name' ).val(MC.canvas_data.name)
 
+            this.updateSNSList this.model.attributes.subscription, this.model.attributes.has_asg, true
+
             null
 
         stackNameChanged : () ->
@@ -144,7 +146,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             ide_event.trigger ide_event.OPEN_ACL, aclUID
 
-        updateSNSList : ( snslist_data, hasASG ) ->
+        updateSNSList : ( snslist_data, hasASG, textOnly ) ->
+
+            console.log "Morris updateSNSList", this.model.attributes
 
             # Hide all message
             $(".property-sns-info > div").hide()
@@ -157,18 +161,23 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             else if not hasASG
                 $("#property-sns-no-asg").show()
 
+            if textOnly
+                return
+
             # Remove Old Stuff
             $list = $("#property-sub-list")
             $list.find("li:not(.hide)").remove()
 
             # Insert New List
             $template = $list.find(".hide")
-            for sub of snslist_data
-                $clone = $template.clone().appendTo $list
+            for sub in snslist_data
+                $clone = $template.clone().removeClass("hide").appendTo $list
 
                 $clone.data "uid", sub.uid
                 $clone.find(".protocol").html sub.protocol
                 $clone.find(".endpoint").html sub.endpoint
+
+            $("#property-stack-sns-num").html( snslist_data.length )
 
             null
 
@@ -178,18 +187,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             uid = $li.data("uid")
             $li.remove()
 
-            console.log "Subscription Removed : #{uid}"
+            this.trigger "DEL_SUBSCRIPTION", uid
 
 
         editSNS : ( event ) ->
-            $sub_li = $(this).parent()
+            $sub_li = $( event.currentTarget ).parent()
             data =
                 title : "Edit"
                 uid   : $sub_li.data("uid")
                 protocol : $sub_li.find(".protocol").text()
                 endpoint : $sub_li.find(".endpoint").text()
 
-            self.openSNSModal event, data
+            this.openSNSModal event, data
             null
 
         saveSNS : ( data ) ->
@@ -202,6 +211,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
                 $dom.find(".endpoint").html( data.endpoint )
 
             this.trigger  "SAVE_SUBSCRIPTION", data
+
+            if !data.uid
+                # Update the list
+                this.updateSNSList this.model.attributes.subscription, this.model.attributes.has_asg
 
         openSNSModal : ( event, data ) ->
             # data =

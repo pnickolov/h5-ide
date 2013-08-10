@@ -3900,6 +3900,34 @@ a.sidebar-hider {
 	cursor     : pointer;
 }
 
+.property-details .icon-del {
+	position   : absolute;
+	top        : 30px;
+	right      : 15px;
+	width      : 16px;
+	height     : 16px;
+	background : red;
+}
+
+.dialog-group {
+	border-radius : 4px;
+	background    : #ddd;
+	margin        : 10px 0;
+	padding       : 10px;
+}
+
+.dialog-group h5 {
+	color : #222;
+}
+
+.asg-policy-advanced .dialog-group {
+	display : none;
+}
+
+.asg-policy-advanced.open .dialog-group {
+	display : block;
+}
+
 .drag-sort-list {
 	width : 300px;
 }
@@ -4177,4 +4205,10 @@ a.sidebar-hider {
 #process-panel .action {
 	text-align: right;
 	padding: 15px 0;
+}
+
+.export-loading-bar {
+	text-align: center;
+	padding-top: 30px;
+	padding-bottom: 1px;
 }

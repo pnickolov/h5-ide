@@ -60,7 +60,7 @@
       <section class="dialog-group">
         <h5>Scaling Activity</h5>
         <span>Adjust number of instances by</span>
-        <div class="selectbox" id="asg-policy-adjustment">
+        <div class="selectbox" id="asg-policy-adjust-type">
           <div class="selection">Change in Capacity</div>
           <ul class="dropdown" tabindex="-1">
             <li data-id="ChangeInCapacity" class="item selected">Change in Capacity</li>
@@ -68,6 +68,9 @@
             <li data-id="PercentChangeInCapacity" class="item">Percent Change in Capacity</li>
           </ul>
         </div>
+        <span>of</span>
+        <input type="text" id="asg-policy-adjust">
+        <span>.</span>
       </section>
 
       <div class="asg-policy-advanced">

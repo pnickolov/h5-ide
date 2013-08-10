@@ -49,16 +49,17 @@ var multiinputbox;
     var $t       = $(this);
     var $wrapper = $t.closest(".multi-input").removeClass("max");
 
-    var event = $.Event( "BEFORE_REMOVE_ROW", value )
+    var $target  = $t.closest(".multi-ipt-row");
+    var value    = $target.find("input").val();
+    var event    = $.Event( "BEFORE_REMOVE_ROW", { value : value } )
+
     $wrapper.trigger( event )
     if ( event.isDefaultPrevented() )
       return
 
-    var $target = $t.closest(".multi-ipt-row");
-    var value   = $target.find("input").val();
     $target.remove();
-
     $wrapper.trigger("REMOVE_ROW", value );
+
     return false;
   }
 })();

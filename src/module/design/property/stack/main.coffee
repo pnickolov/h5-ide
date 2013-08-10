@@ -6,8 +6,9 @@ define [ 'jquery',
          'text!/module/design/property/stack/template.html',
          'text!/module/design/property/stack/app_template.html',
          'text!/module/design/property/stack/acl_template.html',
+         'text!/module/design/property/stack/sub_template.html',
          'event'
-], ( $, stack_template, app_template, acl_template, ide_event ) ->
+], ( $, stack_template, app_template, acl_template, sub_template, ide_event ) ->
 
     #
     current_view  = null
@@ -18,10 +19,14 @@ define [ 'jquery',
     stack_template = '<script type="text/x-handlebars-template" id="property-stack-tmpl">' + stack_template + '</script>'
     app_template = '<script type="text/x-handlebars-template" id="property-app-tmpl">' + app_template + '</script>'
     acl_template = '<script type="text/x-handlebars-template" id="property-stack-acl-tmpl">' + acl_template + '</script>'
+
+    sub_template = '<script type="text/x-handlebars-template" id="property-stack-sns-tmpl">' + sub_template + '</script>'
+
     #load remote html template
     $( 'head' ).append stack_template
     $( 'head' ).append app_template
     $( 'head' ).append acl_template
+    $( 'head' ).append sub_template
 
     #private
     loadModule = ( current_main, tab_type ) ->
@@ -58,6 +63,8 @@ define [ 'jquery',
             #re calc cost when load module
             model.getCost()
 
+            model.getSubscription()
+
             if tab_type is 'OPEN_APP'
                 title = "APP - "
             else
@@ -81,6 +88,7 @@ define [ 'jquery',
                 renderPropertyPanel()
 
                 ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, title + name
+                ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, name
 
             view.on 'DELETE_STACK_SG', (uid) ->
                 model.deleteSecurityGroup uid
@@ -107,6 +115,14 @@ define [ 'jquery',
                 console.log 'rerender property'
 
                 renderPropertyPanel()
+
+            view.on 'SAVE_SUBSCRIPTION', ( data ) ->
+
+                model.addSubscription data
+
+            model.on 'UPDATE_SNS_LIST', ( sns_list, has_asg ) ->
+
+                view.updateSNSList sns_list, has_asg
 
             #refresh cost after add/remove resource
             ide_event.onLongListen ide_event.UPDATE_COST_ESTIMATE, () ->

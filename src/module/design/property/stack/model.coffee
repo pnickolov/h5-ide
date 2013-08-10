@@ -61,6 +61,97 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
             return sgUIDAry
 
+        addSubscription : ( data ) ->
+
+            topic_uid = null
+
+            existing = false
+
+            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+                    topic_uid = comp_uid
+
+                    existing = true
+
+
+                return false
+
+            if not existing
+
+                topic_comp = $.extend true, {}, MC.canvas.SNS_TOPIC_JSON.data
+
+                topic_uid = MC.guid()
+
+                topic_comp.name = topic_comp.resource.Name = topic_comp.resource.DisplayName = 'app-sns'
+
+                MC.canvas_data.component[topic_uid] = topic_comp
+
+            sub_uid = MC.guid()
+
+            sub_comp = $.extend true, {}, MC.canvas.SNS_SUB_JSON.data
+
+            sub_comp.uid = sub_uid
+
+            sub_comp.resource.Protocol = data.protocol
+
+            sub_comp.resource.Endpoint = data.endpoint
+
+            sub_comp.resource.TopicArn = '@' + topic_uid + '.resource.TopicArn'
+
+            MC.canvas_data.component[sub_uid] = sub_comp
+
+            sub_list = []
+
+            has_asg = false
+
+            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
+
+                    tmp = {}
+
+                    tmp.protocol = comp.resource.Protocol
+
+                    tmp.endpoint = comp.resource.Endpoint
+
+                    tmp.uid = comp.uid
+
+                    sub_list.push tmp
+
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+
+                    has_asg = true
+
+                    null
+
+            this.trigger 'UPDATE_SNS_LIST', sub_list, has_asg
+            null
+
+        getSubscription : () ->
+
+            sub_list = []
+
+            has_asg = false
+
+            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
+
+                    tmp = {}
+
+                    tmp.protocol = comp.resource.Protocol
+
+                    tmp.endpoint = comp.resource.Endpoint
+
+                    tmp.uid = comp.uid
+
+                    sub_list.push tmp
+
+            this.set 'subscription', sub_list
+
+
         getNetworkACL : ->
 
             networkACLs = []

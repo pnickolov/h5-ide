@@ -9,6 +9,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
     defaults :
       uid : null
       asg : null
+      name : null
 
       hasLaunchConfig : null
 
@@ -29,7 +30,63 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         this.set 'hasLaunchConfig', true
 
-        this.set 'uid', uid
+      asg = $.extend true, {}, MC.canvas_data.component[uid]
+
+      if asg.resource.HealthCheckType is 'EC2'
+
+        asg.resource.ec2 = true
+
+      else if asg.resource.HealthCheckType is 'ELB'
+
+        asg.resource.elb = true
+
+      this.set 'asg', asg
+
+      this.set 'uid', uid
+
+    setHealthCheckType : ( uid, type ) ->
+
+      MC.canvas_data.component[uid].resource.HealthCheckType = type
+
+      null
+
+    setASGName : ( uid, name ) ->
+
+      MC.canvas_data.component[uid].name = name
+      MC.canvas_data.component[uid].resource.AutoScalingGroupName = name
+
+      null
+
+    setASGMin : ( uid, value ) ->
+
+
+      MC.canvas_data.component[uid].resource.MinSize = value
+
+      null
+
+    setASGMax : ( uid, value ) ->
+
+      MC.canvas_data.component[uid].resource.MaxSize = value
+
+      null
+
+    setASGDesireCapacity : ( uid, value ) ->
+
+      MC.canvas_data.component[uid].resource.DesiredCapacity = value
+
+      null
+
+    setASGCoolDown : ( uid, value ) ->
+
+      MC.canvas_data.component[uid].resource.DefaultCooldown = value
+
+      null
+
+    setHealthCheckGrace : ( uid, value ) ->
+
+      MC.canvas_data.component[uid].resource.HealthCheckGracePeriod = value
+
+      null
 
     setSNSOption : ( uid, check_array ) ->
 

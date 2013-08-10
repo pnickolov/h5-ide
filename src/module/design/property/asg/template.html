@@ -5,40 +5,40 @@
 		<section class="property-control-group">
 			<label class="left" for="property-asg-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input class="input" type="text" required="required" value="{{name}}" id="property-asg-name"/>
+			<input class="input" type="text" required="required" value="{{asg.resource.AutoScalingGroupName}}" id="property-asg-name"/>
 		</section>
 
 		<section class="property-control-group clearfix">
 			<div class="left" style="width:40%;">
 				<label for="property-asg-min">Minimum Size</label>
-				<input class="input" type="text" id="property-asg-min" value="{{minimum}}">
+				<input class="input" type="text" id="property-asg-min" value="{{asg.resource.MinSize}}">
 			</div>
 			<div class="right" style="width:40%;">
 				<label for="property-asg-max">Maximum Size</label>
-				<input class="input" type="text" id="property-asg-max" value="{{maximum}}">
+				<input class="input" type="text" id="property-asg-max" value="{{asg.resource.MaxSize}}">
 			</div>
 	  </section>
 
 		<section class="property-control-group">
 			<label>Desired Capacity</label>
-			<input type="text" id="property-asg-capacity" value="{{capacity}}">
+			<input type="text" id="property-asg-capacity" value="{{asg.resource.DesiredCapacity}}">
 		</section>
 
 		<section class="property-control-group">
 			<label>Default Cooldown</label>
-			<input type="text" id="property-asg-capacity" value="{{cooldown}}">
+			<input type="text" id="property-asg-cooldown" value="{{asg.resource.DefaultCooldown}}">
 			<span>seconds</span>
 		</section>
 
 		<section class="property-control-group clearfix">
 			<label>Health Check Type</label>
 			<div class="radio">
-				<input id="property-asg-ec2" type="radio" value="ec2" {{#if ec2}}checked="true"{{/if}} name="property-asg-hc-option" />
+				<input id="property-asg-ec2" type="radio" value="ec2" {{#if asg.resource.ec2}}checked="true"{{/if}} name="property-asg-hc-option" />
 				<label for="property-asg-ec2"></label>
 			</div>
 			<label for="property-asg-ec2">EC2</label>
 			<div class="radio">
-				<input id="property-asg-elb" type="radio" value="elb" {{#unless ec2}}checked="true"{{/unless}} name="property-asg-hc-option" />
+				<input id="property-asg-elb" type="radio" value="elb" {{#if asg.resource.elb}}checked="true"{{/if}} name="property-asg-hc-option" />
 				<label for="property-asg-elb"></label>
 			</div>
 			<label for="property-asg-elb">ELB</label>
@@ -46,7 +46,7 @@
 
 		<section class="property-control-group">
 			<label>Health Check Grace Period</label>
-			<input type="text" id="property-asg-healthcheck" value="{{healthcheck}}">
+			<input type="text" id="property-asg-healthcheck" value="{{asg.resource.HealthCheckGracePeriod}}">
 			<span>seconds</span>
 		</section>
 	</div>
@@ -99,26 +99,9 @@
 		</div>
 		<label for="property-asg-sns5">Validating a configuraed SNS Topic</label></div>
 
-		<section class="hide" id="property-asg-sns-more">
-			<label>Protocol</label>
-			<div class="selectbox">
-        <div class="selection">Email</div>
-        <ul class="dropdown" tabindex="-1">
-          <li class="item" data-id="sqa">Amazon SQA</li>
-          <li class="selected item" data-id="email">Email</li>
-          <li class="item" data-id="email-json">Email-JSON</li>
-          <li class="item" data-id="http">HTTP</li>
-          <li class="item" data-id="https">HTTPS</li>
-          <li class="item" data-id="sms">SMS</li>
-        </ul>
-      </div>
-
-      <label for="property-asg-endpoint">Endpoint</label>
-      <span class="property-asg-ep">
-      	<input type="text" class="input" id="property-asg-endpoint">
-      </span>
-
-		</section>
+		<p class="property-warning hide" id="property-asg-sns-info">
+    	There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.
+    </p>
 
 	</div>
 	{{else}}

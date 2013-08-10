@@ -156,6 +156,10 @@ a {
 	margin-left: 8px;
 }
 
+.notification-counter:empty {
+	display : none;
+}
+
 .avatar {
 	display: inline-block;
 	border-radius: 15px;

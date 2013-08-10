@@ -60,35 +60,21 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             uid = $("#autoscaling-group-property-uid").attr("data-uid")
             policies = MC.canvas_data.component[uid].resource.TerminationPolicies
 
-            data = []
+            data    = []
+            checked = {}
 
             for policy in policies
+                if policy is "Default"
+                    data.useDefault = true
+                else
+                    data.push { name : policy, checked : true }
+                    checked[ policy ] = true
 
-                data.push { name : policy, checked : true }
-
-            for p in ["OldestInstance", "NewestInstance", "OldestLaunchConfiguration", "ClosestToNextInstanceHour", "Default"]
-
-                existing = false
-
-                for d in data
-
-                    if d.name is p
-
-                        existing = true
-
-                if not existing
-
+            for p in ["OldestInstance", "NewestInstance", "OldestLaunchConfiguration", "ClosestToNextInstanceHour"]
+                if not checked[ p ]
                     data.push { name : p, checked : false }
-            # data = [
-            #     { name : "OldestInstance", checked : if 'OldestInstance' in policies then true else false }
-            #     { name : "NewestInstance", checked : true }
-            #     { name : "OldestLaunchConfiguration", checked : false }
-            #     { name : "ClosestToNextInstanceHour", checked : true }
-            # ]
-            #data.defaultChecked = true
 
-            template = this.term_template data
-            modal template, true
+            modal this.term_template(data), true
 
             self = this
 
@@ -119,10 +105,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 }
                 null
 
-            #data.push {
-            #    name : "Default"
-            #    checked : $("#property-asg-term-def").is(":checked")
-            #}
+            data.push {
+               name : "Default"
+               checked : $("#property-asg-term-def").is(":checked")
+            }
 
             console.log "Finish editing termination policy", data
 

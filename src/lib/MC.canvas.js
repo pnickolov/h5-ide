@@ -1045,6 +1045,7 @@ MC.canvas = {
 					'y': y + height
 				}
 			],
+			canvas_size = MC.canvas.data.get('layout.size'),
 			match_option = MC.canvas.MATCH_PLACEMENT[ MC.canvas.data.get('platform') ][ node_type ],
 			is_option_canvas = match_option ? (match_option[ 0 ] === 'Canvas') : false,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
@@ -1126,8 +1127,15 @@ MC.canvas = {
 				}
 			});
 
+			is_matched =
+				$.isEmptyObject(result) &&
+
+				// canvas right offset = 3
+				x + width < canvas_size[0] - 3 &&
+				y + height < canvas_size[1] - 3;
+
 			return {
-				'is_matched': $.isEmptyObject(result),
+				'is_matched': is_matched,
 				'target': result.id === undefined && is_matched ? 'Canvas' : result.id
 			};
 		}
@@ -1185,7 +1193,11 @@ MC.canvas = {
 
 				match[0].target === match[1].target &&
 				match[0].target === match[2].target &&
-				match[0].target === match[3].target;
+				match[0].target === match[3].target &&
+
+				// canvas right offset = 3
+				x + width < canvas_size[0] - 3 &&
+				y + height < canvas_size[1] - 3;
 
 			if (
 				!is_matched &&
@@ -2179,6 +2191,50 @@ MC.canvas.volume = {
 			'mousemove': MC.canvas.volume.mousemove,
 			'mouseup': MC.canvas.volume.mouseup
 		});
+
+		return false;
+	}
+};
+
+MC.canvas.asgList = {
+	show: function (event)
+	{
+		MC.canvas.asgList.close();
+
+		var target = this.parentNode,
+			target_offset = Canvon(target).offset(),
+			canvas_offset = $('#svg_canvas').offset();
+
+		$('#canvas_container').append( MC.template.asgList() );
+
+		$('#asgList-wrap')
+			.on('click', '.asgList-item', MC.canvas.asgList.select)
+			.css({
+				'top': target_offset.top - canvas_offset.top - 10,
+				'left': target_offset.left - canvas_offset.left
+			});
+
+		MC.canvas.asgList.select.call($('#asgList-wrap .asgList-item').first());
+
+		return true;
+	},
+
+	close: function ()
+	{
+		$('#asgList-wrap').remove();
+
+		return false;
+	},
+
+	select: function (event)
+	{
+		var target = $(this);
+
+		$('#asgList-wrap .selected').removeClass('selected');
+
+		target.addClass('selected');
+
+		$('#svg_canvas').trigger('CANVAS_ASG_SELECTED', target.data('id'));
 
 		return false;
 	}
@@ -4057,6 +4113,15 @@ MC.canvas.event.keyEvent = function (event)
 		canvas_status = MC.canvas.getState(),
 		is_zoomed = $('#canvas_body').hasClass('canvas_zoomed'),
 		selected_node;
+
+	// Disable key event for input & textarea
+	if (
+		nodeName === 'input' ||
+		nodeName === 'textarea'
+	)
+	{
+		return true;
+	}
 
 	// Delete resource - [delete/backspace]
 	if (

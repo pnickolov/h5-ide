@@ -10,7 +10,7 @@
 */
 
 var MC = MC || {},
-	TEMPLATE_LOCATION = './ui/common/MC.template.html';
+	TEMPLATE_LOCATION = '/ui/common/MC.template.html';
 
 $.get(TEMPLATE_LOCATION, function (data)
 {

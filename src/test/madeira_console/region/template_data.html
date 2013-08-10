@@ -1,0 +1,608 @@
+<!--{{ .resource-tables }}-->
+{{#if region_resource_list.loading}}
+Loading...
+{{else}}
+	<div class="dashboard-widget">
+		<ul class="tab grid grid-responsive grid-small-bottom row-counter">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2 active" data-tab-target="#stat-table-instance">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>{{region_resource_list.Instance}}<span class="label">Instance</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-eip">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">Elastic IP</span>
+					{{#if region_resource_list.Not_Used.EIP}}
+					<span class="warning-counter bubble"  data-bubble-template="bubbleAlert" data-bubble-data='{"title":"{{region_resource_list.Not_Used.EIP}} EIP not associated with instance.","description":"This would charge you extra expense."}'>{{region_resource_list.Not_Used.EIP}}</span>
+					{{/if}}
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-ebs">
+				<div class="region-stat-block-wrap">
+					<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">Volume</span>
+					{{#if region_resource_list.Not_Used.Volume}}
+					<span class="warning-counter suggest-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.Volume}} EBS not in use.","description":"This may cost you extra expense to what you utilized"}'>{{region_resource_list.Not_Used.Volume}}</span>
+					{{/if}}
+				</div>
+			</li>
+
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-vpc">
+				<div class="region-stat-block-wrap">
+					<i class="icon-hdd icon-label"></i>{{region_resource_list.VPC}}<span class="label">VPC</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-vpn">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>{{region_resource_list.VPN}}<span class="label">VPN</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-elb">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>{{region_resource_list.ELB}}<span class="label">Load Balancer</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-asg">
+				<div class="region-stat-block-wrap">
+					<i class="icon-hdd icon-label"></i>4<span class="label">Auto Scaling Group</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-cw">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>2<span class="label">CloudWatch Alarm</span>
+					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 alarm(s) in ALARM state.","description":""}'>3</span>
+				</div>
+			</li>
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-sns">
+				<div class="region-stat-block-wrap">
+					<i class="icon-image icon-label"></i>3<span class="label">SNS Subscription</span>
+					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 subscription(s) not confirmed.","description":""}'>3</span>
+				</div>
+			</li>
+
+		</ul>
+		<div id="stat-table-instance" class="stat-table active">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-instance">
+						{{#if region_resource.DescribeInstances}}
+						<thead>
+							<tr>
+								<th class="sortable" style="width:20%">Instance Name/ID</th>
+								<th class="sortable" style="width:10%">Status</th>
+								<th class="sortable" style="width:15%">Launch Time</th>
+								<th class="sortable" style="width:10%">AMI</th>
+								<th class="sortable" style="width:15%">Availability Zone</th>
+								<th style="width:10%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								{{#each region_resource.DescribeInstances }}
+								<tr>
+									<td>
+										{{#if app}}
+											{{#if owner}}
+												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+											{{else}}
+												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											{{/if}}
+										{{else}}
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+										{{/if}}
+										{{ host }}
+										<span class="resource-id">( {{ instanceId }} )</span>
+									</td>
+									<td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
+									<td>{{ launchTime }}</td>
+									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
+									<td>{{ placement.availabilityZone}}</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no instance in this region.</p>
+								</div>
+
+						</tbody>
+						{{/if}}
+						</table>
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-eip" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-eip">
+						{{#if region_resource.DescribeAddresses}}
+						<thead>
+							<tr>
+								<th class="sortable" style="width:40%">IP</th>
+								<th class="sortable" style="width:40%">Associated Instance</th>
+								<th style="width:20%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								{{#each region_resource.DescribeAddresses }}
+								<tr>
+									<td>
+										{{ publicIp }}
+									</td>
+									<td>{{ instanceId }}</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no eip in this region.</p>
+								</div>
+
+						</tbody>
+						{{/if}}
+						</table>
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-ebs" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-ebs">
+						{{#if region_resource.DescribeVolumes}}
+						<thead>
+							<tr>
+								<th class="sortable" style="width:20%">Name/ID</th>
+								<th class="sortable" style="width:15%">Status</th>
+								<th class="sortable" style="width:20%">Create Time</th>
+								<th class="sortable" style="width:15%">Device Name</th>
+								<th class="sortable" style="width:15%">Attachment Status</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								{{#each region_resource.DescribeVolumes }}
+								<tr>
+									<td>
+										{{#if app}}
+											{{#if owner}}
+												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+											{{else}}
+												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											{{/if}}
+										{{else}}
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+										{{/if}}
+										{{ volumeId }}
+									</td>
+									<td><i class="status status-{{ status }} icon-label"></i>{{ status }}</td>
+									<td>{{ createTime }}</td>
+									<td>{{#each attachmentSet.item }}{{ this.device }}{{/each}}</td>
+									<td><i class="status status-{{#each attachmentSet.item }}{{ this.status }}{{/each}} icon-label"></i>{{#each attachmentSet.item }}{{ this.status }}{{/each}}</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no volume in this region.</p>
+								</div>
+
+						</tbody>
+						{{/if}}
+						</table>
+
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-vpc" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+
+						<table class="table table-region-stat" id="region-stat-table-vpc">
+						{{#if region_resource.DescribeVpcs}}
+						<thead>
+							<tr>
+								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:20%">Status</th>
+								<th class="sortable" style="width:25%">CIDR</th>
+								<th class="sortable" style="width:20%">DHCP Settings</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								{{#each region_resource.DescribeVpcs }}
+								<tr>
+									<td>
+										{{#if app}}
+											{{#if owner}}
+												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+											{{else}}
+												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											{{/if}}
+										{{else}}
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+										{{/if}}
+										{{ vpcId }}
+									</td>
+									<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
+									<td>{{ cidrBlock }}</td>
+									{{#if dhcp}}
+									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{dhcp}}}'>{{ dhcpOptionsId }}</a></td>
+									{{else}}
+									<td>None</td>
+									{{/if}}
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no vpc in this region.</p>
+								</div>
+
+						</tbody>
+						{{/if}}
+						</table>
+
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-vpn" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<table class="table table-region-stat" id="region-stat-table-vpn">
+						{{#if region_resource.DescribeVpnConnections}}
+						<thead>
+							<tr>
+								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:20%">Status</th>
+								<th class="sortable" style="width:25%">Virtual Private Gateway</th>
+								<th class="sortable" style="width:20%">Customer Gateway</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								{{#each region_resource.DescribeVpnConnections }}
+								<tr>
+									<td>
+										{{#if app}}
+											{{#if owner}}
+												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+											{{else}}
+												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+											{{/if}}
+										{{else}}
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+										{{/if}}
+										{{ vpnConnectionId }}
+									</td>
+									<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
+									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
+									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{cgw}}}'>{{ customerGatewayId }}</a></td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no vpn in this region.</p>
+								</div>
+
+						</tbody>
+						{{/if}}
+						</table>
+
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-elb" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+
+						<table class="table table-region-stat" id="region-stat-table-elb">
+						{{#if region_resource.DescribeLoadBalancers}}
+						<thead>
+							<tr>
+								<th class="sortable" style="width:25%">DNS Name</th>
+								<th class="sortable" style="width:20%">Create time</th>
+								<th class="sortable" style="width:25%">Availability Zone</th>
+								<th class="sortable" style="width:20%">Status</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								{{#each region_resource.DescribeLoadBalancers }}
+								<tr>
+									<td>
+
+										{{ DNSName }}
+									</td>
+									<td>{{ CreatedTime }}</td>
+									<td>{{ AvailabilityZones.member }}</td>
+									<td>{{ state }}</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								{{/each}}
+							{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no elb in this region.</p>
+								</div>
+
+						</tbody>
+						{{/if}}
+						</table>
+
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-asg" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+
+						<table class="table table-region-stat" id="region-stat-table-asg">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:20%">Name</th>
+								<th class="sortable" style="width:55%">Current/Last Activity</th>
+								<th class="sortable" style="width:15%">Activity Status</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								<tr>
+									<td><a href="" class="table-link table-app-link truncate" title="Open App">[App Name]</a>
+									%asg-name%
+									</td>
+									<td>At 2012-04-12T17:31:30Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 1.  At 2012-04-12T17:32:07Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 to 1.</td>
+									<td>Failed</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+
+							    <!-- Blank Slate -->
+								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no auto scaling group in this region.</p>
+								</div> -->
+
+						</tbody>
+						</table>
+
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-cw" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+
+						<table class="table table-region-stat" id="region-stat-table-cw">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:20%">Name</th>
+								<th class="sortable" style="width:15%">Dimension</th>
+								<th class="sortable" style="width:40%">Threshold</th>
+								<th class="sortable" style="width:15%">State</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								<tr>
+									<td>
+									%cloudwatch-alarm-name%
+									</td>
+									<td>InstanceId = i-fe90d1fc</td>
+									<td>DiskReadBytes >= 2 for 5 minutes</td>
+									<td><i class="status status-red icon-label"></i>ALARM</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								<tr>
+									<td>
+									%cloudwatch-alarm-name%
+									</td>
+									<td>InstanceId = i-fe90d1fc</td>
+									<td>DiskReadBytes >= 2 for 5 minutes</td>
+									<td><i class="status status-green icon-label"></i>OK</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								<tr>
+									<td>
+									%cloudwatch-alarm-name%
+									</td>
+									<td>InstanceId = i-fe90d1fc</td>
+									<td>DiskReadBytes >= 2 for 5 minutes</td>
+									<td><i class="status status-grey icon-label"></i>InsufficientData</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+
+
+							    <!-- Blank Slate -->
+								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no auto scaling group in this region.</p>
+								</div> -->
+
+						</tbody>
+						</table>
+
+					</div>
+				</div>
+		</div>
+		<div id="stat-table-sns" class="stat-table">
+				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+
+						<table class="table table-region-stat" id="region-stat-table-sns">
+						<thead>
+							<tr>
+								<th class="sortable" style="width:30%">Topic Name</th>
+								<th class="sortable" style="width:50%">Endpoint and Protocol</th>
+								<th class="sortable" style="width:10%">Confirmation</th>
+								<th style="width:15%">Detail</th>
+							</tr>
+						</thead>
+						<tbody>
+
+								<tr>
+									<td>%topic-name%
+									</td>
+									<td>Email: paula@mc2.com</td>
+									<td><i class="status status-red icon-label"></i>AuthorizationError</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+								<tr>
+									<td>%topic-name%
+									</td>
+									<td>Email: paula@mc2.com</td>
+									<td><i class="status status-green icon-label"></i>Success</td>
+									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+								</tr>
+
+							    <!-- Blank Slate -->
+								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no auto scaling group in this region.</p>
+								</div> -->
+
+						</tbody>
+						</table>
+
+					</div>
+				</div>
+		</div>
+	</div>
+{{/if}}
+
+<!--{{ .unmanaged-resource-tables }}-->
+{{#if unmanaged_list.loading}}
+<div style="height:253px;width:100%;text-align:center; line-height:253px">Loading......</div>
+{{else}}
+    {{#if unmanaged_list.items}}
+        <div class="dashboard-widget-body dashboard-widget-body-table scroll-wrap">
+        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+        <div class="scroll-content">
+            <table class="table table-region-stat">
+            <thead>
+                <tr>
+                    <th class="sortable" style="width:28%">Type</th>
+                    <th class="sortable" style="width:20%">Name/ID</th>
+                    <th class="sortable" style="width:20%">Status</th>
+                    <th class="sortable" style="width:20%">Estimated Cost</th>
+                    <th tyle="width:20%;">Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{#each unmanaged_list.items}}
+                {{#if data-bubble-data}}
+                    <tr class="bubble" data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{data-bubble-data}}}'>
+                {{else}}
+                    <tr>
+                {{/if}}
+                    <td><i class="icon-{{type}}-mini icon-label"></i>{{type}}</td>
+                    <td>{{name}}</td>
+                    <td><i class="status status-{{status}} icon-label"></i>{{status}}</td>
+                    <td>${{cost}}/h</td>
+                    <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                </tr>
+            {{/each}}
+            	<tr>
+            		<td><i class="icon-{{type}}-mini icon-label"></i>Auto Scaling Group</td>
+            		<td>%asg-name%</td>
+            		<td>5 InService</td>
+            		<td>$45/h</td>
+            		<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+            	</tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    {{else}}
+    <div style="height:253px;width:100%;text-align:center; line-height:253px">There is no unmanaged resource.</div>
+    {{/if}}
+{{/if}}
+
+<!--{{ .aws-status }}-->
+    {{#if status_list}}
+        <span><i class="status status-red"></i>{{status_list.red}}</span>
+        <span><i class="status status-yellow"></i>{{status_list.yellow}}</span>
+        <span><i class="icon-info-sign"></i>{{status_list.info}}</span>
+    {{else}}
+        <span><i class="status status-red"></i>0</span>
+        <span><i class="status status-yellow"></i>0</span>
+        <span><i class="icon-info-sign"></i>0</span>
+    {{/if}}
+
+<!--{{ .vpc-attrs }}-->
+    {{#if vpc_attrs}}
+        {{#if vpc_attrs.classic}}
+            <div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 Classic and EC2 VPC.">
+            <span class="region-platform-classic" >{{ vpc_attrs.classic }}</span>
+        {{else}}
+            <div class="region-platform-wrap tooltip" data-tooltip="This region supports EC2 VPC.">
+        {{/if}}
+        {{#if vpc_attrs.vpc}}
+            <span class="region-platform-vpc">{{ vpc_attrs.vpc }}</span>
+        {{/if}}
+    {{else}}
+    	<div class="region-platform-wrap tooltip" data-tooltip="">
+    {{/if}}
+    </div>
+
+<!--{{ .stat-app-count }}-->
+	<a href="#"><i class="icon-app-nav icon-nav-label left"></i><span class="counter">
+		{{#if cur_app_list}}{{ cur_app_list.length }}{{else}}0{{/if}}</span> Apps</a>
+
+<!--{{ .stat-stack-count }}-->
+	<a href="#"><i class="icon-stack-nav icon-nav-label left"></i><span class="counter">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span> Stacks</a>
+	<button id="btn-create-stack" href="javascript:void(0)" class="btn btn-region-dashboard" title="Create New Stack">+</button>
+
+<!--{{ .stat-app }}-->
+	{{#each cur_app_list}}
+	<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}' style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}.png?time={{update_time}}') 0 0;">
+		<div class="action-thumbnail">
+			{{#if isrunning}}
+			<a class="modal btn stop-app"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Stop App", "body":"Do you confirm to stop {{name}}?", "confirm":"Stop", "color":"blue" }' data-modal-dismiss="true"><i class="icon-stop"></i></a>
+			{{else}}
+			<a class="modal btn run-app"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Run App", "body":"Do you confirm to start {{name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true"><i class="icon-play"></i></a>
+			{{/if}}
+
+			<a class="modal btn terminate-app"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Terminate App", "body":"Do you confirm to terminate {{name}}?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true"><i class="icon-close"></i></a>
+		</div>
+		<a href="javascript:void(0)" id="{{id}}" class="thumbnail-body app-thumbnail">
+			{{#if isrunning}}
+			<div class="thumbnail-name truncate"><i class="icon-play"></i>{{name}}</div>
+			{{else}}
+			<div class="thumbnail-name truncate"><i class="icon-stop"></i>{{name}}</div>
+			{{/if}}
+		</a>
+	</div>
+	{{else}}
+		<div class="blank-widget">There is no app in this region.<br />You can run app from a stack.</div>
+	{{/each}}
+
+<!--{{ .stat-stack }}-->
+	{{#each cur_stack_list}}
+		<div class="item-thumbnail-wrap" style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}.png?time={{update_time}}') 0 0;">
+			<div class="action-thumbnail">
+					<a class="modal btn duplicate-stack"  id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Rename Stack", "body":"Stack Name:", "input":"{{name}}", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"><i class="icon-redo"></i></a>
+
+					<a class="modal btn delete-stack"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to Delete", "body":"Do you confirm to delete {{name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-trashcan" id="{{id}}"></i></a>
+
+				</div>
+			<a href="javascript:void(0)" id="{{id}}" class="thumbnail-body stack-thumbnail">
+				<div class="thumbnail-name truncate">{{name}}</div>
+			</a>
+		</div>
+	{{else}}
+		<div class="blank-widget">
+			There is no stack in this region yet.<br />Create a new stack from here.
+			<img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute">
+		</div>
+	{{/each}}

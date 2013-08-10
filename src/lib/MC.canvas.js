@@ -1021,7 +1021,6 @@ MC.canvas = {
 	isMatchPlace: function (target_id, target_type, node_type, x, y, width, height)
 	{
 		var layout_group_data = MC.canvas.data.get('layout.component.group'),
-			platform = MC.canvas.data.get('platform'),
 			group_stack = [
 				$('#asg_layer').children(),
 				$('#subnet_layer').children(),
@@ -1046,7 +1045,7 @@ MC.canvas = {
 					'y': y + height
 				}
 			],
-			match_option = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ],
+			match_option = MC.canvas.MATCH_PLACEMENT[ MC.canvas.data.get('platform') ][ node_type ],
 			is_option_canvas = match_option ? (match_option[ 0 ] === 'Canvas') : false,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			ignore_stack = [],
@@ -1186,8 +1185,7 @@ MC.canvas = {
 
 				match[0].target === match[1].target &&
 				match[0].target === match[2].target &&
-				match[0].target === match[3].target
-				;
+				match[0].target === match[3].target;
 
 			if (
 				!is_matched &&

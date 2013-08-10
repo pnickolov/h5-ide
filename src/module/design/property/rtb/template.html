@@ -13,7 +13,7 @@
 	</div>
 
 	{{#if route_table.route_disp}}
-	<div class="option-group-head">Routes</div>
+	<div class="option-group-head expand">Routes</div>
 	<div class="option-group">
 		{{#each route_table.route_disp}}
 		<div class="property-item">
@@ -23,7 +23,7 @@
 			</div>
 			<p class="destination">Destination</p>
 
-			<div class="multi-input" data-max-row="" data-type="{{type}}" data-ref="{{ref}}">
+			<div class="multi-input" data-max-row="" data-type="{{type}}" data-ref="{{ref}}" id="property-rtb-ips">
 				{{#if cidr_set.length}}
 				{{#each cidr_set}}
 				<div class="multi-ipt-row">

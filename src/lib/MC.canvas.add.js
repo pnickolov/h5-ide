@@ -67,7 +67,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					break;
 
 				case 'AWS.AutoScaling.Group':
-					if (data[option.groupUId].resource.LaunchConfigurationName)
+					if (data[option.groupUId].resource.LaunchConfigurationName && !option['launchConfig'] )
 					{
 						notification('AutoScalingGroup already has LaunchConfiguration!', false);
 						return null;
@@ -103,7 +103,6 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					if(data.type === 'AWS.EC2.AvailabilityZone' && data.option.name === option.name){
 						$(item)
-							.data('enable', false)
 							.attr('data-enable', false)
 							.addClass('resource-disabled')
 							.removeClass("tooltip");

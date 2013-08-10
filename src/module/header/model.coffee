@@ -24,7 +24,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 info_list = me.queryRequest()
 
             if not unread_num
-                unread_num = 0
+                unread_num = ""
 
             me.set 'info_list', info_list
             me.set 'unread_num', unread_num

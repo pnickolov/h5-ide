@@ -108,11 +108,14 @@
 	border: none;
 	border-right: 1px solid #dfdfdf;
 	position: relative;
-	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-o-text-overflow: ellipsis;
 	-ms-text-overflow: ellipsis;
+}
+
+.table.table-region-stat th {
+	white-space: nowrap;
 }
 
 .table.table-light th,
@@ -480,6 +483,11 @@ textarea {
 	z-index: 30;
 	background: rgba(100, 100, 100, 0.2);
 	display: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 
 .scrollbar-auto-hide > .scrollbar-veritical-wrap,

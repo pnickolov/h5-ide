@@ -4,26 +4,26 @@ define [], () ->
 
 	#private
 	AWS_RESOURCE_TYPE = {
-		AWS_EC2_AvailabilityZone  : "AWS.EC2.AvailabilityZone"
-		AWS_EC2_Instance          : "AWS.EC2.Instance"
-		AWS_EC2_KeyPair           : "AWS.EC2.KeyPair"
-		AWS_EC2_SecurityGroup     : "AWS.EC2.SecurityGroup"
-		AWS_EC2_EIP               : "AWS.EC2.EIP"
-		AWS_EC2_AMI               : "AWS.EC2.AMI"
-		AWS_EBS_Volume            : "AWS.EC2.EBS.Volume"
-		AWS_EBS_Snapshot          : "AWS.EC2.EBS.Snapshot"
-		AWS_ELB                   : "AWS.ELB"
-		AWS_VPC_VPC               : "AWS.VPC.VPC"
-		AWS_VPC_Subnet            : "AWS.VPC.Subnet"
-		AWS_VPC_InternetGateway   : "AWS.VPC.InternetGateway"
-		AWS_VPC_RouteTable        : "AWS.VPC.RouteTable"
-		AWS_VPC_VPNGateway        : "AWS.VPC.VPNGateway"
-		AWS_VPC_CustomerGateway   : "AWS.VPC.CustomerGateway"
-		AWS_VPC_NetworkInterface  : "AWS.VPC.NetworkInterface"
-		AWS_VPC_DhcpOptions       : "AWS.VPC.DhcpOptions"
-		AWS_VPC_VPNConnection     : "AWS.VPC.VPNConnection"
-		AWS_VPC_NetworkAcl        : "AWS.VPC.NetworkAcl"
-		AWS_IAM_ServerCertificate : "AWS.IAM.ServerCertificate"
+		AWS_EC2_AvailabilityZone  					: "AWS.EC2.AvailabilityZone"
+		AWS_EC2_Instance          					: "AWS.EC2.Instance"
+		AWS_EC2_KeyPair           					: "AWS.EC2.KeyPair"
+		AWS_EC2_SecurityGroup     					: "AWS.EC2.SecurityGroup"
+		AWS_EC2_EIP               					: "AWS.EC2.EIP"
+		AWS_EC2_AMI               					: "AWS.EC2.AMI"
+		AWS_EBS_Volume            					: "AWS.EC2.EBS.Volume"
+		AWS_EBS_Snapshot          					: "AWS.EC2.EBS.Snapshot"
+		AWS_ELB                   					: "AWS.ELB"
+		AWS_VPC_VPC               					: "AWS.VPC.VPC"
+		AWS_VPC_Subnet            					: "AWS.VPC.Subnet"
+		AWS_VPC_InternetGateway   					: "AWS.VPC.InternetGateway"
+		AWS_VPC_RouteTable        					: "AWS.VPC.RouteTable"
+		AWS_VPC_VPNGateway        					: "AWS.VPC.VPNGateway"
+		AWS_VPC_CustomerGateway   					: "AWS.VPC.CustomerGateway"
+		AWS_VPC_NetworkInterface  					: "AWS.VPC.NetworkInterface"
+		AWS_VPC_DhcpOptions       					: "AWS.VPC.DhcpOptions"
+		AWS_VPC_VPNConnection     					: "AWS.VPC.VPNConnection"
+		AWS_VPC_NetworkAcl        					: "AWS.VPC.NetworkAcl"
+		AWS_IAM_ServerCertificate 					: "AWS.IAM.ServerCertificate"
 		#
 		AWS_AutoScaling_Group                     : "AWS.AutoScaling.Group"
 		AWS_AutoScaling_LaunchConfiguration       : "AWS.AutoScaling.LaunchConfiguration"
@@ -272,7 +272,7 @@ define [], () ->
 	}
 
 	AWS_RESOURCE = {
-		AvailabilityZone 	: 	'AWS.EC2.AZone'
+		AZ 					: 	'AWS.EC2.AvailabilityZone'
 		AMI					:	'AWS.EC2.AMI'
 		VOLUME				:	'AWS.EC2.EBS.Volume'
 		SNAPSHOT 			:	'AWS.EC2.EBS.Snapshot'

@@ -866,6 +866,7 @@ define [ 'constant', 'event'
 			for key, value of portMap
 				if key.indexOf('sg') >= 0
 					this.trigger 'CREATE_SG_CONNECTION', line_id
+					break
 			null
 
 

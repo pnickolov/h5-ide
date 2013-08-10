@@ -3909,6 +3909,25 @@ a.sidebar-hider {
 	background : red;
 }
 
+.dialog-group {
+	border-radius : 4px;
+	background    : #ddd;
+	margin        : 10px 0;
+	padding       : 10px;
+}
+
+.dialog-group h5 {
+	color : #222;
+}
+
+.asg-policy-advanced .dialog-group {
+	display : none;
+}
+
+.asg-policy-advanced.open .dialog-group {
+	display : block;
+}
+
 .drag-sort-list {
 	width : 300px;
 }

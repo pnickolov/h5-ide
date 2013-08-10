@@ -150,6 +150,50 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     { "key": [ "SecurityGroups"], "show_key": "SecurityGroups"}
                     { "key": [ "Subnets" ], "show_key": "Subnets"}
                 ]
+            "DescribeAutoScalingGroups":
+                "title" : "AutoScalingGroupName"
+                "sub_info":[
+                    {"key": [ "AutoScalingGroupName" ], "show_key": "AutoScalingGroupName"}
+                    {"key": [ "AutoScalingGroupARN" ], "show_key": "AutoScalingGroupARN"}
+                    {"key": [ "AvailabilityZones" ], "show_key": "AvailabilityZones"}
+                    {"key": [ "CreatedTime" ], "show_key": "CreatedTime"}
+                    {"key": [ "DefaultCooldown" ], "show_key": "DefaultCooldown"}
+                    {"key": [ "DesiredCapacity" ], "show_key": "DesiredCapacity"}
+                    {"key": [ "EnabledMetrics" ], "show_key": "EnabledMetrics"}
+                    {"key": [ "HealthCheckGracePeriod" ], "show_key": "HealthCheckGracePeriod"}
+                    {"key": [ "HealthCheckType" ], "show_key": "HealthCheckType"}
+                    {"key": [ "Instances" ], "show_key": "Instances"}
+                    {"key": [ "LaunchConfigurationName" ], "show_key": "LaunchConfigurationName"}
+                    {"key": [ "LoadBalancerNames" ], "show_key": "LoadBalancerNames"}
+                    {"key": [ "MaxSize" ], "show_key": "MaxSize"}
+                    {"key": [ "MinSize" ], "show_key": "MinSize"}
+                    {"key": [ "Status" ], "show_key": "Status"}
+                    {"key": [ "TerminationPolicies" ], "show_key": "TerminationPolicies"}
+                    {"key": [ "VPCZoneIdentifier" ], "show_key": "VPCZoneIdentifier"}
+
+                ]
+
+            "DescribeAlarms":
+                "title" : "AlarmName"
+                "sub_info":[
+                    {"key": [ "ActionsEnabled" ], "show_key": "ActionsEnabled"}
+                    {"key": [ "AlarmActions" ], "show_key": "AlarmActions"}
+                    {"key": [ "AlarmArn" ], "show_key": "AlarmArn"}
+                    {"key": [ "AlarmDescription" ], "show_key": "AlarmDescription"}
+                    {"key": [ "AlarmName" ], "show_key": "AlarmName"}
+                    {"key": [ "ComparisonOperator" ], "show_key": "ComparisonOperator"}
+                    {"key": [ "Dimensions" ], "show_key": "Dimensions"}
+                    {"key": [ "EvaluationPeriods" ], "show_key": "EvaluationPeriods"}
+                    {"key": [ "InsufficientDataActions" ], "show_key": "InsufficientDataActions"}
+                    {"key": [ "MetricName" ], "show_key": "MetricName"}
+                    {"key": [ "Namespace" ], "show_key": "Namespace"}
+                    {"key": [ "OKActions" ], "show_key": "OKActions"}
+                    {"key": [ "Period" ], "show_key": "Period"}
+                    {"key": [ "Statistic" ], "show_key": "Statistic"}
+                    {"key": [ "StateValue" ], "show_key": "StateValue"}
+                    {"key": [ "Threshold" ], "show_key": "Threshold"}
+                    {"key": [ "Unit" ], "show_key": "Unit"}
+                ]
 
     #websocket
     ws = MC.data.websocket
@@ -1068,6 +1112,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     if reg_result then elb.app = reg_result
 
                     null
+
+            # autoscaling
+            if resources.DescribeAutoScalingGroups
+
+                _.map resources.DescribeAutoScalingGroups, ( asl, i ) ->
+
+
+                    asl.detail = me.parseSourceValue 'DescribeAutoScalingGroups', asl, "detail", null
+
+                    null
+
+            #if resources.DescribeAlarms
+
+            #    null
 
             # eip
             if resources.DescribeAddresses

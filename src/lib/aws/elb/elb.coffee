@@ -29,9 +29,9 @@ define [ 'MC' ], ( MC ) ->
 		sgComp.uid = MC.guid()
 		sgComp.name = newELBName + '-sg'
 		sgComp.resource.GroupName = sgComp.name
-		
+
 		if vpcUIDRef then sgComp.resource.VpcId = vpcUIDRef
-		
+
 		MC.canvas_data.component[sgComp.uid] = sgComp
 
 		sgRef = '@' + sgComp.uid + '.resource.GroupId'
@@ -158,6 +158,7 @@ define [ 'MC' ], ( MC ) ->
 
 		if not replacedSubnet
 			elb.resource.Subnets.push subnet_uid
+			elb.resource.AvailabilityZones.push newSubnetAZ
 
 		replacedSubnet
 
@@ -249,7 +250,7 @@ define [ 'MC' ], ( MC ) ->
 		return MC.canvas_data.component[elbSGUID]
 
 	getAllElbSGUID = () ->
-		
+
 		elbSGUIDAry = []
 		_.each MC.canvas_data.component, (compObj) ->
 			compType = compObj.type

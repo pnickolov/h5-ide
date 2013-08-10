@@ -25,14 +25,14 @@ define [], () ->
 		AWS_VPC_NetworkAcl        : "AWS.VPC.NetworkAcl"
 		AWS_IAM_ServerCertificate : "AWS.IAM.ServerCertificate"
 		#
-		AWS_AutoScaling_Group                     : "AWS.AutoScaling.Group"
-		AWS_AutoScaling_LaunchConfiguration       : "AWS.AutoScaling.LaunchConfiguration"
-		AWS_AutoScaling_NotificationConfiguration : "AWS.AutoScaling.NotificationConfiguration"
-		AWS_AutoScaling_ScalingPolicy             : "AWS.AutoScaling.ScalingPolicy"
-		AWS_AutoScaling_ScheduledActions          : "AWS.AutoScaling.ScheduledActions"
-		AWS_CloudWatch_CloudWatch                 : "AWS.CloudWatch.CloudWatch"
-		AWS_SNS_Subscription                      : "AWS.SNS.Subscription"
-		AWS_SNS_Topic                             : "AWS.SNS.Topic"
+		AWS_AUTOSCALING_GROUP                      	: 'AWS.AutoScaling.Group'
+		AWS_AUTOSCALING_LAUNCHCONFIGURATION         : 'AWS.AutoScaling.LaunchConfiguration'
+		AWS_AUTOSCALING_NOTIFICATIONCONFIGURATION   : 'AWS.AutoScaling.NotificationConfiguration'
+		AWS_AUTOSCALING_SCALINGPOLICY               : 'AWS.AutoScaling.ScalingPolicy'
+		AWS_AUTOSCALING_SCHEDULEDACTIONS            : 'AWS.AutoScaling.ScheduledActions'
+		AWS_CLOUDWATCH_CLOUDWATCH                  	: 'AWS.CloudWatch.CloudWatch'
+		AWS_SNS_SUBSCRIPTION                        : 'AWS.SNS.Subscription'
+		AWS_SNS_TOPIC                              	: 'AWS.SNS.Topic'
 	}
 
 	#private
@@ -272,36 +272,36 @@ define [], () ->
 	}
 
 	AWS_RESOURCE = {
-		AvailabilityZone 	: 	'AWS.EC2.AZone'
-		AMI					:	'AWS.EC2.AMI'
-		VOLUME				:	'AWS.EC2.EBS.Volume'
-		SNAPSHOT 			:	'AWS.EC2.EBS.Snapshot'
-		EIP					:	'AWS.EC2.EIP'
-		INSTANCE 			:	'AWS.EC2.Instance'
-		KP 					:	'AWS.EC2.KeyPair'
-		SG 					:	'AWS.EC2.SecurityGroup'
+		AZ                  :   'AWS.EC2.AvailabilityZone'
+		AMI                 :   'AWS.EC2.AMI'
+		VOLUME              :   'AWS.EC2.EBS.Volume'
+		SNAPSHOT            :   'AWS.EC2.EBS.Snapshot'
+		EIP                 :   'AWS.EC2.EIP'
+		INSTANCE            :   'AWS.EC2.Instance'
+		KP                  :   'AWS.EC2.KeyPair'
+		SG                  :   'AWS.EC2.SecurityGroup'
 
-		ELB					:	'AWS.ELB'
+		ELB                 :   'AWS.ELB'
 
-		ACL 				:	'AWS.VPC.NetworkAcl'
-		CGW 				:	'AWS.VPC.CustomerGateway'
-		DHCP 				:	'AWS.VPC.DhcpOptions'
-		ENI 				:	'AWS.VPC.NetworkInterface'
-		IGW 				:	'AWS.VPC.InternetGateway'
-		RT 					:	'AWS.VPC.RouteTable'
-		SUBNET 				:	'AWS.VPC.Subnet'
-		VPC					:	'AWS.VPC.VPC'
-		VPN					:	'AWS.VPC.VPNConnection'
-		VGW 				:	'AWS.VPC.VPNGateway'
+		ACL                 :   'AWS.VPC.NetworkAcl'
+		CGW                 :   'AWS.VPC.CustomerGateway'
+		DHCP                :   'AWS.VPC.DhcpOptions'
+		ENI                 :   'AWS.VPC.NetworkInterface'
+		IGW                 :   'AWS.VPC.InternetGateway'
+		RT                  :   'AWS.VPC.RouteTable'
+		SUBNET              :   'AWS.VPC.Subnet'
+		VPC                 :   'AWS.VPC.VPC'
+		VPN                 :   'AWS.VPC.VPNConnection'
+		VGW                 :   'AWS.VPC.VPNGateway'
 
-		GROUP 				:	'AWS.AutoScaling.Group'
-		LC					:	'AWS.AutoScaling.LaunchConfiguration'
-		NC					:	'AWS.AutoScaling.NotificationConfiguration'
-		POLICY 				:	'AWS.AutoScaling.ScalingPolicy'
-		SA 					:	'AWS.AutoScaling.ScheduledActions'
-		CW					:	'AWS.CloudWatch.CloudWatch'
-		SUBSCRIPTION 		:	'AWS.SNS.Subscription'
-		TOPIC 				:	'AWS.SNS.Topic'
+		ASG               	:   'AWS.AutoScaling.Group'
+		ASL_LC              :   'AWS.AutoScaling.LaunchConfiguration'
+		ASL_NC              :   'AWS.AutoScaling.NotificationConfiguration'
+		ASL_SP              :   'AWS.AutoScaling.ScalingPolicy'
+		ASL_SA              :   'AWS.AutoScaling.ScheduledActions'
+		CLW                 :   'AWS.CloudWatch.CloudWatch'
+		SNS_SUB 		    :   'AWS.SNS.Subscription'
+		SNS_TOPIC           :   'AWS.SNS.Topic'
 	}
 
 

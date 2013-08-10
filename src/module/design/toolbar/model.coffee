@@ -339,6 +339,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 'thumbnail'  : is_thumbnail,
                 'json_data'  : MC.canvas.layout.save(),
                 'stack_id'   : MC.canvas_data.id
+                'url'        : if MC.canvas_data.key is undefined then 'sdfasfdasdf' else MC.canvas_data.key
             #
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage data, MC.SAVEPNG_URL
@@ -348,7 +349,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             else
                 sendMessage()
             #
-            me.trigger 'SAVE_PNG_COMPLETE', null
+            if is_thumbnail is 'true' then me.trigger 'SAVE_PNG_COMPLETE', null
             null
             ###
             me = this

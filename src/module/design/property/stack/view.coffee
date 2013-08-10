@@ -180,6 +180,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             console.log "Subscription Removed : #{uid}"
 
+            this.trigger 'DELETE_SUBSCRIPTION', uid
+
 
         editSNS : ( event ) ->
             $sub_li = $(this).parent()

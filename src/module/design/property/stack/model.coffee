@@ -138,6 +138,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             this.trigger 'UPDATE_SNS_LIST', sub_list, has_asg
             null
 
+        deleteSNS : ( uid ) ->
+
+            delete MC.canvas_data.component[uid]
+
+            null
+
         getSubscription : () ->
 
             sub_list = []

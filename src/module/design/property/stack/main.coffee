@@ -124,6 +124,10 @@ define [ 'jquery',
 
                 view.updateSNSList sns_list, has_asg
 
+            view.on 'DELETE_SUBSCRIPTION', ( uid ) ->
+
+                model.deleteSNS uid
+
             #refresh cost after add/remove resource
             ide_event.onLongListen ide_event.UPDATE_COST_ESTIMATE, () ->
 

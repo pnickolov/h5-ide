@@ -88,19 +88,28 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                 MC.canvas_data.component[topic_uid] = topic_comp
 
-            sub_uid = MC.guid()
+            if data.uid
 
-            sub_comp = $.extend true, {}, MC.canvas.SNS_SUB_JSON.data
+                sub_comp = MC.canvas_data.component[data.uid]
 
-            sub_comp.uid = sub_uid
+                sub_comp.resource.Protocol = data.protocol
 
-            sub_comp.resource.Protocol = data.protocol
+                sub_comp.resource.Endpoint = data.endpoint
 
-            sub_comp.resource.Endpoint = data.endpoint
+            else
+                sub_uid = MC.guid()
 
-            sub_comp.resource.TopicArn = '@' + topic_uid + '.resource.TopicArn'
+                sub_comp = $.extend true, {}, MC.canvas.SNS_SUB_JSON.data
 
-            MC.canvas_data.component[sub_uid] = sub_comp
+                sub_comp.uid = sub_uid
+
+                sub_comp.resource.Protocol = data.protocol
+
+                sub_comp.resource.Endpoint = data.endpoint
+
+                sub_comp.resource.TopicArn = '@' + topic_uid + '.resource.TopicArn'
+
+                MC.canvas_data.component[sub_uid] = sub_comp
 
             sub_list = []
 
@@ -149,7 +158,15 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     sub_list.push tmp
 
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+
+                    has_asg = true
+
+                    null
+
             this.set 'subscription', sub_list
+
+            this.set 'has_asg', has_asg
 
 
         getNetworkACL : ->

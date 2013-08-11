@@ -28,10 +28,11 @@ require [ 'jquery', 'domReady', 'MC',
         MC.data.resource_list = {}
         MC.data.resource_list[r] = {} for r in constant.REGION_KEYS
 
-        #set untitled
-        MC.data.untitled = 0
-        #set tab
-        MC.tab  = {}
+
+        MC.data.resources = {}
+
+        MC.data.region_keys = {}
+
 
 
     #private
@@ -96,7 +97,7 @@ require [ 'jquery', 'domReady', 'MC',
         console.log 'load madeira_console'
         #set MC.data.dashboard_type
 
-        current_region = 'us-east-1'
+        current_region = 'ap-northeast-1'
 
         #load remote ./module/dashboard/region/view.js
         require [ '/test/madeira_console/region/view.js', '/test/madeira_console/region/model.js', 'UI.tooltip', 'UI.bubble', 'UI.modal', 'UI.table', 'UI.tablist' ], ( View, model ) ->
@@ -143,12 +144,37 @@ require [ 'jquery', 'domReady', 'MC',
             model.on 'change:region_resource_list', () ->
                 console.log 'dashboard_region_resource_list'
                 #refresh view
-                region_view.renderRegionResource()
+                #region_view.renderRegionResource()
+
+            describeAWSResourcesService = () ->
+
+                $('#progress_bar').css('width',Math.round( (8 - MC.data.region_keys.length)/constant.REGION_KEYS.length*100,0 ) + "%" )
+
+                $('#progress_num').text (8 - MC.data.region_keys.length)
+
+                region_key = MC.data.region_keys.splice 0,1
+                if region_key.length == 1
+
+                    $('#progress_title').text 'Loading AWS Resources in region: ' + region_key[0]
+                    model.describeAWSResourcesService region_key[0]
+                else
+
+                    region_view.renderRegionResource()
+                    $('#progress_wrap').attr 'display', 'none'
+                    $('#progress_title').text 'Finish Loading AWS Resource.'
+
+            ide_event.onLongListen 'AWS_RESOURCE_CHANGE', ( result ) ->
+
+                describeAWSResourcesService()
 
             model.on 'change:region_resource', () ->
                 console.log 'dashboard_region_resources'
+
                 #refresh view
-                region_view.renderRegionResource()
+
+                #setTimeout describeAWSResourcesService, 1000
+
+
 
             model.on 'REGION_RESOURCE_CHANGED', ()->
                 console.log 'region resource table render'
@@ -180,9 +206,18 @@ require [ 'jquery', 'domReady', 'MC',
             region_view.on 'REFRESH_REGION_BTN', () ->
                 model.describeAWSResourcesService current_region
 
-            model.describeAWSResourcesService current_region
-            model.describeRegionAccountAttributesService current_region
-            model.describeAWSStatusService current_region
+
+            MC.data.resources = {}
+            $('#progress_wrap').attr 'display', 'inline'
+            $('#progress_total').text constant.REGION_KEYS.length
+
+            MC.data.region_keys = $.extend true, [], constant.REGION_KEYS
+
+            describeAWSResourcesService()
+
+
+            #model.describeRegionAccountAttributesService current_region
+            #model.describeAWSStatusService current_region
             #model.getItemList 'app', current_region, overview_app
             #model.getItemList 'stack', current_region, overview_stack
 
@@ -214,6 +249,9 @@ require [ 'jquery', 'domReady', 'MC',
     domReady () ->
 
         init()
+
+
+        $('#progress_wrap').attr 'display', 'none'
 
         $( '#login-btn' ).removeAttr 'disabled'
         $( '#login-btn' ).addClass 'enabled'

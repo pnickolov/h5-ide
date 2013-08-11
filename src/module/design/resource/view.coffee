@@ -51,7 +51,11 @@ define [ 'event',
                 .on( 'click',            '#btn-search-ami',             this, this.searchCommunityAmiCurrent )
                 .on( 'click',            '#community_ami_page_preview', this, this.searchCommunityAmiPreview )
                 .on( 'click',            '#community_ami_page_next',    this, this.searchCommunityAmiNext )
-                .on( 'click',            '.toggle-fav',                 this, this.toggleFav )
+                .on( 'click',            '#community_ami_table .toggle-fav',                 this, this.toggleFav )
+                .on( 'click',            '.favorite-ami-list .faved', this, this.removeFav )
+
+
+
 
 
             #listen
@@ -124,7 +128,12 @@ define [ 'event',
 
             ( $ ( @ ) ).toggleClass( 'faved' )
 
-
+        removeFav : ( event ) ->
+            resourceView = event.data
+            target = $ event.currentTarget
+            #target.trigger 'mouseleave' )
+            id = target.data( 'id' )
+            resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'remove', id
 
         toggleResourcePanel : ( event ) ->
             console.log 'toggleResourcePanel'
@@ -270,11 +279,11 @@ define [ 'event',
             if this.model.attributes.community_ami
                  this_tr = ""
                 _.map this.model.attributes.community_ami.result, ( value, key ) ->
-
+                    fav_class = if value.favorite then 'faved' else ''
                     bit = '64'
                     if value.architecture == 'i386' then bit = '32'
                     this_tr += '<tr class="item" data-id="'+key+' '+value.name+'" data-publicprivate="public" data-platform="'+value.osType+'" data-ebs="'+value.rootDeviceType+'" data-bit="'+bit+'">'
-                    this_tr += '<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="'+key+'"></div></td>'
+                    this_tr += '<td><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="add to Favorite" data-id="'+key+'"></div></td>'
                     this_tr += '<td>'+key+'</td>'
                     this_tr += '<td><div><i class="icon-ubuntu icon-ami-os"></i>'+value.name+'</div><div class="ami-meta">public | '+value.architecture+' | '+value.rootDeviceType+'</div></td>'
                     this_tr += "<td>#{bit}</td></tr>"

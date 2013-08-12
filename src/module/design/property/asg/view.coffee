@@ -129,6 +129,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 self.onEidtPolicy()
                 modal.close()
 
+            $("#asg-policy-adjust-type").on "OPTION_CHANGE", ()->
+                $("#asg-policy-step-wrapper").toggle( $(this).find(".selected").data("id") == "PercentChangeInCapacity" )
+
         onEidtPolicy : () ->
             data =
                 name   : $("#asg-policy-name").val()

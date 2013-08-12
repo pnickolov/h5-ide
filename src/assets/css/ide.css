@@ -101,7 +101,7 @@ a {
 }
 
 .logo {
-	margin: 100px 0;
+	margin: 7px 0;
 	height: 34px;
 	width: 160px;
 	position: absolute;
@@ -533,7 +533,7 @@ a {
 
 /* Main Tab Bar */
 #tabbar-wrapper {
-	padding-left: 193px;
+	padding-left: 175px;
 	padding-right: 180px;
 	height: 50px;
 }

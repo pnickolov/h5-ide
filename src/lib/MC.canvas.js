@@ -2199,24 +2199,27 @@ MC.canvas.volume = {
 MC.canvas.asgList = {
 	show: function (event)
 	{
-		MC.canvas.asgList.close();
+		if (event.which === 1)
+		{
+			MC.canvas.asgList.close();
 
-		var target = this.parentNode,
-			target_offset = Canvon(target).offset(),
-			canvas_offset = $('#svg_canvas').offset();
+			var target = this.parentNode,
+				target_offset = Canvon(target).offset(),
+				canvas_offset = $('#svg_canvas').offset();
 
-		$('#canvas_container').append( MC.template.asgList() );
+			$('#canvas_container').append( MC.template.asgList() );
 
-		$('#asgList-wrap')
-			.on('click', '.asgList-item', MC.canvas.asgList.select)
-			.css({
-				'top': target_offset.top - canvas_offset.top - 10,
-				'left': target_offset.left - canvas_offset.left
-			});
+			$('#asgList-wrap')
+				.on('click', '.asgList-item', MC.canvas.asgList.select)
+				.css({
+					'top': target_offset.top - canvas_offset.top - 10,
+					'left': target_offset.left - canvas_offset.left
+				});
 
-		MC.canvas.asgList.select.call($('#asgList-wrap .asgList-item').first());
+			MC.canvas.asgList.select.call($('#asgList-wrap .asgList-item').first());
 
-		return true;
+			return true;
+		}
 	},
 
 	close: function ()
@@ -2255,8 +2258,8 @@ MC.canvas.event.dragable = {
 				node_type = target.data('class'),
 				svg_canvas = $('#svg_canvas'),
 				canvas_offset = svg_canvas.offset(),
+				platform = MC.canvas.data.get('platform'),
 				shadow,
-				platform,
 				target_group_type;
 
 			if (node_type === 'AWS.AutoScaling.LaunchConfiguration')
@@ -2283,24 +2286,20 @@ MC.canvas.event.dragable = {
 
 			svg_canvas.append(shadow);
 
-			if (target_type === 'node')
-			{
-				platform = MC.canvas.data.get('platform');
-				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
+			target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
 
-				if (target_group_type)
+			if (target_group_type)
+			{
+				$.each(target_group_type, function (index, item)
 				{
-					$.each(target_group_type, function (index, item)
+					if (item !== 'AWS.AutoScaling.Group' && item !== 'Canvas')
 					{
-						if (item !== 'AWS.AutoScaling.Group')
+						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
 						{
-							$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
-							{
-								return 'dropable-group ' + key;
-							});
-						}
-					});
-				}
+							return 'dropable-group ' + key;
+						});
+					}
+				});
 			}
 
 			$(document.body).addClass('disable-event');
@@ -3253,11 +3252,11 @@ MC.canvas.event.siderbarDrag = {
 				canvas_offset = $('#svg_canvas').offset(),
 				node_type = target.data('type'),
 				target_component_type = target.data('component-type'),
+				platform = MC.canvas.data.get('platform'),
 				shadow,
 				clone_node,
 				default_width,
 				default_height,
-				platform,
 				target_group_type,
 				size,
 				component_size;
@@ -3298,20 +3297,6 @@ MC.canvas.event.siderbarDrag = {
 						'height': component_size[1] * MC.canvas.GRID_HEIGHT
 					})
 					.show();
-
-				if (target_component_type === 'node' && node_type !== 'AWS.EC2.EBS.Volume')
-				{
-					platform = MC.canvas.data.get('platform');
-					target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
-
-					$.each(target_group_type, function (index, item)
-					{
-						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
-						{
-							return 'dropable-group ' + key;
-						});
-					});
-				}
 			}
 
 			if (node_type === 'AWS.EC2.EBS.Volume')
@@ -3334,7 +3319,22 @@ MC.canvas.event.siderbarDrag = {
 			}
 			else
 			{
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
 
+				if (target_group_type)
+				{
+					$.each(target_group_type, function (index, item)
+					{
+						if (item !== 'Canvas')
+						{
+							$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+							{
+								return 'dropable-group ' + key;
+							});
+						}
+					});
+				}
+								
 				$(document).on({
 					'mousemove': MC.canvas.event.siderbarDrag.mousemove,
 					'mouseup': MC.canvas.event.siderbarDrag.mouseup

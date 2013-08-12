@@ -750,7 +750,7 @@ MC.canvas = {
 				$('#line_layer').append(svg_line);
 
 				$(svg_line).attr({
-					'class': 'line',
+					'class': 'line line-' + connection_option.type,
 					'data-type': 'line'
 				});
 

@@ -234,7 +234,7 @@ var constant_data = {
 			},
 			'AWS.ELB': [
 			{
-				type: 'sg',
+				type: 'elb-sg',
 				from: 'instance-sg',
 				to: 'elb-sg-out',
 
@@ -246,7 +246,7 @@ var constant_data = {
 				color: '#6DAEFE' //blue
 			},
 			{
-				type: 'sg',
+				type: 'elb-sg',
 				from: 'instance-sg',
 				to: 'elb-sg-in',
 
@@ -323,7 +323,7 @@ var constant_data = {
 		{
 			'AWS.EC2.Instance': [
 			{
-				type: 'sg',
+				type: 'elb-sg',
 				from: 'elb-sg-out',
 				to: 'instance-sg',
 
@@ -335,7 +335,7 @@ var constant_data = {
 				color: '#6DAEFE' //blue
 			},
 			{
-				type: 'sg',
+				type: 'elb-sg',
 				from: 'elb-sg-in',
 				to: 'instance-sg',
 
@@ -364,7 +364,7 @@ var constant_data = {
 			},
 			'AWS.AutoScaling.LaunchConfiguration':[
 			{
-				type: 'sg',
+				type: 'elb-sg',
 				from: 'elb-sg-out',
 				to: 'launchconfig-sg',
 
@@ -376,7 +376,7 @@ var constant_data = {
 				color: '#6DAEFE' //blue
 			},
 			{
-				type: 'sg',
+				type: 'elb-sg',
 				from: 'elb-sg-in',
 				to: 'launchconfig-sg',
 
@@ -614,7 +614,7 @@ var constant_data = {
 			},
 			'AWS.ELB':[
 			{
-				type: 'sg',
+				type: 'elb-sg',
 				from: 'launchconfig-sg',
 				to: 'elb-sg-out',
 
@@ -626,7 +626,7 @@ var constant_data = {
 				color: '#6DAEFE' //blue
 			},
 			{
-				type: 'sg',
+				type: 'elb-sg',
 				from: 'launchconfig-sg',
 				to: 'elb-sg-in',
 

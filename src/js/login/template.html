@@ -1,0 +1,27 @@
+<header>
+	<a id="logo-link" href="http://www.madeiracloud.com/">MadeiraCloud</a>
+</header>
+<div id="main-body">
+	<div id="login-box" class="clearfix">
+		<div id="login-title">
+			<h2>{{ i18n "login" }}</h2><div id="login-register">{{ i18n "login-register" }}<a href="https://my.madeiracloud.com/user/register" id="link-register">{{ i18n "link-register" }}</a></div>
+		</div>
+		<form id="login-form" method="post">
+			<div class="error-msg" id="error-msg-1">{{ i18n "error-msg-1" }}</div>
+			<div class="error-msg" id="error-msg-2">{{ i18n "error-msg-2" }}</div>
+			<div class="control-group">
+				<input autocomplete="off" id="login-user" placeholder="{{ i18n "login-user" }}" type="text" class="login-input" name="user_name"/>
+				<label for="login-user" class="icon-envelope login-label"></label>
+			</div>
+			<div class="control-group">
+				<input autocomplete="off" id="login-password" placeholder="{{ i18n "login-password" }}" type="password" class="login-input" name="password"/>
+				<label for="login-password" class="icon-key login-label"></label>
+			</div>
+			<div id="login-footer">
+				<a href="https://my.madeiracloud.com/user/password" id="link-foget">{{ i18n "link-foget" }}</a>
+				<input id="login-btn" type="submit" value="{{ i18n "login-btn" }}" class="btn btn-primary btn-large" data-loading-text="{{ i18n "login-loading" }}" disabled/>
+			</div>
+		</form>
+	</div>
+</div>
+<div id="footer-push"></div>

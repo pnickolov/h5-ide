@@ -1,19 +1,20 @@
 
 require.config {
 
-	baseUrl            : './'
+	baseUrl            : '/'
 
 	waitSeconds        : 30
 
-	deps               : [ 'js/ide/main' ]
+	deps               : [ '/test/madeira_console/main.js' ]
 
 	locale             : 'en-us'
 
 	paths              :
 
+		'console'      : 'test/madeira_console/console'
+
 		#vender
 		'jquery'       : 'vender/jquery/jquery'
-		'canvon'       : 'vender/canvon/canvon'
 
 		'underscore'   : 'vender/underscore/underscore'
 		'backbone'     : 'vender/backbone/backbone'
@@ -24,17 +25,11 @@ require.config {
 		'i18n'         : 'vender/requirejs/i18n'
 
 		'zeroclipboard': 'vender/zeroclipboard/ZeroClipboard'
-		'jqpagination' : 'vender/jqpagination/jquery.jqpagination'
 
 		#core lib
 		'MC'                 : 'lib/MC.core'
 		'MC.template'        : 'lib/MC.template'
 		'MC.ide.template'    : 'lib/MC.ide.template'
-
-		#canvas
-		'MC.canvas'          : 'lib/MC.canvas'
-		'MC.canvas.constant' : 'lib/MC.canvas.constant'
-		'MC.canvas.add'      : 'lib/MC.canvas.add'
 
 		#ui
 		'UI.tooltip'        : 'ui/common/UI.tooltip'
@@ -219,6 +214,9 @@ require.config {
 
 		'MC.ide.template'  :
 			deps       : [ 'MC', 'jquery', 'underscore' ]
+
+		'UI.scrollbar' :
+			deps		: ['jquery']
 
 		'UI.tabbar'    :
 			deps       : [ 'MC.template' ]

@@ -189,6 +189,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             this.trigger "DEL_SUBSCRIPTION", uid
 
+            this.trigger 'DELETE_SUBSCRIPTION', uid
+
 
         editSNS : ( event ) ->
             $sub_li = $( event.currentTarget ).parent()

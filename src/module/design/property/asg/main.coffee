@@ -85,6 +85,10 @@ define [ 'jquery',
 
                 model.setHealthCheckGrace uid, value
 
+            view.on 'SET_POLICY', ( data ) ->
+
+                model.setPolicy uid, data
+
 
 
     unLoadModule = () ->

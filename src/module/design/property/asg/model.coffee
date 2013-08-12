@@ -177,6 +177,40 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       null
 
+    setPolicy : ( uid, policy_detail ) ->
+
+      policy_uid = null
+
+      policy_comp = null
+
+      if not policy_detail.uid
+
+        policy_uid = MC.guid()
+
+        policy_comp = $.extend true, {}, MC.canvas.ASL_SP_JSON.data
+
+        policy_comp.resource.AdjustmentType = policy_detail.adjustment
+
+        policy_comp.resource.AutoScalingGroupName = '@' + uid + '.resource.AutoScalingGroupName'
+
+        policy_comp.resource.Cooldown = policy_detail.cooldown
+
+        policy_comp.resource.PolicyName = policy_detail.name
+
+        if AdjustmentType is 'PercentChangeInCapacity'
+
+          if not policy_detail.minadjust
+
+            policy_detail.minadjust = 1
+
+          policy_comp.resource.MinAdjustmentStep = policy_detail.minadjust
+
+        policy_comp.resource.ScalingAdjustment = policy_detail.scalingadjust
+
+
+      MC.canvas_data.component[policy_uid] = policy_comp
+
+      null
   }
 
   model = new ASGConfigModel()

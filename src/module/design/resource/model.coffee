@@ -217,6 +217,8 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                         me.set 'my_ami', result.resolved_data
 
                         MC.data.config[region_name].my_ami = result.resolved_data
+                    else
+                        me.set 'my_ami', {}
 
                     null
             null
@@ -288,7 +290,16 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                 aws_model.once 'AWS__PUBLIC_RETURN', ( result ) ->
                     console.log 'AWS__PUBLIC_RETURN'
                     if result.resolved_data
-                        me.set 'community_ami', _.extend result.resolved_data.ami, {timestamp: ( new Date() ).getTime()}
+                        community_ami = _.extend result.resolved_data.ami, {timestamp: ( new Date() ).getTime()}
+                        favorite_ami_ids = _.pluck ( me.get 'favorite_ami' ), 'resource_id'
+
+                        for key, value of community_ami.result
+                            if _.contains favorite_ami_ids, key
+                                value.favorite = true
+
+
+
+                        me.set 'community_ami', community_ami
                     else
                         me.set 'community_ami', null
 
@@ -393,7 +404,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
         addFav: ( region_name, amiId ) ->
             # temp hack
             amiVO = JSON.stringify @get( 'community_ami' ).result[ amiId ]
-            amiId = { amiVO: amiVO, id: amiId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
+            amiId = { id: amiId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
 
             favorite_model.once 'FAVORITE_ADD_RETURN', ( result ) =>
                 if result.return_code is 0
@@ -403,14 +414,31 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
             favorite_model.add { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, amiId
 
         removeFav: ( region_name, amiId ) ->
-            favorite_model.once 'FAVORITE_REMOVE_RETURN', ( result ) =>
-                if result.return_code is 0
-                    delete MC.data.config[region_name].favorite_ami
-                    @favoriteAmiService region_name
+            #favorite_model.once 'FAVORITE_REMOVE_RETURN', ( result ) =>
+            #    if result.return_code is 0
+            #        delete MC.data.config[region_name].favorite_ami
+            #        @favoriteAmiService region_name
 
             amiId = [ amiId ]
 
             favorite_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, amiId
+
+            # remove favorite action is not very important and for instant reason I omit return value validation and change data directly.
+
+            delete MC.data.config[region_name].favorite_ami
+            @resetFavData 'remove', amiId[ 0 ]
+
+        resetFavData: ( action, data ) ->
+            if action is 'add'
+
+            else if action is 'remove'
+                favorite_ami = @get 'favorite_ami'
+                new_favorite_ami = _.reject favorite_ami, ( ami ) ->
+                    return ami.resource_id is data
+
+                @set 'favorite_ami', new_favorite_ami
+
+
 
         getIgwStatus : ->
 

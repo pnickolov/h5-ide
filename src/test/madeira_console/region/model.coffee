@@ -215,6 +215,24 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
         initialize : ->
             me = this
 
+            aws_model.on 'AWS_RESOURCE_RETURN', ( result ) ->
+
+
+
+                #resource_source = result.resolved_data[current_region]
+                _.map result.resolved_data, (value, key) ->
+
+                    console.log 'AWS_RESOURCE_RETURN:' + key
+                    me.setResource value, key
+                    null
+
+
+                me.updateUnmanagedList()
+
+                ide_event.trigger 'AWS_RESOURCE_CHANGE'
+
+                null
+
             null
 
         # reset the empty resultset when enter a second region
@@ -442,15 +460,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             if resource.tagSet != undefined
 
-                _.map resource.tagSet, ( tag ) ->
+                _.map resource.tagSet, ( value, key ) ->
 
-                    if tag.key == 'app'
+                    if key == 'app'
 
-                        resources[action][i].app = tag.value
+                        resources[action][i].app = value
 
-                    if tag.key == 'Created by' and tag.value == owner
+                    if key == 'Created by' and value == owner
 
-                        resources[action][i].owner = tag.value
+                        resources[action][i].owner = value
 
                     null
 
@@ -553,6 +571,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
         #parse bubble value or detail value for unmanagedSource
         parseSourceValue : ( type, value, keys, name )->
+
 
             me = this
 
@@ -1049,7 +1068,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             null
 
 
-        setResource : ( resources ) ->
+        setResource : ( resources, _region ) ->
 
             #cache aws resource data
             this._cacheResource resources
@@ -1065,11 +1084,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             # elb
             if resources.DescribeLoadBalancers
 
-                lists.ELB = resources.DescribeLoadBalancers.length
-
                 reg = /app-\w{8}/
 
                 _.map resources.DescribeLoadBalancers, ( elb, i ) ->
+
+                    elb.region = _region
 
                     #me._set_app_property elb, resources, i, 'DescribeLoadBalancers'
 
@@ -1083,7 +1102,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     else
 
-                        elb_model.DescribeInstanceHealth { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName
+                        elb_model.DescribeInstanceHealth { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), _region,  elb.LoadBalancerName
 
                         elb_model.once 'ELB__DESC_INS_HLT_RETURN', ( result ) ->
 
@@ -1113,15 +1132,31 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     null
 
+                if !MC.data.resources.DescribeLoadBalancers
+                    MC.data.resources.DescribeLoadBalancers = []
+                MC.data.resources.DescribeLoadBalancers = MC.data.resources.DescribeLoadBalancers.concat resources.DescribeLoadBalancers
+                null
+
+            if MC.data.resources.DescribeLoadBalancers
+                lists.ELB = MC.data.resources.DescribeLoadBalancers.length
+
+
             # autoscaling
             if resources.DescribeAutoScalingGroups
 
                 _.map resources.DescribeAutoScalingGroups, ( asl, i ) ->
 
+                    asl.region = _region
 
                     asl.detail = me.parseSourceValue 'DescribeAutoScalingGroups', asl, "detail", null
 
                     null
+
+                if !MC.data.resources.DescribeAutoScalingGroups
+                    MC.data.resources.DescribeAutoScalingGroups = []
+                MC.data.resources.DescribeAutoScalingGroups = MC.data.resources.DescribeAutoScalingGroups.concat resources.DescribeAutoScalingGroups
+                null
+
 
             #if resources.DescribeAlarms
 
@@ -1131,6 +1166,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             if resources.DescribeAddresses
 
                 _.map resources.DescribeAddresses, ( eip, i )->
+
+                    eip.region = _region
 
                     if $.isEmptyObject eip.instanceId
 
@@ -1144,7 +1181,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     null
 
-                lists.EIP = resources.DescribeAddresses.length
+
+                if !MC.data.resources.DescribeAddresses
+                    MC.data.resources.DescribeAddresses = []
+                MC.data.resources.DescribeAddresses = MC.data.resources.DescribeAddresses.concat resources.DescribeAddresses
+                null
+
+            if MC.data.resources.DescribeAddresses
+                lists.EIP = MC.data.resources.DescribeAddresses.length
+
+            MC.data.resources.Not_Used.EIP+=lists.Not_Used.EIP
+            lists.Not_Used.EIP = MC.data.resources.Not_Used.EIP
+
 
             # managed instanceid
             manage_instances_id     =   []
@@ -1153,11 +1201,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             # instance
             if resources.DescribeInstances
 
-                lists.Instance = resources.DescribeInstances.length
 
                 ami_list = []
 
                 _.map resources.DescribeInstances, ( ins, i ) ->
+
+                    ins.region      = _region
+                    ins.app         = ''
+                    ins.name        = ''
+                    ins.created_by  = ''
 
                     ami_list.push ins.imageId
 
@@ -1177,21 +1229,27 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     if ins.tagSet != undefined
 
-                        _.map ins.tagSet, ( tag )->
-                            if tag
-                                if tag.key == 'app'
+                        _.map ins.tagSet, ( value, key )->
+                            if value
+                                if key == 'app'
+
+                                    ins.app = value
 
                                     is_managed = true
 
-                                    resources.DescribeInstances[i].app = tag.value
+                                    resources.DescribeInstances[i].app = value
 
-                                if tag.key == 'name'
+                                if key == 'name'
 
-                                    resources.DescribeInstances[i].host = tag.value
+                                    ins.name = value
 
-                                if tag.key == 'Created by' and tag.value == owner
+                                    resources.DescribeInstances[i].host = value
 
-                                    resources.DescribeInstances[i].owner = tag.value
+                                if key == 'Created by' # and value == owner
+
+                                    ins.created_by = value
+
+                                    resources.DescribeInstances[i].owner = value
 
                             null
 
@@ -1214,7 +1272,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # ami
                 if ami_list.length != 0
 
-                    ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
+                    ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), _region,  ami_list
 
                     ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
 
@@ -1237,12 +1295,22 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                         me.reRenderRegionResource()
 
                         null
+
+                if !MC.data.resources.DescribeInstances
+                    MC.data.resources.DescribeInstances = []
+                MC.data.resources.DescribeInstances = MC.data.resources.DescribeInstances.concat resources.DescribeInstances
+                null
+
+            if MC.data.resources.DescribeInstances
+                lists.Instance = MC.data.resources.DescribeInstances.length
+
+
             # volume
             if resources.DescribeVolumes
 
-                lists.Volume = resources.DescribeVolumes.length
-
                 _.map resources.DescribeVolumes, ( vol, i )->
+
+                    vol.region = _region
 
                     vol.detail = me.parseSourceValue 'DescribeVolumes', vol, "detail", null
 
@@ -1261,6 +1329,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                         if vol.tagSet == undefined and vol.attachmentSet.item[0].instanceId in manage_instances_id
 
                             resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item[0].instanceId]
+                            resources.DescribeVolumes[i].instanceId = vol.attachmentSet.item[0].instanceId
 
                             _.map resources.DescribeInstances, ( ins ) ->
 
@@ -1272,10 +1341,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     null
 
+                if !MC.data.resources.DescribeVolumes
+                    MC.data.resources.DescribeVolumes = []
+                MC.data.resources.DescribeVolumes = MC.data.resources.DescribeVolumes.concat resources.DescribeVolumes
+                null
+
+            if MC.data.resources.DescribeVolumes
+                lists.Volume = MC.data.resources.DescribeVolumes.length
+
+            MC.data.resources.Not_Used.Volume+=lists.Not_Used.Volume
+            lists.Not_Used.Volume = MC.data.resources.Not_Used.Volume
+
             # vpc
             if resources.DescribeVpcs
-
-                lists.VPC = resources.DescribeVpcs.length
 
                 _.map resources.DescribeVpcs, ( vpc, i )->
 
@@ -1296,7 +1374,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # get dhcp detail
                 if dhcp_set.length != 0
 
-                    dhcp_model.DescribeDhcpOptions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set
+                    dhcp_model.DescribeDhcpOptions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), _region,  dhcp_set
 
                     dhcp_model.once 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', ( result ) ->
 
@@ -1332,11 +1410,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                         null
 
+                if !MC.data.resources.DescribeVpcs
+                    MC.data.resources.DescribeVpcs = []
+                MC.data.resources.DescribeVpcs = MC.data.resources.DescribeVpcs.concat resources.DescribeVpcs
+                null
+
+            if MC.data.resources.DescribeVpcs
+                lists.VPC = MC.data.resources.DescribeVpcs.length
+
             # vpn
             if resources.DescribeVpnConnections
-                lists.VPN = resources.DescribeVpnConnections.length
 
                 _.map resources.DescribeVpnConnections, ( vpn, i )->
+
+                    vpn.region = _region
 
                     me._set_app_property vpn, resources, i, 'DescribeVpnConnections'
 
@@ -1357,7 +1444,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # get cgw detail
                 if cgw_set.length != 0
 
-                    customergateway_model.DescribeCustomerGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set
+                    customergateway_model.DescribeCustomerGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), _region,  cgw_set
 
                     customergateway_model.once 'VPC_CGW_DESC_CUST_GWS_RETURN', ( result ) ->
 
@@ -1386,7 +1473,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # get vgw detail
                 if vgw_set.length != 0
 
-                    vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
+                    vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), _region,  vgw_set
 
                     vpngateway_model.once 'VPC_VGW_DESC_VPN_GWS_RETURN', ( result ) ->
 
@@ -1411,10 +1498,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                         me.reRenderRegionResource()
 
+                if !MC.data.resources.DescribeVpnConnections
+                    MC.data.resources.DescribeVpnConnections = []
+                MC.data.resources.DescribeVpnConnections = MC.data.resources.DescribeVpnConnections.concat resources.DescribeVpnConnections
+                null
+
+            if MC.data.resources.DescribeVpnConnections
+                lists.VPN = MC.data.resources.DescribeVpnConnections.length
+
 
             #console.log resources
-            me.set 'region_resource', resources
+            me.set 'region_resource', MC.data.resources
             me.set 'region_resource_list', lists
+
+
 
         describeAWSResourcesService : ( region )->
 
@@ -1454,17 +1551,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 
-            aws_model.once 'AWS_RESOURCE_RETURN', ( result ) ->
 
-                console.log 'AWS_RESOURCE_RETURN'
-
-                resource_source = result.resolved_data[current_region]
-
-                me.setResource resource_source
-
-                me.updateUnmanagedList()
-
-                null
 
         describeAWSStatusService : ( region )->
 

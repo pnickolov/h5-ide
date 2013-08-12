@@ -98,6 +98,9 @@ define [ 'constant', 'event'
 			if !node || !node.groupUId || node.groupUId == tgt_parent
 				return
 
+			# Update layout parent id
+			node.groupUId = tgt_parent
+
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
 			handler   = this.changeParentMap[ component.type ]
@@ -105,6 +108,7 @@ define [ 'constant', 'event'
 				handler.call( this, component, tgt_parent )
 			else
 				console.log "No handler for dragging node:", component
+
 			null
 
 		changeP_Instance : ( component, tgt_parent ) ->

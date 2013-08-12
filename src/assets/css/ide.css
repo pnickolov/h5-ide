@@ -1615,7 +1615,8 @@ td.table-action a.btn {
 }
 
 .toolbar-btn-group:first-child {
-	border-left : none;
+	border-left   : none;
+	border-radius : 2px 0 0 0;
 }
 
 .toolbar-btn-group > li {
@@ -2313,6 +2314,9 @@ a.sidebar-hider {
     transition         : margin, width 0s linear;
 
     background : #313131;
+/*    overflow   : hidden;
+
+	border-radius   : 2px 2px 0 0;*/
 }
 
 #canvas-panel.left-hiden {

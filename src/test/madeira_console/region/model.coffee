@@ -1239,7 +1239,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                                     resources.DescribeInstances[i].app = value
 
-                                if key == 'name'
+                                if key == 'Name'
 
                                     ins.name = value
 

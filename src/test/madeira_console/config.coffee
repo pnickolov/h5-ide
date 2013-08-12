@@ -215,6 +215,9 @@ require.config {
 		'MC.ide.template'  :
 			deps       : [ 'MC', 'jquery', 'underscore' ]
 
+		'UI.scrollbar' :
+			deps		: ['jquery']
+
 		'UI.tabbar'    :
 			deps       : [ 'MC.template' ]
 

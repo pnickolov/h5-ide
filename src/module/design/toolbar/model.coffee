@@ -152,7 +152,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
                         #call save png
-                        me.savePNG true, id
+                        me.savePNG true
 
                         #set toolbar flag
                         me.setFlag id, 'SAVE_STACK', name
@@ -192,7 +192,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         MC.data.stack_list[region].push name
 
                         #call save png
-                        me.savePNG true, new_id
+                        me.savePNG true
 
                         #set toolbar flag
                         me.setFlag id, 'CREATE_STACK', data
@@ -314,7 +314,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             null
 
-        savePNG : ( is_thumbnail, id ) ->
+        savePNG : ( is_thumbnail ) ->
             console.log 'savePNG'
             me = this
             #
@@ -342,7 +342,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 'thumbnail'  : is_thumbnail,
                 'json_data'  : MC.canvas.layout.save(),
                 'stack_id'   : MC.canvas_data.id
-                'url'        : if MC.canvas_data.key is undefined then 'sdfasfdasdf' else MC.canvas_data.key
+                'url'        : MC.canvas_data.key
             #
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage data, MC.SAVEPNG_URL

@@ -3,7 +3,7 @@
 #* Filename: UI.bubble
 #* Creator: Angel
 #* Description: UI.bubble
-#* Date: 20130712
+#* Date: 20130812
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -12,7 +12,8 @@ var bubble = function (event)
 {
 	if (event.type === 'mouseleave')
 	{
-		$('#bubble-box').remove();
+		bubble.clear();
+
 		return false;
 	}
 
@@ -61,6 +62,21 @@ var bubble = function (event)
 
 		bubble_box.css(coordinate).show();
 	}
+
+	bubble.timer = setInterval(function ()
+	{
+		if (target.closest('html').length === 0)
+		{
+			bubble.clear();
+		}
+	}, 1000);
+};
+
+bubble.clear = function ()
+{
+	$('#bubble-box').remove();
+
+	clearInterval(bubble.timer);
 };
 
 $(document).ready(function ()

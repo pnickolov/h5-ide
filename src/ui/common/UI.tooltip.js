@@ -3,7 +3,7 @@
 #* Filename: UI.tooltip
 #* Creator: Angel
 #* Description: UI.tooltip
-#* Date: 20130709
+#* Date: 20130810
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -45,13 +45,23 @@ var tooltip = function (event)
 		}).show();
 
 		$(document.body).on('mouseleave', '.tooltip', tooltip.clear);
+
+		tooltip.timer = setInterval(function ()
+		{
+			if (target.closest('html').length === 0)
+			{
+				tooltip.clear();
+			}
+		}, 1000);
 	}
 };
 
-tooltip.clear = function (event)
+tooltip.clear = function ()
 {
 	$('#tooltip_box').hide();
-	$(document.body).off('mouseover', '.tooltip', tooltip.clear);
+	$(document.body).off('mouseleave', '.tooltip', tooltip.clear);
+
+	clearInterval(tooltip.timer);
 };
 
 $(document).ready(function ()

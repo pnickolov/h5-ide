@@ -10,7 +10,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       uid : null
       asg : null
       name : null
-
+      has_sns_topic : null
       hasLaunchConfig : null
 
     initialize : ->
@@ -39,6 +39,16 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       else if asg.resource.HealthCheckType is 'ELB'
 
         asg.resource.elb = true
+
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+          this.set 'has_sns_topic', true
+
+          return false
+
 
       this.set 'asg', asg
 

@@ -78,6 +78,10 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 console.log 'EIP STATE CHANGED: instance: ' + option.id + ', eip_state:' + option.eip_state
                 null
 
+            #listen CANVAS_PLACE_NOT_MATCH
+            view.on 'CANVAS_PLACE_NOT_MATCH', (event, option) ->
+                model.showNotMatchNotification option.type
+                null
 
 
             model.on 'SHOW_SG_LIST', ( line_id ) ->
@@ -94,6 +98,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 #show property panel after remove resource
                 ide_event.trigger ide_event.OPEN_PROPERTY, 'component', ''
                 null
+
 
             null
 

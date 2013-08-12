@@ -3443,6 +3443,13 @@ MC.canvas.event.siderbarDrag = {
 							MC.canvas.select(new_node.id);
 						}
 					}
+					else
+					{
+						//dispatch event when is not matched
+						$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
+							type: node_type
+						});
+					}
 				}
 			}
 
@@ -3476,6 +3483,13 @@ MC.canvas.event.siderbarDrag = {
 					node_option.groupUId = match_place.target;
 
 					MC.canvas.add(node_type, node_option, coordinate);
+				}
+				else
+				{
+					//dispatch event when is not matched
+					$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
+						type: node_type
+					});
 				}
 			}
 		}

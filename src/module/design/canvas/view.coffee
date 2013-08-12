@@ -19,7 +19,7 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
 
-                .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP',   '#svg_canvas', _.bind( this.route, this ) )
+                .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH',   '#svg_canvas', _.bind( this.route, this ) )
 
         render   : ( template ) ->
             console.log 'canvas render'

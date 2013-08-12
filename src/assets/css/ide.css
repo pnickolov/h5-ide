@@ -342,7 +342,7 @@ a {
 
 	opacity: 0;
 
-	width: 240px;
+	width: 244px;
 	height: 100%;
 
 	z-index: -1;
@@ -366,7 +366,7 @@ a {
 .first-level-nav-label {
 	display: block;
 	background: #4c494c;
-	width: 212px;
+	width: 217px;
 	height: 18px;
 	font-size: 18px;
 	border: solid 1px #434343;
@@ -449,7 +449,7 @@ a {
 .nav-region-list-items li > a {
 	font-size: 13px;
 	color: #ccc;
-	width: 206px;
+	width: 210px;
 	line-height: 24px;
 }
 

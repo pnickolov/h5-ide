@@ -30,7 +30,6 @@ require [ 'jquery', 'domReady', 'MC',
 
 
         MC.data.resources = {}
-
         MC.data.region_keys = {}
 
 
@@ -208,6 +207,7 @@ require [ 'jquery', 'domReady', 'MC',
 
 
             MC.data.resources = {}
+            MC.data.resources.Not_Used = { 'EIP' : 0, 'Volume' : 0 }
             $('#progress_wrap').attr 'display', 'inline'
             $('#progress_total').text constant.REGION_KEYS.length
 

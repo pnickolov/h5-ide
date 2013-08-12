@@ -460,15 +460,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             if resource.tagSet != undefined
 
-                _.map resource.tagSet, ( tag ) ->
+                _.map resource.tagSet, ( value, key ) ->
 
-                    if tag.key == 'app'
+                    if key == 'app'
 
-                        resources[action][i].app = tag.value
+                        resources[action][i].app = value
 
-                    if tag.key == 'Created by' and tag.value == owner
+                    if key == 'Created by' and value == owner
 
-                        resources[action][i].owner = tag.value
+                        resources[action][i].owner = value
 
                     null
 
@@ -1135,8 +1135,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 if !MC.data.resources.DescribeLoadBalancers
                     MC.data.resources.DescribeLoadBalancers = []
                 MC.data.resources.DescribeLoadBalancers = MC.data.resources.DescribeLoadBalancers.concat resources.DescribeLoadBalancers
-                lists.ELB = MC.data.resources.DescribeLoadBalancers.length
                 null
+
+            if MC.data.resources.DescribeLoadBalancers
+                lists.ELB = MC.data.resources.DescribeLoadBalancers.length
+
 
             # autoscaling
             if resources.DescribeAutoScalingGroups
@@ -1182,8 +1185,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 if !MC.data.resources.DescribeAddresses
                     MC.data.resources.DescribeAddresses = []
                 MC.data.resources.DescribeAddresses = MC.data.resources.DescribeAddresses.concat resources.DescribeAddresses
-                lists.EIP = MC.data.resources.DescribeAddresses.length
                 null
+
+            if MC.data.resources.DescribeAddresses
+                lists.EIP = MC.data.resources.DescribeAddresses.length
+
+            MC.data.resources.Not_Used.EIP+=lists.Not_Used.EIP
+            lists.Not_Used.EIP = MC.data.resources.Not_Used.EIP
+
 
             # managed instanceid
             manage_instances_id     =   []
@@ -1220,27 +1229,27 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     if ins.tagSet != undefined
 
-                        _.map ins.tagSet, ( tag )->
-                            if tag
-                                if tag.key == 'app'
+                        _.map ins.tagSet, ( value, key )->
+                            if value
+                                if key == 'app'
 
-                                    ins.app = tag.value
+                                    ins.app = value
 
                                     is_managed = true
 
-                                    resources.DescribeInstances[i].app = tag.value
+                                    resources.DescribeInstances[i].app = value
 
-                                if tag.key == 'name'
+                                if key == 'name'
 
-                                    ins.name = tag.value
+                                    ins.name = value
 
-                                    resources.DescribeInstances[i].host = tag.value
+                                    resources.DescribeInstances[i].host = value
 
-                                if tag.key == 'Created by' and tag.value == owner
+                                if key == 'Created by' # and value == owner
 
-                                    ins.created_by = tag.value
+                                    ins.created_by = value
 
-                                    resources.DescribeInstances[i].owner = tag.value
+                                    resources.DescribeInstances[i].owner = value
 
                             null
 
@@ -1290,8 +1299,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 if !MC.data.resources.DescribeInstances
                     MC.data.resources.DescribeInstances = []
                 MC.data.resources.DescribeInstances = MC.data.resources.DescribeInstances.concat resources.DescribeInstances
-                lists.Instance = MC.data.resources.DescribeInstances.length
                 null
+
+            if MC.data.resources.DescribeInstances
+                lists.Instance = MC.data.resources.DescribeInstances.length
+
 
             # volume
             if resources.DescribeVolumes
@@ -1317,6 +1329,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                         if vol.tagSet == undefined and vol.attachmentSet.item[0].instanceId in manage_instances_id
 
                             resources.DescribeVolumes[i].app = manage_instances_app[vol.attachmentSet.item[0].instanceId]
+                            resources.DescribeVolumes[i].instanceId = vol.attachmentSet.item[0].instanceId
 
                             _.map resources.DescribeInstances, ( ins ) ->
 
@@ -1331,8 +1344,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 if !MC.data.resources.DescribeVolumes
                     MC.data.resources.DescribeVolumes = []
                 MC.data.resources.DescribeVolumes = MC.data.resources.DescribeVolumes.concat resources.DescribeVolumes
-                lists.Volume = MC.data.resources.DescribeVolumes.length
                 null
+
+            if MC.data.resources.DescribeVolumes
+                lists.Volume = MC.data.resources.DescribeVolumes.length
+
+            MC.data.resources.Not_Used.Volume+=lists.Not_Used.Volume
+            lists.Not_Used.Volume = MC.data.resources.Not_Used.Volume
 
             # vpc
             if resources.DescribeVpcs
@@ -1395,8 +1413,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 if !MC.data.resources.DescribeVpcs
                     MC.data.resources.DescribeVpcs = []
                 MC.data.resources.DescribeVpcs = MC.data.resources.DescribeVpcs.concat resources.DescribeVpcs
-                lists.VPC = MC.data.resources.DescribeVpcs.length
                 null
+
+            if MC.data.resources.DescribeVpcs
+                lists.VPC = MC.data.resources.DescribeVpcs.length
 
             # vpn
             if resources.DescribeVpnConnections
@@ -1481,8 +1501,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 if !MC.data.resources.DescribeVpnConnections
                     MC.data.resources.DescribeVpnConnections = []
                 MC.data.resources.DescribeVpnConnections = MC.data.resources.DescribeVpnConnections.concat resources.DescribeVpnConnections
-                lists.VPN = MC.data.resources.DescribeVpnConnections.length
                 null
+
+            if MC.data.resources.DescribeVpnConnections
+                lists.VPN = MC.data.resources.DescribeVpnConnections.length
+
 
             #console.log resources
             me.set 'region_resource', MC.data.resources

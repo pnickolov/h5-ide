@@ -2199,24 +2199,27 @@ MC.canvas.volume = {
 MC.canvas.asgList = {
 	show: function (event)
 	{
-		MC.canvas.asgList.close();
+		if (event.which === 1)
+		{
+			MC.canvas.asgList.close();
 
-		var target = this.parentNode,
-			target_offset = Canvon(target).offset(),
-			canvas_offset = $('#svg_canvas').offset();
+			var target = this.parentNode,
+				target_offset = Canvon(target).offset(),
+				canvas_offset = $('#svg_canvas').offset();
 
-		$('#canvas_container').append( MC.template.asgList() );
+			$('#canvas_container').append( MC.template.asgList() );
 
-		$('#asgList-wrap')
-			.on('click', '.asgList-item', MC.canvas.asgList.select)
-			.css({
-				'top': target_offset.top - canvas_offset.top - 10,
-				'left': target_offset.left - canvas_offset.left
-			});
+			$('#asgList-wrap')
+				.on('click', '.asgList-item', MC.canvas.asgList.select)
+				.css({
+					'top': target_offset.top - canvas_offset.top - 10,
+					'left': target_offset.left - canvas_offset.left
+				});
 
-		MC.canvas.asgList.select.call($('#asgList-wrap .asgList-item').first());
+			MC.canvas.asgList.select.call($('#asgList-wrap .asgList-item').first());
 
-		return true;
+			return true;
+		}
 	},
 
 	close: function ()

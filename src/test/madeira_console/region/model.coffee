@@ -460,15 +460,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             if resource.tagSet != undefined
 
-                _.map resource.tagSet, ( tag ) ->
+                _.map resource.tagSet, ( value, key ) ->
 
-                    if tag.key == 'app'
+                    if key == 'app'
 
-                        resources[action][i].app = tag.value
+                        resources[action][i].app = value
 
-                    if tag.key == 'Created by' and tag.value == owner
+                    if key == 'Created by' and value == owner
 
-                        resources[action][i].owner = tag.value
+                        resources[action][i].owner = value
 
                     null
 
@@ -1193,6 +1193,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             MC.data.resources.Not_Used.EIP+=lists.Not_Used.EIP
             lists.Not_Used.EIP = MC.data.resources.Not_Used.EIP
 
+
             # managed instanceid
             manage_instances_id     =   []
             manage_instances_app    =   {}
@@ -1302,6 +1303,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             if MC.data.resources.DescribeInstances
                 lists.Instance = MC.data.resources.DescribeInstances.length
+
 
             # volume
             if resources.DescribeVolumes

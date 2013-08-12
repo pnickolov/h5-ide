@@ -2532,7 +2532,8 @@ MC.canvas.event.dragable = {
 					group_offsetY,
 					matched_child,
 					child_data,
-					child_type;
+					child_type,
+					isBlank;
 
 				if (group_data.type === 'AWS.VPC.VPC')
 				{
@@ -2649,6 +2650,17 @@ MC.canvas.event.dragable = {
 				group_offsetX = coordinate.x - group_coordinate[0];
 				group_offsetY = coordinate.y - group_coordinate[1];
 
+				isBlank = MC.canvas.isBlank(
+									'group',
+									target_id,
+									group_data.type,
+									coordinate.x,
+									coordinate.y,
+									group_size[0],
+									group_size[1]
+								) &&
+						event.data.groupChild.length === unique_stack.length;
+
 				if (
 					(
 						(
@@ -2659,16 +2671,7 @@ MC.canvas.event.dragable = {
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&
-							MC.canvas.isBlank(
-								'group',
-								target_id,
-								group_data.type,
-								coordinate.x,
-								coordinate.y,
-								group_size[0],
-								group_size[1]
-							) &&
-							event.data.groupChild.length === unique_stack.length
+							isBlank
 						)
 					)
 					&&
@@ -2759,6 +2762,11 @@ MC.canvas.event.dragable = {
 						src_group: target_id,
 						tgt_parent: parentGroup ? parentGroup.id : ''
 					});
+				}
+				else if (!isBlank)
+				{
+					//dispatch event when is not blank
+					$("#svg_canvas").trigger("CANVAS_PLACE_OVERLAP");
 				}
 			}
 		}
@@ -3334,7 +3342,7 @@ MC.canvas.event.siderbarDrag = {
 						}
 					});
 				}
-								
+
 				$(document).on({
 					'mousemove': MC.canvas.event.siderbarDrag.mousemove,
 					'mouseup': MC.canvas.event.siderbarDrag.mouseup
@@ -3475,14 +3483,19 @@ MC.canvas.event.siderbarDrag = {
 				);
 
 				if (
-					match_place.is_matched &&
-					areaChild.length === 0 &&
-					MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1])
+					match_place.is_matched
 				)
 				{
-					node_option.groupUId = match_place.target;
-
-					MC.canvas.add(node_type, node_option, coordinate);
+					if (MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]) && areaChild.length === 0)
+					{
+						node_option.groupUId = match_place.target;
+						MC.canvas.add(node_type, node_option, coordinate);
+					}
+					else
+					{
+						//dispatch event when is not blank
+						$("#svg_canvas").trigger("CANVAS_PLACE_OVERLAP");
+					}
 				}
 				else
 				{

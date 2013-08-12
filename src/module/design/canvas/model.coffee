@@ -38,6 +38,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			null
 
+		#show notification when place is blank
+		showOverlapNotification : () ->
+
+			notification 'warning', lang.ide.CVS_MSG_WARN_COMPONENT_OVERLAP, false
+			null
+
 		#show notification when node not matchplace
 		showNotMatchNotification : ( comp_type ) ->
 			console.log comp_type + ' place to wrong place!'
@@ -46,26 +52,26 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			switch comp_type
 
-				when res_type.AWS_EBS_Volume            then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_VOLUME    ,false
+				when res_type.AWS_EBS_Volume            then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_VOLUME , false
 
-				when res_type.AWS_VPC_Subnet            then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_SUBNET	 ,false
+				when res_type.AWS_VPC_Subnet            then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_SUBNET, false
 
 				when res_type.AWS_EC2_Instance
 
 					if  MC.canvas.data.get('platform') == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas.data.get('platform') == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
 
-						notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ  ,false
+						notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ     , false
 					else
 
-						notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET  ,false
+						notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET , false
 
-				when res_type.AWS_VPC_NetworkInterface  then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_ENI       ,false
+				when res_type.AWS_VPC_NetworkInterface  then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_ENI , false
 
-				when res_type.AWS_VPC_RouteTable        then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_RTB       ,false
+				when res_type.AWS_VPC_RouteTable        then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_RTB , false
 
-				when res_type.AWS_ELB                   then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_ELB       ,false
+				when res_type.AWS_ELB                   then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_ELB , false
 
-				when res_type.AWS_VPC_CustomerGateway   then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_CGW       ,false
+				when res_type.AWS_VPC_CustomerGateway   then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_CGW , false
 
 
 			null

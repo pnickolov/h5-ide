@@ -83,6 +83,12 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 model.showNotMatchNotification option.type
                 null
 
+            #listen CANVAS_PLACE_OVERLAP
+            view.on 'CANVAS_PLACE_OVERLAP', (event) ->
+                model.showOverlapNotification()
+                null
+
+
 
             model.on 'SHOW_SG_LIST', ( line_id ) ->
                 sgrule_main.loadModule line_id, 'delete'

@@ -269,6 +269,10 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         cw_comp = $.extend true, {}, MC.canvas.CLW_JSON.data
 
+        # Hack, set the uid here.
+        # So that view knows the newly added item's uid
+        policy_detail.uid = policy_uid
+
       else
 
         policy_uid = policy_detail.uid
@@ -277,7 +281,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and conp.resource.Dimensions[0].value is '@' + uid + '.resource.AutoScalingGroupName'
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and comp.resource.Dimensions[0].value is '@' + uid + '.resource.AutoScalingGroupName'
 
             cw_uid = comp.uid
 

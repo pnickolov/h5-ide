@@ -183,32 +183,118 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       policy_comp = null
 
+      cw_uid = null
+
+      cw_comp = null
+
       if not policy_detail.uid
 
         policy_uid = MC.guid()
 
         policy_comp = $.extend true, {}, MC.canvas.ASL_SP_JSON.data
 
-        policy_comp.resource.AdjustmentType = policy_detail.adjustment
+        cw_uid = MC.guid()
 
-        policy_comp.resource.AutoScalingGroupName = '@' + uid + '.resource.AutoScalingGroupName'
+        cw_comp = $.extend true, {}, MC.canvas.CLW_JSON.data
 
-        policy_comp.resource.Cooldown = policy_detail.cooldown
+      else
 
-        policy_comp.resource.PolicyName = policy_detail.name
+        policy_uid = policy_detail.uid
 
-        if AdjustmentType is 'PercentChangeInCapacity'
+        policy_comp = MC.canvas_data.component[policy_uid]
 
-          if not policy_detail.minadjust
+        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-            policy_detail.minadjust = 1
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and conp.resource.Dimensions[0].value is '@' + uid + '.resource.AutoScalingGroupName'
 
-          policy_comp.resource.MinAdjustmentStep = policy_detail.minadjust
+            cw_uid = comp.uid
 
-        policy_comp.resource.ScalingAdjustment = policy_detail.scalingadjust
+            cw_comp = comp
 
+            return false
+
+      policy_comp.resource.AdjustmentType = policy_detail.adjusttype
+
+      policy_comp.resource.AutoScalingGroupName = '@' + uid + '.resource.AutoScalingGroupName'
+
+      policy_comp.resource.Cooldown = policy_detail.cooldown
+
+      policy_comp.resource.PolicyName = policy_detail.name
+
+      if policy_detail.adjustment is 'PercentChangeInCapacity'
+
+        if not policy_detail.step
+
+          policy_detail.step = 1
+
+        policy_comp.resource.MinAdjustmentStep = policy_detail.step
+
+      policy_comp.resource.ScalingAdjustment = policy_detail.adjustment
+
+
+
+      cw_comp.uid = cw_uid
+
+      cw_comp.name = cw_comp.resource.AlarmName = policy_detail.name + '-alarm'
+
+      cw_comp.resource.ComparisonOperator = policy_detail.evaluation
+
+      cw_comp.resource.Dimensions = [{name:"AutoScalingGroupName", value:policy_comp.resource.AutoScalingGroupName}]
+
+      cw_comp.resource.EvaluationPeriods = policy_detail.periods
+
+      cw_comp.resource.MetricName = policy_detail.metric
+
+      cw_comp.resource.Namespace = 'AWS/AutoScaling'
+
+      cw_comp.resource.Period = policy_detail.second
+
+      if policy_detail.statistics
+        cw_comp.resource.Statistic = policy_detail.statistics
+
+      cw_comp.resource.Threshold = policy_detail.threshold
+
+      #cw_comp.resource.Unit = "Seconds"
+
+      policy_arn = '@' + policy_uid + '.resource.PolicyARN'
+
+      topic_arn = null
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+          topic_arn = comp.resource.TopicArn
+
+          return false
+
+      action = null
+
+      switch policy_detail.trigger
+
+        when 'ALARM'
+
+          action = cw_comp.resource.AlarmActions
+
+        when 'INSUFFICIANT_DATA'
+
+          action = cw_comp.resource.InsufficientDataActions
+
+        when 'OK'
+
+          action = cw_comp.resource.OKAction
+
+      action.push policy_arn
+
+      if policy_detail.notify and topic_arn
+
+        action.push topic_arn
 
       MC.canvas_data.component[policy_uid] = policy_comp
+
+      MC.canvas_data.component[cw_uid] = cw_comp
+
+
 
       null
   }

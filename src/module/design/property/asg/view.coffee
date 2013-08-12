@@ -139,7 +139,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 second     : $("#asg-policy-second").val()
                 trigger    : $("#asg-policy-trigger .selected").data("id")
                 adjusttype : $("#asg-policy-adjust-type .selected").data("id")
-                adjustment : $("#asg-policy-adjust .selected").data("id")
+                adjustment : $("#asg-policy-adjust").val()
                 statistics : $("#asg-policy-statistics .selected").data("id")
                 cooldown   : $("#asg-policy-cooldown").val()
                 step       : $("#asg-policy-step").val()

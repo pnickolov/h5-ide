@@ -64,6 +64,11 @@ MC.canvas = {
 		return true;
 	},
 
+	view: function ()
+	{
+		$('#canvas_body').toggleClass('canvas-view-normal canvas-view-sg');
+	},
+
 	zoomIn: function ()
 	{
 		var canvas_size = MC.canvas.data.get('layout.size');

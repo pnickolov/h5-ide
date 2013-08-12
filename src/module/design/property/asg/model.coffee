@@ -49,7 +49,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
           return false
 
-      policies = []
+      policies = {}
 
       $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
@@ -105,7 +105,10 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
                   return false
 
-          policies.push tmp
+          policies[comp_uid]  = tmp
+
+
+          null
 
       this.set 'policies', policies
 

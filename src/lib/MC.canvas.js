@@ -3298,20 +3298,23 @@ MC.canvas.event.siderbarDrag = {
 						'height': component_size[1] * MC.canvas.GRID_HEIGHT
 					})
 					.show();
+			}
 
-				if (target_component_type === 'node' && node_type !== 'AWS.EC2.EBS.Volume')
+			if (node_type !== 'AWS.EC2.EBS.Volume')
+			{
+				platform = MC.canvas.data.get('platform');
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
+
+				$.each(target_group_type, function (index, item)
 				{
-					platform = MC.canvas.data.get('platform');
-					target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
-
-					$.each(target_group_type, function (index, item)
+					if (item !== 'Canvas')
 					{
 						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
 						{
 							return 'dropable-group ' + key;
 						});
-					});
-				}
+					}
+				});
 			}
 
 			if (node_type === 'AWS.EC2.EBS.Volume')

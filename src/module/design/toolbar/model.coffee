@@ -173,9 +173,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     if !result.is_error
                         console.log 'create stack successfully'
 
-                        new_id = result.resolved_data
+                        new_id = result.resolved_data.id
+                        key = result.resolved_data.key
+
                         #temp
                         MC.canvas_data.id = new_id
+                        MC.canvas_data.key = key
 
                         #update initial data
                         MC.canvas_property.original_json = JSON.stringify( data )

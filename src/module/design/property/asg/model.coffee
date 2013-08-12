@@ -49,6 +49,65 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
           return false
 
+      policies = []
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+
+          tmp = {}
+
+          tmp.adjusttype = comp.resource.AdjustmentType
+
+          tmp.adjustment = comp.resource.ScalingAdjustment
+
+          tmp.step = comp.resource.MinAdjustmentStep
+
+          tmp.cooldown = comp.resource.Cooldown
+
+          tmp.name = comp.resource.PolicyName
+
+          $.each MC.canvas_data.component, ( c_uid, c ) ->
+
+            if c.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+
+              actions = [c.resource.InsufficientDataActions, c.resource.OKAction, c.resource.AlarmActions]
+
+              for action in actions
+
+                if action[0] and action[0].split('.')[0][1...] is comp_uid
+
+                  tmp.evaluation = c.resource.ComparisonOperator
+
+                  tmp.metric = c.resource.MetricName
+
+                  if action.length is 2
+
+                    tmp.notify = true
+                  else
+
+                    tmp.notify = false
+
+                  tmp.periods = c.resource.EvaluationPeriods
+
+                  tmp.second = c.resource.Period
+
+                  tmp.statistics = c.resource.Statistic
+
+                  tmp.threshold = c.resource.Threshold
+
+                  if c.resource.InsufficientDataActions.length > 0
+                    tmp.trigger = 'INSUFFICIANT_DATA'
+                  else if c.resource.OKAction.length > 0
+                    tmp.trigger = 'OK'
+                  else if c.resource.AlarmActions.length > 0
+                    tmp.trigger = 'ALARM'
+
+                  return false
+
+          policies.push tmp
+
+      this.set 'policies', policies
 
       this.set 'asg', asg
 

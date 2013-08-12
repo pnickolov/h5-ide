@@ -2258,8 +2258,8 @@ MC.canvas.event.dragable = {
 				node_type = target.data('class'),
 				svg_canvas = $('#svg_canvas'),
 				canvas_offset = svg_canvas.offset(),
+				platform = MC.canvas.data.get('platform'),
 				shadow,
-				platform,
 				target_group_type;
 
 			if (node_type === 'AWS.AutoScaling.LaunchConfiguration')
@@ -2286,24 +2286,20 @@ MC.canvas.event.dragable = {
 
 			svg_canvas.append(shadow);
 
-			if (target_type === 'node')
-			{
-				platform = MC.canvas.data.get('platform');
-				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
+			target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
 
-				if (target_group_type)
+			if (target_group_type)
+			{
+				$.each(target_group_type, function (index, item)
 				{
-					$.each(target_group_type, function (index, item)
+					if (item !== 'AWS.AutoScaling.Group' && item !== 'Canvas')
 					{
-						if (item !== 'AWS.AutoScaling.Group')
+						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
 						{
-							$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
-							{
-								return 'dropable-group ' + key;
-							});
-						}
-					});
-				}
+							return 'dropable-group ' + key;
+						});
+					}
+				});
 			}
 
 			$(document.body).addClass('disable-event');
@@ -3256,11 +3252,11 @@ MC.canvas.event.siderbarDrag = {
 				canvas_offset = $('#svg_canvas').offset(),
 				node_type = target.data('type'),
 				target_component_type = target.data('component-type'),
+				platform = MC.canvas.data.get('platform'),
 				shadow,
 				clone_node,
 				default_width,
 				default_height,
-				platform,
 				target_group_type,
 				size,
 				component_size;
@@ -3303,23 +3299,6 @@ MC.canvas.event.siderbarDrag = {
 					.show();
 			}
 
-			if (node_type !== 'AWS.EC2.EBS.Volume')
-			{
-				platform = MC.canvas.data.get('platform');
-				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
-
-				$.each(target_group_type, function (index, item)
-				{
-					if (item !== 'Canvas')
-					{
-						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
-						{
-							return 'dropable-group ' + key;
-						});
-					}
-				});
-			}
-
 			if (node_type === 'AWS.EC2.EBS.Volume')
 			{
 				$('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').attr('class', function (index, key)
@@ -3340,7 +3319,22 @@ MC.canvas.event.siderbarDrag = {
 			}
 			else
 			{
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
 
+				if (target_group_type)
+				{
+					$.each(target_group_type, function (index, item)
+					{
+						if (item !== 'Canvas')
+						{
+							$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+							{
+								return 'dropable-group ' + key;
+							});
+						}
+					});
+				}
+								
 				$(document).on({
 					'mousemove': MC.canvas.event.siderbarDrag.mousemove,
 					'mouseup': MC.canvas.event.siderbarDrag.mouseup

@@ -1,7 +1,7 @@
 require [ 'jquery', 'domReady', 'MC',
     'text!/test/madeira_console/region/template.html',
     'text!/test/madeira_console/region/template_data.html',
-    'event', 'constant', 'session_model', 'MC.ide.template'
+    'event', 'constant', 'session_model', 'MC.ide.template', 'UI.scrollbar'
 ], ( $, domReady, MC, region_tmpl, region_tmpl_data, ide_event, constant, session_model ) ->
 
 
@@ -30,6 +30,7 @@ require [ 'jquery', 'domReady', 'MC',
 
 
         MC.data.resources = {}
+
         MC.data.region_keys = {}
 
 
@@ -208,6 +209,7 @@ require [ 'jquery', 'domReady', 'MC',
 
             MC.data.resources = {}
             MC.data.resources.Not_Used = { 'EIP' : 0, 'Volume' : 0 }
+
             $('#progress_wrap').attr 'display', 'inline'
             $('#progress_total').text constant.REGION_KEYS.length
 

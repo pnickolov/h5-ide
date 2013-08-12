@@ -2,7 +2,7 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'autoscaling_model', 'constant' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, autoscaling_model, constant) ->
 
     current_region  = null
     resource_source = null
@@ -155,7 +155,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 "sub_info":[
                     {"key": [ "AutoScalingGroupName" ], "show_key": "AutoScalingGroupName"}
                     {"key": [ "AutoScalingGroupARN" ], "show_key": "AutoScalingGroupARN"}
-                    {"key": [ "AvailabilityZones" ], "show_key": "AvailabilityZones"}
+                    {"key": [ "AvailabilityZones", "member" ], "show_key": "AvailabilityZones"}
                     {"key": [ "CreatedTime" ], "show_key": "CreatedTime"}
                     {"key": [ "DefaultCooldown" ], "show_key": "DefaultCooldown"}
                     {"key": [ "DesiredCapacity" ], "show_key": "DesiredCapacity"}
@@ -164,11 +164,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     {"key": [ "HealthCheckType" ], "show_key": "HealthCheckType"}
                     {"key": [ "Instances" ], "show_key": "Instances"}
                     {"key": [ "LaunchConfigurationName" ], "show_key": "LaunchConfigurationName"}
-                    {"key": [ "LoadBalancerNames" ], "show_key": "LoadBalancerNames"}
+                    {"key": [ "LoadBalancerNames", 'member' ], "show_key": "LoadBalancerNames"}
                     {"key": [ "MaxSize" ], "show_key": "MaxSize"}
                     {"key": [ "MinSize" ], "show_key": "MinSize"}
                     {"key": [ "Status" ], "show_key": "Status"}
-                    {"key": [ "TerminationPolicies" ], "show_key": "TerminationPolicies"}
+                    {"key": [ "TerminationPolicies", 'member' ], "show_key": "TerminationPolicies"}
                     {"key": [ "VPCZoneIdentifier" ], "show_key": "VPCZoneIdentifier"}
 
                 ]
@@ -177,7 +177,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 "title" : "AlarmName"
                 "sub_info":[
                     {"key": [ "ActionsEnabled" ], "show_key": "ActionsEnabled"}
-                    {"key": [ "AlarmActions" ], "show_key": "AlarmActions"}
+                    {"key": [ "AlarmActions", "member" ], "show_key": "AlarmActions"}
                     {"key": [ "AlarmArn" ], "show_key": "AlarmArn"}
                     {"key": [ "AlarmDescription" ], "show_key": "AlarmDescription"}
                     {"key": [ "AlarmName" ], "show_key": "AlarmName"}
@@ -1116,10 +1116,51 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             # autoscaling
             if resources.DescribeAutoScalingGroups
 
-                _.map resources.DescribeAutoScalingGroups, ( asl, i ) ->
+                _.map resources.DescribeAutoScalingGroups.member, ( asl, i ) ->
 
+                    _.map asl.tagSet, ( tag ) ->
+
+                        if tag.key == 'app'
+
+                            asl.app = tag.value
+
+                        if tag.key == 'Created by' and tag.value == owner
+
+                            asl.owner = tag.value
+
+                        null
 
                     asl.detail = me.parseSourceValue 'DescribeAutoScalingGroups', asl, "detail", null
+
+                    null
+
+                autoscaling_model.DescribeScalingActivities { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  null, null, null, null
+
+                autoscaling_model.once 'ASL__DESC_SCALING_ACTIS_RETURN', ( result ) ->
+
+                    me.reRenderRegionResource()
+
+                    null
+
+            if resources.DescribeAlarms
+
+                _.map resources.DescribeAlarms.member, ( alarm, i ) ->
+
+                    alarm.dimension_display = alarm.Dimensions.member[0].Name + ':' + alarm.Dimensions.member[0].Value
+                    alarm.threshold_display = "#{alarm.MetricName} #{alarm.ComparisonOperator} #{alarm.Threshold} for #{alarm.Period} seconds"
+
+                    if alarm.StateValue is 'OK'
+
+                        alarm.state_ok = true
+
+                    else if alarm.StateValue is 'ALARM'
+
+                        alarm.state_alarm = true
+
+                    else
+                        alarm.state_insufficient = true
+
+                    alarm.detail = me.parseSourceValue 'DescribeAlarms', alarm, "detail", null
 
                     null
 

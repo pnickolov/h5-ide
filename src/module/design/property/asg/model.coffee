@@ -265,6 +265,8 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         policy_comp = $.extend true, {}, MC.canvas.ASL_SP_JSON.data
 
+        policy_comp.uid = policy_uid
+
         cw_uid = MC.guid()
 
         cw_comp = $.extend true, {}, MC.canvas.CLW_JSON.data

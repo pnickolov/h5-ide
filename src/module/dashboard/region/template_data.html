@@ -348,31 +348,49 @@ Loading...
 					<div class="scroll-content">
 
 						<table class="table table-region-stat" id="region-stat-table-asg">
+						{{#if region_resource.DescribeAutoScalingGroups}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:20%">Name</th>
-								<th class="sortable" style="width:55%">Current/Last Activity</th>
-								<th class="sortable" style="width:15%">Activity Status</th>
+								<th class="sortable" style="width:35%">Name</th>
+								<th class="sortable" style="width:45%">Current/Last Activity</th>
+								<th class="sortable" style="width:10%">Activity Status</th>
 								<th style="width:15%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
-
+								{{#each region_resource.DescribeAutoScalingGroups.member }}
 								<tr>
-									<td><a href="" class="table-link table-app-link truncate" title="Open App">[App Name]</a>
-									%asg-name%
+									<td>
+									{{#if app}}
+										{{#if owner}}
+											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}] {{AutoScalingGroupName}}</a>
+										{{else}}
+											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}] {{AutoScalingGroupName}}</span>
+										{{/if}}
+									{{else}}
+										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >[Unmanaged] {{AutoScalingGroupName}}</span>
+									{{/if}}
+									</td>
+									<!-- <td><a href="" class="table-link table-app-link truncate" title="Open App">[App Name]</a> -->
 									</td>
 									<td>At 2012-04-12T17:31:30Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 1.  At 2012-04-12T17:32:07Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 to 1.</td>
 									<td>Failed</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
-
+								{{/each}}
 							    <!-- Blank Slate -->
 								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
 									<p>There is no auto scaling group in this region.</p>
 								</div> -->
 
 						</tbody>
+						{{else}}
+
+							<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no auto scaling group in this region.</p>
+								</div>
+						{{/if}}
+
 						</table>
 
 					</div>
@@ -384,45 +402,28 @@ Loading...
 					<div class="scroll-content">
 
 						<table class="table table-region-stat" id="region-stat-table-cw">
+						{{#if region_resource.DescribeAlarms}}
 						<thead>
 							<tr>
 								<th class="sortable" style="width:20%">Name</th>
-								<th class="sortable" style="width:15%">Dimension</th>
-								<th class="sortable" style="width:40%">Threshold</th>
-								<th class="sortable" style="width:15%">State</th>
-								<th style="width:15%">Detail</th>
+								<th class="sortable" style="width:35%">Dimension</th>
+								<th class="sortable" style="width:35%">Threshold</th>
+								<th class="sortable" style="width:10%">State</th>
+								<th style="width:10%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
-
+								{{#each region_resource.DescribeAlarms.member}}
 								<tr>
 									<td>
-									%cloudwatch-alarm-name%
+									{{AlarmName}}
 									</td>
-									<td>InstanceId = i-fe90d1fc</td>
-									<td>DiskReadBytes >= 2 for 5 minutes</td>
-									<td><i class="status status-red icon-label"></i>ALARM</td>
+									<td>{{dimension_display}}</td>
+									<td>{{threshold_display}}</td>
+									<td><i class="status {{#if state_ok}}status-green{{/if}} {{#if state_alarm}}status-red{{/if}} {{#if state_insufficient}}status-grace{{/if}} icon-label"></i>{{StateValue}}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
-								<tr>
-									<td>
-									%cloudwatch-alarm-name%
-									</td>
-									<td>InstanceId = i-fe90d1fc</td>
-									<td>DiskReadBytes >= 2 for 5 minutes</td>
-									<td><i class="status status-green icon-label"></i>OK</td>
-									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-								</tr>
-								<tr>
-									<td>
-									%cloudwatch-alarm-name%
-									</td>
-									<td>InstanceId = i-fe90d1fc</td>
-									<td>DiskReadBytes >= 2 for 5 minutes</td>
-									<td><i class="status status-grey icon-label"></i>InsufficientData</td>
-									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-								</tr>
-
+								{{/each}}
 
 							    <!-- Blank Slate -->
 								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
@@ -430,6 +431,12 @@ Loading...
 								</div> -->
 
 						</tbody>
+						{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no cloud watch alarm in this region.</p>
+								</div>
+
+						{{/if}}
 						</table>
 
 					</div>

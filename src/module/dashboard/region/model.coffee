@@ -195,6 +195,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     {"key": [ "Unit" ], "show_key": "Unit"}
                 ]
 
+            "ListSubscriptions":
+
+                "title" :   "Endpoint"
+                "sub_info" : [
+                    {"key": [ "Endpoint" ], "show_key": "Endpoint"}
+                    {"key": [ "Owner" ], "show_key": "Owner"}
+                    {"key": [ "Protocol" ], "show_key": "Protocol"}
+                    {"key": [ "SubscriptionArn" ], "show_key": "SubscriptionArn"}
+                    {"key": [ "TopicArn" ], "show_key": "TopicArn"}
+
+                ]
+
     #websocket
     ws = MC.data.websocket
 
@@ -1110,6 +1122,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     reg_result = elb.LoadBalancerName.match reg
 
                     if reg_result then elb.app = reg_result
+
+                    null
+
+            # sns
+            if resources.ListSubscriptions
+
+                _.map resources.ListSubscriptions.member, ( sub, i ) ->
+
+                    sub.detail = me.parseSourceValue 'ListSubscriptions', sub, "detail", null
+
+                    if sub.SubscriptionArn is 'PendingConfirmation'
+
+                        sub.pending_state = 'PendingConfirmation'
+
+                    else
+
+                        sub.success_state = 'Success'
+
+                    sub.topic = sub.TopicArn.split(":")[5]
 
                     null
 

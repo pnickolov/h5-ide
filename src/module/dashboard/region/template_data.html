@@ -448,6 +448,7 @@ Loading...
 					<div class="scroll-content">
 
 						<table class="table table-region-stat" id="region-stat-table-sns">
+						{{#if region_resource.ListSubscriptions}}
 						<thead>
 							<tr>
 								<th class="sortable" style="width:30%">Topic Name</th>
@@ -457,21 +458,15 @@ Loading...
 							</tr>
 						</thead>
 						<tbody>
-
+								{{#each region_resource.ListSubscriptions.member}}
 								<tr>
-									<td>%topic-name%
+									<td>{{topic}}
 									</td>
-									<td>Email: paula@mc2.com</td>
-									<td><i class="status status-red icon-label"></i>AuthorizationError</td>
+									<td>{{Protocol}}: {{Endpoint}}</td>
+									<td><i class="status {{#if pending_state}}status-red{{else}}status-green{{/if}} icon-label"></i>{{#if pending_state}}{{pending_state}}{{else}}{{success_state}}{{/if}}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
-								<tr>
-									<td>%topic-name%
-									</td>
-									<td>Email: paula@mc2.com</td>
-									<td><i class="status status-green icon-label"></i>Success</td>
-									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-								</tr>
+								{{/each}}
 
 							    <!-- Blank Slate -->
 								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
@@ -479,6 +474,12 @@ Loading...
 								</div> -->
 
 						</tbody>
+						{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no subscription in this region.</p>
+								</div>
+
+						{{/if}}
 						</table>
 
 					</div>

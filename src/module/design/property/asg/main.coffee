@@ -6,8 +6,9 @@ define [ 'jquery',
          'text!/module/design/property/asg/template.html',
          'text!/module/design/property/asg/term_template.html',
          'text!/module/design/property/asg/policy_template.html',
+         'text!/module/design/property/asg/app_template.html',
          'event'
-], ( $, template, term_template, policy_template, ide_event ) ->
+], ( $, template, term_template, policy_template, app_template, ide_event ) ->
 
     #
     current_view     = null
@@ -17,11 +18,12 @@ define [ 'jquery',
     template = '<script type="text/x-handlebars-template" id="property-asg-tmpl">' + template + '</script>'
     term_template = '<script type="text/x-handlebars-template" id="property-asg-term-tmpl">' + term_template + '</script>'
     policy_template = '<script type="text/x-handlebars-template" id="property-asg-policy-tmpl">' + policy_template + '</script>'
+    app_template = '<script type="text/x-handlebars-template" id="property-asg-app-tmpl">' + app_template + '</script>'
     #load remote html template
-    $( 'head' ).append( template ).append( term_template ).append( policy_template )
+    $( 'head' ).append( template ).append( term_template ).append( policy_template ).append( app_template )
 
     #private
-    loadModule = ( uid, current_main ) ->
+    loadModule = ( uid, current_main, tab_type ) ->
 
         # What does this mean ?
         MC.data.current_sub_main = current_main
@@ -46,7 +48,8 @@ define [ 'jquery',
 
             model.getASGDetail uid
 
-            view.render()
+            view.render( tab_type == "OPEN_APP" )
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.asg.resource.AutoScalingGroupName
 
 
             view.on 'SET_SNS_OPTION', ( checkArray ) ->
@@ -64,6 +67,7 @@ define [ 'jquery',
             view.on 'SET_ASG_NAME', ( name ) ->
 
                 model.setASGName uid, name
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, name
 
             view.on 'SET_ASG_MIN', ( value ) ->
 

@@ -279,6 +279,11 @@
 	stroke-width: 4px !important;
 }
 
+.fill-line {
+	stroke: rgba(255, 255, 255, 0);
+	stroke-width: 10px;
+}
+
 /* node label */
 .node-label {
 	font-size: 12px;

@@ -30,6 +30,68 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       this.set 'asg', MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.AutoScalingGroupARN]
 
 
+      policies = {}
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+
+          app_comp = MC.data.resource_list[MC.canvas_data.region][comp.resource.PolicyARN]
+          tmp = {}
+
+          tmp.adjusttype = app_comp.AdjustmentType
+
+          tmp.adjustment = app_comp.ScalingAdjustment
+
+          tmp.step = app_comp.MinAdjustmentStep
+
+          tmp.cooldown = app_comp.Cooldown
+
+          tmp.name = app_comp.PolicyName
+
+          $.each MC.canvas_data.component, ( c_uid, c ) ->
+
+            if c.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and c.name is MC.canvas_data.component[comp_uid].name + '-alarm'
+
+              app_cw = MC.data.resource_list[MC.canvas_data.region][c.resource.AlarmNameArn]
+              actions = [app_cw.InsufficientDataActions, app_cw.OKAction, app_cw.AlarmActions]
+
+              for action in actions
+
+                if action[0] and action[0].split('.')[0][1...] is comp_uid
+
+                  tmp.evaluation = app_cw.ComparisonOperator
+
+                  tmp.metric = app_cw.MetricName
+
+                  if action.length is 2
+
+                    tmp.notify = true
+                  else
+
+                    tmp.notify = false
+
+                  tmp.periods = app_cw.EvaluationPeriods
+
+                  tmp.second = app_cw.Period
+
+                  tmp.statistics = app_cw.Statistic
+
+                  tmp.threshold = app_cw.Threshold
+
+                  if app_cw.InsufficientDataActions.length > 0
+                    tmp.trigger = 'INSUFFICIANT_DATA'
+                  else if app_cw.OKActions.length > 0
+                    tmp.trigger = 'OK'
+                  else if app_cw.AlarmActions.length > 0
+                    tmp.trigger = 'ALARM'
+
+                  return false
+
+          policies[comp_uid]  = tmp
+
+          null
+
     getASGDetail : ( uid ) ->
 
       me = this
@@ -77,7 +139,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
           $.each MC.canvas_data.component, ( c_uid, c ) ->
 
-            if c.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+            if c.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and c.name is MC.canvas_data.component[comp_uid].name + '-alarm'
 
               actions = [c.resource.InsufficientDataActions, c.resource.OKAction, c.resource.AlarmActions]
 

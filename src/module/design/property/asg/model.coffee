@@ -27,6 +27,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
     getASGDetailApp : ( uid ) ->
 
+      this.set 'asg', MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.AutoScalingGroupARN]
 
 
     getASGDetail : ( uid ) ->

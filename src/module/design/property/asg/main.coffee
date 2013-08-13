@@ -46,7 +46,11 @@ define [ 'jquery',
 
             model.setUID uid
 
-            model.getASGDetail uid
+            if tab_type == "OPEN_APP"
+                model.getASGDetailApp uid
+
+            else
+                model.getASGDetail uid
 
             view.render( tab_type == "OPEN_APP" )
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.asg.AutoScalingGroupName

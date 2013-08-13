@@ -292,6 +292,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 #add new-app status
                 #me.handleRequest result, 'RUN_STACK', region, id, app_name
                 ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
+                # track
+                analytics.track "Launched Stack",
+                    stack_id: id,
+                    stack_region: region,
+                    stack_app_name: app_name
 
         #zoomin
         zoomIn : () ->

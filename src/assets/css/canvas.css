@@ -21,17 +21,17 @@
 
 .canvas-view-sg .line-sg,
 .canvas-view-sg .port-instance-sg {
-	display: none;
+	visibility: hidden;
 }
 
 .canvas-view-sg .view-hover,
 .canvas-view-sg .view-keephover {
-	display: block !important;
+	visibility: visible !important;
 	fill-opacity: 0.5;
 }
 
 .canvas-view-sg .view-show {
-	display: block !important;
+	visibility: visible !important;
 	fill-opacity: 1 !important;
 }
 

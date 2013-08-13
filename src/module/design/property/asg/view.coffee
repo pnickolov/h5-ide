@@ -168,7 +168,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             unit       = unitMap[ data.metric ] || ""
 
             if not data.uid
-                throw "Cannot find scaling policy uid"
+                throw new Error "Cannot find scaling policy uid"
 
             $policies = $("#property-asg-policies")
             $li = $policies.children("[data-uid='#{data.uid}']")

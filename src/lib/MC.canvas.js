@@ -833,7 +833,8 @@ MC.canvas = {
 		var target = $('#' + id),
 			target_type = target.data('type'),
 			svg_canvas = $("#svg_canvas"),
-			clone_node;
+			clone_node,
+			node_connections;
 
 		Canvon(target[0]).addClass('selected');
 
@@ -855,6 +856,23 @@ MC.canvas = {
 			$('#node_layer').append(clone);
 
 			svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
+
+			node_connections = MC.canvas.data.get('layout.component.node.' + id + '.connection');
+
+			$.each(node_connections, function (index, item)
+			{
+				Canvon(item.line).addClass('view-show');
+
+				$('#' + item.target).find('.port-' + item.port).each(function ()
+				{
+					Canvon(this).addClass('view-show');
+				});
+			});
+
+			clone.find('.port').each(function ()
+			{
+				Canvon(this).addClass('view-show');
+			});
 		}
 
 		if (target_type === 'group')
@@ -4130,9 +4148,14 @@ MC.canvas.event.selectNode = function (event)
 
 MC.canvas.event.clearSelected = function ()
 {
-	$('#svg_canvas .selected').each(function (index, item)
+	$('#svg_canvas .selected').each(function ()
 	{
-		Canvon(item).removeClass('selected');
+		Canvon(this).removeClass('selected');
+	});
+
+	$('#svg_canvas .view-show').each(function ()
+	{
+		Canvon(this).removeClass('view-show');
 	});
 
 	MC.canvas_property.selected_node = [];

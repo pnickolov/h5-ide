@@ -24,6 +24,10 @@
 	display: none;
 }
 
+.view-show {
+	display: block !important;
+}
+
 #screenshot_canvas_body {
 	padding: 10px;
 	background: #FFF url('../images/ide/grid.png');

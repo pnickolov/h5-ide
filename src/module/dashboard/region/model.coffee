@@ -1009,49 +1009,49 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             #asg
             if resources.DescribeAutoScalingGroups
-                _.map resources.DescribeAutoScalingGroups.item, ( res, i ) ->
+                _.map resources.DescribeAutoScalingGroups.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.AutoScalingGroupName] = res
                     null
 
             #asl lc
             if resources.DescribeLaunchConfigurations
-                _.map resources.DescribeLaunchConfigurations.item, ( res, i ) ->
+                _.map resources.DescribeLaunchConfigurations.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.LaunchConfigurationName] = res
                     null
 
             #asl nc
             if resources.DescribeNotificationConfigurations
-                _.map resources.DescribeNotificationConfigurations.item, ( res, i ) ->
+                _.map resources.DescribeNotificationConfigurations.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.TopicARN + res.NotificationType] = res
                     null
 
             #asl sp
             if resources.DescribePolicies
-                _.map resources.DescribePolicies.item, ( res, i ) ->
+                _.map resources.DescribePolicies.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.PolicyName] = res
                     null
 
             #asl sa
             if resources.DescribeScheduledActions
-                _.map resources.DescribeScheduledActions.item, ( res, i ) ->
+                _.map resources.DescribeScheduledActions.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.ScheduledActionName] = res
                     null
 
             #clw
             if resources.DescribeAlarms
-                _.map resources.DescribeAlarms.item, ( res, i ) ->
+                _.map resources.DescribeAlarms.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.AlarmNames] = res
                     null
 
             #sns sub
             if resources.ListSubscriptions
-                _.map resources.ListSubscriptions.item, ( res, i ) ->
+                _.map resources.ListSubscriptions.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.SubscriptionArn] = res
                     null
 
             #sns topic
             if resources.ListTopics
-                _.map resources.ListTopics.item, ( res, i ) ->
+                _.map resources.ListTopics.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.TopicArn] = res
                     null
 

@@ -177,7 +177,8 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeLaunchConfigurationsResponse
+		($.xml2json ($.parseXML result[1])).DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations
+
 
 	#private (parser DescribeLaunchConfigurations return)
 	parserDescribeLaunchConfigurationsReturn = ( result, return_code, param ) ->
@@ -235,7 +236,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeNotificationConfigurationsResponse
+		($.xml2json ($.parseXML result[1])).DescribeNotificationConfigurationsResponse.DescribeNotificationConfigurationsResult.NotificationConfigurations
 
 	#private (parser DescribeNotificationConfigurations return)
 	parserDescribeNotificationConfigurationsReturn = ( result, return_code, param ) ->
@@ -264,7 +265,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribePoliciesResponse
+		($.xml2json ($.parseXML result[1])).DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies
 
 	#private (parser DescribePolicies return)
 	parserDescribePoliciesReturn = ( result, return_code, param ) ->
@@ -322,7 +323,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeScalingProcessTypesResponse
+		($.xml2json ($.parseXML result[1])).DescribeScalingProcessTypesResponse.DescribeScalingProcessTypesResult
 
 	#private (parser DescribeScalingProcessTypes return)
 	parserDescribeScalingProcessTypesReturn = ( result, return_code, param ) ->
@@ -351,7 +352,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeScheduledActionsResponse
+		($.xml2json ($.parseXML result[1])).DescribeScheduledActionsResponse.DescribeScheduledActionsResult.ScheduledUpdateGroupActions
 
 	#private (parser DescribeScheduledActions return)
 	parserDescribeScheduledActionsReturn = ( result, return_code, param ) ->
@@ -487,4 +488,5 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	resolveDescribePoliciesResult                    : resolveDescribePoliciesResult
 	resolveDescribeScheduledActionsResult            : resolveDescribeScheduledActionsResult
 	resolveDescribeScalingActivitiesResult           : resolveDescribeScalingActivitiesResult
+	resolveDescribeAutoScalingInstancesResult        : resolveDescribeScalingActivitiesResult
 

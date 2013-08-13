@@ -3005,15 +3005,16 @@ MC.canvas.event.drawConnection = {
 				'canvas_offset': canvas_offset
 			});
 
+			MC.canvas.event.clearSelected();
 			// Clean selected
-			$('#svg_canvas .selected').each(function ()
-			{
-				Canvon(this).removeClass('selected');
-			});
+			// $('#svg_canvas .selected').each(function ()
+			// {
+			// 	Canvon(this).removeClass('selected');
+			// });
 
-			MC.canvas_property.selected_node = [];
+			// MC.canvas_property.selected_node = [];
 
-			Canvon(parent[0]).addClass('selected');
+			//Canvon(parent[0]).addClass('selected');
 
 			// Keep hover style on
 			if ($('#canvas_body').hasClass('canvas-view-sg'))
@@ -3022,10 +3023,10 @@ MC.canvas.event.drawConnection = {
 				{
 					Canvon(item.line).addClass('view-keephover');
 
-					$('#' + item.target).find('.port-' + item.port).each(function ()
-					{
-						Canvon(this).addClass('view-keephover');
-					});
+					// $('#' + item.target).find('.port-' + item.port).each(function ()
+					// {
+					// 	Canvon(this).addClass('view-keephover');
+					// });
 				});
 			}
 
@@ -4193,16 +4194,16 @@ MC.canvas.event.nodeHover = function ()
 		{
 			Canvon(item.line).addClass('view-hover');
 
-			$('#' + item.target).find('.port-' + item.port).each(function ()
-			{
-				Canvon(this).addClass('view-hover');
-			});
+			// $('#' + item.target).find('.port-' + item.port).each(function ()
+			// {
+			// 	Canvon(this).addClass('view-hover');
+			// });
 		});
 
-		target.find('.port').each(function ()
-		{
-			Canvon(this).addClass('view-show');
-		});
+		// target.find('.port').each(function ()
+		// {
+		// 	Canvon(this).addClass('view-show');
+		// });
 	}
 
 	if (event.type === 'mouseout')
@@ -4212,10 +4213,10 @@ MC.canvas.event.nodeHover = function ()
 			Canvon(this).removeClass('view-hover');
 		});
 
-		$(this).find('.port').each(function ()
-		{
-			Canvon(this).removeClass('view-show');
-		});
+		// $(this).find('.port').each(function ()
+		// {
+		// 	Canvon(this).removeClass('view-show');
+		// });
 	}
 };
 

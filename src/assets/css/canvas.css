@@ -19,23 +19,28 @@
 	background: #fff url('../images/ide/grid.png');
 }
 
-.canvas-view-sg .line-sg,
+/*.canvas-view-sg .line-sg,
 .canvas-view-sg .port-instance-sg {
-	visibility: hidden;
+	visibility: visible;
+	fill-opacity: 0.1;
 }
 
-.canvas-view-sg .view-hover,
-.canvas-view-sg .view-keephover {
+.canvas-view-sg .line path {
+	fill-opacity: 0.1 !important;
+}*/
+
+.view-hover,
+.view-keephover {
 	visibility: visible !important;
-	fill-opacity: 0.5;
+	opacity: 0.7 !important;
 }
 
-.canvas-view-sg .view-show {
+.view-show {
 	visibility: visible !important;
-	fill-opacity: 1 !important;
+	opacity: 1 !important;
 }
 
-.canvas-view-sg .selected .port {
+.selected .port {
 	visibility: visible !important;
 }
 
@@ -257,11 +262,11 @@
 	fill: rgba(255, 255, 255, 0);
 }
 
-#line_layer g.line {
-	opacity: .6;
+/* line connection */
+#line_layer .line {
+	opacity: 0.2;
 }
 
-/* line connection */
 .line.selected,
 .line.selected path {
 	display: block !important;

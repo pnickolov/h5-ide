@@ -1,6 +1,14 @@
 <article class="property-app">
 
-	<section class="property-control-group clearfix">
+
+	<dl class="dl-horizontal dl-region-type property-control-group">
+		<dt><label>Region</label></dt>
+		<dd>{{property_detail.region}}</dd>
+		<dt><label>Type</label></dt>
+		<dd>{{property_detail.type}}</dd>
+	</dl>
+
+<!-- 	<section class="property-control-group clearfix">
 		<label class="left">Region</label>
 		<span class="property-info-value">{{property_detail.region}}</span>
 	</section>
@@ -8,14 +16,14 @@
 	<section class="property-control-group clearfix">
 		<label class="left">Type</label>
 		<span class="property-info-value">{{property_detail.type}}</span>
-	</section>
+	</section> -->
 
 
-	<div class="option-group-head" id="sg-head">Security Groups (<span id="property-head-sg-num"></span>)</div>
+	<div class="option-group-head" id="sg-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
 	<div class="option-group sg-group">loading...</div>
 
 	{{#if property_detail.is_vpc}}
-	<div class="option-group-head">Network ACL ({{network_acl.length}})</div>
+	<div class="option-group-head"><span class="property-head-num-wrap">Network ACL({{network_acl.length}})</span></div>
 	<div class="option-group stack-property-acl-list"></div>
 	{{/if}}
 

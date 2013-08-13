@@ -1,4 +1,3 @@
-
 require.config {
 
 	baseUrl            : './'
@@ -30,6 +29,7 @@ require.config {
 		'MC'                 : 'lib/MC.core'
 		'MC.template'        : 'lib/MC.template'
 		'MC.ide.template'    : 'lib/MC.ide.template'
+		'MC.validate'  	     : 'lib/MC.validate'
 
 		#canvas
 		'MC.canvas'          : 'lib/MC.canvas'
@@ -58,7 +58,7 @@ require.config {
 		'UI.multiinputbox'  : 'ui/common/UI.multiinputbox'
 		'UI.zeroclipboard'  : 'ui/common/UI.zeroclipboard'
 		'UI.sortable'       : 'ui/common/jquery.sortable'
-		'UI.parsely' 	    : 'ui/common/UI.parsley.js'
+		'UI.parsley' 	    : 'ui/common/UI.parsley'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
@@ -215,6 +215,9 @@ require.config {
 			deps       : [ 'jquery' ]
 			exports    : 'MC'
 
+		'MC.validate'  :
+			deps       : [ 'MC' ]
+
 		'MC.template'  :
 			deps       : [ 'handlebars', 'MC' ]
 			exports    : 'MC.template'
@@ -230,6 +233,9 @@ require.config {
 
 		'UI.modal'     :
 			deps       : [ 'MC.template' ]
+
+		'UI.parsely'   :
+			deps       : [ 'jquery' ]
 
 		'Meteor'       :
 			deps       : ['underscore']

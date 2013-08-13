@@ -309,7 +309,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
     #///////////////// Parser for resource return (need resolve) /////////////////
     resourceMap = ( result ) ->
-       responses = {
+        responses = {
             "DescribeImagesResponse"               :   ami_service.resolveDescribeImagesResult
             "DescribeAvailabilityZonesResponse"    :   ec2_service.resolveDescribeAvailabilityZonesResult
             "DescribeVolumesResponse"              :   ebs_service.resolveDescribeVolumesResult
@@ -339,10 +339,23 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
             "DescribeAlarmsResponse"                       :   cloudwatch_service.resolveDescribeAlarmsResult
             "ListSubscriptionsResponse"                    :   sns_service.resolveListSubscriptionsResult
             "ListTopicsResponse"                           :   sns_service.resolveListTopicsResult
+            "DescribeAutoScalingInstancesResponse"         :   autoscaling_service.resolveDescribeAutoScalingInstancesResult
 
-       }
+        }
 
-       (responses[($.parseXML node[1]).documentElement.localName] node for node in result)
+        dict = {}
+
+        for node in result
+
+            action_name = ($.parseXML node).documentElement.localName
+
+            dict_name = action_name.replace /Response/i, ""
+
+            dict[dict_name] = [] if dict[dict_name]?
+
+            dict[dict_name] = responses[action_name] [null, node]
+
+        dict
 
     #private (resolve result to vo )
     resolveResourceResult = ( result ) ->
@@ -350,7 +363,11 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 
         #return vo
-        aws_parser.resourceMap result
+        res = {}
+        res[region] = resourceMap nodes for region, nodes of result
+
+
+        res
 
     #private (parser resource return)
     parserResourceReturn = ( result, return_code, param ) ->

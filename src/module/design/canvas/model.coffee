@@ -64,7 +64,7 @@ define [ 'constant', 'event'
 			resource_type = constant.AWS_RESOURCE_TYPE
 			parent = MC.canvas_data.layout.component.group[ tgt_parent ]
 
-			if component.type == resource_type.AWS_EC2_AvailabilityZone
+			if parent.type == resource_type.AWS_EC2_AvailabilityZone
 				check = true
 			else if MC.canvas_data.component[ tgt_parent ].resource.AvailabilityZone != component.resource.Placement.AvailabilityZone
 				check = true
@@ -98,6 +98,9 @@ define [ 'constant', 'event'
 			if !node || !node.groupUId || node.groupUId == tgt_parent
 				return
 
+			# Update layout parent id
+			node.groupUId = tgt_parent
+
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
 			handler   = this.changeParentMap[ component.type ]
@@ -105,6 +108,7 @@ define [ 'constant', 'event'
 				handler.call( this, component, tgt_parent )
 			else
 				console.log "No handler for dragging node:", component
+
 			null
 
 		changeP_Instance : ( component, tgt_parent ) ->

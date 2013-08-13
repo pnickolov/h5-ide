@@ -4,12 +4,12 @@ Loading...
 {{else}}
 	<div class="dashboard-widget">
 		<ul class="tab grid grid-responsive grid-small-bottom row-counter">
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2 active" data-tab-target="#stat-table-instance">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2 active"  style="width:10%" data-tab-target="#stat-table-instance">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.Instance}}<span class="label">Instance</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-eip">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-eip">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">Elastic IP</span>
 					{{#if region_resource_list.Not_Used.EIP}}
@@ -17,7 +17,7 @@ Loading...
 					{{/if}}
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-ebs">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-ebs">
 				<div class="region-stat-block-wrap">
 					<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">Volume</span>
 					{{#if region_resource_list.Not_Used.Volume}}
@@ -26,34 +26,34 @@ Loading...
 				</div>
 			</li>
 
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-vpc">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-vpc">
 				<div class="region-stat-block-wrap">
 					<i class="icon-hdd icon-label"></i>{{region_resource_list.VPC}}<span class="label">VPC</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-vpn">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-vpn">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.VPN}}<span class="label">VPN</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-elb">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-elb">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.ELB}}<span class="label">Load Balancer</span>
 				</div>
 			</li>
 			<!--
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-asg">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-asg">
 				<div class="region-stat-block-wrap">
 					<i class="icon-hdd icon-label"></i>4<span class="label">Auto Scaling Group</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-cw">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-cw">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>2<span class="label">CloudWatch Alarm</span>
 					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 alarm(s) in ALARM state.","description":""}'>3</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-sns">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-sns">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>3<span class="label">SNS Subscription</span>
 					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 subscription(s) not confirmed.","description":""}'>3</span>
@@ -69,14 +69,14 @@ Loading...
 						{{#if region_resource.DescribeInstances}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:5%">Region</th>
-								<th class="sortable" style="width:25%">Instance Name/ID</th>
-								<th class="sortable" style="width:10%">Status</th>
-								<th class="sortable" style="width:10%">Launch Time</th>
-								<th class="sortable" style="width:10%">AMI</th>
-								<th class="sortable" style="width:5%">Availability Zone</th>
-								<th class="sortable" style="width:5%">Created By</th>
-								<th style="width:5%">Detail</th>
+								<th class="sortable" style="width:10%">Region</th>
+								<th class="sortable" style="width:32%">Instance Name/ID</th>
+								<th class="sortable" style="width:8%">Status</th>
+								<th class="sortable" style="width:17%">Launch Time</th>
+								<th class="sortable" style="width:9%">AMI</th>
+								<th class="sortable" style="width:10%">Availability Zone</th>
+								<th class="sortable" style="width:10%">Created By</th>
+								<th style="width:4%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -162,13 +162,13 @@ Loading...
 						<thead>
 							<tr>
 								<th class="sortable" style="width:10%">Region</th>
-								<th class="sortable" style="width:10%">Name/ID</th>
-								<th class="sortable" style="width:15%">Status</th>
+								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:10%">Status</th>
 								<th class="sortable" style="width:20%">Create Time</th>
-								<th class="sortable" style="width:15%">Device Name</th>
-								<th class="sortable" style="width:15%">Attachment Status</th>
-								<th class="sortable" style="width:15%">Instance Id</th>
-								<th style="width:15%">Detail</th>
+								<th class="sortable" style="width:10%">Device Name</th>
+								<th class="sortable" style="width:10%">Attachment Status</th>
+								<th class="sortable" style="width:10%">Instance Id</th>
+								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -273,11 +273,11 @@ Loading...
 						<thead>
 							<tr>
 								<th class="sortable" style="width:10%">Region</th>
-								<th class="sortable" style="width:15%">Name/ID</th>
-								<th class="sortable" style="width:20%">Status</th>
-								<th class="sortable" style="width:25%">Virtual Private Gateway</th>
+								<th class="sortable" style="width:30%">Name/ID</th>
+								<th class="sortable" style="width:15%">Status</th>
+								<th class="sortable" style="width:20%">Virtual Private Gateway</th>
 								<th class="sortable" style="width:20%">Customer Gateway</th>
-								<th style="width:15%">Detail</th>
+								<th style="width:10%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>

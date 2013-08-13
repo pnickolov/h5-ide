@@ -2035,9 +2035,6 @@ MC.canvas.volume = {
 
 	mousemove: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
 		if (
 			event.data.originalX !== event.pageX ||
 			event.data.originalY !== event.pageY
@@ -2273,8 +2270,8 @@ MC.canvas.event.dragable = {
 	{
 		if (event.which === 1)
 		{
-			event.preventDefault();
-			event.stopPropagation();
+			// event.preventDefault();
+			// event.stopPropagation();
 
 			var target = $(this),
 				target_offset = Canvon(this).offset(),
@@ -2282,6 +2279,7 @@ MC.canvas.event.dragable = {
 				node_type = target.data('class'),
 				svg_canvas = $('#svg_canvas'),
 				canvas_offset = svg_canvas.offset(),
+				canvas_body = $('#canvas_body'),
 				platform = MC.canvas.data.get('platform'),
 				shadow,
 				target_group_type;
@@ -2335,7 +2333,7 @@ MC.canvas.event.dragable = {
 					'mouseup': MC.canvas.event.dragable.gatewayup
 				}, {
 					'target': target,
-					'canvas_body': $('#canvas_body'),
+					'canvas_body': canvas_body,
 					'target_type': target_type,
 					'node_type': node_type,
 					'vpc_data': MC.canvas.data.get('layout.component.group.' + $('.AWS-VPC-VPC').attr('id')),
@@ -2355,7 +2353,7 @@ MC.canvas.event.dragable = {
 						'mouseup': MC.canvas.event.dragable.asgExpandup
 					}, {
 						'target': target,
-						'canvas_body': $('#canvas_body'),
+						'canvas_body': canvas_body,
 						'target_type': target_type,
 						'shadow': shadow,
 						'offsetX': event.pageX - target_offset.left + canvas_offset.left,
@@ -2373,7 +2371,7 @@ MC.canvas.event.dragable = {
 						'mouseup': MC.canvas.event.dragable.mouseup
 					}, {
 						'target': target,
-						'canvas_body': $('#canvas_body'),
+						'canvas_body': canvas_body,
 						'target_type': target_type,
 						'shadow': shadow,
 						'offsetX': event.pageX - target_offset.left + canvas_offset.left,
@@ -2393,9 +2391,6 @@ MC.canvas.event.dragable = {
 	},
 	mousemove: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
 		var grid_width = MC.canvas.GRID_WIDTH,
 			grid_height = MC.canvas.GRID_HEIGHT,
 			scale_ratio = MC.canvas_property.SCALE_RATIO;
@@ -2804,11 +2799,6 @@ MC.canvas.event.dragable = {
 		{
 			return key.replace('dropable-group ', '');
 		});
-
-		$(document).off({
-			'mousemove': MC.canvas.event.mousemove,
-			'mouseup': MC.canvas.event.mouseup
-		});
 	},
 	gatewaymove: function (event)
 	{
@@ -2882,6 +2872,8 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.remove();
 
+		event.data.canvas_body.removeClass('node-dragging');
+
 		$(document.body).removeClass('disable-event');
 
 		$(document).off({
@@ -2928,6 +2920,8 @@ MC.canvas.event.dragable = {
 		});
 
 		event.data.shadow.remove();
+
+		event.data.canvas_body.removeClass('node-dragging');
 
 		$(document.body).removeClass('disable-event');
 
@@ -3424,9 +3418,6 @@ MC.canvas.event.siderbarDrag = {
 
 	mousemove: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
 		event.data.shadow.css({
 			'top': event.pageY - 50,
 			'left': event.pageX - 50
@@ -3630,8 +3621,8 @@ MC.canvas.event.groupResize = {
 			}
 
 			$(document.body)
-				.addClass('disable-event')
-				.css('cursor', $(event.target).css('cursor'));
+				.css('cursor', $(event.target).css('cursor'))
+				.addClass('disable-event');
 
 			$(document)
 				.on({
@@ -4135,8 +4126,8 @@ MC.canvas.event.groupResize = {
 		}
 
 		$(document.body)
-			.removeClass('disable-event')
-			.css('cursor', 'default');
+			.css('cursor', '')
+			.removeClass('disable-event');
 
 		$(document)
 			.off({

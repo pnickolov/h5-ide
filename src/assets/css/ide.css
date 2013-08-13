@@ -1751,6 +1751,10 @@ a.sidebar-hider {
 	cursor: pointer;
 	padding: 5px;
 	box-sizing: border-box;
+
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
 }
 
 .resource-item:hover {

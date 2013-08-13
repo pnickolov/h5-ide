@@ -64,10 +64,13 @@ define [ 'jquery',
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
 
 				# Cleanup property panel, this shoulde be move to property/view
-				# Trigger blur event to save the currently editing input
-				$("input").blur()
+
+				# Better than $("input:focus")
+				$(document.activeElement).filter("input").blur()
+
 				# Hide second panel if there's any
 				view.immHideSecondPanel()
+
 
 				#
 				MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }

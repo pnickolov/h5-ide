@@ -35,6 +35,10 @@
 	fill-opacity: 1 !important;
 }
 
+.canvas-view-sg .selected .port {
+	visibility: visible !important;
+}
+
 #screenshot_canvas_body {
 	padding: 10px;
 	background: #FFF url('../images/ide/grid.png');

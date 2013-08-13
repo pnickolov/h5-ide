@@ -869,11 +869,11 @@ MC.canvas = {
 				{
 					Canvon(this).addClass('view-show');
 				});
+			});
 
-				clone.find('.port-' + layout_connection_data[ item.line ].target[ id ]).each(function ()
-				{
-					Canvon(this).addClass('view-show');
-				});
+			clone.find('.port').each(function ()
+			{
+				Canvon(this).addClass('view-show');
 			});
 		}
 
@@ -3012,21 +3012,17 @@ MC.canvas.event.drawConnection = {
 			});
 
 			MC.canvas_property.selected_node = [];
-			//MC.canvas.event.clearSelected();
+
+			Canvon(parent[0]).addClass('selected');
 
 			// Keep hover style on
-			if ($('#canvas_body').hasClass('canvas-view-sg') && !parent.hasClass('selected'))
+			if ($('#canvas_body').hasClass('canvas-view-sg'))
 			{
 				$.each(node_connections, function (index, item)
 				{
 					Canvon(item.line).addClass('view-keephover');
 
 					$('#' + item.target).find('.port-' + item.port).each(function ()
-					{
-						Canvon(this).addClass('view-keephover');
-					});
-
-					parent.find('.port-' + layout_connection_data[ item.line ].target[ node_id ]).each(function ()
 					{
 						Canvon(this).addClass('view-keephover');
 					});
@@ -3150,7 +3146,7 @@ MC.canvas.event.drawConnection = {
 									})
 									.find('.port-' + value.to).attr("class", function (index, key)
 									{
-										return "connectable-port " + key;
+										return "connectable-port view-show " + key;
 									});
 							}
 						});
@@ -3285,6 +3281,11 @@ MC.canvas.event.drawConnection = {
 		$('#svg_canvas .view-keephover').each(function ()
 		{
 			Canvon(this).removeClass('view-keephover');
+		});
+
+		$('#svg_canvas .view-show').each(function ()
+		{
+			Canvon(this).removeClass('view-show');
 		});
 
 		$('#svg_canvas .connectable-port').each(function ()
@@ -4196,11 +4197,11 @@ MC.canvas.event.nodeHover = function ()
 			{
 				Canvon(this).addClass('view-hover');
 			});
+		});
 
-			target.find('.port-' + layout_connection_data[ item.line ].target[ target_id ]).each(function ()
-			{
-				Canvon(this).addClass('view-hover');
-			});
+		target.find('.port').each(function ()
+		{
+			Canvon(this).addClass('view-show');
 		});
 	}
 
@@ -4209,6 +4210,11 @@ MC.canvas.event.nodeHover = function ()
 		$('#svg_canvas .view-hover').each(function ()
 		{
 			Canvon(this).removeClass('view-hover');
+		});
+
+		$(this).find('.port').each(function ()
+		{
+			Canvon(this).removeClass('view-show');
 		});
 	}
 };

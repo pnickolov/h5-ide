@@ -418,6 +418,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'START_APP', region, id, name
+                
+                # track
+                analytics.track "Started App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
 
         stopApp : (data) ->
             me = this
@@ -432,6 +438,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'STOP_APP', region, id, name
+                
+                # track
+                analytics.track "Stopped App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
 
         terminateApp : (data) ->
             me = this
@@ -447,6 +459,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'TERMINATE_APP', region, id, name
+                
+                # track
+                analytics.track "Terminated App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
 
         handleRequest : (result, flag, region, id, name) ->
             me = this

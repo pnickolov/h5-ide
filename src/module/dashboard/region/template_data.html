@@ -43,19 +43,23 @@ Loading...
 			</li>
 			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-asg">
 				<div class="region-stat-block-wrap">
-					<i class="icon-hdd icon-label"></i>4<span class="label">Auto Scaling Group</span>
+					<i class="icon-hdd icon-label"></i>{{region_resource_list.AutoScalingGroup}}<span class="label">Auto Scaling Group</span>
 				</div>
 			</li>
 			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-cw">
 				<div class="region-stat-block-wrap">
-					<i class="icon-image icon-label"></i>2<span class="label">CloudWatch Alarm</span>
-					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 alarm(s) in ALARM state.","description":""}'>3</span>
+					<i class="icon-image icon-label"></i>{{region_resource_list.CW}}<span class="label">CloudWatch Alarm</span>
+					{{#if region_resource_list.Not_Used.CW}}
+					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.CW}} alarm(s) in ALARM state.","description":""}'>{{region_resource_list.Not_Used.CW}}</span>
+					{{/if}}
 				</div>
 			</li>
 			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-sns">
 				<div class="region-stat-block-wrap">
-					<i class="icon-image icon-label"></i>3<span class="label">SNS Subscription</span>
-					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 subscription(s) not confirmed.","description":""}'>3</span>
+					<i class="icon-image icon-label"></i>{{region_resource_list.SNS}}<span class="label">SNS Subscription</span>
+					{{#if region_resource_list.Not_Used.SNS}}
+					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.SNS}} subscription(s) not confirmed.","description":""}'>{{region_resource_list.Not_Used.SNS}}</span>
+					{{/if}}
 				</div>
 			</li>
 
@@ -373,8 +377,8 @@ Loading...
 									</td>
 									<!-- <td><a href="" class="table-link table-app-link truncate" title="Open App">[App Name]</a> -->
 									</td>
-									<td>At 2012-04-12T17:31:30Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 1.  At 2012-04-12T17:32:07Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 to 1.</td>
-									<td>Failed</td>
+									<td>{{last_activity}}</td>
+									<td>{{activity_state}}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -452,8 +456,8 @@ Loading...
 						<thead>
 							<tr>
 								<th class="sortable" style="width:30%">Topic Name</th>
-								<th class="sortable" style="width:50%">Endpoint and Protocol</th>
-								<th class="sortable" style="width:10%">Confirmation</th>
+								<th class="sortable" style="width:40%">Endpoint and Protocol</th>
+								<th class="sortable" style="width:20%">Confirmation</th>
 								<th style="width:15%">Detail</th>
 							</tr>
 						</thead>

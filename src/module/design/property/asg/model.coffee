@@ -312,13 +312,15 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and comp.resource.Dimensions[0].value is '@' + uid + '.resource.AutoScalingGroupName'
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and comp.name is MC.canvas_data.component[policy_uid].name + '-alarm'
 
             cw_uid = comp.uid
 
             cw_comp = comp
 
             return false
+
+      policy_comp.name = policy_detail.name
 
       policy_comp.resource.AdjustmentType = policy_detail.adjusttype
 
@@ -404,6 +406,17 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
 
       null
+
+    delPolicy : ( uid ) ->
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and comp.name is MC.canvas_data.component[uid].name + '-alarm'
+
+            delete MC.canvas_data.component[comp.uid]
+            delete MC.canvas_data.component[uid]
+            return false
+
   }
 
   model = new ASGConfigModel()

@@ -293,7 +293,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeScalingActivitiesResponse
+		($.xml2json ($.parseXML result[1])).DescribeScalingActivitiesResponse.DescribeScalingActivitiesResult.Activities
 
 	#private (parser DescribeScalingActivities return)
 	parserDescribeScalingActivitiesReturn = ( result, return_code, param ) ->

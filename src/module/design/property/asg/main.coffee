@@ -49,7 +49,7 @@ define [ 'jquery',
             model.getASGDetail uid
 
             view.render( tab_type == "OPEN_APP" )
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.asg.resource.AutoScalingGroupName
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.asg.AutoScalingGroupName
 
 
             view.on 'SET_SNS_OPTION', ( checkArray ) ->
@@ -93,6 +93,9 @@ define [ 'jquery',
 
                 model.setPolicy uid, data
 
+            view.on 'DELETE_POLICY', ( uid ) ->
+
+                model.delPolicy uid
 
 
     unLoadModule = () ->

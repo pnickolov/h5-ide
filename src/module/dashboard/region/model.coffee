@@ -1068,9 +1068,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             me = this
 
-            lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0}
+            lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0, AutoScalingGroup:0, SNS:0, CW:0}
 
-            lists.Not_Used = { 'EIP' : 0, 'Volume' : 0 }
+            lists.Not_Used = { 'EIP' : 0, 'Volume' : 0 , SNS:0, CW:0}
 
             owner = atob $.cookie( 'usercode' )
 
@@ -1130,11 +1130,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 _.map resources.ListSubscriptions.member, ( sub, i ) ->
 
+                    lists.SNS+=1
                     sub.detail = me.parseSourceValue 'ListSubscriptions', sub, "detail", null
 
                     if sub.SubscriptionArn is 'PendingConfirmation'
 
                         sub.pending_state = 'PendingConfirmation'
+
+                        lists.Not_Used.SNS+=1
 
                     else
 
@@ -1148,7 +1151,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             if resources.DescribeAutoScalingGroups
 
                 _.map resources.DescribeAutoScalingGroups.member, ( asl, i ) ->
-
+                    lists.AutoScalingGroup+=1
                     _.map asl.tagSet, ( tag ) ->
 
                         if tag.key == 'app'
@@ -1163,19 +1166,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     asl.detail = me.parseSourceValue 'DescribeAutoScalingGroups', asl, "detail", null
 
-                    null
+                    if resources.DescribeScalingActivities
 
-                autoscaling_model.DescribeScalingActivities { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  null, null, null, null
+                        $.each resources.DescribeScalingActivities.member, ( idx, activity ) ->
 
-                autoscaling_model.once 'ASL__DESC_SCALING_ACTIS_RETURN', ( result ) ->
+                            if activity.AutoScalingGroupName is asl.AutoScalingGroupName
 
-                    me.reRenderRegionResource()
+                                asl.last_activity = activity.Cause
+
+                                asl.activity_state = activity.StatusCode
+
+                                return false
 
                     null
 
             if resources.DescribeAlarms
 
                 _.map resources.DescribeAlarms.member, ( alarm, i ) ->
+
+                    lists.CW+=1
 
                     alarm.dimension_display = alarm.Dimensions.member[0].Name + ':' + alarm.Dimensions.member[0].Value
                     alarm.threshold_display = "#{alarm.MetricName} #{alarm.ComparisonOperator} #{alarm.Threshold} for #{alarm.Period} seconds"
@@ -1185,7 +1194,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                         alarm.state_ok = true
 
                     else if alarm.StateValue is 'ALARM'
-
+                        lists.Not_Used.CW += 1
                         alarm.state_alarm = true
 
                     else
@@ -1244,6 +1253,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     ins.detail = me.parseSourceValue 'DescribeInstances', ins, "detail", null
 
                     #popup_key_set.detail.DescribeInstances.sub_info.pop() for j in delete_index
+                    ins.launchTime = MC.dateFormat(new Date(ins.launchTime),'yyyy-MM-dd hh:mm:ss')
 
                     is_managed = false
 
@@ -1317,6 +1327,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 _.map resources.DescribeVolumes, ( vol, i )->
 
                     vol.detail = me.parseSourceValue 'DescribeVolumes', vol, "detail", null
+
+                    vol.createTime = MC.dateFormat(new Date(vol.createTime),'yyyy-MM-dd hh:mm:ss')
 
                     lists.Not_Used.Volume++ if vol.status == "available"
 
@@ -1522,6 +1534,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             resources[res_type.CLW]       =   {}
             resources[res_type.SNS_SUB]   =   {}
             resources[res_type.SNS_TOPIC] =   {}
+            resources[res_type.ASL_ACT]   =   {}
 
 
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources

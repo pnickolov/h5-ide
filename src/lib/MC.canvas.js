@@ -3018,7 +3018,7 @@ MC.canvas.event.drawConnection = {
 
 			// Keep hover style on
 			//if ($('#canvas_body').hasClass('canvas-view-sg'))
-			{
+			//{
 				$.each(node_connections, function (index, item)
 				{
 					Canvon(item.line).addClass('view-keephover');

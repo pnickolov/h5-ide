@@ -47,6 +47,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			this.listenTo this, 'change:user_data', this.setUserData
 			this.listenTo this, 'change:base64' , this.setBase64Encoded
 			this.listenTo this, 'change:eni_description' , this.setEniDescription
+			this.listenTo this, 'change:tenacy' , this.setTenancy
 			this.listenTo this, 'change:source_check', this.setSourceCheck
 			this.listenTo this, 'change:set_kp', this.setKP
 			this.listenTo this, 'change:add_kp', this.addKP

@@ -308,7 +308,7 @@ a.table-link {
 	padding: 8px 20px 8px 8px;
 	display: inline-block;
 	outline: none;
-	border: 1px solid transparent;
+	/*border: 1px solid transparent;*/
 	/*color: #666;*/
 
 	-webkit-transition: background-color .2s;
@@ -334,7 +334,7 @@ textarea:focus {
 }
 */
 .property-control-group > label {
-	color     : #979697;
+	color     : #999;
 	font-size : 13px;
 }
 
@@ -342,6 +342,7 @@ textarea:focus {
 .property-content textarea {
 	background-color : #464546;
 	color            : #D0D0D0;
+	border: 1px solid transparent;
 }
 
 .property-content .input:hover,
@@ -424,12 +425,12 @@ textarea {
 	/*height: 80px;*/
 	padding: 5px;
 	margin-bottom: 10px;
-	border: 1px solid #999;
+	/*border: 1px solid #999;*/
 	font-size: 14px;
 	line-height: 20px;
 	border-radius: 3px;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-	color: #555;
+	/*color: #555;*/
 	vertical-align: middle;
 	overflow: auto;
 	outline: none;
@@ -447,8 +448,8 @@ textarea {
 .checkbox,
 .radio {
 	-webkit-user-select : none;
-		 -moz-user-select : none;
-		  -ms-user-select : none;
+   	-moz-user-select : none;
+	  -ms-user-select : none;
 
 	position       : relative;
 	display        : inline-block;
@@ -926,6 +927,100 @@ textarea {
 	/*color: #e0e0e0;*/
 }
 
+/* Option Group & Fixedaccordion */
+
+.option-group-head {
+	position : relative;
+}
+
+.option-group-head:before {
+	display          : block;
+	content          : " ";
+	width            : 0;
+	height           : 0;
+	border           : 4px solid transparent;
+	border-top-color : #999;
+	position         : absolute;
+	right            : 6px;
+	top              : 50%;
+	margin-top       : -2px;
+}
+
+.option-group-head.expand:before {
+	display          : block;
+	content          : " ";
+	width            : 0;
+	height           : 0;
+	border           : 4px solid transparent;
+	border-bottom-color : #999;
+	position         : absolute;
+	right            : 6px;
+	top              : 50%;
+	margin-top       : -6px;
+}
+
+.option-group-head,
+.fixedaccordion-head {
+	background-color : #3c3c3c;
+	border-bottom    : 1px solid #313131;
+	color            : #c5c9c5;
+	text-shadow      : 0 1px rgba(30,34,40,.75);
+	box-shadow       : 0 2px 0 rgba(0,0,0,.1);
+
+	cursor              : pointer;
+	-webkit-user-select : none;
+	-moz-user-select    : none;
+	-ms-user-select     : none;
+	-o-user-select      : none;
+	user-select         : none;
+	overflow            : hidden;
+
+	height      : 37px;
+	line-height : 37px;
+	padding     : 0 10px;
+
+	-webkit-transition : background-color .2s ease-in-out;
+	-moz-transition    : background-color .2s ease-in-out;
+	-ms-transition     : background-color .2s ease-in-out;
+	-o-transition      : background-color .2s ease-in-out;
+	transition         : background-color .2s ease-in-out;
+}
+
+.option-group,
+.fixedaccordion .accordion-body {
+	background-color : #545554;
+	box-shadow       : inset 0 0 6px rgba(0,0,0,.2);
+    border-bottom    : 1px solid #313131;
+}
+
+.option-group:last-child {
+	border-bottom: none;
+}
+
+.fixedaccordion .accordion-body {
+	position         : relative;
+	display          : none;
+	overflow         : hidden;
+}
+
+.fixedaccordion .expanded .accordion-body {
+	display: block;
+}
+
+
+.expanded .fixedaccordion-head {
+	cursor: default;
+}
+
+.option-group-head.expand,
+.option-group-head:hover,
+.expanded .fixedaccordion-head,
+.fixedaccordion-head:hover {
+	background-color: #383838;
+	color: #f0f0f0;
+}
+
+
 /* Notification */
 #notification_wrap {
     color: #FFF;
@@ -1143,9 +1238,6 @@ textarea {
 	height: 100%;
 }
 
-/* Fixedaccordion - Style moved to ide.css*/
-
-
 /* Selectbox V2 */
 .selectbox {
 	position       : relative;
@@ -1164,7 +1256,7 @@ textarea {
 	padding       : 5px;
 
 	-webkit-user-select : none;
-     -moz-user-select : none;
+     -moz-user-select   : none;
 	        user-select : none;
 }
 
@@ -1265,6 +1357,28 @@ textarea {
 	margin-left : 5px;
 	float       : right;
 }
+
+.property-content .selectbox .selection {
+	border        : 1px solid #3D3D3D;
+	box-shadow    : inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+	border-radius : 2px;
+
+	font-size     : 12px;
+	color         : #d0d0d0;
+
+	background : #464546;
+
+	-webkit-transition: background .2s;
+	-moz-transition: background .2s;
+	-ms-transition: background .2s;
+	-o-transition: background .2s;
+	transition: background .2s;
+}
+
+.property-content .selectbox .selection:hover {
+	background: #414041;
+}
+
 
 /* Radio Buttons */
 

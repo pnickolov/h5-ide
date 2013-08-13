@@ -725,7 +725,10 @@ define [ 'constant', 'event'
 			else if portMap['instance-attach'] and portMap['eni-attach']
 
 				# check whether instance has position to add one more eni
-				instance_component 	= 	MC.canvas_data.component[portMap['instance-attach']]
+				instance_component = MC.canvas_data.component[portMap['instance-attach']]
+				eni_component      = MC.canvas_data.component[portMap['eni-attach']]
+				if eni_component.resource.AvailabilityZone isnt instance_component.resource.Placement.AvailabilityZone
+					return "Network Interface must be attached to instance within the same availability zone."
 
 				instance_type 		= 	instance_component.resource.InstanceType.split('.')
 

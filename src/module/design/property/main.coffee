@@ -123,7 +123,7 @@ define [ 'jquery',
 							# Acl Property is not loaded in such a way.
 							when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration then lc_main.loadModule uid, lc_main
 
-							when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group then asg_main.loadModule uid, asg_main
+							when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group then asg_main.loadModule uid, asg_main, tab_type
 
 							#
 							else

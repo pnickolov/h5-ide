@@ -112,7 +112,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       this.set 'policies', policies
 
-      this.set 'asg', asg
+      this.set 'asg', asg.resource
 
       this.set 'uid', uid
 

@@ -4,23 +4,19 @@
 		<label class="left" for="property-stack-name">Stack Name</label>
 		<input class="input" type="text" required="required" value="{{property_detail.name}}" name="property-stack-name" id="property-stack-name">
 	</section>
-
-	<section class="property-control-group">
-		<label class="left">Region</label>
-		<span class="property-info-value">{{property_detail.region}}</span>
-	</section>
-
-	<section class="property-control-group">
-		<label class="left">Type</label>
-		<span class="property-info-value">{{property_detail.type}}</span>
-	</section>
+	<dl class="dl-horizontal dl-region-type property-control-group">
+		<dt><label>Region</label></dt>
+		<dd>{{property_detail.region}}</dd>
+		<dt><label>Type</label></dt>
+		<dd>{{property_detail.type}}</dd>
+	</dl>
 
 	<!-- SG, ACL, COST -->
-	<div class="option-group-head" id="sg-head">Security Groups (<span id="property-head-sg-num"></span>)</div>
+	<div class="option-group-head" id="sg-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group">Loading...</div>
 
 	{{#if property_detail.is_vpc}}
-	<div class="option-group-head pos-r">Network ACL({{network_acl.length}})
+	<div class="option-group-head pos-r">Network ACL<span class="property-head-num-wrap">({{network_acl.length}})</span>
 		<button class="create-acl btn btn-primary btn-region-dashboard" id="stack-property-add-new-acl" title="Create New Network ACL">+</button>
 	</div>
 	<div class="option-group stack-property-acl-list">Loading...</div>
@@ -31,7 +27,7 @@
 		{{#if total_fee}}${{total_fee}}/month{{/if}}
 	</div>
 	<div class="option-group">
-		<table class="table table-light">
+		<table class="table">
 			<thead>
 				<tr>
 					<th style="">Resource</th>
@@ -51,7 +47,7 @@
 			{{/each}}
 		</table>
 	</div>
-
+	<a href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
 </article>
 
-<a href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+

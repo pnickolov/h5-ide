@@ -9,9 +9,9 @@
 		</section>
 		<section class="property-control-group">
 			<label>AMI</label>
-			<div id="property-ami" class="ami-wrap clearfix secondary-panel" data-secondarypanel-data='{{{instance_ami_property}}}'>
-				<img class="icon-property-instance-ami" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
-				<div class="property-label">{{instance_ami.name}}</div>
+			<div id="property-ami" class="property-ami-wrap clearfix secondary-panel" data-secondarypanel-data='{{{instance_ami_property}}}'>
+				<img class="property-ami-icon left" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
+				<div class="property-ami-label">{{instance_ami.name}}</div>
 			</div>
 		</section>
 		<section class="property-control-group">
@@ -159,6 +159,6 @@
 	</div>
 	{{/if}}
 
-	<div class="option-group-head" id="sg-head">Security Groups (<span id="property-head-sg-num"></span>)</div>
+	<div class="option-group-head" id="sg-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group">Loading...</div>
 </article>

@@ -141,7 +141,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       this.set 'notification_type', nc_array
       this.set 'policies', policies
 
-      this.set 'asg', asg
+      this.set 'asg', asg.resource
 
       this.set 'uid', uid
 

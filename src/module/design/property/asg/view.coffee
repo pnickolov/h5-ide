@@ -5,20 +5,20 @@
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC ) ->
 
     metricMap =
-        "CPUUtilization" : "CPU Utilization"
-        "DiskReadBytes" : "Disk Reads"
-        "DiskReadOps" : "Disk Read Operations"
-        "DiskWriteBytes" : "Disk Writes"
-        "DiskWriteOps" : "Disk Write Operations"
-        "NetworkIn" : "Network In"
-        "NetworkOut" : "Network Out"
-        "StatusCheckFailed" : "Status Check Failed (Any)"
+        "CPUUtilization"             : "CPU Utilization"
+        "DiskReadBytes"              : "Disk Reads"
+        "DiskReadOps"                : "Disk Read Operations"
+        "DiskWriteBytes"             : "Disk Writes"
+        "DiskWriteOps"               : "Disk Write Operations"
+        "NetworkIn"                  : "Network In"
+        "NetworkOut"                 : "Network Out"
+        "StatusCheckFailed"          : "Status Check Failed (Any)"
         "StatusCheckFailed_Instance" : "Status Check Failed (Instance)"
-        "StatusCheckFailed_System" : "Status Check Failed (System)"
+        "StatusCheckFailed_System"   : "Status Check Failed (System)"
 
     adjustMap =
-        "ChangeInCapacity" : "Change in Capacity"
-        "ExactCapacity" : "Exact Capacity"
+        "ChangeInCapacity"        : "Change in Capacity"
+        "ExactCapacity"           : "Exact Capacity"
         "PercentChangeInCapacity" : "Percent Change in Capacity"
 
     unitMap =
@@ -33,11 +33,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile $( '#property-asg-tmpl' ).html()
-
-        term_template : Handlebars.compile $( '#property-asg-term-tmpl' ).html()
-
+        template        : Handlebars.compile $( '#property-asg-tmpl' ).html()
+        term_template   : Handlebars.compile $( '#property-asg-term-tmpl' ).html()
         policy_template : Handlebars.compile $( '#property-asg-policy-tmpl' ).html()
+        app_template    : Handlebars.compile $( '#property-asg-app-tmpl' ).html()
 
         events   :
             "click #property-asg-term-edit"                : "showTermPolicy"
@@ -54,11 +53,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             "change #property-asg-healthcheck"             : "setHealthCheckGrace"
             "click #property-asg-policy-add"               : "showScalingPolicy"
             "click #property-asg-policies .icon-edit"      : "editScalingPolicy"
-            "click #property-asg-policies .icon-del"      : "delScalingPolicy"
+            "click #property-asg-policies .icon-del"       : "delScalingPolicy"
 
 
 
-        render     : ( attributes ) ->
+        render     : ( isApp ) ->
             console.log 'property:asg render'
             data = $.extend true, {}, this.model.attributes
 
@@ -70,7 +69,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 policy.unit       = unitMap[ policy.metric ]
                 policies.push policy
 
-            $( '.property-details' ).html this.template data
+            data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
+
+            template = if isApp then this.app_template else this.template
+
+            $( '.property-details' ).html template data
 
         setASGCoolDown : ( event ) ->
 
@@ -97,8 +100,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             this.trigger 'SET_HEALTH_CHECK_GRACE', event.target.value
 
         showTermPolicy : () ->
-            uid = $("#autoscaling-group-property-uid").attr("data-uid")
-            policies = MC.canvas_data.component[uid].resource.TerminationPolicies
+            policies = this.model.attributes.asg.TerminationPolicies
 
             data    = []
             checked = {}

@@ -25,7 +25,13 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       this.set data
       null
 
+    getASGDetailApp : ( uid ) ->
+
+
+
     getASGDetail : ( uid ) ->
+
+      me = this
 
       if MC.canvas_data.component[uid].resource.LaunchConfigurationName
 
@@ -46,7 +52,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
 
-          this.set 'has_sns_topic', true
+          me.set 'has_sns_topic', true
 
           return false
 
@@ -369,13 +375,18 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       topic_arn = null
 
+      topic_existing = false
+
       $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
         if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
 
-          topic_arn = comp.resource.TopicArn
+          topic_existing = true
+
+          topic_arn = '@' + comp_uid + '.resource.TopicArn'
 
           return false
+
 
       action = null
 
@@ -397,9 +408,63 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       action.push policy_arn
 
-      if policy_detail.notify and topic_arn
+      if policy_detail.notify
+
+        if not topic_arn
+
+          topic_comp = $.extend true, {}, MC.canvas.SNS_TOPIC_JSON.data
+
+          topic_uid = MC.guid()
+
+          topic_comp.uid = topic_uid
+
+          topic_comp.name = topic_comp.resource.Name = topic_comp.resource.DisplayName = 'sns-topic'
+
+          topic_arn = '@' + topic_uid + '.resource.TopicArn'
+
+          MC.canvas_data.component[topic_uid] = topic_comp
+
 
         action.push topic_arn
+
+      else
+
+        topic_uid = null
+
+        sub_existing = false
+
+        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
+
+            sub_existing = true
+
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+            topic_uid = comp.uid
+
+          null
+
+        if topic_uid
+
+          if not sub_existing
+
+            topic_ref = '@' + topic_uid + '.resource.TopicArn'
+
+            topic_in_policy_existing = false
+
+            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+              if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and (topic_ref in comp.resource.OKAction or topic_ref in comp.resource.InsufficientDataActions or topic_ref in comp.resource.AlarmActions)
+
+                topic_in_policy_existing = true
+
+                return false
+
+            if not topic_in_policy_existing
+
+              delete MC.canvas_data.component[topic_uid]
+
 
       MC.canvas_data.component[policy_uid] = policy_comp
 

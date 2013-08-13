@@ -486,4 +486,5 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	resolveDescribeNotificationConfigurationsResult  : resolveDescribeNotificationConfigurationsResult
 	resolveDescribePoliciesResult                    : resolveDescribePoliciesResult
 	resolveDescribeScheduledActionsResult            : resolveDescribeScheduledActionsResult
+	resolveDescribeScalingActivitiesResult           : resolveDescribeScalingActivitiesResult
 

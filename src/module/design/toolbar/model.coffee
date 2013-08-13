@@ -143,6 +143,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     if !result.is_error
                         console.log 'save stack successfully'
+                        
+                        # track
+                        analytics.track "Saved Stack",
+                            stack_name: data.name,
+                            stack_region: data.region,
+                            stack_id: data.id
 
                         #update initial data
                         MC.canvas_property.original_json = JSON.stringify( data )
@@ -172,6 +178,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     if !result.is_error
                         console.log 'create stack successfully'
+                        
+                        # track
+                        analytics.track "Saved Stack",
+                            stack_name: data.name,
+                            stack_region: data.region,
+                            stack_id: data.id
 
                         new_id = result.resolved_data.id
                         key = result.resolved_data.key
@@ -283,6 +295,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 #add new-app status
                 #me.handleRequest result, 'RUN_STACK', region, id, app_name
                 ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
+                # track
+                analytics.track "Launched Stack",
+                    stack_id: id,
+                    stack_region: region,
+                    stack_app_name: app_name
 
         #zoomin
         zoomIn : () ->
@@ -405,6 +422,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'START_APP', region, id, name
+                
+                # track
+                analytics.track "Started App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
 
         stopApp : (data) ->
             me = this
@@ -419,6 +442,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'STOP_APP', region, id, name
+                
+                # track
+                analytics.track "Stopped App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
 
         terminateApp : (data) ->
             me = this
@@ -434,6 +463,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'TERMINATE_APP', region, id, name
+                
+                # track
+                analytics.track "Terminated App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
 
         handleRequest : (result, flag, region, id, name) ->
             me = this

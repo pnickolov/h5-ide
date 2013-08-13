@@ -2559,6 +2559,10 @@ a.sidebar-hider {
 	margin-top: -2px;
 }
 
+#property-eni-list > li:first-child:last-child > .network-remove-icon {
+	display : none;
+}
+
 .network-list {
 	background: #f0f0f0;
 	border: 1px solid #ccc;

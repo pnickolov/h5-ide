@@ -4,12 +4,12 @@ Loading...
 {{else}}
 	<div class="dashboard-widget">
 		<ul class="tab grid grid-responsive grid-small-bottom row-counter">
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2 active" data-tab-target="#stat-table-instance">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2 active"  style="width:10%" data-tab-target="#stat-table-instance">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.Instance}}<span class="label">Instance</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-eip">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-eip">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">Elastic IP</span>
 					{{#if region_resource_list.Not_Used.EIP}}
@@ -17,7 +17,7 @@ Loading...
 					{{/if}}
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-ebs">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-ebs">
 				<div class="region-stat-block-wrap">
 					<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">Volume</span>
 					{{#if region_resource_list.Not_Used.Volume}}
@@ -26,39 +26,40 @@ Loading...
 				</div>
 			</li>
 
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-vpc">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-vpc">
 				<div class="region-stat-block-wrap">
 					<i class="icon-hdd icon-label"></i>{{region_resource_list.VPC}}<span class="label">VPC</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-vpn">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-vpn">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.VPN}}<span class="label">VPN</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-elb">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-elb">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.ELB}}<span class="label">Load Balancer</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-asg">
+			<!--
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-asg">
 				<div class="region-stat-block-wrap">
 					<i class="icon-hdd icon-label"></i>4<span class="label">Auto Scaling Group</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-cw">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-cw">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>2<span class="label">CloudWatch Alarm</span>
 					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 alarm(s) in ALARM state.","description":""}'>3</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-sns">
+			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-sns">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>3<span class="label">SNS Subscription</span>
 					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 subscription(s) not confirmed.","description":""}'>3</span>
 				</div>
 			</li>
-
+			-->
 		</ul>
 		<div id="stat-table-instance" class="stat-table active">
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
@@ -68,18 +69,21 @@ Loading...
 						{{#if region_resource.DescribeInstances}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:20%">Instance Name/ID</th>
-								<th class="sortable" style="width:10%">Status</th>
-								<th class="sortable" style="width:15%">Launch Time</th>
-								<th class="sortable" style="width:10%">AMI</th>
-								<th class="sortable" style="width:15%">Availability Zone</th>
-								<th style="width:10%">Detail</th>
+								<th class="sortable" style="width:10%">Region</th>
+								<th class="sortable" style="width:32%">Instance Name/ID</th>
+								<th class="sortable" style="width:8%">Status</th>
+								<th class="sortable" style="width:17%">Launch Time</th>
+								<th class="sortable" style="width:9%">AMI</th>
+								<th class="sortable" style="width:10%">Availability Zone</th>
+								<th class="sortable" style="width:10%">Created By</th>
+								<th style="width:4%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
 
 								{{#each region_resource.DescribeInstances }}
 								<tr>
+									<td>{{ region }}</td>
 									<td>
 										{{#if app}}
 											{{#if owner}}
@@ -97,6 +101,7 @@ Loading...
 									<td>{{ launchTime }}</td>
 									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
 									<td>{{ placement.availabilityZone}}</td>
+									<td>{{ created_by }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -119,8 +124,9 @@ Loading...
 						{{#if region_resource.DescribeAddresses}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:40%">IP</th>
-								<th class="sortable" style="width:40%">Associated Instance</th>
+								<th class="sortable" style="width:20%">Region</th>
+								<th class="sortable" style="width:30%">IP</th>
+								<th class="sortable" style="width:30%">Associated Instance</th>
 								<th style="width:20%">Detail</th>
 							</tr>
 						</thead>
@@ -128,6 +134,7 @@ Loading...
 
 								{{#each region_resource.DescribeAddresses }}
 								<tr>
+									<td>{{ region }}</td>
 									<td>
 										{{ publicIp }}
 									</td>
@@ -154,18 +161,21 @@ Loading...
 						{{#if region_resource.DescribeVolumes}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:20%">Name/ID</th>
-								<th class="sortable" style="width:15%">Status</th>
+								<th class="sortable" style="width:10%">Region</th>
+								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:10%">Status</th>
 								<th class="sortable" style="width:20%">Create Time</th>
-								<th class="sortable" style="width:15%">Device Name</th>
-								<th class="sortable" style="width:15%">Attachment Status</th>
-								<th style="width:15%">Detail</th>
+								<th class="sortable" style="width:10%">Device Name</th>
+								<th class="sortable" style="width:10%">Attachment Status</th>
+								<th class="sortable" style="width:10%">Instance Id</th>
+								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
 
 								{{#each region_resource.DescribeVolumes }}
 								<tr>
+									<td>{{ region }}</td>
 									<td>
 										{{#if app}}
 											{{#if owner}}
@@ -182,6 +192,7 @@ Loading...
 									<td>{{ createTime }}</td>
 									<td>{{#each attachmentSet.item }}{{ this.device }}{{/each}}</td>
 									<td><i class="status status-{{#each attachmentSet.item }}{{ this.status }}{{/each}} icon-label"></i>{{#each attachmentSet.item }}{{ this.status }}{{/each}}</td>
+									<td>{{ instanceId }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -206,7 +217,8 @@ Loading...
 						{{#if region_resource.DescribeVpcs}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:25%">Name/ID</th>
+								<th class="sortable" style="width:10%">Region</th>
+								<th class="sortable" style="width:15%">Name/ID</th>
 								<th class="sortable" style="width:20%">Status</th>
 								<th class="sortable" style="width:25%">CIDR</th>
 								<th class="sortable" style="width:20%">DHCP Settings</th>
@@ -217,6 +229,7 @@ Loading...
 
 								{{#each region_resource.DescribeVpcs }}
 								<tr>
+									<td>{{ region }}</td>
 									<td>
 										{{#if app}}
 											{{#if owner}}
@@ -259,17 +272,19 @@ Loading...
 						{{#if region_resource.DescribeVpnConnections}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:25%">Name/ID</th>
-								<th class="sortable" style="width:20%">Status</th>
-								<th class="sortable" style="width:25%">Virtual Private Gateway</th>
+								<th class="sortable" style="width:10%">Region</th>
+								<th class="sortable" style="width:30%">Name/ID</th>
+								<th class="sortable" style="width:15%">Status</th>
+								<th class="sortable" style="width:20%">Virtual Private Gateway</th>
 								<th class="sortable" style="width:20%">Customer Gateway</th>
-								<th style="width:15%">Detail</th>
+								<th style="width:10%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
 
 								{{#each region_resource.DescribeVpnConnections }}
 								<tr>
+									<td>{{ region }}</td>
 									<td>
 										{{#if app}}
 											{{#if owner}}
@@ -309,6 +324,7 @@ Loading...
 						{{#if region_resource.DescribeLoadBalancers}}
 						<thead>
 							<tr>
+								<th class="sortable" style="width:25%">Region</th>
 								<th class="sortable" style="width:25%">DNS Name</th>
 								<th class="sortable" style="width:20%">Create time</th>
 								<th class="sortable" style="width:25%">Availability Zone</th>
@@ -320,6 +336,7 @@ Loading...
 
 								{{#each region_resource.DescribeLoadBalancers }}
 								<tr>
+									<td>{{ region }}</td>
 									<td>
 
 										{{ DNSName }}
@@ -350,8 +367,9 @@ Loading...
 						<table class="table table-region-stat" id="region-stat-table-asg">
 						<thead>
 							<tr>
+								<th class="sortable" style="width:10%">Region</th>
 								<th class="sortable" style="width:20%">Name</th>
-								<th class="sortable" style="width:55%">Current/Last Activity</th>
+								<th class="sortable" style="width:45%">Current/Last Activity</th>
 								<th class="sortable" style="width:15%">Activity Status</th>
 								<th style="width:15%">Detail</th>
 							</tr>
@@ -359,6 +377,7 @@ Loading...
 						<tbody>
 
 								<tr>
+									<td>{{ region }}</td>
 									<td><a href="" class="table-link table-app-link truncate" title="Open App">[App Name]</a>
 									%asg-name%
 									</td>
@@ -386,9 +405,10 @@ Loading...
 						<table class="table table-region-stat" id="region-stat-table-cw">
 						<thead>
 							<tr>
+								<th class="sortable" style="width:10%">Region</th>
 								<th class="sortable" style="width:20%">Name</th>
 								<th class="sortable" style="width:15%">Dimension</th>
-								<th class="sortable" style="width:40%">Threshold</th>
+								<th class="sortable" style="width:30%">Threshold</th>
 								<th class="sortable" style="width:15%">State</th>
 								<th style="width:15%">Detail</th>
 							</tr>
@@ -396,6 +416,7 @@ Loading...
 						<tbody>
 
 								<tr>
+									<td>{{ region }}</td>
 									<td>
 									%cloudwatch-alarm-name%
 									</td>
@@ -443,8 +464,9 @@ Loading...
 						<table class="table table-region-stat" id="region-stat-table-sns">
 						<thead>
 							<tr>
+								<th class="sortable" style="width:10%">Region</th>
 								<th class="sortable" style="width:30%">Topic Name</th>
-								<th class="sortable" style="width:50%">Endpoint and Protocol</th>
+								<th class="sortable" style="width:40%">Endpoint and Protocol</th>
 								<th class="sortable" style="width:10%">Confirmation</th>
 								<th style="width:15%">Detail</th>
 							</tr>
@@ -452,6 +474,7 @@ Loading...
 						<tbody>
 
 								<tr>
+									<td>{{ region }}</td>
 									<td>%topic-name%
 									</td>
 									<td>Email: paula@mc2.com</td>
@@ -589,7 +612,7 @@ Loading...
 
 <!--{{ .stat-stack }}-->
 	{{#each cur_stack_list}}
-		<div class="item-thumbnail-wrap" style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}') 0 0;">
+		<div class="item-thumbnail-wrap" style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}.png?time={{update_time}}') 0 0;">
 			<div class="action-thumbnail">
 					<a class="modal btn duplicate-stack"  id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Rename Stack", "body":"Stack Name:", "input":"{{name}}", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"><i class="icon-redo"></i></a>
 

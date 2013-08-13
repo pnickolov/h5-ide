@@ -61,7 +61,8 @@ define [ 'jquery',
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
 
-				$("input").blur()
+				# Better than $("input:focus")
+				$(document.activeElement).filter("input").blur()
 
 				#
 				MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }

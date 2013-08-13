@@ -64,7 +64,7 @@ define [ 'constant', 'event'
 			resource_type = constant.AWS_RESOURCE_TYPE
 			parent = MC.canvas_data.layout.component.group[ tgt_parent ]
 
-			if component.type == resource_type.AWS_EC2_AvailabilityZone
+			if parent.type == resource_type.AWS_EC2_AvailabilityZone
 				check = true
 			else if MC.canvas_data.component[ tgt_parent ].resource.AvailabilityZone != component.resource.Placement.AvailabilityZone
 				check = true
@@ -98,6 +98,9 @@ define [ 'constant', 'event'
 			if !node || !node.groupUId || node.groupUId == tgt_parent
 				return
 
+			# Update layout parent id
+			node.groupUId = tgt_parent
+
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
 			handler   = this.changeParentMap[ component.type ]
@@ -105,6 +108,7 @@ define [ 'constant', 'event'
 				handler.call( this, component, tgt_parent )
 			else
 				console.log "No handler for dragging node:", component
+
 			null
 
 		changeP_Instance : ( component, tgt_parent ) ->
@@ -293,17 +297,17 @@ define [ 'constant', 'event'
 				# remove instance relate routetable
 				else if value.type == resource_type.AWS_VPC_RouteTable
 
-					this._removeGatewayIdFromRT key, component.uid
+					this._removeFromRTB key, component.uid
 
 			null
 
 		deleteR_Eni : ( component ) ->
 			for key, value of MC.canvas_data.component
 				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-					this._removeGatewayIdFromRT key, component.uid
+					this._removeFromRTB key, component.uid
 				else if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
 					if MC.extractID( value.resource.NetworkInterfaceId ) == component.uid
-						delete mc.canvas_data.component[ key ]
+						delete MC.canvas_data.component[ key ]
 
 			null
 
@@ -333,7 +337,7 @@ define [ 'constant', 'event'
 
 			for key, value of MC.canvas_data.component
 				if value.type == resource_type.AWS_VPC_RouteTable
-					this._removeGatewayIdFromRT key, component.uid
+					this._removeFromRTB key, component.uid
 
 			# Enable IGW in resource panel
 			ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, resource_type.AWS_VPC_InternetGateway
@@ -346,10 +350,10 @@ define [ 'constant', 'event'
 
 			for key, value of MC.canvas_data.component
 				if value.type == resource_type.AWS_VPC_RouteTable
-					this._removeGatewayIdFromRT key, component.uid
+					this._removeFromRTB key, component.uid
 
 				else if value.type == resource_type.AWS_VPC_VPNConnection and MC.extractID( value.resource.VpnGatewayId ) == component.uid
-					delete mc.canvas_data.component[ key ]
+					delete MC.canvas_data.component[ key ]
 
 
 			# Enable VGW in resource panel
@@ -533,7 +537,7 @@ define [ 'constant', 'event'
 
 
 			# Instance <==> RouteTable
-			if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			if portMap['instance-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 				rt_uid = null
 
@@ -543,14 +547,14 @@ define [ 'constant', 'event'
 				component_resource = MC.canvas_data.component[ rt_uid ].resource
 
 				for i in component_resource.RouteSet
-					if MC.extractID( i.InstanceId ) isnt portMap['instance-sg']
+					if MC.extractID( i.InstanceId ) isnt portMap['instance-rtb']
 						keepArray.push i
 
 				component_resource.RouteSet = keepArray
 				return
 
 			# Eni <==> RouteTable
-			if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			if portMap['eni-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 				rt_uid = null
 
@@ -561,7 +565,7 @@ define [ 'constant', 'event'
 				component_resource = MC.canvas_data.component[rt_uid].resource
 
 				for i in component_resource.RouteSet
-					if MC.extractID( i.NetworkInterfaceId ) isnt portMap['eni-sg']
+					if MC.extractID( i.NetworkInterfaceId ) isnt portMap['eni-rtb']
 						keepArray.push i
 
 				component_resource.RouteSet = keepArray
@@ -592,13 +596,14 @@ define [ 'constant', 'event'
 
 			null
 
-		_removeGatewayIdFromRT : ( rt_uid, gateway_instance_uid) ->
+		_removeFromRTB : ( rt_uid, component_uid ) ->
 
-			$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
+			routeSet  = MC.canvas_data.component[rt_uid].resource.RouteSet
 
-				if route.InstanceId.split('.')[0][1...] == gateway_instance_uid or route.NetworkInterfaceId.split('.')[0][1...] == gateway_instance_uid
-
-					MC.canvas_data.component[rt_uid].resource.RouteSet.splice index, 1
+			for route, i in routeSet
+				if route.GatewayId.indexOf( component_uid ) != -1 or route.InstanceId.indexOf( component_uid ) != -1 or route.NetworkInterfaceId.indexOf( component_uid ) != -1
+					routeSet.splice i, 1
+					break
 
 		_removeInstanceFromSG : ( sg_uid, instance_uid ) ->
 
@@ -720,7 +725,10 @@ define [ 'constant', 'event'
 			else if portMap['instance-attach'] and portMap['eni-attach']
 
 				# check whether instance has position to add one more eni
-				instance_component 	= 	MC.canvas_data.component[portMap['instance-attach']]
+				instance_component = MC.canvas_data.component[portMap['instance-attach']]
+				eni_component      = MC.canvas_data.component[portMap['eni-attach']]
+				if eni_component.resource.AvailabilityZone isnt instance_component.resource.Placement.AvailabilityZone
+					return "Network Interface must be attached to instance within the same availability zone."
 
 				instance_type 		= 	instance_component.resource.InstanceType.split('.')
 

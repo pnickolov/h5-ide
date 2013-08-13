@@ -25,14 +25,14 @@ define [], () ->
 		AWS_VPC_NetworkAcl        : "AWS.VPC.NetworkAcl"
 		AWS_IAM_ServerCertificate : "AWS.IAM.ServerCertificate"
 		#
-		AWS_AUTOSCALING_GROUP                      	: 'AWS.AutoScaling.Group'
-		AWS_AUTOSCALING_LAUNCHCONFIGURATION         : 'AWS.AutoScaling.LaunchConfiguration'
-		AWS_AUTOSCALING_NOTIFICATIONCONFIGURATION   : 'AWS.AutoScaling.NotificationConfiguration'
-		AWS_AUTOSCALING_SCALINGPOLICY               : 'AWS.AutoScaling.ScalingPolicy'
-		AWS_AUTOSCALING_SCHEDULEDACTIONS            : 'AWS.AutoScaling.ScheduledActions'
-		AWS_CLOUDWATCH_CLOUDWATCH                  	: 'AWS.CloudWatch.CloudWatch'
-		AWS_SNS_SUBSCRIPTION                        : 'AWS.SNS.Subscription'
-		AWS_SNS_TOPIC                              	: 'AWS.SNS.Topic'
+		AWS_AutoScaling_Group                      	: 'AWS.AutoScaling.Group'
+		AWS_AutoScaling_LaunchConfiguration         : 'AWS.AutoScaling.LaunchConfiguration'
+		AWS_AutoScaling_NotificationConfiguration   : 'AWS.AutoScaling.NotificationConfiguration'
+		AWS_AutoScaling_ScalingPolicy               : 'AWS.AutoScaling.ScalingPolicy'
+		AWS_AutoScaling_ScheduledActions            : 'AWS.AutoScaling.ScheduledActions'
+		AWS_CloudWatch_CloudWatch                  	: 'AWS.CloudWatch.CloudWatch'
+		AWS_SNS_Subscription                        : 'AWS.SNS.Subscription'
+		AWS_SNS_Topic                              	: 'AWS.SNS.Topic'
 	}
 
 	#private
@@ -57,16 +57,25 @@ define [], () ->
 		AWS_VPC_VPNConnection     : "vpn"
 		AWS_VPC_NetworkAcl        : "acl"
 		AWS_IAM_ServerCertificate : "iam"
+		#
+		AWS_AutoScaling_Group                     : 'asg'
+		AWS_AutoScaling_LaunchConfiguration       : 'asl_lc'
+		AWS_AutoScaling_NotificationConfiguration : 'asl_nc'
+		AWS_AutoScaling_ScalingPolicy             : 'asl_sp'
+		AWS_AutoScaling_ScheduledActions          : 'asl_sa'
+		AWS_CloudWatch_CloudWatch                 : 'clw'
+		AWS_SNS_Subscription                      : 'sns_sub'
+		AWS_SNS_Topic                             : 'sns_top'
 	}
 
 	#private
 	AWS_PORT_NAME = {
 		#AWS.EC2.Instance
-		INSTANCE_SG_IN   : "instance_sg_in"  #left
-		INSTANCE_SG_OUT  : "instance_sg_out" #right top
+		INSTANCE_SG      : "instance_sg"
 		INSTANCE_ATTACH  : "instance_attach" #right bottom
 
 		#AWS.ELB
+		ELB_SG_IN        : "elb_sg_in"     #top
 		ELB_SG_OUT       : "elb_sg_out"     #top
 		ELB_ATTACH       : "elb_attach"     #bottom
 
@@ -75,8 +84,7 @@ define [], () ->
 		SUBNET_ACL       : "subnet_acl"     #right
 
 		#AWS.VPC.RouteTable
-		RTB_SRC_TOP      : "rtb_src_top"
-		RTB_SRC_BOTTOM   : "rtb_src_bottom"
+		RTB_SRC          : "rtb_src"
 		RTB_TGT_LEFT     : "rtb_tgt_left"
 		RTB_TGT_RIGHT    : "rtb_tgt_right"
 
@@ -92,8 +100,7 @@ define [], () ->
 
 		#AWS.VPC.NetworkInterface
 		ENI_ATTACH       : "eni_attach"
-		ENI_SG_IN        : "eni_sg_in"
-		ENI_SG_OUT       : "eni_sg_out"
+		ENI_SG           : "eni_sg"
 
 	}
 
@@ -288,6 +295,7 @@ define [], () ->
 		VGW                 :   'AWS.VPC.VPNGateway'
 
 		ASG               	:   'AWS.AutoScaling.Group'
+		ASL_ACT             :   'AWS.AutoScaling.Activities' #none component
 		ASL_LC              :   'AWS.AutoScaling.LaunchConfiguration'
 		ASL_NC              :   'AWS.AutoScaling.NotificationConfiguration'
 		ASL_SP              :   'AWS.AutoScaling.ScalingPolicy'

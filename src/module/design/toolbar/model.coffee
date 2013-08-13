@@ -318,18 +318,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             console.log 'savePNG'
             me = this
             #
-            callback = ( res ) ->
+            callback = ( result ) ->
                 console.log 'phantom callback'
-                console.log res.data.status
-                if res.data.status is 'success'
-                    if res.data.thumbnail is 'true'
-                        console.log 's3 url = ' + res.data.result
+                console.log result.data.host
+                return if result.data.host isnt MC.SAVEPNG_URL.replace( 'http://', '' ).replace( '/', '' )
+                if result.data.res.status is 'success'
+                    if result.data.res.thumbnail is 'true'
+                        console.log 's3 url = ' + result.data.res.result
                         window.removeEventListener 'message', callback
 
                         #push event
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST
+                        ide_event.trigger ide_event.UPDATE_STACK_THUMBNAIL, result.data.res.result
                     else
-                        me.trigger 'SAVE_PNG_COMPLETE', res.data.result
+                        me.trigger 'SAVE_PNG_COMPLETE', result.data.res.result
                         window.removeEventListener 'message', callback
                 else
                     #window.removeEventListener 'message', callback

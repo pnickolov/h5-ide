@@ -1010,13 +1010,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             #asg
             if resources.DescribeAutoScalingGroups
                 _.map resources.DescribeAutoScalingGroups.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.AutoScalingGroupName] = res
+                    MC.data.resource_list[current_region][res.AutoScalingGroupARN] = res
+                    null
+
+            #asg
+            if resources.DescribeAutoScalingInstances
+                _.map resources.DescribeAutoScalingInstances.member, ( res, i ) ->
+                    MC.data.resource_list[current_region][res.InstanceId] = res
                     null
 
             #asl lc
             if resources.DescribeLaunchConfigurations
                 _.map resources.DescribeLaunchConfigurations.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.LaunchConfigurationName] = res
+                    MC.data.resource_list[current_region][res.LaunchConfigurationARN] = res
                     null
 
             #asl nc
@@ -1028,19 +1034,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             #asl sp
             if resources.DescribePolicies
                 _.map resources.DescribePolicies.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.PolicyName] = res
+                    MC.data.resource_list[current_region][res.PolicyARN] = res
                     null
 
             #asl sa
             if resources.DescribeScheduledActions
                 _.map resources.DescribeScheduledActions.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.ScheduledActionName] = res
+                    MC.data.resource_list[current_region][res.ScheduledActionARN] = res
                     null
 
             #clw
             if resources.DescribeAlarms
                 _.map resources.DescribeAlarms.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.AlarmNames] = res
+                    MC.data.resource_list[current_region][res.AlarmArn] = res
                     null
 
             #sns sub

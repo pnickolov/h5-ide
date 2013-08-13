@@ -29,13 +29,13 @@
 	fill-opacity: 0.1 !important;
 }*/
 
-.view-hover,
-.view-keephover {
+.line-sg.view-hover,
+.line-sg.view-keephover {
 	visibility: visible !important;
 	opacity: 0.7 !important;
 }
 
-.view-show {
+.line-sg.view-show {
 	visibility: visible !important;
 	opacity: 1 !important;
 }
@@ -263,7 +263,7 @@
 }
 
 /* line connection */
-#line_layer .line {
+#line_layer .line-sg {
 	opacity: 0.2;
 }
 
@@ -277,6 +277,11 @@
 .line:hover {
 	opacity: .8 !important;
 	stroke-width: 4px !important;
+}
+
+.fill-line {
+	stroke: rgba(255, 255, 255, 0);
+	stroke-width: 10px;
 }
 
 /* node label */

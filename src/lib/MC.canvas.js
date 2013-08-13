@@ -741,6 +741,7 @@ MC.canvas = {
 						if (path !== "")
 						{
 							MC.paper.path(path);
+							MC.paper.path(path).attr('class','fill-line');
 
 							if (dash_style)
 							{

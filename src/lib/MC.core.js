@@ -19,7 +19,7 @@ var MC = {
 
 	current_module : {},
 
-	_extractIDRegex : /@([^.]+)\./,
+	_extractIDRegex : /^@?([^.]+)/,
 
 	// Global data
 	data: {},

@@ -57,6 +57,7 @@ require.config {
 		'UI.editablelabel'  : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'  : 'ui/common/UI.multiinputbox'
 		'UI.zeroclipboard'  : 'ui/common/UI.zeroclipboard'
+		'UI.parsely' 	    : 'ui/common/UI.parsley.js'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'

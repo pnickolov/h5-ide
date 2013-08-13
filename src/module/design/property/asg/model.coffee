@@ -393,6 +393,8 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
           action = cw_comp.resource.OKAction
 
+      action.splice(0,action.length)
+
       action.push policy_arn
 
       if policy_detail.notify and topic_arn

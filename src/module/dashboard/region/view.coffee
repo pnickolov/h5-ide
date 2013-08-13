@@ -196,7 +196,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             _.each $( '#region-stat-stack' ).children(), ( item ) ->
                 $item = $ item
                 if $item.attr('style').indexOf( url ) isnt -1
-                    new_url = 'https://s3.amazonaws.com/madeiracloudthumbnail/1cF3vm7Gi/J8Cv89GAES0Q3feZ3tCE4ZFRxeHzgM8ZXb2I4y/0pXGLwISv/QjgrbOGMtc3RhY2sga2V5?time=' + Math.round(+new Date())
+                    new_url = 'https://s3.amazonaws.com/madeiracloudthumbnail/' + url + '?time=' + Math.round(+new Date())
                     console.log 'new_url = ' + new_url
                     $item.removeAttr 'style'
                     $item.css 'background-image', 'url(' + new_url + ')'

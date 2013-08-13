@@ -83,6 +83,7 @@ define [ 'jquery', 'handlebars',
 				$.cookie 'region_name', result.region_name, { expires: 3600 }
 				$.cookie 'email',       result.email,       { expires: 3600 }
 				$.cookie 'has_cred',    result.has_cred,    { expires: 3600 }
+				$.cookie 'username',     username, 			{ expires: 3600 }
 
 				#redirect to page ide.html
 				window.location.href = 'ide.html'

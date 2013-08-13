@@ -69,7 +69,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				case 'AWS.AutoScaling.Group':
 					if (data[option.groupUId].resource.LaunchConfigurationName && !option['launchConfig'] )
 					{
-						notification('AutoScalingGroup already has LaunchConfiguration!', false);
+						notification( 'warning', 'AutoScalingGroup already has LaunchConfiguration!', false);
 						return null;
 					}
 					type = 'AWS.AutoScaling.LaunchConfiguration';
@@ -585,7 +585,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3.dragger
-				Canvon.image('../assets/images/ide/icon/asg-resource-dragger.png', width - 22, 0, 22, 20).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/asg-resource-dragger.png', width - 22, 0, 22, 20).attr({
 					'class': 'asg-resource-dragger',
 					'id': group.id + '_asg_resource_dragger',
 					'display': !option['originalId'] && (option['launchConfig'] || (component_data && (component_data.resource.LaunchConfigurationName!==''))) ? 'inline' : 'none'
@@ -622,9 +622,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					$(group).append(
 						////1bg
-						Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15 + offset_x, 11 + offset_y, 70, 70),
+						Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15 + offset_x, 11 + offset_y, 70, 70),
 						////2os_type
-						Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30 + offset_x, 15 + offset_y, 39, 27),
+						Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30 + offset_x, 15 + offset_y, 39, 27),
 						////3lc name
 						Canvon.text(50 + offset_x, 90 + offset_y, lc_name).attr({
 							'class': 'node-label name'
@@ -801,7 +801,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15, 11, 70, 70),
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 11, 70, 70),
 
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
@@ -861,10 +861,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////7. os_type
-				Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30, 15, 39, 27),
+				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30, 15, 39, 27),
 
 				////8.1 volume-attached
-				Canvon.image('../assets/images/ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 48, 29, 24).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 48, 29, 24).attr({
 					'id': group.id + '_volume_status'
 				}),
 
@@ -1145,7 +1145,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/elb-' + icon_scheme + '-canvas.png', 15, 24, 70, 53).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/elb-' + icon_scheme + '-canvas.png', 15, 24, 70, 53).attr({
 					'id' : group.id + '_elb_scheme'
 				}),
 
@@ -1279,7 +1279,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/rt-'+main_icon+'canvas.png', 10, 13, 60, 57).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/rt-'+main_icon+'canvas.png', 10, 13, 60, 57).attr({
 					'id': group.id + '_rt_status'
 				}),
 
@@ -1387,7 +1387,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/igw-canvas.png', 10, 15, 60, 46),
+				Canvon.image(MC.IMG_URL + 'ide/icon/igw-canvas.png', 10, 15, 60, 46),
 
 				//2 path: left port
 				// Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -1469,7 +1469,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/vgw-canvas.png', 10, 15, 60, 46),
+				Canvon.image(MC.IMG_URL + 'ide/icon/vgw-canvas.png', 10, 15, 60, 46),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -1552,7 +1552,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/cgw-canvas.png', 13, 10, 153, 76),
+				Canvon.image(MC.IMG_URL + 'ide/icon/cgw-canvas.png', 13, 10, 153, 76),
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -1653,7 +1653,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'ry': 5
 				}),
 
-				Canvon.image('../assets/images/ide/icon/eni-canvas-'+attached+'.png', 16, 28, 68, 53).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/eni-canvas-'+attached+'.png', 16, 28, 68, 53).attr({
 					'id': group.id + '_eni_status'
 				}),
 
@@ -1870,7 +1870,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image('../assets/images/ide/icon/instance-canvas.png', 15, 11, 70, 70),
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 11, 70, 70),
 
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
@@ -1895,10 +1895,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////7. os_type
-				Canvon.image('../assets/images/ide/ami/' + os_type + '.png', 30, 15, 39, 27),
+				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30, 15, 39, 27),
 
 				////8.1 volume-attached
-				Canvon.image('../assets/images/ide/icon/instance-volume-' + icon_volume_status + '.png' , 35, 48, 29, 24).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 35, 48, 29, 24).attr({
 					'id': group.id + '_volume_status'
 				}),
 

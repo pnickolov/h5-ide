@@ -64,6 +64,11 @@ MC.canvas = {
 		return true;
 	},
 
+	view: function ()
+	{
+		$('#canvas_body').toggleClass('canvas-view-normal canvas-view-sg');
+	},
+
 	zoomIn: function ()
 	{
 		var canvas_size = MC.canvas.data.get('layout.size');
@@ -750,7 +755,7 @@ MC.canvas = {
 				$('#line_layer').append(svg_line);
 
 				$(svg_line).attr({
-					'class': 'line',
+					'class': 'line line-' + connection_option.type,
 					'data-type': 'line'
 				});
 
@@ -828,7 +833,9 @@ MC.canvas = {
 		var target = $('#' + id),
 			target_type = target.data('type'),
 			svg_canvas = $("#svg_canvas"),
-			clone_node;
+			clone_node,
+			node_connections,
+			layout_connection_data;
 
 		Canvon(target[0]).addClass('selected');
 
@@ -850,6 +857,24 @@ MC.canvas = {
 			$('#node_layer').append(clone);
 
 			svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
+
+			node_connections = MC.canvas.data.get('layout.component.node.' + id + '.connection');
+			layout_connection_data = MC.canvas.data.get('layout.connection');
+
+			$.each(node_connections, function (index, item)
+			{
+				Canvon(item.line).addClass('view-show');
+
+				$('#' + item.target).find('.port-' + item.port).each(function ()
+				{
+					Canvon(this).addClass('view-show');
+				});
+			});
+
+			clone.find('.port').each(function ()
+			{
+				Canvon(this).addClass('view-show');
+			});
 		}
 
 		if (target_type === 'group')
@@ -1733,8 +1758,6 @@ MC.canvas.volume = {
 			canvas_container.append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
 			bubble_box = $('#volume-bubble-box');
 
-			//console.info(node_volume_data);
-
 			if (target_data.type === 'AWS.AutoScaling.LaunchConfiguration')
 			{
 				$.each(node_volume_data, function (index, item)
@@ -2199,24 +2222,27 @@ MC.canvas.volume = {
 MC.canvas.asgList = {
 	show: function (event)
 	{
-		MC.canvas.asgList.close();
+		if (event.which === 1)
+		{
+			MC.canvas.asgList.close();
 
-		var target = this.parentNode,
-			target_offset = Canvon(target).offset(),
-			canvas_offset = $('#svg_canvas').offset();
+			var target = this.parentNode,
+				target_offset = Canvon(target).offset(),
+				canvas_offset = $('#svg_canvas').offset();
 
-		$('#canvas_container').append( MC.template.asgList() );
+			$('#canvas_container').append( MC.template.asgList() );
 
-		$('#asgList-wrap')
-			.on('click', '.asgList-item', MC.canvas.asgList.select)
-			.css({
-				'top': target_offset.top - canvas_offset.top - 10,
-				'left': target_offset.left - canvas_offset.left
-			});
+			$('#asgList-wrap')
+				.on('click', '.asgList-item', MC.canvas.asgList.select)
+				.css({
+					'top': target_offset.top - canvas_offset.top - 10,
+					'left': target_offset.left - canvas_offset.left
+				});
 
-		MC.canvas.asgList.select.call($('#asgList-wrap .asgList-item').first());
+			MC.canvas.asgList.select.call($('#asgList-wrap .asgList-item').first());
 
-		return true;
+			return true;
+		}
 	},
 
 	close: function ()
@@ -2255,8 +2281,8 @@ MC.canvas.event.dragable = {
 				node_type = target.data('class'),
 				svg_canvas = $('#svg_canvas'),
 				canvas_offset = svg_canvas.offset(),
+				platform = MC.canvas.data.get('platform'),
 				shadow,
-				platform,
 				target_group_type;
 
 			if (node_type === 'AWS.AutoScaling.LaunchConfiguration')
@@ -2283,24 +2309,20 @@ MC.canvas.event.dragable = {
 
 			svg_canvas.append(shadow);
 
-			if (target_type === 'node')
-			{
-				platform = MC.canvas.data.get('platform');
-				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
+			target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
 
-				if (target_group_type)
+			if (target_group_type)
+			{
+				$.each(target_group_type, function (index, item)
 				{
-					$.each(target_group_type, function (index, item)
+					if (item !== 'AWS.AutoScaling.Group' && item !== 'Canvas')
 					{
-						if (item !== 'AWS.AutoScaling.Group')
+						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
 						{
-							$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
-							{
-								return 'dropable-group ' + key;
-							});
-						}
-					});
-				}
+							return 'dropable-group ' + key;
+						});
+					}
+				});
 			}
 
 			$(document.body).addClass('disable-event');
@@ -2533,7 +2555,8 @@ MC.canvas.event.dragable = {
 					group_offsetY,
 					matched_child,
 					child_data,
-					child_type;
+					child_type,
+					isBlank;
 
 				if (group_data.type === 'AWS.VPC.VPC')
 				{
@@ -2650,6 +2673,18 @@ MC.canvas.event.dragable = {
 				group_offsetX = coordinate.x - group_coordinate[0];
 				group_offsetY = coordinate.y - group_coordinate[1];
 
+				isBlank =
+					MC.canvas.isBlank(
+						'group',
+						target_id,
+						group_data.type,
+						coordinate.x,
+						coordinate.y,
+						group_size[0],
+						group_size[1]
+					) &&
+					event.data.groupChild.length === unique_stack.length;
+
 				if (
 					(
 						(
@@ -2660,16 +2695,7 @@ MC.canvas.event.dragable = {
 						(
 							!coordinate_fixed &&
 							match_place.is_matched &&
-							MC.canvas.isBlank(
-								'group',
-								target_id,
-								group_data.type,
-								coordinate.x,
-								coordinate.y,
-								group_size[0],
-								group_size[1]
-							) &&
-							event.data.groupChild.length === unique_stack.length
+							isBlank
 						)
 					)
 					&&
@@ -2760,6 +2786,11 @@ MC.canvas.event.dragable = {
 						src_group: target_id,
 						tgt_parent: parentGroup ? parentGroup.id : ''
 					});
+				}
+				else if (!isBlank)
+				{
+					//dispatch event when is not blank
+					$("#svg_canvas").trigger("CANVAS_PLACE_OVERLAP");
 				}
 			}
 		}
@@ -2921,6 +2952,7 @@ MC.canvas.event.drawConnection = {
 				node_id = parent.attr('id'),
 				node_type = parent.data('class'),
 				layout_component_data = MC.canvas.data.get('layout.component'),
+				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				layout_node_data = layout_component_data[ parent.data('type') ],
 				node_connections = layout_node_data[ node_id ].connection,
 				position = target.data('position'),
@@ -2974,6 +3006,29 @@ MC.canvas.event.drawConnection = {
 			});
 
 			MC.canvas.event.clearSelected();
+			// Clean selected
+			// $('#svg_canvas .selected').each(function ()
+			// {
+			// 	Canvon(this).removeClass('selected');
+			// });
+
+			// MC.canvas_property.selected_node = [];
+
+			//Canvon(parent[0]).addClass('selected');
+
+			// Keep hover style on
+			//if ($('#canvas_body').hasClass('canvas-view-sg'))
+			//{
+				$.each(node_connections, function (index, item)
+				{
+					Canvon(item.line).addClass('view-keephover');
+
+					// $('#' + item.target).find('.port-' + item.port).each(function ()
+					// {
+					// 	Canvon(this).addClass('view-keephover');
+					// });
+				});
+			//}
 
 			// Highlight connectable port
 			$.each(connection_option, function (type, option)
@@ -3092,7 +3147,7 @@ MC.canvas.event.drawConnection = {
 									})
 									.find('.port-' + value.to).attr("class", function (index, key)
 									{
-										return "connectable-port " + key;
+										return "connectable-port view-show " + key;
 									});
 							}
 						});
@@ -3219,14 +3274,24 @@ MC.canvas.event.drawConnection = {
 			}
 		}
 
-		$('#svg_canvas .connectable').each(function (index, item)
+		$('#svg_canvas .connectable').each(function ()
 		{
-			Canvon(item).removeClass('connectable');
+			Canvon(this).removeClass('connectable');
 		});
 
-		$('#svg_canvas .connectable-port').each(function (index, item)
+		$('#svg_canvas .view-keephover').each(function ()
 		{
-			Canvon(item).removeClass('connectable-port');
+			Canvon(this).removeClass('view-keephover');
+		});
+
+		$('#svg_canvas .view-show').each(function ()
+		{
+			Canvon(this).removeClass('view-show');
+		});
+
+		$('#svg_canvas .connectable-port').each(function ()
+		{
+			Canvon(this).removeClass('connectable-port');
 		});
 
 		$(document.body).removeClass('disable-event');
@@ -3253,11 +3318,11 @@ MC.canvas.event.siderbarDrag = {
 				canvas_offset = $('#svg_canvas').offset(),
 				node_type = target.data('type'),
 				target_component_type = target.data('component-type'),
+				platform = MC.canvas.data.get('platform'),
 				shadow,
 				clone_node,
 				default_width,
 				default_height,
-				platform,
 				target_group_type,
 				size,
 				component_size;
@@ -3298,20 +3363,6 @@ MC.canvas.event.siderbarDrag = {
 						'height': component_size[1] * MC.canvas.GRID_HEIGHT
 					})
 					.show();
-
-				if (target_component_type === 'node' && node_type !== 'AWS.EC2.EBS.Volume')
-				{
-					platform = MC.canvas.data.get('platform');
-					target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
-
-					$.each(target_group_type, function (index, item)
-					{
-						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
-						{
-							return 'dropable-group ' + key;
-						});
-					});
-				}
 			}
 
 			if (node_type === 'AWS.EC2.EBS.Volume')
@@ -3334,6 +3385,21 @@ MC.canvas.event.siderbarDrag = {
 			}
 			else
 			{
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
+
+				if (target_group_type)
+				{
+					$.each(target_group_type, function (index, item)
+					{
+						if (item !== 'Canvas')
+						{
+							$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
+							{
+								return 'dropable-group ' + key;
+							});
+						}
+					});
+				}
 
 				$(document).on({
 					'mousemove': MC.canvas.event.siderbarDrag.mousemove,
@@ -3443,6 +3509,13 @@ MC.canvas.event.siderbarDrag = {
 							MC.canvas.select(new_node.id);
 						}
 					}
+					else
+					{
+						//dispatch event when is not matched
+						$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
+							type: node_type
+						});
+					}
 				}
 			}
 
@@ -3468,14 +3541,26 @@ MC.canvas.event.siderbarDrag = {
 				);
 
 				if (
-					match_place.is_matched &&
-					areaChild.length === 0 &&
-					MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1])
+					match_place.is_matched
 				)
 				{
-					node_option.groupUId = match_place.target;
-
-					MC.canvas.add(node_type, node_option, coordinate);
+					if (MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]) && areaChild.length === 0)
+					{
+						node_option.groupUId = match_place.target;
+						MC.canvas.add(node_type, node_option, coordinate);
+					}
+					else
+					{
+						//dispatch event when is not blank
+						$("#svg_canvas").trigger("CANVAS_PLACE_OVERLAP");
+					}
+				}
+				else
+				{
+					//dispatch event when is not matched
+					$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
+						type: node_type
+					});
 				}
 			}
 		}
@@ -4096,11 +4181,55 @@ MC.canvas.event.selectNode = function (event)
 	}
 };
 
+MC.canvas.event.nodeHover = function ()
+{
+	if (event.type === 'mouseover')
+	{
+		var target = $(this),
+			target_id = this.id,
+			node_connections = MC.canvas.data.get('layout.component.node.' + target_id + '.connection'),
+			layout_connection_data = MC.canvas.data.get('layout.connection');
+
+		$.each(node_connections, function (index, item)
+		{
+			Canvon(item.line).addClass('view-hover');
+
+			// $('#' + item.target).find('.port-' + item.port).each(function ()
+			// {
+			// 	Canvon(this).addClass('view-hover');
+			// });
+		});
+
+		// target.find('.port').each(function ()
+		// {
+		// 	Canvon(this).addClass('view-show');
+		// });
+	}
+
+	if (event.type === 'mouseout')
+	{
+		$('#svg_canvas .view-hover').each(function ()
+		{
+			Canvon(this).removeClass('view-hover');
+		});
+
+		// $(this).find('.port').each(function ()
+		// {
+		// 	Canvon(this).removeClass('view-show');
+		// });
+	}
+};
+
 MC.canvas.event.clearSelected = function ()
 {
-	$('#svg_canvas .selected').each(function (index, item)
+	$('#svg_canvas .selected').each(function ()
 	{
-		Canvon(item).removeClass('selected');
+		Canvon(this).removeClass('selected');
+	});
+
+	$('#svg_canvas .view-show').each(function ()
+	{
+		Canvon(this).removeClass('view-show');
 	});
 
 	MC.canvas_property.selected_node = [];

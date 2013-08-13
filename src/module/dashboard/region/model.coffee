@@ -285,8 +285,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             id          = item.id
             name        = item.name
             create_time = item.time_create
-            update_time = item.time_update
-            id_code     = MC.base64Encode(id)
+            id_code     = item.key
+
+            update_time =  Math.round(+new Date())
 
             status      = "play"
             isrunning   = true
@@ -303,7 +304,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 status = "pending"
 
             if flag == 'app'
-                id_code     = MC.base64Encode(item.stack_id) #temp
                 date = new Date()
                 start_time = null
                 stop_time = null

@@ -191,6 +191,16 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             console.log $(event.currentTarget).find('.thumbnail-name').text(), event.currentTarget.id, this.region
             ide_event.trigger ide_event.OPEN_STACK_TAB, $(event.currentTarget).find('.thumbnail-name').text(), this.region, event.currentTarget.id
 
+        updateStackThumbnail : ( url ) ->
+            console.log 'updateStackThumbnail, url = ' + url
+            _.each $( '#region-stat-stack' ).children(), ( item ) ->
+                $item = $ item
+                if $item.attr('style').indexOf( url ) isnt -1
+                    new_url = 'https://s3.amazonaws.com/madeiracloudthumbnail/' + url + '?time=' + Math.round(+new Date())
+                    console.log 'new_url = ' + new_url
+                    $item.removeAttr 'style'
+                    $item.css 'background-image', 'url(' + new_url + ')'
+
     }
 
     return GegionView

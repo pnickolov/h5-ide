@@ -34,7 +34,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.mul
             if new_ip
                 #validation check
                 if new_ip in ori_ips
-                    notification 'warn', 'IP Prefixes must be unique from each other'
+                    notification 'warning', 'IP Prefixes must be unique from each other'
 
                 me.trigger 'VPN_ADD_IP', new_ip
             else

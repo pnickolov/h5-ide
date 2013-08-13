@@ -19,6 +19,31 @@
 	background: #fff url('../images/ide/grid.png');
 }
 
+/*.canvas-view-sg .line-sg,
+.canvas-view-sg .port-instance-sg {
+	visibility: visible;
+	fill-opacity: 0.1;
+}
+
+.canvas-view-sg .line path {
+	fill-opacity: 0.1 !important;
+}*/
+
+.view-hover,
+.view-keephover {
+	visibility: visible !important;
+	opacity: 0.7 !important;
+}
+
+.view-show {
+	visibility: visible !important;
+	opacity: 1 !important;
+}
+
+.selected .port {
+	visibility: visible !important;
+}
+
 #screenshot_canvas_body {
 	padding: 10px;
 	background: #FFF url('../images/ide/grid.png');
@@ -237,13 +262,14 @@
 	fill: rgba(255, 255, 255, 0);
 }
 
-#line_layer g.line {
-	opacity: .6;
+/* line connection */
+#line_layer .line {
+	opacity: 0.2;
 }
 
-/* line connection */
 .line.selected,
 .line.selected path {
+	display: block !important;
 	opacity: 1 !important;
 	stroke-width: 4px !important;
 }

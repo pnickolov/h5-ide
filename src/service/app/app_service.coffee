@@ -364,7 +364,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
         #return vo
         res = {}
-        res[region] = resourceMap nodes for region, nodes of result
+        res = resourceMap result
 
 
         res

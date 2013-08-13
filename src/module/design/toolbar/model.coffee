@@ -143,6 +143,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     if !result.is_error
                         console.log 'save stack successfully'
+                        
+                        # track
+                        analytics.track "Saved Stack",
+                            stack_name: data.name,
+                            stack_region: data.region,
+                            stack_id: data.id
 
                         #update initial data
                         MC.canvas_property.original_json = JSON.stringify( data )
@@ -172,6 +178,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     if !result.is_error
                         console.log 'create stack successfully'
+                        
+                        # track
+                        analytics.track "Saved Stack",
+                            stack_name: data.name,
+                            stack_region: data.region,
+                            stack_id: data.id
 
                         new_id = result.resolved_data
                         #temp

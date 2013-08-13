@@ -1013,7 +1013,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     MC.data.resource_list[current_region][res.AutoScalingGroupARN] = res
                     null
 
-            #asg
+            #asg instance
             if resources.DescribeAutoScalingInstances
                 _.map resources.DescribeAutoScalingInstances.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.InstanceId] = res
@@ -1027,7 +1027,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             #asl nc
             if resources.DescribeNotificationConfigurations
-                MC.data.resource_list[current_region].NotificationConfigurations = []
+
+                #init
+                if !MC.data.resource_list[current_region].NotificationConfigurations
+                    MC.data.resource_list[current_region].NotificationConfigurations = []
+
                 _.map resources.DescribeNotificationConfigurations.member, ( res, i ) ->
                     MC.data.resource_list[current_region].NotificationConfigurations.push res
                     null
@@ -1052,8 +1056,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             #sns sub
             if resources.ListSubscriptions
+
+                #init
+                if !MC.data.resource_list[current_region].Subscriptions
+                    MC.data.resource_list[current_region].Subscriptions = []
+
                 _.map resources.ListSubscriptions.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.SubscriptionArn] = res
+                    MC.data.resource_list[current_region].Subscriptions.push res
                     null
 
             #sns topic

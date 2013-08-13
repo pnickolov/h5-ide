@@ -834,7 +834,8 @@ MC.canvas = {
 			target_type = target.data('type'),
 			svg_canvas = $("#svg_canvas"),
 			clone_node,
-			node_connections;
+			node_connections,
+			layout_connection_data;
 
 		Canvon(target[0]).addClass('selected');
 
@@ -858,6 +859,7 @@ MC.canvas = {
 			svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
 
 			node_connections = MC.canvas.data.get('layout.component.node.' + id + '.connection');
+			layout_connection_data = MC.canvas.data.get('layout.connection');
 
 			$.each(node_connections, function (index, item)
 			{
@@ -867,11 +869,11 @@ MC.canvas = {
 				{
 					Canvon(this).addClass('view-show');
 				});
-			});
 
-			clone.find('.port').each(function ()
-			{
-				Canvon(this).addClass('view-show');
+				clone.find('.port-' + layout_connection_data[ item.line ].target[ id ]).each(function ()
+				{
+					Canvon(this).addClass('view-show');
+				});
 			});
 		}
 
@@ -4143,6 +4145,40 @@ MC.canvas.event.selectNode = function (event)
 		MC.canvas.event.clearSelected();
 
 		MC.canvas.select(this.id);
+	}
+};
+
+MC.canvas.event.nodeHover = function ()
+{
+	if (event.type === 'mouseover')
+	{
+		var target = $(this),
+			target_id = this.id,
+			node_connections = MC.canvas.data.get('layout.component.node.' + target_id + '.connection'),
+			layout_connection_data = MC.canvas.data.get('layout.connection');
+
+		$.each(node_connections, function (index, item)
+		{
+			Canvon(item.line).addClass('view-hover');
+
+			$('#' + item.target).find('.port-' + item.port).each(function ()
+			{
+				Canvon(this).addClass('view-hover');
+			});
+
+			target.find('.port-' + layout_connection_data[ item.line ].target[ target_id ]).each(function ()
+			{
+				Canvon(this).addClass('view-hover');
+			});
+		});
+	}
+
+	if (event.type === 'mouseout')
+	{
+		$('#svg_canvas .view-hover').each(function ()
+		{
+			Canvon(this).removeClass('view-hover');
+		});
 	}
 };
 

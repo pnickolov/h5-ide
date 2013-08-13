@@ -24,8 +24,14 @@
 	display: none;
 }
 
-.view-show {
+.canvas-view-sg .view-hover {
 	display: block !important;
+	fill-opacity: 0.5;
+}
+
+.canvas-view-sg .view-show {
+	display: block !important;
+	fill-opacity: 1 !important;
 }
 
 #screenshot_canvas_body {

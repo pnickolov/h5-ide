@@ -296,6 +296,7 @@ define [], () ->
 
 		ASG               	:   'AWS.AutoScaling.Group'
 		ASL_ACT             :   'AWS.AutoScaling.Activities' #none component
+		ASL_INS             :   'AWS.AutoScaling.Instance' #none component
 		ASL_LC              :   'AWS.AutoScaling.LaunchConfiguration'
 		ASL_NC              :   'AWS.AutoScaling.NotificationConfiguration'
 		ASL_SP              :   'AWS.AutoScaling.ScalingPolicy'

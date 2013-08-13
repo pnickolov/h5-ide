@@ -178,7 +178,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         #TO-DO
 
         #return vo
-        ($.xml2json ($.parseXML result[1])).ListTopicsResponse
+        ($.xml2json ($.parseXML result[1])).ListTopicsResponse.ListTopicsResult.Topics
 
     #private (parser ListTopics return)
     parserListTopicsReturn = ( result, return_code, param ) ->

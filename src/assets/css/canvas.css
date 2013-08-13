@@ -24,7 +24,8 @@
 	display: none;
 }
 
-.canvas-view-sg .view-hover {
+.canvas-view-sg .view-hover,
+.canvas-view-sg .view-keephover {
 	display: block !important;
 	fill-opacity: 0.5;
 }
@@ -259,6 +260,7 @@
 /* line connection */
 .line.selected,
 .line.selected path {
+	display: block !important;
 	opacity: 1 !important;
 	stroke-width: 4px !important;
 }

@@ -1758,8 +1758,6 @@ MC.canvas.volume = {
 			canvas_container.append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
 			bubble_box = $('#volume-bubble-box');
 
-			//console.info(node_volume_data);
-
 			if (target_data.type === 'AWS.AutoScaling.LaunchConfiguration')
 			{
 				$.each(node_volume_data, function (index, item)
@@ -2675,16 +2673,17 @@ MC.canvas.event.dragable = {
 				group_offsetX = coordinate.x - group_coordinate[0];
 				group_offsetY = coordinate.y - group_coordinate[1];
 
-				isBlank = MC.canvas.isBlank(
-									'group',
-									target_id,
-									group_data.type,
-									coordinate.x,
-									coordinate.y,
-									group_size[0],
-									group_size[1]
-								) &&
-						event.data.groupChild.length === unique_stack.length;
+				isBlank =
+					MC.canvas.isBlank(
+						'group',
+						target_id,
+						group_data.type,
+						coordinate.x,
+						coordinate.y,
+						group_size[0],
+						group_size[1]
+					) &&
+					event.data.groupChild.length === unique_stack.length;
 
 				if (
 					(
@@ -2953,6 +2952,7 @@ MC.canvas.event.drawConnection = {
 				node_id = parent.attr('id'),
 				node_type = parent.data('class'),
 				layout_component_data = MC.canvas.data.get('layout.component'),
+				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				layout_node_data = layout_component_data[ parent.data('type') ],
 				node_connections = layout_node_data[ node_id ].connection,
 				position = target.data('position'),
@@ -3005,7 +3005,33 @@ MC.canvas.event.drawConnection = {
 				'canvas_offset': canvas_offset
 			});
 
-			MC.canvas.event.clearSelected();
+			// Clean selected
+			$('#svg_canvas .selected').each(function ()
+			{
+				Canvon(this).removeClass('selected');
+			});
+
+			MC.canvas_property.selected_node = [];
+			//MC.canvas.event.clearSelected();
+
+			// Keep hover style on
+			if ($('#canvas_body').hasClass('canvas-view-sg') && !parent.hasClass('selected'))
+			{
+				$.each(node_connections, function (index, item)
+				{
+					Canvon(item.line).addClass('view-keephover');
+
+					$('#' + item.target).find('.port-' + item.port).each(function ()
+					{
+						Canvon(this).addClass('view-keephover');
+					});
+
+					parent.find('.port-' + layout_connection_data[ item.line ].target[ node_id ]).each(function ()
+					{
+						Canvon(this).addClass('view-keephover');
+					});
+				});
+			}
 
 			// Highlight connectable port
 			$.each(connection_option, function (type, option)
@@ -3251,14 +3277,19 @@ MC.canvas.event.drawConnection = {
 			}
 		}
 
-		$('#svg_canvas .connectable').each(function (index, item)
+		$('#svg_canvas .connectable').each(function ()
 		{
-			Canvon(item).removeClass('connectable');
+			Canvon(this).removeClass('connectable');
 		});
 
-		$('#svg_canvas .connectable-port').each(function (index, item)
+		$('#svg_canvas .view-keephover').each(function ()
 		{
-			Canvon(item).removeClass('connectable-port');
+			Canvon(this).removeClass('view-keephover');
+		});
+
+		$('#svg_canvas .connectable-port').each(function ()
+		{
+			Canvon(this).removeClass('connectable-port');
 		});
 
 		$(document.body).removeClass('disable-event');

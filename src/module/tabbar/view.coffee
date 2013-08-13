@@ -2,7 +2,7 @@
 #  View(UI logic) for tabbar
 #############################
 
-define [ 'backbone', 'jquery', 'handlebars' ], () ->
+define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     TabBarView = Backbone.View.extend {
 
@@ -17,6 +17,8 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
         initialize : ->
             #listen
             $( document ).on 'click', '.new-stack-dialog', this, this.openNewStackDialog
+            #
+            this.listenTo ide_event, 'UPDATE_TAB_ICON', this.updateTabIcon
 
         render   : () ->
             console.log 'tabbar render'
@@ -113,6 +115,17 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
                     temp.html temp.find( 'i' ).get( 0 ).outerHTML + tab_name
                     null
             return original_tab_id
+
+        updateTabIcon : ( type, tab_id ) ->
+            console.log 'updateTabIcon, type = ' + type + ', tab_id = ' + tab_id
+            ###
+            _.each $( '.tabbar-group' ).children(), ( item ) ->
+                $item = $( item )
+                if $item.attr( 'id' ) is 'tab-bar-' + tab_id
+                    $item.find( 'i' ).removeClass 'icon-layers'
+                    if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-tabbar-' + type.toLowerCase()
+                    $item.find( 'i' ).addClass classname
+            ###
     }
 
     return TabBarView

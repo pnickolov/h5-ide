@@ -5,8 +5,9 @@
 define [ 'jquery',
          'text!/module/design/property/asg/template.html',
          'text!/module/design/property/asg/term_template.html',
+         'text!/module/design/property/asg/policy_template.html',
          'event'
-], ( $, template, term_template, ide_event ) ->
+], ( $, template, term_template, policy_template, ide_event ) ->
 
     #
     current_view     = null
@@ -15,8 +16,9 @@ define [ 'jquery',
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-asg-tmpl">' + template + '</script>'
     term_template = '<script type="text/x-handlebars-template" id="property-asg-term-tmpl">' + term_template + '</script>'
+    policy_template = '<script type="text/x-handlebars-template" id="property-asg-policy-tmpl">' + policy_template + '</script>'
     #load remote html template
-    $( 'head' ).append( template ).append( term_template )
+    $( 'head' ).append( template ).append( term_template ).append( policy_template )
 
     #private
     loadModule = ( uid, current_main ) ->
@@ -82,6 +84,10 @@ define [ 'jquery',
             view.on 'SET_HEALTH_CHECK_GRACE', ( value ) ->
 
                 model.setHealthCheckGrace uid, value
+
+            view.on 'SET_POLICY', ( data ) ->
+
+                model.setPolicy uid, data
 
 
 

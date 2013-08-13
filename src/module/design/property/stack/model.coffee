@@ -139,6 +139,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             this.set 'has_asg', has_asg
             null
 
+        deleteSNS : ( uid ) ->
+
+            delete MC.canvas_data.component[uid]
+
+            null
+
         getSubscription : () ->
 
             sub_list = []

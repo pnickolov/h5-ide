@@ -90,7 +90,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeAutoScalingGroupsResponse
+		($.xml2json ($.parseXML result[1])).DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups
 
 	#private (parser DescribeAutoScalingGroups return)
 	parserDescribeAutoScalingGroupsReturn = ( result, return_code, param ) ->
@@ -480,4 +480,10 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	DescribeScalingProcessTypes  : DescribeScalingProcessTypes
 	DescribeScheduledActions     : DescribeScheduledActions
 	DescribeTags                 : DescribeTags
+
+	resolveDescribeAutoScalingGroupsResult           : resolveDescribeAutoScalingGroupsResult
+	resolveDescribeLaunchConfigurationsResult        : resolveDescribeLaunchConfigurationsResult
+	resolveDescribeNotificationConfigurationsResult  : resolveDescribeNotificationConfigurationsResult
+	resolveDescribePoliciesResult                    : resolveDescribePoliciesResult
+	resolveDescribeScheduledActionsResult            : resolveDescribeScheduledActionsResult
 

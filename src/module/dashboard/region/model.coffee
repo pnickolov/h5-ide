@@ -2,7 +2,7 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'constant' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, constant) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'autoscaling_model', 'constant' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, autoscaling_model, constant) ->
 
     current_region  = null
     resource_source = null
@@ -155,7 +155,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 "sub_info":[
                     {"key": [ "AutoScalingGroupName" ], "show_key": "AutoScalingGroupName"}
                     {"key": [ "AutoScalingGroupARN" ], "show_key": "AutoScalingGroupARN"}
-                    {"key": [ "AvailabilityZones" ], "show_key": "AvailabilityZones"}
+                    {"key": [ "AvailabilityZones", "member" ], "show_key": "AvailabilityZones"}
                     {"key": [ "CreatedTime" ], "show_key": "CreatedTime"}
                     {"key": [ "DefaultCooldown" ], "show_key": "DefaultCooldown"}
                     {"key": [ "DesiredCapacity" ], "show_key": "DesiredCapacity"}
@@ -164,11 +164,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     {"key": [ "HealthCheckType" ], "show_key": "HealthCheckType"}
                     {"key": [ "Instances" ], "show_key": "Instances"}
                     {"key": [ "LaunchConfigurationName" ], "show_key": "LaunchConfigurationName"}
-                    {"key": [ "LoadBalancerNames" ], "show_key": "LoadBalancerNames"}
+                    {"key": [ "LoadBalancerNames", 'member' ], "show_key": "LoadBalancerNames"}
                     {"key": [ "MaxSize" ], "show_key": "MaxSize"}
                     {"key": [ "MinSize" ], "show_key": "MinSize"}
                     {"key": [ "Status" ], "show_key": "Status"}
-                    {"key": [ "TerminationPolicies" ], "show_key": "TerminationPolicies"}
+                    {"key": [ "TerminationPolicies", 'member' ], "show_key": "TerminationPolicies"}
                     {"key": [ "VPCZoneIdentifier" ], "show_key": "VPCZoneIdentifier"}
 
                 ]
@@ -177,7 +177,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 "title" : "AlarmName"
                 "sub_info":[
                     {"key": [ "ActionsEnabled" ], "show_key": "ActionsEnabled"}
-                    {"key": [ "AlarmActions" ], "show_key": "AlarmActions"}
+                    {"key": [ "AlarmActions", "member" ], "show_key": "AlarmActions"}
                     {"key": [ "AlarmArn" ], "show_key": "AlarmArn"}
                     {"key": [ "AlarmDescription" ], "show_key": "AlarmDescription"}
                     {"key": [ "AlarmName" ], "show_key": "AlarmName"}
@@ -193,6 +193,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     {"key": [ "StateValue" ], "show_key": "StateValue"}
                     {"key": [ "Threshold" ], "show_key": "Threshold"}
                     {"key": [ "Unit" ], "show_key": "Unit"}
+                ]
+
+            "ListSubscriptions":
+
+                "title" :   "Endpoint"
+                "sub_info" : [
+                    {"key": [ "Endpoint" ], "show_key": "Endpoint"}
+                    {"key": [ "Owner" ], "show_key": "Owner"}
+                    {"key": [ "Protocol" ], "show_key": "Protocol"}
+                    {"key": [ "SubscriptionArn" ], "show_key": "SubscriptionArn"}
+                    {"key": [ "TopicArn" ], "show_key": "TopicArn"}
+
                 ]
 
     #websocket
@@ -273,8 +285,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             id          = item.id
             name        = item.name
             create_time = item.time_create
-            update_time = item.time_update
-            id_code     = MC.base64Encode(id)
+            id_code     = item.key
+
+            update_time =  Math.round(+new Date())
 
             status      = "play"
             isrunning   = true
@@ -291,7 +304,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 status = "pending"
 
             if flag == 'app'
-                id_code     = MC.base64Encode(item.stack_id) #temp
                 date = new Date()
                 start_time = null
                 stop_time = null
@@ -997,49 +1009,49 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             #asg
             if resources.DescribeAutoScalingGroups
-                _.map resources.DescribeAutoScalingGroups.item, ( res, i ) ->
+                _.map resources.DescribeAutoScalingGroups.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.AutoScalingGroupName] = res
                     null
 
             #asl lc
             if resources.DescribeLaunchConfigurations
-                _.map resources.DescribeLaunchConfigurations.item, ( res, i ) ->
+                _.map resources.DescribeLaunchConfigurations.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.LaunchConfigurationName] = res
                     null
 
             #asl nc
             if resources.DescribeNotificationConfigurations
-                _.map resources.DescribeNotificationConfigurations.item, ( res, i ) ->
+                _.map resources.DescribeNotificationConfigurations.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.TopicARN + res.NotificationType] = res
                     null
 
             #asl sp
             if resources.DescribePolicies
-                _.map resources.DescribePolicies.item, ( res, i ) ->
+                _.map resources.DescribePolicies.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.PolicyName] = res
                     null
 
             #asl sa
             if resources.DescribeScheduledActions
-                _.map resources.DescribeScheduledActions.item, ( res, i ) ->
+                _.map resources.DescribeScheduledActions.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.ScheduledActionName] = res
                     null
 
             #clw
             if resources.DescribeAlarms
-                _.map resources.DescribeAlarms.item, ( res, i ) ->
+                _.map resources.DescribeAlarms.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.AlarmNames] = res
                     null
 
             #sns sub
             if resources.ListSubscriptions
-                _.map resources.ListSubscriptions.item, ( res, i ) ->
+                _.map resources.ListSubscriptions.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.SubscriptionArn] = res
                     null
 
             #sns topic
             if resources.ListTopics
-                _.map resources.ListTopics.item, ( res, i ) ->
+                _.map resources.ListTopics.member, ( res, i ) ->
                     MC.data.resource_list[current_region][res.TopicArn] = res
                     null
 
@@ -1056,9 +1068,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             me = this
 
-            lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0}
+            lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0, AutoScalingGroup:0, SNS:0, CW:0}
 
-            lists.Not_Used = { 'EIP' : 0, 'Volume' : 0 }
+            lists.Not_Used = { 'EIP' : 0, 'Volume' : 0 , SNS:0, CW:0}
 
             owner = atob $.cookie( 'usercode' )
 
@@ -1113,13 +1125,82 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     null
 
+            # sns
+            if resources.ListSubscriptions
+
+                _.map resources.ListSubscriptions.member, ( sub, i ) ->
+
+                    lists.SNS+=1
+                    sub.detail = me.parseSourceValue 'ListSubscriptions', sub, "detail", null
+
+                    if sub.SubscriptionArn is 'PendingConfirmation'
+
+                        sub.pending_state = 'PendingConfirmation'
+
+                        lists.Not_Used.SNS+=1
+
+                    else
+
+                        sub.success_state = 'Success'
+
+                    sub.topic = sub.TopicArn.split(":")[5]
+
+                    null
+
             # autoscaling
             if resources.DescribeAutoScalingGroups
 
-                _.map resources.DescribeAutoScalingGroups, ( asl, i ) ->
+                _.map resources.DescribeAutoScalingGroups.member, ( asl, i ) ->
+                    lists.AutoScalingGroup+=1
+                    _.map asl.tagSet, ( tag ) ->
 
+                        if tag.key == 'app'
+
+                            asl.app = tag.value
+
+                        if tag.key == 'Created by' and tag.value == owner
+
+                            asl.owner = tag.value
+
+                        null
 
                     asl.detail = me.parseSourceValue 'DescribeAutoScalingGroups', asl, "detail", null
+
+                    if resources.DescribeScalingActivities
+
+                        $.each resources.DescribeScalingActivities.member, ( idx, activity ) ->
+
+                            if activity.AutoScalingGroupName is asl.AutoScalingGroupName
+
+                                asl.last_activity = activity.Cause
+
+                                asl.activity_state = activity.StatusCode
+
+                                return false
+
+                    null
+
+            if resources.DescribeAlarms
+
+                _.map resources.DescribeAlarms.member, ( alarm, i ) ->
+
+                    lists.CW+=1
+
+                    alarm.dimension_display = alarm.Dimensions.member[0].Name + ':' + alarm.Dimensions.member[0].Value
+                    alarm.threshold_display = "#{alarm.MetricName} #{alarm.ComparisonOperator} #{alarm.Threshold} for #{alarm.Period} seconds"
+
+                    if alarm.StateValue is 'OK'
+
+                        alarm.state_ok = true
+
+                    else if alarm.StateValue is 'ALARM'
+                        lists.Not_Used.CW += 1
+                        alarm.state_alarm = true
+
+                    else
+                        alarm.state_insufficient = true
+
+                    alarm.detail = me.parseSourceValue 'DescribeAlarms', alarm, "detail", null
 
                     null
 
@@ -1172,6 +1253,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     ins.detail = me.parseSourceValue 'DescribeInstances', ins, "detail", null
 
                     #popup_key_set.detail.DescribeInstances.sub_info.pop() for j in delete_index
+                    ins.launchTime = MC.dateFormat(new Date(ins.launchTime),'yyyy-MM-dd hh:mm:ss')
 
                     is_managed = false
 
@@ -1245,6 +1327,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 _.map resources.DescribeVolumes, ( vol, i )->
 
                     vol.detail = me.parseSourceValue 'DescribeVolumes', vol, "detail", null
+
+                    vol.createTime = MC.dateFormat(new Date(vol.createTime),'yyyy-MM-dd hh:mm:ss')
 
                     lists.Not_Used.Volume++ if vol.status == "available"
 
@@ -1450,6 +1534,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             resources[res_type.CLW]       =   {}
             resources[res_type.SNS_SUB]   =   {}
             resources[res_type.SNS_TOPIC] =   {}
+            resources[res_type.ASL_ACT]   =   {}
 
 
             aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources

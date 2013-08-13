@@ -10,7 +10,16 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
+define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_service'
+         'keypair_service', 'securitygroup_service', 'elb_service', 'iam_service', 'acl_service'
+         'customergateway_service', 'dhcp_service', 'eni_service', 'internetgateway_service', 'routetable_service'
+         'autoscaling_service', 'cloudwatch_service', 'sns_service',
+         'subnet_service', 'vpc_service', 'vpn_service', 'vpngateway_service', 'ec2_service', 'ami_service' ], (MC, result_vo, constant, ebs_service, eip_service, instance_service
+         keypair_service, securitygroup_service, elb_service, iam_service, acl_service
+         customergateway_service, dhcp_service, eni_service, internetgateway_service, routetable_service,
+         autoscaling_service, cloudwatch_service, sns_service,
+         subnet_service, vpc_service, vpn_service, vpngateway_service, ec2_service, ami_service) ->
+
 
     URL = '/app/'
 
@@ -299,28 +308,41 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 
     #///////////////// Parser for resource return (need resolve) /////////////////
-    #resourceMap = ( result ) ->
-    #    responses = {
-    #         "DescribeVolumesResponse"              :   ebs_parser.resolveDescribeVolumesResult
-    #         "DescribeSnapshotsResponse"            :   ebs_parser.resolveDescribeSnapshotsResult
-    #         "DescribeAddressesResponse"            :   eip_parser.resolveDescribeAddressesResult
-    #         "DescribeInstancesResponse"            :   instance_parser.resolveDescribeInstancesResult
-    #         "DescribeKeyPairsResponse"             :   keypair_parser.resolveDescribeKeyPairsResult
-    #         "DescribeSecurityGroupsResponse"       :   securitygroup_parser.resolveDescribeSecurityGroupsResult
-    #         "DescribeLoadBalancersResponse"        :   elb_parser.resolveDescribeLoadBalancersResult
-    #         "DescribeNetworkAclsResponse"          :   acl_parser.resolveDescribeNetworkAclsResult
-    #         "DescribeCustomerGatewaysResponse"     :   customergateway_parser.resolveDescribeCustomerGatewaysResult
-    #         "DescribeDhcpOptionsResponse"          :   dhcp_parser.resolveDescribeDhcpOptionsResult
-    #         "DescribeNetworkInterfacesResponse"    :   eni_parser.resolveDescribeNetworkInterfacesResult
-    #         "DescribeInternetGatewaysResponse"     :   internetgateway_parser.resolveDescribeInternetGatewaysResult
-    #         "DescribeRouteTablesResponse"          :   routetable_parser.resolveDescribeRouteTablesResult
-    #         "DescribeSubnetsResponse"              :   subnet_parser.resolveDescribeSubnetsResult
-    #         "DescribeVpcsResponse"                 :   vpc_parser.resolveDescribeVpcsResult
-    #         "DescribeVpnConnectionsResponse"       :   vpn_parser.resolveDescribeVpnConnectionsResult
-    #         "DescribeVpnGatewaysResponse"          :   vpngateway_parser.resolveDescribeVpnGatewaysResult
-    #    }
+    resourceMap = ( result ) ->
+       responses = {
+            "DescribeImagesResponse"               :   ami_service.resolveDescribeImagesResult
+            "DescribeAvailabilityZonesResponse"    :   ec2_service.resolveDescribeAvailabilityZonesResult
+            "DescribeVolumesResponse"              :   ebs_service.resolveDescribeVolumesResult
+            "DescribeSnapshotsResponse"            :   ebs_service.resolveDescribeSnapshotsResult
+            "DescribeAddressesResponse"            :   eip_service.resolveDescribeAddressesResult
+            "DescribeInstancesResponse"            :   instance_service.resolveDescribeInstancesResult
+            "DescribeKeyPairsResponse"             :   keypair_service.resolveDescribeKeyPairsResult
+            "DescribeSecurityGroupsResponse"       :   securitygroup_service.resolveDescribeSecurityGroupsResult
+            "DescribeLoadBalancersResponse"        :   elb_service.resolveDescribeLoadBalancersResult
+            "DescribeNetworkAclsResponse"          :   acl_service.resolveDescribeNetworkAclsResult
+            "DescribeCustomerGatewaysResponse"     :   customergateway_service.resolveDescribeCustomerGatewaysResult
+            "DescribeDhcpOptionsResponse"          :   dhcp_service.resolveDescribeDhcpOptionsResult
+            "DescribeNetworkInterfacesResponse"    :   eni_service.resolveDescribeNetworkInterfacesResult
+            "DescribeInternetGatewaysResponse"     :   internetgateway_service.resolveDescribeInternetGatewaysResult
+            "DescribeRouteTablesResponse"          :   routetable_service.resolveDescribeRouteTablesResult
+            "DescribeSubnetsResponse"              :   subnet_service.resolveDescribeSubnetsResult
+            "DescribeVpcsResponse"                 :   vpc_service.resolveDescribeVpcsResult
+            "DescribeVpnConnectionsResponse"       :   vpn_service.resolveDescribeVpnConnectionsResult
+            "DescribeVpnGatewaysResponse"          :   vpngateway_service.resolveDescribeVpnGatewaysResult
+            #
+            "DescribeAutoScalingGroupsResponse"            :   autoscaling_service.resolveDescribeAutoScalingGroupsResult
+            "DescribeLaunchConfigurationsResponse"         :   autoscaling_service.resolveDescribeLaunchConfigurationsResult
+            "DescribeNotificationConfigurationsResponse"   :   autoscaling_service.resolveDescribeNotificationConfigurationsResult
+            "DescribePoliciesResponse"                     :   autoscaling_service.resolveDescribePoliciesResult
+            "DescribeScheduledActionsResponse"             :   autoscaling_service.resolveDescribeScheduledActionsResult
+            "DescribeScalingActivitiesResponse"            :   autoscaling_service.resolveDescribeScalingActivitiesResult
+            "DescribeAlarmsResponse"                       :   cloudwatch_service.resolveDescribeAlarmsResult
+            "ListSubscriptionsResponse"                    :   sns_service.resolveListSubscriptionsResult
+            "ListTopicsResponse"                           :   sns_service.resolveListTopicsResult
 
-    #    (responses[($.parseXML node[1]).documentElement.localName] node for node in result)
+       }
+
+       (responses[($.parseXML node[1]).documentElement.localName] node for node in result)
 
     #private (resolve result to vo )
     resolveResourceResult = ( result ) ->

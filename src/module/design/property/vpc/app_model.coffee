@@ -39,13 +39,14 @@ define ['constant', 'backbone', 'MC' ], ( constant ) ->
                 if vpc.mainRTB
                   break
 
-          dhcpData = appData[ vpc.dhcpOptionsId ].dhcpConfigurationSet.item
-          dhcp = {}
+          if vpc.dhcpOptionsId
+            dhcpData = appData[ vpc.dhcpOptionsId ].dhcpConfigurationSet.item
+            dhcp = {}
 
-          for i in dhcpData
-            dhcp[ MC.camelCase( i.key ) ] = i.valueSet
+            for i in dhcpData
+              dhcp[ MC.camelCase( i.key ) ] = i.valueSet
 
-          vpc.dhcp = dhcp
+            vpc.dhcp = dhcp
 
           this.set vpc
     }

@@ -58,6 +58,7 @@ require.config {
 		'UI.multiinputbox'  : 'ui/common/UI.multiinputbox'
 		'UI.zeroclipboard'  : 'ui/common/UI.zeroclipboard'
 		'UI.sortable'       : 'ui/common/jquery.sortable'
+		'UI.parsely' 	    : 'ui/common/UI.parsley.js'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'

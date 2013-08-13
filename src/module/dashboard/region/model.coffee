@@ -1027,8 +1027,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             #asl nc
             if resources.DescribeNotificationConfigurations
+                MC.data.resource_list[current_region]['NotificationConfigurations'] = []
                 _.map resources.DescribeNotificationConfigurations.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.TopicARN + res.NotificationType] = res
+                    MC.data.resource_list[current_region]['NotificationConfigurations'].push res
                     null
 
             #asl sp

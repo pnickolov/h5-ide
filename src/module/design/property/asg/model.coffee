@@ -12,6 +12,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       name : null
       has_sns_topic : null
       hasLaunchConfig : null
+      notification_type : null
 
     initialize : ->
       null
@@ -110,6 +111,34 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
           null
 
+      nc_array = [false, false, false, false, false]
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.split('.')[0][1...] is uid
+
+          if 'autoscaling:EC2_INSTANCE_LAUNCH' in comp.resource.NotificationType
+            nc_array[0] = true
+
+          if 'autoscaling:EC2_INSTANCE_LAUNCH_ERROR' in comp.resource.NotificationType
+
+            nc_array[1] = true
+
+          if 'autoscaling:EC2_INSTANCE_TERMINATE' in comp.resource.NotificationType
+
+            nc_array[2] = true
+
+          if 'autoscaling:EC2_INSTANCE_TERMINATE_ERROR' in comp.resource.NotificationType
+
+            nc_array[3] = true
+
+          if 'autoscaling:TEST_NOTIFICATION' in comp.resource.NotificationType
+
+            nc_array[4] = true
+
+          return false
+
+      this.set 'notification_type', nc_array
       this.set 'policies', policies
 
       this.set 'asg', asg

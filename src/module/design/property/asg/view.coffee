@@ -202,11 +202,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 $selectbox = $("#asg-policy-#{value}")
                 $selected  = null
 
-                $selectbox.find(".item").each ()->
-                    $this = $(this)
-                    if $this.data("id") is data[key]
-                        $selected = $this
-                        return false
+                for item in $selectbox.find(".item")
+                    $item = $(item)
+                    if $item.data("id") is data[key]
+                        $selected = $item
+                        break
 
                 if $selected
                     $selectbox.find(".selected").removeClass "selected"

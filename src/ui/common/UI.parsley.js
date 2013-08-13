@@ -37,7 +37,7 @@
           , alphanum:   "This value should be alphanumeric."
           , phone:      "This value should be a valid phone number."
 
-         // hack 
+         // hack
           , ipaddress:      "This value should be a valid ip address."
           , ipv4:      "This value should be a valid IPv4 address."
           , cidr:      "This value should be a valid CIDR."
@@ -417,7 +417,7 @@
 
           var regExp = $( this ).data( 'regexp' ) || '^[0-9a-zA-Z-]*$';
 
-          // delay handler function 
+          // delay handler function
           var delayHandler = function(origin, context, times) {
 
             return function( e ) {
@@ -426,7 +426,7 @@
                   return;
                 }
                 var getResult = function(val) {
-                  return that.Validator.validators[ 'regexp' ]( val, regExp, that ); 
+                  return that.Validator.validators[ 'regexp' ]( val, regExp, that );
                 }
 
                 var result = getResult($( context ).val());
@@ -466,9 +466,10 @@
               127   // Delete
             ]
 
+
             var isLetter = keyCode >= 65 && keyCode <= 90;
             var isNum = keyCode  >= 48 && keyCode <= 57 && shift === false;
-            var isMinus = keyCode === 45 || keyCode === 189 && shift === false; 
+            var isMinus = keyCode === 45 || keyCode === 189 && shift === false;
             var isPaste = keyCode === 86 && ctrl;
 
             // paste validate on keyup
@@ -1487,7 +1488,7 @@ var getForm = function( context ) {
   if ( context.nodeName === 'form' || true === $( context ).data( 'bind' ) ) {
     form = $( context );
   } else {
-    var form = $( context ).closest('form, [data-bind="true"]'); 
+    var form = $( context ).closest('form, [data-bind="true"]');
   }
 
   return form;
@@ -1511,7 +1512,7 @@ var bindForm = function( e ) {
       }
     });
   }
-  
+
 }
 
 var bindFiled = function( e ) {
@@ -1524,10 +1525,10 @@ var bindFiled = function( e ) {
     if ( isBind( form ) ) {
       formAddItem( form, this );
     } else {
-      form.parsley();
+      form.parsley( { validationMinlength: 1 } );
     }
   } else {
-    $( this ).parsley();
+    $( this ).parsley( { validationMinlength: 1 } );
   }
 
 }
@@ -1543,7 +1544,7 @@ $(document.body).on( 'submit', 'form[data-validate="parsley"]', bindForm);
 // element.parsley-submit click auto bind
 $(document.body).on( 'click', '.parsley-submit', bindForm);
 
-// element.parsley-submit click run validate 
+// element.parsley-submit click run validate
 $(document.body).on( 'click', '.parsley-submit', formValidate);
 
 // global bind on single input

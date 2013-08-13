@@ -5,40 +5,40 @@
 		<section class="property-control-group">
 			<label class="left" for="property-asg-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input class="input" type="text" required="required" value="{{asg.resource.AutoScalingGroupName}}" id="property-asg-name"/>
+			<input class="input" type="text" required="required" value="{{asg.AutoScalingGroupName}}" id="property-asg-name"/>
 		</section>
 
 		<section class="property-control-group clearfix">
 			<div class="left" style="width:40%;">
 				<label for="property-asg-min">Minimum Size</label>
-				<input class="input" type="text" id="property-asg-min" value="{{asg.resource.MinSize}}">
+				<input class="input" type="text" id="property-asg-min" value="{{asg.MinSize}}">
 			</div>
 			<div class="right" style="width:40%;">
 				<label for="property-asg-max">Maximum Size</label>
-				<input class="input" type="text" id="property-asg-max" value="{{asg.resource.MaxSize}}">
+				<input class="input" type="text" id="property-asg-max" value="{{asg.MaxSize}}">
 			</div>
 	  </section>
 
 		<section class="property-control-group">
 			<label>Desired Capacity</label>
-			<input type="text" id="property-asg-capacity" value="{{asg.resource.DesiredCapacity}}">
+			<input type="text" id="property-asg-capacity" value="{{asg.DesiredCapacity}}">
 		</section>
 
 		<section class="property-control-group">
 			<label>Default Cooldown</label>
-			<input type="text" id="property-asg-cooldown" value="{{asg.resource.DefaultCooldown}}">
+			<input type="text" id="property-asg-cooldown" value="{{asg.DefaultCooldown}}">
 			<span>seconds</span>
 		</section>
 
 		<section class="property-control-group clearfix">
 			<label>Health Check Type</label>
 			<div class="radio">
-				<input id="property-asg-ec2" type="radio" value="ec2" {{#if asg.resource.ec2}}checked="true"{{/if}} name="property-asg-hc-option" />
+				<input id="property-asg-ec2" type="radio" value="ec2" {{#if asg.ec2}}checked="true"{{/if}} name="property-asg-hc-option" />
 				<label for="property-asg-ec2"></label>
 			</div>
 			<label for="property-asg-ec2">EC2</label>
 			<div class="radio">
-				<input id="property-asg-elb" type="radio" value="elb" {{#if asg.resource.elb}}checked="true"{{/if}} name="property-asg-hc-option" />
+				<input id="property-asg-elb" type="radio" value="elb" {{#if asg.elb}}checked="true"{{/if}} name="property-asg-hc-option" />
 				<label for="property-asg-elb"></label>
 			</div>
 			<label for="property-asg-elb">ELB</label>
@@ -46,7 +46,7 @@
 
 		<section class="property-control-group">
 			<label>Health Check Grace Period</label>
-			<input type="text" id="property-asg-healthcheck" value="{{asg.resource.HealthCheckGracePeriod}}">
+			<input type="text" id="property-asg-healthcheck" value="{{asg.HealthCheckGracePeriod}}">
 			<span>seconds</span>
 		</section>
 	</div>
@@ -55,11 +55,33 @@
 	<div class="option-group">
 		<section class="property-control-group pos-r">
 			<p>Termination Policy</p>
-			<p>Default</p>
+			<p>{{term_policy_brief}}</p>
 			<i class="icon-edit" id="property-asg-term-edit"></i>
 		</section>
 
-		<ul>
+		<ul id="property-asg-policies">
+			<li class="pos-r hide">
+        <h5 class="name"></h5>
+				<span class="asg-p-metric"></span>
+        <span class="asg-p-eval"></span>
+        <span class="asg-p-periods"></span>
+        <span class="asg-p-trigger"></span>
+        <span class="asg-p-adjust"></span>
+        <i class="icon-edit"></i>
+        <i class="icon-del"></i>
+      </li>
+      {{#each policies}}
+      <li class="pos-r" data-uid="{{uid}}">
+        <h5 class="name">{{name}}</h5>
+      	<span class="asg-p-metric">{{metric}}</span>
+        <span class="asg-p-eval">{{evaluation}} {{threshold}}{{unit}}</span>
+        <span class="asg-p-periods">{{periods}}x{{second}}s</span>
+        <span class="asg-p-trigger">{{trigger}}</span>
+        <span class="asg-p-adjust">{{adjustment}} {{adjusttype}}</span>
+        <i class="icon-edit"></i>
+        <i class="icon-del"></i>
+      </li>
+      {{/each}}
 
 		</ul>
 

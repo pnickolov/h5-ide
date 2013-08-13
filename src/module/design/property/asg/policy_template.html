@@ -5,10 +5,10 @@
    </div>
   <div class="scroll-wrap" style="max-height:500px;">
     <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-   <div class="modal-body scroll-content" id="property-asg-policy">
+   <div class="modal-body scroll-content" id="property-asg-policy" data-uid="{{uid}}">
 
       <label for="asg-policy-name">Policy Name</label>
-      <input type="text" class="input" value="{{policyName}}" id="asg-policy-name">
+      <input type="text" class="input" value="{{name}}" id="asg-policy-name">
 
       <section class="dialog-group">
         <h5>Alarm</h5>
@@ -16,16 +16,16 @@
         <div class="selectbox" id="asg-policy-metric">
           <div class="selection">CPU Utillization</div>
           <ul class="dropdown" tabindex="-1">
-            <li data-id="CPUUtilization" class="item selected">CPUUtilization</li>
-            <li data-id="DiskReadOps" class="item">DiskReadOps</li>
-            <li data-id="DiskWriteOps" class="item">DiskWriteOps</li>
-            <li data-id="DiskReadBytes" class="item">DiskReadBytes</li>
-            <li data-id="DiskWriteBytes" class="item">DiskWriteBytes</li>
-            <li data-id="NetworkIn" class="item">NetworkIn</li>
-            <li data-id="NetworkOut" class="item">NetworkOut</li>
-            <li data-id="StatusCheckFailed" class="item">StatusCheckFailed</li>
-            <li data-id="StatusCheckFailed_Instance" class="item">StatusCheckFailed_Instance</li>
-            <li data-id="StatusCheckFailed_System" class="item">StatusCheckFailed_System</li>
+            <li data-id="CPUUtilization" class="item selected">CPU Utilization</li>
+            <li data-id="DiskReadBytes" class="item">Disk Reads</li>
+            <li data-id="DiskReadOps" class="item">Disk Read Operations</li>
+            <li data-id="DiskWriteBytes" class="item">Disk Writes</li>
+            <li data-id="DiskWriteOps" class="item">Disk Write Operations</li>
+            <li data-id="NetworkIn" class="item">Network In</li>
+            <li data-id="NetworkOut" class="item">Network Out</li>
+            <li data-id="StatusCheckFailed" class="item">Status Check Failed (Any)</li>
+            <li data-id="StatusCheckFailed_Instance" class="item">Status Check Failed (Instance)</li>
+            <li data-id="StatusCheckFailed_System" class="item">Status Check Failed (System)</li>
           </ul>
         </div>
         <span>is</span>
@@ -38,12 +38,12 @@
             <li data-id="<=" class="item">&lt;=</li>
           </ul>
         </div>
-        <input type="text" class="input" id="asg-policy-threshold" value={{threshold}}>
-        <span>%</span>
+        <input type="text" class="input" id="asg-policy-threshold" value="{{threshold}}">
+        <span id="asg-policy-unit">%</span>
         <span>for</span>
-        <input type="text" class="input" id="asg-policy-periods" value={{periods}}>
+        <input type="text" class="input" id="asg-policy-periods" value="{{periods}}">
         <span>periods of</span>
-        <input type="text" class="input" id="asg-policy-second" value={{second}}>
+        <input type="text" class="input" id="asg-policy-second" value="{{second}}">
         <span>seconds, enter ALARM state. Start scaling activity when in</span>
         <div class="selectbox" id="asg-policy-trigger">
           <div class="selection">ALARM</div>
@@ -69,7 +69,7 @@
           </ul>
         </div>
         <span>of</span>
-        <input type="text" id="asg-policy-adjust">
+        <input type="text" id="asg-policy-adjust" value="{{adjustment}}">
         <span>.</span>
       </section>
 
@@ -93,22 +93,25 @@
         <section class="dialog-group">
           <h5>Scaling Options</h5>
           <label for="asg-policy-cooldown">Cooldown Period</label>
-          <input type="text" class="input" id="asg-policy-cooldown">
+          <input type="text" class="input" id="asg-policy-cooldown" value="{{cooldown}}">
           <span>seconds</span>
-          <label for="asg-policy-step">Minimum Adjust Step</label>
-          <input type="text" class="input" id="asg-policy-step">
+
+          <span id="asg-policy-step-wrapper">
+            <label for="asg-policy-step">Minimum Adjust Step</label>
+            <input type="text" class="input" id="asg-policy-step" value="{{step}}">
+          </span>
         </section>
 
         <section class="dialog-group">
           <h5>Notification</h5>
           <div class="checkbox">
-            <input id="asg-policy-notify" type="checkbox"/>
+            <input id="asg-policy-notify" type="checkbox" {{#if notify}}checked="checked"{{/if}}/>
             <label for="asg-policy-notify"></label>
           </div>
           <label for="asg-policy-notify">Send notification via SNS topic</label>
 
           {{#if noSNS}}
-          <p>There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.</p>
+          <p {{#unless notify}}class="hide"{{/unless}} id="asg-policy-no-sns">There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.</p>
           {{/if}}
         </section>
       </div>

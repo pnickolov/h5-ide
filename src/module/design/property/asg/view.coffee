@@ -4,16 +4,39 @@
 
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC ) ->
 
+    metricMap =
+        "CPUUtilization"             : "CPU Utilization"
+        "DiskReadBytes"              : "Disk Reads"
+        "DiskReadOps"                : "Disk Read Operations"
+        "DiskWriteBytes"             : "Disk Writes"
+        "DiskWriteOps"               : "Disk Write Operations"
+        "NetworkIn"                  : "Network In"
+        "NetworkOut"                 : "Network Out"
+        "StatusCheckFailed"          : "Status Check Failed (Any)"
+        "StatusCheckFailed_Instance" : "Status Check Failed (Instance)"
+        "StatusCheckFailed_System"   : "Status Check Failed (System)"
+
+    adjustMap =
+        "ChangeInCapacity"        : "Change in Capacity"
+        "ExactCapacity"           : "Exact Capacity"
+        "PercentChangeInCapacity" : "Percent Change in Capacity"
+
+    unitMap =
+        CPUUtilization : "%"
+        DiskReadBytes  : "B"
+        DiskWriteBytes : "B"
+        NetworkIn      : "B"
+        NetworkOut     : "B"
+
     InstanceView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
 
-        template : Handlebars.compile $( '#property-asg-tmpl' ).html()
-
-        term_template : Handlebars.compile $( '#property-asg-term-tmpl' ).html()
-
+        template        : Handlebars.compile $( '#property-asg-tmpl' ).html()
+        term_template   : Handlebars.compile $( '#property-asg-term-tmpl' ).html()
         policy_template : Handlebars.compile $( '#property-asg-policy-tmpl' ).html()
+        app_template    : Handlebars.compile $( '#property-asg-app-tmpl' ).html()
 
         events   :
             "click #property-asg-term-edit"                : "showTermPolicy"
@@ -29,12 +52,28 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             "change #property-asg-cooldown"                : "setASGCoolDown"
             "change #property-asg-healthcheck"             : "setHealthCheckGrace"
             "click #property-asg-policy-add"               : "showScalingPolicy"
+            "click #property-asg-policies .icon-edit"      : "editScalingPolicy"
+            "click #property-asg-policies .icon-del"       : "delScalingPolicy"
 
 
 
-        render     : ( attributes ) ->
+        render     : ( isApp ) ->
             console.log 'property:asg render'
-            $( '.property-details' ).html this.template this.model.attributes
+            data = $.extend true, {}, this.model.attributes
+
+            policies = []
+            for uid, policy of data.policies
+                policy.uid        = uid
+                policy.metric     = metricMap[ policy.metric ]
+                policy.adjusttype = adjustMap[ policy.adjusttype ]
+                policy.unit       = unitMap[ policy.metric ]
+                policies.push policy
+
+            data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
+
+            template = if isApp then this.app_template else this.template
+
+            $( '.property-details' ).html template data
 
         setASGCoolDown : ( event ) ->
 
@@ -61,8 +100,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             this.trigger 'SET_HEALTH_CHECK_GRACE', event.target.value
 
         showTermPolicy : () ->
-            uid = $("#autoscaling-group-property-uid").attr("data-uid")
-            policies = MC.canvas_data.component[uid].resource.TerminationPolicies
+            policies = this.model.attributes.asg.TerminationPolicies
 
             data    = []
             checked = {}
@@ -118,18 +156,88 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
 
             this.trigger 'SET_TERMINATE_POLICY', data
 
-        showScalingPolicy : () ->
-            data =
-                title : "Add"
+        delScalingPolicy  : ( event ) ->
+            $li = $( event.currentTarget ).closest("li")
+            uid = $li.data("uid")
+            $li.remove()
+
+            this.trigger 'DELETE_POLICY', uid
+
+        updateScalingPolicy : ( data ) ->
+            # Add or update the policy
+            metric     = metricMap[ data.metric ]
+            adjusttype = adjustMap[ data.adjusttype ]
+            unit       = unitMap[ data.metric ] || ""
+
+            if not data.uid
+                throw new Error "Cannot find scaling policy uid"
+
+            $policies = $("#property-asg-policies")
+            $li = $policies.children("[data-uid='#{data.uid}']")
+            if $li.length is 0
+                $li = $policies.children(".hide").clone().attr("data-uid", data.uid).removeClass("hide").appendTo $policies
+
+            $li.find(".name").html data.name
+            $li.find(".asg-p-metric").html  metric
+            $li.find(".asg-p-eval").html    data.evaluation + " " + data.threshold + unit
+            $li.find(".asg-p-periods").html data.periods + "x" + data.second + "s"
+            $li.find(".asg-p-trigger").html data.trigger
+            $li.find(".asg-p-adjust").html  data.adjustment + " " + data.adjusttype
+
+        editScalingPolicy : ( event ) ->
+
+            uid = $( event.currentTarget ).closest("li").data("uid")
+
+            data = $.extend true, {}, this.model.attributes.policies[ uid ]
+            data.uid   = uid
+            data.title = "Edit"
+            this.showScalingPolicy( data )
+
+            selectMap =
+                metric     : "metric"
+                evaluation : "eval"
+                trigger    : "trigger"
+                adjusttype : "adjust-type"
+                statistics : "statistics"
+
+            for key, value of selectMap
+                $selectbox = $("#asg-policy-#{value}")
+                $selected  = null
+
+                for item in $selectbox.find(".item")
+                    $item = $(item)
+                    if $item.data("id") is data[key]
+                        $selected = $item
+                        break
+
+                if $selected
+                    $selectbox.find(".selected").removeClass "selected"
+                    $selectbox.find(".selection").html $selected.addClass("selected").html()
+
+        showScalingPolicy : ( data ) ->
+            if !data
+                data =
+                    title : "Add"
+
+            data.noSNS = this.model.attributes.has_sns_topic
 
             modal this.policy_template(data), true
 
             self = this
             $("#property-asg-policy-done").on "click", ()->
-                self.onEidtPolicy()
+                self.onPolicyDone()
                 modal.close()
 
-        onEidtPolicy : () ->
+            $("#asg-policy-adjust-type").on "OPTION_CHANGE", ()->
+                $("#asg-policy-step-wrapper").toggle( $(this).find(".selected").data("id") == "PercentChangeInCapacity" )
+
+            $("#asg-policy-notify").on "click", ()->
+                $("#asg-policy-no-sns").toggle( $("#asg-policy-notify").is(":checked") )
+
+            $("#asg-policy-metric").on "OPTION_CHANGE", ()->
+                $("#asg-policy-unit").html( unitMap[$(this).find(".selected").data("id")] || "" )
+
+        onPolicyDone : () ->
             data =
                 name   : $("#asg-policy-name").val()
                 metric : $("#asg-policy-metric .selected").data("id")
@@ -139,15 +247,18 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                 second     : $("#asg-policy-second").val()
                 trigger    : $("#asg-policy-trigger .selected").data("id")
                 adjusttype : $("#asg-policy-adjust-type .selected").data("id")
-                adjustment : $("#asg-policy-adjust .selected").data("id")
+                adjustment : $("#asg-policy-adjust").val()
                 statistics : $("#asg-policy-statistics .selected").data("id")
                 cooldown   : $("#asg-policy-cooldown").val()
                 step       : $("#asg-policy-step").val()
                 notify     : $("#asg-policy-notify").is(":checked")
+                uid        : $("#property-asg-policy").data("uid")
 
             console.log "Finish Editing Policy : ", data
 
             this.trigger 'SET_POLICY', data
+
+            this.updateScalingPolicy data
 
         updateSNSOption : () ->
             checkArray = []

@@ -178,9 +178,11 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 			"DescribeNotificationConfigurationsResponse"   :   autoscaling_service.resolveDescribeNotificationConfigurationsResult
 			"DescribePoliciesResponse"                     :   autoscaling_service.resolveDescribePoliciesResult
 			"DescribeScheduledActionsResponse"             :   autoscaling_service.resolveDescribeScheduledActionsResult
+			"DescribeScalingActivitiesResponse"            :   autoscaling_service.resolveDescribeScalingActivitiesResult
 			"DescribeAlarmsResponse"                       :   cloudwatch_service.resolveDescribeAlarmsResult
 			"ListSubscriptionsResponse"                    :   sns_service.resolveListSubscriptionsResult
 			"ListTopicsResponse"                           :   sns_service.resolveListTopicsResult
+
 		}
 
 		dict = {}

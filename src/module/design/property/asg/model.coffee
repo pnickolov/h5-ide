@@ -10,8 +10,9 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       uid : null
       asg : null
       name : null
-
+      has_sns_topic : null
       hasLaunchConfig : null
+      notification_type : null
 
     initialize : ->
       null
@@ -40,7 +41,107 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         asg.resource.elb = true
 
-      this.set 'asg', asg
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+          this.set 'has_sns_topic', true
+
+          return false
+
+      policies = {}
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+
+          tmp = {}
+
+          tmp.adjusttype = comp.resource.AdjustmentType
+
+          tmp.adjustment = comp.resource.ScalingAdjustment
+
+          tmp.step = comp.resource.MinAdjustmentStep
+
+          tmp.cooldown = comp.resource.Cooldown
+
+          tmp.name = comp.resource.PolicyName
+
+          $.each MC.canvas_data.component, ( c_uid, c ) ->
+
+            if c.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+
+              actions = [c.resource.InsufficientDataActions, c.resource.OKAction, c.resource.AlarmActions]
+
+              for action in actions
+
+                if action[0] and action[0].split('.')[0][1...] is comp_uid
+
+                  tmp.evaluation = c.resource.ComparisonOperator
+
+                  tmp.metric = c.resource.MetricName
+
+                  if action.length is 2
+
+                    tmp.notify = true
+                  else
+
+                    tmp.notify = false
+
+                  tmp.periods = c.resource.EvaluationPeriods
+
+                  tmp.second = c.resource.Period
+
+                  tmp.statistics = c.resource.Statistic
+
+                  tmp.threshold = c.resource.Threshold
+
+                  if c.resource.InsufficientDataActions.length > 0
+                    tmp.trigger = 'INSUFFICIANT_DATA'
+                  else if c.resource.OKAction.length > 0
+                    tmp.trigger = 'OK'
+                  else if c.resource.AlarmActions.length > 0
+                    tmp.trigger = 'ALARM'
+
+                  return false
+
+          policies[comp_uid]  = tmp
+
+
+          null
+
+      nc_array = [false, false, false, false, false]
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.split('.')[0][1...] is uid
+
+          if 'autoscaling:EC2_INSTANCE_LAUNCH' in comp.resource.NotificationType
+            nc_array[0] = true
+
+          if 'autoscaling:EC2_INSTANCE_LAUNCH_ERROR' in comp.resource.NotificationType
+
+            nc_array[1] = true
+
+          if 'autoscaling:EC2_INSTANCE_TERMINATE' in comp.resource.NotificationType
+
+            nc_array[2] = true
+
+          if 'autoscaling:EC2_INSTANCE_TERMINATE_ERROR' in comp.resource.NotificationType
+
+            nc_array[3] = true
+
+          if 'autoscaling:TEST_NOTIFICATION' in comp.resource.NotificationType
+
+            nc_array[4] = true
+
+          return false
+
+      this.set 'notification_type', nc_array
+      this.set 'policies', policies
+
+      this.set 'asg', asg.resource
 
       this.set 'uid', uid
 
@@ -183,34 +284,139 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       policy_comp = null
 
+      cw_uid = null
+
+      cw_comp = null
+
       if not policy_detail.uid
 
         policy_uid = MC.guid()
 
         policy_comp = $.extend true, {}, MC.canvas.ASL_SP_JSON.data
 
-        policy_comp.resource.AdjustmentType = policy_detail.adjustment
+        policy_comp.uid = policy_uid
 
-        policy_comp.resource.AutoScalingGroupName = '@' + uid + '.resource.AutoScalingGroupName'
+        cw_uid = MC.guid()
 
-        policy_comp.resource.Cooldown = policy_detail.cooldown
+        cw_comp = $.extend true, {}, MC.canvas.CLW_JSON.data
 
-        policy_comp.resource.PolicyName = policy_detail.name
+        # Hack, set the uid here.
+        # So that view knows the newly added item's uid
+        policy_detail.uid = policy_uid
 
-        if AdjustmentType is 'PercentChangeInCapacity'
+      else
 
-          if not policy_detail.minadjust
+        policy_uid = policy_detail.uid
 
-            policy_detail.minadjust = 1
+        policy_comp = MC.canvas_data.component[policy_uid]
 
-          policy_comp.resource.MinAdjustmentStep = policy_detail.minadjust
+        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-        policy_comp.resource.ScalingAdjustment = policy_detail.scalingadjust
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and comp.name is MC.canvas_data.component[policy_uid].name + '-alarm'
 
+            cw_uid = comp.uid
+
+            cw_comp = comp
+
+            return false
+
+      policy_comp.name = policy_detail.name
+
+      policy_comp.resource.AdjustmentType = policy_detail.adjusttype
+
+      policy_comp.resource.AutoScalingGroupName = '@' + uid + '.resource.AutoScalingGroupName'
+
+      policy_comp.resource.Cooldown = policy_detail.cooldown
+
+      policy_comp.resource.PolicyName = policy_detail.name
+
+      if policy_detail.adjustment is 'PercentChangeInCapacity'
+
+        if not policy_detail.step
+
+          policy_detail.step = 1
+
+        policy_comp.resource.MinAdjustmentStep = policy_detail.step
+
+      policy_comp.resource.ScalingAdjustment = policy_detail.adjustment
+
+
+
+      cw_comp.uid = cw_uid
+
+      cw_comp.name = cw_comp.resource.AlarmName = policy_detail.name + '-alarm'
+
+      cw_comp.resource.ComparisonOperator = policy_detail.evaluation
+
+      cw_comp.resource.Dimensions = [{name:"AutoScalingGroupName", value:policy_comp.resource.AutoScalingGroupName}]
+
+      cw_comp.resource.EvaluationPeriods = policy_detail.periods
+
+      cw_comp.resource.MetricName = policy_detail.metric
+
+      cw_comp.resource.Namespace = 'AWS/AutoScaling'
+
+      cw_comp.resource.Period = policy_detail.second
+
+      if policy_detail.statistics
+        cw_comp.resource.Statistic = policy_detail.statistics
+
+      cw_comp.resource.Threshold = policy_detail.threshold
+
+      #cw_comp.resource.Unit = "Seconds"
+
+      policy_arn = '@' + policy_uid + '.resource.PolicyARN'
+
+      topic_arn = null
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+          topic_arn = comp.resource.TopicArn
+
+          return false
+
+      action = null
+
+      switch policy_detail.trigger
+
+        when 'ALARM'
+
+          action = cw_comp.resource.AlarmActions
+
+        when 'INSUFFICIANT_DATA'
+
+          action = cw_comp.resource.InsufficientDataActions
+
+        when 'OK'
+
+          action = cw_comp.resource.OKAction
+
+      action.push policy_arn
+
+      if policy_detail.notify and topic_arn
+
+        action.push topic_arn
 
       MC.canvas_data.component[policy_uid] = policy_comp
 
+      MC.canvas_data.component[cw_uid] = cw_comp
+
+
+
       null
+
+    delPolicy : ( uid ) ->
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and comp.name is MC.canvas_data.component[uid].name + '-alarm'
+
+            delete MC.canvas_data.component[comp.uid]
+            delete MC.canvas_data.component[uid]
+            return false
+
   }
 
   model = new ASGConfigModel()

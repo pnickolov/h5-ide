@@ -110,7 +110,7 @@ define [ 'jquery',
                 model.getCost()
 
             ide_event.onLongListen ide_event.UPDATE_STACK_LIST, (flag) ->
-                console.log 'UPDATE_STACK_LIST'
+                console.log 'stack:UPDATE_STACK_LIST'
 
                 if flag is 'NEW_STACK'
                     renderPropertyPanel()

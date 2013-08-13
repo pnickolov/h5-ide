@@ -3017,7 +3017,7 @@ MC.canvas.event.drawConnection = {
 			//Canvon(parent[0]).addClass('selected');
 
 			// Keep hover style on
-			if ($('#canvas_body').hasClass('canvas-view-sg'))
+			//if ($('#canvas_body').hasClass('canvas-view-sg'))
 			{
 				$.each(node_connections, function (index, item)
 				{
@@ -3028,7 +3028,7 @@ MC.canvas.event.drawConnection = {
 					// 	Canvon(this).addClass('view-keephover');
 					// });
 				});
-			}
+			//}
 
 			// Highlight connectable port
 			$.each(connection_option, function (type, option)

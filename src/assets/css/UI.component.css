@@ -1265,7 +1265,7 @@ textarea {
 	        user-select : none;
 }
 
-.selectbox .selection:before {
+.selectbox .selection:after {
 
 	display : block;
 	content : " ";

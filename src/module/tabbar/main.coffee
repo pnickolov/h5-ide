@@ -82,6 +82,10 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 model.set 'stack_region_name', view.temp_region_name
                 #set current platform
                 model.set 'current_platform', platform
+                # track
+                analytics.track "Created Stack",
+                    stack_type: platform,
+                    stack_region: view.temp_region_name
                 #tabbar api
                 Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled - ' + MC.data.untitled
                 #MC.data.untitled ++
@@ -104,6 +108,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 console.log tab_id
                 #push event
                 ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
+                #
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
 
             #listen open_stack
             model.on 'OPEN_STACK', ( tab_id ) ->
@@ -113,6 +119,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                     console.log 'GET_STACK_COMPLETE'
                     #push event
                     ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result
+                    #
+                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
                 #
                 model.getStackInfo tab_id
 
@@ -125,6 +133,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                     console.log result
                     #push event
                     ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result
+                    #
+                    ide_event.trigger ide_event.UPDATE_TAB_ICON, result.resolved_data[0].state, tab_id
                 #
                 model.getAppInfo tab_id
             model.on 'OPEN_APP', openApp
@@ -134,6 +144,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 console.log 'OPEN_PROCESS'
                 #push event
                 ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OPEN_PROCESS', tab_id
+                #
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', tab_id
 
             #listen old_app
             model.on 'OLD_APP', ( tab_id ) ->

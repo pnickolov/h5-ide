@@ -229,3 +229,9 @@ body {
 		font-family: 'Lato','Titillium Web','Ubuntu', 'Helvetica Neue', Arial, sans-serif;
 	}
 }
+
+/* Hide Selection */
+
+::selection {
+	background: transparent;
+}

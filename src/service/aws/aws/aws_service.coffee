@@ -13,9 +13,11 @@
 define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_service'
          'keypair_service', 'securitygroup_service', 'elb_service', 'iam_service', 'acl_service'
          'customergateway_service', 'dhcp_service', 'eni_service', 'internetgateway_service', 'routetable_service'
+         'autoscaling_service', 'cloudwatch_service', 'sns_service',
          'subnet_service', 'vpc_service', 'vpn_service', 'vpngateway_service', 'ec2_service', 'ami_service' ], (MC, result_vo, constant, ebs_service, eip_service, instance_service
          keypair_service, securitygroup_service, elb_service, iam_service, acl_service
-         customergateway_service, dhcp_service, eni_service, internetgateway_service, routetable_service
+         customergateway_service, dhcp_service, eni_service, internetgateway_service, routetable_service,
+         autoscaling_service, cloudwatch_service, sns_service,
          subnet_service, vpc_service, vpn_service, vpngateway_service, ec2_service, ami_service) ->
 
 	URL = '/aws/'
@@ -170,6 +172,17 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 			"DescribeVpcsResponse"                 :   vpc_service.resolveDescribeVpcsResult
 			"DescribeVpnConnectionsResponse"       :   vpn_service.resolveDescribeVpnConnectionsResult
 			"DescribeVpnGatewaysResponse"          :   vpngateway_service.resolveDescribeVpnGatewaysResult
+			#
+			"DescribeAutoScalingGroupsResponse"            :   autoscaling_service.resolveDescribeAutoScalingGroupsResult
+			"DescribeLaunchConfigurationsResponse"         :   autoscaling_service.resolveDescribeLaunchConfigurationsResult
+			"DescribeNotificationConfigurationsResponse"   :   autoscaling_service.resolveDescribeNotificationConfigurationsResult
+			"DescribePoliciesResponse"                     :   autoscaling_service.resolveDescribePoliciesResult
+			"DescribeScheduledActionsResponse"             :   autoscaling_service.resolveDescribeScheduledActionsResult
+			"DescribeScalingActivitiesResponse"            :   autoscaling_service.resolveDescribeScalingActivitiesResult
+			"DescribeAlarmsResponse"                       :   cloudwatch_service.resolveDescribeAlarmsResult
+			"ListSubscriptionsResponse"                    :   sns_service.resolveListSubscriptionsResult
+			"ListTopicsResponse"                           :   sns_service.resolveListTopicsResult
+
 		}
 
 		dict = {}

@@ -61,7 +61,8 @@ define [ 'jquery',
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
 
-				$("input").blur()
+				# Better than $("input:focus")
+				$(document.activeElement).filter("input").blur()
 
 				#
 				MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
@@ -137,14 +138,17 @@ define [ 'jquery',
 
 							if key.indexOf( 'rtb' ) >= 0
 								#select line between instance and routetable
-								$.each line_option, ( idx, value ) ->
+								for value, idx in line_option
 
 									if value.port.indexOf('rtb-tgt-left') >=0 or value.port.indexOf('rtb-tgt-right') >=0
-
 										#rtb_main.loadModule value.uid, 'component', rtb_main
 										rtb_main.loadModule value.uid, rtb_main, tab_type
+										break
 
-										return false
+									else if value.port.indexOf('subnet') >= 0
+										rtb_main.loadModule uid, rtb_main
+										break
+
 
 							else if key.indexOf('sg') >=0
 

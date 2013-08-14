@@ -60,10 +60,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             this.trigger 'SET_ROUTE', uid, data, children
 
         changeName : ( event ) ->
+            rtName = event.currentTarget.value
+
+            # required validate
+            if not MC.validate 'required', rtName
+                return
 
             uid = $("#rt-name").data 'uid'
 
-            this.trigger 'SET_NAME', uid, event.target.value
+            this.trigger 'SET_NAME', uid, rtName
 
         setMainRT : () ->
 

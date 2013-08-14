@@ -481,3 +481,10 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	DescribeScheduledActions     : DescribeScheduledActions
 	DescribeTags                 : DescribeTags
 
+	resolveDescribeAutoScalingGroupsResult           : resolveDescribeAutoScalingGroupsResult
+	resolveDescribeLaunchConfigurationsResult        : resolveDescribeLaunchConfigurationsResult
+	resolveDescribeNotificationConfigurationsResult  : resolveDescribeNotificationConfigurationsResult
+	resolveDescribePoliciesResult                    : resolveDescribePoliciesResult
+	resolveDescribeScheduledActionsResult            : resolveDescribeScheduledActionsResult
+	resolveDescribeScalingActivitiesResult           : resolveDescribeScalingActivitiesResult
+

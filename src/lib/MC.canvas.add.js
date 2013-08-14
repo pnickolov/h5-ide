@@ -1278,6 +1278,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 				component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+				component_data.resource.AvailabilityZone = option.group.availableZoneName;
 
 				var sg_group = {};
 				sg_group.GroupId = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId';

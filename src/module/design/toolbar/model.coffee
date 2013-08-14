@@ -143,6 +143,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     if !result.is_error
                         console.log 'save stack successfully'
+                        
+                        # track
+                        analytics.track "Saved Stack",
+                            stack_name: data.name,
+                            stack_region: data.region,
+                            stack_id: data.id
 
                         #update initial data
                         MC.canvas_property.original_json = JSON.stringify( data )
@@ -152,7 +158,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
                         #call save png
-                        me.savePNG true, id
+                        me.savePNG true
 
                         #set toolbar flag
                         me.setFlag id, 'SAVE_STACK', name
@@ -172,10 +178,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     if !result.is_error
                         console.log 'create stack successfully'
+                        
+                        # track
+                        analytics.track "Saved Stack",
+                            stack_name: data.name,
+                            stack_region: data.region,
+                            stack_id: data.id
 
-                        new_id = result.resolved_data
+                        new_id = result.resolved_data.id
+                        key = result.resolved_data.key
+
                         #temp
                         MC.canvas_data.id = new_id
+                        MC.canvas_data.key = key
 
                         #update initial data
                         MC.canvas_property.original_json = JSON.stringify( data )
@@ -189,7 +204,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         MC.data.stack_list[region].push name
 
                         #call save png
-                        me.savePNG true, new_id
+                        me.savePNG true
 
                         #set toolbar flag
                         me.setFlag id, 'CREATE_STACK', data
@@ -280,6 +295,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 #add new-app status
                 #me.handleRequest result, 'RUN_STACK', region, id, app_name
                 ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
+                # track
+                analytics.track "Launched Stack",
+                    stack_id: id,
+                    stack_region: region,
+                    stack_app_name: app_name
 
         #zoomin
         zoomIn : () ->
@@ -311,22 +331,23 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             null
 
-        savePNG : ( is_thumbnail, id ) ->
+        savePNG : ( is_thumbnail ) ->
             console.log 'savePNG'
             me = this
             #
-            callback = ( res ) ->
+            callback = ( result ) ->
                 console.log 'phantom callback'
-                console.log res.data.status
-                if res.data.status is 'success'
-                    if res.data.thumbnail is 'true'
-                        console.log 's3 url = ' + res.data.result
+                console.log result.data.host
+                return if result.data.host isnt MC.SAVEPNG_URL.replace( 'http://', '' ).replace( '/', '' )
+                if result.data.res.status is 'success'
+                    if result.data.res.thumbnail is 'true'
+                        console.log 's3 url = ' + result.data.res.result
                         window.removeEventListener 'message', callback
 
                         #push event
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST
+                        ide_event.trigger ide_event.UPDATE_STACK_THUMBNAIL, result.data.res.result
                     else
-                        me.trigger 'SAVE_PNG_COMPLETE', res.data.result
+                        me.trigger 'SAVE_PNG_COMPLETE', result.data.res.result
                         window.removeEventListener 'message', callback
                 else
                     #window.removeEventListener 'message', callback
@@ -339,6 +360,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 'thumbnail'  : is_thumbnail,
                 'json_data'  : MC.canvas.layout.save(),
                 'stack_id'   : MC.canvas_data.id
+                'url'        : MC.canvas_data.key
             #
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage data, MC.SAVEPNG_URL
@@ -348,7 +370,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             else
                 sendMessage()
             #
-            me.trigger 'SAVE_PNG_COMPLETE', null
+            if is_thumbnail is 'true' then me.trigger 'SAVE_PNG_COMPLETE', null
             null
             ###
             me = this
@@ -400,6 +422,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'START_APP', region, id, name
+                
+                # track
+                analytics.track "Started App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
 
         stopApp : (data) ->
             me = this
@@ -414,6 +442,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'STOP_APP', region, id, name
+                
+                # track
+                analytics.track "Stopped App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
 
         terminateApp : (data) ->
             me = this
@@ -429,6 +463,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'TERMINATE_APP', region, id, name
+                
+                # track
+                analytics.track "Terminated App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
 
         handleRequest : (result, flag, region, id, name) ->
             me = this

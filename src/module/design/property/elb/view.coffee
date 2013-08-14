@@ -80,8 +80,22 @@ define ['event', 'MC',
             this.trigger 'REFRESH_CERT_PANEL_DATA'
 
         elbNameChange : ( event ) ->
+
             console.log 'elbNameChange'
             value = event.target.value
+
+            # required validate
+            if not MC.validate 'required', value
+                return
+
+            # repeat name check
+            cid = $( '#elb-property-detail' ).attr 'component'
+            if MC.aws.aws.checkIsRepeatName(cid, value)
+                $('#property-elb-name').parsley('showError', 'Load Balancer name already in use, please choose another.')
+                return
+
+            $('#property-elb-name').parsley('hideError')
+
             cid = $( '#elb-property-detail' ).attr 'component'
 
             this.trigger 'ELB_NAME_CHANGED', value

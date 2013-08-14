@@ -3,13 +3,13 @@ define({
 		'login'          : 'Log In',
 		'login-register' : 'New to MadeiraCloud? ',
 		'link-register'  : 'Register',
-		'error-msg-1'    : 'Email address or username does not match password.',
-		'error-msg-2'    : 'Hey, you fogot to provide email address.',
-		'link-foget'     : 'Forget Password?',
-		'footer-info'    : 'MaderiaCloud HTML5 Version',
-		'login-user'     : 'Email Address or Username',
+		'error-msg-1'    : 'Username or email does not match the password.',
+		'error-msg-2'    : 'Hey, you fogot to provide a username or email.',
+		'link-foget'     : 'Forgot your Password?',
+		'login-user'     : 'Username or email',
 		'login-password' : 'Password',
-		'login-btn'      : 'Log In'
+		'login-btn'      : 'Log In',
+		'login-loading'  : 'Logging In'
 	},
 	'ide' : {
 		'dashboard' : 'Dashboard',

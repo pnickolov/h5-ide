@@ -1,4 +1,3 @@
-
 require.config {
 
 	baseUrl            : './'
@@ -30,6 +29,7 @@ require.config {
 		'MC'                 : 'lib/MC.core'
 		'MC.template'        : 'lib/MC.template'
 		'MC.ide.template'    : 'lib/MC.ide.template'
+		'MC.validate'  	     : 'lib/MC.validate'
 
 		#canvas
 		'MC.canvas'          : 'lib/MC.canvas'
@@ -57,6 +57,7 @@ require.config {
 		'UI.editablelabel'  : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'  : 'ui/common/UI.multiinputbox'
 		'UI.zeroclipboard'  : 'ui/common/UI.zeroclipboard'
+		'UI.parsley' 	    : 'ui/common/UI.parsley'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
@@ -110,6 +111,10 @@ require.config {
 		'customergateway_model'    : 'model/aws/vpc/customergateway_model'
 		'vpngateway_model'    : 'model/aws/vpc/vpngateway_model'
 		'keypair_model' : 'model/aws/ec2/keypair_model'
+
+		'autoscaling_model' : 'model/aws/autoscaling/autoscaling_model'
+		'cloudwatch_model'  : 'model/aws/cloudwatch/cloudwatch_model'
+		'sns_model'         : 'model/aws/sns/sns_model'
 
 		#result_vo
 		'result_vo'    : 'service/result_vo'
@@ -178,6 +183,14 @@ require.config {
 
 		'iam_service'   : 'service/aws/iam/iam/iam_service'
 
+		#
+		'autoscaling_service' : 'service/aws/autoscaling/autoscaling/autoscaling_service'
+
+		'cloudwatch_service'  : 'service/aws/cloudwatch/cloudwatch/cloudwatch_service'
+
+		'sns_service'         : 'service/aws/sns/sns/sns_service'
+
+
 	shim               :
 
 		'jquery'       :
@@ -201,6 +214,9 @@ require.config {
 			deps       : [ 'jquery' ]
 			exports    : 'MC'
 
+		'MC.validate'  :
+			deps       : [ 'MC' ]
+
 		'MC.template'  :
 			deps       : [ 'handlebars', 'MC' ]
 			exports    : 'MC.template'
@@ -216,6 +232,9 @@ require.config {
 
 		'UI.modal'     :
 			deps       : [ 'MC.template' ]
+
+		'UI.parsely'   :
+			deps       : [ 'jquery' ]
 
 		'Meteor'       :
 			deps       : ['underscore']

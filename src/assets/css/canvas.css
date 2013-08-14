@@ -1,14 +1,14 @@
 /* Canvas */
 #canvas {
-	margin-top: 43px;
-	top: -6px;
+	/*margin-top: 43px;
+	top: -6px;*/
 	z-index: 1;
 	width: 100%;
 	position: absolute;
 }
 
 #canvas_container {
-	padding: 20px;
+	padding: 0 20px 20px 0;
 	overflow: hidden;
 	background: rgb(237, 237, 237);
 	position: relative;
@@ -300,7 +300,7 @@
 	fill: rgba(252, 190, 23, 0.02);
 	stroke: #f9be76;
 	stroke-linejoin: round;
-	stroke-dasharray: 6, 4;
+	stroke-dasharray: 16, 6;
 	stroke-width: 2;
 }
 
@@ -322,7 +322,7 @@
 	fill: rgba(224, 224, 224, 0.05);
 	stroke: #dbd7d7;
 	stroke-linejoin: round;
-	stroke-dasharray: 6, 4;
+	stroke-dasharray: 16, 6;
 	stroke-width: 2;
 }
 

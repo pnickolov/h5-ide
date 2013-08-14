@@ -3,10 +3,10 @@
 #############################
 
 define [ 'MC', 'event', 'handlebars'
-         'i18n!/nls/lang.js',
-         'view', 'layout', 'canvas_layout',
-         'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
-         'WS', 'constant', 'aws_handle', 'test/json_view/json_view'
+		 'i18n!/nls/lang.js',
+		 'view', 'layout', 'canvas_layout',
+		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
+		 'WS', 'constant', 'aws_handle', 'test/json_view/json_view'
 ], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant ) ->
 
 	console.info canvas_layout
@@ -148,3 +148,13 @@ define [ 'MC', 'event', 'handlebars'
 		#i18n
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.ide[ text ]
+
+		analytics.identify 147,
+			name: $.cookie("username")
+			username: $.cookie("username")
+			email: MC.base64Decode($.cookie("email"))
+			created: 1328260166
+			Intercom:
+				userHash: "5add343430ecaf54f7c1a6285758fcccb87fb365d089d6e1a520b2d7fa49fb05"
+
+		analytics.track "Loaded IDE", {}

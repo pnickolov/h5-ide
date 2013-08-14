@@ -1,9 +1,9 @@
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
-		<a href="javascript:void(0)" class="btn-toolbar tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_flags.name}}"}' data-modal-dismiss="true"><i class="icon-toolbar-run"></i></a>
+		<a href="javascript:void(0)" class="tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_flags.name}}"}' data-modal-dismiss="true"><i class="icon-toolbar-run"></i></a>
 	</li>
 	<li class="btn-toolbar">
-		<a href="#" class="btn-toolbar tooltip" data-tooltip="Save stack"><i class="icon-toolbar-save"></i></a>
+		<a href="#" class="tooltip" data-tooltip="Save stack"><i class="icon-toolbar-save"></i></a>
 	</li>
 	<li class="selectbox btn-toolbar">
 		<div class="selection tooltip" data-tooltip="More Actions...">
@@ -11,35 +11,35 @@
 		</div>
 		<ul class="dropdown" tabindex="-1">
 			{{#if item_flags.is_duplicate}}
-			<li class="btn-toolbar" id="toolbar-duplicate" data-tooltip="Duplicate stack"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</li>
+			<li id="toolbar-duplicate"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</li>
 			{{else}}
-			<li class="btn-toolbar" data-tooltip="Duplicate stack"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</li>
+			<li class="disabled"><i class="icon-toolbar-duplicate"></i>Duplicate Stack</li>
 			{{/if}}
 
 			{{#if item_flags.is_delete}}
-			<li class="btn-toolbar modal" id="toolbar-delete" data-tooltip="Delete stack" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</li>
+			<li class="modal" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</li>
 			{{else}}
-			<li class="btn-toolbar" id="toolbar-delete" data-tooltip="Delete stack"><i class="icon-toolbar-delete"></i>Delete Stack</li>
+			<li class="disabled" id="toolbar-delete"><i class="icon-toolbar-delete"></i>Delete Stack</li>
 			{{/if}}
 
-			<li class="btn-toolbar" id="toolbar-new" data-tooltip="Create new stack"><i class="icon-toolbar-new-stack"></i>New Stack</li>
+			<li id="toolbar-new" data-tooltip="Create new stack"><i class="icon-toolbar-new-stack"></i>New Stack</li>
 		</ul>
 	</li>
 </ul>
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
-		<a href="#" class="btn-toolbar tooltip" data-tooltip="Undo"><i class="icon-toolbar-undo"></i></a>
+		<a href="#" class="tooltip" data-tooltip="Undo"><i class="icon-toolbar-undo"></i></a>
 	</li>
 	<li class="btn-toolbar">
-		<a href="#" class="btn-toolbar tooltip" data-tooltip="Redo"><i class="icon-toolbar-redo"></i></a>
+		<a href="#" class="tooltip" data-tooltip="Redo"><i class="icon-toolbar-redo"></i></a>
 	</li>
 </ul>
 <ul class="toolbar-btn-group">
 	<li class="btn-toolbar">
-		<a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom In"><i class="icon-toolbar-zoom-in"></i></a>
+		<a href="#" class="tooltip" data-tooltip="Zoom In"><i class="icon-toolbar-zoom-in"></i></a>
 	</li>
 	<li class="btn-toolbar">
-		<a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom Out"><i class="icon-toolbar-zoom-out"></i></a>
+		<a href="#" class="tooltip" data-tooltip="Zoom Out"><i class="icon-toolbar-zoom-out"></i></a>
 	</li>
 </ul>
 <ul class="toolbar-btn-group">
@@ -48,13 +48,13 @@
 			<span class="icon-toolbar-export"></span>
 		</div>
 		<ul class="dropdown" tabindex="-1">
-			<li class="btn-toolbar" id="toolbar-export-png"><i class="icon-toolbar-export-png"></i>Export as PNG</li>
-			<li class="btn-toolbar modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
+			<li id="toolbar-export-png"><i class="icon-toolbar-export-png"></i>Export as PNG</li>
+			<li class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
 				<i class="icon-toolbar-export-json"></i>Export as Json</li>
 			<!-- for debug -->
-			<li class="btn-toolbar" id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
-			<li class="btn-toolbar" id="toolbar-jsoncopy"  data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
-			<li class="btn-toolbar" id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</li>
+			<li id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
+			<li id="toolbar-jsoncopy"  data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
+			<li id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</li>
 		</ul>
 	</li>
 </ul>

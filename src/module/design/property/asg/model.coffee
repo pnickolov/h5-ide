@@ -19,10 +19,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
     setUID : ( uid ) ->
 
-      data =
-        uid : uid
-
-      this.set data
+      this.set 'uid', uid
       null
 
     getASGDetailApp : ( uid ) ->
@@ -136,6 +133,50 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         this.set 'sendNotify', false
       this.set 'notifies', nc_array
+
+      instance_count = 0
+      if asg.Instances
+
+        instance_count = asg.Instances.member.length
+
+      instances_display = []
+      subnets = {}
+
+      if asg.Instances
+
+        $.each asg.Instances.member, ( idx, instance ) ->
+
+          tmp = {}
+
+          if instance.HealthStatus is 'Healthy'
+
+            tmp.status = 'green'
+          else
+            tmp.status = 'red'
+
+          tmp.name = instance.InstanceId
+
+          if subnets[instance.AvailabilityZone]
+
+            subnets[instance.AvailabilityZone].push tmp
+          else
+            subnets[instance.AvailabilityZone] = [tmp]
+
+
+          null
+
+      for k, v of subnets
+
+        tmp = {}
+
+        tmp.name = k
+        tmp.instances = v
+
+        instances_display.push tmp
+
+      this.set 'subnets', instances_display
+      this.set 'instance_count', instance_count
+
 
     getASGDetail : ( uid ) ->
 
@@ -410,7 +451,9 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
           #  null
       null
 
-    setTerminatePolicy : ( uid, policies ) ->
+    setTerminatePolicy : ( policies ) ->
+
+      uid = this.get 'uid'
 
       current_policies = []
 

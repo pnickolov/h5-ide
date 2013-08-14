@@ -119,7 +119,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeAutoScalingInstancesResponse
+		($.xml2json ($.parseXML result[1])).DescribeAutoScalingInstancesResponse.DescribeAutoScalingInstancesResult.AutoScalingInstances
 
 	#private (parser DescribeAutoScalingInstances return)
 	parserDescribeAutoScalingInstancesReturn = ( result, return_code, param ) ->

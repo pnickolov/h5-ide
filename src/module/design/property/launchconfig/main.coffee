@@ -25,7 +25,6 @@ define [ 'jquery',
         #
         MC.data.current_sub_main = current_main
 
-        debugger
         if tab_type is 'OPEN_APP'
             loadAppModule uid, current_main
             return

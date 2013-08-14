@@ -3,10 +3,12 @@ body {
 	height: 100%;
 }
 
-body {
+#body {
 	font-size: 14px;
 	min-width: 1024px;
 	color: #666;
+	overflow: hidden;
+	background: #4c494c;
 }
 
 a {
@@ -23,10 +25,6 @@ a {
 
 .icon-caret-down {
 	margin-left: 2px;
-}
-
-#body {
-	background: #4c494c;
 }
 
 /* generic class */

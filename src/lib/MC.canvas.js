@@ -2799,11 +2799,16 @@ MC.canvas.event.dragable = {
 		{
 			return key.replace('dropable-group ', '');
 		});
+
+		$(document).off({
+			'mousemove': MC.canvas.event.dragable.mousemove,
+			'mouseup': MC.canvas.event.dragable.mouseup
+		});
 	},
 	gatewaymove: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
+		// event.preventDefault();
+		// event.stopPropagation();
 
 		var gateway_top = Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)),
 			vpc_coordinate = event.data.vpc_data.coordinate,
@@ -2937,7 +2942,7 @@ MC.canvas.event.drawConnection = {
 	{
 		if (event.which === 1)
 		{
-			event.preventDefault();
+			//event.preventDefault();
 
 			var svg_canvas = $('#svg_canvas'),
 				canvas_offset = svg_canvas.offset(),
@@ -3305,8 +3310,8 @@ MC.canvas.event.siderbarDrag = {
 	{
 		if (event.which === 1)
 		{
-			event.preventDefault();
-			event.stopPropagation();
+			// event.preventDefault();
+			// event.stopPropagation();
 
 			var target = $(this),
 				target_offset = target.offset(),
@@ -3594,8 +3599,8 @@ MC.canvas.event.groupResize = {
 	{
 		if (event.which === 1)
 		{
-			event.preventDefault();
-			event.stopPropagation();
+			// event.preventDefault();
+			// event.stopPropagation();
 
 			var target = event.target,
 				parent = $(target.parentNode.parentNode),
@@ -3658,6 +3663,8 @@ MC.canvas.event.groupResize = {
 					'group_port': type === 'AWS.VPC.Subnet' ? [parent.find('.port-subnet-assoc-in').first(), parent.find('.port-subnet-assoc-out').first()] : null
 				});
 		}
+
+		return false;
 	},
 	mousemove: function (event)
 	{
@@ -4151,26 +4158,30 @@ MC.canvas.event.selectLine = function (event)
 {
 	if (event.which === 1)
 	{
-		event.preventDefault();
-		event.stopPropagation();
+		// event.preventDefault();
+		// event.stopPropagation();
 
 		MC.canvas.event.clearSelected();
 
 		MC.canvas.select(this.id);
 	}
+
+	return false;
 };
 
 MC.canvas.event.selectNode = function (event)
 {
 	if (event.which === 1)
 	{
-		event.preventDefault();
-		event.stopPropagation();
+		// event.preventDefault();
+		// event.stopPropagation();
 
 		MC.canvas.event.clearSelected();
 
 		MC.canvas.select(this.id);
 	}
+
+	return false;
 };
 
 MC.canvas.event.nodeHover = function ()

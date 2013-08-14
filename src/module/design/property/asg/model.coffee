@@ -27,7 +27,11 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
     getASGDetailApp : ( uid ) ->
 
-      this.set 'asg', MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.AutoScalingGroupARN]
+      asg = $.extend true, {}, MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.AutoScalingGroupARN]
+
+      asg.TerminationPolicies = asg.TerminationPolicies.member
+
+      this.set 'asg', asg
 
 
       policies = {}
@@ -53,44 +57,51 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
             if c.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and c.name is MC.canvas_data.component[comp_uid].name + '-alarm'
 
-              app_cw = MC.data.resource_list[MC.canvas_data.region][c.resource.AlarmNameArn]
-              actions = [app_cw.InsufficientDataActions, app_cw.OKAction, app_cw.AlarmActions]
+              app_cw = MC.data.resource_list[MC.canvas_data.region][c.resource.AlarmArn]
+
+              actions = [app_cw.InsufficientDataActions, app_cw.OKActions, app_cw.AlarmActions]
 
               for action in actions
 
-                if action[0] and action[0].split('.')[0][1...] is comp_uid
+                if action
 
-                  tmp.evaluation = app_cw.ComparisonOperator
+                  for act in action.member
 
-                  tmp.metric = app_cw.MetricName
+                    if act is app_comp.PolicyARN
 
-                  if action.length is 2
+                      tmp.evaluation = app_cw.ComparisonOperator
 
-                    tmp.notify = true
-                  else
+                      tmp.metric = app_cw.MetricName
 
-                    tmp.notify = false
+                      if action.length is 2
 
-                  tmp.periods = app_cw.EvaluationPeriods
+                        tmp.notify = true
+                      else
 
-                  tmp.second = app_cw.Period
+                        tmp.notify = false
 
-                  tmp.statistics = app_cw.Statistic
+                      tmp.periods = app_cw.EvaluationPeriods
 
-                  tmp.threshold = app_cw.Threshold
+                      tmp.second = app_cw.Period
 
-                  if app_cw.InsufficientDataActions.length > 0
-                    tmp.trigger = 'INSUFFICIANT_DATA'
-                  else if app_cw.OKActions.length > 0
-                    tmp.trigger = 'OK'
-                  else if app_cw.AlarmActions.length > 0
-                    tmp.trigger = 'ALARM'
+                      tmp.statistics = app_cw.Statistic
+
+                      tmp.threshold = app_cw.Threshold
+
+                      if app_cw.InsufficientDataActions and app_cw.InsufficientDataActions.length > 0
+                        tmp.trigger = 'INSUFFICIANT_DATA'
+                      else if app_cw.OKActions and app_cw.OKActions.length > 0
+                        tmp.trigger = 'OK'
+                      else if app_cw.AlarmActions and app_cw.AlarmActions.length > 0
+                        tmp.trigger = 'ALARM'
 
                   return false
 
           policies[comp_uid]  = tmp
 
           null
+
+      this.set 'policies', policies
 
     getASGDetail : ( uid ) ->
 
@@ -312,6 +323,32 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         new_notification.resource.AutoScalingGroupName = '@' + uid + '.resource.AutoScalingGroupName'
 
+        topic_arn = null
+
+        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+            topic_arn = '@' + comp_uid + '.resource.TopicArn'
+
+            return false
+
+        if not topic_arn
+
+          topic_comp = $.extend true, {}, MC.canvas.SNS_TOPIC_JSON.data
+
+          topic_uid = MC.guid()
+
+          topic_comp.uid = topic_uid
+
+          topic_comp.name = topic_comp.resource.Name = topic_comp.resource.DisplayName = 'sns-topic'
+
+          topic_arn = '@' + topic_uid + '.resource.TopicArn'
+
+          MC.canvas_data.component[topic_uid] = topic_comp
+
+        new_notification.resource.TopicARN = topic_arn
+
         MC.canvas_data.component[nc_uid] = new_notification
 
       else
@@ -323,6 +360,12 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
             delete MC.canvas_data.component[comp_uid]
 
             return false
+
+        res = this.checkTopicDependency()
+
+        if res[0] and not res[1]
+
+          delete MC.canvas_data.component[res[2]]
 
       #if new_notification.resource.TopicARN and endpoint
 
@@ -492,41 +535,43 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       else
 
-        topic_uid = null
+        # topic_uid = null
 
-        sub_existing = false
+        # sub_existing = false
 
-        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+        # $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
+        #   if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
 
-            sub_existing = true
+        #     sub_existing = true
 
-          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+        #   if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
 
-            topic_uid = comp.uid
+        #     topic_uid = comp.uid
 
-          null
+        #   null
 
-        if topic_uid
+        # if topic_uid
 
-          if not sub_existing
+        #   if not sub_existing
 
-            topic_ref = '@' + topic_uid + '.resource.TopicArn'
+        #     topic_ref = '@' + topic_uid + '.resource.TopicArn'
 
-            topic_in_policy_existing = false
+        #     topic_in_policy_existing = false
 
-            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+        #     $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-              if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and (topic_ref in comp.resource.OKAction or topic_ref in comp.resource.InsufficientDataActions or topic_ref in comp.resource.AlarmActions)
+        #       if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and (topic_ref in comp.resource.OKAction or topic_ref in comp.resource.InsufficientDataActions or topic_ref in comp.resource.AlarmActions)
 
-                topic_in_policy_existing = true
+        #         topic_in_policy_existing = true
 
-                return false
+        #         return false
 
-            if not topic_in_policy_existing
+        res = this.checkTopicDependency()
 
-              delete MC.canvas_data.component[topic_uid]
+        if res[0] and not res[1]
+
+          delete MC.canvas_data.component[res[2]]
 
 
       MC.canvas_data.component[policy_uid] = policy_comp
@@ -546,6 +591,48 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
             delete MC.canvas_data.component[comp.uid]
             delete MC.canvas_data.component[uid]
             return false
+
+    checkTopicDependency :() ->
+
+      topic_uid = null
+
+      dependent = false
+
+      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+          topic_uid = comp_uid
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
+
+          dependent = true
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
+
+          dependent = true
+
+        null
+
+      if topic_uid and not dependent
+
+        topic_ref = '@' + topic_uid + '.resource.TopicArn'
+
+        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and (topic_ref in comp.resource.OKAction or topic_ref in comp.resource.InsufficientDataActions or topic_ref in comp.resource.AlarmActions)
+
+            dependent = true
+
+            return false
+
+      if topic_uid
+
+        return [true, dependent, topic_uid]
+
+      else
+
+        return [false, dependent, topic_uid]
 
   }
 

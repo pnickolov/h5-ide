@@ -1646,7 +1646,7 @@ var constant_data = {
 				'Endpoint': '',
 				'TopicArn': '',
 				'Protocol': '',
-				'DeliveryPolicy': null,
+				'DeliveryPolicy': '',
 				'SubscriptionArn': ''
 			}
 		}
@@ -1661,9 +1661,9 @@ var constant_data = {
 			'resource': {
 				'Name': '',
 				'TopicArn': '',
-				'Policy': null,
+				'Policy': '',
 				'DisplayName': '',
-				'DeliveryPolicy': null
+				'DeliveryPolicy': ''
 			}
 		}
 	}

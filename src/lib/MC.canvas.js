@@ -722,11 +722,11 @@ MC.canvas = {
 				// straight line
 				if (start0.x === end0.x || start0.y === end0.y)
 				{
-					MC.paper.line(start0.x, start0.y, end0.x, end0.y);
+					MC.paper.path('M ' + start0.x + ' ' + start0.y + ' L ' + end0.x + ' ' + end0.y);
 
 					if (dash_style)
 					{
-						MC.paper.line(start0.x, start0.y, end0.x, end0.y).attr(dash_style);
+						MC.paper.path('M ' + start0.x + ' ' + start0.y + ' L ' + end0.x + ' ' + end0.y).attr(dash_style);
 					}
 				}
 				else

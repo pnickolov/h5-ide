@@ -13,7 +13,7 @@ define [ 'event', 'MC',
         events   :
             "click #property-app-keypair" : "downloadKeypair"
 
-        template  : Handlebars.compile $( '#property-instance-app-tmpl' ).html()
+        template  : Handlebars.compile $( '#property-launchconfig-app-tmpl' ).html()
 
         render     : () ->
             console.log 'property:instance app render', this.model.attributes

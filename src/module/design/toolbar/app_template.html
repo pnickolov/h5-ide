@@ -1,40 +1,31 @@
-<ul class="toolbar-btn-group">
-  <li class="btn-toolbar">
+<section class="toolbar-btn-group">
+  {{#if item_flags.is_use_ami}}
+  <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-stop"{{else}}class="modal tooltip btn-toolbar disabled icon-stop" id="toolbar-stop-app"{{/if}} data-tooltip="This app cannot be stopped since it uses instance-store AMI"></a>
+  {{else}}
+  <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-stop"{{else}} class="modal tooltip btn-toolbar icon-stop" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to stop app?", "body":"Do you confirm to stop app {{item_flags.name}}?", "confirm":"Stop", "color":"red" }' data-modal-dismiss="true" id="toolbar-stop-app"{{/if}} data-tooltip="Stop this app's resources."></a>
+  {{/if}}
 
-    {{#if item_flags.is_use_ami}}
-    <a {{#if item_flags.is_running}}{{else}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar"{{else}}class="modal tooltip btn-toolbar disabled" id="toolbar-stop-app"{{/if}} data-tooltip="This app cannot be stopped since it uses instance-store AMI"><i class="icon-toolbar-stop"></i></a>
-    {{else}}
-    <a {{#if item_flags.is_running}}{{else}}style="display:none;"{{/if}} href="#"  {{#if item_flags.is_pending}}class="tooltip btn-toolbar"{{else}} class="modal tooltip btn-toolbar" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to stop app?", "body":"Do you confirm to stop app {{item_flags.name}}?", "confirm":"Stop", "color":"red" }' data-modal-dismiss="true" id="toolbar-stop-app"{{/if}} data-tooltip="Stop this app's resources."><i class="icon-toolbar-stop"></i></a>
-    {{/if}}
+  <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app?", "body":"Do you confirm to start app {{item_flags.name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="Start this app's resources."></a>
 
-    <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar" {{else}}class="modal tooltip btn-toolbar"  data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app?", "body":"Do you confirm to start app {{item_flags.name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="Start this app's resources."><i class="icon-toolbar-run"></i></a>
+  <a href="#" class="btn-toolbar tooltip {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to terminate app {{item_flags.name}}?", "body":"Do you confirm to terminate app?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="Permanently terminate this app's resources"></a> <!--"'-->
+</section>
 
-  </li>
-  <li class="btn-toolbar">
-    <a href="#" {{#if item_flags.is_pending}}class="btn-toolbar tooltip" {{else}}class="btn-toolbar tooltip modal" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to terminate app {{item_flags.name}}?", "body":"Do you confirm to terminate app?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="Permanently terminate this app's resources"><i class="icon-toolbar-terminate"></i></a>
-  </li>
-</ul>
-<ul class="toolbar-btn-group">
-  <li class="btn-toolbar">
-    <a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom In"><i class="icon-toolbar-zoom-in"></i></a>
-  </li>
-  <li class="btn-toolbar">
-    <a href="#" class="btn-toolbar tooltip" data-tooltip="Zoom Out"><i class="icon-toolbar-zoom-out"></i></a>
-  </li>
-</ul>
-<ul class="toolbar-btn-group">
-  <li class="selectbox btn-toolbar">
-    <div class="selection tooltip" data-tooltip="Export..." id="toolbar-export">
-      <span class="icon-toolbar-export"></span>
-    </div>
+<section class="toolbar-btn-group">
+  <a href="#" class="btn-toolbar tooltip icon-zoom-in" data-tooltip="Zoom In"></a>
+  <a href="#" class="btn-toolbar tooltip icon-zoom-out" data-tooltip="Zoom Out"></a>
+</section>
+
+<section class="toolbar-btn-group">
+  <div class="selectbox btn-toolbar">
+    <a class="selection tooltip icon-send" data-tooltip="Export..." id="toolbar-export"></a>
     <ul class="dropdown" tabindex="-1">
-      <li class="btn-toolbar" id="toolbar-export-png"><i class="icon-toolbar-export-png"></i>Export as PNG</li>
-      <li class="btn-toolbar modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
+      <li id="toolbar-export-png"><i class="icon-toolbar-export-png"></i>Export as PNG</li>
+      <li class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
         <i class="icon-toolbar-export-json"></i>Export as Json</li>
       <!-- for debug -->
-      <li class="btn-toolbar" id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
-      <li class="btn-toolbar" id="toolbar-jsoncopy"  data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
-      <li class="btn-toolbar" id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</li>
+      <li id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
+      <li id="toolbar-jsoncopy"  data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
+      <li id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</li>
     </ul>
-  </li>
-</ul>
+  </div>
+</section>

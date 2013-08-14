@@ -53,5 +53,24 @@ var MC = MC || {};
 		return value1 === value2;
 	};
 
+	MC.validate.exist = function( value, set ) {
+		if ( Array.prototype.indexOf && Array.prototype.indexOf === set.indexOf ) {
+			return set.indexOf( value ) !== -1;
+		}
+
+		var i = 0;
+		for ( ; i<set.length; i++ ) {
+			if ( set[ i ] === value ) {
+				break;
+			}
+		}
+
+		return !( i === set.length );
+	};
+
+	MC.validate.range = function( value, range ) {
+		return value >= range[ 0 ] && value <= range[ 1 ];
+	};
+
 })( MC );
 

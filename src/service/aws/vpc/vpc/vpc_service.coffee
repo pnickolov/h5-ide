@@ -62,9 +62,9 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 		result_set = ($.xml2json ($.parseXML result[1])).DescribeVpcsResponse.vpcSet
 
-		if result?.item?
+		if result_set?.item?
 
-			return result.item
+			return result_set.item
 
 		else
 

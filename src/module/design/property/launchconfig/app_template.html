@@ -1,0 +1,139 @@
+<article class="property-app">
+  <div class="option-group-head expand">Instance Details</div>
+  <div class="option-group">
+    <dl class="dl-vertical">
+      <dt>Instance ID</dt>
+      <dd>{{instanceId}}</dd>
+
+      <dt>State</dt>
+      <dd><i class="status status-{{#if isRunning}}green{{else}}{{#if isPending}}orange{{else}}red{{/if}}{{/if}}"></i>{{instanceState.name}}</dd>
+
+      <dt>Launch Time</dt>
+      <dd>{{launchTime}}</dd>
+    </dl>
+
+    <dl class="dl-vertical">
+      <dt>Primary Public IP</dt>
+      <dd>{{ipAddress}}</dd>
+
+      <dt>Public DNS</dt>
+      <dd>{{dnsName}}</dd>
+
+      <dt>Primary Private IP</dt>
+      <dd>{{privateIpAddress}}</dd>
+
+      <dt>Private DNS</dt>
+      <dd>{{privateDnsName}}</dd>
+    </dl>
+
+    <dl class="dl-vertical">
+      <dt>AMI</dt>
+      <dd>{{imageId}}<dd>
+
+      <dt>Instance Type</dt>
+      <dd>{{instanceType}}</dd>
+
+      <dt>Key Pair</dt>
+      <dd><a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a></dd>
+
+    </dl>
+
+    <dl class="dl-vertical">
+      <dt>EBS Optimized</dt>
+      <dd>{{ebsOptimized}}<dd>
+
+      <dt>Tenancy</dt>
+      <dd>{{placement.tenancy}}</dd>
+
+      <dt>Root Device Type</dt>
+      <dd>{{rootDeviceType}}</dd>
+
+      <dt>Block Device</dt>
+      <dd>{{blockDevice}}</dd>
+    </dl>
+  </div>
+
+  {{#if eni}}
+  <div class="option-group-head">Network Interface Details</div>
+  <div class="option-group">
+    <dl class="dl-vertical">
+      <dt>Device Name</dt>
+      <dd>{{eni.name}}</dd>
+
+      <dt>Network Interface ID</dt>
+      <dd>{{eni.networkInterfaceId}}</dd>
+
+      <dt>State</dt>
+      <dd><i class="status status-{{#if eni.isInUse}}green{{else}}orange{{/if}}"></i>{{eni.status}}</dd>
+
+      {{#if eni.description}}
+      <dt>Description</dt>
+      <dd>{{eni.description}}</dd>
+      {{/if}}
+
+      <dt>Source/Destination Check</dt>
+      <dd>{{eni.sourceDestCheck}}</dd>
+    </dl>
+
+    <div class="hidden-details">
+      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">⇲ Show details</span><span class="details-on">⇱ Hide details</span></a>
+
+      <dl class="dl-vertical"></dl>
+
+      <dl class="dl-vertical">
+        <dt>VPC ID</dt>
+        <dd>{{eni.vpcId}}</dd>
+
+        <dt>Subnet</dt>
+        <dd>{{eni.subnetId}}</dd>
+
+        {{#if eni.attachment}}
+        <dt>Attachment ID</dt>
+        <dd>{{eni.attachment.attachmentId}}</dd>
+
+        <dt>Attachment Owner</dt>
+        <dd>{{eni.instanceOwnerId}}</dd>
+
+        <dt>Attachment Status</dt>
+        <dd>{{eni.attachment.status}}</dd>
+        {{/if}}
+      </dl>
+      <dl class="dl-vertical">
+        <dt>Mac Address</dt>
+        <dd>{{eni.macAddress}}</dd>
+
+        {{#if eni.association.publicDnsName}}
+        <dt>Public DNS</dt>
+        <dd>{{eni.association.publicDnsName}}</dd>
+        {{/if}}
+        {{#if eni.privateDnsName}}
+        <dt>Private DNS</dt>
+        <dd>{{eni.privateDnsName}}</dd>
+        {{/if}}
+        {{#if eni.ownerId}}
+        <dt>IP Owner</dt>
+        <dd>{{eni.ownerId}}</dd>
+        {{/if}}
+      </dl>
+    </div>
+
+    <table class="property-app-table">
+      <tr class="property-app-table-h">
+        <th>IP Address</th>
+        <th>Public IP</th>
+      </tr>
+      {{#each eni.privateIpAddressesSet.item}}
+      <tr>
+        <td>{{privateIpAddress}}{{#if primary}}<span>(Primary)</span>{{/if}}</td>
+        <td>{{#if association.publicIp}}{{association.publicIp}}{{else}}-{{/if}}</td>
+      </tr>
+      {{/each}}
+    </table>
+
+  </div>
+  {{/if}}
+
+  <div class="option-group-head" id="sg-head"> Security Groups (<span id="property-head-sg-num"></span>)</div>
+  <div class="option-group sg-group"></div>
+
+</article>

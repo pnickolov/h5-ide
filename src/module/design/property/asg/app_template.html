@@ -1,0 +1,85 @@
+<article>
+  <div class="option-group-head expand">Auto Scaling Group Details</div>
+  <div class="option-group">
+    <dl class="dl-vertical">
+      <dt>Auto Scaling Group Name</dt>
+      <dd>{{asg.AutoScalingGroupName}}</dd>
+      <dt>Auto Scaling Group ARN</dt>
+      <dd>
+        <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{asg.AutoScalingGroupARN}}">{{asg.AutoScalingGroupARN}}</span><i title="ARN" class="icon-copy" data-clipboard-text="{{asg.AutoScalingGroupARN}}"></i></div>
+      </dd>
+      <dt>Created Time</dt>
+      <dd>{{asg.CreatedTime}}</dd>
+      <dt>Launch Configuration</dt>
+      <dd>{{asg.LaunchConfigurationName}}</dd>
+    </dl>
+    <dl class="dl-vertical">
+      <dt>Minimum Size</dt>
+      <dd>{{asg.MinSize}}</dd>
+      <dt>Maximum Size</dt>
+      <dd>{{asg.MaxSize}}</dd>
+      <dt>Desired Capacity</dt>
+      <dd>{{asg.DesiredCapacity}}</dd>
+      <dt>Default Cooldown</dt>
+      <dd>{{asg.DefaultCooldown}}</dd>
+    </dl>
+    <dl class="dl-vertical">
+      <dt>Health Check Type</dt>
+      <dd>{{asg.HealthCheckType}}</dd>
+      <dt>Health Check Grace Period</dt>
+      <dd>{{asg.HealthCheckGracePeriod}}</dd>
+    </dl>
+  </div>
+
+  <div class="option-group-head">Instance ({{instance_count}})</div>
+  <div class="option-group">
+    {{#each subnets}}
+    <h5>{{name}}</h5>
+    <ul>
+      {{#each instances}}
+        <li><i class="status status-{{status}}"></i>{{name}}</li>
+      {{/each}}
+    </ul>
+    {{/each}}
+  </div>
+
+  <div class="option-group-head">Policy</div>
+  <div class="option-group">
+    <section class="property-control-group pos-r">
+      <p>Termination Policy</p>
+      <p>{{term_policy_brief}}</p>
+      <i class="icon-detail" id="property-asg-term-edit"></i>
+    </section>
+
+    <ul id="property-asg-policies">
+      {{#each policies}}
+      <li class="pos-r" data-uid="{{uid}}">
+        <h5 class="name">{{name}}</h5>
+        <span class="asg-p-metric">{{metric}}</span>
+        <span class="asg-p-eval">{{evaluation}} {{threshold}}{{unit}}</span>
+        <span class="asg-p-periods">{{periods}}x{{second}}s</span>
+        <span class="asg-p-trigger">{{trigger}}</span>
+        <span class="asg-p-adjust">{{adjustment}} {{adjusttype}}</span>
+        <i class="icon-detail"></i>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="option-group-head">Notification</div>
+  <div class="option-group">
+    {{#if sendNotify}}
+    <p>Send notification via SNS topic for:</p>
+    <section>
+      {{#if notifies.[0]}}<p>Successful instance launch</p>{{/if}}
+      {{#if notifies.[1]}}<p>Failed instance launch</p>{{/if}}
+      {{#if notifies.[2]}}<p>Successful instance termination</p>{{/if}}
+      {{#if notifies.[3]}}<p>Failed instance termination</p>{{/if}}
+      {{#if notifies.[4]}}<p>Validating a configuraed SNS Topic</p>{{/if}}
+    </section>
+    {{else}}
+    <p>No notification configured for this auto scaling group</p>
+    {{/if}}
+  </div>
+
+</article>

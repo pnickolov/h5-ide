@@ -148,7 +148,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeAlarmsResponse
+		($.xml2json ($.parseXML result[1])).DescribeAlarmsResponse.DescribeAlarmsResult.MetricAlarms
 
 	#private (parser DescribeAlarms return)
 	parserDescribeAlarmsReturn = ( result, return_code, param ) ->

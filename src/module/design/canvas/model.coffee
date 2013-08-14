@@ -1,8 +1,8 @@
 #############################
 #  View Mode for canvas
 #############################
-define [ 'constant', 'event'
-		'backbone', 'jquery', 'underscore', 'UI.modal' ], ( constant, ide_event ) ->
+define [ 'constant', 'event', 'i18n!/nls/lang.js',
+		'backbone', 'jquery', 'underscore', 'UI.modal' ], ( constant, ide_event, lang ) ->
 
 	CanvasModel = Backbone.Model.extend {
 
@@ -21,7 +21,8 @@ define [ 'constant', 'event'
 				'AWS_VPC_CustomerGateway'  : 'CGW'
 				'AWS_EC2_AvailabilityZone' : 'AZ'
 				'AWS_ELB'                  : 'ELB'
-				#'AWS_EBS_Volume'           : 'Volume'
+				'AWS_AutoScaling_Group'    : 'ASG'
+				'AWS_AutoScaling_LaunchConfiguration' : 'ASG_LC'
 			}
 
 			this.changeParentMap = {}
@@ -34,6 +35,44 @@ define [ 'constant', 'event'
 				this.validateDropMap[ resource_type[key] ] = this['beforeD_'   + value]
 				this.deleteResMap[    resource_type[key] ] = this['deleteR_'   + value]
 				this.beforeDeleteMap[ resource_type[key] ] = this['beforeDel_' + value]
+
+			null
+
+		#show notification when place is blank
+		showOverlapNotification : () ->
+
+			notification 'warning', lang.ide.CVS_MSG_WARN_COMPONENT_OVERLAP, false
+			null
+
+		#show notification when node not matchplace
+		showNotMatchNotification : ( comp_type ) ->
+			console.log comp_type + ' place to wrong place!'
+
+			res_type = constant.AWS_RESOURCE_TYPE
+
+			switch comp_type
+
+				when res_type.AWS_EBS_Volume            then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_VOLUME , false
+
+				when res_type.AWS_VPC_Subnet            then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_SUBNET, false
+
+				when res_type.AWS_EC2_Instance
+
+					if  MC.canvas.data.get('platform') == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas.data.get('platform') == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
+
+						notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ     , false
+					else
+
+						notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET , false
+
+				when res_type.AWS_VPC_NetworkInterface  then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_ENI , false
+
+				when res_type.AWS_VPC_RouteTable        then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_RTB , false
+
+				when res_type.AWS_ELB                   then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_ELB , false
+
+				when res_type.AWS_VPC_CustomerGateway   then notification 'warning', lang.ide.CVS_MSG_WARN_NOTMATCH_CGW , false
+
 
 			null
 
@@ -210,10 +249,17 @@ define [ 'constant', 'event'
 
 		deleteObject : ( event, option ) ->
 
+			option = $.extend {}, option
+
 			component = MC.canvas_data.component[ option.id ] ||
 			if not component
 				component = $.extend true, {uid:option.id}, MC.canvas_data.layout.component.group[ option.id ]
 
+			# Treat ASG as a node, not a group
+			if component.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+				option.type = 'node'
+
+			# Find Handler to delete the resource
 			switch option.type
 				when 'node'
 					handler = this.deleteResMap[ component.type ]
@@ -222,6 +268,8 @@ define [ 'constant', 'event'
 				when 'line'
 					result = this.deleteLine option
 
+			# If the handler returns false or string,
+			# The delete operation is prevented.
 			if handler
 				result = handler.call( this, component, option.force )
 
@@ -254,12 +302,57 @@ define [ 'constant', 'event'
 				# MC.canvas.remove actually remove the component from MC.canvas_data.component.
 				# Consider this as bad coding pattern, because its canvas/model's job to do that.
 				MC.canvas.remove $("#" + option.id)[0]
+				delete MC.canvas_data.component[option.id]
 				this.trigger 'DELETE_OBJECT_COMPLETE'
 
 			else if event && event.preventDefault
 				event.preventDefault()
 
 			result
+
+		deleteR_ASG : ( component, force ) ->
+			layout_data = MC.canvas_data.layout.component.node[component.uid]
+
+			if not layout_data
+				# This is a extended ASG
+				return
+
+			# Ask user to comfirm the delete operation
+			if not force
+				return "Delete this item will delete the entire #{component.name}. Do you confirm to delete?"
+
+			# Delete the component
+			asg_uid = component.uid
+
+			# Delete extentions
+			for comp_uid, comp of MC.canvas_data.layout.component.group
+				if comp.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId is asg_uid
+					MC.canvas.remove $("#" + comp_uid)[0]
+
+			# Delete the component
+			delete MC.canvas_data.component[component.uid]
+
+			if not component.resource.LaunchConfigurationName
+				return
+
+			# Delete the LC if there's only one asg is using.
+			lc_uid    = component.resource.LaunchConfigurationName
+			lc_shared = false
+			for comp_uid, compo of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					if comp.resource.LaunchConfigurationName is lc_uid
+						lc_shared = true
+						break
+
+			if not lc_shared
+				lc_uid = MC.extractID lc_uid
+				delete MC.canvas_data.component[lc_uid]
+				ide_event.trigger ide_event.DELETE_ASG_LC, lc_uid
+
+			null
+
+		deleteR_ASG_LC : ( component ) ->
+			"!Currently changing launch configuration is not supported."
 
 		deleteR_Instance : ( component ) ->
 
@@ -297,17 +390,17 @@ define [ 'constant', 'event'
 				# remove instance relate routetable
 				else if value.type == resource_type.AWS_VPC_RouteTable
 
-					this._removeGatewayIdFromRT key, component.uid
+					this._removeFromRTB key, component.uid
 
 			null
 
 		deleteR_Eni : ( component ) ->
 			for key, value of MC.canvas_data.component
 				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-					this._removeGatewayIdFromRT key, component.uid
+					this._removeFromRTB key, component.uid
 				else if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
 					if MC.extractID( value.resource.NetworkInterfaceId ) == component.uid
-						delete mc.canvas_data.component[ key ]
+						delete MC.canvas_data.component[ key ]
 
 			null
 
@@ -337,7 +430,7 @@ define [ 'constant', 'event'
 
 			for key, value of MC.canvas_data.component
 				if value.type == resource_type.AWS_VPC_RouteTable
-					this._removeGatewayIdFromRT key, component.uid
+					this._removeFromRTB key, component.uid
 
 			# Enable IGW in resource panel
 			ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, resource_type.AWS_VPC_InternetGateway
@@ -350,10 +443,10 @@ define [ 'constant', 'event'
 
 			for key, value of MC.canvas_data.component
 				if value.type == resource_type.AWS_VPC_RouteTable
-					this._removeGatewayIdFromRT key, component.uid
+					this._removeFromRTB key, component.uid
 
 				else if value.type == resource_type.AWS_VPC_VPNConnection and MC.extractID( value.resource.VpnGatewayId ) == component.uid
-					delete mc.canvas_data.component[ key ]
+					delete MC.canvas_data.component[ key ]
 
 
 			# Enable VGW in resource panel
@@ -411,7 +504,7 @@ define [ 'constant', 'event'
 				# [ @@@ Warning @@@ ] If there's one child that cannot be deleted for any reason. Data is corrupted.
 				this.deleteObject null, op
 
-			null
+			false
 
 		deleteR_AZ : ( component ) ->
 
@@ -537,7 +630,7 @@ define [ 'constant', 'event'
 
 
 			# Instance <==> RouteTable
-			if portMap['instance-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			if portMap['instance-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 				rt_uid = null
 
@@ -547,14 +640,14 @@ define [ 'constant', 'event'
 				component_resource = MC.canvas_data.component[ rt_uid ].resource
 
 				for i in component_resource.RouteSet
-					if MC.extractID( i.InstanceId ) isnt portMap['instance-sg']
+					if MC.extractID( i.InstanceId ) isnt portMap['instance-rtb']
 						keepArray.push i
 
 				component_resource.RouteSet = keepArray
 				return
 
 			# Eni <==> RouteTable
-			if portMap['eni-sg'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			if portMap['eni-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 				rt_uid = null
 
@@ -565,7 +658,7 @@ define [ 'constant', 'event'
 				component_resource = MC.canvas_data.component[rt_uid].resource
 
 				for i in component_resource.RouteSet
-					if MC.extractID( i.NetworkInterfaceId ) isnt portMap['eni-sg']
+					if MC.extractID( i.NetworkInterfaceId ) isnt portMap['eni-rtb']
 						keepArray.push i
 
 				component_resource.RouteSet = keepArray
@@ -596,13 +689,14 @@ define [ 'constant', 'event'
 
 			null
 
-		_removeGatewayIdFromRT : ( rt_uid, gateway_instance_uid) ->
+		_removeFromRTB : ( rt_uid, component_uid ) ->
 
-			$.each MC.canvas_data.component[rt_uid].resource.RouteSet, ( index, route ) ->
+			routeSet  = MC.canvas_data.component[rt_uid].resource.RouteSet
 
-				if route.InstanceId.split('.')[0][1...] == gateway_instance_uid or route.NetworkInterfaceId.split('.')[0][1...] == gateway_instance_uid
-
-					MC.canvas_data.component[rt_uid].resource.RouteSet.splice index, 1
+			for route, i in routeSet
+				if route.GatewayId.indexOf( component_uid ) != -1 or route.InstanceId.indexOf( component_uid ) != -1 or route.NetworkInterfaceId.indexOf( component_uid ) != -1
+					routeSet.splice i, 1
+					break
 
 		_removeInstanceFromSG : ( sg_uid, instance_uid ) ->
 
@@ -724,7 +818,10 @@ define [ 'constant', 'event'
 			else if portMap['instance-attach'] and portMap['eni-attach']
 
 				# check whether instance has position to add one more eni
-				instance_component 	= 	MC.canvas_data.component[portMap['instance-attach']]
+				instance_component = MC.canvas_data.component[portMap['instance-attach']]
+				eni_component      = MC.canvas_data.component[portMap['eni-attach']]
+				if eni_component.resource.AvailabilityZone isnt instance_component.resource.Placement.AvailabilityZone
+					return "Network Interface must be attached to instance within the same availability zone."
 
 				instance_type 		= 	instance_component.resource.InstanceType.split('.')
 

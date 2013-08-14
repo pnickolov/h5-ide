@@ -1,5 +1,5 @@
 <article class="property-control-group" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
-  Attach the Netowrk Interface to an instance.
+  Attach the Network Interface to an instance within the same availability zone.
 </article>
 
 <article id="property-eni-wrapper" {{#unless eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/unless}}>
@@ -45,6 +45,6 @@
     </section>
   </div>
 
-  <div class="option-group-head" id="sg-head">Security Groups (<span id="property-head-sg-num"></span>)</div>
+  <div class="option-group-head" id="sg-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group">Loading...</div>
 </article>

@@ -14,12 +14,12 @@ var MC = {
 	// Global Variable
 	API_URL: 'https://api.madeiracloud.com/',
 	IMG_URL: '../assets/images/',
-	WS_URL: 'http://api.madeiracloud.com:8300',//-> 8300
+	WS_URL: 'https://api.madeiracloud.com/ws',//-> 8300
 	SAVEPNG_URL: 'http://api.madeiracloud.com:8320/',
 
 	current_module : {},
 
-	_extractIDRegex : /@([^.]+)\./,
+	_extractIDRegex : /^@?([^.]+)/,
 
 	// Global data
 	data: {},

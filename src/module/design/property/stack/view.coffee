@@ -14,6 +14,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         stack_template  : Handlebars.compile $( '#property-stack-tmpl' ).html()
         acl_template    : Handlebars.compile $( '#property-stack-acl-tmpl' ).html()
         app_template    : Handlebars.compile $( '#property-app-tmpl' ).html()
+        sub_template    : Handlebars.compile $( '#property-stack-sns-tmpl' ).html()
 
         events   :
             # 'change #property-stack-name'           : 'stackNameChanged'
@@ -33,6 +34,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             'click #stack-property-add-new-acl' : 'openCreateAclPanel'
             'click .stack-property-acl-list .edit' : 'openEditAclPanel'
 
+            'click #property-sub-list .icon-edit' : 'editSNS'
+            'click #property-sub-list .icon-del'  : 'delSNS'
+            'click #property-create-asg' : 'openSNSModal'
+
         render     : () ->
             me = this
 
@@ -49,6 +54,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             MC.canvas_data.name = MC.canvas_data.name.replace(/\s+/g, '')
             $( '#property-stack-name' ).val(MC.canvas_data.name)
+
+            this.updateSNSList this.model.attributes.subscription, this.model.attributes.has_asg, true
 
             null
 
@@ -138,6 +145,142 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             aclUID = source.attr('acl-uid')
 
             ide_event.trigger ide_event.OPEN_ACL, aclUID
+
+        updateSNSList : ( snslist_data, hasASG, textOnly ) ->
+
+            console.log "Morris updateSNSList", this.model.attributes
+
+            # Hide all message
+            $(".property-sns-info > div").hide()
+
+            if not snslist_data or not snslist_data.length
+                if hasASG
+                    $("#property-sns-no-sub").show()
+                else
+                    $("#property-sns-no-sub-no-asg").show()
+            else if not hasASG
+                $("#property-sns-no-asg").show()
+
+            if textOnly
+                return
+
+            # Remove Old Stuff
+            $list = $("#property-sub-list")
+            $list.find("li:not(.hide)").remove()
+
+            # Insert New List
+            $template = $list.find(".hide")
+            for sub in snslist_data
+                $clone = $template.clone().removeClass("hide").appendTo $list
+
+                $clone.data "uid", sub.uid
+                $clone.find(".protocol").html sub.protocol
+                $clone.find(".endpoint").html sub.endpoint
+
+            $("#property-stack-sns-num").html( snslist_data.length )
+
+            null
+
+        delSNS : ( event ) ->
+
+            $li = $(this).closest("li")
+            uid = $li.data("uid")
+            $li.remove()
+
+            this.trigger "DEL_SUBSCRIPTION", uid
+
+            this.trigger 'DELETE_SUBSCRIPTION', uid
+
+
+        editSNS : ( event ) ->
+            $sub_li = $( event.currentTarget ).parent()
+            data =
+                title : "Edit"
+                uid   : $sub_li.data("uid")
+                protocol : $sub_li.find(".protocol").text()
+                endpoint : $sub_li.find(".endpoint").text()
+
+            this.openSNSModal event, data
+            null
+
+        saveSNS : ( data ) ->
+
+            if data.uid
+                # We are editing existing Subscription
+                # Update the related subscription's dom
+                $dom = $("#property-sub-list > li[data-uid='#{data.uid}']")
+                $dom.find(".protocol").html( data.protocol )
+                $dom.find(".endpoint").html( data.endpoint )
+
+            this.trigger  "SAVE_SUBSCRIPTION", data
+
+            if !data.uid
+                # Update the list
+                this.updateSNSList this.model.attributes.subscription, this.model.attributes.has_asg
+
+        openSNSModal : ( event, data ) ->
+            # data =
+            #       uid : "123123-123123-123123"
+            #       protocol : "Email"
+            #       endpoint : "123@abc.com"
+            if !data
+                data =
+                    protocol : "Email"
+                    title    : "Add"
+
+            modal this.sub_template data
+
+            $modal = $("#property-asg-sns-modal")
+
+            # Setup the protocol
+            $modal.find(".dropdown").find(".item").each ()->
+                if $(this).text() is data.protocol
+                    $(this).addClass("selected")
+
+            # Setup the endpoint
+            updateEndpoint = ( protocol ) ->
+                $input  = $(".property-asg-ep").removeClass("https http")
+                switch $modal.find(".selected").data("id")
+
+                    when "sqa"
+                        placeholder = "e.g. Amazon ARN"
+                    when "email"
+                        placeholder = "e.g. exmaple@acme.com"
+                    when "email-json"
+                        placeholder = "e.g. example@acme.com"
+                    when "sms"
+                        placeholder = "e.g. 1-343-21-323"
+                    when "http"
+                        $input.addClass "http"
+                        placeholder = "e.g. www.example.com"
+                    when "https"
+                        $input.addClass "https"
+                        placeholder = "e.g. www.example.com"
+                $("#property-asg-endpoint").attr "placeholder", placeholder
+                null
+
+            updateEndpoint()
+
+            $modal.on "OPTION_CHANGE", updateEndpoint
+
+
+            # Bind Events
+            self = this
+            $("#property-asg-sns-done").on "click", ()->
+                data =
+                    uid : $modal.data("uid")
+                    protocol : $modal.find(".selected").data("id")
+                    endpoint : $("#property-asg-endpoint").val()
+
+                console.log "Save Subscription", data
+
+                modal.close()
+
+                self.saveSNS data
+                null
+            null
+
+
     }
 
     view = new StackView()

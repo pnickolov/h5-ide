@@ -2,12 +2,7 @@
 	<i class="icon-double-angle-left"></i>
 </a>
 <div class="sidebar-title">
-	<span class="sidebar-title-text">Resource Panel</span>
-	<div class="search-bar" id="resource-search">
-	  <i class="icon-search"></i>
-	  <input class="input" type="text" placeholder="Filter Resource by Name" />
-	  <i class="icon-cancel"></i>
-	</div>
+	<span class="sidebar-title-text">Resources</span>
 </div>
 <div class="fixedaccordion accordion-default resource-panel-fixedaccordion" data-sub="54">
 	<div class="accordion-group expanded">
@@ -64,15 +59,23 @@
 	</div>
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
-			ELB
+			ELB and Auto Scaling
 		</div>
 		<div class="accordion-body">
 			<div class="item-wrap">
-				<ul class="resource-list">
+				<ul class="resource-list" id="resource-asg-list">
 					<li>
 						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new ELB." data-component-type="node" data-type="AWS.ELB" data-option='{"name": "elb"}'>
 							<div class="resource-icon resource-icon-elb"></div>
 							<div class="resource-label">New ELB</div>
+						</div>
+					</li>
+					<li>
+						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new auto scaling group." data-component-type="group" data-type="AWS.AutoScaling.Group" data-option='{"name": "asg"}'>
+							<div class="resource-icon resource-icon-asg">
+								<div class="resource-icon-asg-label">no config</div>
+							</div>
+							<div class="resource-label">New AutoScalingGroup</div>
 						</div>
 					</li>
 				</ul>

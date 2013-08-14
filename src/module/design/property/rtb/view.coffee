@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/rtb
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox', 'MC.validate', 'UI.parsley' ], ( ide_event ) ->
 
     RTBView = Backbone.View.extend {
 
@@ -15,6 +15,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
             'change .ipt-wrapper'             : 'addIp'
             'REMOVE_ROW  .multi-input'        : 'removeIp'
+            'ADD_ROW     .multi-input'        : 'processParsley'
             'BEFORE_REMOVE_ROW  .multi-input' : 'beforeRemoveIp'
             'change #rt-name'                 : 'changeName'
             'click #set-main-rt'              : 'setMainRT'
@@ -24,6 +25,13 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             console.log 'property:rtb render'
             $( '.property-details' ).html this.template this.model.attributes
 
+        processParsley: ( event ) ->
+            $( event.currentTarget )
+            .find( 'input' )
+            .last()
+            .removeClass( 'parsley-validated' )
+            .next( '.parsley-error-list' )
+            .remove()
 
         addIp : ( event ) ->
 
@@ -60,10 +68,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             this.trigger 'SET_ROUTE', uid, data, children
 
         changeName : ( event ) ->
+            rtName = event.currentTarget.value
+
+            # required validate
+            if not MC.validate 'required', rtName
+                return
 
             uid = $("#rt-name").data 'uid'
 
-            this.trigger 'SET_NAME', uid, event.target.value
+            this.trigger 'SET_NAME', uid, rtName
 
         setMainRT : () ->
 

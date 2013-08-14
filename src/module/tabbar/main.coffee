@@ -82,6 +82,10 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 model.set 'stack_region_name', view.temp_region_name
                 #set current platform
                 model.set 'current_platform', platform
+                # track
+                analytics.track "Created Stack",
+                    stack_type: platform,
+                    stack_region: view.temp_region_name
                 #tabbar api
                 Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled - ' + MC.data.untitled
                 #MC.data.untitled ++

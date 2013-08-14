@@ -1,14 +1,14 @@
 /* Canvas */
 #canvas {
-	margin-top: 43px;
-	top: -6px;
+	/*margin-top: 43px;
+	top: -6px;*/
 	z-index: 1;
 	width: 100%;
 	position: absolute;
 }
 
 #canvas_container {
-	padding: 20px;
+	padding: 0 20px 20px 0;
 	overflow: hidden;
 	background: rgb(237, 237, 237);
 	position: relative;
@@ -17,6 +17,39 @@
 #canvas_body {
 	border: 1px solid #ccc;
 	background: #fff url('../images/ide/grid.png');
+}
+
+/*.canvas-view-sg .line-sg,
+.canvas-view-sg .port-instance-sg {
+	visibility: visible;
+	fill-opacity: 0.1;
+}
+
+.canvas-view-sg .line path {
+	fill-opacity: 0.1 !important;
+}*/
+
+.line-sg.view-hover,
+.line-sg.view-keephover {
+	visibility: visible !important;
+	opacity: 0.7 !important;
+}
+
+.line-sg.view-show {
+	visibility: visible !important;
+	opacity: 1 !important;
+}
+
+.selected .port {
+	visibility: visible !important;
+}
+
+.node-dragging .node,
+.node-dragging .group-label,
+.node-dragging .asg-resource-dragger {
+	cursor: -webkit-grabbing !important;
+	cursor: -moz-grabbing !important;
+	cursor: grabbing !important;
 }
 
 #screenshot_canvas_body {
@@ -116,6 +149,10 @@
 	z-index: 100;
 	border: 1px solid #f3f3f3;
 	display: none;
+
+	cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
+	cursor: grabbing;
 }
 
 #drag_shadow .resource-icon {
@@ -143,6 +180,11 @@
 	background: none;
 	opacity: 1;
 	border: none;
+}
+
+#drag_shadow.AWS-AutoScaling-Group {
+	background: rgba(118, 214, 255, 0.05);
+	border: 2px dashed #76d6ff;
 }
 
 /* port style */
@@ -231,13 +273,13 @@
 	fill: rgba(255, 255, 255, 0);
 }
 
-#line_layer g.line {
-	opacity: .6;
+/* line connection */
+#line_layer .line-sg {
+	opacity: 0.2;
 }
 
-/* line connection */
-.line.selected,
-.line.selected path {
+.line.selected {
+	display: block !important;
 	opacity: 1 !important;
 	stroke-width: 4px !important;
 }
@@ -245,6 +287,11 @@
 .line:hover {
 	opacity: .8 !important;
 	stroke-width: 4px !important;
+}
+
+.fill-line {
+	stroke: rgba(255, 255, 255, 0);
+	stroke-width: 10px;
 }
 
 /* node label */
@@ -267,7 +314,11 @@
 /* group */
 .group-label {
 	font-size: 12px;
-	cursor: default;
+	cursor: pointer;
+
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
 }
 
 .az-name {
@@ -300,7 +351,7 @@
 	fill: rgba(252, 190, 23, 0.02);
 	stroke: #f9be76;
 	stroke-linejoin: round;
-	stroke-dasharray: 6, 4;
+	stroke-dasharray: 16, 6;
 	stroke-width: 2;
 }
 
@@ -322,7 +373,7 @@
 	fill: rgba(224, 224, 224, 0.05);
 	stroke: #dbd7d7;
 	stroke-linejoin: round;
-	stroke-dasharray: 6, 4;
+	stroke-dasharray: 16, 6;
 	stroke-width: 2;
 }
 
@@ -340,6 +391,55 @@
 	fill: #999;
 }
 
+
+.group-asg {
+	fill: rgba(118, 214, 255, 0.05);
+	stroke: #76d6ff;
+	stroke-linejoin: round;
+	stroke-dasharray: 6, 4;
+	stroke-width: 2;
+}
+
+.asg-title {
+	fill: #83CBF9;
+	stroke: #83CBF9;
+}
+.asg-title:hover {
+	fill: #5dc2f6;
+	stroke: #5dc2f6;
+}
+
+.AWS-AutoScaling-Group:hover .group-asg,
+.node-dragging .dropable-group .group-asg {
+	stroke: #76d6ff;
+}
+
+.AWS-AutoScaling-Group.selected .group-asg {
+	stroke: #76d6ff;
+	fill: rgba(255, 255, 255, 0);
+}
+
+.AWS-AutoScaling-Group .group-label {
+	fill: #ffffff;
+	font-size: 13px;
+}
+
+.asg-resource-dragger {
+	fill: rgba(118, 214, 255, 1);
+	cursor: pointer;
+
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
+}
+
+/*when no LaunchConfiguration in asg*/
+.prompt_text {
+	fill: #16B4F9;
+	font-size: 12px;
+	cursor: default;
+}
+
 /*scale area style*/
 .group-resizer {
 	fill-opacity: 0;
@@ -348,11 +448,6 @@
 .node-dragging .dropable-group .group-resizer {
 	fill-opacity: 1;
 	fill: rgba(252, 190, 23, 0.15);
-}
-
-.node-dragging .dropable-group .group-resizer {
-	fill-opacity: 1;
-	fill: rgba(238, 238, 238, 0.5);
 }
 
 .node-dragging .dropable-group .group-resizer {
@@ -391,6 +486,18 @@
 
 .resizer-bottomright {
 	cursor: nwse-resize;
+}
+
+.resizer-top:hover,
+.resizer-topleft:hover,
+.resizer-topright:hover,
+.resizer-left:hover,
+.resizer-right:hover,
+.resizer-bottom:hover,
+.resizer-bottomleft:hover,
+.resizer-bottomright:hover {
+	fill-opacity: 1;
+	fill: rgba(200, 200, 200, 0.12);
 }
 
 .eip-status {
@@ -487,4 +594,95 @@
 .canvas_state_app .resizer-wrap,
 .canvas_zoomed .resizer-wrap {
 	display: none;
+}
+
+#asgList-wrap {
+	position: absolute;
+	border: 2px solid #83CBF9;
+	width: 376px;
+	z-index: 30;
+	background: rgba(255, 255, 255, 0.95);
+	border-radius: 4px;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+#asgList-header {
+	background-color: #83CBF9;
+	color: #fff;
+	padding: 0 3px 3px;
+}
+
+#asgList-close {
+	position: absolute;
+	right: 5px;
+	top: -2px;
+	font-style: normal;
+	cursor: pointer;
+	font-size: 18px;
+	color: #fff;
+}
+
+#asgList {
+	padding: 8px 20px 3px;
+}
+
+#asgList li {
+	float: left;
+	margin: 0 10px 10px 0;
+	position: relative;
+}
+
+#asgList .status {
+	position: absolute;
+	right: 22px;
+	top: 17px;
+	width: 8px;
+	height: 8px;
+}
+
+.asgList-item {
+	border-radius: 5px;
+	display: block;
+	border: 2px solid rgba(255, 255, 255, 0);
+	width: 98px;
+	height: 98px;
+	background: url('../images/ide/icon/instance-canvas.png') 15px 10px no-repeat;
+}
+
+.asgList-item.selected {
+	border: 2px solid rgba(101, 159, 255, 0.6);
+	background-color: rgba(242, 248, 255, 0.6);
+}
+
+.asgList-item-icon {
+	position: absolute;
+	top: 15px;
+	left: 32px;
+	width: 39px;
+	height: 27px;
+}
+
+.asgList-item-volume {
+	position: absolute;
+	top: 48px;
+	left: 37px;
+	width: 29px;
+	height: 24px;
+	background: url('../images/ide/icon/instance-volume-not-attached.png') no-repeat;
+	text-align: center;
+}
+
+.asgList-item-number {
+	font-size: 12px;
+	color: #74B1FD;
+}
+
+.asgList-item-label {
+	color: #333;
+	width: 100px;
+	overflow: hidden;
+	font-size: 12px;
+	position: absolute;
+	top: 80px;
+	text-align: center;
 }

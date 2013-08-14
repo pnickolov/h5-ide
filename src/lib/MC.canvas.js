@@ -1869,6 +1869,10 @@ MC.canvas.volume = {
 					document.getElementById( target_id )
 				);
 			}
+			else
+			{
+				MC.canvas.select(target_id);
+			}
 		}
 
 		return false;
@@ -1976,9 +1980,6 @@ MC.canvas.volume = {
 	{
 		if (event.which === 1)
 		{
-			event.preventDefault();
-			event.stopPropagation();
-
 			var target = $(this),
 				target_offset = target.offset(),
 				canvas_offset = $('#svg_canvas').offset(),
@@ -2070,9 +2071,6 @@ MC.canvas.volume = {
 
 	mouseup: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
 		var target = $(event.data.target),
 			target_component_type = target.data('component-type'),
 			node_option = target.data('option'),
@@ -3006,15 +3004,6 @@ MC.canvas.event.drawConnection = {
 			});
 
 			MC.canvas.event.clearSelected();
-			// Clean selected
-			// $('#svg_canvas .selected').each(function ()
-			// {
-			// 	Canvon(this).removeClass('selected');
-			// });
-
-			// MC.canvas_property.selected_node = [];
-
-			//Canvon(parent[0]).addClass('selected');
 
 			// Keep hover style on
 			//if ($('#canvas_body').hasClass('canvas-view-sg'))
@@ -3022,11 +3011,6 @@ MC.canvas.event.drawConnection = {
 				$.each(node_connections, function (index, item)
 				{
 					Canvon(item.line).addClass('view-keephover');
-
-					// $('#' + item.target).find('.port-' + item.port).each(function ()
-					// {
-					// 	Canvon(this).addClass('view-keephover');
-					// });
 				});
 			//}
 
@@ -4196,17 +4180,7 @@ MC.canvas.event.nodeHover = function ()
 		$.each(node_connections, function (index, item)
 		{
 			Canvon(item.line).addClass('view-hover');
-
-			// $('#' + item.target).find('.port-' + item.port).each(function ()
-			// {
-			// 	Canvon(this).addClass('view-hover');
-			// });
 		});
-
-		// target.find('.port').each(function ()
-		// {
-		// 	Canvon(this).addClass('view-show');
-		// });
 	}
 
 	if (event.type === 'mouseout')
@@ -4215,11 +4189,6 @@ MC.canvas.event.nodeHover = function ()
 		{
 			Canvon(this).removeClass('view-hover');
 		});
-
-		// $(this).find('.port').each(function ()
-		// {
-		// 	Canvon(this).removeClass('view-show');
-		// });
 	}
 };
 

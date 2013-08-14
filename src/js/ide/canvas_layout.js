@@ -47,7 +47,7 @@ var listen = function ()
 	{
 		$('#canvas_body')
 			.addClass('canvas_state_' + canvas_state)
-			//.on('mousedown', '.instance-volume', MC.canvas.volume.show)
+			.on('mousedown', '.instance-volume', MC.canvas.volume.show)
 			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
 			.on('click', '.line', MC.canvas.event.selectLine)
 			.on('mousedown', MC.canvas.event.clearSelected)

@@ -3,10 +3,12 @@ body {
 	height: 100%;
 }
 
-body {
+#body {
 	font-size: 14px;
 	min-width: 1024px;
 	color: #666;
+	overflow: hidden;
+	background: #4c494c;
 }
 
 a {
@@ -23,10 +25,6 @@ a {
 
 .icon-caret-down {
 	margin-left: 2px;
-}
-
-#body {
-	background: #4c494c;
 }
 
 /* generic class */
@@ -1604,8 +1602,6 @@ td.table-action a.btn {
 	height    : 43px;
 	width     : 100%;
 	min-width : 370px;
-	/*overflow  : hidden;*/
-
 	background      : #ececec;
 	/*border-bottom : 2px solid #d3d3d3;*/
 	box-shadow      : inset 0 2px 0 rgba(255,255,255,.5), 0 2px 0 #d3d3d3;
@@ -1787,6 +1783,10 @@ a.sidebar-hider {
 	cursor: pointer;
 	padding: 5px;
 	box-sizing: border-box;
+
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
 }
 
 .resource-item:hover {
@@ -1881,6 +1881,10 @@ a.sidebar-hider {
 
 .resource-icon-cgw {
 	background: url('../images/ide/icon/cgw-resource.png') center center no-repeat;
+}
+
+.resource-icon-asg {
+	background: url('../images/ide/icon/asg-resource.png') center center no-repeat;
 }
 
 
@@ -2159,9 +2163,9 @@ a.sidebar-hider {
 }
 
 .property-control-group > label{
-	margin-bottom: 8px;
-	color: #758694;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+	color         : #999;
+	font-size     : 13px;
+	margin-bottom : 8px;
 }
 
 .property-control-group .input {
@@ -2462,11 +2466,6 @@ a.sidebar-hider {
 	background-color: #eee;
 	padding: 10px;
 	position: relative;
-}
-
-.sg-header .count {
-	font-size: 12px;
-	color: #999;
 }
 
 .sg-header .sg-icon-add {
@@ -3957,6 +3956,14 @@ a:hover .icon-toolbar-zoom-out {
 	background: url('../images/ide/icon-export-json.png') center center no-repeat;
 }
 
+#json-content {
+	margin: 15px 0;
+	width: 645px;
+	display: block;
+	height: 300px;
+	padding: 10px;
+}
+
 /*app-vpn-cgw*/
 #app-cgw-vpn-accordion .dl-vertical {
 	padding: 10px;
@@ -4007,6 +4014,96 @@ a:hover .icon-toolbar-zoom-out {
 #app-cgw-body .status,
 #app-vpn-body .status {
 	margin: 0 5px 0 0;
+}
+
+/* Auto Scaling Group Property */
+.property-asg-ep.http:before {
+	content : "http";
+	display : inline-block;
+}
+.property-asg-ep.https:before {
+	content : "https";
+}
+
+.property-details .icon-edit {
+	position   : absolute;
+	top        : 5px;
+	right      : 15px;
+	width      : 16px;
+	height     : 16px;
+	background : green;
+	cursor     : pointer;
+}
+
+.property-details .icon-del {
+	position   : absolute;
+	top        : 30px;
+	right      : 15px;
+	width      : 16px;
+	height     : 16px;
+	background : red;
+}
+
+.dialog-group {
+	border-radius : 4px;
+	background    : #ddd;
+	margin        : 10px 0;
+	padding       : 10px;
+}
+
+.dialog-group h5 {
+	color : #222;
+}
+
+.asg-policy-advanced .dialog-group {
+	display : none;
+}
+
+.asg-policy-advanced.open .dialog-group {
+	display : block;
+}
+
+.drag-sort-list {
+	width : 300px;
+}
+
+.drag-sort-list li {
+	border : 1px solid #ccc;
+	background : #eee;
+	line-height : 30px;
+	padding-left : 6px;
+	margin-top   : -1px;
+}
+
+.drag-sort-list .checkbox {
+	margin-top : -3px;
+	border-right : 1px solid #ccc;
+	padding-right : 8px;
+}
+
+.drag-sort-list li.enabled {
+	background : none;
+}
+
+.drag-sort-list .drag-handle {
+	width      : 16px;
+	height     : 16px;
+	float      : right;
+	background : red;
+	margin     : 7px 8px 0 0;
+	display    : none;
+}
+
+.drag-sort-list .enabled .drag-handle {
+	display : block;
+}
+
+.drag-sort-list .sortable-placeholder {
+	line-height   : 30px;
+	height        : 30px;
+	background    : #f5f5f5;
+	border        : 1px dotted #ccc;
+	border-bottom : none;
 }
 
 /* stack and app property sgrule */

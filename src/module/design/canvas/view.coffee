@@ -15,10 +15,11 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
             #bind event
             $( document )
                 .on( 'CANVAS_NODE_SELECTED',        '#svg_canvas', this.showProperty )
+                .on( 'CANVAS_ASG_VOLUME_SELECTED',  '#svg_canvas', this.showASGVolumeProperty )
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
 
-                .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP',   '#svg_canvas', _.bind( this.route, this ) )
+                .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH CANVAS_PLACE_OVERLAP',   '#svg_canvas', _.bind( this.route, this ) )
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -41,6 +42,10 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
         showProperty : ( event, uid ) ->
             console.log 'showProperty, uid = ' + uid
             ide_event.trigger ide_event.OPEN_PROPERTY, 'component', uid
+
+        showASGVolumeProperty : ( event, uid ) ->
+            console.log 'showProperty, uid = ' + uid
+            ide_event.trigger ide_event.OPEN_PROPERTY, 'component_asg_volume', uid
 
         lineSelected : ( event, line_id ) ->
             ide_event.trigger ide_event.OPEN_PROPERTY, 'line', line_id

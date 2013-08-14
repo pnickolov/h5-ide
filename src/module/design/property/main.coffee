@@ -36,8 +36,10 @@ define [ 'jquery',
 				'./module/design/property/cgw/main',
 				'./module/design/property/vpn/main',
 				'./module/design/property/eni/main',
-				'./module/design/property/acl/main'
-		], ( View, model, stack_main, instance_main, sg_main, sgrule_main, volume_main, elb_main, az_main, subnet_main, vpc_main, rtb_main, igw_main, vgw_main, cgw_main, vpn_main, eni_main, acl_main ) ->
+				'./module/design/property/acl/main',
+				'./module/design/property/launchconfig/main',
+				'./module/design/property/asg/main'
+		], ( View, model, stack_main, instance_main, sg_main, sgrule_main, volume_main, elb_main, az_main, subnet_main, vpc_main, rtb_main, igw_main, vgw_main, cgw_main, vpn_main, eni_main, acl_main, lc_main, asg_main) ->
 
 			current_uid = null
 			tab_type = null
@@ -61,8 +63,14 @@ define [ 'jquery',
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
 
+				# Cleanup property panel, this shoulde be move to property/view
+
 				# Better than $("input:focus")
 				$(document.activeElement).filter("input").blur()
+
+				# Hide second panel if there's any
+				view.immHideSecondPanel()
+
 
 				#
 				MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
@@ -74,7 +82,12 @@ define [ 'jquery',
 				current_uid  = uid
 				console.log 'OPEN_PROPERTY, uid = ' + uid
 
-				if type == 'component'
+				if type == 'component_asg_volume'
+					#show asg volume property
+					volume_main.loadModule uid, volume_main, tab_type
+
+
+				else if type == 'component'
 
 					#show stack property
 					if uid is ''
@@ -111,6 +124,9 @@ define [ 'jquery',
 							#show eni property
 							when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface then eni_main.loadModule uid, eni_main, tab_type
 							# Acl Property is not loaded in such a way.
+							when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration then lc_main.loadModule uid, lc_main
+
+							when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group then asg_main.loadModule uid, asg_main, tab_type
 
 							#
 							else
@@ -120,7 +136,7 @@ define [ 'jquery',
 						#AvailabilityZone
 						if MC.canvas_data.layout.component.group[ uid ] and MC.canvas_data.layout.component.group[ uid ].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
 							console.log 'type = ' + MC.canvas_data.layout.component.group[ uid ].type
-							if tab_type is 'OPEN_APP' then stack_main.loadModule stack_main else az_main.loadModule uid, az_main, tab_type
+							stack_main.loadModule stack_main, tab_type
 
 				else
 
@@ -167,7 +183,6 @@ define [ 'jquery',
 				#
 				if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
 
-				view.immHideSecondPanel()
 				null
 
 			#listen OPEN_SG

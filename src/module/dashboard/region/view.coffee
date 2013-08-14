@@ -77,12 +77,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $( this.el ).find( '#region-stat-stack' ).html this.stat_stack this.model.attributes
             null
 
-        checkCreateStack : ( is_disabled ) ->
-            console.log 'checkCreateStack'
-            if is_disabled
-                $('#btn-create-stack').removeClass('disabled').addClass('btn-primary')
+        checkCreateStack : ( platforms ) ->
+            $button = $("#btn-create-stack")
+            if platforms and platforms.length
+                $button.removeAttr "disabled"
             else
-                $('#btn-create-stack').removeClass('btn-primary').addClass('disabled')
+                $button.attr "disabled", "disabled"
             null
 
         returnOverviewClick : ( target ) ->

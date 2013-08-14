@@ -2,11 +2,11 @@
   <section class="property-control-group">
     <label class="left" for="property-acl-name">Name</label>
     <span class="required-input right">Required</span>
-    <input class="input" type="text" value="{{component.name}}" {{#if is_default}}disabled="disabled"{{/if}} id="property-acl-name"/>
+    <input class="input" type="text" value="{{component.name}}" {{#if is_default}}disabled{{/if}} id="property-acl-name"/>
   </section>
 
   <div class="option-group-head acl-header pos-r">Rule
-    <span class="count">(<span id="acl-rule-count">{{component.resource.entrySet.length}}</span>)</span>
+    <span class="property-head-num-wrap">(<span id="acl-rule-count">{{component.resource.entrySet.length}}</span>)</span>
     <a href="#" class="acl-icon-add tooltip" id="acl-add-rule-icon" data-tooltip="Create new Network ACL Rule"></a>
   </div>
   <div class="option-group">
@@ -25,7 +25,7 @@
     <ul class="acl-rules" id="acl-rule-list">{{acl_list}}</ul>
   </div>
 
-  <div class="option-group-head acl-header">Associations<span class="count">(<span id="acl-assn-count">{{associations.length}}</span>)</span>
+  <div class="option-group-head acl-header">Associations<span class="property-head-num-wrap">(<span id="acl-assn-count">{{associations.length}}</span>)</span>
   </div>
 
   <ul class="option-group">

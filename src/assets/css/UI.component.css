@@ -333,10 +333,7 @@ textarea:focus {
 	background-color: #eee;
 }
 */
-.property-control-group > label {
-	color     : #999;
-	font-size : 13px;
-}
+
 
 .property-content .input,
 .property-content textarea {
@@ -362,9 +359,10 @@ textarea:focus {
 
 .property-content .input.disabled,
 .proerty-content .input[disabled] {
-	background-color: #616161;
+	background-color: #383738;
 	box-shadow: none;
-	color: #484648;
+	color: #666;
+	border: 1px solid transparent;
 }
 
 .prefix-input {
@@ -553,6 +551,11 @@ textarea {
 	z-index: 30;
 	background: rgba(100, 100, 100, 0.2);
 	display: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 
 .scrollbar-auto-hide > .scrollbar-veritical-wrap,

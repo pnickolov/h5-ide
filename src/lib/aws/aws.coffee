@@ -5,15 +5,24 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		new_name 	= ""
 		name_prefix = ""
-		max_num 	= 0
+		name_list   = []
 
 		switch compType
 
 			when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 				name_prefix = "host"
 
+			when constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+				name_prefix = "kp"
+
 			when constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-				name_prefix = "sg-"
+				name_prefix = "sg"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+				name_prefix = "eip"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+				name_prefix = "vol"
 
 			when constant.AWS_RESOURCE_TYPE.AWS_ELB
 				name_prefix = "load-balancer-"
@@ -33,29 +42,72 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 			when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 				name_prefix = "eni"
 
+			when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions
+				name_prefix = "dhcp"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+				name_prefix = "vpn"
+
 			when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
-				name_prefix = "acl-"
+				name_prefix = "acl"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
+				name_prefix = "iam"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+				name_prefix = "Internet-gateway"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+				name_prefix = "VPN-gateway"
+
+			#ASG
+			when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+				name_prefix = "asg"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+				name_prefix = "launch-config-"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
+				name_prefix = "asl-nc"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+				name_prefix = "asl-sp-"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScheduledActions
+				name_prefix = "asl-sa-"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+				name_prefix = "clw-"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
+				name_prefix = "sns-sub"
+
+			when constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+				name_prefix = "sns-topic"
 
 
+		#get exist name
 		_.each MC.canvas_data.component, (compObj) ->
 
 			if compObj.type is compType
 
-				new_name = compObj.name
+				name_list.push compObj.name
 
-				if new_name.slice(0, name_prefix.length) is name_prefix
-
-					currentNum = Number(new_name.slice(name_prefix.length))
-
-					if currentNum > max_num
-
-						max_num = currentNum
 			null
 
-		max_num++
+
+		#find name
+		idx = 1
+		while idx <= name_list.length
+
+			if $.inArray( (name_prefix + idx), name_list ) == -1
+				#not in name_list
+				break
+
+			idx++
 
 		#return new name
-		name_prefix + max_num
+		name_prefix + idx
 
 	#public
 	getNewName : getNewName

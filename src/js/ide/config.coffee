@@ -57,6 +57,7 @@ require.config {
 		'UI.editablelabel'  : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'  : 'ui/common/UI.multiinputbox'
 		'UI.zeroclipboard'  : 'ui/common/UI.zeroclipboard'
+		'UI.sortable'       : 'ui/common/jquery.sortable'
 		'UI.parsley' 	    : 'ui/common/UI.parsley'
 
 		#jquery plugin

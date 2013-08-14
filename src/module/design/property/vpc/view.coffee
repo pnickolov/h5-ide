@@ -2,8 +2,7 @@
 #  View(UI logic) for design/property/vpc
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
-        'UI.fixedaccordion' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event ) ->
 
     # Helpers
     mapFilterInput = ( selector ) ->
@@ -60,8 +59,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore'
 
             $( '.property-details' ).html this.template data
             $( '#property-domain-server' ).on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
-
-            fixedaccordion.resize()
 
         onChangeName : ( event ) ->
             this.trigger "CHANGE_NAME", event.target.value

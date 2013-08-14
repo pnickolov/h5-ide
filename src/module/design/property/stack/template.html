@@ -22,6 +22,40 @@
 	<div class="option-group stack-property-acl-list">Loading...</div>
 	{{/if}}
 
+	<div class="option-group-head">SNS Topic Subscription (<span id="property-stack-sns-num">{{subscription.length}}</span>)</div>
+  <div class="option-group">
+
+  	<ul id="property-sub-list">
+      <li class="pos-r hide">
+        <p>Protocol&nbsp;&nbsp;&nbsp;&nbsp;<span class="protocol"></span></p>
+        <p>Endpoint&nbsp;&nbsp;&nbsp;&nbsp;<span class="endpoint"></span></p>
+        <i class="icon-edit"></i>
+        <i class="icon-del"></i>
+      </li>
+      {{#each subscription}}
+      <li class="pos-r" data-uid="{{uid}}">
+        <p>Protocol&nbsp;&nbsp;&nbsp;&nbsp;<span class="protocol">{{protocol}}</span></p>
+        <p>Endpoint&nbsp;&nbsp;&nbsp;&nbsp;<span class="endpoint">{{endpoint}}</span></p>
+        <i class="icon-edit"></i>
+        <i class="icon-del"></i>
+      </li>
+      {{/each}}
+  	</ul>
+
+    <section class="property-sns-info">
+      <div id="property-sns-no-sub-no-asg">
+        <p>SNS is available forauto scaling group notification and scaling policy.</p>
+        <p>You can enable auto scaling group to send notification via SNS Topic</p>
+      </div>
+
+      <div id="property-sns-no-asg"><p>There is no auto scaling group in this stack using notification. If there is no usage of SNS topic, the topic will not be created when the stack runs into an app.</p></div>
+
+      <div id="property-sns-no-sub"><p class="property-warning">There is auto scaling group relay on SNS Topic to receive notification. Yet no subscription is set up. </p></div>
+    </section>
+
+  	<button id="property-create-asg">Add Subscription</button>
+  </div>
+
 	<div class="option-group-head expand">
 		Cost Estimation <a href="###"><i class="icon-question-sign"></i></a>
 		{{#if total_fee}}${{total_fee}}/month{{/if}}

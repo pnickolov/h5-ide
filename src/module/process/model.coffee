@@ -2,7 +2,7 @@
 #  View Mode for header module
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event, Backbone, $, _, constant ) ->
+define [ 'event', 'backbone', 'jquery', 'underscore', 'constant', 'app_model' ], ( ide_event, Backbone, $, _, constant, app_model ) ->
 
     #websocket
     ws = MC.data.websocket
@@ -54,6 +54,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                                 ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
                                 ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
                             , 2000
+
+
 
             null
 
@@ -138,6 +140,22 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                 if MC.data.current_tab_id is tab_name
                     me.set 'flag_list', flag_list
                     me.trigger 'UPDATE_PROCESS'
+
+        getKey  :   (region, app_id) ->
+            me = this
+
+            # generate s3 key
+            app_model.getKey { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
+            app_model.once 'APP_GETKEY_RETURN', (result) ->
+                console.log 'APP_GETKEY_RETURN'
+                console.log result
+
+                if !result.is_error
+                    # trigger toolbar save png event
+                    console.log 'TOOLBAR_SAVE_PNG'
+                    # data.key = result.resolved_data
+
+            null
 
     }
 

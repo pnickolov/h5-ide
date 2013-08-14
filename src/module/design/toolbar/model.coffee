@@ -152,7 +152,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
                         #call save png
-                        me.savePNG true
+                        me.savePNG true, data
 
                         #set toolbar flag
                         me.setFlag id, 'SAVE_STACK', name
@@ -192,7 +192,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         MC.data.stack_list[region].push name
 
                         #call save png
-                        me.savePNG true
+                        me.savePNG true, data
 
                         #set toolbar flag
                         me.setFlag id, 'CREATE_STACK', data
@@ -282,7 +282,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 #add new-app status
                 #me.handleRequest result, 'RUN_STACK', region, id, app_name
-                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
+                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
 
         #zoomin
         zoomIn : () ->
@@ -314,7 +314,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             null
 
-        savePNG : ( is_thumbnail ) ->
+        savePNG : ( is_thumbnail, data ) ->
             console.log 'savePNG'
             me = this
             #
@@ -336,17 +336,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     #window.removeEventListener 'message', callback
             window.addEventListener 'message', callback
             #
-            data =
+            phantom_data =
                 'origin_host': window.location.origin,
                 'usercode'   : $.cookie( 'usercode'   ),
                 'session_id' : $.cookie( 'session_id' ),
                 'thumbnail'  : is_thumbnail,
-                'json_data'  : MC.canvas.layout.save(),
-                'stack_id'   : MC.canvas_data.id
-                'url'        : MC.canvas_data.key
+                'json_data'  : JSON.stringify(data),
+                'stack_id'   : data.id
+                'url'        : data.key
             #
             sendMessage = ->
-                $( '#phantom-frame' )[0].contentWindow.postMessage data, MC.SAVEPNG_URL
+                $( '#phantom-frame' )[0].contentWindow.postMessage phantom_data, MC.SAVEPNG_URL
             if $( '#phantom-frame' )[0] is undefined
                 $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
                 $('#phantom-frame').load -> sendMessage()

@@ -92,9 +92,9 @@ define [ 'jquery',
                 model.zoomOut()
 
             #export to png
-            view.on 'TOOLBAR_EXPORT_PNG_CLICK', () ->
+            view.on 'TOOLBAR_EXPORT_PNG_CLICK', (data) ->
                 console.log 'design_toolbar_click:exportPngIcon'
-                model.savePNG false
+                model.savePNG false, data
 
             model.on 'SAVE_PNG_COMPLETE', ( base64_image ) ->
                 console.log 'SAVE_PNG_COMPLETE'

@@ -112,7 +112,16 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#resolve result
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeSecurityGroupsResponse.securityGroupInfo
+		result_set = ($.xml2json ($.parseXML result[1])).DescribeSecurityGroupsResponse.securityGroupInfo
+
+		if result_set?.item?
+
+			return result_set.item
+
+		else
+
+			return null
+
 
 	#private (parser DescribeSecurityGroups return)
 	parserDescribeSecurityGroupsReturn = ( result, return_code, param ) ->

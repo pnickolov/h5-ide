@@ -383,6 +383,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-subnet-assoc-in',
+					'id' : group.id + '_port-subnet-assoc-in',
 					'transform': 'translate(-12, ' + ((height / 2) - 13) + ')', //port position: right:0 top:-90 left:-180 bottom:-270
 					'data-name': 'subnet-assoc-in', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
@@ -394,6 +395,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-subnet-assoc-out',
+					'id' : group.id + '_port-subnet-assoc-out',
 					'transform': 'translate(' + (width + 4) + ', ' + ((height / 2) - 13) + ')',
 					'data-name': 'subnet-assoc-out',
 					'data-position': 'right',
@@ -633,6 +635,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						//4 path: left port(blue)
 						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-left',
+							'id' : group.id + '_port-launchconfig-sg-left',
 							'transform': 'translate('+ (8 + offset_x ) + ', ' + (26 + offset_y) + ')' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
 							'data-name': 'launchconfig-sg', //for identify port
 							'data-position': 'left', //port position: for calc point of junction
@@ -644,6 +647,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						//5 path: right port(blue)
 						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-right',
+							'id' : group.id + '_port-launchconfig-sg-right',
 							'transform': 'translate(' + (84 + offset_x) +' , ' + (26 + offset_y) + ')' + MC.canvas.PORT_RIGHT_ROTATE,
 							'data-name': 'launchconfig-sg',
 							'data-position': 'right',
@@ -806,6 +810,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-left',
+					'id' : group.id + '_port-instance-sg-left',
 					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
 					'data-name': 'instance-sg', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
@@ -817,6 +822,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: left port(green)
 				// Canvon.path(MC.canvas.PATH_D_PORT).attr({
 				// 	'class': 'port port-green port-instance-elb-attach',
+				//  'id' : group.id + '_port-instance-elb-attach',
 				// 	'transform': 'translate(8, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
 				// 	'data-name': 'instance-elb-attach',
 				// 	'data-position': 'left',
@@ -828,6 +834,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-right',
+					'id' : group.id + '_port-instance-sg-right',
 					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'instance-sg',
 					'data-position': 'right',
@@ -839,6 +846,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//5 path: right port(green)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-instance-attach',
+					'id' : group.id + '_port-instance-attach',
 					'id': group.id + '_instance_attach',
 					'transform': 'translate(84, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'instance-attach',
@@ -851,6 +859,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//6 path: top port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-rtb',
+					'id' : group.id + '_port-instance-rtb',
 					'id': group.id + '_instance_rtb',
 					'transform': 'translate(50, -6)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'instance-rtb',
@@ -1153,6 +1162,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_sg_in',
 					'class': 'port port-blue port-elb-sg-in',
+					'id' : group.id + '_port-elb-sg-in',
 					'transform': 'translate(8, 39)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-in',
 					'data-position': 'left',
@@ -1165,6 +1175,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_sg_out',
 					'class': 'port port-blue port-elb-sg-out',
+					'id' : group.id + '_port-elb-sg-out',
 					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-out',
 					'data-position': 'right',
@@ -1176,6 +1187,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				// //4 path: right port -> instance attach
 				// Canvon.path(MC.canvas.PATH_D_PORT).attr({
 				// 	'class': 'port port-green port-elb-attach',
+				//  'id' : group.id + '_port-elb-attach',
 				// 	'transform': 'translate(84, 42)' + MC.canvas.PORT_RIGHT_ROTATE,
 				// 	'data-name': 'elb-attach',
 				// 	'data-position': 'right',
@@ -1188,6 +1200,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'id' : group.id + '_elb_assoc',
 					'class': 'port port-gray port-elb-assoc',
+					'id' : group.id + '_port-elb-assoc',
 					'transform': 'translate(84, 57)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-assoc',
 					'data-position': 'right',
@@ -1286,6 +1299,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-left',
+					'id' : group.id + '_port-rtb-tgt-left',
 					'transform': 'translate(11, 25)' + MC.canvas.PORT_LEFT_ROTATE,
 					'data-name': 'rtb-tgt-left',
 					'data-position': 'left',
@@ -1297,6 +1311,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-rtb-tgt-right',
+					'id' : group.id + '_port-rtb-tgt-right',
 					'transform': 'translate(69, 25)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'rtb-tgt-right',
 					'data-position': 'right',
@@ -1308,6 +1323,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: top port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-top',
+					'id' : group.id + '_port-rtb-src-top',
 					'transform': 'translate(41, -4)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'top',
@@ -1319,6 +1335,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//5 path: bottom port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-bottom',
+					'id' : group.id + '_port-rtb-src-bottom',
 					'transform': 'translate(42, 66)' + MC.canvas.PORT_DOWN_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'bottom',
@@ -1392,6 +1409,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				// Canvon.path(MC.canvas.PATH_D_PORT).attr({
 				// 	'class': 'port port-blue port-igw-unknown',
+				//  'id' : group.id + '_port-igw-unknown',
 				// 	'transform': 'translate(12, 25)' + MC.canvas.PORT_LEFT_ROTATE,
 				// 	'data-name': 'igw-unknown',
 				// 	'data-position': 'left',
@@ -1403,6 +1421,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-igw-tgt',
+					'id' : group.id + '_port-igw-tgt',
 					'transform': 'translate(76, 25)' + MC.canvas.PORT_LEFT_ROTATE,
 					'data-name': 'igw-tgt',
 					'data-position': 'right',
@@ -1474,6 +1493,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-vgw-tgt',
+					'id' : group.id + '_port-vgw-tgt',
 					'transform': 'translate(4, 25)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'vgw-tgt',
 					'data-position': 'left',
@@ -1485,6 +1505,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-purple port-vgw-vpn',
+					'id' : group.id + '_port-vgw-vpn',
 					'transform': 'translate(69, 25)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'vgw-vpn',
 					'data-position': 'right',
@@ -1557,6 +1578,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-purple port-cgw-vpn',
+					'id' : group.id + '_port-cgw-vpn',
 					'transform': 'translate(7, 35)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'cgw-vpn',
 					'data-position': 'left',
@@ -1667,6 +1689,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-eni-sg port-eni-sg-left',
+					'id' : group.id + '_port-eni-sg-left',
 					'id': group.id + '_eni_sg_left',
 					//'display': 'none', //hide
 					'transform': 'translate(7, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
@@ -1680,6 +1703,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//3 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-eni-attach',
+					'id' : group.id + '_port-eni-attach',
 					'transform': 'translate(7, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-attach',
 					'data-position': 'left',
@@ -1691,6 +1715,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-eni-sg port-eni-sg-right',
+					'id' : group.id + '_port-eni-sg-right',
 					'id': group.id + '_eni_sg_right',
 					//'display': 'none', //hide
 					'transform': 'translate(85, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
@@ -1704,6 +1729,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//5 path: top port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-rtb',
+					'id' : group.id + '_port-eni-rtb',
 					'id': group.id + '_eni_rtb',
 					'transform': 'translate(48, 10)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'eni-rtb',
@@ -1876,6 +1902,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-left',
+					'id' : group.id + '_port-launchconfig-sg-left',
 					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
 					'data-name': 'launchconfig-sg', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
@@ -1887,6 +1914,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				//4 path: right port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-right',
+					'id' : group.id + '_port-launchconfig-sg-right',
 					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'launchconfig-sg',
 					'data-position': 'right',

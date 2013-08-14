@@ -1604,7 +1604,6 @@ td.table-action a.btn {
 	height    : 43px;
 	width     : 100%;
 	min-width : 370px;
-	overflow  : hidden;
 
 	background      : #ececec;
 	/*border-bottom : 2px solid #d3d3d3;*/
@@ -1622,6 +1621,7 @@ td.table-action a.btn {
 .toolbar-btn-group:first-child {
 	border-left   : none;
 	border-radius : 2px 0 0 0;
+	overflow      : hidden;
 }
 
 .toolbar-btn-group > li {

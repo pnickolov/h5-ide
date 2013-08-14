@@ -476,7 +476,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             time_stamp      = new Date().getTime() / 1000
             unmanaged_list  = { "time_stamp": time_stamp, "items": [] }
-            resources_keys  = [ 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses' ]
+            resources_keys  = [ 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses', 'DescribeAutoScalingGroups' ]
 
             if resource_source
                 #console.log resource_source
@@ -525,6 +525,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                                         'type': "VPC",
                                         'name': (if name then name else value.vpcId),
                                         'status': value.state,
+                                        'cost': 0.00,
+                                        'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
+                                        'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
+                                    }
+                                when "DescribeAutoScalingGroups"
+                                    unmanaged_list.item.push {
+                                        'type': "Auto Scaling Group",
+                                        'name': (if name then name else value.AutoScalingGroupName),
+                                        'state': value.state,
                                         'cost': 0.00,
                                         'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
                                         'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)

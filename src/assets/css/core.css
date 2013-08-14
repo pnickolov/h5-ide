@@ -180,7 +180,7 @@ p {
 	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
-	pointer-events: none;
+	/*pointer-events: none;*/
 }
 
 .text-left {

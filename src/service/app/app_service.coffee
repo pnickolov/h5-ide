@@ -298,6 +298,33 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     # end of parserInfoReturn
 
 
+    #///////////////// Parser for getKey return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveGetKeyResult = ( result ) ->
+
+        #return vo
+        result
+
+    #private (parser info return)
+    parserGetKeyReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveGetKeyResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserInfoReturn
+
+
     #///////////////// Parser for resource return (need resolve) /////////////////
     #resourceMap = ( result ) ->
     #    responses = {
@@ -471,6 +498,10 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     summary = ( src, username, session_id, region_name=null, callback ) ->
         send_request "summary", src, [ username, session_id, region_name ], parserSummaryReturn, callback
         true
+
+    #def getKey(self, username, session_id, region_name, app_id):
+    getKey = ( src, username, session_id, region_name, app_id, callback) ->
+        send_request "getKey", src, [ username, session_id, region_name, app_id ], parseGetKeyReturn, callback
 
 
     #############################################################

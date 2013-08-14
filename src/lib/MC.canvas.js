@@ -745,7 +745,7 @@ MC.canvas = {
 						if (path !== "")
 						{
 							MC.paper.path(path);
-							//MC.paper.path(path).attr('class','fill-line');
+							MC.paper.path(path).attr('class','fill-line');
 
 							if (dash_style)
 							{
@@ -2003,8 +2003,8 @@ MC.canvas.volume = {
 			}
 
 			$(document.body)
-				.addClass('disable-event')
-				.append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>');
+				.append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>')
+				.append('<div id="overlayer" class="grabbing"></div>');
 
 			shadow = $('#drag_shadow');
 
@@ -2208,7 +2208,9 @@ MC.canvas.volume = {
 
 		event.data.shadow.remove();
 
-		$(document.body).removeClass('disable-event');
+		//$(document.body).removeClass('disable-event');
+
+		$('#overlayer').remove();
 
 		$(document).off({
 			'mousemove': MC.canvas.volume.mousemove,
@@ -2326,7 +2328,7 @@ MC.canvas.event.dragable = {
 				});
 			}
 
-			$(document.body).addClass('disable-event');
+			$(document.body).append('<div id="overlayer" class="grabbing"></div>');
 
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
@@ -2399,13 +2401,13 @@ MC.canvas.event.dragable = {
 
 		if (
 			event.pageX !== event.data.originalPageX &&
-			event.pageY !== event.data.originalPageY
+			event.pageY !== event.data.originalPageY &&
+			event.data.shadow[0].getAttribute('class').indexOf('shadow') === -1
 		)
 		{
 			Canvon(event.data.shadow[0]).addClass('shadow');
+			event.data.canvas_body.addClass('node-dragging');
 		}
-
-		event.data.canvas_body.addClass('node-dragging');
 
 		event.data.shadow.attr('transform',
 			'translate(' +
@@ -2795,7 +2797,8 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.remove();
 		event.data.canvas_body.removeClass('node-dragging');
-		$(document.body).removeClass('disable-event');
+		//$(document.body).removeClass('disable-event');
+		$('#overlayer').remove();
 
 		$('.dropable-group').attr('class', function (index, key)
 		{
@@ -2881,7 +2884,8 @@ MC.canvas.event.dragable = {
 
 		event.data.canvas_body.removeClass('node-dragging');
 
-		$(document.body).removeClass('disable-event');
+		$('#overlayer').remove();
+		//$(document.body).removeClass('disable-event');
 
 		$(document).off({
 			'mousemove': MC.canvas.event.gatewaymove,
@@ -2930,7 +2934,8 @@ MC.canvas.event.dragable = {
 
 		event.data.canvas_body.removeClass('node-dragging');
 
-		$(document.body).removeClass('disable-event');
+		//$(document.body).removeClass('disable-event');
+		$('#overlayer').remove();
 
 		$(document).off({
 			'mousemove': MC.canvas.event.dragable.mousemove,
@@ -2991,7 +2996,7 @@ MC.canvas.event.drawConnection = {
 					break;
 			}
 
-			$(document.body).addClass('disable-event');
+			$(document.body).append('<div id="overlayer"></div>');
 
 			$(document).on({
 				'mousemove': MC.canvas.event.drawConnection.mousemove,
@@ -3282,7 +3287,8 @@ MC.canvas.event.drawConnection = {
 			Canvon(this).removeClass('connectable-port');
 		});
 
-		$(document.body).removeClass('disable-event');
+		$('#overlayer').remove();
+		//$(document.body).removeClass('disable-event');
 
 		$(document).off({
 			'mousemove': MC.canvas.event.drawConnection.mousemove,
@@ -3320,7 +3326,7 @@ MC.canvas.event.siderbarDrag = {
 				return false;
 			}
 
-			$(document.body).append('<div id="drag_shadow"></div>');
+			$(document.body).append('<div id="drag_shadow"></div><div id="overlayer" class="grabbing"></div>');
 			shadow = $('#drag_shadow');
 
 			if (target_component_type === 'group')
@@ -3398,7 +3404,7 @@ MC.canvas.event.siderbarDrag = {
 				});
 			}
 
-			$(document.body).addClass('disable-event');
+			//$(document.body).addClass('disable-event');
 
 			$('#canvas_body').addClass('node-dragging');
 		}
@@ -3571,7 +3577,8 @@ MC.canvas.event.siderbarDrag = {
 			event.data.shadow.remove();
 		}
 
-		$(document.body).removeClass('disable-event');
+		//$(document.body).removeClass('disable-event');
+		$('#overlayer').remove();
 
 		$('#canvas_body').removeClass('node-dragging');
 
@@ -3613,9 +3620,7 @@ MC.canvas.event.groupResize = {
 				});
 			}
 
-			$(document.body)
-				.css('cursor', $(event.target).css('cursor'))
-				.addClass('disable-event');
+			$(document.body).append('<div id="overlayer" style="cursor: ' + $(event.target).css('cursor') + '"></div>');
 
 			$(document)
 				.on({
@@ -4120,9 +4125,7 @@ MC.canvas.event.groupResize = {
 			});
 		}
 
-		$(document.body)
-			.css('cursor', '')
-			.removeClass('disable-event');
+		$('#overlayer').remove();
 
 		$(document)
 			.off({

@@ -2231,8 +2231,8 @@ MC.canvas.asgList = {
 			$('#asgList-wrap')
 				.on('click', '.asgList-item', MC.canvas.asgList.select)
 				.css({
-					'top': target_offset.top - canvas_offset.top - 10,
-					'left': target_offset.left - canvas_offset.left
+					'top': target_offset.top - canvas_offset.top - 30,
+					'left': target_offset.left - canvas_offset.left - 20
 				});
 
 			MC.canvas.asgList.select.call($('#asgList-wrap .asgList-item').first());

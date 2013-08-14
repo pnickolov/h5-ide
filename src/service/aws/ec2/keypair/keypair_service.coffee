@@ -99,7 +99,16 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#resolve result
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeKeyPairsResponse.keySet
+		result_set = ($.xml2json ($.parseXML result[1])).DescribeKeyPairsResponse.keySet
+
+		if result_set?.item?
+
+			return result_set.item
+
+		else
+
+			return null
+
 
 	#private (parser DescribeKeyPairs return)
 	parserDescribeKeyPairsReturn = ( result, return_code, param ) ->

@@ -153,7 +153,15 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#resolve result
 
 		#return vo
-		($.xml2json ($.parseXML result[1])).DescribeImagesResponse.imagesSet
+		result_set = ($.xml2json ($.parseXML result[1])).DescribeImagesResponse.imagesSet
+
+		if result_set?.item?
+
+			return result_set.item
+
+		else
+
+			return null
 
 	#private (parser DescribeImages return)
 	parserDescribeImagesReturn = ( result, return_code, param ) ->

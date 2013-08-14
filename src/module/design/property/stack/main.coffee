@@ -63,7 +63,12 @@ define [ 'jquery',
             #re calc cost when load module
             model.getCost()
 
-            model.getSubscription()
+            if view_type == 'app_view'
+
+                model.getAppSubscription()
+
+            else
+                model.getSubscription()
 
             if tab_type is 'OPEN_APP'
                 title = "APP - "

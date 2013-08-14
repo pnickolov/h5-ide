@@ -2,54 +2,28 @@
   <div class="option-group-head expand">Instance Details</div>
   <div class="option-group">
     <dl class="dl-vertical">
-      <dt>Instance ID</dt>
-      <dd>{{instanceId}}</dd>
 
-      <dt>State</dt>
-      <dd><i class="status status-{{#if isRunning}}green{{else}}{{#if isPending}}orange{{else}}red{{/if}}{{/if}}"></i>{{instanceState.name}}</dd>
-
-      <dt>Launch Time</dt>
-      <dd>{{launchTime}}</dd>
+      <dt>Create Time</dt>
+      <dd>{{lc.CreatedTime}}</dd>
     </dl>
 
-    <dl class="dl-vertical">
-      <dt>Primary Public IP</dt>
-      <dd>{{ipAddress}}</dd>
-
-      <dt>Public DNS</dt>
-      <dd>{{dnsName}}</dd>
-
-      <dt>Primary Private IP</dt>
-      <dd>{{privateIpAddress}}</dd>
-
-      <dt>Private DNS</dt>
-      <dd>{{privateDnsName}}</dd>
-    </dl>
 
     <dl class="dl-vertical">
       <dt>AMI</dt>
-      <dd>{{imageId}}<dd>
+      <dd>{{lc.ImageId}}<dd>
 
       <dt>Instance Type</dt>
-      <dd>{{instanceType}}</dd>
+      <dd>{{lc.InstanceType}}</dd>
 
       <dt>Key Pair</dt>
-      <dd><a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a></dd>
+      <dd><a href="#" class="icon-download" id="property-app-keypair">{{lc.KeyName}}</a></dd>
 
     </dl>
 
     <dl class="dl-vertical">
       <dt>EBS Optimized</dt>
-      <dd>{{ebsOptimized}}<dd>
+      <dd>{{lc.EbsOptimized}}<dd>
 
-      <dt>Tenancy</dt>
-      <dd>{{placement.tenancy}}</dd>
-
-      <dt>Root Device Type</dt>
-      <dd>{{rootDeviceType}}</dd>
-
-      <dt>Block Device</dt>
-      <dd>{{blockDevice}}</dd>
     </dl>
   </div>
 

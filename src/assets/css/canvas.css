@@ -44,6 +44,14 @@
 	visibility: visible !important;
 }
 
+.node-dragging .node,
+.node-dragging .group-label,
+.node-dragging .asg-resource-dragger {
+	cursor: -webkit-grabbing !important;
+	cursor: -moz-grabbing !important;
+	cursor: grabbing !important;
+}
+
 #screenshot_canvas_body {
 	padding: 10px;
 	background: #FFF url('../images/ide/grid.png');
@@ -141,6 +149,10 @@
 	z-index: 100;
 	border: 1px solid #f3f3f3;
 	display: none;
+
+	cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
+	cursor: grabbing;
 }
 
 #drag_shadow .resource-icon {
@@ -174,7 +186,6 @@
 	background: rgba(118, 214, 255, 0.05);
 	border: 2px dashed #76d6ff;
 }
-
 
 /* port style */
 .port-blue {
@@ -267,8 +278,7 @@
 	opacity: 0.2;
 }
 
-.line.selected,
-.line.selected path {
+.line.selected {
 	display: block !important;
 	opacity: 1 !important;
 	stroke-width: 4px !important;
@@ -305,6 +315,10 @@
 .group-label {
 	font-size: 12px;
 	cursor: pointer;
+
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
 }
 
 .az-name {
@@ -413,6 +427,10 @@
 .asg-resource-dragger {
 	fill: rgba(118, 214, 255, 1);
 	cursor: pointer;
+
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
 }
 
 /*when no LaunchConfiguration in asg*/

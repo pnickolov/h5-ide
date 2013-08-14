@@ -889,7 +889,15 @@ MC.canvas.add = function (flag, option, coordinate)
 					$('#' + group.id + '_elb_sg_out').attr('transform','translate(84, 39)');//move port to middle
 					break;
 				case 'custom-vpc':
+					if (icon_scheme === "internet")
+					{
+						MC.canvas.display(group.id,'elb_sg_in',false);//hide port elb_sg_in
+					}
 				case 'ec2-vpc':
+					if (icon_scheme === "internet")
+					{
+						MC.canvas.display(group.id,'elb_sg_in',false);//hide port elb_sg_in
+					}
 					break;
 			}
 

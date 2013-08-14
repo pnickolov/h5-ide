@@ -7,12 +7,12 @@
 			{{#if isDefault}}
 			<input class="input"  type="text" required="required" id="securitygroup-name" disabled="disabled" name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
 			{{else}}
-			<input class="input"  type="text" required="required" id="securitygroup-name" name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
+			<input class="input"  type="text" required="required" id="securitygroup-name" {{#if is_elb_sg}}disabled="disabled"{{/if}} name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
 			{{/if}}
 		</div>
 		<div class="property-control-group">
 			<label class="left" for="securitygroup-description" >Description</label>
-			<input class="input" type="text" id="securitygroup-description" name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" />
+			<input class="input" type="text" id="securitygroup-description" {{#if is_elb_sg}}disabled="disabled"{{/if}} name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" />
 		</div>
 	</div>
 

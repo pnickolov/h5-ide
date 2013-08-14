@@ -40,19 +40,19 @@
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >Name</label>
-				<input class="input"  type="text" id="elb-property-cert-name-input"/>
+				<input class="input" value="{{server_cert.name}}" type="text" id="elb-property-cert-name-input"/>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >Private Key</label>
-				<textarea class="input elb-property-cert-input" id="elb-property-cert-privatekey-input"/>
+				<textarea class="input elb-property-cert-input" value="{{server_cert.prikey}}" id="elb-property-cert-privatekey-input"/>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >Public Key Certificate</label>
-				<textarea class="input elb-property-cert-input" id="elb-property-cert-publickey-input"/>
+				<textarea class="input elb-property-cert-input" value="{{server_cert.pubkey}}" id="elb-property-cert-publickey-input"/>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >Certificate Chain</label>
-				<textarea class="input elb-property-cert-input" id="elb-property-cert-chain-input"/>
+				<textarea class="input elb-property-cert-input" value="{{server_cert.chain}}" id="elb-property-cert-chain-input"/>
 			</div>
 		</div>
 	</div>
@@ -78,7 +78,7 @@
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >Ping Path</label>
 			<span class="required-input right">(Required)</span>
-			<input class="input elb-name"  type="text" required="required" value="{{ health_detail.path }}" name="property-elb-name" id="property-elb-health-path"/>
+			<input class="input elb-name" {{#if health_detail.disabled_path}}disabled="disabled"{{/if}}  type="text" required="required" value="{{ health_detail.path }}" name="property-elb-name" id="property-elb-health-path"/>
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >Health Check Interval</label>
@@ -149,7 +149,9 @@
 	</div>
 	{{/if}}
 
+	{{# if component.resource.VpcId}}
 	<div class="option-group-head" id="sg-head">Security Groups (<span id="property-head-sg-num"></span>)</div>
 	<div class="option-group sg-group">loading...</div>
+	{{/if}}
 
 </article>

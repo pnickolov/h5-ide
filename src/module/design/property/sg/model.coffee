@@ -10,6 +10,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'sg_detail'    : null
             'sg_app_detail' : null
             'get_xxx'    : null
+            'is_elb_sg'  : false
 
         initialize : ->
             #listen
@@ -47,6 +48,11 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 
             me.set 'sg_detail', sg_detail
+
+            if MC.aws.elb.isELBDefaultSG(uid)
+                me.set 'is_elb_sg', true
+            else
+                me.set 'is_elb_sg', false
 
         getAppSG : ( sg_uid ) ->
 

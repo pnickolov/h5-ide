@@ -90,7 +90,7 @@ define [ 'jquery',
 
             view.on 'OPEN_ACL', ( acl_uid ) ->
 
-                ide_event.trigger ide_event.OPEN_ACL acl_uid
+                ide_event.trigger ide_event.OPEN_ACL, acl_uid
 
             model.init uid
             view.render()

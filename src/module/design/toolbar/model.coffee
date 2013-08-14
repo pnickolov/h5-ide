@@ -152,7 +152,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
                         #call save png
-                        me.savePNG true
+                        me.savePNG true, 'stack'
 
                         #set toolbar flag
                         me.setFlag id, 'SAVE_STACK', name
@@ -192,7 +192,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         MC.data.stack_list[region].push name
 
                         #call save png
-                        me.savePNG true
+                        me.savePNG true, 'stack'
 
                         #set toolbar flag
                         me.setFlag id, 'CREATE_STACK', data
@@ -280,9 +280,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log 'STACK_RUN_RETURN'
                 console.log result
 
-                #add new-app status
-                #me.handleRequest result, 'RUN_STACK', region, id, app_name
-                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
+                savePNG true, 'app'
+
+                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
 
         #zoomin
         zoomIn : () ->
@@ -314,7 +314,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             null
 
-        savePNG : ( is_thumbnail ) ->
+        savePNG : ( is_thumbnail, type ) ->
             console.log 'savePNG'
             me = this
             #
@@ -328,7 +328,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         window.removeEventListener 'message', callback
 
                         #push event
-                        ide_event.trigger ide_event.UPDATE_STACK_THUMBNAIL, result.data.res.result
+                        if type is 'stack'
+                            ide_event.trigger ide_event.UPDATE_STACK_THUMBNAIL, result.data.res.result
+                        else
+                            ide_event.trigger ide_event.UPDATE_APP_THUMBNAIL, result.data.res.result
                     else
                         me.trigger 'SAVE_PNG_COMPLETE', result.data.res.result
                         window.removeEventListener 'message', callback

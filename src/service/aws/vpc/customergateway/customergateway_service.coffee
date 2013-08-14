@@ -58,7 +58,16 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	#private (resolve result to vo )
 	resolveDescribeCustomerGatewaysResult = ( result ) ->
 		#return
-		($.xml2json ($.parseXML result[1])).DescribeCustomerGatewaysResponse.customerGatewaySet
+		result_set = ($.xml2json ($.parseXML result[1])).DescribeCustomerGatewaysResponse.customerGatewaySet
+
+		if result_set?.item?
+
+			return result_set.item
+
+		else
+
+			return null
+
 
 	#private (parser DescribeCustomerGateways return)
 	parserDescribeCustomerGatewaysReturn = ( result, return_code, param ) ->

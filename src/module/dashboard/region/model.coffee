@@ -947,61 +947,61 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             #kp
             if resources.DescribeKeyPairs
-                _.map resources.DescribeKeyPairs.item, ( res, i ) ->
+                _.map resources.DescribeKeyPairs, ( res, i ) ->
                     MC.data.resource_list[current_region][res.keyFingerprint] = res
                     null
 
             #sg
             if resources.DescribeSecurityGroups
-                _.map resources.DescribeSecurityGroups.item, ( res, i ) ->
+                _.map resources.DescribeSecurityGroups, ( res, i ) ->
                     MC.data.resource_list[current_region][res.groupId] = res
                     null
 
             #dhcp
             if resources.DescribeDhcpOptions
-                _.map resources.DescribeDhcpOptions.item, ( res, i ) ->
+                _.map resources.DescribeDhcpOptions, ( res, i ) ->
                     MC.data.resource_list[current_region][res.dhcpOptionsId] = res
                     null
 
             #subnet
             if resources.DescribeSubnets
-                _.map resources.DescribeSubnets.item, ( res, i ) ->
+                _.map resources.DescribeSubnets, ( res, i ) ->
                     MC.data.resource_list[current_region][res.subnetId] = res
                     null
 
             #routetable
             if resources.DescribeRouteTables
-                _.map resources.DescribeRouteTables.item, ( res, i ) ->
+                _.map resources.DescribeRouteTables, ( res, i ) ->
                     MC.data.resource_list[current_region][res.routeTableId] = res
                     null
 
             #acl
             if resources.DescribeNetworkAcls
-                _.map resources.DescribeNetworkAcls.item, ( res, i ) ->
+                _.map resources.DescribeNetworkAcls, ( res, i ) ->
                     MC.data.resource_list[current_region][res.networkAclId] = res
                     null
 
             #eni
             if resources.DescribeNetworkInterfaces
-                _.map resources.DescribeNetworkInterfaces.item, ( res, i ) ->
+                _.map resources.DescribeNetworkInterfaces, ( res, i ) ->
                     MC.data.resource_list[current_region][res.networkInterfaceId] = res
                     null
 
             #igw
             if resources.DescribeInternetGateways
-                _.map resources.DescribeInternetGateways.item, ( res, i ) ->
+                _.map resources.DescribeInternetGateways, ( res, i ) ->
                     MC.data.resource_list[current_region][res.internetGatewayId] = res
                     null
 
             #vgw
             if resources.DescribeVpnGateways
-                _.map resources.DescribeVpnGateways.item, ( res, i ) ->
+                _.map resources.DescribeVpnGateways, ( res, i ) ->
                     MC.data.resource_list[current_region][res.vpnGatewayId] = res
                     null
 
             #cgw
             if resources.DescribeCustomerGateways
-                _.map resources.DescribeCustomerGateways.item, ( res, i ) ->
+                _.map resources.DescribeCustomerGateways, ( res, i ) ->
                     MC.data.resource_list[current_region][res.customerGatewayId] = res
                     null
 
@@ -1009,19 +1009,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             #asg
             if resources.DescribeAutoScalingGroups
-                _.map resources.DescribeAutoScalingGroups.member, ( res, i ) ->
+                _.map resources.DescribeAutoScalingGroups, ( res, i ) ->
                     MC.data.resource_list[current_region][res.AutoScalingGroupARN] = res
                     null
 
-            #asg instance
-            if resources.DescribeAutoScalingInstances
-                _.map resources.DescribeAutoScalingInstances.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.InstanceId] = res
-                    null
 
             #asl lc
             if resources.DescribeLaunchConfigurations
-                _.map resources.DescribeLaunchConfigurations.member, ( res, i ) ->
+                _.map resources.DescribeLaunchConfigurations, ( res, i ) ->
                     MC.data.resource_list[current_region][res.LaunchConfigurationARN] = res
                     null
 
@@ -1032,25 +1027,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 if !MC.data.resource_list[current_region].NotificationConfigurations
                     MC.data.resource_list[current_region].NotificationConfigurations = []
 
-                _.map resources.DescribeNotificationConfigurations.member, ( res, i ) ->
+                _.map resources.DescribeNotificationConfigurations, ( res, i ) ->
                     MC.data.resource_list[current_region].NotificationConfigurations.push res
                     null
 
             #asl sp
             if resources.DescribePolicies
-                _.map resources.DescribePolicies.member, ( res, i ) ->
+                _.map resources.DescribePolicies, ( res, i ) ->
                     MC.data.resource_list[current_region][res.PolicyARN] = res
                     null
 
             #asl sa
             if resources.DescribeScheduledActions
-                _.map resources.DescribeScheduledActions.member, ( res, i ) ->
+                _.map resources.DescribeScheduledActions, ( res, i ) ->
                     MC.data.resource_list[current_region][res.ScheduledActionARN] = res
                     null
 
             #clw
             if resources.DescribeAlarms
-                _.map resources.DescribeAlarms.member, ( res, i ) ->
+                _.map resources.DescribeAlarms, ( res, i ) ->
                     MC.data.resource_list[current_region][res.AlarmArn] = res
                     null
 
@@ -1061,13 +1056,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 if !MC.data.resource_list[current_region].Subscriptions
                     MC.data.resource_list[current_region].Subscriptions = []
 
-                _.map resources.ListSubscriptions.member, ( res, i ) ->
+                _.map resources.ListSubscriptions, ( res, i ) ->
                     MC.data.resource_list[current_region].Subscriptions.push res
                     null
 
             #sns topic
             if resources.ListTopics
-                _.map resources.ListTopics.member, ( res, i ) ->
+                _.map resources.ListTopics, ( res, i ) ->
                     MC.data.resource_list[current_region][res.TopicArn] = res
                     null
 
@@ -1080,7 +1075,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
         setResource : ( resources ) ->
 
             #cache aws resource data
-            this._cacheResource resources
+            MC.aws.aws.cacheResource resources, current_region
 
             me = this
 
@@ -1144,7 +1139,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             # sns
             if resources.ListSubscriptions
 
-                _.map resources.ListSubscriptions.member, ( sub, i ) ->
+                _.map resources.ListSubscriptions, ( sub, i ) ->
 
                     lists.SNS+=1
                     sub.detail = me.parseSourceValue 'ListSubscriptions', sub, "detail", null
@@ -1166,7 +1161,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             # autoscaling
             if resources.DescribeAutoScalingGroups
 
-                _.map resources.DescribeAutoScalingGroups.member, ( asl, i ) ->
+                _.map resources.DescribeAutoScalingGroups, ( asl, i ) ->
                     lists.AutoScalingGroup+=1
                     _.map asl.Tags.member, ( tag ) ->
 
@@ -1184,7 +1179,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     if resources.DescribeScalingActivities
 
-                        $.each resources.DescribeScalingActivities.member, ( idx, activity ) ->
+                        $.each resources.DescribeScalingActivities, ( idx, activity ) ->
 
                             if activity.AutoScalingGroupName is asl.AutoScalingGroupName
 
@@ -1198,7 +1193,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             if resources.DescribeAlarms
 
-                _.map resources.DescribeAlarms.member, ( alarm, i ) ->
+                _.map resources.DescribeAlarms, ( alarm, i ) ->
 
                     lists.CW+=1
 

@@ -58,7 +58,16 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	#private (resolve result to vo )
 	resolveDescribeVpnGatewaysResult = ( result ) ->
 		#return
-		($.xml2json ($.parseXML result[1])).DescribeVpnGatewaysResponse.vpnGatewaySet
+		result_set = ($.xml2json ($.parseXML result[1])).DescribeVpnGatewaysResponse.vpnGatewaySet
+
+		if result_set?.item?
+
+			return result_set.item
+
+		else
+
+			return null
+
 
 	#private (parser DescribeVpnGateways return)
 	parserDescribeVpnGatewaysReturn = ( result, return_code, param ) ->

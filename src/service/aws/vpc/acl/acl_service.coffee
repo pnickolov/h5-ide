@@ -60,7 +60,16 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	resolveDescribeNetworkAclsResult = ( result ) ->
 
 		#return acl
-		($.xml2json ($.parseXML result[1])).DescribeNetworkAclsResponse.networkAclSet
+		result_set = ($.xml2json ($.parseXML result[1])).DescribeNetworkAclsResponse.networkAclSet
+
+		if result_set?.item?
+
+			return result_set.item
+
+		else
+
+			return null
+
 
 	#private (parser DescribeNetworkAcls return)
 	parserDescribeNetworkAclsReturn = ( result, return_code, param ) ->

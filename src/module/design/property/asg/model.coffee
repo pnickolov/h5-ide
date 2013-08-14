@@ -103,6 +103,40 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       this.set 'policies', policies
 
+      notifications = MC.data.resource_list[MC.canvas_data.region].NotificationConfigurations
+
+      nc_array = [false, false, false, false, false]
+
+      if notifications
+
+        $.each notifications, ( idx, nc ) ->
+
+          if nc.AutoScalingGroupName is asg.AutoScalingGroupName
+
+            if nc.NotificationType is 'autoscaling:EC2_INSTANCE_LAUNCH'
+              nc_array[0] = true
+
+            if nc.NotificationType is 'autoscaling:EC2_INSTANCE_LAUNCH_ERROR'
+              nc_array[1] = true
+
+            if nc.NotificationType is 'autoscaling:EC2_INSTANCE_TERMINATE'
+              nc_array[2] = true
+
+            if nc.NotificationType is 'autoscaling:EC2_INSTANCE_TERMINATE_ERROR'
+              nc_array[3] = true
+
+            if nc.NotificationType is 'autoscaling:TEST_NOTIFICATION'
+              nc_array[4] = true
+
+          null
+
+      if true in nc_array
+        this.set 'sendNotify', true
+      else
+
+        this.set 'sendNotify', false
+      this.set 'notifies', nc_array
+
     getASGDetail : ( uid ) ->
 
       me = this

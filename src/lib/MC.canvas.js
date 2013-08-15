@@ -2331,6 +2331,8 @@ MC.canvas.event.dragable = {
 
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
+				Canvon(shadow[0]).addClass('shadow');
+
 				$(document).on({
 					'mousemove': MC.canvas.event.dragable.gatewaymove,
 					'mouseup': MC.canvas.event.dragable.gatewayup

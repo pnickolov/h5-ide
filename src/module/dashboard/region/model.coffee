@@ -1204,6 +1204,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     null
 
+            # cloudwatch alarm
             if resources.DescribeAlarms
 
                 _.map resources.DescribeAlarms, ( alarm, i ) ->
@@ -1227,10 +1228,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     alarm.detail = me.parseSourceValue 'DescribeAlarms', alarm, "detail", null
 
                     null
-
-            #if resources.DescribeAlarms
-
-            #    null
 
             # eip
             if resources.DescribeAddresses

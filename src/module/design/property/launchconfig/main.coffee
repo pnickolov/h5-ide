@@ -84,6 +84,7 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
+            model.getAppLaunch uid
             #view
             view.model    = model
             view.render()

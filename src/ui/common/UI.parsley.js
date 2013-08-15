@@ -1,13 +1,123 @@
 !function($) {
 
+  var Util = {
+    getCaretPosition: function( oField ) {
+      // Initialize
+      var iCaretPos = 0;
 
+      // IE Support
+      if (document.selection) {
+
+        // Set focus on the element
+        oField.focus ();
+
+        // To get cursor position, get empty selection range
+        var oSel = document.selection.createRange ();
+
+        // Move selection start to 0 position
+        oSel.moveStart ('character', -oField.value.length);
+
+        // The caret position is selection length
+        iCaretPos = oSel.text.length;
+      }
+
+      // Firefox support
+      else if (oField.selectionStart || oField.selectionStart == '0')
+        iCaretPos = oField.selectionStart;
+
+      // Return results
+      return (iCaretPos);
+
+    },
+
+    getCharFromKeyEvent: function( e ) {
+      var c, keyType;
+      var keyCode = e.which;
+      var shift = e.shiftKey;
+      var ctrl = e.ctrlKey || e.metaKey;
+
+      var isLetterKey = keyCode >= 65 && keyCode <= 90;
+      var isNumKey = keyCode  >= 48 && keyCode <= 57;
+      var isSmallNumKey = keyCode  >= 96 && keyCode <= 105;
+
+
+      var controlCodeList = [8,9,13,16,19,20,27,32,33,34,35,36,37,38,39,40,45,46,112,113,114,115,116,117,118,119,120,121,122,123,144,145];
+      var controlNameList = ['BackSpace','Tab','Enter','Shift','Pause','CapsLock','Escape','Space','PageUp','PageDown','End','Move','Left','Up','Right','Down','Insert','Delete','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12','NumsLock','Home'];
+
+      var shiftMap = {
+        192: '~',
+        49: '!',
+        50: '@',
+        51: '#',
+        52: '$',
+        53: '%',
+        54: '^',
+        55: '&',
+        56: '*',
+        57: '(',
+        48: ')',
+        189: '_',
+        187: '+',
+        219: '{',
+        221: '}',
+        220: '|',
+        186: ':',
+        222: '"',
+        188: '<',
+        190: '>',
+        191: '?',
+        };
+
+      var otherMap = {
+        //other key in small keyboard
+        106: '*',
+        107: '+',
+        108: 'Enter',
+        109: '-',
+        110: '.',
+        111: '/',
+        //other key in main keyboard
+        192: '`',
+        189: '-',
+        187: '=',
+        219: '[',
+        221: ']',
+        220: '\\',
+        186: ';',
+        222: "'",
+        188: ',',
+        190: '.',
+        191: '/'
+      }
+
+
+
+      if ( isLetterKey ) {
+        c = String.fromCharCode( keyCode );
+      } else if ( isNumKey && !shift ) {
+        c = String.fromCharCode( keyCode );
+      } else if ( isSmallNumKey ){
+        c = String.fromCharCode( keyCode - 48 );
+      } else if ( $.inArray( keyCode, controlCodeList ) !== -1 ) {
+        var index = $.inArray( keyCode, controlCodeList );
+        c = controlNameList[ index ];
+      } else if ( shift ) {
+        c = shiftMap[ keyCode ];
+      } else if ( keyCode in otherMap ) {
+        c = otherMap[ keyCode ];
+      }
+
+      return c;
+
+    }
+  }
 /*
  * Parsley.js allows you to verify your form inputs frontend side, without writing a line of javascript. Or so..
  *
  * Author: Guillaume Potier - @guillaumepotier
 */
 
-!function ($) {
+!function ($, Util) {
 
   'use strict';
 
@@ -414,8 +524,7 @@
 
         // Ignore disallowed input
         if ( this.$element.data( 'ignore' ) === true ) {
-
-          var regExp = $( this ).data( 'regexp' ) || '^[0-9a-zA-Z-]*$';
+          var regExp = this.options.regexp || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
 
           // delay handler function
           var delayHandler = function(origin, context, times) {
@@ -454,33 +563,30 @@
           // Handle keydown
           this.$element.on( 'keydown', function( e ) {
 
-            var keyCode = e.which;
-            var shift = e.shiftKey;
-            var ctrl = e.ctrlKey || e.metaKey;
+            var inputChar, isControl, isLegal;
 
-            var whiteList = [
-              8  ,  // Backspace
-              13 ,  // Return
-              37 ,  // Left
-              39 ,  // Right
-              127   // Delete
-            ]
+            inputChar = Util.getCharFromKeyEvent( e );
+            console.log(inputChar);
 
+            isControl = inputChar && inputChar.length > 1;
 
-            var isLetter = keyCode >= 65 && keyCode <= 90;
-            var isNum = keyCode  >= 48 && keyCode <= 57 && shift === false;
-            var isMinus = keyCode === 45 || keyCode === 189 && shift === false;
-            var isPaste = keyCode === 86 && ctrl;
+            if ( !isControl ) {
+              var valueArray = this.value.split( '' );
+              var pos = Util.getCaretPosition( this );
+              valueArray.splice( pos, 0, inputChar );
+
+              var newValue = valueArray.join( '' );
+              console.log(newValue);
+              isLegal = new RegExp( regExp, "i" ).test(newValue);
+              console.log(isLegal);
+            }
 
             // paste validate on keyup
             var origin = $( this ).val();
             $(this).one( 'keyup', delayHandler( origin, this ) );
 
-            var isAllow = isLetter || isNum || isMinus;
+            if ( !isControl && !isLegal ) return false;
 
-            if ( $.inArray( e.which, whiteList ) === -1 && !isAllow ) {
-              return false;
-            }
           });
         }
 
@@ -1473,7 +1579,7 @@
 
 
 // This plugin works with jQuery or Zepto (with data extension built for Zepto.)
-}(window.jQuery || window.Zepto);
+}(window.jQuery || window.Zepto, Util);
 
 // global bind some event
 // focus, submit

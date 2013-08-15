@@ -4,7 +4,7 @@
 
 	{{#each sg_group}}
     <div class="option-group-head">{{name}}</div>
-    <ul class="option-group sg-info-list" id="sg-info-list">
+    <ul class="option-group acl-sg-info-list" id="sg-info-list">
       {{#each rules}}
       <li class="clearfix" href="#">
         <i class="{{#if Egress}}icon-rule-inbound{{else}}icon-rule-outbound{{/if}}"></i>

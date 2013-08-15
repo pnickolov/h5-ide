@@ -1,8 +1,18 @@
+<ul class="acl-sg-info-list">
 {{#each network_acl}}
-	<div class="property-item">
+	<li>
+		<div class="col2">
+			<div class="col2-1 truncate">{{name}}</div>
+			<div class="col2-3 truncate">{{rule}} rules, {{association}} associations</div>
+			<div class="delete {{#unless isUsed}}used{{/unless}}" acl-uid="{{uid}}">Delete</div>
+		</div>
+		<div class="col3 edit" acl-uid="{{uid}}">></div>
+	</li>
+	<!-- <div class="property-item">
 		<div class="edit" acl-uid="{{uid}}">></div>
 		<p class="title">{{name}}</p>	
 		<p class="info">{{rule}} rules,{{association}} association</p>
 		<p class="delete {{#unless isUsed}}used{{/unless}}" acl-uid="{{uid}}">Delete</p>
-	</div>
+	</div> -->
 {{/each}}
+</ul>

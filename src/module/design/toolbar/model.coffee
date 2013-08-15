@@ -143,7 +143,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     if !result.is_error
                         console.log 'save stack successfully'
-                        
+
                         # track
                         analytics.track "Saved Stack",
                             stack_name: data.name,
@@ -158,7 +158,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
                         #call save png
-                        me.savePNG true
+                        me.savePNG true, 'stack'
 
                         #set toolbar flag
                         me.setFlag id, 'SAVE_STACK', name
@@ -178,7 +178,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     if !result.is_error
                         console.log 'create stack successfully'
-                        
+
                         # track
                         analytics.track "Saved Stack",
                             stack_name: data.name,
@@ -204,7 +204,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         MC.data.stack_list[region].push name
 
                         #call save png
-                        me.savePNG true
+                        me.savePNG true, 'stack'
 
                         #set toolbar flag
                         me.setFlag id, 'CREATE_STACK', data
@@ -331,7 +331,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             null
 
-        savePNG : ( is_thumbnail ) ->
+        savePNG : ( is_thumbnail, type ) ->
             console.log 'savePNG'
             me = this
             #
@@ -345,7 +345,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         window.removeEventListener 'message', callback
 
                         #push event
-                        ide_event.trigger ide_event.UPDATE_STACK_THUMBNAIL, result.data.res.result
+                        if type is 'stack'
+                            ide_event.trigger ide_event.UPDATE_STACK_THUMBNAIL, result.data.res.result
+                        else
+                            ide_event.trigger ide_event.UPDATE_APP_THUMBNAIL, result.data.res.result
                     else
                         me.trigger 'SAVE_PNG_COMPLETE', result.data.res.result
                         window.removeEventListener 'message', callback
@@ -422,7 +425,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'START_APP', region, id, name
-                
+
                 # track
                 analytics.track "Started App",
                     app_id: id,
@@ -442,7 +445,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'STOP_APP', region, id, name
-                
+
                 # track
                 analytics.track "Stopped App",
                     app_id: id,
@@ -463,7 +466,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 console.log result
 
                 me.handleRequest result, 'TERMINATE_APP', region, id, name
-                
+
                 # track
                 analytics.track "Terminated App",
                     app_id: id,

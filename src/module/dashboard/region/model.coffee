@@ -1178,6 +1178,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                             asl.app = tag.Value
 
+                        if tag.Key == 'app-id'
+
+                            asl.app_id = tag.Value
+
                         if tag.Key == 'Created by' and tag.Value == owner
 
                             asl.owner = tag.Value

@@ -28,6 +28,7 @@ define [ 'MC' ], ( MC ) ->
 		sgComp = $.extend(true, {}, MC.canvas.SG_JSON.data)
 		sgComp.uid = MC.guid()
 		sgComp.name = newELBName + '-sg'
+		sgComp.resource.GroupDescription = 'Automatically created SG for load-balancer'
 		sgComp.resource.GroupName = sgComp.name
 
 		if vpcUIDRef then sgComp.resource.VpcId = vpcUIDRef
@@ -35,7 +36,7 @@ define [ 'MC' ], ( MC ) ->
 		MC.canvas_data.component[sgComp.uid] = sgComp
 
 		sgRef = '@' + sgComp.uid + '.resource.GroupId'
-		MC.canvas_data.component[uid].resource.SecurityGroups.push(sgRef)
+		MC.canvas_data.component[uid].resource.SecurityGroups = [sgRef]
 
 		# add rule to default sg
 		MC.aws.elb.updateRuleToElbSG uid
@@ -237,6 +238,7 @@ define [ 'MC' ], ( MC ) ->
 	getElbDefaultSG = (elbUID) ->
 
 		elbComp = MC.canvas_data.component[elbUID]
+		if !elbComp then return null
 		elbName = elbComp.resource.LoadBalancerName
 		elbSGName = elbName + '-sg'
 
@@ -261,6 +263,24 @@ define [ 'MC' ], ( MC ) ->
 
 		return elbSGUIDAry
 
+	removeELBDefaultSG = (elbUID) ->
+
+		elbSGObj = MC.aws.elb.getElbDefaultSG(elbUID)
+		if elbSGObj then delete MC.canvas_data.component[elbSGObj.uid]
+
+	isELBDefaultSG = (sgUID) ->
+
+		result = false
+		_.each MC.canvas_data.component, (compObj) ->
+			compType = compObj.type
+			if compType is 'AWS.ELB'
+				elbSGObj = MC.aws.elb.getElbDefaultSG compObj.uid
+				if elbSGObj.uid is sgUID
+					result = true
+			null
+
+		return result
+
 	#public
 	init                      : init
 	addInstanceAndAZToELB     : addInstanceAndAZToELB
@@ -272,3 +292,5 @@ define [ 'MC' ], ( MC ) ->
 	getElbDefaultSG           : getElbDefaultSG
 	updateRuleToElbSG         : updateRuleToElbSG
 	getAllElbSGUID			  : getAllElbSGUID
+	removeELBDefaultSG		  : removeELBDefaultSG
+	isELBDefaultSG            : isELBDefaultSG

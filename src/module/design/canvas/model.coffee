@@ -86,7 +86,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
-			handler   = this.validateDropMap[ component.type ]
+			handler   =  if component then this.validateDropMap[ component.type ] else null
 			if handler
 				error = handler.call( this, component, tgt_parent )
 				if error

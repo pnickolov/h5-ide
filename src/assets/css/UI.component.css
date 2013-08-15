@@ -467,7 +467,7 @@ textarea {
 	height        : 14px;
 	border-radius : 2px;
 	border        : 1px solid #999;
-	box-shadow    : inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+	/*box-shadow    : inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);*/
 	background    : #fcfff4;
 }
 
@@ -485,7 +485,7 @@ textarea {
 
 .radio > label {
 	border-radius : 14px;
-	box-shadow    : inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+	/*box-shadow    : inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);*/
 	background    : #fcfff4;
 	display       : block;
 }

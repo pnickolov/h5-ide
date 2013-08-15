@@ -1168,9 +1168,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                         region_ami_list = {}
 
-                        if $.type(result.resolved_data.item) == 'array'
+                        if $.type(result.resolved_data) == 'array'
 
-                            _.map result.resolved_data.item, ( ami ) ->
+                            _.map result.resolved_data, ( ami ) ->
 
                                 region_ami_list[ami.imageId] = ami
 

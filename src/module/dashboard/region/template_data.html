@@ -417,7 +417,7 @@ Loading...
 							</tr>
 						</thead>
 						<tbody>
-								{{#each region_resource.DescribeAlarms.member}}
+								{{#each region_resource.DescribeAlarms}}
 								<tr>
 									<td>
 									{{AlarmName}}
@@ -462,7 +462,7 @@ Loading...
 							</tr>
 						</thead>
 						<tbody>
-								{{#each region_resource.ListSubscriptions.member}}
+								{{#each region_resource.ListSubscriptions}}
 								<tr>
 									<td>{{topic}}
 									</td>

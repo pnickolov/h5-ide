@@ -3,7 +3,7 @@
 #* Filename: UI.tabbar
 #* Creator: Angel
 #* Description: UI.tabbar
-#* Date: 20130725
+#* Date: 20130814
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -32,19 +32,21 @@ var Tabbar = {
 		$('#tab-bar ul').append(dragging_tab);
 		target.css('visibility', 'hidden');
 
-		$(document).on('mousemove', {
-			'target': target,
-			'dragging_tab': dragging_tab,
-			'offset_left': event.pageX - target.offset().left,
-			'tab_list': tab_list,
-			'tab_width': tab_list.width(),
-			'tabbar_offsetLeft': $('#tab-bar').offset().left
-		}, Tabbar.mousemove);
+		$(document.body).append('<div id="overlayer"></div>');
 
-		$(document).on('mouseup', {
-			'target': target,
-			'dragging_tab': dragging_tab
-		}, Tabbar.mouseup);
+		$(document)
+			.on('mousemove', {
+				'target': target,
+				'dragging_tab': dragging_tab,
+				'offset_left': event.pageX - target.offset().left,
+				'tab_list': tab_list,
+				'tab_width': tab_list.width(),
+				'tabbar_offsetLeft': $('#tab-bar').offset().left
+			}, Tabbar.mousemove)
+			.on('mouseup', {
+				'target': target,
+				'dragging_tab': dragging_tab
+			}, Tabbar.mouseup);
 
 		MC.canvas.volume.close();
 
@@ -85,6 +87,8 @@ var Tabbar = {
 		event.data.target.css('visibility', 'visible');
 		event.data.dragging_tab.remove();
 		
+		$('#overlayer').remove();
+
 		$(document).off({
 			'mousemove': Tabbar.mousemove,
 			'mouseup': Tabbar.mouseup

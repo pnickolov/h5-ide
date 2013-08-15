@@ -15,12 +15,21 @@ a {
 	color: #ccc;
 }
 
+#overlayer {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 80;
+}
+
 .blur-effect {
-	-webkit-filter: blur(1px);
+/*	-webkit-filter: blur(1px);
 	-moz-filter: blur(1px);
 	-o-filter: blur(1px);
 	-ms-filter: blur(1px);
-	filter: blur(1px);
+	filter: blur(1px);*/
 }
 
 .icon-caret-down {

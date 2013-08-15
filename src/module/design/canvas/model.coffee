@@ -466,9 +466,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			null
 
 		deleteR_ELB : ( component ) ->
-			sg_uid = MC.aws.elb.getElbDefaultSG component.uid
+			elbSGObj = MC.aws.elb.getElbDefaultSG component.uid
 			delete MC.canvas_data.component[ component.uid ]
-			delete MC.canvas_data.component[ sg_uid ]
+			delete MC.canvas_data.component[ elbSGObj.uid ]
 
 		deleteGroup : ( component, force ) ->
 			nodes  = MC.canvas.groupChild( $("#" + (component.uid) )[0] )

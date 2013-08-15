@@ -145,7 +145,36 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		return both_side
 
+	createNewSG = () ->
+
+		uid = MC.guid()
+
+		component_data = $.extend(true, {}, MC.canvas.SG_JSON.data)
+
+		component_data.uid = uid
+
+		sg_name = MC.aws.aws.getNewName(constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup)
+
+		component_data.name = sg_name
+
+		component_data.resource.GroupName = sg_name
+
+		tmp = {}
+		tmp.uid = uid
+		tmp.name = sg_name
+
+		MC.canvas_property.sg_list.push tmp
+
+		data = MC.canvas.data.get('component')
+
+		data[uid] = component_data
+
+		MC.canvas.data.set('component', data)
+
+		return uid
+
 	#public
 	getAllRefComp : getAllRefComp
 	getAllRule : getAllRule
 	getSgRuleDetail : getSgRuleDetail
+	createNewSG : createNewSG

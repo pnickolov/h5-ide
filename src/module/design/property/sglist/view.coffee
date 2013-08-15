@@ -27,6 +27,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 
 		openSgPanel : ( event ) ->
 			sgUID = $(event.target).parents('li').attr('sg-uid')
+			if !sgUID
+				sgUID = MC.aws.sg.createNewSG()
+				this.trigger 'ASSIGN_SG_TOCOMP', sgUID, true
+
 			this.trigger 'OPEN_SG', sgUID
 
 		refreshSGList: () ->

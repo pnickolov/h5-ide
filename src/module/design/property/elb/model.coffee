@@ -14,6 +14,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'component' :   null
             'uid'       :   null
             'is_elb'    :   true
+            'server_cert' : null
 
         init : ( uid ) ->
 
@@ -58,7 +59,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             port = target.split(':')[1].split('/')[0]
 
             #Ping Path
-            path = '/' + target.split('/')[1]
+            path = '/index.html'
+            disabled_path = true
+            if target.split('/')[1]
+                path = '/' + target.split('/')[1]
+                disabled_path = false
 
             #Health Check Interval
             interval = healthcheck.Interval
@@ -79,6 +84,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 path: path,
                 interval: interval,
                 timeout: timeout,
+                disabled_path: disabled_path,
                 unhealthy_threshold: unhealthy_threshold,
                 healthy_threshold: healthy_threshold
             }
@@ -89,10 +95,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 listenerAry: listenerAry
             }
 
+            if MC.aws.vpc.getVPCUID()
+                this.set 'az_detail', null
+                return
+
             #AZ & Instance Info
             azObj = {}
             azObjAry = []
-
             region = MC.canvas_data.region
 
             if !MC.data.config[region].zone
@@ -119,8 +128,17 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 obj[key] = value
 
                 selected = (key in azAry)
+
+                # keep az name to short name
+                # us-east-1a -> US East 1a
+
+                keyAry = key.split('-')
+                keyAry[0] = keyAry[0].toUpperCase()
+                keyAry[1] = keyAry[1][0].toUpperCase() + keyAry[1].slice(1)
+                keyStr = keyAry.join(' ')
+
                 azObjAry.push({
-                    az_name: key,
+                    az_name: keyStr,
                     instance_num: value,
                     selected: selected
                 })
@@ -176,6 +194,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             console.log 'setHealthProtocol = ' + value
             target = MC.canvas_data.component[ uid ].resource.HealthCheck.Target
             new_target = value + ':' + target.split(':')[1]
+
+            if value is 'TCP' or value is 'SSL'
+                new_target = new_target.split('/')[0]
 
             MC.canvas_data.component[ uid ].resource.HealthCheck.Target = new_target
 
@@ -241,6 +262,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                         value[index].Listener.SSLCertificateId = ''
                     else
                         delCertComp = false
+                        value[index].Listener.SSLCertificateId = '@' + currentCertUID + '.resource.ServerCertificateMetadata.Arn'
                     null
 
                 if delCertComp

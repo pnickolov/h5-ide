@@ -68,16 +68,34 @@ define ['event', 'MC',
             listenerDetail = this.model.get 'listener_detail'
             listenerAry = listenerDetail.listenerAry
 
+            Canremove = false
             _.each listenerAry, (obj) ->
                 listener = obj.Listener
+                listener.Canremove = Canremove
                 itemTpl = MC.template.elbPropertyListenerItem(listener)
                 $('#accordion-group-elb-property-listener').append itemTpl
+                if !Canremove then Canremove = true
+                null
 
             this.trigger 'REFRESH_CERT_PANEL_DATA'
 
         elbNameChange : ( event ) ->
+
             console.log 'elbNameChange'
             value = event.target.value
+
+            # required validate
+            if not MC.validate 'required', value
+                return
+
+            # repeat name check
+            cid = $( '#elb-property-detail' ).attr 'component'
+            if MC.aws.aws.checkIsRepeatName(cid, value)
+                $('#property-elb-name').parsley('showError', 'Load Balancer name already in use, please choose another.')
+                return
+
+            $('#property-elb-name').parsley('hideError')
+
             cid = $( '#elb-property-detail' ).attr 'component'
 
             this.trigger 'ELB_NAME_CHANGED', value
@@ -94,8 +112,10 @@ define ['event', 'MC',
 
             if value is 'internal'
                 MC.canvas.update cid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNAL_CANVAS
+                MC.canvas.display(cid, 'elb_sg_in', true)
             else
                 MC.canvas.update cid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNET_CANVAS
+                MC.canvas.display(cid, 'elb_sg_in', false)
 
         healthProtocolSelect : ( evnet, value ) ->
             console.log 'healthProtocolSelect'
@@ -137,7 +157,8 @@ define ['event', 'MC',
                 "InstanceProtocol": "HTTP",
                 "Protocol": "HTTP",
                 "SSLCertificateId": "",
-                "InstancePort":""
+                "InstancePort":"",
+                "Canremove":true
             })
             $('#accordion-group-elb-property-listener').append itemTpl
             null
@@ -151,6 +172,56 @@ define ['event', 'MC',
         # listenerInstancePortChanged : ( event ) ->
 
         listenerItemChanged : ( event ) ->
+
+            # auto change port accord protocol
+            # auto change protocol accord layers
+            if event
+                thatElem = $(event.target)
+                value = thatElem.find('.selection').text()
+                if value
+                    portElem = null
+                    otherProtocolElem = null
+                    parentItemElem = thatElem.parents('.elb-property-listener-main')
+                    if thatElem.hasClass('elb-property-listener-elb-protocol-select')
+                        portElem = parentItemElem.find('.elb-property-listener-elb-port-input')
+                        otherProtocolElem = parentItemElem.find('.elb-property-listener-instance-protocol-select')
+                    else
+                        portElem = parentItemElem.find('.elb-property-listener-instance-port-input')
+                        otherProtocolElem = parentItemElem.find('.elb-property-listener-elb-protocol-select')
+                    if value in ['HTTPS', 'SSL']
+                        portElem.val('443')
+                    else
+                        portElem.val('80')
+
+                    if value in ['TCP', 'SSL']
+                        $('#property-elb-health-path').prop('disabled', true)
+                    else
+                        $('#property-elb-health-path').prop('disabled', false)
+
+                    # auto change protocol accord layers
+                    layerMap = {
+                        'HTTP': 'application',
+                        'HTTPS': 'application',
+                        'TCP': 'transport',
+                        'SSL': 'transport'
+                    }
+                    currentPtotocol = value
+                    otherProtocol = otherProtocolElem.find('.selection').text()
+                    if layerMap[currentPtotocol] isnt layerMap[otherProtocol]
+                        # diffrent layer
+                        otherProtocolElem.find('.selection').text(currentPtotocol)
+                    if otherProtocolElem.hasClass('elb-property-listener-elb-protocol-select')
+                        portElem = parentItemElem.find('.elb-property-listener-elb-port-input')
+                    else
+                        portElem = parentItemElem.find('.elb-property-listener-instance-port-input')
+
+                    newOtherProtocol = otherProtocolElem.find('.selection').text()
+                    if newOtherProtocol in ['HTTPS', 'SSL']
+                        portElem.val('443')
+                    else
+                        portElem.val('80')
+
+            #
             me = this
 
             listenerContainerElem = $('#accordion-group-elb-property-listener')

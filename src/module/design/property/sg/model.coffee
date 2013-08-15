@@ -10,6 +10,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'sg_detail'    : null
             'sg_app_detail' : null
             'get_xxx'    : null
+            'is_elb_sg'  : false
 
         initialize : ->
             #listen
@@ -48,6 +49,11 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             me.set 'sg_detail', sg_detail
 
+            if MC.aws.elb.isELBDefaultSG(uid)
+                me.set 'is_elb_sg', true
+            else
+                me.set 'is_elb_sg', false
+
         getAppSG : ( sg_uid ) ->
 
             # get sg obj
@@ -71,90 +77,67 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             this.set 'sg_app_detail', sg_app_detail
 
-        addSG : ( parent )->
+        # addSG : ( parent )->
 
-            me = this
+        #     me = this
 
-            uid = MC.guid()
+        #     uid = MC.guid()
 
-            component_data = $.extend(true, {}, MC.canvas.SG_JSON.data)
+        #     component_data = $.extend(true, {}, MC.canvas.SG_JSON.data)
 
-            component_data.uid = uid
+        #     component_data.uid = uid
 
-            gen_num = [0...500]
+        #     gen_num = [0...500]
 
-            $.each gen_num, ( num ) ->
+        #     $.each gen_num, ( num ) ->
 
-                sg_name = 'custom-sg' + num
+        #         sg_name = 'custom-sg' + num
 
-                existing = false
+        #         existing = false
 
-                _.map MC.canvas_data.component, ( value, key ) ->
+        #         _.map MC.canvas_data.component, ( value, key ) ->
 
-                    if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup and value.name == sg_name
+        #             if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup and value.name == sg_name
 
-                        existing = true
+        #                 existing = true
 
-                        null
+        #                 null
 
-                if not existing
+        #         if not existing
 
-                    component_data.name = sg_name
+        #             component_data.name = sg_name
 
-                    component_data.resource.GroupName = sg_name
+        #             component_data.resource.GroupName = sg_name
 
-                    tmp = {}
-                    tmp.uid = uid
-                    tmp.name = sg_name
+        #             tmp = {}
+        #             tmp.uid = uid
+        #             tmp.name = sg_name
 
-                    # if parent
-                    #     tmp.member = [ parent ]
+        #             # if parent
+        #             #     tmp.member = [ parent ]
 
-                    MC.canvas_property.sg_list.push tmp
+        #             MC.canvas_property.sg_list.push tmp
 
-                    return false
-
-
+        #             return false
 
 
-            data = MC.canvas.data.get('component')
 
-            data[uid] = component_data
 
-            MC.canvas.data.set('component', data)
+        #     data = MC.canvas.data.get('component')
 
-            sg_detail = {}
+        #     data[uid] = component_data
 
-            sg_detail.component = MC.canvas_data.component[uid]
+        #     MC.canvas.data.set('component', data)
 
-            sg_detail.members = 1
+        #     sg_detail = {}
 
-            sg_detail.rules = 1
+        #     sg_detail.component = MC.canvas_data.component[uid]
 
-            # if parent
+        #     sg_detail.members = 1
 
-            #     sg_detail.parent = parent
+        #     sg_detail.rules = 1
 
-            #     sg_detail.member_names = [ MC.canvas_data.component[parent].name ]
-
-            #     if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-
-            #         $.each MC.canvas_data.component, ( key, comp ) ->
-
-            #             if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == parent and comp.resource.Attachment.DeviceIndex == '0'
-
-            #                 group = {
-            #                     GroupId : '@' + uid + '.resource.GroupId'
-            #                     GroupName : '@' +  uid + '.resource.GroupName'
-            #                 }
-
-            #                 MC.canvas_data.component[ comp.uid ].resource.GroupSet.push group
-
-            #                 return false
-            #     else
-            #         MC.canvas_data.component[parent].resource.SecurityGroupId.push '@'+uid+'.resource.GroupId'
-
-            me.set 'sg_detail', sg_detail
+        #     me.set 'sg_detail', sg_detail
 
         setSGName : ( uid, value ) ->
 

@@ -1009,7 +1009,7 @@ Additional Notes and Questions
 
 <!-- elbPropertyListenerItem -->
 <div class="elb-property-listener-main">
-	<div class="elb-property-listener-item-remove">×</div>
+	{{#if Canremove}}<div class="elb-property-listener-item-remove">×</div>{{/if}}
 	<div class="property-control-group clearfix elb-property-listener-item">
 		<div class="left elb-property-listener-item-1">
 			<label>Load Balancer Protocol</label>
@@ -1057,7 +1057,7 @@ Additional Notes and Questions
 		<span>{{rule.ipranges}}</span>
 		</div>
 		<div class='rule-port' title="port message">{{rule.fromport}}-{{rule.toport}}</div>
-		<div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div>
+		<!-- <div class='rule-edit-icon tooltip' data-tooltip="Edit rule detail"></div> -->
 	<div class='rule-remove-icon tooltip' data-tooltip="delete security group"></div>
 </li>
 

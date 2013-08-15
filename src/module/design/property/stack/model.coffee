@@ -75,8 +75,9 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     existing = true
 
+                    return false
 
-                return false
+
 
             if not existing
 
@@ -84,7 +85,9 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                 topic_uid = MC.guid()
 
-                topic_comp.name = topic_comp.resource.Name = topic_comp.resource.DisplayName = 'app-sns'
+                topic_comp.name = topic_comp.resource.Name = topic_comp.resource.DisplayName = 'sns-topic'
+
+                topic_comp.uid = topic_uid
 
                 MC.canvas_data.component[topic_uid] = topic_comp
 

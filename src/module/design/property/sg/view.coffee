@@ -58,9 +58,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 		#SG SecondaryPanel
 		showEditRuleModal : (event) ->
+			if this.model.get('is_elb_sg') then return
 			modal MC.template.modalSGRule {isAdd:false}, true
 
 		showCreateRuleModal : (event) ->
+			if this.model.get('is_elb_sg') then return
 			isclassic = false
 			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 				isclassic = true
@@ -68,6 +70,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			return false
 
 		removeRulefromList: (event, id) ->
+			if this.model.get('is_elb_sg') then return
 			rule = {}
 			li_dom = $(event.target).parents('li').first()
 			rule.inbound = li_dom.data('inbound')

@@ -16,7 +16,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 				name_prefix = "kp"
 
 			when constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-				name_prefix = "sg"
+				name_prefix = "custom-sg-"
 
 			when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
 				name_prefix = "eip"
@@ -299,6 +299,26 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		null
 
 
+	checkIsRepeatName = (compUID, newName) ->
+
+		originCompObj = MC.canvas_data.component[compUID]
+		originCompUID = originCompObj.uid
+		originCompType = originCompObj.type
+		# originCompName = originCompObj.name
+
+		result = false
+		_.each MC.canvas_data.component, (compObj) ->
+			compUID = compObj.uid
+			compType = compObj.type
+			compName = compObj.name
+			if originCompType is compType and originCompUID isnt compUID and newName is compName
+				result = true
+				return false
+			null
+
+		return result
+
 	#public
 	getNewName : getNewName
 	cacheResource : cacheResource
+	checkIsRepeatName : checkIsRepeatName

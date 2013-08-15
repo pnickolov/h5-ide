@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/rtb
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox', 'MC.validate', 'UI.parsley' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( ide_event ) ->
 
     RTBView = Backbone.View.extend {
 

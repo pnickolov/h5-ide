@@ -283,14 +283,14 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		#asl instance
 		if resources.DescribeAutoScalingInstances
 			_.map resources.DescribeAutoScalingInstances, ( res, i ) ->
-				MC.data.resource_list[region][res.InstanceId] = res
+				MC.data.resource_list[region][res.AutoScalingGroupName + ':' + res.InstanceId] = res
 				null
 
 
 		#asl activities
 		if resources.DescribeScalingActivities
 			_.map resources.DescribeScalingActivities, ( res, i ) ->
-				MC.data.resource_list[region][res.InstanceId] = res
+				MC.data.resource_list[region][res.ActivityId] = res
 				null
 
 

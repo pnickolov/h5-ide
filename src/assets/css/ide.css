@@ -112,15 +112,19 @@ a {
 }
 
 .header-menu .dropdown {
-	position: relative;
-	float: left;
-	line-height: 50px;
-	border-left: 1px solid #252225;
-	-webkit-transition: background-color 0.2s;
-	-moz-transition: background-color 0.2s;
-	-ms-transition: background-color 0.2s;
-	-o-transition: background-color 0.2s;
-	transition: background-color 0.2s;
+
+	position           : relative;
+	float              : left;
+	line-height        : 50px;
+	height             : 50px;
+
+	border-left        : 1px solid #252225;
+
+	-webkit-transition : background-color 0.2s;
+	-moz-transition    : background-color 0.2s;
+	-ms-transition     : background-color 0.2s;
+	-o-transition      : background-color 0.2s;
+	transition         : background-color 0.2s;
 }
 
 #header .header-menu .dropdown a {
@@ -2395,10 +2399,12 @@ a.sidebar-hider {
 }
 
 .sg-info-list-tab {
-	color      : #999;
-	background : #424142;
-	padding    : 5px;
-	height     : 30px;
+	color         : #999;
+	background    : #474747;
+	padding       : 5px;
+	height        : 30px;
+	box-shadow    : 0 2px 5px 0 rgba(0,0,0,.2);
+	border-bottom : 1px solid #383838;
 }
 
 .sg-info-list-tab li {
@@ -2424,13 +2430,10 @@ a.sidebar-hider {
 	margin-left: 10px;
 }
 
-.sg-info-list-tab .active {
-	color: #eee;
-	background: #313031;
-}
-
+.sg-info-list-tab .active,
 .sg-info-list-tab li:hover {
-	background: #313031;
+	color: #eee;
+	background: #383A3D;
 }
 
 .acl-sg-info-list li {

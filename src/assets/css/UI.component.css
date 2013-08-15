@@ -497,8 +497,9 @@ textarea {
 	height        : 8px;
 	top           : 4px;
 	left          : 4px;
-	background    : #666;
+	background    : #555;
 	border-radius : 8px;
+	opacity: 1;
 }
 
 .radio-wrap,

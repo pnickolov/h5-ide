@@ -282,7 +282,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 #add new-app status
                 #me.handleRequest result, 'RUN_STACK', region, id, app_name
-                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
+                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, data, result
 
         #zoomin
         zoomIn : () ->

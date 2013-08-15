@@ -46,7 +46,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant', 'app_model' ],
                         # if ended then push event
                         app_name = MC.process[tab_name].app_name
                         app_id = MC.process[tab_name].flag_list.app_id
-                        region = MC.process[tab_name].region_name
+                        region = MC.process[tab_name].data.region
                         if MC.data.current_tab_id is 'process-'+app_name and MC.process[tab_name].flag_list.is_done
                             # hold on 2 seconds
                             setTimeout () ->

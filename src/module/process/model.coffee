@@ -80,7 +80,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant', 'app_model' ],
                     console.log 'request id:' + req_id
                     query = ws.collection.request.find({id:req_id})
                     handle = query.observeChanges {
-                        changed : (idx, dag) ->
+                        changed : (idx, dag) =>
                             flag_list = {}
 
                             req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
@@ -113,8 +113,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant', 'app_model' ],
                                     # save png
                                     data = process.data
                                     data.key = me.getKey(me, data.region, app_id)
-                                    if data.key
-                                        ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, process.data
+                                    # if data.key
+                                    #ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, app_id, process.data
 
                                     # hold on 2 seconds
                                     setTimeout () ->

@@ -100,9 +100,9 @@ define [ 'jquery',
                 console.log 'SAVE_PNG_COMPLETE'
                 view.exportPNG base64_image
 
-            ide_event.onLongListen 'SAVE_APP_THUMBNAIL', ( data ) ->
+            ide_event.onLongListen 'SAVE_APP_THUMBNAIL', ( app_id, data ) ->
                 console.log 'SAVE_APP_THUMBNAIL'
-                model.savePNG true, data
+                model.saveAppThumbnail(app_id, data)
 
             view.on 'TOOLBAR_STOP_CLICK', (data) ->
                 console.log 'design_toolbar_click:stopApp'

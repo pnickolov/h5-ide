@@ -549,7 +549,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             is_instance_store
 
-        getKey  :   (region, app_id) ->
+        saveAppThumbnail  :   ( app_id, data ) ->
             me = this
 
             # generate s3 key
@@ -560,9 +560,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 if !result.is_error
                     # trigger toolbar save png event
-                    console.log 'TOOLBAR_SAVE_PNG'
+                    console.log 'app key:' + result.resolved_data
 
-                    result.resolved_data
+                    data.key = result.resolved_data
+
+                    savePNG true, data
 
             null
 

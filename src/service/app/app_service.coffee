@@ -442,6 +442,32 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     # end of parserListReturn
 
 
+    #///////////////// Parser for getKey return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveGetKeyResult = ( result ) ->
+        #resolve result
+        result
+
+    #private (parser list return)
+    parseGetKeyReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveGetKeyResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserListReturn
+
+
     #############################################################
 
     #def create(self, username, session_id, region_name, spec):
@@ -517,4 +543,5 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     list                         : list
     resource                     : resource
     summary                      : summary
+    getKey                       : getKey
 

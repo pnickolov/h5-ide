@@ -508,8 +508,7 @@ textarea {
 }
 
 .property-content .radio label {
-	background: #D2D2D2;
-	border: 1px solid #171617;
+	/*border: 1px solid #171617;*/
 	border-radius: 100%;
 }
 
@@ -535,12 +534,22 @@ textarea {
 }
 
 .property-content .checkbox label {
-	width: 16px;
-	height: 16px;
+	width: 14px;
+	height: 14px;
 	border-radius: 2px;
-	background: #DDD6D2;
-	border: 1px solid #343334;
+	/*border: 1px solid #343334;*/
+}
+
+.property-content .checkbox label,
+.property-content .radio label {
+	background: #d2d2d2;
+	border: 1px solid transparent;
 	box-shadow: none;
+}
+
+.property-content .checkbox:hover label,
+.property-content .radio:hover label {
+	background: #eee;
 }
 
 .property-content .checkbox label:after {

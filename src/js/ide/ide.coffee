@@ -149,10 +149,11 @@ define [ 'MC', 'event', 'handlebars'
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.ide[ text ]
 
-		analytics.identify(147, {
+		analytics.identify($.cookie("userid"),, {
 			name : $.cookie("username"),
 			username : $.cookie("username"),
 			email : MC.base64Decode($.cookie("email")),
+			region : MC.base64Decode($.cookie("region_name")),
 			created : 1328260166
 			}, {
 			Intercom : {

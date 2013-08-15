@@ -58,7 +58,16 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	#private (resolve result to vo )
 	resolveDescribeSubnetsResult = ( result ) ->
 		#return
-		($.xml2json ($.parseXML result[1])).DescribeSubnetsResponse.subnetSet
+		result_set = ($.xml2json ($.parseXML result[1])).DescribeSubnetsResponse.subnetSet
+
+		if result_set?.item?
+
+			return result_set.item
+
+		else
+
+			return null
+
 
 	#private (parser DescribeSubnets return)
 	parserDescribeSubnetsReturn = ( result, return_code, param ) ->

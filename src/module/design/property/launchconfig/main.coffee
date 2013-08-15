@@ -15,7 +15,7 @@ define [ 'jquery',
 
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-launchconfig-tmpl">' + template + '</script>'
-    app_template = "<script type='text/x-handlebars-template' id='property-launchconfig-tmpl'>#{app_template}</script>"
+    app_template = "<script type='text/x-handlebars-template' id='property-launchconfig-app-tmpl'>#{app_template}</script>"
     #load remote html template
     $( 'head' ).append( template ).append( app_template )
 
@@ -84,6 +84,7 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
+            model.getAppLaunch uid
             #view
             view.model    = model
             view.render()

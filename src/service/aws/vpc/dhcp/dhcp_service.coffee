@@ -58,7 +58,16 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	#private (resolve result to vo )
 	resolveDescribeDhcpOptionsResult = ( result ) ->
 		#return
-		($.xml2json ($.parseXML result[1])).DescribeDhcpOptionsResponse.dhcpOptionsSet
+		result_set = ($.xml2json ($.parseXML result[1])).DescribeDhcpOptionsResponse.dhcpOptionsSet
+
+		if result_set?.item?
+
+			return result_set.item
+
+		else
+
+			return null
+
 
 	#private (parser DescribeDhcpOptions return)
 	parserDescribeDhcpOptionsReturn = ( result, return_code, param ) ->

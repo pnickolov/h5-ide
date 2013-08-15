@@ -58,7 +58,16 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	#private (resolve result to vo )
 	resolveDescribeInternetGatewaysResult = ( result ) ->
 		#return
-		($.xml2json ($.parseXML result[1])).DescribeInternetGatewaysResponse.internetGatewaySet
+		result_set = ($.xml2json ($.parseXML result[1])).DescribeInternetGatewaysResponse.internetGatewaySet
+
+		if result_set?.item?
+
+			return result_set.item
+
+		else
+
+			return null
+
 
 	#private (parser DescribeInternetGateways return)
 	parserDescribeInternetGatewaysReturn = ( result, return_code, param ) ->

@@ -62,7 +62,7 @@ define [ 'jquery',
 
             view.on 'SET_TERMINATE_POLICY', ( policies ) ->
 
-                model.setTerminatePolicy uid, policies
+                model.setTerminatePolicy policies
 
             view.on 'SET_HEALTH_TYPE', ( type ) ->
 

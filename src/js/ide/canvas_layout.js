@@ -52,7 +52,8 @@ var listen = function ()
 			.on('click', '.line', MC.canvas.event.selectLine)
 			.on('mousedown', MC.canvas.event.clearSelected)
 			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
-			.on('selectstart', returnFalse);
+			.on('selectstart', returnFalse)
+			.on('mousedown', '.node-launchconfiguration-label', MC.canvas.asgList.show);
 
 		$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
 	}
@@ -63,7 +64,6 @@ var listen = function ()
 			.addClass('canvas_state_' + canvas_state)
 			//.on('mousedown', '.instance-volume', MC.canvas.volume.show)
 			//.on('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
-			.on('mousedown', '.node-label', MC.canvas.asgList.show)
 			.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 			.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 			.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)

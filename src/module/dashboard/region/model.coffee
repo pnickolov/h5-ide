@@ -62,6 +62,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     { "key": [ "isDefault" ], "show_key": "Default VPC:"},
                     { "key": [ "instanceTenancy" ], "show_key": "Tenacy"}
                 ]
+            "DescribeAutoScalingGroups":
+                "status": [ "state" ],
+                "title": "AutoScalingGroupName",
+                "sub_info":[
+                    { "key": [ "AutoScalingGroupName" ], "show_key": "AutoScalingGroupName"},
+                    { "key": [ "type" ], "show_key": "Type"},
+                    {"key": [ "Status" ], "show_key": "Status"}
+                ]
+
+
         "detail" :
             "DescribeVolumes":
                 "title": "volumeId",
@@ -530,10 +540,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                                         'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
                                     }
                                 when "DescribeAutoScalingGroups"
-                                    unmanaged_list.item.push {
+                                    unmanaged_list.items.push {
                                         'type': "Auto Scaling Group",
                                         'name': (if name then name else value.AutoScalingGroupName),
-                                        'state': value.state,
+                                        'state': value.activity_state,
                                         'cost': 0.00,
                                         'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
                                         'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
@@ -592,7 +602,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 keys_type     = "unmanaged_bubble"
                 keys_to_parse = popup_key_set[keys_type][type]
 
-            status_keys = keys_to_parse.status
+            if !keys_to_parse
+                console.log type + ' ' + name
+
+            status_keys = if keys_to_parse.status then keys_to_parse.status else null
 
             if status_keys
                 state_key = status_keys[0]

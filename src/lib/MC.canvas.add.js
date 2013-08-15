@@ -1945,8 +1945,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////10. lc name
-				Canvon.text(50, 90, option.name).attr({
-					'class': 'node-label name',
+				Canvon.text(50, 90, (MC.canvas.getState()==='stack' ? option.name : '? in service')).attr({
+					'class': 'name' + (MC.canvas.getState()==='stack' ? ' node-label' : ' node-launchconfiguration-label'),
 					'id': group.id + '_lc_name'
 				})
 			).attr({

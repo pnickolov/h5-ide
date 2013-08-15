@@ -302,6 +302,15 @@
 	cursor: default;
 }
 
+/* launchconfiguration label of node in app */
+.node-launchconfiguration-label {
+	font-size: 12px;
+	text-anchor: middle;
+	fill: #368bf5;
+	cursor: default;
+	text-decoration: underline;
+}
+
 .volume-number {
 	font-size: 12px;
 	fill: #74B1FD;

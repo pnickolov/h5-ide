@@ -149,16 +149,16 @@ define [ 'MC', 'event', 'handlebars'
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.ide[ text ]
 
-		analytics.identify($.cookie("userid"),, {
+		analytics.identify($.cookie("userid"), {
 			name : $.cookie("username"),
 			username : $.cookie("username"),
 			email : MC.base64Decode($.cookie("email")),
-			region : MC.base64Decode($.cookie("region_name")),
+			region : $.cookie("region_name"),
 			created : 1328260166
 			}, {
 			Intercom : {
 				userHash : '5add343430ecaf54f7c1a6285758fcccb87fb365d089d6e1a520b2d7fa49fb05'
 			}
-		});
+		})
 		
-		analytics.track('Loaded IDE', { });
+		analytics.track('Loaded IDE', { })

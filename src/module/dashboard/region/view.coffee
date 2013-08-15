@@ -31,6 +31,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click #btn-create-stack'       : 'createStackClick'
             'click .app-thumbnail'          : 'clickAppThumbnail'
             'click .stack-thumbnail'        : 'clickStackThumbnail'
+            'click #asg-app-name'           : 'clickAsgAppName'
 
         renderVPCAttrs : ->
             console.log 'dashboard region vpc_attrs render'
@@ -200,6 +201,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                     console.log 'new_url = ' + new_url
                     $item.removeAttr 'style'
                     $item.css 'background-image', 'url(' + new_url + ')'
+
+        clickAsgAppName : ( event ) ->
+            me = this
+            console.log 'dashboard region click asg app name'
+
+            app_name = $(event.currentTarget).data('option').name
+            app_id   = $(event.currentTarget).data('option').id
+            ide_event.trigger ide_event.OPEN_APP_TAB, app_name, me.region, app_id
 
     }
 

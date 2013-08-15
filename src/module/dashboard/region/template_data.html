@@ -87,7 +87,7 @@ Loading...
 									<td>
 										{{#if app}}
 											{{#if owner}}
-												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+												<a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
 											{{else}}
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
@@ -173,7 +173,7 @@ Loading...
 									<td>
 										{{#if app}}
 											{{#if owner}}
-												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+												<a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
 											{{else}}
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
@@ -224,7 +224,7 @@ Loading...
 									<td>
 										{{#if app}}
 											{{#if owner}}
-												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+												<a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
 											{{else}}
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
@@ -277,7 +277,7 @@ Loading...
 									<td>
 										{{#if app}}
 											{{#if owner}}
-												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+												<a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
 											{{else}}
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
@@ -355,9 +355,9 @@ Loading...
 						{{#if region_resource.DescribeAutoScalingGroups}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:35%">Name</th>
-								<th class="sortable" style="width:45%">Current/Last Activity</th>
-								<th class="sortable" style="width:10%">Activity Status</th>
+								<th class="sortable" style="width:20%">Name</th>
+								<th class="sortable" style="width:50%">Current/Last Activity</th>
+								<th class="sortable" style="width:20%">Activity Status</th>
 								<th style="width:15%">Detail</th>
 							</tr>
 						</thead>
@@ -367,13 +367,14 @@ Loading...
 									<td>
 									{{#if app}}
 										{{#if owner}}
-											<a href="" class="table-link table-app-link truncate" title="Open App">[{{app}}] {{AutoScalingGroupName}}</a>
+											<a href="javascript:void(0)" class="table-link table-app-link truncate" id="asg-app-name" data-option='{"id": "{{app_id}}", "name": "{{app}}"}' title="Open App">[{{ app }}]</a>
 										{{else}}
-											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}] {{AutoScalingGroupName}}</span>
+											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 										{{/if}}
 									{{else}}
-										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >[Unmanaged] {{AutoScalingGroupName}}</span>
+										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >[Unmanaged] </span>
 									{{/if}}
+									{{AutoScalingGroupName}}
 									</td>
 									<!-- <td><a href="" class="table-link table-app-link truncate" title="Open App">[App Name]</a> -->
 									</td>

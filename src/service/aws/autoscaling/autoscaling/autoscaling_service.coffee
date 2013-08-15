@@ -136,7 +136,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		#TO-DO
 
 		#return vo
-		result_set = ($.xml2json ($.parseXML result[1])).DescribeAutoScalingInstancesResponse
+		result_set = ($.xml2json ($.parseXML result[1])).DescribeAutoScalingInstancesResponse.DescribeAutoScalingInstancesResult.AutoScalingInstances
 
 		if result_set?.member?
 

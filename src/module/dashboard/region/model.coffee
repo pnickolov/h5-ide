@@ -1018,17 +1018,23 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 _.map resources.DescribeAutoScalingGroups, ( asl, i ) ->
                     lists.AutoScalingGroup+=1
-                    _.map asl.Tags.member, ( tag ) ->
 
-                        if tag.Key == 'app'
+                    if asl.Tags
+                        _.map asl.Tags.member, ( tag ) ->
 
-                            asl.app = tag.Value
+                            if tag.Key == 'app'
 
-                        if tag.Key == 'Created by' and tag.Value == owner
+                                asl.app = tag.Value
 
-                            asl.owner = tag.Value
+                            if tag.Key == 'app-id'
 
-                        null
+                                asl.app_id = tag.Value
+
+                            if tag.Key == 'Created by' and tag.Value == owner
+
+                                asl.owner = tag.Value
+
+                            null
 
                     asl.detail = me.parseSourceValue 'DescribeAutoScalingGroups', asl, "detail", null
 
@@ -1046,6 +1052,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     null
 
+            # cloudwatch alarm
             if resources.DescribeAlarms
 
                 _.map resources.DescribeAlarms, ( alarm, i ) ->
@@ -1069,10 +1076,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     alarm.detail = me.parseSourceValue 'DescribeAlarms', alarm, "detail", null
 
                     null
-
-            #if resources.DescribeAlarms
-
-            #    null
 
             # eip
             if resources.DescribeAddresses

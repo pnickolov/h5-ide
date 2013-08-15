@@ -1018,21 +1018,23 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 _.map resources.DescribeAutoScalingGroups, ( asl, i ) ->
                     lists.AutoScalingGroup+=1
-                    _.map asl.Tags.member, ( tag ) ->
 
-                        if tag.Key == 'app'
+                    if asl.Tags
+                        _.map asl.Tags.member, ( tag ) ->
 
-                            asl.app = tag.Value
+                            if tag.Key == 'app'
 
-                        if tag.Key == 'app-id'
+                                asl.app = tag.Value
 
-                            asl.app_id = tag.Value
+                            if tag.Key == 'app-id'
 
-                        if tag.Key == 'Created by' and tag.Value == owner
+                                asl.app_id = tag.Value
 
-                            asl.owner = tag.Value
+                            if tag.Key == 'Created by' and tag.Value == owner
 
-                        null
+                                asl.owner = tag.Value
+
+                            null
 
                     asl.detail = me.parseSourceValue 'DescribeAutoScalingGroups', asl, "detail", null
 

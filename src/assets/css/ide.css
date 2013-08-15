@@ -121,15 +121,19 @@ a {
 }
 
 .header-menu .dropdown {
-	position: relative;
-	float: left;
-	line-height: 50px;
-	border-left: 1px solid #252225;
-	-webkit-transition: background-color 0.2s;
-	-moz-transition: background-color 0.2s;
-	-ms-transition: background-color 0.2s;
-	-o-transition: background-color 0.2s;
-	transition: background-color 0.2s;
+
+	position           : relative;
+	float              : left;
+	line-height        : 50px;
+	height             : 50px;
+
+	border-left        : 1px solid #252225;
+
+	-webkit-transition : background-color 0.2s;
+	-moz-transition    : background-color 0.2s;
+	-ms-transition     : background-color 0.2s;
+	-o-transition      : background-color 0.2s;
+	transition         : background-color 0.2s;
 }
 
 #header .header-menu .dropdown a {
@@ -1743,7 +1747,7 @@ a:hover .toolbar-label {
 	padding : 12px 10px;
 
 	font-size   : 16px;
-	color       : #e9edf2;
+	color       : #b0b0b0;
 	text-shadow : 0 1px #333;
 	/*text-align: center;*/
 
@@ -2112,7 +2116,8 @@ a.sidebar-hider {
 .property-content {
 	height      : 100%;
 
-	background-color: #555455;
+	background-color : #555455;
+	color            : #ccc;
 
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
@@ -2132,27 +2137,46 @@ a.sidebar-hider {
 	line-height : 43px;
 	text-shadow : none;
 
-	padding       : 0 10px;
-	height        : 43px;
+	padding : 0 10px;
+	height  : 43px;
+	width   : 260px;
 
 	cursor        : default;
 }
 
 .back {
-	color     : #999;
-	font-size : 12px;
-
 	background   : #313131;
-	padding      : 0 20px;
+	padding      : 0 12px;
 	border-right : 1px solid #272627;
-	box-shadow: inset 0 2px 0 rgba(255,255,255,.05);
+	box-shadow   : inset 0 2px 0 rgba(255,255,255,.05);
+	position     : absolute;
 
-	position : absolute;
-	left     : 0
+	left         : 0;
+	width        : 20px;
+	height       : 45px;
+	display      : inline-block;
 }
 
 .back:hover {
 	background   : #272627;
+}
+
+.icon-btn-back {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 50%;
+	margin-top: -10px;
+	left: 12px;
+
+	background       : url('../images/ide/icon/icon-btn-back.png') center center no-repeat;
+	opacity: .6;
+
+}
+
+.back:hover .icon-btn-back {
+	opacity: 1;
 }
 
 .option-group-head {
@@ -2436,10 +2460,12 @@ a.sidebar-hider {
 }
 
 .sg-info-list-tab {
-	color      : #999;
-	background : #424142;
-	padding    : 5px;
-	height     : 30px;
+	color         : #999;
+	background    : #474747;
+	padding       : 5px;
+	height        : 30px;
+	box-shadow    : 0 2px 5px 0 rgba(0,0,0,.2);
+	border-bottom : 1px solid #383838;
 }
 
 .sg-info-list-tab li {
@@ -2465,13 +2491,10 @@ a.sidebar-hider {
 	margin-left: 10px;
 }
 
-.sg-info-list-tab .active {
-	color: #eee;
-	background: #313031;
-}
-
+.sg-info-list-tab .active,
 .sg-info-list-tab li:hover {
-	background: #313031;
+	color: #eee;
+	background: #383A3D;
 }
 
 .acl-sg-info-list li {
@@ -2489,7 +2512,7 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list li:hover {
-	background : #343334;
+	background : #454445;
 }
 
 .acl-sg-info-list .col1 {
@@ -2499,14 +2522,15 @@ a.sidebar-hider {
 	float              : left;
 	padding            : 15px 0;
 }
+
 .acl-sg-info-list .col2 {
-	width     : 220px;
+	width     : 210px;
 	float     : left;
 	word-wrap : break-word;
 }
 
 .acl-sg-info-list .col2 > div {
-	width: 220px;
+	width: 210px;
 }
 
 .acl-sg-info-list .col2 .col2-1 {
@@ -2527,13 +2551,13 @@ a.sidebar-hider {
 
 	text-align       : center;
 
-	width            : 30px;
+	width            : 40px;
 	height           : 72px;
 	line-height      : 72px;
-	
+
 	cursor           : pointer;
 
-	background-color : #383738;
+	/*background-color : #393839;*/
 	box-shadow       : 0 1px 0 0 #333;
 
 	-webkit-transition : background .2s;
@@ -2544,7 +2568,7 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list .col3:hover {
-	background-color: #313031;
+	background-color: #3d3c3d;
 }
 
 .acl-sg-info-list .sg-list-association-check {
@@ -2558,9 +2582,32 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list .sg-list-delete-btn {
-	margin-top: 35px;
-	cursor: pointer;
-	margin-left: 0px;
+	cursor      : pointer;
+	margin-top  : 35px;
+	margin-left : 0px;
+}
+
+.icon-btn-details {
+	display    : inline-block;
+	width      : 20px;
+	height     : 20px;
+	position   : absolute;
+	top        : 50%;
+	margin-top : -10px;
+	left       : 8px;
+
+	background       : url('../images/ide/icon/icon-btn-details.png') center center no-repeat;
+	background-size: auto auto;
+	/*background-color : #999;*/
+	opacity: .6;
+
+	/*border-radius    : 100%;*/
+}
+
+.acl-sg-info-list .col3:hover .icon-btn-details,
+.icon-btn-details:hover {
+	opacity          : 1;
+	/*background-color : #B25B91;*/
 }
 
 /* Secondary Panel */
@@ -2850,12 +2897,14 @@ a.sidebar-hider {
 	display : block;
 }
 
-#add-sg-btn {
+.add-to-list {
 	width: 100%;
 	text-align: center;
 	display: block;
 	padding: 10px;
 }
+
+
 /* SG Rule Modal */
 #modal-sg-rule .modal-body{
 	padding: 10px;
@@ -3801,7 +3850,7 @@ a.sidebar-hider {
 }
 
 .property-app {
-	font-size: 12px;
+	/*font-size: 12px;*/
 }
 
 .accordion-default.property-app .accordion-body {
@@ -3888,6 +3937,21 @@ a.sidebar-hider {
 	background: url('../images/ide/icon-dashboard-tabbar.png') center center no-repeat;
 }
 
+.icon-stack-tabbar {
+	background: url('../images/ide/icon/icon-stack-tabbar.png') center center no-repeat;
+}
+
+.icon-app-tabbar-running {
+	background: url('../images/ide/icon/icon-app-tabbar-running.png') center center no-repeat;
+}
+
+.icon-app-tabbar-stopped {
+	background: url('../images/ide/icon/icon-app-tabbar-stopped.png') center center no-repeat;
+}
+
+.icon-app-tabbar-pending {
+	background: url('../images/ide/icon/icon-app-tabbar-pending.png') center center no-repeat;
+}
 /* Nav Icon */
 
 .icon-dashboard-nav {
@@ -4084,27 +4148,13 @@ a.sidebar-hider {
 }
 
 /* stack and app property sgrule */
-.property-subhead {
-	padding: 10px;
-}
-
-#property-sgrule .acl-sg-info-list .col1 {
-	margin-right: 5px;
-}
-
-#property-sgrule .acl-sg-info-list .col2 .col2-2 {
-	color: #000;
-}
-
-#property-sgrule .acl-sg-info-list .col2 .col2-2 {
-	color: #000;
-}
 
 [class^="icon-rule-"], [class*=" icon-rule-"] {
 	background-repeat: no-repeat;
 	background-position: center;
 	display: inline-block;
 	width: 22px;
+
 	height: 13px;
 	float: left;
 }
@@ -4120,6 +4170,7 @@ a.sidebar-hider {
 #property-sgrule [class^="icon-rule-"], #property-sgrule [class*=" icon-rule-"] {
 	margin-right: 10px;
 }
+
 
 /* run stack */
 

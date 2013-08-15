@@ -5,7 +5,7 @@
 			<label class="left" for="securitygroup-name" >Name</label>
 			<span class="required-input right">Required</span>
 			{{#if isDefault}}
-			<input class="input"  type="text" required="required" id="securitygroup-name" disabled="disabled" name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
+			<input class="input"  type="text" required="required" id="securitygroup-name" disabled name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
 			{{else}}
 			<input class="input"  type="text" required="required" id="securitygroup-name" {{#if is_elb_sg}}disabled="disabled"{{/if}} name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
 			{{/if}}

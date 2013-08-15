@@ -2,7 +2,7 @@
 #  View Mode for design
 #############################
 
-define [ 'MC', 'event', 'app_model', 'backbone' ], ( MC, ide_event, app_model ) ->
+define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' ], ( MC, ide_event, constant, app_model, instance_service) ->
 
     #private
     DesignModel = Backbone.Model.extend {
@@ -101,6 +101,59 @@ define [ 'MC', 'event', 'app_model', 'backbone' ], ( MC, ide_event, app_model ) 
             MC.data.last_open_property
 
 
+        describeInstancesOfASG : (region) ->
+
+            comp_layout   = MC.canvas.data.get('layout.component.group')
+            comp_data     = MC.canvas.data.get('component')
+            instance_ids = []
+
+            #find ASG in comp_layout
+            _.map comp_layout, ( value, id ) ->
+
+                if value.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+
+                    asg_arn         = if comp_data[id] then comp_data[id].resource.AutoScalingGroupARN else null
+                    asg_res          = if asg_arn then MC.data.resource_list[region][asg_arn] else null
+                    instance_memeber = if asg_res then asg_res.Instances.member else null
+
+                    #find instance in ASG
+                    if instance_memeber
+                        _.map instance_memeber, (ins, i) ->
+                            instance_ids.push ins.InstanceId
+                            null
+
+                null
+
+            ######
+            src = {}
+            src.sender = this
+            src.model  = null
+
+            if instance_ids.length > 0
+                instance_service.DescribeInstances src, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, instance_ids, null, ( aws_result ) ->
+
+                    if !aws_result.is_error
+                    #DescribeInstances succeed
+
+                        if aws_result.resolved_data
+
+                             _.map aws_result.resolved_data, (ins, i) ->
+
+                                MC.data.resource_list[region][ins.instanceId] = ins
+                                null
+
+                        null
+
+                    else
+                    #DescribeInstances failed
+
+                        console.log 'instance.DescribeInstances failed, error is ' + aws_result.error_message
+
+            null
+
+
+
+
 
         getAppResourcesService : ( region, app_id )->
 
@@ -115,6 +168,8 @@ define [ 'MC', 'event', 'app_model', 'backbone' ], ( MC, ide_event, app_model ) 
                 resource_source = result.resolved_data
 
                 MC.aws.aws.cacheResource resource_source, region
+
+                me.describeInstancesOfASG region
 
                 null
 

@@ -43,12 +43,12 @@
 					<div class="col2-2 truncate">{{sgDesc}}</div>
 					<div class="col2-3 truncate">{{sgRuleNum}} rules, {{sgMemberNum}} members</div>
 				</div>
-				<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip={{#if app_view}}"View SG"{{else}}"Go to Security Group Details"{{/if}} data-sgid="{{sgUID}}">&gt;</div>
+				<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip={{#if app_view}}"View Security Group Details"{{else}}"Go to Security Group Details"{{/if}} data-sgid="{{sgUID}}"><span class="icon-btn-details"></span></div>
 				{{#if is_stack_sg}}{{#unless sgIsDefault}}{{#unless sgMemberNum}}<div class="sg-list-delete-btn">Delete</div>{{/unless}}{{/unless}}{{/if}}
 			</li>
 			{{/each}}
 		</ul>
-		{{#unless app_view}}<a href="javascripti:void(0)" id="add-sg-btn">Create new Security Group</a>{{/unless}}
+		{{#unless app_view}}<a href="javascripti:void(0)" class="add-to-list" id="add-sg-btn">Create new Security Group...</a>{{/unless}}
 	</div>
 	<div id="item-rule" class="tab-item">
 		<div class="sg-rule-filter">

@@ -58,6 +58,7 @@ define [ 'jquery',
             view.model    = model
             view.render()
 
+            ide_event.trigger ide_event.RELOAD_PROPERTY
             # Update property title
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 

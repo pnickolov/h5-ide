@@ -180,6 +180,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
         getAppSubscription : () ->
 
+            me = this
             topic_uid = null
             topic_arn = null
             snstopic = {}
@@ -196,7 +197,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     snstopic.arn = topic_arn
 
-                    this.set 'snstopic', snstopic
+                    me.set 'snstopic', snstopic
 
                     return false
 

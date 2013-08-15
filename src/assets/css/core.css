@@ -183,6 +183,16 @@ p {
 	/*pointer-events: none;*/
 }
 
+.disable-pointer-event {
+	pointer-events: none;
+}
+
+.grabbing {
+	cursor: -webkit-grabbing !important;
+	cursor: -moz-grabbing !important;
+	cursor: grabbing !important;
+}
+
 .text-left {
 	text-align: left;
 }

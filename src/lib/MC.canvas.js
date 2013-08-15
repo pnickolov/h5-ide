@@ -2549,6 +2549,9 @@ MC.canvas.event.dragable = {
 					parent_data,
 					parent_coordinate,
 					parent_size,
+					data,
+					connection_target_id,
+					connection_stack,
 					fixed_areaChild,
 					group_offsetX,
 					group_offsetY,
@@ -2706,6 +2709,7 @@ MC.canvas.event.dragable = {
 				{
 					MC.canvas.position(event.data.target[0], coordinate.x, coordinate.y);
 
+					var connection_stack = {};
 					$.each(event.data.groupChild, function (index, item)
 					{
 						child_type = item.getAttribute('data-type');
@@ -2725,8 +2729,34 @@ MC.canvas.event.dragable = {
 						// Re-draw group connection
 						if (node_data.type === 'AWS.VPC.Subnet' || child_type === 'node')
 						{
-							MC.canvas.reConnect(item.id);
+							//MC.canvas.reConnect(item.id);
+							$.each(node_data.connection, function (i, data)
+							{
+								connection_stack[ data.line ] = true;
+							});
 						}
+					});
+
+					$.each(connection_stack, function (key, value)
+					{
+						data = layout_connection_data[ key ];
+
+						connection_target_id = [];
+
+						$.each(data.target, function (key, value)
+						{
+							connection_target_id.push(key);
+						});
+
+						MC.canvas.connect(
+							$('#' + connection_target_id[0]),
+							data.target[ connection_target_id[0] ],
+							$('#' + connection_target_id[1]),
+							data.target[ connection_target_id[1] ],
+							{
+								'line_uid': key
+							}
+						);
 					});
 
 					// Re-draw group connection
@@ -4164,11 +4194,7 @@ MC.canvas.event.selectNode = function (event)
 {
 	if (event.which === 1)
 	{
-		// event.preventDefault();
-		// event.stopPropagation();
-
 		MC.canvas.event.clearSelected();
-
 		MC.canvas.select(this.id);
 	}
 
@@ -4186,7 +4212,6 @@ MC.canvas.event.nodeHover = function ()
 
 		$.each(node_connections, function (index, item)
 		{
-			//console.info(document.getElementById(item.line));
 			Canvon(item.line).addClass('view-hover');
 		});
 	}

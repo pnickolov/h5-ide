@@ -573,10 +573,15 @@ MC.canvas = {
 				if (value[ 'target' ] === to_uid && value[ 'port' ] === from_target_port)
 				{
 					is_connected = true;
+
+					return false;
 				}
 			});
 
-			if (is_connected === false || line_option)
+			if (
+				line_option ||
+				is_connected === false
+			)
 			{
 				// Special connection
 				if (
@@ -698,100 +703,92 @@ MC.canvas = {
 				MC.canvas._addPad(start0, 1);
 				MC.canvas._addPad(end0, 1);
 
-				//line style
-				MC.paper.start({
-					'stroke': connection_option.color,
-					'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-					'fill': 'none'
-				});
-
-				if (
-					connection_option.stroke_dasharray &&
-					connection_option.color_dash &&
-					connection_option.stroke_dasharray !== ''
-				)
-				{
-					dash_style = {
-						'stroke': connection_option.color_dash,
-						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-						'fill': 'none',
-						'stroke-dasharray': connection_option.stroke_dasharray
-					};
-				}
-
 				// straight line
 				if (start0.x === end0.x || start0.y === end0.y)
 				{
-					MC.paper.path('M ' + start0.x + ' ' + start0.y + ' L ' + end0.x + ' ' + end0.y);
-
-					if (dash_style)
-					{
-						MC.paper.path('M ' + start0.x + ' ' + start0.y + ' L ' + end0.x + ' ' + end0.y).attr(dash_style);
-					}
+					path = 'M ' + start0.x + ' ' + start0.y + ' L ' + end0.x + ' ' + end0.y;
 				}
 				else
 				{
 					// fold line
-
-					///// route
 					MC.canvas.route(controlPoints, start0, end0, from_type, to_type ,from_target_port, to_target_port);
 
-					///// draw fold line /////
 					if (controlPoints.length > 0)
 					{
-						/////draw round corner line /////
 						path = MC.canvas._round_corner(controlPoints);
-
-						if (path !== "")
-						{
-							MC.paper.path(path);
-							MC.paper.path(path).attr('class','fill-line');
-
-							if (dash_style)
-							{
-								MC.paper.path(path, dash_style);
-							}
-						}
 					}
 				}
 
-				svg_line = MC.paper.save();
-
-				$('#line_layer').append(svg_line);
-
-				$(svg_line).attr({
-					'class': 'line line-' + connection_option.type,
-					'data-type': 'line'
-				});
-
-				if (line_option)
+				if (line_option && line_option.line_uid)
 				{
-					svg_line.id = line_option['line_uid'];
+					svg_line = document.getElementById( line_option.line_uid );
+				}
+
+				if (line_option && svg_line !== null)
+				{
+					$(svg_line).children().attr('d', path);
 				}
 				else
 				{
-					svg_line.id = MC.guid();
-
-					from_node_connection_data.push({
-						'target': to_uid,
-						'port': from_target_port,
-						'line': svg_line.id
+					//line style
+					MC.paper.start({
+						'stroke': connection_option.color,
+						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+						'fill': 'none'
 					});
 
-					to_node_connection_data.push({
-						'target': from_uid,
-						'port': to_target_port,
-						'line': svg_line.id
+					MC.paper.path(path);
+					MC.paper.path(path).attr('class','fill-line');
+
+					if (
+						connection_option.stroke_dasharray &&
+						connection_option.color_dash &&
+						connection_option.stroke_dasharray !== ''
+					)
+					{
+						MC.paper.path(path, {
+							'stroke': connection_option.color_dash,
+							'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
+							'fill': 'none',
+							'stroke-dasharray': connection_option.stroke_dasharray
+						});
+					}
+
+					svg_line = MC.paper.save();
+
+					$('#line_layer').append(svg_line);
+
+					$(svg_line).attr({
+						'class': 'line line-' + connection_option.type,
+						'data-type': 'line'
 					});
 
-					MC.canvas_data.layout.component[ from_node_type ][ from_uid ].connection = from_node_connection_data;
-					MC.canvas_data.layout.component[ to_node_type ][ to_uid ].connection = to_node_connection_data;
-				}
+					if (line_option)
+					{
+						svg_line.id = line_option['line_uid'];
+					}
+					else
+					{
+						svg_line.id = MC.guid();
 
-				layout_connection_data = MC.canvas_data.layout.connection[ svg_line.id ] || {};
+						from_node_connection_data.push({
+							'target': to_uid,
+							'port': from_target_port,
+							'line': svg_line.id
+						});
 
-				if (!line_option)
-				{
+						to_node_connection_data.push({
+							'target': from_uid,
+							'port': to_target_port,
+							'line': svg_line.id
+						});
+
+						MC.canvas_data.layout.component[ from_node_type ][ from_uid ].connection = from_node_connection_data;
+						MC.canvas_data.layout.component[ to_node_type ][ to_uid ].connection = to_node_connection_data;
+					}
+
+					layout_connection_data = MC.canvas_data.layout.connection[ svg_line.id ] || {};
+
 					connection_target_data[ from_uid ] = from_target_port;
 					connection_target_data[ to_uid ] = to_target_port;
 
@@ -801,8 +798,9 @@ MC.canvas = {
 						'point': [],
 						'type': connection_option.type
 					};
+
+					MC.canvas_data.layout.connection[ svg_line.id ] = layout_connection_data;
 				}
-				MC.canvas_data.layout.connection[ svg_line.id ] = layout_connection_data;
 
 				return svg_line.id;
 			}
@@ -821,11 +819,12 @@ MC.canvas = {
 		{
 			line_target = layout_connection_data[ value.line ][ 'target' ];
 
-			line_layer.removeChild( document.getElementById( value.line ) );
-
 			MC.canvas.connect(
+				// From
 				node_id, line_target[ node_id ],
+				// To
 				value.target, line_target[ value.target ],
+				// Line
 				{'line_uid': value['line']}
 			);
 		});
@@ -870,7 +869,7 @@ MC.canvas = {
 			{
 				Canvon(item.line).addClass('view-show');
 
-				$('#' + item.target).find('.port-' + item.port).each(function ()
+				$('#' + item.target + '_port-' + item.port).each(function ()
 				{
 					Canvon(this).addClass('view-show');
 				});
@@ -4115,6 +4114,7 @@ MC.canvas.event.groupResize = {
 
 			$.each(node_connections, function (index, value)
 			{
+				//$('#' + value.line).show();
 				line_connection = layout_connection_data[ value.line ];
 
 				MC.canvas.connect(
@@ -4186,6 +4186,7 @@ MC.canvas.event.nodeHover = function ()
 
 		$.each(node_connections, function (index, item)
 		{
+			//console.info(document.getElementById(item.line));
 			Canvon(item.line).addClass('view-hover');
 		});
 	}

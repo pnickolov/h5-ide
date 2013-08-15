@@ -549,6 +549,23 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             is_instance_store
 
+        getKey  :   (region, app_id) ->
+            me = this
+
+            # generate s3 key
+            app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
+            app_model.once 'APP_GETKEY_RETURN', (result) ->
+                console.log 'APP_GETKEY_RETURN'
+                console.log result
+
+                if !result.is_error
+                    # trigger toolbar save png event
+                    console.log 'TOOLBAR_SAVE_PNG'
+
+                    result.resolved_data
+
+            null
+
     }
 
     model = new ToolbarModel()

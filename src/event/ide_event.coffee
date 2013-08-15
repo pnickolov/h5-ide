@@ -104,6 +104,9 @@ define [ 'underscore', 'backbone' ], () ->
         #trigger property view's undelegateEvents
         UNDELEGATE_PROPERTY_DOM_EVENTS : 'UNDELEGATE_PROPERTY_DOM_EVENTS'
 
+        #app ready and generate thumbnail
+        SAVE_APP_THUMBNAIL  :   'SAVE_APP_THUMBNAIL'
+
 
         constructor : ->
             _.extend this, Backbone.Events

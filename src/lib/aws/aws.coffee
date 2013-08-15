@@ -320,4 +320,5 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 	#public
 	getNewName : getNewName
+	cacheResource : cacheResource
 	checkIsRepeatName : checkIsRepeatName

@@ -454,7 +454,7 @@ textarea {
 	position       : relative;
 	display        : inline-block;
 	vertical-align : middle;
-	margin         : 0 5px 0 0;
+	margin         : -2px 5px 0 0;
 	width          : 16px;
 	height         : 16px;
 }
@@ -555,6 +555,12 @@ textarea {
 
 .property-content .disabled .checkbox label {
 	background: #616161;
+}
+
+.property-content .checkbox + label,
+.property-content .radio + label {
+	font-size: 14px;
+	color: #d0d0d0;
 }
 
 /* Select */

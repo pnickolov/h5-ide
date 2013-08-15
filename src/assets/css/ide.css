@@ -2131,8 +2131,9 @@ a.sidebar-hider {
 	line-height : 43px;
 	text-shadow : none;
 
-	padding       : 0 10px;
-	height        : 43px;
+	padding : 0 10px;
+	height  : 43px;
+	width   : 260px;
 
 	cursor        : default;
 }
@@ -2471,6 +2472,7 @@ a.sidebar-hider {
 	float              : left;
 	padding            : 15px 0;
 }
+
 .acl-sg-info-list .col2 {
 	width     : 210px;
 	float     : left;
@@ -2505,7 +2507,7 @@ a.sidebar-hider {
 	
 	cursor           : pointer;
 
-	background-color : #383738;
+	/*background-color : #393839;*/
 	box-shadow       : 0 1px 0 0 #333;
 
 	-webkit-transition : background .2s;
@@ -2516,7 +2518,7 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list .col3:hover {
-	background-color: #333233;
+	background-color: #3d3c3d;
 }
 
 .acl-sg-info-list .sg-list-association-check {
@@ -2530,30 +2532,32 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list .sg-list-delete-btn {
-	margin-top: 35px;
-	cursor: pointer;
-	margin-left: 0px;
-}
-
-.acl-sg-info-list .col3:hover .icon-btn-details,
-.icon-btn-details:hover {
-	opacity: 1;
+	cursor      : pointer;
+	margin-top  : 35px;
+	margin-left : 0px;
 }
 
 .icon-btn-details {
 	display    : inline-block;
-	width      : 24px;
-	height     : 24px;
+	width      : 20px;
+	height     : 20px;
 	position   : absolute;
 	top        : 50%;
 	margin-top : -12px;
 	left       : 8px;
 
 	background       : url('../images/ide/icon/icon-btn-details.png') center center no-repeat;
-	background-color : #999;
+	background-size: auto auto;
+	/*background-color : #999;*/
 	opacity: .6;
 
-	border-radius    : 100%;
+	/*border-radius    : 100%;*/
+}
+
+.acl-sg-info-list .col3:hover .icon-btn-details,
+.icon-btn-details:hover {
+	opacity          : 1;
+	/*background-color : #B25B91;*/
 }
 
 /* Secondary Panel */
@@ -3794,7 +3798,7 @@ a.sidebar-hider {
 }
 
 .property-app {
-	font-size: 12px;
+	/*font-size: 12px;*/
 }
 
 .accordion-default.property-app .accordion-body {

@@ -2207,8 +2207,6 @@ MC.canvas.volume = {
 
 		event.data.shadow.remove();
 
-		//$(document.body).removeClass('disable-event');
-
 		$('#overlayer').remove();
 
 		$(document).off({
@@ -2273,9 +2271,6 @@ MC.canvas.event.dragable = {
 	{
 		if (event.which === 1)
 		{
-			// event.preventDefault();
-			// event.stopPropagation();
-
 			var target = $(this),
 				target_offset = Canvon(this).offset(),
 				target_type = target.data('type'),
@@ -2351,42 +2346,25 @@ MC.canvas.event.dragable = {
 			}
 			else
 			{
-				if (event.target.getAttribute('class') === 'asg-resource-dragger')
-				{
-					$(document).on({
-						'mousemove': MC.canvas.event.dragable.mousemove,
-						'mouseup': MC.canvas.event.dragable.asgExpandup
-					}, {
-						'target': target,
-						'canvas_body': canvas_body,
-						'target_type': target_type,
-						'shadow': shadow,
-						'offsetX': event.pageX - target_offset.left + canvas_offset.left,
-						'offsetY': event.pageY - target_offset.top + canvas_offset.top,
-						'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
-						'originalPageX': event.pageX,
-						'originalPageY': event.pageY,
-						'originalTarget': event.target
-					});
-				}
-				else
-				{
-					$(document).on({
-						'mousemove': MC.canvas.event.dragable.mousemove,
-						'mouseup': MC.canvas.event.dragable.mouseup
-					}, {
-						'target': target,
-						'canvas_body': canvas_body,
-						'target_type': target_type,
-						'shadow': shadow,
-						'offsetX': event.pageX - target_offset.left + canvas_offset.left,
-						'offsetY': event.pageY - target_offset.top + canvas_offset.top,
-						'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
-						'originalPageX': event.pageX,
-						'originalPageY': event.pageY,
-						'originalTarget': event.target
-					});
-				}
+				$(document).on({
+					'mousemove': MC.canvas.event.dragable.mousemove,
+					'mouseup': event.target.getAttribute('class') === 'asg-resource-dragger' ?
+						// For asgExpand
+						MC.canvas.event.dragable.asgExpandup : 
+						// Default
+						MC.canvas.event.dragable.mouseup
+				}, {
+					'target': target,
+					'canvas_body': canvas_body,
+					'target_type': target_type,
+					'shadow': shadow,
+					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
+					'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
+					'originalPageX': event.pageX,
+					'originalPageY': event.pageY,
+					'originalTarget': event.target
+				});
 			}
 
 			MC.canvas.event.clearSelected();
@@ -3045,13 +3023,10 @@ MC.canvas.event.drawConnection = {
 			MC.canvas.event.clearSelected();
 
 			// Keep hover style on
-			//if ($('#canvas_body').hasClass('canvas-view-sg'))
-			//{
-				$.each(node_connections, function (index, item)
-				{
-					Canvon(item.line).addClass('view-keephover');
-				});
-			//}
+			$.each(node_connections, function (index, item)
+			{
+				Canvon(item.line).addClass('view-keephover');
+			});
 
 			// Highlight connectable port
 			$.each(connection_option, function (type, option)
@@ -3334,9 +3309,6 @@ MC.canvas.event.siderbarDrag = {
 	{
 		if (event.which === 1)
 		{
-			// event.preventDefault();
-			// event.stopPropagation();
-
 			var target = $(this),
 				target_offset = target.offset(),
 				canvas_offset = $('#svg_canvas').offset(),
@@ -3572,13 +3544,13 @@ MC.canvas.event.siderbarDrag = {
 					}
 					else
 					{
-						//dispatch event when is not blank
+						// dispatch event when is not blank
 						$("#svg_canvas").trigger("CANVAS_PLACE_OVERLAP");
 					}
 				}
 				else
 				{
-					//dispatch event when is not matched
+					// dispatch event when is not matched
 					$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
 						type: node_type
 					});
@@ -3607,7 +3579,6 @@ MC.canvas.event.siderbarDrag = {
 			event.data.shadow.remove();
 		}
 
-		//$(document.body).removeClass('disable-event');
 		$('#overlayer').remove();
 
 		$('#canvas_body').removeClass('node-dragging');
@@ -3624,9 +3595,6 @@ MC.canvas.event.groupResize = {
 	{
 		if (event.which === 1)
 		{
-			// event.preventDefault();
-			// event.stopPropagation();
-
 			var target = event.target,
 				parent = $(target.parentNode.parentNode),
 				group = parent.find('.group'),
@@ -4180,9 +4148,6 @@ MC.canvas.event.selectLine = function (event)
 {
 	if (event.which === 1)
 	{
-		// event.preventDefault();
-		// event.stopPropagation();
-
 		MC.canvas.event.clearSelected();
 
 		MC.canvas.select(this.id);

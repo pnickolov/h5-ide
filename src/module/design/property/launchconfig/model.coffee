@@ -577,6 +577,13 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			if eniUID
 				realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
 				MC.aws.eni.saveIPList eniUID, realIPAry
+
+		getAppLaunch : ( uid ) ->
+
+			lc = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.LaunchConfigurationARN]
+
+			this.set 'lc', lc
+
 	}
 
 	model = new LaunchConfigModel()

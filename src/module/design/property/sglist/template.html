@@ -1,5 +1,5 @@
 {{#unless is_stack_sg}}
-<ul class="tab">
+<ul class="tab sg-info-list-tab">
 	<li data-tab-target="#item-group" class="active">Group</li>
 	<li data-tab-target="#item-rule">Rule</li>
 </ul>
@@ -7,20 +7,35 @@
 
 <div class="tab-content">
 	<div id="item-group" class="active tab-item">
-		<ul class="sg-info-list" id="sg-info-list">
+		<ul class="acl-sg-info-list" id="sg-info-list">
 			{{#each sg_list}}
 			<li class="clearfix" sg-uid="{{sgUID}}">
 				{{#unless sgHideCheck}}
 					{{#if sgFull.full}}
 						{{#if sgChecked}}
-							<input class="col2-1 sg-list-association-check" type="checkbox" checked="checked" sg-uid="{{sgUID}}"/>
+						<div class="checkbox-wrap col1 ">
+							<div class="checkbox">
+								<input class="sg-list-association-check" type="checkbox" checked="checked" sg-uid="{{sgUID}}" id="sg-list-{{sgUID}}"/>
+								<label for="sg-list-{{sgUID}}"></label>
+							</div>
+						</div>
 						{{else}}
-							<span class="tooltip col2-1 sg-list-association-check" data-tooltip="Resource can have 5 security groups at most.">
-							<input type="checkbox" disabled="disabled" style="vertical-align:top;">
+							<span class="tooltip col1 sg-list-association-check" data-tooltip="Resource can have 5 security groups at most.">
+								<div class="checkbox-wrap disabled">
+									<div class="checkbox">
+										<input type="checkbox" disabled="disabled" style="vertical-align:top;" id="sg-list-{{sgUID}}">
+										<label for="sg-list-{{sgUID}}"></label>
+									</div>
+								</div>
 							</span>
 						{{/if}}
 					{{else}}
-						<input class="col2-1 sg-list-association-check" type="checkbox" {{#if sgChecked}}checked="checked"{{/if}} sg-uid="{{sgUID}}"/>
+						<div class="checkbox-wrap col1">
+							<div class="checkbox">
+								<input class="sg-list-association-check" type="checkbox" {{#if sgChecked}}checked="checked"{{/if}} sg-uid="{{sgUID}}" id="sg-list-{{sgUID}}"/>
+								<label for="sg-list-{{sgUID}}"></label>
+							</div>
+						</div>
 					{{/if}}
 				{{/unless}}
 				<div class="col2">
@@ -28,12 +43,12 @@
 					<div class="col2-2 truncate">{{sgDesc}}</div>
 					<div class="col2-3 truncate">{{sgRuleNum}} rules, {{sgMemberNum}} members</div>
 				</div>
-				<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip={{#if app_view}}"View SG"{{else}}"Edit SG"{{/if}} data-sgid="{{sgUID}}">&gt;</div>
+				<div class="col3  secondary-panel sg-edit-icon tooltip" data-tooltip={{#if app_view}}"View SG"{{else}}"Go to Security Group Details"{{/if}} data-sgid="{{sgUID}}">&gt;</div>
 				{{#if is_stack_sg}}{{#unless sgIsDefault}}{{#unless sgMemberNum}}<div class="sg-list-delete-btn">Delete</div>{{/unless}}{{/unless}}{{/if}}
 			</li>
 			{{/each}}
 		</ul>
-		{{#unless app_view}}<div class="btn btn-silver secondary-panel" id="add-sg-btn">Create new Security Group</div>{{/unless}}
+		{{#unless app_view}}<a href="javascripti:void(0)" id="add-sg-btn">Create new Security Group</a>{{/unless}}
 	</div>
 	<div id="item-rule" class="tab-item">
 		<div class="sg-rule-filter">

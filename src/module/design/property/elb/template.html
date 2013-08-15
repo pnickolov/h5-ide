@@ -1,11 +1,11 @@
 <article id="elb-property-detail" component="{{component.uid}}">
 
 	<div class="option-group-head expand">Load Balancer Details </div>
-	<div class="option-group">
+	<div class="option-group" data-bind="true" data-validate="parsley" >
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >Name</label>
 			<span class="required-input right">(Required)</span>
-			<input class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+			<input data-ignore="true" data-regexp="" data-required="true" data-required-rollback="true" max-length="32" class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 		</section>
 
 		{{# if component.resource.VpcId}}
@@ -40,25 +40,25 @@
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >Name</label>
-				<input class="input"  type="text" id="elb-property-cert-name-input"/>
+				<input class="input" value="{{server_cert.name}}" type="text" id="elb-property-cert-name-input"/>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >Private Key</label>
-				<textarea class="input elb-property-cert-input" id="elb-property-cert-privatekey-input"/>
+				<textarea class="input elb-property-cert-input" value="{{server_cert.prikey}}" id="elb-property-cert-privatekey-input"/>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >Public Key Certificate</label>
-				<textarea class="input elb-property-cert-input" id="elb-property-cert-publickey-input"/>
+				<textarea class="input elb-property-cert-input" value="{{server_cert.pubkey}}" id="elb-property-cert-publickey-input"/>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >Certificate Chain</label>
-				<textarea class="input elb-property-cert-input" id="elb-property-cert-chain-input"/>
+				<textarea class="input elb-property-cert-input" value="{{server_cert.chain}}" id="elb-property-cert-chain-input"/>
 			</div>
 		</div>
 	</div>
 
 	<div class="option-group-head"> Health Check Configuration </div>
-	<div class="option-group">
+	<div class="option-group" data-bind="true" data-validate="parsley" >
 		<section class="property-control-group">
 			<label>Ping Protocol</label>
 			<div class="selectbox selectbox-mega" id="elb-property-health-protocol-select">
@@ -73,12 +73,12 @@
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >Ping Port</label>
-			<input class="input elb-name"  type="text" required="required" value="{{ health_detail.port }}" name="property-elb-name" id="property-elb-health-port"/>
+			<input class="input" tooltip="1-65535" data-range="[1, 65535]" type="text" required="required" value="{{ health_detail.port }}" name="property-elb-name" id="property-elb-health-port"/>
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >Ping Path</label>
 			<span class="required-input right">(Required)</span>
-			<input class="input elb-name"  type="text" required="required" value="{{ health_detail.path }}" name="property-elb-name" id="property-elb-health-path"/>
+			<input class="input elb-name" {{#if health_detail.disabled_path}}disabled="disabled"{{/if}}  type="text" required="required" value="{{ health_detail.path }}" name="property-elb-name" id="property-elb-health-path"/>
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >Health Check Interval</label>
@@ -149,7 +149,9 @@
 	</div>
 	{{/if}}
 
-	<div class="option-group-head" id="sg-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+	{{# if component.resource.VpcId}}
+	<div class="option-group-head" id="sg-head">Security Groups (<span id="property-head-sg-num"></span>)</div>
 	<div class="option-group sg-group">loading...</div>
+	{{/if}}
 
 </article>

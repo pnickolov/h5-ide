@@ -25,7 +25,7 @@ define [ 'jquery',
 		#
 		# MC.data.current_sub_main = current_main
 
-		if !sg_uid then return
+		# if !sg_uid then return
 
 		is_app_view = false
 		currentState = MC.canvas.getState()

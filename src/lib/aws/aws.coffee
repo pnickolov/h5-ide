@@ -16,7 +16,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 				name_prefix = "kp"
 
 			when constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-				name_prefix = "sg"
+				name_prefix = "custom-sg-"
 
 			when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
 				name_prefix = "eip"
@@ -109,5 +109,216 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		#return new name
 		name_prefix + idx
 
+
+	cacheResource = (resources, region) ->
+
+		#cache aws resource data to MC.data.reosurce_list
+
+		#vpc
+		if resources.DescribeVpcs
+			_.map resources.DescribeVpcs, ( res, i ) ->
+				MC.data.resource_list[region][res.vpcId] = res
+				null
+
+		#instance
+		if resources.DescribeInstances
+			_.map resources.DescribeInstances, ( res, i ) ->
+				MC.data.resource_list[region][res.instanceId] = res
+				null
+
+		#volume
+		if resources.DescribeVolumes
+			_.map resources.DescribeVolumes, ( res, i ) ->
+				MC.data.resource_list[region][res.volumeId] = res
+				null
+
+		#eip
+		if resources.DescribeAddresses
+			_.map resources.DescribeAddresses, ( res, i ) ->
+				MC.data.resource_list[region][res.publicIp] = res
+				null
+
+		#elb
+		if resources.DescribeLoadBalancers
+			_.map resources.DescribeLoadBalancers, ( res, i ) ->
+				MC.data.resource_list[region][res.LoadBalancerName] = res
+				null
+
+		#vpn
+		if resources.DescribeVpnConnections
+			_.map resources.DescribeVpnConnections, ( res, i ) ->
+				MC.data.resource_list[region][res.vpnConnectionId] = res
+				null
+
+		#kp
+		if resources.DescribeKeyPairs
+			_.map resources.DescribeKeyPairs, ( res, i ) ->
+				MC.data.resource_list[region][res.keyFingerprint] = res
+				null
+
+		#sg
+		if resources.DescribeSecurityGroups
+			_.map resources.DescribeSecurityGroups, ( res, i ) ->
+				MC.data.resource_list[region][res.groupId] = res
+				null
+
+		#dhcp
+		if resources.DescribeDhcpOptions
+			_.map resources.DescribeDhcpOptions, ( res, i ) ->
+				MC.data.resource_list[region][res.dhcpOptionsId] = res
+				null
+
+		#subnet
+		if resources.DescribeSubnets
+			_.map resources.DescribeSubnets, ( res, i ) ->
+				MC.data.resource_list[region][res.subnetId] = res
+				null
+
+		#routetable
+		if resources.DescribeRouteTables
+			_.map resources.DescribeRouteTables, ( res, i ) ->
+				MC.data.resource_list[region][res.routeTableId] = res
+				null
+
+		#acl
+		if resources.DescribeNetworkAcls
+			_.map resources.DescribeNetworkAcls, ( res, i ) ->
+				MC.data.resource_list[region][res.networkAclId] = res
+				null
+
+		#eni
+		if resources.DescribeNetworkInterfaces
+			_.map resources.DescribeNetworkInterfaces.git , ( res, i ) ->
+				MC.data.resource_list[region][res.networkInterfaceId] = res
+				null
+
+		#igw
+		if resources.DescribeInternetGateways
+			_.map resources.DescribeInternetGateways, ( res, i ) ->
+				MC.data.resource_list[region][res.internetGatewayId] = res
+				null
+
+		#vgw
+		if resources.DescribeVpnGateways
+			_.map resources.DescribeVpnGateways, ( res, i ) ->
+				MC.data.resource_list[region][res.vpnGatewayId] = res
+				null
+
+		#cgw
+		if resources.DescribeCustomerGateways
+			_.map resources.DescribeCustomerGateways, ( res, i ) ->
+				MC.data.resource_list[region][res.customerGatewayId] = res
+				null
+
+		#ami
+		if resources.DescribeImages
+			_.map resources.DescribeImages, ( res, i ) ->
+				if !MC.data.dict_ami[res.imageId]
+					MC.data.dict_ami[res.imageId] = res
+				#MC.data.resource_list[region][res.imageId] = res
+				null
+
+
+		########################
+
+		#asg
+		if resources.DescribeAutoScalingGroups
+			_.map resources.DescribeAutoScalingGroups, ( res, i ) ->
+				MC.data.resource_list[region][res.AutoScalingGroupARN] = res
+				null
+
+		#asl lc
+		if resources.DescribeLaunchConfigurations
+			_.map resources.DescribeLaunchConfigurations, ( res, i ) ->
+				MC.data.resource_list[region][res.LaunchConfigurationARN] = res
+				null
+
+		#asl nc
+		if resources.DescribeNotificationConfigurations
+
+			#init
+			if !MC.data.resource_list[region].NotificationConfigurations
+				MC.data.resource_list[region].NotificationConfigurations = []
+
+			_.map resources.DescribeNotificationConfigurations, ( res, i ) ->
+				MC.data.resource_list[region].NotificationConfigurations.push res
+				null
+
+		#asl sp
+		if resources.DescribePolicies
+			_.map resources.DescribePolicies, ( res, i ) ->
+				MC.data.resource_list[region][res.PolicyARN] = res
+				null
+
+		#asl sa
+		if resources.DescribeScheduledActions
+			_.map resources.DescribeScheduledActions, ( res, i ) ->
+				MC.data.resource_list[region][res.ScheduledActionARN] = res
+				null
+
+		#clw
+		if resources.DescribeAlarms
+			_.map resources.DescribeAlarms, ( res, i ) ->
+				MC.data.resource_list[region][res.AlarmArn] = res
+				null
+
+		#sns sub
+		if resources.ListSubscriptions
+
+			#init
+			if !MC.data.resource_list[region].Subscriptions
+				MC.data.resource_list[region].Subscriptions = []
+
+			_.map resources.ListSubscriptions, ( res, i ) ->
+				MC.data.resource_list[region].Subscriptions.push res
+				null
+
+		#sns topic
+		if resources.ListTopics
+			_.map resources.ListTopics, ( res, i ) ->
+				MC.data.resource_list[region][res.TopicArn] = res
+				null
+
+
+		#asl instance
+		if resources.DescribeAutoScalingInstances
+			_.map resources.DescribeAutoScalingInstances, ( res, i ) ->
+				MC.data.resource_list[region][res.InstanceId] = res
+				null
+
+
+		#asl activities
+		if resources.DescribeScalingActivities
+			_.map resources.DescribeScalingActivities, ( res, i ) ->
+				MC.data.resource_list[region][res.InstanceId] = res
+				null
+
+
+
+
+		null
+
+
+	checkIsRepeatName = (compUID, newName) ->
+
+		originCompObj = MC.canvas_data.component[compUID]
+		originCompUID = originCompObj.uid
+		originCompType = originCompObj.type
+		# originCompName = originCompObj.name
+
+		result = false
+		_.each MC.canvas_data.component, (compObj) ->
+			compUID = compObj.uid
+			compType = compObj.type
+			compName = compObj.name
+			if originCompType is compType and originCompUID isnt compUID and newName is compName
+				result = true
+				return false
+			null
+
+		return result
+
 	#public
 	getNewName : getNewName
+	cacheResource : cacheResource
+	checkIsRepeatName : checkIsRepeatName

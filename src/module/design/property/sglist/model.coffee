@@ -161,9 +161,11 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			parent_model = this.get 'parent_model'
 
 			if sgChecked
-				parent_model.assignSGToComp sgUID
+				if parent_model.assignSGToComp
+					parent_model.assignSGToComp sgUID
 			else
-				parent_model.unAssignSGToComp sgUID
+				if parent_model.unAssignSGToComp
+					parent_model.unAssignSGToComp sgUID
 
 		deleteSGFromComp : (sgUID) ->
 			delete MC.canvas_data.component[sgUID]

@@ -362,12 +362,12 @@ Loading...
 							</tr>
 						</thead>
 						<tbody>
-								{{#each region_resource.DescribeAutoScalingGroups.member }}
+								{{#each region_resource.DescribeAutoScalingGroups}}
 								<tr>
 									<td>
 									{{#if app}}
 										{{#if owner}}
-											<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}] {{AutoScalingGroupName}}</a>
+											<a href="" class="table-link table-app-link truncate" title="Open App">[{{app}}] {{AutoScalingGroupName}}</a>
 										{{else}}
 											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}] {{AutoScalingGroupName}}</span>
 										{{/if}}
@@ -417,7 +417,7 @@ Loading...
 							</tr>
 						</thead>
 						<tbody>
-								{{#each region_resource.DescribeAlarms.member}}
+								{{#each region_resource.DescribeAlarms}}
 								<tr>
 									<td>
 									{{AlarmName}}
@@ -462,7 +462,7 @@ Loading...
 							</tr>
 						</thead>
 						<tbody>
-								{{#each region_resource.ListSubscriptions.member}}
+								{{#each region_resource.ListSubscriptions}}
 								<tr>
 									<td>{{topic}}
 									</td>
@@ -524,13 +524,6 @@ Loading...
                     <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                 </tr>
             {{/each}}
-            	<tr>
-            		<td><i class="icon-{{type}}-mini icon-label"></i>Auto Scaling Group</td>
-            		<td>%asg-name%</td>
-            		<td>5 InService</td>
-            		<td>$45/h</td>
-            		<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-            	</tr>
             </tbody>
         </table>
     </div>

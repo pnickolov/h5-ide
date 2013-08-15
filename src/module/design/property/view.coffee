@@ -5,7 +5,7 @@
 define [ './temp_view',
          'event'
          'backbone', 'jquery', 'handlebars',
-         'UI.fixedaccordion', 'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon', 'UI.multiinputbox'
+         'UI.fixedaccordion', 'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon', 'UI.multiinputbox', 'MC.validate', 'UI.parsley'
 ], ( temp_view, ide_event ) ->
 
     PropertyView = Backbone.View.extend {
@@ -112,7 +112,7 @@ define [ './temp_view',
             $("#property-second-panel .property-content").html data.dom
             $("#property-panel .property-wrap").addClass "show-second-panel"
 
-            $("#hide-second-panel").data("tooltip", "Back to" + $("#property-title").text())
+            $("#hide-second-panel").data("tooltip", "Back to " + $("#property-title").text())
 
         hideSecondPanel : () ->
             $("#property-panel .property-wrap").removeClass "show-second-panel"

@@ -62,6 +62,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     { "key": [ "isDefault" ], "show_key": "Default VPC:"},
                     { "key": [ "instanceTenancy" ], "show_key": "Tenacy"}
                 ]
+            "DescribeAutoScalingGroups":
+                "status": [ "state" ],
+                "title": "AutoScalingGroupName",
+                "sub_info":[
+                    { "key": [ "AutoScalingGroupName" ], "show_key": "AutoScalingGroupName"},
+                    { "key": [ "type" ], "show_key": "Type"},
+                    {"key": [ "Status" ], "show_key": "Status"}
+                ]
+
+
         "detail" :
             "DescribeVolumes":
                 "title": "volumeId",
@@ -476,7 +486,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             time_stamp      = new Date().getTime() / 1000
             unmanaged_list  = { "time_stamp": time_stamp, "items": [] }
-            resources_keys  = [ 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses' ]
+            resources_keys  = [ 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeInstances', 'DescribeVpnConnections', 'DescribeVpcs', 'DescribeAddresses', 'DescribeAutoScalingGroups' ]
 
             if resource_source
                 #console.log resource_source
@@ -525,6 +535,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                                         'type': "VPC",
                                         'name': (if name then name else value.vpcId),
                                         'status': value.state,
+                                        'cost': 0.00,
+                                        'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
+                                        'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
+                                    }
+                                when "DescribeAutoScalingGroups"
+                                    unmanaged_list.items.push {
+                                        'type': "Auto Scaling Group",
+                                        'name': (if name then name else value.AutoScalingGroupName),
+                                        'state': value.activity_state,
                                         'cost': 0.00,
                                         'data-bubble-data': ( me.parseSourceValue cur_tag, value, "unmanaged_bubble", name ),
                                         'data-modal-data': ( me.parseSourceValue cur_tag, value, "detail", name)
@@ -583,7 +602,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 keys_type     = "unmanaged_bubble"
                 keys_to_parse = popup_key_set[keys_type][type]
 
-            status_keys = keys_to_parse.status
+            if !keys_to_parse
+                console.log type + ' ' + name
+
+            status_keys = if keys_to_parse.status then keys_to_parse.status else null
 
             if status_keys
                 state_key = status_keys[0]
@@ -905,182 +927,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             parse_btns_result
 
 
-        _cacheResource : (resources) ->
-
-            #cache aws resource data to MC.data.reosurce_list
-
-            #vpc
-            if resources.DescribeVpcs
-                _.map resources.DescribeVpcs, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.vpcId] = res
-                    null
-
-            #instance
-            if resources.DescribeInstances
-                _.map resources.DescribeInstances, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.instanceId] = res
-                    null
-
-            #volume
-            if resources.DescribeVolumes
-                _.map resources.DescribeVolumes, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.volumeId] = res
-                    null
-
-            #eip
-            if resources.DescribeAddresses
-                _.map resources.DescribeAddresses, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.publicIp] = res
-                    null
-
-            #elb
-            if resources.DescribeLoadBalancers
-                _.map resources.DescribeLoadBalancers, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.LoadBalancerName] = res
-                    null
-
-            #vpn
-            if resources.DescribeVpnConnections
-                _.map resources.DescribeVpnConnections, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.vpnConnectionId] = res
-                    null
-
-            #kp
-            if resources.DescribeKeyPairs
-                _.map resources.DescribeKeyPairs.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.keyFingerprint] = res
-                    null
-
-            #sg
-            if resources.DescribeSecurityGroups
-                _.map resources.DescribeSecurityGroups.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.groupId] = res
-                    null
-
-            #dhcp
-            if resources.DescribeDhcpOptions
-                _.map resources.DescribeDhcpOptions.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.dhcpOptionsId] = res
-                    null
-
-            #subnet
-            if resources.DescribeSubnets
-                _.map resources.DescribeSubnets.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.subnetId] = res
-                    null
-
-            #routetable
-            if resources.DescribeRouteTables
-                _.map resources.DescribeRouteTables.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.routeTableId] = res
-                    null
-
-            #acl
-            if resources.DescribeNetworkAcls
-                _.map resources.DescribeNetworkAcls.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.networkAclId] = res
-                    null
-
-            #eni
-            if resources.DescribeNetworkInterfaces
-                _.map resources.DescribeNetworkInterfaces.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.networkInterfaceId] = res
-                    null
-
-            #igw
-            if resources.DescribeInternetGateways
-                _.map resources.DescribeInternetGateways.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.internetGatewayId] = res
-                    null
-
-            #vgw
-            if resources.DescribeVpnGateways
-                _.map resources.DescribeVpnGateways.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.vpnGatewayId] = res
-                    null
-
-            #cgw
-            if resources.DescribeCustomerGateways
-                _.map resources.DescribeCustomerGateways.item, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.customerGatewayId] = res
-                    null
-
-            ########################
-
-            #asg
-            if resources.DescribeAutoScalingGroups
-                _.map resources.DescribeAutoScalingGroups.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.AutoScalingGroupARN] = res
-                    null
-
-            #asg instance
-            if resources.DescribeAutoScalingInstances
-                _.map resources.DescribeAutoScalingInstances.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.InstanceId] = res
-                    null
-
-            #asl lc
-            if resources.DescribeLaunchConfigurations
-                _.map resources.DescribeLaunchConfigurations.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.LaunchConfigurationARN] = res
-                    null
-
-            #asl nc
-            if resources.DescribeNotificationConfigurations
-
-                #init
-                if !MC.data.resource_list[current_region].NotificationConfigurations
-                    MC.data.resource_list[current_region].NotificationConfigurations = []
-
-                _.map resources.DescribeNotificationConfigurations.member, ( res, i ) ->
-                    MC.data.resource_list[current_region].NotificationConfigurations.push res
-                    null
-
-            #asl sp
-            if resources.DescribePolicies
-                _.map resources.DescribePolicies.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.PolicyARN] = res
-                    null
-
-            #asl sa
-            if resources.DescribeScheduledActions
-                _.map resources.DescribeScheduledActions.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.ScheduledActionARN] = res
-                    null
-
-            #clw
-            if resources.DescribeAlarms
-                _.map resources.DescribeAlarms.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.AlarmArn] = res
-                    null
-
-            #sns sub
-            if resources.ListSubscriptions
-
-                #init
-                if !MC.data.resource_list[current_region].Subscriptions
-                    MC.data.resource_list[current_region].Subscriptions = []
-
-                _.map resources.ListSubscriptions.member, ( res, i ) ->
-                    MC.data.resource_list[current_region].Subscriptions.push res
-                    null
-
-            #sns topic
-            if resources.ListTopics
-                _.map resources.ListTopics.member, ( res, i ) ->
-                    MC.data.resource_list[current_region][res.TopicArn] = res
-                    null
-
-
-
-
-            null
-
-
         setResource : ( resources ) ->
 
             #cache aws resource data
-            this._cacheResource resources
+            MC.aws.aws.cacheResource resources, current_region
 
             me = this
 
@@ -1144,7 +994,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             # sns
             if resources.ListSubscriptions
 
-                _.map resources.ListSubscriptions.member, ( sub, i ) ->
+                _.map resources.ListSubscriptions, ( sub, i ) ->
 
                     lists.SNS+=1
                     sub.detail = me.parseSourceValue 'ListSubscriptions', sub, "detail", null
@@ -1166,7 +1016,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             # autoscaling
             if resources.DescribeAutoScalingGroups
 
-                _.map resources.DescribeAutoScalingGroups.member, ( asl, i ) ->
+                _.map resources.DescribeAutoScalingGroups, ( asl, i ) ->
                     lists.AutoScalingGroup+=1
                     _.map asl.Tags.member, ( tag ) ->
 
@@ -1184,7 +1034,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     if resources.DescribeScalingActivities
 
-                        $.each resources.DescribeScalingActivities.member, ( idx, activity ) ->
+                        $.each resources.DescribeScalingActivities, ( idx, activity ) ->
 
                             if activity.AutoScalingGroupName is asl.AutoScalingGroupName
 
@@ -1198,7 +1048,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             if resources.DescribeAlarms
 
-                _.map resources.DescribeAlarms.member, ( alarm, i ) ->
+                _.map resources.DescribeAlarms, ( alarm, i ) ->
 
                     lists.CW+=1
 
@@ -1318,9 +1168,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                         region_ami_list = {}
 
-                        if $.type(result.resolved_data.item) == 'array'
+                        if $.type(result.resolved_data) == 'array'
 
-                            _.map result.resolved_data.item, ( ami ) ->
+                            _.map result.resolved_data, ( ami ) ->
 
                                 region_ami_list[ami.imageId] = ami
 

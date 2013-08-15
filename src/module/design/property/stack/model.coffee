@@ -75,8 +75,9 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     existing = true
 
+                    return false
 
-                return false
+
 
             if not existing
 
@@ -84,7 +85,9 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                 topic_uid = MC.guid()
 
-                topic_comp.name = topic_comp.resource.Name = topic_comp.resource.DisplayName = 'app-sns'
+                topic_comp.name = topic_comp.resource.Name = topic_comp.resource.DisplayName = 'sns-topic'
+
+                topic_comp.uid = topic_uid
 
                 MC.canvas_data.component[topic_uid] = topic_comp
 
@@ -175,6 +178,42 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
             this.set 'has_asg', has_asg
 
+        getAppSubscription : () ->
+
+            topic_uid = null
+            topic_arn = null
+            snstopic = {}
+            subscription = []
+            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+                    topic_uid = comp_uid
+
+                    topic_arn = comp.resource.TopicArn
+
+                    snstopic.name = MC.data.resource_list[MC.canvas_data.region][topic_arn].Name
+
+                    snstopic.arn = topic_arn
+
+                    this.set 'snstopic', snstopic
+
+                    return false
+
+            if topic_arn
+
+                $.each MC.data.resource_list[MC.canvas_data.region].Subscriptions, ( idx, sub )->
+
+                    if sub.TopicArn is topic_arn
+
+                        tmp = {}
+                        tmp.protocol = sub.Protocol
+                        tmp.endpoint = sub.Endpoint
+                        tmp.arn = sub.SubscriptionArn
+
+                        subscription.push tmp
+
+            this.set 'subscription', subscription
 
         getNetworkACL : ->
 

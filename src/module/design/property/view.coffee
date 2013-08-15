@@ -4,7 +4,7 @@
 
 define [ './temp_view',
          'event'
-         'backbone', 'jquery', 'handlebars'
+         'backbone', 'jquery', 'handlebars',
          'UI.fixedaccordion', 'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon', 'UI.multiinputbox', 'MC.validate', 'UI.parsley'
 ], ( temp_view, ide_event ) ->
 

@@ -3,10 +3,12 @@ body {
 	height: 100%;
 }
 
-body {
+#body {
 	font-size: 14px;
 	min-width: 1024px;
 	color: #666;
+	overflow: hidden;
+	background: #4c494c;
 }
 
 a {
@@ -23,10 +25,6 @@ a {
 
 .icon-caret-down {
 	margin-left: 2px;
-}
-
-#body {
-	background: #4c494c;
 }
 
 /* generic class */
@@ -1604,7 +1602,6 @@ td.table-action a.btn {
 	height    : 43px;
 	width     : 100%;
 	min-width : 370px;
-	overflow  : hidden;
 
 	background      : #ececec;
 	/*border-bottom : 2px solid #d3d3d3;*/
@@ -1648,46 +1645,60 @@ a:hover .toolbar-label {
 	border-bottom : 1px solid #E0E0E0;
 	cursor        : pointer !important;
 	position      : relative;
-	padding       : 10px 5px 10px 40px;
+	color         : #555;
+	text-align    : left;
+	padding-left  : 40px;
+	padding-right : 10px;
+}
+
+.toolbar-btn-group .dropdown i {
+	position   : absolute;
+	top        : 5px;
+	left       : 0px;
+	font-size  : 20px;
+	width      : 40px;
+	text-align : center;
 }
 
 .btn-toolbar {
-	position : relative;
-	display  : block;
-	width    : auto;
-	height   : 42px;
+	width       : 42px;
+	height      : 42px;
+	position    : relative;
+	float       : left;
+	line-height : 42px;
+	text-align  : center;
+	color       : #868486;
 }
 
-.btn-toolbar a {
-	padding : 6px;
-	height  : 31px;
-	display : inline-block;
+.btn-toolbar:hover {
+	color : #c17ca7;
+	background-color: #d0d0d0;
+}
+
+.btn-toolbar.disabled {
+	color : #cecece;
+}
+.btn-toolbar.open {
+	background-color: #d0d0d0;
+}
+.btn-toolbar:hover .selection, .btn-toolbar.open .selection {
+	color : #c17ca7 !important;
+}
+
+.btn-toolbar.selectbox {
+	width : auto;
 }
 
 .btn-toolbar.selectbox .selection {
-	padding : 6px 15px 6px 5px;
-	height  : 31px;
-	border  : none;
-}
-
-.btn-toolbar a:hover,
-.btn-toolbar .selection:hover,
-.btn-toolbar.open .selection {
-	background-color: #d0d0d0;
-	/*box-shadow: inset 0 2px 2px rgba(0,0,0,.03);*/
+	font-size : 16px;
+	color     : #868486;
+	padding   : 0 18px 0 10px;
+	border    : none;
+	line-height : 42px;
 }
 
 .toolbar-btn-group .dropdown li:last-child {
 	border-bottom: none;
-}
-
-.toolbar-btn-group .dropdown i {
-	position: absolute;
-	top: 5px;
-	left: 0px;
-	font-size: 20px;
-	width: 40px;
-	text-align: center;
 }
 
 .toolbar-btn-group .dropdown > li:hover {
@@ -1787,6 +1798,10 @@ a.sidebar-hider {
 	cursor: pointer;
 	padding: 5px;
 	box-sizing: border-box;
+
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
 }
 
 .resource-item:hover {
@@ -1881,6 +1896,10 @@ a.sidebar-hider {
 
 .resource-icon-cgw {
 	background: url('../images/ide/icon/cgw-resource.png') center center no-repeat;
+}
+
+.resource-icon-asg {
+	background: url('../images/ide/icon/asg-resource.png') center center no-repeat;
 }
 
 
@@ -3828,132 +3847,26 @@ a.sidebar-hider {
 
 
 /* Toolbar Icon */
-
-[class*='icon-toolbar-'] {
+.icon-toolbar-export-png {
 	width: 30px;
 	height: 30px;
 	display: inline-block;
-/*	padding: 5px;*/
-}
-
-.icon-toolbar-run {
-	background: url('../images/ide/icon/icon-toolbar-run-normal.png') center center no-repeat;
-}
-
-a:hover .icon-toolbar-run {
-	background: url('../images/ide/icon/icon-toolbar-run-active.png') center center no-repeat;
-}
-
-.disabled .icon-toolbar-run {
-	background: url('../images/ide/icon/icon-toolbar-run-disabled.png') center center no-repeat;
-}
-
-.icon-toolbar-stop {
-	background: url('../images/ide/icon/icon-toolbar-stop-normal.png') center center no-repeat;
-}
-
-a:hover .icon-toolbar-stop {
-	background: url('../images/ide/icon/icon-toolbar-stop-active.png') center center no-repeat;
-}
-
-.disabled .icon-toolbar-stop {
-	background: url('../images/ide/icon/icon-toolbar-stop-disabled.png') center center no-repeat;
-}
-
-.icon-toolbar-save {
-	background: url('../images/ide/icon/icon-toolbar-save-normal.png') center center no-repeat;
-}
-
-a:hover .icon-toolbar-save {
-	background: url('../images/ide/icon/icon-toolbar-save-active.png') center center no-repeat;
-}
-
-.icon-toolbar-terminate {
-	background: url('../images/ide/icon-terminate.png') center center no-repeat;
-}
-
-.icon-toolbar-more-action {
-	background: url('../images/ide/icon/icon-toolbar-more-normal.png') center center no-repeat;
-}
-
-.btn-toolbar:hover .icon-toolbar-more-action {
-	background: url('../images/ide/icon/icon-toolbar-more-active.png') center center no-repeat;
-}
-
-.icon-toolbar-duplicate {
-	background: url('../images/ide/icon-duplicate.png') center center no-repeat;
-}
-
-.icon-toolbar-delete {
-	background: url('../images/ide/icon-delete.png') center center no-repeat;
-}
-
-.icon-toolbar-new-stack {
-	background: url('../images/ide/icon-new-stack.png') center center no-repeat;
-}
-
-.icon-toolbar-undo {
-	background: url('../images/ide/icon/icon-toolbar-undo-normal.png') center center no-repeat;
-}
-
-a:hover .icon-toolbar-undo {
-	background: url('../images/ide/icon/icon-toolbar-undo-active.png') center center no-repeat;
-}
-
-.disabled .icon-toolbar-undo {
-	background: url('../images/ide/icon/icon-toolbar-undo-disabled.png') center center no-repeat;
-}
-
-.icon-toolbar-redo {
-	background: url('../images/ide/icon/icon-toolbar-redo-normal.png') center center no-repeat;
-}
-
-a:hover .icon-toolbar-redo {
-	background: url('../images/ide/icon/icon-toolbar-redo-active.png') center center no-repeat;
-}
-
-.disabled .icon-toolbar-redo {
-	background: url('../images/ide/icon/icon-toolbar-redo-disabled.png') center center no-repeat;
-}
-
-.icon-toolbar-zoom-in {
-	background: url('../images/ide/icon/icon-toolbar-zoom-in-normal.png') center center no-repeat;
-}
-
-a:hover .icon-toolbar-zoom-in {
-	background: url('../images/ide/icon/icon-toolbar-zoom-in-active.png') center center no-repeat;
-}
-
-.disabled .icon-toolbar-zoom-in {
-	background: url('../images/ide/icon/icon-toolbar-zoom-in-disabled.png') center center no-repeat;
-}
-
-.icon-toolbar-zoom-out {
-	background: url('../images/ide/icon/icon-toolbar-zoom-out-normal.png') center center no-repeat;
-}
-
-a:hover .icon-toolbar-zoom-out {
-	background: url('../images/ide/icon/icon-toolbar-zoom-out-active.png') center center no-repeat;
-}
-
-.disabled .icon-toolbar-zoom-out {
-	background: url('../images/ide/icon/icon-toolbar-zoom-out-disabled.png') center center no-repeat;
-}
-
-.icon-toolbar-export {
-	background: url('../images/ide/icon/icon-toolbar-export-normal.png') center center no-repeat;
-}
-
-.btn-toolbar:hover .icon-toolbar-export {
-	background: url('../images/ide/icon/icon-toolbar-export-active.png') center center no-repeat;
-}
-
-.icon-toolbar-export-png {
 	background: url('../images/ide/icon-export-png.png') center center no-repeat;
 }
 
 .icon-toolbar-export-json {
+	width: 30px;
+	height: 30px;
+	display: inline-block;
 	background: url('../images/ide/icon-export-json.png') center center no-repeat;
+}
+
+#json-content {
+	margin: 15px 0;
+	width: 645px;
+	display: block;
+	height: 300px;
+	padding: 10px;
 }
 
 /*app-vpn-cgw*/
@@ -4006,6 +3919,96 @@ a:hover .icon-toolbar-zoom-out {
 #app-cgw-body .status,
 #app-vpn-body .status {
 	margin: 0 5px 0 0;
+}
+
+/* Auto Scaling Group Property */
+.property-asg-ep.http:before {
+	content : "http";
+	display : inline-block;
+}
+.property-asg-ep.https:before {
+	content : "https";
+}
+
+.property-details .icon-edit {
+	position   : absolute;
+	top        : 5px;
+	right      : 15px;
+	width      : 16px;
+	height     : 16px;
+	background : green;
+	cursor     : pointer;
+}
+
+.property-details .icon-del {
+	position   : absolute;
+	top        : 30px;
+	right      : 15px;
+	width      : 16px;
+	height     : 16px;
+	background : red;
+}
+
+.dialog-group {
+	border-radius : 4px;
+	background    : #ddd;
+	margin        : 10px 0;
+	padding       : 10px;
+}
+
+.dialog-group h5 {
+	color : #222;
+}
+
+.asg-policy-advanced .dialog-group {
+	display : none;
+}
+
+.asg-policy-advanced.open .dialog-group {
+	display : block;
+}
+
+.drag-sort-list {
+	width : 300px;
+}
+
+.drag-sort-list li {
+	border : 1px solid #ccc;
+	background : #eee;
+	line-height : 30px;
+	padding-left : 6px;
+	margin-top   : -1px;
+}
+
+.drag-sort-list .checkbox {
+	margin-top : -3px;
+	border-right : 1px solid #ccc;
+	padding-right : 8px;
+}
+
+.drag-sort-list li.enabled {
+	background : none;
+}
+
+.drag-sort-list .drag-handle {
+	width      : 16px;
+	height     : 16px;
+	float      : right;
+	background : red;
+	margin     : 7px 8px 0 0;
+	display    : none;
+}
+
+.drag-sort-list .enabled .drag-handle {
+	display : block;
+}
+
+.drag-sort-list .sortable-placeholder {
+	line-height   : 30px;
+	height        : 30px;
+	background    : #f5f5f5;
+	border        : 1px dotted #ccc;
+	border-bottom : none;
 }
 
 /* stack and app property sgrule */

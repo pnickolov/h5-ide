@@ -146,21 +146,6 @@ var selectbox = {
                   .removeClass("open");
     }
 
-    function dropdown( event ) {
-        var $self = $( event.currentTarget ).find('div');
-        if ( $self.attr( 'style' ) && $self.attr( 'style' ).indexOf( 'none' ) === -1 ) {
-            $self.hide();
-        }
-        else {
-            $self.show();
-            $(document.body).one('click', function( event ){
-                $self.hide();
-                //if header--notification is push DROPDOWN_CLOSE
-                $( $self.closest("li").children()[0] ).trigger( "DROPDOWN_CLOSE" )
-            });
-        }
-    }
-
     $(function(){
         selectbox.init();
         $(document.body)
@@ -170,71 +155,14 @@ var selectbox = {
             .on('click',   ".selectbox .selection",       toggle)
             .on('click',   ".selectbox .dropdown .item",  select)
             .on('keydown', ".selectbox.open .dropdown",   keydown)
-            .on('click',   ".dropdown",                  dropdown);
 
             /* Below are functions that's in bootstrap-dropdown */
-            //.on('click',   ".js-toggle-dropdown",        toggleDropdown)
+            .on('click',   ".js-toggle-dropdown",        toggleDropdown)
     });
 
 
 
     /* Functions took from bootstrap-dropdown, it simple toggles "open" class */
-    /*
-    var dropDownBound = false;
-    function toggleDropdown ( event ) {
-
-        var $target = $( event.currentTarget );
-
-        if ( $target.is('.disabled, :disabled') ) return;
-
-        var $dropdown = $target.attr( "data-target" );
-        if ( $dropdown ) {
-            $dropdown = $( $dropdown );
-        }
-        if ( !$dropdown ) {
-            $dropdown = $target.parent();
-        }
-        var opened    = $dropdown.hasClass("open");
-
-        if ( opened ) {
-            $dropdown.removeClass("open");
-            $target.trigger("DROPDOWN_CLOSE");
-        } else {
-            // Bind click event to close popup
-            // Close other dropdown and fires event
-            if ( !dropDownBound ) {
-                closeDropdown();
-                dropDownBound = true;
-                $( document.body ).one("click", closeDropdown);
-            } else {
-                closeDropdown();
-            }
-
-            $dropdown.addClass("open");
-            $target.trigger("DROPDOWN_OPEN");
-        }
-
-        return false;
-    }
-
-    function closeDropdown() {
-        var $dropdownBtn = $(".js-toggle-dropdown");
-        $dropdownBtn.each(function(){
-            var $this = $(this);
-            var $dropdown = $this.attr( "data-target" );
-            if ( $dropdown ) {
-                $dropdown = $( $dropdown );
-            }
-            if ( !$dropdown ) {
-                $dropdown = $this.parent();
-            }
-            if ( $dropdown.hasClass("open") ) {
-                $dropdown.removeClass("open");
-                $this.trigger("DROPDOWN_CLOSE");
-            }
-        });
-        dropDownBound = false;
-    }
     var dropDownBound = false;
     function toggleDropdown ( event ) {
 
@@ -297,6 +225,5 @@ var selectbox = {
         });
         dropDownBound = false;
     }
-    */
 
 })();

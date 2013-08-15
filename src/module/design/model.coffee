@@ -2,7 +2,7 @@
 #  View Mode for design
 #############################
 
-define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
+define [ 'MC', 'event', 'app_model', 'backbone' ], ( MC, ide_event, app_model ) ->
 
     #private
     DesignModel = Backbone.Model.extend {
@@ -99,6 +99,25 @@ define [ 'MC', 'event', 'backbone' ], ( MC, ide_event ) ->
         getLastOpenProperty : () ->
             console.log 'getLastOpenProperty'
             MC.data.last_open_property
+
+
+
+        getAppResourcesService : ( region, app_id )->
+
+            me = this
+
+            app_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  app_id
+
+            app_model.once 'APP_RESOURCE_RETURN', ( result ) ->
+
+                console.log 'APP_RESOURCE_RETURN'
+
+                resource_source = result.resolved_data
+
+                MC.aws.aws.cacheResource resource_source, region
+
+                null
+
     }
 
     model = new DesignModel()

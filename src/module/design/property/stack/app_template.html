@@ -1,5 +1,5 @@
 <article class="property-app">
-	
+
 
 	<dl class="dl-horizontal dl-region-type property-control-group">
 		<dt><label>Region</label></dt>
@@ -26,6 +26,38 @@
 	<div class="option-group-head"><span class="property-head-num-wrap">Network ACL({{network_acl.length}})</span></div>
 	<div class="option-group stack-property-acl-list"></div>
 	{{/if}}
+
+	<div class="option-group-head">SNS Topic Subscription ({{#if subscription}}{{subscription.length}}{{else}}0{{/if}})</div>
+	<div class="option-group">
+		{{#if subscription}}
+		<h5>SNS Topic</h5>
+		<div class="property-control-group">
+      <dl class="dl-vertical">
+        <dt>SNS Topic Name</dt>
+        <dd>{{snstopic.name}}</dd>
+        <dt>SNS Topic ARN</dt>
+        <dd id="property-app-elb-dnss">
+          <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{snstopic.arn}}">{{snstopic.arn}}</span><i title="SNS Topic ARN" class="icon-copy" data-clipboard-text="{{snstopic.arn}}"></i></div>
+        </dd>
+        <dt>SNS Subscription ARN</dt>
+        <dd id="property-app-elb-dnss">
+          <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{snstopic.sub_arn}}">{{snstopic.sub_arn}}</span><i title="SNS Subscription ARN" class="icon-copy" data-clipboard-text="{{snstopic.sub_arn}}"></i></div>
+        </dd>
+      </dl>
+    </div>
+    <h5>Subscription</h5>
+    <ul>
+    {{#each subscription}}
+	    <li>
+	    	<div>Protocol&nbsp;&nbsp;&nbsp;&nbsp;{{protocol}}</div>
+	    	<div>Endpoint&nbsp;&nbsp;&nbsp;&nbsp;{{endpoint}}</div>
+	    </li>
+    {{/each}}
+    </ul>
+		{{else}}
+		<p>This app has no SNS Topic</p>
+		{{/if}}
+	</div>
 
 	<div class="option-group-head expand">
 		Cost Estimation <a href="###"><i class="icon-question-sign"></i></a>

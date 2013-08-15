@@ -120,7 +120,15 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         #TO-DO
 
         #return vo
-        ($.xml2json ($.parseXML result[1])).ListSubscriptionsResponse
+        result_set = ($.xml2json ($.parseXML result[1])).ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions
+
+        if result_set?.member?
+
+            return result_set.member
+
+        else
+
+            return null
 
     #private (parser ListSubscriptions return)
     parserListSubscriptionsReturn = ( result, return_code, param ) ->
@@ -149,7 +157,15 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         #TO-DO
 
         #return vo
-        ($.xml2json ($.parseXML result[1])).ListSubscriptionsByTopicResponse
+        result_set = ($.xml2json ($.parseXML result[1])).ListSubscriptionsByTopicResponse
+
+        if result_set?.member?
+
+            return result_set.member
+
+        else
+
+            return null
 
     #private (parser ListSubscriptionsByTopic return)
     parserListSubscriptionsByTopicReturn = ( result, return_code, param ) ->
@@ -178,7 +194,15 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         #TO-DO
 
         #return vo
-        ($.xml2json ($.parseXML result[1])).ListTopicsResponse
+        result_set = ($.xml2json ($.parseXML result[1])).ListTopicsResponse.ListTopicsResult.Topics
+
+        if result_set?.member?
+
+            return result_set.member
+
+        else
+
+            return null
 
     #private (parser ListTopics return)
     parserListTopicsReturn = ( result, return_code, param ) ->

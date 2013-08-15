@@ -2542,6 +2542,7 @@ MC.canvas.event.dragable = {
 					group_padding = MC.canvas.GROUP_PADDING,
 					child_stack = [],
 					unique_stack = [],
+					connection_stack = {},
 					coordinate_fixed = false,
 					match_place,
 					areaChild,
@@ -2551,7 +2552,6 @@ MC.canvas.event.dragable = {
 					parent_size,
 					data,
 					connection_target_id,
-					connection_stack,
 					fixed_areaChild,
 					group_offsetX,
 					group_offsetY,
@@ -2709,7 +2709,6 @@ MC.canvas.event.dragable = {
 				{
 					MC.canvas.position(event.data.target[0], coordinate.x, coordinate.y);
 
-					var connection_stack = {};
 					$.each(event.data.groupChild, function (index, item)
 					{
 						child_type = item.getAttribute('data-type');

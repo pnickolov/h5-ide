@@ -158,7 +158,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
                         #call save png
-                        me.savePNG true, 'stack'
+                        me.savePNG true, data
 
                         #set toolbar flag
                         me.setFlag id, 'SAVE_STACK', name
@@ -204,7 +204,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         MC.data.stack_list[region].push name
 
                         #call save png
-                        me.savePNG true, 'stack'
+                        me.savePNG true, data
 
                         #set toolbar flag
                         me.setFlag id, 'CREATE_STACK', data
@@ -294,12 +294,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 #add new-app status
                 #me.handleRequest result, 'RUN_STACK', region, id, app_name
-                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
-                # track
-                analytics.track "Launched Stack",
-                    stack_id: id,
-                    stack_region: region,
-                    stack_app_name: app_name
+                # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
+                # # track
+                # analytics.track "Launched Stack",
+                #     stack_id: id,
+                #     stack_region: region,
+                #     stack_app_name: app_name
+                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, data, result
 
         #zoomin
         zoomIn : () ->
@@ -331,7 +332,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             null
 
-        savePNG : ( is_thumbnail, type ) ->
+        savePNG : ( is_thumbnail, data ) ->
             console.log 'savePNG'
             me = this
             #
@@ -345,10 +346,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         window.removeEventListener 'message', callback
 
                         #push event
-                        if type is 'stack'
-                            ide_event.trigger ide_event.UPDATE_STACK_THUMBNAIL, result.data.res.result
-                        else
-                            ide_event.trigger ide_event.UPDATE_APP_THUMBNAIL, result.data.res.result
+                        ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, result.data.res.result
                     else
                         me.trigger 'SAVE_PNG_COMPLETE', result.data.res.result
                         window.removeEventListener 'message', callback
@@ -356,17 +354,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     #window.removeEventListener 'message', callback
             window.addEventListener 'message', callback
             #
-            data =
+            phantom_data =
                 'origin_host': window.location.origin,
                 'usercode'   : $.cookie( 'usercode'   ),
                 'session_id' : $.cookie( 'session_id' ),
                 'thumbnail'  : is_thumbnail,
-                'json_data'  : MC.canvas.layout.save(),
-                'stack_id'   : MC.canvas_data.id
-                'url'        : MC.canvas_data.key
+                'json_data'  : JSON.stringify(data),
+                'stack_id'   : data.id
+                'url'        : data.key
             #
             sendMessage = ->
-                $( '#phantom-frame' )[0].contentWindow.postMessage data, MC.SAVEPNG_URL
+                $( '#phantom-frame' )[0].contentWindow.postMessage phantom_data, MC.SAVEPNG_URL
             if $( '#phantom-frame' )[0] is undefined
                 $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
                 $('#phantom-frame').load -> sendMessage()
@@ -476,14 +474,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
         handleRequest : (result, flag, region, id, name) ->
             me = this
 
-            if flag isnt 'RUN_STACK'
-                me.setFlag id, flag, 'pending'
+            me.setFlag id, flag, 'pending'
 
             if !result.is_error
-                if flag == 'RUN_STACK'
-                    console.log 'run stack request successfully'
-                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', name
-                else if flag == 'START_APP'
+                if flag == 'START_APP'
                     console.log 'start app request successfully'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS', name
                 else if flag == 'STOP_APP'
@@ -507,9 +501,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                             if req.state == "Done"
                                 handle.stop()
 
-                                if flag == 'RUN_STACK'
-                                    me.trigger 'TOOLBAR_STACK_RUN_SUCCESS', name
-                                else if flag == 'START_APP'
+                                if flag == 'START_APP'
                                     me.trigger 'TOOLBAR_APP_START_SUCCESS', name
                                 else if flag == 'STOP_APP'
                                     me.trigger 'TOOLBAR_APP_STOP_SUCCESS', name
@@ -526,19 +518,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                 if flag is 'TERMINATE_APP'
                                     ide_event.trigger ide_event.APP_TERMINATE, name, id
 
-                                if flag isnt 'RUN_STACK'
-                                    me.setFlag id, flag, req.state
+                                me.setFlag id, flag, req.state
 
                             else if req.state == "Failed"
                                 handle.stop()
 
-                                if flag == 'RUN_STACK'
-                                    me.trigger 'TOOLBAR_STACK_RUN_FAILED', name
-
-                                    if name in MC.data.app_list[MC.canvas_data.region]
-                                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
-
-                                else if flag == 'START_APP'
+                                if flag == 'START_APP'
                                     me.trigger 'TOOLBAR_APP_START_FAILED', name
                                 else if flag == 'STOP_APP'
                                     me.trigger 'TOOLBAR_APP_STOP_FAILED', name
@@ -548,21 +533,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                 if flag is 'TERMINATE_APP' and is_success
                                     ide_event.trigger ide_event.APP_TERMINATE, name, id
 
-                                if flag isnt 'RUN_STACK'
-                                    me.setFlag id, flag, req.state
+                                me.setFlag id, flag, req.state
 
                     }
 
                     null
 
             else
-                if flag == 'RUN_STACK'
-                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_FAILED', name
-
-                    if name in MC.data.app_list[region]
-                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
-
-                else if flag == 'START_APP'
+                if flag == 'START_APP'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED', name
                     #MC.canvas_data.state = 'Stopped'
                 else if flag == 'STOP_APP'
@@ -572,8 +550,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', name
                     #MC.canvas_data.state = 'Stopped'
 
-                if flag isnt 'RUN_STACK'
-                    me.setFlag id, flag, 'failed'
+                me.setFlag id, flag, 'failed'
 
         isInstanceStore : () ->
 
@@ -586,6 +563,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         break
 
             is_instance_store
+
+        saveAppThumbnail  :   ( data ) ->
+            me = this
+
+            # generate s3 key
+            app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), data.region, data.id
+            app_model.once 'APP_GETKEY_RETURN', (result) ->
+                console.log 'APP_GETKEY_RETURN'
+                console.log result
+
+                if !result.is_error
+                    # trigger toolbar save png event
+                    console.log 'app key:' + result.resolved_data
+
+                    data.key = result.resolved_data
+
+                    me.savePNG true, data
+
+            null
 
     }
 

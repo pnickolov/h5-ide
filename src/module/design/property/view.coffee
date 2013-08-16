@@ -21,7 +21,7 @@ define [ './temp_view',
                               .on('click', ".option-group-head", this.toggleOption)
                               .on('click', "#hide-second-panel", _.bind( this.hideSecondPanel, this) )
 
-                              .on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', '.option-group', this.optionToggle)
+            #                  .on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', '.option-group', this.optionToggle)
 
         render     : ( template ) ->
             console.log 'property render'
@@ -60,38 +60,45 @@ define [ './temp_view',
             $target = $toggle.next()
 
             if hide
-                h = $target.innerHeight()
-                $target.css({
-                        "max-height" : h
-                        "overflow"   : "hidden"
-                    })
-                    .toggleClass("transition", false)
-
-                setTimeout ()->
-                    $target.toggleClass("transition", true).css("max-height", 0)
-                , 10
+                $target.css("display", "block").slideUp(200)
             else
-                $target.removeClass("transition").css {
-                    position     : "absolute"
-                    visibility   : "hidden"
-                    "max-height" : "100000px"
-                    overflow     : "hidden"
-                }
-                h = $target.innerHeight()
-                $target.css("max-height", "0")
-                setTimeout () ->
-                    $target.toggleClass("transition", true).css {
-                        position     : ""
-                        visibility   : ""
-                        "max-height" : h
-                    }
-
-                , 10
-
+                $target.slideDown(200)
             $toggle.toggleClass("expand")
-
-
             return false
+
+            # if hide
+            #     h = $target.innerHeight()
+            #     $target.css({
+            #             "max-height" : h
+            #             "overflow"   : "hidden"
+            #         })
+            #         .toggleClass("transition", false)
+
+            #     setTimeout ()->
+            #         $target.toggleClass("transition", true).css("max-height", 0)
+            #     , 10
+            # else
+            #     $target.removeClass("transition").css {
+            #         position     : "absolute"
+            #         visibility   : "hidden"
+            #         "max-height" : "100000px"
+            #         overflow     : "hidden"
+            #     }
+            #     h = $target.innerHeight()
+            #     $target.css("max-height", "0")
+            #     setTimeout () ->
+            #         $target.toggleClass("transition", true).css {
+            #             position     : ""
+            #             visibility   : ""
+            #             "max-height" : h
+            #         }
+
+            #     , 10
+
+            # $toggle.toggleClass("expand")
+
+
+            # return false
 
         optionToggle : ( event ) ->
             $target = $(this)

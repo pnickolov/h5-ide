@@ -61,16 +61,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
         stackNameChanged : () ->
             me = this
+            stackNameInput = $ '#property-stack-name'
+            stackId = @model.get( 'property_detail' ).id
+            name = stackNameInput.val()
 
-            name = $( '#property-stack-name' ).val()
-            #check stack name
-            if name[0] == '-'
-                notification 'error', 'Stack name cannot start with dash.'
-            else if not name
-                $( '#property-stack-name' ).val me.model.attributes.property_detail.name
-            else if name in MC.data.stack_list[MC.canvas_data.region]
-                notification 'error', 'Stack name \"' + name + '\" is already in using. Please use another one.'
-            else
+            stackNameInput.parsley 'custom', () ->
+                if not MC.aws.aws.checkStackName stackId, name
+                    return "Stack name \" #{name} \" is already in using. Please use another one."
+
+            if stackNameInput.parsley 'validate'
                 me.trigger 'STACK_NAME_CHANGED', name
 
         openSecurityGroup : (event) ->

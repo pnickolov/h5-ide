@@ -55,10 +55,12 @@ MC.canvas = {
 			case 'image':
 				target.attr('href', value);
 				break;
-
 			case 'eip':
 				target.attr('data-eip-state', value);
-				break
+				break;
+			case 'id':
+				target.attr('id', value);
+				break;
 		}
 
 		return true;

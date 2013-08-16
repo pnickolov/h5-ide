@@ -117,7 +117,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                     total_stack += 1
 
                     if value.region in constant.REGION_KEYS and value.name not in MC.data.stack_list[value.region]
-                        MC.data.stack_list[value.region].push value.name
+                        MC.data.stack_list[value.region].push { id: value.id, name: value.name }
 
                     null
 

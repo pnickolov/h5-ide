@@ -67,6 +67,21 @@ a {
    100% { -webkit-transform: rotate(360deg); }
 }
 
+@-moz-keyframes loading-spinner {
+   0% { -webkit-transform: rotate(0deg); }
+   100% { -webkit-transform: rotate(360deg); }
+}
+
+@-o-keyframes loading-spinner {
+   0% { -webkit-transform: rotate(0deg); }
+   100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes loading-spinner {
+   0% { -webkit-transform: rotate(0deg); }
+   100% { -webkit-transform: rotate(360deg); }
+}
+
 .truncate {
 	/*width: 250px;*/
 	white-space: nowrap;
@@ -2117,7 +2132,7 @@ a.sidebar-hider {
 .property-content {
 	height      : 100%;
 
-	background-color : #555455;
+	background-color : #5e5e5e;
 	color            : #ccc;
 
 	-webkit-box-sizing: border-box;
@@ -2127,6 +2142,7 @@ a.sidebar-hider {
 
 .property-content a {
 	color: #5685D3;
+	font-size: 13px;
 }
 
 .property-content a:hover {
@@ -2198,22 +2214,23 @@ a.sidebar-hider {
 }
 
 .option-group {
-	max-height : 0;
-	overflow   : hidden;
-	position   : relative;
+	display  : none;
+	overflow : hidden;
+	position : relative;
 }
 
-.option-group.transition {
+/*.option-group.transition {
 	-webkit-transition: max-height .25s ease-in-out;
 	   -moz-transition: max-height .25s ease-in-out;
 	    -ms-transition: max-height .25s ease-in-out;
 	     -o-transition: max-height .25s ease-in-out;
 	        transition: max-height .25s ease-in-out;
-}
+}*/
 
 .expand + .option-group {
-	max-height : inherit;
-	overflow   : visible;
+	display    : block;
+	/*max-height : inherit;
+	overflow   : visible;*/
 }
 
 .property-control-group {
@@ -2535,11 +2552,11 @@ a.sidebar-hider {
 	color: #e0e0e0;
 }
 .acl-sg-info-list .col2 .col2-2 {
-	color: #999;
+	color: #bbb;
 	font-size: 12px;
 }
 .acl-sg-info-list .col2 .col2-3 {
-	color: #6b6b6b;
+	color: #999;
 	font-size: 12px;
 }
 .acl-sg-info-list .col3 {
@@ -2655,42 +2672,43 @@ a.sidebar-hider {
 }
 
 .sg-rule-list li {
-	width: 260px;
-	padding: 5px;
-	height: 40px;
-	border-bottom: #eee 1px solid;
-	position: relative;
-	font-size: 12px;
+	width         : 260px;
+	height        : 40px;
+	padding       : 10px;
+
+	border-bottom : 1px solid #383738;
+	background    : #414041;
+
+	position : relative;
+	display  : table;
+
+	-webkit-transition: background .2s;
+	-moz-transition: background .2s;
+	-ms-transition: background .2s;
+	-o-transition: background .2s;
+	transition: background .2s;
 }
 
-/*#property-panel li:hover {
-	background-color: #C6E2F2;
-}*/
-
-.sg-context-wrap {
-	height: 100%;
-}
-.sg-context-wrap .property-control-group {
-	padding: 0 10px 10px 10px;
+.sg-rule-list li:hover {
+	background : #383738;
 }
 
-.sg-rule-list .rule-direction-icon {
-	width: 15px;
-	height: 15px;
-	background-color: #eee;
-	position: absolute;
-	top: 5px;
-	left: 5px;
+.sg-rule-list-row {
+	/*display: table-row;*/
+	height: 20px;
+	margin-top: 5px;
 }
-.sg-rule-list .rule-edit-icon {
-	width: 15px;
-	height: 15px;
-	background-color: #eee;
-	position: absolute;
-	top: 5px;
-	right: 5px;
+
+.sg-rule-list-row div {
+	display: table-cell;
 }
+
+.sg-rule-list-row div:first-child {
+	width: 50px;
+}
+
 .sg-rule-list .rule-remove-icon {
+	display: none;
 	width: 15px;
 	height: 15px;
 	background-color: #eee;
@@ -2698,24 +2716,29 @@ a.sidebar-hider {
 	top: 25px;
 	right: 5px;
 }
-.sg-rule-list .rule-protocol {
-	line-height: 15px;
-	position: absolute;
-	top: 25px;
-	left: 5px;
+
+.sg-rule-list li:hover .rule-remove-icon {
+	display: block;
 }
-.sg-rule-list .rule-source {
-	line-height: 15px;
-	position: absolute;
-	top: 5px;
-	left: 55px;
+
+.rule-direction-icon {
+	width      : 16px;
+	height     : 16px;
+	background : red;
 }
-.sg-rule-list .rule-port {
-	line-height: 15px;
-	position: absolute;
-	top: 25px;
-	left: 55px;
+
+.rule-protocol {
+	font-size      : 12px;
+	color          : #55C7FF;
+	text-transform : uppercase;
+
+	border-radius : 2px;
+	border        : 1px solid #55C7FF;
+
+	padding : 0 3px;
 }
+
+
 .sg-member-list li {
 	clear: both;
 	padding: 10px;
@@ -2870,16 +2893,13 @@ a.sidebar-hider {
 }
 
 .rule-list-sort h5 {
-	width: 80px;
+	width: 60px;
 	display: inline-block;
-	line-height: 30px;
 }
+
 .rule-list-sort .selectbox {
-	width: 160px;
+	width: 195px;
 	display: inline-block;
-}
-.rule-list-sort .selectbox .dropdown-menu {
-	top: 30px;
 }
 
 .sg-group {

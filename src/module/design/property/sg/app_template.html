@@ -1,73 +1,64 @@
-<div class="secondary-panel" id="sg-secondary-panel" parent="{{sg_detail.parent}}" uid='{{sg_detail.component.uid}}'>
+<article>
+  <div class="property-control-group">
+    <dl class="dl-vertical">
+      <dt>Security Group ID</dt>
+      <dd>{{sg_app_detail.groupId}}</dd>
 
-<header class="sidebar-title">
-  <a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
-  <span class="sidebar-title-text">{{sg_app_detail.groupName}}</span>
-</header>
+      <dt>Description</dt>
+      <dd>{{sg_app_detail.groupDescription}}</dd>
 
-<div class="property-control-group">
-  <dl class="dl-vertical">
-    <dt>Security Group ID</dt>
-    <dd>{{sg_app_detail.groupId}}</dd>
+      <dt>VPC ID</dt>
+      <dd>{{sg_app_detail.vpcId}}</dd>
+    </dl>
+  </div>
 
-    <dt>Description</dt>
-    <dd>{{sg_app_detail.groupDescription}}</dd>
+  <div class="option-group-head expand">Rule
+    <span class="property-head-num-wrap">(<span id="rule-count">{{sg_app_detail.rules.length}}</span>)</span>
+  </div>
+  <div class="option-group">
+    <div id="sg-rule-empty">
+      <p>To create rule referencing IP Range, click plus button here.</p>
+      <p>To create rul referencing specific IP or Security Group, connect the blue port of instance/ELB/ENI.</p>
+    </div>
 
-    <dt>VPC ID</dt>
-    <dd>{{sg_app_detail.vpcId}}</dd>
-  </dl>
-</div>
-
-
-<div class="fixedaccordion accordion-default" data-sub="43">
-  <section class="accordion-group expanded">
-    <header class="fixedaccordion-head">Rule<span class="property-head-num-wrap">({{sg_app_detail.rules.length}})</span></header>
-
-    <article class="accordion-body">
-      <div class="rule-list-sort property-control-group">
-        <h5>Sort by</h5>
-        <div class="selectbox" id="sg-rule-filter-select">
-          <div class="selection"></div>
-          <ul class="dropdown" tabindex="-1">
-            <li class="item selected" data-id="direction">Direction</li>
-            <li class="item" data-id="source/destination">Source/Destination</li>
-            <li class="item" data-id="protocol">Protocol</li>
-          </ul>
-        </div>
+    <div class="rule-list-sort property-control-group">
+      <h5>Sort by</h5>
+      <div class="selectbox" id="sg-rule-filter-select">
+        <div class="selection">Direction</div>
+        <ul class="dropdown" tabindex="-1">
+          <li class="item selected" data-id="2">Direction</li>
+          <li class="item" data-id="2">Source/Destination</li>
+          <li class="item" data-id="3">Protocol</li>
+        </ul>
       </div>
+    </div>
 
-      <ul class="sg-rule-list" id="sg-rule-list">
-        {{#each sg_app_detail.rules}}
-        <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
-          <i class="icon-rule-{{direction}}" data-tooltip="{{direction}}"></i>
-          <!-- <div class='rule-direction-icon tooltip' data-tooltip="{{direction}}"></div> -->
-          <div class='rule-protocol'>{{ipProtocol}}</div>
-          <div class='rule-source'>
-            <div class="rule-source-icon"></div>
-            <span>{{ipRanges}}</span>
-          </div>
-          <div class='rule-port' title="port message">{{fromPort}}-{{toPort}}</div>
-        </li>
-        {{/each}}
-      </ul>
+    <ul class="sg-rule-list" id="sg-rule-list">
+      {{#each sg_app_detail.rules}}
+      <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
+        <i class="icon-rule-{{direction}}" data-tooltip="{{direction}}"></i>
+        <div class='rule-protocol'>{{ipProtocol}}</div>
+        <div class='rule-source'>
+          <div class="rule-source-icon"></div>
+          <span>{{ipRanges}}</span>
+        </div>
+        <div class='rule-port' title="port message">{{fromPort}}-{{toPort}}</div>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
 
-    </article>
-  </section>
-
-  <section class="accordion-group expanded">
-    <header class="fixedaccordion-head">Member<span class="property-head-num-wrap">({{sg_app_detail.members.length}})</span></header>
-
-    <article class="accordion-body">
-      <ul class="sg-member-list">
-        {{#each sg_app_detail.members}}
-        <li>
-          <div class="sg-member-icon"></div>
-          <div class="sg-member-name">{{name}}</div>
-        </li>
-        {{/each}}
-      </ul>
-    </article>
-  </section>
-</div>
-
-</div>
+  <div class="option-group-head expand">Member
+    <span class="property-head-num-wrap">(<span>{{sg_app_detail.members.length}}</span>)</span>
+  </div>
+  <div class="option-group">
+    <ul class="sg-member-list">
+      {{#each sg_app_detail.members}}
+      <li>
+        <div class="sg-member-icon"></div>
+        <div class="sg-member-name">{{name}}</div>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+</article>

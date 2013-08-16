@@ -2117,7 +2117,7 @@ a.sidebar-hider {
 .property-content {
 	height      : 100%;
 
-	background-color : #555455;
+	background-color : #5e5e5e;
 	color            : #ccc;
 
 	-webkit-box-sizing: border-box;
@@ -2655,23 +2655,23 @@ a.sidebar-hider {
 }
 
 .sg-rule-list li {
-	width: 260px;
-	padding: 5px;
-	height: 40px;
-	border-bottom: #eee 1px solid;
-	position: relative;
-	font-size: 12px;
+	width         : 260px;
+	height        : 40px;
+	padding       : 10px;
+	border-bottom : 1px solid #383738;
+	background    : #414041;
+
+	position : relative;
+
+	-webkit-transition: background .2s;
+	-moz-transition: background .2s;
+	-ms-transition: background .2s;
+	-o-transition: background .2s;
+	transition: background .2s;
 }
 
-/*#property-panel li:hover {
-	background-color: #C6E2F2;
-}*/
-
-.sg-context-wrap {
-	height: 100%;
-}
-.sg-context-wrap .property-control-group {
-	padding: 0 10px 10px 10px;
+.sg-rule-list li:hover {
+	background : #383738;
 }
 
 .sg-rule-list .rule-direction-icon {
@@ -2704,7 +2704,7 @@ a.sidebar-hider {
 	top: 25px;
 	left: 5px;
 }
-.sg-rule-list .rule-source {
+.sg-rule-list .rule-reference {
 	line-height: 15px;
 	position: absolute;
 	top: 5px;

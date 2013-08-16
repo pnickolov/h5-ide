@@ -71,8 +71,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 				$(b).find('.rule-protocol').attr('data-id')
 
 		_sortSource : ( a, b) ->
-			return $(a).find('.rule-source').attr('data-id') >
-				$(b).find('.rule-source').attr('data-id')
+			return $(a).find('.rule-reference').attr('data-id') >
+				$(b).find('.rule-reference').attr('data-id')
 	}
 
 	view = new SGListView()

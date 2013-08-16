@@ -21,8 +21,8 @@ define [ 'MC' ], ( MC ) ->
 		ipAddrBinStr = ipAddrBinAry.join ''
 		ipAddrBinPrefixStr = ipAddrBinStr.slice(0, suffix)
 
-		ipAddrBinStrSuffixMin = ipAddrBinStr.slice(suffix).replace(/1/g,'0')
-		ipAddrBinStrSuffixMax = ipAddrBinStrSuffixMin.replace(/0/g,'1')
+		ipAddrBinStrSuffixMin = ipAddrBinStr.slice(suffix).replace(/1/g, '0')
+		ipAddrBinStrSuffixMax = ipAddrBinStrSuffixMin.replace(/0/g, '1')
 
 		console.log(ipAddrBinStrSuffixMin, ipAddrBinStrSuffixMax)
 

@@ -11,7 +11,6 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
         defaults:
             'info_list'     : null    # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
             'unread_num'    : null
-            'is_unread'     : null
             'in_dashboard'  : true
 
         getInfoList : () ->
@@ -28,11 +27,6 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 unread_num = 0
 
             me.set 'info_list', info_list
-
-            is_unread = false
-            if unread_num>0
-                is_unread = true
-            me.set 'is_unread', is_unread
             me.set 'unread_num', unread_num
 
             # listen
@@ -74,12 +68,10 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 else
                     return
 
-                if item.rid.search('stack') == 0    # run stack
-                    item.name = lst[2]
-
-                    if item.is_complete     # run stack success
-                        lst = req.data.split(' ')
-                        item.rid = lst[lst.length-1]
+                if item.rid.search('stack') == 0 and not item.is_error
+                    lst = req.data.split(' ')
+                    item.rid = lst[lst.length-1]
+                    item.name = req.brief.split(' ')[2]
 
                 # filter terminate app
                 #if item.operation is 'terminate' and item.is_complete
@@ -117,20 +109,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
             if ws
                 query = ws.collection.request.find()
-                handle = query.observeChanges
-
-                    added : (id, dag) ->
-                        req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
-
-                        if req_list
-                            req = req_list[0]
-
-                            console.log '****************added request:' + req.data + ',' + req.state
-
-                            me.updateReqList req
-
-                        null
-
+                handle = query.observeChanges {
                     changed : (id, dag) ->
 
                         req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
@@ -141,37 +120,36 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
                             console.log 'request ' + req.data + "," + req.state
 
-                        null
+                            item = me.parseInfo req
 
-            item = me.parseInfo req
+                            if item
+                                info_list = me.get 'info_list'
+                                unread_num = me.get 'unread_num'
+                                in_dashboard = me.get 'in_dashboard'
+                                
+                                # check whether same operation
+                                the_req = []
+                                the_req.push i for i in info_list when i.id == item.id and i.operation == item.operation
+                                if the_req.length <= 0
+                                    if in_dashboard or item.rid != MC.canvas_data.id
+                                        item.is_readed = false
 
-            if item
-                info_list = me.get 'info_list'
-                unread_num = me.get 'unread_num'
-                in_dashboard = me.get 'in_dashboard'
+                                        unread_num += 1
+                                        me.set 'unread_num', unread_num
 
-                # check whether same operation
-                the_req = []
-                the_req.push i for i in info_list when i.id == item.id and i.operation == item.operation
-                if the_req.length <= 0
-                    if in_dashboard or item.rid != MC.canvas_data.id
-                        item.is_readed = false
+                                    # remove the old request and new to the header
+                                    info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
 
-                        unread_num += 1
-                        me.set 'unread_num', unread_num
-                        me.set 'is_unread', true
+                                    info_list.splice 0, 0, item
 
-                        console.log (me.get 'unread_num')
+                                    me.set 'info_list', info_list
 
-                    # remove the old request and new to the header
-                    info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
+                                    me.trigger 'HEADER_UPDATE'
 
-                    info_list.splice 0, 0, item
+                                null
+                }
 
-                    me.set 'info_list', info_list
-
-                    me.trigger 'HEADER_UPDATE'
-
+                null
 
         setFlag : (flag) ->
             me = this
@@ -208,7 +186,6 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
             me.set 'info_list', info_list
             me.set 'unread_num', 0
-            me.set 'is_unread', false
 
             me.trigger 'HEADER_UPDATE'
 
@@ -233,7 +210,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             session_model.logout {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' )
 
             #logout return handler (dispatch from service/session/session_model)
-            me.once 'SESSION_LOGOUT_RETURN', ( forge_result ) ->
+            session_model.once 'SESSION_LOGOUT_RETURN', ( forge_result ) ->
 
                 if !forge_result.is_error
                     #logout succeed

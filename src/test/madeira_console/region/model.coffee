@@ -949,6 +949,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                 _.map resources.DescribeLoadBalancers, ( elb, i ) ->
 
+                    elb.region = current_region
+
                     #me._set_app_property elb, resources, i, 'DescribeLoadBalancers'
 
                     elb.detail = me.parseSourceValue 'DescribeLoadBalancers', elb, "detail", null
@@ -996,6 +998,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                 _.map resources.ListSubscriptions, ( sub, i ) ->
 
+                    sub.region = current_region
+
                     lists.SNS+=1
                     sub.detail = me.parseSourceValue 'ListSubscriptions', sub, "detail", null
 
@@ -1017,6 +1021,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
             if resources.DescribeAutoScalingGroups
 
                 _.map resources.DescribeAutoScalingGroups, ( asl, i ) ->
+
+                    asl.region = current_region
+
                     lists.AutoScalingGroup+=1
 
                     if asl.Tags
@@ -1057,6 +1064,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                 _.map resources.DescribeAlarms, ( alarm, i ) ->
 
+                    alarm.region = current_region
+
                     lists.CW+=1
 
                     alarm.dimension_display = alarm.Dimensions.member[0].Name + ':' + alarm.Dimensions.member[0].Value
@@ -1081,6 +1090,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
             if resources.DescribeAddresses
 
                 _.map resources.DescribeAddresses, ( eip, i )->
+
+                    eip.region = current_region
 
                     if $.isEmptyObject eip.instanceId
 
@@ -1108,6 +1119,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                 ami_list = []
 
                 _.map resources.DescribeInstances, ( ins, i ) ->
+
+                    ins.region = current_region
 
                     ami_list.push ins.imageId
 
@@ -1195,6 +1208,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                 _.map resources.DescribeVolumes, ( vol, i )->
 
+                    vol.region = current_region
+
                     vol.detail = me.parseSourceValue 'DescribeVolumes', vol, "detail", null
 
                     vol.createTime = MC.dateFormat(new Date(vol.createTime),'yyyy-MM-dd hh:mm:ss')
@@ -1231,6 +1246,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                 lists.VPC = resources.DescribeVpcs.length
 
                 _.map resources.DescribeVpcs, ( vpc, i )->
+
+                    vpc.region = current_region
 
                     me._set_app_property vpc, resources, i, 'DescribeVpcs'
 
@@ -1290,6 +1307,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                 lists.VPN = resources.DescribeVpnConnections.length
 
                 _.map resources.DescribeVpnConnections, ( vpn, i )->
+
+                    vpn.region = current_region
 
                     me._set_app_property vpn, resources, i, 'DescribeVpnConnections'
 

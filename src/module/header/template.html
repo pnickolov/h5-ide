@@ -1,12 +1,10 @@
 <ul class="header-menu">
 	<li class="dropdown">
-		<a href="#" id="header--messages" class="js-toggle-dropdown" role="button">
-			<i class="icon-envelope"></i>
-		</a>
-	</li>
-	<li class="dropdown">
 		<a href="#" id="header--notification" class="js-toggle-dropdown" role="button">
-			<i class="icon-bell"></i><span class="notification-counter">{{unread_num}}</span>
+			<i class="icon-bell"></i>
+			{{#if is_unread}}
+			<span class="notification-counter">{{unread_num}}</span>
+			{{/if}}
 		</a>
 		<div id="notification-panel-wrapper" class="dropdown-menu" role="menu">
 			<div class="notification-list">

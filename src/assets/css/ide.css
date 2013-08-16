@@ -2089,6 +2089,7 @@ a.sidebar-hider {
 
 #property-second-title {
 	margin-left: 48px;
+	width: 216px;
 }
 
 .show-second-panel #property-first-panel {
@@ -2219,14 +2220,11 @@ a.sidebar-hider {
 	line-height: 20px;
 }
 
-.property-control-group label {
-	cursor: pointer;
-}
-
-.property-control-group > label{
+.property-control-group label{
 	color         : #999;
 	font-size     : 13px;
 	margin-bottom : 8px;
+	cursor: pointer;
 }
 
 .property-control-group .input {
@@ -2271,7 +2269,7 @@ a.sidebar-hider {
 
 .property-control-group .selectbox {
 	width: 260px;
-	margin-top: 10px;
+	/*margin-top: 10px;*/
 }
 
 .property-control-group .selectbox .dropdown-toggle {
@@ -2717,7 +2715,7 @@ a.sidebar-hider {
 	width : 180px !important;
 }
 
-.btn-to-secondary-panel {
+/*.btn-to-secondary-panel {
 	text-align  : center;
 	line-height : 70px;
 	height      : 100%;
@@ -2732,7 +2730,7 @@ a.sidebar-hider {
 	font-family : 'MC-ide';
 	font-size   : 20px;
 }
-
+*/
 .item-line-button {
 	height      : 30px;
 	line-height : 30px;
@@ -2839,17 +2837,16 @@ a.sidebar-hider {
 	margin-top: -8px;
 }
 
-.sg-rule-filter h5 {
+.rule-list-sort h5 {
 	width: 80px;
 	display: inline-block;
 	line-height: 30px;
 }
-.sg-rule-filter .selectbox {
+.rule-list-sort .selectbox {
 	width: 160px;
-	line-height: 30px;
 	display: inline-block;
 }
-.sg-rule-filter .selectbox .dropdown-menu {
+.rule-list-sort .selectbox .dropdown-menu {
 	top: 30px;
 }
 
@@ -3418,19 +3415,6 @@ a.sidebar-hider {
 
 
 /* ACL Property Panel */
-.acl-header .acl-icon-add {
-	width: 36px;
-	height: 36px;
-	background-color: #CCC;
-	display: inline-block;
-	position: absolute;
-	top: 0;
-	right: 0;
-}
-
-.acl-modal-one-row-left .radio, .radio-label {
-	/*float: left;*/
-}
 
 .acl-float-left {
 	float: left;
@@ -4046,11 +4030,11 @@ a.sidebar-hider {
 
 .property-details .icon-del {
 	position   : absolute;
-	top        : 30px;
-	right      : 15px;
+/*	top        : 30px;
+	right      : 15px;*/
 	width      : 16px;
 	height     : 16px;
-	background : red;
+	/*background : red;*/
 }
 
 .dialog-group {

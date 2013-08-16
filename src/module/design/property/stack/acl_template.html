@@ -6,7 +6,7 @@
 			<div class="col2-3 truncate">{{rule}} rules, {{association}} associations</div>
 			<div class="delete {{#unless isUsed}}used{{/unless}}" acl-uid="{{uid}}">Delete</div>
 		</div>
-		<div class="col3 edit" acl-uid="{{uid}}">></div>
+		<div class="col3 edit" acl-uid="{{uid}}"><span class="icon-btn-details"></span></div>
 	</li>
 	<!-- <div class="property-item">
 		<div class="edit" acl-uid="{{uid}}">></div>
@@ -16,3 +16,4 @@
 	</div> -->
 {{/each}}
 </ul>
+<a href="javascript:void(0)" class="add-to-list" id="stack-property-add-new-acl" title="Create new Network ACL">Create new Network ACL...</button>

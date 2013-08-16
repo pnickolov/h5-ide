@@ -1,6 +1,7 @@
 !function($) {
 
   var Util = {
+
     getCaretPosition: function( oField ) {
       // Initialize
       var iCaretPos = 0;
@@ -28,6 +29,22 @@
       // Return results
       return (iCaretPos);
 
+    },
+
+    prefixMatch : function(regex, input, pattern){
+      pattern = pattern || '';
+      var start = regex.slice(0, 1) === '^' ? 1 : 0;
+      var end = regex.slice(-1) === '$' ? '': '$';
+      for (var i = start; i <= regex.length; i ++){
+        var prefix_regex = regex.slice(0, i);
+        try {
+          var match = new RegExp(prefix_regex + end, pattern).test(input)
+        } catch( e ) {
+          continue;
+        }
+        if(match) return true;
+      }
+      return false;
     },
 
     getCharFromKeyEvent: function( e ) {
@@ -93,7 +110,11 @@
 
 
       if ( isLetterKey ) {
-        c = String.fromCharCode( keyCode );
+        if ( ctrl ) {
+          c = 'ctrlFunc';
+        } else {
+          c = String.fromCharCode( keyCode );
+        }
       } else if ( isNumKey && !shift ) {
         c = String.fromCharCode( keyCode );
       } else if ( isSmallNumKey ){
@@ -205,6 +226,20 @@
         }
 
         return this.notnull( val ) && this.notblank( val );
+      },
+
+      custom: function ( val, option , context ) {
+
+        var thisArg, now, result;
+        thisArg = option.thisArg || window;
+        result = option.validator.call( thisArg, val );
+
+        if ( result ) {
+          context.Validator.addMessage( 'custom', result );
+          return false;
+        } else {
+          return true;
+        }
       }
 
       , type: function ( val, type ) {
@@ -499,15 +534,14 @@
       // bind parsley events if validators have been registered
       if ( this.hasConstraints() ) {
         this.bindValidationEvents();
-
-
         var result = this.Validator.validators['required']( this.val );
+      }
 
         // hack
         var that = this;
 
         // required rollback function
-        if (this.isRequired && this.$element.data('required-rollback') === true) {
+        if (this.$element.data('required-rollback') === true) {
           this.$element.on('focus', function() {
             $(this).data('pre-value', $(this).val());
           })
@@ -521,11 +555,22 @@
 
         }
 
-
+        // hack
         // Ignore disallowed input
+        var that = this;
         if ( this.$element.data( 'ignore' ) === true ) {
-          var regExp = this.options.regexp || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
+          var regExp, regMap, type;
+          regMap = {
+            cidr: '^[0-9]?$|^[0-9][0-9./]+$',
+            ipv4: '^[0-9]*$|^[0-9][0-9.]+$',
+            ipaddress: '^[0-9]*$|^[0-9][0-9./]+$'
+          };
 
+          type = this.options.type;
+
+          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ type ] || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
+
+          var wholeReg = this.options.regexp;
           // delay handler function
           var delayHandler = function(origin, context, times) {
 
@@ -547,7 +592,7 @@
                 }
               }
 
-          }
+            }
 
           // Disable context menu
           this.$element.on('contextmenu', function( e ) {
@@ -560,13 +605,14 @@
             $(this).one( 'change mouseup mousedown keydown keyup', delayHandler( origin, this ) );
           });
 
+
+
           // Handle keydown
           this.$element.on( 'keydown', function( e ) {
 
             var inputChar, isControl, isLegal;
 
             inputChar = Util.getCharFromKeyEvent( e );
-            console.log(inputChar);
 
             isControl = inputChar && inputChar.length > 1;
 
@@ -576,24 +622,23 @@
               valueArray.splice( pos, 0, inputChar );
 
               var newValue = valueArray.join( '' );
-              console.log(newValue);
               isLegal = new RegExp( regExp, "i" ).test(newValue);
-              console.log(isLegal);
             }
 
             // paste validate on keyup
             var origin = $( this ).val();
-            $(this).one( 'keyup', delayHandler( origin, this ) );
+            $(this).one( 'keyup blur', delayHandler( origin, this ) );
 
             if ( !isControl && !isLegal ) return false;
 
           });
+
+
         }
 
 
       }
 
-    }
 
     , setParent: function ( elem ) {
       this.$parent = $( elem );
@@ -960,6 +1005,8 @@
           valid = false;
           this.constraints[ constraint ].valid = valid;
           this.options.listeners.onFieldError( this.element, this.constraints, this );
+          // hack
+          break;
         } else if ( true === result ) {
           this.constraints[ constraint ].valid = true;
           valid = false !== valid;
@@ -1021,6 +1068,37 @@
     }
 
     // hack for manual error control end
+    , custom: function ( option ) {
+      //for ( var constraint in this.constraints ) {
+        //this.removeConstraint( constraint );
+        //delete this.options[ constraint ];
+      //}
+      //this.$element.addClass( 'parsley-validated' );
+
+      var validator, now, thisArg;
+
+      if ( typeof option === 'function' ) {
+        validator = option;
+      } else {
+        validator = option.validator;
+        now = option.now;
+        thisArg = option.thisArg;
+      }
+
+
+      var addConstraint = {};
+      addConstraint.custom = { validator: validator, thisArg: thisArg };
+      this.addConstraint( addConstraint, true );
+      this.bindValidationEvents();
+
+      if ( now ) {
+        this.validate();
+      }
+
+    }
+    // hack for custom validate function
+
+    // hack for custom validate function end
 
     /**
     * Manage ul error Container

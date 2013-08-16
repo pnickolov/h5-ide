@@ -22,7 +22,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			sgAry = []
 			_.each MC.canvas_data.component, (comp, uid) ->
 				compType = comp.type
-				if compType is 'AWS.ELB'
+				if compType is 'AWS.ELB' or compType is 'AWS.AutoScaling.LaunchConfiguration'
 					sgAry = sgAry.concat comp.resource.SecurityGroups
 
 				if compType is 'AWS.EC2.Instance'

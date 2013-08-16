@@ -97,18 +97,20 @@ define [ 'MC', 'event',
             true
 
         clickDuplicateIcon : ->
-            console.log 'clickDuplicateIcon'
-
             name     = MC.canvas_data.name
-            new_name = name + '-copy'
 
-            #check name
-            if not name
-                notification 'error', 'No stack name.'
-            else if new_name in MC.data.stack_list[MC.canvas_data.region]
-                notification 'error', 'Repeated stack name.'
-            else
-                this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name, MC.canvas_data
+            doDuplicate = ( name ) =>
+                new_name = "#{name}-copy"
+                #check name
+                if not name
+                    notification 'error', 'No stack name.'
+                else if not MC.aws.aws.checkStackName null, new_name
+                    doDuplicate( new_name )
+                    #notification 'error', 'Repeated stack name.'
+                else
+                    this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name, MC.canvas_data
+
+            doDuplicate name
 
             true
 
@@ -156,7 +158,7 @@ define [ 'MC', 'event',
 
         clickExportPngIcon : ->
             console.log 'clickExportPngIcon'
-            this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
+            this.trigger 'TOOLBAR_EXPORT_PNG_CLICK', MC.canvas_data
 
         clickExportJSONIcon : ->
             file_content = MC.canvas.layout.save()

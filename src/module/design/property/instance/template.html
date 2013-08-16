@@ -15,13 +15,13 @@
 			</div>
 		</section>
 		<section class="property-control-group">
-			<label>Instance Type</label>
+			<label class="left">Instance Type</label>
 			<div class="selectbox selectbox-mega" id="instance-type-select">
 				<div class="selection"></div>
 				<ul class="dropdown">
 					{{#each instance_type}}
 					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
-						<div class="main  truncate">{{main}}</div>
+						<div class="main truncate">{{main}}</div>
 						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
 					</li>
 					{{/each}}
@@ -41,7 +41,7 @@
 		</section>
 		{{# if component.resource.VpcId}}
 		<section class="property-control-group">
-			<label>Tenancy</label>
+			<label class="left">Tenancy</label>
 			<div class="selectbox" id="tenancy-select">
 				<div class="selection">{{#if checkbox_display.tenancy}}Default{{else}}Dedicated{{/if}}</div>
 				<ul class="dropdown" tabindex="-1">
@@ -57,7 +57,7 @@
 		</section>
 		{{/if}}
 		<section class="property-control-group">
-			<label>Key Pair</label>
+			<label class="left">Key Pair</label>
 			<div class="selectbox" id="keypair-select">
 				<div class="selection"></div>
 				<div style="height: 120px; width:228px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">

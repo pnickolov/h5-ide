@@ -307,6 +307,31 @@ define [ 'backbone', 'app_service' ], ( Backbone, app_service ) ->
 
 
 
+        #getKey api (define function)
+        getKey : ( src, username, session_id, region_name, app_id ) ->
+
+            me = this
+
+            src.model = me
+
+            app_service.getKey src, username, session_id, region_name, app_id, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #summary succeed
+
+                    app_info = forge_result.resolved_data
+
+                    #set vo
+
+
+                else
+                #summary failed
+
+                    console.log 'app.getKey failed, error is ' + forge_result.error_message
+
+                #dispatch event (dispatch event whenever login succeed or failed)
+                me.trigger 'APP_GETKEY_RETURN', forge_result
+
     }
 
     #############################################################

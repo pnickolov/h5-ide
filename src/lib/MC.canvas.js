@@ -55,10 +55,12 @@ MC.canvas = {
 			case 'image':
 				target.attr('href', value);
 				break;
-
 			case 'eip':
 				target.attr('data-eip-state', value);
-				break
+				break;
+			case 'id':
+				target.attr('id', value);
+				break;
 		}
 
 		return true;
@@ -1415,6 +1417,17 @@ MC.canvas.layout = {
 					if (v.type === "AWS.EC2.Instance")
 					{
 						sg_uids = v.resource.SecurityGroupId;
+						$.each(sg_uids, function (id, sg_ref)
+						{
+							if (sg_ref.split('.')[0].slice(1) === tmp.uid)
+							{
+								tmp.member.push(v.uid);
+							}
+						})
+					}
+					if (v.type === "AWS.AutoScaling.LaunchConfiguration")
+					{
+						sg_uids = v.resource.SecurityGroups;
 						$.each(sg_uids, function (id, sg_ref)
 						{
 							if (sg_ref.split('.')[0].slice(1) === tmp.uid)

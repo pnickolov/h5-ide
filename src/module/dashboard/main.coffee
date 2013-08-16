@@ -273,9 +273,9 @@ define [ 'jquery',
 
                         null
 
-                    ide_event.onLongListen ide_event.UPDATE_STACK_THUMBNAIL, ( url ) ->
-                        console.log 'UPDATE_STACK_THUMBNAIL'
-                        region_view.updateStackThumbnail url if region_view
+                    ide_event.onLongListen ide_event.UPDATE_REGION_THUMBNAIL, ( url ) ->
+                        console.log 'UPDATE_REGION_THUMBNAIL'
+                        region_view.updateThumbnail url if region_view
                         null
 
     unLoadModule = () ->

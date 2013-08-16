@@ -1050,8 +1050,8 @@ MC.canvas = {
 			],
 			canvas_size = MC.canvas.data.get('layout.size'),
 			match_option = MC.canvas.MATCH_PLACEMENT[ MC.canvas.data.get('platform') ][ node_type ],
-			is_option_canvas = match_option ? (match_option[ 0 ] === 'Canvas') : false,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			//is_option_canvas = match_option ? (match_option[ 0 ] === 'Canvas') : false,
+			//scale_ratio = MC.canvas_property.SCALE_RATIO,
 			ignore_stack = [],
 			match = [],
 			result = {},
@@ -1081,8 +1081,8 @@ MC.canvas = {
 			}
 		}
 
-		x = x * scale_ratio;
-		y = y * scale_ratio;
+		//x = x * scale_ratio;
+		//y = y * scale_ratio;
 
 		// if (is_option_canvas)
 		// {
@@ -2420,7 +2420,7 @@ MC.canvas.event.dragable = {
 				canvas_offset = svg_canvas.offset(),
 				shadow_offset = Canvon(event.data.shadow[0]).offset(),
 				layout_node_data = MC.canvas.data.get('layout.component.node'),
-				layout_connection_data = MC.canvas.data.get('layout.connection'),
+				//layout_connection_data = MC.canvas.data.get('layout.connection'),
 				BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
 				scale_ratio = MC.canvas_property.SCALE_RATIO,
 				component_size,
@@ -2520,7 +2520,7 @@ MC.canvas.event.dragable = {
 
 				if (group_data.type === 'AWS.VPC.VPC')
 				{
-					if ( coordinate.y <= 3)
+					if (coordinate.y <= 3)
 					{
 						 coordinate.y = 3;
 					}
@@ -4303,20 +4303,19 @@ MC.canvas.event.keyEvent = function (event)
 	{
 		var target = $('#' + MC.canvas_property.selected_node[ 0 ]),
 			target_id = MC.canvas_property.selected_node[ 0 ],
-			layout_node_data = MC.canvas.data.get('layout.component.node'),
-			layout_connection_data = MC.canvas.data.get('layout.connection'),
-			node_data = layout_node_data[ target_id ],
 			node_type = target.data('class'),
 			target_type = target.data('type'),
+			target_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id),
+			canvas_size = MC.canvas.data.get('layout.size'),
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			coordinate = {'x': target_data.coordinate[0], 'y': target_data.coordinate[1]},
 			component_size = MC.canvas.COMPONENT_SIZE[ node_type ],
-			coordinate = {'x': node_data.coordinate[0], 'y': node_data.coordinate[1]},
 			match_place,
 			vpc_id,
 			vpc_data,
 			vpc_coordinate;
 
-		if (target.data('type') !== 'node')
+		if (target_type !== 'node')
 		{
 			return false;
 		}
@@ -4369,7 +4368,10 @@ MC.canvas.event.keyEvent = function (event)
 		if (
 			coordinate.x > 0 &&
 			coordinate.y > 0 &&
-			match_place.is_matched
+			match_place.is_matched &&
+
+			coordinate.x + component_size[0] < canvas_size[0] - 3 &&
+			coordinate.y + component_size[1] < canvas_size[1] - 3
 		)
 		{
 			MC.canvas.position(target[0], coordinate.x  * scale_ratio, coordinate.y * scale_ratio);

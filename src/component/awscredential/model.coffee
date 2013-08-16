@@ -22,7 +22,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
             session_model.set_credential {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), access_key, secret_key, account_id
 
-            session_model.once 'SESSION_SET__CREDENTIAL_RETURN', (result1) ->
+            me.once 'SESSION_SET__CREDENTIAL_RETURN', (result1) ->
                 console.log 'SESSION_SET__CREDENTIAL_RETURN'
                 console.log result1
 

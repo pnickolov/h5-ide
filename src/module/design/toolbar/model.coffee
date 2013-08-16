@@ -475,6 +475,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             me = this
 
             me.setFlag id, flag, 'pending'
+            #
+            ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
 
             if !result.is_error
                 if flag == 'START_APP'

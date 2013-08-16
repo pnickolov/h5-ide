@@ -549,11 +549,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             is_instance_store
 
-        saveAppThumbnail  :   ( app_id, data ) ->
+        saveAppThumbnail  :   ( data ) ->
             me = this
 
             # generate s3 key
-            app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), data.region, app_id
+            app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), data.region, data.id
             app_model.once 'APP_GETKEY_RETURN', (result) ->
                 console.log 'APP_GETKEY_RETURN'
                 console.log result

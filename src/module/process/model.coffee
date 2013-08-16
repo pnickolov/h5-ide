@@ -50,7 +50,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                         #data = MC.process[tab_name].data
                         if MC.data.current_tab_id is 'process-'+app_name and MC.process[tab_name].flag_list.is_done
                             #save png
-                            ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, app_id, MC.process[tab_name].data
+                            MC.process[tab_name].data.id = app_id
+                            ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, MC.process[tab_name].data
 
                             # hold on 2 seconds
                             setTimeout () ->
@@ -109,7 +110,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                                 # if on current tab
                                 if MC.data.current_tab_id is 'process-' + app_name
                                     # save png
-                                    ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, app_id, process.data
+                                    process.data.id = app_id
+                                    ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, process.data
 
                                     # hold on 2 seconds
                                     setTimeout () ->

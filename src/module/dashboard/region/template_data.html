@@ -565,7 +565,7 @@ Loading...
 
 <!--{{ .stat-app }}-->
 	{{#each cur_app_list}}
-	<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}' style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}.png?time={{update_time}}') 0 0;">
+	<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}' style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}') 0 0;">
 		<div class="action-thumbnail">
 			{{#if isrunning}}
 			<a class="modal btn stop-app"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Stop App", "body":"Do you confirm to stop {{name}}?", "confirm":"Stop", "color":"blue" }' data-modal-dismiss="true"><i class="icon-stop"></i></a>

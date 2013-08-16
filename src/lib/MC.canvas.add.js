@@ -471,6 +471,13 @@ MC.canvas.add = function (flag, option, coordinate)
 					{
 						component_layout.originalId = option['originalId'];
 						option.name = data[option.originalId].name;//use original name
+						layout_group = MC.canvas_data.layout.component.group[option.groupUId];
+						if(layout_group.type === 'AWS.EC2.AvailabilityZone'){
+							MC.canvas_data.component[component_layout.originalId].resource.AvailabilityZones.push(layout_group.name);
+						}
+						else{
+							MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier = MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier + ' , @' + option.groupUId + '.resource.SubnetId';
+						}
 					}
 				}
 				else

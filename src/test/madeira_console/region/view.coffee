@@ -31,6 +31,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click #btn-create-stack'       : 'createStackClick'
             'click .app-thumbnail'          : 'clickAppThumbnail'
             'click .stack-thumbnail'        : 'clickStackThumbnail'
+            'click #asg-app-name'           : 'clickAsgAppName'
 
         renderVPCAttrs : ->
             console.log 'dashboard region vpc_attrs render'
@@ -77,12 +78,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $( this.el ).find( '#region-stat-stack' ).html this.stat_stack this.model.attributes
             null
 
-        checkCreateStack : ( is_disabled ) ->
-            console.log 'checkCreateStack'
-            if is_disabled
-                $('#btn-create-stack').removeClass('disabled').addClass('btn-primary')
+        checkCreateStack : ( platforms ) ->
+            $button = $("#btn-create-stack")
+            if platforms and platforms.length
+                $button.removeAttr "disabled"
             else
-                $('#btn-create-stack').removeClass('btn-primary').addClass('disabled')
+                $button.attr "disabled", "disabled"
             null
 
         returnOverviewClick : ( target ) ->
@@ -190,6 +191,24 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             console.log 'dashboard region click stack thumbnail'
             console.log $(event.currentTarget).find('.thumbnail-name').text(), event.currentTarget.id, this.region
             ide_event.trigger ide_event.OPEN_STACK_TAB, $(event.currentTarget).find('.thumbnail-name').text(), this.region, event.currentTarget.id
+
+        updateStackThumbnail : ( url ) ->
+            console.log 'updateStackThumbnail, url = ' + url
+            _.each $( '#region-stat-stack' ).children(), ( item ) ->
+                $item = $ item
+                if $item.attr('style').indexOf( url ) isnt -1
+                    new_url = 'https://s3.amazonaws.com/madeiracloudthumbnail/' + url + '?time=' + Math.round(+new Date())
+                    console.log 'new_url = ' + new_url
+                    $item.removeAttr 'style'
+                    $item.css 'background-image', 'url(' + new_url + ')'
+
+        clickAsgAppName : ( event ) ->
+            me = this
+            console.log 'dashboard region click asg app name'
+
+            app_name = $(event.currentTarget).data('option').name
+            app_id   = $(event.currentTarget).data('option').id
+            ide_event.trigger ide_event.OPEN_APP_TAB, app_name, me.region, app_id
 
     }
 

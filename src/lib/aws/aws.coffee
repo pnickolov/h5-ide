@@ -1,4 +1,4 @@
-define [ 'MC', 'constant' ], ( MC, constant ) ->
+define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 
 	#private
 	getNewName = (compType) ->
@@ -318,7 +318,15 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		return result
 
+	checkStackName = ( stackId, newName ) ->
+		stackArray = _.flatten _.values MC.data.stack_list
+
+		not _.some stackArray, ( stack ) ->
+			return stack.id isnt stackId and stack.name is newName
+
+
 	#public
 	getNewName : getNewName
 	cacheResource : cacheResource
 	checkIsRepeatName : checkIsRepeatName
+	checkStackName: checkStackName

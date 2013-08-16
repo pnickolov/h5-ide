@@ -21,7 +21,7 @@ define [ './temp_view',
                               .on('click', ".option-group-head", this.toggleOption)
                               .on('click', "#hide-second-panel", _.bind( this.hideSecondPanel, this) )
 
-                              .on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', '.option-group', this.optionToggle)
+            #                  .on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', '.option-group', this.optionToggle)
 
         render     : ( template ) ->
             console.log 'property render'
@@ -58,6 +58,13 @@ define [ './temp_view',
             $toggle = $(this)
             hide    = $toggle.hasClass("expand")
             $target = $toggle.next()
+
+            if hide
+                $target.css("display", "block").slideUp(250)
+            else
+                $target.slideDown(250)
+            $toggle.toggleClass("expand")
+            return
 
             if hide
                 h = $target.innerHeight()

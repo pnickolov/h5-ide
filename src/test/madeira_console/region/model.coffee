@@ -951,6 +951,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                     elb.region = current_region
 
+                    #resolve Tag
+                    me.resolveTag elb.tagSet, resources.DescribeLoadBalancers[i]
+
+
                     #me._set_app_property elb, resources, i, 'DescribeLoadBalancers'
 
                     elb.detail = me.parseSourceValue 'DescribeLoadBalancers', elb, "detail", null
@@ -1000,6 +1004,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                     sub.region = current_region
 
+                    #resolve Tag
+                    me.resolveTag sub.tagSet, resources.ListSubscriptions[i]
+
                     lists.SNS+=1
                     sub.detail = me.parseSourceValue 'ListSubscriptions', sub, "detail", null
 
@@ -1023,6 +1030,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                 _.map resources.DescribeAutoScalingGroups, ( asl, i ) ->
 
                     asl.region = current_region
+
+                    #resolve Tag
+                    me.resolveTag asl.tagSet, resources.DescribeAutoScalingGroups[i]
 
                     lists.AutoScalingGroup+=1
 
@@ -1066,6 +1076,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                     alarm.region = current_region
 
+                    #resolve Tag
+                    me.resolveTag alarm.tagSet, resources.DescribeAlarms[i]
+
                     lists.CW+=1
 
                     alarm.dimension_display = alarm.Dimensions.member[0].Name + ':' + alarm.Dimensions.member[0].Value
@@ -1092,6 +1105,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                 _.map resources.DescribeAddresses, ( eip, i )->
 
                     eip.region = current_region
+
+                    #resolve Tag
+                    me.resolveTag eip.tagSet, resources.DescribeAddresses[i]
+
 
                     if $.isEmptyObject eip.instanceId
 
@@ -1210,6 +1227,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                     vol.region = current_region
 
+                    #resolve Tag
+                    me.resolveTag vol.tagSet, resources.DescribeVolumes[i]
+
+
                     vol.detail = me.parseSourceValue 'DescribeVolumes', vol, "detail", null
 
                     vol.createTime = MC.dateFormat(new Date(vol.createTime),'yyyy-MM-dd hh:mm:ss')
@@ -1248,6 +1269,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                 _.map resources.DescribeVpcs, ( vpc, i )->
 
                     vpc.region = current_region
+
+                    #resolve Tag
+                    me.resolveTag vpc.tagSet, resources.DescribeVpcs[i]
 
                     me._set_app_property vpc, resources, i, 'DescribeVpcs'
 
@@ -1309,6 +1333,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                 _.map resources.DescribeVpnConnections, ( vpn, i )->
 
                     vpn.region = current_region
+
+                    #resolve Tag
+                    me.resolveTag vpn.tagSet, resources.DescribeVpnConnections[i]
+
 
                     me._set_app_property vpn, resources, i, 'DescribeVpnConnections'
 
@@ -1442,6 +1470,32 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
             if MC.data.resources[api]
                 lists[key] = MC.data.resources[api].length
+
+        #resolve res Tag
+        resolveTag : ( tagSet, res ) ->
+
+            if tagSet
+
+                _.map tagSet, ( value, key )->
+
+                    if key == 'app'
+
+                        res.app = value
+
+                    if key == 'name'
+
+                        res.host = value
+
+                    if key == 'Created by'
+
+                        res.owner = value
+
+                    null
+
+            if not res.host
+
+                res.host = ''
+
 
 
 

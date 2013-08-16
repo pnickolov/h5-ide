@@ -78,7 +78,7 @@ Loading...
 								<th class="sortable" style="width:15%">Launch Time</th>
 								<th class="sortable" style="width:10%">AMI</th>
 								<th class="sortable" style="width:10%">Availability Zone</th>
-								<th style="width:10%">Creator</th>
+								<th style="width:10%">Created By</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -128,8 +128,9 @@ Loading...
 						<thead>
 							<tr>
 								<th class="sortable" style="width:15%">Region</th>
-								<th class="sortable" style="width:40%">IP</th>
-								<th class="sortable" style="width:40%">Associated Instance</th>
+								<th class="sortable" style="width:35%">IP</th>
+								<th class="sortable" style="width:35%">Associated Instance</th>
+								<th style="width:10%">Created By</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -170,6 +171,7 @@ Loading...
 								<th class="sortable" style="width:20%">Create Time</th>
 								<th class="sortable" style="width:15%">Device Name</th>
 								<th class="sortable" style="width:15%">Attachment Status</th>
+								<th style="width:10%">Created By</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -194,6 +196,7 @@ Loading...
 									<td>{{ createTime }}</td>
 									<td>{{#each attachmentSet.item }}{{ this.device }}{{/each}}</td>
 									<td><i class="status status-{{#each attachmentSet.item }}{{ this.status }}{{/each}} icon-label"></i>{{#each attachmentSet.item }}{{ this.status }}{{/each}}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -223,6 +226,7 @@ Loading...
 								<th class="sortable" style="width:20%">Status</th>
 								<th class="sortable" style="width:25%">CIDR</th>
 								<th class="sortable" style="width:20%">DHCP Settings</th>
+								<th style="width:5%">Created By</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -250,6 +254,7 @@ Loading...
 									{{else}}
 									<td>None</td>
 									{{/if}}
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -275,9 +280,10 @@ Loading...
 							<tr>
 								<th class="sortable" style="width:10%">Region</th>
 								<th class="sortable" style="width:25%">Name/ID</th>
-								<th class="sortable" style="width:20%">Status</th>
-								<th class="sortable" style="width:25%">Virtual Private Gateway</th>
+								<th class="sortable" style="width:15%">Status</th>
+								<th class="sortable" style="width:20%">Virtual Private Gateway</th>
 								<th class="sortable" style="width:20%">Customer Gateway</th>
+								<th style="width:10%">Created By</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -301,6 +307,7 @@ Loading...
 									<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
 									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
 									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{cgw}}}'>{{ customerGatewayId }}</a></td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -328,8 +335,9 @@ Loading...
 								<th class="sortable" style="width:15%">Region</th>
 								<th class="sortable" style="width:25%">DNS Name</th>
 								<th class="sortable" style="width:20%">Create time</th>
-								<th class="sortable" style="width:25%">Availability Zone</th>
+								<th class="sortable" style="width:15%">Availability Zone</th>
 								<th class="sortable" style="width:20%">Status</th>
+								<th style="width:10%">Created By</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -345,6 +353,7 @@ Loading...
 									<td>{{ CreatedTime }}</td>
 									<td>{{ AvailabilityZones.member }}</td>
 									<td>{{ state }}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -373,6 +382,7 @@ Loading...
 								<th class="sortable" style="width:20%">Name</th>
 								<th class="sortable" style="width:50%">Current/Last Activity</th>
 								<th class="sortable" style="width:20%">Activity Status</th>
+								<th style="width:10%">Created By</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -396,6 +406,7 @@ Loading...
 									</td>
 									<td>{{last_activity}}</td>
 									<td>{{activity_state}}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -426,11 +437,12 @@ Loading...
 						{{#if region_resource.DescribeAlarms}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:15%">Region</th>
+								<th class="sortable" style="width:10%">Region</th>
 								<th class="sortable" style="width:20%">Name</th>
 								<th class="sortable" style="width:35%">Dimension</th>
 								<th class="sortable" style="width:35%">Threshold</th>
 								<th class="sortable" style="width:10%">State</th>
+								<th style="width:10%">Created By</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -444,6 +456,7 @@ Loading...
 									<td>{{dimension_display}}</td>
 									<td>{{threshold_display}}</td>
 									<td><i class="status {{#if state_ok}}status-green{{/if}} {{#if state_alarm}}status-red{{/if}} {{#if state_insufficient}}status-grace{{/if}} icon-label"></i>{{StateValue}}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -476,8 +489,9 @@ Loading...
 							<tr>
 								<th class="sortable" style="width:15%">Region</th>
 								<th class="sortable" style="width:30%">Topic Name</th>
-								<th class="sortable" style="width:40%">Endpoint and Protocol</th>
+								<th class="sortable" style="width:30%">Endpoint and Protocol</th>
 								<th class="sortable" style="width:20%">Confirmation</th>
+								<th style="width:10%">Created By</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -489,6 +503,7 @@ Loading...
 									</td>
 									<td>{{Protocol}}: {{Endpoint}}</td>
 									<td><i class="status {{#if pending_state}}status-red{{else}}status-green{{/if}} icon-label"></i>{{#if pending_state}}{{pending_state}}{{else}}{{success_state}}{{/if}}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}

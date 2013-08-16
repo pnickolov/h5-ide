@@ -126,25 +126,21 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                                 info_list = me.get 'info_list'
                                 unread_num = me.get 'unread_num'
                                 in_dashboard = me.get 'in_dashboard'
-                                
-                                # check whether same operation
-                                the_req = []
-                                the_req.push i for i in info_list when i.id == item.id and i.operation == item.operation
-                                if the_req.length <= 0
-                                    if in_dashboard or item.rid != MC.canvas_data.id
-                                        item.is_readed = false
 
-                                        unread_num += 1
-                                        me.set 'unread_num', unread_num
+                                if in_dashboard or item.rid != MC.canvas_data.id
+                                    item.is_readed = false
 
-                                    # remove the old request and new to the header
-                                    info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
+                                    unread_num += 1
+                                    me.set 'unread_num', unread_num
 
-                                    info_list.splice 0, 0, item
+                                # remove the old request and new to the header
+                                info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
 
-                                    me.set 'info_list', info_list
+                                info_list.splice 0, 0, item
 
-                                    me.trigger 'HEADER_UPDATE'
+                                me.set 'info_list', info_list
+
+                                me.trigger 'HEADER_UPDATE'
 
                                 null
                 }

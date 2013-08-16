@@ -50,8 +50,9 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                         #data = MC.process[tab_name].data
                         if MC.data.current_tab_id is 'process-'+app_name and MC.process[tab_name].flag_list.is_done
                             #save png
-                            MC.process[tab_name].data.id = app_id
-                            ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, MC.process[tab_name].data
+                            data = $.extend( true, {}, MC.process[tab_name].data )
+                            data.id = app_id
+                            ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, data
 
                             # hold on 2 seconds
                             setTimeout () ->
@@ -68,7 +69,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
         handleProcess : (tab_name) ->
             me = this
 
-            process = MC.process[tab_name]
+            #process = MC.process[tab_name]
+            process  = $.extend( true, {}, MC.process[tab_name] )
             app_name = process.app_name
 
             console.log 'handleProcess id:' + process.tab_id

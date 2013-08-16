@@ -710,16 +710,9 @@ MC.canvas = {
 					MC.paper.path(path);
 					MC.paper.path(path).attr('class','fill-line');
 
-					if (
-						connection_option.stroke_dasharray &&
-						connection_option.color_dash &&
-						connection_option.stroke_dasharray !== ''
-					)
+					if (connection_option.dash_line === true)
 					{
-						MC.paper.path(path, {
-							'stroke': connection_option.color_dash,
-							'stroke-dasharray': connection_option.stroke_dasharray
-						});
+						MC.paper.path(path).attr('class', 'dash-line');
 					}
 
 					svg_line = MC.paper.save();

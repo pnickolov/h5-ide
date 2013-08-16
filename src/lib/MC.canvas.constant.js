@@ -70,7 +70,7 @@ var constant_data = {
 	STOKE_WIDTH_VPC: 4,
 
 	//strok width of line
-	LINE_STROKE_WIDTH: 2,
+	//LINE_STROKE_WIDTH: 2,
 
 	//constant for MC.canvas.add
 	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 12 l 2 0 l 6 -6 z", //triangle
@@ -284,18 +284,14 @@ var constant_data = {
 				from: 'instance-rtb',
 				to: 'rtb-tgt-left',
 				relation: 'multiple', //a instance can only connect to one routetable
-				//dash line
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
+				dash_line: true
 			},
 			{
 				type: 'sg',
 				from: 'instance-rtb',
 				to: 'rtb-tgt-right',
 				relation: 'unique', //a instance can only connect to one routetable
-				//dash line
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
+				dash_line: true
 			}]
 		},
 		'AWS.EC2.EBS.Volume':
@@ -338,8 +334,7 @@ var constant_data = {
 				from: 'elb-attach',
 				to: 'instance-elb-attach',
 				relation: 'multiple'
-			}
-			],
+			}],
 			'AWS.VPC.Subnet':
 			{
 				type: 'association',
@@ -369,8 +364,7 @@ var constant_data = {
 				},
 
 				relation: 'multiple'
-			}
-			]
+			}]
 		},
 		'AWS.VPC.NetworkInterface':
 		{
@@ -399,21 +393,15 @@ var constant_data = {
 				from: 'eni-rtb',
 				to: 'rtb-tgt-left',
 				relation: 'multiple',
-
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
-
+				dash_line: true
 			},
 			{
 				type: 'sg',
 				from: 'eni-rtb',
 				to: 'rtb-tgt-right',
 				relation: 'multiple',
-
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
-			}
-			]
+				dash_line: true
+			}]
 		},
 		'AWS.VPC.RouteTable':
 		{
@@ -435,9 +423,7 @@ var constant_data = {
 				from: 'rtb-tgt-left',
 				to: 'instance-rtb',
 				relation: 'multiple',
-				//dash line
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
+				dash_line: true
 			},
 			{
 				type: 'rtb-target',
@@ -445,9 +431,7 @@ var constant_data = {
 				to: 'instance-rtb',
 
 				relation: 'multiple',
-				//dash line
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
+				dash_line: true
 			}],
 			'AWS.VPC.NetworkInterface': [
 			{
@@ -455,29 +439,22 @@ var constant_data = {
 				from: 'rtb-tgt-left',
 				to: 'eni-rtb',
 				relation: 'multiple',
-				//dash line
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
+				dash_line: true,
 			},
 			{
 				type: 'rtb-target',
 				from: 'rtb-tgt-right',
 				to: 'eni-rtb',
 				relation: 'multiple',
-				//dash line
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
-			}
-			],
+				dash_line: true
+			}],
 			'AWS.VPC.InternetGateway':
 			{
 				type: 'rtb-target',
 				from: 'rtb-tgt-left',
 				to: 'igw-tgt',
 				relation: 'multiple', //a rt can only connect to one igw
-
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
+				dash_line: true
 			},
 			'AWS.VPC.VPNGateway':
 			{
@@ -485,9 +462,7 @@ var constant_data = {
 				from: 'rtb-tgt-right',
 				to: 'vgw-tgt',
 				relation: 'multiple', //a rt can only connect to one vgw
-
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
+				dash_line: true
 			}
 		},
 		'AWS.VPC.InternetGateway':
@@ -497,8 +472,7 @@ var constant_data = {
 				type: 'rtb-target',
 				from: 'igw-tgt',
 				to: 'rtb-tgt-left',
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
+				dash_line: true
 			}
 		},
 		'AWS.VPC.VPNGateway':
@@ -508,9 +482,7 @@ var constant_data = {
 				type: 'rtb-target',
 				from: 'vgw-tgt',
 				to: 'rtb-tgt-right',
-
-				color_dash: '#9FC9FD', //dash color
-				stroke_dasharray: '10, 10'
+				dash_line: true
 			},
 			'AWS.VPC.CustomerGateway':
 			{

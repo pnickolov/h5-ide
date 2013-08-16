@@ -273,6 +273,11 @@
 	stroke: #6DAEFE;
 }
 
+.line-rtb-target .dash-line {
+	stroke: #9FC9FD;
+	stroke-dasharray: 10px 10px;
+}
+
 .line-association {
 	stroke: #d8d7d6;
 }

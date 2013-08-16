@@ -54,7 +54,6 @@ define [ 'jquery',
 
             view.render( tab_type == "OPEN_APP" )
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.asg.AutoScalingGroupName
-            ide_event.trigger ide_event.RELOAD_PROPERTY
 
             view.on 'SET_SNS_OPTION', ( checkArray ) ->
 

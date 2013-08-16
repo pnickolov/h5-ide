@@ -67,7 +67,6 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
         handleProcess : (tab_name) ->
             me = this
-            console.log me
 
             process = MC.process[tab_name]
             app_name = process.app_name
@@ -93,10 +92,17 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                             if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
                                 flag_list.is_inprocess = true
+
                                 flag_list.steps = dag.dag.step.length
 
+                                # check rollback
                                 dones = 0
                                 dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
+                                console.log 'done steps:' + dones
+                                if dag.dag.state is 'Rollback'
+                                    tmp_list = me.get 'flag_list'
+                                    if tmp_list.dones>0 then (dones = tmp_list.dones) else (dones = 0)
+
                                 flag_list.dones = dones
                                 flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
 

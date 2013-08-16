@@ -60,7 +60,7 @@
 		{{#if total_fee}} ${{total_fee}}/month {{/if}}
 	</div>
 	<div class="option-group">
-		<table class="table table-light">
+		<table class="table">
 			<thead>
 				<tr>
 					<th style="">Resource</th>
@@ -69,15 +69,15 @@
 				</tr>
 			</thead>
 
-			{{#each cost_list}}
 			<tbody>
+				{{#each cost_list}}
 				<tr>
 					<td>{{resource}}</td>
 					<td>{{size}}</td>
 					<td>{{fee}}</td>
 				</tr>
+				{{/each}}
 			</tbody>
-			{{/each}}
 		</table>
 
 	</div>

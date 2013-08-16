@@ -14,7 +14,7 @@
     </section>
 
     <section class="property-control-group">
-      <label>Tenancy</label>
+      <label class="left">Tenancy</label>
       <div class="selectbox selectbox-mega" id="property-tenancy">
         <div class="selection">{{#if defaultTenancy}}Default{{else}}Dedicated{{/if}}</div>
         <ul class="dropdown" tabindex="-1">
@@ -69,7 +69,7 @@
       </div>
 
       <div class="property-control-group">
-        <label>Domain Name Server</label>
+        <label class="left">Domain Name Server</label>
         <div>
           <div class="checkbox">
             <input id="property-amazon-dns" {{#if dhcp.useAmazonDns}}checked="checked"{{/if}}type="checkbox">

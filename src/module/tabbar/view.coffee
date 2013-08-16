@@ -118,14 +118,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         updateTabIcon : ( type, tab_id ) ->
             console.log 'updateTabIcon, type = ' + type + ', tab_id = ' + tab_id
-            ###
             _.each $( '.tabbar-group' ).children(), ( item ) ->
                 $item = $( item )
                 if $item.attr( 'id' ) is 'tab-bar-' + tab_id
-                    $item.find( 'i' ).removeClass 'icon-layers'
                     if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-tabbar-' + type.toLowerCase()
                     $item.find( 'i' ).addClass classname
-            ###
     }
 
     return TabBarView

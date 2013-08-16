@@ -260,8 +260,8 @@ define [ 'event',
                 $(b).find('.acl-rule-direction').attr('data-id')
 
         _sortSource : ( a, b) ->
-            return $(a).find('.acl-rule-source').attr('data-id') >
-                $(b).find('.acl-rule-source').attr('data-id')
+            return $(a).find('.acl-rule-reference').attr('data-id') >
+                $(b).find('.acl-rule-reference').attr('data-id')
     }
 
     view = new ACLView()

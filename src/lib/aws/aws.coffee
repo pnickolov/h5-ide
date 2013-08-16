@@ -1,4 +1,4 @@
-define [ 'MC', 'constant' ], ( MC, constant ) ->
+define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 
 	#private
 	getNewName = (compType) ->
@@ -188,7 +188,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		#eni
 		if resources.DescribeNetworkInterfaces
-			_.map resources.DescribeNetworkInterfaces.git , ( res, i ) ->
+			_.map resources.DescribeNetworkInterfaces , ( res, i ) ->
 				MC.data.resource_list[region][res.networkInterfaceId] = res
 				null
 
@@ -283,14 +283,14 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		#asl instance
 		if resources.DescribeAutoScalingInstances
 			_.map resources.DescribeAutoScalingInstances, ( res, i ) ->
-				MC.data.resource_list[region][res.InstanceId] = res
+				MC.data.resource_list[region][res.AutoScalingGroupName + ':' + res.InstanceId] = res
 				null
 
 
 		#asl activities
 		if resources.DescribeScalingActivities
 			_.map resources.DescribeScalingActivities, ( res, i ) ->
-				MC.data.resource_list[region][res.InstanceId] = res
+				MC.data.resource_list[region][res.ActivityId] = res
 				null
 
 
@@ -318,6 +318,15 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		return result
 
+	checkStackName = ( stackId, newName ) ->
+		stackArray = _.flatten _.values MC.data.stack_list
+
+		not _.some stackArray, ( stack ) ->
+			return stack.id isnt stackId and stack.name is newName
+
+
 	#public
 	getNewName : getNewName
+	cacheResource : cacheResource
 	checkIsRepeatName : checkIsRepeatName
+	checkStackName: checkStackName

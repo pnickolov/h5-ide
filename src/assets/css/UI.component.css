@@ -454,7 +454,7 @@ textarea {
 	position       : relative;
 	display        : inline-block;
 	vertical-align : middle;
-	margin         : 0 5px 0 0;
+	margin         : -2px 5px 0 0;
 	width          : 16px;
 	height         : 16px;
 }
@@ -467,7 +467,7 @@ textarea {
 	height        : 14px;
 	border-radius : 2px;
 	border        : 1px solid #999;
-	box-shadow    : inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+	/*box-shadow    : inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);*/
 	background    : #fcfff4;
 }
 
@@ -485,7 +485,7 @@ textarea {
 
 .radio > label {
 	border-radius : 14px;
-	box-shadow    : inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+	/*box-shadow    : inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);*/
 	background    : #fcfff4;
 	display       : block;
 }
@@ -497,8 +497,9 @@ textarea {
 	height        : 8px;
 	top           : 4px;
 	left          : 4px;
-	background    : #666;
+	background    : #555;
 	border-radius : 8px;
+	opacity: 1;
 }
 
 .radio-wrap,
@@ -507,8 +508,7 @@ textarea {
 }
 
 .property-content .radio label {
-	background: #D2D2D2;
-	border: 1px solid #171617;
+	/*border: 1px solid #171617;*/
 	border-radius: 100%;
 }
 
@@ -534,12 +534,22 @@ textarea {
 }
 
 .property-content .checkbox label {
-	width: 16px;
-	height: 16px;
+	width: 14px;
+	height: 14px;
 	border-radius: 2px;
-	background: #DDD6D2;
-	border: 1px solid #343334;
+	/*border: 1px solid #343334;*/
+}
+
+.property-content .checkbox label,
+.property-content .radio label {
+	background: #d2d2d2;
+	border: 1px solid transparent;
 	box-shadow: none;
+}
+
+.property-content .checkbox:hover label,
+.property-content .radio:hover label {
+	background: #eee;
 }
 
 .property-content .checkbox label:after {
@@ -554,6 +564,12 @@ textarea {
 
 .property-content .disabled .checkbox label {
 	background: #616161;
+}
+
+.property-content .checkbox + label,
+.property-content .radio + label {
+	font-size: 14px;
+	color: #d0d0d0;
 }
 
 /* Select */
@@ -1422,7 +1438,7 @@ textarea {
 
 .property-content .selectbox .selection {
 	border        : 1px solid #363536;
-	box-shadow    : inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+	box-shadow    : inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 	border-radius : 2px;
 
 	padding: 8px;
@@ -1430,7 +1446,7 @@ textarea {
 	font-size     : 14px;
 	color         : #d0d0d0;
 
-	background : #464546;
+	background : #4f4e4f;
 
 	-webkit-transition: background .2s;
 	-moz-transition: background .2s;
@@ -1440,7 +1456,7 @@ textarea {
 }
 
 .property-content .selectbox .selection:hover {
-	background: #414041;
+	background: #464546;
 }
 
 

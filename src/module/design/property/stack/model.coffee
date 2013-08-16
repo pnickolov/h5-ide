@@ -75,8 +75,9 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     existing = true
 
+                    return false
 
-                return false
+
 
             if not existing
 
@@ -84,7 +85,9 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                 topic_uid = MC.guid()
 
-                topic_comp.name = topic_comp.resource.Name = topic_comp.resource.DisplayName = 'app-sns'
+                topic_comp.name = topic_comp.resource.Name = topic_comp.resource.DisplayName = 'sns-topic'
+
+                topic_comp.uid = topic_uid
 
                 MC.canvas_data.component[topic_uid] = topic_comp
 
@@ -177,6 +180,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
         getAppSubscription : () ->
 
+            me = this
             topic_uid = null
             topic_arn = null
             snstopic = {}
@@ -193,7 +197,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     snstopic.arn = topic_arn
 
-                    this.set 'snstopic', snstopic
+                    me.set 'snstopic', snstopic
 
                     return false
 

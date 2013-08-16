@@ -307,6 +307,33 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
     # end of parserInfoReturn
 
 
+    #///////////////// Parser for getKey return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveGetKeyResult = ( result ) ->
+
+        #return vo
+        result
+
+    #private (parser info return)
+    parserGetKeyReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveGetKeyResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserInfoReturn
+
+
     #///////////////// Parser for resource return (need resolve) /////////////////
     resourceMap = ( result ) ->
         responses = {
@@ -454,6 +481,32 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
     # end of parserListReturn
 
 
+    #///////////////// Parser for getKey return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveGetKeyResult = ( result ) ->
+        #resolve result
+        result
+
+    #private (parser list return)
+    parseGetKeyReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveGetKeyResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserListReturn
+
+
     #############################################################
 
     #def create(self, username, session_id, region_name, spec):
@@ -511,6 +564,10 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
         send_request "summary", src, [ username, session_id, region_name ], parserSummaryReturn, callback
         true
 
+    #def getKey(self, username, session_id, region_name, app_id):
+    getKey = ( src, username, session_id, region_name, app_id, callback) ->
+        send_request "getKey", src, [ username, session_id, region_name, app_id ], parseGetKeyReturn, callback
+
 
     #############################################################
     #public
@@ -525,4 +582,5 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
     list                         : list
     resource                     : resource
     summary                      : summary
+    getKey                       : getKey
 

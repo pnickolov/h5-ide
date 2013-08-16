@@ -1,8 +1,8 @@
 <article>
 
-	<section class="property-control-group">
+	<section class="property-control-group" data-bind="true">
 		<label class="left" for="property-stack-name">Stack Name</label>
-		<input class="input" type="text" required="required" value="{{property_detail.name}}" name="property-stack-name" id="property-stack-name">
+		<input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{property_detail.name}}" name="property-stack-name" id="property-stack-name">
 	</section>
 	<dl class="dl-horizontal dl-region-type property-control-group">
 		<dt><label>Region</label></dt>

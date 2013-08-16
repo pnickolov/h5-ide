@@ -194,387 +194,352 @@ var constant_data = {
 
 	CONNECTION_OPTION:
 	{
-		'AWS.EC2.Instance':
-		{
-			'AWS.AutoScaling.LaunchConfiguration':
-			{
-				type: 'sg',
-				from: 'instance-sg',
-				to: 'launchconfig-sg',
-
-				direction: {
-					from: 'horizontal',
-					to: 'horizontal'
+		"AWS.EC2.Instance": {
+			"AWS.AutoScaling.LaunchConfiguration": {
+				"type": "sg",
+				"from": "instance-sg",
+				"to": "launchconfig-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
 				},
-
-				relation: 'multiple'
+				"relation": "multiple"
 			},
-			'AWS.EC2.Instance':
-			{
-				type: 'sg',
-				from: 'instance-sg',
-				to: 'instance-sg',
-
-				direction: {
-					from: 'horizontal',
-					to: 'horizontal'
+			"AWS.EC2.Instance": {
+				"type": "sg",
+				"from": "instance-sg",
+				"to": "instance-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
 				},
-
-				relation: 'multiple'
+				"relation": "multiple"
 			},
-			'AWS.EC2.EBS.Volume':
-			{
-				type: 'attachment',
-				from: 'instance-attach',
-				to: 'volume-attach',
-				relation: 'multiple'
-			},
-			'AWS.ELB': [
-			{
-				type: 'elb-sg',
-				from: 'instance-sg',
-				to: 'elb-sg-out',
-
-				direction: {
-					from: 'horizontal'
+			"AWS.ELB": [
+				{
+					"type": "elb-sg",
+					"from": "instance-sg",
+					"to": "elb-sg-out",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
 				},
-
-				relation: 'multiple'
-			},
-			{
-				type: 'elb-sg',
-				from: 'instance-sg',
-				to: 'elb-sg-in',
-
-				direction: {
-					from: 'horizontal'
-				},
-
-				relation: 'multiple'
-			},
-			{
-				type: 'attachment',
-				from: 'instance-elb-attach',
-				to: 'elb-attach',
-				relation: 'multiple'
-			}
+				{
+					"type": "elb-sg",
+					"from": "instance-sg",
+					"to": "elb-sg-in",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
+				}
 			],
-			'AWS.VPC.NetworkInterface': [
-			{
-				type: 'attachment',
-				from: 'instance-attach',
-				to: 'eni-attach',
-				relation: 'multiple'
-			},
-			{
-				type: 'sg',
-				from: 'instance-sg',
-				to: 'eni-sg',
-
-				direction: {
-					from: 'horizontal',
-					to: 'horizontal'
+			"AWS.VPC.NetworkInterface": [
+				{
+					"type": "attachment",
+					"from": "instance-attach",
+					"to": "eni-attach",
+					"relation": "multiple"
 				},
-
-				relation: 'multiple'
-			}],
-			'AWS.VPC.RouteTable': [
-			{
-				type: 'rtb-target',
-				from: 'instance-rtb',
-				to: 'rtb-tgt-left',
-				relation: 'multiple', //a instance can only connect to one routetable
-				dash_line: true
-			},
-			{
-				type: 'sg',
-				from: 'instance-rtb',
-				to: 'rtb-tgt-right',
-				relation: 'unique', //a instance can only connect to one routetable
-				dash_line: true
-			}]
+				{
+					"type": "sg",
+					"from": "instance-sg",
+					"to": "eni-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.VPC.RouteTable": [
+				{
+					"type": "rtb-target",
+					"from": "instance-rtb",
+					"to": "rtb-tgt-left",
+					"relation": "multiple",
+					"dash_line": true
+				},
+				{
+					"type": "sg",
+					"from": "instance-rtb",
+					"to": "rtb-tgt-right",
+					"relation": "unique",
+					"dash_line": true
+				}
+			]
 		},
-		'AWS.EC2.EBS.Volume':
-		{
-			'AWS.EC2.Instance':
-			{
-				type: 'attachment',
-				from: 'volume-attach',
-				to: 'instance-attach',
-				relation: 'unique' //a volume can only connect to one instance
+		"AWS.ELB": {
+			"AWS.EC2.Instance": [
+				{
+					"type": "elb-sg",
+					"from": "elb-sg-out",
+					"to": "instance-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				},
+				{
+					"type": "elb-sg",
+					"from": "elb-sg-in",
+					"to": "instance-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.VPC.NetworkInterface": [
+				{
+					"type": "elb-sg",
+					"from": "elb-sg-out",
+					"to": "eni-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				},
+				{
+					"type": "elb-sg",
+					"from": "elb-sg-in",
+					"to": "eni-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.AutoScaling.LaunchConfiguration": [
+				{
+					"type": "elb-sg",
+					"from": "elb-sg-out",
+					"to": "launchconfig-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				},
+				{
+					"type": "elb-sg",
+					"from": "elb-sg-in",
+					"to": "launchconfig-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.VPC.Subnet": {
+				"type": "association",
+				"from": "elb-assoc",
+				"to": "subnet-assoc-in",
+				"relation": "multiple"
 			}
 		},
-		'AWS.ELB':
-		{
-			'AWS.EC2.Instance': [
-			{
-				type: 'elb-sg',
-				from: 'elb-sg-out',
-				to: 'instance-sg',
-
-				direction: {
-					to: 'horizontal'
+		"AWS.VPC.NetworkInterface": {
+			"AWS.EC2.Instance": [
+				{
+					"type": "sg",
+					"from": "eni-sg",
+					"to": "instance-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
+					},
+					"relation": "multiple"
 				},
-
-				relation: 'multiple'
-			},
-			{
-				type: 'elb-sg',
-				from: 'elb-sg-in',
-				to: 'instance-sg',
-
-				direction: {
-					to: 'horizontal'
+				{
+					"type": "attachment",
+					"from": "eni-attach",
+					"to": "instance-attach",
+					"relation": "unique"
+				}
+			],
+			"AWS.VPC.NetworkInterface": [
+				{
+					"type": "sg",
+					"from": "eni-sg",
+					"to": "eni-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.VPC.RouteTable": [
+				{
+					"type": "sg",
+					"from": "eni-rtb",
+					"to": "rtb-tgt-left",
+					"relation": "multiple",
+					"dash_line": true
 				},
-
-				relation: 'multiple'
-			},
-			{
-				type: 'attachment',
-				from: 'elb-attach',
-				to: 'instance-elb-attach',
-				relation: 'multiple'
-			}],
-			'AWS.VPC.Subnet':
-			{
-				type: 'association',
-				from: 'elb-assoc',
-				to: 'subnet-assoc-in',
-				relation: 'multiple'
-			},
-			'AWS.AutoScaling.LaunchConfiguration':[
-			{
-				type: 'elb-sg',
-				from: 'elb-sg-out',
-				to: 'launchconfig-sg',
-
-				direction: {
-					to: 'horizontal'
-				},
-
-				relation: 'multiple'
-			},
-			{
-				type: 'elb-sg',
-				from: 'elb-sg-in',
-				to: 'launchconfig-sg',
-
-				direction: {
-					to: 'horizontal'
-				},
-
-				relation: 'multiple'
-			}]
+				{
+					"type": "sg",
+					"from": "eni-rtb",
+					"to": "rtb-tgt-right",
+					"relation": "multiple",
+					"dash_line": true
+				}
+			]
 		},
-		'AWS.VPC.NetworkInterface':
-		{
-			'AWS.EC2.Instance': [
-			{
-				type: 'sg',
-				from: 'eni-sg',
-				to: 'instance-sg',
-
-				direction: {
-					from: 'horizontal',
-					to: 'horizontal'
+		"AWS.VPC.RouteTable": {
+			"AWS.VPC.Subnet": {
+				"type": "association",
+				"from": "rtb-src",
+				"to": "subnet-assoc-out",
+				"direction": {
+					"from": "vertical"
 				},
-
-				relation: 'multiple'
+				"relation": "multiple"
 			},
-			{
-				type: 'attachment',
-				from: 'eni-attach',
-				to: 'instance-attach',
-				relation: 'unique' //an eni can only connect to one instance
-			}],
-			'AWS.VPC.RouteTable': [
-			{
-				type: 'sg',
-				from: 'eni-rtb',
-				to: 'rtb-tgt-left',
-				relation: 'multiple',
-				dash_line: true
-			},
-			{
-				type: 'sg',
-				from: 'eni-rtb',
-				to: 'rtb-tgt-right',
-				relation: 'multiple',
-				dash_line: true
-			}]
-		},
-		'AWS.VPC.RouteTable':
-		{
-			'AWS.VPC.Subnet':
-			{
-				type: 'association',
-				from: 'rtb-src',
-				to: 'subnet-assoc-out',
-
-				direction: {
-					from: 'vertical'
+			"AWS.EC2.Instance": [
+				{
+					"type": "rtb-target",
+					"from": "rtb-tgt-left",
+					"to": "instance-rtb",
+					"relation": "multiple",
+					"dash_line": true
 				},
-
-				relation: 'multiple'
+				{
+					"type": "rtb-target",
+					"from": "rtb-tgt-right",
+					"to": "instance-rtb",
+					"relation": "multiple",
+					"dash_line": true
+				}
+			],
+			"AWS.VPC.NetworkInterface": [
+				{
+					"type": "rtb-target",
+					"from": "rtb-tgt-left",
+					"to": "eni-rtb",
+					"relation": "multiple",
+					"dash_line": true
+				},
+				{
+					"type": "rtb-target",
+					"from": "rtb-tgt-right",
+					"to": "eni-rtb",
+					"relation": "multiple",
+					"dash_line": true
+				}
+			],
+			"AWS.VPC.InternetGateway": {
+				"type": "rtb-target",
+				"from": "rtb-tgt-left",
+				"to": "igw-tgt",
+				"relation": "multiple",
+				"dash_line": true
 			},
-			'AWS.EC2.Instance': [
-			{
-				type: 'rtb-target',
-				from: 'rtb-tgt-left',
-				to: 'instance-rtb',
-				relation: 'multiple',
-				dash_line: true
-			},
-			{
-				type: 'rtb-target',
-				from: 'rtb-tgt-right',
-				to: 'instance-rtb',
-
-				relation: 'multiple',
-				dash_line: true
-			}],
-			'AWS.VPC.NetworkInterface': [
-			{
-				type: 'rtb-target',
-				from: 'rtb-tgt-left',
-				to: 'eni-rtb',
-				relation: 'multiple',
-				dash_line: true,
-			},
-			{
-				type: 'rtb-target',
-				from: 'rtb-tgt-right',
-				to: 'eni-rtb',
-				relation: 'multiple',
-				dash_line: true
-			}],
-			'AWS.VPC.InternetGateway':
-			{
-				type: 'rtb-target',
-				from: 'rtb-tgt-left',
-				to: 'igw-tgt',
-				relation: 'multiple', //a rt can only connect to one igw
-				dash_line: true
-			},
-			'AWS.VPC.VPNGateway':
-			{
-				type: 'rtb-target',
-				from: 'rtb-tgt-right',
-				to: 'vgw-tgt',
-				relation: 'multiple', //a rt can only connect to one vgw
-				dash_line: true
+			"AWS.VPC.VPNGateway": {
+				"type": "rtb-target",
+				"from": "rtb-tgt-right",
+				"to": "vgw-tgt",
+				"relation": "multiple",
+				"dash_line": true
 			}
 		},
-		'AWS.VPC.InternetGateway':
-		{
-			'AWS.VPC.RouteTable':
-			{
-				type: 'rtb-target',
-				from: 'igw-tgt',
-				to: 'rtb-tgt-left',
-				dash_line: true
+		"AWS.VPC.InternetGateway": {
+			"AWS.VPC.RouteTable": {
+				"type": "rtb-target",
+				"from": "igw-tgt",
+				"to": "rtb-tgt-left",
+				"dash_line": true
 			}
 		},
-		'AWS.VPC.VPNGateway':
-		{
-			'AWS.VPC.RouteTable':
-			{
-				type: 'rtb-target',
-				from: 'vgw-tgt',
-				to: 'rtb-tgt-right',
-				dash_line: true
+		"AWS.VPC.VPNGateway": {
+			"AWS.VPC.RouteTable": {
+				"type": "rtb-target",
+				"from": "vgw-tgt",
+				"to": "rtb-tgt-right",
+				"dash_line": true
 			},
-			'AWS.VPC.CustomerGateway':
-			{
-				type: 'vpn',
-				from: 'vgw-vpn',
-				to: 'cgw-vpn'
+			"AWS.VPC.CustomerGateway": {
+				"type": "vpn",
+				"from": "vgw-vpn",
+				"to": "cgw-vpn"
 			}
 		},
-		'AWS.VPC.CustomerGateway':
-		{
-			'AWS.VPC.VPNGateway':
-			{
-				type: 'vpn',
-				from: 'cgw-vpn',
-				to: 'vgw-vpn',
-				relation: 'unique' //a cgw can only connect to one vgw
+		"AWS.VPC.CustomerGateway": {
+			"AWS.VPC.VPNGateway": {
+				"type": "vpn",
+				"from": "cgw-vpn",
+				"to": "vgw-vpn",
+				"relation": "unique"
 			}
 		},
-		'AWS.VPC.Subnet':
-		{
-			'AWS.VPC.RouteTable':
-			{
-				type: 'association',
-				from: 'subnet-assoc-out',
-				to: 'rtb-src',
-
-				direction: {
-					to: 'vertical'
+		"AWS.VPC.Subnet": {
+			"AWS.VPC.RouteTable": {
+				"type": "association",
+				"from": "subnet-assoc-out",
+				"to": "rtb-src",
+				"direction": {
+					"to": "vertical"
 				},
-
-				relation: 'multiple'
+				"relation": "multiple"
 			},
-			'AWS.ELB':
-			{
-				type: 'association',
-				from: 'subnet-assoc-in',
-				to: 'elb-assoc',
-				relation: 'unique'
+			"AWS.ELB": {
+				"type": "association",
+				"from": "subnet-assoc-in",
+				"to": "elb-assoc",
+				"relation": "unique"
 			}
 		},
-
-		'AWS.AutoScaling.LaunchConfiguration':
-		{
-			'AWS.AutoScaling.LaunchConfiguration':
-			{
-				type: 'sg',
-				from: 'launchconfig-sg',
-				to: 'launchconfig-sg',
-
-				direction: {
-					from: 'horizontal',
-					to: 'horizontal'
+		"AWS.AutoScaling.LaunchConfiguration": {
+			"AWS.AutoScaling.LaunchConfiguration": {
+				"type": "sg",
+				"from": "launchconfig-sg",
+				"to": "launchconfig-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
 				},
-
-				relation: 'multiple'
+				"relation": "multiple"
 			},
-			'AWS.EC2.Instance':
-			{
-				type: 'sg',
-				from: 'launchconfig-sg',
-				to: 'launchconfig-sg',
-
-				direction: {
-					from: 'horizontal',
-					to: 'horizontal'
+			"AWS.EC2.Instance": {
+				"type": "sg",
+				"from": "launchconfig-sg",
+				"to": "instance-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
 				},
-
-				relation: 'multiple'
+				"relation": "multiple"
 			},
-			'AWS.ELB': [
-			{
-				type: 'elb-sg',
-				from: 'launchconfig-sg',
-				to: 'elb-sg-out',
-
-				direction: {
-					from: 'horizontal'
+			"AWS.VPC.NetworkInterface": {
+				"type": "sg",
+				"from": "launchconfig-sg",
+				"to": "eni-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
 				},
-
-				relation: 'multiple'
+				"relation": "multiple"
 			},
-			{
-				type: 'elb-sg',
-				from: 'launchconfig-sg',
-				to: 'elb-sg-in',
-
-				direction: {
-					from: 'horizontal'
+			"AWS.ELB": [
+				{
+					"type": "elb-sg",
+					"from": "launchconfig-sg",
+					"to": "elb-sg-out",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
 				},
-
-				relation: 'multiple'
-			}]
+				{
+					"type": "elb-sg",
+					"from": "launchconfig-sg",
+					"to": "elb-sg-in",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			]
 		}
 	},
 

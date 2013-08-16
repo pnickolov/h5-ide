@@ -438,14 +438,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
         handleRequest : (result, flag, region, id, name) ->
             me = this
 
-            if flag isnt 'RUN_STACK'
-                me.setFlag id, flag, 'pending'
+            me.setFlag id, flag, 'pending'
 
             if !result.is_error
-                if flag == 'RUN_STACK'
-                    console.log 'run stack request successfully'
-                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', name
-                else if flag == 'START_APP'
+                if flag == 'START_APP'
                     console.log 'start app request successfully'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS', name
                 else if flag == 'STOP_APP'
@@ -469,9 +465,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                             if req.state == "Done"
                                 handle.stop()
 
-                                if flag == 'RUN_STACK'
-                                    me.trigger 'TOOLBAR_STACK_RUN_SUCCESS', name
-                                else if flag == 'START_APP'
+                                if flag == 'START_APP'
                                     me.trigger 'TOOLBAR_APP_START_SUCCESS', name
                                 else if flag == 'STOP_APP'
                                     me.trigger 'TOOLBAR_APP_STOP_SUCCESS', name
@@ -488,19 +482,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                 if flag is 'TERMINATE_APP'
                                     ide_event.trigger ide_event.APP_TERMINATE, name, id
 
-                                if flag isnt 'RUN_STACK'
-                                    me.setFlag id, flag, req.state
+                                me.setFlag id, flag, req.state
 
                             else if req.state == "Failed"
                                 handle.stop()
 
-                                if flag == 'RUN_STACK'
-                                    me.trigger 'TOOLBAR_STACK_RUN_FAILED', name
-
-                                    if name in MC.data.app_list[MC.canvas_data.region]
-                                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
-
-                                else if flag == 'START_APP'
+                                if flag == 'START_APP'
                                     me.trigger 'TOOLBAR_APP_START_FAILED', name
                                 else if flag == 'STOP_APP'
                                     me.trigger 'TOOLBAR_APP_STOP_FAILED', name
@@ -510,21 +497,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                 if flag is 'TERMINATE_APP' and is_success
                                     ide_event.trigger ide_event.APP_TERMINATE, name, id
 
-                                if flag isnt 'RUN_STACK'
-                                    me.setFlag id, flag, req.state
+                                me.setFlag id, flag, req.state
 
                     }
 
                     null
 
             else
-                if flag == 'RUN_STACK'
-                    me.trigger 'TOOLBAR_STACK_RUN_REQUEST_FAILED', name
-
-                    if name in MC.data.app_list[region]
-                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
-
-                else if flag == 'START_APP'
+                if flag == 'START_APP'
                     me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED', name
                     #MC.canvas_data.state = 'Stopped'
                 else if flag == 'STOP_APP'
@@ -534,8 +514,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', name
                     #MC.canvas_data.state = 'Stopped'
 
-                if flag isnt 'RUN_STACK'
-                    me.setFlag id, flag, 'failed'
+                me.setFlag id, flag, 'failed'
 
         isInstanceStore : () ->
 

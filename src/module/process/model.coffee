@@ -58,6 +58,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                                 ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
                                 ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
                                 ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
+                                ide_event.trigger ide_event.UPDATE_APP_LIST, null
                             , 2000
 
 
@@ -69,6 +70,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
             console.log me
 
             process = MC.process[tab_name]
+            app_name = process.app_name
 
             console.log 'handleProcess id:' + process.tab_id
 
@@ -87,7 +89,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                             console.log 'request ' + req.data + "," + req.state + ',' + dag.dag.state
 
-                            app_name = req.brief.split(' ')[2]
+                            #app_name = req.brief.split(' ')[2]
 
                             if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
                                 flag_list.is_inprocess = true
@@ -118,6 +120,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                                         ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
                                         ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, req.region
                                         ide_event.trigger ide_event.DELETE_TAB_DATA, 'process-' + app_name
+                                        ide_event.trigger ide_event.UPDATE_APP_LIST, null
                                     , 2000
 
                             else if req.state is constant.OPS_STATE.OPS_STATE_FAILED
@@ -125,6 +128,9 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                                 flag_list.is_failed = true
                                 flag_list.err_detail = req.data
+
+                                if app_name in MC.data.app_list[process.data.region]
+                                    MC.data.app_list[process.data.region].splice MC.data.app_list[process.data.region].indexOf(app_name), 1
 
 
                             MC.process[tab_name].flag_list = flag_list
@@ -150,6 +156,10 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                 if MC.data.current_tab_id is tab_name
                     me.set 'flag_list', flag_list
                     me.trigger 'UPDATE_PROCESS'
+
+                if app_name in MC.data.app_list[process.data.region]
+                    MC.data.app_list[process.data.region].splice MC.data.app_list[process.data.region].indexOf(app_name), 1
+
 
     }
 

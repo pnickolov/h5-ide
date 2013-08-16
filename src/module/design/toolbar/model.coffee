@@ -137,7 +137,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
-                stack_model.once 'STACK_SAVE_RETURN', (result) ->
+                me.once 'STACK_SAVE_RETURN', (result) ->
                     console.log 'STACK_SAVE_RETURN'
                     console.log result
 
@@ -172,7 +172,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             else    #new
                 stack_model.create { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
-                stack_model.once 'STACK_CREATE_RETURN', (result) ->
+                me.once 'STACK_CREATE_RETURN', (result) ->
                     console.log 'STACK_CREATE_RETURN'
                     console.log result
 
@@ -228,7 +228,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                    return
 
             stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, new_name, name
-            stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
+            me.once 'STACK_SAVE__AS_RETURN', (result) ->
                 console.log 'STACK_SAVE__AS_RETURN'
                 console.log result
 
@@ -254,7 +254,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             name = data.name
 
             stack_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
-            stack_model.once 'STACK_REMOVE_RETURN', (result) ->
+            me.once 'STACK_REMOVE_RETURN', (result) ->
                 console.log 'STACK_REMOVE_RETURN'
                 console.log result
 
@@ -288,7 +288,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
             stack_model.run { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
-            stack_model.once 'STACK_RUN_RETURN', (result) ->
+            me.once 'STACK_RUN_RETURN', (result) ->
                 console.log 'STACK_RUN_RETURN'
                 console.log result
 
@@ -418,7 +418,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             name = data.name
 
             app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
-            app_model.once 'APP_START_RETURN', (result) ->
+            me.once 'APP_START_RETURN', (result) ->
                 console.log 'APP_START_RETURN'
                 console.log result
 
@@ -438,7 +438,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             name = data.name
 
             app_model.stop { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
-            app_model.once 'APP_STOP_RETURN', (result) ->
+            me.once 'APP_STOP_RETURN', (result) ->
                 console.log 'APP_STOP_RETURN'
                 console.log result
 
@@ -459,7 +459,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             #terminate : ( src, username, session_id, region_name, app_id, app_name=null )
             app_model.terminate { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
-            app_model.once 'APP_TERMINATE_RETURN', (result) ->
+            me.once 'APP_TERMINATE_RETURN', (result) ->
                 console.log 'APP_TERMINATE_RETURN'
                 console.log result
 
@@ -569,7 +569,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             # generate s3 key
             app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), data.region, data.id
-            app_model.once 'APP_GETKEY_RETURN', (result) ->
+            me.once 'APP_GETKEY_RETURN', (result) ->
                 console.log 'APP_GETKEY_RETURN'
                 console.log result
 

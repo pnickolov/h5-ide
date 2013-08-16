@@ -178,7 +178,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             #get service(model)
             vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
 
-            vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
+            me.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
                 console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 

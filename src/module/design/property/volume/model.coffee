@@ -85,7 +85,7 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
 
                     ebs_model.DescribeSnapshots { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, [volume_detail.Ebs.SnapshotId]
 
-            ebs_model.once 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
+            me.once 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
 
                 if $.isEmptyObject result.resolved_data.item.description
 

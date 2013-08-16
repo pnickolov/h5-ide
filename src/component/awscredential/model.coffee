@@ -29,7 +29,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
                 if !result1.is_error
                     vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), 'us-east-1',  ["supported-platforms"]
 
-                    vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result2) ->
+                    me.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result2) ->
 
                         console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 

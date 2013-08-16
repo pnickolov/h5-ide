@@ -43,7 +43,7 @@ define [ 'backbone', 'parametergroup_service'], ( Backbone, parametergroup_servi
                     console.log 'parametergroup.DescribeDBParameterGroups failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_PG_DESC_DB_PARAM_GRPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_PG_DESC_DB_PARAM_GRPS_RETURN', aws_result
 
 
         #DescribeDBParameters api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'parametergroup_service'], ( Backbone, parametergroup_servi
                     console.log 'parametergroup.DescribeDBParameters failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_PG_DESC_DB_PARAMS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_PG_DESC_DB_PARAMS_RETURN', aws_result
 
 
 

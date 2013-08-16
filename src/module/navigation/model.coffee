@@ -59,8 +59,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             me = this
 
             #get service(model)
-            app_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-            app_model.once 'APP_LST_RETURN', ( result ) ->
+            app_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+            me.once 'APP_LST_RETURN', ( result ) ->
 
                 console.log 'APP_LST_RETURN'
                 console.log result
@@ -81,8 +81,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             me = this
 
             #get service(model)
-            stack_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-            stack_model.once 'STACK_LST_RETURN', ( result ) ->
+            stack_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+            me.once 'STACK_LST_RETURN', ( result ) ->
 
                 console.log 'STACK_LST_RETURN'
                 console.log result
@@ -122,15 +122,15 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             me = this
 
             #get service(model)
-            ec2_model.DescribeRegions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-            ec2_model.once 'EC2_EC2_DESC_REGIONS_RETURN', ( result ) ->
+            ec2_model.DescribeRegions { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+            me.once 'EC2_EC2_DESC_REGIONS_RETURN', ( result ) ->
 
                 console.log 'EC2_EC2_DESC_REGIONS_RETURN'
                 console.log result
 
                 #
                 region_list = _.map result.resolved_data.item, ( value, key ) ->
-                
+
                     region_city = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[1]
                     region_area = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[0]
 

@@ -43,7 +43,7 @@ define [ 'backbone', 'favorite_service' ], ( Backbone, favorite_service ) ->
                     console.log 'favorite.add failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'FAVORITE_ADD_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'FAVORITE_ADD_RETURN', forge_result
 
 
         #remove api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'favorite_service' ], ( Backbone, favorite_service ) ->
                     console.log 'favorite.remove failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'FAVORITE_REMOVE_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'FAVORITE_REMOVE_RETURN', forge_result
 
 
         #info api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'favorite_service' ], ( Backbone, favorite_service ) ->
                     console.log 'favorite.info failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'FAVORITE_INFO_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'FAVORITE_INFO_RETURN', forge_result
 
 
 

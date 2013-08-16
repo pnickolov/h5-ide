@@ -43,7 +43,7 @@ define [ 'backbone', 'ec2_service'], ( Backbone, ec2_service) ->
                     console.log 'ec2.CreateTags failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EC2_CREATE_TAGS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_CREATE_TAGS_RETURN', aws_result
 
 
         #DeleteTags api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'ec2_service'], ( Backbone, ec2_service) ->
                     console.log 'ec2.DeleteTags failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EC2_DELETE_TAGS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_DELETE_TAGS_RETURN', aws_result
 
 
         #DescribeTags api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'ec2_service'], ( Backbone, ec2_service) ->
                     console.log 'ec2.DescribeTags failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EC2_DESC_TAGS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_DESC_TAGS_RETURN', aws_result
 
 
         #DescribeRegions api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'ec2_service'], ( Backbone, ec2_service) ->
                     console.log 'ec2.DescribeRegions failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EC2_DESC_REGIONS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_DESC_REGIONS_RETURN', aws_result
 
 
         #DescribeAvailabilityZones api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'ec2_service'], ( Backbone, ec2_service) ->
                     console.log 'ec2.DescribeAvailabilityZones failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', aws_result
 
 
 

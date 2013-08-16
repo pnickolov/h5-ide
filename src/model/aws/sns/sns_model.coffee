@@ -43,7 +43,7 @@ define [ 'backbone', 'sns_service'], ( Backbone, sns_service ) ->
                     console.log 'sns.GetSubscriptionAttributes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SNS__GET_SUBSCR_ATTRS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SNS__GET_SUBSCR_ATTRS_RETURN', aws_result
 
 
         #GetTopicAttributes api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'sns_service'], ( Backbone, sns_service ) ->
                     console.log 'sns.GetTopicAttributes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SNS__GET_TOPIC_ATTRS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SNS__GET_TOPIC_ATTRS_RETURN', aws_result
 
 
         #ListSubscriptions api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'sns_service'], ( Backbone, sns_service ) ->
                     console.log 'sns.ListSubscriptions failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SNS__LST_SUBSCRS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SNS__LST_SUBSCRS_RETURN', aws_result
 
 
         #ListSubscriptionsByTopic api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'sns_service'], ( Backbone, sns_service ) ->
                     console.log 'sns.ListSubscriptionsByTopic failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SNS__LST_SUBSCRS_BY_TOPIC_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SNS__LST_SUBSCRS_BY_TOPIC_RETURN', aws_result
 
 
         #ListTopics api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'sns_service'], ( Backbone, sns_service ) ->
                     console.log 'sns.ListTopics failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SNS__LST_TOPICS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SNS__LST_TOPICS_RETURN', aws_result
 
 
 

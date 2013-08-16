@@ -117,7 +117,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
             if ws
                 query = ws.collection.request.find()
-                handle = query.observeChanges {
+                handle = query.observeChanges
 
                     added : (id, dag) ->
                         req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
@@ -140,6 +140,8 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                             req = req_list[0]
 
                             console.log 'request ' + req.data + "," + req.state
+
+                        null
 
             item = me.parseInfo req
 

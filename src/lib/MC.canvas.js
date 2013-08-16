@@ -254,7 +254,6 @@ MC.canvas = {
 	_round_corner: function (controlPoints)
 	{
 		//add by xjimmy, draw round corner of fold line
-
 		var d = '',
 			last_p = {},
 			prev_p = {},
@@ -541,6 +540,7 @@ MC.canvas = {
 			from_node_connection_data,
 			to_node_connection_data,
 			is_connected,
+			port_direction,
 			startX,
 			startY,
 			endX,
@@ -615,28 +615,15 @@ MC.canvas = {
 
 							if (direction.from === 'vertical')
 							{
-								if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
-								{
-									from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-bottom');
-								}
-								else
-								{
-									from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-top');
-								}
+								port_direction = to_port_offset.top > from_node[0].getBoundingClientRect().top ? 'bottom' : 'top';
 							}
 
 							if (direction.from === 'horizontal')
 							{
-								if (to_port_offset.left > from_node[0].getBoundingClientRect().left)
-								{
-									from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-right');
-								}
-								else
-								{
-									from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-left');
-								}
+								port_direction = to_port_offset.left > from_node[0].getBoundingClientRect().left ? 'right' : 'left';
 							}
 
+							from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-' + port_direction);
 							from_port_offset = from_port.getBoundingClientRect();
 						}
 
@@ -647,28 +634,15 @@ MC.canvas = {
 
 							if (direction.to === 'vertical')
 							{
-								if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
-								{
-									to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-bottom');
-								}
-								else
-								{
-									to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-top');
-								}
+								port_direction = from_port_offset.top > to_node[0].getBoundingClientRect().top ? 'bottom' : 'top';
 							}
 
 							if (direction.to === 'horizontal')
 							{
-								if (from_port_offset.left > to_node[0].getBoundingClientRect().left)
-								{
-									to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-right');
-								}
-								else
-								{
-									to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-left');
-								}
+								port_direction = from_port_offset.left > to_node[0].getBoundingClientRect().left ? 'right' : 'left';
 							}
 
+							to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-' + port_direction);
 				 			to_port_offset = to_port.getBoundingClientRect();
 						}
 					}
@@ -1110,66 +1084,66 @@ MC.canvas = {
 		x = x * scale_ratio;
 		y = y * scale_ratio;
 
-		if (is_option_canvas)
-		{
-			$.each(group_stack, function (index, layer_data)
-			{
-				if (layer_data)
-				{
-					$.each(layer_data, function (i, item)
-					{
-						group_data = layout_group_data[ item.id ];
-						coordinate = group_data.coordinate;
-						size = group_data.size;
+		// if (is_option_canvas)
+		// {
+		// 	$.each(group_stack, function (index, layer_data)
+		// 	{
+		// 		if (layer_data)
+		// 		{
+		// 			$.each(layer_data, function (i, item)
+		// 			{
+		// 				group_data = layout_group_data[ item.id ];
+		// 				coordinate = group_data.coordinate;
+		// 				size = group_data.size;
 
-						if (
-							$.inArray(item.id, ignore_stack) === -1 &&
-							//target_id !== item.id &&
-							(
-								(x >= coordinate[0] &&
-								x <= coordinate[0] + size[0])
-								||
-								(x + width >= coordinate[0] &&
-								x + width <= coordinate[0] + size[0])
-							)
-							&&
-							(
-								(y >= coordinate[1] &&
-								y <= coordinate[1] + size[1])
-								||
-								(y + height >= coordinate[1] &&
-								y + height <= coordinate[1] + size[1])
-							)
-						)
-						{
-							result = {
-								'id': item.id,
-								'type': group_data.type
-							};
-						}
-					});
+		// 				if (
+		// 					$.inArray(item.id, ignore_stack) === -1 &&
+		// 					//target_id !== item.id &&
+		// 					(
+		// 						(x >= coordinate[0] &&
+		// 						x <= coordinate[0] + size[0])
+		// 						||
+		// 						(x + width >= coordinate[0] &&
+		// 						x + width <= coordinate[0] + size[0])
+		// 					)
+		// 					&&
+		// 					(
+		// 						(y >= coordinate[1] &&
+		// 						y <= coordinate[1] + size[1])
+		// 						||
+		// 						(y + height >= coordinate[1] &&
+		// 						y + height <= coordinate[1] + size[1])
+		// 					)
+		// 				)
+		// 				{
+		// 					result = {
+		// 						'id': item.id,
+		// 						'type': group_data.type
+		// 					};
+		// 				}
+		// 			});
 
-					if (!$.isEmptyObject(result))
-					{
-						return false;
-					}
-				}
-			});
+		// 			if (!$.isEmptyObject(result))
+		// 			{
+		// 				return false;
+		// 			}
+		// 		}
+		// 	});
 
-			is_matched =
-				$.isEmptyObject(result) &&
+		// 	is_matched =
+		// 		$.isEmptyObject(result) &&
 
-				// canvas right offset = 3
-				x + width < canvas_size[0] - 3 &&
-				y + height < canvas_size[1] - 3;
+		// 		// canvas right offset = 3
+		// 		x + width < canvas_size[0] - 3 &&
+		// 		y + height < canvas_size[1] - 3;
 
-			return {
-				'is_matched': is_matched,
-				'target': result.id === undefined && is_matched ? 'Canvas' : result.id
-			};
-		}
-		else
-		{
+		// 	return {
+		// 		'is_matched': is_matched,
+		// 		'target': result.id === undefined && is_matched ? 'Canvas' : result.id
+		// 	};
+		// }
+		// else
+		// {
 			$.each(point, function (index, data)
 			{
 				$.each(group_stack, function (i, layer_data)
@@ -1234,7 +1208,11 @@ MC.canvas = {
 				!match[0] &&
 				!match[1] &&
 				!match[2] &&
-				!match[3]
+				!match[3] &&
+
+				// canvas right offset = 3
+				x + width < canvas_size[0] - 3 &&
+				y + height < canvas_size[1] - 3
 			)
 			{
 				is_matched = true;
@@ -1245,7 +1223,7 @@ MC.canvas = {
 				'is_matched': is_matched,
 				'target': is_matched ? match_target : null
 			};
-		}
+		//}
 	},
 
 	isBlank: function (type, target_id, target_type, x, y, width, height)

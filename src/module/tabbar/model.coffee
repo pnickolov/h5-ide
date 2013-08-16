@@ -87,7 +87,7 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             console.log 'getStackInfo'
             #get this
             me = this
-            stack_model.once 'STACK_INFO_RETURN', ( result ) ->
+            me.once 'STACK_INFO_RETURN', ( result ) ->
                 console.log 'STACK_INFO_RETURN'
                 console.log result
                 me.trigger 'GET_STACK_COMPLETE', result
@@ -97,7 +97,7 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             console.log 'getAppInfo'
             #get this
             me = this
-            app_model.once 'APP_INFO_RETURN', ( result ) ->
+            me.once 'APP_INFO_RETURN', ( result ) ->
                 console.log 'APP_INFO_RETURN'
                 console.log result
                 me.trigger 'GET_APP_COMPLETE', result

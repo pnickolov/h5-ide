@@ -553,7 +553,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             me = this
 
             # generate s3 key
-            app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
+            app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), data.region, app_id
             app_model.once 'APP_GETKEY_RETURN', (result) ->
                 console.log 'APP_GETKEY_RETURN'
                 console.log result
@@ -564,7 +564,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     data.key = result.resolved_data
 
-                    savePNG true, data
+                    me.savePNG true, data
 
             null
 

@@ -2,7 +2,7 @@
 #  View Mode for header module
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'underscore', 'constant', 'app_model' ], ( ide_event, Backbone, $, _, constant, app_model ) ->
+define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event, Backbone, $, _, constant ) ->
 
     #websocket
     ws = MC.data.websocket
@@ -50,8 +50,6 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant', 'app_model' ],
                         #data = MC.process[tab_name].data
                         if MC.data.current_tab_id is 'process-'+app_name and MC.process[tab_name].flag_list.is_done
                             #save png
-                            #data.key = me.getKey(region, app_id)
-                            #if data.key
                             ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, app_id, MC.process[tab_name].data
 
                             # hold on 2 seconds
@@ -111,10 +109,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant', 'app_model' ],
                                 # if on current tab
                                 if MC.data.current_tab_id is 'process-' + app_name
                                     # save png
-                                    data = process.data
-                                    data.key = me.getKey(me, data.region, app_id)
-                                    # if data.key
-                                    #ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, app_id, process.data
+                                    ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, app_id, process.data
 
                                     # hold on 2 seconds
                                     setTimeout () ->
@@ -153,22 +148,6 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant', 'app_model' ],
                 if MC.data.current_tab_id is tab_name
                     me.set 'flag_list', flag_list
                     me.trigger 'UPDATE_PROCESS'
-
-        getKey  :   (me, region, app_id) ->
-            #me = this
-            # generate s3 key
-            app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
-            app_model.once 'APP_GETKEY_RETURN', (result) ->
-                console.log 'APP_GETKEY_RETURN'
-                console.log result
-
-                if !result.is_error
-                    # trigger toolbar save png event
-                    console.log 'TOOLBAR_SAVE_PNG'
-
-                    result.resolved_data
-
-            null
 
     }
 

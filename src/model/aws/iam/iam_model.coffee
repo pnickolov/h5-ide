@@ -43,7 +43,7 @@ define [ 'backbone', 'iam_service'], ( Backbone, iam_service) ->
                     console.log 'iam.GetServerCertificate failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'IAM__GET_SERVER_CERTIFICATE_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'IAM__GET_SERVER_CERTIFICATE_RETURN', aws_result
 
 
         #ListServerCertificates api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'iam_service'], ( Backbone, iam_service) ->
                     console.log 'iam.ListServerCertificates failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'IAM__LST_SERVER_CERTIFICATES_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'IAM__LST_SERVER_CERTIFICATES_RETURN', aws_result
 
 
 

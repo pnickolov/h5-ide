@@ -43,7 +43,7 @@ define [ 'backbone', 'subnet_service'], ( Backbone, subnet_service) ->
                     console.log 'subnet.DescribeSubnets failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_SNET_DESC_SUBNETS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_SNET_DESC_SUBNETS_RETURN', aws_result
 
 
 

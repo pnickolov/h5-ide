@@ -43,7 +43,7 @@ define [ 'backbone', 'aws_service'], ( Backbone, aws_service) ->
                     console.log 'aws.quickstart failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'AWS_QUICKSTART_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'AWS_QUICKSTART_RETURN', aws_result
 
 
         #Public api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'aws_service'], ( Backbone, aws_service) ->
                     console.log 'aws.Public failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'AWS__PUBLIC_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'AWS__PUBLIC_RETURN', aws_result
 
 
         #info api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'aws_service'], ( Backbone, aws_service) ->
                     console.log 'aws.info failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'AWS_INFO_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'AWS_INFO_RETURN', aws_result
 
 
         #resource api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'aws_service'], ( Backbone, aws_service) ->
                     console.log 'aws.resource failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'AWS_RESOURCE_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'AWS_RESOURCE_RETURN', aws_result
 
 
         #price api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'aws_service'], ( Backbone, aws_service) ->
                     console.log 'aws.price failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'AWS_PRICE_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'AWS_PRICE_RETURN', aws_result
 
 
         #status api (define function)
@@ -173,7 +173,7 @@ define [ 'backbone', 'aws_service'], ( Backbone, aws_service) ->
                     console.log 'aws.status failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'AWS_STATUS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'AWS_STATUS_RETURN', aws_result
 
 
 

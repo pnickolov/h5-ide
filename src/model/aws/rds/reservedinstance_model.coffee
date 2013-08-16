@@ -43,7 +43,7 @@ define [ 'backbone', 'reservedinstance_service'], ( Backbone, reservedinstance_s
                     console.log 'reservedinstance.DescribeReservedDBInstances failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_RSVDINS_DESC_RESERVED_DB_INSTANCES_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RSVDINS_DESC_RESERVED_DB_INSTANCES_RETURN', aws_result
 
 
         #DescribeReservedDBInstancesOfferings api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'reservedinstance_service'], ( Backbone, reservedinstance_s
                     console.log 'reservedinstance.DescribeReservedDBInstancesOfferings failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_RSVDINS_DESC_RESERVED_DB_INSTANCES_OFFERINGS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RSVDINS_DESC_RESERVED_DB_INSTANCES_OFFERINGS_RETURN', aws_result
 
 
 

@@ -43,7 +43,7 @@ define [ 'backbone', 'dhcp_service'], ( Backbone, dhcp_service) ->
                     console.log 'dhcp.DescribeDhcpOptions failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', aws_result
 
 
 

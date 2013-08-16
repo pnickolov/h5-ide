@@ -43,7 +43,7 @@ define [ 'backbone', 'log_service'], ( Backbone, log_service) ->
                     console.log 'log.put_user_log failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'LOG_PUT__USER__LOG_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'LOG_PUT__USER__LOG_RETURN', forge_result
 
 
 

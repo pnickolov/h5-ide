@@ -159,7 +159,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
             me = this
 
-            app_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  app_id
+            app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  app_id
 
             me.once 'APP_RESOURCE_RETURN', ( result ) ->
 

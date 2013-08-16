@@ -77,13 +77,13 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
 
                 if volume_detail.resource.SnapshotId
 
-                    ebs_model.DescribeSnapshots { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), volume_detail.resource.AvailabilityZone.slice(0,-1), [volume_detail.resource.SnapshotId]
+                    ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), volume_detail.resource.AvailabilityZone.slice(0,-1), [volume_detail.resource.SnapshotId]
 
             if volume_detail.Ebs
 
                 if volume_detail.Ebs.SnapshotId
 
-                    ebs_model.DescribeSnapshots { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, [volume_detail.Ebs.SnapshotId]
+                    ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, [volume_detail.Ebs.SnapshotId]
 
             me.once 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
 

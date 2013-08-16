@@ -91,7 +91,7 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
                 console.log 'STACK_INFO_RETURN'
                 console.log result
                 me.trigger 'GET_STACK_COMPLETE', result
-            stack_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'stack_region_name' ), [ stack_id ]
+            stack_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'stack_region_name' ), [ stack_id ]
 
         getAppInfo : ( app_id ) ->
             console.log 'getAppInfo'
@@ -101,7 +101,7 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
                 console.log 'APP_INFO_RETURN'
                 console.log result
                 me.trigger 'GET_APP_COMPLETE', result
-            app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'app_region_name' ), [ app_id ]
+            app_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'app_region_name' ), [ app_id ]
 
         checkPlatform : ( region_name ) ->
             console.log 'checkPlatform'

@@ -50,7 +50,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
             else
 
                 #get service(model)
-                ec2_model.DescribeAvailabilityZones { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, null
+                ec2_model.DescribeAvailabilityZones { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, null
                 me.once 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', ( result ) ->
                     console.log 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN'
                     console.log result
@@ -89,7 +89,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
             me.set 'resoruce_snapshot', null
 
             #get service(model)
-            ebs_model.DescribeSnapshots { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,  ["self"], null, null
+            ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,  ["self"], null, null
             me.once 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
                 console.log 'EC2_EBS_DESC_SSS_RETURN'
                 console.log result
@@ -122,7 +122,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
             else
                 #get service(model)
-                aws_model.quickstart { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
+                aws_model.quickstart { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
                 me.once 'AWS_QUICKSTART_RETURN', ( result ) ->
                     console.log 'AWS_QUICKSTART_RETURN'
                     ami_list = []
@@ -197,7 +197,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
             else
                 #get service(model)
-                ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, null
+                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, null
                 me.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
 
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN'
@@ -243,7 +243,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
 
             if stack_ami_list.length !=0
-                ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
+                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
                 me.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN'
 
@@ -286,7 +286,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
             ami_list = []
             if community_ami[region_name] == undefined
                 #get service(model)
-                aws_model.Public { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, filters
+                aws_model.Public { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, filters
                 me.once 'AWS__PUBLIC_RETURN', ( result ) ->
                     console.log 'AWS__PUBLIC_RETURN'
                     if result.resolved_data
@@ -368,7 +368,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
             else
 
                 #get service(model)
-                favorite_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
+                favorite_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name
                 me.once 'FAVORITE_INFO_RETURN', ( result ) ->
                     console.log 'FAVORITE_INFO_RETURN'
                     legalData = _.filter result.resolved_data, (value, key) ->
@@ -411,7 +411,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                     delete MC.data.config[region_name].favorite_ami
                     @favoriteAmiService region_name
 
-            favorite_model.add { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, amiId
+            favorite_model.add { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, amiId
 
         removeFav: ( region_name, amiId ) ->
             me.once 'FAVORITE_REMOVE_RETURN', ( result ) =>
@@ -421,7 +421,7 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
             amiId = [ amiId ]
 
-            favorite_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, amiId
+            favorite_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, amiId
 
             # remove favorite action is not very important and for instant reason I omit return value validation and change data directly.
 

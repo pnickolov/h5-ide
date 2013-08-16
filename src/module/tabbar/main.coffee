@@ -262,15 +262,16 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 console.log 'UPDATE_TABBAR, tab_id = ' + tab_id + ', tab_name = ' + tab_name
                 original_tab_id = view.updateCurrentTab tab_id, tab_name
                 console.log original_tab_id
-                if original_tab_id isnt tab_id then ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
+                if tab_id.split( '-' )[0] isnt 'app'
+                    if original_tab_id isnt tab_id then ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
 
             #listen
-            ide_event.onLongListen ide_event.OPEN_APP_PROCESS_TAB, ( tab_id, tab_name, region_name, result ) ->
-                console.log 'OPEN_APP_PROCESS_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name + ', region_name = ' + region_name + ', result = ' + result
+            ide_event.onLongListen ide_event.OPEN_APP_PROCESS_TAB, ( tab_id, tab_name, data, result ) ->
+                console.log 'OPEN_APP_PROCESS_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name + ', region_name = ' + data.region + ', result = ' + result
                 #set vo
                 #model.set 'app_region_name', region_name
                 #
-                MC.process[ 'process-' + tab_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'region_name' : region_name, 'result' : result }
+                MC.process[ 'process-' + tab_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'data' : data, 'result' : result }
                 #tabbar api
                 Tabbar.add 'process-' + tab_name.toLowerCase(), tab_name + ' - app'
 

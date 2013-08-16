@@ -46,21 +46,32 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                         # if ended then push event
                         app_name = MC.process[tab_name].app_name
                         app_id = MC.process[tab_name].flag_list.app_id
-                        region = MC.process[tab_name].region_name
+                        region = MC.process[tab_name].data.region
+                        #data = MC.process[tab_name].data
                         if MC.data.current_tab_id is 'process-'+app_name and MC.process[tab_name].flag_list.is_done
+                            #save png
+                            data = $.extend( true, {}, MC.process[tab_name].data )
+                            data.id = app_id
+                            ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, data
+
                             # hold on 2 seconds
                             setTimeout () ->
                                 ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
                                 ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
                                 ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
+                                ide_event.trigger ide_event.UPDATE_APP_LIST, null
                             , 2000
+
+
 
             null
 
         handleProcess : (tab_name) ->
             me = this
 
-            process = MC.process[tab_name]
+            #process = MC.process[tab_name]
+            process  = $.extend( true, {}, MC.process[tab_name] )
+            app_name = process.app_name
 
             console.log 'handleProcess id:' + process.tab_id
 
@@ -71,7 +82,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                     console.log 'request id:' + req_id
                     query = ws.collection.request.find({id:req_id})
                     handle = query.observeChanges {
-                        changed : (idx, dag) ->
+                        changed : (idx, dag) =>
                             flag_list = {}
 
                             req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
@@ -79,14 +90,21 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                             console.log 'request ' + req.data + "," + req.state + ',' + dag.dag.state
 
-                            app_name = req.brief.split(' ')[2]
+                            #app_name = req.brief.split(' ')[2]
 
                             if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
                                 flag_list.is_inprocess = true
+
                                 flag_list.steps = dag.dag.step.length
 
+                                # check rollback
                                 dones = 0
                                 dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
+                                console.log 'done steps:' + dones
+                                if dag.dag.state is 'Rollback'
+                                    tmp_list = me.get 'flag_list'
+                                    if tmp_list.dones>0 then (dones = tmp_list.dones) else (dones = 0)
+
                                 flag_list.dones = dones
                                 flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
 
@@ -101,11 +119,16 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                                 # if on current tab
                                 if MC.data.current_tab_id is 'process-' + app_name
+                                    # save png
+                                    process.data.id = app_id
+                                    ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, process.data
+
                                     # hold on 2 seconds
                                     setTimeout () ->
                                         ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
                                         ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, req.region
                                         ide_event.trigger ide_event.DELETE_TAB_DATA, 'process-' + app_name
+                                        ide_event.trigger ide_event.UPDATE_APP_LIST, null
                                     , 2000
 
                             else if req.state is constant.OPS_STATE.OPS_STATE_FAILED
@@ -113,6 +136,9 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                                 flag_list.is_failed = true
                                 flag_list.err_detail = req.data
+
+                                if app_name in MC.data.app_list[process.data.region]
+                                    MC.data.app_list[process.data.region].splice MC.data.app_list[process.data.region].indexOf(app_name), 1
 
 
                             MC.process[tab_name].flag_list = flag_list
@@ -138,6 +164,10 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                 if MC.data.current_tab_id is tab_name
                     me.set 'flag_list', flag_list
                     me.trigger 'UPDATE_PROCESS'
+
+                if app_name in MC.data.app_list[process.data.region]
+                    MC.data.app_list[process.data.region].splice MC.data.app_list[process.data.region].indexOf(app_name), 1
+
 
     }
 

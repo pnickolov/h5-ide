@@ -158,7 +158,7 @@ define [ 'MC', 'event',
 
         clickExportPngIcon : ->
             console.log 'clickExportPngIcon'
-            this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
+            this.trigger 'TOOLBAR_EXPORT_PNG_CLICK', MC.canvas_data
 
         clickExportJSONIcon : ->
             file_content = MC.canvas.layout.save()

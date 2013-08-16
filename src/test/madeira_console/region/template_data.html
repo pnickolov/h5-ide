@@ -4,12 +4,12 @@ Loading...
 {{else}}
 	<div class="dashboard-widget">
 		<ul class="tab grid grid-responsive grid-small-bottom row-counter">
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2 active"  style="width:10%" data-tab-target="#stat-table-instance">
+			<li style="width:10%" class="col-1-6 col-1-8-bp1 col-1-10-bp2 active" data-tab-target="#stat-table-instance">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.Instance}}<span class="label">Instance</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-eip">
+			<li style="width:10%" class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-eip">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.EIP}}<span class="label">Elastic IP</span>
 					{{#if region_resource_list.Not_Used.EIP}}
@@ -17,7 +17,7 @@ Loading...
 					{{/if}}
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-ebs">
+			<li style="width:10%" class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-ebs">
 				<div class="region-stat-block-wrap">
 					<i class="icon-hdd icon-label"></i>{{region_resource_list.Volume}}<span class="label">Volume</span>
 					{{#if region_resource_list.Not_Used.Volume}}
@@ -26,40 +26,43 @@ Loading...
 				</div>
 			</li>
 
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-vpc">
+			<li style="width:10%" class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-vpc">
 				<div class="region-stat-block-wrap">
 					<i class="icon-hdd icon-label"></i>{{region_resource_list.VPC}}<span class="label">VPC</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-vpn">
+			<li style="width:10%" class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-vpn">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.VPN}}<span class="label">VPN</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-elb">
+			<li style="width:10%" class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-elb">
 				<div class="region-stat-block-wrap">
 					<i class="icon-image icon-label"></i>{{region_resource_list.ELB}}<span class="label">Load Balancer</span>
 				</div>
 			</li>
-			<!--
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-asg">
+			<li style="width:10%" class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-asg">
 				<div class="region-stat-block-wrap">
-					<i class="icon-hdd icon-label"></i>4<span class="label">Auto Scaling Group</span>
+					<i class="icon-hdd icon-label"></i>{{region_resource_list.AutoScalingGroup}}<span class="label">Auto Scaling Group</span>
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-cw">
+			<li style="width:10%" class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-cw">
 				<div class="region-stat-block-wrap">
-					<i class="icon-image icon-label"></i>2<span class="label">CloudWatch Alarm</span>
-					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 alarm(s) in ALARM state.","description":""}'>3</span>
+					<i class="icon-image icon-label"></i>{{region_resource_list.CW}}<span class="label">CloudWatch Alarm</span>
+					{{#if region_resource_list.Not_Used.CW}}
+					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.CW}} alarm(s) in ALARM state.","description":""}'>{{region_resource_list.Not_Used.CW}}</span>
+					{{/if}}
 				</div>
 			</li>
-			<li class="col-1-6 col-1-8-bp1 col-1-10-bp2" style="width:10%" data-tab-target="#stat-table-sns">
+			<li style="width:10%" class="col-1-6 col-1-8-bp1 col-1-10-bp2" data-tab-target="#stat-table-sns">
 				<div class="region-stat-block-wrap">
-					<i class="icon-image icon-label"></i>3<span class="label">SNS Subscription</span>
-					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"3 subscription(s) not confirmed.","description":""}'>3</span>
+					<i class="icon-image icon-label"></i>{{region_resource_list.SNS}}<span class="label">SNS Subscription</span>
+					{{#if region_resource_list.Not_Used.SNS}}
+					<span class="warning-counter warning-counter bubble"  data-bubble-template="bubbleSuggest" data-bubble-data='{"title":"{{region_resource_list.Not_Used.SNS}} subscription(s) not confirmed.","description":""}'>{{region_resource_list.Not_Used.SNS}}</span>
+					{{/if}}
 				</div>
 			</li>
-			-->
+
 		</ul>
 		<div id="stat-table-instance" class="stat-table active">
 				<div class="dashboard-widget-body dashboard-widget-body-table table-tall scroll-wrap">
@@ -70,13 +73,13 @@ Loading...
 						<thead>
 							<tr>
 								<th class="sortable" style="width:10%">Region</th>
-								<th class="sortable" style="width:32%">Instance Name/ID</th>
-								<th class="sortable" style="width:8%">Status</th>
-								<th class="sortable" style="width:17%">Launch Time</th>
-								<th class="sortable" style="width:9%">AMI</th>
+								<th class="sortable" style="width:20%">Instance Name/ID</th>
+								<th class="sortable" style="width:10%">Status</th>
+								<th class="sortable" style="width:15%">Launch Time</th>
+								<th class="sortable" style="width:10%">AMI</th>
 								<th class="sortable" style="width:10%">Availability Zone</th>
-								<th class="sortable" style="width:10%">Created By</th>
-								<th style="width:4%">Detail</th>
+								<th style="width:10%">Created By</th>
+								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -87,7 +90,7 @@ Loading...
 									<td>
 										{{#if app}}
 											{{#if owner}}
-												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+												<a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
 											{{else}}
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
@@ -101,7 +104,7 @@ Loading...
 									<td>{{ launchTime }}</td>
 									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
 									<td>{{ placement.availabilityZone}}</td>
-									<td>{{ created_by }}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -124,10 +127,11 @@ Loading...
 						{{#if region_resource.DescribeAddresses}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:20%">Region</th>
-								<th class="sortable" style="width:30%">IP</th>
-								<th class="sortable" style="width:30%">Associated Instance</th>
-								<th style="width:20%">Detail</th>
+								<th class="sortable" style="width:15%">Region</th>
+								<th class="sortable" style="width:35%">IP</th>
+								<th class="sortable" style="width:35%">Associated Instance</th>
+								<th style="width:10%">Created By</th>
+								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -139,6 +143,7 @@ Loading...
 										{{ publicIp }}
 									</td>
 									<td>{{ instanceId }}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -161,13 +166,13 @@ Loading...
 						{{#if region_resource.DescribeVolumes}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:10%">Region</th>
-								<th class="sortable" style="width:25%">Name/ID</th>
-								<th class="sortable" style="width:10%">Status</th>
+								<th class="sortable" style="width:15%">Region</th>
+								<th class="sortable" style="width:20%">Name/ID</th>
+								<th class="sortable" style="width:15%">Status</th>
 								<th class="sortable" style="width:20%">Create Time</th>
-								<th class="sortable" style="width:10%">Device Name</th>
-								<th class="sortable" style="width:10%">Attachment Status</th>
-								<th class="sortable" style="width:10%">Instance Id</th>
+								<th class="sortable" style="width:15%">Device Name</th>
+								<th class="sortable" style="width:15%">Attachment Status</th>
+								<th style="width:10%">Created By</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -179,7 +184,7 @@ Loading...
 									<td>
 										{{#if app}}
 											{{#if owner}}
-												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+												<a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
 											{{else}}
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
@@ -192,7 +197,7 @@ Loading...
 									<td>{{ createTime }}</td>
 									<td>{{#each attachmentSet.item }}{{ this.device }}{{/each}}</td>
 									<td><i class="status status-{{#each attachmentSet.item }}{{ this.status }}{{/each}} icon-label"></i>{{#each attachmentSet.item }}{{ this.status }}{{/each}}</td>
-									<td>{{ instanceId }}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -217,12 +222,13 @@ Loading...
 						{{#if region_resource.DescribeVpcs}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:10%">Region</th>
-								<th class="sortable" style="width:15%">Name/ID</th>
+								<th class="sortable" style="width:15%">Region</th>
+								<th class="sortable" style="width:25%">Name/ID</th>
 								<th class="sortable" style="width:20%">Status</th>
 								<th class="sortable" style="width:25%">CIDR</th>
 								<th class="sortable" style="width:20%">DHCP Settings</th>
-								<th style="width:15%">Detail</th>
+								<th style="width:5%">Created By</th>
+								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -233,7 +239,7 @@ Loading...
 									<td>
 										{{#if app}}
 											{{#if owner}}
-												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+												<a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
 											{{else}}
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
@@ -249,6 +255,7 @@ Loading...
 									{{else}}
 									<td>None</td>
 									{{/if}}
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -273,11 +280,12 @@ Loading...
 						<thead>
 							<tr>
 								<th class="sortable" style="width:10%">Region</th>
-								<th class="sortable" style="width:30%">Name/ID</th>
+								<th class="sortable" style="width:25%">Name/ID</th>
 								<th class="sortable" style="width:15%">Status</th>
 								<th class="sortable" style="width:20%">Virtual Private Gateway</th>
 								<th class="sortable" style="width:20%">Customer Gateway</th>
-								<th style="width:10%">Detail</th>
+								<th style="width:10%">Created By</th>
+								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -288,7 +296,7 @@ Loading...
 									<td>
 										{{#if app}}
 											{{#if owner}}
-												<a href="" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+												<a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
 											{{else}}
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
@@ -300,6 +308,7 @@ Loading...
 									<td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
 									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
 									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{cgw}}}'>{{ customerGatewayId }}</a></td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -324,12 +333,13 @@ Loading...
 						{{#if region_resource.DescribeLoadBalancers}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:25%">Region</th>
+								<th class="sortable" style="width:15%">Region</th>
 								<th class="sortable" style="width:25%">DNS Name</th>
 								<th class="sortable" style="width:20%">Create time</th>
-								<th class="sortable" style="width:25%">Availability Zone</th>
+								<th class="sortable" style="width:15%">Availability Zone</th>
 								<th class="sortable" style="width:20%">Status</th>
-								<th style="width:15%">Detail</th>
+								<th style="width:10%">Created By</th>
+								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -344,6 +354,7 @@ Loading...
 									<td>{{ CreatedTime }}</td>
 									<td>{{ AvailabilityZones.member }}</td>
 									<td>{{ state }}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}
@@ -365,33 +376,54 @@ Loading...
 					<div class="scroll-content">
 
 						<table class="table table-region-stat" id="region-stat-table-asg">
+						{{#if region_resource.DescribeAutoScalingGroups}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:10%">Region</th>
+								<th class="sortable" style="width:15%">Region</th>
 								<th class="sortable" style="width:20%">Name</th>
-								<th class="sortable" style="width:45%">Current/Last Activity</th>
-								<th class="sortable" style="width:15%">Activity Status</th>
-								<th style="width:15%">Detail</th>
+								<th class="sortable" style="width:50%">Current/Last Activity</th>
+								<th class="sortable" style="width:20%">Activity Status</th>
+								<th style="width:10%">Created By</th>
+								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
-
+								{{#each region_resource.DescribeAutoScalingGroups}}
 								<tr>
 									<td>{{ region }}</td>
-									<td><a href="" class="table-link table-app-link truncate" title="Open App">[App Name]</a>
-									%asg-name%
+									<td>
+									{{#if app}}
+										{{#if owner}}
+											<a href="javascript:void(0)" class="table-link table-app-link truncate" id="asg-app-name" data-option='{"id": "{{app_id}}", "name": "{{app}}"}' title="Open App">[{{ app }}]</a>
+										{{else}}
+											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+										{{/if}}
+									{{else}}
+										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >[Unmanaged] </span>
+									{{/if}}
+									{{AutoScalingGroupName}}
 									</td>
-									<td>At 2012-04-12T17:31:30Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 1.  At 2012-04-12T17:32:07Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 to 1.</td>
-									<td>Failed</td>
+									<!-- <td><a href="" class="table-link table-app-link truncate" title="Open App">[App Name]</a> -->
+									</td>
+									<td>{{last_activity}}</td>
+									<td>{{activity_state}}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
-
+								{{/each}}
 							    <!-- Blank Slate -->
 								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
 									<p>There is no auto scaling group in this region.</p>
 								</div> -->
 
 						</tbody>
+						{{else}}
+
+							<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no auto scaling group in this region.</p>
+								</div>
+						{{/if}}
+
 						</table>
 
 					</div>
@@ -403,47 +435,32 @@ Loading...
 					<div class="scroll-content">
 
 						<table class="table table-region-stat" id="region-stat-table-cw">
+						{{#if region_resource.DescribeAlarms}}
 						<thead>
 							<tr>
 								<th class="sortable" style="width:10%">Region</th>
 								<th class="sortable" style="width:20%">Name</th>
-								<th class="sortable" style="width:15%">Dimension</th>
-								<th class="sortable" style="width:30%">Threshold</th>
-								<th class="sortable" style="width:15%">State</th>
-								<th style="width:15%">Detail</th>
+								<th class="sortable" style="width:35%">Dimension</th>
+								<th class="sortable" style="width:35%">Threshold</th>
+								<th class="sortable" style="width:10%">State</th>
+								<th style="width:10%">Created By</th>
+								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
-
+								{{#each region_resource.DescribeAlarms}}
 								<tr>
 									<td>{{ region }}</td>
 									<td>
-									%cloudwatch-alarm-name%
+									{{AlarmName}}
 									</td>
-									<td>InstanceId = i-fe90d1fc</td>
-									<td>DiskReadBytes >= 2 for 5 minutes</td>
-									<td><i class="status status-red icon-label"></i>ALARM</td>
+									<td>{{dimension_display}}</td>
+									<td>{{threshold_display}}</td>
+									<td><i class="status {{#if state_ok}}status-green{{/if}} {{#if state_alarm}}status-red{{/if}} {{#if state_insufficient}}status-grace{{/if}} icon-label"></i>{{StateValue}}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
-								<tr>
-									<td>
-									%cloudwatch-alarm-name%
-									</td>
-									<td>InstanceId = i-fe90d1fc</td>
-									<td>DiskReadBytes >= 2 for 5 minutes</td>
-									<td><i class="status status-green icon-label"></i>OK</td>
-									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-								</tr>
-								<tr>
-									<td>
-									%cloudwatch-alarm-name%
-									</td>
-									<td>InstanceId = i-fe90d1fc</td>
-									<td>DiskReadBytes >= 2 for 5 minutes</td>
-									<td><i class="status status-grey icon-label"></i>InsufficientData</td>
-									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-								</tr>
-
+								{{/each}}
 
 							    <!-- Blank Slate -->
 								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
@@ -451,6 +468,12 @@ Loading...
 								</div> -->
 
 						</tbody>
+						{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no cloud watch alarm in this region.</p>
+								</div>
+
+						{{/if}}
 						</table>
 
 					</div>
@@ -462,32 +485,29 @@ Loading...
 					<div class="scroll-content">
 
 						<table class="table table-region-stat" id="region-stat-table-sns">
+						{{#if region_resource.ListSubscriptions}}
 						<thead>
 							<tr>
-								<th class="sortable" style="width:10%">Region</th>
+								<th class="sortable" style="width:15%">Region</th>
 								<th class="sortable" style="width:30%">Topic Name</th>
-								<th class="sortable" style="width:40%">Endpoint and Protocol</th>
-								<th class="sortable" style="width:10%">Confirmation</th>
-								<th style="width:15%">Detail</th>
+								<th class="sortable" style="width:30%">Endpoint and Protocol</th>
+								<th class="sortable" style="width:20%">Confirmation</th>
+								<th style="width:10%">Created By</th>
+								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
 						<tbody>
-
+								{{#each region_resource.ListSubscriptions}}
 								<tr>
 									<td>{{ region }}</td>
-									<td>%topic-name%
+									<td>{{topic}}
 									</td>
-									<td>Email: paula@mc2.com</td>
-									<td><i class="status status-red icon-label"></i>AuthorizationError</td>
+									<td>{{Protocol}}: {{Endpoint}}</td>
+									<td><i class="status {{#if pending_state}}status-red{{else}}status-green{{/if}} icon-label"></i>{{#if pending_state}}{{pending_state}}{{else}}{{success_state}}{{/if}}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
-								<tr>
-									<td>%topic-name%
-									</td>
-									<td>Email: paula@mc2.com</td>
-									<td><i class="status status-green icon-label"></i>Success</td>
-									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-								</tr>
+								{{/each}}
 
 							    <!-- Blank Slate -->
 								<!-- <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
@@ -495,6 +515,12 @@ Loading...
 								</div> -->
 
 						</tbody>
+						{{else}}
+								<div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+									<p>There is no subscription in this region.</p>
+								</div>
+
+						{{/if}}
 						</table>
 
 					</div>
@@ -535,13 +561,6 @@ Loading...
                     <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                 </tr>
             {{/each}}
-            	<tr>
-            		<td><i class="icon-{{type}}-mini icon-label"></i>Auto Scaling Group</td>
-            		<td>%asg-name%</td>
-            		<td>5 InService</td>
-            		<td>$45/h</td>
-            		<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-            	</tr>
             </tbody>
         </table>
     </div>
@@ -584,7 +603,7 @@ Loading...
 
 <!--{{ .stat-stack-count }}-->
 	<a href="#"><i class="icon-stack-nav icon-nav-label left"></i><span class="counter">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span> Stacks</a>
-	<button id="btn-create-stack" href="javascript:void(0)" class="btn btn-region-dashboard" title="Create New Stack">+</button>
+	<button id="btn-create-stack" href="javascript:void(0)" class="btn btn-region-dashboard btn-primary" disabled="disabled" title="Create New Stack">+</button>
 
 <!--{{ .stat-app }}-->
 	{{#each cur_app_list}}
@@ -612,7 +631,7 @@ Loading...
 
 <!--{{ .stat-stack }}-->
 	{{#each cur_stack_list}}
-		<div class="item-thumbnail-wrap" style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}.png?time={{update_time}}') 0 0;">
+		<div class="item-thumbnail-wrap" style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}') 0 0;">
 			<div class="action-thumbnail">
 					<a class="modal btn duplicate-stack"  id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Rename Stack", "body":"Stack Name:", "input":"{{name}}", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"><i class="icon-redo"></i></a>
 

@@ -60,45 +60,45 @@ define [ './temp_view',
             $target = $toggle.next()
 
             if hide
-                $target.css("display", "block").slideUp(250)
+                $target.css("display", "block").slideUp(200)
             else
-                $target.slideDown(250)
+                $target.slideDown(200)
             $toggle.toggleClass("expand")
-            return
-
-            if hide
-                h = $target.innerHeight()
-                $target.css({
-                        "max-height" : h
-                        "overflow"   : "hidden"
-                    })
-                    .toggleClass("transition", false)
-
-                setTimeout ()->
-                    $target.toggleClass("transition", true).css("max-height", 0)
-                , 10
-            else
-                $target.removeClass("transition").css {
-                    position     : "absolute"
-                    visibility   : "hidden"
-                    "max-height" : "100000px"
-                    overflow     : "hidden"
-                }
-                h = $target.innerHeight()
-                $target.css("max-height", "0")
-                setTimeout () ->
-                    $target.toggleClass("transition", true).css {
-                        position     : ""
-                        visibility   : ""
-                        "max-height" : h
-                    }
-
-                , 10
-
-            $toggle.toggleClass("expand")
-
-
             return false
+
+            # if hide
+            #     h = $target.innerHeight()
+            #     $target.css({
+            #             "max-height" : h
+            #             "overflow"   : "hidden"
+            #         })
+            #         .toggleClass("transition", false)
+
+            #     setTimeout ()->
+            #         $target.toggleClass("transition", true).css("max-height", 0)
+            #     , 10
+            # else
+            #     $target.removeClass("transition").css {
+            #         position     : "absolute"
+            #         visibility   : "hidden"
+            #         "max-height" : "100000px"
+            #         overflow     : "hidden"
+            #     }
+            #     h = $target.innerHeight()
+            #     $target.css("max-height", "0")
+            #     setTimeout () ->
+            #         $target.toggleClass("transition", true).css {
+            #             position     : ""
+            #             visibility   : ""
+            #             "max-height" : h
+            #         }
+
+            #     , 10
+
+            # $toggle.toggleClass("expand")
+
+
+            # return false
 
         optionToggle : ( event ) ->
             $target = $(this)

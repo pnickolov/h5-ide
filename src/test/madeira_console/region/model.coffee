@@ -464,15 +464,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
             if resource.tagSet != undefined
 
-                _.map resource.tagSet, ( tag ) ->
+                _.map resource.tagSet, ( value, key ) ->
 
-                    if tag.key == 'app'
+                    if key == 'app'
 
-                        resources[action][i].app = tag.value
+                        resources[action][i].app = value
 
-                    if tag.key == 'Created by' and tag.value == owner
+                    if key == 'Created by' and value == owner
 
-                        resources[action][i].owner = tag.value
+                        resources[action][i].owner = value
 
                     null
 
@@ -1141,21 +1141,21 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                     if ins.tagSet != undefined
 
-                        _.map ins.tagSet, ( tag )->
-                            if tag
-                                if tag.key == 'app'
+                        _.map ins.tagSet, ( value, key )->
 
-                                    is_managed = true
+                            if key == 'app'
 
-                                    resources.DescribeInstances[i].app = tag.value
+                                is_managed = true
 
-                                if tag.key == 'name'
+                                resources.DescribeInstances[i].app = value
 
-                                    resources.DescribeInstances[i].host = tag.value
+                            if key == 'name'
 
-                                if tag.key == 'Created by' and tag.value == owner
+                                resources.DescribeInstances[i].host = value
 
-                                    resources.DescribeInstances[i].owner = tag.value
+                            if key == 'Created by'
+
+                                resources.DescribeInstances[i].owner = value
 
                             null
 

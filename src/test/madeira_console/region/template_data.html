@@ -78,6 +78,7 @@ Loading...
 								<th class="sortable" style="width:15%">Launch Time</th>
 								<th class="sortable" style="width:10%">AMI</th>
 								<th class="sortable" style="width:10%">Availability Zone</th>
+								<th style="width:10%">Creator</th>
 								<th style="width:5%">Detail</th>
 							</tr>
 						</thead>
@@ -103,6 +104,7 @@ Loading...
 									<td>{{ launchTime }}</td>
 									<td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
 									<td>{{ placement.availabilityZone}}</td>
+									<td>{{ owner }}</td>
 									<td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
 								</tr>
 								{{/each}}

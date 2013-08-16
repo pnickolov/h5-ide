@@ -11,10 +11,10 @@ require.config {
 
 	paths              :
 
-		'console'      : 'test/madeira_console/console'
 
 		#vender
 		'jquery'       : 'vender/jquery/jquery'
+		'canvon'       : 'vender/canvon/canvon'
 
 		'underscore'   : 'vender/underscore/underscore'
 		'backbone'     : 'vender/backbone/backbone'
@@ -25,11 +25,18 @@ require.config {
 		'i18n'         : 'vender/requirejs/i18n'
 
 		'zeroclipboard': 'vender/zeroclipboard/ZeroClipboard'
+		'jqpagination' : 'vender/jqpagination/jquery.jqpagination'
 
 		#core lib
 		'MC'                 : 'lib/MC.core'
 		'MC.template'        : 'lib/MC.template'
 		'MC.ide.template'    : 'lib/MC.ide.template'
+		'MC.validate'  	     : 'lib/MC.validate'
+
+		#canvas
+		'MC.canvas'          : 'lib/MC.canvas'
+		'MC.canvas.constant' : 'lib/MC.canvas.constant'
+		'MC.canvas.add'      : 'lib/MC.canvas.add'
 
 		#ui
 		'UI.tooltip'        : 'ui/common/UI.tooltip'
@@ -52,6 +59,8 @@ require.config {
 		'UI.editablelabel'  : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'  : 'ui/common/UI.multiinputbox'
 		'UI.zeroclipboard'  : 'ui/common/UI.zeroclipboard'
+		'UI.sortable'       : 'ui/common/jquery.sortable'
+		'UI.parsley' 	    : 'ui/common/UI.parsley'
 
 		#jquery plugin
 		'hoverIntent'  : 'ui/common/jquery.hoverIntent.minified'
@@ -208,6 +217,9 @@ require.config {
 			deps       : [ 'jquery' ]
 			exports    : 'MC'
 
+		'MC.validate'  :
+			deps       : [ 'MC' ]
+
 		'MC.template'  :
 			deps       : [ 'handlebars', 'MC' ]
 			exports    : 'MC.template'
@@ -215,17 +227,20 @@ require.config {
 		'MC.ide.template'  :
 			deps       : [ 'MC', 'jquery', 'underscore' ]
 
-		'UI.scrollbar' :
-			deps		: ['jquery']
-
 		'UI.tabbar'    :
 			deps       : [ 'MC.template' ]
 
 		'UI.bubble'    :
 			deps       : [ 'MC.template' ]
 
+		'UI.scrollbar' :
+			deps       : ['jquery']
+
 		'UI.modal'     :
 			deps       : [ 'MC.template' ]
+
+		'UI.parsely'   :
+			deps       : [ 'jquery' ]
 
 		'Meteor'       :
 			deps       : ['underscore']

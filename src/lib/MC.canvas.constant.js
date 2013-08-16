@@ -207,8 +207,7 @@ var constant_data = {
 					to: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			},
 			'AWS.EC2.Instance':
 			{
@@ -221,16 +220,14 @@ var constant_data = {
 					to: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			},
 			'AWS.EC2.EBS.Volume':
 			{
 				type: 'attachment',
 				from: 'instance-attach',
 				to: 'volume-attach',
-				relation: 'multiple',
-				color: '#12CD4F' //green
+				relation: 'multiple'
 			},
 			'AWS.ELB': [
 			{
@@ -242,8 +239,7 @@ var constant_data = {
 					from: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			},
 			{
 				type: 'elb-sg',
@@ -254,15 +250,13 @@ var constant_data = {
 					from: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			},
 			{
 				type: 'attachment',
 				from: 'instance-elb-attach',
 				to: 'elb-attach',
-				relation: 'multiple',
-				color: '#12CD4F' //green
+				relation: 'multiple'
 			}
 			],
 			'AWS.VPC.NetworkInterface': [
@@ -270,7 +264,6 @@ var constant_data = {
 				type: 'attachment',
 				from: 'instance-attach',
 				to: 'eni-attach',
-				color: '#12CD4F',
 				relation: 'multiple'
 			},
 			{
@@ -283,16 +276,14 @@ var constant_data = {
 					to: 'horizontal'
 				},
 
-				color: '#6DAEFE',
 				relation: 'multiple'
 			}],
 			'AWS.VPC.RouteTable': [
 			{
-				type: 'rtb_target',
+				type: 'rtb-target',
 				from: 'instance-rtb',
 				to: 'rtb-tgt-left',
 				relation: 'multiple', //a instance can only connect to one routetable
-				color: '#6DAEFE', //blue
 				//dash line
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
@@ -302,7 +293,6 @@ var constant_data = {
 				from: 'instance-rtb',
 				to: 'rtb-tgt-right',
 				relation: 'unique', //a instance can only connect to one routetable
-				color: '#6DAEFE', //blue
 				//dash line
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
@@ -315,8 +305,7 @@ var constant_data = {
 				type: 'attachment',
 				from: 'volume-attach',
 				to: 'instance-attach',
-				relation: 'unique', //a volume can only connect to one instance
-				color: '#12CD4F' //green
+				relation: 'unique' //a volume can only connect to one instance
 			}
 		},
 		'AWS.ELB':
@@ -331,8 +320,7 @@ var constant_data = {
 					to: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			},
 			{
 				type: 'elb-sg',
@@ -343,15 +331,13 @@ var constant_data = {
 					to: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			},
 			{
 				type: 'attachment',
 				from: 'elb-attach',
 				to: 'instance-elb-attach',
-				relation: 'multiple',
-				color: '#12CD4F' //green
+				relation: 'multiple'
 			}
 			],
 			'AWS.VPC.Subnet':
@@ -359,8 +345,7 @@ var constant_data = {
 				type: 'association',
 				from: 'elb-assoc',
 				to: 'subnet-assoc-in',
-				relation: 'multiple',
-				color: '#d8d7d6' //gray
+				relation: 'multiple'
 			},
 			'AWS.AutoScaling.LaunchConfiguration':[
 			{
@@ -372,8 +357,7 @@ var constant_data = {
 					to: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			},
 			{
 				type: 'elb-sg',
@@ -384,8 +368,7 @@ var constant_data = {
 					to: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			}
 			]
 		},
@@ -402,23 +385,21 @@ var constant_data = {
 					to: 'horizontal'
 				},
 
-				color: '#6DAEFE', //blue
 				relation: 'multiple'
 			},
 			{
 				type: 'attachment',
 				from: 'eni-attach',
 				to: 'instance-attach',
-				relation: 'unique', //an eni can only connect to one instance
-				color: '#12CD4F' //green
+				relation: 'unique' //an eni can only connect to one instance
 			}],
 			'AWS.VPC.RouteTable': [
 			{
 				type: 'sg',
 				from: 'eni-rtb',
 				to: 'rtb-tgt-left',
-				color: '#6DAEFE', //blue
 				relation: 'multiple',
+
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 
@@ -427,8 +408,8 @@ var constant_data = {
 				type: 'sg',
 				from: 'eni-rtb',
 				to: 'rtb-tgt-right',
-				color: '#6DAEFE', //blue
 				relation: 'multiple',
+
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			}
@@ -446,25 +427,23 @@ var constant_data = {
 					from: 'vertical'
 				},
 
-				relation: 'multiple',
-				color: '#d8d7d6'
+				relation: 'multiple'
 			},
 			'AWS.EC2.Instance': [
 			{
-				type: 'rtb_target',
+				type: 'rtb-target',
 				from: 'rtb-tgt-left',
 				to: 'instance-rtb',
-				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				//dash line
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			},
 			{
-				type: 'rtb_target',
+				type: 'rtb-target',
 				from: 'rtb-tgt-right',
 				to: 'instance-rtb',
-				color: '#6DAEFE', //blue
+
 				relation: 'multiple',
 				//dash line
 				color_dash: '#9FC9FD', //dash color
@@ -472,20 +451,18 @@ var constant_data = {
 			}],
 			'AWS.VPC.NetworkInterface': [
 			{
-				type: 'rtb_target',
+				type: 'rtb-target',
 				from: 'rtb-tgt-left',
 				to: 'eni-rtb',
-				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				//dash line
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			},
 			{
-				type: 'rtb_target',
+				type: 'rtb-target',
 				from: 'rtb-tgt-right',
 				to: 'eni-rtb',
-				color: '#6DAEFE', //blue
 				relation: 'multiple',
 				//dash line
 				color_dash: '#9FC9FD', //dash color
@@ -494,22 +471,20 @@ var constant_data = {
 			],
 			'AWS.VPC.InternetGateway':
 			{
-				type: 'rtb_target',
+				type: 'rtb-target',
 				from: 'rtb-tgt-left',
 				to: 'igw-tgt',
 				relation: 'multiple', //a rt can only connect to one igw
-				color: '#6DAEFE', //blue
 
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			},
 			'AWS.VPC.VPNGateway':
 			{
-				type: 'rtb_target',
+				type: 'rtb-target',
 				from: 'rtb-tgt-right',
 				to: 'vgw-tgt',
 				relation: 'multiple', //a rt can only connect to one vgw
-				color: '#6DAEFE', //blue
 
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
@@ -519,10 +494,9 @@ var constant_data = {
 		{
 			'AWS.VPC.RouteTable':
 			{
-				type: 'rtb_target',
+				type: 'rtb-target',
 				from: 'igw-tgt',
 				to: 'rtb-tgt-left',
-				color: '#6DAEFE', //blue
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			}
@@ -531,10 +505,10 @@ var constant_data = {
 		{
 			'AWS.VPC.RouteTable':
 			{
-				type: 'rtb_target',
+				type: 'rtb-target',
 				from: 'vgw-tgt',
 				to: 'rtb-tgt-right',
-				color: '#6DAEFE', //blue
+
 				color_dash: '#9FC9FD', //dash color
 				stroke_dasharray: '10, 10'
 			},
@@ -542,8 +516,7 @@ var constant_data = {
 			{
 				type: 'vpn',
 				from: 'vgw-vpn',
-				to: 'cgw-vpn',
-				color: '#bf7aa5' //purple
+				to: 'cgw-vpn'
 			}
 		},
 		'AWS.VPC.CustomerGateway':
@@ -553,8 +526,7 @@ var constant_data = {
 				type: 'vpn',
 				from: 'cgw-vpn',
 				to: 'vgw-vpn',
-				relation: 'unique', //a cgw can only connect to one vgw
-				color: '#bf7aa5' //purple
+				relation: 'unique' //a cgw can only connect to one vgw
 			}
 		},
 		'AWS.VPC.Subnet':
@@ -569,16 +541,14 @@ var constant_data = {
 					to: 'vertical'
 				},
 
-				relation: 'multiple',
-				color: '#d8d7d6'
+				relation: 'multiple'
 			},
 			'AWS.ELB':
 			{
 				type: 'association',
 				from: 'subnet-assoc-in',
 				to: 'elb-assoc',
-				relation: 'unique',
-				color: '#d8d7d6' //gray
+				relation: 'unique'
 			}
 		},
 
@@ -595,8 +565,7 @@ var constant_data = {
 					to: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			},
 			'AWS.EC2.Instance':
 			{
@@ -609,10 +578,9 @@ var constant_data = {
 					to: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			},
-			'AWS.ELB':[
+			'AWS.ELB': [
 			{
 				type: 'elb-sg',
 				from: 'launchconfig-sg',
@@ -622,8 +590,7 @@ var constant_data = {
 					from: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
+				relation: 'multiple'
 			},
 			{
 				type: 'elb-sg',
@@ -634,10 +601,8 @@ var constant_data = {
 					from: 'horizontal'
 				},
 
-				relation: 'multiple',
-				color: '#6DAEFE' //blue
-			}
-			]
+				relation: 'multiple'
+			}]
 		}
 	},
 

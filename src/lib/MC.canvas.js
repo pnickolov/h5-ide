@@ -705,11 +705,7 @@ MC.canvas = {
 				else
 				{
 					//line style
-					MC.paper.start({
-						'stroke': connection_option.color,
-						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-						'fill': 'none'
-					});
+					MC.paper.start();
 
 					MC.paper.path(path);
 					MC.paper.path(path).attr('class','fill-line');
@@ -722,8 +718,6 @@ MC.canvas = {
 					{
 						MC.paper.path(path, {
 							'stroke': connection_option.color_dash,
-							'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-							'fill': 'none',
 							'stroke-dasharray': connection_option.stroke_dasharray
 						});
 					}

@@ -519,6 +519,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                                 if flag is 'TERMINATE_APP'
                                     ide_event.trigger ide_event.APP_TERMINATE, name, id
+                                else if flag is 'START_APP'
+                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
+                                else if flag is 'STOP_APP'
+                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
 
                                 me.setFlag id, flag, req.state
 
@@ -534,6 +538,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                                 if flag is 'TERMINATE_APP' and is_success
                                     ide_event.trigger ide_event.APP_TERMINATE, name, id
+                                else
+                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
 
                                 me.setFlag id, flag, req.state
 
@@ -553,6 +559,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     #MC.canvas_data.state = 'Stopped'
 
                 me.setFlag id, flag, 'failed'
+
+                # failed and stop
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
 
         isInstanceStore : () ->
 

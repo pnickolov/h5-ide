@@ -2420,7 +2420,7 @@ MC.canvas.event.dragable = {
 				canvas_offset = svg_canvas.offset(),
 				shadow_offset = Canvon(event.data.shadow[0]).offset(),
 				layout_node_data = MC.canvas.data.get('layout.component.node'),
-				//layout_connection_data = MC.canvas.data.get('layout.connection'),
+				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
 				scale_ratio = MC.canvas_property.SCALE_RATIO,
 				component_size,

@@ -39,14 +39,14 @@
       <ul class="sg-rule-list" id="sg-rule-list">
         {{#each sg_app_detail.rules}}
         <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
-          <i class="icon-rule-{{direction}}" data-tooltip="{{direction}}"></i>
-          <!-- <div class='rule-direction-icon tooltip' data-tooltip="{{direction}}"></div> -->
-          <div class='rule-protocol'>{{ipProtocol}}</div>
-          <div class='rule-reference'>
-            <div class="rule-reference-icon"></div>
-            <span>{{ipRanges}}</span>
+          <div class="sg-rule-list-row">
+            <div class='rule-direction-icon tooltip' data-tooltip="{{direction}}"></div>
+            <div class='rule-reference'>{{ipRanges}}</div>
           </div>
-          <div class='rule-port' title="port message">{{fromPort}}-{{toPort}}</div>
+          <div class="sg-rule-list-row">
+            <div><span class="rule-protocol">{{ipProtocol}}</span></div>
+            <div class='rule-port' title="port message">{{fromPort}}-{{toPort}}</div>
+          </div>
         </li>
         {{/each}}
       </ul>

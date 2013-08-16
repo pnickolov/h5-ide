@@ -65,13 +65,16 @@
 		<ul class="sg-rule-list" id="sglist-rule-list">
 			{{#each sg_rule_list}}
 			<li data-inbound="true">
-				<div data-id="{{Direction}}" class='rule-direction-icon tooltip' data-tooltip="{{Direction}}">{{Direction}}</div>
-				<div data-id="{{IpProtocol}}" class='rule-protocol'>{{IpProtocol}}</div>
-				<div data-id="{{IpRanges}}" class='rule-reference'>
-					<div class="rule-reference-icon"></div>
-					<span>{{IpRanges}}</span>
+				<div class="sg-rule-list-row">
+					<div data-id="{{Direction}}" class='rule-direction-icon tooltip' data-tooltip="{{Direction}}"></div>
+					<div data-id="{{IpRanges}}" class='rule-reference'>
+						{{IpRanges}}
+					</div>
 				</div>
-				<div data-id="{{FromPort}}" class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
+				<div class="sg-rule-list-row">
+					<div data-id="{{IpProtocol}}"><span class="rule-protocol">{{IpProtocol}}</span></div>
+					<div data-id="{{FromPort}}" class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
+				</div>
 			</li>
 			{{/each}}
 		</ul>

@@ -43,7 +43,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeApps failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_APPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_APPS_RETURN', aws_result
 
 
         #DescribeStacks api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeStacks failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_STACKS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_STACKS_RETURN', aws_result
 
 
         #DescribeCommands api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeCommands failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_COMMANDS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_COMMANDS_RETURN', aws_result
 
 
         #DescribeDeployments api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeDeployments failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_DEPLOYMENTS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_DEPLOYMENTS_RETURN', aws_result
 
 
         #DescribeElasticIps api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeElasticIps failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_ELASTIC_IPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_ELASTIC_IPS_RETURN', aws_result
 
 
         #DescribeInstances api (define function)
@@ -173,7 +173,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeInstances failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_INSS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_INSS_RETURN', aws_result
 
 
         #DescribeLayers api (define function)
@@ -199,7 +199,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeLayers failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_LAYERS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_LAYERS_RETURN', aws_result
 
 
         #DescribeLoadBasedAutoScaling api (define function)
@@ -225,7 +225,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeLoadBasedAutoScaling failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_LOAD_BASED_ASL_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_LOAD_BASED_ASL_RETURN', aws_result
 
 
         #DescribePermissions api (define function)
@@ -251,7 +251,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribePermissions failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_PERMISSIONS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_PERMISSIONS_RETURN', aws_result
 
 
         #DescribeRaidArrays api (define function)
@@ -277,7 +277,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeRaidArrays failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_RAID_ARRAYS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_RAID_ARRAYS_RETURN', aws_result
 
 
         #DescribeServiceErrors api (define function)
@@ -303,7 +303,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeServiceErrors failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_SERVICE_ERRORS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_SERVICE_ERRORS_RETURN', aws_result
 
 
         #DescribeTimeBasedAutoScaling api (define function)
@@ -329,7 +329,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeTimeBasedAutoScaling failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_TIME_BASED_ASL_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_TIME_BASED_ASL_RETURN', aws_result
 
 
         #DescribeUserProfiles api (define function)
@@ -355,7 +355,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeUserProfiles failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_USER_PROFILES_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_USER_PROFILES_RETURN', aws_result
 
 
         #DescribeVolumes api (define function)
@@ -381,7 +381,7 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                     console.log 'opsworks.DescribeVolumes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'OPSWORKS__DESC_VOLS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_VOLS_RETURN', aws_result
 
 
 

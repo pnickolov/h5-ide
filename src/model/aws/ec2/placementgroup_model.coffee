@@ -43,7 +43,7 @@ define [ 'backbone', 'placementgroup_service'], ( Backbone, placementgroup_servi
                     console.log 'placementgroup.CreatePlacementGroup failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_PG_CREATE_PLA_GRP_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_PG_CREATE_PLA_GRP_RETURN', aws_result
 
 
         #DeletePlacementGroup api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'placementgroup_service'], ( Backbone, placementgroup_servi
                     console.log 'placementgroup.DeletePlacementGroup failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_PG_DELETE_PLA_GRP_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_PG_DELETE_PLA_GRP_RETURN', aws_result
 
 
         #DescribePlacementGroups api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'placementgroup_service'], ( Backbone, placementgroup_servi
                     console.log 'placementgroup.DescribePlacementGroups failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_PG_DESC_PLA_GRPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_PG_DESC_PLA_GRPS_RETURN', aws_result
 
 
 

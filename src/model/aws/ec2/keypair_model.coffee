@@ -43,7 +43,7 @@ define [ 'backbone', 'keypair_service'], ( Backbone, keypair_service) ->
                     console.log 'keypair.CreateKeyPair failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_KP_CREATE_KEY_PAIR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_KP_CREATE_KEY_PAIR_RETURN', aws_result
 
 
         #DeleteKeyPair api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'keypair_service'], ( Backbone, keypair_service) ->
                     console.log 'keypair.DeleteKeyPair failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_KP_DELETE_KEY_PAIR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_KP_DELETE_KEY_PAIR_RETURN', aws_result
 
 
         #ImportKeyPair api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'keypair_service'], ( Backbone, keypair_service) ->
                     console.log 'keypair.ImportKeyPair failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_KP_IMPORT_KEY_PAIR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_KP_IMPORT_KEY_PAIR_RETURN', aws_result
 
 
         #DescribeKeyPairs api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'keypair_service'], ( Backbone, keypair_service) ->
                     console.log 'keypair.DescribeKeyPairs failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_KP_DESC_KEY_PAIRS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_KP_DESC_KEY_PAIRS_RETURN', aws_result
 
 
         #upload api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'keypair_service'], ( Backbone, keypair_service) ->
                     console.log 'keypair.upload failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_KPUPLOAD_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_KPUPLOAD_RETURN', aws_result
 
 
         #download api (define function)
@@ -173,7 +173,7 @@ define [ 'backbone', 'keypair_service'], ( Backbone, keypair_service) ->
                     console.log 'keypair.download failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_KPDOWNLOAD_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_KPDOWNLOAD_RETURN', aws_result
 
 
         #remove api (define function)
@@ -199,7 +199,7 @@ define [ 'backbone', 'keypair_service'], ( Backbone, keypair_service) ->
                     console.log 'keypair.remove failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_KPREMOVE_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_KPREMOVE_RETURN', aws_result
 
 
         #list api (define function)
@@ -225,7 +225,7 @@ define [ 'backbone', 'keypair_service'], ( Backbone, keypair_service) ->
                     console.log 'keypair.list failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_KPLST_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_KPLST_RETURN', aws_result
 
 
 

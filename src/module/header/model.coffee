@@ -233,7 +233,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             session_model.logout {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' )
 
             #logout return handler (dispatch from service/session/session_model)
-            session_model.once 'SESSION_LOGOUT_RETURN', ( forge_result ) ->
+            me.once 'SESSION_LOGOUT_RETURN', ( forge_result ) ->
 
                 if !forge_result.is_error
                     #logout succeed

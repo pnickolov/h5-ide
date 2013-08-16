@@ -43,7 +43,7 @@ define [ 'backbone', 'routetable_service'], ( Backbone, routetable_service) ->
                     console.log 'routetable.DescribeRouteTables failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_RT_DESC_RT_TBLS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_RT_DESC_RT_TBLS_RETURN', aws_result
 
 
 

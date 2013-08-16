@@ -43,7 +43,7 @@ define [ 'backbone', 'eip_service'], ( Backbone, eip_service) ->
                     console.log 'eip.AllocateAddress failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EIP_ALLOCATE_ADDR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EIP_ALLOCATE_ADDR_RETURN', aws_result
 
 
         #ReleaseAddress api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'eip_service'], ( Backbone, eip_service) ->
                     console.log 'eip.ReleaseAddress failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EIP_RELEASE_ADDR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EIP_RELEASE_ADDR_RETURN', aws_result
 
 
         #AssociateAddress api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'eip_service'], ( Backbone, eip_service) ->
                     console.log 'eip.AssociateAddress failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EIP_ASSOCIATE_ADDR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EIP_ASSOCIATE_ADDR_RETURN', aws_result
 
 
         #DisassociateAddress api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'eip_service'], ( Backbone, eip_service) ->
                     console.log 'eip.DisassociateAddress failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EIP_DISASSOCIATE_ADDR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EIP_DISASSOCIATE_ADDR_RETURN', aws_result
 
 
         #DescribeAddresses api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'eip_service'], ( Backbone, eip_service) ->
                     console.log 'eip.DescribeAddresses failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EIP_DESC_ADDRES_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EIP_DESC_ADDRES_RETURN', aws_result
 
 
 

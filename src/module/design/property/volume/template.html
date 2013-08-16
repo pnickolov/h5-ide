@@ -1,4 +1,34 @@
 <article id='property-panel-volume' uid='{{volume_detail.uid}}'>
+    {{#if volume_detail.isLC}}
+    <section class="property-control-group">
+        <label>Device Name</label>
+        <div class="name tooltip" data-tooltip="Required">
+            {{#if volume_detail.isWin}}
+            <label for="volume-device">xvd</label>
+            {{else}}
+            <label for="volume-device">/dev/</label>
+            {{/if}}
+            <input type="text" class="input input-device" value="{{volume_detail.editName}}" id="volume-device">
+        </div>
+    </section>
+    <section class="property-control-group">
+        <label>Volume Size</label>
+        <div class="ranged-number-input">
+            <label for="volume-size-ranged"></label>
+            <input id="volume-size-ranged" type="number" value="{{volume_detail.Ebs.VolumeSize}}" name="volume-size-ranged" min="1" max="1024" required="">
+        <label for="volume-property-ranged-number" >GB</label>
+        </div>
+    </section>
+
+    {{#if volume_detail.Ebs.SnapshotId}}
+    <section class="property-control-group">
+        <label>Snapshot</label>
+        <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
+            <div>{{volume_detail.Ebs.SnapshotId}}</div>
+        </div>
+    </section>
+    {{/if}}
+    {{else}}
     <section class="property-control-group">
         <label>Device Name</label>
         <div class="name tooltip" data-tooltip="Required">
@@ -58,4 +88,5 @@
         <label for="volume-property-ranged-number" >GB</label>
         </div>
     </section>
+    {{/if}}
 </article>

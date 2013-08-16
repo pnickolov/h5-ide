@@ -744,10 +744,6 @@ a {
 	box-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
-.dashboard-widget:hover {
-	box-shadow: 0 0 5px rgba(0,0,0,.2);
-}
-
 .dashboard-widget-body a,
 .dashboard-header a {
 	color: #666;
@@ -1636,6 +1632,7 @@ td.table-action a.btn {
 .toolbar-btn-group > li {
 	float: left;
 	margin-top: -2px;
+<<<<<<< HEAD
 }
 
 .toolbar-label {
@@ -1643,6 +1640,15 @@ td.table-action a.btn {
 	text-shadow: 0 1px 0 rgba(0,0,0,.5);
 }
 
+=======
+}
+
+.toolbar-label {
+	padding: 6px 10px 0 0;
+	text-shadow: 0 1px 0 rgba(0,0,0,.5);
+}
+
+>>>>>>> feature/tweaks-dan
 a:hover .toolbar-label {
 	color: #eee;
 }
@@ -2366,6 +2372,7 @@ a.sidebar-hider {
 
 .property-ami-wrap:hover {
 	background: #414041;
+<<<<<<< HEAD
 }
 
 .property-ami-label {
@@ -2389,6 +2396,31 @@ a.sidebar-hider {
 	transition         : background .2s;
 }
 
+=======
+}
+
+.property-ami-label {
+	padding    : 6px 0;
+	height     : 26px;
+	overflow   : hidden;
+}
+
+.property-ami-icon {
+	margin  : -5px 5px -5px -5px;
+	padding : 11px 2px;
+
+	background    : #7A7A7A;
+	border-radius : 4px 0 0 4px;
+	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.05),2px 0 0 0 rgba(0,0,0,.1);
+
+	-webkit-transition : background .2s;
+	-moz-transition    : background .2s;
+	-ms-transition     : background .2s;
+	-o-transition      : background .2s;
+	transition         : background .2s;
+}
+
+>>>>>>> feature/tweaks-dan
 .property-ami-wrap:hover .property-ami-icon {
 	background : #7f7f7f;
 }

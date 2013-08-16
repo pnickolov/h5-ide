@@ -188,7 +188,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		#eni
 		if resources.DescribeNetworkInterfaces
-			_.map resources.DescribeNetworkInterfaces.git , ( res, i ) ->
+			_.map resources.DescribeNetworkInterfaces , ( res, i ) ->
 				MC.data.resource_list[region][res.networkInterfaceId] = res
 				null
 

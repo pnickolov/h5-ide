@@ -135,7 +135,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             ide_event.trigger ide_event.OPEN_ACL, aclUID
 
         openEditAclPanel : ( event ) ->
-            source = $(event.target)
+            source = $(event.currentTarget)
             if(source.hasClass('secondary-panel'))
                 target = source
             else

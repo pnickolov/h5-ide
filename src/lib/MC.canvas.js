@@ -1942,6 +1942,8 @@ MC.canvas.volume = {
 
 			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
 
+			document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
+
 			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
 			if (target_node.data('class') === 'AWS.EC2.Instance')
@@ -2128,6 +2130,7 @@ MC.canvas.volume = {
 					$('#instance_volume_number').text(target_volume_data.length);
 
 					MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
+					document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
 
 					MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
@@ -2150,6 +2153,8 @@ MC.canvas.volume = {
 					MC.canvas.data.set('component.' + original_node_id + '.resource.BlockDeviceMapping', original_node_volume_data);
 
 					MC.canvas.update(original_node_id, 'text', 'volume_number', original_node_volume_data.length);
+
+					document.getElementById(original_node_id + '_volume_number').setAttribute('value', target_volume_data.length);
 				}
 			}
 			else if (!event.data.action)
@@ -2174,6 +2179,16 @@ MC.canvas.volume = {
 				$('#instance_volume_number').text(target_volume_data.length);
 
 				MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
+
+				document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
+				// if (target_volume_data.length === 0)
+				// {
+				// 	Canvon(document.getElementById(target_id + '_volume_number')).addClass('volume-empty');
+				// }
+				// else
+				// {
+				// 	Canvon(document.getElementById(target_id + '_volume_number')).removeClass('volume-empty');
+				// }
 
 				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 

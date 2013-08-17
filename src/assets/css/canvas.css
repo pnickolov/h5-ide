@@ -358,6 +358,14 @@
 	fill: #74B1FD;
 }
 
+.volume-number[value="0"] {
+	opacity: 0.5;
+}
+
+.volume-empty {
+	opacity: 0.5;
+}
+
 .node-background {
 	fill-opacity: 0;
 }

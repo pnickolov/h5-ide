@@ -81,15 +81,19 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		return allDispRuleAry
 
-	getSgRuleDetail = (line_id) ->
-
-		if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-
-			this.set 'isnt_classic', false
+	getSgRuleDetail = (line_id_or_target) ->
 
 		both_side = []
 
-		options = MC.canvas.lineTarget line_id
+		options = null
+
+		if $.type(line_id_or_target) is "string"
+
+			options = MC.canvas.lineTarget line_id_or_target
+
+		else
+
+			options = line_id_or_target
 
 		$.each options, ( i, connection_obj ) ->
 

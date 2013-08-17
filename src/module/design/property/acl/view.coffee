@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'backbone', 'jquery', 'handlebars', 'UI.parsley' ], ( ide_event, template, rule_template ) ->
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, template, rule_template ) ->
 
    ACLView = Backbone.View.extend {
 
@@ -210,7 +210,6 @@ define [ 'event',
             name = target.val()
 
             id = @model.get( 'component' ).uid
-            debug id
 
             MC.validate.preventDupname target, id, name, 'ACL'
 

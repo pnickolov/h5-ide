@@ -8,7 +8,6 @@ MC.canvas_data = {};
 MC.canvas_property = {};
 
 MC.canvas = {
-
 	getState: function ()
 	{
 		return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
@@ -306,6 +305,7 @@ MC.canvas = {
 			case 'rtb-src':
 				mid_y = point.y;
 				break;
+
 			case 'rtb-tgt-left':
 			case 'rtb-tgt-right': //both left and right
 				mid_y = point.y + 40 * sign;
@@ -321,9 +321,11 @@ MC.canvas = {
 			case 'rtb-tgt-left': //for start
 				mid_x = point.x + 4;
 				break;
+
 			case 'rtb-tgt-right': //for end
 				mid_x = point.x - 4;
 				break;
+
 			case 'rtb-src': //both top and bottom
 				mid_x = point.x + 40 * sign;
 				break;
@@ -334,7 +336,6 @@ MC.canvas = {
 	route: function (controlPoints, start0, end0, from_type, to_type, from_port_name, to_port_name)
 	{
 		//add by xjimmy, connection algorithm (xjimmy's algorithm)
-
 		var start = {},
 			end = {},
 			mid_x,
@@ -1039,8 +1040,6 @@ MC.canvas = {
 			],
 			canvas_size = MC.canvas.data.get('layout.size'),
 			match_option = MC.canvas.MATCH_PLACEMENT[ MC.canvas.data.get('platform') ][ node_type ],
-			//is_option_canvas = match_option ? (match_option[ 0 ] === 'Canvas') : false,
-			//scale_ratio = MC.canvas_property.SCALE_RATIO,
 			ignore_stack = [],
 			match = [],
 			result = {},
@@ -1070,149 +1069,85 @@ MC.canvas = {
 			}
 		}
 
-		//x = x * scale_ratio;
-		//y = y * scale_ratio;
-
-		// if (is_option_canvas)
-		// {
-		// 	$.each(group_stack, function (index, layer_data)
-		// 	{
-		// 		if (layer_data)
-		// 		{
-		// 			$.each(layer_data, function (i, item)
-		// 			{
-		// 				group_data = layout_group_data[ item.id ];
-		// 				coordinate = group_data.coordinate;
-		// 				size = group_data.size;
-
-		// 				if (
-		// 					$.inArray(item.id, ignore_stack) === -1 &&
-		// 					//target_id !== item.id &&
-		// 					(
-		// 						(x >= coordinate[0] &&
-		// 						x <= coordinate[0] + size[0])
-		// 						||
-		// 						(x + width >= coordinate[0] &&
-		// 						x + width <= coordinate[0] + size[0])
-		// 					)
-		// 					&&
-		// 					(
-		// 						(y >= coordinate[1] &&
-		// 						y <= coordinate[1] + size[1])
-		// 						||
-		// 						(y + height >= coordinate[1] &&
-		// 						y + height <= coordinate[1] + size[1])
-		// 					)
-		// 				)
-		// 				{
-		// 					result = {
-		// 						'id': item.id,
-		// 						'type': group_data.type
-		// 					};
-		// 				}
-		// 			});
-
-		// 			if (!$.isEmptyObject(result))
-		// 			{
-		// 				return false;
-		// 			}
-		// 		}
-		// 	});
-
-		// 	is_matched =
-		// 		$.isEmptyObject(result) &&
-
-		// 		// canvas right offset = 3
-		// 		x + width < canvas_size[0] - 3 &&
-		// 		y + height < canvas_size[1] - 3;
-
-		// 	return {
-		// 		'is_matched': is_matched,
-		// 		'target': result.id === undefined && is_matched ? 'Canvas' : result.id
-		// 	};
-		// }
-		// else
-		// {
-			$.each(point, function (index, data)
+		$.each(point, function (index, data)
+		{
+			$.each(group_stack, function (i, layer_data)
 			{
-				$.each(group_stack, function (i, layer_data)
+				if (layer_data)
 				{
-					if (layer_data)
+					match_status = {};
+					$.each(layer_data, function (i, item)
 					{
-						match_status = {};
-						$.each(layer_data, function (i, item)
+						group_data = layout_group_data[ item.id ];
+						coordinate = group_data.coordinate;
+						size = group_data.size;
+
+						if (
+							//target_id !== item.id &&
+							$.inArray(item.id, ignore_stack) === -1 &&
+							data.x > coordinate[0] &&
+							data.x < coordinate[0] + size[0] &&
+							data.y > coordinate[1] &&
+							data.y < coordinate[1] + size[1]
+						)
 						{
-							group_data = layout_group_data[ item.id ];
-							coordinate = group_data.coordinate;
-							size = group_data.size;
+							match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
+							match_status['target'] = item.id;
+							match_target = item.id;
 
-							if (
-								//target_id !== item.id &&
-								$.inArray(item.id, ignore_stack) === -1 &&
-								data.x > coordinate[0] &&
-								data.x < coordinate[0] + size[0] &&
-								data.y > coordinate[1] &&
-								data.y < coordinate[1] + size[1]
-							)
-							{
-								match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
-								match_status['target'] = item.id;
-								match_target = item.id;
-
-								return false;
-							}
-						});
-
-						if (!$.isEmptyObject(match_status))
-						{
-							match[ index ] = match_status;
 							return false;
 						}
+					});
+
+					if (!$.isEmptyObject(match_status))
+					{
+						match[ index ] = match_status;
+						return false;
 					}
-				});
+				}
 			});
+		});
 
-			is_matched =
-				match[0] &&
-				match[1] &&
-				match[2] &&
-				match[3] &&
+		is_matched =
+			match[0] &&
+			match[1] &&
+			match[2] &&
+			match[3] &&
 
-				match[0].is_matched &&
-				match[1].is_matched &&
-				match[2].is_matched &&
-				match[3].is_matched &&
+			match[0].is_matched &&
+			match[1].is_matched &&
+			match[2].is_matched &&
+			match[3].is_matched &&
 
-				match[0].target === match[1].target &&
-				match[0].target === match[2].target &&
-				match[0].target === match[3].target &&
+			match[0].target === match[1].target &&
+			match[0].target === match[2].target &&
+			match[0].target === match[3].target &&
 
-				// canvas right offset = 3
-				x + width < canvas_size[0] - 3 &&
-				y + height < canvas_size[1] - 3;
+			// canvas right offset = 3
+			x + width < canvas_size[0] - 3 &&
+			y + height < canvas_size[1] - 3;
 
-			if (
-				!is_matched &&
-				$.inArray('Canvas', match_option) > -1 &&
-				!match[0] &&
-				!match[1] &&
-				!match[2] &&
-				!match[3] &&
+		if (
+			!is_matched &&
+			$.inArray('Canvas', match_option) > -1 &&
+			!match[0] &&
+			!match[1] &&
+			!match[2] &&
+			!match[3] &&
 
-				// canvas right offset = 3
-				x + width < canvas_size[0] - 3 &&
-				y + height < canvas_size[1] - 3
-			)
-			{
-				is_matched = true;
-				match_target = 'Canvas';
-			}
+			// canvas right offset = 3
+			x + width < canvas_size[0] - 3 &&
+			y + height < canvas_size[1] - 3
+		)
+		{
+			is_matched = true;
+			match_target = 'Canvas';
+		}
 
-			return {
-				'is_matched': is_matched,
-				'target': is_matched ? match_target : null
-			};
-		//}
+		return {
+			'is_matched': is_matched,
+			'target': is_matched ? match_target : null
+		};
 	},
 
 	isBlank: function (type, target_id, target_type, x, y, width, height)
@@ -1797,16 +1732,8 @@ MC.canvas.volume = {
 			width = bubble_box.width();
 			height = bubble_box.height();
 
-			//if (target_offset.left + target_width + width - document.body.scrollLeft > window.innerWidth)
-			//{
-				// coordinate.left = target_offset.left - width - 15 - canvas_offset.left;
-				// bubble_box.addClass('bubble-right');
-			// }
-			// else
-			// {
 			coordinate.left = target_offset.left + target_width + 15 - canvas_offset.left;
 			bubble_box.addClass('bubble-left');
-			// }
 
 			coordinate.top = target_offset.top - canvas_offset.top - ((height - target_height) / 2);
 
@@ -2181,14 +2108,6 @@ MC.canvas.volume = {
 				MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
 
 				document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
-				// if (target_volume_data.length === 0)
-				// {
-				// 	Canvon(document.getElementById(target_id + '_volume_number')).addClass('volume-empty');
-				// }
-				// else
-				// {
-				// 	Canvon(document.getElementById(target_id + '_volume_number')).removeClass('volume-empty');
-				// }
 
 				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
@@ -2367,24 +2286,25 @@ MC.canvas.event.dragable = {
 	},
 	mousemove: function (event)
 	{
-		var grid_width = MC.canvas.GRID_WIDTH,
+		var event_data = event.data,
+			grid_width = MC.canvas.GRID_WIDTH,
 			grid_height = MC.canvas.GRID_HEIGHT,
 			scale_ratio = MC.canvas_property.SCALE_RATIO;
 
 		if (
-			event.pageX !== event.data.originalPageX &&
-			event.pageY !== event.data.originalPageY &&
-			event.data.shadow[0].getAttribute('class').indexOf('shadow') === -1
+			event.pageX !== event_data.originalPageX &&
+			event.pageY !== event_data.originalPageY &&
+			event_data.shadow[0].getAttribute('class').indexOf('shadow') === -1
 		)
 		{
-			Canvon(event.data.shadow[0]).addClass('shadow');
-			event.data.canvas_body.addClass('node-dragging');
+			Canvon(event_data.shadow[0]).addClass('shadow');
+			event_data.canvas_body.addClass('node-dragging');
 		}
 
-		event.data.shadow.attr('transform',
+		event_data.shadow.attr('transform',
 			'translate(' +
-				Math.round((event.pageX - event.data.offsetX) / (grid_width / scale_ratio)) * grid_width + ',' +
-				Math.round((event.pageY - event.data.offsetY) / (grid_height / scale_ratio)) * grid_height +
+				Math.round((event.pageX - event_data.offsetX) / (grid_width / scale_ratio)) * grid_width + ',' +
+				Math.round((event.pageY - event_data.offsetY) / (grid_height / scale_ratio)) * grid_height +
 			')'
 		);
 
@@ -2701,7 +2621,6 @@ MC.canvas.event.dragable = {
 						// Re-draw group connection
 						if (node_data.type === 'AWS.VPC.Subnet' || child_type === 'node')
 						{
-							//MC.canvas.reConnect(item.id);
 							$.each(node_data.connection, function (i, data)
 							{
 								connection_stack[ data.line ] = true;
@@ -2782,8 +2701,8 @@ MC.canvas.event.dragable = {
 
 					// after change node to another group,trigger event
 					svg_canvas.trigger("CANVAS_GROUP_CHANGE_PARENT", {
-						src_group: target_id,
-						tgt_parent: parentGroup ? parentGroup.id : ''
+						'src_group': target_id,
+						'tgt_parent': parentGroup ? parentGroup.id : ''
 					});
 
 					MC.canvas.select(target_id);
@@ -2798,7 +2717,7 @@ MC.canvas.event.dragable = {
 
 		event.data.shadow.remove();
 		event.data.canvas_body.removeClass('node-dragging');
-		//$(document.body).removeClass('disable-event');
+
 		$('#overlayer').remove();
 
 		$('.dropable-group').attr('class', function (index, key)
@@ -2813,9 +2732,6 @@ MC.canvas.event.dragable = {
 	},
 	gatewaymove: function (event)
 	{
-		// event.preventDefault();
-		// event.stopPropagation();
-
 		var gateway_top = Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)),
 			vpc_coordinate = event.data.vpc_data.coordinate,
 			vpc_size = event.data.vpc_data.size;
@@ -2886,7 +2802,6 @@ MC.canvas.event.dragable = {
 		event.data.canvas_body.removeClass('node-dragging');
 
 		$('#overlayer').remove();
-		//$(document.body).removeClass('disable-event');
 
 		$(document).off({
 			'mousemove': MC.canvas.event.gatewaymove,
@@ -3294,7 +3209,8 @@ MC.canvas.event.siderbarDrag = {
 		{
 			var target = $(this),
 				target_offset = target.offset(),
-				canvas_offset = $('#svg_canvas').offset(),
+				svg_canvas = $('#svg_canvas'),
+				canvas_offset = svg_canvas.offset(),
 				node_type = target.data('type'),
 				target_component_type = target.data('component-type'),
 				platform = MC.canvas.data.get('platform'),
@@ -3358,7 +3274,7 @@ MC.canvas.event.siderbarDrag = {
 					'mouseup': MC.canvas.volume.mouseup
 				}, {
 					'target': target,
-					'canvas_offset': $('#svg_canvas').offset(),
+					'canvas_offset': svg_canvas.offset(),
 					'shadow': shadow
 				});
 			}
@@ -3388,8 +3304,6 @@ MC.canvas.event.siderbarDrag = {
 					'shadow': shadow
 				});
 			}
-
-			//$(document.body).addClass('disable-event');
 
 			$('#canvas_body').addClass('node-dragging');
 		}
@@ -4058,7 +3972,6 @@ MC.canvas.event.groupResize = {
 			MC.canvas.data.set('layout.component.group.' + group_id + '.coordinate', [group_left, group_top]);
 			MC.canvas.data.set('layout.component.group.' + group_id + '.size', [group_width, group_height]);
 
-			//update group-resizer
 			MC.canvas.updateResizer(parent, group_width, group_height);
 		}
 		else
@@ -4186,6 +4099,17 @@ MC.canvas.event.clearSelected = function ()
 	});
 
 	MC.canvas_property.selected_node = [];
+};
+
+MC.canvas.event.clickBlank = function (event)
+{
+	if (event.target.id === 'svg_canvas')
+	{
+		//dispatch event when click blank area in canvas
+		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
+	}
+
+	return true;
 };
 
 MC.canvas.event.keyEvent = function (event)
@@ -4417,15 +4341,4 @@ MC.canvas.event.keyEvent = function (event)
 
 		return false;
 	}
-};
-
-MC.canvas.event.clickBlank = function (event)
-{
-	if (event.target.id === 'svg_canvas')
-	{
-		//dispatch event when click blank area in canvas
-		$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
-	}
-
-	return true;
 };

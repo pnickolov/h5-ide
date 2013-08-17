@@ -4,7 +4,7 @@
 
 define [ 'event', 'backbone', 'jquery', 'handlebars',
     'UI.notification',
-    'UI.secondarypanel', 'UI.parsley' ], ( ide_event ) ->
+    'UI.secondarypanel' ], ( ide_event ) ->
 
     StackView = Backbone.View.extend {
 
@@ -245,17 +245,33 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
                         placeholder = "e.g. Amazon ARN"
                     when "email"
                         placeholder = "e.g. exmaple@acme.com"
+                        type = 'email'
                     when "email-json"
                         placeholder = "e.g. example@acme.com"
+                        type = 'email'
                     when "sms"
                         placeholder = "e.g. 1-343-21-323"
+                        type='phone'
                     when "http"
                         $input.addClass "http"
                         placeholder = "e.g. www.example.com"
+                        type = 'url'
                     when "https"
                         $input.addClass "https"
                         placeholder = "e.g. www.example.com"
-                $("#property-asg-endpoint").attr "placeholder", placeholder
+                        type = 'url'
+
+                endPoint = $ '#property-asg-endpoint'
+                endPoint.attr "placeholder", placeholder
+
+                endPoint.parsley 'custom', ( value ) ->
+                    if type and value and ( not MC.validate type, value )
+                        return 'input error.'
+
+                if endPoint.val().length
+                    endPoint.parsley 'validate'
+
+
                 null
 
             updateEndpoint()
@@ -266,18 +282,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             # Bind Events
             self = this
             $("#property-asg-sns-done").on "click", ()->
-                data =
-                    uid : $modal.data("uid")
-                    protocol : $modal.find(".selected").data("id")
-                    endpoint : $("#property-asg-endpoint").val()
+                endPoint = $("#property-asg-endpoint")
 
-                console.log "Save Subscription", data
+                if endPoint.parsley 'validate'
+                    data =
+                        uid : $modal.data("uid")
+                        protocol : $modal.find(".selected").data("id")
+                        endpoint : endPoint.val()
 
-                modal.close()
+                    modal.close()
 
-                self.saveSNS data
+                    self.saveSNS data
+
                 null
-            null
 
 
     }

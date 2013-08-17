@@ -2534,7 +2534,7 @@ a.sidebar-hider {
 	height        : 52px;
 	padding       : 10px;
 	border-bottom : 1px solid #383738;
-	background    : #414041;
+	background    : #444;
 
 	-webkit-transition: background .2s;
 	-moz-transition: background .2s;
@@ -2544,7 +2544,7 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list li:hover {
-	background : #454445;
+	background : #555;
 }
 
 .acl-sg-info-list .col1 {
@@ -2600,7 +2600,7 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list .col3:hover {
-	background-color: #3d3c3d;
+	background-color: #404040;
 }
 
 .acl-sg-info-list .sg-list-association-check {

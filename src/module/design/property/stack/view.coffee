@@ -4,7 +4,7 @@
 
 define [ 'event', 'backbone', 'jquery', 'handlebars',
     'UI.notification',
-    'UI.secondarypanel' ], ( ide_event ) ->
+    'UI.secondarypanel', 'UI.parsley' ], ( ide_event ) ->
 
     StackView = Backbone.View.extend {
 

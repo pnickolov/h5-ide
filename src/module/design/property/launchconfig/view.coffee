@@ -5,14 +5,13 @@
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         'UI.fixedaccordion',
         'UI.selectbox',
-        'UI.secondarypanel',
         'UI.tooltip',
         'UI.notification',
         'UI.modal',
         'UI.tablist',
         'UI.toggleicon' ], ( ide_event, MC ) ->
 
-    InstanceView = Backbone.View.extend {
+    LanchConfigView = Backbone.View.extend {
 
         el       : $ document
         tagName  : $ '.property-details'
@@ -20,21 +19,22 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         template : Handlebars.compile $( '#property-launchconfig-tmpl' ).html()
 
         events   :
-            'change .launch-configuration-name' : 'lcNameChange'
-            'change .instance-type-select' : 'instanceTypeSelect'
-            'change #property-instance-ebs-optimized' : 'ebsOptimizedSelect'
+            'change .launch-configuration-name'           : 'lcNameChange'
+            'change .instance-type-select'                : 'instanceTypeSelect'
+            'change #property-instance-ebs-optimized'     : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
-            'change #property-instance-user-data' : 'userdataChange'
-            'change #property-instance-source-check' : 'sourceCheckChange'
-            'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
-            'OPTION_CHANGE #tenancy-select' : "tenancySelect"
-            'OPTION_CHANGE #keypair-select' : "addtoKPList"
-            'EDIT_UPDATE #keypair-select' : "createtoKPList"
-            'click #instance-ip-add' : "addIPtoList"
+            'change #property-instance-user-data'         : 'userdataChange'
+            'change #property-instance-source-check'      : 'sourceCheckChange'
+            'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
+            'OPTION_CHANGE #tenancy-select'               : "tenancySelect"
+            'OPTION_CHANGE #keypair-select'               : "addtoKPList"
+            'EDIT_UPDATE #keypair-select'                 : "createtoKPList"
+            'click #instance-ip-add'                      : "addIPtoList"
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
-            'blur .input-ip' : 'updateEIPList'
-            'click .toggle-eip' : 'addEIP'
+            'blur .input-ip'                              : 'updateEIPList'
+            'click .toggle-eip'                           : 'addEIP'
+            'click #property-ami'                         : 'openAmiPanel'
 
         render     : ( attributes ) ->
             console.log 'property:instance render'
@@ -80,11 +80,20 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         openAmiPanel : ( event ) ->
             target = $('#property-ami')
+            ###
             secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
             $(document.body).on 'click', '.back', secondarypanel.close
+            ###
+            console.log MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
+            ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
+                title : $( event.target ).text()
+                dom   : MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
+                id    : 'Ami'
+            }
+            null
 
     }
 
-    view = new InstanceView()
+    view = new LanchConfigView()
 
     return view

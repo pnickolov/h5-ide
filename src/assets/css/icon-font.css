@@ -18,7 +18,8 @@
 .icon-redo,
 .icon-zoom-out,
 .icon-zoom-in,
-.icon-send {
+.icon-send,
+.icon-add {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -33,3 +34,4 @@
 .icon-zoom-in:before  { content : "\F116"; }
 .icon-zoom-out:before { content : "\F117"; }
 .icon-send:before     { content : "\F118"; }
+.icon-add:before     { content : "\F119"; }

@@ -14,6 +14,32 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             'is_unread'     : null
             'in_dashboard'  : true
 
+        initialize : ->
+
+            me = this
+
+            #logout return handler (dispatch from service/session/session_model)
+            me.on 'SESSION_LOGOUT_RETURN', ( forge_result ) ->
+
+                if !forge_result.is_error
+                    #logout succeed
+
+                    result = forge_result.resolved_data
+
+                #delete cookies
+                $.cookie 'userid',      null, { expires: 0 }
+                $.cookie 'usercode',    null, { expires: 0 }
+                $.cookie 'session_id',  null, { expires: 0 }
+                $.cookie 'region_name', null, { expires: 0 }
+                $.cookie 'email',       null, { expires: 0 }
+                $.cookie 'has_cred',    null, { expires: 0 }
+
+                #redirect to page login.html
+                window.location.href = 'login.html'
+
+                return false
+
+
         getInfoList : () ->
             me = this
 
@@ -117,20 +143,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
             if ws
                 query = ws.collection.request.find()
-                handle = query.observeChanges
-
-                    added : (id, dag) ->
-                        req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
-
-                        if req_list
-                            req = req_list[0]
-
-                            console.log '****************added request:' + req.data + ',' + req.state
-
-                            me.updateReqList req
-
-                        null
-
+                handle = query.observeChanges {
                     changed : (id, dag) ->
 
                         req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
@@ -141,37 +154,37 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
                             console.log 'request ' + req.data + "," + req.state
 
-                        null
+                            item = me.parseInfo req
 
-            item = me.parseInfo req
+                            if item
+                                info_list = me.get 'info_list'
+                                unread_num = me.get 'unread_num'
+                                in_dashboard = me.get 'in_dashboard'
 
-            if item
-                info_list = me.get 'info_list'
-                unread_num = me.get 'unread_num'
-                in_dashboard = me.get 'in_dashboard'
+                                # check whether same operation
+                                the_req = []
+                                the_req.push i for i in info_list when i.id == item.id and i.operation == item.operation
+                                if the_req.length <= 0
+                                    if in_dashboard or item.rid != MC.canvas_data.id
+                                        item.is_readed = false
 
-                # check whether same operation
-                the_req = []
-                the_req.push i for i in info_list when i.id == item.id and i.operation == item.operation
-                if the_req.length <= 0
-                    if in_dashboard or item.rid != MC.canvas_data.id
-                        item.is_readed = false
+                                        unread_num += 1
+                                        me.set 'unread_num', unread_num
+                                        me.set 'is_unread', true
 
-                        unread_num += 1
-                        me.set 'unread_num', unread_num
-                        me.set 'is_unread', true
+                                    # remove the old request and new to the header
+                                    info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
 
-                        console.log (me.get 'unread_num')
+                                    info_list.splice 0, 0, item
 
-                    # remove the old request and new to the header
-                    info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
+                                    me.set 'info_list', info_list
 
-                    info_list.splice 0, 0, item
+                                    me.trigger 'HEADER_UPDATE'
 
-                    me.set 'info_list', info_list
+                                null
+                }
 
-                    me.trigger 'HEADER_UPDATE'
-
+                null
 
         setFlag : (flag) ->
             me = this
@@ -188,6 +201,11 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                         unread_num = unread_num - 1
 
                         me.set 'unread_num', unread_num
+                        if unread_num>0
+                            me.set 'is_unread', true
+                        else
+                            me.set 'is_unread', false
+
                         me.set 'info_list', info_list
 
                         me.trigger 'HEADER_UPDATE'
@@ -232,26 +250,6 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             #invoke session.logout api
             session_model.logout {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' )
 
-            #logout return handler (dispatch from service/session/session_model)
-            me.once 'SESSION_LOGOUT_RETURN', ( forge_result ) ->
-
-                if !forge_result.is_error
-                    #logout succeed
-
-                    result = forge_result.resolved_data
-
-                #delete cookies
-                $.cookie 'userid',      null, { expires: 0 }
-                $.cookie 'usercode',    null, { expires: 0 }
-                $.cookie 'session_id',  null, { expires: 0 }
-                $.cookie 'region_name', null, { expires: 0 }
-                $.cookie 'email',       null, { expires: 0 }
-                $.cookie 'has_cred',    null, { expires: 0 }
-
-                #redirect to page login.html
-                window.location.href = 'login.html'
-
-                return false
 
     }
 

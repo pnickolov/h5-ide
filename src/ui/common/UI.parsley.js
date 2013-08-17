@@ -513,6 +513,7 @@
       this.$element = $( element );
       this.val = this.$element.val();
       this.isRequired = false;
+      this.isRequiredRollback = false;
       this.constraints = {};
 
       // overriden by ParsleyItemMultiple if radio or checkbox input
@@ -542,6 +543,8 @@
 
         // required rollback function
         if (this.$element.data('required-rollback') === true) {
+          this.isRequiredRollback = true;
+
           this.$element.on('focus', function() {
             $(this).data('pre-value', $(this).val());
           })
@@ -948,14 +951,16 @@
         , valid = null;
 
       // do not even bother trying validating a field w/o constraints
-      if ( !this.hasConstraints() ) {
-        return null;
+      if ( !this.hasConstraints() && !this.isRequiredRollback ) {
+        //return null;
+        return true;
       }
 
       // reset Parsley validation if onFieldValidate returns true, or if field is empty and not required
-      if ( this.options.listeners.onFieldValidate( this.element, this ) || ( '' === val && !this.isRequired ) ) {
+      if ( this.options.listeners.onFieldValidate( this.element, this ) || ( '' === val && !this.isRequired && !this.isRequiredRollback ) ) {
         this.reset();
-        return null;
+        //return null;
+        return true;
       }
 
       // do not validate a field already validated and unchanged !
@@ -967,6 +972,12 @@
 
       if ( 'undefined' !== typeof errorBubbling ? errorBubbling : this.options.showErrors ) {
         this.manageValidationResult();
+      }
+
+      if ( valid === null ) valid = true;
+
+      if ( valid && this.isRequiredRollback ) {
+        valid = this.Validator.validators[ 'required' ]( val );
       }
 
       return valid;

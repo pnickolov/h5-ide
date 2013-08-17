@@ -1,26 +1,31 @@
 <article id="property-sgrule" data-line="{{line_id}}">
 
-  <div class="property-subhead">The selected connection reflects following security group rule(s):</div>
+  <section class="property-control-group">The selected connection reflects following security group rule(s):</section>
 
 	{{#each sg_group}}
-    <div class="option-group-head">{{name}}</div>
-    <ul class="option-group acl-sg-info-list" id="sg-info-list">
+    <div class="property-group-head">{{name}}</div>
+    <ul class="property-group sg-rule-list property-list" id="sg-info-list">
       {{#each rules}}
-      <li class="clearfix" href="#">
-        <i class="{{#if Egress}}icon-rule-inbound{{else}}icon-rule-outbound{{/if}}"></i>
-        <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div>
-
-        <div class="col2">
-          <div class="col2-1 truncate">{{connection}}</div>
-          <div class="col2-2 truncate"><div class="rule-protocol">{{protocol}}</div>{{port}}</div>
+      <li>
+        <div class="rule-list-row">
+          <div class="rule-direction-icon {{#if Egress}}icon-rule-inbound{{else}}icon-rule-outbound{{/if}} tooltip" data-tooltip="{{#if Egress}}Inbound{{else}}Outbound{{/if}}"></div>
+          <div class="rule-reference">{{connection}}</div>
         </div>
+<!--         <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div> -->
+
+        
+          <div class="rule-list-row">
+            <div><span class="rule-protocol">{{protocol}}</span></div>
+            <div class="rule-port">{{port}}</div>
+          </div>
+
       </li>
       {{/each}}
     </ul>
   {{/each}}
 
   {{#unless isAppView}}
-  <button class="btn btn-red" id="sg-edit-rule-button">Edit Related Rule</button>
+  <button class="btn" id="sg-edit-rule-button">Edit Related Rule</button>
   {{/unless}}
 
 </article>

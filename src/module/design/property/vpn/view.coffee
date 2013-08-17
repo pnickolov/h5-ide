@@ -21,35 +21,22 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.mul
             $( '.property-details' ).html this.template this.model.attributes
 
         addIP : (event) ->
-            me = this
-            #console.log 'add ip'
-
             ips = []
-            _.map $("#property-vpn-ips .input"), (target) -> ips.push target.value
+            $("#property-vpn-ips input").each ()->
+                ips.push $(this).val()
 
-            ori_ips = me.model.attributes.vpn_detail.ips
-
-            new_ip = ip for ip in ips when ori_ips.indexOf(ip) == -1
-
-            if new_ip
-                #validation check
-                if new_ip in ori_ips
-                    notification 'warning', 'IP Prefixes must be unique from each other'
-
-                me.trigger 'VPN_ADD_IP', new_ip
-            else
-                notification 'warning', 'Must be a valid IPv4 CIDR Address'
-
-            #console.log ips
-
+            this.trigger 'VPN_IP_UPDATE', ips
             null
 
         removeIP : (event, ip) ->
+            if not ip
+                return
 
-            if ip
+            ips = []
+            $("#property-vpn-ips input").each ()->
+                ips.push $(this).val()
 
-                this.trigger 'VPN_DELETE_IP', ip
-
+            this.trigger 'VPN_IP_UPDATE', ips
             null
 
     }

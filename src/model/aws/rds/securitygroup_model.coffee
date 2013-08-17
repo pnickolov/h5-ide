@@ -43,7 +43,7 @@ define [ 'backbone', 'securitygroup_service'], ( Backbone, securitygroup_service
                     console.log 'securitygroup.DescribeDBSecurityGroups failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_SG_DESC_DB_SGS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_SG_DESC_DB_SGS_RETURN', aws_result
 
 
 

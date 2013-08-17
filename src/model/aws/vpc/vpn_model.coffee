@@ -43,7 +43,7 @@ define [ 'backbone', 'vpn_service'], ( Backbone, vpn_service) ->
                     console.log 'vpn.DescribeVpnConnections failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_VPN_DESC_VPN_CONNS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_VPN_DESC_VPN_CONNS_RETURN', aws_result
 
 
 

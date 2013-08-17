@@ -43,7 +43,7 @@ define [ 'backbone', 'sdb_service'], ( Backbone, sdb_service) ->
                     console.log 'sdb.DomainMetadata failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SDB__DOMAIN_MDATA_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SDB__DOMAIN_MDATA_RETURN', aws_result
 
 
         #GetAttributes api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'sdb_service'], ( Backbone, sdb_service) ->
                     console.log 'sdb.GetAttributes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SDB__GET_ATTRS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SDB__GET_ATTRS_RETURN', aws_result
 
 
         #ListDomains api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'sdb_service'], ( Backbone, sdb_service) ->
                     console.log 'sdb.ListDomains failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SDB__LST_DOMAINS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SDB__LST_DOMAINS_RETURN', aws_result
 
 
 

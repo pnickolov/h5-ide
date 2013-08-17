@@ -43,7 +43,7 @@ define [ 'backbone', 'vpngateway_service'], ( Backbone, vpngateway_service) ->
                     console.log 'vpngateway.DescribeVpnGateways failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_VGW_DESC_VPN_GWS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_VGW_DESC_VPN_GWS_RETURN', aws_result
 
 
 

@@ -43,7 +43,7 @@ define [ 'backbone', 'optiongroup_service'], ( Backbone, optiongroup_service) ->
                     console.log 'optiongroup.DescribeOptionGroupOptions failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_OG_DESC_OPT_GRP_OPTIONS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_OG_DESC_OPT_GRP_OPTIONS_RETURN', aws_result
 
 
         #DescribeOptionGroups api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'optiongroup_service'], ( Backbone, optiongroup_service) ->
                     console.log 'optiongroup.DescribeOptionGroups failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_OG_DESC_OPT_GRPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_OG_DESC_OPT_GRPS_RETURN', aws_result
 
 
 

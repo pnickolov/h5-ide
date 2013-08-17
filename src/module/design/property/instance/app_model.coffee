@@ -85,7 +85,7 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
             keypair_model.download {sender:this}, username, session, MC.canvas_data.region, keypairname
 
             self = this
-            keypair_model.once 'EC2_KPDOWNLOAD_RETURN', ( data )->
+            me.once 'EC2_KPDOWNLOAD_RETURN', ( data )->
 
                 if data.is_error
                     notification 'error', "Cannot download keypair: " + keypairname

@@ -2,11 +2,11 @@
 #  View(UI logic) for component/sgrule
 #############################
 
-define [
-         'text!/component/sgrule/template.html',
-         'text!/component/sgrule/list_template.html',
-         'text!/component/sgrule/delete_rule_dialog.html',
-         'event', 'backbone', 'jquery', 'handlebars', 'UI.modal' ], ( template, list_template, delete_template, ide_event ) ->
+define [ 'text!./template.html',
+         'text!./list_template.html',
+         'text!./delete_rule_dialog.html',
+         'event'
+], ( template, list_template, delete_template, ide_event ) ->
 
     template      = Handlebars.compile template
     list_template = Handlebars.compile list_template
@@ -39,13 +39,13 @@ define [
             this.updateSidebar()
 
         renderDeleteModule : () ->
-
             modal delete_template( this.model.attributes ), true
             this.setElement $("#confirm-delete-sg-line").closest '.modal-footer'
 
         onClose : () ->
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.
           this.trigger 'CLOSE_POPUP'
+
 
         switchNode : ( event ) ->
 
@@ -61,34 +61,25 @@ define [
         addRule : ( event ) ->
           # Extract the data from the view
           data = this.extractRuleData()
-          console.log data
 
-          this.trigger 'ADD_SG_RULE', data
-          # TODO : Tell model to add rule.
-
-          # TODO : Insert rule to the sidebar
+          this.trigger 'ADD_RULE', data
 
           # Switch to done view.
-
-          #this.$el.animate({left:'+=100px'}, 300).toggleClass('done', true)
-          this.$el.find('#modal-box').animate({left:'+=100px'}, 300).toggleClass('done', true)
-
-
+          this.$el.find('#modal-box').toggleClass('done', true)
 
           # Update sidebar
           this.updateSidebar()
 
         readdRule : () ->
-          this.$el.find('#modal-box').animate({left:'-=100px'}, 300).toggleClass('done', false)
+          this.$el.find('#modal-box').toggleClass('done', false)
 
-
-        deleteRule : () ->
+        deleteRule : ( event ) ->
           console.log "delete"
 
-          this.trigger 'DELETE_PREVIEW_RULE'
-          # TODO : Tell model to delete rule
+          this.trigger 'DELETE_RULE', $(event.currentTarget).closest('.sg-create-rule-item').attr("data-uid")
 
-          # TODO : Remove dom element.
+          this.updateSidebar()
+          false
 
         onDirChange : () ->
           $(".sg-rule-direction").html( if $("#sg-rule-create-dir-i").is(":checked") then "Source" else "Destination" )
@@ -103,6 +94,21 @@ define [
 
         updateSidebar : () ->
           this.$el.find( '.sg-rule-create-sidebar' ).html( list_template( this.model.attributes ) )
+          rule_count = $(".sg-create-rule-item").length
+
+          $sidebar = $(".sg-rule-create-sidebar")
+          $modal   = this.$el.find('#modal-box')
+
+          isShown = $sidebar.hasClass "shown"
+
+          if rule_count is 0
+            if isShown
+              $sidebar.removeClass( "shown" ).animate({ left : "0" })
+              $modal.animate({left:'-=100px'}, 300)
+          else
+            if not isShown
+              $sidebar.addClass( "shown" ).animate({ left : "-200px" })
+              $modal.animate({left:'+=100px'}, 300)
 
         extractRuleData : () ->
           outward = if $("#sg-rule-create-tgt-o").find("input").is(":checked") then "out" else "in"

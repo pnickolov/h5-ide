@@ -43,7 +43,7 @@ define [ 'backbone', 'request_service'], ( Backbone, request_service) ->
                     console.log 'request.init failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'REQUEST_INIT_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'REQUEST_INIT_RETURN', forge_result
 
 
         #update api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'request_service'], ( Backbone, request_service) ->
                     console.log 'request.update failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'REQUEST_UPDATE_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'REQUEST_UPDATE_RETURN', forge_result
 
 
 

@@ -122,7 +122,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 $item = $( item )
                 if $item.attr( 'id' ) is 'tab-bar-' + tab_id
                     if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-tabbar-' + type.toLowerCase()
-                    $item.find( 'i' ).addClass classname
+                    $item.find( 'i' ).removeClass()
+                    $item.find( 'i' ).addClass 'icon-tabbar-label ' + classname
     }
 
     return TabBarView

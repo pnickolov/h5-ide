@@ -43,7 +43,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeAdjustmentTypes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_ADJT_TYPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_ADJT_TYPS_RETURN', aws_result
 
 
         #DescribeAutoScalingGroups api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeAutoScalingGroups failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_ASL_GRPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_ASL_GRPS_RETURN', aws_result
 
 
         #DescribeAutoScalingInstances api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeAutoScalingInstances failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_ASL_INSS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_ASL_INSS_RETURN', aws_result
 
 
         #DescribeAutoScalingNotificationTypes api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeAutoScalingNotificationTypes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_ASL_NTF_TYPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_ASL_NTF_TYPS_RETURN', aws_result
 
 
         #DescribeLaunchConfigurations api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeLaunchConfigurations failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_LAUNCH_CONFS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_LAUNCH_CONFS_RETURN', aws_result
 
 
         #DescribeMetricCollectionTypes api (define function)
@@ -173,7 +173,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeMetricCollectionTypes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_METRIC_COLL_TYPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_METRIC_COLL_TYPS_RETURN', aws_result
 
 
         #DescribeNotificationConfigurations api (define function)
@@ -199,7 +199,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeNotificationConfigurations failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_NTF_CONFS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_NTF_CONFS_RETURN', aws_result
 
 
         #DescribePolicies api (define function)
@@ -225,7 +225,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribePolicies failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_PCYS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_PCYS_RETURN', aws_result
 
 
         #DescribeScalingActivities api (define function)
@@ -251,7 +251,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeScalingActivities failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_SCALING_ACTIS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_SCALING_ACTIS_RETURN', aws_result
 
 
         #DescribeScalingProcessTypes api (define function)
@@ -277,7 +277,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeScalingProcessTypes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_SCALING_PRC_TYPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_SCALING_PRC_TYPS_RETURN', aws_result
 
 
         #DescribeScheduledActions api (define function)
@@ -303,7 +303,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeScheduledActions failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_SCHD_ACTS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_SCHD_ACTS_RETURN', aws_result
 
 
         #DescribeTags api (define function)
@@ -329,7 +329,7 @@ define [ 'backbone', 'autoscaling_service'], ( Backbone, autoscaling_service ) -
                     console.log 'autoscaling.DescribeTags failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_TAGS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_TAGS_RETURN', aws_result
 
 
     }

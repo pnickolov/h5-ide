@@ -2234,22 +2234,21 @@ a.sidebar-hider {
 }
 
 .option-group {
-	max-height : 0;
-	overflow   : hidden;
-	position   : relative;
+	display  : none;
 }
 
-.option-group.transition {
+/*.option-group.transition {
 	-webkit-transition: max-height .25s ease-in-out;
 	   -moz-transition: max-height .25s ease-in-out;
 	    -ms-transition: max-height .25s ease-in-out;
 	     -o-transition: max-height .25s ease-in-out;
 	        transition: max-height .25s ease-in-out;
-}
+}*/
 
 .expand + .option-group {
-	max-height : inherit;
-	overflow   : visible;
+	display    : block;
+	/*max-height : inherit;
+	overflow   : visible;*/
 }
 
 .property-control-group {
@@ -3662,19 +3661,19 @@ a.sidebar-hider {
 	z-index    : -1;
 	padding    : 20px 0;
 
-	-webkit-transition: left .3s ease-in-out;
+/*	-webkit-transition: left .3s ease-in-out;
 	   -moz-transition: left .3s ease-in-out;
 	    -ms-transition: left .3s ease-in-out;
 	     -o-transition: left .3s ease-in-out;
-	        transition: left .3s ease-in-out;
+	        transition: left .3s ease-in-out;*/
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
 }
 
-.done .sg-rule-create-sidebar {
+/*.done .sg-rule-create-sidebar {
 	left : -200px;
-}
+}*/
 
 .sidebar-wrap {
 	height : 100%;

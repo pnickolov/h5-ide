@@ -43,7 +43,7 @@ define [ 'backbone', 'elb_service'], ( Backbone, elb_service) ->
                     console.log 'elb.DescribeInstanceHealth failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ELB__DESC_INS_HLT_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ELB__DESC_INS_HLT_RETURN', aws_result
 
 
         #DescribeLoadBalancerPolicies api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'elb_service'], ( Backbone, elb_service) ->
                     console.log 'elb.DescribeLoadBalancerPolicies failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ELB__DESC_LB_PCYS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ELB__DESC_LB_PCYS_RETURN', aws_result
 
 
         #DescribeLoadBalancerPolicyTypes api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'elb_service'], ( Backbone, elb_service) ->
                     console.log 'elb.DescribeLoadBalancerPolicyTypes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ELB__DESC_LB_PCY_TYPS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ELB__DESC_LB_PCY_TYPS_RETURN', aws_result
 
 
         #DescribeLoadBalancers api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'elb_service'], ( Backbone, elb_service) ->
                     console.log 'elb.DescribeLoadBalancers failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ELB__DESC_LBS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'ELB__DESC_LBS_RETURN', aws_result
 
 
 

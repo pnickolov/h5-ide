@@ -43,7 +43,7 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                     console.log 'ami.CreateImage failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_AMI_CREATE_IMAGE_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_CREATE_IMAGE_RETURN', aws_result
 
 
         #RegisterImage api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                     console.log 'ami.RegisterImage failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_AMI_REGISTER_IMAGE_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_REGISTER_IMAGE_RETURN', aws_result
 
 
         #DeregisterImage api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                     console.log 'ami.DeregisterImage failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_AMI_DEREGISTER_IMAGE_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_DEREGISTER_IMAGE_RETURN', aws_result
 
 
         #ModifyImageAttribute api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                     console.log 'ami.ModifyImageAttribute failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_AMI_MODIFY_IMAGE_ATTR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_MODIFY_IMAGE_ATTR_RETURN', aws_result
 
 
         #ResetImageAttribute api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                     console.log 'ami.ResetImageAttribute failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_AMI_RESET_IMAGE_ATTR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_RESET_IMAGE_ATTR_RETURN', aws_result
 
 
         #DescribeImageAttribute api (define function)
@@ -173,7 +173,7 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                     console.log 'ami.DescribeImageAttribute failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_AMI_DESC_IMAGE_ATTR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_DESC_IMAGE_ATTR_RETURN', aws_result
 
 
         #DescribeImages api (define function)
@@ -199,7 +199,7 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                     console.log 'ami.DescribeImages failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_AMI_DESC_IMAGES_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_DESC_IMAGES_RETURN', aws_result
 
 
 

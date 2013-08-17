@@ -43,7 +43,7 @@ define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
                     console.log 'stack.create failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'STACK_CREATE_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_CREATE_RETURN', forge_result
 
 
         #remove api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
                     console.log 'stack.remove failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'STACK_REMOVE_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_REMOVE_RETURN', forge_result
 
 
         #save api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
                     console.log 'stack.save failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'STACK_SAVE_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_SAVE_RETURN', forge_result
 
 
         #rename api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
                     console.log 'stack.rename failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'STACK_RENAME_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_RENAME_RETURN', forge_result
 
 
         #run api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
                     console.log 'stack.run failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'STACK_RUN_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_RUN_RETURN', forge_result
 
 
         #save_as api (define function)
@@ -173,7 +173,7 @@ define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
                     console.log 'stack.save_as failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'STACK_SAVE__AS_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_SAVE__AS_RETURN', forge_result
 
 
         #info api (define function)
@@ -199,7 +199,7 @@ define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
                     console.log 'stack.info failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'STACK_INFO_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_INFO_RETURN', forge_result
 
 
         #list api (define function)
@@ -225,7 +225,7 @@ define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
                     console.log 'stack.list failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'STACK_LST_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_LST_RETURN', forge_result
 
 
 

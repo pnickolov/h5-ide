@@ -3,7 +3,7 @@
 #* Filename: UI.tooltip
 #* Creator: Angel
 #* Description: UI.tooltip
-#* Date: 20130810
+#* Date: 20130817
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -12,8 +12,8 @@ var tooltip = function (event)
 {
 	var target = $(this),
 		content = $.trim(target.data('tooltip')),
-		target_offset = target.offset(),
 		tooltip_box = $('#tooltip_box'),
+		target_offset,
 		width,
 		height,
 		target_width,
@@ -30,11 +30,22 @@ var tooltip = function (event)
 
 		tooltip_box.text(content);
 
+		if (target.prop('namespaceURI') === 'http://www.w3.org/2000/svg')
+		{
+			target_offset = target[0].getBoundingClientRect();
+			target_width = target_offset.width;
+			target_height = target_offset.height;
+		}
+		else
+		{
+			target_offset = target.offset();
+			target_width = target.innerWidth();
+			target_height = target.innerHeight();
+		}
+
 		width = tooltip_box.width();
 		height = tooltip_box.height();
-		target_width = target.innerWidth();
-		target_height = target.innerHeight();
-
+		
 		tooltip_box.css({
 			'left': target_offset.left + width - document.body.scrollLeft > window.innerWidth ?
 				target_offset.left - width :

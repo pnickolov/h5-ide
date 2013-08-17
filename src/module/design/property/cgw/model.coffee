@@ -69,7 +69,7 @@ define [ 'constant' ], ( constant ) ->
                         if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
                             continue
 
-                        if comp.resource.CustomerGatewayId and compo.resource.CustomerGatewayId.indexOf( uid ) isnt -1
+                        if comp.resource.CustomerGatewayId and comp.resource.CustomerGatewayId.indexOf( uid ) isnt -1
                             comp.resource.Routes = []
             null
     }

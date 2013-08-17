@@ -14,6 +14,29 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
 
+            me = this
+
+            #listen EC2_EBS_DESC_SSS_RETURN
+            me.on 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
+
+                if $.isEmptyObject result.resolved_data.item.description
+
+                    result.resolved_data.item.description = 'None'
+
+                if not result.resolved_data.item.volumeId
+
+                    result.resolved_data.item.volumeId = 'None'
+
+                volume_detail.snapshot = JSON.stringify result.resolved_data.item
+
+                me.set 'volume_detail', volume_detail
+
+                me.trigger "REFRESH_PANEL"
+
+                null
+
+
+
         getVolume : ( uid ) ->
 
             me = this
@@ -85,22 +108,6 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
 
                     ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, [volume_detail.Ebs.SnapshotId]
 
-            me.once 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
-
-                if $.isEmptyObject result.resolved_data.item.description
-
-                    result.resolved_data.item.description = 'None'
-
-                if not result.resolved_data.item.volumeId
-
-                    result.resolved_data.item.volumeId = 'None'
-
-                volume_detail.snapshot = JSON.stringify result.resolved_data.item
-
-                me.set 'volume_detail', volume_detail
-
-                me.trigger "REFRESH_PANEL"
-
         setDeviceName : ( uid, name ) ->
 
             me = this
@@ -117,15 +124,29 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
 
                 $.each lc_block_device, ( i, block ) ->
 
-                    if block.DeviceName.slice(0,1) != '/' and block.DeviceName.indexOf('xvd'+device_name)>=0
+                    if block.DeviceName.slice(0,1) != '/' and block.DeviceName.indexOf(device_name)>=0
 
                         block.DeviceName = 'xvd' + name
+
+                        MC.canvas.update(realuid,'id','volume_' + device_name, realuid + '_volume_' + 'xvd' + name)
+
+                        $("#property-panel-volume").attr 'uid', realuid + '_volume_' + 'xvd' + name
+
+                        MC.canvas.update(realuid,'text','volume_' + block.DeviceName, block.DeviceName)
 
                     else if block.DeviceName.slice(0,1) == '/' and block.DeviceName.indexOf(device_name)>=0
 
                         block.DeviceName = '/dev/' + name
 
+                        MC.canvas.update(realuid,'id','volume_' + device_name, realuid + '_volume_' + name)
+
+                        $("#property-panel-volume").attr 'uid', realuid + '_volume_' + name
+
+                        MC.canvas.update(realuid,'text','volume_' + name, block.DeviceName)
+
                     null
+
+
 
             else
 

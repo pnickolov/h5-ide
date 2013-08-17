@@ -1175,15 +1175,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                                 resources.DescribeInstances[i].host = value
 
+                            if key == 'Name'
+
+                                resources.DescribeInstances[i].Name = value
+
                             if key == 'Created by'
 
                                 resources.DescribeInstances[i].owner = value
 
                             null
 
-                    if not resources.DescribeInstances[i].host
+                        if not resources.DescribeInstances[i].host
 
-                        resources.DescribeInstances[i].host = ''
+                            resources.DescribeInstances[i].host = resources.DescribeInstances[i].Name
 
                     null
 
@@ -1491,17 +1495,21 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
                     if key == 'name'
 
-                        res.host = value
+                        res.name = value
 
                     if key == 'Created by'
 
                         res.owner = value
 
+                    if key == 'Name'
+
+                        res.Name = value
+
                     null
 
-            if not res.host
+                if not res.name
 
-                res.host = ''
+                    res.name = res.Name
 
 
 

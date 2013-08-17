@@ -82,7 +82,7 @@
   </div>
   {{/with}}
 
-  {{#if vpn.available}}
+  {{#if vpn.detail}}
   <div class="option-group-head">Download Configuration</div>
   <div class="option-group" id="app-vpn-connection-body">
     <div class="property-control-group clearfix">
@@ -114,11 +114,9 @@
         </ul>
       </div>
     </div>
-    {{#with vpn.detail}}
-      {{#each btns}}
-      <a id="download-vpn-cgw-conf" class="btn btn-primary" {{#if download}}href="data://text/plain;base64,{{filecontent}}" download="{{filename}}.txt"{{/if}}>{{btnname}}</a>
-      {{/each}}
-    {{/with}}
+    {{#each vpn.detail.btns}}
+    <a id="download-vpn-cgw-conf" class="btn btn-primary" {{#if download}}href="data://text/plain;base64,{{filecontent}}" download="{{filename}}.txt"{{/if}}>{{btnname}}</a>
+    {{/each}}
   </div>
   {{/if}}
 </article>

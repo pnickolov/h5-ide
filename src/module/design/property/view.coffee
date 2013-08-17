@@ -36,7 +36,6 @@ define [ './temp_view',
         togglePropertyPanel : ( event ) ->
             console.log 'togglePropertyPanel'
             $( '#property-panel' ).toggleClass 'hiden'
-            $( event ).children().first().toggleClass('icon-double-angle-left').toggleClass('icon-double-angle-right')
             $( '#canvas-panel' ).toggleClass 'right-hiden'
             false
 

@@ -10,6 +10,37 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
         defaults :
             snapshot : null
 
+        initialize : ->
+
+            me = this
+
+            #listen APP_RESOURCE_RETURN
+            me.on 'APP_RESOURCE_RETURN', ( result ) ->
+
+                app_id = result.param[5][4]
+                console.log 'APP_RESOURCE_RETURN:' + app_id
+
+
+                if !result.is_error
+
+                    region = result.param[3]
+
+                    resource_source = result.resolved_data
+
+                    if resource_source
+
+                        MC.aws.aws.cacheResource resource_source, region
+                        me.describeInstancesOfASG region
+
+                else
+
+                    #TO-DO
+
+
+                null
+
+
+
         saveTab : ( tab_id, snapshot, data, property, property_panel, last_open_property ) ->
             console.log 'saveTab'
             MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'last_open_property' : last_open_property }
@@ -161,17 +192,6 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
             app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  app_id
 
-            me.once 'APP_RESOURCE_RETURN', ( result ) ->
-
-                console.log 'APP_RESOURCE_RETURN'
-
-                resource_source = result.resolved_data
-
-                MC.aws.aws.cacheResource resource_source, region
-
-                me.describeInstancesOfASG region
-
-                null
 
     }
 

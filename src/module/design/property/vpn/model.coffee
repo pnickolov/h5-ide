@@ -16,39 +16,36 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
         getVPN : (line_option) ->
             me = this
 
-            vpn_detail = me.get 'vpn_detail'
+            vpn_detail = {}
 
-            if not vpn_detail
-                vpn_detail = {}
+            cgw_uid = node.uid for node in line_option when node.port == 'cgw-vpn'
+            vgw_uid = node.uid for node in line_option when node.port == 'vgw-vpn'
 
-                cgw_uid = node.uid for node in line_option when node.port == 'cgw-vpn'
-                vgw_uid = node.uid for node in line_option when node.port == 'vgw-vpn'
+            if cgw_uid and vgw_uid
+                vpn_detail.is_dynamic = if !!MC.canvas_data.component[cgw_uid].resource.BgpAsn then true else false
+                vpn_detail.cgw_name = MC.canvas_data.component[ cgw_uid ].name
 
-                if cgw_uid and vgw_uid
-                    vpn_detail.is_dynamic = if !!MC.canvas_data.component[cgw_uid].resource.BgpAsn then true else false
-                    vpn_detail.cgw_name = MC.canvas_data.component[ cgw_uid ].name
+                vgw_ref = '@' + vgw_uid + '.resource.VpnGatewayId'
+                cgw_ref = '@' + cgw_uid + '.resource.CustomerGatewayId'
 
-                    vgw_ref = '@' + vgw_uid + '.resource.VpnGatewayId'
-                    cgw_ref = '@' + cgw_uid + '.resource.CustomerGatewayId'
+                _.map MC.canvas_data.component, (item) ->
 
-                    _.map MC.canvas_data.component, (item) ->
+                    if item.type == 'AWS.VPC.VPNConnection' and item.resource.VpnGatewayId == vgw_ref and item.resource.CustomerGatewayId == cgw_ref
 
-                        if item.type == 'AWS.VPC.VPNConnection' and item.resource.VpnGatewayId == vgw_ref and item.resource.CustomerGatewayId == cgw_ref
-                           
-                            vpn_detail.uid = item.uid
+                        vpn_detail.uid = item.uid
 
-                            vpn_detail.name = item.name
+                        vpn_detail.name = item.name
 
-                            vpn_detail.ips = []
-                            
-                            vpn_detail.ips.push route.DestinationCidrBlock for route in item.resource.Routes
+                        vpn_detail.ips = []
 
-                            vpn_detail.is_del = if vpn_detail.ips.length > 1 then true else false
+                        vpn_detail.ips.push route.DestinationCidrBlock for route in item.resource.Routes
 
-                            null
+                        vpn_detail.is_del = if vpn_detail.ips.length > 1 then true else false
 
-                me.set 'vpn_detail', vpn_detail
-            
+                        null
+
+            me.set 'vpn_detail', vpn_detail
+
         delIP : (ip) ->
             me = this
 
@@ -71,23 +68,15 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             null
 
-        addIP : (new_ip) ->
-            me = this
+        updateIps : ( ipset ) ->
 
-            vpn_detail = me.get 'vpn_detail'
+            vpn_detail = this.get 'vpn_detail'
 
-            if new_ip not in vpn_detail.ips
-                vpn_detail.ips.push new_ip
+            routes = []
+            for i in ipset
+                routes.push { 'Source' : '', 'State' : '', 'DestinationCidrBlock' : i }
 
-                #update vpn component
-                route = { 'Source' : '', 'State' : '', 'DestinationCidrBlock' : new_ip }
-
-                MC.canvas_data.component[ vpn_detail.uid ].resource.Routes.push route
-
-                me.set 'vpn_detail', vpn_detail
-
-                me.trigger 'UPDATE_VPN_DATA'
-
+            MC.canvas_data.component[ vpn_detail.uid ].resource.Routes = routes
             null
 
     }

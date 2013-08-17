@@ -1047,7 +1047,6 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_data = $.extend(true, {}, MC.canvas.ASL_VOL_JSON);
 					component_data.DeviceName = option.name;
 					component_data.Ebs.VolumeSize = option.volumeSize;
-					component_data.VirtualName = option.VirtualName;
 
 					if (option.snapshotId)
 					{

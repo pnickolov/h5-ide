@@ -48,7 +48,18 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         instanceNameChange : ( event ) ->
             console.log 'instanceNameChange'
-            this.model.set 'name', event.target.value
+
+            target = $ event.currentTarget
+            name = target.val()
+            id = @model.get 'get_uid'
+
+            debug @model.attributes
+
+            MC.validate.preventDupname target, id, name, 'Instance'
+
+
+            if target.parsley 'validate'
+                this.model.set 'name', name
             null
 
         instanceTypeSelect : ( event, value )->

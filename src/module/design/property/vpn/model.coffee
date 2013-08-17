@@ -68,23 +68,15 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             null
 
-        addIP : (new_ip) ->
-            me = this
+        updateIps : ( ipset ) ->
 
-            vpn_detail = me.get 'vpn_detail'
+            vpn_detail = this.get 'vpn_detail'
 
-            if new_ip not in vpn_detail.ips
-                vpn_detail.ips.push new_ip
+            routes = []
+            for i in ipset
+                routes.push { 'Source' : '', 'State' : '', 'DestinationCidrBlock' : i }
 
-                #update vpn component
-                route = { 'Source' : '', 'State' : '', 'DestinationCidrBlock' : new_ip }
-
-                MC.canvas_data.component[ vpn_detail.uid ].resource.Routes.push route
-
-                me.set 'vpn_detail', vpn_detail
-
-                me.trigger 'UPDATE_VPN_DATA'
-
+            MC.canvas_data.component[ vpn_detail.uid ].resource.Routes = routes
             null
 
     }

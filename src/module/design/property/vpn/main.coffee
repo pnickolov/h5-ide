@@ -35,25 +35,12 @@ define [ 'jquery',
             #view
             view.model    = model
             #render
-            renderVPNPanel = (line_option) ->
-                model.getVPN line_option
-                view.render()
-                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "vpn:#{model.attributes.vpn_detail.cgw_name}"
+            model.getVPN line_option
+            view.render()
+            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "vpn:#{model.attributes.vpn_detail.cgw_name}"
 
-            renderVPNPanel line_option
-
-            view.on 'VPN_DELETE_IP', (ip) ->
-                console.log "VPN_DELETE_IP:" + ip
-                model.delIP ip
-
-            view.on 'VPN_ADD_IP', (new_ip) ->
-                console.log "VPN_ADD_IP:" + new_ip
-                model.addIP new_ip
-
-            model.on 'UPDATE_VPN_DATA', () ->
-                console.log 'update vpn panel'
-                view.render()
-                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "vpn:#{model.attributes.vpn_detail.cgw_name}"
+            view.on 'VPN_IP_UPDATE', (ipset) ->
+                model.updateIps ipset
 
     unLoadModule = () ->
         current_view.off()

@@ -178,7 +178,14 @@ define [ 'jquery',
 
 							else if '|vgw-vpn>cgw-vpn|cgw-vpn>vgw-vpn|'.indexOf( key ) > 0
 								#select line between vgw and  cgw
-								vpn_main.loadModule line_option, 'line', vpn_main
+								if tab_type is 'OPEN_APP'
+									if line_option[1].port == "cgw-vpn"
+										cgw_uid = line_option[1].uid
+									else
+										cgw_uid = line_option[0].uid
+									cgw_main.loadModule cgw_uid, cgw_main, tab_type
+								else
+									vpn_main.loadModule line_option, 'line', vpn_main
 
 				#
 				if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom

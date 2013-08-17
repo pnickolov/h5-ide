@@ -280,18 +280,21 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     ami = v for k,v of feeMap.ami when v.imageId == imageId
 
-                    if feeMap.ami[imageId].osType is 'win'
-                        os = 'windows'
-                    else
-                        os = 'linux-other'
+                    if feeMap.ami[imageId]
 
-                    size_list = size.split('.')
-                    fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
-                    unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
+                        if feeMap.ami[imageId].osType is 'win'
+                            os = 'windows'
+                        else
+                            os = 'linux-other'
 
-                    cost_list.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + '/hr' }
+                        size_list = size.split('.')
+                        fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
+                        unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
 
-                    total_fee += fee * 24 * 30
+                        cost_list.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + '/hr' }
+
+                        total_fee += fee * 24 * 30
+
 
                 else if item.type is 'AWS.ELB'
                     elb = i for i in feeMap.price.elb when i.unit is 'perELBHour'

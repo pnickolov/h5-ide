@@ -2,9 +2,9 @@
 #  View Mode for design/resource
 #############################
 
-define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event',
+define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event',
          'backbone', 'jquery', 'underscore'
-], ( ec2_model, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event ) ->
+], ( ec2_service, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event ) ->
 
     #private
     ami_instance_type = null
@@ -24,41 +24,6 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
             me = this
 
-
-            ######listen EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN
-            me.on 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', ( result ) ->
-
-                region_name = result.param[3]
-                console.log 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN: ' + region_name
-
-
-
-                _.map result.resolved_data.item, (value)->
-                    value.zoneShortName = value.zoneName.slice(-2)
-                    null
-
-                res = $.extend true, {}, result.resolved_data
-
-                #if type != 'NEW_STACK'
-
-                $.each res.item, ( idx, value ) ->
-
-                    $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
-
-                        if zone.name == value.zoneName
-
-                            res.item[idx].isUsed = true
-
-                            null
-
-                console.log 'get az: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
-                if region_name == MC.canvas.data.get('region')
-                    me.set 'availability_zone', res
-
-                #cache az to MC.data.config[region_name].zone
-                MC.data.config[region_name].zone = result.resolved_data
-
-                null
 
             ######listen EC2_EBS_DESC_SSS_RETURN
             me.on 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
@@ -287,24 +252,70 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
                 res = $.extend true, {}, MC.data.config[region_name].zone
 
-                #if type != 'NEW_STACK'
+                if type != 'NEW_STACK'
 
-                $.each res.item, ( idx, value ) ->
+                    $.each res.item, ( idx, value ) ->
 
-                    $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+                        $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
 
-                        if zone.name == value.zoneName
+                            if zone.name == value.zoneName
 
-                            res.item[idx].isUsed = true
+                                res.item[idx].isUsed = true
 
-                            null
+                                null
 
                 me.set 'availability_zone', res
 
             else
 
                 #get service(model)
-                ec2_model.DescribeAvailabilityZones { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, null
+                ec2_service.DescribeAvailabilityZones { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, null, ( result ) ->
+
+                    if !result.is_error
+                    #DescribeAvailabilityZones succeed
+
+                        region_name = result.param[3]
+                        console.log 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN: ' + region_name
+
+
+
+                        _.map result.resolved_data.item, (value)->
+                            value.zoneShortName = value.zoneName.slice(-2)
+                            null
+
+                        res = $.extend true, {}, result.resolved_data
+
+                        if type != 'NEW_STACK'
+
+                            $.each res.item, ( idx, value ) ->
+
+                                $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+
+                                    if zone.name == value.zoneName
+
+                                        res.item[idx].isUsed = true
+
+                                        null
+
+                        console.log 'get az: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
+                        if region_name == MC.canvas.data.get('region')
+                            me.set 'availability_zone', res
+
+                        #cache az to MC.data.config[region_name].zone
+                        MC.data.config[region_name].zone = result.resolved_data
+
+                        null
+
+
+
+                    else
+                    #DescribeAvailabilityZones failed
+
+                        console.log 'ec2.DescribeAvailabilityZones failed, error is ' + result.error_message
+
+
+
+
 
         #call service
         describeSnapshotsService : ( region_name ) ->

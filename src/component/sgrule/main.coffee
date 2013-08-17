@@ -25,7 +25,7 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
                 unLoadModule view, model
 
-            view.on 'ADD_SG_RULE', ( rule_data ) ->
+            view.on 'ADD_RULE', ( rule_data ) ->
 
                 model.addSGRule rule_data
 
@@ -41,12 +41,10 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
                 ide_event.trigger ide_event.REDRAW_SG_LINE
 
-            view.on 'DELETE_PREVIEW_RULE', () ->
-
-                this.model.deletePriviewRule()
+            view.on 'DELETE_RULE', ( uid ) ->
 
                 ide_event.trigger ide_event.REDRAW_SG_LINE
-                
+
 
             #render
             if delete_module

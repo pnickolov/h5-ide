@@ -148,7 +148,7 @@ define [ 'MC', 'event', 'handlebars'
 		#i18n
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.ide[ text ]
-			
+
 		analytics.identify($.cookie("userid"), {
 			name : $.cookie("username"),
 			username : $.cookie("username"),
@@ -160,5 +160,5 @@ define [ 'MC', 'event', 'handlebars'
 				userHash : '5add343430ecaf54f7c1a6285758fcccb87fb365d089d6e1a520b2d7fa49fb05'
 			}
 		})
-		
+
 		analytics.track('Loaded IDE', { })

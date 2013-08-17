@@ -1,4 +1,15 @@
+
+
+
 <article class="property-app">
+{{#if isLC}}
+    <dl class="dl-vertical">
+    <dt>Device Name</dt>
+    <dd>{{DeviceName}}</dd>
+    <dt>Volume Size</dt>
+    <dd>{{Ebs.VolumeSize}} GB</dd>
+  </dl>
+{{else}}
   <dl class="dl-vertical">
     <dt>Volume ID</dt>
     <dd>{{volumeId}}</dd>
@@ -31,5 +42,7 @@
     <dt>Attach Time</dt>
     <dd>{{attachmentSet.item.0.attachTime}}</dd>
   </dl>
+
+{{/if}}
 </article>
 

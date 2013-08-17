@@ -19,8 +19,8 @@
       </div>
 
       <label for="property-asg-endpoint">Endpoint</label>
-      <span class="property-asg-ep">
-        <input type="text" class="input" id="property-asg-endpoint" value={{endpoint}}>
+      <span class="property-asg-ep" data-bind="true">
+        <input type="text" class="input" id="property-asg-endpoint" value="{{endpoint}}" max-length="255" data-required-rollback="true" data-trigger="change">
       </span>
 
     </section>

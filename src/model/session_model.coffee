@@ -43,7 +43,7 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service ) ->
                     console.log 'session.login failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SESSION_LOGIN_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGIN_RETURN', forge_result else me.trigger 'SESSION_LOGIN_RETURN', forge_result
 
 
         #logout api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service ) ->
                     console.log 'session.logout failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SESSION_LOGOUT_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGOUT_RETURN', forge_result
 
 
         #set_credential api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service ) ->
                     console.log 'session.set_credential failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SESSION_SET__CREDENTIAL_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_SET__CREDENTIAL_RETURN', forge_result
 
 
         #guest api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service ) ->
                     console.log 'session.guest failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'SESSION_GUEST_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_GUEST_RETURN', forge_result
 
 
 

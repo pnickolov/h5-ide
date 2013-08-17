@@ -43,7 +43,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.CreateVolume failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_CREATE_VOL_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_CREATE_VOL_RETURN', aws_result
 
 
         #DeleteVolume api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.DeleteVolume failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_DELETE_VOL_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_DELETE_VOL_RETURN', aws_result
 
 
         #AttachVolume api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.AttachVolume failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_ATTACH_VOL_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_ATTACH_VOL_RETURN', aws_result
 
 
         #DetachVolume api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.DetachVolume failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_DETACH_VOL_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_DETACH_VOL_RETURN', aws_result
 
 
         #DescribeVolumes api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.DescribeVolumes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_DESC_VOLS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_DESC_VOLS_RETURN', aws_result
 
 
         #DescribeVolumeAttribute api (define function)
@@ -173,7 +173,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.DescribeVolumeAttribute failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_DESC_VOL_ATTR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_DESC_VOL_ATTR_RETURN', aws_result
 
 
         #DescribeVolumeStatus api (define function)
@@ -199,7 +199,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.DescribeVolumeStatus failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_DESC_VOL_STATUS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_DESC_VOL_STATUS_RETURN', aws_result
 
 
         #ModifyVolumeAttribute api (define function)
@@ -225,7 +225,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.ModifyVolumeAttribute failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_MODIFY_VOL_ATTR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_MODIFY_VOL_ATTR_RETURN', aws_result
 
 
         #EnableVolumeIO api (define function)
@@ -251,7 +251,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.EnableVolumeIO failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_ENABLE_VOL_I_O_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_ENABLE_VOL_I_O_RETURN', aws_result
 
 
         #CreateSnapshot api (define function)
@@ -277,7 +277,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.CreateSnapshot failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_CREATE_SS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_CREATE_SS_RETURN', aws_result
 
 
         #DeleteSnapshot api (define function)
@@ -303,7 +303,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.DeleteSnapshot failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_DELETE_SS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_DELETE_SS_RETURN', aws_result
 
 
         #ModifySnapshotAttribute api (define function)
@@ -329,7 +329,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.ModifySnapshotAttribute failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_MODIFY_SS_ATTR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_MODIFY_SS_ATTR_RETURN', aws_result
 
 
         #ResetSnapshotAttribute api (define function)
@@ -355,7 +355,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.ResetSnapshotAttribute failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_RESET_SS_ATTR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_RESET_SS_ATTR_RETURN', aws_result
 
 
         #DescribeSnapshots api (define function)
@@ -381,7 +381,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.DescribeSnapshots failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_DESC_SSS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_DESC_SSS_RETURN', aws_result
 
 
         #DescribeSnapshotAttribute api (define function)
@@ -407,7 +407,7 @@ define [ 'backbone', 'ebs_service'], ( Backbone, ebs_service) ->
                     console.log 'ebs.DescribeSnapshotAttribute failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EBS_DESC_SS_ATTR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EBS_DESC_SS_ATTR_RETURN', aws_result
 
 
 

@@ -55,10 +55,12 @@ MC.canvas = {
 			case 'image':
 				target.attr('href', value);
 				break;
-
 			case 'eip':
 				target.attr('data-eip-state', value);
-				break
+				break;
+			case 'id':
+				target.attr('id', value);
+				break;
 		}
 
 		return true;
@@ -254,7 +256,6 @@ MC.canvas = {
 	_round_corner: function (controlPoints)
 	{
 		//add by xjimmy, draw round corner of fold line
-
 		var d = '',
 			last_p = {},
 			prev_p = {},
@@ -541,6 +542,7 @@ MC.canvas = {
 			from_node_connection_data,
 			to_node_connection_data,
 			is_connected,
+			port_direction,
 			startX,
 			startY,
 			endX,
@@ -615,28 +617,15 @@ MC.canvas = {
 
 							if (direction.from === 'vertical')
 							{
-								if (to_port_offset.top > from_node[0].getBoundingClientRect().top)
-								{
-									from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-bottom');
-								}
-								else
-								{
-									from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-top');
-								}
+								port_direction = to_port_offset.top > from_node[0].getBoundingClientRect().top ? 'bottom' : 'top';
 							}
 
 							if (direction.from === 'horizontal')
 							{
-								if (to_port_offset.left > from_node[0].getBoundingClientRect().left)
-								{
-									from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-right');
-								}
-								else
-								{
-									from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-left');
-								}
+								port_direction = to_port_offset.left > from_node[0].getBoundingClientRect().left ? 'right' : 'left';
 							}
 
+							from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-' + port_direction);
 							from_port_offset = from_port.getBoundingClientRect();
 						}
 
@@ -647,28 +636,15 @@ MC.canvas = {
 
 							if (direction.to === 'vertical')
 							{
-								if (from_port_offset.top > to_node[0].getBoundingClientRect().top)
-								{
-									to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-bottom');
-								}
-								else
-								{
-									to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-top');
-								}
+								port_direction = from_port_offset.top > to_node[0].getBoundingClientRect().top ? 'bottom' : 'top';
 							}
 
 							if (direction.to === 'horizontal')
 							{
-								if (from_port_offset.left > to_node[0].getBoundingClientRect().left)
-								{
-									to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-right');
-								}
-								else
-								{
-									to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-left');
-								}
+								port_direction = from_port_offset.left > to_node[0].getBoundingClientRect().left ? 'right' : 'left';
 							}
 
+							to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-' + port_direction);
 				 			to_port_offset = to_port.getBoundingClientRect();
 						}
 					}
@@ -731,27 +707,14 @@ MC.canvas = {
 				else
 				{
 					//line style
-					MC.paper.start({
-						'stroke': connection_option.color,
-						'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-						'fill': 'none'
-					});
+					MC.paper.start();
 
 					MC.paper.path(path);
 					MC.paper.path(path).attr('class','fill-line');
 
-					if (
-						connection_option.stroke_dasharray &&
-						connection_option.color_dash &&
-						connection_option.stroke_dasharray !== ''
-					)
+					if (connection_option.dash_line === true)
 					{
-						MC.paper.path(path, {
-							'stroke': connection_option.color_dash,
-							'stroke-width': MC.canvas.LINE_STROKE_WIDTH,
-							'fill': 'none',
-							'stroke-dasharray': connection_option.stroke_dasharray
-						});
+						MC.paper.path(path).attr('class', 'dash-line');
 					}
 
 					svg_line = MC.paper.save();
@@ -1076,8 +1039,8 @@ MC.canvas = {
 			],
 			canvas_size = MC.canvas.data.get('layout.size'),
 			match_option = MC.canvas.MATCH_PLACEMENT[ MC.canvas.data.get('platform') ][ node_type ],
-			is_option_canvas = match_option ? (match_option[ 0 ] === 'Canvas') : false,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			//is_option_canvas = match_option ? (match_option[ 0 ] === 'Canvas') : false,
+			//scale_ratio = MC.canvas_property.SCALE_RATIO,
 			ignore_stack = [],
 			match = [],
 			result = {},
@@ -1107,69 +1070,69 @@ MC.canvas = {
 			}
 		}
 
-		x = x * scale_ratio;
-		y = y * scale_ratio;
+		//x = x * scale_ratio;
+		//y = y * scale_ratio;
 
-		if (is_option_canvas)
-		{
-			$.each(group_stack, function (index, layer_data)
-			{
-				if (layer_data)
-				{
-					$.each(layer_data, function (i, item)
-					{
-						group_data = layout_group_data[ item.id ];
-						coordinate = group_data.coordinate;
-						size = group_data.size;
+		// if (is_option_canvas)
+		// {
+		// 	$.each(group_stack, function (index, layer_data)
+		// 	{
+		// 		if (layer_data)
+		// 		{
+		// 			$.each(layer_data, function (i, item)
+		// 			{
+		// 				group_data = layout_group_data[ item.id ];
+		// 				coordinate = group_data.coordinate;
+		// 				size = group_data.size;
 
-						if (
-							$.inArray(item.id, ignore_stack) === -1 &&
-							//target_id !== item.id &&
-							(
-								(x >= coordinate[0] &&
-								x <= coordinate[0] + size[0])
-								||
-								(x + width >= coordinate[0] &&
-								x + width <= coordinate[0] + size[0])
-							)
-							&&
-							(
-								(y >= coordinate[1] &&
-								y <= coordinate[1] + size[1])
-								||
-								(y + height >= coordinate[1] &&
-								y + height <= coordinate[1] + size[1])
-							)
-						)
-						{
-							result = {
-								'id': item.id,
-								'type': group_data.type
-							};
-						}
-					});
+		// 				if (
+		// 					$.inArray(item.id, ignore_stack) === -1 &&
+		// 					//target_id !== item.id &&
+		// 					(
+		// 						(x >= coordinate[0] &&
+		// 						x <= coordinate[0] + size[0])
+		// 						||
+		// 						(x + width >= coordinate[0] &&
+		// 						x + width <= coordinate[0] + size[0])
+		// 					)
+		// 					&&
+		// 					(
+		// 						(y >= coordinate[1] &&
+		// 						y <= coordinate[1] + size[1])
+		// 						||
+		// 						(y + height >= coordinate[1] &&
+		// 						y + height <= coordinate[1] + size[1])
+		// 					)
+		// 				)
+		// 				{
+		// 					result = {
+		// 						'id': item.id,
+		// 						'type': group_data.type
+		// 					};
+		// 				}
+		// 			});
 
-					if (!$.isEmptyObject(result))
-					{
-						return false;
-					}
-				}
-			});
+		// 			if (!$.isEmptyObject(result))
+		// 			{
+		// 				return false;
+		// 			}
+		// 		}
+		// 	});
 
-			is_matched =
-				$.isEmptyObject(result) &&
+		// 	is_matched =
+		// 		$.isEmptyObject(result) &&
 
-				// canvas right offset = 3
-				x + width < canvas_size[0] - 3 &&
-				y + height < canvas_size[1] - 3;
+		// 		// canvas right offset = 3
+		// 		x + width < canvas_size[0] - 3 &&
+		// 		y + height < canvas_size[1] - 3;
 
-			return {
-				'is_matched': is_matched,
-				'target': result.id === undefined && is_matched ? 'Canvas' : result.id
-			};
-		}
-		else
-		{
+		// 	return {
+		// 		'is_matched': is_matched,
+		// 		'target': result.id === undefined && is_matched ? 'Canvas' : result.id
+		// 	};
+		// }
+		// else
+		// {
 			$.each(point, function (index, data)
 			{
 				$.each(group_stack, function (i, layer_data)
@@ -1234,7 +1197,11 @@ MC.canvas = {
 				!match[0] &&
 				!match[1] &&
 				!match[2] &&
-				!match[3]
+				!match[3] &&
+
+				// canvas right offset = 3
+				x + width < canvas_size[0] - 3 &&
+				y + height < canvas_size[1] - 3
 			)
 			{
 				is_matched = true;
@@ -1245,7 +1212,7 @@ MC.canvas = {
 				'is_matched': is_matched,
 				'target': is_matched ? match_target : null
 			};
-		}
+		//}
 	},
 
 	isBlank: function (type, target_id, target_type, x, y, width, height)
@@ -2218,8 +2185,6 @@ MC.canvas.volume = {
 
 		event.data.shadow.remove();
 
-		//$(document.body).removeClass('disable-event');
-
 		$('#overlayer').remove();
 
 		$(document).off({
@@ -2284,9 +2249,6 @@ MC.canvas.event.dragable = {
 	{
 		if (event.which === 1)
 		{
-			// event.preventDefault();
-			// event.stopPropagation();
-
 			var target = $(this),
 				target_offset = Canvon(this).offset(),
 				target_type = target.data('type'),
@@ -2342,6 +2304,8 @@ MC.canvas.event.dragable = {
 
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
+				Canvon(shadow[0]).addClass('shadow');
+
 				$(document).on({
 					'mousemove': MC.canvas.event.dragable.gatewaymove,
 					'mouseup': MC.canvas.event.dragable.gatewayup
@@ -2360,42 +2324,25 @@ MC.canvas.event.dragable = {
 			}
 			else
 			{
-				if (event.target.getAttribute('class') === 'asg-resource-dragger')
-				{
-					$(document).on({
-						'mousemove': MC.canvas.event.dragable.mousemove,
-						'mouseup': MC.canvas.event.dragable.asgExpandup
-					}, {
-						'target': target,
-						'canvas_body': canvas_body,
-						'target_type': target_type,
-						'shadow': shadow,
-						'offsetX': event.pageX - target_offset.left + canvas_offset.left,
-						'offsetY': event.pageY - target_offset.top + canvas_offset.top,
-						'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
-						'originalPageX': event.pageX,
-						'originalPageY': event.pageY,
-						'originalTarget': event.target
-					});
-				}
-				else
-				{
-					$(document).on({
-						'mousemove': MC.canvas.event.dragable.mousemove,
-						'mouseup': MC.canvas.event.dragable.mouseup
-					}, {
-						'target': target,
-						'canvas_body': canvas_body,
-						'target_type': target_type,
-						'shadow': shadow,
-						'offsetX': event.pageX - target_offset.left + canvas_offset.left,
-						'offsetY': event.pageY - target_offset.top + canvas_offset.top,
-						'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
-						'originalPageX': event.pageX,
-						'originalPageY': event.pageY,
-						'originalTarget': event.target
-					});
-				}
+				$(document).on({
+					'mousemove': MC.canvas.event.dragable.mousemove,
+					'mouseup': event.target.getAttribute('class') === 'asg-resource-dragger' ?
+						// For asgExpand
+						MC.canvas.event.dragable.asgExpandup : 
+						// Default
+						MC.canvas.event.dragable.mouseup
+				}, {
+					'target': target,
+					'canvas_body': canvas_body,
+					'target_type': target_type,
+					'shadow': shadow,
+					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
+					'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
+					'originalPageX': event.pageX,
+					'originalPageY': event.pageY,
+					'originalTarget': event.target
+				});
 			}
 
 			MC.canvas.event.clearSelected();
@@ -2573,7 +2520,7 @@ MC.canvas.event.dragable = {
 
 				if (group_data.type === 'AWS.VPC.VPC')
 				{
-					if ( coordinate.y <= 3)
+					if (coordinate.y <= 3)
 					{
 						 coordinate.y = 3;
 					}
@@ -3054,13 +3001,10 @@ MC.canvas.event.drawConnection = {
 			MC.canvas.event.clearSelected();
 
 			// Keep hover style on
-			//if ($('#canvas_body').hasClass('canvas-view-sg'))
-			//{
-				$.each(node_connections, function (index, item)
-				{
-					Canvon(item.line).addClass('view-keephover');
-				});
-			//}
+			$.each(node_connections, function (index, item)
+			{
+				Canvon(item.line).addClass('view-keephover');
+			});
 
 			// Highlight connectable port
 			$.each(connection_option, function (type, option)
@@ -3343,9 +3287,6 @@ MC.canvas.event.siderbarDrag = {
 	{
 		if (event.which === 1)
 		{
-			// event.preventDefault();
-			// event.stopPropagation();
-
 			var target = $(this),
 				target_offset = target.offset(),
 				canvas_offset = $('#svg_canvas').offset(),
@@ -3581,13 +3522,13 @@ MC.canvas.event.siderbarDrag = {
 					}
 					else
 					{
-						//dispatch event when is not blank
+						// dispatch event when is not blank
 						$("#svg_canvas").trigger("CANVAS_PLACE_OVERLAP");
 					}
 				}
 				else
 				{
-					//dispatch event when is not matched
+					// dispatch event when is not matched
 					$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
 						type: node_type
 					});
@@ -3616,7 +3557,6 @@ MC.canvas.event.siderbarDrag = {
 			event.data.shadow.remove();
 		}
 
-		//$(document.body).removeClass('disable-event');
 		$('#overlayer').remove();
 
 		$('#canvas_body').removeClass('node-dragging');
@@ -3633,9 +3573,6 @@ MC.canvas.event.groupResize = {
 	{
 		if (event.which === 1)
 		{
-			// event.preventDefault();
-			// event.stopPropagation();
-
 			var target = event.target,
 				parent = $(target.parentNode.parentNode),
 				group = parent.find('.group'),
@@ -4189,9 +4126,6 @@ MC.canvas.event.selectLine = function (event)
 {
 	if (event.which === 1)
 	{
-		// event.preventDefault();
-		// event.stopPropagation();
-
 		MC.canvas.event.clearSelected();
 
 		MC.canvas.select(this.id);
@@ -4369,20 +4303,19 @@ MC.canvas.event.keyEvent = function (event)
 	{
 		var target = $('#' + MC.canvas_property.selected_node[ 0 ]),
 			target_id = MC.canvas_property.selected_node[ 0 ],
-			layout_node_data = MC.canvas.data.get('layout.component.node'),
-			layout_connection_data = MC.canvas.data.get('layout.connection'),
-			node_data = layout_node_data[ target_id ],
 			node_type = target.data('class'),
 			target_type = target.data('type'),
+			target_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id),
+			canvas_size = MC.canvas.data.get('layout.size'),
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			coordinate = {'x': target_data.coordinate[0], 'y': target_data.coordinate[1]},
 			component_size = MC.canvas.COMPONENT_SIZE[ node_type ],
-			coordinate = {'x': node_data.coordinate[0], 'y': node_data.coordinate[1]},
 			match_place,
 			vpc_id,
 			vpc_data,
 			vpc_coordinate;
 
-		if (target.data('type') !== 'node')
+		if (target_type !== 'node')
 		{
 			return false;
 		}
@@ -4435,7 +4368,10 @@ MC.canvas.event.keyEvent = function (event)
 		if (
 			coordinate.x > 0 &&
 			coordinate.y > 0 &&
-			match_place.is_matched
+			match_place.is_matched &&
+
+			coordinate.x + component_size[0] < canvas_size[0] - 3 &&
+			coordinate.y + component_size[1] < canvas_size[1] - 3
 		)
 		{
 			MC.canvas.position(target[0], coordinate.x  * scale_ratio, coordinate.y * scale_ratio);

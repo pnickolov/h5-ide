@@ -43,7 +43,7 @@ define [ 'backbone', 'internetgateway_service'], ( Backbone, internetgateway_ser
                     console.log 'internetgateway.DescribeInternetGateways failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_IGW_DESC_INET_GWS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_IGW_DESC_INET_GWS_RETURN', aws_result
 
 
 

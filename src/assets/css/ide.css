@@ -2214,22 +2214,23 @@ a.sidebar-hider {
 }
 
 .option-group {
-	max-height : 0;
-	overflow   : hidden;
-	position   : relative;
+	display  : none;
+	overflow : hidden;
+	position : relative;
 }
 
-.option-group.transition {
+/*.option-group.transition {
 	-webkit-transition: max-height .25s ease-in-out;
 	   -moz-transition: max-height .25s ease-in-out;
 	    -ms-transition: max-height .25s ease-in-out;
 	     -o-transition: max-height .25s ease-in-out;
 	        transition: max-height .25s ease-in-out;
-}
+}*/
 
 .expand + .option-group {
-	max-height : inherit;
-	overflow   : visible;
+	display    : block;
+	/*max-height : inherit;
+	overflow   : visible;*/
 }
 
 .property-control-group {

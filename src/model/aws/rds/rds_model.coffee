@@ -43,7 +43,7 @@ define [ 'backbone', 'rds_service'], ( Backbone, rds_service) ->
                     console.log 'rds.DescribeDBEngineVersions failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_RDS_DESC_DB_ENG_VERS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_DB_ENG_VERS_RETURN', aws_result
 
 
         #DescribeOrderableDBInstanceOptions api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'rds_service'], ( Backbone, rds_service) ->
                     console.log 'rds.DescribeOrderableDBInstanceOptions failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_RDS_DESC_ORD_DB_INS_OPTS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_ORD_DB_INS_OPTS_RETURN', aws_result
 
 
         #DescribeEngineDefaultParameters api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'rds_service'], ( Backbone, rds_service) ->
                     console.log 'rds.DescribeEngineDefaultParameters failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_RDS_DESC_ENG_DFT_PARAMS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_ENG_DFT_PARAMS_RETURN', aws_result
 
 
         #DescribeEvents api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'rds_service'], ( Backbone, rds_service) ->
                     console.log 'rds.DescribeEvents failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_RDS_DESC_EVENTS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_EVENTS_RETURN', aws_result
 
 
 

@@ -322,6 +322,20 @@
 	stroke-width: 10px;
 }
 
+/* draw line */
+.draw-line-wrap {
+	fill: none;
+	opacity: 1 !important;
+}
+
+.draw-line {
+	stroke-width: 5px;
+}
+
+.draw-line-arrow {
+	stroke-width: 3px;
+}
+
 /* node label */
 .node-label {
 	font-size: 12px;
@@ -342,6 +356,14 @@
 .volume-number {
 	font-size: 12px;
 	fill: #74B1FD;
+}
+
+.volume-number[value="0"] {
+	opacity: 0.5;
+}
+
+.volume-empty {
+	opacity: 0.5;
 }
 
 .node-background {

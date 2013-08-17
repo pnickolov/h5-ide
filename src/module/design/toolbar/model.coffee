@@ -64,16 +64,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 is_tab = true
 
             else if flag is 'RUNNING_APP'
-                item_state_map[id].state = constant.APP_STATE.APP_STATE_RUNNING
-                item_state_map[id].is_running = true
-                item_state_map[id].is_pending = false
+                if id of item_state_map
+                    item_state_map[id].state = constant.APP_STATE.APP_STATE_RUNNING
+                    item_state_map[id].is_running = true
+                    item_state_map[id].is_pending = false
 
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
 
             else if flag is 'STOPPED_APP'
-                item_state_map[id].state = constant.APP_STATE.APP_STATE_STOPPED
-                item_state_map[id].is_running = false
-                item_state_map[id].is_pending = false
+                if id of item_state_map
+                    item_state_map[id].state = constant.APP_STATE.APP_STATE_STOPPED
+                    item_state_map[id].is_running = false
+                    item_state_map[id].is_pending = false
 
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
 
@@ -82,7 +84,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 return
 
             else if flag is 'PENDING_APP'
-                item_state_map[id].is_pending = true
+                if id of item_state_map
+                    item_state_map[id].is_pending = true
 
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
 
@@ -368,12 +371,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             else
                 return false
 
-        startApp : (data) ->
+        startApp : (region, id, name) ->
             me = this
-
-            region = data.region
-            id = data.id
-            name = data.name
 
             app_model.start { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
             me.once 'APP_START_RETURN', (result) ->
@@ -388,12 +387,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     app_region: region,
                     app_name: name
 
-        stopApp : (data) ->
+        stopApp : (region, id, name) ->
             me = this
-
-            region = data.region
-            id = data.id
-            name = data.name
 
             app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
             me.once 'APP_STOP_RETURN', (result) ->
@@ -408,12 +403,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     app_region: region,
                     app_name: name
 
-        terminateApp : (data) ->
+        terminateApp : (region, id, name) ->
             me = this
-
-            region = data.region
-            id = data.id
-            name = data.name
 
             #terminate : ( src, username, session_id, region_name, app_id, app_name=null )
             app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
@@ -475,7 +466,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                     if name in MC.data.app_list[region]
                                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
-                                    ide_event.trigger ide_event.APP_TERMINATE, name, id
+                                    ide_event.trigger ide_event.TERMINATE_APP, name, id
 
                                 #push event
                                 ide_event.trigger ide_event.UPDATE_APP_LIST, null

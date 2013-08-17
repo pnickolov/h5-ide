@@ -83,10 +83,10 @@ define [ 'underscore', 'backbone' ], () ->
         RETURN_OVERVIEW_TAB : 'RETURN_OVERVIEW_TAB'
         RETURN_REGION_TAB   : 'RETURN_REGION_TAB'
 
-        #app/stack in region
-        APP_RUN             : 'APP_RUN'
-        APP_STOP            : 'APP_STOP'
-        APP_TERMINATE       : 'APP_TERMINATE'
+        #app/stack operation
+        START_APP           : 'START_APP'
+        STOP_APP            : 'STOP_APP'
+        TERMINATE_APP       : 'TERMINATE_APP'
         UPDATE_APP_LIST     : 'UPDATE_APP_LIST'
         UPDATE_STACK_LIST   : 'UPDATE_STACK_LIST'
         STACK_DELETE        : 'STACK_DELETE'

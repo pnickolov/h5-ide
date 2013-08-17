@@ -81,16 +81,6 @@ define [ 'jquery',
                 console.log 'design_toolbar_click:runStack'
                 model.runStack(app_name, data)
 
-            #zoomin
-            view.on 'TOOLBAR_ZOOMIN_CLICK', () ->
-                console.log 'design_toolbar_click:zoomIn'
-                model.zoomIn()
-
-            #zoomout
-            view.on 'TOOLBAR_ZOOMOUT_CLICK', () ->
-                console.log 'design_toolbar_click:zoomOut'
-                model.zoomOut()
-
             #export to png
             view.on 'TOOLBAR_EXPORT_PNG_CLICK', (data) ->
                 console.log 'design_toolbar_click:exportPngIcon'
@@ -104,17 +94,21 @@ define [ 'jquery',
                 console.log 'SAVE_APP_THUMBNAIL'
                 model.saveAppThumbnail(data)
 
-            view.on 'TOOLBAR_STOP_CLICK', (data) ->
-                console.log 'design_toolbar_click:stopApp'
-                model.stopApp(data)
+            # app operation
+            ide_event.onLongListen 'STOP_APP', (region, app_id, app_name) ->
+            #view.on 'TOOLBAR_STOP_CLICK', (data) ->
+                console.log 'design_toolbar STOP_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name
+                model.stopApp(region, app_id, app_name)
 
-            view.on 'TOOLBAR_START_CLICK', (data) ->
-                console.log 'design_toolbar_click:startApp'
-                model.startApp(data)
+            ide_event.onLongListen 'START_APP', (region, app_id, app_name) ->
+            #view.on 'TOOLBAR_START_CLICK', (data) ->
+                console.log 'design_toolbar START_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name
+                model.startApp(region, app_id, app_name)
 
-            view.on 'TOOLBAR_TERMINATE_CLICK', (data) ->
-                console.log 'design_toolbar_click:terminateApp'
-                model.terminateApp(data)
+            ide_event.onLongListen 'TERMINATE_APP', (region, app_id, app_name) ->
+            #view.on 'TOOLBAR_TERMINATE_CLICK', (data) ->
+                console.log 'design_toolbar TERMINATE_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name
+                model.terminateApp(region, app_id, app_name)
 
             ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
                 console.log 'design_toolbar_click:saveStack'

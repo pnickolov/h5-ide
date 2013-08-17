@@ -2493,12 +2493,12 @@ MC.canvas.event.dragable = {
 
 					MC.canvas.reConnect(target_id);
 
-					MC.canvas.select(target_id);
-
 					svg_canvas.trigger("CANVAS_NODE_CHANGE_PARENT", {
 						'src_node': target_id,
 						'tgt_parent': parentGroup ? parentGroup.id : ''
 					});
+
+					MC.canvas.select(target_id);
 				}
 			}
 
@@ -2780,13 +2780,13 @@ MC.canvas.event.dragable = {
 						}
 					}
 
-					MC.canvas.select(target_id);
-
-					//after change node to another group,trigger event
+					// after change node to another group,trigger event
 					svg_canvas.trigger("CANVAS_GROUP_CHANGE_PARENT", {
 						src_group: target_id,
 						tgt_parent: parentGroup ? parentGroup.id : ''
 					});
+
+					MC.canvas.select(target_id);
 				}
 				else if (!isBlank)
 				{

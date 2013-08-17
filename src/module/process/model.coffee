@@ -140,6 +140,10 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                                 if app_name in MC.data.app_list[process.data.region]
                                     MC.data.app_list[process.data.region].splice MC.data.app_list[process.data.region].indexOf(app_name), 1
 
+                                if MC.data.current_tab_id is tab_name
+                                    # update tab icon
+                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', tab_name
+
 
                             MC.process[tab_name].flag_list = flag_list
 
@@ -164,6 +168,9 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                 if MC.data.current_tab_id is tab_name
                     me.set 'flag_list', flag_list
                     me.trigger 'UPDATE_PROCESS'
+
+                    # update tab icon
+                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', tab_name
 
                 if app_name in MC.data.app_list[process.data.region]
                     MC.data.app_list[process.data.region].splice MC.data.app_list[process.data.region].indexOf(app_name), 1

@@ -336,6 +336,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log 'APP_START_RETURN'
                 console.log result
 
+                # update tab icon
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+
                 #parse the result
                 if !result.is_error #request successfuly
 
@@ -350,6 +353,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                                     console.log 'stop handle'
                                     #push event
                                     ide_event.trigger ide_event.APP_RUN, app_name, app_id
+
+                                    # update icon
+                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', app_id
                         }
                     null
 
@@ -363,6 +369,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log 'APP_STOP_RETURN'
                 console.log result
 
+                # update tab icon
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+
                 if !result.is_error
                     if ws
                         req_id = result.resolved_data.id
@@ -375,6 +384,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                                     console.log 'stop handle'
                                     #push event
                                     ide_event.trigger ide_event.APP_STOP, app_name, app_id
+                                    
+                                    # update icon
+                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', app_id
                         }
                     null
 
@@ -387,6 +399,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             me.once 'APP_TERMINATE_RETURN', (result) ->
                 console.log 'APP_TERMINATE_RETURN'
                 console.log result
+
+                # update tab icon
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
 
                 if !result.is_error
                     if ws

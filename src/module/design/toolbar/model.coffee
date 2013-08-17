@@ -63,40 +63,28 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 is_tab = true
 
-            else if flag is 'START_APP'
-                if value is constant.OPS_STATE.OPS_STATE_DONE
-                    item_state_map[id].state = constant.APP_STATE.APP_STATE_RUNNING
-                    item_state_map[id].is_running = true
-                    item_state_map[id].is_pending = false
-                else if value is constant.OPS_STATE.OPS_STATE_FAILED
-                    item_state_map[id].state = constant.APP_STATE.APP_STATE_STOPPED
-                    item_state_map[id].is_running = false
-                    item_state_map[id].is_pending = false
-                else
-                    item_state_map[id].is_pending = true
+            else if flag is 'RUNNING_APP'
+                item_state_map[id].state = constant.APP_STATE.APP_STATE_RUNNING
+                item_state_map[id].is_running = true
+                item_state_map[id].is_pending = false
 
-            else if flag is 'STOP_APP'
-                if value is constant.OPS_STATE.OPS_STATE_DONE
-                    item_state_map[id].state = constant.APP_STATE.APP_STATE_STOPPED
-                    item_state_map[id].is_running = false
-                    item_state_map[id].is_pending = false
-                else if value is constant.OPS_STATE.OPS_STATE_FAILED
-                    item_state_map[id].state = constant.APP_STATE.APP_STATE_RUNNING
-                    item_state_map[id].is_running = true
-                    item_state_map[id].is_pending = false
-                else
-                    item_state_map[id].is_pending = true
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
 
-            else if flag is 'TERMINATE_APP'
-                if value is constant.OPS_STATE.OPS_STATE_DONE
-                    delete item_state_map[id]
-                    return
-                else if value is constant.OPS_STATE.OPS_STATE_FAILED
-                    item_state_map[id].state = constant.APP_STATE.APP_STATE_STOPPED
-                    item_state_map[id].is_running = false
-                    item_state_map[id].is_pending = false
-                else
-                    item_state_map[id].is_pending = true
+            else if flag is 'STOPPED_APP'
+                item_state_map[id].state = constant.APP_STATE.APP_STATE_STOPPED
+                item_state_map[id].is_running = false
+                item_state_map[id].is_pending = false
+
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
+
+            else if flag is 'TERMINATED_APP'
+                (delete item_state_map[id]) if id of item_state_map
+                return
+
+            else if flag is 'PENDING_APP'
+                item_state_map[id].is_pending = true
+
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
 
             if id == MC.canvas_data.id and is_tab
                 me.set 'item_flags', item_state_map[id]
@@ -474,9 +462,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
         handleRequest : (result, flag, region, id, name) ->
             me = this
 
-            me.setFlag id, flag, 'pending'
-            #
-            ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
+            me.setFlag id, 'PENDING_APP'
 
             if !result.is_error
                 if flag == 'START_APP'
@@ -504,27 +490,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                 handle.stop()
 
                                 if flag == 'START_APP'
+                                    me.setFlag id, 'RUNNING_APP'
                                     me.trigger 'TOOLBAR_APP_START_SUCCESS', name
+
                                 else if flag == 'STOP_APP'
+                                    me.setFlag id, 'STOPPED_APP'
                                     me.trigger 'TOOLBAR_APP_STOP_SUCCESS', name
+
                                 else if flag == 'TERMINATE_APP'
+                                    me.setFlag id, 'TERMINATED_APP'
                                     me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS', name
 
                                     # remove the app name from app_list
                                     if name in MC.data.app_list[region]
                                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
+                                    ide_event.trigger ide_event.APP_TERMINATE, name, id
+
                                 #push event
                                 ide_event.trigger ide_event.UPDATE_APP_LIST, null
-
-                                if flag is 'TERMINATE_APP'
-                                    ide_event.trigger ide_event.APP_TERMINATE, name, id
-                                else if flag is 'START_APP'
-                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
-                                else if flag is 'STOP_APP'
-                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
-
-                                me.setFlag id, flag, req.state
 
                             else if req.state == "Failed"
                                 handle.stop()
@@ -536,12 +520,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                 else if flag == 'TERMINATE_APP'
                                     me.trigger 'TOOLBAR_APP_TERMINATE_FAILED', name
 
-                                if flag is 'TERMINATE_APP' and is_success
-                                    ide_event.trigger ide_event.APP_TERMINATE, name, id
-                                else
-                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
-
-                                me.setFlag id, flag, req.state
+                                me.setFlag id, 'STOPPED_APP'
 
                     }
 
@@ -558,10 +537,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', name
                     #MC.canvas_data.state = 'Stopped'
 
-                me.setFlag id, flag, 'failed'
+                me.setFlag id, 'STOPPED_APP'
 
-                # failed and stop
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
 
         isInstanceStore : () ->
 

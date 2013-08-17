@@ -58,26 +58,22 @@ define [ 'jquery',
 				tab_type = type
 				#
 				stack_main.loadModule stack_main, type
-				null
 
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
 
-				# Cleanup property panel, this shoulde be move to property/view
-
 				# Better than $("input:focus")
-				$(document.activeElement).filter("input").blur()
+				$( document.activeElement ).filter( 'input' ).blur()
 
 				# Hide second panel if there's any
 				view.immHideSecondPanel()
 
-
-				#
+				#backup OLD_APP and OLD_STACK start
 				MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : type, 'uid' : uid, 'instance_expended_id' : instance_expended_id }
-				#
-				if bak_tab_type then tab_type = bak_tab_type
-
+				if bak_tab_type             then tab_type = bak_tab_type
 				if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
+				view.back_dom = if back_dom then back_dom else 'none'
+				#backup OLD_APP and OLD_STACK end
 
 				current_uid  = uid
 				console.log 'OPEN_PROPERTY, uid = ' + uid
@@ -85,7 +81,6 @@ define [ 'jquery',
 				if type == 'component_asg_volume'
 					#show asg volume property
 					volume_main.loadModule uid, volume_main, tab_type
-
 
 				else if type == 'component'
 
@@ -187,8 +182,8 @@ define [ 'jquery',
 								else
 									vpn_main.loadModule line_option, 'line', vpn_main
 
-				#
-				if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
+				#if back_dom then ide_event.trigger ide_event.UPDATE_PROPERTY, back_dom
+				console.log 'end'
 
 				null
 
@@ -207,12 +202,13 @@ define [ 'jquery',
 			ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->
 				view.refresh()
 
-			ide_event.onLongListen ide_event.UPDATE_PROPERTY, ( back_dom ) ->
-				console.log 'UPDATE_PROPERTY'
-				#temp
-				setTimeout () ->
-					view.updateHtml back_dom
-				, 500
+			#ide_event.onLongListen ide_event.UPDATE_PROPERTY, ( back_dom ) ->
+			#	console.log 'UPDATE_PROPERTY'
+			#	temp
+			#	setTimeout () ->
+			#		view.updateHtml back_dom
+			#	, 500
+			#
 
 			ide_event.onLongListen ide_event.PROPERTY_TITLE_CHANGE, ( title ) ->
 				view.setTitle title

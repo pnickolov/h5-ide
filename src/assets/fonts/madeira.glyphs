@@ -607,6 +607,38 @@ width = 960;
 }
 );
 unicode = F118;
+},
+{
+glyphname = unif119;
+lastChange = "2013-08-16 18:55:10 +0800";
+layers = (
+{
+layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
+name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"180 -181 LINE",
+"480 -181 LINE",
+"480 839 LINE",
+"180 839 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"-180 179 LINE",
+"840 179 LINE",
+"840 479 LINE",
+"-180 479 LINE"
+);
+}
+);
+width = 600;
+}
+);
+unicode = F119;
 }
 );
 gridLength = 60;

@@ -1431,10 +1431,9 @@ var constant_data = {
 	ASL_VOL_JSON: {
 		"DeviceName": "",
 		"Ebs": {
-			"SnapshotId": "",
+			// "SnapshotId": "",
 			"VolumeSize": 0
-		},
-		"VirtualName": ""
+		}
 	},
 
 	/*****AWS.AutoScaling.NotificationConfiguration*****/

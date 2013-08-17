@@ -60,6 +60,9 @@ define [ 'jquery',
 
                 model.setDeviceName volume_uid, name
 
+                # retrive again due to uid may be change in launch configuration
+                volume_uid = $("#property-panel-volume").attr 'uid'
+
                 renderPropertyPanel( volume_uid )
 
             view.on 'VOLUME_SIZE_CHANGED', ( value ) ->

@@ -2529,22 +2529,33 @@ a.sidebar-hider {
 	background: #383A3D;
 }
 
-.acl-sg-info-list li {
-	width         : 260px;
-	height        : 52px;
-	padding       : 10px;
-	border-bottom : 1px solid #383738;
-	background    : #444;
+/* General Style for Property Panel List */
 
-	-webkit-transition: background .2s;
-	-moz-transition: background .2s;
-	-ms-transition: background .2s;
-	-o-transition: background .2s;
-	transition: background .2s;
+.property-list {
+	border-top : 1px solid #4d4d4d;
 }
 
-.acl-sg-info-list li:hover {
+.property-list li {
+	width         : 260px;
+	padding       : 10px;
+	border-bottom : 1px solid #4d4d4d;
+	background    : #5C5C5C;
+
+	-webkit-transition : background .2s;
+	-moz-transition    : background .2s;
+	-ms-transition     : background .2s;
+	-o-transition      : background .2s;
+	transition         : background .2s;
+}
+
+.property-list li:hover {
 	background : #555;
+}
+
+/* End of General Style for Property Panel List */
+
+.acl-sg-info-list li {
+	height        : 52px;
 }
 
 .acl-sg-info-list .col1 {
@@ -2588,9 +2599,6 @@ a.sidebar-hider {
 	line-height      : 72px;
 
 	cursor           : pointer;
-
-	/*background-color : #393839;*/
-	box-shadow       : 0 1px 0 0 #333;
 
 	-webkit-transition : background .2s;
 	-moz-transition    : background .2s;
@@ -2681,44 +2689,30 @@ a.sidebar-hider {
 }
 
 .add-rule:hover {
-	color      : #fff;
-	text-shadow: 0 2px rgba(0,0,0,.8);
-	/*background : #323232;*/
+	color         : #fff;
+	/*text-shadow : 0 2px rgba(0,0,0,.8);*/
+	background    : #B25B91;
+	box-shadow    : -1px 0 0 0 rgba(0,0,0,.5);
 }
 
 .sg-rule-list li {
-	width         : 260px;
 	height        : 40px;
-	padding       : 10px;
-
-	border-bottom : 1px solid #383738;
-	background    : #414041;
 
 	position : relative;
 	display  : table;
-
-	-webkit-transition: background .2s;
-	-moz-transition: background .2s;
-	-ms-transition: background .2s;
-	-o-transition: background .2s;
-	transition: background .2s;
 }
 
-.sg-rule-list li:hover {
-	background : #383738;
-}
-
-.sg-rule-list-row {
+.rule-list-row {
 	/*display: table-row;*/
 	height: 20px;
 	margin-top: 5px;
 }
 
-.sg-rule-list-row div {
+.rule-list-row div {
 	display: table-cell;
 }
 
-.sg-rule-list-row div:first-child {
+.rule-list-row div:first-child {
 	width: 65px;
 }
 

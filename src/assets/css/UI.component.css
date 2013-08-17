@@ -1033,11 +1033,12 @@ textarea {
 
 .option-group-head,
 .fixedaccordion-head {
-	background-color : #3c3c3c;
-	border-bottom    : 1px solid #313131;
+	background-color : #404040;
+	border-bottom    : 1px solid #353535;
 	color            : #c5c9c5;
 	text-shadow      : 0 1px rgba(30,34,40,.75);
-	box-shadow       : 0 2px 0 rgba(0,0,0,.1), inset 0 1px 0 0 rgba(255,255,255,.1);
+	box-shadow       : 0 2px 0 rgba(0,0,0,.1);
+	/*box-shadow       : 0 2px 0 rgba(0,0,0,.1), inset 0 1px 0 0 rgba(255,255,255,.1);*/
 
 	cursor              : pointer;
 	-webkit-user-select : none;
@@ -1056,6 +1057,10 @@ textarea {
 	-ms-transition     : background-color .2s ease-in-out;
 	-o-transition      : background-color .2s ease-in-out;
 	transition         : background-color .2s ease-in-out;
+}
+
+.property-control-group + .option-group-head {
+	border-top : 1px solid #353535;
 }
 
 .option-group-head {
@@ -1093,7 +1098,7 @@ textarea {
 .option-group-head:hover,
 .expanded .fixedaccordion-head,
 .fixedaccordion-head:hover {
-	background-color: #383838;
+	background-color: #474747;
 	color: #f0f0f0;
 }
 

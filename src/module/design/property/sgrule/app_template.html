@@ -4,14 +4,14 @@
   {{#each sg_app_ary}}
   <div class="property-group-head">{{groupName}}</div>
   <div class="property-group">
-    <ul class="sg-rule-list" id="sg-info-list">
+    <ul class="sg-rule-list property-list" id="sg-info-list">
       {{#each rules}}
       <li>
-        <div class="sg-rule-list-row">
+        <div class="rule-list-row">
           <div class="rule-direction-icon icon-rule-{{direction}}" data-tooltip="{{direction}}"></div>
           <div class="rule-reference">{{ipRanges}}</div>
         </div>
-        <div class="sg-rule-list-row">
+        <div class="rule-list-row">
           <div><span class="rule-protocol">{{ipRanges}}</span></div>
           <div class="rule-port">{{fromPort}}-{{toPort}}</div>
         </div>

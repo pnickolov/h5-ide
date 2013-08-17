@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sg
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 'UI.parsley' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 'UI.parsley', 'MC.validate' ], ( ide_event, MC ) ->
 
 	InstanceView = Backbone.View.extend {
 
@@ -105,13 +105,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel', 
 			$("#protocol-icmp-main-select").data('protocal-sub', id)
 
 		setSGName : ( event ) ->
-			sg_uid = @model.get( 'sg_detail' ).component.uid
+			id = @model.get( 'sg_detail' ).component.uid
 			target = $ event.currentTarget
 			name = target.val()
 
-			target.parsley 'custom', () ->
-                if not MC.aws.aws.checkIsRepeatName sg_uid, name
-                    return "SG name \" #{name} \" is already in using. Please use another one."
+			MC.validate.preventDupname target, id, name, 'SG'
 
 			if target.parsley 'validate'
 				this.trigger 'SET_SG_NAME', name

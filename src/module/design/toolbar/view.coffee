@@ -208,7 +208,7 @@ define [ 'MC', 'event',
 
             target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
-                me.trigger 'TOOLBAR_STOP_CLICK', MC.canvas_data
+                me.trigger 'TOOLBAR_STOP_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
                 modal.close()
 
         clickStartApp : (event) ->
@@ -217,7 +217,7 @@ define [ 'MC', 'event',
 
             target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
-                me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data
+                me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
                 modal.close()
 
         clickTerminateApp : (event) ->
@@ -227,7 +227,7 @@ define [ 'MC', 'event',
 
             target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
-                me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data
+                me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
                 modal.close()
 
     }

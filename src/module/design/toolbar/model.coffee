@@ -290,36 +290,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 #     stack_app_name: app_name
                 ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, data, result
 
-        #zoomin
-        zoomIn : () ->
-            me = this
-
-            MC.canvas.zoomIn()
-
-            zoomin_flag = true
-            if MC.canvas_property.SCALE_RATIO <= 1
-                zoomin_flag = false
-
-            me.setFlag('ZOOM_IN', zoomin_flag)
-            me.setFlag('ZOOM_OUT', true)
-
-            null
-
-        #zoomout
-        zoomOut : () ->
-            me = this
-
-            MC.canvas.zoomOut()
-
-            zoomout_flag = true
-            if MC.canvas_property.SCALE_RATIO >= 1.6
-                zoomout_flag = false
-
-            me.setFlag('ZOOM_OUT', zoomout_flag)
-            me.setFlag('ZOOM_IN', true)
-
-            null
-
         savePNG : ( is_thumbnail, data ) ->
             console.log 'savePNG'
             me = this

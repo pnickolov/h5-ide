@@ -971,6 +971,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 		#after drag component from resource panel to canvas
+		_findMainRT : () ->
+			resource_type = constant.AWS_RESOURCE_TYPE
+			for key, value of MC.canvas_data.component
+					if value.type isnt resource_type.AWS_VPC_RouteTable
+						continue
+
+					if "" + value.resource.AssociationSet[0].Main is 'true'
+						return key
+			null
+
 		createComponent : ( event, uid ) ->
 			resource_type = constant.AWS_RESOURCE_TYPE
 
@@ -984,21 +994,17 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				when resource_type.AWS_VPC_InternetGateway
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
+					# Automatically connect IGW and main RT
+					line_id = MC.canvas.connect uid, "igw-tgt", this._findMainRT(), 'rtb-tgt-left'
+					this.createLine null, line_id
 
 				when resource_type.AWS_VPC_VPNGateway
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 
 				when resource_type.AWS_VPC_Subnet
 					# Connect to main RT
-					for key, value of MC.canvas_data.component
-						if value.type isnt resource_type.AWS_VPC_RouteTable
-							continue
-
-						if "" + value.resource.AssociationSet[0].Main is 'true'
-							rtId = key
-							break
-
-					MC.canvas.connect uid, "subnet-assoc-out", rtId, 'rtb-src'
+					line_id = MC.canvas.connect uid, "subnet-assoc-out", this._findMainRT(), 'rtb-src'
+					this.createLine null, line_id
 
 					# Associate to default acl
 					defaultACLComp = MC.aws.acl.getDefaultACL()

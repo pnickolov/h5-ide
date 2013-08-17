@@ -49,7 +49,10 @@ define [ 'backbone', 'MC' ], () ->
           vpn = _.extend {}, appData[ vpn_id ]
 
           # JSON detail
-          vpn.detail = JSON.parse vpn.detail
+          if vpn.detail
+            vpn.detail = JSON.parse vpn.detail
+          else
+            console.error "Cannot find VPN detail for #{vpn_id}"
 
           #set vpn available
           if vpn.state is 'available'

@@ -3010,6 +3010,7 @@ MC.canvas.event.drawConnection = {
 				'originalX': offset.left - canvas_offset.left,
 				'originalY': offset.top - canvas_offset.top,
 				'option': connection_option,
+				'draw_line': $('#draw-line-connection'),
 				'port_name': port_name,
 				'canvas_offset': canvas_offset
 			});
@@ -3276,7 +3277,6 @@ MC.canvas.event.drawConnection = {
 		});
 
 		$('#overlayer').remove();
-		//$(document.body).removeClass('disable-event');
 
 		$(document).off({
 			'mousemove': MC.canvas.event.drawConnection.mousemove,
@@ -3793,18 +3793,15 @@ MC.canvas.event.groupResize = {
 			group_left = Math.ceil((parent_offset.left - canvas_offset.left) / 10);
 		}
 
-		//adjust group_top
+		// adjust group_top
 		if (direction === 'top' || direction === 'topleft' || direction === 'topright')
 		{
-			//when resize by left,topleft, bottomleft
 			if (offsetY < 0)
 			{
-				//move up
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top) / 10);
 			}
 			else if (offsetY > 0)
 			{
-				//move down
 				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10);
 			}
 		}

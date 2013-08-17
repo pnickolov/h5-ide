@@ -28,6 +28,7 @@ define [ 'MC', 'event', 'handlebars'
 
 		#global config data by region
 		MC.data.config = {}
+		MC.data.config[r] = {} for r in constant.REGION_KEYS
 
 		#global cache for all ami
 		MC.data.dict_ami = {}

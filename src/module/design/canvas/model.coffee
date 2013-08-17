@@ -263,17 +263,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			switch option.type
 				when 'node'
 					handler = this.deleteResMap[ component.type ]
+					if handler
+						result = handler.call( this, component, option.force )
 				when 'group'
 					result = this.deleteGroup component, option.force
 				when 'line'
 					result = this.deleteLine option
 
+
 			# If the handler returns false or string,
 			# The delete operation is prevented.
-			if handler
-				result = handler.call( this, component, option.force )
-
-
 			if typeof result is "string"
 				# Delete Handler returns a comfirmation string.
 				if result[0] == '!'
@@ -504,7 +503,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				# [ @@@ Warning @@@ ] If there's one child that cannot be deleted for any reason. Data is corrupted.
 				this.deleteObject null, op
 
-			false
+			null
 
 		deleteR_AZ : ( component ) ->
 
@@ -972,6 +971,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 		#after drag component from resource panel to canvas
+		_findMainRT : () ->
+			resource_type = constant.AWS_RESOURCE_TYPE
+			for key, value of MC.canvas_data.component
+					if value.type isnt resource_type.AWS_VPC_RouteTable
+						continue
+
+					if "" + value.resource.AssociationSet[0].Main is 'true'
+						return key
+			null
+
 		createComponent : ( event, uid ) ->
 			resource_type = constant.AWS_RESOURCE_TYPE
 
@@ -985,21 +994,18 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				when resource_type.AWS_VPC_InternetGateway
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
+					# Automatically connect IGW and main RT
+					# Coommented out, because we don't need to add the route anymore.
+					# line_id = MC.canvas.connect uid, "igw-tgt", this._findMainRT(), 'rtb-tgt-left'
+					# this.createLine null, line_id
 
 				when resource_type.AWS_VPC_VPNGateway
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 
 				when resource_type.AWS_VPC_Subnet
 					# Connect to main RT
-					for key, value of MC.canvas_data.component
-						if value.type isnt resource_type.AWS_VPC_RouteTable
-							continue
-
-						if "" + value.resource.AssociationSet[0].Main is 'true'
-							rtId = key
-							break
-
-					MC.canvas.connect uid, "subnet-assoc-out", rtId, 'rtb-src'
+					line_id = MC.canvas.connect uid, "subnet-assoc-out", this._findMainRT(), 'rtb-src'
+					this.createLine null, line_id
 
 					# Associate to default acl
 					defaultACLComp = MC.aws.acl.getDefaultACL()
@@ -1246,7 +1252,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				MC.canvas.update uid,'eip','eip_status', 'on'
 
 				# Ask the user the add IGW
-				this.askToAddIGW 'EIP'
+				this.askToAddIGW 'Elastic IP'
 
 			else
 				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
@@ -1268,6 +1274,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				res = "internet-facing Load Balancer"
 			else if component.type == resource_type.AWS_EC2_EIP
 				res = "Elastic IP"
+			else if _.isString component
+				res = component
 
 			# Confimation
 			self = this

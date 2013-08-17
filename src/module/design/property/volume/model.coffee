@@ -14,6 +14,29 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
             #listen
             #this.listenTo this, 'change:get_host', this.getHost
 
+            me = this
+
+            #listen EC2_EBS_DESC_SSS_RETURN
+            me.on 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
+
+                if $.isEmptyObject result.resolved_data.item.description
+
+                    result.resolved_data.item.description = 'None'
+
+                if not result.resolved_data.item.volumeId
+
+                    result.resolved_data.item.volumeId = 'None'
+
+                volume_detail.snapshot = JSON.stringify result.resolved_data.item
+
+                me.set 'volume_detail', volume_detail
+
+                me.trigger "REFRESH_PANEL"
+
+                null
+
+
+
         getVolume : ( uid ) ->
 
             me = this
@@ -84,22 +107,6 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
                 if volume_detail.Ebs.SnapshotId
 
                     ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, [volume_detail.Ebs.SnapshotId]
-
-            me.once 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
-
-                if $.isEmptyObject result.resolved_data.item.description
-
-                    result.resolved_data.item.description = 'None'
-
-                if not result.resolved_data.item.volumeId
-
-                    result.resolved_data.item.volumeId = 'None'
-
-                volume_detail.snapshot = JSON.stringify result.resolved_data.item
-
-                me.set 'volume_detail', volume_detail
-
-                me.trigger "REFRESH_PANEL"
 
         setDeviceName : ( uid, name ) ->
 

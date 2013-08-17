@@ -21,6 +21,227 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
         defaults :
             'item_flags'    : null
 
+
+        initialize : ->
+
+            me = this
+
+            #####listen STACK_SAVE_RETURN
+            me.on 'STACK_SAVE_RETURN', (result) ->
+                console.log 'STACK_SAVE_RETURN'
+
+                if !result.is_error
+
+                    region  = result.param[3]
+                    data    = result.param[4]
+                    id      = data.id
+
+                    console.log 'save stack successfully'
+
+                    # track
+                    analytics.track "Saved Stack",
+                        stack_name: data.name,
+                        stack_region: data.region,
+                        stack_id: data.id
+
+                    #update initial data
+                    MC.canvas_property.original_json = JSON.stringify( data )
+
+                    me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', name
+
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
+
+                    #call save png
+                    me.savePNG true, data
+
+                    #set toolbar flag
+                    me.setFlag id, 'SAVE_STACK', name
+
+                    id
+                else
+                    me.trigger 'TOOLBAR_STACK_SAVE_FAILED'
+
+                    null
+
+
+            #####listen STACK_CREATE_RETURN
+            me.on 'STACK_CREATE_RETURN', (result) ->
+                console.log 'STACK_CREATE_RETURN'
+
+                if !result.is_error
+                    console.log 'create stack successfully'
+
+                    region  = result.param[3]
+                    data    = result.param[4]
+                    id      = data.id
+
+                    # track
+                    analytics.track "Saved Stack",
+                        stack_name: data.name,
+                        stack_region: data.region,
+                        stack_id: data.id
+
+                    new_id = result.resolved_data.id
+                    key = result.resolved_data.key
+
+                    #temp
+                    MC.canvas_data.id = new_id
+                    MC.canvas_data.key = key
+
+                    #update initial data
+                    MC.canvas_property.original_json = JSON.stringify( data )
+
+                    me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', name
+
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK'
+
+                    ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
+
+                    MC.data.stack_list[region].push name
+
+                    #call save png
+                    me.savePNG true, data
+
+                    #set toolbar flag
+                    me.setFlag id, 'CREATE_STACK', data
+
+                    new_id
+
+                else
+                    me.trigger 'TOOLBAR_STACK_SAVE_FAILED'
+
+                    null
+
+            #####listen STACK_SAVE__AS_RETURN
+            me.on 'STACK_SAVE__AS_RETURN', (result) ->
+                console.log 'STACK_SAVE__AS_RETURN'
+
+                if !result.is_error
+                    console.log 'save as stack successfully'
+
+                    region      = result.param[3]
+                    id          = result.param[4]
+                    new_name    = result.param[5]
+                    name        = result.param[6]
+
+                    #update stack name list
+                    if new_name not in MC.data.stack_list[region]
+                        MC.data.stack_list[region].push new_name
+
+                    #trigger event
+                    me.trigger 'TOOLBAR_STACK_DUPLICATE_SUCCESS', name
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+                else
+                    me.trigger 'TOOLBAR_STACK_DUPLICATE_FAILED', name
+
+            #####listen STACK_REMOVE_RETURN
+            me.on 'STACK_REMOVE_RETURN', (result) ->
+                console.log 'STACK_REMOVE_RETURN'
+
+                if !result.is_error
+                    console.log 'send delete stack successful message'
+
+                    region  = result.param[3]
+                    id      = result.param[4]
+                    name    = result.param[5]
+
+                    #update stack name list
+                    if name in MC.data.stack_list[region]
+                        index = MC.data.stack_list[region].indexOf(name)
+                        MC.data.stack_list[region].splice(index, 1)
+
+                    #trigger event
+                    me.trigger 'TOOLBAR_STACK_DELETE_SUCCESS', name
+                    ide_event.trigger ide_event.STACK_DELETE, name, id
+
+                    me.setFlag id, 'DELETE_STACK'
+
+                else
+                    me.trigger 'TOOLBAR_STACK_DELETE_FAILED', name
+
+
+            #####listen STACK_RUN_RETURN
+            me.on 'STACK_RUN_RETURN', (result) ->
+                console.log 'STACK_RUN_RETURN'
+
+                region      = result.param[3]
+                id          = result.param[4]
+                app_name    = result.param[5]
+
+                #add new-app status
+                #me.handleRequest result, 'RUN_STACK', region, id, app_name
+                # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
+                # # track
+                # analytics.track "Launched Stack",
+                #     stack_id: id,
+                #     stack_region: region,
+                #     stack_app_name: app_name
+                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, data, result
+
+
+            #####listen APP_START_RETURN
+            me.on 'APP_START_RETURN', (result) ->
+                console.log 'APP_START_RETURN'
+
+                region  = result.param[3]
+                id      = result.param[4]
+                name    = result.param[5]
+
+                me.handleRequest result, 'START_APP', region, id, name
+
+                # track
+                analytics.track "Started App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
+
+            #####listen APP_STOP_RETURN
+            me.on 'APP_STOP_RETURN', (result) ->
+                console.log 'APP_STOP_RETURN'
+
+                region  = result.param[3]
+                id      = result.param[4]
+                name    = result.param[5]
+
+                me.handleRequest result, 'STOP_APP', region, id, name
+
+                # track
+                analytics.track "Stopped App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
+
+            #####listen APP_TERMINATE_RETURN
+            me.on 'APP_TERMINATE_RETURN', (result) ->
+                console.log 'APP_TERMINATE_RETURN'
+
+                region  = result.param[3]
+                id      = result.param[4]
+                name    = result.param[5]
+
+                me.handleRequest result, 'TERMINATE_APP', region, id, name
+
+                # track
+                analytics.track "Terminated App",
+                    app_id: id,
+                    app_region: region,
+                    app_name: name
+
+            #####listen APP_GETKEY_RETURN
+            me.on 'APP_GETKEY_RETURN', (result) ->
+                console.log 'APP_GETKEY_RETURN'
+
+                if !result.is_error
+                    # trigger toolbar save png event
+                    console.log 'app key:' + result.resolved_data
+
+                    data.key = result.resolved_data
+
+                    me.savePNG true, data
+
+
+
+
         setFlag : (id, flag, value) ->
             me = this
 
@@ -137,84 +358,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
-                me.once 'STACK_SAVE_RETURN', (result) ->
-                    console.log 'STACK_SAVE_RETURN'
-                    console.log result
-
-                    if !result.is_error
-                        console.log 'save stack successfully'
-
-                        # track
-                        analytics.track "Saved Stack",
-                            stack_name: data.name,
-                            stack_region: data.region,
-                            stack_id: data.id
-
-                        #update initial data
-                        MC.canvas_property.original_json = JSON.stringify( data )
-
-                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', name
-
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
-
-                        #call save png
-                        me.savePNG true, data
-
-                        #set toolbar flag
-                        me.setFlag id, 'SAVE_STACK', name
-
-                        id
-                    else
-                        me.trigger 'TOOLBAR_STACK_SAVE_FAILED'
-
-                        null
 
             else    #new
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
-                me.once 'STACK_CREATE_RETURN', (result) ->
-                    console.log 'STACK_CREATE_RETURN'
-                    console.log result
-
-                    if !result.is_error
-                        console.log 'create stack successfully'
-
-                        # track
-                        analytics.track "Saved Stack",
-                            stack_name: data.name,
-                            stack_region: data.region,
-                            stack_id: data.id
-
-                        new_id = result.resolved_data.id
-                        key = result.resolved_data.key
-
-                        #temp
-                        MC.canvas_data.id = new_id
-                        MC.canvas_data.key = key
-
-                        #update initial data
-                        MC.canvas_property.original_json = JSON.stringify( data )
-
-                        me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', name
-
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK'
-
-                        ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
-
-                        MC.data.stack_list[region].push name
-
-                        #call save png
-                        me.savePNG true, data
-
-                        #set toolbar flag
-                        me.setFlag id, 'CREATE_STACK', data
-
-                        new_id
-
-                    else
-                        me.trigger 'TOOLBAR_STACK_SAVE_FAILED'
-
-                        null
 
         #duplicate
         duplicateStack : (new_name, data) ->
@@ -228,22 +375,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                    return
 
             stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, new_name, name
-            me.once 'STACK_SAVE__AS_RETURN', (result) ->
-                console.log 'STACK_SAVE__AS_RETURN'
-                console.log result
-
-                if !result.is_error
-                    console.log 'save as stack successfully'
-
-                    #update stack name list
-                    if new_name not in MC.data.stack_list[region]
-                        MC.data.stack_list[region].push new_name
-
-                    #trigger event
-                    me.trigger 'TOOLBAR_STACK_DUPLICATE_SUCCESS', name
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST
-                else
-                    me.trigger 'TOOLBAR_STACK_DUPLICATE_FAILED', name
 
         #delete
         deleteStack : (data) ->
@@ -254,26 +385,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             name = data.name
 
             stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
-            me.once 'STACK_REMOVE_RETURN', (result) ->
-                console.log 'STACK_REMOVE_RETURN'
-                console.log result
-
-                if !result.is_error
-                    console.log 'send delete stack successful message'
-
-                    #update stack name list
-                    if name in MC.data.stack_list[region]
-                        index = MC.data.stack_list[region].indexOf(name)
-                        MC.data.stack_list[region].splice(index, 1)
-
-                    #trigger event
-                    me.trigger 'TOOLBAR_STACK_DELETE_SUCCESS', name
-                    ide_event.trigger ide_event.STACK_DELETE, name, id
-
-                    me.setFlag id, 'DELETE_STACK'
-
-                else
-                    me.trigger 'TOOLBAR_STACK_DELETE_FAILED', name
 
         #run
         runStack : ( app_name, data) ->
@@ -288,19 +399,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
             stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
-            me.once 'STACK_RUN_RETURN', (result) ->
-                console.log 'STACK_RUN_RETURN'
-                console.log result
-
-                #add new-app status
-                #me.handleRequest result, 'RUN_STACK', region, id, app_name
-                # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
-                # # track
-                # analytics.track "Launched Stack",
-                #     stack_id: id,
-                #     stack_region: region,
-                #     stack_app_name: app_name
-                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, data, result
 
         #zoomin
         zoomIn : () ->
@@ -418,17 +516,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             name = data.name
 
             app_model.start { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
-            me.once 'APP_START_RETURN', (result) ->
-                console.log 'APP_START_RETURN'
-                console.log result
-
-                me.handleRequest result, 'START_APP', region, id, name
-
-                # track
-                analytics.track "Started App",
-                    app_id: id,
-                    app_region: region,
-                    app_name: name
 
         stopApp : (data) ->
             me = this
@@ -438,17 +525,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             name = data.name
 
             app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
-            me.once 'APP_STOP_RETURN', (result) ->
-                console.log 'APP_STOP_RETURN'
-                console.log result
-
-                me.handleRequest result, 'STOP_APP', region, id, name
-
-                # track
-                analytics.track "Stopped App",
-                    app_id: id,
-                    app_region: region,
-                    app_name: name
 
         terminateApp : (data) ->
             me = this
@@ -459,17 +535,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             #terminate : ( src, username, session_id, region_name, app_id, app_name=null )
             app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
-            me.once 'APP_TERMINATE_RETURN', (result) ->
-                console.log 'APP_TERMINATE_RETURN'
-                console.log result
-
-                me.handleRequest result, 'TERMINATE_APP', region, id, name
-
-                # track
-                analytics.track "Terminated App",
-                    app_id: id,
-                    app_region: region,
-                    app_name: name
 
         handleRequest : (result, flag, region, id, name) ->
             me = this
@@ -580,18 +645,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             # generate s3 key
             app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), data.region, data.id
-            me.once 'APP_GETKEY_RETURN', (result) ->
-                console.log 'APP_GETKEY_RETURN'
-                console.log result
-
-                if !result.is_error
-                    # trigger toolbar save png event
-                    console.log 'app key:' + result.resolved_data
-
-                    data.key = result.resolved_data
-
-                    me.savePNG true, data
-
             null
 
     }

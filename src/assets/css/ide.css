@@ -2094,10 +2094,11 @@ a.sidebar-hider {
 }
 
 .property-wrap {
-	overflow : hidden;
-	position : relative;
-	width    : 100%;
-	height   : 100%;
+	overflow   : hidden;
+	position   : relative;
+	width      : 100%;
+	height     : 100%;
+	background : #5e5e5e;
 }
 
 .property-panel-wrapper {
@@ -2235,6 +2236,7 @@ a.sidebar-hider {
 
 .option-group {
 	display  : none;
+	overflow : hidden;
 }
 
 /*.option-group.transition {
@@ -2679,7 +2681,7 @@ a.sidebar-hider {
 	display : inline-block;
 	width   : 38px;
 	height  : 38px;
-	
+
 	line-height : 38px;
 	text-align  : center;
 	color: #ccc;

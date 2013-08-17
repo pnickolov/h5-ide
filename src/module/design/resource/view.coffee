@@ -139,13 +139,10 @@ define [ 'event',
             console.log 'toggleResourcePanel'
             #
             $( '#resource-panel' ).toggleClass 'hiden'
-            $( event ).children().first().toggleClass( 'icon-double-angle-left' ).toggleClass 'icon-double-angle-right'
             $( '#canvas-panel' ).toggleClass 'left-hiden'
             console.log $( '#resource-panel' ).attr( 'class' )
-            #
-            #tmp = $( '#resource-panel' ).attr( 'class' )
-            #type = $( '#hide-resource-panel' ).attr( 'data-current-state' ).split( ':' )[1]
-            if $( '#resource-panel' ).attr( 'class' ).indexOf( 'hiden' ) isnt -1 then state = 'hiden' else state = 'show'
+
+            if $( '#resource-panel' ).hasClass("hidden") then state = 'hiden' else state = 'show'
             $( '#hide-resource-panel' ).attr 'data-current-state', state
 
         hideResourcePanel : ( type ) ->
@@ -161,20 +158,20 @@ define [ 'event',
             #
             if type is 'OPEN_STACK' or type is 'NEW_STACK'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
-                if $( '#resource-panel' ).attr( 'class' ).indexOf( 'hiden' ) isnt -1 then $( '#hide-resource-panel' ).trigger 'click'
+                if $( '#resource-panel' ).hasClass("hiden") then $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
 
             if type is 'OLD_STACK'
                 $( '#hide-resource-panel' ).show()
                 if $( '#hide-resource-panel' ).attr( 'data-current-state' ) is 'show'
-                    if $( '#resource-panel' ).attr( 'class' ).indexOf( 'hiden' ) isnt -1
+                    if $( '#resource-panel' ).hasClass("hiden")
                         $( '#hide-resource-panel' ).trigger 'click'
                 else
-                    if $( '#resource-panel' ).attr( 'class' ).indexOf( 'hiden' ) is -1
+                    if not $( '#resource-panel' ).hasClass("hiden")
                         $( '#hide-resource-panel' ).trigger 'click'
             else if type is 'OLD_APP'
                 $( '#hide-resource-panel' ).hide()
-                if $( '#resource-panel' ).attr( 'class' ).indexOf( 'hiden' ) is -1
+                if not $( '#resource-panel' ).hasClass("hiden")
                     $( '#hide-resource-panel' ).trigger 'click'
             #
             console.log $( '#hide-resource-panel' ).attr 'data-current-state'

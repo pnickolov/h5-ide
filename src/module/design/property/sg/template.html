@@ -1,18 +1,14 @@
 <article>
 	<div class="option-group-head expand">Security Group Details</div>
 	<div class="option-group">
-		<div class="property-control-group">
+		<div class="property-control-group" data-bind="true">
 			<label class="left" for="securitygroup-name" >Name</label>
 			<span class="required-input right">Required</span>
-			{{#if isDefault}}
-			<input class="input"  type="text" required="required" id="securitygroup-name" disabled name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
-			{{else}}
-			<input class="input"  type="text" required="required" id="securitygroup-name" {{#if is_elb_sg}}disabled="disabled"{{/if}} name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
-			{{/if}}
+			<input class="input"  type="text" id="securitygroup-name" {{#if isDefault}} disabled {{else}}{{#if is_elb_sg}}disabled{{/if}}{{/if}} name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}" maxlength="255" data-ignore="true" data-required-rollback="true"/>
 		</div>
 		<div class="property-control-group">
 			<label class="left" for="securitygroup-description" >Description</label>
-			<input class="input" type="text" id="securitygroup-description" {{#if is_elb_sg}}disabled="disabled"{{/if}} name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" />
+			<input class="input" type="text" id="securitygroup-description" {{#if is_elb_sg}}disabled="disabled"{{/if}} name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" maxlength="255" />
 		</div>
 	</div>
 

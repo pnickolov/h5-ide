@@ -12,14 +12,17 @@ define [ './temp_view',
 
         el         : '#property-panel'
 
+        back_dom   : 'none'
+
         initialize : ->
             #listen
             #$( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
             #$( window   ).on 'resize', fixedaccordion.resize
             #listen
-            $( document.body ).on('click', '#hide-property-panel', this.togglePropertyPanel)
-                              .on('click', ".option-group-head", this.toggleOption)
-                              .on('click', "#hide-second-panel", _.bind( this.hideSecondPanel, this) )
+            $( document.body ).on( 'click',           '#hide-property-panel', this.togglePropertyPanel                )
+                              .on( 'click',           '.option-group-head',   this.toggleOption                       )
+                              .on( 'click',           '#hide-second-panel',   _.bind( this.hideSecondPanel, this     ))
+                              .on( 'DOMNodeInserted', '.property-wrap',       this, _.debounce( this.domChange, 200, false ))
 
             #                  .on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', '.option-group', this.optionToggle)
 
@@ -36,7 +39,6 @@ define [ './temp_view',
         togglePropertyPanel : ( event ) ->
             console.log 'togglePropertyPanel'
             $( '#property-panel' ).toggleClass 'hiden'
-            $( event ).children().first().toggleClass('icon-double-angle-left').toggleClass('icon-double-angle-right')
             $( '#canvas-panel' ).toggleClass 'right-hiden'
             false
 
@@ -142,6 +144,25 @@ define [ './temp_view',
 
                 null
             , 10
+
+            null
+
+        domChange : ( event ) ->
+            console.log 'listen DOMNodeInserted'
+            #console.log event.target
+            #console.log event.data.back_dom
+            #
+            back_dom = event.data.back_dom
+            #
+            return if back_dom is 'none'
+            ###
+            temp = $( event.data.back_dom ).find( '#property-second-panel' ).find( '.property-content' ).html()
+            if temp isnt ''
+                event.data.back_dom = 'none'
+                $( '.property-content' ).html temp
+            ###
+            event.data.back_dom = 'none'
+            $( '#property-panel' ).html back_dom
 
             null
     }

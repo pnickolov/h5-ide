@@ -15,6 +15,23 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
 
         ###
 
+        initialize : ->
+
+            me = this
+            me.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
+
+                keypairname = result.param[4]
+
+                if result.is_error
+                    notification 'error', "Cannot download keypair: " + keypairname
+                    data = null
+                else
+
+                    data = result.resolved_data
+                me.trigger "KP_DOWNLOADED", data
+
+                null
+
 
         init : ( instance_id )->
 
@@ -83,16 +100,6 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
             session  = $.cookie "session_id"
 
             keypair_model.download {sender:this}, username, session, MC.canvas_data.region, keypairname
-
-            self = this
-            me.once 'EC2_KPDOWNLOAD_RETURN', ( data )->
-
-                if data.is_error
-                    notification 'error', "Cannot download keypair: " + keypairname
-                    data = null
-                else
-                    data = data.resolved_data
-                self.trigger "KP_DOWNLOADED", data
 
 
     }

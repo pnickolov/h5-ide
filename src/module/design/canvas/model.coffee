@@ -263,17 +263,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			switch option.type
 				when 'node'
 					handler = this.deleteResMap[ component.type ]
+					if handler
+						result = handler.call( this, component, option.force )
 				when 'group'
 					result = this.deleteGroup component, option.force
 				when 'line'
 					result = this.deleteLine option
 
+
 			# If the handler returns false or string,
 			# The delete operation is prevented.
-			if handler
-				result = handler.call( this, component, option.force )
-
-
 			if typeof result is "string"
 				# Delete Handler returns a comfirmation string.
 				if result[0] == '!'

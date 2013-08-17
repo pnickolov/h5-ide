@@ -8,7 +8,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		refCompAry = []
 		_.each MC.canvas_data.component, (comp) ->
 			compType = comp.type
-			if compType is 'AWS.ELB'
+			if compType is 'AWS.ELB' or compType is 'AWS.AutoScaling.LaunchConfiguration'
 				sgAry = comp.resource.SecurityGroups
 				sgAry = _.map sgAry, (value) ->
 					refSGUID = value.slice(1).split('.')[0]

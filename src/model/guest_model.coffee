@@ -43,7 +43,7 @@ define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
                     console.log 'guest.invite failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'GUEST_INVITE_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_INVITE_RETURN', forge_result
 
 
         #cancel api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
                     console.log 'guest.cancel failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'GUEST_CANCEL_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_CANCEL_RETURN', forge_result
 
 
         #access api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
                     console.log 'guest.access failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'GUEST_ACCESS_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_ACCESS_RETURN', forge_result
 
 
         #end api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
                     console.log 'guest.end failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'GUEST_END_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_END_RETURN', forge_result
 
 
         #info api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
                     console.log 'guest.info failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'GUEST_INFO_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_INFO_RETURN', forge_result
 
 
 

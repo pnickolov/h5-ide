@@ -331,8 +331,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.once 'APP_START_RETURN', (result) ->
+            app_model.start { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
+            me.once 'APP_START_RETURN', (result) ->
                 console.log 'APP_START_RETURN'
                 console.log result
 
@@ -364,8 +364,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.stop { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.once 'APP_STOP_RETURN', (result) ->
+            app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
+            me.once 'APP_STOP_RETURN', (result) ->
                 console.log 'APP_STOP_RETURN'
                 console.log result
 
@@ -395,8 +395,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.terminate { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.once 'APP_TERMINATE_RETURN', (result) ->
+            app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
+            me.once 'APP_TERMINATE_RETURN', (result) ->
                 console.log 'APP_TERMINATE_RETURN'
                 console.log result
 
@@ -425,8 +425,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
 
-            stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
-            stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
+            stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
+            me.once 'STACK_SAVE__AS_RETURN', (result) ->
                 console.log 'STACK_SAVE__AS_RETURN'
                 console.log result
 
@@ -438,8 +438,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             current_region = region
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
-            stack_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, stack_name
-            stack_model.once 'STACK_REMOVE_RETURN', (result) ->
+            stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, stack_name
+            me.once 'STACK_REMOVE_RETURN', (result) ->
                 console.log 'STACK_REMOVE_RETURN'
                 console.log result
 
@@ -578,9 +578,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             current_region = region
 
-            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
+            vpc_model.DescribeAccountAttributes { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
 
-            vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
+            me.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
                 console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
@@ -976,9 +976,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     else
 
-                        elb_model.DescribeInstanceHealth { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName
+                        elb_model.DescribeInstanceHealth { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName
 
-                        elb_model.once 'ELB__DESC_INS_HLT_RETURN', ( result ) ->
+                        me.once 'ELB__DESC_INS_HLT_RETURN', ( result ) ->
 
                                 total = result.resolved_data.length
 
@@ -1180,9 +1180,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # ami
                 if ami_list.length != 0
 
-                    ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
+                    ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
 
-                    ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
+                    me.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
 
                         region_ami_list = {}
 
@@ -1264,9 +1264,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # get dhcp detail
                 if dhcp_set.length != 0
 
-                    dhcp_model.DescribeDhcpOptions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set
+                    dhcp_model.DescribeDhcpOptions { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set
 
-                    dhcp_model.once 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', ( result ) ->
+                    me.once 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', ( result ) ->
 
                         dhcp_set = result.resolved_data.item
 
@@ -1325,9 +1325,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # get cgw detail
                 if cgw_set.length != 0
 
-                    customergateway_model.DescribeCustomerGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set
+                    customergateway_model.DescribeCustomerGateways { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set
 
-                    customergateway_model.once 'VPC_CGW_DESC_CUST_GWS_RETURN', ( result ) ->
+                    me.once 'VPC_CGW_DESC_CUST_GWS_RETURN', ( result ) ->
 
                         cgw_set = result.resolved_data.item
 
@@ -1354,9 +1354,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # get vgw detail
                 if vgw_set.length != 0
 
-                    vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
+                    vpngateway_model.DescribeVpnGateways { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
 
-                    vpngateway_model.once 'VPC_VGW_DESC_VPN_GWS_RETURN', ( result ) ->
+                    me.once 'VPC_VGW_DESC_VPN_GWS_RETURN', ( result ) ->
 
                         vgw_set = result.resolved_data.item
 
@@ -1421,9 +1421,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             resources[res_type.ASL_ACT]   =   {}
 
 
-            aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
+            aws_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 
-            aws_model.once 'AWS_RESOURCE_RETURN', ( result ) ->
+            me.once 'AWS_RESOURCE_RETURN', ( result ) ->
 
                 console.log 'AWS_RESOURCE_RETURN'
 
@@ -1441,9 +1441,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             current_region = region
 
-            aws_model.status { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+            aws_model.status { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
 
-            aws_model.once 'AWS_STATUS_RETURN', ( result ) ->
+            me.once 'AWS_STATUS_RETURN', ( result ) ->
 
                 console.log 'AWS_STATUS_RETURN'
 

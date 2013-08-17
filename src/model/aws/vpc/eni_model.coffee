@@ -43,7 +43,7 @@ define [ 'backbone', 'eni_service'], ( Backbone, eni_service) ->
                     console.log 'eni.DescribeNetworkInterfaces failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_ENI_DESC_NET_IFS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_ENI_DESC_NET_IFS_RETURN', aws_result
 
 
         #DescribeNetworkInterfaceAttribute api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'eni_service'], ( Backbone, eni_service) ->
                     console.log 'eni.DescribeNetworkInterfaceAttribute failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_ENI_DESC_NET_IF_ATTR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_ENI_DESC_NET_IF_ATTR_RETURN', aws_result
 
 
 

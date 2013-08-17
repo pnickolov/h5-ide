@@ -43,7 +43,7 @@ define [ 'backbone', 'acl_service'], ( Backbone, acl_service) ->
                     console.log 'acl.DescribeNetworkAcls failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_ACL_DESC_NET_ACLS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_ACL_DESC_NET_ACLS_RETURN', aws_result
 
 
 

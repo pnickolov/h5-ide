@@ -11,6 +11,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
         defaults:
             'info_list'     : null    # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
             'unread_num'    : null
+            'is_unread'     : null
             'in_dashboard'  : true
 
         getInfoList : () ->
@@ -24,9 +25,14 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 info_list = me.queryRequest()
 
             if not unread_num
-                unread_num = ""
+                unread_num = 0
 
             me.set 'info_list', info_list
+
+            is_unread = false
+            if unread_num>0
+                is_unread = true
+            me.set 'is_unread', is_unread
             me.set 'unread_num', unread_num
 
             # listen
@@ -68,14 +74,16 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 else
                     return
 
-                if item.rid.search('stack') == 0 and not item.is_error
-                    lst = req.data.split(' ')
-                    item.rid = lst[lst.length-1]
-                    item.name = req.brief.split(' ')[2]
+                if item.rid.search('stack') == 0    # run stack
+                    item.name = lst[2]
+
+                    if item.is_complete     # run stack success
+                        lst = req.data.split(' ')
+                        item.rid = lst[lst.length-1]
 
                 # filter terminate app
-                if item.operation is 'terminate' and item.is_complete
-                    item.is_terminated = true
+                #if item.operation is 'terminate' and item.is_complete
+                #    item.is_terminated = true
 
             else
                 return
@@ -95,9 +103,9 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                     info_list.push item
 
             # filter done and terminated app
-            # terminated_list = []
-            # terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
-            # info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
+            terminated_list = []
+            terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
+            info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
 
             info_list.sort (a, b) ->
                 return if a.time <= b.time then 1 else -1
@@ -127,20 +135,25 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                                 unread_num = me.get 'unread_num'
                                 in_dashboard = me.get 'in_dashboard'
 
-                                if in_dashboard or item.rid != MC.canvas_data.id
-                                    item.is_readed = false
+                                # check whether same operation
+                                the_req = []
+                                the_req.push i for i in info_list when i.id == item.id and i.operation == item.operation
+                                if the_req.length <= 0
+                                    if in_dashboard or item.rid != MC.canvas_data.id
+                                        item.is_readed = false
 
-                                    unread_num += 1
-                                    me.set 'unread_num', unread_num
+                                        unread_num += 1
+                                        me.set 'unread_num', unread_num
+                                        me.set 'is_unread', true
 
-                                # remove the old request and new to the header
-                                info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
+                                    # remove the old request and new to the header
+                                    info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
 
-                                info_list.splice 0, 0, item
+                                    info_list.splice 0, 0, item
 
-                                me.set 'info_list', info_list
+                                    me.set 'info_list', info_list
 
-                                me.trigger 'HEADER_UPDATE'
+                                    me.trigger 'HEADER_UPDATE'
 
                                 null
                 }
@@ -162,6 +175,11 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                         unread_num = unread_num - 1
 
                         me.set 'unread_num', unread_num
+                        if unread_num>0
+                            me.set 'is_unread', true
+                        else
+                            me.set 'is_unread', false
+
                         me.set 'info_list', info_list
 
                         me.trigger 'HEADER_UPDATE'
@@ -182,6 +200,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
             me.set 'info_list', info_list
             me.set 'unread_num', 0
+            me.set 'is_unread', false
 
             me.trigger 'HEADER_UPDATE'
 

@@ -4,7 +4,7 @@
 
 define [ 'event', 'backbone', 'jquery', 'handlebars',
     'UI.notification',
-    'UI.secondarypanel' ], ( ide_event ) ->
+    'UI.secondarypanel', 'UI.parsley' ], ( ide_event ) ->
 
     StackView = Backbone.View.extend {
 
@@ -135,7 +135,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             ide_event.trigger ide_event.OPEN_ACL, aclUID
 
         openEditAclPanel : ( event ) ->
-            source = $(event.target)
+            source = $(event.currentTarget)
             if(source.hasClass('secondary-panel'))
                 target = source
             else

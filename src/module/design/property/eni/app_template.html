@@ -15,34 +15,38 @@
       <dt>Source/Destination Check</dt>
       <dd>{{sourceDestCheck}}</dd>
     </dl>
-    <dl class="dl-vertical">
-      <dt>VPC ID</dt>
-      <dd>{{vpcId}}</dd>
-      <dt>Subnet ID</dt>
-      <dd>{{subnetId}}</dd>
-      {{#if attachment}}
-      <dt>Attachment ID</dt>
-      <dd>{{attachment.attachmentId}}</dd>
-      <dt>Attachment Owner</dt>
-      <dd>{{attachment.instanceOwnerId}}</dd>
-      <dt>Attachment Status</dt>
-      <dd>{{attachment.status}}</dd>
-      {{/if}}
-      <dt>Mac Address</dt>
-      <dd>{{macAddress}}</dd>
-      {{#if association.publicDnsName}}
-      <dt>Public DNS</dt>
-      <dd>{{association.publicDnsName}}</dd>
-      {{/if}}
-      {{#if privateDnsName}}
-      <dt>Private DNS</dt>
-      <dd>{{privateDnsName}}</dd>
-      {{/if}}
-      {{#if ownerId}}
-      <dt>IP Owner</dt>
-      <dd>{{ownerId}}</dd>
-      {{/if}}
-    </dl>
+    <div class="hidden-details">
+      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">⇲ Show details</span><span class="details-on">⇱ Hide details</span></a>
+      <dl class="dl-vertical">
+        <dt>VPC ID</dt>
+        <dd>{{vpcId}}</dd>
+        <dt>Subnet ID</dt>
+        <dd>{{subnetId}}</dd>
+        {{#if attachment}}
+        <dt>Attachment ID</dt>
+        <dd>{{attachment.attachmentId}}</dd>
+        <dt>Attachment Owner</dt>
+        <dd>{{attachment.instanceOwnerId}}</dd>
+        <dt>Attachment Status</dt>
+        <dd>{{attachment.status}}</dd>
+        {{/if}}
+        <dt>Mac Address</dt>
+        <dd>{{macAddress}}</dd>
+        {{#if association.publicDnsName}}
+        <dt>Public DNS</dt>
+        <dd>{{association.publicDnsName}}</dd>
+        {{/if}}
+        {{#if privateDnsName}}
+        <dt>Private DNS</dt>
+        <dd>{{privateDnsName}}</dd>
+        {{/if}}
+        {{#if ownerId}}
+        <dt>IP Owner</dt>
+        <dd>{{ownerId}}</dd>
+        {{/if}}
+      </dl>
+    </div>
+
     <table class="property-app-table">
       <tr class="property-app-table-h">
         <th>IP Address</th>

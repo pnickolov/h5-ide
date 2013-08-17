@@ -2215,8 +2215,6 @@ a.sidebar-hider {
 
 .option-group {
 	display  : none;
-	overflow : hidden;
-	position : relative;
 }
 
 /*.option-group.transition {
@@ -3646,19 +3644,19 @@ a.sidebar-hider {
 	z-index    : -1;
 	padding    : 20px 0;
 
-	-webkit-transition: left .3s ease-in-out;
+/*	-webkit-transition: left .3s ease-in-out;
 	   -moz-transition: left .3s ease-in-out;
 	    -ms-transition: left .3s ease-in-out;
 	     -o-transition: left .3s ease-in-out;
-	        transition: left .3s ease-in-out;
+	        transition: left .3s ease-in-out;*/
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
 }
 
-.done .sg-rule-create-sidebar {
+/*.done .sg-rule-create-sidebar {
 	left : -200px;
-}
+}*/
 
 .sidebar-wrap {
 	height : 100%;

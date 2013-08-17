@@ -43,7 +43,7 @@ define [ 'backbone', 'vpc_service'], ( Backbone, vpc_service) ->
                     console.log 'vpc.DescribeVpcs failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_VPC_DESC_VPCS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_VPC_DESC_VPCS_RETURN', aws_result
 
 
         #DescribeAccountAttributes api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'vpc_service'], ( Backbone, vpc_service) ->
                     console.log 'vpc.DescribeAccountAttributes failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', aws_result
 
 
         #DescribeVpcAttribute api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'vpc_service'], ( Backbone, vpc_service) ->
                     console.log 'vpc.DescribeVpcAttribute failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_VPC_DESC_VPC_ATTR_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_VPC_DESC_VPC_ATTR_RETURN', aws_result
 
 
 

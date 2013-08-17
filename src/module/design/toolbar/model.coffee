@@ -119,8 +119,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if !result.is_error
                     console.log 'save as stack successfully'
 
-                    region  = result.param[3]
-                    data    = result.param[4]
+                    region      = result.param[3]
+                    id          = result.param[4]
+                    new_name    = result.param[5]
+                    name        = result.param[6]
 
                     #update stack name list
                     if new_name not in MC.data.stack_list[region]

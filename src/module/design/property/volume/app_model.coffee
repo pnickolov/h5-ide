@@ -13,16 +13,43 @@ define [ 'backbone', 'MC' ], () ->
 
         init : ( volume_uid )->
 
+          me = this
+
           myVolumeComponent = MC.canvas_data.component[ volume_uid ]
 
           appData = MC.data.resource_list[ MC.canvas_data.region ]
 
-          volume = $.extend true, {}, appData[ myVolumeComponent.resource.VolumeId ]
-          volume.name = myVolumeComponent.name
-          volume.IOPS = myVolumeComponent.resource.Iops
+          if volume_uid.indexOf('_') > 0
 
-          if volume.status == "in-use"
-            volume.isInUse = true
+                tmp = volume_uid.split('_')
+
+                realuid = tmp[0]
+
+                device_name = tmp[2]
+
+                lc_block_device = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[realuid].resource.LaunchConfigurationARN].BlockDeviceMappings.member
+
+                $.each lc_block_device, ( i, block ) ->
+
+                  if block.DeviceName.indexOf(device_name) >=0
+
+                        volume_detail = $.extend true, {}, block
+
+                        volume_detail.uid = volume_uid
+
+                        volume_detail.isLC = true
+
+                        me.set volume_detail
+
+                        return false
+          else
+
+            volume = $.extend true, {}, appData[ myVolumeComponent.resource.VolumeId ]
+            volume.name = myVolumeComponent.name
+            volume.IOPS = myVolumeComponent.resource.Iops
+            volume.isLC = false
+            if volume.status == "in-use"
+              volume.isInUse = true
 
           this.set volume
 

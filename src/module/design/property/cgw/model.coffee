@@ -2,7 +2,7 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
+define [ 'constant' ], ( constant ) ->
 
     CGWModel = Backbone.Model.extend {
 
@@ -60,8 +60,17 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             if error
                 return error
             else
-                MC.canvas_data.component[ this.attributes.uid ].resource.BgpAsn = bgp
+                uid = this.attributes.uid
+                MC.canvas_data.component.resource.BgpAsn = bgp
 
+                # The CGW is dynamic. clear all ips of vpn connection
+                if bgp
+                    for key, comp of MC.canvas_data.component
+                        if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+                            continue
+
+                        if comp.resource.CustomerGatewayId and compo.resource.CustomerGatewayId.indexOf( uid ) isnt -1
+                            comp.resource.Routes = []
             null
     }
 

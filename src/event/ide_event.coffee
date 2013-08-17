@@ -90,6 +90,10 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_APP_LIST     : 'UPDATE_APP_LIST'
         UPDATE_STACK_LIST   : 'UPDATE_STACK_LIST'
         STACK_DELETE        : 'STACK_DELETE'
+        #app state
+        STARTED_APP         : 'STARTED_APP'
+        STOPPED_APP         : 'STOPPED_APP'
+        TERMINATED_APP      : 'TERMINATED_APP'
 
         #canvas event
         CANVAS_SAVE         : 'CANVAS_SAVE' #save stack/app by ctrl+s

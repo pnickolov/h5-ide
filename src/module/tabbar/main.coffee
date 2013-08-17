@@ -210,31 +210,31 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 null
 
             #listen
-            # ide_event.onLongListen ide_event.START_APP, ( tab_name, app_id ) ->
-            #     console.log 'START_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
-            #     #
-            #     view.changeIcon app_id
-            #     #push event
-            #     ide_event.trigger ide_event.UPDATE_APP_LIST, null
-            #     null
+            ide_event.onLongListen ide_event.STARTED_APP, ( tab_name, app_id ) ->
+                console.log 'START_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+                #
+                view.changeIcon app_id
+                #push event
+                ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                null
 
-            # #listen
-            # ide_event.onLongListen ide_event.STOP_APP, ( tab_name, app_id ) ->
-            #     console.log 'STOP_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
-            #     #
-            #     view.changeIcon app_id
-            #     #push event
-            #     ide_event.trigger ide_event.UPDATE_APP_LIST, null
-            #     null
+            #listen
+            ide_event.onLongListen ide_event.STOPPED_APP, ( tab_name, app_id ) ->
+                console.log 'STOP_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+                #
+                view.changeIcon app_id
+                #push event
+                ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                null
 
-            # #listen
-            # ide_event.onLongListen ide_event.TERMINATE_APP, ( tab_name, app_id ) ->
-            #     console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
-            #     #
-            #     view.closeTab app_id
-            #     #push event
-            #     ide_event.trigger ide_event.UPDATE_APP_LIST, null
-            #     null
+            #listen
+            ide_event.onLongListen ide_event.TERMINATED_APP, ( tab_name, app_id ) ->
+                console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+                #
+                view.closeTab app_id
+                #push event
+                ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                null
 
             #listen
             ide_event.onLongListen ide_event.STACK_DELETE, ( tab_name, stack_id ) ->

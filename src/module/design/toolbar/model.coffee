@@ -4,8 +4,6 @@
 
 define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_model', 'constant' ], (MC, Backbone, $, _, ide_event, stack_model, app_model, constant) ->
 
-    app_state_list = [ 'Pending', 'InProcess', 'Done', 'Failed' ]
-
     #item state map
     # {app_id:{'name':name, 'state':state, 'is_running':true|false, 'is_pending':true|false, 'is_use_ami':true|false},
     #  stack_id:{'name':name, 'is_run':true|false, 'is_duplicate':true|false, 'is_delete':true|false}}
@@ -454,9 +452,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                     me.setFlag id, 'RUNNING_APP'
                                     me.trigger 'TOOLBAR_APP_START_SUCCESS', name
 
+                                    ide_event.trigger ide_event.STARTED_APP, name, id
+
                                 else if flag == 'STOP_APP'
                                     me.setFlag id, 'STOPPED_APP'
                                     me.trigger 'TOOLBAR_APP_STOP_SUCCESS', name
+
+                                    ide_event.trigger ide_event.STOPPED_APP, name, id
 
                                 else if flag == 'TERMINATE_APP'
                                     me.setFlag id, 'TERMINATED_APP'
@@ -466,10 +468,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                                     if name in MC.data.app_list[region]
                                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
-                                    ide_event.trigger ide_event.TERMINATE_APP, name, id
+                                    ide_event.trigger ide_event.TERMINATED_APP, name, id
 
                                 #push event
-                                ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                                #ide_event.trigger ide_event.UPDATE_APP_LIST, null
 
                             else if req.state == "Failed"
                                 handle.stop()
@@ -518,7 +520,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             # generate s3 key
             app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), data.region, data.id
-            me.once 'APP_GETKEY_RETURN', (result) ->
+            app_model.once 'APP_GETKEY_RETURN', (result) ->
                 console.log 'APP_GETKEY_RETURN'
                 console.log result
 

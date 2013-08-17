@@ -467,8 +467,9 @@ a {
 }
 
 .nav-region-list li > a {
-	font-size: 12px;
-	color: #999;
+	font-size : 12px;
+	color     : #999;
+	cursor    : default;
 }
 
 .nav-region-list > li {
@@ -526,16 +527,19 @@ a {
 }
 
 .nav-new-stack {
-	display: none;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding: 5px 8px;
-	color: #fff;
-	font-size: 16px;
+	display   : none;
+
+	position  : absolute;
+	right     : 20px;
+	top       : 10px;
+
+	color     : #ddd;
+
+	cursor    : pointer;
 }
 
-.nav-stack-region-title:hover {
+.nav-stack-region-title:hover,
+.nav-new-stack:hover {
 	color: #fff;
 }
 
@@ -757,6 +761,10 @@ a {
 	border: 1px solid #b1b1b1;
 	background: #fff;
 	box-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+.dashboard-widget:hover {
+	box-shadow: 0 0 10px rgba(0,0,0,.1);
 }
 
 .dashboard-widget-body a,
@@ -1623,18 +1631,18 @@ td.table-action a.btn {
 	top      : 0;
 	z-index  : 2;
 
-	height    : 43px;
+	height    : 44px;
 	width     : 100%;
 	min-width : 370px;
-	background      : #ececec;
+	background      : #f0f0f0;
 	/*border-bottom : 2px solid #d3d3d3;*/
-	box-shadow      : inset 0 2px 0 rgba(255,255,255,.5), 0 2px 0 #d3d3d3;
+	box-shadow      : 0 2px 0 #d3d3d3;
 	border-radius   : 2px 2px 0 0;
 
 }
 
 .toolbar-btn-group {
-	padding     : 2px 0;
+	padding     : 3px 0;
 	border-left : 1px solid #dedede;
 	float       : left;
 }
@@ -1647,7 +1655,6 @@ td.table-action a.btn {
 .toolbar-btn-group > li {
 	float: left;
 	margin-top: -2px;
-<<<<<<< HEAD
 }
 
 .toolbar-label {
@@ -1655,22 +1662,14 @@ td.table-action a.btn {
 	text-shadow: 0 1px 0 rgba(0,0,0,.5);
 }
 
-=======
-}
-
-.toolbar-label {
-	padding: 6px 10px 0 0;
-	text-shadow: 0 1px 0 rgba(0,0,0,.5);
-}
-
->>>>>>> feature/tweaks-dan
 a:hover .toolbar-label {
 	color: #eee;
 }
 
 .toolbar-btn-group .selectbox .dropdown {
-	border : 1px solid #E0E0E0;
-	width  : auto;
+	border     : 1px solid #E0E0E0;
+	width      : auto;
+	margin-top : 5px;
 }
 
 .toolbar-btn-group .dropdown li {
@@ -1680,6 +1679,7 @@ a:hover .toolbar-label {
 	position      : relative;
 	color         : #555;
 	text-align    : left;
+	line-height   : 42px;
 	padding-left  : 40px;
 	padding-right : 10px;
 }
@@ -1694,28 +1694,41 @@ a:hover .toolbar-label {
 }
 
 .btn-toolbar {
-	width       : 42px;
-	height      : 42px;
+	width       : 30px;
+	height      : 30px;
+
 	position    : relative;
 	float       : left;
-	line-height : 42px;
+
+	line-height : 30px;
 	text-align  : center;
 	color       : #868486;
+
+	margin-left : 4px;
+	padding     : 4px;
 }
 
+.toolbar-btn-group .btn-toolbar:last-child{
+	margin-right: 4px;
+}
+
+
 .btn-toolbar:hover {
-	color : #c17ca7;
-	background-color: #d0d0d0;
+	color            : #c17ca7;
+	background-color : #d0d0d0;
+	border-radius    : 4px;
+	box-shadow       : inset 0 0 2px rgba(0,0,0,.1);
 }
 
 .btn-toolbar.disabled {
 	color : #cecece;
 }
 .btn-toolbar.open {
-	background-color: #d0d0d0;
+	background-color : #d0d0d0;
+	border-radius    : 4px;
 }
 .btn-toolbar:hover .selection, .btn-toolbar.open .selection {
-	color : #c17ca7 !important;
+	color         : #c17ca7 !important;
 }
 
 .btn-toolbar.selectbox {
@@ -1727,7 +1740,7 @@ a:hover .toolbar-label {
 	color     : #868486;
 	padding   : 0 18px 0 10px;
 	border    : none;
-	line-height : 42px;
+	line-height : 30px;
 }
 
 .toolbar-btn-group .dropdown li:last-child {
@@ -2081,10 +2094,11 @@ a.sidebar-hider {
 }
 
 .property-wrap {
-	overflow : hidden;
-	position : relative;
-	width    : 100%;
-	height   : 100%;
+	overflow   : hidden;
+	position   : relative;
+	width      : 100%;
+	height     : 100%;
+	background : #5e5e5e;
 }
 
 .property-panel-wrapper {
@@ -2141,12 +2155,12 @@ a.sidebar-hider {
 }
 
 .property-content a {
-	color: #5685D3;
+	color: #ADADAD;
 	font-size: 13px;
 }
 
 .property-content a:hover {
-	color: #6695E3;
+	color: #ccc;
 }
 
 .property-sidebar-title {
@@ -2159,6 +2173,13 @@ a.sidebar-hider {
 	width   : 260px;
 
 	cursor        : default;
+}
+
+.property-group-head {
+	padding    : 6px 10px;
+	font-size  : 13px;
+	background : #323232;
+	box-shadow : 0 2px 0 0 rgba(0,0,0,.2);
 }
 
 .back {
@@ -2215,6 +2236,7 @@ a.sidebar-hider {
 
 .option-group {
 	display  : none;
+	overflow : hidden;
 }
 
 /*.option-group.transition {
@@ -2435,7 +2457,6 @@ a.sidebar-hider {
 	transition         : background .2s;
 }
 
->>>>>>> feature/tweaks-dan
 .property-ami-wrap:hover .property-ami-icon {
 	background : #7f7f7f;
 }
@@ -2510,22 +2531,33 @@ a.sidebar-hider {
 	background: #383A3D;
 }
 
-.acl-sg-info-list li {
-	width         : 260px;
-	height        : 52px;
-	padding       : 10px;
-	border-bottom : 1px solid #383738;
-	background    : #414041;
+/* General Style for Property Panel List */
 
-	-webkit-transition: background .2s;
-	-moz-transition: background .2s;
-	-ms-transition: background .2s;
-	-o-transition: background .2s;
-	transition: background .2s;
+.property-list {
+	border-top : 1px solid #4d4d4d;
 }
 
-.acl-sg-info-list li:hover {
-	background : #454445;
+.property-list li {
+	width         : 260px;
+	padding       : 10px;
+	border-bottom : 1px solid #4d4d4d;
+	background    : #5C5C5C;
+
+	-webkit-transition : background .2s;
+	-moz-transition    : background .2s;
+	-ms-transition     : background .2s;
+	-o-transition      : background .2s;
+	transition         : background .2s;
+}
+
+.property-list li:hover {
+	background : #555;
+}
+
+/* End of General Style for Property Panel List */
+
+.acl-sg-info-list li {
+	height        : 52px;
 }
 
 .acl-sg-info-list .col1 {
@@ -2570,9 +2602,6 @@ a.sidebar-hider {
 
 	cursor           : pointer;
 
-	/*background-color : #393839;*/
-	box-shadow       : 0 1px 0 0 #333;
-
 	-webkit-transition : background .2s;
 	-moz-transition    : background .2s;
 	-ms-transition     : background .2s;
@@ -2581,7 +2610,7 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list .col3:hover {
-	background-color: #3d3c3d;
+	background-color: #404040;
 }
 
 .acl-sg-info-list .sg-list-association-check {
@@ -2636,73 +2665,57 @@ a.sidebar-hider {
 	color: #999;
 	display: inline-block;
 }
+
 #secondary-panel-wrap .context {
 	width: 115px;
 	color: #666;
 	display: inline-block;
 }
+
 #secondary-panel-wrap .context-wrap a {
 	color: #00F;
 	word-wrap: break-word;
 }
 
-.sg-title,
-.sg-description {
-	margin: 10px;
+.add-rule {
+	display : inline-block;
+	width   : 38px;
+	height  : 38px;
+
+	line-height : 38px;
+	text-align  : center;
+	color: #ccc;
+
+	position    : absolute;
+	right       : 0;
 }
 
-.sg-header {
-	height: 20px;
-	line-height: 20px;
-	background-color: #eee;
-	padding: 10px;
-	position: relative;
-}
-
-.sg-header .sg-icon-add {
-	width: 36px;
-	height: 36px;
-	background-color: #CCC;
-	display: inline-block;
-	position: absolute;
-	top: 0;
-	right: 0;
+.add-rule:hover {
+	color         : #fff;
+	/*text-shadow : 0 2px rgba(0,0,0,.8);*/
+	background    : #B25B91;
+	box-shadow    : -1px 0 0 0 rgba(0,0,0,.5);
 }
 
 .sg-rule-list li {
-	width         : 260px;
 	height        : 40px;
-	padding       : 10px;
-
-	border-bottom : 1px solid #383738;
-	background    : #414041;
 
 	position : relative;
 	display  : table;
-
-	-webkit-transition: background .2s;
-	-moz-transition: background .2s;
-	-ms-transition: background .2s;
-	-o-transition: background .2s;
-	transition: background .2s;
 }
 
-.sg-rule-list li:hover {
-	background : #383738;
-}
-
-.sg-rule-list-row {
+.rule-list-row {
 	/*display: table-row;*/
 	height: 20px;
 	margin-top: 5px;
 }
 
-.sg-rule-list-row div {
+.rule-list-row div {
 	display: table-cell;
 }
 
-.sg-rule-list-row div:first-child {
-	width: 50px;
+.rule-list-row div:first-child {
+	width: 65px;
 }
 
 .sg-rule-list .rule-remove-icon {

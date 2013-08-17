@@ -1,13 +1,13 @@
 <article>
-  <section class="property-control-group">
+  <section class="property-control-group" data-bind="true">
     <label class="left" for="property-acl-name">Name</label>
     <span class="required-input right">Required</span>
-    <input class="input" type="text" value="{{component.name}}" {{#if is_default}}disabled{{/if}} id="property-acl-name"/>
+    <input class="input" type="text" value="{{component.name}}" {{#if is_default}}disabled{{/if}} id="property-acl-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
   </section>
 
   <div class="option-group-head acl-header">Rule
     <span class="property-head-num-wrap">(<span id="acl-rule-count">{{component.resource.entrySet.length}}</span>)</span>
-    <a href="#" class="acl-icon-add tooltip" id="acl-add-rule-icon" data-tooltip="Create new Network ACL Rule"></a>
+    <a href="#" class="icon-add add-rule tooltip" id="acl-add-rule-icon" data-tooltip="Create new Network ACL Rule"></a>
   </div>
   <div class="option-group">
     <div class="acl-sort-rule clearfix">

@@ -263,17 +263,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			switch option.type
 				when 'node'
 					handler = this.deleteResMap[ component.type ]
+					if handler
+						result = handler.call( this, component, option.force )
 				when 'group'
 					result = this.deleteGroup component, option.force
 				when 'line'
 					result = this.deleteLine option
 
+
 			# If the handler returns false or string,
 			# The delete operation is prevented.
-			if handler
-				result = handler.call( this, component, option.force )
-
-
 			if typeof result is "string"
 				# Delete Handler returns a comfirmation string.
 				if result[0] == '!'
@@ -584,28 +583,21 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			for id, port of MC.canvas_data.layout.connection[option.id].target
 				portMap[ port ] = id
 
-			# ELB <==> Instance
-			if portMap['elb-sg-out'] and portMap['instance-sg']
-				MC.aws.elb.removeInstanceFromELB portMap['elb-sg-out'], portMap['instance-sg']
-				return
-
 			# ELB <==> Subnet
 			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
 				MC.aws.elb.removeSubnetFromELB portMap['elb-assoc'], portMap['subnet-assoc-in']
-				return
 
 			# Eni <==> Instance
-			if portMap['instance-attach'] and portMap['eni-attach']
+			else if portMap['instance-attach'] and portMap['eni-attach']
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
 
 				#hide sg port of eni when delete line
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', false
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_right', false
-				return
 
 			# IGW <==> RouteTable
-			if portMap['igw-tgt'] and portMap['rtb-tgt-left']
+			else if portMap['igw-tgt'] and portMap['rtb-tgt-left']
 
 				keepArray = []
 				component_resource = MC.canvas_data.component[portMap['rtb-tgt-left']].resource
@@ -619,7 +611,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 			# Subnet <==> RouteTable
-			if portMap['subnet-assoc-out'] and portMap['rtb-src']
+			else if portMap['subnet-assoc-out'] and portMap['rtb-src']
 
 				rt_uid = portMap['rtb-src']
 				sb_uid = portMap['subnet-assoc-out']
@@ -630,7 +622,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 			# Instance <==> RouteTable
-			if portMap['instance-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['instance-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 				rt_uid = null
 
@@ -644,10 +636,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						keepArray.push i
 
 				component_resource.RouteSet = keepArray
-				return
 
 			# Eni <==> RouteTable
-			if portMap['eni-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['eni-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
 
 				rt_uid = null
 
@@ -662,10 +653,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						keepArray.push i
 
 				component_resource.RouteSet = keepArray
-				return
 
 			# VGW <==> RouteTable
-			if portMap['vgw-tgt'] and portMap['rtb-tgt-right']
+			else if portMap['vgw-tgt'] and portMap['rtb-tgt-right']
 
 				component_resource = MC.canvas_data.component[portMap['rtb-tgt-right']].resource
 				keepArray = []
@@ -675,17 +665,22 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						keepArray.push i
 
 				component_resource.RouteSet = keepArray
-				return
 
 			# VGW <==> CGW
-			if portMap['vgw-vpn'] and portMap['cgw-vpn']
+			else if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
-				return
 
-			# Instance/ENI SG
+			# === SG Lines ===
+			# ELB <==> Instance
+			else if portMap['elb-sg-out'] and portMap['instance-sg']
+				MC.aws.elb.removeInstanceFromELB portMap['elb-sg-out'], portMap['instance-sg']
+
+			# SG Supports
 			if portMap['instance-sg'] or portMap['eni-sg'] or portMap['elb-sg-in'] or portMap['elb-sg-out']
 				this.trigger 'SHOW_SG_LIST', option.id
-				return
+
+				# Deleting SG needs confirmation, return false to prevent the line being deleted.
+				return false
 
 			null
 

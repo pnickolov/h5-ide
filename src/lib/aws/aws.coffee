@@ -304,19 +304,14 @@ define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 		originCompObj = MC.canvas_data.component[compUID]
 		originCompUID = originCompObj.uid
 		originCompType = originCompObj.type
-		# originCompName = originCompObj.name
 
-		result = false
-		_.each MC.canvas_data.component, (compObj) ->
+		not _.some MC.canvas_data.component, (compObj) ->
 			compUID = compObj.uid
 			compType = compObj.type
 			compName = compObj.name
 			if originCompType is compType and originCompUID isnt compUID and newName is compName
-				result = true
-				return false
-			null
+				return true
 
-		return result
 
 	checkStackName = ( stackId, newName ) ->
 		stackArray = _.flatten _.values MC.data.stack_list

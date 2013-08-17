@@ -483,10 +483,12 @@ a {
 
 #nav-dashboard-region li > a,
 .nav-region-list-items li > a {
-	font-size: 13px;
-	color: #ccc;
-	width: 210px;
-	line-height: 24px;
+	font-size   : 13px;
+	color       : #ccc;
+	line-height : 24px;
+
+	width       : 210px;
+	cursor      : pointer;
 }
 
 #nav-dashboard-region li a:hover,
@@ -2688,6 +2690,8 @@ a.sidebar-hider {
 
 	position    : absolute;
 	right       : 0;
+
+	cursor : pointer;
 }
 
 .add-rule:hover {

@@ -44,6 +44,8 @@ define [ 'jquery',
 			view.setAppView = if tab_type is 'OPEN_APP' then true else false
 
 			model.setLineId uid
+
+			model.getDispSGList uid
 			#render
 			view.render()
 			ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "Security Group Rule"

@@ -36,7 +36,8 @@ define [ 'text!./template.html',
             this.setElement $('#sg-rule-create-modal').closest '#modal-wrap'
 
             # Update sidebar
-            this.updateSidebar()
+            this.trigger 'UPDATE_SLIDE_BAR'
+            #this.updateSidebar()
 
         renderDeleteModule : () ->
             modal delete_template( this.model.attributes ), true
@@ -67,8 +68,11 @@ define [ 'text!./template.html',
           # Switch to done view.
           this.$el.find('#modal-box').toggleClass('done', true)
 
+          this.trigger 'UPDATE_LINE_ID'
+
           # Update sidebar
-          this.updateSidebar()
+          this.trigger 'UPDATE_SLIDE_BAR'
+          #this.updateSidebar()
 
         readdRule : () ->
           this.$el.find('#modal-box').toggleClass('done', false)
@@ -78,7 +82,8 @@ define [ 'text!./template.html',
 
           this.trigger 'DELETE_RULE', $(event.currentTarget).closest('.sg-create-rule-item').attr("data-uid")
 
-          this.updateSidebar()
+          this.trigger 'UPDATE_SLIDE_BAR'
+          #this.updateSidebar()
           false
 
         onDirChange : () ->

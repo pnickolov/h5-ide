@@ -124,15 +124,29 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
 
                 $.each lc_block_device, ( i, block ) ->
 
-                    if block.DeviceName.slice(0,1) != '/' and block.DeviceName.indexOf('xvd'+device_name)>=0
+                    if block.DeviceName.slice(0,1) != '/' and block.DeviceName.indexOf(device_name)>=0
 
                         block.DeviceName = 'xvd' + name
+
+                        MC.canvas.update(realuid,'id','volume_' + device_name, realuid + '_volume_' + 'xvd' + name)
+
+                        $("#property-panel-volume").attr 'uid', realuid + '_volume_' + 'xvd' + name
+
+                        MC.canvas.update(realuid,'text','volume_' + block.DeviceName, block.DeviceName)
 
                     else if block.DeviceName.slice(0,1) == '/' and block.DeviceName.indexOf(device_name)>=0
 
                         block.DeviceName = '/dev/' + name
 
+                        MC.canvas.update(realuid,'id','volume_' + device_name, realuid + '_volume_' + name)
+
+                        $("#property-panel-volume").attr 'uid', realuid + '_volume_' + name
+
+                        MC.canvas.update(realuid,'text','volume_' + name, block.DeviceName)
+
                     null
+
+
 
             else
 

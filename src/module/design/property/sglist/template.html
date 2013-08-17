@@ -7,7 +7,7 @@
 
 <div class="tab-content">
 	<div id="item-group" class="active tab-item">
-		<ul class="acl-sg-info-list" id="sg-info-list">
+		<ul class="acl-sg-info-list property-list" id="sg-info-list">
 			{{#each sg_list}}
 			<li class="clearfix" sg-uid="{{sgUID}}">
 				{{#unless sgHideCheck}}
@@ -62,16 +62,16 @@
 				</ul>
 			</div>
 		</div>
-		<ul class="sg-rule-list" id="sglist-rule-list">
+		<ul class="sg-rule-list property-list" id="sglist-rule-list">
 			{{#each sg_rule_list}}
 			<li data-inbound="true">
-				<div class="sg-rule-list-row">
+				<div class="rule-list-row">
 					<div data-id="{{Direction}}" class='rule-direction-icon tooltip' data-tooltip="{{Direction}}"></div>
 					<div data-id="{{IpRanges}}" class='rule-reference'>
 						{{IpRanges}}
 					</div>
 				</div>
-				<div class="sg-rule-list-row">
+				<div class="rule-list-row">
 					<div data-id="{{IpProtocol}}"><span class="rule-protocol">{{IpProtocol}}</span></div>
 					<div data-id="{{FromPort}}" class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
 				</div>

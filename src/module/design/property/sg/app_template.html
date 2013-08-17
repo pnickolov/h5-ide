@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <ul class="sg-rule-list" id="sg-rule-list">
+    <ul class="sg-rule-list property-list" id="sg-rule-list">
       {{#each sg_app_detail.rules}}
       <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
         <i class="icon-rule-{{direction}}" data-tooltip="{{direction}}"></i>
@@ -52,7 +52,7 @@
     <span class="property-head-num-wrap">(<span>{{sg_app_detail.members.length}}</span>)</span>
   </div>
   <div class="option-group">
-    <ul class="sg-member-list">
+    <ul class="sg-member-list property-list">
       {{#each sg_app_detail.members}}
       <li>
         <div class="sg-member-icon"></div>

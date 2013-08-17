@@ -4,7 +4,7 @@
     <h3 class="sg-create-group">{{name}}</h3>
     <ul>
       {{#each rules}}
-        <li class="clearfix sg-create-rule-item">
+        <li class="clearfix sg-create-rule-item" data-uid="{{uid}}">
           <span class="sg-rule-col1">
             <span class="{{#if egress}}sg-rule-inbound{{else}}sg-rule-outbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
             <span class="sg-rule-protocol">{{protocol}}</span>

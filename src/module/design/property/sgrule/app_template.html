@@ -1,19 +1,19 @@
 <article class="property-info">
-  <div class="property-subhead">
-    The selected connection reflects following security group rule(s):
-  </div>
+   <section class="property-control-group">The selected connection reflects following security group rule(s):</section>
 
   {{#each sg_app_ary}}
-  <div class="option-group-head">{{groupName}}</div>
-  <div class="option-group">
-    <ul class="acl-sg-info-list" id="sg-info-list">
+  <div class="property-group-head">{{groupName}}</div>
+  <div class="property-group">
+    <ul class="sg-rule-list property-list" id="sg-info-list">
       {{#each rules}}
-      <li class="clearfix" href="#">
-        <i class="icon-rule-{{direction}}" data-tooltip="{{direction}}"></i>
-        <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div>
-        <div class="col2">
-          <div class="col2-1 truncate">{{ipRanges}}</div>
-          <div class="col2-2 truncate"><div class="rule-protocol">{{ipRanges}}</div>{{fromPort}}-{{toPort}}</div>
+      <li>
+        <div class="rule-list-row">
+          <div class="rule-direction-icon icon-rule-{{direction}}" data-tooltip="{{direction}}"></div>
+          <div class="rule-reference">{{ipRanges}}</div>
+        </div>
+        <div class="rule-list-row">
+          <div><span class="rule-protocol">{{ipRanges}}</span></div>
+          <div class="rule-port">{{fromPort}}-{{toPort}}</div>
         </div>
       </li>
       {{/each}}

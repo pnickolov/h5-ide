@@ -2,58 +2,52 @@
 #  pop-up for component/sgrule module
 ####################################
 
-define [ 'jquery', 'event' ], ( $, ide_event ) ->
+define [ 'event', './view', './model' ], ( ide_event, View, Model ) ->
 
     #private
     loadModule = ( line_id, delete_module ) ->
 
+        view  = new View()
+        model = new Model()
+
+        #view
+        view.model = model
+
+        model.getSgRuleDetail line_id
         #
-        require [ './component/sgrule/view', './component/sgrule/model' ], ( View, Model ) ->
+        view.on 'CLOSE_POPUP', () ->
 
-            #
-            view  = new View()
-            model = new Model()
+            model.checkRuleExisting()
 
-            #view
-            view.model    = model
+            unLoadModule view, model
 
-            model.getSgRuleDetail line_id
-            #
-            view.on 'CLOSE_POPUP', () ->
+        view.on 'ADD_RULE', ( rule_data ) ->
 
-                model.checkRuleExisting()
+            model.addSGRule rule_data
 
-                unLoadModule view, model
+            ide_event.trigger ide_event.REDRAW_SG_LINE
 
-            view.on 'ADD_SG_RULE', ( rule_data ) ->
+        model.on 'DELETE_LINE', ( line_id ) ->
 
-                model.addSGRule rule_data
+            ide_event.trigger ide_event.DELETE_LINE_TO_CANVAS, line_id
 
-                ide_event.trigger ide_event.REDRAW_SG_LINE
+        view.on 'DELETE_SG_LINE', () ->
 
-            model.on 'DELETE_LINE', ( line_id ) ->
+            this.model.deleteSGLine()
 
-                ide_event.trigger ide_event.DELETE_LINE_TO_CANVAS, line_id
+            ide_event.trigger ide_event.REDRAW_SG_LINE
 
-            view.on 'DELETE_SG_LINE', () ->
+        view.on 'DELETE_RULE', ( uid ) ->
 
-                this.model.deleteSGLine()
+            ide_event.trigger ide_event.REDRAW_SG_LINE
 
-                ide_event.trigger ide_event.REDRAW_SG_LINE
 
-            view.on 'DELETE_PREVIEW_RULE', () ->
-
-                this.model.deletePriviewRule()
-
-                ide_event.trigger ide_event.REDRAW_SG_LINE
-                
-
-            #render
-            if delete_module
-                model.getDeleteSGList()
-                view.renderDeleteModule()
-            else
-                view.render()
+        #render
+        if delete_module
+            model.getDeleteSGList()
+            view.renderDeleteModule()
+        else
+            view.render()
 
     unLoadModule = ( view, model ) ->
         console.log 'sgrule unLoadModule'

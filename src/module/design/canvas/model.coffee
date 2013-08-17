@@ -503,7 +503,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				# [ @@@ Warning @@@ ] If there's one child that cannot be deleted for any reason. Data is corrupted.
 				this.deleteObject null, op
 
-			false
+			null
 
 		deleteR_AZ : ( component ) ->
 

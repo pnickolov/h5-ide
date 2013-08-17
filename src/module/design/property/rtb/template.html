@@ -44,10 +44,10 @@
 		    {{#if isVgw}}
 		    <div class="allow-checkbox">
 				<div class="checkbox">
-					<input id="checkbox_id" type="checkbox" value="None" name="check_value" data-uid="{{vgw}}" {{#if isProp}}checked="true"{{/if}}>
-					<label for="checkbox_id"></label>
+					<input id="propagate_{{@index}}" type="checkbox" value="None" class="propagation" data-uid="{{vgw}}" {{#if isProp}}checked="true"{{/if}}>
+					<label for="propagate_{{@index}}"></label>
 				</div>
-				<label for="checkbox_id">Allow propagation</label>
+				<label for="propagate_{{@index}}">Allow propagation</label>
 			</div>
 			{{/if}}
 			</div>

@@ -19,7 +19,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             'BEFORE_REMOVE_ROW  .multi-input' : 'beforeRemoveIp'
             'change #rt-name'                 : 'changeName'
             'click #set-main-rt'              : 'setMainRT'
-            'change #checkbox_id'             : 'changePropagation'
+            'change .propagation'             : 'changePropagation'
 
         render     : () ->
             console.log 'property:rtb render'

@@ -158,20 +158,20 @@ define [ 'event',
             #
             if type is 'OPEN_STACK' or type is 'NEW_STACK'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
-                if $( '#resource-panel' ).hasClass("hidden") then $( '#hide-resource-panel' ).trigger 'click'
+                if $( '#resource-panel' ).hasClass("hiden") then $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
 
             if type is 'OLD_STACK'
                 $( '#hide-resource-panel' ).show()
                 if $( '#hide-resource-panel' ).attr( 'data-current-state' ) is 'show'
-                    if $( '#resource-panel' ).hasClass("hidden")
+                    if $( '#resource-panel' ).hasClass("hiden")
                         $( '#hide-resource-panel' ).trigger 'click'
                 else
-                    if not $( '#resource-panel' ).hasClass("hidden")
+                    if not $( '#resource-panel' ).hasClass("hiden")
                         $( '#hide-resource-panel' ).trigger 'click'
             else if type is 'OLD_APP'
                 $( '#hide-resource-panel' ).hide()
-                if not $( '#resource-panel' ).hasClass("hidden")
+                if not $( '#resource-panel' ).hasClass("hiden")
                     $( '#hide-resource-panel' ).trigger 'click'
             #
             console.log $( '#hide-resource-panel' ).attr 'data-current-state'

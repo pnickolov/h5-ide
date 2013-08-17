@@ -250,7 +250,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     if resource_source
 
-                        me.setResource resource_source
+                        me.setResource resource_source, region
                         me.updateUnmanagedList()
 
                 else
@@ -1007,10 +1007,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             parse_btns_result
 
 
-        setResource : ( resources ) ->
+        setResource : ( resources, region ) ->
 
             #cache aws resource data
-            MC.aws.aws.cacheResource resources, current_region
+            MC.aws.aws.cacheResource resources, region
+
+            if region != current_region
+
+                return null
 
             me = this
 

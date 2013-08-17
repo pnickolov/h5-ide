@@ -51,8 +51,9 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
                             null
 
-
-                me.set 'availability_zone', res
+                console.log 'get az: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
+                if region_name == MC.canvas.data.get('region')
+                    me.set 'availability_zone', res
 
                 #cache az to MC.data.config[region_name].zone
                 MC.data.config[region_name].zone = result.resolved_data
@@ -103,8 +104,9 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                     null
 
 
-                me.set 'quickstart_ami', ami_list
-
+                console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
+                if region_name == MC.canvas.data.get('region')
+                    me.set 'quickstart_ami', ami_list
 
 
                 #cache config data for current region
@@ -141,56 +143,71 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
                 region_name = result.param[3]
                 console.log 'EC2_AMI_DESC_IMAGES_RETURN: ' + region_name
 
-                #cache my ami to my_ami
-                MC.data.config[region_name].my_ami = {}
+                if !result.is_error and result.param[5] and result.param[5][0] and result.param[5][0] == 'self'
+                #####my ami
 
-                if result.resolved_data
+                    console.log 'EC2_AMI_DESC_IMAGES_RETURN: My AMI'
 
-                    _.map result.resolved_data.item, (value)->
-                        #cache my ami item to MC.data.dict_ami
-                        value.instanceType = me._getInstanceType value
-                        value.osType = me._getOSType value
-                        MC.data.dict_ami[value.imageId] = value
-                        null
+                    my_ami_list = {}
 
-                    me.set 'my_ami', result.resolved_data
+                    #cache my ami to my_ami
+                    MC.data.config[region_name].my_ami = {}
 
-                    MC.data.config[region_name].my_ami = result.resolved_data
+                    if result.resolved_data
+
+                        _.map result.resolved_data.item, (value)->
+                            #cache my ami item to MC.data.dict_ami
+                            value.instanceType = me._getInstanceType value
+                            value.osType = me._getOSType value
+                            MC.data.dict_ami[value.imageId] = value
+                            null
+
+                        my_ami_list = result.resolved_data
+
+                        MC.data.config[region_name].my_ami = result.resolved_data
+
+
+                    console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
+                    if region_name == MC.canvas.data.get('region')
+                        me.set 'my_ami', my_ami_list
+
                 else
-                    me.set 'my_ami', {}
+                #####
+
+                    console.log 'EC2_AMI_DESC_IMAGES_RETURN:'
+
+                    if result.resolved_data
+                        _.map result.resolved_data.item, (value)->
+
+                            #cache ami item in stack to MC.data.dict_ami
+                            value.instanceType = me._getInstanceType value
+                            MC.data.dict_ami[value.imageId] = value
+
+                            null
+
 
                 null
 
-
-            ######listen EC2_AMI_DESC_IMAGES_RETURN
-            me.on 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
-                console.log 'EC2_AMI_DESC_IMAGES_RETURN'
-
-                _.map result.resolved_data.item, (value)->
-
-                    #cache ami item in stack to MC.data.dict_ami
-                    value.instanceType = me._getInstanceType value
-                    MC.data.dict_ami[value.imageId] = value
-
-                    null
-                null
 
             ######listen AWS__PUBLIC_RETURN
             me.on 'AWS__PUBLIC_RETURN', ( result ) ->
                 console.log 'AWS__PUBLIC_RETURN'
-                if result.resolved_data
-                    community_ami = _.extend result.resolved_data.ami, {timestamp: ( new Date() ).getTime()}
+
+                community_ami_list = {}
+
+                if !result.is_error and  result.resolved_data
+                    community_ami_list = _.extend result.resolved_data.ami, {timestamp: ( new Date() ).getTime()}
                     favorite_ami_ids = _.pluck ( me.get 'favorite_ami' ), 'resource_id'
 
-                    for key, value of community_ami.result
+                    for key, value of community_ami_list.result
                         if _.contains favorite_ami_ids, key
                             value.favorite = true
 
 
+                console.log 'get community ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
+                if region_name == MC.canvas.data.get('region')
+                    me.set 'community_ami', community_ami_list
 
-                    me.set 'community_ami', community_ami
-                else
-                    me.set 'community_ami', null
 
                 null
 
@@ -223,7 +240,10 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
                     null
 
-                me.set 'favorite_ami', legalData
+
+                console.log 'get favorite ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
+                if region_name == MC.canvas.data.get('region')
+                    me.set 'favorite_ami', legalData
 
                 #cache favorite_ami
                 MC.data.config[region_name].favorite_ami = {}
@@ -267,17 +287,17 @@ define [ 'ec2_model', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', '
 
                 res = $.extend true, {}, MC.data.config[region_name].zone
 
-                if type != 'NEW_STACK'
+                #if type != 'NEW_STACK'
 
-                    $.each res.item, ( idx, value ) ->
+                $.each res.item, ( idx, value ) ->
 
-                        $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+                    $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
 
-                            if zone.name == value.zoneName
+                        if zone.name == value.zoneName
 
-                                res.item[idx].isUsed = true
+                            res.item[idx].isUsed = true
 
-                                null
+                            null
 
                 me.set 'availability_zone', res
 

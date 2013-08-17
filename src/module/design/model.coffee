@@ -17,7 +17,9 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
             #listen APP_RESOURCE_RETURN
             me.on 'APP_RESOURCE_RETURN', ( result ) ->
 
-                console.log 'APP_RESOURCE_RETURN'
+                app_id = result.param[5][4]
+                console.log 'APP_RESOURCE_RETURN:' + app_id
+
 
                 if !result.is_error
 

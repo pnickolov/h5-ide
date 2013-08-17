@@ -303,7 +303,7 @@
 }
 
 .webkit .line {
-	filter : url(#dropshadow); /*only support chrome*/
+	/* filter : url(#dropshadow); only support chrome*/
 }
 
 .line.selected {

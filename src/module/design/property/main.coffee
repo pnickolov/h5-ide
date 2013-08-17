@@ -63,7 +63,7 @@ define [ 'jquery',
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
 
 				# Better than $("input:focus")
-				$( document.activeElement ).filter( 'input' ).blur()
+				$( document.activeElement ).filter( 'input, textarea' ).blur()
 
 				# Hide second panel if there's any
 				view.immHideSecondPanel()

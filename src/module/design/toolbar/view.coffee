@@ -128,21 +128,38 @@ define [ 'MC', 'event',
             console.log 'clickNewStackIcon'
             ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
 
-        clickZoomInIcon : ->
+        clickZoomInIcon : ( event ) ->
             console.log 'clickZoomInIcon'
 
-            if MC.canvas_property.SCALE_RATIO <= 1
-                notification 'warning', 'Cannot zoom in now.'
-            else
+            if $( event.currentTarget ).hasClass("disabled")
+                return false
+
+            if MC.canvas_property.SCALE_RATIO > 1
                 MC.canvas.zoomIn()
 
-        clickZoomOutIcon : ->
+            $("#main-toolbar .icon-zoom-out").toggleClass("disabled", false)
+
+            if MC.canvas_property.SCALE_RATIO <= 1
+                $("#main-toolbar .icon-zoom-in").toggleClass("disabled", true)
+
+            return false
+
+
+        clickZoomOutIcon : ( event )->
             console.log 'clickZoomOutIcon'
 
-            if MC.canvas_property.SCALE_RATIO >= 1.6
-                notification 'warning', 'Cannot zoom out now.'
-            else
+            if $( event.currentTarget ).hasClass("disabled")
+                return false
+
+            if MC.canvas_property.SCALE_RATIO < 1.6
                 MC.canvas.zoomOut()
+
+            $("#main-toolbar .icon-zoom-in").toggleClass("disabled", false)
+
+            if MC.canvas_property.SCALE_RATIO >= 1.6
+                $("#main-toolbar .icon-zoom-out").toggleClass("disabled", true)
+
+            return false
 
         clickUndoIcon : ->
             console.log 'clickUndoIcon'

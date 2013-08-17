@@ -995,8 +995,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				when resource_type.AWS_VPC_InternetGateway
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 					# Automatically connect IGW and main RT
-					line_id = MC.canvas.connect uid, "igw-tgt", this._findMainRT(), 'rtb-tgt-left'
-					this.createLine null, line_id
+					# Coommented out, because we don't need to add the route anymore.
+					# line_id = MC.canvas.connect uid, "igw-tgt", this._findMainRT(), 'rtb-tgt-left'
+					# this.createLine null, line_id
 
 				when resource_type.AWS_VPC_VPNGateway
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType

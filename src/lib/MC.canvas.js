@@ -2920,7 +2920,6 @@ MC.canvas.event.dragable = {
 
 		event.data.canvas_body.removeClass('node-dragging');
 
-		//$(document.body).removeClass('disable-event');
 		$('#overlayer').remove();
 
 		$(document).off({
@@ -2935,8 +2934,6 @@ MC.canvas.event.drawConnection = {
 	{
 		if (event.which === 1)
 		{
-			//event.preventDefault();
-
 			var svg_canvas = $('#svg_canvas'),
 				canvas_offset = svg_canvas.offset(),
 				target = $(this),
@@ -2984,6 +2981,11 @@ MC.canvas.event.drawConnection = {
 
 			$(document.body).append('<div id="overlayer"></div>');
 
+			svg_canvas.append(Canvon.group().attr({
+				'class': 'draw-line-wrap line-' + port_type,
+				'id': 'draw-line-connection'
+			}));
+
 			$(document).on({
 				'mousemove': MC.canvas.event.drawConnection.mousemove,
 				'mouseup': MC.canvas.event.drawConnection.mouseup
@@ -2992,7 +2994,6 @@ MC.canvas.event.drawConnection = {
 				'originalTarget': target.parent(),
 				'originalX': offset.left - canvas_offset.left,
 				'originalY': offset.top - canvas_offset.top,
-				'strokeColor': MC.canvas.LINE_COLOR[ port_type ] || "#000000",
 				'option': connection_option,
 				'port_name': port_name,
 				'canvas_offset': canvas_offset
@@ -3148,33 +3149,22 @@ MC.canvas.event.drawConnection = {
 			arrowAngleA = angle - arrowPI,
 			arrowAngleB = angle + arrowPI;
 
-		if (MC.paper.drewLine)
-		{
-			MC.paper.clear(MC.paper.drewLine);
-		}
+		event.data.draw_line.empty().append(
+			Canvon.line(startX, startY, endX, endY).attr('class', 'draw-line'),
 
-		MC.paper.start({
-			'fill': 'none',
-			'stroke': event.data.strokeColor
-		});
-		MC.paper.line(startX, startY, endX, endY, {
-			'stroke-width': 5
-		});
-		MC.paper.polygon([
-			[endX, endY],
-			[endX - arrow_length * Math.cos(arrowAngleA), endY - arrow_length * Math.sin(arrowAngleA)],
-			[endX - arrow_length * Math.cos(arrowAngleB), endY - arrow_length * Math.sin(arrowAngleB)]
-		], {
-			'stroke-width': 3
-		});
-		MC.paper.drewLine = MC.paper.save();
+			Canvon.polygon([
+				[endX, endY],
+				[endX - arrow_length * Math.cos(arrowAngleA), endY - arrow_length * Math.sin(arrowAngleA)],
+				[endX - arrow_length * Math.cos(arrowAngleB), endY - arrow_length * Math.sin(arrowAngleB)]
+			]).attr('class', 'draw-line-arrow')
+		);
 
 		return false;
 	},
 
 	mouseup: function (event)
 	{
-		MC.paper.clear(MC.paper.drewLine);
+		event.data.draw_line.remove();
 
 		var match_node = MC.canvas.matchPoint(
 				event.pageX - event.data.canvas_offset.left,

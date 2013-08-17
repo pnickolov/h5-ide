@@ -1245,7 +1245,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				MC.canvas.update uid,'eip','eip_status', 'on'
 
 				# Ask the user the add IGW
-				this.askToAddIGW 'EIP'
+				this.askToAddIGW 'Elastic IP'
 
 			else
 				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
@@ -1267,6 +1267,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				res = "internet-facing Load Balancer"
 			else if component.type == resource_type.AWS_EC2_EIP
 				res = "Elastic IP"
+			else if _.isString component
+				res = component
 
 			# Confimation
 			self = this

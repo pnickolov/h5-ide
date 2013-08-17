@@ -32,8 +32,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 if !result.is_error
 
-                    region  = param[3]
-                    data    = param[4]
+                    region  = result.param[3]
+                    data    = result.param[4]
                     id      = data.id
 
                     console.log 'save stack successfully'
@@ -71,8 +71,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if !result.is_error
                     console.log 'create stack successfully'
 
-                    region  = param[3]
-                    data    = param[4]
+                    region  = result.param[3]
+                    data    = result.param[4]
                     id      = data.id
 
                     # track
@@ -119,8 +119,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if !result.is_error
                     console.log 'save as stack successfully'
 
-                    region  = param[3]
-                    data    = param[4]
+                    region  = result.param[3]
+                    data    = result.param[4]
 
                     #update stack name list
                     if new_name not in MC.data.stack_list[region]
@@ -139,9 +139,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if !result.is_error
                     console.log 'send delete stack successful message'
 
-                    region  = param[3]
-                    id      = param[4]
-                    name    = param[5]
+                    region  = result.param[3]
+                    id      = result.param[4]
+                    name    = result.param[5]
 
                     #update stack name list
                     if name in MC.data.stack_list[region]
@@ -162,9 +162,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             me.on 'STACK_RUN_RETURN', (result) ->
                 console.log 'STACK_RUN_RETURN'
 
-                region      = param[3]
-                id          = param[4]
-                app_name    = param[5]
+                region      = result.param[3]
+                id          = result.param[4]
+                app_name    = result.param[5]
 
                 #add new-app status
                 #me.handleRequest result, 'RUN_STACK', region, id, app_name

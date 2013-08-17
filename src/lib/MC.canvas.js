@@ -3523,7 +3523,9 @@ MC.canvas.event.siderbarDrag = {
 					if (MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]) && areaChild.length === 0)
 					{
 						node_option.groupUId = match_place.target;
-						MC.canvas.add(node_type, node_option, coordinate);
+						new_node = MC.canvas.add(node_type, node_option, coordinate);
+
+						MC.canvas.select(new_node.id);
 					}
 					else
 					{

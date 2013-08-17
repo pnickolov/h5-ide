@@ -210,7 +210,6 @@ define [ 'event',
             name = target.val()
 
             id = @model.get( 'component' ).uid
-            debug id
 
             MC.validate.preventDupname target, id, name, 'ACL'
 

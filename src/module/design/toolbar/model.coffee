@@ -61,7 +61,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                     null
 
-
             #####listen STACK_CREATE_RETURN
             me.on 'STACK_CREATE_RETURN', (result) ->
                 console.log 'STACK_CREATE_RETURN'
@@ -155,14 +154,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 else
                     me.trigger 'TOOLBAR_STACK_DELETE_FAILED', name
 
-
             #####listen STACK_RUN_RETURN
             me.on 'STACK_RUN_RETURN', (result) ->
                 console.log 'STACK_RUN_RETURN'
 
-                region      = param[3]
-                id          = param[4]
-                app_name    = param[5]
+                region      = result.param[3]
+                id          = result.param[4]
+                app_name    = result.param[5]
 
                 #add new-app status
                 #me.handleRequest result, 'RUN_STACK', region, id, app_name
@@ -234,8 +232,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     data.key = result.resolved_data
 
                     me.savePNG true, data
-
-
 
 
         setFlag : (id, flag, value) ->
@@ -348,7 +344,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             else    #new
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
-
 
         #duplicate
         duplicateStack : (new_name, data) ->

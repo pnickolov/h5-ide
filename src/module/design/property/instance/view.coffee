@@ -53,7 +53,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             name = target.val()
             id = @model.get 'get_uid'
 
-            debug @model.attributes
 
             MC.validate.preventDupname target, id, name, 'Instance'
 

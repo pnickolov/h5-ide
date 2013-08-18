@@ -4,7 +4,7 @@
 
 define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event' ], (Backbone, $, _, session_model, constant, ide_event) ->
 
-    ws = MC.data.websocket
+    #ws = MC.data.websocket
 
     HeaderModel = Backbone.Model.extend {
 
@@ -62,9 +62,39 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             me.set 'unread_num', unread_num
 
             # listen
-            me.updateRequest()
+            #me.updateRequest()
 
             null
+
+        updateHeader : (req) ->
+            me = this
+
+            item = me.parseInfo req
+
+            if item
+                info_list = me.get 'info_list'
+                unread_num = me.get 'unread_num'
+                in_dashboard = me.get 'in_dashboard'
+
+                # check whether same operation
+                the_req = []
+                the_req.push i for i in info_list when i.id == item.id
+
+                if in_dashboard or item.rid != MC.canvas_data.id
+                    if the_req.length>0 and the_req[0].id != item.id
+                        item.is_readed = false
+
+                        unread_num += 1
+                        me.set 'unread_num', unread_num
+                        me.set 'is_unread', true
+
+                # remove the old request and new to the header
+                info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
+
+                info_list.splice 0, 0, item
+
+                me.set 'info_list', info_list
+
 
         parseInfo : (req) ->
             me = this
@@ -88,6 +118,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 item.operation = lst[0].toLowerCase()
                 item.name = lst[lst.length-1]
 
+                item.state = req.state
                 if req.state is constant.OPS_STATE.OPS_STATE_FAILED
                     item.is_error = true
                     item.error = req.data
@@ -138,53 +169,53 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
             info_list
 
-        updateRequest : () ->
-            me = this
+        # updateRequest : () ->
+        #     me = this
 
-            if ws
-                query = ws.collection.request.find()
-                handle = query.observeChanges {
-                    changed : (id, dag) ->
+        #     if ws
+        #         query = ws.collection.request.find()
+        #         handle = query.observeChanges {
+        #             changed : (id, dag) ->
 
-                        req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
+        #                 req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
 
-                        if req_list
+        #                 if req_list
 
-                            req = req_list[0]
+        #                     req = req_list[0]
 
-                            console.log 'request ' + req.data + "," + req.state
+        #                     console.log 'request ' + req.data + "," + req.state
 
-                            item = me.parseInfo req
+        #                     item = me.parseInfo req
 
-                            if item
-                                info_list = me.get 'info_list'
-                                unread_num = me.get 'unread_num'
-                                in_dashboard = me.get 'in_dashboard'
+        #                     if item
+        #                         info_list = me.get 'info_list'
+        #                         unread_num = me.get 'unread_num'
+        #                         in_dashboard = me.get 'in_dashboard'
 
-                                # check whether same operation
-                                the_req = []
-                                the_req.push i for i in info_list when i.id == item.id and i.operation == item.operation
-                                if the_req.length <= 0
-                                    if in_dashboard or item.rid != MC.canvas_data.id
-                                        item.is_readed = false
+        #                         # check whether same operation
+        #                         the_req = []
+        #                         the_req.push i for i in info_list when i.id == item.id and i.operation == item.operation
+        #                         if the_req.length <= 0
+        #                             if in_dashboard or item.rid != MC.canvas_data.id
+        #                                 item.is_readed = false
 
-                                        unread_num += 1
-                                        me.set 'unread_num', unread_num
-                                        me.set 'is_unread', true
+        #                                 unread_num += 1
+        #                                 me.set 'unread_num', unread_num
+        #                                 me.set 'is_unread', true
 
-                                    # remove the old request and new to the header
-                                    info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
+        #                             # remove the old request and new to the header
+        #                             info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
 
-                                    info_list.splice 0, 0, item
+        #                             info_list.splice 0, 0, item
 
-                                    me.set 'info_list', info_list
+        #                             me.set 'info_list', info_list
 
-                                    me.trigger 'HEADER_UPDATE'
+        #                             me.trigger 'HEADER_UPDATE'
 
-                                null
-                }
+        #                         null
+        #         }
 
-                null
+        #         null
 
         setFlag : (flag) ->
             me = this
@@ -208,7 +239,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
                         me.set 'info_list', info_list
 
-                        me.trigger 'HEADER_UPDATE'
+                        #me.trigger 'HEADER_UPDATE'
 
                         break
             null
@@ -228,7 +259,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             me.set 'unread_num', 0
             me.set 'is_unread', false
 
-            me.trigger 'HEADER_UPDATE'
+            #me.trigger 'HEADER_UPDATE'
 
             null
 

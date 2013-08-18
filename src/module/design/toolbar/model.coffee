@@ -518,81 +518,24 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     console.log 'request id:' + req_id
                     query = ws.collection.request.find({id:req_id})
                     handle = query.observeChanges {
+                        added   : (idx, dag) ->
+                            req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
+                            req = req_list[0]
+
+                            console.log 'added request ' + req.data + "," + req.state
+
+                            me.reqHanle flag, id, name, req, dag
+
                         changed : (idx, dag) ->
                             req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
                             req = req_list[0]
 
-                            console.log 'request ' + req.data + "," + req.state
+                            console.log 'changed request ' + req.data + "," + req.state
 
-                            flag_list = {}
+                            me.reqHanle flag, id, name, req, dag
 
-                            switch req.state
-                                when constant.OPS_STATE.OPS_STATE_INPROCESS
-                                    if flag is 'RUN_STACK'
-
-                                        flag_list.is_inprocess = true
-
-                                        flag_list.steps = dag.dag.step.length
-
-                                        # check rollback
-                                        dones = 0
-                                        dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
-                                        console.log 'done steps:' + dones
-                                        if dag.dag.state isnt 'Rollback'
-                                            flag_list.dones = dones
-                                            flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
-
-                                when constant.OPS_STATE.OPS_STATE_FAILED
-                                    handle.stop()
-
-                                    me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
-
-                                    if flag is 'RUN_STACK'
-                                        flag_list.is_failed = true
-                                        flag_list.err_detail = req.data
-                                    else
-                                        me.setFlag id, 'STOPPED_APP'
-
-                                when constant.OPS_STATE.OPS_STATE_DONE
-                                    handle.stop()
-
-                                    me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
-
-                                    lst = req.data.split(' ')
-                                    app_id = lst[lst.length-1]
-
-                                    switch flag
-                                        when 'RUN_STACK'
-                                            flag_list.app_id = app_id
-                                            flag_list.is_done = true
-
-                                        when 'START_APP'
-                                            me.setFlag id, 'RUNNING_APP'
-                                            ide_event.trigger ide_event.STARTED_APP, name, id
-
-                                        when 'STOP_APP'
-                                            me.setFlag id, 'STOPPED_APP'
-                                            ide_event.trigger ide_event.STOPPED_APP, name, id
-                                        
-                                        when 'TERMINATE_APP'
-                                            me.setFlag id, 'TERMINATED_APP'
-                                            ide_event.trigger ide_event.TERMINATED_APP, name, id
-
-                                            # remove the app name from app_list
-                                            if name in MC.data.app_list[region]
-                                                MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
-                                       
-                                        else
-                                            console.log 'not support toolbar operation:' + flag
-
-                                else
-                                    console.log 'not support request state:' + req.state
-
-                            # send process data
-                            if flag_list and flag is 'RUN_STACK'
-                                MC.process['process-' + name].flag_list = flag_list
-                                #ide_event.trigger ide_event.UPDATE_PROCESS, req.region, name
-                                ide_event.trigger ide_event.UPDATE_PROCESS, name
+                            if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
+                                handle.stop()
 
                     }
 
@@ -617,6 +560,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
         reqHanle : (flag, id, name, req, dag) ->
             me = this
 
+            # update header
+            ide_event.trigger ide_event.UPDATE_HEADER, req
+
             flag_list = {}
 
             switch req.state
@@ -636,7 +582,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                             flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
 
                 when constant.OPS_STATE.OPS_STATE_FAILED
-                    handle.stop()
+                    #handle.stop()
 
                     me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
 
@@ -647,15 +593,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         me.setFlag id, 'STOPPED_APP'
 
                 when constant.OPS_STATE.OPS_STATE_DONE
-                    handle.stop()
+                    #handle.stop()
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
 
                     lst = req.data.split(' ')
                     app_id = lst[lst.length-1]
-
-                    flag_list.app_id = app_id
-                    flag_list.is_done = true
 
                     switch flag
                         when 'RUN_STACK'
@@ -685,56 +628,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                     console.log 'not support request state:' + req.state
 
             # send process data
-            if flag_list
+            if flag_list and flag is 'RUN_STACK'
                 MC.process['process-' + name].flag_list = flag_list
                 #ide_event.trigger ide_event.UPDATE_PROCESS, req.region, name
                 ide_event.trigger ide_event.UPDATE_PROCESS, name
-
-        parseRequest : (req) ->
-            me = this
-
-            item = {}
-            item.id = req.id
-            item.rid = req.rid
-            item.time = req.time_end
-            item.time_str = MC.dateFormat(new Date(item.time * 1000), "hh:mm yyyy-MM-dd")
-            item.region = req.region
-            item.region_label = constant.REGION_LABEL[req.region]
-            item.is_readed = true
-            item.is_error = false
-            item.is_request = false
-            item.is_process = false
-            item.is_complete = false
-            item.is_terminated = false
-
-            if req.brief
-                lst = req.brief.split ' '
-                item.operation = lst[0].toLowerCase()
-                item.name = lst[lst.length-1]
-
-                if req.state is constant.OPS_STATE.OPS_STATE_FAILED
-                    item.is_error = true
-                    item.error = req.data
-                else if req.state is constant.OPS_STATE.OPS_STATE_PENDING
-                    item.is_request = true
-                else if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
-                    item.is_process = true
-                else if req.state is constant.OPS_STATE.OPS_STATE_DONE
-                    item.is_complete = true
-                else
-                    return
-
-                if item.rid.search('stack') == 0    # run stack
-                    item.name = lst[2]
-
-                    if item.is_complete     # run stack success
-                        lst = req.data.split(' ')
-                        item.rid = lst[lst.length-1]
-
-            else
-                return
-
-            item
 
         isInstanceStore : () ->
 

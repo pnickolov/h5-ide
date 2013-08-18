@@ -5,7 +5,7 @@
 define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event, Backbone, $, _, constant ) ->
 
     #websocket
-    ws = MC.data.websocket
+    #ws = MC.data.websocket
 
     ProcessModel = Backbone.Model.extend {
 

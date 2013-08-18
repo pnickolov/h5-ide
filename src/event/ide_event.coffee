@@ -116,6 +116,9 @@ define [ 'underscore', 'backbone' ], () ->
         #update process
         UPDATE_PROCESS      :   'UPDATE_PROCESS'
 
+        #update header
+        UPDATE_HEADER       :   'UPDATE_HEADER'
+
 
         constructor : ->
             _.extend this, Backbone.Events

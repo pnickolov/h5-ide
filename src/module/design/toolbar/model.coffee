@@ -10,6 +10,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
     item_state_map = {}
     is_tab = true
 
+    run_stack_map = {}  # {<region>:{<app_name>:{<data>}}}
+
     #websocket
     ws = MC.data.websocket
 
@@ -170,8 +172,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 #     stack_id: id,
                 #     stack_region: region,
                 #     stack_app_name: app_name
-                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, data, result
+                data = run_stack_map[region][app_name]
+                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
 
+                # handle request
+                me.handleRequest result, 'RUN_STACK', region, id, app_name
 
             #####listen APP_START_RETURN
             me.on 'APP_START_RETURN', (result) ->
@@ -341,7 +346,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
             if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
-
             else    #new
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
@@ -381,6 +385,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
             stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
+
+            # save stack data
+            if not (region of run_stack_map) then run_stack_map[region] = {}
+
+            run_stack_map[region][app_name] = data
+
+            null
+
 
         savePNG : ( is_thumbnail, data ) ->
             console.log 'savePNG'
@@ -479,18 +491,27 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
         handleRequest : (result, flag, region, id, name) ->
             me = this
 
-            me.setFlag id, 'PENDING_APP'
+            if flag isnt 'RUN_STACK'
+                me.setFlag id, 'PENDING_APP'
 
             if !result.is_error
-                if flag == 'START_APP'
-                    console.log 'start app request successfully'
-                    me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS', name
-                else if flag == 'STOP_APP'
-                    console.log 'stop app request successfully'
-                    me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS', name
-                else if flag == 'TERMINATE_APP'
-                    console.log 'terminate app request successfully'
-                    me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS', name
+                # if flag is 'RUN_STACK'
+                #     console.log 'run stack request successfully'
+                #     me.trigger 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', name
+
+                # else if flag is 'START_APP'
+                #     console.log 'start app request successfully'
+                #     me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS', name
+
+                # else if flag is 'STOP_APP'
+                #     console.log 'stop app request successfully'
+                #     me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS', name
+
+                # else if flag is 'TERMINATE_APP'
+                #     console.log 'terminate app request successfully'
+                #     me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS', name
+
+                me.trigger 'TOOLBAR_REQUEST_SUCCESS', flag, name
 
                 if ws
                     req_id = result.resolved_data.id
@@ -503,63 +524,217 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                             console.log 'request ' + req.data + "," + req.state
 
-                            if req.state == "Done"
-                                handle.stop()
+                            flag_list = {}
 
-                                if flag == 'START_APP'
-                                    me.setFlag id, 'RUNNING_APP'
-                                    me.trigger 'TOOLBAR_APP_START_SUCCESS', name
+                            switch req.state
+                                when constant.OPS_STATE.OPS_STATE_INPROCESS
+                                    if flag is 'RUN_STACK'
 
-                                    ide_event.trigger ide_event.STARTED_APP, name, id
+                                        flag_list.is_inprocess = true
 
-                                else if flag == 'STOP_APP'
-                                    me.setFlag id, 'STOPPED_APP'
-                                    me.trigger 'TOOLBAR_APP_STOP_SUCCESS', name
+                                        flag_list.steps = dag.dag.step.length
 
-                                    ide_event.trigger ide_event.STOPPED_APP, name, id
+                                        # check rollback
+                                        dones = 0
+                                        dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
+                                        console.log 'done steps:' + dones
+                                        if dag.dag.state isnt 'Rollback'
+                                            flag_list.dones = dones
+                                            flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
 
-                                else if flag == 'TERMINATE_APP'
-                                    me.setFlag id, 'TERMINATED_APP'
-                                    me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS', name
+                                when constant.OPS_STATE.OPS_STATE_FAILED
+                                    handle.stop()
 
-                                    # remove the app name from app_list
-                                    if name in MC.data.app_list[region]
-                                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+                                    me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
 
-                                    ide_event.trigger ide_event.TERMINATED_APP, name, id
+                                    if flag is 'RUN_STACK'
+                                        flag_list.is_failed = true
+                                        flag_list.err_detail = req.data
+                                    else
+                                        me.setFlag id, 'STOPPED_APP'
 
-                                #push event
-                                #ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                                when constant.OPS_STATE.OPS_STATE_DONE
+                                    handle.stop()
 
-                            else if req.state == "Failed"
-                                handle.stop()
+                                    me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
 
-                                if flag == 'START_APP'
-                                    me.trigger 'TOOLBAR_APP_START_FAILED', name
-                                else if flag == 'STOP_APP'
-                                    me.trigger 'TOOLBAR_APP_STOP_FAILED', name
-                                else if flag == 'TERMINATE_APP'
-                                    me.trigger 'TOOLBAR_APP_TERMINATE_FAILED', name
+                                    lst = req.data.split(' ')
+                                    app_id = lst[lst.length-1]
 
-                                me.setFlag id, 'STOPPED_APP'
+                                    switch flag
+                                        when 'RUN_STACK'
+                                            flag_list.app_id = app_id
+                                            flag_list.is_done = true
+
+                                        when 'START_APP'
+                                            me.setFlag id, 'RUNNING_APP'
+                                            ide_event.trigger ide_event.STARTED_APP, name, id
+
+                                        when 'STOP_APP'
+                                            me.setFlag id, 'STOPPED_APP'
+                                            ide_event.trigger ide_event.STOPPED_APP, name, id
+                                        
+                                        when 'TERMINATE_APP'
+                                            me.setFlag id, 'TERMINATED_APP'
+                                            ide_event.trigger ide_event.TERMINATED_APP, name, id
+
+                                            # remove the app name from app_list
+                                            if name in MC.data.app_list[region]
+                                                MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+                                       
+                                        else
+                                            console.log 'not support toolbar operation:' + flag
+
+                                else
+                                    console.log 'not support request state:' + req.state
+
+                            # send process data
+                            if flag_list and flag is 'RUN_STACK'
+                                MC.process['process-' + name].flag_list = flag_list
+                                #ide_event.trigger ide_event.UPDATE_PROCESS, req.region, name
+                                ide_event.trigger ide_event.UPDATE_PROCESS, name
 
                     }
 
                     null
 
             else
-                if flag == 'START_APP'
-                    me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED', name
-                    #MC.canvas_data.state = 'Stopped'
-                else if flag == 'STOP_APP'
-                    me.trigger 'TOOLBAR_APP_STOP_REQUEST_FAILED', name
-                    #MC.canvas_data.state = 'Running'
-                else if flag == 'TERMINATE_APP'
-                    me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', name
-                    #MC.canvas_data.state = 'Stopped'
+                # if flag == 'START_APP'
+                #     me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED', name
+                #     #MC.canvas_data.state = 'Stopped'
+                # else if flag == 'STOP_APP'
+                #     me.trigger 'TOOLBAR_APP_STOP_REQUEST_FAILED', name
+                #     #MC.canvas_data.state = 'Running'
+                # else if flag == 'TERMINATE_APP'
+                #     me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', name
+                #     #MC.canvas_data.state = 'Stopped'
 
-                me.setFlag id, 'STOPPED_APP'
+                me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
 
+                if flag isnt 'RUN_STACK'
+                    me.setFlag id, 'STOPPED_APP'
+
+        reqHanle : (flag, id, name, req, dag) ->
+            me = this
+
+            flag_list = {}
+
+            switch req.state
+                when constant.OPS_STATE.OPS_STATE_INPROCESS
+                    if flag is 'RUN_STACK'
+
+                        flag_list.is_inprocess = true
+
+                        flag_list.steps = dag.dag.step.length
+
+                        # check rollback
+                        dones = 0
+                        dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
+                        console.log 'done steps:' + dones
+                        if dag.dag.state isnt 'Rollback'
+                            flag_list.dones = dones
+                            flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
+
+                when constant.OPS_STATE.OPS_STATE_FAILED
+                    handle.stop()
+
+                    me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
+
+                    if flag is 'RUN_STACK'
+                        flag_list.is_failed = true
+                        flag_list.err_detail = req.data
+                    else
+                        me.setFlag id, 'STOPPED_APP'
+
+                when constant.OPS_STATE.OPS_STATE_DONE
+                    handle.stop()
+
+                    me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
+
+                    lst = req.data.split(' ')
+                    app_id = lst[lst.length-1]
+
+                    flag_list.app_id = app_id
+                    flag_list.is_done = true
+
+                    switch flag
+                        when 'RUN_STACK'
+                            flag_list.app_id = app_id
+                            flag_list.is_done = true
+
+                        when 'START_APP'
+                            me.setFlag id, 'RUNNING_APP'
+                            ide_event.trigger ide_event.STARTED_APP, name, id
+
+                        when 'STOP_APP'
+                            me.setFlag id, 'STOPPED_APP'
+                            ide_event.trigger ide_event.STOPPED_APP, name, id
+                        
+                        when 'TERMINATE_APP'
+                            me.setFlag id, 'TERMINATED_APP'
+                            ide_event.trigger ide_event.TERMINATED_APP, name, id
+
+                            # remove the app name from app_list
+                            if name in MC.data.app_list[region]
+                                MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+                       
+                        else
+                            console.log 'not support toolbar operation:' + flag
+
+                else
+                    console.log 'not support request state:' + req.state
+
+            # send process data
+            if flag_list
+                MC.process['process-' + name].flag_list = flag_list
+                #ide_event.trigger ide_event.UPDATE_PROCESS, req.region, name
+                ide_event.trigger ide_event.UPDATE_PROCESS, name
+
+        parseRequest : (req) ->
+            me = this
+
+            item = {}
+            item.id = req.id
+            item.rid = req.rid
+            item.time = req.time_end
+            item.time_str = MC.dateFormat(new Date(item.time * 1000), "hh:mm yyyy-MM-dd")
+            item.region = req.region
+            item.region_label = constant.REGION_LABEL[req.region]
+            item.is_readed = true
+            item.is_error = false
+            item.is_request = false
+            item.is_process = false
+            item.is_complete = false
+            item.is_terminated = false
+
+            if req.brief
+                lst = req.brief.split ' '
+                item.operation = lst[0].toLowerCase()
+                item.name = lst[lst.length-1]
+
+                if req.state is constant.OPS_STATE.OPS_STATE_FAILED
+                    item.is_error = true
+                    item.error = req.data
+                else if req.state is constant.OPS_STATE.OPS_STATE_PENDING
+                    item.is_request = true
+                else if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
+                    item.is_process = true
+                else if req.state is constant.OPS_STATE.OPS_STATE_DONE
+                    item.is_complete = true
+                else
+                    return
+
+                if item.rid.search('stack') == 0    # run stack
+                    item.name = lst[2]
+
+                    if item.is_complete     # run stack success
+                        lst = req.data.split(' ')
+                        item.rid = lst[lst.length-1]
+
+            else
+                return
+
+            item
 
         isInstanceStore : () ->
 
@@ -573,22 +748,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
             is_instance_store
 
-        saveAppThumbnail  :   ( data ) ->
+        saveAppThumbnail  :   ( region, app_name, app_id ) ->
             me = this
 
-            # generate s3 key
-            app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), data.region, data.id
-            app_model.once 'APP_GETKEY_RETURN', (result) ->
-                console.log 'APP_GETKEY_RETURN'
-                console.log result
+            data = run_stack_map[region][app_name]
 
-                if !result.is_error
-                    # trigger toolbar save png event
-                    console.log 'app key:' + result.resolved_data
+            if data
+                # generate s3 key
+                app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
+                app_model.once 'APP_GETKEY_RETURN', (result) ->
+                    console.log 'APP_GETKEY_RETURN'
+                    console.log result
 
-                    data.key = result.resolved_data
+                    if !result.is_error
+                        # trigger toolbar save png event
+                        console.log 'app key:' + result.resolved_data
 
-                    me.savePNG true, data
+                        data.key = result.resolved_data
+
+                        me.savePNG true, data
 
             null
 

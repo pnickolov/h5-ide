@@ -143,7 +143,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
             model.on 'OPEN_PROCESS', ( tab_id ) ->
                 console.log 'OPEN_PROCESS'
                 #push event
-                ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OPEN_PROCESS', tab_id
+                #ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OPEN_PROCESS', tab_id
+                ide_event.trigger ide_event.SWITCH_APP_PROCESS, tab_id
                 #
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', tab_id
 
@@ -163,7 +164,8 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
             model.on 'OLD_PROCESS', ( tab_id ) ->
                 console.log 'OLD_PROCESS'
                 #push event
-                ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OLD_PROCESS', tab_id
+                #ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OLD_PROCESS', tab_id
+                ide_event.trigger ide_event.SWITCH_APP_PROCESS, tab_id
 
             #listen
             model.on 'SAVE_DESIGN_MODULE', ( tab_id ) ->
@@ -266,12 +268,12 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                     if original_tab_id isnt tab_id then ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
 
             #listen
-            ide_event.onLongListen ide_event.OPEN_APP_PROCESS_TAB, ( tab_id, tab_name, data, result ) ->
-                console.log 'OPEN_APP_PROCESS_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name + ', region_name = ' + data.region + ', result = ' + result
+            ide_event.onLongListen ide_event.OPEN_APP_PROCESS_TAB, ( tab_id, tab_name, region, result ) ->
+                console.log 'OPEN_APP_PROCESS_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name + ', region_name = ' + region
                 #set vo
                 #model.set 'app_region_name', region_name
                 #
-                MC.process[ 'process-' + tab_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'data' : data, 'result' : result }
+                MC.process[ 'process-' + tab_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : {'is_pending':true} }
                 #tabbar api
                 Tabbar.add 'process-' + tab_name.toLowerCase(), tab_name + ' - app'
 

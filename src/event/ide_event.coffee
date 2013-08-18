@@ -113,6 +113,9 @@ define [ 'underscore', 'backbone' ], () ->
         #app ready and generate thumbnail
         SAVE_APP_THUMBNAIL  :   'SAVE_APP_THUMBNAIL'
 
+        #update process
+        UPDATE_PROCESS      :   'UPDATE_PROCESS'
+
 
         constructor : ->
             _.extend this, Backbone.Events

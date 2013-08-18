@@ -17,52 +17,65 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
             me.set 'flag_list', {'is_pending':true}
 
-        getProcess  : (type, tab_name) ->
+        getProcess  : (tab_name) ->
             me = this
 
-            console.log 'tab type is:' + type
-
-            if MC.data.current_tab_id.split('-')[0] isnt 'process'
-                return
-
-            console.log 'getProcess tab name:' + tab_name
-
             if MC.process[tab_name]
-                if type is 'OPEN_PROCESS'
-                    #initial the start state
-                    flag_list = {'is_pending':true}
-                    me.set 'flag_list', flag_list
-                    MC.process[tab_name].flag_list = flag_list
+                # get the data
+                flag_list = MC.process[tab_name].flag_list
 
-                    me.trigger 'UPDATE_PROCESS'
+                me.set 'flag_list', flag_list
 
-                    me.handleProcess tab_name
+                # push event when done
+                app_name = MC.process[tab_name].app_name
+                if MC.data.current_tab_id is 'process-' + app_name and 'is_done' of flag_list and flag_list.is_done
+                    app_id = flag_list.app_id
+                    region = MC.process[tab_name].region
 
-                else if type is 'OLD_PROCESS'
-                    if MC.process[tab_name].flag_list   # processing app
-                        me.set 'flag_list', MC.process[tab_name].flag_list
-                        me.trigger 'UPDATE_PROCESS'
+                    # save png
+                    ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, region, app_name, app_id
 
-                        # if ended then push event
-                        app_name = MC.process[tab_name].app_name
-                        app_id = MC.process[tab_name].flag_list.app_id
-                        region = MC.process[tab_name].data.region
-                        #data = MC.process[tab_name].data
-                        if MC.data.current_tab_id is 'process-'+app_name and MC.process[tab_name].flag_list.is_done
-                            #save png
-                            data = $.extend( true, {}, MC.process[tab_name].data )
-                            data.id = app_id
-                            ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, data
+                    # hold on two seconds
+                    setTimeout () ->
+                        ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
+                        ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
+                        ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
+                        ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                    , 2000
 
-                            # hold on 2 seconds
-                            setTimeout () ->
-                                ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
-                                ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
-                                ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
-                                ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                            , 2000
+                # if type is 'OPEN_PROCESS'
+                #     #initial the start state
+                #     flag_list = {'is_pending':true}
+                #     me.set 'flag_list', flag_list
+                #     MC.process[tab_name].flag_list = flag_list
 
+                #     me.trigger 'UPDATE_PROCESS'
 
+                #     me.handleProcess tab_name
+
+                # else if type is 'OLD_PROCESS'
+                #     if MC.process[tab_name].flag_list   # processing app
+                #         me.set 'flag_list', MC.process[tab_name].flag_list
+                #         me.trigger 'UPDATE_PROCESS'
+
+                #         # if ended then push event
+                #         app_name = MC.process[tab_name].app_name
+                #         app_id = MC.process[tab_name].flag_list.app_id
+                #         region = MC.process[tab_name].data.region
+                #         #data = MC.process[tab_name].data
+                #         if MC.data.current_tab_id is 'process-'+app_name and MC.process[tab_name].flag_list.is_done
+                #             #save png
+                #             data = $.extend( true, {}, MC.process[tab_name].data )
+                #             data.id = app_id
+                #             ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, data
+
+                #             # hold on 2 seconds
+                #             setTimeout () ->
+                #                 ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
+                #                 ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
+                #                 ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
+                #                 ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                #             , 2000
 
             null
 

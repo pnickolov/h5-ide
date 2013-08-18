@@ -23,13 +23,22 @@ define [ 'event' ], ( ide_event ) ->
             MC.ide_event = ide_event
 
             #listen
-            ide_event.onLongListen ide_event.SWITCH_APP_PROCESS, ( type, tab_name ) ->
-                console.log 'process:SWITCH_APP_PROCESS, type = ' + type + ', tab_name = ' + tab_name
+            ide_event.onLongListen ide_event.SWITCH_APP_PROCESS, ( tab_name ) ->
+                console.log 'process:SWITCH_APP_PROCESS tab_name = ' + tab_name
 
-                model.getProcess(type, tab_name)
+                if tab_name.indexOf('process-') == 0
+                    model.getProcess(tab_name)
 
-            model.on 'UPDATE_PROCESS', () ->
+                view.render()
+
+            ide_event.onLongListen ide_event.UPDATE_PROCESS, ( app_name ) ->
+            #model.on 'UPDATE_PROCESS', () ->
                 console.log 'UPDATE_PROCESS'
+
+                tab_name = 'process-' + app_name
+                if MC.data.current_tab_id is tab_name
+                    model.getProcess tab_name
+
                 view.render()
 
     unLoadModule = () ->

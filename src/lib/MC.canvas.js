@@ -3438,8 +3438,10 @@ MC.canvas.event.siderbarDrag = {
 					{
 						node_option.groupUId = match_place.target;
 						new_node = MC.canvas.add(node_type, node_option, coordinate);
-
-						MC.canvas.select(new_node.id);
+						if (!(MC.aws.vpc.getVPCUID() && node_type === "AWS.EC2.AvailabilityZone"))
+						{	//has no vpc
+							MC.canvas.select(new_node.id);
+						}
 					}
 					else
 					{

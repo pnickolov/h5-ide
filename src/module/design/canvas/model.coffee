@@ -482,7 +482,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Ask user to confirm delete parent who has children
 			if !force and nodes.length
-				return "Deleting #{component.name} will also remove all resources inside. Do you confirm to delete?"
+				return sprintf lang.ide.CVS_CFM_DEL_GROUP, component.name
 
 
 			# It's time to delete the resource,

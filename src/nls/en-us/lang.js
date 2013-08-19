@@ -26,7 +26,8 @@ define({
 		'CVS_MSG_WARN_NOTMATCH_CGW'             : 'Customer Gateway must be dropped outside VPC.',
 
 		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : 'There is a little overlapping. Make more space and try again.',
-		'CVS_WARN_EXCEED_ENI_LIMIT'            : "[ %s ]'s Instance Type: [ %s ] only support at most [ %s ] Network Interfaces (including the primary).",
+		'CVS_WARN_EXCEED_ENI_LIMIT'             : "[ %s ]'s Instance Type: [ %s ] only support at most [ %s ] Network Interfaces (including the primary).",
+		'CVS_CFM_DEL_GROUP'                     : "Deleting [ %s ] will also remove all resources inside. Do you confirm to delete?",
 
 
 		/******property module******/

@@ -1046,7 +1046,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					defaultACLComp = MC.aws.acl.getDefaultACL()
 					MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
 
-<<<<<<< HEAD
+					# select subnet
+					MC.canvas.select(uid)
+
 				when resource_type.AWS_AutoScaling_Group
 					if MC.canvas_data.layout.component.group[uid].originalId
 						asg_comp = MC.canvas_data.component[MC.canvas_data.layout.component.group[uid].originalId]
@@ -1056,10 +1058,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						 		MC.canvas.connect($("#"+lb_uid), 'elb-sg-out', $("#"+uid), 'launchconfig-sg')
 
 
-=======
-					# select subnet
-					MC.canvas.select(uid)
->>>>>>> origin/develop
 
 			console.log "Morris : #{componentType}"
 

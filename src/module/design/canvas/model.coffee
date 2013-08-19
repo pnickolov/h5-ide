@@ -984,6 +984,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			switch componentType
 
+				when resource_type.AWS_EC2_Instance
+					subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
+					subnetUID = subnetUIDRef.split('.')[0].slice(1)
+					MC.aws.subnet.updateAllENIIPList(subnetUID)
+
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)
 
@@ -1008,6 +1013,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					# Associate to default acl
 					defaultACLComp = MC.aws.acl.getDefaultACL()
 					MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
+
+					# select subnet
+					MC.canvas.select(uid)
 
 			console.log "Morris : #{componentType}"
 

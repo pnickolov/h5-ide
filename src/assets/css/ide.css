@@ -4378,3 +4378,14 @@ a.sidebar-hider {
 	padding-top: 30px;
 	padding-bottom: 1px;
 }
+
+/* added by song */
+
+.disabled-event-layout {
+	position: absolute;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}

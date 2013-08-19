@@ -35,7 +35,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'click #instance-ip-add' : "addIPtoList"
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
-            'blur .input-ip' : 'updateEIPList'
+            'change .input-ip' : 'updateEIPList'
             'click .toggle-eip' : 'addEIP'
 
         render     : ( attributes ) ->

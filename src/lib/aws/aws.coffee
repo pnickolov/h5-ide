@@ -1,4 +1,4 @@
-define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
+define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 	#private
 	getNewName = (compType) ->
@@ -324,9 +324,18 @@ define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 		not _.some stackArray, ( stack ) ->
 			return stack.id isnt stackId and stack.name is newName
 
+	disabledAllOperabilityArea = (enabled) ->
+
+		if enabled
+            $('#resource-panel').append('<div class="disabled-event-layout"></div>')
+            $('#canvas').append('<div class="disabled-event-layout"></div>')
+            $('#tabbar-wrapper').append('<div class="disabled-event-layout"></div>')
+		else
+			$('.disabled-event-layout').remove()
 
 	#public
 	getNewName : getNewName
 	cacheResource : cacheResource
 	checkIsRepeatName : checkIsRepeatName
-	checkStackName: checkStackName
+	checkStackName : checkStackName
+	disabledAllOperabilityArea : disabledAllOperabilityArea

@@ -337,16 +337,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             #             }
             #     null
 
-            #listen APP_INFO_RETURN
-            me.on 'APP_INFO_RETURN', (result) ->
-
-                console.log 'APP_INFO_RETURN'
-
-                #if !result.is_error
-                #    if ws
-
-                null
-
             #listen STACK_SAVE__AS_RETURN
             me.on 'STACK_SAVE__AS_RETURN', (result) ->
                 console.log 'STACK_SAVE__AS_RETURN'
@@ -516,14 +506,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 status = "pending"
                 ispending = true
 
-            is_use_ami = false
+            has_instance_store_ami = false
 
             if flag == 'app'
                 date = new Date()
                 start_time = null
                 stop_time = null
 
-                #is_use_ami = me.isInstanceStore item
+                has_instance_store_ami = if 'has_instance_store_ami' of item and item.has_instance_store_ami then item.has_instance_store_ami else false
 
                 if item.last_start
                     date.setTime(item.last_start*1000)
@@ -532,7 +522,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     date.setTime(item.last_stop*1000)
                     stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
 
-            return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'ispending' : ispending, 'status' : status, 'cost' : "$0/month" }
+            return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'ispending' : ispending, 'status' : status, 'cost' : "$0/month", 'has_instance_store_ami' : has_instance_store_ami }
 
         updateAppList : (flag, app_id) ->
             me = this
@@ -551,18 +541,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                             me.trigger 'UPDATE_REGION_APP_LIST'
 
             null
-
-        isInstanceStore : ( data ) ->
-
-            is_instance_store = false
-
-            if 'component' in data.layout and 'node' in data.layout.component
-                for node in data.layout.component.node
-                    if node.rootDeviceType == 'instance-store'
-                        is_instance_store = true
-                        break
-
-            is_instance_store
 
         runApp : (region, app_id) ->
             me = this

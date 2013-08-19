@@ -286,7 +286,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     is_pending = true
 
                 id = id.resolved_data[0].id
-                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_use_ami':me.isInstanceStore() }
+                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_use_ami':me.isInstanceStore(MC.canvas_data) }
 
                 is_tab = true
 
@@ -352,6 +352,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             id = data.id
             name = data.name
 
+            data.has_instance_store_ami = me.isInstanceStore data
             if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
@@ -680,12 +681,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
-        isInstanceStore : () ->
+        isInstanceStore : ( data ) ->
 
             is_instance_store = false
 
-            if 'component' in MC.canvas_data.layout and 'node' in MC.canvas_data.layout.component
-                for node in MC.canvas_data.layout.component.node
+            if 'component' in data.layout and 'node' in data.layout.component
+                for node in data.layout.component.node
                     if node.rootDeviceType == 'instance-store'
                         is_instance_store = true
                         break

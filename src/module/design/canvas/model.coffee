@@ -845,7 +845,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 				if reach_max
-					return "#{instance_component.name}'s Instance Type: #{instance_component.resource.InstanceType} only support at most #{max_eni_number} Network Interfaces (including the primary)."
+					return sprintf lang.ide.CVS_WARN_EXCEED_ENI_LIMIT, instance_component.name, instance_component.resource.InstanceType, max_eni_number
 
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
 

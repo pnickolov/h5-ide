@@ -3,10 +3,10 @@
 #############################
 
 define [ 'MC', 'event',
-         'zeroclipboard',
+         'zeroclipboard', 'i18n!/nls/lang.js',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification', 'UI.zeroclipboard'
-], ( MC, ide_event, ZeroClipboard ) ->
+], ( MC, ide_event, ZeroClipboard, lang ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -66,10 +66,10 @@ define [ 'MC', 'event',
 
                 #check app name
                 if not app_name
-                    notification 'error', 'No app name.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
                     return
                 if app_name in MC.data.app_list[MC.canvas_data.region]
-                    notification 'error', 'Repeated app name.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                     return
 
                 me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
@@ -85,11 +85,11 @@ define [ 'MC', 'event',
             name = MC.canvas_data.name
 
             if not name
-                notification 'error', 'No stack name.'
+                notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
             else if name.indexOf(' ') >= 0
-                notification 'error', 'stack name contains white space.'
+                notification 'warning', 'stack name contains white space.'
             else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
-                notification 'error', 'Repeated stack name.'
+                notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
             else
                 MC.canvas_data.name = name
                 this.trigger 'TOOLBAR_SAVE_CLICK', MC.canvas_data
@@ -103,10 +103,10 @@ define [ 'MC', 'event',
                 new_name = "#{name}-copy"
                 #check name
                 if not name
-                    notification 'error', 'No stack name.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if not MC.aws.aws.checkStackName null, new_name
                     doDuplicate( new_name )
-                    #notification 'error', 'Repeated stack name.'
+                    #notification 'warning', 'Repeated stack name.'
                 else
                     this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name, MC.canvas_data
 

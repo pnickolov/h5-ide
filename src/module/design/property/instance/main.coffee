@@ -103,7 +103,7 @@ define [ 'jquery',
 
             model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
 
-                notification 'error', 'Instance Type: '+ instance_type + ' only support at most ' + eni_number + ' Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type'
+                notification 'error', lang.ide.PROP_WARN_EXCEED_ENI_LIMIT
 
 
     loadAppModule = ( uid, instance_expended_id, current_main ) ->

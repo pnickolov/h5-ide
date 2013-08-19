@@ -273,9 +273,10 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 #set vo
                 #model.set 'app_region_name', region_name
                 #
-                MC.process[ 'process-' + tab_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : {'is_pending':true} }
+                process_name = 'process-' + region + '-' + tab_name
+                MC.process[ process_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : {'is_pending':true} }
                 #tabbar api
-                Tabbar.add 'process-' + tab_name.toLowerCase(), tab_name + ' - app'
+                Tabbar.add process_name.toLowerCase(), tab_name + ' - app'
 
             #listen
             ide_event.onLongListen ide_event.PROCESS_RUN_SUCCESS, ( tab_id, region_name ) ->

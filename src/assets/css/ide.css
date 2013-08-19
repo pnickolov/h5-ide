@@ -2099,6 +2099,10 @@ a.sidebar-hider {
 	width      : 100%;
 	height     : 100%;
 	background : #5e5e5e;
+	-webkit-transform: translate(0,0);
+	   -moz-transform: translate(0,0);
+	     -o-transform: translate(0,0);
+	        transform: translate(0,0);
 }
 
 .property-panel-wrapper {
@@ -2107,6 +2111,18 @@ a.sidebar-hider {
 	left     : 0;
 	top      : 0;
 	position : absolute;
+}
+
+.property-wrap .scroll-wrap {
+	height      : 100%;
+	padding-top : 45px;
+	margin-top  : -45px;
+	position    : relative;
+	z-index     : 1;
+
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
 .transition .property-panel-wrapper {
@@ -2128,6 +2144,7 @@ a.sidebar-hider {
 }
 
 .show-second-panel #property-first-panel {
+	z-index : 3;
 	left : -30%;
 }
 
@@ -2140,6 +2157,7 @@ a.sidebar-hider {
 }
 
 .show-second-panel #property-second-panel {
+	z-index : 4;
 	left : 0;
 }
 
@@ -2163,16 +2181,22 @@ a.sidebar-hider {
 	color: #ccc;
 }
 
+.property-content .icon-add {
+	font-size : 16px;
+}
+
 .property-sidebar-title {
 	font-size   : 16px;
 	line-height : 43px;
 	text-shadow : none;
 
-	padding : 0 10px;
-	height  : 43px;
-	width   : 260px;
+	padding  : 0 10px;
+	height   : 43px;
+	width    : 260px;
+	position : relative;
+	z-index  : 2;
 
-	cursor        : default;
+	cursor : default;
 }
 
 .property-group-head {
@@ -4389,4 +4413,15 @@ a.sidebar-hider {
 	text-align: center;
 	padding-top: 30px;
 	padding-bottom: 1px;
+}
+
+/* added by song */
+
+.disabled-event-layout {
+	position: absolute;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
 }

@@ -916,7 +916,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                         parse_sub_info = parse_table
 
             if keys_to_parse.btns
-                parse_btns  = me._parseBtnValue keys_to_parse.btns, value_to_parse
+                parse_btns  = MC.aws.vpn.generateDownload keys_to_parse.btns, value_to_parse
                 if parse_btns
                     parse_btns = '"btns":' + parse_btns
                     if parse_sub_info
@@ -1083,81 +1083,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             parse_table_result
 
         _parseEmptyValue : ( val )->
-            result = if val then val else ''
-            result
-
-        _parseBtnValue : ( keyes_set, value_set )->
-            me                  = this
-            parse_btns_result   = ''
-            btn_data            = ''
-
-            _.map keyes_set, ( value ) ->
-                btn_data = ''
-
-                if value.type is "download_configuration"
-                    value_conf = value_set.customerGatewayConfiguration
-
-                    if value_conf
-                        #console.log value_conf
-                        value_conf = $.xml2json($.parseXML value_conf)
-                        #console.log value_conf
-                        value_conf = value_conf.vpn_connection
-                        dc_data =
-                            vpnConnectionId                         : me._parseEmptyValue value_conf['@attributes'].id
-                            vpnGatewayId                            : me._parseEmptyValue value_conf.vpn_gateway_id
-                            customerGatewayId                       : me._parseEmptyValue value_conf.customer_gateway_id
-                            tunnel                                  : []
-                        _.map value_conf.ipsec_tunnel, ( value, key ) ->
-                            cur_array = {}
-                            cur_array.number                                 = key + 1
-                            cur_array.ike_protocol_method                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
-                            cur_array.ike_protocol_method                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
-                            cur_array.ike_pre_shared_key                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.pre_shared_key,
-                            cur_array.ike_authentication_protocol_algorithm  = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
-                            cur_array.ike_encryption_protocol                = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.encryption_protocol
-                            cur_array.ike_lifetime                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.lifetime
-                            cur_array.ike_mode                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.mode
-                            cur_array.ike_perfect_forward_secrecy            = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.perfect_forward_secrecy
-                            cur_array.ipsec_protocol                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.protocol
-                            cur_array.ipsec_authentication_protocol          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.authentication_protocol
-                            cur_array.ipsec_encryption_protocol              = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.encryption_protocol
-                            cur_array.ipsec_lifetime                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.lifetime
-                            cur_array.ipsec_mode                             = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.mode
-                            cur_array.ipsec_perfect_forward_secrecy          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.perfect_forward_secrecy
-                            cur_array.ipsec_interval                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.interval
-                            cur_array.ipsec_retries                          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.retries
-                            cur_array.tcp_mss_adjustment                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.tcp_mss_adjustment
-                            cur_array.clear_df_bit                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.clear_df_bit
-                            cur_array.fragmentation_before_encryption        = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.fragmentation_before_encryption
-                            cur_array.customer_gateway_outside_address        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_outside_address.ip_address
-                            cur_array.vpn_gateway_outside_address            = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_outside_address.ip_address
-                            cur_array.customer_gateway_inside_address        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
-                            cur_array.vpn_gateway_inside_address             = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
-                            cur_array.next_hop                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address
-
-                            dc_data.tunnel.push cur_array
-
-                            null
-
-                        dc_filename = if dc_data.vpnConnectionId then dc_data.vpnConnectionId else 'download_configuration'
-                        dc_data     = MC.template.configurationDownload(dc_data)
-                        dc_parse    = '{"download":true,"filecontent":"'
-                        dc_parse    +=  btoa(dc_data)
-                        dc_parse    += '","filename":"'
-                        dc_parse    += dc_filename
-                        dc_parse    +='","btnname":"'
-                        dc_parse    += value.name
-                        dc_parse    += '"},'
-                        btn_data    += dc_parse
-
-                if btn_data
-                    btn_data            = btn_data.substring 0, btn_data.length - 1
-                    parse_btns_result   += '['
-                    parse_btns_result   += btn_data
-                    parse_btns_result   += ']'
-
-            parse_btns_result
-
+            if val then val else ''
 
         setResource : ( resources, region ) ->
 

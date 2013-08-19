@@ -10,17 +10,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
             sg_detail : null
 
-            sg_group : [
-                    {
-                        name  : "DefaultSG"
-                        rules : [ {
-                            egress     : true
-                            protocol   : "TCP"
-                            connection : "eni"
-                            port       : "1234"
-                        } ]
-                    }
-                ]
+            sg_group : []
 
             preview_rule : null
 

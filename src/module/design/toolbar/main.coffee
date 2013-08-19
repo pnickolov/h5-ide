@@ -51,16 +51,6 @@ define [ 'jquery',
                     model.setTabFlag(true)
                 , 500
 
-            # ide_event.onLongListen ide_event.SWITCH_APP_TAB, () ->
-            #     console.log 'SWITCH_APP_TAB'
-            #     model.setTabFlag(true)
-            #     null
-
-            # ide_event.onLongListen ide_event.SWITCH_STACK_TAB, () ->
-            #     console.log 'SWITCH_STACK_TAB'
-            #     model.setTabFlag(true)
-            #     null
-
             #save
             view.on 'TOOLBAR_SAVE_CLICK', (data) ->
                 console.log 'design_toolbar_click:saveStack'
@@ -115,75 +105,25 @@ define [ 'jquery',
                 model.saveStack()
 
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
-                info = flag.replace /_./g, ' '
-                if info
-                    view.notify 'info', info.toLowerCase() + ' ' + name + ' request successfully.'
+                    info = flag.replace /_/g, ' '
+                    if info
+                        view.notify 'info', 'Start to ' + info.toLowerCase() + ' ' + name + ' successfully.'
 
             model.on 'TOOLBAR_REQUEST_FAILED', (flag, name) ->
-                info = flag.replace /_./g, ' '
+                info = flag.replace /_/g, ' '
                 if info
-                    view.notify 'error', info.toLowerCase() + ' ' + name + ' request failed.'
+                    view.notify 'error', 'Start to ' + info.toLowerCase() + ' ' + name + ' failed.'
 
             model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, name) ->
-                info = flag.replace /_./g, ' '
+                info = flag.replace /_/g, ' '
                 if info
                     view.notify 'info', info.toLowerCase() + ' ' + name + ' successfully.'
 
             model.on 'TOOLBAR_HANDLE_FAILED', (flag, name) ->
-                info = flag.replace /_./g, ' '
+                info = flag.replace /_/g, ' '
                 if info
                     view.notify 'error', info.toLowerCase() + ' ' + name + ' failed.'
 
-            # model.on 'TOOLBAR_STACK_RUN_SUCCESS', (name) ->
-            #     view.notify 'info', 'Run stack ' + name + ' successfully.'
-            # model.on 'TOOLBAR_STACK_RUN_FAILED', (name) ->
-            #     view.notify 'error', 'Run stack ' + name + ' failed.'
-            # model.on 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', (name) ->
-            #     view.notify 'info', 'Run stack ' + name + ' request successfully.'
-            # model.on 'TOOLBAR_STACK_RUN_REQUEST_FAILED', (name) ->
-            #     view.notify 'error', 'Run stack ' + name + ' request failed.'
-
-            # model.on 'TOOLBAR_STACK_SAVE_SUCCESS', (name) ->
-            #     view.notify 'info', 'Save stack ' + name + ' successfully.'
-            # model.on 'TOOLBAR_STACK_SAVE_FAILED', (name) ->
-            #     view.notify 'error', 'Save stack ' + name + ' failed.'
-
-            # model.on 'TOOLBAR_STACK_DUPLICATE_SUCCESS', (name) ->
-            #     view.notify 'info', 'Duplicate stack ' + name + ' successfully.'
-            # model.on 'TOOLBAR_STACK_DUPLICATE_FAILED', (name) ->
-            #     view.notify 'error', 'Duplicate stack ' + name + ' failed.'
-
-            # model.on 'TOOLBAR_STACK_DELETE_SUCCESS', (name) ->
-            #     view.notify 'info', 'Delete stack ' + name + ' successfully.'
-            # model.on 'TOOLBAR_STACK_DELETE_FAILED', (name) ->
-            #     view.notify 'error', 'Delete stack ' + name + ' failed.'
-
-            # model.on 'TOOLBAR_APP_START_REQUEST_SUCCESS', (name) ->
-            #     view.notify 'info', 'Start app ' + name + ' request successfully.'
-            # model.on 'TOOLBAR_APP_START_REQUEST_FAILED', (name) ->
-            #     view.notify 'error', 'Start app ' +　name + ' request failed.'
-            # model.on 'TOOLBAR_APP_START_SUCCESS', (name) ->
-            #     view.notify 'info', 'Start app ' + name + ' successfully.'
-            # model.on 'TOOLBAR_APP_START_FAILED', (name) ->
-            #     view.notify 'error', 'Start app ' + name + ' failed.'
-
-            # model.on 'TOOLBAR_APP_STOP_REQUEST_SUCCESS', (name) ->
-            #     view.notify 'info', 'Stop app ' + name + ' request successfully.'
-            # model.on 'TOOLBAR_APP_STOP_REQUEST_FAILED', (name) ->
-            #     view.notify 'error', 'Stop app ' + name + ' request failed.'
-            # model.on 'TOOLBAR_APP_STOP_SUCCESS', (name) ->
-            #     view.notify 'info', 'Stop app ' + name + ' successfully.'
-            # model.on 'TOOLBAR_APP_STOP_FAILED', (name) ->
-            #     view.notify 'error', 'Stop app ' + name + ' successfully.'
-
-            # model.on 'TOOLBAR_APP_TERMINATE_REQUEST_SUCCESS', (name) ->
-            #     view.notify 'info', 'Terminate app ' + name + ' request successfully.'
-            # model.on 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', (name) ->
-            #     view.notify 'error', 'Terminate app ' + name + ' request failed.'
-            # model.on 'TOOLBAR_APP_TERMINATE_SUCCESS', (name) ->
-            #     view.notify 'info', 'Terminate app ' + name + ' successfully.'
-            # model.on 'TOOLBAR_APP_TERMINATE_FAILED', (name) ->
-            #     view.notify 'error', 'Terminate app ' + name + ' failed.'
 
     unLoadModule = () ->
         #view.remove()

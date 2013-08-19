@@ -397,35 +397,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
             stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
 
-            # stack_service.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, null, null, null, null, ( result ) ->
-
-            #     if !result.is_error
-            #     #run succeed
-
-            #         console.log 'STACK_RUN_RETURN'
-
-            #         region      = result.param[3]
-            #         id          = result.param[4]
-            #         app_name    = result.param[5]
-
-            #         #add new-app status
-            #         #me.handleRequest result, 'RUN_STACK', region, id, app_name
-            #         # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
-            #         # # track
-            #         # analytics.track "Launched Stack",
-            #         #     stack_id: id,
-            #         #     stack_region: region,
-            #         #     stack_app_name: app_name
-            #         #ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
-
-
-            #     else
-            #     #run failed
-
-            #         console.log 'stack.run failed, error is ' + result.error_message
-
-
-
             # save stack data
             if not (region of run_stack_map) then run_stack_map[region] = {}
 
@@ -475,32 +446,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #
             if is_thumbnail is 'true' then me.trigger 'SAVE_PNG_COMPLETE', null
             null
-            ###
-            me = this
-            $.ajax {
-                url  : MC.SAVEPNG_URL,
-                type : 'post',
-                data : {
-                    'usercode'   : $.cookie( 'usercode'   ),
-                    'session_id' : $.cookie( 'session_id' ),
-                    'thumbnail'  : is_thumbnail,
-                    'json_data'  : MC.canvas.layout.save(),
-                    'stack_id'   : id
-                },
-                success : ( res ) ->
-                    console.log 'phantom callback'
-                    console.log res
-                    console.log res.status
-                    if res.status is 'success'
-                        if res.thumbnail is 'true'
-                            console.log 's3 url = ' + res.result
-                            ide_event.trigger ide_event.UPDATE_STACK_THUMBNAIL
-                        else
-                            me.trigger 'SAVE_PNG_COMPLETE', res.result
-                    else
-                        #
-            }
-            ###
 
         isChanged : (data) ->
             #check if there are changes
@@ -534,22 +479,19 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             if flag isnt 'RUN_STACK'
                 me.setFlag id, 'PENDING_APP'
 
+            # pending req
+            if result.resolved_data
+                res = result.resolved_data
+
+                brief = flag.replace(/_/g, ' ').toLowerCase() + name
+                if flag is 'RUN_STACK'
+                    brief = 'Launch app ' + name + ' from stack ' + res.rid
+               
+                pending_req = { 'id' : res.id, 'rid' : res.rid, 'time_end' : res.time_submit, 'region' : region, 'state' : constant.OPS_STATE.OPS_STATE_PENDING, 'brief' : brief }
+
+                ide_event.trigger ide_event.UPDATE_HEADER, pending_req
+
             if !result.is_error
-                # if flag is 'RUN_STACK'
-                #     console.log 'run stack request successfully'
-                #     me.trigger 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', name
-
-                # else if flag is 'START_APP'
-                #     console.log 'start app request successfully'
-                #     me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS', name
-
-                # else if flag is 'STOP_APP'
-                #     console.log 'stop app request successfully'
-                #     me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS', name
-
-                # else if flag is 'TERMINATE_APP'
-                #     console.log 'terminate app request successfully'
-                #     me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS', name
 
                 me.trigger 'TOOLBAR_REQUEST_SUCCESS', flag, name
 
@@ -582,15 +524,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     null
 
             else
-                # if flag == 'START_APP'
-                #     me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED', name
-                #     #MC.canvas_data.state = 'Stopped'
-                # else if flag == 'STOP_APP'
-                #     me.trigger 'TOOLBAR_APP_STOP_REQUEST_FAILED', name
-                #     #MC.canvas_data.state = 'Running'
-                # else if flag == 'TERMINATE_APP'
-                #     me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', name
-                #     #MC.canvas_data.state = 'Stopped'
 
                 me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
 

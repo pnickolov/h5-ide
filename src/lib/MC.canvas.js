@@ -776,7 +776,7 @@ MC.canvas = {
 		var node = $('#' + node_id),
 			node_connections = MC.canvas.data.get('layout.component.' + node.data('type') + '.' + node_id + '.connection') || {},
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
-			line_layer = document.getElementById('line_layer'),
+			//line_layer = document.getElementById('line_layer'),
 			line_target;
 
 		$.each(node_connections, function (index, value)
@@ -975,9 +975,11 @@ MC.canvas = {
 
 	pixelToGrid: function (x, y)
 	{
+		var scale_ratio = MC.canvas_property.SCALE_RATIO;
+
 		return {
-			'x': Math.ceil(x / MC.canvas.GRID_WIDTH),
-			'y': Math.ceil(y / MC.canvas.GRID_HEIGHT)
+			'x': Math.ceil(x * scale_ratio / MC.canvas.GRID_WIDTH),
+			'y': Math.ceil(y * scale_ratio / MC.canvas.GRID_HEIGHT)
 		};
 	},
 
@@ -2385,7 +2387,7 @@ MC.canvas.event.dragable = {
 
 				parentGroup = MC.canvas.parentGroup(
 					target_id,
-					layout_node_data[target_id].type,
+					node_type,
 					coordinate.x,
 					coordinate.y,
 					coordinate.x + component_size[0],
@@ -2409,7 +2411,7 @@ MC.canvas.event.dragable = {
 					)
 				)
 				{
-					MC.canvas.position(target[0], coordinate.x  * scale_ratio, coordinate.y * scale_ratio);
+					MC.canvas.position(target[0], coordinate.x, coordinate.y);
 
 					MC.canvas.reConnect(target_id);
 
@@ -2681,7 +2683,7 @@ MC.canvas.event.dragable = {
 							igw_top = igw_gateway_data.coordinate[1] + group_offsetY;
 
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-							MC.canvas.position(igw_gateway[0],  (group_left - 4) * scale_ratio, igw_top * scale_ratio);
+							MC.canvas.position(igw_gateway[0],  group_left - 4, igw_top);
 
 							MC.canvas.reConnect(igw_gateway_id);
 						}
@@ -2693,7 +2695,7 @@ MC.canvas.event.dragable = {
 							vgw_top = vgw_gateway_data.coordinate[1] + group_offsetY;
 
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-							MC.canvas.position(vgw_gateway[0],  (group_left + group_width - 4) * scale_ratio, vgw_top * scale_ratio);
+							MC.canvas.position(vgw_gateway[0],  group_left + group_width - 4, vgw_top);
 
 							MC.canvas.reConnect(vgw_gateway_id);
 						}
@@ -2786,7 +2788,7 @@ MC.canvas.event.dragable = {
 
 		coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-		MC.canvas.position(target[0], coordinate.x  * scale_ratio, coordinate.y * scale_ratio);
+		MC.canvas.position(target[0], coordinate.x, coordinate.y);
 
 		MC.canvas.reConnect(target_id);
 
@@ -2879,8 +2881,10 @@ MC.canvas.event.drawConnection = {
 				port_type = target.data('type'),
 				port_name = target.data('name'),
 				connection_option = MC.canvas.CONNECTION_OPTION[ node_type ],
+				scale_ratio = MC.canvas_property.SCALE_RATIO,
 				CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
 				offset = {},
+				port_position_offset = 8 / scale_ratio,
 				target_connection_option,
 				target_data,
 				is_connected;
@@ -2890,22 +2894,22 @@ MC.canvas.event.drawConnection = {
 			{
 				case 'left':
 					offset.left = target_offset.left;
-					offset.top  = target_offset.top  + 8;
+					offset.top  = target_offset.top + port_position_offset;
 					break;
 
 				case 'right':
-					offset.left = target_offset.left + 8;
-					offset.top  = target_offset.top + 8;
+					offset.left = target_offset.left + port_position_offset;
+					offset.top  = target_offset.top + port_position_offset;
 					break;
 
 				case 'top':
-					offset.left = target_offset.left + 8;
+					offset.left = target_offset.left + port_position_offset;
 					offset.top  = target_offset.top;
 					break;
 
 				case 'bottom':
-					offset.left = target_offset.left + 8;
-					offset.top  = target_offset.top + 8;
+					offset.left = target_offset.left + port_position_offset;
+					offset.top  = target_offset.top + port_position_offset;
 					break;
 			}
 
@@ -2922,8 +2926,8 @@ MC.canvas.event.drawConnection = {
 			}, {
 				'connect': target.data('connect'),
 				'originalTarget': target.parent(),
-				'originalX': offset.left - canvas_offset.left,
-				'originalY': offset.top - canvas_offset.top,
+				'originalX': (offset.left - canvas_offset.left) * scale_ratio,
+				'originalY': (offset.top - canvas_offset.top) * scale_ratio,
 				'option': connection_option,
 				'draw_line': $('#draw-line-connection'),
 				'port_name': port_name,
@@ -3070,10 +3074,11 @@ MC.canvas.event.drawConnection = {
 	mousemove: function (event)
 	{
 		var canvas_offset = event.data.canvas_offset,
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			startX = event.data.originalX,
 			startY = event.data.originalY,
-			endX = event.pageX - canvas_offset.left,
-			endY = event.pageY - canvas_offset.top,
+			endX = (event.pageX - canvas_offset.left) * scale_ratio,
+			endY = (event.pageY - canvas_offset.top) * scale_ratio,
 			arrow_length = 8,
 			angle = Math.atan2(endY - startY, endX - startX),
 			arrowPI = Math.PI / 6,
@@ -3550,7 +3555,10 @@ MC.canvas.event.groupResize = {
 						Math.ceil((group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH),
 						Math.ceil((group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
 					),
-					'group_port': type === 'AWS.VPC.Subnet' ? [parent.find('.port-subnet-assoc-in').first(), parent.find('.port-subnet-assoc-out').first()] : null
+					'group_port': type === 'AWS.VPC.Subnet' ? [
+						parent.find('.port-subnet-assoc-in').first(),
+						parent.find('.port-subnet-assoc-out').first()
+					] : null
 				});
 		}
 
@@ -3561,11 +3569,12 @@ MC.canvas.event.groupResize = {
 		var direction = event.data.direction,
 			type = event.data.group_type,
 			group_border = event.data.group_border,
-			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10,
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10 * scale_ratio,
 			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
-			max_left = event.data.originalWidth - group_min_padding,
-			top = Math.round((event.pageY - event.data.originalTop) / 10) * 10,
-			max_top = event.data.originalHeight - group_min_padding,
+			max_left = (event.data.originalWidth - group_min_padding) * scale_ratio,
+			top = Math.round((event.pageY - event.data.originalTop) / 10) * 10 * scale_ratio,
+			max_top = (event.data.originalHeight - group_min_padding) * scale_ratio,
 			label_offset = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 			prop;
 
@@ -3575,57 +3584,57 @@ MC.canvas.event.groupResize = {
 				prop = {
 					'y': top > max_top ? max_top : top,
 					'x': left > max_left ? max_left : left,
-					'width': event.data.originalWidth - left,
-					'height': event.data.originalHeight - top
+					'width': event.data.originalWidth * scale_ratio - left,
+					'height': event.data.originalHeight * scale_ratio - top
 				};
 				break;
 
 			case 'topright':
 				prop = {
 					'y': top > max_top ? max_top : top,
-					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
-					'height': event.data.originalHeight - top
+					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10 * scale_ratio,
+					'height': event.data.originalHeight * scale_ratio - top
 				};
 				break;
 
 			case 'bottomleft':
 				prop = {
 					'x': left > max_left ? max_left : left,
-					'width': event.data.originalWidth - left,
-					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
+					'width': event.data.originalWidth * scale_ratio - left,
+					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10 * scale_ratio
 				};
 				break;
 
 			case 'bottomright':
 				prop = {
-					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10,
-					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
+					'width': Math.round((event.data.originalWidth * scale_ratio + event.pageX - event.data.originalX) / 10) * 10 * scale_ratio,
+					'height': Math.round((event.data.originalHeight * scale_ratio + event.pageY - event.data.originalY) / 10) * 10 * scale_ratio
 				};
 				break;
 
 			case 'top':
 				prop = {
 					'y': top > max_top ? max_top : top,
-					'height': event.data.originalHeight - top
+					'height': event.data.originalHeight * scale_ratio - top
 				};
 				break;
 
 			case 'right':
 				prop = {
-					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10
+					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10 * scale_ratio
 				};
 				break;
 
 			case 'bottom':
 				prop = {
-					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10
+					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10 * scale_ratio
 				};
 				break;
 
 			case 'left':
 				prop = {
 					'x': left > max_left ? max_left : left,
-					'width': event.data.originalWidth - left
+					'width': event.data.originalWidth * scale_ratio - left
 				};
 				break;
 		}
@@ -3662,13 +3671,14 @@ MC.canvas.event.groupResize = {
 			direction = event.data.direction,
 			parent_offset = parent[0].getBoundingClientRect(),
 			canvas_offset = event.data.canvas_offset,
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			offsetX = target.attr('x') * 1,
 			offsetY = target.attr('y') * 1,
 			group_id = parent.attr('id'),
 			group_width = Math.ceil(target.attr('width') / 10),
 			group_height = Math.ceil(target.attr('height') / 10),
-			group_left = Math.ceil((parent_offset.left - canvas_offset.left + offsetX) / 10),
-			group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10),
+			group_left = Math.ceil((parent_offset.left - canvas_offset.left + offsetX) / 10) * scale_ratio,
+			group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10) * scale_ratio,
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
 			node_minX = [],
@@ -3677,7 +3687,6 @@ MC.canvas.event.groupResize = {
 			node_maxY = [],
 			component_size = MC.canvas.COMPONENT_SIZE,
 			group_padding = MC.canvas.GROUP_PADDING,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			parentGroup = event.data.parentGroup,
 			label_coordinate = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 			layout_connection_data,
@@ -3706,7 +3715,7 @@ MC.canvas.event.groupResize = {
 		if (offsetX < 0)
 		{
 			//when resize by left,topleft, bottomleft
-			group_left = Math.ceil((parent_offset.left - canvas_offset.left) / 10);
+			group_left = Math.ceil((parent_offset.left - canvas_offset.left) / 10) * scale_ratio;
 		}
 
 		// adjust group_top
@@ -3714,11 +3723,11 @@ MC.canvas.event.groupResize = {
 		{
 			if (offsetY < 0)
 			{
-				group_top = Math.ceil((parent_offset.top - canvas_offset.top) / 10);
+				group_top = Math.ceil((parent_offset.top - canvas_offset.top) / 10) * scale_ratio;
 			}
 			else if (offsetY > 0)
 			{
-				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10);
+				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10) * scale_ratio;
 			}
 		}
 
@@ -3918,7 +3927,7 @@ MC.canvas.event.groupResize = {
 					}
 
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					MC.canvas.position(igw_gateway[0],  (group_left - 4) * scale_ratio, igw_top * scale_ratio);
+					MC.canvas.position(igw_gateway[0],  group_left - 4, igw_top);
 
 					MC.canvas.reConnect(igw_gateway_id);
 				}
@@ -3940,11 +3949,7 @@ MC.canvas.event.groupResize = {
 					}
 
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					MC.canvas.position(
-						vgw_gateway[0],
-						(group_left + group_width - 4) * scale_ratio,
-						vgw_top * scale_ratio
-					);
+					MC.canvas.position(vgw_gateway[0], group_left + group_width - 4, vgw_top);
 
 					MC.canvas.reConnect(vgw_gateway_id);
 				}

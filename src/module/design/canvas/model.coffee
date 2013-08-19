@@ -560,6 +560,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 					continue
 
+				if not value.resource.AssociationSet.length
+					continue
+
 				if "" + value.resource.AssociationSet[0].Main is 'true'
 					continue
 
@@ -977,6 +980,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					if value.type isnt resource_type.AWS_VPC_RouteTable
 						continue
 
+					if not value.resource.AssociationSet.length
+						continue
+
 					if "" + value.resource.AssociationSet[0].Main is 'true'
 						return key
 			null
@@ -988,6 +994,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			componentType = if componentType then componentType.type else resource_type.AWS_EC2_AvailabilityZone
 
 			switch componentType
+
+				when resource_type.AWS_EC2_Instance
+					subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
+					subnetUID = subnetUIDRef.split('.')[0].slice(1)
+					MC.aws.subnet.updateAllENIIPList(subnetUID)
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)
@@ -1010,6 +1021,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					# Associate to default acl
 					defaultACLComp = MC.aws.acl.getDefaultACL()
 					MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
+
+					# select subnet
+					MC.canvas.select(uid)
 
 			console.log "Morris : #{componentType}"
 

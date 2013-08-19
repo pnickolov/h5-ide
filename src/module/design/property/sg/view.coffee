@@ -105,8 +105,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			$("#protocol-icmp-main-select").data('protocal-sub', id)
 
 		setSGName : ( event ) ->
-			# sg_uid = $("#sg-secondary-panel").attr "uid"
-			this.trigger 'SET_SG_NAME', event.target.value
+			id = @model.get( 'sg_detail' ).component.uid
+			target = $ event.currentTarget
+			name = target.val()
+
+			MC.validate.preventDupname target, id, name, 'SG'
+
+			if target.parsley 'validate'
+				this.trigger 'SET_SG_NAME', name
 
 		setSGDescription : ( event ) ->
 			# sg_uid = $("#sg-secondary-panel").attr "uid"

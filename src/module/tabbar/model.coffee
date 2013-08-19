@@ -13,6 +13,23 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             current_platform  : null
             tab_name          : null
 
+
+        initialize : ->
+
+            me = this
+
+            #####listen STACK_INFO_RETURN
+            me.on 'STACK_INFO_RETURN', ( result ) ->
+                console.log 'STACK_INFO_RETURN'
+                me.trigger 'GET_STACK_COMPLETE', result
+
+            #####listen APP_INFO_RETURN
+            me.on 'APP_INFO_RETURN', ( result ) ->
+                console.log 'APP_INFO_RETURN'
+                me.trigger 'GET_APP_COMPLETE', result
+
+
+
         refresh      : ( older, newer, type ) ->
             console.log 'refresh, older = ' + older + ', newer = ' + newer + ', type = ' + type
             #save
@@ -87,21 +104,13 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             console.log 'getStackInfo'
             #get this
             me = this
-            stack_model.once 'STACK_INFO_RETURN', ( result ) ->
-                console.log 'STACK_INFO_RETURN'
-                console.log result
-                me.trigger 'GET_STACK_COMPLETE', result
-            stack_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'stack_region_name' ), [ stack_id ]
+            stack_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'stack_region_name' ), [ stack_id ]
 
         getAppInfo : ( app_id ) ->
             console.log 'getAppInfo'
             #get this
             me = this
-            app_model.once 'APP_INFO_RETURN', ( result ) ->
-                console.log 'APP_INFO_RETURN'
-                console.log result
-                me.trigger 'GET_APP_COMPLETE', result
-            app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'app_region_name' ), [ app_id ]
+            app_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'app_region_name' ), [ app_id ]
 
         checkPlatform : ( region_name ) ->
             console.log 'checkPlatform'

@@ -28,7 +28,7 @@
           <div class="selection">{{sg_detail.[1].sg.[0].name}}</div>
           <ul class="dropdown">
             {{#each sg_detail.[1].sg}}
-              <li class="item {{#if @index}}{{else}}selected{{/if}}" data-id="{{uid}}">{{name}}</li>
+              <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
             {{/each}}
           </ul>
         </div>
@@ -68,25 +68,25 @@
         </div>
       </li>
 
-      <li class="clearfix sg-rule-create-out">
+      <li class="clearfix sg-rule-create-in">
         <label class="left sg-rule-direction">Source</label>
-        <div class="selectbox dis-blk mgl80" id="sg-create-dir-out">
+        <div class="selectbox dis-blk mgl80" id="sg-create-dir-in">
           <div class="selection">{{sg_detail.[1].sg.[0].name}}</div>
           <ul class="dropdown">
             {{#each sg_detail.[1].sg}}
-              <li class="item {{#if @index}}{{else}}selected{{/if}}" data-id="{{uid}}">{{name}}</li>
+              <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
             {{/each}}
           </ul>
         </div>
       </li>
 
-      <li class="clearfix sg-rule-create-in">
+      <li class="clearfix sg-rule-create-out">
         <label class="left sg-rule-direction">Source</label>
-        <div class="selectbox dis-blk mgl80" id="sg-create-dir-in">
+        <div class="selectbox dis-blk mgl80" id="sg-create-dir-out">
           <div class="selection">{{sg_detail.[0].sg.[0].name}}</div>
           <ul class="dropdown">
             {{#each sg_detail.[0].sg}}
-              <li class="item {{#if @index}}{{else}}selected{{/if}}" data-id="{{uid}}">{{name}}</li>
+              <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
             {{/each}}
           </ul>
         </div>
@@ -203,7 +203,7 @@
             </div>
           </section>
 
-			
+
 		{{#if isnt_classic}}
 
           <section class="sg-proto-input" id="sg-proto-ipt-custom">

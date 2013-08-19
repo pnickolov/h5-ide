@@ -43,7 +43,7 @@ define [ 'backbone', 'instance_service'], ( Backbone, instance_service) ->
                     console.log 'instance.DescribeDBInstances failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_INS_DESC_DB_INSTANCES_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_INS_DESC_DB_INSTANCES_RETURN', aws_result
 
 
 

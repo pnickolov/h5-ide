@@ -43,7 +43,7 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
                     console.log 'cloudwatch.GetMetricStatistics failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'CW__GET_METRIC_STATS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'CW__GET_METRIC_STATS_RETURN', aws_result
 
 
         #ListMetrics api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
                     console.log 'cloudwatch.ListMetrics failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'CW__LST_METRICS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'CW__LST_METRICS_RETURN', aws_result
 
 
         #DescribeAlarmHistory api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
                     console.log 'cloudwatch.DescribeAlarmHistory failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'CW__DESC_ALM_HIST_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'CW__DESC_ALM_HIST_RETURN', aws_result
 
 
         #DescribeAlarms api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
                     console.log 'cloudwatch.DescribeAlarms failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'CW__DESC_ALMS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'CW__DESC_ALMS_RETURN', aws_result
 
 
         #DescribeAlarmsForMetric api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
                     console.log 'cloudwatch.DescribeAlarmsForMetric failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'CW__DESC_ALMS_FOR_METRIC_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'CW__DESC_ALMS_FOR_METRIC_RETURN', aws_result
 
 
 

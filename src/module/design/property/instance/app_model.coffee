@@ -15,6 +15,23 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
 
         ###
 
+        initialize : ->
+
+            me = this
+            me.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
+
+                keypairname = result.param[4]
+
+                if result.is_error
+                    notification 'error', "Cannot download keypair: " + keypairname
+                    data = null
+                else
+
+                    data = result.resolved_data
+                me.trigger "KP_DOWNLOADED", data
+
+                null
+
 
         init : ( instance_id )->
 
@@ -47,6 +64,10 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
             null
 
         getEniData : ( instance_data ) ->
+
+            if  !instance_data.networkInterfaceSet
+                return null
+
             for i in instance_data.networkInterfaceSet.item
                 if i.attachment.deviceIndex == "0"
                     id = i.networkInterfaceId
@@ -84,16 +105,8 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
 
             keypair_model.download {sender:this}, username, session, MC.canvas_data.region, keypairname
 
-            self = this
-            keypair_model.once 'EC2_KPDOWNLOAD_RETURN', ( data )->
-
-                if data.is_error
-                    notification 'error', "Cannot download keypair: " + keypairname
-                    data = null
-                else
-                    data = data.resolved_data
-                self.trigger "KP_DOWNLOADED", data
-
+        getAMI : ( ami_id ) ->
+            MC.data.dict_ami[ami_id]
 
     }
 

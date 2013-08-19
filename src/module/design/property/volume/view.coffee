@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/volume
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     VolumeView = Backbone.View.extend {
 
@@ -63,9 +63,21 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.secondarypanel' ], ( i
                 this.trigger 'IOPS_CHANGED', iops_size
 
         showSnapshotDetail : ( event ) ->
+            console.log 'showSnapshotDetail'
+            ###
             target = $('#snapshot-info-group')
             secondarypanel.open target, MC.template.snapshotSecondaryPanel target.data('secondarypanel-data')
             $(document.body).on 'click', '.back', secondarypanel.close
+            ###
+
+            target = $('#snapshot-info-group')
+            console.log MC.template.snapshotSecondaryPanel target.data( 'secondarypanel-data' )[ 0 ]
+            ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
+                title : $( event.target ).text()
+                dom   : MC.template.snapshotSecondaryPanel target.data( 'secondarypanel-data' )[ 0 ]
+                id    : 'Snapshot'
+            }
+            null
     }
 
     view = new VolumeView()

@@ -103,8 +103,8 @@ define [ 'event',
         regionNameClick      : ( event ) ->
             console.log 'regionNameClick'
             console.log $( event.target ).attr( 'data-region-name' )
-            if $( event.target ).attr( 'data-region-name' ) is undefined then return
-            ide_event.trigger ide_event.NAVIGATION_TO_DASHBOARD_REGION, $( event.target ).attr( 'data-region-name' )
+            data_region_name = if $( event.target ).attr( 'data-region-name' ) is undefined then $( event.currentTarget ).attr( 'data-region-name' ) else $( event.target ).attr( 'data-region-name' )
+            ide_event.trigger ide_event.NAVIGATION_TO_DASHBOARD_REGION, data_region_name
 
         hoverIntent          : ->
             $('.nav-head').hoverIntent {

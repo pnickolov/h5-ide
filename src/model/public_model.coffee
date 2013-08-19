@@ -43,7 +43,7 @@ define [ 'backbone', 'public_service'], ( Backbone, public_service ) ->
                     console.log 'public.get_hostname failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'PUBLIC_GET__HOSTNAME_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'PUBLIC_GET__HOSTNAME_RETURN', forge_result
 
 
         #get_dns_ip api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'public_service'], ( Backbone, public_service ) ->
                     console.log 'public.get_dns_ip failed, error is ' + forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'PUBLIC_GET__DNS__IP_RETURN', forge_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'PUBLIC_GET__DNS__IP_RETURN', forge_result
 
 
 

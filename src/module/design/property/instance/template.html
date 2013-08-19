@@ -2,10 +2,10 @@
 
 	<div class="option-group-head expand">Instance Details</div>
 	<div class="option-group">
-		<section class="property-control-group">
+		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-instance-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input class="input instance-name"  type="text" required="required" value="{{ name }}" name="property-instance-name" id="property-instance-name"/>
+			<input class="input instance-name"  type="text" value="{{ name }}" name="property-instance-name" id="property-instance-name" data-ignore="true" data-required-rollback="true"/>
 		</section>
 		<section class="property-control-group">
 			<label>AMI</label>

@@ -1,25 +1,20 @@
 <article>
-	<div class="option-group-head sg-header expand">Security Group Details</div>
+	<div class="option-group-head expand">Security Group Details</div>
 	<div class="option-group">
-		<div class="property-control-group">
+		<div class="property-control-group" data-bind="true">
 			<label class="left" for="securitygroup-name" >Name</label>
 			<span class="required-input right">Required</span>
-			{{#if isDefault}}
-			<input class="input"  type="text" required="required" id="securitygroup-name" disabled name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
-			{{else}}
-			<input class="input"  type="text" required="required" id="securitygroup-name" {{#if is_elb_sg}}disabled="disabled"{{/if}} name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}"/>
-			{{/if}}
+			<input class="input"  type="text" id="securitygroup-name" {{#if isDefault}} disabled {{else}}{{#if is_elb_sg}}disabled{{/if}}{{/if}} name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}" maxlength="255" data-ignore="true" data-required-rollback="true"/>
 		</div>
 		<div class="property-control-group">
 			<label class="left" for="securitygroup-description" >Description</label>
-			<input class="input" type="text" id="securitygroup-description" {{#if is_elb_sg}}disabled="disabled"{{/if}} name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" />
+			<input class="input" type="text" id="securitygroup-description" {{#if is_elb_sg}}disabled="disabled"{{/if}} name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" maxlength="255" />
 		</div>
 	</div>
 
-
-	<div class="option-group-head sg-header">Rule
+	<div class="option-group-head">Rule
 			<span class="property-head-num-wrap">(<span id="rule-count">{{sg_detail.rules}}</span>)</span>
-			<a href="#" class="sg-icon-add tooltip" id="sg-add-rule-icon" data-tooltip="Create rule referencing IP Range"></a>
+			<a href="#" class="icon-add tooltip add-rule" id="sg-add-rule-icon" data-tooltip="Create rule referencing IP Range"></a>
 	</div>
 	<div class="option-group">
 		<div id="sg-rule-empty" class="property-control-group">
@@ -39,16 +34,16 @@
 			</div>
 		</div>
 
-		<ul class="sg-rule-list" id="sg-rule-list">
+		<ul class="sg-rule-list property-list" id="sg-rule-list">
 			{{#each sg_detail.component.resource.IpPermissions}}
 			<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}">
 				<!-- <i class="icon-rule-inbound tooltip" data-tooltip="Inbound"></i> -->
-				<div class="sg-rule-list-row">
+				<div class="rule-list-row">
 					<div class='rule-direction-icon tooltip' data-tooltip="Inbound"></div>
 					<div class='rule-reference'>{{ip_display}}</div>
 					<div class='rule-remove-icon tooltip' data-tooltip="Remove rule"></div>
 				</div>
-				<div class="sg-rule-list-row">
+				<div class="rule-list-row">
 					<div><span class="rule-protocol">{{IpProtocol}}</span></div>
 					<div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
 				</div>
@@ -56,28 +51,28 @@
 			{{/each}}
 			{{#each sg_detail.component.resource.IpPermissionsEgress}}
 			<li data-inbound="false" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}">
-				<div class="sg-rule-list-row">
+				<div class="rule-list-row">
 					<div class='rule-direction-icon tooltip' data-tooltip="Inbound"></div>
-					<div class='rule-reference'>{{ip_display}}</div>
+					<div class='rule-reference tooltip' data-tooltip="Source/Destination">{{ip_display}}</div>
 					<div class='rule-remove-icon tooltip' data-tooltip="Remove rule"></div>
 				</div>
-				<div class="sg-rule-list-row">
-					<div><span class="rule-protocol">{{IpProtocol}}</span></div>
-					<div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
+				<div class="rule-list-row">
+					<div><span class="rule-protocol tooltip" data-tooltip="Protocol">{{IpProtocol}}</span></div>
+					<div class='rule-port tooltip' data-tooltip="Port or Code">{{FromPort}}-{{ToPort}}</div>
 				</div>
 			</li>
 			{{/each}}
 		</ul>
 	</div>
 
-	<div class="option-group-head sg-header">Member<span class="property-head-num-wrap">({{sg_detail.members.length}})</span>	</div>
+	<div class="option-group-head">Member<span class="property-head-num-wrap">({{sg_detail.members.length}})</span>	</div>
 	<div class="option-group">
 		<div id="sg-member-empty" class="property-control-group">
 			<p>Select an instantce/ENI/ELB and edit Security Group section in Property panel to assign member to security group.</p>
 			<img src="" title="screenshot for instruction"/>
 		</div>
 
-		<ul class="sg-member-list">
+		<ul class="sg-member-list property-list">
 			{{#each sg_detail.members}}
 			<li>
 				<div class="sg-member-icon"></div>

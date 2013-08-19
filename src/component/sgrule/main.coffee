@@ -2,58 +2,61 @@
 #  pop-up for component/sgrule module
 ####################################
 
-define [ 'jquery', 'event' ], ( $, ide_event ) ->
+define [ 'event', './view', './model' ], ( ide_event, View, Model ) ->
 
     #private
     loadModule = ( line_id, delete_module ) ->
 
+        view  = new View()
+        model = new Model()
+
+        #view
+        view.model = model
+
+        model.getSgRuleDetail line_id
         #
-        require [ './component/sgrule/view', './component/sgrule/model' ], ( View, Model ) ->
 
-            #
-            view  = new View()
-            model = new Model()
+        view.on 'CLOSE_POPUP', () ->
 
-            #view
-            view.model    = model
+            model.checkRuleExisting()
 
-            model.getSgRuleDetail line_id
-            #
-            view.on 'CLOSE_POPUP', () ->
+            unLoadModule view, model
 
-                model.checkRuleExisting()
+        view.on 'ADD_RULE', ( rule_data ) ->
 
-                unLoadModule view, model
+            model.addSGRule rule_data
 
-            view.on 'ADD_SG_RULE', ( rule_data ) ->
+            ide_event.trigger ide_event.REDRAW_SG_LINE
 
-                model.addSGRule rule_data
+        model.on 'DELETE_LINE', ( line_id ) ->
 
-                ide_event.trigger ide_event.REDRAW_SG_LINE
+            ide_event.trigger ide_event.DELETE_LINE_TO_CANVAS, line_id
 
-            model.on 'DELETE_LINE', ( line_id ) ->
+        view.on 'DELETE_SG_LINE', () ->
 
-                ide_event.trigger ide_event.DELETE_LINE_TO_CANVAS, line_id
+            this.model.deleteSGLine()
 
-            view.on 'DELETE_SG_LINE', () ->
+            ide_event.trigger ide_event.REDRAW_SG_LINE
 
-                this.model.deleteSGLine()
+        view.on 'DELETE_RULE', ( rule_id ) ->
 
-                ide_event.trigger ide_event.REDRAW_SG_LINE
+            this.model.deleteSGRule(rule_id)
 
-            view.on 'DELETE_PREVIEW_RULE', () ->
+            ide_event.trigger ide_event.REDRAW_SG_LINE
 
-                this.model.deletePriviewRule()
 
-                ide_event.trigger ide_event.REDRAW_SG_LINE
-                
+        view.on 'UPDATE_SLIDE_BAR', () ->
 
-            #render
-            if delete_module
-                model.getDeleteSGList()
-                view.renderDeleteModule()
-            else
-                view.render()
+            model.getDispSGList line_id
+
+            view.updateSidebar()
+
+        #render
+        if delete_module
+            model.getDeleteSGList()
+            view.renderDeleteModule()
+        else
+            view.render()
 
     unLoadModule = ( view, model ) ->
         console.log 'sgrule unLoadModule'

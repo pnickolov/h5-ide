@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130809
+#* Date: 20130817
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -200,6 +200,8 @@ var scrollbar = {
 			}
 		}
 
+		scroll_value = Math.round(scroll_value);
+
 		if (scrollbar.isTransform)
 		{
 			scroll_content.css('transform', 'translate3d(' + scroll_value + 'px, ' + (scroll_content[0].realScrollTop ? scroll_content[0].realScrollTop : 0) + 'px, 0)');
@@ -239,6 +241,8 @@ var scrollbar = {
 				scroll_value = -max_scroll;
 			}
 		}
+
+		scroll_value = Math.round(scroll_value);
 
 		if (scrollbar.isTransform)
 		{

@@ -2,7 +2,7 @@
 #  View Mode for dashboard(region)
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_model', 'elb_model', 'dhcp_model', 'vpngateway_model', 'customergateway_model', 'vpc_model', 'autoscaling_model', 'constant' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_model, elb_model, dhcp_model, vpngateway_model, customergateway_model, vpc_model, autoscaling_model, constant) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_model', 'aws_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service', 'vpc_model', 'constant' ], (MC, Backbone, $, _, ide_event, app_model, stack_model, aws_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, vpc_model, constant) ->
 
     current_region  = null
     resource_source = null
@@ -237,6 +237,178 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
         initialize : ->
             me = this
 
+            #listen AWS_RESOURCE_RETURN
+            me.on 'AWS_RESOURCE_RETURN', ( result ) ->
+
+                if !result.is_error
+
+                    console.log 'AWS_RESOURCE_RETURN'
+
+                    region = result.param[3]
+
+                    resource_source = if result.resolved_data[region] then result.resolved_data[region] else null
+
+                    if resource_source
+
+                        me.setResource resource_source, region
+                        me.updateUnmanagedList()
+
+                else
+                    #TO-DO
+
+                null
+
+
+            #listen APP_START_RETURN
+            me.on 'APP_START_RETURN', (result) ->
+
+                console.log 'APP_START_RETURN'
+
+                # update tab icon
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+
+                #parse the result
+                if !result.is_error #request successfuly
+
+                    if ws
+                        req_id = result.resolved_data.id
+                        console.log "request id:" + req_id
+                        query = ws.collection.request.find({id:req_id})
+                        handle = query.observeChanges {
+                            changed : (id, req) ->
+                                if req.state == "Done"
+                                    handle.stop()
+                                    console.log 'stop handle'
+                                    #push event
+                                    ide_event.trigger ide_event.APP_RUN, app_name, app_id
+
+                                    # update icon
+                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', app_id
+                        }
+                    null
+
+            #listen APP_STOP_RETURN
+            me.on 'APP_STOP_RETURN', (result) ->
+
+                console.log 'APP_STOP_RETURN'
+
+                # update tab icon
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+
+                if !result.is_error
+                    if ws
+                        req_id = result.resolved_data.id
+                        console.log "request id:" + req_id
+                        query = ws.collection.request.find({id:req_id})
+                        handle = query.observeChanges {
+                            changed : (id, req) ->
+                                if req.state == "Done"
+                                    handle.stop()
+                                    console.log 'stop handle'
+                                    #push event
+                                    ide_event.trigger ide_event.APP_STOP, app_name, app_id
+
+                                    # update icon
+                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', app_id
+
+                        }
+                    null
+
+            #listen APP_TERMINATE_RETURN
+            me.on 'APP_TERMINATE_RETURN', (result) ->
+
+                console.log 'APP_TERMINATE_RETURN'
+
+                # update tab icon
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+
+                if !result.is_error
+                    if ws
+                        req_id = result.resolved_data.id
+                        console.log "request id:" + req_id
+                        query = ws.collection.request.find({id:req_id})
+                        handle = query.observeChanges {
+                            changed : (id, req) ->
+                                if req.state == "Done"
+                                    handle.stop()
+                                    console.log 'stop handle'
+                                    #push event
+                                    ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
+                        }
+                null
+
+            #listen STACK_SAVE__AS_RETURN
+            me.on 'STACK_SAVE__AS_RETURN', (result) ->
+                console.log 'STACK_SAVE__AS_RETURN'
+
+                if !result.is_error
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+
+                null
+
+            #listen STACK_REMOVE_RETURN
+            me.on 'STACK_REMOVE_RETURN', (result) ->
+                console.log 'STACK_REMOVE_RETURN'
+                console.log result
+
+                if !result.is_error
+                    ide_event.trigger ide_event.STACK_DELETE, stack_name, stack_id
+
+
+            #listen VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN
+            me.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
+
+                console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
+
+                regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item[0].attributeValueSet.item
+
+                if regionAttrSet.length == 2
+                    vpc_attrs_value = { 'classic' : 'Classic', 'vpc' : 'VPC' }
+                else
+                    vpc_attrs_value = { 'vpc' : 'VPC' }
+
+                me.set 'vpc_attrs', vpc_attrs_value
+
+                null
+
+            #listen AWS_STATUS_RETURN
+            me.on 'AWS_STATUS_RETURN', ( result ) ->
+
+                console.log 'AWS_STATUS_RETURN'
+
+                status_list  = { red: 0, yellow: 0, info: 0 }
+                service_list = constant.SERVICE_REGION[ current_region ]
+                result_list  = result.resolved_data.current
+
+                _.map result_list, ( value ) ->
+                    service_set         = value
+                    cur_service         = service_set.service
+                    should_show_service = false
+
+                    _.map service_list, ( value ) ->
+                        if cur_service is value
+                            should_show_service = true
+                        null
+
+                    if should_show_service
+                        switch service_set.status
+                            when '1'
+                                status_list.red += 1
+                                null
+                            when '2'
+                                status_list.yellow += 1
+                                null
+                            when '3'
+                                status_list.info += 1
+                                null
+                            else
+                                null
+
+                me.set 'status_list', status_list
+
+                null
+
+
             null
 
         # reset the empty resultset when enter a second region
@@ -326,82 +498,30 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'status' : status, 'cost' : "$0/month" }
 
+
         runApp : (region, app_id) ->
             me = this
             current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.start { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.once 'APP_START_RETURN', (result) ->
-                console.log 'APP_START_RETURN'
-                console.log result
+            app_model.start { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
 
-                #parse the result
-                if !result.is_error #request successfuly
-
-                    if ws
-                        req_id = result.resolved_data.id
-                        console.log "request id:" + req_id
-                        query = ws.collection.request.find({id:req_id})
-                        handle = query.observeChanges {
-                            changed : (id, req) ->
-                                if req.state == "Done"
-                                    handle.stop()
-                                    console.log 'stop handle'
-                                    #push event
-                                    ide_event.trigger ide_event.APP_RUN, app_name, app_id
-                        }
-                    null
 
         stopApp : (region, app_id) ->
             me = this
             current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.stop { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.once 'APP_STOP_RETURN', (result) ->
-                console.log 'APP_STOP_RETURN'
-                console.log result
+            app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
 
-                if !result.is_error
-                    if ws
-                        req_id = result.resolved_data.id
-                        console.log "request id:" + req_id
-                        query = ws.collection.request.find({id:req_id})
-                        handle = query.observeChanges {
-                            changed : (id, req) ->
-                                if req.state == "Done"
-                                    handle.stop()
-                                    console.log 'stop handle'
-                                    #push event
-                                    ide_event.trigger ide_event.APP_STOP, app_name, app_id
-                        }
-                    null
 
         terminateApp : (region, app_id) ->
             me = this
             current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.terminate { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            app_model.once 'APP_TERMINATE_RETURN', (result) ->
-                console.log 'APP_TERMINATE_RETURN'
-                console.log result
+            app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
 
-                if !result.is_error
-                    if ws
-                        req_id = result.resolved_data.id
-                        console.log "request id:" + req_id
-                        query = ws.collection.request.find({id:req_id})
-                        handle = query.observeChanges {
-                            changed : (id, req) ->
-                                if req.state == "Done"
-                                    handle.stop()
-                                    console.log 'stop handle'
-                                    #push event
-                                    ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
-                        }
-                null
 
         duplicateStack : (region, stack_id, new_name) ->
             console.log 'duplicateStack'
@@ -410,26 +530,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
 
-            stack_model.save_as { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
-            stack_model.once 'STACK_SAVE__AS_RETURN', (result) ->
-                console.log 'STACK_SAVE__AS_RETURN'
-                console.log result
+            stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
 
-                if !result.is_error
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST
 
         deleteStack : (region, stack_id) ->
             me = this
             current_region = region
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
-            stack_model.remove { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, stack_name
-            stack_model.once 'STACK_REMOVE_RETURN', (result) ->
-                console.log 'STACK_REMOVE_RETURN'
-                console.log result
+            stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, stack_name
 
-                if !result.is_error
-                    ide_event.trigger ide_event.STACK_DELETE, stack_name, stack_id
 
         _genDhcp: (dhcp) ->
 
@@ -563,22 +673,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             current_region = region
 
-            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
+            vpc_model.DescribeAccountAttributes { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
 
-            vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
-
-                console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
-
-                regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item[0].attributeValueSet.item
-
-                if $.type(regionAttrSet) == "array"
-                    vpc_attrs_value = { 'classic' : 'Classic', 'vpc' : 'VPC' }
-                else
-                    vpc_attrs_value = { 'vpc' : 'VPC' }
-
-                me.set 'vpc_attrs', vpc_attrs_value
-
-                null
 
             null
 
@@ -684,7 +780,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                         parse_sub_info = parse_table
 
             if keys_to_parse.btns
-                parse_btns  = me._parseBtnValue keys_to_parse.btns, value_to_parse
+                parse_btns  = MC.aws.vpn.generateDownload keys_to_parse.btns, value_to_parse
                 if parse_btns
                     parse_btns = '"btns":' + parse_btns
                     if parse_sub_info
@@ -851,86 +947,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             parse_table_result
 
         _parseEmptyValue : ( val )->
-            result = if val then val else ''
-            result
+            if val then val else ''
 
-        _parseBtnValue : ( keyes_set, value_set )->
-            me                  = this
-            parse_btns_result   = ''
-            btn_data            = ''
-
-            _.map keyes_set, ( value ) ->
-                btn_data = ''
-
-                if value.type is "download_configuration"
-                    value_conf = value_set.customerGatewayConfiguration
-
-                    if value_conf
-                        #console.log value_conf
-                        value_conf = $.xml2json($.parseXML value_conf)
-                        #console.log value_conf
-                        value_conf = value_conf.vpn_connection
-                        dc_data =
-                            vpnConnectionId                         : me._parseEmptyValue value_conf['@attributes'].id
-                            vpnGatewayId                            : me._parseEmptyValue value_conf.vpn_gateway_id
-                            customerGatewayId                       : me._parseEmptyValue value_conf.customer_gateway_id
-                            tunnel                                  : []
-                        _.map value_conf.ipsec_tunnel, ( value, key ) ->
-                            cur_array = {}
-                            cur_array.number                                 = key + 1
-                            cur_array.ike_protocol_method                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
-                            cur_array.ike_protocol_method                    = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
-                            cur_array.ike_pre_shared_key                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.pre_shared_key,
-                            cur_array.ike_authentication_protocol_algorithm  = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.authentication_protocol
-                            cur_array.ike_encryption_protocol                = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.encryption_protocol
-                            cur_array.ike_lifetime                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.lifetime
-                            cur_array.ike_mode                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.mode
-                            cur_array.ike_perfect_forward_secrecy            = me._parseEmptyValue value_conf.ipsec_tunnel[key].ike.perfect_forward_secrecy
-                            cur_array.ipsec_protocol                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.protocol
-                            cur_array.ipsec_authentication_protocol          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.authentication_protocol
-                            cur_array.ipsec_encryption_protocol              = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.encryption_protocol
-                            cur_array.ipsec_lifetime                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.lifetime
-                            cur_array.ipsec_mode                             = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.mode
-                            cur_array.ipsec_perfect_forward_secrecy          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.perfect_forward_secrecy
-                            cur_array.ipsec_interval                         = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.interval
-                            cur_array.ipsec_retries                          = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.dead_peer_detection.retries
-                            cur_array.tcp_mss_adjustment                     = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.tcp_mss_adjustment
-                            cur_array.clear_df_bit                           = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.clear_df_bit
-                            cur_array.fragmentation_before_encryption        = me._parseEmptyValue value_conf.ipsec_tunnel[key].ipsec.fragmentation_before_encryption
-                            cur_array.customer_gateway_outside_address        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_outside_address.ip_address
-                            cur_array.vpn_gateway_outside_address            = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_outside_address.ip_address
-                            cur_array.customer_gateway_inside_address        = me._parseEmptyValue value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
-                            cur_array.vpn_gateway_inside_address             = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address + '/' + value_conf.ipsec_tunnel[key].customer_gateway.tunnel_inside_address.network_cidr
-                            cur_array.next_hop                               = me._parseEmptyValue value_conf.ipsec_tunnel[key].vpn_gateway.tunnel_inside_address.ip_address
-
-                            dc_data.tunnel.push cur_array
-
-                            null
-
-                        dc_filename = if dc_data.vpnConnectionId then dc_data.vpnConnectionId else 'download_configuration'
-                        dc_data     = MC.template.configurationDownload(dc_data)
-                        dc_parse    = '{"download":true,"filecontent":"'
-                        dc_parse    +=  btoa(dc_data)
-                        dc_parse    += '","filename":"'
-                        dc_parse    += dc_filename
-                        dc_parse    +='","btnname":"'
-                        dc_parse    += value.name
-                        dc_parse    += '"},'
-                        btn_data    += dc_parse
-
-                if btn_data
-                    btn_data            = btn_data.substring 0, btn_data.length - 1
-                    parse_btns_result   += '['
-                    parse_btns_result   += btn_data
-                    parse_btns_result   += ']'
-
-            parse_btns_result
-
-
-        setResource : ( resources ) ->
+        setResource : ( resources, region ) ->
 
             #cache aws resource data
-            MC.aws.aws.cacheResource resources, current_region
+            MC.aws.aws.cacheResource resources, region
+
+            if region != current_region
+
+                return null
 
             me = this
 
@@ -961,9 +987,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                     else
 
-                        elb_model.DescribeInstanceHealth { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName
+                        #use elb_service to invoke api
+                        elb_service.DescribeInstanceHealth { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName, null, ( result ) ->
 
-                        elb_model.once 'ELB__DESC_INS_HLT_RETURN', ( result ) ->
+                            if !result.is_error
+                            #DescribeInstanceHealth succeed
 
                                 total = result.resolved_data.length
 
@@ -983,7 +1011,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                                 me.reRenderRegionResource()
 
-                                null
+                            else
+                            #DescribeInstanceHealth failed
+
+                                console.log 'elb.DescribeInstanceHealth failed, error is ' + result.error_message
+
 
                     reg_result = elb.LoadBalancerName.match reg
 
@@ -1165,29 +1197,36 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # ami
                 if ami_list.length != 0
 
-                    ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list
+                    #use ami_service to invoke api
+                    ami_service.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  ami_list, null, null, null, ( result ) ->
 
-                    ami_model.once 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
+                        if !result.is_error
+                        #DescribeImages succeed
 
-                        region_ami_list = {}
+                            region_ami_list = {}
 
-                        if $.type(result.resolved_data) == 'array'
+                            if $.type(result.resolved_data) == 'array'
 
-                            _.map result.resolved_data, ( ami ) ->
+                                _.map result.resolved_data, ( ami ) ->
 
-                                region_ami_list[ami.imageId] = ami
+                                    region_ami_list[ami.imageId] = ami
+
+                                    null
+
+                            _.map resources.DescribeInstances, ( ins, i ) ->
+
+                                ins.image = region_ami_list[ins.imageId]
 
                                 null
 
-                        _.map resources.DescribeInstances, ( ins, i ) ->
+                            me.reRenderRegionResource()
 
-                            ins.image = region_ami_list[ins.imageId]
+                        else
+                        #DescribeImages failed
 
-                            null
+                            console.log 'ami.DescribeImages failed, error is ' + result.error_message
 
-                        me.reRenderRegionResource()
 
-                        null
             # volume
             if resources.DescribeVolumes
 
@@ -1249,41 +1288,50 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # get dhcp detail
                 if dhcp_set.length != 0
 
-                    dhcp_model.DescribeDhcpOptions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set
+                    #use dhcp_service to envoke api
+                    dhcp_service.DescribeDhcpOptions { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set, null, ( result ) ->
 
-                    dhcp_model.once 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', ( result ) ->
+                        if !result.is_error
+                        #DescribeDhcpOptions succeed
 
-                        dhcp_set = result.resolved_data.item
+                            dhcp_set = result.resolved_data.item
 
-                        _.map resources.DescribeVpcs, ( vpc ) ->
+                            _.map resources.DescribeVpcs, ( vpc ) ->
 
-                            if vpc.dhcpOptionsId == 'default'
+                                if vpc.dhcpOptionsId == 'default'
 
-                                vpc.dhcp = '{"title": "default", "sub_info" : ["<dt>DhcpOptionsId: </dt><dd>None</dd>"]}'
+                                    vpc.dhcp = '{"title": "default", "sub_info" : ["<dt>DhcpOptionsId: </dt><dd>None</dd>"]}'
 
-                            if $.type(dhcp_set) == 'object'
+                                if $.type(dhcp_set) == 'object'
 
-                                if vpc.dhcpOptionsId == dhcp_set.dhcpOptionsId
+                                    if vpc.dhcpOptionsId == dhcp_set.dhcpOptionsId
 
-                                    vpc.dhcp = me._genDhcp dhcp_set
+                                        vpc.dhcp = me._genDhcp dhcp_set
 
-                            else
+                                else
 
-                                _.map dhcp_set, ( dhcp )->
+                                    _.map dhcp_set, ( dhcp )->
 
-                                    if vpc.dhcpOptionsId == dhcp.dhcpOptionsId
+                                        if vpc.dhcpOptionsId == dhcp.dhcpOptionsId
 
-                                        vpc.dhcp = me._genDhcp dhcp
+                                            vpc.dhcp = me._genDhcp dhcp
 
-                                        null
+                                            null
 
-                            null
+                                null
 
-                        me.reRenderRegionResource()
+                            me.reRenderRegionResource()
 
-                        #console.error me.parseSourceValue 'DescribeDhcpOptions', dhcp, "bubble", null
+                            #console.error me.parseSourceValue 'DescribeDhcpOptions', dhcp, "bubble", null
+
+
+                        else
+                        #DescribeDhcpOptions failed
+
+                            console.log 'dhcp.DescribeDhcpOptions failed, error is ' + result.error_message
 
                         null
+
 
             # vpn
             if resources.DescribeVpnConnections
@@ -1310,59 +1358,82 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 # get cgw detail
                 if cgw_set.length != 0
 
-                    customergateway_model.DescribeCustomerGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set
+                    #use service to invoke api
+                    customergateway_service.DescribeCustomerGateways { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  cgw_set, null, ( result ) ->
 
-                    customergateway_model.once 'VPC_CGW_DESC_CUST_GWS_RETURN', ( result ) ->
+                        if !result.is_error
+                        #DescribeCustomerGateways succeed
 
-                        cgw_set = result.resolved_data.item
+                            cgw_set = result.resolved_data.item
 
-                        _.map resources.DescribeVpnConnections, ( vpn ) ->
+                            _.map resources.DescribeVpnConnections, ( vpn ) ->
 
-                            if $.type(cgw_set) == 'object'
+                                if $.type(cgw_set) == 'object'
 
-                                vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw_set, "bubble", null
+                                    vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw_set, "bubble", null
 
-                            else
+                                else
 
-                                _.map cgw_set, ( cgw ) ->
+                                    _.map cgw_set, ( cgw ) ->
 
-                                    if vpn.customerGatewayId == cgw.customerGatewayId
+                                        if vpn.customerGatewayId == cgw.customerGatewayId
 
-                                        vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw, "bubble", null
+                                            vpn.cgw = me.parseSourceValue 'DescribeCustomerGateways', cgw, "bubble", null
 
-                                    null
+                                        null
 
-                            null
+                                null
 
-                        me.reRenderRegionResource()
+                            me.reRenderRegionResource()
+
+
+                        else
+                        #DescribeCustomerGateways failed
+
+                            console.log 'customergateway.DescribeCustomerGateways failed, error is ' + result.error_message
+
+                        null
+
 
                 # get vgw detail
                 if vgw_set.length != 0
 
-                    vpngateway_model.DescribeVpnGateways { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set
+                    #use vpngateway_service to invoke api
+                    vpngateway_service.DescribeVpnGateways { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set, null, ( result ) ->
 
-                    vpngateway_model.once 'VPC_VGW_DESC_VPN_GWS_RETURN', ( result ) ->
+                        if !result.is_error
+                        #DescribeVpnGateways succeed
 
-                        vgw_set = result.resolved_data.item
+                            vgw_set = result.resolved_data.item
 
-                        _.map resources.DescribeVpnConnections, ( vpn ) ->
+                            _.map resources.DescribeVpnConnections, ( vpn ) ->
 
-                            if $.type(vgw_set) == 'object'
+                                if $.type(vgw_set) == 'object'
 
-                                vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw_set, "bubble", null
-
-                            else
-
-                                _.map vgw_set, ( vgw )->
-
-                                    if vpn.vpnGatewayId == vgw.vpnGatewayId
-
-                                        vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw, "bubble", null
+                                    vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw_set, "bubble", null
 
                                     null
-                            null
 
-                        me.reRenderRegionResource()
+                                else
+
+                                    _.map vgw_set, ( vgw )->
+
+                                        if vpn.vpnGatewayId == vgw.vpnGatewayId
+
+                                            vpn.vgw = me.parseSourceValue 'DescribeVpnGateways', vgw, "bubble", null
+
+                                        null
+                                    null
+
+                            me.reRenderRegionResource()
+
+
+                        else
+                        #DescribeVpnGateways failed
+
+                            console.log 'vpngateway.DescribeVpnGateways failed, error is ' + result.error_message
+
+                        null
 
 
             #console.log resources
@@ -1406,19 +1477,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             resources[res_type.ASL_ACT]   =   {}
 
 
-            aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
+            aws_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 
-            aws_model.once 'AWS_RESOURCE_RETURN', ( result ) ->
 
-                console.log 'AWS_RESOURCE_RETURN'
-
-                resource_source = result.resolved_data[current_region]
-
-                me.setResource resource_source
-
-                me.updateUnmanagedList()
-
-                null
 
         describeAWSStatusService : ( region )->
 
@@ -1426,43 +1487,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             current_region = region
 
-            aws_model.status { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+            aws_model.status { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
 
-            aws_model.once 'AWS_STATUS_RETURN', ( result ) ->
-
-                console.log 'AWS_STATUS_RETURN'
-
-                status_list  = { red: 0, yellow: 0, info: 0 }
-                service_list = constant.SERVICE_REGION[ current_region ]
-                result_list  = result.resolved_data.current
-
-                _.map result_list, ( value ) ->
-                    service_set         = value
-                    cur_service         = service_set.service
-                    should_show_service = false
-
-                    _.map service_list, ( value ) ->
-                        if cur_service is value
-                            should_show_service = true
-                        null
-
-                    if should_show_service
-                        switch service_set.status
-                            when '1'
-                                status_list.red += 1
-                                null
-                            when '2'
-                                status_list.yellow += 1
-                                null
-                            when '3'
-                                status_list.info += 1
-                                null
-                            else
-                                null
-
-                me.set 'status_list', status_list
-
-                null
             null
     }
 

@@ -22,12 +22,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
             session_model.set_credential {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), access_key, secret_key, account_id
 
-            session_model.once 'SESSION_SET__CREDENTIAL_RETURN', (result1) ->
+            me.once 'SESSION_SET__CREDENTIAL_RETURN', (result1) ->
                 console.log 'SESSION_SET__CREDENTIAL_RETURN'
                 console.log result1
 
                 if !result1.is_error
-                    vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), 'us-east-1',  ["supported-platforms"]
+                    vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
 
                     vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result2) ->
 

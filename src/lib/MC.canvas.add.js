@@ -81,11 +81,9 @@ MC.canvas.add = function (flag, option, coordinate)
 		{
 			option.name = MC.aws.aws.getNewName(type);//get init name for component
 		}
-
 	}
 
 	class_type = type.replace(/\./ig, '-'); // type is resource type
-
 
 	switch (type) {
 
@@ -501,14 +499,11 @@ MC.canvas.add = function (flag, option, coordinate)
 					}
 
 					//vpc
-					if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC)
+					{
 						component_data.resource.VPCZoneIdentifier = '@' + option.group.subnetUId + '.resource.SubnetId';
-
 					}
 				}
-
-
-
 			}
 			else
 			{
@@ -728,8 +723,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				MC.canvas_property.sg_list[0].member.push(group.id);
 
 				// if subnet
-				if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
-
+				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC)
+				{
 					//default eni
 					eni = $.extend(true, {}, MC.canvas.ENI_JSON.data);
 					uid = MC.guid();
@@ -743,13 +738,13 @@ MC.canvas.add = function (flag, option, coordinate)
 					sg_group.GroupName = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupName';
 					eni.resource.GroupSet.push(sg_group);
 
-					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
+					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.DEFAULT_VPC)
+					{
 						component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 						component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 						eni.resource.SubnetId = component_data.resource.SubnetId;
 						eni.resource.VpcId = component_data.resource.VpcId;
 					}
-
 				}
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
@@ -885,7 +880,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				//8.2 volume number
 				Canvon.text(35, 60, volume_number).attr({
 					'class': 'node-label volume-number',
-					'id': group.id + '_volume_number'
+					'id': group.id + '_volume_number',
+					'value': volume_number
 				}),
 
 				//8.3 hot area for volume
@@ -1051,7 +1047,6 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_data = $.extend(true, {}, MC.canvas.ASL_VOL_JSON);
 					component_data.DeviceName = option.name;
 					component_data.Ebs.VolumeSize = option.volumeSize;
-					component_data.VirtualName = option.VirtualName;
 
 					if (option.snapshotId)
 					{

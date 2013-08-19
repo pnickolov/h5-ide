@@ -21,18 +21,16 @@ define [ 'backbone', 'MC' ], () ->
           cgw.name = myCGWComponent.name
 
           # cgw state color
-          multiStateColorMap = {
-            pending: 'yellow'
-            available: 'green'
-            deleting: 'red'
-            deleted: 'red'
-          }
+          multiStateColorMap =
+            pending   : 'yellow'
+            available : 'green'
+            deleting  : 'red'
+            deleted   : 'red'
 
           # cgw state color
-          twoStateColorMap = {
-            DOWN: 'red'
-            UP: 'green'
-          }
+          twoStateColorMap =
+            DOWN : 'red'
+            UP   : 'green'
 
           cgw.stateColor = multiStateColorMap[cgw.state]
 
@@ -40,8 +38,7 @@ define [ 'backbone', 'MC' ], () ->
           vpn_id = null
           # get vpn id
           _.each MC.canvas_data.component, ( c ) ->
-            if c.type is 'AWS.VPC.VPNConnection' and \
-            c.resource.CustomerGatewayId is "@#{cgw_uid}.resource.CustomerGatewayId"
+            if c.type is 'AWS.VPC.VPNConnection' and c.resource.CustomerGatewayId is "@#{cgw_uid}.resource.CustomerGatewayId"
               vpn_id = c.resource.VpnConnectionId
               return
 
@@ -49,7 +46,11 @@ define [ 'backbone', 'MC' ], () ->
           vpn = _.extend {}, appData[ vpn_id ]
 
           # JSON detail
-          vpn.detail = JSON.parse vpn.detail
+          config =
+            name : "Download"
+            type : "download_configuration"
+
+          vpn.detail = JSON.parse MC.aws.vpn.generateDownload( [ config ], vpn )
 
           #set vpn available
           if vpn.state is 'available'

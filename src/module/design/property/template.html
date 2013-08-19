@@ -1,12 +1,12 @@
-<a href="#" id="hide-property-panel" class="tooltip sidebar-hider" data-tooltip="Hide Property Panel">
-	<i class="icon-double-angle-right"></i>
+<a href="#" id="hide-property-panel" class="tooltip sidebar-hider" data-tooltip="Toggle Property Panel">
 </a>
 
 <div class="property-wrap">
   <section class="property-panel-wrapper" id="property-first-panel">
     <header class="property-sidebar-title sidebar-title truncate" id='property-title'></header>
-    <!-- When refactoring the scrollbar finishes, we can add scrollbar for the property panel here -->
-    <div class="property-content property-details">
+    <div class="scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="scroll-content property-content property-details"></div>
     </div>
   </section>
 
@@ -14,7 +14,9 @@
     <div class="property-sidebar-title sidebar-title">
       <a class="back tooltip" data-tooltip="" href="#" id="hide-second-panel"><span class="icon-btn-back"></span></a><span id='property-second-title' class="truncate"></span>
     </div>
-    <div class="property-content">
+    <div class="scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="scroll-content property-content"></div>
     </div>
   </section>
 </div>

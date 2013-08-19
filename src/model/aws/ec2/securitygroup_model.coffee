@@ -43,7 +43,7 @@ define [ 'backbone', 'securitygroup_service'], ( Backbone, securitygroup_service
                     console.log 'securitygroup.CreateSecurityGroup failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_SG_CREATE_SG_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_SG_CREATE_SG_RETURN', aws_result
 
 
         #DeleteSecurityGroup api (define function)
@@ -69,7 +69,7 @@ define [ 'backbone', 'securitygroup_service'], ( Backbone, securitygroup_service
                     console.log 'securitygroup.DeleteSecurityGroup failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_SG_DELETE_SG_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_SG_DELETE_SG_RETURN', aws_result
 
 
         #AuthorizeSecurityGroupIngress api (define function)
@@ -95,7 +95,7 @@ define [ 'backbone', 'securitygroup_service'], ( Backbone, securitygroup_service
                     console.log 'securitygroup.AuthorizeSecurityGroupIngress failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_SG_AUTH_SG_INGRESS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_SG_AUTH_SG_INGRESS_RETURN', aws_result
 
 
         #RevokeSecurityGroupIngress api (define function)
@@ -121,7 +121,7 @@ define [ 'backbone', 'securitygroup_service'], ( Backbone, securitygroup_service
                     console.log 'securitygroup.RevokeSecurityGroupIngress failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_SG_REVOKE_SG_INGRESS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_SG_REVOKE_SG_INGRESS_RETURN', aws_result
 
 
         #DescribeSecurityGroups api (define function)
@@ -147,7 +147,7 @@ define [ 'backbone', 'securitygroup_service'], ( Backbone, securitygroup_service
                     console.log 'securitygroup.DescribeSecurityGroups failed, error is ' + aws_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_SG_DESC_SGS_RETURN', aws_result
+                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_SG_DESC_SGS_RETURN', aws_result
 
 
 

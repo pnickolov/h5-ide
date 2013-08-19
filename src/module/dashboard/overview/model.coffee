@@ -46,6 +46,31 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             me = this
 
+            #listen VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN
+
+            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
+
+                console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
+
+                regionAttrSet = result.resolved_data
+
+                region_classic_vpc_result = []
+
+                _.map constant.REGION_KEYS, ( value ) ->
+
+                    if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
+
+                        cur_attr = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
+                        if  cur_attr and $.type(cur_attr) == "array" and cur_attr.length == 2
+                            region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
+                        else
+                            region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
+                        null
+
+                me.set 'region_classic_list', region_classic_vpc_result
+                null
+
+
             null
 
         #temp
@@ -173,30 +198,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             me = this
 
-            region_classic_vpc_result = []
-
             #get service(model)
-            vpc_model.DescribeAccountAttributes { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
-
-            vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
-
-                console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
-
-                regionAttrSet = result.resolved_data
-
-                _.map constant.REGION_KEYS, ( value ) ->
-
-                    if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
-
-                        cur_attr = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
-                        if  cur_attr and $.type(cur_attr) == "array" and cur_attr.length == 2
-                            region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
-                        else
-                            region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
-                        null
-
-                me.set 'region_classic_list', region_classic_vpc_result
-                null
+            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
 
             null
 

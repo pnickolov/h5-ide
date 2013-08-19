@@ -29,17 +29,6 @@
 	fill-opacity: 0.1 !important;
 }*/
 
-.line-sg.view-hover,
-.line-sg.view-keephover {
-	visibility: visible !important;
-	opacity: 0.7 !important;
-}
-
-.line-sg.view-show {
-	visibility: visible !important;
-	opacity: 1 !important;
-}
-
 .selected .port {
 	visibility: visible !important;
 }
@@ -259,23 +248,62 @@
 	fill: #F2F8FF;
 }
 
-.line {
-	cursor: pointer;
-	stroke-linejoin: round;
-}
-
-.webkit .line {
-	filter : url(#dropshadow); /*only support chrome*/
-}
-
 .instance-volume {
 	cursor: pointer;
 	fill: rgba(255, 255, 255, 0);
 }
 
 /* line connection */
-#line_layer .line-sg {
+.line {
+	cursor: pointer;
+	stroke-linejoin: round;
+	fill: none;
+	stroke-width: 2px;
+}
+
+.line-attachment {
+	stroke: #12CD4F;
+}
+
+.line-elb-sg {
+	stroke: #6DAEFE;
+}
+
+.line-rtb-target {
+	stroke: #6DAEFE;
+}
+
+.line-rtb-target .dash-line {
+	stroke: #9FC9FD;
+	stroke-dasharray: 10px 10px;
+}
+
+.line-association {
+	stroke: #d8d7d6;
+}
+
+.line-vpn {
+	stroke: #bf7aa5;
+}
+
+.line-sg {
+	stroke: #6DAEFE;
 	opacity: 0.2;
+}
+
+.line-sg.view-hover,
+.line-sg.view-keephover {
+	visibility: visible !important;
+	opacity: 0.7 !important;
+}
+
+.line-sg.view-show {
+	visibility: visible !important;
+	opacity: 1 !important;
+}
+
+.webkit .line {
+	filter : url(#dropshadow); /*only support chrome*/
 }
 
 .line.selected {
@@ -292,6 +320,20 @@
 .fill-line {
 	stroke: rgba(255, 255, 255, 0);
 	stroke-width: 10px;
+}
+
+/* draw line */
+.draw-line-wrap {
+	fill: none;
+	opacity: 1 !important;
+}
+
+.draw-line {
+	stroke-width: 5px;
+}
+
+.draw-line-arrow {
+	stroke-width: 3px;
 }
 
 /* node label */
@@ -314,6 +356,10 @@
 .volume-number {
 	font-size: 12px;
 	fill: #74B1FD;
+}
+
+.volume-number[value="0"] {
+	opacity: 0.5;
 }
 
 .node-background {

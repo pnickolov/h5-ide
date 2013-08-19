@@ -51,19 +51,12 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             region_labels[ 'sa-east-1' ]      = 'South America - Sao Paulo'
             ###
 
-            null
-
-        #app list
-        appListService : ->
-
             me = this
 
-            #get service(model)
-            app_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-            app_model.once 'APP_LST_RETURN', ( result ) ->
+            #####listen APP_LST_RETURN
+            me.on 'APP_LST_RETURN', ( result ) ->
 
                 console.log 'APP_LST_RETURN'
-                console.log result
 
                 #
                 app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
@@ -75,17 +68,10 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 null
 
-        #stack list
-        stackListService : ->
-
-            me = this
-
-            #get service(model)
-            stack_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-            stack_model.once 'STACK_LST_RETURN', ( result ) ->
+            #####listen STACK_LST_RETURN
+            me.on 'STACK_LST_RETURN', ( result ) ->
 
                 console.log 'STACK_LST_RETURN'
-                console.log result
 
                 #
                 stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
@@ -100,6 +86,48 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                 me.set 'stack_list', stack_list
 
                 null
+
+
+            #####listen EC2_EC2_DESC_REGIONS_RETURN
+            me.on 'EC2_EC2_DESC_REGIONS_RETURN', ( result ) ->
+
+                console.log 'EC2_EC2_DESC_REGIONS_RETURN'
+
+                #
+                region_list = _.map result.resolved_data.item, ( value, key ) ->
+
+                    region_city = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[1]
+                    region_area = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[0]
+
+                    return { 'region_city' : region_city, 'region_area' : region_area, 'region_name' : value.regionName }
+
+                console.log region_list
+
+                #set vo
+                me.set 'region_list', region_list
+
+                null
+
+
+            null
+
+        #app list
+        appListService : ->
+
+            me = this
+
+            #get service(model)
+            app_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+
+
+        #stack list
+        stackListService : ->
+
+            me = this
+
+            #get service(model)
+            stack_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+
 
         #region empty list
         regionEmptyList : () ->
@@ -122,26 +150,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             me = this
 
             #get service(model)
-            ec2_model.DescribeRegions { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-            ec2_model.once 'EC2_EC2_DESC_REGIONS_RETURN', ( result ) ->
+            ec2_model.DescribeRegions { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
 
-                console.log 'EC2_EC2_DESC_REGIONS_RETURN'
-                console.log result
-
-                #
-                region_list = _.map result.resolved_data.item, ( value, key ) ->
-                
-                    region_city = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[1]
-                    region_area = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[0]
-
-                    return { 'region_city' : region_city, 'region_area' : region_area, 'region_name' : value.regionName }
-
-                console.log region_list
-
-                #set vo
-                me.set 'region_list', region_list
-
-                null
     }
 
     model = new NavigationModel()

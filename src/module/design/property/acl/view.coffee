@@ -36,7 +36,7 @@ define [ 'event',
             'OPTION_CHANGE #modal-protocol-select'       : 'modalRuleProtocolSelected'
             'OPTION_CHANGE #protocol-icmp-main-select'   : 'modalRuleICMPSelected'
             'click .property-rule-delete-btn'            : 'removeRuleClicked'
-            'change #property-acl-name'                    : 'aclNameChanged'
+            'change #property-acl-name'                  : 'aclNameChanged'
 
             'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
 
@@ -206,8 +206,15 @@ define [ 'event',
             this.refreshRuleList this.model.attributes.component
 
         aclNameChanged : (event) ->
-            aclName = $('#property-acl-name').val()
-            this.trigger 'ACL_NAME_CHANGED', aclName
+            target = $ event.currentTarget
+            name = target.val()
+
+            id = @model.get( 'component' ).uid
+
+            MC.validate.preventDupname target, id, name, 'ACL'
+
+            if target.parsley 'validate'
+                this.trigger 'ACL_NAME_CHANGED', name
 
         modalRuleProtocolSelected : (event) ->
             protocolSelectElem = $(event.target)

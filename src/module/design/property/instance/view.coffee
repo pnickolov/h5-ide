@@ -5,7 +5,6 @@
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         'UI.fixedaccordion',
         'UI.selectbox',
-        'UI.secondarypanel',
         'UI.tooltip',
         'UI.notification',
         'UI.modal',
@@ -37,6 +36,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             'change .input-ip' : 'updateEIPList'
             'click .toggle-eip' : 'addEIP'
+            'click #property-ami' : 'openAmiPanel'
 
         render     : ( attributes ) ->
             console.log 'property:instance render'
@@ -48,7 +48,17 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         instanceNameChange : ( event ) ->
             console.log 'instanceNameChange'
-            this.model.set 'name', event.target.value
+
+            target = $ event.currentTarget
+            name = target.val()
+            id = @model.get 'get_uid'
+
+
+            MC.validate.preventDupname target, id, name, 'Instance'
+
+
+            if target.parsley 'validate'
+                this.model.set 'name', name
             null
 
         instanceTypeSelect : ( event, value )->
@@ -120,9 +130,21 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             this.updateEIPList()
 
         openAmiPanel : ( event ) ->
+            console.log 'openAmiPanel'
             target = $('#property-ami')
+            ###
             secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
             $(document.body).on 'click', '.back', secondarypanel.close
+            ###
+            console.log MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
+
+            data = target.data( 'secondarypanel-data' )
+            ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
+                title : data.imageId
+                dom   : MC.template.aimSecondaryPanel data
+                id    : 'Ami'
+            }
+            null
 
         addEIP : ( event ) ->
 

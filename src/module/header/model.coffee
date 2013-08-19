@@ -94,6 +94,11 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
                 info_list.splice 0, 0, item
 
+                # filter done and terminated app
+                terminated_list = []
+                terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
+                info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
+
                 me.set 'info_list', info_list
 
 

@@ -5,7 +5,7 @@
 define [ 'event',
          'constant'
          'backbone', 'jquery', 'handlebars',
-         'UI.fixedaccordion', 'UI.selectbox', 'UI.toggleicon', 'UI.searchbar', 'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
+         'UI.selectbox', 'UI.toggleicon', 'UI.searchbar', 'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
 ], ( ide_event, constant, Backbone, $ ) ->
 
     ResourceView = Backbone.View.extend {
@@ -54,8 +54,8 @@ define [ 'event',
                 .on( 'click',            '#community_ami_table .toggle-fav',                 this, this.toggleFav )
                 .on( 'click',            '.favorite-ami-list .faved', this, this.removeFav )
 
-
-
+            $( window ).on "resize", _.bind( this.resizeAccordion, this )
+            $( "#tab-content-design" ).on "click", ".fixedaccordion-head", this.updateAccordion
 
 
             #listen
@@ -65,15 +65,67 @@ define [ 'event',
             console.log 'resource render'
             $( '#resource-panel' ).html template
             #
-            fixedaccordion.resize()
-
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
+
+            this.recalcAccordion()
             null
 
         reRender   : ( template ) ->
             console.log 're-resource render'
             if $.trim( this.$el.html() ) is 'loading...' then $( '#resource-panel' ).html template
+
+            this.recalcAccordion()
+
+        updateAccordion : ( event, noAnimate ) ->
+
+            $target    = $( event.currentTarget )
+            $accordion = $target.closest(".accordion-group")
+
+            if $accordion.hasClass "expanded"
+                return false
+
+            $expanded = $accordion.siblings ".expanded"
+            $body     = $accordion.children ".accordion-body"
+
+            $accordionWrap   = $accordion.closest ".fixedaccordion"
+            $accordionParent = $accordionWrap.parent()
+
+            height = $accordionParent.outerHeight() - $accordionWrap.position().top - $accordionWrap.children().length * $target.outerHeight()
+
+            $body.outerHeight height
+
+            if noAnimate
+                $accordion.addClass "expanded"
+                $expanded.removeClass "expanded"
+                return false
+
+            $body.slideDown 200, ()->
+                $accordion.addClass "expanded"
+
+            $expanded.children(".accordion-body").slideUp 200, ()->
+                $expanded.closest(".accordion-group").removeClass "expanded"
+            false
+
+        recalcAccordion : () ->
+            $accordions = $("#resource-panel").children(".fixedaccordion").children()
+            $accordion  = $accordions.filter(".expanded")
+            if $accordion.length is 0
+                $accordion = $accordions.eq(0)
+
+            $target = $accordion.removeClass( 'expanded' ).children( '.fixedaccordion-head' )
+            this.updateAccordion( { currentTarget : $target[0] }, true )
+
+        resizeAccordion : () ->
+            if this.__resizeAccdTO
+                clearTimeout this.__resizeAccdTO
+
+            self = this
+            this.__resizeAccdTO = setTimeout ()->
+                self.recalcAccordion()
+            , 150
+
+            null
 
         listen   : ( model ) ->
             #set this.model
@@ -103,7 +155,7 @@ define [ 'event',
                 $( '.favorite-ami-list' ).hide()
                 $( '.my-ami-list' ).hide()
             #event.data.trigger 'RESOURCE_SELECET', id
-            fixedaccordion.show.call($($(this).parent().find('.fixedaccordion-head')[0]))
+            $( this ).siblings(".fixedaccordion-head").click()
             null
 
         searchBarShowEvent : ( event ) ->
@@ -154,24 +206,24 @@ define [ 'event',
                 $( '#hide-resource-panel' ).hide()
             else
                 #
-                fixedaccordion.resize()
+                this.recalcAccordion()
             #
             if type is 'OPEN_STACK' or type is 'NEW_STACK'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
-                if $( '#resource-panel' ).hasClass("hidden") then $( '#hide-resource-panel' ).trigger 'click'
+                if $( '#resource-panel' ).hasClass("hiden") then $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
 
             if type is 'OLD_STACK'
                 $( '#hide-resource-panel' ).show()
                 if $( '#hide-resource-panel' ).attr( 'data-current-state' ) is 'show'
-                    if $( '#resource-panel' ).hasClass("hidden")
+                    if $( '#resource-panel' ).hasClass("hiden")
                         $( '#hide-resource-panel' ).trigger 'click'
                 else
-                    if not $( '#resource-panel' ).hasClass("hidden")
+                    if not $( '#resource-panel' ).hasClass("hiden")
                         $( '#hide-resource-panel' ).trigger 'click'
             else if type is 'OLD_APP'
                 $( '#hide-resource-panel' ).hide()
-                if not $( '#resource-panel' ).hasClass("hidden")
+                if not $( '#resource-panel' ).hasClass("hiden")
                     $( '#hide-resource-panel' ).trigger 'click'
             #
             console.log $( '#hide-resource-panel' ).attr 'data-current-state'

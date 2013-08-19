@@ -48,7 +48,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             #listen VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN
 
-            me.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
+            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
                 console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
@@ -199,7 +199,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             me = this
 
             #get service(model)
-            vpc_model.DescribeAccountAttributes { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
+            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
 
             null
 

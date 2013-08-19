@@ -1,10 +1,11 @@
 /* Canvas */
 #canvas {
-	/*margin-top: 43px;
-	top: -6px;*/
-	z-index: 1;
-	width: 100%;
-	position: absolute;
+	z-index  : 1;
+	position : absolute;
+	left     : 0;
+	right    : 0;
+	top      : 44px;
+	bottom   : 0;
 }
 
 #canvas_container {
@@ -477,6 +478,10 @@
 .AWS-AutoScaling-Group .group-label {
 	fill: #ffffff;
 	font-size: 13px;
+}
+
+.asg-expand {
+	opacity: 0.5;
 }
 
 .asg-resource-dragger {

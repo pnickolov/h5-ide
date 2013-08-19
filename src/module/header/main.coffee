@@ -29,9 +29,16 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
                 model.getInfoList()
                 view.render()
 
-            model.on 'HEADER_UPDATE', () ->
+            ide_event.onLongListen ide_event.UPDATE_HEADER, (req) ->
+            #model.on 'HEADER_UPDATE', () ->
                 console.log 'HEADER_UPDATE'
-                view.render()
+
+                if req
+                    console.log 'request:' + req
+                    
+                    model.updateHeader(req)
+                    view.render()
+
                 #view.resetAlert()
 
             # model.on 'change:info_list', () ->
@@ -45,21 +52,25 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
             ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
                 console.log 'SWITCH_DASHBOARD'
                 model.setFlag(true)
+                view.render()
 
             ide_event.onLongListen ide_event.SWITCH_TAB, () ->
                 #temp
                 setTimeout () ->
                     console.log 'SWITCH_TAB header id:' + MC.canvas_data.id
                     model.setFlag(false)
+                    view.render()
                 , 500
 
             ide_event.onListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, item_name ) ->
                 console.log 'RELOAD_RESOURCE'
                 model.setFlag(false)
+                view.render()
 
             view.on 'DROPDOWN_MENU_CLOSED', () ->
                 console.log 'DROPDOWN_MENU_CLOSED'
                 model.resetInfoList()
+                view.render()
 
             view.on 'DROPDOWN_APP_NAME_CLICK', (req_id) ->
                 console.log 'design_header:DROPDOWN_APP_NAME_CLICK'

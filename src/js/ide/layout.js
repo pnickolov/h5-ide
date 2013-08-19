@@ -5,16 +5,17 @@
 var ready = function () {
 
 	//Resource Panel
-    $(document).on('click', '.fixedaccordion-head select', function (event)
-    {
-        event.stopPropagation();
-    });
-    $(document).on('change', '.fixedaccordion-head select', function (event)
-    {
-        event.stopPropagation();
+  // No longger needed this code
+    // $(document).on('click', '.fixedaccordion-head select', function (event)
+    // {
+    //     event.stopPropagation();
+    // });
+    // $(document).on('change', '.fixedaccordion-head select', function (event)
+    // {
+    //     event.stopPropagation();
 
-        fixedaccordion.show.call($(this).parent().parent());
-    });
+    //     fixedaccordion.show.call($(this).parent().parent());
+    // });
 
 	// Global Overview World Map Hover Sync
 	$('#map-region-spot-list').on('mouseenter', 'li', function()

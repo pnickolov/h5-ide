@@ -2,7 +2,7 @@
 #  View Mode for design/property/sgrule
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
+define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
 
 	SGRuleModel = Backbone.Model.extend {
 
@@ -32,6 +32,42 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 		getDispSGList : (line_uid) ->
 
 			that = this
+
+			target = MC.canvas_data.layout.connection[line_uid].target
+
+			portMap = {}
+
+			for k,v of target
+                portMap[v] = k
+
+            for k,v of target
+
+                if v is 'launchconfig-sg' and not MC.canvas_data.component[k]
+
+                    original_group_uid = MC.canvas_data.layout.component.group[k].originalId
+
+                    for comp_uid, comp of MC.canvas_data.layout.component.node
+
+                        if comp.type is 'AWS.AutoScaling.LaunchConfiguration' and comp.groupUId is original_group_uid
+
+                            for l_id, line_comp of MC.canvas_data.layout.connection
+
+                                tmp_portMap = {}
+
+                                for key,val of line_comp.target
+                                    tmp_portMap[val] = key
+
+                                for key, val of line_comp.target
+
+                                    if key is comp_uid and line_comp.type is 'elb-sg'
+
+                                        if tmp_portMap['elb-sg-out'] and portMap['elb-sg-out'] and tmp_portMap['elb-sg-out'] is portMap['elb-sg-out']
+
+                                            target = MC.canvas_data.layout.connection[l_id].target
+
+                                            line_uid = l_id
+
+                                            that.set 'line_id', line_uid
 
 			bothSGAry = MC.aws.sg.getSgRuleDetail line_uid
 

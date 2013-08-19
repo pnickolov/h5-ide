@@ -331,6 +331,17 @@ var constant_data = {
 					"relation": "multiple"
 				}
 			],
+			"AWS.AutoScaling.Group": [
+				{
+					"type": "elb-sg",
+					"from": "elb-sg-out",
+					"to": "launchconfig-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
 			"AWS.VPC.Subnet": {
 				"type": "association",
 				"from": "elb-assoc",
@@ -545,6 +556,19 @@ var constant_data = {
 					"type": "sg",
 					"from": "launchconfig-sg",
 					"to": "elb-sg-in",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			]
+		},
+		"AWS.AutoScaling.Group":{
+			"AWS.ELB" : [
+				{
+					"type": "elb-sg",
+					"from": "launchconfig-sg",
+					"to": "elb-sg-out",
 					"direction": {
 						"from": "horizontal"
 					},

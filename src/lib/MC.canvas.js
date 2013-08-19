@@ -2262,7 +2262,7 @@ MC.canvas.event.dragable = {
 					'mousemove': MC.canvas.event.dragable.mousemove,
 					'mouseup': event.target.getAttribute('class') === 'asg-resource-dragger' ?
 						// For asgExpand
-						MC.canvas.event.dragable.asgExpandup : 
+						MC.canvas.event.dragable.asgExpandup :
 						// Default
 						MC.canvas.event.dragable.mouseup
 				}, {
@@ -2619,7 +2619,7 @@ MC.canvas.event.dragable = {
 						MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
 
 						// Re-draw group connection
-						if (node_data.type === 'AWS.VPC.Subnet' || child_type === 'node')
+						if (node_data.type === 'AWS.VPC.Subnet' || child_type === 'node' || node_data.type === 'AWS.AutoScaling.Group')
 						{
 							$.each(node_data.connection, function (i, data)
 							{
@@ -2651,7 +2651,7 @@ MC.canvas.event.dragable = {
 					});
 
 					// Re-draw group connection
-					if (group_data.type === 'AWS.VPC.Subnet')
+					if (group_data.type === 'AWS.VPC.Subnet' || group_data.type === 'AWS.AutoScaling.Group')
 					{
 						MC.canvas.reConnect(target_id);
 					}

@@ -476,6 +476,14 @@ MC.canvas.add = function (flag, option, coordinate)
 						else{
 							MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier = MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier + ' , @' + option.groupUId + '.resource.SubnetId';
 						}
+						// if(MC.canvas_data.component[component_layout.originalId].resource.LoadBalancerNames.length > 0){
+						// 	$.each(MC.canvas_data.component[component_layout.originalId].resource.LoadBalancerNames, function(idx, loadbalancername){
+						// 		lb_uid = loadbalancername.split('.')[0].slice(1);
+						// 		asg_uid = group.id;
+						// 		MC.canvas.connect($("#"+lb_uid), 'elb-sg-out', $("#"+asg_uid), 'launchconfig-sg')
+						// 	});
+						// }
+
 					}
 				}
 				else

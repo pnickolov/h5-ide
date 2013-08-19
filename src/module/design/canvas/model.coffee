@@ -965,6 +965,24 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			else if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
+			else if portMap['elb-sg-out'] and portMap['launchconfig-sg']
+
+				elb_ref = '@' + portMap['elb-sg-out'] + '.resource.LoadBalancerName'
+
+				if elb_ref not in MC.canvas_data.component[MC.canvas_data.layout.component.node[portMap['launchconfig-sg']].groupUId].resource.LoadBalancerNames
+
+					MC.canvas_data.component[MC.canvas_data.layout.component.node[portMap['launchconfig-sg']].groupUId].resource.LoadBalancerNames.push elb_ref
+
+				# expand asg need to draw the connection between elb and asg
+				asg_uid = MC.canvas_data.layout.component.node[portMap['launchconfig-sg']].groupUId
+
+				$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
+
+					if comp.type is 'AWS.AutoScaling.Group' and comp.originalId and comp.originalId is asg_uid
+
+						MC.canvas.connect $("#"+portMap['elb-sg-out']), 'elb-sg-out', $("#"+comp_uid), 'launchconfig-sg'
+
+
 			if not (MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC and (portMap['elb-sg-in'] or portMap['elb-sg-out']))
 				for key, value of portMap
 					if key.indexOf('sg') >= 0
@@ -990,7 +1008,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 		createComponent : ( event, uid ) ->
 			resource_type = constant.AWS_RESOURCE_TYPE
 
-			componentType = MC.canvas_data.component[uid]
+			componentType = if MC.canvas_data.component[uid] then MC.canvas_data.component[uid] else MC.canvas_data.layout.component.group[uid]
 			componentType = if componentType then componentType.type else resource_type.AWS_EC2_AvailabilityZone
 
 			switch componentType
@@ -1022,6 +1040,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					# Associate to default acl
 					defaultACLComp = MC.aws.acl.getDefaultACL()
 					MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
+
+				when resource_type.AWS_AutoScaling_Group
+					if MC.canvas_data.layout.component.group[uid].originalId
+						asg_comp = MC.canvas_data.component[MC.canvas_data.layout.component.group[uid].originalId]
+						if asg_comp and asg_comp.resource.LoadBalancerNames.length > 0
+							$.each asg_comp.resource.LoadBalancerNames, (idx, loadbalancername)->
+						 		lb_uid = loadbalancername.split('.')[0].slice(1)
+						 		MC.canvas.connect($("#"+lb_uid), 'elb-sg-out', $("#"+uid), 'launchconfig-sg')
+
+
 
 			console.log "Morris : #{componentType}"
 
@@ -1190,19 +1218,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				if line.type == 'sg'
 
 					MC.canvas.remove $("#"+line_id)[0]
-
-				if line.type is 'elb-sg'
-
-					for k, v of line.target
-
-						if v is 'elb-sg-in'
-
-							MC.canvas.remove $("#"+line_id)[0]
-
-							break
-
-
-
 
 			$.each lines, ( idx, line_data ) ->
 

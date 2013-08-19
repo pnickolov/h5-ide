@@ -19,20 +19,22 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             'my_ami'             : null
             'favorite_ami'       : null
             'community_ami'      : null
+            'check_required_service_count' : null
+
+        service_count : 0
 
         initialize : ->
 
             me = this
-
 
             ######listen EC2_EBS_DESC_SSS_RETURN
             me.on 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
                 console.log 'EC2_EBS_DESC_SSS_RETURN'
 
                 me.set 'resoruce_snapshot', result.resolved_data
+                #
+                me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
                 null
-
-
 
             ######listen AWS_QUICKSTART_RETURN
             me.on 'AWS_QUICKSTART_RETURN', ( result ) ->
@@ -65,14 +67,11 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                     MC.data.dict_ami[key] = value
 
                     ami_list.push value
-
                     null
-
 
                 console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
                 if region_name == MC.canvas.data.get('region')
                     me.set 'quickstart_ami', ami_list
-
 
                 #cache config data for current region
                 MC.data.config[region_name].ami                 = result.resolved_data.ami
@@ -98,9 +97,10 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 me.describeStackAmiService region_name
 
                 ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY
-
+                #
+                me._checkRequireServiceCount( 'AWS_QUICKSTART_RETURN' )
+                #
                 null
-
 
             ######listen EC2_AMI_DESC_IMAGES_RETURN
             me.on 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
@@ -153,7 +153,6 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                 null
 
-
             ######listen AWS__PUBLIC_RETURN
             me.on 'AWS__PUBLIC_RETURN', ( result ) ->
                 console.log 'AWS__PUBLIC_RETURN'
@@ -175,7 +174,6 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
 
                 null
-
 
             ######listen FAVORITE_INFO_RETURN
             me.on 'FAVORITE_INFO_RETURN', ( result ) ->
@@ -216,7 +214,6 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                 null
 
-
             #####listen FAVORITE_ADD_RETURN
             me.on 'FAVORITE_ADD_RETURN', ( result ) =>
 
@@ -233,12 +230,11 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                 region_name = result.param[3]
                 console.log 'FAVORITE_REMOVE_RETURN: ' + region_name
-            #    if result.return_code is 0
-            #        delete MC.data.config[region_name].favorite_ami
-            #        @favoriteAmiService region_name
+                #    if result.return_code is 0
+                #        delete MC.data.config[region_name].favorite_ami
+                #        @favoriteAmiService region_name
 
                 null
-
 
         #call service
         describeAvailableZonesService : ( region_name, type ) ->
@@ -263,7 +259,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                                 res.item[idx].isUsed = true
 
                                 null
-
+                #
+                me._checkRequireServiceCount( 'describeAvailableZonesService' )
+                #
                 me.set 'availability_zone', res
 
             else
@@ -276,8 +274,6 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                         region_name = result.param[3]
                         console.log 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN: ' + region_name
-
-
 
                         _.map result.resolved_data.item, (value)->
                             value.zoneShortName = value.zoneName.slice(-2)
@@ -303,19 +299,13 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                         #cache az to MC.data.config[region_name].zone
                         MC.data.config[region_name].zone = result.resolved_data
-
+                        #
+                        me._checkRequireServiceCount( 'describeAvailableZonesService' )
+                        #
                         null
-
-
-
                     else
-                    #DescribeAvailabilityZones failed
-
+                        #DescribeAvailabilityZones failed
                         console.log 'ec2.DescribeAvailabilityZones failed, error is ' + result.error_message
-
-
-
-
 
         #call service
         describeSnapshotsService : ( region_name ) ->
@@ -349,6 +339,8 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                 #describe ami in stack
                 me.describeStackAmiService region_name
+
+                me._checkRequireServiceCount( 'AWS_QUICKSTART_RETURN' )
 
                 ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY
 
@@ -398,7 +390,6 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
             if stack_ami_list.length !=0
                 ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
-
 
         describeCommunityAmiService : ( region_name, name, platform, architecture, rootDeviceType, perPageNum, returnPage ) ->
 
@@ -529,8 +520,6 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                 @set 'favorite_ami', new_favorite_ami
 
-
-
         getIgwStatus : ->
 
             isUsed = false
@@ -608,6 +597,15 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 osType = found[0]
 
             osType
+
+        _checkRequireServiceCount : ( name ) ->
+            console.log '_checkRequireServiceCount, name = ' + name
+            #
+            @service_count = @service_count + 1
+            #
+            @set 'check_required_service_count', @service_count
+            #
+            null
 
     }
 

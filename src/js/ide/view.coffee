@@ -15,6 +15,15 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             $( '.main-content' ).height window.innerHeight - 42
             $('.sub-menu-scroll-wrap').height window.innerHeight - 100
 
+        showMain : () ->
+            console.log 'showMain'
+            #
+            MC.data.loading_wrapper_html = $( '#loading-bar-wrapper' ).html()
+            #
+            $( '.loading-wrapper' ).fadeOut 'normal', () ->
+                $( '.loading-wrapper' ).remove()
+                $( '#wrapper' ).removeClass 'main-content'
+
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'
             console.log 'MC.data.dashboard_type = ' + MC.data.dashboard_type

@@ -77,14 +77,15 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 in_dashboard = me.get 'in_dashboard'
 
                 # check whether same operation
-                the_req = []
-                the_req.push i for i in info_list when i.id == item.id
+                same_req = 0
+                same_req++ for i in info_list when i.id == item.id
 
+                # check whether on current tab
                 if in_dashboard or item.rid != MC.canvas_data.id
-                    if the_req.length>0 and the_req[0].id != item.id
-                        item.is_readed = false
-
+                    item.is_readed = false
+                    if same_req == 0 or unread_num == 0
                         unread_num += 1
+
                         me.set 'unread_num', unread_num
                         me.set 'is_unread', true
 

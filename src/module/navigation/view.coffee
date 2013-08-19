@@ -70,9 +70,9 @@ define [ 'event',
 
         stackListItemsClick : ( event ) ->
             console.log 'stack tab click event'
-            target   = event.target
-            nav      = $ '#navigation'
-            main     = $ '#main'
+            target   = event.currentTarget
+            #nav      = $ '#navigation'
+            #main     = $ '#main'
             tab_name = $( target ).text()
             #
             #ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name, $( target ).attr( 'data-region-name' ), $( target ).attr( 'data-stack-id' )
@@ -80,9 +80,9 @@ define [ 'event',
 
         appListItemsClick : ( event ) ->
             console.log 'app tab click event'
-            target   = event.target
-            nav      = $ '#navigation'
-            main     = $ '#main'
+            target   = event.currentTarget
+            #nav      = $ '#navigation'
+            #main     = $ '#main'
             tab_name = $( target ).text()
             #
             #ide_event.trigger ide_event.OPEN_APP_TAB, $.trim( tab_name ), $( target ).attr( 'data-region-name' ) , $( target ).attr( 'data-app-id' )

@@ -47,8 +47,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #update initial data
                     MC.canvas_property.original_json = JSON.stringify( data )
 
-                    me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', name
-
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
                     #call save png
@@ -57,9 +55,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #set toolbar flag
                     me.setFlag id, 'SAVE_STACK', name
 
+                    me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
+
                     id
                 else
-                    me.trigger 'TOOLBAR_STACK_SAVE_FAILED'
+                    #me.trigger 'TOOLBAR_HANDLE_FAILED', 'SAVE_STACK', name
 
                     null
 

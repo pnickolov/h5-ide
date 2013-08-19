@@ -30,11 +30,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me.on 'STACK_SAVE_RETURN', (result) ->
                 console.log 'STACK_SAVE_RETURN'
 
-                if !result.is_error
+                region  = result.param[3]
+                data    = result.param[4]
+                id      = data.id
 
-                    region  = result.param[3]
-                    data    = result.param[4]
-                    id      = data.id
+                name = data.name
+
+                if !result.is_error
 
                     console.log 'save stack successfully'
 
@@ -59,7 +61,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     id
                 else
-                    #me.trigger 'TOOLBAR_HANDLE_FAILED', 'SAVE_STACK', name
+                    me.trigger 'TOOLBAR_HANDLE_FAILED', 'SAVE_STACK', name
 
                     null
 
@@ -67,12 +69,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me.on 'STACK_CREATE_RETURN', (result) ->
                 console.log 'STACK_CREATE_RETURN'
 
+                region  = result.param[3]
+                data    = result.param[4]
+                id      = data.id
+
+                name    = data.name
+
                 if !result.is_error
                     console.log 'create stack successfully'
-
-                    region  = result.param[3]
-                    data    = result.param[4]
-                    id      = data.id
 
                     # track
                     analytics.track "Saved Stack",
@@ -90,7 +94,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #update initial data
                     MC.canvas_property.original_json = JSON.stringify( data )
 
-                    me.trigger 'TOOLBAR_STACK_SAVE_SUCCESS', name
+                    me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
 
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK'
 
@@ -107,7 +111,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     new_id
 
                 else
-                    me.trigger 'TOOLBAR_STACK_SAVE_FAILED'
+                    me.trigger 'TOOLBAR_HANDLE_FAILED', 'CREATE_STACK', name
 
                     null
 
@@ -115,34 +119,34 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me.on 'STACK_SAVE__AS_RETURN', (result) ->
                 console.log 'STACK_SAVE__AS_RETURN'
 
+                region      = result.param[3]
+                id          = result.param[4]
+                new_name    = result.param[5]
+                name        = result.param[6]
+
                 if !result.is_error
                     console.log 'save as stack successfully'
-
-                    region      = result.param[3]
-                    id          = result.param[4]
-                    new_name    = result.param[5]
-                    name        = result.param[6]
 
                     #update stack name list
                     if new_name not in MC.data.stack_list[region]
                         MC.data.stack_list[region].push new_name
 
                     #trigger event
-                    me.trigger 'TOOLBAR_STACK_DUPLICATE_SUCCESS', name
+                    me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'DUPLICATE_STACK', name
                     ide_event.trigger ide_event.UPDATE_STACK_LIST
                 else
-                    me.trigger 'TOOLBAR_STACK_DUPLICATE_FAILED', name
+                    me.trigger 'TOOLBAR_HANDLE_FAILED', 'DUPLICATE_STACK', name
 
             #####listen STACK_REMOVE_RETURN
             me.on 'STACK_REMOVE_RETURN', (result) ->
                 console.log 'STACK_REMOVE_RETURN'
 
+                region  = result.param[3]
+                id      = result.param[4]
+                name    = result.param[5]
+
                 if !result.is_error
                     console.log 'send delete stack successful message'
-
-                    region  = result.param[3]
-                    id      = result.param[4]
-                    name    = result.param[5]
 
                     #update stack name list
                     if name in MC.data.stack_list[region]
@@ -150,13 +154,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         MC.data.stack_list[region].splice(index, 1)
 
                     #trigger event
-                    me.trigger 'TOOLBAR_STACK_DELETE_SUCCESS', name
+                    me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'REMOVE_STACK', name
                     ide_event.trigger ide_event.STACK_DELETE, name, id
 
                     me.setFlag id, 'DELETE_STACK'
 
                 else
-                    me.trigger 'TOOLBAR_STACK_DELETE_FAILED', name
+                    me.trigger 'TOOLBAR_HANDLE_FAILED', 'REMOVE_STACK', name
 
             #####listen STACK_RUN_RETURN
             me.on 'STACK_RUN_RETURN', (result) ->
@@ -171,6 +175,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
 
                 data = run_stack_map[region][app_name]
+
                 ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
 
                 # handle request
@@ -383,7 +388,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             id = data.id
             region = data.region
             if me.isChanged(data) or id.indexOf('stack-') isnt 0
-                id = me.saveStack(region, id, data)
+                me.saveStack(data)
+                id = MC.canvas_data.id
                 if not id
                     return
 
@@ -598,21 +604,26 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             flag_list = {}
 
+            region = req.region
+
             switch req.state
                 when constant.OPS_STATE.OPS_STATE_INPROCESS
                     if flag is 'RUN_STACK'
 
-                        flag_list.is_inprocess = true
+                        if 'dag' of dag # changed request
+                            flag_list.is_inprocess = true
+                            flag_list.steps = dag.dag.step.length
 
-                        flag_list.steps = dag.dag.step.length
+                            # check rollback
+                            dones = 0
+                            dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
+                            console.log 'done steps:' + dones
+                            if dag.dag.state isnt 'Rollback'
+                                flag_list.dones = dones
+                                flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
 
-                        # check rollback
-                        dones = 0
-                        dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
-                        console.log 'done steps:' + dones
-                        if dag.dag.state isnt 'Rollback'
-                            flag_list.dones = dones
-                            flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
+                        else # added request
+                            flag_list.is_pending = true
 
                 when constant.OPS_STATE.OPS_STATE_FAILED
                     #handle.stop()
@@ -662,9 +673,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             # send process data
             if flag_list and flag is 'RUN_STACK'
-                MC.process['process-' + name].flag_list = flag_list
-                #ide_event.trigger ide_event.UPDATE_PROCESS, req.region, name
-                ide_event.trigger ide_event.UPDATE_PROCESS, name
+
+                tab_name = 'process-' + region + '-' + name
+
+                MC.process[tab_name].flag_list = flag_list
+
+                ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
         isInstanceStore : () ->
 

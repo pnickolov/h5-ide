@@ -280,7 +280,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     ami = v for k,v of feeMap.ami when v.imageId == imageId
 
-                    if ami of feeMap and imageId of feeMap.ami
+                    if 'ami' of feeMap and imageId of feeMap.ami
 
                         if feeMap.ami[imageId].osType is 'win'
                             os = 'windows'
@@ -297,7 +297,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
 
                 else if item.type is 'AWS.ELB'
-                    if price of feeMap and elb of feeMap.price
+                    if 'price' of feeMap and 'elb' of feeMap.price
                         elb = i for i in feeMap.price.elb when i.unit is 'perELBHour'
 
                         cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : elb.fee + '/hr' }
@@ -305,7 +305,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                         total_fee += elb.fee * 24 * 30
 
                 else if item.type is 'AWS.EC2.EBS.Volume'
-                    if price of feeMap and ebs of feeMap.price
+                    if 'price' of feeMap and 'ebs' of feeMap.price
                         if item.resource.VolumeType is 'standard'
                             vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
                         else

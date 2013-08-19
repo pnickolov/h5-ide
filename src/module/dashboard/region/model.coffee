@@ -260,88 +260,98 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
 
             #listen APP_START_RETURN
-            me.on 'APP_START_RETURN', (result) ->
+            # me.on 'APP_START_RETURN', (result) ->
 
-                console.log 'APP_START_RETURN'
+            #     console.log 'APP_START_RETURN'
 
-                # update tab icon
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+            #     # update tab icon
+            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
 
-                #parse the result
-                if !result.is_error #request successfuly
+            #     #parse the result
+            #     if !result.is_error #request successfuly
 
-                    if ws
-                        req_id = result.resolved_data.id
-                        console.log "request id:" + req_id
-                        query = ws.collection.request.find({id:req_id})
-                        handle = query.observeChanges {
-                            changed : (id, req) ->
-                                if req.state == "Done"
-                                    handle.stop()
-                                    console.log 'stop handle'
-                                    #push event
-                                    ide_event.trigger ide_event.APP_RUN, app_name, app_id
+            #         if ws
+            #             req_id = result.resolved_data.id
+            #             console.log "request id:" + req_id
+            #             query = ws.collection.request.find({id:req_id})
+            #             handle = query.observeChanges {
+            #                 changed : (id, req) ->
+            #                     if req.state == "Done"
+            #                         handle.stop()
+            #                         console.log 'stop handle'
+            #                         #push event
+            #                         ide_event.trigger ide_event.APP_RUN, app_name, app_id
 
-                                    # update icon
-                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', app_id
-                        }
-                    null
+            #                         # update icon
+            #                         ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', app_id
+            #             }
+            #         null
 
-            #listen APP_STOP_RETURN
-            me.on 'APP_STOP_RETURN', (result) ->
+            # #listen APP_STOP_RETURN
+            # me.on 'APP_STOP_RETURN', (result) ->
 
-                console.log 'APP_STOP_RETURN'
+            #     console.log 'APP_STOP_RETURN'
 
-                # update tab icon
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+            #     # update tab icon
+            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
 
-                if !result.is_error
-                    if ws
-                        req_id = result.resolved_data.id
-                        console.log "request id:" + req_id
-                        query = ws.collection.request.find({id:req_id})
-                        handle = query.observeChanges {
-                            changed : (id, req) ->
-                                if req.state == "Done"
-                                    handle.stop()
-                                    console.log 'stop handle'
-                                    #push event
-                                    ide_event.trigger ide_event.APP_STOP, app_name, app_id
+            #     if !result.is_error
+            #         if ws
+            #             req_id = result.resolved_data.id
+            #             console.log "request id:" + req_id
+            #             query = ws.collection.request.find({id:req_id})
+            #             handle = query.observeChanges {
+            #                 changed : (id, req) ->
+            #                     if req.state == "Done"
+            #                         handle.stop()
+            #                         console.log 'stop handle'
+            #                         #push event
+            #                         ide_event.trigger ide_event.APP_STOP, app_name, app_id
 
-                                    # update icon
-                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', app_id
+            #                         # update icon
+            #                         ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', app_id
 
-                        }
-                    null
+            #             }
+            #         null
 
-            #listen APP_TERMINATE_RETURN
-            me.on 'APP_TERMINATE_RETURN', (result) ->
+            # #listen APP_TERMINATE_RETURN
+            # me.on 'APP_TERMINATE_RETURN', (result) ->
 
-                console.log 'APP_TERMINATE_RETURN'
+            #     console.log 'APP_TERMINATE_RETURN'
 
-                # update tab icon
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+            #     # update tab icon
+            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
 
-                if !result.is_error
-                    if ws
-                        req_id = result.resolved_data.id
-                        console.log "request id:" + req_id
-                        query = ws.collection.request.find({id:req_id})
-                        handle = query.observeChanges {
-                            changed : (id, req) ->
-                                if req.state == "Done"
-                                    handle.stop()
-                                    console.log 'stop handle'
-                                    #push event
-                                    ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
-                        }
-                null
+            #     if !result.is_error
+            #         if ws
+            #             req_id = result.resolved_data.id
+            #             console.log "request id:" + req_id
+            #             query = ws.collection.request.find({id:req_id})
+            #             handle = query.observeChanges {
+            #                 changed : (id, req) ->
+            #                     if req.state == "Done"
+            #                         handle.stop()
+            #                         console.log 'stop handle'
+            #                         #push event
+            #                         ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
+            #             }
+            #     null
 
             #listen STACK_SAVE__AS_RETURN
             me.on 'STACK_SAVE__AS_RETURN', (result) ->
                 console.log 'STACK_SAVE__AS_RETURN'
 
                 if !result.is_error
+
+                    region      = result.param[3]
+                    id          = result.param[4]
+                    new_name    = result.param[5]
+                    name        = result.param[6]
+
+                    #update stack name list
+                    if new_name not in MC.data.stack_list[region]
+                        MC.data.stack_list[region].push new_name
+
                     ide_event.trigger ide_event.UPDATE_STACK_LIST
 
                 null
@@ -352,7 +362,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log result
 
                 if !result.is_error
-                    ide_event.trigger ide_event.STACK_DELETE, stack_name, stack_id
+
+                    region  = result.param[3]
+                    id      = result.param[4]
+                    name    = result.param[5]
+
+                    ide_event.trigger ide_event.STACK_DELETE, name, id
 
 
             #listen VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN

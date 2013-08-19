@@ -28,7 +28,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                 # push event when done
                 app_name = MC.process[tab_name].app_name
-                if MC.data.current_tab_id is 'process-' + app_name and 'is_done' of flag_list and flag_list.is_done
+                #if MC.data.current_tab_id is 'process-' + app_name and 'is_done' of flag_list and flag_list.is_done
+                if 'is_done' of flag_list and flag_list.is_done
                     app_id = flag_list.app_id
                     region = MC.process[tab_name].region
 

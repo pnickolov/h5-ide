@@ -31,11 +31,10 @@ define [ 'event' ], ( ide_event ) ->
 
                 view.render()
 
-            ide_event.onLongListen ide_event.UPDATE_PROCESS, ( app_name ) ->
+            ide_event.onLongListen ide_event.UPDATE_PROCESS, ( tab_name ) ->
             #model.on 'UPDATE_PROCESS', () ->
                 console.log 'UPDATE_PROCESS'
 
-                tab_name = 'process-' + app_name
                 if MC.data.current_tab_id is tab_name
                     model.getProcess tab_name
 

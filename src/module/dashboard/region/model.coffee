@@ -337,6 +337,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             #             }
             #     null
 
+            #listen APP_INFO_RETURN
+            me.on 'APP_INFO_RETURN', (result) ->
+
+                console.log 'APP_INFO_RETURN'
+
+                #if !result.is_error
+                #    if ws
+
+                null
+
             #listen STACK_SAVE__AS_RETURN
             me.on 'STACK_SAVE__AS_RETURN', (result) ->
                 console.log 'STACK_SAVE__AS_RETURN'
@@ -452,7 +462,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
         # get current region's app/stack list
         getItemList : ( flag, region, result ) ->
-
             me = this
 
             item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ region ] == regions.region_group
@@ -482,6 +491,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                         me.trigger 'UPDATE_REGION_STACK_LIST'
 
         parseItem : (item, flag) ->
+            me = this
+
             id          = item.id
             name        = item.name
             create_time = item.time_create
@@ -505,10 +516,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 status = "pending"
                 ispending = true
 
+            is_use_ami = false
+
             if flag == 'app'
                 date = new Date()
                 start_time = null
                 stop_time = null
+
+                #is_use_ami = me.isInstanceStore item
+
                 if item.last_start
                     date.setTime(item.last_start*1000)
                     start_time  = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
@@ -536,6 +552,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             null
 
+        isInstanceStore : ( data ) ->
+
+            is_instance_store = false
+
+            if 'component' in data.layout and 'node' in data.layout.component
+                for node in data.layout.component.node
+                    if node.rootDeviceType == 'instance-store'
+                        is_instance_store = true
+                        break
+
+            is_instance_store
 
         runApp : (region, app_id) ->
             me = this

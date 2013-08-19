@@ -24,6 +24,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                 # get the data
                 flag_list = MC.process[tab_name].flag_list
 
+                # linear increase
+
                 me.set 'flag_list', flag_list
 
                 # push event when done
@@ -43,40 +45,6 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                         ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
                         ide_event.trigger ide_event.UPDATE_APP_LIST, null
                     , 2000
-
-                # if type is 'OPEN_PROCESS'
-                #     #initial the start state
-                #     flag_list = {'is_pending':true}
-                #     me.set 'flag_list', flag_list
-                #     MC.process[tab_name].flag_list = flag_list
-
-                #     me.trigger 'UPDATE_PROCESS'
-
-                #     me.handleProcess tab_name
-
-                # else if type is 'OLD_PROCESS'
-                #     if MC.process[tab_name].flag_list   # processing app
-                #         me.set 'flag_list', MC.process[tab_name].flag_list
-                #         me.trigger 'UPDATE_PROCESS'
-
-                #         # if ended then push event
-                #         app_name = MC.process[tab_name].app_name
-                #         app_id = MC.process[tab_name].flag_list.app_id
-                #         region = MC.process[tab_name].data.region
-                #         #data = MC.process[tab_name].data
-                #         if MC.data.current_tab_id is 'process-'+app_name and MC.process[tab_name].flag_list.is_done
-                #             #save png
-                #             data = $.extend( true, {}, MC.process[tab_name].data )
-                #             data.id = app_id
-                #             ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, data
-
-                #             # hold on 2 seconds
-                #             setTimeout () ->
-                #                 ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
-                #                 ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
-                #                 ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
-                #                 ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                #             , 2000
 
             null
 

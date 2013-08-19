@@ -95,7 +95,9 @@
 				{{/if}}
 				<label for="property-instance-enable-cloudwatch"></label>
 			</div>
-			<label for="property-instance-enable-cloudwatch" >Enable CloudWatch</label>
+			<label for="property-instance-enable-cloudwatch" >Enable CloudWatch Detailed Monitoring</label>
+
+			<p class="hide" id="property-cloudwatch-warn">Data is available in 1-minute periods at an additional cost. For information about pricing, go to the <a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-instance-user-data">User Data</label>
@@ -141,8 +143,8 @@
 				{{#each eni_display.eni_ips}}
 				<li class="input-ip-item">
 					<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
-						<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}.</label>
-						<input type="text" class="input input-ip" value="x" id="instance-ip-1">
+						<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}</label>
+						<input type="text" class="input input-ip" value="{{suffix}}" id="instance-ip-1">
 					</div>
 					{{#unless Primary}}<div class="network-remove-icon"></div>{{/unless}}
 					{{#if has_eip}}

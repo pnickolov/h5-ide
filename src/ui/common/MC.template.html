@@ -945,47 +945,31 @@ Additional Notes and Questions
 </div>
 
 <!-- aimSecondaryPanel -->
-<div class="sidebar-title">
-	<!--
-    <a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
-	-->
-    <span class="sidebar-title-text">{{imageId}}</span>
-</div>
-<div class="fixedaccordion accordion-default" data-sub="68">
-    <div class="accordion-group  expanded" >
-        <div class="fixedaccordion-head">
-        AMI Details
-        </div>
-        <div class="accordion-body scroll-wrap scrollbar-auto-hide context-wrap">
-            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-            <div class="item-wrap scroll-content">
-                <dl class="dl-horizontal">
-                    <dt>AMI ID</dt>
-                    <dd>{{imageId}}</dd>
-                    <dt>Name</dt>
-                    <dd>{{name}}</dd>
-                    <dt>Description</dt>
-                    <dd>{{description}}</dd>
-                    <dt>Root Device Type</dt>
-                    <dd>{{rootDeviceType}}</dd>
-                    <dt>Architecture</dt>
-                    <dd>{{architecture}}</dd>
-                    <dt>Virtualization</dt>
-                    <dd>{{virtualizationType}}</dd>
-                    <dt>Kernel ID</dt>
-                    <dd>{{kernelId}}</dd>
-                    <dt>Type</dt>
-                    <dd>{{osType}}</dd>
-                    <dt>Support Instance</dt>
-                    <dd><a href="#" target="_blank">{{instance_type}}</a></dd>
-                </dl>
-            </div>
-        </div>
-    </div>
-</div>
+<article>
+  <dl class="dl-horizontal">
+      <dt>AMI ID</dt>
+      <dd>{{imageId}}</dd>
+      <dt>Name</dt>
+      <dd>{{name}}</dd>
+      <dt>Description</dt>
+      <dd>{{description}}</dd>
+      <dt>Root Device Type</dt>
+      <dd>{{rootDeviceType}}</dd>
+      <dt>Architecture</dt>
+      <dd>{{architecture}}</dd>
+      <dt>Virtualization</dt>
+      <dd>{{virtualizationType}}</dd>
+      <dt>Kernel ID</dt>
+      <dd>{{kernelId}}</dd>
+      <dt>Type</dt>
+      <dd>{{osType}}</dd>
+      <dt>Support Instance</dt>
+      <dd>{{instance_type}}</dd>
+  </dl>
+</article>
 
 <!-- snapshotSecondaryPanel -->
-<article class="item-wrap scroll-content">
+<article>
     <dl class="dl-horizontal">
         <dt>Snapshot ID</dt>
         <dd>{{snapshotId}}</dd>
@@ -1094,4 +1078,19 @@ Additional Notes and Questions
 			</a>
 		</li>
 	</ul>
+</div>
+
+<!-- setupCIDRConfirm -->
+<div style="width:420px">
+  <div class="modal-header"> <h3>Set up CIDR Block</h3><i class="modal-close">&times;</i> </div>
+  <div class="modal-body">
+    <div class="modal-text-wraper"> <div class="modal-center-align-helper">
+      <div class="modal-text">{{main_content}}</div>
+      <div class="modal-text">{{desc_content}}</div>
+    </div> </div>
+  </div>
+  <div class="modal-footer">
+  	<button id="cidr-remove" class="btn modal-close btn-red">Remove Subnet</button>
+    <button id="cidr-return" class="btn modal-close btn-silver">OK</button>
+  </div>
 </div>

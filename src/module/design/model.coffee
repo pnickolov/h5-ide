@@ -20,26 +20,16 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                 app_id = result.param[4]
                 console.log 'APP_RESOURCE_RETURN:' + app_id
 
-
                 if !result.is_error
-
                     region = result.param[3]
-
                     resource_source = result.resolved_data
 
                     if resource_source
-
                         MC.aws.aws.cacheResource resource_source, region
                         me.describeInstancesOfASG region
-
                 else
-
                     #TO-DO
-
-
                 null
-
-
 
         saveTab : ( tab_id, snapshot, data, property, property_panel, last_open_property ) ->
             console.log 'saveTab'
@@ -47,6 +37,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
             null
 
         saveProcessTab : ( tab_id ) ->
+            console.log 'saveProcessTab'
             if !MC.tab[ tab_id ]     then MC.tab[ tab_id ] = MC.process[ tab_id ]
             #if MC.process[ tab_id ] then delete MC.process[ tab_id ]
             null

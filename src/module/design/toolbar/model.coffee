@@ -2,7 +2,7 @@
 #  View Mode for design/toolbar module
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_model', 'constant' ], (MC, Backbone, $, _, ide_event, stack_model, app_model, constant) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant' ], (MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant) ->
 
     app_state_list = [ 'Pending', 'InProcess', 'Done', 'Failed' ]
 
@@ -158,25 +158,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 else
                     me.trigger 'TOOLBAR_STACK_DELETE_FAILED', name
-
-
-            #####listen STACK_RUN_RETURN
-            me.on 'STACK_RUN_RETURN', (result) ->
-                console.log 'STACK_RUN_RETURN'
-
-                region      = result.param[3]
-                id          = result.param[4]
-                app_name    = result.param[5]
-
-                #add new-app status
-                #me.handleRequest result, 'RUN_STACK', region, id, app_name
-                # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
-                # # track
-                # analytics.track "Launched Stack",
-                #     stack_id: id,
-                #     stack_region: region,
-                #     stack_app_name: app_name
-                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, data, result
 
 
             #####listen APP_START_RETURN
@@ -397,8 +378,35 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if not id
                     return
 
-            #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
-            stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
+
+            stack_service.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, null, null, null, null, ( result ) ->
+
+                if !result.is_error
+                #run succeed
+
+                    console.log 'STACK_RUN_RETURN'
+
+                    region      = result.param[3]
+                    id          = result.param[4]
+                    app_name    = result.param[5]
+
+                    #add new-app status
+                    #me.handleRequest result, 'RUN_STACK', region, id, app_name
+                    # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
+                    # # track
+                    # analytics.track "Launched Stack",
+                    #     stack_id: id,
+                    #     stack_region: region,
+                    #     stack_app_name: app_name
+                    ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, data, result
+
+
+                else
+                #run failed
+
+                    console.log 'stack.run failed, error is ' + result.error_message
+
+
 
         #zoomin
         zoomIn : () ->

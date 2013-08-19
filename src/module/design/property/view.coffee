@@ -115,33 +115,32 @@ define [ './temp_view',
 
         showSecondPanel : ( data ) ->
             $("#property-second-title").html( data.title ).attr( "data-id", data.id )
-            $("#property-second-panel .property-content").html data.dom
-            $("#property-panel .property-wrap").addClass "show-second-panel"
-
             $("#hide-second-panel").data("tooltip", "Back to " + $("#property-title").text())
 
+            $("#property-second-panel").show().animate({left:"0px"}, 200).find(".property-content").html( data.dom )
+            $("#property-first-panel").animate {left:"-30%"}, 200, ()->
+                $("#property-first-panel").hide()
+
+
         hideSecondPanel : () ->
-            $("#property-panel .property-wrap").removeClass "show-second-panel"
+            $panel = $("#property-second-panel")
+            $panel.animate {left:"100%"}, 200, ()->
+                $("#property-second-panel").hide()
+            $("#property-first-panel").show().animate {left:"0px"}, 200
+
             this.trigger "HIDE_SUBPANEL", $("#property-second-title").attr( "data-id" )
             false
 
         immHideSecondPanel : () ->
-            if not $("#property-panel .property-wrap").hasClass "show-second-panel"
-                return
+            $("#property-second-panel").css {
+                display : "none"
+                left    : "100%"
+            }
 
-            # Hide Second Panel immediately
-            setTimeout () ->
-                $("#property-panel").removeClass "transition"
-                $("#property-panel .property-wrap").removeClass "show-second-panel"
-
-                setTimeout ()->
-                    $("#property-panel").addClass "transition"
-                    null
-                , 10
-
-                null
-            , 10
-
+            $("#property-first-panel").css {
+                display : "block"
+                left    : "0px"
+            }
             null
 
         domChange : ( event ) ->

@@ -2135,16 +2135,17 @@ a.sidebar-hider {
 	        box-sizing: border-box;
 }
 
-.transition .property-panel-wrapper {
+/*.transition .property-panel-wrapper {
 	-webkit-transition: left .2s ease-in-out;
 	   -moz-transition: left .2s ease-in-out;
 	    -ms-transition: left .2s ease-in-out;
 	     -o-transition: left .2s ease-in-out;
 	        transition: left .2s ease-in-out;
-}
+}*/
 
 #property-second-panel {
-	left : 100%;
+	display    : none;
+	left       : 100%;
 	background : #fff;
 }
 
@@ -2153,7 +2154,7 @@ a.sidebar-hider {
 	width: 216px;
 }
 
-.show-second-panel #property-first-panel {
+/*.show-second-panel #property-first-panel {
 	z-index : 3;
 	left : -30%;
 }
@@ -2169,7 +2170,7 @@ a.sidebar-hider {
 .show-second-panel #property-second-panel {
 	z-index : 4;
 	left : 0;
-}
+}*/
 
 .property-content {
 	height      : 100%;

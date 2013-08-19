@@ -349,7 +349,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                                     handle.stop()
                                     console.log 'stop handle'
                                     #push event
-                                    ide_event.trigger ide_event.APP_RUN, app_name, app_id
+                                    ide_event.trigger ide_event.START_APP, app_name, app_id
                         }
                     null
 
@@ -374,7 +374,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                                     handle.stop()
                                     console.log 'stop handle'
                                     #push event
-                                    ide_event.trigger ide_event.APP_STOP, app_name, app_id
+                                    ide_event.trigger ide_event.STOP_APP, app_name, app_id
                         }
                     null
 
@@ -399,7 +399,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                                     handle.stop()
                                     console.log 'stop handle'
                                     #push event
-                                    ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
+                                    ide_event.trigger ide_event.TERMINATE_APP, app_name, app_id
                         }
                 null
 

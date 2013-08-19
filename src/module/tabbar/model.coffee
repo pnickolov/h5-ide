@@ -28,8 +28,6 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
                 console.log 'APP_INFO_RETURN'
                 me.trigger 'GET_APP_COMPLETE', result
 
-
-
         refresh      : ( older, newer, type ) ->
             console.log 'refresh, older = ' + older + ', newer = ' + newer + ', type = ' + type
             #save

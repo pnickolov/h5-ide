@@ -102,19 +102,44 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             that = this
 
-            template = MC.template.setupCIDRConfirm {
-                content   : "Message"
-            }
-            modal template, false, () ->
+            mainContent = ''
+            descContent = ''
 
-                $('.modal-close, #cidr-return').click () ->
-                    $('#property-cidr-block').focus()
+            subnetUID = that.model.get('uid')
+            vpcComp = MC.aws.subnet.getVPC(subnetUID)
+            vpcCIDR = vpcComp.resource.CidrBlock
 
-                $('#cidr-remove').click () ->
-                    subnetUID = that.model.get('uid')
-                    $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
-                    MC.canvas.remove($("#" + subnetUID)[0])
-                    MC.aws.aws.disabledAllOperabilityArea(false)
+            # if blank
+            cidrPrefix = $("#property-cidr-prefix").html()
+            cidrSuffix = $("#property-cidr-block").val()
+            subnetCIDR = cidrPrefix + cidrSuffix
+
+            haveError = true
+            if !cidrSuffix
+                mainContent = 'CIDR block is required.'
+                descContent = 'Please provide a subset of IP ranges of this VPC.'
+            else if !MC.aws.subnet.isInVPCCIDR(vpcCIDR, subnetCIDR)
+                # mainContent = 'CIDR block is required.'
+                # descContent = 'Please provide a subset of IP ranges of this VPC.'
+            else
+                haveError = false
+
+            if haveError
+                template = MC.template.setupCIDRConfirm {
+                    main_content : mainContent,
+                    desc_content : descContent
+                }
+                modal template, false, () ->
+
+                    $('.modal-close, #cidr-return').click () ->
+                        $('#property-cidr-block').focus()
+
+                    $('#cidr-remove').click () ->
+                        $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
+                        MC.canvas.remove($("#" + subnetUID)[0])
+                        MC.aws.aws.disabledAllOperabilityArea(false)
+            else
+                MC.aws.aws.disabledAllOperabilityArea(false)
 
         onChangeACL : () ->
 

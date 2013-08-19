@@ -1,41 +1,7 @@
-var
-	hide_siderbar = function ()
-	{
-		$('#siderbar_body_main').hide();
 
-		$('#main_body').animate({
-			'margin-left': 60
-		}, 300);
-
-		$('#siderbar').animate({
-			'width': 60
-		}, 300);
-
-		$('#show_siderbar_btn').fadeIn();
-	},
-
-	show_siderbar = function ()
-	{
-		$('#main_body').animate({
-			'margin-left': 279
-		}, 300);
-
-		$('#siderbar').animate({
-			'width': 279
-		}, 300, function ()
-		{
-			$('#siderbar_body_main').show();
-			$('#show_siderbar_btn').fadeOut();
-		});
-	},
-
-	canvas_resize = function ()
-	{
-		//$('#main_body_content').css('height', window.innerHeight - 60);
-
-		$('#canvas').css('height', window.innerHeight - 98);
-	};
-
+// [ Warning!!!! ] DEAD CODE
+// This source code is dead. listen() / ready() / connect() seems like doing nothing.
+// But it pollutes the window object. Which makes it un-removable !!!!
 // Dom Ready
 var listen = function ()
 {
@@ -90,8 +56,6 @@ var ready = function ()
 	$(document.body)
 		.on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown);
 
-	canvas_resize();
-	$(window).on('resize', canvas_resize);
 };
 
 // Dom Ready

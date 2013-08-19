@@ -260,81 +260,91 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
 
             #listen APP_START_RETURN
-            me.on 'APP_START_RETURN', (result) ->
+            # me.on 'APP_START_RETURN', (result) ->
 
-                console.log 'APP_START_RETURN'
+            #     console.log 'APP_START_RETURN'
 
-                # update tab icon
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+            #     # update tab icon
+            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
 
-                #parse the result
-                if !result.is_error #request successfuly
+            #     #parse the result
+            #     if !result.is_error #request successfuly
 
-                    if ws
-                        req_id = result.resolved_data.id
-                        console.log "request id:" + req_id
-                        query = ws.collection.request.find({id:req_id})
-                        handle = query.observeChanges {
-                            changed : (id, req) ->
-                                if req.state == "Done"
-                                    handle.stop()
-                                    console.log 'stop handle'
-                                    #push event
-                                    ide_event.trigger ide_event.APP_RUN, app_name, app_id
+            #         if ws
+            #             req_id = result.resolved_data.id
+            #             console.log "request id:" + req_id
+            #             query = ws.collection.request.find({id:req_id})
+            #             handle = query.observeChanges {
+            #                 changed : (id, req) ->
+            #                     if req.state == "Done"
+            #                         handle.stop()
+            #                         console.log 'stop handle'
+            #                         #push event
+            #                         ide_event.trigger ide_event.APP_RUN, app_name, app_id
 
-                                    # update icon
-                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', app_id
-                        }
-                    null
+            #                         # update icon
+            #                         ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', app_id
+            #             }
+            #         null
 
-            #listen APP_STOP_RETURN
-            me.on 'APP_STOP_RETURN', (result) ->
+            # #listen APP_STOP_RETURN
+            # me.on 'APP_STOP_RETURN', (result) ->
 
-                console.log 'APP_STOP_RETURN'
+            #     console.log 'APP_STOP_RETURN'
 
-                # update tab icon
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+            #     # update tab icon
+            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
 
-                if !result.is_error
-                    if ws
-                        req_id = result.resolved_data.id
-                        console.log "request id:" + req_id
-                        query = ws.collection.request.find({id:req_id})
-                        handle = query.observeChanges {
-                            changed : (id, req) ->
-                                if req.state == "Done"
-                                    handle.stop()
-                                    console.log 'stop handle'
-                                    #push event
-                                    ide_event.trigger ide_event.APP_STOP, app_name, app_id
+            #     if !result.is_error
+            #         if ws
+            #             req_id = result.resolved_data.id
+            #             console.log "request id:" + req_id
+            #             query = ws.collection.request.find({id:req_id})
+            #             handle = query.observeChanges {
+            #                 changed : (id, req) ->
+            #                     if req.state == "Done"
+            #                         handle.stop()
+            #                         console.log 'stop handle'
+            #                         #push event
+            #                         ide_event.trigger ide_event.APP_STOP, app_name, app_id
 
-                                    # update icon
-                                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', app_id
+            #                         # update icon
+            #                         ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', app_id
 
-                        }
-                    null
+            #             }
+            #         null
 
-            #listen APP_TERMINATE_RETURN
-            me.on 'APP_TERMINATE_RETURN', (result) ->
+            # #listen APP_TERMINATE_RETURN
+            # me.on 'APP_TERMINATE_RETURN', (result) ->
 
-                console.log 'APP_TERMINATE_RETURN'
+            #     console.log 'APP_TERMINATE_RETURN'
 
-                # update tab icon
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+            #     # update tab icon
+            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
 
-                if !result.is_error
-                    if ws
-                        req_id = result.resolved_data.id
-                        console.log "request id:" + req_id
-                        query = ws.collection.request.find({id:req_id})
-                        handle = query.observeChanges {
-                            changed : (id, req) ->
-                                if req.state == "Done"
-                                    handle.stop()
-                                    console.log 'stop handle'
-                                    #push event
-                                    ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
-                        }
+            #     if !result.is_error
+            #         if ws
+            #             req_id = result.resolved_data.id
+            #             console.log "request id:" + req_id
+            #             query = ws.collection.request.find({id:req_id})
+            #             handle = query.observeChanges {
+            #                 changed : (id, req) ->
+            #                     if req.state == "Done"
+            #                         handle.stop()
+            #                         console.log 'stop handle'
+            #                         #push event
+            #                         ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
+            #             }
+            #     null
+
+            #listen APP_INFO_RETURN
+            me.on 'APP_INFO_RETURN', (result) ->
+
+                console.log 'APP_INFO_RETURN'
+
+                #if !result.is_error
+                #    if ws
+
                 null
 
             #listen STACK_SAVE__AS_RETURN
@@ -342,6 +352,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log 'STACK_SAVE__AS_RETURN'
 
                 if !result.is_error
+
+                    region      = result.param[3]
+                    id          = result.param[4]
+                    new_name    = result.param[5]
+                    name        = result.param[6]
+
+                    #update stack name list
+                    if new_name not in MC.data.stack_list[region]
+                        MC.data.stack_list[region].push new_name
+
                     ide_event.trigger ide_event.UPDATE_STACK_LIST
 
                 null
@@ -352,7 +372,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 console.log result
 
                 if !result.is_error
-                    ide_event.trigger ide_event.STACK_DELETE, stack_name, stack_id
+
+                    region  = result.param[3]
+                    id      = result.param[4]
+                    name    = result.param[5]
+
+                    ide_event.trigger ide_event.STACK_DELETE, name, id
 
 
             #listen VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN
@@ -437,7 +462,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
         # get current region's app/stack list
         getItemList : ( flag, region, result ) ->
-
             me = this
 
             item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ region ] == regions.region_group
@@ -459,11 +483,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     #difference
                     if _.difference me.get('cur_app_list'), cur_item_list
                         me.set 'cur_app_list', cur_item_list
+                        me.trigger 'UPDATE_REGION_APP_LIST'
+
                 else if flag == 'stack'
                     if _.difference me.get('cur_stack_list'), cur_item_list
                         me.set 'cur_stack_list', cur_item_list
+                        me.trigger 'UPDATE_REGION_STACK_LIST'
 
         parseItem : (item, flag) ->
+            me = this
+
             id          = item.id
             name        = item.name
             create_time = item.time_create
@@ -473,6 +502,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             status      = "play"
             isrunning   = true
+            ispending   = false
 
             # check state
             if item.state == constant.APP_STATE.APP_STATE_INITIALIZING    #constant.APP_STATE.APP_STATE_STOPPING or
@@ -484,11 +514,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 status = "stop"
             else
                 status = "pending"
+                ispending = true
+
+            is_use_ami = false
 
             if flag == 'app'
                 date = new Date()
                 start_time = null
                 stop_time = null
+
+                #is_use_ami = me.isInstanceStore item
+
                 if item.last_start
                     date.setTime(item.last_start*1000)
                     start_time  = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
@@ -496,32 +532,132 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     date.setTime(item.last_stop*1000)
                     stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
 
-            return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'status' : status, 'cost' : "$0/month" }
+            return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'ispending' : ispending, 'status' : status, 'cost' : "$0/month" }
 
+        updateAppList : (flag, app_id) ->
+            me = this
+
+            cur_app_list = me.get 'cur_app_list'
+
+            if flag is 'pending'
+                for item in cur_app_list
+                    if item.id == app_id
+                        idx = cur_app_list.indexOf item
+                        if idx>=0
+                            cur_app_list[idx].status = "pending"
+                            cur_app_list[idx].ispending = true
+
+                            me.set 'cur_app_list', cur_app_list
+                            me.trigger 'UPDATE_REGION_APP_LIST'
+
+            null
+
+        isInstanceStore : ( data ) ->
+
+            is_instance_store = false
+
+            if 'component' in data.layout and 'node' in data.layout.component
+                for node in data.layout.component.node
+                    if node.rootDeviceType == 'instance-store'
+                        is_instance_store = true
+                        break
+
+            is_instance_store
 
         runApp : (region, app_id) ->
             me = this
             current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.start { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
+            ide_event.trigger ide_event.START_APP, region, app_id, app_name
+            # app_model.start { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
+            # me.once 'APP_START_RETURN', (result) ->
+            #     console.log 'APP_START_RETURN'
+            #     console.log result
 
+            #     # update tab icon
+            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+
+            #     #parse the result
+            #     if !result.is_error #request successfuly
+
+            #         if ws
+            #             req_id = result.resolved_data.id
+            #             console.log "request id:" + req_id
+            #             query = ws.collection.request.find({id:req_id})
+            #             handle = query.observeChanges {
+            #                 changed : (id, req) ->
+            #                     if req.state == "Done"
+            #                         handle.stop()
+            #                         console.log 'stop handle'
+            #                         #push event
+            #                         ide_event.trigger ide_event.START_APP, app_name, app_id
+
+            #                         # update icon
+            #                         ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', app_id
+            #             }
+            #         null
 
         stopApp : (region, app_id) ->
             me = this
             current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
+            ide_event.trigger ide_event.STOP_APP, region, app_id, app_name
+            # app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
+            # me.once 'APP_STOP_RETURN', (result) ->
+            #     console.log 'APP_STOP_RETURN'
+            #     console.log result
 
+            #     # update tab icon
+            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+
+            #     if !result.is_error
+            #         if ws
+            #             req_id = result.resolved_data.id
+            #             console.log "request id:" + req_id
+            #             query = ws.collection.request.find({id:req_id})
+            #             handle = query.observeChanges {
+            #                 changed : (id, req) ->
+            #                     if req.state == "Done"
+            #                         handle.stop()
+            #                         console.log 'stop handle'
+            #                         #push event
+            #                         ide_event.trigger ide_event.STOP_APP, app_name, app_id
+
+            #                         # update icon
+            #                         ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', app_id
+            #             }
+            #         null
 
         terminateApp : (region, app_id) ->
             me = this
             current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
-            app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
+            ide_event.trigger ide_event.TERMINATE_APP, region, app_id, app_name
+            # app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
+            # me.once 'APP_TERMINATE_RETURN', (result) ->
+            #     console.log 'APP_TERMINATE_RETURN'
+            #     console.log result
 
+            #     # update tab icon
+            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
+
+            #     if !result.is_error
+            #         if ws
+            #             req_id = result.resolved_data.id
+            #             console.log "request id:" + req_id
+            #             query = ws.collection.request.find({id:req_id})
+            #             handle = query.observeChanges {
+            #                 changed : (id, req) ->
+            #                     if req.state == "Done"
+            #                         handle.stop()
+            #                         console.log 'stop handle'
+            #                         #push event
+            #                         ide_event.trigger ide_event.TERMINATE_APP, app_name, app_id
+            #             }
+            #     null
 
         duplicateStack : (region, stack_id, new_name) ->
             console.log 'duplicateStack'

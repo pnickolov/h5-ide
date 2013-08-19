@@ -985,31 +985,22 @@ Additional Notes and Questions
 </div>
 
 <!-- snapshotSecondaryPanel -->
-<div class="sidebar-title">
-	<!--
-    <a class="back tooltip" data-tooltip='Go back to "Stack-untitled-01"' href="#">&lt;</a>
-	-->
-    <span class="sidebar-title-text">{{snapshotId}}</span>
-</div>
-<div class="scroll-wrap scrollbar-auto-hide context-wrap">
-    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-    <div class="item-wrap scroll-content">
-        <dl class="dl-horizontal">
-            <dt>Snapshot ID</dt>
-            <dd>{{snapshotId}}</dd>
-            <dt>Volume ID</dt>
-            <dd>{{volumeId}}</dd>
-            <dt>Description</dt>
-            <dd>{{description}}</dd>
-            <dt>Capacity</dt>
-            <dd>{{volumeSize}}GB</dd>
-            <dt>Owner</dt>
-            <dd>{{ownerId}}</dd>
-            <dt>Started</dt>
-            <dd>{{startTime}}</dd>
-        </dl>
-    </div>
-</div>
+<article class="item-wrap scroll-content">
+    <dl class="dl-horizontal">
+        <dt>Snapshot ID</dt>
+        <dd>{{snapshotId}}</dd>
+        <dt>Volume ID</dt>
+        <dd>{{volumeId}}</dd>
+        <dt>Description</dt>
+        <dd>{{description}}</dd>
+        <dt>Capacity</dt>
+        <dd>{{volumeSize}}GB</dd>
+        <dt>Owner</dt>
+        <dd>{{ownerId}}</dd>
+        <dt>Started</dt>
+        <dd>{{startTime}}</dd>
+    </dl>
+</article>
 
 <!-- elbPropertyListenerItem -->
 <div class="elb-property-listener-main">

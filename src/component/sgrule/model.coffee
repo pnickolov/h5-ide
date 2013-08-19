@@ -83,6 +83,11 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
             if not existing and MC.canvas_data.layout.connection[line_id]
                 if MC.canvas_data.layout.connection[line_id].type is 'sg'
                     this.trigger 'DELETE_LINE', line_id
+                if MC.canvas_data.layout.connection[line_id].type is 'elb-sg'
+                    for k, v of MC.canvas_data.layout.connection[line_id].target
+                        if v is 'elb-sg-in'
+                            this.trigger 'DELETE_LINE', line_id
+                            break
 
 
         _checkRule : ( from_sg, to_sg) ->

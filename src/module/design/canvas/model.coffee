@@ -1124,6 +1124,19 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 										to_sg_group.push comp.uid
 
+						when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+
+							$.each comp.resource.SecurityGroups, ( idx, sgs )->
+
+								if sgs.split('.')[0][1...] == from_sg_uid
+
+									from_sg_group.push comp.uid
+
+								if sgs.split('.')[0][1...] == to_sg_uid
+
+									to_sg_group.push comp.uid
+
+
 				$.each from_sg_group, ( i, from_comp_uid ) ->
 
 					$.each to_sg_group, (i, to_comp_uid) ->
@@ -1146,7 +1159,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 								when constant.AWS_RESOURCE_TYPE.AWS_ELB
 
-									from_port = 'elb-sg-out'
+									from_port = 'elb-sg-in'
+
+								when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+
+									from_port = 'launchconfig-sg'
 
 							switch MC.canvas_data.component[to_comp_uid].type
 
@@ -1162,6 +1179,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									to_port = 'elb-sg-in'
 
+								when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+
+									to_port = 'launchconfig-sg'
+
 							lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 
 			$.each MC.canvas_data.layout.connection, ( line_id, line ) ->
@@ -1169,6 +1190,18 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				if line.type == 'sg'
 
 					MC.canvas.remove $("#"+line_id)[0]
+
+				if line.type is 'elb-sg'
+
+					for k, v of line.target
+
+						if v is 'elb-sg-in'
+
+							MC.canvas.remove $("#"+line_id)[0]
+
+							break
+
+
 
 
 			$.each lines, ( idx, line_data ) ->

@@ -137,7 +137,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 					both_side.push side_sg
 
-				when constant.AWS_RESOURCE_TYPE.AWS_ELB
+				when constant.AWS_RESOURCE_TYPE.AWS_ELB, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
 					side_sg = {}
 

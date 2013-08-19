@@ -339,6 +339,17 @@ var constant_data = {
 			}
 		},
 		"AWS.VPC.NetworkInterface": {
+			"AWS.ELB": [
+				{
+					"type": "elb-sg",
+					"from": "elb-sg-in",
+					"to": "eni-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
 			"AWS.EC2.Instance": [
 				{
 					"type": "sg",

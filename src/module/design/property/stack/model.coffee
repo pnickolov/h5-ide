@@ -266,7 +266,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             feeMap = MC.data.config[region]
 
             #no config data load
-            if not feeMap
+            if not ( feeMap and feeMap.ami and feeMap.price )
 
                 return false
 

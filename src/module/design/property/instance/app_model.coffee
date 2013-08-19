@@ -64,6 +64,10 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
             null
 
         getEniData : ( instance_data ) ->
+
+            if  !instance_data.networkInterfaceSet
+                return null
+
             for i in instance_data.networkInterfaceSet.item
                 if i.attachment.deviceIndex == "0"
                     id = i.networkInterfaceId
@@ -99,7 +103,9 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
             username = $.cookie "usercode"
             session  = $.cookie "session_id"
 
-            keypair_model.download {sender:this}, username, session, MC.canvas_data.region, keypairname
+            me = this
+
+            keypair_model.download {sender:me}, username, session, MC.canvas_data.region, keypairname
 
 
     }

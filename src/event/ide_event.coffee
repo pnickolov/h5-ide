@@ -53,6 +53,7 @@ define [ 'underscore', 'backbone' ], () ->
         DELETE_LINE_TO_CANVAS:'DELETE_LINE_TO_CANVAS'
 
         REDRAW_SG_LINE      : 'REDRAW_SG_LINE'
+        UPDATE_SG_LINE      : 'UPDATE_SG_LINE'
         #
         ADD_STACK_TAB       : 'ADD_STACK_TAB'
         OPEN_STACK_TAB      : 'OPEN_STACK_TAB'

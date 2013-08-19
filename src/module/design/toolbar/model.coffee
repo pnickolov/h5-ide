@@ -2,7 +2,7 @@
 #  View Mode for design/toolbar module
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_model', 'constant' ], (MC, Backbone, $, _, ide_event, stack_model, app_model, constant) ->
+define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant' ], (MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant) ->
 
     #item state map
     # {app_id:{'name':name, 'state':state, 'is_running':true|false, 'is_pending':true|false, 'is_use_ami':true|false},
@@ -32,8 +32,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
 
                 if !result.is_error
 
-                    region  = param[3]
-                    data    = param[4]
+                    region  = result.param[3]
+                    data    = result.param[4]
                     id      = data.id
 
                     console.log 'save stack successfully'
@@ -70,8 +70,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if !result.is_error
                     console.log 'create stack successfully'
 
-                    region  = param[3]
-                    data    = param[4]
+                    region  = result.param[3]
+                    data    = result.param[4]
                     id      = data.id
 
                     # track
@@ -118,8 +118,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if !result.is_error
                     console.log 'save as stack successfully'
 
-                    region  = param[3]
-                    data    = param[4]
+                    region      = result.param[3]
+                    id          = result.param[4]
+                    new_name    = result.param[5]
+                    name        = result.param[6]
 
                     #update stack name list
                     if new_name not in MC.data.stack_list[region]
@@ -138,9 +140,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if !result.is_error
                     console.log 'send delete stack successful message'
 
-                    region  = param[3]
-                    id      = param[4]
-                    name    = param[5]
+                    region  = result.param[3]
+                    id      = result.param[4]
+                    name    = result.param[5]
 
                     #update stack name list
                     if name in MC.data.stack_list[region]
@@ -383,8 +385,35 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                 if not id
                     return
 
-            #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
-            stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
+
+            stack_service.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, null, null, null, null, ( result ) ->
+
+                if !result.is_error
+                #run succeed
+
+                    console.log 'STACK_RUN_RETURN'
+
+                    region      = result.param[3]
+                    id          = result.param[4]
+                    app_name    = result.param[5]
+
+                    #add new-app status
+                    #me.handleRequest result, 'RUN_STACK', region, id, app_name
+                    # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
+                    # # track
+                    # analytics.track "Launched Stack",
+                    #     stack_id: id,
+                    #     stack_region: region,
+                    #     stack_app_name: app_name
+                    ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, data, result
+
+
+                else
+                #run failed
+
+                    console.log 'stack.run failed, error is ' + result.error_message
+
+
 
             # save stack data
             if not (region of run_stack_map) then run_stack_map[region] = {}
@@ -612,7 +641,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                         when 'STOP_APP'
                             me.setFlag id, 'STOPPED_APP'
                             ide_event.trigger ide_event.STOPPED_APP, name, id
-                        
+
                         when 'TERMINATE_APP'
                             me.setFlag id, 'TERMINATED_APP'
                             ide_event.trigger ide_event.TERMINATED_APP, name, id
@@ -620,7 +649,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_model', 'app_
                             # remove the app name from app_list
                             if name in MC.data.app_list[region]
                                 MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
-                       
+
                         else
                             console.log 'not support toolbar operation:' + flag
 

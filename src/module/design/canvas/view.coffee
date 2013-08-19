@@ -2,7 +2,7 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event ) ->
+define [ 'event', 'canvas_layout', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event, canvas_layout ) ->
 
     CanvasView = Backbone.View.extend {
 
@@ -10,7 +10,8 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
 
         initialize : ->
             #listen
-            this.listenTo ide_event, 'SWITCH_TAB', this.resizeCanvasPanel
+            this.listenTo ide_event, 'SWITCH_TAB', ()->
+                canvas_layout.listen()
 
             #bind event
             $( document )
@@ -30,14 +31,6 @@ define [ 'event', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notificat
         reRender   : ( template ) ->
             console.log 're-canvas render'
             if $.trim( this.$el.html() ) is 'loading...' then $( '#canvas' ).html template
-
-        resizeCanvasPanel : ( type ) ->
-            console.log 'resizeCanvasPanel = ' + type
-            #temp resize canvas panel
-            #canvasPanelResize()
-            canvas_resize()
-            #temp
-            require [ 'canvas_layout' ], ( canvas_layout ) -> canvas_layout.listen()
 
         showProperty : ( event, uid ) ->
             console.log 'showProperty, uid = ' + uid

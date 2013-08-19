@@ -116,7 +116,7 @@ define [ 'text!./template.html',
               $modal.animate({left:'+=100px'}, 300)
 
         extractRuleData : () ->
-          outward = if $("#sg-rule-create-tgt-o").find("input").is(":checked") then "out" else "in"
+          outward = if $("#sg-rule-create-tgt-o").is(":checked") then "out" else "in"
 
           data =
             sgId      : $("#sg-create-sg-" + outward).find( ".selected" ).attr("data-id")

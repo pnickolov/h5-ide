@@ -3,7 +3,6 @@
 #############################
 
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
-        'UI.fixedaccordion',
         'UI.selectbox',
         'UI.tooltip',
         'UI.notification',

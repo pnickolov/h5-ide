@@ -2109,6 +2109,18 @@ a.sidebar-hider {
 	position : absolute;
 }
 
+.property-wrap .scroll-wrap {
+	height      : 100%;
+	padding-top : 45px;
+	margin-top  : -45px;
+	position    : relative;
+	z-index     : 1;
+
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
 .transition .property-panel-wrapper {
 	-webkit-transition: left .2s ease-in-out;
 	   -moz-transition: left .2s ease-in-out;
@@ -2128,6 +2140,7 @@ a.sidebar-hider {
 }
 
 .show-second-panel #property-first-panel {
+	z-index : 3;
 	left : -30%;
 }
 
@@ -2140,6 +2153,7 @@ a.sidebar-hider {
 }
 
 .show-second-panel #property-second-panel {
+	z-index : 4;
 	left : 0;
 }
 
@@ -2172,11 +2186,13 @@ a.sidebar-hider {
 	line-height : 43px;
 	text-shadow : none;
 
-	padding : 0 10px;
-	height  : 43px;
-	width   : 260px;
+	padding  : 0 10px;
+	height   : 43px;
+	width    : 260px;
+	position : relative;
+	z-index  : 2;
 
-	cursor        : default;
+	cursor : default;
 }
 
 .property-group-head {

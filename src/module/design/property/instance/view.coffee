@@ -137,9 +137,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             $(document.body).on 'click', '.back', secondarypanel.close
             ###
             console.log MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
+
+            data = target.data( 'secondarypanel-data' )
             ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
-                title : $( event.target ).text()
-                dom   : MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
+                title : data.imageId
+                dom   : MC.template.aimSecondaryPanel data
                 id    : 'Ami'
             }
             null

@@ -169,16 +169,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 #add new-app status
                 #me.handleRequest result, 'RUN_STACK', region, id, app_name
                 # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
-                # # track
-                # analytics.track "Launched Stack",
-                #     stack_id: id,
-                #     stack_region: region,
-                #     stack_app_name: app_name
+
                 data = run_stack_map[region][app_name]
                 ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
 
                 # handle request
                 me.handleRequest result, 'RUN_STACK', region, id, app_name
+
+                # track
+                analytics.track "Launched Stack",
+                    stack_id: id,
+                    stack_region: region,
+                    stack_app_name: app_name
 
             #####listen APP_START_RETURN
             me.on 'APP_START_RETURN', (result) ->
@@ -385,33 +387,35 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 if not id
                     return
 
+            #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
+            stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
 
-            stack_service.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, null, null, null, null, ( result ) ->
+            # stack_service.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, null, null, null, null, ( result ) ->
 
-                if !result.is_error
-                #run succeed
+            #     if !result.is_error
+            #     #run succeed
 
-                    console.log 'STACK_RUN_RETURN'
+            #         console.log 'STACK_RUN_RETURN'
 
-                    region      = result.param[3]
-                    id          = result.param[4]
-                    app_name    = result.param[5]
+            #         region      = result.param[3]
+            #         id          = result.param[4]
+            #         app_name    = result.param[5]
 
-                    #add new-app status
-                    #me.handleRequest result, 'RUN_STACK', region, id, app_name
-                    # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
-                    # # track
-                    # analytics.track "Launched Stack",
-                    #     stack_id: id,
-                    #     stack_region: region,
-                    #     stack_app_name: app_name
-                    ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, data, result
+            #         #add new-app status
+            #         #me.handleRequest result, 'RUN_STACK', region, id, app_name
+            #         # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
+            #         # # track
+            #         # analytics.track "Launched Stack",
+            #         #     stack_id: id,
+            #         #     stack_region: region,
+            #         #     stack_app_name: app_name
+            #         #ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
 
 
-                else
-                #run failed
+            #     else
+            #     #run failed
 
-                    console.log 'stack.run failed, error is ' + result.error_message
+            #         console.log 'stack.run failed, error is ' + result.error_message
 
 
 

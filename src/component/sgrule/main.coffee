@@ -15,6 +15,7 @@ define [ 'event', './view', './model' ], ( ide_event, View, Model ) ->
 
         model.getSgRuleDetail line_id
         #
+
         view.on 'CLOSE_POPUP', () ->
 
             model.checkRuleExisting()
@@ -37,10 +38,18 @@ define [ 'event', './view', './model' ], ( ide_event, View, Model ) ->
 
             ide_event.trigger ide_event.REDRAW_SG_LINE
 
-        view.on 'DELETE_RULE', ( uid ) ->
+        view.on 'DELETE_RULE', ( rule_id ) ->
+
+            this.model.deleteSGRule(rule_id)
 
             ide_event.trigger ide_event.REDRAW_SG_LINE
 
+
+        view.on 'UPDATE_SLIDE_BAR', () ->
+
+            model.getDispSGList line_id
+
+            view.updateSidebar()
 
         #render
         if delete_module

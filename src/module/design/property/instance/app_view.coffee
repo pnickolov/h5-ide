@@ -12,6 +12,7 @@ define [ 'event', 'MC',
 
         events   :
             "click #property-app-keypair" : "downloadKeypair"
+            "click #property-app-ami"     : "openAmiPanel"
 
         template  : Handlebars.compile $( '#property-instance-app-tmpl' ).html()
 
@@ -39,6 +40,10 @@ define [ 'event', 'MC',
             $saveBtn.removeClass("btn-gray").addClass("btn-blue")
                     .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )
                     .attr("download", $("#property-keypair-name").html() + ".pem" )
+
+        openAmiPanel : ( event ) ->
+            this.trigger "OPEN_AMI", $( event.target ).data("uid")
+            false
 
     }
 

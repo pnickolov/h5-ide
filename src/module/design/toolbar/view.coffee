@@ -3,10 +3,10 @@
 #############################
 
 define [ 'MC', 'event',
-         'zeroclipboard',
+         'zeroclipboard', 'i18n!/nls/lang.js',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification', 'UI.zeroclipboard'
-], ( MC, ide_event, ZeroClipboard ) ->
+], ( MC, ide_event, ZeroClipboard, lang ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -66,10 +66,10 @@ define [ 'MC', 'event',
 
                 #check app name
                 if not app_name
-                    notification 'error', 'No app name.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
                     return
                 if app_name in MC.data.app_list[MC.canvas_data.region]
-                    notification 'error', 'Repeated app name.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                     return
 
                 me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
@@ -85,11 +85,11 @@ define [ 'MC', 'event',
             name = MC.canvas_data.name
 
             if not name
-                notification 'error', 'No stack name.'
+                notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
             else if name.indexOf(' ') >= 0
-                notification 'error', 'stack name contains white space.'
+                notification 'warning', 'stack name contains white space.'
             else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
-                notification 'error', 'Repeated stack name.'
+                notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
             else
                 MC.canvas_data.name = name
                 this.trigger 'TOOLBAR_SAVE_CLICK', MC.canvas_data
@@ -103,10 +103,10 @@ define [ 'MC', 'event',
                 new_name = "#{name}-copy"
                 #check name
                 if not name
-                    notification 'error', 'No stack name.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if not MC.aws.aws.checkStackName null, new_name
                     doDuplicate( new_name )
-                    #notification 'error', 'Repeated stack name.'
+                    #notification 'warning', 'Repeated stack name.'
                 else
                     this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name, MC.canvas_data
 
@@ -128,21 +128,38 @@ define [ 'MC', 'event',
             console.log 'clickNewStackIcon'
             ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
 
-        clickZoomInIcon : ->
+        clickZoomInIcon : ( event ) ->
             console.log 'clickZoomInIcon'
 
-            if MC.canvas_property.SCALE_RATIO <= 1
-                notification 'warning', 'Cannot zoom in now.'
-            else
+            if $( event.currentTarget ).hasClass("disabled")
+                return false
+
+            if MC.canvas_property.SCALE_RATIO > 1
                 MC.canvas.zoomIn()
 
-        clickZoomOutIcon : ->
+            $("#main-toolbar .icon-zoom-out").toggleClass("disabled", false)
+
+            if MC.canvas_property.SCALE_RATIO <= 1
+                $("#main-toolbar .icon-zoom-in").toggleClass("disabled", true)
+
+            return false
+
+
+        clickZoomOutIcon : ( event )->
             console.log 'clickZoomOutIcon'
 
-            if MC.canvas_property.SCALE_RATIO >= 1.6
-                notification 'warning', 'Cannot zoom out now.'
-            else
+            if $( event.currentTarget ).hasClass("disabled")
+                return false
+
+            if MC.canvas_property.SCALE_RATIO < 1.6
                 MC.canvas.zoomOut()
+
+            $("#main-toolbar .icon-zoom-in").toggleClass("disabled", false)
+
+            if MC.canvas_property.SCALE_RATIO >= 1.6
+                $("#main-toolbar .icon-zoom-out").toggleClass("disabled", true)
+
+            return false
 
         clickUndoIcon : ->
             console.log 'clickUndoIcon'
@@ -208,7 +225,8 @@ define [ 'MC', 'event',
 
             target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
-                me.trigger 'TOOLBAR_STOP_CLICK', MC.canvas_data
+                #me.trigger 'TOOLBAR_STOP_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                ide_event.trigger ide_event.STOP_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
                 modal.close()
 
         clickStartApp : (event) ->
@@ -217,7 +235,8 @@ define [ 'MC', 'event',
 
             target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
-                me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data
+                #me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                ide_event.trigger ide_event.START_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
                 modal.close()
 
         clickTerminateApp : (event) ->
@@ -227,7 +246,8 @@ define [ 'MC', 'event',
 
             target = $( '#main-toolbar' )
             $('#btn-confirm').on 'click', { target : this }, (event) ->
-                me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data
+                #me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                ide_event.trigger ide_event.TERMINATE_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
                 modal.close()
 
     }

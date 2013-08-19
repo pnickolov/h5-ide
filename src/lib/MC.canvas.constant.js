@@ -1053,7 +1053,7 @@ var constant_data = {
 				"BgpAsn": "",
 				"CustomerGatewayId": "",
 				"State": "available",
-				"IpAddress": "1.1.1.1"
+				"IpAddress": ""
 			}
 		}
 	},

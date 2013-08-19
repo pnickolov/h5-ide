@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'backbone', 'jquery', 'handlebars', 'UI.parsley' ], ( ide_event, template, rule_template ) ->
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, template, rule_template ) ->
 
    ACLView = Backbone.View.extend {
 

@@ -194,12 +194,14 @@ define [ 'jquery',
                         null
 
                     #listen
-                    model.on 'change:cur_app_list', () ->
+                    #model.on 'change:cur_app_list', () ->
+                    model.on 'UPDATE_REGION_APP_LIST', () ->
                         console.log 'dashboard_region_change:cur_app_list'
                         #model.get 'cur_app_list'
                         region_view.renderRegionStatApp()
 
-                    model.on 'change:cur_stack_list', () ->
+                    #model.on 'change:cur_stack_list', () ->
+                    model.on 'UPDATE_REGION_STACK_LIST', () ->
                         console.log 'dashboard_region_change:cur_stack_list'
                         #model.get 'cur_stack_list'
                         region_view.renderRegionStatStack()
@@ -277,6 +279,11 @@ define [ 'jquery',
                         console.log 'UPDATE_REGION_THUMBNAIL'
                         region_view.updateThumbnail url if region_view
                         null
+
+                    ide_event.onLongListen ide_event.UPDATE_TAB_ICON, ( flag, app_id ) ->
+                        console.log 'UPDATE_TAB_ICON'
+
+                        model.updateAppList flag, app_id
 
     unLoadModule = () ->
         #view.remove()

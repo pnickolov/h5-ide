@@ -103,7 +103,7 @@ define [ 'jquery',
 
             model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
 
-                notification 'error', 'Instance Type: '+ instance_type + ' only support at most ' + eni_number + ' Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type'
+                notification 'error', lang.ide.PROP_WARN_EXCEED_ENI_LIMIT
 
 
     loadAppModule = ( uid, instance_expended_id, current_main ) ->
@@ -127,6 +127,13 @@ define [ 'jquery',
 
             model.on "KP_DOWNLOADED", (data)-> view.updateKPModal(data)
             view.on "REQUEST_KEYPAIR", (name)-> model.downloadKP(name)
+            view.on "OPEN_AMI", (id) ->
+                data = model.getAMI id
+                ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
+                    title : id
+                    dom   : MC.template.aimSecondaryPanel data
+                    id    : 'Ami'
+                }
 
             model.init(uid)
 

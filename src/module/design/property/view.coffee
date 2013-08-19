@@ -5,7 +5,7 @@
 define [ './temp_view',
          'event'
          'backbone', 'jquery', 'handlebars',
-         'UI.fixedaccordion', 'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon', 'UI.multiinputbox', 'MC.validate', 'UI.parsley'
+         'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon', 'UI.multiinputbox', 'MC.validate', 'UI.parsley'
 ], ( temp_view, ide_event ) ->
 
     PropertyView = Backbone.View.extend {
@@ -15,9 +15,6 @@ define [ './temp_view',
         back_dom   : 'none'
 
         initialize : ->
-            #listen
-            #$( document ).delegate '#hide-property-panel', 'click', this.togglePropertyPanel
-            #$( window   ).on 'resize', fixedaccordion.resize
             #listen
             $( document.body ).on( 'click',           '#hide-property-panel', this.togglePropertyPanel                )
                               .on( 'click',           '.option-group-head',   this.toggleOption                       )

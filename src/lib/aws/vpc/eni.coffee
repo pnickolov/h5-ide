@@ -186,9 +186,36 @@ define [ 'MC' ], ( MC ) ->
 
 		return eniComp
 
+	getENIDivIPAry = (subnetCIDR, ipAddr) ->
+		
+		suffix = Number(subnetCIDR.split('/')[1])
+
+		ipAddrAry = ipAddr.split('.')
+
+		resultPrefix = ''
+		resultSuffix = ''
+
+		if suffix > 23
+			resultPrefix = ipAddrAry[0] + '.' + ipAddrAry[1] + '.' + ipAddrAry[2] + '.'
+			resultSuffix = ipAddrAry[3]
+		else
+			resultPrefix = ipAddrAry[0] + '.' + ipAddrAry[1] + '.'
+			resultSuffix = ipAddrAry[2] + '.' + ipAddrAry[3]
+
+		return [resultPrefix, resultSuffix]
+
+	getSubnetComp = (eniUID) ->
+
+		eniComp = MC.canvas_data.component[eniUID]
+		subnetUIDRef = eniComp.resource.SubnetId
+		subnetUID = subnetUIDRef.slice(1).split('.')[0]
+		return MC.canvas_data.component[subnetUID]
+
 	#public
 	getAvailableIPInCIDR : getAvailableIPInCIDR
 	getAllOtherIPInCIDR : getAllOtherIPInCIDR
 	saveIPList : saveIPList
 	generateIPList : generateIPList
 	getInstanceDefaultENI : getInstanceDefaultENI
+	getENIDivIPAry : getENIDivIPAry
+	getSubnetComp : getSubnetComp

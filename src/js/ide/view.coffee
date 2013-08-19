@@ -9,11 +9,6 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
         el       : $ '#main'
 
         initialize : ->
-            $( window ).on "resize", this.resizeEvent
-
-        resizeEvent : ->
-            $( '.main-content' ).height window.innerHeight - 42
-            $('.sub-menu-scroll-wrap').height window.innerHeight - 100
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'
@@ -28,7 +23,6 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             $( '#tab-content-design' ).removeClass  'active'
             $( '#tab-content-process' ).removeClass 'active'
             #
-            this.resizeEvent()
 
         showRegionTab : () ->
             console.log 'showRegionTab'
@@ -38,7 +32,6 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             $( '#tab-content-design' ).removeClass    'active'
             $( '#tab-content-process' ).removeClass   'active'
             #
-            this.resizeEvent()
 
         showTab : () ->
             console.log 'showTab'
@@ -48,7 +41,6 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-process' ).removeClass   'active'
             #
-            this.resizeEvent()
 
         showProcessTab : () ->
             console.log 'showProcessTab'
@@ -58,7 +50,6 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-design' ).removeClass    'active'
             #
-            this.resizeEvent()
     }
 
     view = new MainView()

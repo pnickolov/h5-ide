@@ -560,6 +560,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 					continue
 
+				if not value.resource.AssociationSet.length
+					continue
+
 				if "" + value.resource.AssociationSet[0].Main is 'true'
 					continue
 
@@ -975,6 +978,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			resource_type = constant.AWS_RESOURCE_TYPE
 			for key, value of MC.canvas_data.component
 					if value.type isnt resource_type.AWS_VPC_RouteTable
+						continue
+
+					if not value.resource.AssociationSet.length
 						continue
 
 					if "" + value.resource.AssociationSet[0].Main is 'true'

@@ -512,9 +512,9 @@ a VPN Connection. Each VPN Connection is assigned a VPN Connection Identifier
 and is associated with two other identifiers, namely the
 Customer Gateway Identifier and the Virtual Private Gateway Identifier.
 
-Your VPN Connection ID                         : {{vpnConnectionId}}
-Your Virtual Private Gateway ID         : {{vpnGatewayId}}
-Your Customer Gateway ID                       : {{customerGatewayId}}
+Your VPN Connection ID            : {{vpnConnectionId}}
+Your Virtual Private Gateway ID   : {{vpnGatewayId}}
+Your Customer Gateway ID          : {{customerGatewayId}}
 
 A VPN Connection consists of a pair of IPSec tunnel security associations (SAs).
 It is important that both tunnel security associations be configured.
@@ -526,37 +526,37 @@ IPSec Tunnel #{{this.number}}
 #1: Internet Key Exchange Configuration
 
 Configure the IKE SA as follows
-  - Authentication Method    : {{this.ike_protocol_method}}
-  - Pre-Shared Key           : {{this.ike_pre_shared_key}}
-  - Authentication Algorithm : {{this.ike_authentication_protocol_algorithm}}
-  - Encryption Algorithm     : {{this.ike_encryption_protocol}}
-  - Lifetime                 : {{this.ike_lifetime}} seconds
-  - Phase 1 Negotiation Mode : {{this.ike_mode}}
-  - Perfect Forward Secrecy  : {{this.ike_perfect_forward_secrecy}}
+  - Authentication Method         : {{this.ike_protocol_method}}
+  - Pre-Shared Key                : {{this.ike_pre_shared_key}}
+  - Authentication Algorithm      : {{this.ike_authentication_protocol_algorithm}}
+  - Encryption Algorithm          : {{this.ike_encryption_protocol}}
+  - Lifetime                      : {{this.ike_lifetime}} seconds
+  - Phase 1 Negotiation Mode      : {{this.ike_mode}}
+  - Perfect Forward Secrecy       : {{this.ike_perfect_forward_secrecy}}
 
 #2: IPSec Configuration
 
 Configure the IPSec SA as follows:
-  - Protocol                 : {{this.ipsec_protocol}}
-  - Authentication Algorithm : {{this.ipsec_authentication_protocol}}
-  - Encryption Algorithm     : {{this.ipsec_encryption_protocol}}
-  - Lifetime                 : {{this.ipsec_lifetime}} seconds
-  - Mode                     : {{this.ipsec_mode}}
-  - Perfect Forward Secrecy  : {{this.ipsec_perfect_forward_secrecy}}
+  - Protocol                      : {{this.ipsec_protocol}}
+  - Authentication Algorithm      : {{this.ipsec_authentication_protocol}}
+  - Encryption Algorithm          : {{this.ipsec_encryption_protocol}}
+  - Lifetime                      : {{this.ipsec_lifetime}} seconds
+  - Mode                          : {{this.ipsec_mode}}
+  - Perfect Forward Secrecy       : {{this.ipsec_perfect_forward_secrecy}}
 
 IPSec Dead Peer Detection (DPD) will be enabled on the AWS Endpoint. We
 recommend configuring DPD on your endpoint as follows:
-  - DPD Interval             : {{this.ipsec_interval}}
-  - DPD Retries              : {{this.ipsec_retries}}
+  - DPD Interval                  : {{this.ipsec_interval}}
+  - DPD Retries                   : {{this.ipsec_retries}}
 
 IPSec ESP (Encapsulating Security Payload) inserts additional
 headers to transmit packets. These headers require additional space,
 which reduces the amount of space available to transmit application data.
 To limit the impact of this behavior, we recommend the following
 configuration on your Customer Gateway:
-  - TCP MSS Adjustment       : {{this.tcp_mss_adjustment}} bytes
-  - Clear Don't Fragment Bit : {{this.clear_df_bit}}
-  - Fragmentation            : {{this.fragmentation_before_encryption}}
+  - TCP MSS Adjustment            : {{this.tcp_mss_adjustment}} bytes
+  - Clear Don't Fragment Bit      : {{this.clear_df_bit}}
+  - Fragmentation                 : {{this.fragmentation_before_encryption}}
 
 #3: Tunnel Interface Configuration
 
@@ -579,15 +579,15 @@ The Customer Gateway inside IP address should be configured on your tunnel
 interface.
 
 Outside IP Addresses:
-  - Customer Gateway                   : {{this.customer_gateway_outside_address}}
-  - Virtual Private Gateway            : {{this.vpn_gateway_outside_address}}
+  - Customer Gateway              : {{this.customer_gateway_outside_address}}
+  - Virtual Private Gateway       : {{this.vpn_gateway_outside_address}}
 
 Inside IP Addresses
-  - Customer Gateway                   : {{this.customer_gateway_inside_address}}
-  - Virtual Private Gateway         : {{this.vpn_gateway_inside_address}}
+  - Customer Gateway              : {{this.customer_gateway_inside_address}}
+  - Virtual Private Gateway       : {{this.vpn_gateway_inside_address}}
 
 Configure your tunnel to fragment at the optimal size:
-  - Tunnel interface MTU     : 1436 bytes
+  - Tunnel interface MTU          : 1436 bytes
 
 
 #4: Static Routing Configuration:
@@ -597,7 +597,7 @@ you will need a static route added to your router.
 
 Static Route Configuration Options:
 
-  - Next hop       : {{this.next_hop}}
+  - Next hop                      : {{this.next_hop}}
 
 You should add static routes towards your internal network on the VGW.
 The VGW will then send traffic towards your internal network over

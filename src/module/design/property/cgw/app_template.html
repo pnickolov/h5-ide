@@ -114,8 +114,8 @@
         </ul>
       </div>
     </div>
-    {{#each vpn.detail.btns}}
-    <a id="download-vpn-cgw-conf" class="btn btn-primary" {{#if download}}href="data://text/plain;base64,{{filecontent}}" download="{{filename}}.txt"{{/if}}>{{btnname}}</a>
+    {{#each vpn.detail}}
+    <a id="download-vpn-cgw-conf" class="btn btn-primary" {{#if download}}href="data://text/plain;base64,{{filecontent}}" download="{{filename}}.txt"{{/if}}>Download</a>
     {{/each}}
   </div>
   {{/if}}

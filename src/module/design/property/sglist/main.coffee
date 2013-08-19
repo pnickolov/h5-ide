@@ -57,9 +57,11 @@ define [ 'jquery',
 
             view.on 'ASSIGN_SG_TOCOMP', (sgUID, sgChecked) ->
                 model.assignSGToComp sgUID, sgChecked
+                ide_event.trigger ide_event.REDRAW_SG_LINE
 
             view.on 'DELETE_SG_FROM_COMP', (sgUID) ->
                 model.deleteSGFromComp sgUID
+                ide_event.trigger ide_event.REDRAW_SG_LINE
 
             view.on 'OPEN_SG', (sgUID) ->
                 ide_event.trigger ide_event.OPEN_SG, sgUID

@@ -88,9 +88,11 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                     return false
 
-            if not existing and MC.canvas_data.layout.connection[this.get('line_id')]
+            line_id = this.get('line_id')
 
-                this.trigger 'DELETE_LINE', this.get('line_id')
+            if not existing and MC.canvas_data.layout.connection[line_id]
+                if MC.canvas_data.layout.connection[line_id].type is 'sg'
+                    this.trigger 'DELETE_LINE', line_id
 
 
         _checkRule : ( from_sg, to_sg) ->

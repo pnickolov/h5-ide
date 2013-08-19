@@ -962,11 +962,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			else if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
 
-
-			for key, value of portMap
-				if key.indexOf('sg') >= 0
-					this.trigger 'CREATE_SG_CONNECTION', line_id
-					break
+			if not (MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC and (portMap['elb-sg-in'] or portMap['elb-sg-out']))
+				for key, value of portMap
+					if key.indexOf('sg') >= 0
+						this.trigger 'CREATE_SG_CONNECTION', line_id
+						break
 			null
 
 
@@ -998,6 +998,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					# Coommented out, because we don't need to add the route anymore.
 					# line_id = MC.canvas.connect uid, "igw-tgt", this._findMainRT(), 'rtb-tgt-left'
 					# this.createLine null, line_id
+
+				when resource_type.AWS_EC2_Instance
+					ide_event.trigger ide_event.REDRAW_SG_LINE
+
+				when resource_type.AWS_VPC_NetworkInterface
+					ide_event.trigger ide_event.REDRAW_SG_LINE
 
 				when resource_type.AWS_VPC_VPNGateway
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType

@@ -462,7 +462,7 @@ MC.canvas.add = function (flag, option, coordinate)
 								groupType = 'Subnet';
 								break;
 						}
-						notification('warning', 'Please expand AutoScalingGroup to another ' + groupType + '!', false);
+						notification('warning', 'Please expand Auto Scaling Group to another ' + groupType + '.', false);
 						return null;
 					}
 					else

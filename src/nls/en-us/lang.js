@@ -68,8 +68,8 @@ define({
 		// instance property module
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Cannot download keypair:',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'No stack name.',
-		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'Repeated app name.',
-		'PROP_MSG_WARN_NO_APP_NAME'             : 'No app name.',
+		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'Repeated stack name.',
+		'PROP_MSG_WARN_NO_APP_NAME'             : 'No app app.',
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'Repeated app name.',
 		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance Type: [ %s ] only support at most [ %s ] Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type',
 

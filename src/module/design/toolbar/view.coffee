@@ -92,7 +92,7 @@ define [ 'MC', 'event',
                 notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
             else
                 MC.canvas_data.name = name
-                this.trigger 'TOOLBAR_SAVE_CLICK', MC.canvas_data
+                ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
             true
 
@@ -104,11 +104,20 @@ define [ 'MC', 'event',
                 #check name
                 if not name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
+                else if name.indexOf(' ') >= 0
+                    notification 'warning', 'stack name contains white space.'
+                else if new_name in MC.data.stack_list[MC.canvas_data.region]
+                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else if not MC.aws.aws.checkStackName null, new_name
                     doDuplicate( new_name )
                     #notification 'warning', 'Repeated stack name.'
                 else
-                    this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name, MC.canvas_data
+                    # save stack
+                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                    setTimeOut () ->
+                        ide_event.trigger ide_event.DUPLICATE_STACK, new_name, MC.canvas_data
+                    , 500
 
             doDuplicate name
 
@@ -122,7 +131,7 @@ define [ 'MC', 'event',
                 console.log 'clickDeleteIcon'
                 modal.close()
 
-                me.trigger 'TOOLBAR_DELETE_CLICK', MC.canvas_data
+                ide_event.trigger ide_event.DELETE_STACK, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
 
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'

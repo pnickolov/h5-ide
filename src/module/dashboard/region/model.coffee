@@ -644,7 +644,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
 
-            stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
+            #stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
+            ide_event.trigger ide_event.DUPLICATE_STACK, region, stack_id, new_name, stack_name
 
 
         deleteStack : (region, stack_id) ->
@@ -652,8 +653,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             current_region = region
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
-            stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, stack_name
-
+            #stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, stack_name
+            ide_event.trigger ide_event.DELETE_STACK, region, stack_id, stack_name
 
         _genDhcp: (dhcp) ->
 

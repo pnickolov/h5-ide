@@ -356,25 +356,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
         #duplicate
-        duplicateStack : (new_name, data) ->
+        duplicateStack : (region, id, new_name, name) ->
             me = this
-
-            region = data.region
-            id = data.id
-            name = data.name
-            if me.isChanged(data)
-                if not me.saveStack(data)
-                   return
 
             stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, new_name, name
 
         #delete
-        deleteStack : (data) ->
+        deleteStack : (region, id, name) ->
             me = this
-
-            region = data.region
-            id = data.id
-            name = data.name
 
             stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
@@ -399,7 +388,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             run_stack_map[region][app_name] = data
 
             null
-
 
         savePNG : ( is_thumbnail, data ) ->
             console.log 'savePNG'

@@ -52,19 +52,22 @@ define [ 'jquery',
                 , 500
 
             #save
-            view.on 'TOOLBAR_SAVE_CLICK', (data) ->
-                console.log 'design_toolbar_click:saveStack'
+            ide_event.onLongListen ide_event.SAVE_STACK, (data) ->
+            #view.on 'TOOLBAR_SAVE_CLICK', (data) ->
+                console.log ide_event.SAVE_STACK
                 model.saveStack(data)
 
             #duplicate
-            view.on 'TOOLBAR_DUPLICATE_CLICK', (new_name, data) ->
-                console.log 'design_toolbar_click:duplicateStack'
-                model.duplicateStack(new_name, data)
+            ide_event.onLongListen ide_event.DUPLICATE_STACK, (region, id, new_name, name) ->
+            #view.on 'TOOLBAR_DUPLICATE_CLICK', (new_name, data) ->
+                console.log ide_event.DUPLICATE_STACK + ':' + region + ',' + id + ',' + new_name + ',' + name
+                model.duplicateStack(region, id, new_name, name)
 
             #delete
-            view.on 'TOOLBAR_DELETE_CLICK', (data) ->
-                console.log 'design_toolbar_click:deleteStack'
-                model.deleteStack(data)
+            ide_event.onLongListen ide_event.DELETE_STACK, (region, id, name) ->
+            #view.on 'TOOLBAR_DELETE_CLICK', (data) ->
+                console.log ide_event.DELETE_STACK + ':' + region + ',' + id + ',' + name
+                model.deleteStack(region, id, name)
 
             #run
             view.on 'TOOLBAR_RUN_CLICK', (app_name, data) ->

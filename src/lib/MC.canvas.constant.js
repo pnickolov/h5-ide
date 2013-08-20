@@ -140,14 +140,14 @@ var constant_data = {
 		EC2_VPC: 'ec2-vpc' //has vpc
 	},
 
-	// If array, order by Subnet -> AZ -> Canvas.
+	// If array, order by ASG -> Subnet -> AZ -> Canvas.
 	MATCH_PLACEMENT:
 	{
 		'ec2-classic':
 		{
 			'AWS.ELB': ['Canvas'],
 			'AWS.EC2.AvailabilityZone': ['Canvas'],
-			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone','AWS.AutoScaling.Group'],
+			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.EC2.AvailabilityZone'],
 			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone'],
 			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone']
 		},
@@ -155,7 +155,7 @@ var constant_data = {
 		{
 			'AWS.ELB': ['Canvas'],
 			'AWS.EC2.AvailabilityZone': ['Canvas'],
-			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone','AWS.AutoScaling.Group'],
+			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.EC2.AvailabilityZone'],
 			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone'],
 			'AWS.VPC.NetworkInterface': ['AWS.EC2.AvailabilityZone'],
 			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone']
@@ -163,7 +163,7 @@ var constant_data = {
 		'custom-vpc':
 		{
 			'AWS.ELB': ['AWS.VPC.VPC'],
-			'AWS.EC2.Instance': ['AWS.VPC.Subnet','AWS.AutoScaling.Group'],
+			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.VPC.Subnet'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
 			'AWS.VPC.CustomerGateway': ['Canvas'],
@@ -178,7 +178,7 @@ var constant_data = {
 		'ec2-vpc':
 		{
 			'AWS.ELB': ['AWS.VPC.VPC'],
-			'AWS.EC2.Instance': ['AWS.VPC.Subnet','AWS.AutoScaling.Group'],
+			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.VPC.Subnet'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
 			'AWS.VPC.CustomerGateway': ['Canvas'],

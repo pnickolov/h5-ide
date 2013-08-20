@@ -150,6 +150,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                     $('#cidr-remove').click () ->
                         $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
                         MC.canvas.remove($("#" + subnetUID)[0])
+                        delete MC.canvas_data.component[subnetUID]
                         MC.aws.aws.disabledAllOperabilityArea(false)
             else
                 change = {}
@@ -159,7 +160,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 this.trigger "CHANGE_CIDR", change
 
                 MC.aws.aws.disabledAllOperabilityArea(false)
-                $('#property-cidr-block').blur()
+                # $('#property-cidr-block').blur()
 
         onChangeACL : () ->
 

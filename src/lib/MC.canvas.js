@@ -3342,135 +3342,138 @@ MC.canvas.event.siderbarDrag = {
 
 	mouseup: function (event)
 	{
-		var target = $(event.data.target),
-			target_id = target.attr('id') || '',
-			target_type = target.data('component-type'),
-			node_type = target.data('type'),
-			canvas_offset = $('#svg_canvas').offset(),
-			shadow_offset = event.data.shadow.position(),
-			node_option = target.data('option'),
-			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
-			component_size,
-			match_place,
-			default_group_size,
-			new_node,
-			vpc_id,
-			vpc_data,
-			vpc_coordinate,
-			areaChild;
-
-		if (coordinate.x > 0 && coordinate.y > 0)
+		if (!$('#canvas_body').hasClass('canvas_zoomed'))
 		{
-			if (target_type === 'node')
+			var target = $(event.data.target),
+				target_id = target.attr('id') || '',
+				target_type = target.data('component-type'),
+				node_type = target.data('type'),
+				canvas_offset = $('#svg_canvas').offset(),
+				shadow_offset = event.data.shadow.position(),
+				node_option = target.data('option'),
+				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
+				component_size,
+				match_place,
+				default_group_size,
+				new_node,
+				vpc_id,
+				vpc_data,
+				vpc_coordinate,
+				areaChild;
+
+			if (coordinate.x > 0 && coordinate.y > 0)
 			{
-				component_size = MC.canvas.COMPONENT_SIZE[ node_type ];
-
-				if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+				if (target_type === 'node')
 				{
-					vpc_id = $('.AWS-VPC-VPC').attr('id');
-					vpc_data = MC.canvas.data.get('layout.component.group.' + vpc_id);
-					vpc_coordinate = vpc_data.coordinate;
+					component_size = MC.canvas.COMPONENT_SIZE[ node_type ];
 
-					node_option.groupUId = vpc_id;
+					if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+					{
+						vpc_id = $('.AWS-VPC-VPC').attr('id');
+						vpc_data = MC.canvas.data.get('layout.component.group.' + vpc_id);
+						vpc_coordinate = vpc_data.coordinate;
 
-					if (coordinate.y > vpc_coordinate[1] + vpc_data.size[1] - component_size[1])
-					{
-						coordinate.y = vpc_coordinate[1] + vpc_data.size[1] - component_size[1];
-					}
-					if (coordinate.y < vpc_coordinate[1])
-					{
-						coordinate.y = vpc_coordinate[1];
-					}
+						node_option.groupUId = vpc_id;
 
-					if (node_type === 'AWS.VPC.InternetGateway')
-					{
-						coordinate.x = vpc_coordinate[0] - (component_size[1] / 2);
-					}
-					if (node_type === 'AWS.VPC.VPNGateway')
-					{
-						coordinate.x = vpc_coordinate[0] + vpc_data.size[0] - (component_size[1] / 2);
-					}
+						if (coordinate.y > vpc_coordinate[1] + vpc_data.size[1] - component_size[1])
+						{
+							coordinate.y = vpc_coordinate[1] + vpc_data.size[1] - component_size[1];
+						}
+						if (coordinate.y < vpc_coordinate[1])
+						{
+							coordinate.y = vpc_coordinate[1];
+						}
 
-					MC.canvas.add(node_type, node_option, coordinate);
+						if (node_type === 'AWS.VPC.InternetGateway')
+						{
+							coordinate.x = vpc_coordinate[0] - (component_size[1] / 2);
+						}
+						if (node_type === 'AWS.VPC.VPNGateway')
+						{
+							coordinate.x = vpc_coordinate[0] + vpc_data.size[0] - (component_size[1] / 2);
+						}
+
+						MC.canvas.add(node_type, node_option, coordinate);
+					}
+					else
+					{
+						match_place = MC.canvas.isMatchPlace(
+							null,
+							target_type,
+							node_type,
+							coordinate.x,
+							coordinate.y,
+							component_size[0],
+							component_size[1]
+						);
+
+						if (match_place.is_matched)
+						{
+							node_option.groupUId = match_place.target;
+							new_node = MC.canvas.add(node_type, node_option, coordinate);
+
+							if (new_node)
+							{
+								MC.canvas.select(new_node.id);
+							}
+						}
+						else
+						{
+							//dispatch event when is not matched
+							$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
+								type: node_type
+							});
+						}
+					}
 				}
-				else
+
+				if (target_type === 'group')
 				{
+					default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
 					match_place = MC.canvas.isMatchPlace(
 						null,
 						target_type,
 						node_type,
 						coordinate.x,
 						coordinate.y,
-						component_size[0],
-						component_size[1]
+						default_group_size[0],
+						default_group_size[1]
+					),
+					areaChild = MC.canvas.areaChild(
+						null,
+						target_type,
+						coordinate.x,
+						coordinate.y,
+						coordinate.x + default_group_size[0],
+						coordinate.y + default_group_size[1]
 					);
 
-					if (match_place.is_matched)
+					if (
+						match_place.is_matched
+					)
 					{
-						node_option.groupUId = match_place.target;
-						new_node = MC.canvas.add(node_type, node_option, coordinate);
-
-						if (new_node)
+						if (MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]) && areaChild.length === 0)
 						{
-							MC.canvas.select(new_node.id);
+							node_option.groupUId = match_place.target;
+							new_node = MC.canvas.add(node_type, node_option, coordinate);
+							if (!(MC.aws.vpc.getVPCUID() && node_type === "AWS.EC2.AvailabilityZone"))
+							{	//has no vpc
+								MC.canvas.select(new_node.id);
+							}
+						}
+						else
+						{
+							// dispatch event when is not blank
+							$("#svg_canvas").trigger("CANVAS_PLACE_OVERLAP");
 						}
 					}
 					else
 					{
-						//dispatch event when is not matched
+						// dispatch event when is not matched
 						$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
 							type: node_type
 						});
 					}
-				}
-			}
-
-			if (target_type === 'group')
-			{
-				default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
-				match_place = MC.canvas.isMatchPlace(
-					null,
-					target_type,
-					node_type,
-					coordinate.x,
-					coordinate.y,
-					default_group_size[0],
-					default_group_size[1]
-				),
-				areaChild = MC.canvas.areaChild(
-					null,
-					target_type,
-					coordinate.x,
-					coordinate.y,
-					coordinate.x + default_group_size[0],
-					coordinate.y + default_group_size[1]
-				);
-
-				if (
-					match_place.is_matched
-				)
-				{
-					if (MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]) && areaChild.length === 0)
-					{
-						node_option.groupUId = match_place.target;
-						new_node = MC.canvas.add(node_type, node_option, coordinate);
-						if (!(MC.aws.vpc.getVPCUID() && node_type === "AWS.EC2.AvailabilityZone"))
-						{	//has no vpc
-							MC.canvas.select(new_node.id);
-						}
-					}
-					else
-					{
-						// dispatch event when is not blank
-						$("#svg_canvas").trigger("CANVAS_PLACE_OVERLAP");
-					}
-				}
-				else
-				{
-					// dispatch event when is not matched
-					$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
-						type: node_type
-					});
 				}
 			}
 		}
@@ -3652,12 +3655,12 @@ MC.canvas.event.groupResize = {
 				break;
 		}
 
-		if (prop.width && prop.width < group_min_padding)
+		if (prop.width !== undefined && prop.width < group_min_padding)
 		{
 			prop.width = group_min_padding;
 		}
 
-		if (prop.height && prop.height < group_min_padding)
+		if (prop.height !== undefined && prop.height < group_min_padding)
 		{
 			prop.height = group_min_padding;
 		}

@@ -165,7 +165,9 @@ define [ 'MC' ], ( MC ) ->
 		if !subnetComp then return
 		subnetRef = '@' + subnetComp.uid + '.resource.SubnetId'
 		subnetCIDR = subnetComp.resource.CidrBlock
-		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR subnetCIDR, []
+
+		needIPCount = MC.aws.eni.getSubnetNeedIPCount(subnetComp.uid)
+		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR(subnetCIDR, [], needIPCount)
 
 		needIPCount = 0
 

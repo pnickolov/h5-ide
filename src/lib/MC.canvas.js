@@ -3644,12 +3644,12 @@ MC.canvas.event.groupResize = {
 				break;
 		}
 
-		if (prop.width && prop.width < group_min_padding)
+		if (prop.width !== undefined && prop.width < group_min_padding)
 		{
 			prop.width = group_min_padding;
 		}
 
-		if (prop.height && prop.height < group_min_padding)
+		if (prop.height !== undefined && prop.height < group_min_padding)
 		{
 			prop.height = group_min_padding;
 		}

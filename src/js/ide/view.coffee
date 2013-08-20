@@ -13,11 +13,6 @@ define [ 'event',
         delay    : null
 
         initialize : ->
-            $( window ).on "resize", this.resizeEvent
-
-        resizeEvent : ->
-            $( '.main-content' ).height window.innerHeight - 42
-            $('.sub-menu-scroll-wrap').height window.innerHeight - 100
 
         showMain : ->
             console.log 'showMain'
@@ -58,7 +53,6 @@ define [ 'event',
             $( '#tab-content-design' ).removeClass  'active'
             $( '#tab-content-process' ).removeClass 'active'
             #
-            this.resizeEvent()
 
         showRegionTab : () ->
             console.log 'showRegionTab'
@@ -68,7 +62,6 @@ define [ 'event',
             $( '#tab-content-design' ).removeClass    'active'
             $( '#tab-content-process' ).removeClass   'active'
             #
-            this.resizeEvent()
 
         showTab : () ->
             console.log 'showTab'
@@ -78,7 +71,6 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-process' ).removeClass   'active'
             #
-            this.resizeEvent()
 
         showProcessTab : () ->
             console.log 'showProcessTab'
@@ -88,7 +80,6 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-design' ).removeClass    'active'
             #
-            this.resizeEvent()
     }
 
     view = new MainView()

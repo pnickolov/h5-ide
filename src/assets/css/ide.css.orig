@@ -4439,17 +4439,7 @@ a.sidebar-hider {
 	padding-bottom: 1px;
 }
 
-/* added by song */
-
-.disabled-event-layout {
-	position: absolute;
-	z-index: 9999;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-}
-
+<<<<<<< HEAD
 /* Loading */
 .loading-wrapper {
 	position: fixed;
@@ -4509,3 +4499,15 @@ a.sidebar-hider {
 	display:none;
 }
 */
+=======
+/* added by song */
+
+.disabled-event-layout {
+	position: absolute;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+>>>>>>> develop

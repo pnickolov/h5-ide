@@ -35,6 +35,7 @@ require.config {
 
 		'zeroclipboard': 'vender/zeroclipboard/ZeroClipboard'
 		'jqpagination' : 'vender/jqpagination/jquery.jqpagination'
+		'sprintf'      : 'vender/sprintf/sprintf'
 
 		#core lib
 		'MC'                 : 'lib/MC.core'
@@ -223,7 +224,7 @@ require.config {
 			exports    : 'Handlebars'
 
 		'MC'           :
-			deps       : [ 'jquery' ]
+			deps       : [ 'jquery','sprintf' ]
 			exports    : 'MC'
 
 		'MC.validate'  :

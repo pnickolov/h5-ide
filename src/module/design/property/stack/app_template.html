@@ -8,22 +8,11 @@
 		<dd>{{property_detail.type}}</dd>
 	</dl>
 
-<!-- 	<section class="property-control-group clearfix">
-		<label class="left">Region</label>
-		<span class="property-info-value">{{property_detail.region}}</span>
-	</section>
-
-	<section class="property-control-group clearfix">
-		<label class="left">Type</label>
-		<span class="property-info-value">{{property_detail.type}}</span>
-	</section> -->
-
-
-	<div class="option-group-head" id="sg-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+	<div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
 	<div class="option-group sg-group">loading...</div>
 
 	{{#if property_detail.is_vpc}}
-	<div class="option-group-head"><span class="property-head-num-wrap">Network ACL({{network_acl.length}})</span></div>
+	<div class="option-group-head">Network ACL<span class="property-head-num-wrap">({{network_acl.length}})</span></div>
 	<div class="option-group stack-property-acl-list"></div>
 	{{/if}}
 
@@ -85,4 +74,4 @@
 
 
 
-<a href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>

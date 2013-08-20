@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance (app)
 #############################
 
-define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, constant ) ->
+define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( keypair_model, constant, lang ) ->
 
     AppInstanceModel = Backbone.Model.extend {
 
@@ -23,7 +23,7 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
                 keypairname = result.param[4]
 
                 if result.is_error
-                    notification 'error', "Cannot download keypair: " + keypairname
+                    notification 'error', lang.ide.PROP_MSG_ERR_DOWNLOAD_KP_FAILED + keypairname
                     data = null
                 else
 
@@ -103,10 +103,10 @@ define ['keypair_model', 'constant', 'backbone', 'MC' ], ( keypair_model, consta
             username = $.cookie "usercode"
             session  = $.cookie "session_id"
 
-            me = this
+            keypair_model.download {sender:this}, username, session, MC.canvas_data.region, keypairname
 
-            keypair_model.download {sender:me}, username, session, MC.canvas_data.region, keypairname
-
+        getAMI : ( ami_id ) ->
+            MC.data.dict_ami[ami_id]
 
     }
 

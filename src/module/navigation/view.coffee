@@ -121,7 +121,7 @@ define [ 'event',
         checkDesignLoadComplete : ( type, tab_name, region_name, tab_id ) ->
             console.log 'checkDesignLoadComplete'
             if MC.data.design_submodule_count isnt -1
-                notification 'warning', 'Design Module no download complete.', false
+                notification 'warning', lang.ide.NAV_DESMOD_NOT_FINISH_LOAD , false
             else
                 ide_event.trigger type, tab_name, region_name, tab_id
     }

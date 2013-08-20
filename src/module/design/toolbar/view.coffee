@@ -143,15 +143,17 @@ define [ 'MC', 'event',
             if $( event.currentTarget ).hasClass("disabled")
                 return false
 
-            if MC.canvas_property.SCALE_RATIO > 1
-                MC.canvas.zoomIn()
+            # if MC.canvas_property.SCALE_RATIO > 1
+            #     MC.canvas.zoomIn()
 
-            $("#main-toolbar .icon-zoom-out").toggleClass("disabled", false)
+            # $("#main-toolbar .icon-zoom-out").toggleClass("disabled", false)
 
-            if MC.canvas_property.SCALE_RATIO <= 1
-                $("#main-toolbar .icon-zoom-in").toggleClass("disabled", true)
+            # if MC.canvas_property.SCALE_RATIO <= 1
+            #     $("#main-toolbar .icon-zoom-in").toggleClass("disabled", true)
 
-            return false
+            # return false
+
+            this.trigger 'TOOLBAR_ZOOM_IN'
 
 
         clickZoomOutIcon : ( event )->
@@ -160,15 +162,17 @@ define [ 'MC', 'event',
             if $( event.currentTarget ).hasClass("disabled")
                 return false
 
-            if MC.canvas_property.SCALE_RATIO < 1.6
-                MC.canvas.zoomOut()
+            # if MC.canvas_property.SCALE_RATIO < 1.6
+            #     MC.canvas.zoomOut()
 
-            $("#main-toolbar .icon-zoom-in").toggleClass("disabled", false)
+            # $("#main-toolbar .icon-zoom-in").toggleClass("disabled", false)
 
-            if MC.canvas_property.SCALE_RATIO >= 1.6
-                $("#main-toolbar .icon-zoom-out").toggleClass("disabled", true)
+            # if MC.canvas_property.SCALE_RATIO >= 1.6
+            #     $("#main-toolbar .icon-zoom-out").toggleClass("disabled", true)
 
-            return false
+            # return false
+
+            this.trigger 'TOOLBAR_ZOOM_OUT'
 
         clickUndoIcon : ->
             console.log 'clickUndoIcon'

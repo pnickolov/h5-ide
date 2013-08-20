@@ -247,26 +247,38 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me = this
 
             if flag is 'NEW_STACK'
-                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':false, 'is_delete':false}
+                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true}
                 is_tab = true
 
             else if flag is 'OPEN_STACK'
                 id = id.resolved_data[0].id
-                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
+                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
                 is_tab = true
 
             else if flag is 'SAVE_STACK'
-                item_state_map[id] = {'name':value, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
+                item_state_map[id].name         = value
+                item_state_map[id].is_run       = true
+                item_state_map[id].is_duplicate = true
+                item_state_map[id].is_delete    = true
 
             else if flag is 'CREATE_STACK'
+                item_state_map[value.id] = {'name':value.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':item_state_map[id].is_zoomin, 'is_zoomout':item_state_map[id].is_zoomout}
+
                 delete item_state_map[id]
-                item_state_map[value.id] = {'name':value.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
 
                 id = value.id
 
             else if flag is 'DELETE_STACK'
                 delete item_state_map[id]
                 return
+
+            else if flag is 'ZOOMIN_STACK'
+                item_state_map[id].is_zoomin    = value
+                item_state_map[id].is_zoomout   = true
+
+            else if flag is 'ZOOMOUT_STACK'
+                item_state_map[id].is_zoomout   = value
+                item_state_map[id].is_zoomin    = true
 
             else if flag is 'OPEN_APP'
                 is_running = false
@@ -281,7 +293,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     is_pending = true
 
                 id = id.resolved_data[0].id
-                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data) }
+                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_zoomin':false, 'is_zoomout':true, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data) }
 
                 is_tab = true
 
@@ -387,6 +399,32 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             run_stack_map[region][app_name] = data
 
             null
+
+        #zoomin
+        zoomIn : () ->
+            me = this
+
+            if MC.canvas_property.SCALE_RATIO > 1
+                MC.canvas.zoomIn()
+
+            flag = true
+            if MC.canvas_property.SCALE_RATIO <= 1
+                flag = false
+
+            me.setFlag MC.canvas_data.id, 'ZOOMIN_STACK', flag
+
+        #zoomout
+        zoomOut : () ->
+            me = this
+
+            if MC.canvas_property.SCALE_RATIO < 1.6
+                MC.canvas.zoomOut()
+
+            flag = true
+            if MC.canvas_property.SCALE_RATIO >= 1.6
+                flag = false
+
+            me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
 
         savePNG : ( is_thumbnail, data ) ->
             console.log 'savePNG'

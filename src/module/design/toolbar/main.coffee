@@ -69,6 +69,16 @@ define [ 'jquery',
                 console.log ide_event.DELETE_STACK + ':' + region + ',' + id + ',' + name
                 model.deleteStack(region, id, name)
 
+            #zoomin
+            view.on 'TOOLBAR_ZOOM_IN', () ->
+                console.log 'TOOLBAR_ZOOM_IN'
+                model.zoomIn()
+
+            #zoomout
+            view.on 'TOOLBAR_ZOOM_OUT', () ->
+                console.log 'TOOLBAR_ZOOM_OUT'
+                model.zoomOut()
+
             #run
             view.on 'TOOLBAR_RUN_CLICK', (app_name, data) ->
                 console.log 'design_toolbar_click:runStack'

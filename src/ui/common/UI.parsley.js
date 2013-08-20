@@ -58,8 +58,8 @@
       var isSmallNumKey = keyCode  >= 96 && keyCode <= 105;
 
 
-      var controlCodeList = [8,9,13,16,19,20,27,32,33,34,35,36,37,38,39,40,45,46,112,113,114,115,116,117,118,119,120,121,122,123,144,145];
-      var controlNameList = ['BackSpace','Tab','Enter','Shift','Pause','CapsLock','Escape','Space','PageUp','PageDown','End','Move','Left','Up','Right','Down','Insert','Delete','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12','NumsLock','Home'];
+      var controlCodeList = [8,9,13,16,19,20,27,33,34,35,36,37,38,39,40,45,46,112,113,114,115,116,117,118,119,120,121,122,123,144,145];
+      var controlNameList = ['BackSpace','Tab','Enter','Shift','Pause','CapsLock','Escape','PageUp','PageDown','End','Move','Left','Up','Right','Down','Insert','Delete','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12','NumsLock','Home'];
 
       var shiftMap = {
         192: '~',
@@ -104,7 +104,8 @@
         222: "'",
         188: ',',
         190: '.',
-        191: '/'
+        191: '/',
+        32: ' '
       }
 
 

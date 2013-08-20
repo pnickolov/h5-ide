@@ -7,12 +7,14 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
   ASGConfigModel = Backbone.Model.extend {
 
     defaults :
-      uid : null
-      asg : null
-      name : null
-      has_sns_topic : null
-      hasLaunchConfig : null
+      uid               : null
+      asg               : null
+      name              : null
+      has_sns_topic     : null
+      hasLaunchConfig   : null
       notification_type : null
+      has_elb           : false
+      detail_monitor    : false
 
     initialize : ->
       null

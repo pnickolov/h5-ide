@@ -2267,7 +2267,7 @@ MC.canvas.event.dragable = {
 					'mousemove': MC.canvas.event.dragable.mousemove,
 					'mouseup': event.target.getAttribute('class') === 'asg-resource-dragger' ?
 						// For asgExpand
-						MC.canvas.event.dragable.asgExpandup : 
+						MC.canvas.event.dragable.asgExpandup :
 						// Default
 						MC.canvas.event.dragable.mouseup
 				}, {
@@ -2424,6 +2424,14 @@ MC.canvas.event.dragable = {
 					});
 
 					MC.canvas.select(target_id);
+				}
+				else if (
+						parentGroup &&
+						parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
+						node_type === 'AWS.EC2.Instance'
+				)
+				{
+					notification('warning', 'Launch Configuration can only be created by using AMI from Resource Panel.');
 				}
 			}
 

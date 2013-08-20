@@ -107,12 +107,12 @@ define [ 'jquery',
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
                     info = flag.replace /_/g, ' '
                     if info
-                        view.notify 'info', 'Start to ' + info.toLowerCase() + ' ' + name + ' successfully.'
+                        view.notify 'info', 'Sending request to ' + info.toLowerCase() + ' ' + name + ' successfully.'
 
             model.on 'TOOLBAR_REQUEST_FAILED', (flag, name) ->
                 info = flag.replace /_/g, ' '
                 if info
-                    view.notify 'error', 'Start to ' + info.toLowerCase() + ' ' + name + ' failed.'
+                    view.notify 'error', 'Sending request to ' + info.toLowerCase() + ' ' + name + ' failed.'
 
             model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, name) ->
                 info = flag.replace /_/g, ' '

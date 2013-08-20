@@ -226,7 +226,7 @@ var constant_data = {
 					"relation": "multiple"
 				},
 				{
-					"type": "elb-sg",
+					"type": "sg",
 					"from": "instance-sg",
 					"to": "elb-sg-in",
 					"direction": {
@@ -282,7 +282,7 @@ var constant_data = {
 					"relation": "multiple"
 				},
 				{
-					"type": "elb-sg",
+					"type": "sg",
 					"from": "elb-sg-in",
 					"to": "instance-sg",
 					"direction": {
@@ -302,7 +302,7 @@ var constant_data = {
 					"relation": "multiple"
 				},
 				{
-					"type": "elb-sg",
+					"type": "sg",
 					"from": "elb-sg-in",
 					"to": "eni-sg",
 					"direction": {
@@ -322,7 +322,7 @@ var constant_data = {
 					"relation": "multiple"
 				},
 				{
-					"type": "elb-sg",
+					"type": "sg",
 					"from": "elb-sg-in",
 					"to": "launchconfig-sg",
 					"direction": {
@@ -531,7 +531,7 @@ var constant_data = {
 					"relation": "multiple"
 				},
 				{
-					"type": "elb-sg",
+					"type": "sg",
 					"from": "launchconfig-sg",
 					"to": "elb-sg-in",
 					"direction": {

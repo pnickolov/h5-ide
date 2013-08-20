@@ -480,6 +480,10 @@
 	font-size: 13px;
 }
 
+.asg-expand {
+	opacity: 0.5;
+}
+
 .asg-resource-dragger {
 	fill: rgba(118, 214, 255, 1);
 	cursor: pointer;

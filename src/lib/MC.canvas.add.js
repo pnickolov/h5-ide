@@ -636,7 +636,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 						//4 path: left port(blue)
 						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-left',
+							'class': 'port-blue port-launchconfig-sg port-launchconfig-sg-left',//remove 'port' class to remove event
 							'id' : group.id + '_port-launchconfig-sg-left',
 							'transform': 'translate('+ (8 + offset_x ) + ', ' + (26 + offset_y) + ')' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
 							'data-name': 'launchconfig-sg', //for identify port
@@ -648,7 +648,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 						//5 path: right port(blue)
 						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-right',
+							'class': 'port-blue port-launchconfig-sg port-launchconfig-sg-right',//remove 'port' class to remove event
 							'id' : group.id + '_port-launchconfig-sg-right',
 							'transform': 'translate(' + (84 + offset_x) +' , ' + (26 + offset_y) + ')' + MC.canvas.PORT_RIGHT_ROTATE,
 							'data-name': 'launchconfig-sg',
@@ -657,7 +657,11 @@ MC.canvas.add = function (flag, option, coordinate)
 							'data-direction': 'out',
 							'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 						})
-					);
+					).attr({
+						'class': 'dragable ' + class_type + ' asg-expand ',//append asg-expand
+						'data-type': 'group',
+						'data-class': type
+					});
 				}
 			}
 

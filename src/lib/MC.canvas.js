@@ -1275,7 +1275,10 @@ MC.canvas = {
 
 			if (
 				node_id !== key &&
-				$.inArray(item.type, group_weight) > -1 &&
+				(
+					$.inArray(item.type, group_weight) > -1 ||
+					item.type === node_type
+				) &&
 				start_x <= coordinate[0] + size[0] &&
 				end_x >= coordinate[0] &&
 				start_y <= coordinate[1] + size[1] &&
@@ -3890,6 +3893,8 @@ MC.canvas.event.groupResize = {
 				group_left = 2;
 			}
 		}
+
+
 
 		if (
 			group_width > group_padding &&

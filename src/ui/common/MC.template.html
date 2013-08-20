@@ -1047,36 +1047,15 @@ Additional Notes and Questions
 		<a id="asgList-close" href="javascrpit:void(0)" onclick="MC.canvas.asgList.close()">&times;</a>
 	</div>
 	<ul id="asgList" class="clearfix">
-		<li>
-			<a href="javascript:void(0)" class="asgList-item" data-id="aa">
-				<i class="asgList-item-status status status-green"></i>
-				<div class="asgList-item-icon" style="background-image: url('./assets/images/ide/ami/suse.x86_64.ebs.png')"></div>
-				<div class="asgList-item-volume">
-					<span class="asgList-item-number">0</span>
-				</div>
-				<div class="asgList-item-label">launch-config-1</div>
-			</a>
-		</li>
-		<li>
-			<a href="javascript:void(0)" class="asgList-item" data-id="aa">
-				<i class="asgList-item-status status status-green"></i>
-				<div class="asgList-item-icon" style="background-image: url('./assets/images/ide/ami/suse.x86_64.ebs.png')"></div>
-				<div class="asgList-item-volume">
-					<span class="asgList-item-number">0</span>
-				</div>
-				<div class="asgList-item-label">launch-config-1</div>
-			</a>
-		</li>
-		<li>
-			<a href="javascript:void(0)" class="asgList-item" data-id="aa">
-				<i class="asgList-item-status status status-green"></i>
-				<div class="asgList-item-icon" style="background-image: url('./assets/images/ide/ami/suse.x86_64.ebs.png')"></div>
-				<div class="asgList-item-volume">
-					<span class="asgList-item-number">0</span>
-				</div>
-				<div class="asgList-item-label">launch-config-1</div>
-			</a>
-		</li>
+    {{#each instances}}
+      <a href="#" class="asgList-item" data-id="{{id}}"></a>
+        <i class="asgList-item-status status status-{{status}}"></i>
+        <span class="asgList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
+        <span class="asgList-item-volume">
+          <span class="asgList-item-number">0</span>
+        </span>
+        <span class="asgList-item-label">{{id}}</span>
+    {{/each}}
 	</ul>
 </div>
 

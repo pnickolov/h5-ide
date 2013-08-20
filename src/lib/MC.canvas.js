@@ -2146,7 +2146,49 @@ MC.canvas.asgList = {
 				target_offset = Canvon(target).offset(),
 				canvas_offset = $('#svg_canvas').offset();
 
-			$('#canvas_container').append( MC.template.asgList() );
+			// Prepare data
+			var lc_comp = MC.canvas_data.component[ MC.extractID( event.currentTarget.id ) ];
+			var i;
+
+			for ( i in MC.canvas_data.component ) {
+				var comp = MC.canvas_data.component[i]
+				if ( comp.type === "AWS.AutoScaling.Group" &&
+					   comp.resource.LaunchConfigurationName.indexOf( lc_comp.uid ) != -1 ) {
+					lc_comp = comp;
+					break;
+				}
+			}
+
+			var data = MC.data.resource_list[ MC.canvas_data.region ][ comp.resource.AutoScalingGroupARN ];
+			var layout = MC.canvas_data.layout.component.node[event.currentTarget.id];
+			var statusMap = {
+				   "Pending"     : "orange"
+				 , "Quarantined" : "orange"
+				 , "InService"   : "green"
+				 , "Terminating" : "red"
+				 , "Terminated"  : "red"
+			};
+
+			var temp_data = {
+				  instances  : []
+			};
+
+			if ( layout ) {
+				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join("");
+			}
+
+			var instances = lc_comp.resource.Instances.member;
+			if ( instances )
+			{
+				for ( i = 0; i < instances.length; ++i ) {
+					temp_data.push({
+						  id     : instances[i].InstanceId
+						, status : statusMap[ instances[i].LifecycleState ]
+					});
+				}
+			}
+
+			$('#canvas_container').append( MC.template.asgList( temp_data ) );
 
 			$('#asgList-wrap')
 				.on('click', '.asgList-item', MC.canvas.asgList.select)

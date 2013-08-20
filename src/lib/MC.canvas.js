@@ -1220,8 +1220,6 @@ MC.canvas = {
 			)
 			{
 				matched = document.getElementById( key );
-
-				return false;
 			}
 		});
 

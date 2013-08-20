@@ -122,7 +122,7 @@ a {
 #header {
 	background: #312d31;
 	height: 50px;
-	z-index: 3;
+	z-index: 10;
 	position: absolute;
 	right: 0;
 }
@@ -492,10 +492,12 @@ a {
 
 #nav-dashboard-region li > a,
 .nav-region-list-items li > a {
-	font-size: 13px;
-	color: #ccc;
-	width: 210px;
-	line-height: 24px;
+	font-size   : 13px;
+	color       : #ccc;
+	line-height : 24px;
+
+	width       : 210px;
+	cursor      : pointer;
 }
 
 #nav-dashboard-region li a:hover,
@@ -642,13 +644,17 @@ a {
 	position: absolute;
 	top: 5px;
 	right: 5px;
-	width: 10px;
-	height: 10px;
+	width: 16px;
+	height: 16px;
+	text-align: center;
+	line-height: 16px;
 }
 
-.tab-bar-truncate.unsaved i:after {
-	content: "*";
-	font-size: 18px;
+#tab-bar li.unsaved a.close-tab,
+#tab-bar li.active.unsaved a.close-tab {
+	border-radius: 100%;
+	background: red;
+	color: #fff;
 }
 
 #tab-bar li.active a.close-tab {
@@ -1733,6 +1739,13 @@ a:hover .toolbar-label {
 .btn-toolbar.disabled {
 	color : #cecece;
 }
+
+.btn-toolbar.disabled:hover {
+	background-color : transparent;
+	box-shadow       : none;
+	cursor           : default;
+}
+
 .btn-toolbar.open {
 	background-color : #d0d0d0;
 	border-radius    : 4px;
@@ -1958,11 +1971,18 @@ a.sidebar-hider {
 	background: url('../images/ide/icon/asg-resource.png') center center no-repeat;
 }
 
+.resource-icon-asg-label {
+	font-size: 12px;
+	color: #999;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
 
 .ebs-size {
 	font-size: 12px;
 	position: absolute;
-	margin-top: 43px;
+	margin-top: 40px;
 	width: 100%;
 	display: block;
 	text-align: center;
@@ -2108,7 +2128,6 @@ a.sidebar-hider {
 	position   : relative;
 	width      : 100%;
 	height     : 100%;
-	background : #5e5e5e;
 	-webkit-transform: translate(0,0);
 	   -moz-transform: translate(0,0);
 	     -o-transform: translate(0,0);
@@ -2135,16 +2154,17 @@ a.sidebar-hider {
 	        box-sizing: border-box;
 }
 
-.transition .property-panel-wrapper {
+/*.transition .property-panel-wrapper {
 	-webkit-transition: left .2s ease-in-out;
 	   -moz-transition: left .2s ease-in-out;
 	    -ms-transition: left .2s ease-in-out;
 	     -o-transition: left .2s ease-in-out;
 	        transition: left .2s ease-in-out;
-}
+}*/
 
 #property-second-panel {
-	left : 100%;
+	display    : none;
+	left       : 100%;
 	background : #fff;
 }
 
@@ -2153,7 +2173,7 @@ a.sidebar-hider {
 	width: 216px;
 }
 
-.show-second-panel #property-first-panel {
+/*.show-second-panel #property-first-panel {
 	z-index : 3;
 	left : -30%;
 }
@@ -2169,12 +2189,12 @@ a.sidebar-hider {
 .show-second-panel #property-second-panel {
 	z-index : 4;
 	left : 0;
-}
+}*/
 
 .property-content {
 	height      : 100%;
 
-	background-color : #5e5e5e;
+	background-color : #555455;
 	color            : #ccc;
 
 	-webkit-box-sizing: border-box;
@@ -2441,7 +2461,6 @@ a.sidebar-hider {
 
 .property-ami-wrap:hover {
 	background: #414041;
-<<<<<<< HEAD
 }
 
 .property-ami-label {
@@ -2463,9 +2482,6 @@ a.sidebar-hider {
 	-ms-transition     : background .2s;
 	-o-transition      : background .2s;
 	transition         : background .2s;
-}
-
-=======
 }
 
 .property-ami-label {
@@ -2720,6 +2736,8 @@ a.sidebar-hider {
 
 	position    : absolute;
 	right       : 0;
+
+	cursor : pointer;
 }
 
 .add-rule:hover {
@@ -2750,7 +2768,8 @@ a.sidebar-hider {
 	width: 65px;
 }
 
-.sg-rule-list .rule-remove-icon {
+.sg-rule-list .rule-remove-icon,
+.acl-rule-list .rule-remove-icon {
 	display: none;
 	width: 15px;
 	height: 15px;
@@ -2760,7 +2779,8 @@ a.sidebar-hider {
 	right: 5px;
 }
 
-.sg-rule-list li:hover .rule-remove-icon {
+.sg-rule-list li:hover .rule-remove-icon,
+.acl-rule-list li:hover .rule-remove-icon {
 	display: block;
 }
 
@@ -3309,22 +3329,22 @@ a.sidebar-hider {
 }
 
 /* property-newtwork-acl */
-.acl-rule-col1 {
-	float  : left;
-	width  : 35px;
-	height : 50px;
+
+.acl-rule-list li {
+	width: 280px;
+	padding: 0;
 }
 
-.acl-rule-col2 {
-	float  : left;
-	width  : 60px;
-	height : 50px;
+.acl-rule-number {
+	width      : 100%;
+	height     : 20px;
+	background : #484748;
 }
 
-.acl-rule-col4 {
-	float  : right;
-	width  : 20px;
-	height : 50px;
+.acl-rule-details {
+	padding  : 10px;
+	position : relative;
+	width    : 260px;
 }
 
 .acl-rule-allow-cb {
@@ -3531,10 +3551,6 @@ a.sidebar-hider {
 
 .modal-row > label {
 	margin-right: 20px;
-}
-
-.acl-rules li:hover {
-	background-color: #fff;
 }
 
 #modal-acl-source-input {

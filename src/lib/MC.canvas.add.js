@@ -196,7 +196,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				{
 					MC.canvas.add('AWS.VPC.Subnet', {
 						'name': 'subnet',
-						'groupUId': group.id
+						'groupUId': group.id,
+						'auto': true
 					}, {
 						'x': coordinate.x + MC.canvas.GROUP_PADDING,
 						'y': coordinate.y + MC.canvas.GROUP_PADDING
@@ -314,6 +315,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				component_data.resource.VpcId = "@" + option.group.vpcUId + '.resource.VpcId';
 				component_data.resource.AvailabilityZone = option.group.availableZoneName;
+				component_data.autoCreate = option.auto;
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 				component_layout.groupUId = option.groupUId;
@@ -462,7 +464,7 @@ MC.canvas.add = function (flag, option, coordinate)
 								groupType = 'Subnet';
 								break;
 						}
-						notification('warning', 'Please expand AutoScalingGroup to another ' + groupType + '!', false);
+						notification('warning', 'Please expand Auto Scaling Group to another ' + groupType + '.', false);
 						return null;
 					}
 					else

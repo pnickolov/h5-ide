@@ -140,14 +140,14 @@ var constant_data = {
 		EC2_VPC: 'ec2-vpc' //has vpc
 	},
 
-	// If array, order by Subnet -> AZ -> Canvas.
+	// If array, order by ASG -> Subnet -> AZ -> Canvas.
 	MATCH_PLACEMENT:
 	{
 		'ec2-classic':
 		{
 			'AWS.ELB': ['Canvas'],
 			'AWS.EC2.AvailabilityZone': ['Canvas'],
-			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone','AWS.AutoScaling.Group'],
+			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.EC2.AvailabilityZone'],
 			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone'],
 			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone']
 		},
@@ -155,7 +155,7 @@ var constant_data = {
 		{
 			'AWS.ELB': ['Canvas'],
 			'AWS.EC2.AvailabilityZone': ['Canvas'],
-			'AWS.EC2.Instance': ['AWS.EC2.AvailabilityZone','AWS.AutoScaling.Group'],
+			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.EC2.AvailabilityZone'],
 			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone'],
 			'AWS.VPC.NetworkInterface': ['AWS.EC2.AvailabilityZone'],
 			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone']
@@ -163,7 +163,7 @@ var constant_data = {
 		'custom-vpc':
 		{
 			'AWS.ELB': ['AWS.VPC.VPC'],
-			'AWS.EC2.Instance': ['AWS.VPC.Subnet','AWS.AutoScaling.Group'],
+			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.VPC.Subnet'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
 			'AWS.VPC.CustomerGateway': ['Canvas'],
@@ -178,7 +178,7 @@ var constant_data = {
 		'ec2-vpc':
 		{
 			'AWS.ELB': ['AWS.VPC.VPC'],
-			'AWS.EC2.Instance': ['AWS.VPC.Subnet','AWS.AutoScaling.Group'],
+			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.VPC.Subnet'],
 			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
 			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
 			'AWS.VPC.CustomerGateway': ['Canvas'],
@@ -205,6 +205,18 @@ var constant_data = {
 				},
 				"relation": "multiple"
 			},
+			"AWS.AutoScaling.Group": [
+				{
+					"type": "sg",
+					"from": "instance-sg",
+					"to": "launchconfig-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
 			"AWS.EC2.Instance": {
 				"type": "sg",
 				"from": "instance-sg",
@@ -293,15 +305,6 @@ var constant_data = {
 			],
 			"AWS.VPC.NetworkInterface": [
 				{
-					"type": "elb-sg",
-					"from": "elb-sg-out",
-					"to": "eni-sg",
-					"direction": {
-						"to": "horizontal"
-					},
-					"relation": "multiple"
-				},
-				{
 					"type": "sg",
 					"from": "elb-sg-in",
 					"to": "eni-sg",
@@ -331,6 +334,26 @@ var constant_data = {
 					"relation": "multiple"
 				}
 			],
+			"AWS.AutoScaling.Group": [
+				{
+					"type": "elb-sg",
+					"from": "elb-sg-out",
+					"to": "launchconfig-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				},
+				{
+					"type": "sg",
+					"from": "elb-sg-in",
+					"to": "launchconfig-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
 			"AWS.VPC.Subnet": {
 				"type": "association",
 				"from": "elb-assoc",
@@ -339,6 +362,39 @@ var constant_data = {
 			}
 		},
 		"AWS.VPC.NetworkInterface": {
+			"AWS.ELB": [
+				{
+					"type": "sg",
+					"from": "eni-sg",
+					"to": "elb-sg-in",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.AutoScaling.LaunchConfiguration": {
+				"type": "sg",
+				"from": "eni-sg",
+				"to": "launchconfig-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
+				},
+				"relation": "multiple"
+			},
+			"AWS.AutoScaling.Group": [
+				{
+					"type": "sg",
+					"from": "eni-sg",
+					"to": "launchconfig-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
 			"AWS.EC2.Instance": [
 				{
 					"type": "sg",
@@ -536,6 +592,52 @@ var constant_data = {
 					"to": "elb-sg-in",
 					"direction": {
 						"from": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			]
+		},
+		"AWS.AutoScaling.Group":{
+			"AWS.ELB" : [
+				{
+					"type": "elb-sg",
+					"from": "launchconfig-sg",
+					"to": "elb-sg-out",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
+				},
+				{
+					"type": "sg",
+					"from": "launchconfig-sg",
+					"to": "elb-sg-in",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.EC2.Instance" : [
+				{
+					"type": "sg",
+					"from": "launchconfig-sg",
+					"to": "instance-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.VPC.NetworkInterface" : [
+				{
+					"type": "sg",
+					"from": "launchconfig-sg",
+					"to": "eni-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
 					},
 					"relation": "multiple"
 				}

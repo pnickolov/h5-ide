@@ -39,7 +39,51 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
             this.set 'line_id', line_id
 
-            this.set 'target', MC.canvas_data.layout.connection[line_id].target
+            target = MC.canvas_data.layout.connection[line_id].target
+
+            # portMap = {}
+
+            # for k,v of target
+            #     portMap[v] = k
+
+            # for k,v of target
+
+            #     if v is 'launchconfig-sg' and not MC.canvas_data.component[k]
+
+            #         original_group_uid = MC.canvas_data.layout.component.group[k].originalId
+
+            #         $.each MC.canvas_data.layout.component.node, ( comp_uid, comp ) ->
+
+            #             if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and comp.groupUId is original_group_uid
+
+            #                 $.each MC.canvas_data.layout.connection, ( l_id, line_comp ) ->
+
+            #                     tmp_portMap = {}
+
+            #                     for key,val of line_comp.target
+            #                         tmp_portMap[val] = key
+
+            #                     for key, val of line_comp.target
+
+            #                         if key is comp_uid and line_comp.type is 'elb-sg'
+
+            #                             if tmp_portMap['elb-sg-out'] and portMap['elb-sg-out'] and tmp_portMap['elb-sg-out'] is portMap['elb-sg-out']
+
+            #                                 target = MC.canvas_data.layout.connection[l_id].target
+
+            #                                 this.set 'line_id', l_id
+
+            #                                 break
+
+
+
+            #                 return false
+
+
+
+
+
+            this.set 'target', target
 
             if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
@@ -78,9 +122,12 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                     return false
 
-            if not existing and MC.canvas_data.layout.connection[this.get('line_id')]
+            line_id = this.get('line_id')
 
-                this.trigger 'DELETE_LINE', this.get('line_id')
+            if not existing and MC.canvas_data.layout.connection[line_id]
+                if MC.canvas_data.layout.connection[line_id].type is 'sg'
+                    this.trigger 'DELETE_LINE', line_id
+
 
 
         _checkRule : ( from_sg, to_sg) ->
@@ -301,7 +348,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                                 to_sg_list.push sg.GroupId.split('.')[0][1...]
 
-                    when constant.AWS_RESOURCE_TYPE.AWS_ELB
+                    when constant.AWS_RESOURCE_TYPE.AWS_ELB, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
                         $.each MC.canvas_data.component[connection_obj.uid].resource.SecurityGroups, ( idx, sg )->
 

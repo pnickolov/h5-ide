@@ -12,7 +12,7 @@
       <span class="required-input right">Required</span>
       <div class="subnet-cidr-wrapper">
         <span class="cidr-prefix" id="property-cidr-prefix">{{CIDRPrefix}}</span>
-        <input class="input cidr-rest tooltip" type="text" value="{{CIDR}}" lastValue="{{CIDR}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."/>
+        <input data-ignore="true" data-ignore-regexp="^[0-9]?$|^[0-9][0-9./]+$" class="input cidr-rest tooltip" type="text" value="{{CIDR}}" lastValue="{{CIDR}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."/>
       </div>
     </section>
   </div>

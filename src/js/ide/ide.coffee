@@ -153,9 +153,17 @@ define [ 'MC', 'event', 'handlebars'
 		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
 		#	console.log 'RESOURCE_COMPLETE'
 
+		#############################
+		#  i18n
+		#############################
+
 		#i18n
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.ide[ text ]
+
+		#############################
+		#  analytics
+		#############################
 
 		analytics.identify($.cookie("userid"), {
 			name : $.cookie("username"),

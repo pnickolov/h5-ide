@@ -12,7 +12,6 @@ body {
 	background : #4c494c;
 
 	position   : relative;
-	min-width  : 1110px;
 	min-height : 600px;
 }
 
@@ -2271,7 +2270,6 @@ a.sidebar-hider {
 
 .option-group {
 	display  : none;
-	overflow : hidden;
 }
 
 /*.option-group.transition {
@@ -2589,20 +2587,21 @@ a.sidebar-hider {
 
 /* End of General Style for Property Panel List */
 
-.acl-sg-info-list li {
-	height        : 52px;
+.acl-sg-info-list > li {
+	height  : 52px;
+	padding : 10px 0 10px 10px;
+	width   : auto;
 }
 
 .acl-sg-info-list .col1 {
-	margin-right       : 15px;
-	/*background-color : #eee;*/
-	width              : 15px;
-	float              : left;
-	padding            : 15px 0;
+	margin-right : 15px;
+	width        : 15px;
+	float        : left;
+	padding      : 15px 0;
 }
 
 .acl-sg-info-list .col2 {
-	width     : 210px;
+	width     : 200px;
 	float     : left;
 	word-wrap : break-word;
 }
@@ -2623,17 +2622,17 @@ a.sidebar-hider {
 	font-size: 12px;
 }
 .acl-sg-info-list .col3 {
-	position         : absolute;
-	right            : 0;
-	margin-top       : -10px;
+	float        : right;
+	margin-top   : -10px;
+	position     : relative;
 
-	text-align       : center;
+	text-align : center;
 
-	width            : 40px;
-	height           : 72px;
-	line-height      : 72px;
+	cursor      : pointer;
+	width       : 40px;
+	height      : 72px;
+	line-height : 72px;
 
-	cursor           : pointer;
 
 	-webkit-transition : background .2s;
 	-moz-transition    : background .2s;

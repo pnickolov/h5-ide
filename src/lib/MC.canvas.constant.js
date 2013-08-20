@@ -205,6 +205,18 @@ var constant_data = {
 				},
 				"relation": "multiple"
 			},
+			"AWS.AutoScaling.Group": [
+				{
+					"type": "sg",
+					"from": "instance-sg",
+					"to": "launchconfig-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
 			"AWS.EC2.Instance": {
 				"type": "sg",
 				"from": "instance-sg",
@@ -293,15 +305,6 @@ var constant_data = {
 			],
 			"AWS.VPC.NetworkInterface": [
 				{
-					"type": "elb-sg",
-					"from": "elb-sg-out",
-					"to": "eni-sg",
-					"direction": {
-						"to": "horizontal"
-					},
-					"relation": "multiple"
-				},
-				{
 					"type": "sg",
 					"from": "elb-sg-in",
 					"to": "eni-sg",
@@ -331,6 +334,26 @@ var constant_data = {
 					"relation": "multiple"
 				}
 			],
+			"AWS.AutoScaling.Group": [
+				{
+					"type": "elb-sg",
+					"from": "elb-sg-out",
+					"to": "launchconfig-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				},
+				{
+					"type": "sg",
+					"from": "elb-sg-in",
+					"to": "launchconfig-sg",
+					"direction": {
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
 			"AWS.VPC.Subnet": {
 				"type": "association",
 				"from": "elb-assoc",
@@ -339,6 +362,39 @@ var constant_data = {
 			}
 		},
 		"AWS.VPC.NetworkInterface": {
+			"AWS.ELB": [
+				{
+					"type": "sg",
+					"from": "eni-sg",
+					"to": "elb-sg-in",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.AutoScaling.LaunchConfiguration": {
+				"type": "sg",
+				"from": "eni-sg",
+				"to": "launchconfig-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
+				},
+				"relation": "multiple"
+			},
+			"AWS.AutoScaling.Group": [
+				{
+					"type": "sg",
+					"from": "eni-sg",
+					"to": "launchconfig-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
 			"AWS.EC2.Instance": [
 				{
 					"type": "sg",
@@ -536,6 +592,52 @@ var constant_data = {
 					"to": "elb-sg-in",
 					"direction": {
 						"from": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			]
+		},
+		"AWS.AutoScaling.Group":{
+			"AWS.ELB" : [
+				{
+					"type": "elb-sg",
+					"from": "launchconfig-sg",
+					"to": "elb-sg-out",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
+				},
+				{
+					"type": "sg",
+					"from": "launchconfig-sg",
+					"to": "elb-sg-in",
+					"direction": {
+						"from": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.EC2.Instance" : [
+				{
+					"type": "sg",
+					"from": "launchconfig-sg",
+					"to": "instance-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
+					},
+					"relation": "multiple"
+				}
+			],
+			"AWS.VPC.NetworkInterface" : [
+				{
+					"type": "sg",
+					"from": "launchconfig-sg",
+					"to": "eni-sg",
+					"direction": {
+						"from": "horizontal",
+						"to": "horizontal"
 					},
 					"relation": "multiple"
 				}
@@ -1357,7 +1459,7 @@ var constant_data = {
 					}
 				],
 				'HealthCheckGracePeriod': '',
-				'HealthCheckType': '',
+				'HealthCheckType': 'EC2',
 				'Instances': [
 
 				],
@@ -1377,7 +1479,7 @@ var constant_data = {
 				],
 				'Tags': '',
 				'TerminationPolicies': [
-
+					'Default'
 				],
 				'VPCZoneIdentifier': '',
 				'InstanceId': '',

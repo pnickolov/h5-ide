@@ -162,6 +162,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 community_ami_list = {}
 
                 if !result.is_error and  result.resolved_data
+
                     community_ami_list = _.extend result.resolved_data.ami, {timestamp: ( new Date() ).getTime()}
                     favorite_ami_ids = _.pluck ( me.get 'favorite_ami' ), 'resource_id'
 
@@ -239,6 +240,11 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                 region_name = result.param[3]
                 console.log 'FAVORITE_REMOVE_RETURN: ' + region_name
+<<<<<<< HEAD
+                #    if result.return_code is 0
+                #        delete MC.data.config[region_name].favorite_ami
+                #        @favoriteAmiService region_name
+=======
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
@@ -246,6 +252,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 else
                     notification 'error', 'Remove AMI to favorite succeed'
 
+>>>>>>> develop
 
                 null
 

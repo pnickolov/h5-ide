@@ -39,12 +39,8 @@
 				<div class="bar" id="progress_bar" style="width: 0%;"></div>
 			</div>
 			<p class="process-info">
-				{{#if flag_list.dones}}
-				<span><b class="num">{{flag_list.dones}}</b> of</span>
-				<span><b class="total">{{flag_list.steps}}</b> tasks</span>
-				{{else}}
-				<span><b class="info"></b>Beginning...</span>
-				{{/if}}
+				<span><b class="num" id="progress_num">0</b> of</span>
+				<span><b class="total" id="progress_total">0</b> tasks</span>
 			</p>
 		</div>
 		{{/if}}

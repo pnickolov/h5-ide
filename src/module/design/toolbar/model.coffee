@@ -529,7 +529,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     if flag is 'RUN_STACK'
 
                         flag_list.is_inprocess = true
-                        flag_list.rate = 0
                         if 'dag' of dag # changed request
 
                             flag_list.steps = dag.dag.step.length
@@ -543,7 +542,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
 
                 when constant.OPS_STATE.OPS_STATE_FAILED
-                    #handle.stop()
 
                     me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
 
@@ -554,7 +552,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         me.setFlag id, 'STOPPED_APP'
 
                 when constant.OPS_STATE.OPS_STATE_DONE
-                    #handle.stop()
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
 

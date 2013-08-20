@@ -1,14 +1,19 @@
 html,
 body {
-	height: 100%;
+	width    : 100%;
+	height   : 100%;
+	overflow : hidden;
 }
 
 #body {
-	font-size: 14px;
-	min-width: 1024px;
-	color: #666;
-	overflow: hidden;
-	background: #4c494c;
+	font-size  : 14px;
+	color      : #666;
+	overflow   : hidden;
+	background : #4c494c;
+
+	position   : relative;
+	min-width  : 1110px;
+	min-height : 600px;
 }
 
 a {
@@ -24,13 +29,13 @@ a {
 	z-index: 80;
 }
 
-.blur-effect {
-/*	-webkit-filter: blur(1px);
+/*.blur-effect {
+	-webkit-filter: blur(1px);
 	-moz-filter: blur(1px);
 	-o-filter: blur(1px);
 	-ms-filter: blur(1px);
-	filter: blur(1px);*/
-}
+	filter: blur(1px);
+}*/
 
 .icon-caret-down {
 	margin-left: 2px;
@@ -117,7 +122,7 @@ a {
 #header {
 	background: #312d31;
 	height: 50px;
-	z-index: 3;
+	z-index: 10;
 	position: absolute;
 	right: 0;
 }
@@ -341,10 +346,9 @@ a {
 
 /* Wrapper */
 #wrapper {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	min-height: 600px;
+	position : absolute;
+	width    : 100%;
+	height   : 100%;
 }
 
 /* Left Nav */
@@ -352,10 +356,9 @@ a {
 #navigation {
 	position : absolute;
 	top      : 53px;
+	bottom   : 0;
 	z-index  : 200;
-
-	width  : 45px;
-	height : 100%;
+	width    : 45px;
 }
 
 #first-level-nav {
@@ -404,6 +407,12 @@ a {
 	border: solid 1px #434343;
 	padding: 12px 13px 16px 13px;
 	color: #fff;
+}
+
+.sub-menu-scroll-wrap {
+	position : absolute !important;
+	top      : 48px;
+	bottom   : 0;
 }
 
 #firs-level-nav {
@@ -483,10 +492,12 @@ a {
 
 #nav-dashboard-region li > a,
 .nav-region-list-items li > a {
-	font-size: 13px;
-	color: #ccc;
-	width: 210px;
-	line-height: 24px;
+	font-size   : 13px;
+	color       : #ccc;
+	line-height : 24px;
+
+	width       : 210px;
+	cursor      : pointer;
 }
 
 #nav-dashboard-region li a:hover,
@@ -557,10 +568,11 @@ a {
 
 /* Main */
 #main {
-	position: relative;
-	margin-left: 46px;
-	min-width: 800px;
-	z-index: 1;
+	position : absolute;
+	left     : 45px;
+	top      : 54px;
+	right    : 0;
+	bottom   : 0;
 }
 
 #main.wide {
@@ -632,13 +644,17 @@ a {
 	position: absolute;
 	top: 5px;
 	right: 5px;
-	width: 10px;
-	height: 10px;
+	width: 16px;
+	height: 16px;
+	text-align: center;
+	line-height: 16px;
 }
 
-.tab-bar-truncate.unsaved i:after {
-	content: "*";
-	font-size: 18px;
+#tab-bar li.unsaved a.close-tab,
+#tab-bar li.active.unsaved a.close-tab {
+	border-radius: 100%;
+	background: red;
+	color: #fff;
 }
 
 #tab-bar li.active a.close-tab {
@@ -1723,6 +1739,13 @@ a:hover .toolbar-label {
 .btn-toolbar.disabled {
 	color : #cecece;
 }
+
+.btn-toolbar.disabled:hover {
+	background-color : transparent;
+	box-shadow       : none;
+	cursor           : default;
+}
+
 .btn-toolbar.open {
 	background-color : #d0d0d0;
 	border-radius    : 4px;
@@ -1948,11 +1971,18 @@ a.sidebar-hider {
 	background: url('../images/ide/icon/asg-resource.png') center center no-repeat;
 }
 
+.resource-icon-asg-label {
+	font-size: 12px;
+	color: #999;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
 
 .ebs-size {
 	font-size: 12px;
 	position: absolute;
-	margin-top: 43px;
+	margin-top: 40px;
 	width: 100%;
 	display: block;
 	text-align: center;
@@ -2098,7 +2128,6 @@ a.sidebar-hider {
 	position   : relative;
 	width      : 100%;
 	height     : 100%;
-	background : #5e5e5e;
 	-webkit-transform: translate(0,0);
 	   -moz-transform: translate(0,0);
 	     -o-transform: translate(0,0);
@@ -2125,16 +2154,17 @@ a.sidebar-hider {
 	        box-sizing: border-box;
 }
 
-.transition .property-panel-wrapper {
+/*.transition .property-panel-wrapper {
 	-webkit-transition: left .2s ease-in-out;
 	   -moz-transition: left .2s ease-in-out;
 	    -ms-transition: left .2s ease-in-out;
 	     -o-transition: left .2s ease-in-out;
 	        transition: left .2s ease-in-out;
-}
+}*/
 
 #property-second-panel {
-	left : 100%;
+	display    : none;
+	left       : 100%;
 	background : #fff;
 }
 
@@ -2143,7 +2173,7 @@ a.sidebar-hider {
 	width: 216px;
 }
 
-.show-second-panel #property-first-panel {
+/*.show-second-panel #property-first-panel {
 	z-index : 3;
 	left : -30%;
 }
@@ -2159,12 +2189,12 @@ a.sidebar-hider {
 .show-second-panel #property-second-panel {
 	z-index : 4;
 	left : 0;
-}
+}*/
 
 .property-content {
 	height      : 100%;
 
-	background-color : #5e5e5e;
+	background-color : #555455;
 	color            : #ccc;
 
 	-webkit-box-sizing: border-box;
@@ -2371,23 +2401,21 @@ a.sidebar-hider {
 
 /* Canvas and Toolbar Wrapper */
 #canvas-panel {
-	position     : relative;
-    top          : 0;
-    left         : 0;
-    right        : 0;
-    margin-left  : 246px;
-    margin-right : 280px;
+	position     : absolute;
+  top          : 0;
+  left         : 0;
+  right        : 0;
+  bottom       : 0;
+  margin-left  : 246px;
+  margin-right : 280px;
 
-    -webkit-transition : margin, width 0s linear;
-    -moz-transition    : margin, widht 0s linear;
-    -ms-transition     : margin, width 0s linear;
-    -o-transition      : margin, width 0s linear;
-    transition         : margin, width 0s linear;
+/*  -webkit-transition : margin, width 0s linear;
+  -moz-transition    : margin, width 0s linear;
+  -ms-transition     : margin, width 0s linear;
+  -o-transition      : margin, width 0s linear;
+  transition         : margin, width 0s linear;*/
 
-    background : #313131;
-/*    overflow   : hidden;
-
-	border-radius   : 2px 2px 0 0;*/
+  background : #313131;
 }
 
 #canvas-panel.left-hiden {
@@ -2433,7 +2461,6 @@ a.sidebar-hider {
 
 .property-ami-wrap:hover {
 	background: #414041;
-<<<<<<< HEAD
 }
 
 .property-ami-label {
@@ -2455,9 +2482,6 @@ a.sidebar-hider {
 	-ms-transition     : background .2s;
 	-o-transition      : background .2s;
 	transition         : background .2s;
-}
-
-=======
 }
 
 .property-ami-label {
@@ -2712,6 +2736,8 @@ a.sidebar-hider {
 
 	position    : absolute;
 	right       : 0;
+
+	cursor : pointer;
 }
 
 .add-rule:hover {
@@ -2742,7 +2768,8 @@ a.sidebar-hider {
 	width: 65px;
 }
 
-.sg-rule-list .rule-remove-icon {
+.sg-rule-list .rule-remove-icon,
+.acl-rule-list .rule-remove-icon {
 	display: none;
 	width: 15px;
 	height: 15px;
@@ -2752,7 +2779,8 @@ a.sidebar-hider {
 	right: 5px;
 }
 
-.sg-rule-list li:hover .rule-remove-icon {
+.sg-rule-list li:hover .rule-remove-icon,
+.acl-rule-list li:hover .rule-remove-icon {
 	display: block;
 }
 
@@ -3301,22 +3329,22 @@ a.sidebar-hider {
 }
 
 /* property-newtwork-acl */
-.acl-rule-col1 {
-	float  : left;
-	width  : 35px;
-	height : 50px;
+
+.acl-rule-list li {
+	width: 280px;
+	padding: 0;
 }
 
-.acl-rule-col2 {
-	float  : left;
-	width  : 60px;
-	height : 50px;
+.acl-rule-number {
+	width      : 100%;
+	height     : 20px;
+	background : #484748;
 }
 
-.acl-rule-col4 {
-	float  : right;
-	width  : 20px;
-	height : 50px;
+.acl-rule-details {
+	padding  : 10px;
+	position : relative;
+	width    : 260px;
 }
 
 .acl-rule-allow-cb {
@@ -3523,10 +3551,6 @@ a.sidebar-hider {
 
 .modal-row > label {
 	margin-right: 20px;
-}
-
-.acl-rules li:hover {
-	background-color: #fff;
 }
 
 #modal-acl-source-input {

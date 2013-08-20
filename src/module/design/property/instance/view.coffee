@@ -3,7 +3,6 @@
 #############################
 
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
-        'UI.fixedaccordion',
         'UI.selectbox',
         'UI.tooltip',
         'UI.notification',
@@ -70,9 +69,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         tenancySelect : ( event, value ) ->
             this.model.set 'tenacy', value
 
-
         cloudwatchSelect : ( event ) ->
             this.model.set 'cloudwatch', event.target.checked
+            $("#property-cloudwatch-warn").toggle( $("#property-instance-enable-cloudwatch").is(":checked") )
 
         userdataChange : ( event ) ->
             this.model.set 'user_data', event.target.value

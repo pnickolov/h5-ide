@@ -571,24 +571,36 @@ Loading...
 
 <!--{{ .stat-app }}-->
 	{{#each cur_app_list}}
-	<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}' style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}') 0 0;">
-		<div class="action-thumbnail">
-			{{#if isrunning}}
-			<a class="modal btn stop-app"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Stop App", "body":"Do you confirm to stop {{name}}?", "confirm":"Stop", "color":"blue" }' data-modal-dismiss="true"><i class="icon-stop"></i></a>
-			{{else}}
-			<a class="modal btn run-app"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Run App", "body":"Do you confirm to start {{name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true"><i class="icon-play"></i></a>
-			{{/if}}
-
-			<a class="modal btn terminate-app"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Terminate App", "body":"Do you confirm to terminate {{name}}?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true"><i class="icon-close"></i></a>
+		{{#if ispending}}
+		<div class="item-thumbnail-wrap bubble" style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}') 0 0;">
+			<a href="javascript:void(0)" id="{{id}}" class="thumbnail-body app-thumbnail">
+				{{#if isrunning}}
+				<div class="thumbnail-name truncate"><i class="icon-play"></i>{{name}}</div>
+				{{else}}
+				<div class="thumbnail-name truncate"><i class="icon-stop"></i>{{name}}</div>
+				{{/if}}
+			</a>
 		</div>
-		<a href="javascript:void(0)" id="{{id}}" class="thumbnail-body app-thumbnail">
-			{{#if isrunning}}
-			<div class="thumbnail-name truncate"><i class="icon-play"></i>{{name}}</div>
-			{{else}}
-			<div class="thumbnail-name truncate"><i class="icon-stop"></i>{{name}}</div>
-			{{/if}}
-		</a>
-	</div>
+		{{else}}
+		<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}' style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}') 0 0;">
+			<div class="action-thumbnail">
+				{{#if isrunning}}
+				<a class="modal btn stop-app"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Stop App", "body":"Do you confirm to stop {{name}}?", "confirm":"Stop", "color":"blue" }' data-modal-dismiss="true"><i class="icon-stop"></i></a>
+				{{else}}
+				<a class="modal btn run-app"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Run App", "body":"Do you confirm to start {{name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true"><i class="icon-play"></i></a>
+				{{/if}}
+
+				<a class="modal btn terminate-app"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Terminate App", "body":"Do you confirm to terminate {{name}}?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true"><i class="icon-close"></i></a>
+			</div>
+			<a href="javascript:void(0)" id="{{id}}" class="thumbnail-body app-thumbnail">
+				{{#if isrunning}}
+				<div class="thumbnail-name truncate"><i class="icon-play"></i>{{name}}</div>
+				{{else}}
+				<div class="thumbnail-name truncate"><i class="icon-stop"></i>{{name}}</div>
+				{{/if}}
+			</a>
+		</div>
+		{{/if}}
 	{{else}}
 		<div class="blank-widget">There is no app in this region.<br />You can run app from a stack.</div>
 	{{/each}}

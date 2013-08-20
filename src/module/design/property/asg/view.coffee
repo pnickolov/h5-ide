@@ -51,7 +51,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             "change #property-asg-capacity"                : "setASGDesireCapacity"
             "change #property-asg-cooldown"                : "setASGCoolDown"
             "change #property-asg-healthcheck"             : "setHealthCheckGrace"
-            "click #property-asg-policy-add"               : "showScalingPolicy"
+            "click #property-asg-policy-add"               : "addScalingPolicy"
             "click #property-asg-policies .icon-edit"      : "editScalingPolicy"
             "click #property-asg-policies .icon-del"       : "delScalingPolicy"
 
@@ -121,7 +121,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             self = this
 
             # Bind event to the popup
-            $("#property-asg-term").on "change", "input", ()->
+            $("#property-asg-term").on "click", "input", ()->
+                $checked = $("#property-asg-term").find("input:checked")
+                if $checked.length is 0
+                    return false
+
                 $this = $(this)
                 checked = $this.is(":checked")
                 $this.closest("li").toggleClass("enabled", checked)
@@ -161,6 +165,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             uid = $li.data("uid")
             $li.remove()
 
+            $("#property-asg-policy-add").removeClass("tooltip disabled")
+
             this.trigger 'DELETE_POLICY', uid
 
         updateScalingPolicy : ( data ) ->
@@ -175,7 +181,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             $policies = $("#property-asg-policies")
             $li = $policies.children("[data-uid='#{data.uid}']")
             if $li.length is 0
+                # Create a scaling policy
                 $li = $policies.children(".hide").clone().attr("data-uid", data.uid).removeClass("hide").appendTo $policies
+
+                # Check if we have 25 policy already.
+                # There's a template item inside the ul, so the length shoud be 26
+                if $("#property-asg-policies").children().length is 26
+                    $("#property-asg-policy-add").addClass("tooltip disabled")
+
 
             $li.find(".name").html data.name
             $li.find(".asg-p-metric").html  metric
@@ -189,8 +202,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             uid = $( event.currentTarget ).closest("li").data("uid")
 
             data = $.extend true, {}, this.model.attributes.policies[ uid ]
-            data.uid   = uid
-            data.title = "Edit"
+
+            data.uid            = uid
+            data.title          = "Edit"
+            data.detail_monitor = this.model.attributes.detail_monitor
+
             this.showScalingPolicy( data )
 
             selectMap =
@@ -214,10 +230,21 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                     $selectbox.find(".selected").removeClass "selected"
                     $selectbox.find(".selection").html $selected.addClass("selected").html()
 
+        addScalingPolicy : ( event ) ->
+            if $( event.currentTarget ).hasClass "disabled"
+                return false
+
+            this.showScalingPolicy()
+            false
+
+
         showScalingPolicy : ( data ) ->
             if !data
                 data =
-                    title : "Add"
+                    title   : "Add"
+                    second  : 300
+                    periods : 2
+                    step    : 1
 
             data.noSNS = this.model.attributes.has_sns_topic
 

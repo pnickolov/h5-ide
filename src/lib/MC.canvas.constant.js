@@ -1459,7 +1459,7 @@ var constant_data = {
 					}
 				],
 				'HealthCheckGracePeriod': '',
-				'HealthCheckType': '',
+				'HealthCheckType': 'EC2',
 				'Instances': [
 
 				],
@@ -1479,7 +1479,7 @@ var constant_data = {
 				],
 				'Tags': '',
 				'TerminationPolicies': [
-
+					'Default'
 				],
 				'VPCZoneIdentifier': '',
 				'InstanceId': '',

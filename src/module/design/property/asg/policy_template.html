@@ -23,9 +23,11 @@
             <li data-id="DiskWriteOps" class="item">Disk Write Operations</li>
             <li data-id="NetworkIn" class="item">Network In</li>
             <li data-id="NetworkOut" class="item">Network Out</li>
+            {{#unless detail_monitor}}
             <li data-id="StatusCheckFailed" class="item">Status Check Failed (Any)</li>
             <li data-id="StatusCheckFailed_Instance" class="item">Status Check Failed (Instance)</li>
             <li data-id="StatusCheckFailed_System" class="item">Status Check Failed (System)</li>
+            {{/unless}}
           </ul>
         </div>
         <span>is</span>
@@ -38,7 +40,7 @@
             <li data-id="<=" class="item">&lt;=</li>
           </ul>
         </div>
-        <input type="text" class="input" id="asg-policy-threshold" value="{{threshold}}">
+        <input type="text" class="input" id="asg-policy-threshold" value="{{threshold}}" placeholder="Threshold">
         <span id="asg-policy-unit">%</span>
         <span>for</span>
         <input type="text" class="input" id="asg-policy-periods" value="{{periods}}">
@@ -69,7 +71,7 @@
           </ul>
         </div>
         <span>of</span>
-        <input type="text" id="asg-policy-adjust" value="{{adjustment}}">
+        <input type="text" id="asg-policy-adjust" value="{{adjustment}}" placeholder="e.g. -30">
         <span>.</span>
       </section>
 
@@ -93,7 +95,7 @@
         <section class="dialog-group">
           <h5>Scaling Options</h5>
           <label for="asg-policy-cooldown">Cooldown Period</label>
-          <input type="text" class="input" id="asg-policy-cooldown" value="{{cooldown}}">
+          <input type="text" class="input" id="asg-policy-cooldown" value="{{cooldown}}" placeholder="default cooldown">
           <span>seconds</span>
 
           <span id="asg-policy-step-wrapper">

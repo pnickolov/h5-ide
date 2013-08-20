@@ -23,9 +23,7 @@ define [ 'event', 'MC',
             keypair = $( event.currentTarget ).html()
             this.trigger "REQUEST_KEYPAIR", keypair
 
-            modal MC.template.modalDownloadKP {
-                keypairname : keypair
-            }
+            modal MC.template.modalDownloadKP { keypairname : keypair }
             false
 
         updateKPModal : ( data ) ->

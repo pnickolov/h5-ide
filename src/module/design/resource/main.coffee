@@ -44,6 +44,8 @@ define [ 'jquery',
                 #check re-render
                 view.reRender template
                 #
+                model.service_count = 0
+                #
                 model.describeAvailableZonesService region_name, type
                 model.describeSnapshotsService      region_name
                 model.quickstartService             region_name
@@ -78,6 +80,13 @@ define [ 'jquery',
 
             model.on 'change:availability_zone', () ->
                 ide_event.trigger ide_event.RELOAD_AZ, model.get 'availability_zone'
+
+            model.on 'change:check_required_service_count', () ->
+                console.log 'check_required_service_count, count = ' + model.get 'check_required_service_count'
+                if model.get( 'check_required_service_count' ) is 3
+                    ide_event.trigger ide_event.SWITCH_MAIN
+                    model.service_count = 0
+                null
 
     unLoadModule = () ->
         #view.remove()

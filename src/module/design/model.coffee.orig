@@ -21,7 +21,6 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                 console.log 'APP_RESOURCE_RETURN:' + app_id
 
                 if !result.is_error
-
                     region = result.param[3]
                     resource_source = result.resolved_data
 
@@ -30,9 +29,12 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                         me.describeInstancesOfASG region
                 else
                     #TO-DO
+<<<<<<< HEAD
                 #
                 ide_event.trigger ide_event.SWITCH_MAIN
 
+=======
+>>>>>>> develop
                 null
 
         saveTab : ( tab_id, snapshot, data, property, property_panel, last_open_property ) ->

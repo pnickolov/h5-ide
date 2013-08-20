@@ -10,9 +10,9 @@
     <a href="#" class="icon-add add-rule tooltip" id="acl-add-rule-icon" data-tooltip="Create new Network ACL Rule"></a>
   </div>
   <div class="option-group">
-    <div class="acl-sort-rule clearfix">
-      <h5 class="left">Sort by</h5>
-      <div class="selectbox right" id="acl-sort-rule-select">
+    <div class="rule-list-sort property-control-group">
+      <h5>Sort by</h5>
+      <div class="selectbox" id="acl-sort-rule-select">
         <div class="selection">Rule Number</div>
         <ul class="dropdown" tabindex="-1">
           <li data-id="number" class="item selected">Rule Number</li>
@@ -22,15 +22,15 @@
         </ul>
       </div>
     </div>
-    <ul class="acl-rules" id="acl-rule-list">{{acl_list}}</ul>
+    <ul class="property-list acl-rule-list" id="acl-rule-list">{{acl_list}}</ul>
   </div>
 
   <div class="option-group-head acl-header">Associations<span class="property-head-num-wrap">(<span id="acl-assn-count">{{associations.length}}</span>)</span>
   </div>
 
-  <ul class="option-group">
+  <ul class="option-group property-list">
     {{#each associations}}
-    <li class="property-acl-assn">{{subnet_name}} ({{subnet_cidr}})</li>
+    <li>{{subnet_name}} ({{subnet_cidr}})</li>
     {{/each}}
   </ul>
 </article>

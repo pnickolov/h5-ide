@@ -38,7 +38,7 @@
 			</div>
 			<label for="property-asg-ec2">EC2</label>
 			<div class="radio">
-				<input id="property-asg-elb" type="radio" value="elb" {{#if asg.elb}}checked="true"{{/if}} name="property-asg-hc-option" />
+				<input id="property-asg-elb" type="radio" {{#unless has_elb}}disabled="disabled"{{/unless}} value="elb" {{#if asg.elb}}checked="true"{{/if}} name="property-asg-hc-option" />
 				<label for="property-asg-elb"></label>
 			</div>
 			<label for="property-asg-elb">ELB</label>
@@ -85,7 +85,7 @@
 
 		</ul>
 
-		<button id="property-asg-policy-add">Add Scaling Policy</button>
+		<a href="#" class="add-to-list" id="property-asg-policy-add" data-tooltip="You can only add 25 scaling policies">Add Scaling Policy</a>
 	</div>
 
 	<div class="option-group-head">Notification</div>

@@ -83,12 +83,13 @@ define [ 'MC', 'event',
             console.log 'clickSaveIcon'
 
             name = MC.canvas_data.name
+            id = MC.canvas_data.id
 
             if not name
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
             else if name.indexOf(' ') >= 0
                 notification 'warning', 'stack name contains white space.'
-            else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
+            else if not MC.aws.aws.checkStackName id, name
                 notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
             else
                 MC.canvas_data.name = name

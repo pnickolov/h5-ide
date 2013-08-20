@@ -84,6 +84,29 @@ define [ 'MC' ], ( MC ) ->
 		else
 			return false
 
+	isSubnetConflictInVPC = (subnetUID, originSubnetCIDR) ->
+
+		subnetCIDR = ''
+		if originSubnetCIDR
+			subnetCIDR = originSubnetCIDR
+		else
+			subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+		
+		vpcComp = MC.aws.subnet.getVPC(subnetUID)
+		vpcUID = vpcComp.uid
+		isHaveConflict = false
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.Subnet'
+				subnetVPCUID = compObj.resource.VpcId.split('.')[0].slice(1)
+				currentSubnetUID = compObj.uid
+				currentSubnetCIDR = compObj.resource.CidrBlock
+				if subnetVPCUID is vpcUID and subnetUID isnt currentSubnetUID
+					if isSubnetConflict(subnetCIDR, currentSubnetCIDR)
+						isHaveConflict = true
+						return false
+			null
+		return isHaveConflict
+
 	isInVPCCIDR = (vpcCIDR, subnetCIDR) ->
 
 		if MC.aws.subnet.isSubnetConflict(vpcCIDR, subnetCIDR)
@@ -125,7 +148,51 @@ define [ 'MC' ], ( MC ) ->
 
 			null
 
-		console.log(newSubnetAry)
+		return newSubnetAry
+
+	getVPC = (subnetUID) ->
+
+		subnetComp = MC.canvas_data.component[subnetUID]
+		vpcUID = subnetComp.resource.VpcId.slice(1).split('.')[0]
+		if vpcUID
+			return MC.canvas_data.component[vpcUID]
+		else
+			return null
+
+	updateAllENIIPList = (subnetUID) ->
+
+		subnetComp = MC.canvas_data.component[subnetUID]
+		if !subnetComp then return
+		subnetRef = '@' + subnetComp.uid + '.resource.SubnetId'
+		subnetCIDR = subnetComp.resource.CidrBlock
+		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR subnetCIDR, []
+
+		needIPCount = 0
+
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface' and compObj.resource.SubnetId is subnetRef
+				needIPCount += compObj.resource.PrivateIpAddressSet.length
+
+		# start auto assign ip
+		assignedIPAry = []
+		_.each currentAvailableIPAry, (newIPObj) ->
+			if needIPCount is 0
+				return false
+			if newIPObj.available
+				needIPCount--
+				assignedIPAry.push newIPObj.ip
+
+		i = 0
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface' and compObj.resource.SubnetId is subnetRef
+				newPrivateIpAddressSet = _.map compObj.resource.PrivateIpAddressSet, (ipObj) ->
+					ipObj.PrivateIpAddress = assignedIPAry[i++]
+					ipObj.AutoAssign = true
+					return ipObj
+				MC.canvas_data.component[compObj.uid].resource.PrivateIpAddressSet = newPrivateIpAddressSet
+			null
+
+		null
 
 	#public
 	genCIDRPrefixSuffix : genCIDRPrefixSuffix
@@ -133,3 +200,6 @@ define [ 'MC' ], ( MC ) ->
 	isInVPCCIDR : isInVPCCIDR
 	autoAssignAllCIDR : autoAssignAllCIDR
 	genCIDRDivAry : genCIDRDivAry
+	getVPC : getVPC
+	updateAllENIIPList : updateAllENIIPList
+	isSubnetConflictInVPC : isSubnetConflictInVPC

@@ -56,14 +56,11 @@ define [ 'jquery',
 
                 model.setName change.value
                 # Sync the name to canvas
-                MC.canvas.update uid, "text", "name", change.value
-
                 ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, change.value
                 null
 
             view.on "CHANGE_CIDR", ( change ) ->
-                error model.setCIDR change.value
-                change.done error
+                model.setCIDR change.value
                 null
 
             view.on "CHANGE_ACL", ( change ) ->

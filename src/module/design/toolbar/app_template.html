@@ -1,11 +1,9 @@
 <section class="toolbar-btn-group">
   {{#if item_flags.is_use_ami}}
-  <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-stop"{{else}}class="modal tooltip btn-toolbar disabled icon-stop" id="toolbar-stop-app"{{/if}} data-tooltip="This app cannot be stopped since it uses instance-store AMI"></a>
   {{else}}
   <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-stop"{{else}} class="modal tooltip btn-toolbar icon-stop" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to stop app", "body":"Do you confirm to stop app {{item_flags.name}}?", "confirm":"Stop", "color":"red" }' data-modal-dismiss="true" id="toolbar-stop-app"{{/if}} data-tooltip="Stop this app's resources."></a>
-  {{/if}}
-
   <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app", "body":"Do you confirm to start app {{item_flags.name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="Start this app's resources."></a>
+  {{/if}}
 
   <a href="#" class="btn-toolbar tooltip {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to terminate app {{item_flags.name}}", "body":"Do you confirm to terminate app?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="Permanently terminate this app's resources"></a> <!--"'-->
 </section>

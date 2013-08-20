@@ -156,11 +156,14 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
             ######listen AWS__PUBLIC_RETURN
             me.on 'AWS__PUBLIC_RETURN', ( result ) ->
-                console.log 'AWS__PUBLIC_RETURN'
+
+                region_name = result.param[3]
+                console.log 'AWS__PUBLIC_RETURN: ' + region_name
 
                 community_ami_list = {}
 
                 if !result.is_error and  result.resolved_data
+
                     community_ami_list = _.extend result.resolved_data.ami, {timestamp: ( new Date() ).getTime()}
                     favorite_ami_ids = _.pluck ( me.get 'favorite_ami' ), 'resource_id'
 
@@ -169,9 +172,13 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                             value.favorite = true
 
 
-                console.log 'get community ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
-                if region_name == MC.canvas.data.get('region')
-                    me.set 'community_ami', community_ami_list
+                    console.log 'get community ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
+                    if region_name == MC.canvas.data.get('region')
+                        me.set 'community_ami', community_ami_list
+
+                else
+
+                    notification 'warning', 'Get Community AMIs failed'
 
 
                 null
@@ -223,9 +230,12 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 region_name = result.param[3]
                 console.log 'FAVORITE_ADD_RETURN: ' + region_name
 
-                if result.return_code is 0
+                if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
+                    notification 'info', 'Add AMI to favorite succeed'
+                else
+                    notification 'error', 'Add AMI to favorite failed'
                 null
 
             #listen FAVORITE_REMOVE_RETURN
@@ -233,9 +243,13 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                 region_name = result.param[3]
                 console.log 'FAVORITE_REMOVE_RETURN: ' + region_name
-            #    if result.return_code is 0
-            #        delete MC.data.config[region_name].favorite_ami
-            #        @favoriteAmiService region_name
+                if !result.is_error
+                    delete MC.data.config[region_name].favorite_ami
+                    me.favoriteAmiService region_name
+                    notification 'info', 'Remove AMI to favorite succeed'
+                else
+                    notification 'error', 'Remove AMI to favorite succeed'
+
 
                 null
 
@@ -506,11 +520,15 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             amiVO = JSON.stringify @get( 'community_ami' ).result[ amiId ]
             amiId = { id: amiId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
 
+            me =  this
+
             favorite_model.add { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, amiId
 
         removeFav: ( region_name, amiId ) ->
 
             amiId = [ amiId ]
+
+            me = this
 
             favorite_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, amiId
 

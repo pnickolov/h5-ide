@@ -482,7 +482,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Ask user to confirm delete parent who has children
 			if !force and nodes.length
-				return "Deleting #{component.name} will also remove all resources inside. Do you confirm to delete?"
+				return sprintf lang.ide.CVS_CFM_DEL_GROUP, component.name
 
 
 			# It's time to delete the resource,
@@ -848,7 +848,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 				if reach_max
-					return "#{instance_component.name}'s Instance Type: #{instance_component.resource.InstanceType} only support at most #{max_eni_number} Network Interfaces (including the primary)."
+					return sprintf lang.ide.CVS_WARN_EXCEED_ENI_LIMIT, instance_component.name, instance_component.resource.InstanceType, max_eni_number
 
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
 
@@ -995,6 +995,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			switch componentType
 
+				when resource_type.AWS_EC2_Instance
+					subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
+					subnetUID = subnetUIDRef.split('.')[0].slice(1)
+					MC.aws.subnet.updateAllENIIPList(subnetUID)
+
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)
 
@@ -1022,6 +1027,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					# Associate to default acl
 					defaultACLComp = MC.aws.acl.getDefaultACL()
 					MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
+
+					# select subnet
+					if MC.canvas_data.component[uid].autoCreate
+						MC.canvas.select(uid)
+						delete MC.canvas_data.component[uid].autoCreate
 
 			console.log "Morris : #{componentType}"
 

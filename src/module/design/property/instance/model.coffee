@@ -440,11 +440,10 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			eni_detail.eni_ips = []
 
-			subnet_cidr_prefix = MC.canvas_data.component[MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]].resource.CidrBlock.split('.')
+			subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
+			subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
 
-			subnet_cidr_prefix.splice -1, 1
-
-			subnet_cidr_prefix = subnet_cidr_prefix.join('.')
+			prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
 
 			_.map MC.canvas_data.component, ( val, key ) ->
 
@@ -462,7 +461,16 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 						ip_detail.index = idx
 
-						ip_detail.prefix = subnet_cidr_prefix
+						ip_detail.prefix = prefixSuffixAry[0]
+
+						if ip_detail.AutoAssign is true or ip_detail.AutoAssign is 'true'
+							ip_detail.suffix = prefixSuffixAry[1]
+						else
+							subnetComp = MC.aws.eni.getSubnetComp(uid)
+							subnetCIDR = subnetComp.resource.CidrBlock
+							ipAddress = ip_detail.PrivateIpAddress
+							fixPrefixSuffixAry = MC.aws.eni.getENIDivIPAry(subnetCIDR, ipAddress)
+							ip_detail.suffix = fixPrefixSuffixAry[1]
 
 						$.each MC.canvas_data.component, ( comp_uid, comp ) ->
 

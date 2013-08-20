@@ -3,7 +3,6 @@
 #############################
 
 define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
-        'UI.fixedaccordion',
         'UI.selectbox',
         'UI.tooltip',
         'UI.notification',
@@ -34,7 +33,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'click #instance-ip-add' : "addIPtoList"
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
-            'blur .input-ip' : 'updateEIPList'
+            'change .input-ip' : 'updateEIPList'
             'click .toggle-eip' : 'addEIP'
             'click #property-ami' : 'openAmiPanel'
 
@@ -70,9 +69,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         tenancySelect : ( event, value ) ->
             this.model.set 'tenacy', value
 
-
         cloudwatchSelect : ( event ) ->
             this.model.set 'cloudwatch', event.target.checked
+            $("#property-cloudwatch-warn").toggle( $("#property-instance-enable-cloudwatch").is(":checked") )
 
         userdataChange : ( event ) ->
             this.model.set 'user_data', event.target.value
@@ -137,9 +136,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             $(document.body).on 'click', '.back', secondarypanel.close
             ###
             console.log MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
+
+            data = target.data( 'secondarypanel-data' )
             ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
-                title : $( event.target ).text()
-                dom   : MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
+                title : data.imageId
+                dom   : MC.template.aimSecondaryPanel data
                 id    : 'Ami'
             }
             null

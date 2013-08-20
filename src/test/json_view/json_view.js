@@ -11,7 +11,7 @@ define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 		"AWS.VPC.RouteTable",
 		"AWS.VPC.VPNGateway",
 		"AWS.VPC.CustomerGateway",
-		"AWS.VPC.NetworkInterface",
+		// "AWS.VPC.NetworkInterface",
 		"AWS.AutoScaling.Group",
 		"AWS.AutoScaling.LaunchConfiguration"
 	];

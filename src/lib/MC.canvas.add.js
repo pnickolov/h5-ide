@@ -196,7 +196,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				{
 					MC.canvas.add('AWS.VPC.Subnet', {
 						'name': 'subnet',
-						'groupUId': group.id
+						'groupUId': group.id,
+						'auto': true
 					}, {
 						'x': coordinate.x + MC.canvas.GROUP_PADDING,
 						'y': coordinate.y + MC.canvas.GROUP_PADDING
@@ -314,6 +315,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				component_data.resource.VpcId = "@" + option.group.vpcUId + '.resource.VpcId';
 				component_data.resource.AvailabilityZone = option.group.availableZoneName;
+				component_data.autoCreate = option.auto;
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 				component_layout.groupUId = option.groupUId;
@@ -462,7 +464,7 @@ MC.canvas.add = function (flag, option, coordinate)
 								groupType = 'Subnet';
 								break;
 						}
-						notification('warning', 'Please expand AutoScalingGroup to another ' + groupType + '!', false);
+						notification('warning', 'Please expand Auto Scaling Group to another ' + groupType + '.', false);
 						return null;
 					}
 					else
@@ -636,7 +638,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 						//4 path: left port(blue)
 						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-left',
+							'class': 'port-blue port-launchconfig-sg port-launchconfig-sg-left',//remove 'port' class to remove event
 							'id' : group.id + '_port-launchconfig-sg-left',
 							'transform': 'translate('+ (8 + offset_x ) + ', ' + (26 + offset_y) + ')' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
 							'data-name': 'launchconfig-sg', //for identify port
@@ -648,7 +650,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 						//5 path: right port(blue)
 						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-							'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-right',
+							'class': 'port-blue port-launchconfig-sg port-launchconfig-sg-right',//remove 'port' class to remove event
 							'id' : group.id + '_port-launchconfig-sg-right',
 							'transform': 'translate(' + (84 + offset_x) +' , ' + (26 + offset_y) + ')' + MC.canvas.PORT_RIGHT_ROTATE,
 							'data-name': 'launchconfig-sg',
@@ -657,7 +659,11 @@ MC.canvas.add = function (flag, option, coordinate)
 							'data-direction': 'out',
 							'data-angle': MC.canvas.PORT_RIGHT_ANGLE
 						})
-					);
+					).attr({
+						'class': 'dragable ' + class_type + ' asg-expand ',//append asg-expand
+						'data-type': 'group',
+						'data-class': type
+					});
 				}
 			}
 

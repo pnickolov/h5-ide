@@ -33,6 +33,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             # Should not touch model's data
             data = $.extend true, {}, this.model.attributes
 
+            subnetUID = this.model.get('uid')
             vpcComp = MC.aws.subnet.getVPC(this.model.get('uid'))
             vpcCIDR = vpcComp.resource.CidrBlock
 
@@ -45,7 +46,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             this.refreshACLList()
 
-            $('#property-cidr-block').focus()
+            if MC.aws.subnet.isSubnetConflictInVPC(subnetUID)
+                $('#property-cidr-block').val('')
+                $('#property-cidr-block').focus()
+
+            null
 
         openCreateAclPanel : ( event ) ->
             source = $(event.target)
@@ -91,6 +96,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             change.event   = "CHANGE_CIDR"
 
             this.trigger "CHANGE_CIDR", change
+
+            null
 
         onFocusCIDR : ( event ) ->
 

@@ -84,6 +84,24 @@ define [ 'MC' ], ( MC ) ->
 		else
 			return false
 
+	isSubnetConflictInVPC = (subnetUID) ->
+
+		subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+		vpcComp = MC.aws.subnet.getVPC(subnetUID)
+		vpcUID = vpcComp.uid
+		isHaveConflict = false
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.Subnet'
+				subnetVPCUID = compObj.resource.VpcId.split('.')[0].slice(1)
+				currentSubnetUID = compObj.uid
+				currentSubnetCIDR = compObj.resource.CidrBlock
+				if subnetVPCUID is vpcUID and subnetUID isnt currentSubnetUID
+					if isSubnetConflict(subnetCIDR, currentSubnetCIDR)
+						isHaveConflict = true
+						return false
+			null
+		return isHaveConflict
+
 	isInVPCCIDR = (vpcCIDR, subnetCIDR) ->
 
 		if MC.aws.subnet.isSubnetConflict(vpcCIDR, subnetCIDR)
@@ -139,6 +157,7 @@ define [ 'MC' ], ( MC ) ->
 	updateAllENIIPList = (subnetUID) ->
 
 		subnetComp = MC.canvas_data.component[subnetUID]
+		if !subnetComp then return
 		subnetRef = '@' + subnetComp.uid + '.resource.SubnetId'
 		subnetCIDR = subnetComp.resource.CidrBlock
 		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR subnetCIDR, []
@@ -178,3 +197,4 @@ define [ 'MC' ], ( MC ) ->
 	genCIDRDivAry : genCIDRDivAry
 	getVPC : getVPC
 	updateAllENIIPList : updateAllENIIPList
+	isSubnetConflictInVPC : isSubnetConflictInVPC

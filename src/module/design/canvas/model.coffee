@@ -1023,7 +1023,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
 
 					# select subnet
-					MC.canvas.select(uid)
+					if MC.canvas_data.component[uid].autoCreate
+						MC.canvas.select(uid)
+						delete MC.canvas_data.component[uid].autoCreate
 
 			console.log "Morris : #{componentType}"
 

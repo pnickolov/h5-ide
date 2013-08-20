@@ -29,7 +29,6 @@ define [ 'MC' ], ( MC ) ->
 		ipAddrNumSuffixMin = parseInt ipAddrBinStrSuffixMin, 2
 		ipAddrNumSuffixMax = parseInt ipAddrBinStrSuffixMax, 2
 
-		alert(ipAddrNumSuffixMax)
 		allIPAry = _.map [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1], (value) ->
 			newIPBinStr = ipAddrBinPrefixStr + _addZeroToLeftStr(value.toString(2), prefix)
 

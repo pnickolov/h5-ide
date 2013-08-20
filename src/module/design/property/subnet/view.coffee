@@ -91,11 +91,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         onChangeCIDR : ( event ) ->
 
-            change.handled = false
-            change.value   = $("#property-cidr-prefix").html() + $("#property-cidr-block").val()
-            change.event   = "CHANGE_CIDR"
+            # change.handled = false
+            # change.value   = $("#property-cidr-prefix").html() + $("#property-cidr-block").val()
+            # change.event   = "CHANGE_CIDR"
 
-            this.trigger "CHANGE_CIDR", change
+            # this.trigger "CHANGE_CIDR", change
 
             null
 
@@ -125,9 +125,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             if !cidrSuffix
                 mainContent = 'CIDR block is required.'
                 descContent = 'Please provide a subset of IP ranges of this VPC.'
+            else if !MC.validate 'cidr', subnetCIDR
+                mainContent = subnetCIDR + ' is not a valid form of CIDR block.'
+                descContent = 'Please provide a valid IP range. For example, 10.0.0.1/24.'
             else if !MC.aws.subnet.isInVPCCIDR(vpcCIDR, subnetCIDR)
-                # mainContent = 'CIDR block is required.'
-                # descContent = 'Please provide a subset of IP ranges of this VPC.'
+                mainContent = subnetCIDR + ' conflicts with VPC CIDR.'
+                descContent = 'Subnet CIDR block should be a subset of VPC\'s.'
+            else if MC.aws.subnet.isSubnetConflictInVPC(subnetUID, subnetCIDR)
+                mainContent = subnetCIDR + ' conflicts with other subnet.'
+                descContent = 'Please choose a CIDR block not conflicting with existing subnet.'
             else
                 haveError = false
 
@@ -146,7 +152,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                         MC.canvas.remove($("#" + subnetUID)[0])
                         MC.aws.aws.disabledAllOperabilityArea(false)
             else
+                change = {}
+                change.handled = false
+                change.value   = subnetCIDR
+                change.event   = "CHANGE_CIDR"
+                this.trigger "CHANGE_CIDR", change
+
                 MC.aws.aws.disabledAllOperabilityArea(false)
+                $('#property-cidr-block').blur()
 
         onChangeACL : () ->
 

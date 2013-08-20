@@ -84,9 +84,14 @@ define [ 'MC' ], ( MC ) ->
 		else
 			return false
 
-	isSubnetConflictInVPC = (subnetUID) ->
+	isSubnetConflictInVPC = (subnetUID, originSubnetCIDR) ->
 
-		subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+		subnetCIDR = ''
+		if originSubnetCIDR
+			subnetCIDR = originSubnetCIDR
+		else
+			subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+		
 		vpcComp = MC.aws.subnet.getVPC(subnetUID)
 		vpcUID = vpcComp.uid
 		isHaveConflict = false

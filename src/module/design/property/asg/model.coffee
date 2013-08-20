@@ -295,6 +295,19 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
           return false
 
+      if asg.resource.LoadBalancerNames.length > 0
+        this.set 'has_elb', true
+
+      $.each MC.canvas_data.layout.component.node, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and comp.groupUId is asg.uid
+
+          if MC.canvas_data.component[comp_uid].resource.InstanceMonitoring is 'enabled'
+
+            me.set 'detail_monitor', true
+
+            return false
+
       this.set 'notification_type', nc_array
       this.set 'policies', policies
 

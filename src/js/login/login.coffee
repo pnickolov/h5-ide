@@ -77,13 +77,13 @@ define [ 'jquery', 'handlebars',
 				result = forge_result.resolved_data
 
 				#set cookies
-				$.cookie 'userid',      result.userid,      { expires: 3600 }
-				$.cookie 'usercode',    result.usercode,    { expires: 3600 }
-				$.cookie 'session_id',  result.session_id,  { expires: 3600 }
-				$.cookie 'region_name', result.region_name, { expires: 3600 }
-				$.cookie 'email',       result.email,       { expires: 3600 }
-				$.cookie 'has_cred',    result.has_cred,    { expires: 3600 }
-				$.cookie 'username',     username, 			{ expires: 3600 }
+				$.cookie 'userid',      result.userid,      { expires: 1 }
+				$.cookie 'usercode',    result.usercode,    { expires: 1 }
+				$.cookie 'session_id',  result.session_id,  { expires: 1 }
+				$.cookie 'region_name', result.region_name, { expires: 1 }
+				$.cookie 'email',       result.email,       { expires: 1 }
+				$.cookie 'has_cred',    result.has_cred,    { expires: 1 }
+				$.cookie 'username',     username, 			{ expires: 1 }
 
 				#redirect to page ide.html
 				window.location.href = 'ide.html'

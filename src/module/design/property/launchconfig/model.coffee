@@ -580,9 +580,12 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 		getAppLaunch : ( uid ) ->
 
-			lc = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.LaunchConfigurationARN]
+			component = MC.canvas_data.component[uid]
+			lc_data   = MC.data.resource_list[MC.canvas_data.region][ component.resource.LaunchConfigurationARN ]
 
-			this.set 'lc', lc
+			this.set 'name', component.name
+			this.set 'lc',   lc_data
+			this.set 'get_uid',  uid
 
 	}
 

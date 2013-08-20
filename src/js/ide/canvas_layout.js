@@ -1,7 +1,7 @@
+
 // [ Warning!!!! ] DEAD CODE
 // This source code is dead. listen() / ready() / connect() seems like doing nothing.
 // But it pollutes the window object. Which makes it un-removable !!!!
-
 // Dom Ready
 var listen = function ()
 {

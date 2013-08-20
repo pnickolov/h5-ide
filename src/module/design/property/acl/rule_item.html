@@ -1,19 +1,17 @@
 {{#each content}}
   <li rule-num="{{ruleNumber}}" rule-engress="{{egress}}">
-    <h5 class="tooltip acl-rule-number" data-id="{{ruleNumber}}" data-tooltip="Rule Number">{{ruleNumber}}</h5>
-    <div class="clearfix">
-      <span class="acl-rule-col1">
-        <a href="#" class="acl-rule-allow-cb tooltip {{ruleAction}} acl-rule-action" data-id="{{ruleAction}}" data-tooltip="Allow/Deny"></a>
-      </span>
-      <span class="acl-rule-col2">
-        <span class="{{#ifCond egress "false"}}acl-rule-inbound{{else}}acl-rule-outbound{{/ifCond}} tooltip acl-rule-direction" data-id="{{egress}}" data-tooltip="Inbound/Outbound"></span>
-        <span class="acl-rule-protocol tooltip" data-id="{{protocol}}" data-tooltip="Protocol">{{protocol}}</span>
-      </span>
-      <span class="acl-rule-col4"><a class="property-rule-delete-btn"></a></span>
-      <div class="acl-rule-col3">
-        <div class="acl-rule-reference tooltip" data-id="{{cidrBlock}}" data-tooltip="CidrBlock">{{cidrBlock}}</div>
+    <div class="tooltip acl-rule-number" data-id="{{ruleNumber}}" data-tooltip="Rule Number">{{ruleNumber}}</div>
+    <div class="acl-rule-details">
+      <div class="rule-list-row">
+        <div href="#" class="acl-rule-allow-cb tooltip {{ruleAction}} acl-rule-action" data-id="{{ruleAction}}" data-tooltip="{{ruleAction}}"></div>
+        <div class="{{#ifCond egress "false"}}acl-rule-inbound{{else}}acl-rule-outbound{{/ifCond}} tooltip acl-rule-direction" data-id="{{egress}}" data-tooltip="Inbound/Outbound"></div>
+        <div class="acl-rule-reference tooltip" data-id="{{cidrBlock}}" data-tooltip="CIDR Block">{{cidrBlock}}</div>
+      </div>
+      <div class="rule-list-row">       
+        <div class="acl-rule-protocol tooltip" data-id="{{protocol}}" data-tooltip="Protocol">{{protocol}}</div>
         <div class="acl-rule-port tooltip" data-id="{{port}}" data-tooltip="Port">{{port}}</div>
       </div>
+      <a class="rule-remove-icon property-rule-delete-btn tooltip" data-tooltip="Remove rule"></a>
     </div>
   </li>
 {{/each}}

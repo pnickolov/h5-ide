@@ -16,9 +16,9 @@
 
   <header class="option-group-head">Rule<span class="property-head-num-wrap">({{component.rule_number}})</span></header>
   <article class="option-group">
-    <div class="acl-sort-rule clearfix">
-      <h5 class="left">Sort by</h5>
-      <div class="selectbox right" id="acl-sort-rule-select">
+    <div class="rule-list-sort property-control-group">
+      <h5>Sort by</h5>
+      <div class="selectbox" id="acl-sort-rule-select">
         <div class="selection">Rule Number</div>
         <ul class="dropdown" tabindex="-1">
           <li data-id="1" class="item selected">Rule Number</li>
@@ -29,20 +29,18 @@
       </div>
     </div>
 
-    <ul class="acl-rules">
+    <ul class="property-list acl-rule-list">
       {{#each component.entrySet.item}}
         <li rule-num="{{ruleAction}}" rule-engress="{{egress}}">
-          <h5 class="tooltip" data-tooltip="Rule Number">{{ruleNumber}}</h5>
-          <div class="clearfix">
-            <span class="acl-rule-col1">
-              <a href="#" class="acl-rule-allow-cb tooltip {{ruleAction}}" data-tooltip="Allow/Deny"></a>
-            </span>
-            <span class="acl-rule-col2">
-              <span class="{{#if egress}}acl-rule-outbound{{else}}acl-rule-inbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
-              <span class="acl-rule-protocol tooltip" data-tooltip="Protocol">{{protocolName}}({{protocol}})</span>
-            </span>
-            <div class="acl-rule-col3">
+          <div class="tooltip acl-rule-number" data-tooltip="Rule Number">{{ruleNumber}}</h5>
+          <div class="acl-rule-details">
+            <div class="rule-list-row">
+              <div href="#" class="acl-rule-allow-cb tooltip {{ruleAction}}" data-tooltip="Allow/Deny"></div>
+              <div class="{{#if egress}}acl-rule-outbound{{else}}acl-rule-inbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></div>
               <div class="acl-rule-reference tooltip" data-tooltip="CidrBlock">{{cidrBlock}}</div>
+            </div>
+            <div class="rule-list-row">
+              <div class="acl-rule-protocol tooltip" data-tooltip="Protocol">{{protocolName}}({{protocol}})</div>
               <div class="acl-rule-port tooltip" data-tooltip="Port">{{portRange.to}}-{{portRange.from}}</div>
             </div>
           </div>
@@ -53,9 +51,9 @@
 
 
   <header class="option-group-head">Association<span class="property-head-num-wrap">({{component.asso_number}})</span></header>
-  <ul class="option-group">
+  <ul class="option-group property-list">
     {{#each component.associationSet.item}}
-      <li class="property-acl-assn">{{subnetDisplay}}</li>
+      <li>{{subnetDisplay}}</li>
     {{/each}}
   </ul>
 

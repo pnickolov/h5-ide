@@ -1169,8 +1169,8 @@ MC.canvas = {
 		{
 			// start_x = x;
 			// start_y = y;
-			end_x = x + width;
-			end_y = y + height;
+			end_x = start_x + width;
+			end_y = start_y + height;
 
 			$.each(children, function (key, item)
 			{

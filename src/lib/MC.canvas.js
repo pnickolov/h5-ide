@@ -1152,10 +1152,10 @@ MC.canvas = {
 		};
 	},
 
-	isBlank: function (type, target_id, target_type, x, y, width, height)
+	isBlank: function (type, target_id, target_type, start_x, start_y, width, height)
 	{
 		var children = MC.canvas.data.get('layout.component.' + type),
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			//scale_ratio = MC.canvas_property.SCALE_RATIO,
 			group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
 			isBlank = true,
 			start_x,
@@ -1167,10 +1167,10 @@ MC.canvas = {
 
 		if (type === 'group')
 		{
-			start_x = x * scale_ratio;
-			start_y = y * scale_ratio;
-			end_x = (x + width) * scale_ratio;
-			end_y = (y + height) * scale_ratio;
+			// start_x = x;
+			// start_y = y;
+			end_x = x + width;
+			end_y = y + height;
 
 			$.each(children, function (key, item)
 			{
@@ -1220,6 +1220,8 @@ MC.canvas = {
 			)
 			{
 				matched = document.getElementById( key );
+
+				//return false;
 			}
 		});
 

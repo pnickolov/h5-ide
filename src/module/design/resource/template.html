@@ -1,12 +1,12 @@
 <a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip="Toggle Resource Panel">
 </a>
 <div class="sidebar-title">
-	<span class="sidebar-title-text">Resources</span>
+	<span class="sidebar-title-text">{{ i18n "RES_TIT_RESOURCES" }}</span>
 </div>
 <div class="fixedaccordion accordion-default">
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
-			Availability Zone
+			{{ i18n "RES_TIT_AZ" }}
 		</div>
 		<div class="accordion-body">
 			<div class="item-wrap">
@@ -49,7 +49,7 @@
 					<li>
 						<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach new EBS volume." data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"name": "/dev/sdf", "volumeSize":"1", "snapshotId": ""}'>
 							<div class="resource-icon resource-icon-volume"></div>
-							<div class="resource-label">New Volume</div>
+							<div class="resource-label">{{i18n RES_TIT_VOL}}</div>
 						</div>
 					</li>
 				</ul>

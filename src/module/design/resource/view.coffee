@@ -63,7 +63,7 @@ define [ 'event',
 
         render   : ( template, attrs ) ->
             console.log 'resource render'
-            $( '#resource-panel' ).html template
+            $( '#resource-panel' ).html Handlebars.compile template
             #
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
@@ -73,7 +73,7 @@ define [ 'event',
 
         reRender   : ( template ) ->
             console.log 're-resource render'
-            if $.trim( this.$el.html() ) is 'loading...' then $( '#resource-panel' ).html template
+            if $.trim( this.$el.html() ) is 'loading...' then $( '#resource-panel' ).html Handlebars.compile template
 
             this.recalcAccordion()
 

@@ -305,15 +305,6 @@ var constant_data = {
 			],
 			"AWS.VPC.NetworkInterface": [
 				{
-					"type": "elb-sg",
-					"from": "elb-sg-out",
-					"to": "eni-sg",
-					"direction": {
-						"to": "horizontal"
-					},
-					"relation": "multiple"
-				},
-				{
 					"type": "sg",
 					"from": "elb-sg-in",
 					"to": "eni-sg",
@@ -373,15 +364,25 @@ var constant_data = {
 		"AWS.VPC.NetworkInterface": {
 			"AWS.ELB": [
 				{
-					"type": "elb-sg",
-					"from": "elb-sg-in",
-					"to": "eni-sg",
+					"type": "sg",
+					"from": "eni-sg",
+					"to": "elb-sg-in",
 					"direction": {
-						"to": "horizontal"
+						"from": "horizontal"
 					},
 					"relation": "multiple"
 				}
 			],
+			"AWS.AutoScaling.LaunchConfiguration": {
+				"type": "sg",
+				"from": "eni-sg",
+				"to": "launchconfig-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
+				},
+				"relation": "multiple"
+			},
 			"AWS.AutoScaling.Group": [
 				{
 					"type": "sg",

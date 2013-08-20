@@ -2,11 +2,15 @@
 #  View(UI logic) for Main
 #############################
 
-define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
+define [ 'event',
+         'UI.notification',
+         'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event ) ->
 
     MainView = Backbone.View.extend {
 
         el       : $ '#main'
+
+        delay    : null
 
         initialize : ->
             $( window ).on "resize", this.resizeEvent
@@ -15,14 +19,31 @@ define [ 'backbone', 'jquery', 'handlebars', 'underscore' ], () ->
             $( '.main-content' ).height window.innerHeight - 42
             $('.sub-menu-scroll-wrap').height window.innerHeight - 100
 
-        showMain : () ->
+        showMain : ->
             console.log 'showMain'
             #
-            MC.data.loading_wrapper_html = $( '#loading-bar-wrapper' ).html()
+            clearTimeout @delay
+            #
+            MC.data.loading_wrapper_html = $( '#loading-bar-wrapper' ).html() if !MC.data.loading_wrapper_html
+            #
+            return if $( '#loading-bar-wrapper' ).html().trim() is ''
             #
             $( '.loading-wrapper' ).fadeOut 'normal', () ->
                 $( '.loading-wrapper' ).remove()
                 $( '#wrapper' ).removeClass 'main-content'
+
+        showLoading : ( tab_id )->
+            console.log 'showLoading, tab_id = ' + tab_id
+            $( '#loading-bar-wrapper' ).html MC.data.loading_wrapper_html
+            #
+            @delay = setTimeout () ->
+                console.log '_rollback sdfasfsdfsdfasdfasfasdddddddddddddddddddd'
+                if $( '#loading-bar-wrapper' ).html().trim() isnt ''
+                    ide_event.trigger ide_event.SWITCH_MAIN
+                    ide_event.trigger ide_event.STACK_DELETE, null, tab_id
+                    notification 'error', 'Open Tab error, please open again', false
+            , 4000
+            null
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'

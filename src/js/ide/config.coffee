@@ -253,7 +253,7 @@ require.config {
 			exports    : 'Meteor'
 
 		'WS'           :
-			deps       : ['Meteor', 'underscore']
+			deps       : [ 'Meteor', 'underscore', 'MC' ]
 			exports    : 'WS'
 
 		'MC.canvas':

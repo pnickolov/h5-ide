@@ -57,10 +57,6 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
             #$( '#property-panel' ).empty()
             null
 
-        showLoading : ->
-            console.log 'showLoading'
-            $( '#loading-bar-wrapper' ).html  MC.data.loading_wrapper_html
-
     }
 
     return DesignView

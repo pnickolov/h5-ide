@@ -4408,6 +4408,7 @@ a.sidebar-hider {
 	height: 80px;
 }
 
+/*
 .loading-block {
 	width: 6px;
 	height: 40px;
@@ -4437,7 +4438,6 @@ a.sidebar-hider {
 
 @-webkit-keyframes block-animation {
      0% { opacity: 1; height: 40px; margin-top:0px  }
-    /* 50% { opacity: .5; } */
   100% { opacity: .4; height: 10px; margin-top:20px }
 }
 
@@ -4449,3 +4449,4 @@ a.sidebar-hider {
 	bottom: 0;
 	display:none;
 }
+*/

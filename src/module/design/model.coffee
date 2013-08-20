@@ -31,7 +31,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                 else
                     #TO-DO
                 #
-                ide_event.trigger ide_event.SWITCH_LOADING
+                ide_event.trigger ide_event.SWITCH_MAIN
 
                 null
 

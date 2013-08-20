@@ -111,6 +111,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                 $.each sg_detail[1].sg, ( j, to_sg ) ->
 
                     result = me._checkRule from_sg, to_sg
+                    if not result
+                        result = me._checkRule to_sg, from_sg
 
                     if result
 

@@ -170,10 +170,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 id          = result.param[4]
                 app_name    = result.param[5]
 
-                #add new-app status
-                #me.handleRequest result, 'RUN_STACK', region, id, app_name
-                # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
-
                 data = run_stack_map[region][app_name]
 
                 ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
@@ -286,7 +282,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     is_pending = true
 
                 id = id.resolved_data[0].id
-                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_use_ami':me.isInstanceStore(MC.canvas_data) }
+                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data) }
 
                 is_tab = true
 
@@ -479,18 +475,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             if flag isnt 'RUN_STACK'
                 me.setFlag id, 'PENDING_APP'
 
-            # pending req
-            if result.resolved_data
-                res = result.resolved_data
-
-                brief = flag.replace(/_/g, ' ').toLowerCase() + name
-                if flag is 'RUN_STACK'
-                    brief = 'Launch app ' + name + ' from stack ' + res.rid
-               
-                pending_req = { 'id' : res.id, 'rid' : res.rid, 'time_end' : res.time_submit, 'region' : region, 'state' : constant.OPS_STATE.OPS_STATE_PENDING, 'brief' : brief }
-
-                ide_event.trigger ide_event.UPDATE_HEADER, pending_req
-
             if !result.is_error
 
                 me.trigger 'TOOLBAR_REQUEST_SUCCESS', flag, name
@@ -618,8 +602,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             is_instance_store = false
 
-            if 'component' in data.layout and 'node' in data.layout.component
-                for node in data.layout.component.node
+            if 'component' of data.layout and 'node' of data.layout.component
+                for k, node of data.layout.component.node
                     if node.rootDeviceType == 'instance-store'
                         is_instance_store = true
                         break

@@ -65,9 +65,33 @@ MC.canvas = {
 		return true;
 	},
 
-	view: function ()
+	resize: function (target, type)
 	{
-		$('#canvas_body').toggleClass('canvas-view-normal canvas-view-sg');
+		var canvas_size = MC.canvas.data.get("layout.size"),
+			key = target === 'width' ? 0 : 1,
+			value;
+
+		if (type === 'expand')
+		{
+			canvas_size[ key ] += 60;
+		}
+
+		if (type === 'shrink')
+		{
+			canvas_size[ key ] -= 60;
+		}
+
+		$('#svg_canvas').attr({
+			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
+			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+		});
+
+		$('#canvas_container').css({
+			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
+			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+		});
+
+		MC.canvas.data.set("layout.size", canvas_size);
 	},
 
 	zoomIn: function ()

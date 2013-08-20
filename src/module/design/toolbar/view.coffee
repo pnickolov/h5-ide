@@ -115,8 +115,8 @@ define [ 'MC', 'event',
                     # save stack
                     ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
-                    setTimeOut () ->
-                        ide_event.trigger ide_event.DUPLICATE_STACK, new_name, MC.canvas_data
+                    setTimeout () ->
+                        ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
                     , 500
 
             doDuplicate name

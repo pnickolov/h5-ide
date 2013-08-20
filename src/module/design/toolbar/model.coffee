@@ -243,7 +243,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     me.savePNG true, data
 
-
         setFlag : (id, flag, value) ->
             me = this
 

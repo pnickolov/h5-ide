@@ -581,7 +581,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			null
 
 		deleteLine : ( option ) ->
-
+			me = this
 			portMap   = {}
 			for id, port of MC.canvas_data.layout.connection[option.id].target
 				portMap[ port ] = id
@@ -679,8 +679,114 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				MC.aws.elb.removeInstanceFromELB portMap['elb-sg-out'], portMap['instance-sg']
 
 			# SG Supports
-			if portMap['instance-sg'] or portMap['eni-sg'] or portMap['elb-sg-in'] or portMap['elb-sg-out']
-				this.trigger 'SHOW_SG_LIST', option.id
+			if portMap['instance-sg'] or portMap['eni-sg'] or portMap['elb-sg-in'] or portMap['launchconfig-sg']
+
+				if portMap['elb-sg-out'] and portMap['launchconfig-sg']
+					elb_ref = '@' + portMap['elb-sg-out'] + '.resource.LoadBalancerName'
+                    # if select the main launch configuration and elb line
+					if MC.canvas_data.component[portMap['launchconfig-sg']]
+
+						selected_line_id = null
+
+						original_group_uid = MC.canvas_data.layout.component.node[portMap['launchconfig-sg']].groupUId
+
+						$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
+
+	                        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId is original_group_uid
+
+	                        	$.each MC.canvas_data.layout.connection, ( line_id, line )->
+
+	                        		if line.type is 'elb-sg'
+	                        			tmp_map = {}
+	                        			$.each line.target, (k, v)->
+	                        				tmp_map[v] = k
+	                        				null
+
+	                        			if tmp_map['elb-sg-out'] is portMap['elb-sg-out'] and tmp_map['launchconfig-sg'] is comp_uid
+	                        				elb_index = MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.indexOf(elb_ref)
+	                        				if elb_index >= 0
+	                        					MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.splice elb_index, 1
+	                        				MC.canvas.remove $("#" + line_id)[0]
+
+	                        				return false
+
+	                        			if tmp_map['elb-sg-out'] is portMap['elb-sg-out'] and tmp_map['launchconfig-sg'] is portMap['launchconfig-sg']
+
+	                        				selected_line_id = line_id
+
+	                        			null
+
+	                    MC.canvas.remove $("#" + selected_line_id)[0]
+                    # select the expand lanchconfiguration and elb line
+					else
+						original_group_uid = MC.canvas_data.layout.component.group[portMap['launchconfig-sg']].originalId
+
+						$.each MC.canvas_data.layout.component.node, ( comp_uid, comp ) ->
+
+							if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and comp.groupUId is original_group_uid
+
+								elb_index = MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.indexOf(elb_ref)
+								if elb_index >= 0
+									MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.splice elb_index, 1
+
+								$.each MC.canvas_data.layout.connection, ( l_id, line_comp ) ->
+
+							        tmp_portMap = {}
+
+							        $.each line_comp.target, ( key, val ) ->
+
+							            tmp_portMap[val] = key
+
+							            null
+
+							        if tmp_portMap['elb-sg-out'] is portMap['elb-sg-out'] and tmp_portMap['launchconfig-sg'] is comp_uid
+
+							            MC.canvas.remove $("#" + l_id)[0]
+
+							        else
+							        	$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
+
+							        		if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is original_group_uid
+
+							        			if tmp_portMap['elb-sg-out'] is portMap['elb-sg-out'] and tmp_portMap['launchconfig-sg'] is group_id
+
+							        				MC.canvas.remove $("#" + l_id)[0]
+
+							        				return false
+
+
+
+
+				else if portMap['launchconfig-sg']
+
+					if MC.canvas_data.component[portMap['launchconfig-sg']]
+						original_group_uid = MC.canvas_data.layout.component.node[portMap['launchconfig-sg']].groupUId
+					else
+						original_group_uid = MC.canvas_data.layout.component.group[portMap['launchconfig-sg']].originalId
+
+					$.each MC.canvas_data.layout.component.node, (comp_uid, comp)->
+
+                        if comp.type is 'AWS.AutoScaling.LaunchConfiguration' and comp.groupUId is original_group_uid
+
+                            $.each MC.canvas_data.layout.connection, (l_id, line_comp)->
+
+                                tmp_portMap = {}
+
+                                $.each line_comp.target, (key,val)->
+                                    tmp_portMap[val] = key
+                                    null
+
+                                if tmp_portMap['launchconfig-sg'] is comp_uid and line_comp.type is 'sg'
+
+                                    $.each portMap, (port_key, port_val)->
+
+                                        if port_key isnt 'launchconfig-sg'
+
+                                            if tmp_portMap[port_key] and portMap[port_key] and tmp_portMap[port_key] is portMap[port_key]
+
+                                                me.trigger 'SHOW_SG_LIST', l_id
+				else
+					this.trigger 'SHOW_SG_LIST', option.id
 
 				# Deleting SG needs confirmation, return false to prevent the line being deleted.
 				return false
@@ -1168,9 +1274,25 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									from_sg_group.push comp.uid
 
+									asg_uid = MC.canvas_data.layout.component.node[comp.uid].groupUId
+
+									$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
+
+										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId
+
+											from_sg_group.push group_id
+
 								if sgs.split('.')[0][1...] == to_sg_uid
 
 									to_sg_group.push comp.uid
+
+									asg_uid = MC.canvas_data.layout.component.node[comp.uid].groupUId
+
+									$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
+
+										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId
+
+											to_sg_group.push group_id
 
 
 				$.each from_sg_group, ( i, from_comp_uid ) ->
@@ -1183,43 +1305,55 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 							to_port = null
 
-							switch MC.canvas_data.component[from_comp_uid].type
+							if MC.canvas_data.component[from_comp_uid]
 
-								when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+								switch MC.canvas_data.component[from_comp_uid].type
 
-									from_port = 'instance-sg'
+									when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
-								when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+										from_port = 'instance-sg'
 
-									from_port = 'eni-sg'
+									when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
-								when constant.AWS_RESOURCE_TYPE.AWS_ELB
+										from_port = 'eni-sg'
 
-									from_port = 'elb-sg-in'
+									when constant.AWS_RESOURCE_TYPE.AWS_ELB
 
-								when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+										from_port = 'elb-sg-in'
 
-									from_port = 'launchconfig-sg'
+									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
-							switch MC.canvas_data.component[to_comp_uid].type
+										from_port = 'launchconfig-sg'
 
-								when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+							else
+								from_port = 'launchconfig-sg'
 
-									to_port = 'instance-sg'
+							if MC.canvas_data.component[to_comp_uid]
 
-								when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+								switch MC.canvas_data.component[to_comp_uid].type
 
-									to_port = 'eni-sg'
+									when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
-								when constant.AWS_RESOURCE_TYPE.AWS_ELB
+										to_port = 'instance-sg'
 
-									to_port = 'elb-sg-in'
+									when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
-								when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+										to_port = 'eni-sg'
 
-									to_port = 'launchconfig-sg'
+									when constant.AWS_RESOURCE_TYPE.AWS_ELB
 
-							lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+										to_port = 'elb-sg-in'
+
+									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+
+										to_port = 'launchconfig-sg'
+
+							else
+								to_port = 'launchconfig-sg'
+
+							if not (from_port == to_port == 'launchconfig-sg')
+
+								lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 
 			$.each MC.canvas_data.layout.connection, ( line_id, line ) ->
 

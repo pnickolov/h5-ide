@@ -4,40 +4,40 @@
 
 define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
 
-	SGRuleModel = Backbone.Model.extend {
+    SGRuleModel = Backbone.Model.extend {
 
-		defaults :
-			sg_group : [
-					{
-						name  : "DefaultSG"
-						rules : [ {
-							egress     : true
-							protocol   : "TCP"
-							connection : "eni"
-							port       : "1234"
-						} ]
-					}
-				]
-			sg_app_ary : null
-			line_id : null
+        defaults :
+            sg_group : [
+                    {
+                        name  : "DefaultSG"
+                        rules : [ {
+                            egress     : true
+                            protocol   : "TCP"
+                            connection : "eni"
+                            port       : "1234"
+                        } ]
+                    }
+                ]
+            sg_app_ary : null
+            line_id : null
 
-		initialize : ->
-			#listen
-			#this.listenTo this, 'change:get_host', this.getHost
+        initialize : ->
+            #listen
+            #this.listenTo this, 'change:get_host', this.getHost
 
-		setLineId : ( line_id ) ->
+        setLineId : ( line_id ) ->
 
-			this.set 'line_id', line_id
+            this.set 'line_id', line_id
 
-		getDispSGList : (line_uid) ->
+        getDispSGList : (line_uid) ->
 
-			that = this
+            that = this
 
-			target = MC.canvas_data.layout.connection[line_uid].target
+            target = MC.canvas_data.layout.connection[line_uid].target
 
-			portMap = {}
+            portMap = {}
 
-			for k,v of target
+            for k,v of target
                 portMap[v] = k
 
             for k,v of target
@@ -57,46 +57,58 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
                                 for key,val of line_comp.target
                                     tmp_portMap[val] = key
 
-                                for key, val of line_comp.target
+                                if tmp_portMap['launchconfig-sg'] is comp_uid and line_comp.type is 'elb-sg'
 
-                                    if key is comp_uid and line_comp.type is 'elb-sg'
+                                    if tmp_portMap['elb-sg-out'] and portMap['elb-sg-out'] and tmp_portMap['elb-sg-out'] is portMap['elb-sg-out']
 
-                                        if tmp_portMap['elb-sg-out'] and portMap['elb-sg-out'] and tmp_portMap['elb-sg-out'] is portMap['elb-sg-out']
+                                        target = MC.canvas_data.layout.connection[l_id].target
 
-                                            target = MC.canvas_data.layout.connection[l_id].target
+                                        line_uid = l_id
 
-                                            line_uid = l_id
+                                        that.set 'line_id', line_uid
 
-                                            that.set 'line_id', line_uid
+                                else if tmp_portMap['launchconfig-sg'] is comp_uid and line_comp.type is 'sg'
 
-			bothSGAry = MC.aws.sg.getSgRuleDetail line_uid
+                                    for port_key, port_val of portMap
 
-			sgUIDAry = []
-			_.each bothSGAry, (sgObj) ->
-				innerSGAry = sgObj.sg
-				_.each innerSGAry, (innerSGObj) ->
-					sgUID = innerSGObj.uid
-					sgUIDAry.push sgUID
-					null
-				null
+                                        if port_key isnt 'launchconfig-sg'
 
-			sgUIDAry = _.uniq(sgUIDAry)
+                                            if tmp_portMap[port_key] and portMap[port_key] and tmp_portMap[port_key] is portMap[port_key]
 
-			sg_app_ary = []
-			_.each sgUIDAry, (sgUID) ->
-				sg_app_ary.push that._getSGInfo(sgUID)
-				null
+                                                target = MC.canvas_data.layout.connection[l_id].target
 
-			that.set 'sg_group', sg_app_ary
+                                                line_uid = l_id
 
-		_getSGInfo : (sgUID) ->
+                                                that.set 'line_id', line_uid
 
-			# get app sg obj
-			rules = []
+            bothSGAry = MC.aws.sg.getSgRuleDetail line_uid
 
-			permissions = [MC.canvas_data.component[sgUID].resource.IpPermissions, MC.canvas_data.component[sgUID].resource.IpPermissionsEgress]
+            sgUIDAry = []
+            _.each bothSGAry, (sgObj) ->
+                innerSGAry = sgObj.sg
+                _.each innerSGAry, (innerSGObj) ->
+                    sgUID = innerSGObj.uid
+                    sgUIDAry.push sgUID
+                    null
+                null
 
-			$.each permissions, (i, permission)->
+            sgUIDAry = _.uniq(sgUIDAry)
+
+            sg_app_ary = []
+            _.each sgUIDAry, (sgUID) ->
+                sg_app_ary.push that._getSGInfo(sgUID)
+                null
+
+            that.set 'sg_group', sg_app_ary
+
+        _getSGInfo : (sgUID) ->
+
+            # get app sg obj
+            rules = []
+
+            permissions = [MC.canvas_data.component[sgUID].resource.IpPermissions, MC.canvas_data.component[sgUID].resource.IpPermissionsEgress]
+
+            $.each permissions, (i, permission)->
 
                 $.each permission, ( idx, rule ) ->
 
@@ -106,10 +118,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
 
                     if i is 0
 
-                    	tmp_rule.egress = false
+                        tmp_rule.egress = false
 
                     else
-                    	tmp_rule.egress = true
+                        tmp_rule.egress = true
 
                     tmp_rule.protocol = rule.IpProtocol
 
@@ -124,62 +136,62 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
 
                     rules.push tmp_rule
 
-			#get sg name
-			sg_app_detail =
-				name : MC.canvas_data.component[sgUID].resource.GroupName
-				rules : rules
+            #get sg name
+            sg_app_detail =
+                name : MC.canvas_data.component[sgUID].resource.GroupName
+                rules : rules
 
-			return sg_app_detail
+            return sg_app_detail
 
-		getAppDispSGList : (line_uid) ->
+        getAppDispSGList : (line_uid) ->
 
-			that = this
+            that = this
 
-			bothSGAry = MC.aws.sg.getSgRuleDetail line_uid
+            bothSGAry = MC.aws.sg.getSgRuleDetail line_uid
 
-			sgUIDAry = []
-			_.each bothSGAry, (sgObj) ->
-				innerSGAry = sgObj.sg
-				_.each innerSGAry, (innerSGObj) ->
-					sgUID = innerSGObj.uid
-					sgUIDAry.push sgUID
-					null
-				null
+            sgUIDAry = []
+            _.each bothSGAry, (sgObj) ->
+                innerSGAry = sgObj.sg
+                _.each innerSGAry, (innerSGObj) ->
+                    sgUID = innerSGObj.uid
+                    sgUIDAry.push sgUID
+                    null
+                null
 
-			sgUIDAry = _.uniq(sgUIDAry)
+            sgUIDAry = _.uniq(sgUIDAry)
 
-			sg_app_ary = []
-			_.each sgUIDAry, (sgUID) ->
-				sg_app_ary.push that._getAppSGInfo(sgUID)
-				null
+            sg_app_ary = []
+            _.each sgUIDAry, (sgUID) ->
+                sg_app_ary.push that._getAppSGInfo(sgUID)
+                null
 
-			that.set 'sg_group', sg_app_ary
+            that.set 'sg_group', sg_app_ary
 
-		_getAppSGInfo : (sgUID) ->
+        _getAppSGInfo : (sgUID) ->
 
-			# get app sg obj
-			currentRegion = MC.canvas_data.region
-			currentSGComp = MC.canvas_data.component[sgUID]
-			currentSGID = currentSGComp.resource.GroupId
-			currentAppSG = MC.data.resource_list[currentRegion][currentSGID]
+            # get app sg obj
+            currentRegion = MC.canvas_data.region
+            currentSGComp = MC.canvas_data.component[sgUID]
+            currentSGID = currentSGComp.resource.GroupId
+            currentAppSG = MC.data.resource_list[currentRegion][currentSGID]
 
-			members = MC.aws.sg.getAllRefComp sgUID
-			rules = MC.aws.sg.getAllRule currentAppSG
+            members = MC.aws.sg.getAllRefComp sgUID
+            rules = MC.aws.sg.getAllRule currentAppSG
 
-			#get sg name
-			sg_app_detail =
-				groupName : currentAppSG.groupName
-				groupDescription : currentAppSG.groupDescription
-				groupId : currentAppSG.groupId
-				ownerId : currentAppSG.ownerId
-				vpcId : currentAppSG.vpcId
-				members : members
-				rules : rules
+            #get sg name
+            sg_app_detail =
+                groupName : currentAppSG.groupName
+                groupDescription : currentAppSG.groupDescription
+                groupId : currentAppSG.groupId
+                ownerId : currentAppSG.ownerId
+                vpcId : currentAppSG.vpcId
+                members : members
+                rules : rules
 
-			return sg_app_detail
+            return sg_app_detail
 
-	}
+    }
 
-	model = new SGRuleModel()
+    model = new SGRuleModel()
 
-	return model
+    return model

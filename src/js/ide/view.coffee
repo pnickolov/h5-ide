@@ -42,7 +42,7 @@ define [ 'event',
                     ide_event.trigger ide_event.SWITCH_MAIN
                     ide_event.trigger ide_event.STACK_DELETE, null, tab_id
                     notification 'error', 'Open Tab error, please open again', false
-            , 4000
+            , 1000 * 20
             null
 
         showDashbaordTab : () ->

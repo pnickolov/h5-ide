@@ -528,8 +528,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 when constant.OPS_STATE.OPS_STATE_INPROCESS
                     if flag is 'RUN_STACK'
 
+                        flag_list.is_inprocess = true
+                        flag_list.rate = 0
                         if 'dag' of dag # changed request
-                            flag_list.is_inprocess = true
+
                             flag_list.steps = dag.dag.step.length
 
                             # check rollback
@@ -539,9 +541,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             if dag.dag.state isnt 'Rollback'
                                 flag_list.dones = dones
                                 flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
-
-                        else # added request
-                            flag_list.is_pending = true
 
                 when constant.OPS_STATE.OPS_STATE_FAILED
                     #handle.stop()

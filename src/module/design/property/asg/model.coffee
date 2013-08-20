@@ -7,12 +7,14 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
   ASGConfigModel = Backbone.Model.extend {
 
     defaults :
-      uid : null
-      asg : null
-      name : null
-      has_sns_topic : null
-      hasLaunchConfig : null
+      uid               : null
+      asg               : null
+      name              : null
+      has_sns_topic     : null
+      hasLaunchConfig   : null
       notification_type : null
+      has_elb           : false
+      detail_monitor    : false
 
     initialize : ->
       null
@@ -292,6 +294,19 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
             nc_array[4] = true
 
           return false
+
+      if asg.resource.LoadBalancerNames.length > 0
+        this.set 'has_elb', true
+
+      $.each MC.canvas_data.layout.component.node, ( comp_uid, comp ) ->
+
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and comp.groupUId is asg.uid
+
+          if MC.canvas_data.component[comp_uid].resource.InstanceMonitoring is 'enabled'
+
+            me.set 'detail_monitor', true
+
+            return false
 
       this.set 'notification_type', nc_array
       this.set 'policies', policies

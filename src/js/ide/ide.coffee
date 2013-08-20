@@ -50,6 +50,8 @@ define [ 'MC', 'event', 'handlebars'
 		MC.tab  = {}
 		#set process tab
 		MC.process = {}
+		#save <div class="loading-wrapper" class="main-content active">
+		MC.data.loading_wrapper_html = null
 
 		#############################
 		#  WebSocket
@@ -107,6 +109,9 @@ define [ 'MC', 'event', 'handlebars'
 		ide_event.onLongListen ide_event.SWITCH_TAB,          () -> view.showTab()
 		ide_event.onLongListen ide_event.SWITCH_DASHBOARD,    () -> view.showDashbaordTab()
 		ide_event.onLongListen ide_event.SWITCH_APP_PROCESS,  () -> view.showProcessTab()
+		#
+		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
+		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id ) -> view.showLoading tab_id
 
 		#############################
 		#  load module
@@ -141,6 +146,8 @@ define [ 'MC', 'event', 'handlebars'
 		ide_event.onListen ide_event.DESIGN_COMPLETE, () ->
 			console.log 'DESIGN_COMPLETE'
 			process.loadModule()
+			#
+			ide_event.trigger ide_event.SWITCH_MAIN
 
 		#listen RESOURCE_COMPLETE
 		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->

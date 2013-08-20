@@ -12,6 +12,7 @@ body {
 	background : #4c494c;
 
 	position   : relative;
+	min-width  : 1110px;
 	min-height : 600px;
 }
 
@@ -356,7 +357,7 @@ a {
 	position : absolute;
 	top      : 53px;
 	bottom   : 0;
-	z-index  : 50;
+	z-index  : 200;
 	width    : 45px;
 }
 
@@ -2289,6 +2290,7 @@ a.sidebar-hider {
 
 .option-group {
 	display  : none;
+	overflow : hidden;
 }
 
 /*.option-group.transition {
@@ -2602,21 +2604,20 @@ a.sidebar-hider {
 
 /* End of General Style for Property Panel List */
 
-.acl-sg-info-list > li {
-	height  : 52px;
-	padding : 10px 0 10px 10px;
-	width   : auto;
+.acl-sg-info-list li {
+	height        : 52px;
 }
 
 .acl-sg-info-list .col1 {
-	margin-right : 15px;
-	width        : 15px;
-	float        : left;
-	padding      : 15px 0;
+	margin-right       : 15px;
+	/*background-color : #eee;*/
+	width              : 15px;
+	float              : left;
+	padding            : 15px 0;
 }
 
 .acl-sg-info-list .col2 {
-	width     : 200px;
+	width     : 210px;
 	float     : left;
 	word-wrap : break-word;
 }
@@ -2637,17 +2638,17 @@ a.sidebar-hider {
 	font-size: 12px;
 }
 .acl-sg-info-list .col3 {
-	float        : right;
-	margin-top   : -10px;
-	position     : relative;
+	position         : absolute;
+	right            : 0;
+	margin-top       : -10px;
 
-	text-align : center;
+	text-align       : center;
 
-	cursor      : pointer;
-	width       : 40px;
-	height      : 72px;
-	line-height : 72px;
+	width            : 40px;
+	height           : 72px;
+	line-height      : 72px;
 
+	cursor           : pointer;
 
 	-webkit-transition : background .2s;
 	-moz-transition    : background .2s;
@@ -4438,25 +4439,14 @@ a.sidebar-hider {
 	padding-bottom: 1px;
 }
 
-/* added by song */
-
-.disabled-event-layout {
-	position: absolute;
-	z-index: 9999;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-}
-
+<<<<<<< HEAD
 /* Loading */
 .loading-wrapper {
 	position: fixed;
 	width: 100%;
 	height: 100%;
 	z-index: 100000;
-	background: #313131;
-	opacity: .95;
+	background: rgba(0,0,0,.8);
 }
 
 .loading {
@@ -4509,3 +4499,15 @@ a.sidebar-hider {
 	display:none;
 }
 */
+=======
+/* added by song */
+
+.disabled-event-layout {
+	position: absolute;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+>>>>>>> develop

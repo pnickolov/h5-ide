@@ -1317,10 +1317,10 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-blue port-rtb-tgt-left',
+					'class': 'port port-blue port-rtb-tgt port-rtb-tgt-left',
 					'id' : group.id + '_port-rtb-tgt-left',
 					'transform': 'translate(11, 25)' + MC.canvas.PORT_LEFT_ROTATE,
-					'data-name': 'rtb-tgt-left',
+					'data-name': 'rtb-tgt',
 					'data-position': 'left',
 					'data-type': 'sg',
 					'data-direction': 'out',
@@ -1329,10 +1329,10 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-blue port-rtb-tgt-right',
+					'class': 'port port-blue  port-rtb-tgt port-rtb-tgt-right',
 					'id' : group.id + '_port-rtb-tgt-right',
 					'transform': 'translate(69, 25)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'rtb-tgt-right',
+					'data-name': 'rtb-tgt',
 					'data-position': 'right',
 					'data-type': 'sg',
 					'data-direction': 'out',

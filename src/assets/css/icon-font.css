@@ -24,7 +24,8 @@
 .icon-toolbar-delete,
 .icon-new-stack,
 .icon-btn-details,
-.icon-btn-back {
+.icon-btn-back,
+.icon-export-png {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -46,3 +47,4 @@
 .icon-new-stack:before   { content : "\F11A"; }
 .icon-btn-details:before { content : "\F11F"; }
 .icon-btn-back:before    { content : "\F120"; }
+.icon-export-png:before  { content : "\F11D"; }

@@ -2939,7 +2939,8 @@ MC.canvas.event.dragable = {
 		var target = event.data.target,
 			target_id = target.attr('id'),
 			target_type = event.data.target_type,
-			canvas_offset = $('#svg_canvas').offset(),
+			svg_canvas = $('#svg_canvas'),
+			canvas_offset = svg_canvas.offset(),
 			shadow_offset = Canvon(event.data.shadow[0]).offset(),
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
@@ -2956,6 +2957,14 @@ MC.canvas.event.dragable = {
 				coordinate.y,
 				component_size[0],
 				component_size[1]
+			),
+			parentGroup = MC.canvas.parentGroup(
+				target_id,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				coordinate.x + component_size[0],
+				coordinate.y + component_size[1]
 			);
 
 		if (

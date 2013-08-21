@@ -2823,13 +2823,14 @@ a.sidebar-hider {
 	clear : both;
 }
 .subnet-cidr-wrapper .cidr-prefix {
-	display: inline-block;
-	width: 40px;
-	line-height: 35px;
-	vertical-align: middle;
+	display        : inline-block;
+	width          : 50px;
+	line-height    : 35px;
+	vertical-align : middle;
+	margin-right   : 6px;
 }
 .subnet-cidr-wrapper .cidr-rest {
-	width : 180px !important;
+	width : 170px !important;
 }
 
 /*.btn-to-secondary-panel {

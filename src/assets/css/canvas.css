@@ -418,7 +418,7 @@
 
 .AWS-EC2-AvailabilityZone.selected .group-az {
 	stroke: #f7941d;
-	fill: rgba(255, 255, 255, 0);
+	/*fill: rgba(255, 255, 255, 0);*/
 }
 
 .AWS-EC2-AvailabilityZone .group-label {

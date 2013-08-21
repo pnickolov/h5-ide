@@ -358,8 +358,8 @@ textarea:focus {
 }
 
 .property-content .input.disabled,
-.proerty-content .input[disabled] {
-	background-color: #383738;
+.property-content .input[disabled] {
+	background-color: #4E4E4E;
 	box-shadow: none;
 	color: #666;
 	border: 1px solid transparent;

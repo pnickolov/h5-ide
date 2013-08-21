@@ -69,7 +69,8 @@ MC.canvas = {
 	{
 		var canvas_size = MC.canvas.data.get("layout.size"),
 			key = target === 'width' ? 0 : 1,
-			value;
+			value,
+			target_value;
 
 		if (type === 'expand')
 		{
@@ -108,15 +109,22 @@ MC.canvas = {
 			screen_maxX = Math.max.apply(Math, node_maxX);
 			screen_maxY = Math.max.apply(Math, node_maxY);
 
-			if (canvas_size[ key ] - 60 > target === 'width' ? screen_maxX : screen_maxY)
+			target_value = target === 'width' ? screen_maxX : screen_maxY;
+
+			if ((canvas_size[ key ] - 60) <= target_value)
 			{
-				canvas_size[ key ] = 20 + (target === 'width' ? screen_maxX : screen_maxY);
+				canvas_size[ key ] = 20 + target_value;
 
 				$('#svg_resizer_' + target + '_shrink').hide();
 			}
 			else
 			{
 				canvas_size[ key ] -= 60;
+
+				if (canvas_size[ key ] === 20 + target_value)
+				{
+					$('#svg_resizer_' + target + '_shrink').hide();
+				}
 			}
 		}
 
@@ -3663,6 +3671,7 @@ MC.canvas.event.groupResize = {
 				group_left = group_offset.left - canvas_offset.left,
 				group_top = group_offset.top - canvas_offset.top,
 				type = parent.data('class'),
+				line_layer = document.getElementById('line_layer'),
 				node_connections;
 
 			if (type === 'AWS.VPC.Subnet')
@@ -3995,13 +4004,13 @@ MC.canvas.event.groupResize = {
 			parent_size = parent_data.size;
 			parent_coordinate = parent_data.coordinate;
 
-			if (group_left < parent_coordinate[0])
+			if (group_left < parent_coordinate[0] + group_padding)
 			{
 				group_width = group_left + group_width - parent_coordinate[0] - group_padding;
 				group_left = parent_coordinate[0] + group_padding;
 			}
 
-			if (group_top < parent_coordinate[1])
+			if (group_top < parent_coordinate[1] + group_padding)
 			{
 				group_height = group_top + group_height - parent_coordinate[1] - group_padding;
 				group_top = parent_coordinate[1] + group_padding;
@@ -4048,8 +4057,6 @@ MC.canvas.event.groupResize = {
 				group_left = 2;
 			}
 		}
-
-
 
 		if (
 			group_width > group_padding &&
@@ -4229,7 +4236,7 @@ MC.canvas.event.selectNode = function (event)
 	return false;
 };
 
-MC.canvas.event.nodeHover = function ()
+MC.canvas.event.nodeHover = function (event)
 {
 	if (event.type === 'mouseover')
 	{

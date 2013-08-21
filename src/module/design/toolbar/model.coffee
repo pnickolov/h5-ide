@@ -51,6 +51,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
+                    #update key
+                    key = result.resolved_data.key
+                    if key isnt MC.canvas_data.key
+                        MC.canvas_data.key = key
+                        data.key = key
+
                     #call save png
                     me.savePNG true, data
 
@@ -128,7 +134,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'save as stack successfully'
 
                     #update stack name list
-                    MC.data.stack_list[region].push {'id':id, 'name':new_name}
+                    new_id = result.resolved_data.id
+                    MC.data.stack_list[region].push {'id':new_id, 'name':new_name}
+
+                    #save png
+                    key = result.resolved_data.key
+                    ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, key
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'DUPLICATE_STACK', name

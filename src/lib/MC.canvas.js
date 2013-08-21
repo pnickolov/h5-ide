@@ -69,7 +69,8 @@ MC.canvas = {
 	{
 		var canvas_size = MC.canvas.data.get("layout.size"),
 			key = target === 'width' ? 0 : 1,
-			value;
+			value,
+			target_value;
 
 		if (type === 'expand')
 		{
@@ -108,15 +109,22 @@ MC.canvas = {
 			screen_maxX = Math.max.apply(Math, node_maxX);
 			screen_maxY = Math.max.apply(Math, node_maxY);
 
-			if (canvas_size[ key ] - 60 > target === 'width' ? screen_maxX : screen_maxY)
+			target_value = target === 'width' ? screen_maxX : screen_maxY;
+
+			if ((canvas_size[ key ] - 60) <= target_value)
 			{
-				canvas_size[ key ] = 20 + (target === 'width' ? screen_maxX : screen_maxY);
+				canvas_size[ key ] = 20 + target_value;
 
 				$('#svg_resizer_' + target + '_shrink').hide();
 			}
 			else
 			{
 				canvas_size[ key ] -= 60;
+
+				if (canvas_size[ key ] === 20 + target_value)
+				{
+					$('#svg_resizer_' + target + '_shrink').hide();
+				}
 			}
 		}
 

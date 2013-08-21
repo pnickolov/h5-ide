@@ -287,27 +287,29 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# If the handler returns false or string or object,
 			# The delete operation is prevented.
-			if typeof result is 'object' and result.error
-				if event && event.preventDefault
-						event.preventDefault()
-					notification "error", result.error
+			if result
 
-			else if typeof result is "string"
-				# Confimation
-				self = this
-				template = MC.template.canvasOpConfirm {
-					operation : sprintf lang.ide.CVS_CFM_DEL, component.name
-					content   : result
-					color     : "red"
-					proceed   : lang.ide.CFM_BTN_DELETE
-					cancel    : lang.ide.CFM_BTN_CANCEL
-				}
-				modal template, true
-				$("#canvas-op-confirm").one "click", ()->
-					# Do the delete operation
-					opts = $.extend true, { force : true }, option
-					self.deleteObject null, opts
-					modal.close()
+				if typeof result is 'object' and result.error
+					if event && event.preventDefault
+							event.preventDefault()
+						notification "error", result.error
+
+				else if typeof result is "string"
+					# Confimation
+					self = this
+					template = MC.template.canvasOpConfirm {
+						operation : sprintf lang.ide.CVS_CFM_DEL, component.name
+						content   : result
+						color     : "red"
+						proceed   : lang.ide.CFM_BTN_DELETE
+						cancel    : lang.ide.CFM_BTN_CANCEL
+					}
+					modal template, true
+					$("#canvas-op-confirm").one "click", ()->
+						# Do the delete operation
+						opts = $.extend true, { force : true }, option
+						self.deleteObject null, opts
+						modal.close()
 
 
 			else if result isnt false
@@ -326,13 +328,31 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			layout_data = MC.canvas_data.layout.component.group[component.uid]
 
 			if not layout_data
+				return
+
+			if layout_data.originalId.length
 				# This is a extended ASG
+				asg_comp = MC.canvas_data.component[ layout_data.originalId ]
+				vpcs = asg_comp.resource.VPCZoneIdentifier.split " , "
+				for subnet, i in vpcs
+					if subnet.indexOf layout_data.groupUId
+						vpcs.splice i, 1
+						break
+				asg_comp.resource.VPCZoneIdentifier = vpcs.join " , "
 				return
 
 			# Ask user to comfirm the delete operation
 			if not force
 				return sprintf lang.ide.CVS_CFM_DEL_ASG, component.name
 
+			###################################
+			###################################
+			###################################
+			###################################
+			###################################
+			###################################
+			###################################
+			###################################
 			# Delete the component
 			asg_uid = component.uid
 

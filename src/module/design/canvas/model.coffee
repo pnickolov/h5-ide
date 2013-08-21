@@ -129,6 +129,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				return "Network Interface must be attached to instance within the same availability zone."
 			null
 
+		beforeD_ASG : ( component, tgt_parent ) ->
+			for key, group of MC.canvas_data.layout.component.group
+				if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					if group.originalId is component.uid and group.groupUId is tgt_parent
+						parent = MC.canvas_data.component[ tgt_parent ]
+						if !parent
+							parent = MC.canvas_data.layout.component.group[ tgt_parent ]
+
+						return "#{component.name} is already in #{parent.name}"
+
 		#change node from one parent to another parent
 		changeParent : ( event, src_node, tgt_parent ) ->
 			node = MC.canvas_data.layout.component.group[src_node]
@@ -346,8 +356,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			if not lc_shared
 				lc_uid = MC.extractID lc_uid
 				delete MC.canvas_data.component[lc_uid]
-				ide_event.trigger ide_event.DELETE_ASG_LC, lc_uid
-
 			null
 
 		deleteR_ASG_LC : ( component ) ->

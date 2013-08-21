@@ -19,7 +19,13 @@
 .icon-zoom-out,
 .icon-zoom-in,
 .icon-send,
-.icon-add {
+.icon-add,
+.icon-duplicate,
+.icon-toolbar-delete,
+.icon-new-stack,
+.icon-btn-details,
+.icon-btn-back,
+.icon-export-png {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -31,7 +37,14 @@
 .icon-stack:before { content : "\F113"; }
 .icon-undo:before  { content : "\F114"; }
 .icon-redo:before  { content : "\F115"; }
-.icon-zoom-in:before  { content : "\F116"; }
-.icon-zoom-out:before { content : "\F117"; }
-.icon-send:before     { content : "\F118"; }
-.icon-add:before     { content : "\F119"; }
+.icon-zoom-in:before   { content : "\F116"; }
+.icon-zoom-out:before  { content : "\F117"; }
+.icon-send:before      { content : "\F118"; }
+.icon-add:before       { content : "\F119"; }
+.icon-duplicate:before { content : "\F11B"; }
+.icon-duplicate:before { content : "\F11B"; }
+.icon-toolbar-delete:before { content : "\F11C"; }
+.icon-new-stack:before   { content : "\F11A"; }
+.icon-btn-details:before { content : "\F11F"; }
+.icon-btn-back:before    { content : "\F120"; }
+.icon-export-png:before  { content : "\F11D"; }

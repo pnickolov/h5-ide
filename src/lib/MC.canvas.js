@@ -3846,6 +3846,7 @@ MC.canvas.event.groupResize = {
 			group_top = Math.ceil(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / 10),
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
+			canvas_size = MC.canvas.data.get('layout.size'),
 			node_minX = [],
 			node_minY = [],
 			node_maxX = [],
@@ -4069,7 +4070,11 @@ MC.canvas.event.groupResize = {
 				group_top,
 				group_left + group_width,
 				group_top + group_height
-			).length
+			).length &&
+
+			// canvas right offset = 3
+			group_left + group_width < canvas_size[0] - 3 &&
+			group_top + group_height < canvas_size[1] - 3
 		)
 		{
 			if (type === 'AWS.VPC.VPC')

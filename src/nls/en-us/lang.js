@@ -23,7 +23,7 @@ define({
 		 * If using in a sentence use lowercase (e.g., 'View your instances.')
 		 * 
 		 * AZ = Availability Zones
-		 * EC2 AMI = 
+		 * EC2 AMI = Image
 		 * EC2 Instance = Instance
 		 * EBS Volume = Volume
 		 * EBS Snapshot = Snapshot
@@ -45,11 +45,11 @@ define({
 		/******resource panel module******/
 		'RES_TIT_RESOURCES'           : 'Resources',
 		'RES_TIT_AZ'                  : 'Availability Zones',
-		'RES_TIT_AMI'                 : 'AMIs',
-		'RES_LBL_QUICK_START_AMI'     : 'Quick Start AMIs',
-		'RES_LBL_MY_AMI'              : 'My AMIs',
-		'RES_LBL_FAVORITE_AMI'        : 'Favorite AMIs',
-		'RES_BTN_BROWSE_COMMUNITY_AMI': 'Browse Community AMIs',
+		'RES_TIT_AMI'                 : 'Images',
+		'RES_LBL_QUICK_START_AMI'     : 'Quick Start Images',
+		'RES_LBL_MY_AMI'              : 'My Images',
+		'RES_LBL_FAVORITE_AMI'        : 'Favorite Images',
+		'RES_BTN_BROWSE_COMMUNITY_AMI': 'Browse Community Images',
 		'RES_TIT_VOL'                 : 'Volume and Snapshots',
 		'RES_TIT_ELB_ASG'             : 'Load Balancer and Auto Scaling',
 		'RES_TIT_VPC'                 : 'VPC',
@@ -83,7 +83,7 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/******canvas module******/
-		'CVS_MSG_WARN_NOTMATCH_VOLUME'          : 'Volumes and snapshots must be dragged to an instance or AMI.',
+		'CVS_MSG_WARN_NOTMATCH_VOLUME'          : 'Volumes and snapshots must be dragged to an instance or image.',
 		'CVS_MSG_WARN_NOTMATCH_SUBNET'          : 'Subnets must be dragged to an availability zone.',
 		'CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET' : 'Instances must be dragged to a subnet or auto scaling group.',
 		'CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ'     : 'Instances must be dragged to an availability zone.',

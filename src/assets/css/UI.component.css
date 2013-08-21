@@ -202,7 +202,6 @@ a.table-link {
 .btn-primary {
 	background : #B25B91;
 	/*border   : 1px solid #7E1958;*/
-	box-shadow : 0 2 0 0 rgba(57,46,46,0.50);
 }
 
 .btn-primary:hover {
@@ -1034,11 +1033,9 @@ textarea {
 .option-group-head,
 .fixedaccordion-head {
 	background-color : #404040;
-	border-bottom    : 1px solid #353535;
+	border-bottom: 1px solid #353535;
 	color            : #c5c9c5;
 	text-shadow      : 0 1px rgba(30,34,40,.75);
-	box-shadow       : 0 2px 0 rgba(0,0,0,.1);
-	/*box-shadow       : 0 2px 0 rgba(0,0,0,.1), inset 0 1px 0 0 rgba(255,255,255,.1);*/
 
 	cursor              : pointer;
 	-webkit-user-select : none;
@@ -1071,8 +1068,8 @@ textarea {
 .option-group,
 .fixedaccordion .accordion-body {
 	/*background-color : #545554;*/
-	box-shadow       : inset 0 0 6px rgba(0,0,0,.2);
-    border-bottom    : 1px solid #313131;
+	box-shadow       : inset 0 0 6px rgba(0,0,0,.1);
+    border-bottom-width    : 1px solid #313131;
 }
 
 .option-group:last-child {
@@ -1100,6 +1097,11 @@ textarea {
 .fixedaccordion-head:hover {
 	background-color: #474747;
 	color: #f0f0f0;
+}
+
+.option-group-head.expand,
+.expanded .fixedaccordion-head {
+    border-bottom-width: 2px;
 }
 
 
@@ -1368,7 +1370,7 @@ textarea {
 	margin-top : 1px;
 	z-index    : 9999;
 	border     : 1px solid #ccc;
-	box-shadow : 0 8px 10px rgba(0,0,0,.3);
+	box-shadow : 0 4px 4px rgba(0, 0, 0, 0.1);
 	box-sizing : border-box;
 }
 
@@ -1410,7 +1412,7 @@ textarea {
 	padding: 8px;
 	background: #eee;
 	border: 1px solid #ccc;
-	box-shadow: 0 8px 10px rgba(0,0,0,.3);
+	box-shadow: 0 8px 10px rgba(0,0,0,.15);
 }
 
 .editor > .editbtn {

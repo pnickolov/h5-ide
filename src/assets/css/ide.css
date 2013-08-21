@@ -173,7 +173,7 @@ a {
 	min-width: 12px;
 	border-radius: 12px;
 	background-color: #ff6151;
-	box-shadow: 0 1px rgba(0,0,0,.75);
+	box-shadow: 0 1px rgba(0,0,0,.25);
 	border: 1px solid #711212;
 	background-image: -webkit-linear-gradient(bottom, #e81414, #fa4a2d);
 	background-image: -moz-linear-gradient(bottom, #e81414, #fa4a2d);
@@ -214,7 +214,7 @@ a {
 	top: 52px;
 	right: 0;
 	z-index: 3;
-	box-shadow: 0 8px 10px rgba(0,0,0,.3);
+	box-shadow: 0 8px 10px rgba(0,0,0,.2);
 }
 
 #header .dropdown-menu ul {
@@ -776,10 +776,6 @@ a {
 	border: 1px solid #b1b1b1;
 	background: #fff;
 	box-shadow: 0 1px 0 rgba(255,255,255,.5);
-}
-
-.dashboard-widget:hover {
-	box-shadow: 0 0 10px rgba(0,0,0,.1);
 }
 
 .dashboard-widget-body a,
@@ -2528,7 +2524,7 @@ a.sidebar-hider {
 	background    : #474747;
 	padding       : 5px;
 	height        : 30px;
-	box-shadow    : 0 2px 5px 0 rgba(0,0,0,.2);
+	box-shadow    : 0 2px 5px 0 rgba(0,0,0,.1);
 	border-bottom : 1px solid #383838;
 }
 

@@ -20,7 +20,7 @@ module.exports = {
 			'<%= src %>/<%= vender %>/zeroclipboard/ZeroClipboard.swf' : '<%= components %>/zeroclipboard/ZeroClipboard.swf',
 			'<%= src %>/<%= vender %>/sprintf/sprintf.js'              : '<%= components %>/sprintf/src/sprintf.js',
 			'<%= src %>/<%= vender %>/string-format/string-format.js'  : '<%= components %>/string-format/string-format.js',
-			'<%= src %>/<%= vender %>/jqpagination/jquery.jqpagination.js'  : '<%= components %>/jqpagination/js/jquery.jqpagination.js'
+			'<%= src %>/<%= vender %>/jqpagination/jqpagination.js'    : '<%= components %>/jqpagination/js/jquery.jqpagination.js'
 		}
 	},
 
@@ -37,6 +37,18 @@ module.exports = {
 				else {
 					return false;
 				}
+			}
+		}]
+	},
+
+	lib_aws: {
+		files: [{
+			expand : true,
+			cwd    : '<%= src %>/lib/aws',
+			src    : [ '**' ] ,
+			dest   : '<%= release %>/lib/aws',
+			filter : function( filepath ) {
+				return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
 			}
 		}]
 	},

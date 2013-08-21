@@ -78,6 +78,8 @@ module.exports = function( grunt ) {
 		htmlmin    : require( './config/htmlmin.js' ),
 		uglify     : require( './config/uglify.js'  ),
 
+		requirejs  : require( './config/requirejs.js' ),
+
 		concat     : require( './config/concat.js'  ),
 
 		sweep      : require( './config/sweep.js'   )
@@ -172,17 +174,24 @@ module.exports = function( grunt ) {
 	]);
 
 	/* task of use as publish */
-	grunt.registerTask( 'publish', ['make_all',
-									'clean',
+	grunt.registerTask( 'publish', ['clean',
+									'make_all',
 									'copy:publish',
+									'copy:lib_aws',
 									'copy:special_lib',
 									'copy:special_ui',
 									'cssmin',
 									'uglify',
 									'copy:special_lib_rename',
-									'copy:special_lib_del',
 									'copy:special_ui_rename',
+									'copy:special_lib_del',
 									'copy:special_ui_del',
+									'open:publish',
+									'connect:publish'
+	]);
+
+	/* run at r.js */
+	grunt.registerTask( 'require', ['requirejs',
 									'open:publish',
 									'connect:publish'
 	]);

@@ -394,13 +394,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         runStack : ( app_name, data) ->
             me = this
 
-            id = data.id
-            region = data.region
-            if me.isChanged(data) or id.indexOf('stack-') isnt 0
-                me.saveStack(data)
-                id = MC.canvas_data.id
-                if not id
-                    return
+            id      = data.id
+            region  = data.region
+            # if me.isChanged(data) or id.indexOf('stack-') isnt 0
+            #     me.saveStack(data)
+            #     id = MC.canvas_data.id
+            #     if not id
+            #         return
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
             stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name

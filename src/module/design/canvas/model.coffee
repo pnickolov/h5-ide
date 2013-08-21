@@ -1498,7 +1498,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				content   : sprintf lang.ide.CVS_CFM_ADD_IGW_MSG, res
 				color     : "blue"
 				proceed   : lang.ide.CFM_BTN_ADD
-				cancel    : lang.ide_CFM_BTN_DONT_ADD
+				cancel    : lang.ide.CFM_BTN_DONT_ADD
 			}
 			modal template, true
 			$("#canvas-op-confirm").one "click", ()->

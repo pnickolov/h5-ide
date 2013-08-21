@@ -152,6 +152,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
+
+			if !component
+				return
+
 			handler   = this.changeParentMap[ component.type ]
 			if handler
 				handler.call( this, component, tgt_parent )

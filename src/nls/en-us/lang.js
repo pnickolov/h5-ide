@@ -104,8 +104,8 @@ define({
 		'CVS_MSG_ERR_DEL_LINKED_RT'             : 'Subnet must be associated to a route table.',
 		'CVS_CFM_DEL_IGW'                       : 'Internet-facing Load Balancers or Elastic IP will not function without an Internet Gateway, confirm to delete Internet Gateway?',
 		'CVS_MSG_ERR_DEL_LINKED_ELB'            : 'The subnet cannot be deleted since it has association with load balancer.',
-		'CVS_MSG_ERR_DEL_SBRT_LINE'             : 'Subnet must be associated to a route table.'
-		'CVS_MSG_ERR_CONNECT_ENI_AMI'           : 'Network Interface must be attached to instance within the same availability zone.'
+		'CVS_MSG_ERR_DEL_SBRT_LINE'             : 'Subnet must be associated to a route table.',
+		'CVS_MSG_ERR_CONNECT_ENI_AMI'           : 'Network Interface must be attached to instance within the same availability zone.',
 
 
 

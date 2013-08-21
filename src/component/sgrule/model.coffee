@@ -278,11 +278,34 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
             if rule_data.isInbound
 
-                index = MC.canvas_data.component[sg_id].resource.IpPermissions.push sg_rule
+                existing = false
+
+                $.each MC.canvas_data.component[sg_id].resource.IpPermissions, ( idx, permission_rule ) ->
+
+                    if permission_rule.IpProtocol is rule_data.protocol and permission_rule.IpRanges is sg_rule.IpRanges and permission_rule.FromPort is sg_rule.FromPort and permission_rule.ToPort is sg_rule.ToPort
+
+                        existing = true
+
+                        return false
+
+                if not existing
+
+                    index = MC.canvas_data.component[sg_id].resource.IpPermissions.push sg_rule
 
             else
+                existing = false
 
-                index = MC.canvas_data.component[sg_id].resource.IpPermissionsEgress.push sg_rule
+                $.each MC.canvas_data.component[sg_id].resource.IpPermissionsEgress, ( idx, permission_rule ) ->
+
+                    if permission_rule.IpProtocol is rule_data.protocol and permission_rule.IpRanges is sg_rule.IpRanges and permission_rule.FromPort is sg_rule.FromPort and permission_rule.ToPort is sg_rule.ToPort
+
+                        existing = true
+
+                        return false
+
+                if not existing
+
+                    index = MC.canvas_data.component[sg_id].resource.IpPermissionsEgress.push sg_rule
 
             preview_rule = [sg_id, rule_data.isInbound, index-1]
 

@@ -180,7 +180,7 @@ MC.canvas = {
 			// .off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 			// .off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 			// .off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
-		
+
 		return true;
 	},
 
@@ -2218,7 +2218,8 @@ MC.canvas.asgList = {
 				canvas_offset = $('#svg_canvas').offset();
 
 			// Prepare data
-			var lc_comp = MC.canvas_data.component[ MC.extractID( event.currentTarget.id ) ];
+			var uid     = MC.extractID( event.currentTarget.id );
+			var lc_comp = MC.canvas_data.component[ uid ];
 			var i;
 
 			for ( i in MC.canvas_data.component ) {
@@ -2230,8 +2231,7 @@ MC.canvas.asgList = {
 				}
 			}
 
-			var data = MC.data.resource_list[ MC.canvas_data.region ][ comp.resource.AutoScalingGroupARN ];
-			var layout = MC.canvas_data.layout.component.node[event.currentTarget.id];
+			var layout = MC.canvas_data.layout.component.node[ uid ];
 			var statusMap = {
 				   "Pending"     : "orange"
 				 , "Quarantined" : "orange"
@@ -2241,18 +2241,19 @@ MC.canvas.asgList = {
 			};
 
 			var temp_data = {
-				  instances  : []
+					  name       : lc_comp.name
+				  , instances  : []
 			};
 
 			if ( layout ) {
-				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join("");
+				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
 			}
 
-			var instances = lc_comp.resource.Instances.member;
+			var instances = MC.data.resource_list[ MC.canvas_data.region ][ lc_comp.resource.AutoScalingGroupARN ].Instances.member;
 			if ( instances )
 			{
 				for ( i = 0; i < instances.length; ++i ) {
-					temp_data.push({
+					temp_data.instances.push({
 						  id     : instances[i].InstanceId
 						, status : statusMap[ instances[i].LifecycleState ]
 					});

@@ -74,11 +74,50 @@ MC.canvas = {
 		if (type === 'expand')
 		{
 			canvas_size[ key ] += 60;
+
+			$('#svg_resizer_' + target + '_shrink').show();
 		}
 
 		if (type === 'shrink')
 		{
-			canvas_size[ key ] -= 60;
+			var layout_node_data = MC.canvas.data.get('layout.component.node'),
+				layout_group_data = MC.canvas.data.get('layout.component.group'),
+				node_minX = [],
+				node_minY = [],
+				node_maxX = [],
+				node_maxY = [],
+				node_data,
+				group_node_data,
+				screen_maxX,
+				screen_maxY,
+				group_minX,
+				group_minY;
+
+			$.each(layout_node_data, function (index, data)
+			{
+				node_maxX.push(data.coordinate[0] + MC.canvas.COMPONENT_SIZE[ data.type ][0]);
+				node_maxY.push(data.coordinate[1] + MC.canvas.COMPONENT_SIZE[ data.type ][1]);
+			});
+
+			$.each(layout_group_data, function (index, data)
+			{
+				node_maxX.push(data.coordinate[0] + data.size[0]);
+				node_maxY.push(data.coordinate[1] + data.size[1]);
+			});
+
+			screen_maxX = Math.max.apply(Math, node_maxX);
+			screen_maxY = Math.max.apply(Math, node_maxY);
+
+			if (canvas_size[ key ] - 60 > target === 'width' ? screen_maxX : screen_maxY)
+			{
+				canvas_size[ key ] = 20 + (target === 'width' ? screen_maxX : screen_maxY);
+
+				$('#svg_resizer_' + target + '_shrink').hide();
+			}
+			else
+			{
+				canvas_size[ key ] -= 60;
+			}
 		}
 
 		$('#svg_canvas').attr({
@@ -92,6 +131,8 @@ MC.canvas = {
 		});
 
 		MC.canvas.data.set("layout.size", canvas_size);
+
+		return true;
 	},
 
 	zoomIn: function ()
@@ -116,6 +157,8 @@ MC.canvas = {
 				// .on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 				// .on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
 		}
+
+		return true;
 	},
 
 	zoomOut: function ()
@@ -137,6 +180,8 @@ MC.canvas = {
 			// .off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 			// .off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 			// .off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
+		
+		return true;
 	},
 
 	screenshotInit: function ()
@@ -175,6 +220,8 @@ MC.canvas = {
 		});
 
 		$('#screenshot_canvas_header').css('width', screen_maxX);
+
+		return true;
 	},
 
 	_addPad: function (point, adjust)
@@ -3481,12 +3528,24 @@ MC.canvas.event.siderbarDrag = {
 						match_place.is_matched
 					)
 					{
-						if (MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]) && areaChild.length === 0)
+						if (
+							MC.canvas.isBlank(
+								'group',
+								target_id,
+								node_type,
+								// Enlarge a little bit to make the drop place correctly.
+								coordinate.x - 1,
+								coordinate.y - 1,
+								default_group_size[0] + 2,
+								default_group_size[1] + 2
+							) && areaChild.length === 0
+						)
 						{
 							node_option.groupUId = match_place.target;
 							new_node = MC.canvas.add(node_type, node_option, coordinate);
 							if (!(MC.aws.vpc.getVPCUID() && node_type === "AWS.EC2.AvailabilityZone"))
-							{	//has no vpc
+							{
+								//has no vpc
 								MC.canvas.select(new_node.id);
 							}
 						}

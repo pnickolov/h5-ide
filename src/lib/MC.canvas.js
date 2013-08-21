@@ -3993,13 +3993,13 @@ MC.canvas.event.groupResize = {
 			parent_size = parent_data.size;
 			parent_coordinate = parent_data.coordinate;
 
-			if (group_left < parent_coordinate[0])
+			if (group_left < parent_coordinate[0] + group_padding)
 			{
 				group_width = group_left + group_width - parent_coordinate[0] - group_padding;
 				group_left = parent_coordinate[0] + group_padding;
 			}
 
-			if (group_top < parent_coordinate[1])
+			if (group_top < parent_coordinate[1] + group_padding)
 			{
 				group_height = group_top + group_height - parent_coordinate[1] - group_padding;
 				group_top = parent_coordinate[1] + group_padding;
@@ -4046,8 +4046,6 @@ MC.canvas.event.groupResize = {
 				group_left = 2;
 			}
 		}
-
-
 
 		if (
 			group_width > group_padding &&

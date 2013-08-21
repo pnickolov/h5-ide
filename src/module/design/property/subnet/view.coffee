@@ -81,13 +81,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             ide_event.trigger ide_event.OPEN_ACL, source.attr('acl-uid')
 
         onChangeName : ( event ) ->
-            # TODO : Validate newName
+            target = $ event.currentTarget
+            name = target.val()
+            id = @model.get 'uid'
+
+            MC.validate.preventDupname target, id, name, 'Subnet'
 
             # Notify changes
-            change.value   = event.target.value
+            change.value   = name
             change.event   = "CHANGE_NAME"
 
-            this.trigger "CHANGE_NAME", change
+            if target.parsley 'validate'
+                this.trigger "CHANGE_NAME", change
 
 
         onChangeCIDR : ( event ) ->

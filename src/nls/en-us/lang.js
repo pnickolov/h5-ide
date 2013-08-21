@@ -31,7 +31,7 @@ define({
 		 * ELB = Load Balancer
 		 * ASG = Auto Scaling Group
 		 * KP = Key Pair
-		 * VPC = VPC
+		 * VPC = 'Virtual Private Cloud' for titles but 'VPC' in other references is OK
 		 * Subnet = Subnet
 		 * RT = Route Table         
 		 * ENI = Network Interface
@@ -46,13 +46,12 @@ define({
 		'RES_TIT_RESOURCES'           : 'Resources',
 		'RES_TIT_AZ'                  : 'Availability Zones',
 		'RES_TIT_AMI'                 : 'Images',
+		'RES_TIT_VOL'                 : 'Volume and Snapshots',
+		'RES_TIT_ELB_ASG'             : 'Load Balancer and Auto Scaling',
+		'RES_TIT_VPC'                 : 'Virtual Private Cloud',
 		'RES_LBL_QUICK_START_AMI'     : 'Quick Start Images',
 		'RES_LBL_MY_AMI'              : 'My Images',
 		'RES_LBL_FAVORITE_AMI'        : 'Favorite Images',
-		'RES_BTN_BROWSE_COMMUNITY_AMI': 'Browse Community Images',
-		'RES_TIT_VOL'                 : 'Volume and Snapshots',
-		'RES_TIT_ELB_ASG'             : 'Load Balancer and Auto Scaling',
-		'RES_TIT_VPC'                 : 'VPC',
 		'RES_LBL_NEW_VOL'             : 'New Volume',
 		'RES_LBL_NEW_ELB'             : 'New Load Balancer',
 		'RES_LBL_NEW_ASG'             : 'New Auto Scaling Group',
@@ -63,21 +62,20 @@ define({
 		'RES_LBL_NEW_VGW'             : 'New Virtual Gateway',
 		'RES_LBL_NEW_CGW'             : 'New Customer Gateway',
 		'RES_LBL_NEW_ENI'             : 'New Network Interface',
+		'RES_BTN_BROWSE_COMMUNITY_AMI': 'Browse Community Images',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		'RES_TIP_TOGGLE_RESOURCE_PANEL' : 'Show/Hide Resource Panel',
+		'RES_TIP_DRAG_AZ'               : 'Drag to the canvas to use this availability zone',
 		'RES_TIP_DRAG_NEW_VOLUME'       : 'Drag onto an instance to attach a new volume.',
 		'RES_TIP_DRAG_NEW_ELB'          : 'Drag to the canvas to create a new load balancer.',
 		'RES_TIP_DRAG_NEW_ASG'          : 'Drag to the canvas to create a new auto scaling group.',
-		'RES_TIP_DRAG_AZ'               : 'Drag to the canvas to use this availability zone',
 		'RES_TIP_DRAG_NEW_SUBNET'       : 'Drag to an availability zone to create a new subnet.',
 		'RES_TIP_DRAG_NEW_RTB'          : 'Drag to a VPC to create a new route table.',
 		'RES_TIP_DRAG_NEW_IGW'          : 'Drag to the canvas to create a new internet gateway.',
 		'RES_TIP_DRAG_NEW_VGW'          : 'Drag to the canvas to create a new virtual gateway.',
 		'RES_TIP_DRAG_NEW_CGW'          : 'Drag to the canvas to create a new customer gateway.',
 		'RES_TIP_DRAG_NEW_ENI'          : 'Drag to a subnet to create a new network interface.',
-		// Add new strings below this comment. Move above once English has been confirmed
-		
 		'RES_TIP_DRAG_HAS_IGW'          : 'This VPC already has an internet gateway.',
 		'RES_TIP_DRAG_HAS_VGW'          : 'This VPC already has a virtual gateway.',
 		// Add new strings below this comment. Move above once English has been confirmed
@@ -91,8 +89,6 @@ define({
 		'CVS_MSG_WARN_NOTMATCH_RTB'             : 'Route tables must be dragged inside a VPC but outside an availability zone.',
 		'CVS_MSG_WARN_NOTMATCH_ELB'             : 'Load balancers must be dragged inside a VPC but outside an availability zone.',
 		'CVS_MSG_WARN_NOTMATCH_CGW'             : 'Customer gateways must be dragged outside the VPC.',
-		// Add new strings below this comment. Move above once English has been confirmed
-		
 		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : 'Nodes cannot overlap eachother.',
 		'CVS_WARN_EXCEED_ENI_LIMIT'             : "[ %s ]'s type [ %s ] supports a maximum of [ %s ] network interfaces (including the primary).",
 		'CVS_CFM_DEL_GROUP'                     : "Deleting [ %s ] will also remove all resources inside it. Are you sure you want to delete it?",

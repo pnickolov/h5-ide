@@ -47,6 +47,7 @@ define({
 		'RES_BTN_BROWSE_COMMUNITY_AMI': 'Browse Community AMIs',
 		'RES_TIT_VOL'                 : 'Volume & Snapshots',
 		'RES_TIT_ELB_ASG'             : 'ELB & AutoScaling',
+		'RES_LBL_NEW_ASG_NO_CONFIG'   : 'No Config',
 		'RES_TIT_VPC'                 : 'VPC',
 		'RES_LBL_NEW_VOL'             : 'New Volume',
 		'RES_LBL_NEW_ELB'             : 'New ELB',

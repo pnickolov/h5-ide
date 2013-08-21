@@ -3661,6 +3661,7 @@ MC.canvas.event.groupResize = {
 				group_left = group_offset.left - canvas_offset.left,
 				group_top = group_offset.top - canvas_offset.top,
 				type = parent.data('class'),
+				line_layer = document.getElementById('line_layer'),
 				node_connections;
 
 			if (type === 'AWS.VPC.Subnet')

@@ -4226,7 +4226,7 @@ MC.canvas.event.selectNode = function (event)
 	return false;
 };
 
-MC.canvas.event.nodeHover = function ()
+MC.canvas.event.nodeHover = function (event)
 {
 	if (event.type === 'mouseover')
 	{

@@ -67,19 +67,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
 
                                         that.set 'line_id', line_uid
 
-                                else if tmp_portMap['launchconfig-sg'] is comp_uid and line_comp.type is 'sg'
+                                else
 
-                                    for port_key, port_val of portMap
+                                    line_uid = MC.aws.lc.getLCLine line_uid
 
-                                        if port_key isnt 'launchconfig-sg'
-
-                                            if tmp_portMap[port_key] and portMap[port_key] and tmp_portMap[port_key] is portMap[port_key]
-
-                                                target = MC.canvas_data.layout.connection[l_id].target
-
-                                                line_uid = l_id
-
-                                                that.set 'line_id', line_uid
+                                    that.set 'line_id', line_uid
 
             bothSGAry = MC.aws.sg.getSgRuleDetail line_uid
 

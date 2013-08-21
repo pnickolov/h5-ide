@@ -29,8 +29,8 @@
 </section>
 
 <section class="toolbar-btn-group">
-	<a href="#" class="btn-toolbar tooltip icon-zoom-in disabled" data-tooltip="Zoom In"></a>
-	<a href="#" class="btn-toolbar tooltip icon-zoom-out" data-tooltip="Zoom Out"></a>
+	<a href="#" class="btn-toolbar tooltip icon-zoom-in {{#if item_flags.is_zoomin}}{{else}}disabled{{/if}}" data-tooltip="Zoom In"></a>
+	<a href="#" class="btn-toolbar tooltip icon-zoom-out {{#if item_flags.is_zoomout}}{{else}}disabled{{/if}}" data-tooltip="Zoom Out"></a>
 </section>
 
 <section class="toolbar-btn-group">
@@ -39,7 +39,7 @@
 		<ul class="dropdown" tabindex="-1">
 			<li id="toolbar-export-png"><i class="icon-export-png"></i>Export as PNG</li>
 			<li class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
-				<i class="icon-toolbar-export-json"></i>Export as Json</li>
+				<i class="icon-export-json"></i>Export as Json</li>
 			<!-- for debug -->
 			<li id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
 			<li id="toolbar-jsoncopy"  data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>

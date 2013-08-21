@@ -11,7 +11,7 @@
         <div class="acl-rule-protocol tooltip" data-id="{{protocol}}" data-tooltip="Protocol">{{protocol}}</div>
         <div class="acl-rule-port tooltip" data-id="{{port}}" data-tooltip="Port">{{port}}</div>
       </div>
-      <a class="rule-remove-icon property-rule-delete-btn tooltip" data-tooltip="Remove rule"></a>
+      {{#unless isStarRule}}<a class="rule-remove-icon property-rule-delete-btn tooltip" data-tooltip="Remove rule"></a>{{/unless}}
     </div>
   </li>
 {{/each}}

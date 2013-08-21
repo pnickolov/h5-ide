@@ -41,14 +41,6 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
 
                 #view.resetAlert()
 
-            # model.on 'change:info_list', () ->
-            #     console.log 'header update info_list'
-            #     view.render()
-
-            # model.on 'change:unread_num', () ->
-            #     console.log 'header update unread_num'
-            #     view.render()
-
             ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
                 console.log 'SWITCH_DASHBOARD'
                 model.setFlag(true)

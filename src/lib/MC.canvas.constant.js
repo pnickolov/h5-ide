@@ -598,6 +598,26 @@ var constant_data = {
 			]
 		},
 		"AWS.AutoScaling.Group":{
+			"AWS.AutoScaling.LaunchConfiguration": {
+				"type": "sg",
+				"from": "launchconfig-sg",
+				"to": "launchconfig-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
+				},
+				"relation": "multiple"
+			},
+			"AWS.AutoScaling.Group": {
+				"type": "sg",
+				"from": "launchconfig-sg",
+				"to": "launchconfig-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
+				},
+				"relation": "multiple"
+			},
 			"AWS.ELB" : [
 				{
 					"type": "elb-sg",

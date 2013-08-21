@@ -762,37 +762,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 							        				return false
 
-
-
-
 				else if portMap['launchconfig-sg']
 
-					if MC.canvas_data.component[portMap['launchconfig-sg']]
-						original_group_uid = MC.canvas_data.layout.component.node[portMap['launchconfig-sg']].groupUId
-					else
-						original_group_uid = MC.canvas_data.layout.component.group[portMap['launchconfig-sg']].originalId
+					line_id = MC.aws.lc.getLCLine option.id
 
-					$.each MC.canvas_data.layout.component.node, (comp_uid, comp)->
+					this.trigger 'SHOW_SG_LIST', line_id
 
-                        if comp.type is 'AWS.AutoScaling.LaunchConfiguration' and comp.groupUId is original_group_uid
-
-                            $.each MC.canvas_data.layout.connection, (l_id, line_comp)->
-
-                                tmp_portMap = {}
-
-                                $.each line_comp.target, (key,val)->
-                                    tmp_portMap[val] = key
-                                    null
-
-                                if tmp_portMap['launchconfig-sg'] is comp_uid and line_comp.type is 'sg'
-
-                                    $.each portMap, (port_key, port_val)->
-
-                                        if port_key isnt 'launchconfig-sg'
-
-                                            if tmp_portMap[port_key] and portMap[port_key] and tmp_portMap[port_key] is portMap[port_key]
-
-                                                me.trigger 'SHOW_SG_LIST', l_id
 				else
 					this.trigger 'SHOW_SG_LIST', option.id
 
@@ -1361,8 +1336,24 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 							else
 								to_port = 'launchconfig-sg'
 
-							if not (from_port == to_port == 'launchconfig-sg')
 
+							if from_port == to_port == 'launchconfig-sg'
+
+								existing = false
+
+								$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
+
+									if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId and ((comp.originalId is from_comp_uid and comp_uid is to_comp_uid) or (comp.originalId is to_comp_uid and comp_uid is from_comp_uid))
+
+										existing = true
+
+										return false
+
+								if not existing
+
+									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+
+							else
 								lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 
 			$.each MC.canvas_data.layout.connection, ( line_id, line ) ->

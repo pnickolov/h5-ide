@@ -65,9 +65,74 @@ MC.canvas = {
 		return true;
 	},
 
-	view: function ()
+	resize: function (target, type)
 	{
-		$('#canvas_body').toggleClass('canvas-view-normal canvas-view-sg');
+		var canvas_size = MC.canvas.data.get("layout.size"),
+			key = target === 'width' ? 0 : 1,
+			value;
+
+		if (type === 'expand')
+		{
+			canvas_size[ key ] += 60;
+
+			$('#svg_resizer_' + target + '_shrink').show();
+		}
+
+		if (type === 'shrink')
+		{
+			var layout_node_data = MC.canvas.data.get('layout.component.node'),
+				layout_group_data = MC.canvas.data.get('layout.component.group'),
+				node_minX = [],
+				node_minY = [],
+				node_maxX = [],
+				node_maxY = [],
+				node_data,
+				group_node_data,
+				screen_maxX,
+				screen_maxY,
+				group_minX,
+				group_minY;
+
+			$.each(layout_node_data, function (index, data)
+			{
+				node_maxX.push(data.coordinate[0] + MC.canvas.COMPONENT_SIZE[ data.type ][0]);
+				node_maxY.push(data.coordinate[1] + MC.canvas.COMPONENT_SIZE[ data.type ][1]);
+			});
+
+			$.each(layout_group_data, function (index, data)
+			{
+				node_maxX.push(data.coordinate[0] + data.size[0]);
+				node_maxY.push(data.coordinate[1] + data.size[1]);
+			});
+
+			screen_maxX = Math.max.apply(Math, node_maxX);
+			screen_maxY = Math.max.apply(Math, node_maxY);
+
+			if (canvas_size[ key ] - 60 > target === 'width' ? screen_maxX : screen_maxY)
+			{
+				canvas_size[ key ] = 20 + (target === 'width' ? screen_maxX : screen_maxY);
+
+				$('#svg_resizer_' + target + '_shrink').hide();
+			}
+			else
+			{
+				canvas_size[ key ] -= 60;
+			}
+		}
+
+		$('#svg_canvas').attr({
+			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
+			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+		});
+
+		$('#canvas_container').css({
+			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
+			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+		});
+
+		MC.canvas.data.set("layout.size", canvas_size);
+
+		return true;
 	},
 
 	zoomIn: function ()
@@ -86,12 +151,14 @@ MC.canvas = {
 		if (MC.canvas_property.SCALE_RATIO === 1 && $('#canvas_body').hasClass('canvas_zoomed'))
 		{
 			$('#canvas_body')
-				.removeClass('canvas_zoomed')
-				.off('mousedown', '.dragable', MC.canvas.event.selectNode)
-				.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
-				.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
-				.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
+				.removeClass('canvas_zoomed');
+				// .off('mousedown', '.dragable', MC.canvas.event.selectNode)
+				// .on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
+				// .on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
+				// .on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
 		}
+
+		return true;
 	},
 
 	zoomOut: function ()
@@ -108,11 +175,13 @@ MC.canvas = {
 		}
 
 		$('#canvas_body')
-			.addClass('canvas_zoomed')
-			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
-			.off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
-			.off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
-			.off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
+			.addClass('canvas_zoomed');
+			// .on('mousedown', '.dragable', MC.canvas.event.selectNode)
+			// .off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
+			// .off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
+			// .off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
+		
+		return true;
 	},
 
 	screenshotInit: function ()
@@ -151,6 +220,8 @@ MC.canvas = {
 		});
 
 		$('#screenshot_canvas_header').css('width', screen_maxX);
+
+		return true;
 	},
 
 	_addPad: function (point, adjust)
@@ -2876,6 +2947,7 @@ MC.canvas.event.dragable = {
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			component_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
+			BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
 			match_place = MC.canvas.isMatchPlace(
 				null,
 				target_type,
@@ -2886,7 +2958,11 @@ MC.canvas.event.dragable = {
 				component_size[1]
 			);
 
-		if (match_place.is_matched)
+		if (
+			match_place.is_matched &&
+			svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+			!BEFORE_DROP_EVENT.isDefaultPrevented()
+		)
 		{
 			new_node = MC.canvas.add(node_type, {'name': MC.canvas.data.get('component')[target_id].name, 'groupUId': match_place.target, 'originalId': target_id}, coordinate);
 
@@ -3494,12 +3570,24 @@ MC.canvas.event.siderbarDrag = {
 						match_place.is_matched
 					)
 					{
-						if (MC.canvas.isBlank('group', target_id, node_type, coordinate.x, coordinate.y, default_group_size[0], default_group_size[1]) && areaChild.length === 0)
+						if (
+							MC.canvas.isBlank(
+								'group',
+								target_id,
+								node_type,
+								// Enlarge a little bit to make the drop place correctly.
+								coordinate.x - 1,
+								coordinate.y - 1,
+								default_group_size[0] + 2,
+								default_group_size[1] + 2
+							) && areaChild.length === 0
+						)
 						{
 							node_option.groupUId = match_place.target;
 							new_node = MC.canvas.add(node_type, node_option, coordinate);
 							if (!(MC.aws.vpc.getVPCUID() && node_type === "AWS.EC2.AvailabilityZone"))
-							{	//has no vpc
+							{
+								//has no vpc
 								MC.canvas.select(new_node.id);
 							}
 						}
@@ -3628,11 +3716,11 @@ MC.canvas.event.groupResize = {
 			type = event.data.group_type,
 			group_border = event.data.group_border,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
-			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10 * scale_ratio,
 			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
-			max_left = (event.data.originalWidth - group_min_padding) * scale_ratio,
+			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10 * scale_ratio,
+			max_left = event.data.originalWidth * scale_ratio - group_min_padding,
 			top = Math.round((event.pageY - event.data.originalTop) / 10) * 10 * scale_ratio,
-			max_top = (event.data.originalHeight - group_min_padding) * scale_ratio,
+			max_top = event.data.originalHeight * scale_ratio - group_min_padding,
 			label_offset = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 			prop;
 
@@ -3665,8 +3753,8 @@ MC.canvas.event.groupResize = {
 
 			case 'bottomright':
 				prop = {
-					'width': Math.round((event.data.originalWidth * scale_ratio + event.pageX - event.data.originalX) / 10) * 10 * scale_ratio,
-					'height': Math.round((event.data.originalHeight * scale_ratio + event.pageY - event.data.originalY) / 10) * 10 * scale_ratio
+					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10 * scale_ratio,
+					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10 * scale_ratio
 				};
 				break;
 
@@ -3735,8 +3823,8 @@ MC.canvas.event.groupResize = {
 			group_id = parent.attr('id'),
 			group_width = Math.ceil(target.attr('width') / 10),
 			group_height = Math.ceil(target.attr('height') / 10),
-			group_left = Math.ceil((parent_offset.left - canvas_offset.left + offsetX) / 10) * scale_ratio,
-			group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10) * scale_ratio,
+			group_left = Math.ceil(((parent_offset.left - canvas_offset.left) * scale_ratio + offsetX) / 10),
+			group_top = Math.ceil(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / 10),
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
 			node_minX = [],
@@ -3773,19 +3861,23 @@ MC.canvas.event.groupResize = {
 		if (offsetX < 0)
 		{
 			//when resize by left,topleft, bottomleft
-			group_left = Math.ceil((parent_offset.left - canvas_offset.left) / 10) * scale_ratio;
+			group_left = Math.ceil((parent_offset.left - canvas_offset.left) * scale_ratio / 10);
 		}
 
 		// adjust group_top
-		if (direction === 'top' || direction === 'topleft' || direction === 'topright')
+		if (
+			direction === 'top' ||
+			direction === 'topleft' ||
+			direction === 'topright'
+		)
 		{
 			if (offsetY < 0)
 			{
-				group_top = Math.ceil((parent_offset.top - canvas_offset.top) / 10) * scale_ratio;
+				group_top = Math.ceil((parent_offset.top - canvas_offset.top) * scale_ratio / 10);
 			}
 			else if (offsetY > 0)
 			{
-				group_top = Math.ceil((parent_offset.top - canvas_offset.top + offsetY) / 10) * scale_ratio;
+				group_top = Math.ceil(((parent_offset.top - canvas_offset.top)  * scale_ratio + offsetY) / 10);
 			}
 		}
 

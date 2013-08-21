@@ -1916,3 +1916,24 @@ textarea {
 	list-style: none;
 	padding: 10px;
 }
+
+
+/* parsley */
+
+input.parsley-error {
+	background: url(../images/ide/icon/icon-validate-error.png) 97% no-repeat !important;
+	border: 1px solid #F74A48 !important;
+}
+
+.parsley-error-list {
+	display: none;
+	position: absolute;
+	font-size: 12px;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	background-color: #F74A48;
+	padding: 2px;
+	color: #fff;
+	z-index: 90;
+}

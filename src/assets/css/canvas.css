@@ -1,5 +1,6 @@
 /* Canvas */
 #canvas {
+	background: rgb(237, 237, 237);
 	z-index  : 1;
 	position : absolute;
 	left     : 0;
@@ -8,10 +9,13 @@
 	bottom   : 0;
 }
 
+#canvas_content {
+	position: relative;
+	padding: 0 65px 45px 0;
+}
+
 #canvas_container {
-	padding: 0 20px 20px 0;
-	overflow: hidden;
-	background: rgb(237, 237, 237);
+	padding: 0 80px 30px 0;
 	position: relative;
 }
 
@@ -40,6 +44,60 @@
 	cursor: -webkit-grabbing !important;
 	cursor: -moz-grabbing !important;
 	cursor: grabbing !important;
+}
+
+.svg_resizer {
+	position: absolute;
+	width: 45px;
+	height: 45px;
+	border: 1px solid #333;
+
+	background-color: #363636;
+	background-image: -moz-linear-gradient(top, #888, #555);
+	background-image: -webkit-linear-gradient(top, #888, #555);
+	background-image: -o-linear-gradient(top, #888, #555);
+	background-image: linear-gradient(to bottom, #888, #555);
+
+	border-radius: 3px;
+
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+
+	cursor: pointer;
+}
+
+.svg_resizer:hover {
+	border: 1px solid #555;
+
+	background-image: -moz-linear-gradient(top, #777, #888);
+	background-image: -webkit-linear-gradient(top, #777, #888);
+	background-image: -o-linear-gradient(top, #777, #888);
+	background-image: linear-gradient(to bottom, #777, #888);
+
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.svg_resizer_height {
+	bottom: -30px;
+}
+
+.svg_resizer_width {
+	right: 25px;
+}
+
+#svg_resizer_height_expand {
+	left: 10px;
+}
+
+#svg_resizer_height_shrink {
+	left: 65px;
+}
+
+#svg_resizer_width_expand {
+	top: 10px;
+}
+
+#svg_resizer_width_shrink {
+	top: 65px;
 }
 
 #screenshot_canvas_body {
@@ -651,9 +709,12 @@
 }
 
 /*special style for app state and zoomed state*/
-.canvas_state_app .resizer-wrap,
-.canvas_zoomed .resizer-wrap {
+.canvas_state_app .resizer-wrap {
 	display: none;
+}
+
+.canvas_zoomed .resizer-wrap {
+	/*display: none;*/
 }
 
 #asgList-wrap {

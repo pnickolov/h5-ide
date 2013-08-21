@@ -155,10 +155,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
                     $('#cidr-remove').click () ->
                         $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
-                        $("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {
-                            'id': subnetUID,
-                            'type': 'group'
-                        })
+                        ide_event.trigger ide_event.DELETE_COMPONENT, subnetUID, 'group'
                         MC.aws.aws.disabledAllOperabilityArea(false)
             else
                 change = {}

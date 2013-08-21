@@ -106,7 +106,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 null
 
             # type : "node", "group", "line"
-            ide_event.trigger ide_event.DELETE_COMPONENT, ( component_id, type, not_force ) ->
+            ide_event.onLongListen ide_event.DELETE_COMPONENT, ( component_id, type, not_force ) ->
                 model.deleteObject null, {
                     id    : component_id
                     type  : type

@@ -296,7 +296,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				# Confimation
 				self = this
 				template = MC.template.canvasOpConfirm {
-					operation : sprintf lang.ide.CVS_CFM_OPERATION_DEL, component.name
+					operation : sprintf lang.ide.CVS_CFM_DEL, component.name
 					content   : result
 					color     : "red"
 					proceed   : lang.ide.CFM_BTN_DELETE
@@ -323,7 +323,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			result
 
 		deleteR_ASG : ( component, force ) ->
-			layout_data = MC.canvas_data.layout.component.node[component.uid]
+			layout_data = MC.canvas_data.layout.component.group[component.uid]
 
 			if not layout_data
 				# This is a extended ASG
@@ -1498,7 +1498,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				content   : sprintf lang.ide.CVS_CFM_ADD_IGW_MSG, res
 				color     : "blue"
 				proceed   : lang.ide.CFM_BTN_ADD
-				cancel    : lang.ide_CFM_BTN_DONT_ADD
+				cancel    : lang.ide.CFM_BTN_DONT_ADD
 			}
 			modal template, true
 			$("#canvas-op-confirm").one "click", ()->

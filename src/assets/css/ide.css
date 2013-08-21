@@ -4015,21 +4015,6 @@ a.sidebar-hider {
 }
 
 
-/* Toolbar Icon */
-.icon-toolbar-export-png {
-	width: 30px;
-	height: 30px;
-	display: inline-block;
-	background: url('../images/ide/icon-export-png.png') center center no-repeat;
-}
-
-.icon-toolbar-export-json {
-	width: 30px;
-	height: 30px;
-	display: inline-block;
-	background: url('../images/ide/icon-export-json.png') center center no-repeat;
-}
-
 #json-content {
 	margin: 15px 0;
 	width: 645px;

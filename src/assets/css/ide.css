@@ -2824,12 +2824,12 @@ a.sidebar-hider {
 }
 .subnet-cidr-wrapper .cidr-prefix {
 	display: inline-block;
-	width: 40px;
+	/*width: 40px;*/
 	line-height: 35px;
 	vertical-align: middle;
 }
 .subnet-cidr-wrapper .cidr-rest {
-	width : 180px !important;
+	width : 140px !important;
 }
 
 /*.btn-to-secondary-panel {
@@ -3553,7 +3553,7 @@ a.sidebar-hider {
 }
 
 #modal-acl-source-input {
-	display: none;
+	/*display: none;*/
 }
 
 .stack-property-acl-list .delete {

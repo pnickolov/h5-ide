@@ -22,6 +22,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             "keypress #property-cidr-block"  : 'onPressCIDR'
             "blur #property-cidr-block"  : 'onBlurCIDR'
             "click .item-networkacl input" : 'onChangeACL'
+            "click .item-networkacl" : 'onClickACL'
             "change #networkacl-create"    : 'onCreateACL'
 
         initialize : () ->
@@ -38,16 +39,22 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             vpcComp = MC.aws.subnet.getVPC(this.model.get('uid'))
             vpcCIDR = vpcComp.resource.CidrBlock
 
+            focusCIDR = false
+            isInVPCCIDR = MC.aws.subnet.isInVPCCIDR(vpcCIDR, data.CIDR)
+            if MC.aws.subnet.isSubnetConflictInVPC(subnetUID) or !isInVPCCIDR
+                focusCIDR = true
+                if !isInVPCCIDR
+                    data.CIDR = vpcCIDR
+
             # Split CIDR into two parts
             cidrDivAry = MC.aws.subnet.genCIDRDivAry(vpcCIDR, data.CIDR)
             data.CIDRPrefix = cidrDivAry[0]
             data.CIDR = cidrDivAry[1]
 
             $( '.property-details' ).html this.template data
-
             this.refreshACLList()
 
-            if MC.aws.subnet.isSubnetConflictInVPC(subnetUID)
+            if focusCIDR
                 $('#property-cidr-block').val('')
                 $('#property-cidr-block').focus()
 
@@ -175,6 +182,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             this.trigger "CHANGE_ACL", change
 
             this.refreshACLList()
+
+        onClickACL : (event) ->
+
+            inputElem = $(event.currentTarget).find('input')
+            inputElem.select()
 
         onViewACL : () ->
             null

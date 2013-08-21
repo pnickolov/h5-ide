@@ -91,7 +91,7 @@ define [ 'event',
             $accordionWrap   = $accordion.closest ".fixedaccordion"
             $accordionParent = $accordionWrap.parent()
 
-            height = $accordionParent.outerHeight() - $accordionWrap.position().top - $accordionWrap.children().length * $target.outerHeight()
+            height = $accordionParent.outerHeight() - $accordionWrap.position().top - $accordionWrap.children(":visible").length * $target.outerHeight()
 
             $body.outerHeight height
 
@@ -381,7 +381,8 @@ define [ 'event',
 
                         data.vgwIsUsed = this.model.getVgwStatus()
 
-            $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
+            $list = $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
+            $list.toggle $list.children().length > 0
 
         searchCommunityAmi : ( event, pageNum) ->
             if not pageNum

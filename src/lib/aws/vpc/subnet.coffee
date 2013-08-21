@@ -150,6 +150,42 @@ define [ 'MC' ], ( MC ) ->
 
 		return newSubnetAry
 
+	autoAssignSimpleCIDR = (newVPCCIDR, oldSubnetAry, oldVPCCIDR) ->
+
+		newSubnetAry = []
+
+		vpcCIDRAry = newVPCCIDR.split('/')
+		vpcCIDRIPStr = vpcCIDRAry[0]
+		vpcCIDRSuffix = Number(vpcCIDRAry[1])
+		vpcIPAry = vpcCIDRIPStr.split('.')
+
+		oldVPCCIDRSuffix = Number(oldVPCCIDR.split('/')[1])
+
+		if vpcCIDRSuffix is 16 or (vpcCIDRSuffix is 24 and oldVPCCIDRSuffix is vpcCIDRSuffix)
+			vpcIP1 = vpcIPAry[0]
+			vpcIP2 = vpcIPAry[1]
+			vpcIP3 = vpcIPAry[2]
+			_.each oldSubnetAry, (subnetCIDR) ->
+				subnetCIDRAry = subnetCIDR.split('/')
+				subnetCIDRIPStr = subnetCIDRAry[0]
+				subnetCIDRSuffix = Number(subnetCIDRAry[1])
+				subnetIPAry = subnetCIDRIPStr.split('.')
+
+				subnetIPAry[0] = vpcIP1
+				subnetIPAry[1] = vpcIP2
+				if vpcCIDRSuffix is 24
+					subnetIPAry[2] = vpcIP3
+
+				newSubnetCIDR = subnetIPAry.join('.') + '/' + subnetCIDRSuffix
+				newSubnetAry.push(newSubnetCIDR)
+				# if !MC.aws.subnet.isInVPCCIDR(newVPCCIDR, subnetCIDR)
+				# 	newSubnetAry = null
+				# 	return false
+
+				null
+
+		return newSubnetAry
+
 	getVPC = (subnetUID) ->
 
 		subnetComp = MC.canvas_data.component[subnetUID]
@@ -205,3 +241,4 @@ define [ 'MC' ], ( MC ) ->
 	getVPC : getVPC
 	updateAllENIIPList : updateAllENIIPList
 	isSubnetConflictInVPC : isSubnetConflictInVPC
+	autoAssignSimpleCIDR : autoAssignSimpleCIDR

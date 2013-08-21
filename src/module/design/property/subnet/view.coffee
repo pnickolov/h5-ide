@@ -19,6 +19,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             "change #property-subnet-name" : 'onChangeName'
             "change #property-cidr-block"  : 'onChangeCIDR'
             "focus #property-cidr-block"  : 'onFocusCIDR'
+            "keypress #property-cidr-block"  : 'onPressCIDR'
             "blur #property-cidr-block"  : 'onBlurCIDR'
             "click .item-networkacl input" : 'onChangeACL'
             "change #networkacl-create"    : 'onCreateACL'
@@ -99,6 +100,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             null
 
+        onPressCIDR : ( event ) ->
+
+            if (event.keyCode is 13)
+                $('#property-cidr-block').blur()
+
         onFocusCIDR : ( event ) ->
 
             MC.aws.aws.disabledAllOperabilityArea(true)
@@ -149,8 +155,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
                     $('#cidr-remove').click () ->
                         $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
-                        MC.canvas.remove($("#" + subnetUID)[0])
-                        delete MC.canvas_data.component[subnetUID]
+                        ide_event.trigger ide_event.DELETE_COMPONENT, subnetUID, 'group'
                         MC.aws.aws.disabledAllOperabilityArea(false)
             else
                 change = {}

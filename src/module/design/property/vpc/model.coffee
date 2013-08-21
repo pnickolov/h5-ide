@@ -54,12 +54,14 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             null
 
         setCIDR : ( newCIDR ) ->
+
+            oldCIDR = MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock
             MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock = newCIDR
 
             vpcName = MC.canvas_data.component[this.attributes.uid].name
             MC.canvas.update this.attributes.uid, "text", "name", vpcName + ' (' + newCIDR + ')'
 
-            MC.aws.vpc.updateAllSubnetCIDR(newCIDR)
+            MC.aws.vpc.updateAllSubnetCIDR(newCIDR, oldCIDR)
             null
 
         setTenancy : ( tenancy ) ->

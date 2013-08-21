@@ -3854,12 +3854,11 @@ MC.canvas.event.groupResize = {
 			offsetY = target.attr('y') * 1,
 			group_id = parent.attr('id'),
 
-			// Specific algorithm
-			group_width = Math.floor(target.attr('width') / grid_width) + Math.floor(scale_ratio / 1.1),
-			group_height = Math.floor(target.attr('height') / grid_height) + Math.floor(scale_ratio / 1.1),
-
-			group_left = Math.floor((parent_offset.left - canvas_offset.left + offsetX) * scale_ratio / grid_width),
-			group_top = Math.floor((parent_offset.top - canvas_offset.top + offsetY) * scale_ratio / grid_height),
+			group_width = Math.round(target.attr('width') / grid_width),
+			group_height = Math.round(target.attr('height') / grid_height),
+			group_left = Math.round(((parent_offset.left - canvas_offset.left) * scale_ratio + offsetX) / grid_width),
+			group_top = Math.round(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / grid_height),
+			
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
 			canvas_size = MC.canvas.data.get('layout.size'),
@@ -3897,7 +3896,7 @@ MC.canvas.event.groupResize = {
 		if (offsetX < 0)
 		{
 			// when resize by left,topleft, bottomleft
-			group_left = Math.ceil((parent_offset.left - canvas_offset.left) * scale_ratio / 10);
+			group_left = Math.round((parent_offset.left - canvas_offset.left) * scale_ratio / grid_width);
 		}
 
 		// adjust group_top
@@ -3909,11 +3908,11 @@ MC.canvas.event.groupResize = {
 		{
 			if (offsetY < 0)
 			{
-				group_top = Math.ceil((parent_offset.top - canvas_offset.top) * scale_ratio / 10);
+				group_top = Math.round((parent_offset.top - canvas_offset.top) * scale_ratio / grid_height);
 			}
 			else if (offsetY > 0)
 			{
-				group_top = Math.ceil(((parent_offset.top - canvas_offset.top)  * scale_ratio + offsetY) / 10);
+				group_top = Math.round(((parent_offset.top - canvas_offset.top)  * scale_ratio + offsetY) / grid_width);
 			}
 		}
 

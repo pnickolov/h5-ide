@@ -1,5 +1,5 @@
 
-1.Install plugin selenium-ide-2.2.0.xpi(support firefox 22) to firefox
+1.Install plugin selenium-ide-2.3.0.xpi(support firefox 23.0.1+) to firefox
 
 2.grunt develop
 

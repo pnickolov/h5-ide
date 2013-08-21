@@ -1,12 +1,12 @@
-<a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip="Toggle Resource Panel">
+<a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'>
 </a>
 <div class="sidebar-title">
-	<span class="sidebar-title-text">Resources</span>
+	<span class="sidebar-title-text">{{ i18n "RES_TIT_RESOURCES" }}</span>
 </div>
 <div class="fixedaccordion accordion-default">
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
-			Availability Zone
+			{{ i18n "RES_TIT_AZ" }}
 		</div>
 		<div class="accordion-body">
 			<div class="item-wrap">
@@ -47,9 +47,9 @@
 			<div class="item-wrap scroll-content">
 				<ul class="resoruce-snapshot resource-list">
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach new EBS volume." data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"name": "/dev/sdf", "volumeSize":"1", "snapshotId": ""}'>
+						<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"name": "/dev/sdf", "volumeSize":"1", "snapshotId": ""}'>
 							<div class="resource-icon resource-icon-volume"></div>
-							<div class="resource-label">New Volume</div>
+							<div class="resource-label">{{i18n "RES_TIT_VOL"}}</div>
 						</div>
 					</li>
 				</ul>
@@ -64,13 +64,13 @@
 			<div class="item-wrap">
 				<ul class="resource-list" id="resource-asg-list">
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new ELB." data-component-type="node" data-type="AWS.ELB" data-option='{"name": "elb"}'>
+						<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-component-type="node" data-type="AWS.ELB" data-option='{"name": "elb"}'>
 							<div class="resource-icon resource-icon-elb"></div>
 							<div class="resource-label">New ELB</div>
 						</div>
 					</li>
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new auto scaling group." data-component-type="group" data-type="AWS.AutoScaling.Group" data-option='{"name": "asg"}'>
+						<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-component-type="group" data-type="AWS.AutoScaling.Group" data-option='{"name": "asg"}'>
 							<div class="resource-icon resource-icon-asg">
 								<div class="resource-icon-asg-label">no config</div>
 							</div>

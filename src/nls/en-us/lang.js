@@ -99,7 +99,7 @@ define({
 		'CVS_MSG_ERR_DEL_LINKED_RT'             : 'Subnets must be associated to a route table. Please associate the subnets with another route table first.',
 		'CVS_MSG_ERR_DEL_SBRT_LINE'             : 'Subnets must be associated with a route table.',
 		'CVS_MSG_ERR_DEL_LINKED_ELB'            : 'This subnet cannot be deleted because it is associated to a load balancer.',
-		'CVS_CFM_DEL'                           : 'Are you sure you want to delete [ %s ]?'.,
+		'CVS_CFM_DEL'                           : 'Are you sure you want to delete [ %s ]?',
 		'CVS_CFM_DEL_IGW'                       : 'Internet-facing load balancers and elastic IPs will not function without an internet gateway, are you sure you want to delete it?',
 		'CVS_CFM_DEL_GROUP'                     : "Deleting [ %s ] will also remove all resources inside it. Are you sure you want to delete it?",
 		'CVS_CFM_DEL_ASG'                       : 'Deleting this will delete the entire [ %s ]. Are you sure you want to delete it?',

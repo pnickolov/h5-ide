@@ -5,8 +5,9 @@
 define [ 'jquery',
          'text!/module/design/toolbar/stack_template.html',
          'text!/module/design/toolbar/app_template.html',
-         'event'
-], ( $, stack_template, app_template, ide_event ) ->
+         'event',
+         'i18n!/nls/lang.js'
+], ( $, stack_template, app_template, ide_event, lang ) ->
 
     #private
     loadModule = () ->

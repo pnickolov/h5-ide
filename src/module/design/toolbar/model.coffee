@@ -100,7 +100,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
 
-                    MC.data.stack_list[region].push name
+                    MC.data.stack_list[region].push {'id':new_id, 'name':name}
 
                     #call save png
                     me.savePNG true, data
@@ -128,8 +128,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'save as stack successfully'
 
                     #update stack name list
-                    if new_name not in MC.data.stack_list[region]
-                        MC.data.stack_list[region].push new_name
+                    MC.data.stack_list[region].push {'id':id, 'name':new_name}
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'DUPLICATE_STACK', name
@@ -149,9 +148,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'send delete stack successful message'
 
                     #update stack name list
-                    if name in MC.data.stack_list[region]
-                        index = MC.data.stack_list[region].indexOf(name)
-                        MC.data.stack_list[region].splice(index, 1)
+                    obj = {'id':id, 'name':name}
+                    if obj in MC.data.stack_list[region]
+                        MC.data.stack_list[region].splice MC.data.stack_list[region].indexOf(obj), 1
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'REMOVE_STACK', name

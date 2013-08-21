@@ -84,11 +84,14 @@ define [ 'MC', 'event',
 
             name = MC.canvas_data.name
 
+            name_list = []
+            name_list.push i.name for i in MC.data.stack_list[MC.canvas_data.region]
+
             if not name
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
             else if name.indexOf(' ') >= 0
                 notification 'warning', 'stack name contains white space.'
-            else if not MC.canvas_data.id and name in MC.data.stack_list[MC.canvas_data.region]
+            else if not MC.canvas_data.id and name in name_list
                 notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
             else
                 MC.canvas_data.name = name
@@ -98,6 +101,8 @@ define [ 'MC', 'event',
 
         clickDuplicateIcon : ->
             name     = MC.canvas_data.name
+            name_list = []
+            name_list.push i.name for i in MC.data.stack_list[MC.canvas_data.region]
 
             doDuplicate = ( name ) =>
                 new_name = "#{name}-copy"
@@ -106,14 +111,21 @@ define [ 'MC', 'event',
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if name.indexOf(' ') >= 0
                     notification 'warning', 'stack name contains white space.'
-                else if new_name in MC.data.stack_list[MC.canvas_data.region]
+                else if new_name in name_list
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else if not MC.aws.aws.checkStackName null, new_name
                     doDuplicate( new_name )
                     #notification 'warning', 'Repeated stack name.'
                 else
-                    # save stack
-                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                    region  = MC.canvas_data.region
+                    id      = MC.canvas_data.id
+                    name    = MC.canvas_data.name
+
+                    # check change and save stack
+                    ori_data = MC.canvas_property.original_json
+                    new_data = JSON.stringify( MC.canvas_data )
+                    if ori_data != new_data or id.indexOf('stack-') isnt 0
+                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                     setTimeout () ->
                         ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name

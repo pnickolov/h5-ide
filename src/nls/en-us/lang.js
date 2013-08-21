@@ -16,12 +16,12 @@ define({
 		'dashboard' : 'Dashboard',
 		'account-settings' : 'Account Settings',
 		// Add new strings below this comment. Move above once English has been confirmed
-		
+
 		/** RESOURCE NAMING CONVENTIONS
-		 * 
+		 *
 		 * Do not use camel case (e.g., 'KeyPair' should be 'Key Pair')
 		 * If using in a sentence use lowercase (e.g., 'View your instances.')
-		 * 
+		 *
 		 * AZ = Availability Zones
 		 * EC2 AMI = Image
 		 * EC2 Instance = Instance
@@ -33,13 +33,13 @@ define({
 		 * KP = Key Pair
 		 * VPC = 'Virtual Private Cloud' for titles but 'VPC' in other references is OK
 		 * Subnet = Subnet
-		 * RT = Route Table         
+		 * RT = Route Table
 		 * ENI = Network Interface
 		 * IGW = Internet Gateway
 		 * VGW = Virtual Gateway
 		 * CGW = Customer Gateway
 		 * VPN = VPN
-		 * 
+		 *
 		 */
 
 		/******resource panel module******/
@@ -93,6 +93,20 @@ define({
 		'CVS_WARN_EXCEED_ENI_LIMIT'             : "[ %s ]'s type [ %s ] supports a maximum of [ %s ] network interfaces (including the primary).",
 		'CVS_CFM_DEL_GROUP'                     : "Deleting [ %s ] will also remove all resources inside it. Are you sure you want to delete it?",
 		// Add new strings below this comment. Move above once English has been confirmed
+		'CVS_MSG_ERR_MOVE_ATTACHED_ENI'         : 'Network Interface must be attached to instance within the same availability zone.',
+		'CVS_MSG_ERR_DROP_ASG'                  : '[ %s ] is already in [ %s ]',
+		'CVS_CFM_DEL'                           : 'Confirm to delete [ %s ]',
+		'CVS_CFM_ADD_IGW'                       : 'Confirm to add Internet Gateway',
+		'CVS_CFM_ADD_IGW_MSG'                   : 'Automatically add an Internet Gateway to allow this [ %s ] to be addressable?',
+		'CVS_CFM_DEL_ASG'                       : 'Delete this item will delete the entire [ %s ]. Do you confirm to delete?',
+		'CVS_MSG_ERR_DEL_LC'                    : 'Currently changing launch configuration is not supported.',
+		'CVS_MSG_ERR_DEL_MAIN_RT'               : 'Main route table [ %s ] cannot be deleted.',
+		'CVS_MSG_ERR_DEL_LINKED_RT'             : 'Subnet must be associated to a route table.',
+		'CVS_CFM_DEL_IGW'                       : 'Internet-facing Load Balancers or Elastic IP will not function without an Internet Gateway, confirm to delete Internet Gateway?',
+		'CVS_MSG_ERR_DEL_LINKED_ELB'            : 'The subnet cannot be deleted since it has association with load balancer.',
+		'CVS_MSG_ERR_DEL_SBRT_LINE'             : 'Subnet must be associated to a route table.'
+		'CVS_MSG_ERR_CONNECT_ENI_AMI'           : 'Network Interface must be attached to instance within the same availability zone.'
+
 
 
 		/******property module******/
@@ -106,8 +120,14 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/******navigation module******/
-		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com'
+		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',
 		// Add new strings below this comment. Move above once English has been confirmed
 
+		/****** miscellaneous ******/
+		// Add new strings below this comment. Move above once English has been confirmed
+		'CFM_BTN_DELETE'   : 'Delete',
+		'CFM_BTN_CANCEL'   : 'Cancel',
+		'CFM_BTN_ADD'      : 'Add',
+		'CFM_BTN_DONT_ADD' : "Don't add"
 	}
 });

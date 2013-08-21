@@ -66,9 +66,9 @@ define [ 'event',
             selectboxContainer = $('#acl-add-model-source-select .dropdown').empty()
             selected = ''
             _.each subnetMap, (value, key) ->
-                if !selected
-                    selected = 'selected'
-                    $('#acl-add-model-source-select .selection').text(key)
+                # if !selected
+                #     selected = 'selected'
+                #     $('#acl-add-model-source-select .selection').text(key)
 
                 selectboxContainer.append(
                     '<li class="item tooltip ' + selected + '" data-id="' + value + '"><div class="main truncate">' + key + '</div></li>'
@@ -154,8 +154,10 @@ define [ 'event',
 
                 if value.RuleNumber is '32767'
                     newRuleObj.ruleNumber = '*'
+                    newRuleObj.isStarRule = true
                 else
                     newRuleObj.ruleNumber = value.RuleNumber
+                    newRuleObj.isStarRule = false
 
                 if value.Protocol is '-1'
                     newRuleObj.protocol = 'All'

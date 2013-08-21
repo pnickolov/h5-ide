@@ -1523,7 +1523,7 @@ td.table-action a.btn {
 }
 
 .ami-left-col > div {
-	width: 220px;
+	width: 240px;
 	padding: 10px;
 	border-top: 1px #ccc solid;
 }
@@ -2795,12 +2795,12 @@ a.sidebar-hider {
 }
 .subnet-cidr-wrapper .cidr-prefix {
 	display: inline-block;
-	width: 40px;
+	/*width: 40px;*/
 	line-height: 35px;
 	vertical-align: middle;
 }
 .subnet-cidr-wrapper .cidr-rest {
-	width : 180px !important;
+	width : 140px !important;
 }
 
 /*.btn-to-secondary-panel {
@@ -3524,7 +3524,7 @@ a.sidebar-hider {
 }
 
 #modal-acl-source-input {
-	display: none;
+	/*display: none;*/
 }
 
 .stack-property-acl-list .delete {
@@ -4014,21 +4014,6 @@ a.sidebar-hider {
 	background: url('../images/ide/icon-stack-16x16.png') center center no-repeat;
 }
 
-
-/* Toolbar Icon */
-.icon-toolbar-export-png {
-	width: 30px;
-	height: 30px;
-	display: inline-block;
-	background: url('../images/ide/icon-export-png.png') center center no-repeat;
-}
-
-.icon-toolbar-export-json {
-	width: 30px;
-	height: 30px;
-	display: inline-block;
-	background: url('../images/ide/icon-export-json.png') center center no-repeat;
-}
 
 #json-content {
 	margin: 15px 0;

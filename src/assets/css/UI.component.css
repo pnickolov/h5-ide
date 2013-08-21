@@ -1921,7 +1921,9 @@ textarea {
 /* parsley */
 
 input.parsley-error {
-	background: url(../images/ide/icon/icon-validate-error.png) 97% no-repeat !important;
+	background-image: url(../images/ide/icon/icon-validate-error.png) !important;
+	background-repeat: no-repeat !important;
+	background-position: 97% !important;
 	border: 1px solid #F74A48 !important;
 }
 

@@ -66,7 +66,7 @@
 <!--{{ .resource-vpc-select-list }}-->
 {{#if isntClassic}}
 	<div class="fixedaccordion-head">
-		VPC
+		{{ i18n "RES_TIT_VPC" }}
 	</div>
 	<div class="accordion-body scroll-wrap scrollbar-auto-hide">
 		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
@@ -74,40 +74,40 @@
 			<ul class="resource-list">
 				{{#if isntDefaultVPC}}
 				<li>
-					<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_LBL_NEW_SUBNET" }}' data-component-type="group" data-type="AWS.VPC.Subnet" data-option='{"name": "subnet"}'>
+					<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_SUBNET" }}' data-component-type="group" data-type="AWS.VPC.Subnet" data-option='{"name": "subnet"}'>
 						<div class="resource-icon resource-icon-subnet"></div>
-						<div class="resource-label">New Subnet</div>
+						<div class="resource-label">{{ i18n "RES_LBL_NEW_SUBNET" }}</div>
 					</div>
 				</li>
 				<li>
 					<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_RTB" }}' data-component-type="node" data-type="AWS.VPC.RouteTable" data-option='{"name": "RT"}'>
 						<div class="resource-icon resource-icon-rt"></div>
-						<div class="resource-label">New Route Table</div>
+						<div class="resource-label">{{ i18n "RES_LBL_NEW_RTB" }}</div>
 					</div>
 				</li>
 				<li>
 					<div class="tooltip resource-item {{#if igwIsUsed}}resource-disabled{{/if}}" {{#if igwIsUsed}}data-enable="false"{{/if}}data-tooltip='{{#if igwIsUsed}} {{ i18n "RES_TIP_DRAG_HAS_IGW" }} {{else}} {{ i18n "RES_TIP_DRAG_NEW_IGW" }} {{/if}}' data-component-type="node" data-type="AWS.VPC.InternetGateway" data-option='{"name": "IGW"}'>
 						<div class="resource-icon resource-icon-igw"></div>
-						<div class="resource-label">New Internet Gateway</div>
+						<div class="resource-label">{{ i18n "RES_LBL_NEW_IGW" }}</div>
 					</div>
 				</li>
 				<li>
 					<div class="tooltip resource-item {{#if vgwIsUsed}}resource-disabled{{/if}}" {{#if vgwIsUsed}}data-enable="false"{{/if}} data-tooltip='{{#if vgwIsUsed}} {{ i18n "RES_TIP_DRAG_HAS_VGW" }} {{else}} {{ i18n "RES_TIP_DRAG_NEW_VGW" }} {{/if}}' data-component-type="node" data-type="AWS.VPC.VPNGateway" data-option='{"name": "VGW"}'>
 						<div class="resource-icon resource-icon-vgw"></div>
-						<div class="resource-label">New Virtual Gateway</div>
+						<div class="resource-label">{{ i18n "RES_LBL_NEW_VGW" }}</div>
 					</div>
 				</li>
 				<li>
 					<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_CGW" }}' data-component-type="node" data-type="AWS.VPC.CustomerGateway" data-option='{"name": "CGW"}'>
 						<div class="resource-icon resource-icon-cgw"></div>
-						<div class="resource-label">New Customer Gateway</div>
+						<div class="resource-label">{{ i18n "RES_LBL_NEW_CGW" }}</div>
 					</div>
 				</li>
 				{{/if}}
 				<li>
 					<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ENI" }}' data-component-type="node" data-type="AWS.VPC.NetworkInterface" data-option='{"name": "eni"}'>
 						<div class="resource-icon resource-icon-eni"></div>
-						<div class="resource-label">New Network Interface</div>
+						<div class="resource-label">{{ i18n "RES_LBL_NEW_ENI" }}</div>
 					</div>
 				</li>
 			</ul>

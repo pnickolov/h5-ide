@@ -1063,6 +1063,7 @@
         return true;
       } else if ( false === this.valid ) {
         this.errorClassHandler.removeClass( this.options.successClass ).addClass( this.options.errorClass );
+        Util.errortip.first(this.element);
         return false;
       }
 
@@ -1765,6 +1766,7 @@ $(document.body).on( globalBindList, 'form[data-validate="parsley"] input, [data
 */
 var errortip = function (event)
 {
+  errortip.isFirst && (errortip.isFirst = false)
   var target = $(this),
     content = $(this).next('.parsley-error-list'),
     errortip_box = $('#errortip_box'),
@@ -1802,15 +1804,29 @@ var errortip = function (event)
   }
 };
 
+errortip.isFirst = false;
+
+errortip.first = function( target ) {
+  errortip.call(target)
+  errortip.isFirst = true;
+  setTimeout(function() {
+    if (errortip.isFirst) {
+      errortip.clear();
+    }
+  }, 2000);
+}
+
 errortip.clear = function ()
 {
   $('#errortip_box').remove();
   $(document.body).off('mouseleave', '.parsley-error', errortip.clear);
 
 };
+
 $(document).ready(function ()
 {
   $(document.body).on('mouseenter', '.parsley-error', errortip);
 });
 
+Util.errortip = errortip;
 }(window.jQuery)

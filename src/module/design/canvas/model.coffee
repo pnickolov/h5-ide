@@ -1288,7 +1288,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
 
-										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId
+										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is asg_uid
 
 											from_sg_group.push group_id
 
@@ -1300,7 +1300,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
 
-										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId
+										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is asg_uid
 
 											to_sg_group.push group_id
 

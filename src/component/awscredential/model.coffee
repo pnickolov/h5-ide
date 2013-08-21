@@ -10,15 +10,19 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
             'account_id'        : null
             'is_authenticated'  : null
             'is_update'         : null
+            'is_region'         : null  # whether on the region tab
 
         initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
+            me = this
+            #
+            if $.cookie('account_id')
+                me.set 'is_authenticated', true
+                me.set 'account_id', $.cookie('account_id')
+            else
+                me.set 'is_authenticated', false
 
         awsAuthenticate : (access_key, secret_key, account_id) ->
             me = this
-
-            is_authenticated = false
 
             session_model.set_credential {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), access_key, secret_key, account_id
 
@@ -27,33 +31,33 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
                 console.log result1
 
                 if !result1.is_error
-                    vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
 
-                    vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result2) ->
-
-                        console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
-
-                        if !result2.is_error
-                            is_authenticated = true
-                        else
-                            is_authenticated = false
-
-                        me.set 'account_id', account_id
-                        me.set 'is_authenticated', is_authenticated
-
-                        me.trigger 'UPDATE_AWS_CREDENTIAL'
-
-                    null
+                    me.credentialCheck()
+                    me.set 'account_id', account_id
+                    me.trigger 'UPDATE_AWS_CREDENTIAL'
 
                 else
-                    is_authenticated = false
 
                     me.set 'account_id', account_id
-                    me.set 'is_authenticated', is_authenticated
-
+                    me.set 'is_authenticated', false
                     me.trigger 'UPDATE_AWS_CREDENTIAL'
 
             null
+
+        credentialCheck : () ->
+            me = this
+
+            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
+
+            vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result) ->
+
+                console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
+
+                flag = false
+                if !result.is_error
+                    flag = true
+
+                me.set 'is_authenticated', flag
 
     }
 

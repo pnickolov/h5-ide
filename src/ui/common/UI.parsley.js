@@ -82,7 +82,7 @@
         222: '"',
         188: '<',
         190: '>',
-        191: '?',
+        191: '?'
         };
 
       var otherMap = {
@@ -1063,6 +1063,7 @@
         return true;
       } else if ( false === this.valid ) {
         this.errorClassHandler.removeClass( this.options.successClass ).addClass( this.options.errorClass );
+        Util.errortip.first(this.element);
         return false;
       }
 
@@ -1633,7 +1634,7 @@
     inputs: 'input, textarea, select'           // Default supported inputs.
     , excluded: 'input[type=hidden], input[type=file], :disabled' // Do not validate input[type=hidden] & :disabled.
     , trigger: false                            // $.Event() that will trigger validation. eg: keyup, change..
-    , animate: true                             // fade in / fade out error messages
+    , animate: false                             // fade in / fade out error messages
     , animateDuration: 300                      // fadein/fadout ms time
     , focus: 'first'                            // 'fist'|'last'|'none' which error field would have focus first on form validation
     , validationMinlength: 3                    // If trigger validation specified, only if value.length > validationMinlength
@@ -1750,4 +1751,82 @@ $(document.body).on( 'click', '.parsley-submit', formValidate);
 // global bind on single input
 $(document.body).on( globalBindList, 'form[data-validate="parsley"] input, [data-bind="true"] input', bindFiled );
 
+
+
+
+/*
+#**********************************************************
+#* Filename: UI.errortip
+#* Creator: Tim
+#* Description: UI.errortip
+#* Date: 20130817
+# **********************************************************
+# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# **********************************************************
+*/
+var errortip = function (event)
+{
+  errortip.isFirst && (errortip.isFirst = false)
+  var target = $(this),
+    content = $(this).next('.parsley-error-list'),
+    errortip_box = $('#errortip_box'),
+    target_offset,
+    width,
+    height,
+    target_width,
+    target_height;
+
+  if (content)
+  {
+    errortip_box = content.clone();
+    errortip_box.attr('id', 'errortip_box');
+    errortip_box.appendTo(document.body);
+
+    target_offset = target.offset();
+    target_width = target.innerWidth();
+    target_height = target.innerHeight();
+
+    //width = errortip_box.width();
+    //height = errortip_box.height();
+
+
+    errortip_box.css({
+      'left': target_offset.left,
+      'top': target_offset.top + target_height + height - document.body.scrollTop + 45 > window.innerHeight ?
+        target_offset.top - height - 15 :
+        target_offset.top + target_height,
+      width: target_width + 2 - 4,
+
+    }).show();
+
+    $(document.body).on('mouseleave', '.parsley-error', errortip.clear);
+
+  }
+};
+
+errortip.isFirst = false;
+
+errortip.first = function( target ) {
+  errortip.call(target)
+  errortip.isFirst = true;
+  setTimeout(function() {
+    if (errortip.isFirst) {
+      errortip.clear();
+    }
+  }, 2000);
+}
+
+errortip.clear = function ()
+{
+  $('#errortip_box').remove();
+  $(document.body).off('mouseleave', '.parsley-error', errortip.clear);
+
+};
+
+$(document).ready(function ()
+{
+  $(document.body).on('mouseenter', '.parsley-error', errortip);
+});
+
+Util.errortip = errortip;
 }(window.jQuery)

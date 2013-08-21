@@ -180,7 +180,7 @@ MC.canvas = {
 			// .off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 			// .off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 			// .off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
-		
+
 		return true;
 	},
 
@@ -2218,7 +2218,8 @@ MC.canvas.asgList = {
 				canvas_offset = $('#svg_canvas').offset();
 
 			// Prepare data
-			var lc_comp = MC.canvas_data.component[ MC.extractID( event.currentTarget.id ) ];
+			var uid     = MC.extractID( event.currentTarget.id );
+			var lc_comp = MC.canvas_data.component[ uid ];
 			var i;
 
 			for ( i in MC.canvas_data.component ) {
@@ -2230,8 +2231,7 @@ MC.canvas.asgList = {
 				}
 			}
 
-			var data = MC.data.resource_list[ MC.canvas_data.region ][ comp.resource.AutoScalingGroupARN ];
-			var layout = MC.canvas_data.layout.component.node[event.currentTarget.id];
+			var layout = MC.canvas_data.layout.component.node[ uid ];
 			var statusMap = {
 				   "Pending"     : "orange"
 				 , "Quarantined" : "orange"
@@ -2241,18 +2241,19 @@ MC.canvas.asgList = {
 			};
 
 			var temp_data = {
-				  instances  : []
+					  name       : lc_comp.name
+				  , instances  : []
 			};
 
 			if ( layout ) {
-				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join("");
+				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
 			}
 
-			var instances = lc_comp.resource.Instances.member;
+			var instances = MC.data.resource_list[ MC.canvas_data.region ][ lc_comp.resource.AutoScalingGroupARN ].Instances.member;
 			if ( instances )
 			{
 				for ( i = 0; i < instances.length; ++i ) {
-					temp_data.push({
+					temp_data.instances.push({
 						  id     : instances[i].InstanceId
 						, status : statusMap[ instances[i].LifecycleState ]
 					});
@@ -2939,7 +2940,8 @@ MC.canvas.event.dragable = {
 		var target = event.data.target,
 			target_id = target.attr('id'),
 			target_type = event.data.target_type,
-			canvas_offset = $('#svg_canvas').offset(),
+			svg_canvas = $('#svg_canvas'),
+			canvas_offset = svg_canvas.offset(),
 			shadow_offset = Canvon(event.data.shadow[0]).offset(),
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
@@ -2956,6 +2958,14 @@ MC.canvas.event.dragable = {
 				coordinate.y,
 				component_size[0],
 				component_size[1]
+			),
+			parentGroup = MC.canvas.parentGroup(
+				target_id,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				coordinate.x + component_size[0],
+				coordinate.y + component_size[1]
 			);
 
 		if (

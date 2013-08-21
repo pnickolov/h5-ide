@@ -670,6 +670,7 @@ var constant_data = {
 		"version": "5.0",
 		"tag": "",
 		"usage": "",
+		"has_instance_store_ami": "", //true|false
 		"component":
 		{},
 		"layout":

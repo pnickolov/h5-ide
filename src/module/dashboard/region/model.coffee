@@ -337,47 +337,37 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             #             }
             #     null
 
-            #listen APP_INFO_RETURN
-            me.on 'APP_INFO_RETURN', (result) ->
-
-                console.log 'APP_INFO_RETURN'
-
-                #if !result.is_error
-                #    if ws
-
-                null
-
             #listen STACK_SAVE__AS_RETURN
-            me.on 'STACK_SAVE__AS_RETURN', (result) ->
-                console.log 'STACK_SAVE__AS_RETURN'
+            # me.on 'STACK_SAVE__AS_RETURN', (result) ->
+            #     console.log 'STACK_SAVE__AS_RETURN'
 
-                if !result.is_error
+            #     if !result.is_error
 
-                    region      = result.param[3]
-                    id          = result.param[4]
-                    new_name    = result.param[5]
-                    name        = result.param[6]
+            #         region      = result.param[3]
+            #         id          = result.param[4]
+            #         new_name    = result.param[5]
+            #         name        = result.param[6]
 
-                    #update stack name list
-                    if new_name not in MC.data.stack_list[region]
-                        MC.data.stack_list[region].push new_name
+            #         #update stack name list
+            #         if new_name not in MC.data.stack_list[region]
+            #             MC.data.stack_list[region].push new_name
 
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+            #         ide_event.trigger ide_event.UPDATE_STACK_LIST
 
-                null
+            #     null
 
-            #listen STACK_REMOVE_RETURN
-            me.on 'STACK_REMOVE_RETURN', (result) ->
-                console.log 'STACK_REMOVE_RETURN'
-                console.log result
+            # #listen STACK_REMOVE_RETURN
+            # me.on 'STACK_REMOVE_RETURN', (result) ->
+            #     console.log 'STACK_REMOVE_RETURN'
+            #     console.log result
 
-                if !result.is_error
+            #     if !result.is_error
 
-                    region  = result.param[3]
-                    id      = result.param[4]
-                    name    = result.param[5]
+            #         region  = result.param[3]
+            #         id      = result.param[4]
+            #         name    = result.param[5]
 
-                    ide_event.trigger ide_event.STACK_DELETE, name, id
+            #         ide_event.trigger ide_event.STACK_DELETE, name, id
 
 
             #listen VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN
@@ -516,14 +506,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                 status = "pending"
                 ispending = true
 
-            is_use_ami = false
+            has_instance_store_ami = false
 
             if flag == 'app'
                 date = new Date()
                 start_time = null
                 stop_time = null
 
-                #is_use_ami = me.isInstanceStore item
+                has_instance_store_ami = if 'has_instance_store_ami' of item and item.has_instance_store_ami then item.has_instance_store_ami else false
 
                 if item.last_start
                     date.setTime(item.last_start*1000)
@@ -532,7 +522,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
                     date.setTime(item.last_stop*1000)
                     stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
 
-            return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'ispending' : ispending, 'status' : status, 'cost' : "$0/month" }
+            return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'ispending' : ispending, 'status' : status, 'cost' : "$0/month", 'has_instance_store_ami' : has_instance_store_ami }
 
         updateAppList : (flag, app_id) ->
             me = this
@@ -552,51 +542,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             null
 
-        isInstanceStore : ( data ) ->
-
-            is_instance_store = false
-
-            if 'component' in data.layout and 'node' in data.layout.component
-                for node in data.layout.component.node
-                    if node.rootDeviceType == 'instance-store'
-                        is_instance_store = true
-                        break
-
-            is_instance_store
-
         runApp : (region, app_id) ->
             me = this
             current_region = region
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
             ide_event.trigger ide_event.START_APP, region, app_id, app_name
-            # app_model.start { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            # me.once 'APP_START_RETURN', (result) ->
-            #     console.log 'APP_START_RETURN'
-            #     console.log result
-
-            #     # update tab icon
-            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
-
-            #     #parse the result
-            #     if !result.is_error #request successfuly
-
-            #         if ws
-            #             req_id = result.resolved_data.id
-            #             console.log "request id:" + req_id
-            #             query = ws.collection.request.find({id:req_id})
-            #             handle = query.observeChanges {
-            #                 changed : (id, req) ->
-            #                     if req.state == "Done"
-            #                         handle.stop()
-            #                         console.log 'stop handle'
-            #                         #push event
-            #                         ide_event.trigger ide_event.START_APP, app_name, app_id
-
-            #                         # update icon
-            #                         ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', app_id
-            #             }
-            #         null
 
         stopApp : (region, app_id) ->
             me = this
@@ -604,31 +555,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
             ide_event.trigger ide_event.STOP_APP, region, app_id, app_name
-            # app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            # me.once 'APP_STOP_RETURN', (result) ->
-            #     console.log 'APP_STOP_RETURN'
-            #     console.log result
-
-            #     # update tab icon
-            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
-
-            #     if !result.is_error
-            #         if ws
-            #             req_id = result.resolved_data.id
-            #             console.log "request id:" + req_id
-            #             query = ws.collection.request.find({id:req_id})
-            #             handle = query.observeChanges {
-            #                 changed : (id, req) ->
-            #                     if req.state == "Done"
-            #                         handle.stop()
-            #                         console.log 'stop handle'
-            #                         #push event
-            #                         ide_event.trigger ide_event.STOP_APP, app_name, app_id
-
-            #                         # update icon
-            #                         ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', app_id
-            #             }
-            #         null
 
         terminateApp : (region, app_id) ->
             me = this
@@ -636,28 +562,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             app_name = i.name for i in me.get('cur_app_list') when i.id == app_id
             ide_event.trigger ide_event.TERMINATE_APP, region, app_id, app_name
-            # app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-            # me.once 'APP_TERMINATE_RETURN', (result) ->
-            #     console.log 'APP_TERMINATE_RETURN'
-            #     console.log result
-
-            #     # update tab icon
-            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
-
-            #     if !result.is_error
-            #         if ws
-            #             req_id = result.resolved_data.id
-            #             console.log "request id:" + req_id
-            #             query = ws.collection.request.find({id:req_id})
-            #             handle = query.observeChanges {
-            #                 changed : (id, req) ->
-            #                     if req.state == "Done"
-            #                         handle.stop()
-            #                         console.log 'stop handle'
-            #                         #push event
-            #                         ide_event.trigger ide_event.TERMINATE_APP, app_name, app_id
-            #             }
-            #     null
 
         duplicateStack : (region, stack_id, new_name) ->
             console.log 'duplicateStack'
@@ -666,7 +570,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
 
-            stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, new_name, stack_name
+            ide_event.trigger ide_event.DUPLICATE_STACK, region, stack_id, new_name, stack_name
 
 
         deleteStack : (region, stack_id) ->
@@ -674,8 +578,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
             current_region = region
 
             stack_name = s.name for s in me.get('cur_stack_list') when s.id == stack_id
-            stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, stack_id, stack_name
-
+            ide_event.trigger ide_event.DELETE_STACK, region, stack_id, stack_name
 
         _genDhcp: (dhcp) ->
 

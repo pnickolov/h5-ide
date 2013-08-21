@@ -107,6 +107,13 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             result_list.region_infos = []
             region_aws_list          = []
 
+            #global stack name list
+            MC.data.stack_list = {}
+            MC.data.stack_list[r] = [] for r in constant.REGION_KEYS
+            #global app name list
+            MC.data.app_list = {}
+            MC.data.app_list[r] = [] for r in constant.REGION_KEYS
+
             _.map constant.REGION_KEYS, ( value, key )  ->
 
                 region_counts[value] = { 'running_app': 0, 'stopped_app': 0, 'stack': 0 }
@@ -124,7 +131,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                         region_counts[value.region].stopped_app += 1
                     total_app += 1
 
-                    if value.region in constant.REGION_KEYS and value.name not in MC.data.app_list[value.region]
+                    if value.region in constant.REGION_KEYS
                         MC.data.app_list[value.region].push value.name
 
                     null
@@ -141,7 +148,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                     region_counts[value.region].stack += 1
                     total_stack += 1
 
-                    if value.region in constant.REGION_KEYS and value.name not in MC.data.stack_list[value.region]
+                    if value.region in constant.REGION_KEYS
                         MC.data.stack_list[value.region].push { id: value.id, name: value.name }
 
                     null

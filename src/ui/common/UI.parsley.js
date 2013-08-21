@@ -1765,7 +1765,6 @@ $(document.body).on( globalBindList, 'form[data-validate="parsley"] input, [data
 */
 var errortip = function (event)
 {
-  debug('errortip');
   var target = $(this),
     content = $(this).next('.parsley-error-list'),
     errortip_box = $('#errortip_box'),
@@ -1814,5 +1813,4 @@ $(document).ready(function ()
   $(document.body).on('mouseenter', '.parsley-error', errortip);
 });
 
-debug('hererer')
 }(window.jQuery)

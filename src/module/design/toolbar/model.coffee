@@ -51,6 +51,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
 
+                    #update key
+                    key = result.resolved_data.key
+                    if key isnt MC.canvas_data.key
+                        MC.canvas_data.key = key
+                        data.key = key
+
                     #call save png
                     me.savePNG true, data
 
@@ -100,7 +106,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
 
-                    MC.data.stack_list[region].push name
+                    MC.data.stack_list[region].push {'id':new_id, 'name':name}
 
                     #call save png
                     me.savePNG true, data
@@ -128,8 +134,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'save as stack successfully'
 
                     #update stack name list
-                    if new_name not in MC.data.stack_list[region]
-                        MC.data.stack_list[region].push new_name
+                    new_id = result.resolved_data.id
+                    MC.data.stack_list[region].push {'id':new_id, 'name':new_name}
+
+                    #save png
+                    key = result.resolved_data.key
+                    ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, key
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'DUPLICATE_STACK', name
@@ -149,9 +159,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'send delete stack successful message'
 
                     #update stack name list
-                    if name in MC.data.stack_list[region]
-                        index = MC.data.stack_list[region].indexOf(name)
-                        MC.data.stack_list[region].splice(index, 1)
+                    if MC.aws.aws.checkStackName(id, name)
+                        for item in MC.data.stack_list[region]
+                            if item.id is id and item.name is name
+                                MC.data.stack_list[region].splice MC.data.stack_list[region].indexOf(item), 1
+                                break
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'REMOVE_STACK', name
@@ -169,10 +181,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 region      = result.param[3]
                 id          = result.param[4]
                 app_name    = result.param[5]
-
-                #add new-app status
-                #me.handleRequest result, 'RUN_STACK', region, id, app_name
-                # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
 
                 data = run_stack_map[region][app_name]
 
@@ -247,31 +255,42 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     me.savePNG true, data
 
-
         setFlag : (id, flag, value) ->
             me = this
 
             if flag is 'NEW_STACK'
-                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':false, 'is_delete':false}
+                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true}
                 is_tab = true
 
             else if flag is 'OPEN_STACK'
                 id = id.resolved_data[0].id
-                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
+                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
                 is_tab = true
 
             else if flag is 'SAVE_STACK'
-                item_state_map[id] = {'name':value, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
+                item_state_map[id].name         = value
+                item_state_map[id].is_run       = true
+                item_state_map[id].is_duplicate = true
+                item_state_map[id].is_delete    = true
 
             else if flag is 'CREATE_STACK'
+                item_state_map[value.id] = {'name':value.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':item_state_map[id].is_zoomin, 'is_zoomout':item_state_map[id].is_zoomout}
+
                 delete item_state_map[id]
-                item_state_map[value.id] = {'name':value.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true}
 
                 id = value.id
 
             else if flag is 'DELETE_STACK'
                 delete item_state_map[id]
                 return
+
+            else if flag is 'ZOOMIN_STACK'
+                item_state_map[id].is_zoomin    = value
+                item_state_map[id].is_zoomout   = true
+
+            else if flag is 'ZOOMOUT_STACK'
+                item_state_map[id].is_zoomout   = value
+                item_state_map[id].is_zoomin    = true
 
             else if flag is 'OPEN_APP'
                 is_running = false
@@ -286,7 +305,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     is_pending = true
 
                 id = id.resolved_data[0].id
-                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_use_ami':me.isInstanceStore() }
+                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_zoomin':false, 'is_zoomout':true, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data) }
 
                 is_tab = true
 
@@ -352,6 +371,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             id = data.id
             name = data.name
 
+            data.has_instance_store_ami = me.isInstanceStore data
             if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
@@ -359,25 +379,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
         #duplicate
-        duplicateStack : (new_name, data) ->
+        duplicateStack : (region, id, new_name, name) ->
             me = this
-
-            region = data.region
-            id = data.id
-            name = data.name
-            if me.isChanged(data)
-                if not me.saveStack(data)
-                   return
 
             stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, new_name, name
 
         #delete
-        deleteStack : (data) ->
+        deleteStack : (region, id, name) ->
             me = this
-
-            region = data.region
-            id = data.id
-            name = data.name
 
             stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
@@ -385,45 +394,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         runStack : ( app_name, data) ->
             me = this
 
-            id = data.id
-            region = data.region
-            if me.isChanged(data) or id.indexOf('stack-') isnt 0
-                me.saveStack(data)
-                id = MC.canvas_data.id
-                if not id
-                    return
+            id      = data.id
+            region  = data.region
+            # if me.isChanged(data) or id.indexOf('stack-') isnt 0
+            #     me.saveStack(data)
+            #     id = MC.canvas_data.id
+            #     if not id
+            #         return
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
             stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
-
-            # stack_service.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, null, null, null, null, ( result ) ->
-
-            #     if !result.is_error
-            #     #run succeed
-
-            #         console.log 'STACK_RUN_RETURN'
-
-            #         region      = result.param[3]
-            #         id          = result.param[4]
-            #         app_name    = result.param[5]
-
-            #         #add new-app status
-            #         #me.handleRequest result, 'RUN_STACK', region, id, app_name
-            #         # ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, MC.canvas_data.id, app_name, MC.canvas_data.region, result
-            #         # # track
-            #         # analytics.track "Launched Stack",
-            #         #     stack_id: id,
-            #         #     stack_region: region,
-            #         #     stack_app_name: app_name
-            #         #ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
-
-
-            #     else
-            #     #run failed
-
-            #         console.log 'stack.run failed, error is ' + result.error_message
-
-
 
             # save stack data
             if not (region of run_stack_map) then run_stack_map[region] = {}
@@ -432,6 +412,31 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             null
 
+        #zoomin
+        zoomIn : () ->
+            me = this
+
+            if MC.canvas_property.SCALE_RATIO > 1
+                MC.canvas.zoomIn()
+
+            flag = true
+            if MC.canvas_property.SCALE_RATIO <= 1
+                flag = false
+
+            me.setFlag MC.canvas_data.id, 'ZOOMIN_STACK', flag
+
+        #zoomout
+        zoomOut : () ->
+            me = this
+
+            if MC.canvas_property.SCALE_RATIO < 1.6
+                MC.canvas.zoomOut()
+
+            flag = true
+            if MC.canvas_property.SCALE_RATIO >= 1.6
+                flag = false
+
+            me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
 
         savePNG : ( is_thumbnail, data ) ->
             console.log 'savePNG'
@@ -474,32 +479,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #
             if is_thumbnail is 'true' then me.trigger 'SAVE_PNG_COMPLETE', null
             null
-            ###
-            me = this
-            $.ajax {
-                url  : MC.SAVEPNG_URL,
-                type : 'post',
-                data : {
-                    'usercode'   : $.cookie( 'usercode'   ),
-                    'session_id' : $.cookie( 'session_id' ),
-                    'thumbnail'  : is_thumbnail,
-                    'json_data'  : MC.canvas.layout.save(),
-                    'stack_id'   : id
-                },
-                success : ( res ) ->
-                    console.log 'phantom callback'
-                    console.log res
-                    console.log res.status
-                    if res.status is 'success'
-                        if res.thumbnail is 'true'
-                            console.log 's3 url = ' + res.result
-                            ide_event.trigger ide_event.UPDATE_STACK_THUMBNAIL
-                        else
-                            me.trigger 'SAVE_PNG_COMPLETE', res.result
-                    else
-                        #
-            }
-            ###
 
         isChanged : (data) ->
             #check if there are changes
@@ -534,21 +513,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 me.setFlag id, 'PENDING_APP'
 
             if !result.is_error
-                # if flag is 'RUN_STACK'
-                #     console.log 'run stack request successfully'
-                #     me.trigger 'TOOLBAR_STACK_RUN_REQUEST_SUCCESS', name
-
-                # else if flag is 'START_APP'
-                #     console.log 'start app request successfully'
-                #     me.trigger 'TOOLBAR_APP_START_REQUEST_SUCCESS', name
-
-                # else if flag is 'STOP_APP'
-                #     console.log 'stop app request successfully'
-                #     me.trigger 'TOOLBAR_APP_STOP_REQUEST_SUCCESS', name
-
-                # else if flag is 'TERMINATE_APP'
-                #     console.log 'terminate app request successfully'
-                #     me.trigger 'TOOLBAR_APP_TERMINATE_SUCCESS', name
 
                 me.trigger 'TOOLBAR_REQUEST_SUCCESS', flag, name
 
@@ -581,15 +545,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     null
 
             else
-                # if flag == 'START_APP'
-                #     me.trigger 'TOOLBAR_APP_START_REQUEST_FAILED', name
-                #     #MC.canvas_data.state = 'Stopped'
-                # else if flag == 'STOP_APP'
-                #     me.trigger 'TOOLBAR_APP_STOP_REQUEST_FAILED', name
-                #     #MC.canvas_data.state = 'Running'
-                # else if flag == 'TERMINATE_APP'
-                #     me.trigger 'TOOLBAR_APP_TERMINATE_REQUEST_FAILED', name
-                #     #MC.canvas_data.state = 'Stopped'
 
                 me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
 
@@ -610,8 +565,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 when constant.OPS_STATE.OPS_STATE_INPROCESS
                     if flag is 'RUN_STACK'
 
+                        flag_list.is_inprocess = true
                         if 'dag' of dag # changed request
-                            flag_list.is_inprocess = true
+
                             flag_list.steps = dag.dag.step.length
 
                             # check rollback
@@ -622,11 +578,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 flag_list.dones = dones
                                 flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
 
-                        else # added request
-                            flag_list.is_pending = true
-
                 when constant.OPS_STATE.OPS_STATE_FAILED
-                    #handle.stop()
 
                     me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
 
@@ -637,7 +589,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         me.setFlag id, 'STOPPED_APP'
 
                 when constant.OPS_STATE.OPS_STATE_DONE
-                    #handle.stop()
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
 
@@ -680,12 +631,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
-        isInstanceStore : () ->
+        isInstanceStore : ( data ) ->
 
             is_instance_store = false
 
-            if 'component' in MC.canvas_data.layout and 'node' in MC.canvas_data.layout.component
-                for node in MC.canvas_data.layout.component.node
+            if 'component' of data.layout and 'node' of data.layout.component
+                for k, node of data.layout.component.node
                     if node.rootDeviceType == 'instance-store'
                         is_instance_store = true
                         break

@@ -117,7 +117,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 					attachment = value.resource.Attachment
 					if "" + attachment.DeviceIndex != "0" && attachment.InstanceId.indexOf( component.uid ) != -1
-						return "Network Interface must be attached to instance within the same availability zone."
+						return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
 			null
 
 		beforeD_Eni : ( component, tgt_parent ) ->
@@ -126,7 +126,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				return
 
 			if component.resource.Attachment.InstanceId
-				return "Network Interface must be attached to instance within the same availability zone."
+				return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
 			null
 
 		beforeD_ASG : ( component, tgt_parent ) ->
@@ -137,7 +137,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						if !parent
 							parent = MC.canvas_data.layout.component.group[ tgt_parent ]
 
-						return "#{component.name} is already in #{parent.name}"
+						return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, component.name, parent.name
 
 		#change node from one parent to another parent
 		changeParent : ( event, src_node, tgt_parent ) ->
@@ -152,6 +152,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
+
+			if !component
+				return
+
 			handler   = this.changeParentMap[ component.type ]
 			if handler
 				handler.call( this, component, tgt_parent )
@@ -281,31 +285,30 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					result = this.deleteLine option
 
 
-			# If the handler returns false or string,
+			# If the handler returns false or string or object,
 			# The delete operation is prevented.
-			if typeof result is "string"
-				# Delete Handler returns a comfirmation string.
-				if result[0] == '!'
-					# This is an error, not confimation
-					if event && event.preventDefault
+			if typeof result is 'object' and result.error
+				if event && event.preventDefault
 						event.preventDefault()
-					notification "error", result[1...]
-				else
-					# Confimation
-					self = this
-					template = MC.template.canvasOpConfirm {
-						operation : "delete #{component.name}"
-						content   : result
-						color     : "red"
-						proceed   : "Delete"
-						cancel    : "Cancel"
-					}
-					modal template, true
-					$("#canvas-op-confirm").one "click", ()->
-						# Do the delete operation
-						opts = $.extend true, { force : true }, option
-						self.deleteObject null, opts
-						modal.close()
+					notification "error", result.error
+
+			else if typeof result is "string"
+				# Confimation
+				self = this
+				template = MC.template.canvasOpConfirm {
+					operation : sprintf lang.ide.CVS_CFM_DEL, component.name
+					content   : result
+					color     : "red"
+					proceed   : lang.ide.CFM_BTN_DELETE
+					cancel    : lang.ide.CFM_BTN_CANCEL
+				}
+				modal template, true
+				$("#canvas-op-confirm").one "click", ()->
+					# Do the delete operation
+					opts = $.extend true, { force : true }, option
+					self.deleteObject null, opts
+					modal.close()
+
 
 			else if result isnt false
 				# MC.canvas.remove actually remove the component from MC.canvas_data.component.
@@ -320,7 +323,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			result
 
 		deleteR_ASG : ( component, force ) ->
-			layout_data = MC.canvas_data.layout.component.node[component.uid]
+			layout_data = MC.canvas_data.layout.component.group[component.uid]
 
 			if not layout_data
 				# This is a extended ASG
@@ -328,7 +331,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Ask user to comfirm the delete operation
 			if not force
-				return "Delete this item will delete the entire #{component.name}. Do you confirm to delete?"
+				return sprintf lang.ide.CVS_CFM_DEL_ASG, component.name
 
 			# Delete the component
 			asg_uid = component.uid
@@ -359,7 +362,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			null
 
 		deleteR_ASG_LC : ( component ) ->
-			"!Currently changing launch configuration is not supported."
+			return { error : lange.ide.CVS_MSG_ERR_DEL_LC }
 
 		deleteR_Instance : ( component ) ->
 
@@ -413,10 +416,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 		deleteR_RouteTable : ( component ) ->
 			if component.resource.AssociationSet.length > 0 and "" + component.resource.AssociationSet[0].Main == 'true'
-				return "!Main route table #{component.name} cannot be deleted."
+				return { error : sprintf lang.ide.CVS_MSG_ERR_DEL_MAIN_RT }
 
 			if component.resource.AssociationSet.length > 0
-				return "!Subnet must be associated to a route table. "
+				return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_RT }
 			null
 
 		deleteR_IGW : ( component, force ) ->
@@ -433,7 +436,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						confirm = true
 						break
 				if confirm
-					return "Internet-facing Load Balancers or Elastic IP will not function without an Internet Gateway, confirm to delete Internet Gateway?"
+					return lang.ide.CVS_CFM_DEL_IGW
 
 			for key, value of MC.canvas_data.component
 				if value.type == resource_type.AWS_VPC_RouteTable
@@ -560,7 +563,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				for sb in value.resource.Subnets
 					if sb.indexOf( component.uid ) != -1
-						return "!The subnet cannot be deleted since it has association with load balancer."
+						return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
 
 		deleteR_Subnet : ( component ) ->
 			# Delete route table connection
@@ -582,7 +585,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# Delete All Associated ACL
 			_.each MC.canvas_data.component, (compObj) ->
 				compType = compObj.type
-				if compType is 'AWS.VPC.NetworkAcl'
+				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
 					MC.aws.acl.removeAssociationFromACL component.uid, compObj.uid
 				null
 
@@ -628,8 +631,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				sb_uid = portMap['subnet-assoc-out']
 
 				component_resource = MC.canvas_data.component[rt_uid].resource
-
-				return "!Subnet must be associated to a route table."
+				return { error : lang.ide.CVS_MSG_ERR_DEL_SBRT_LINE }
 
 
 			# Instance <==> RouteTable
@@ -762,37 +764,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 							        				return false
 
-
-
-
 				else if portMap['launchconfig-sg']
 
-					if MC.canvas_data.component[portMap['launchconfig-sg']]
-						original_group_uid = MC.canvas_data.layout.component.node[portMap['launchconfig-sg']].groupUId
-					else
-						original_group_uid = MC.canvas_data.layout.component.group[portMap['launchconfig-sg']].originalId
+					line_id = MC.aws.lc.getLCLine option.id
 
-					$.each MC.canvas_data.layout.component.node, (comp_uid, comp)->
+					this.trigger 'SHOW_SG_LIST', line_id
 
-                        if comp.type is 'AWS.AutoScaling.LaunchConfiguration' and comp.groupUId is original_group_uid
-
-                            $.each MC.canvas_data.layout.connection, (l_id, line_comp)->
-
-                                tmp_portMap = {}
-
-                                $.each line_comp.target, (key,val)->
-                                    tmp_portMap[val] = key
-                                    null
-
-                                if tmp_portMap['launchconfig-sg'] is comp_uid and line_comp.type is 'sg'
-
-                                    $.each portMap, (port_key, port_val)->
-
-                                        if port_key isnt 'launchconfig-sg'
-
-                                            if tmp_portMap[port_key] and portMap[port_key] and tmp_portMap[port_key] is portMap[port_key]
-
-                                                me.trigger 'SHOW_SG_LIST', l_id
 				else
 					this.trigger 'SHOW_SG_LIST', option.id
 
@@ -933,7 +910,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				instance_component = MC.canvas_data.component[portMap['instance-attach']]
 				eni_component      = MC.canvas_data.component[portMap['eni-attach']]
 				if eni_component.resource.AvailabilityZone isnt instance_component.resource.Placement.AvailabilityZone
-					return "Network Interface must be attached to instance within the same availability zone."
+					return lang.ide.CVS_MSG_ERR_CONNECT_ENI_AMI
 
 				instance_type 		= 	instance_component.resource.InstanceType.split('.')
 
@@ -1288,7 +1265,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
 
-										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId
+										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is asg_uid
 
 											from_sg_group.push group_id
 
@@ -1300,7 +1277,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
 
-										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId
+										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is asg_uid
 
 											to_sg_group.push group_id
 
@@ -1361,8 +1338,24 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 							else
 								to_port = 'launchconfig-sg'
 
-							if not (from_port == to_port == 'launchconfig-sg')
 
+							if from_port == to_port == 'launchconfig-sg'
+
+								existing = false
+
+								$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
+
+									if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId and ((comp.originalId is from_comp_uid and comp_uid is to_comp_uid) or (comp.originalId is to_comp_uid and comp_uid is from_comp_uid))
+
+										existing = true
+
+										return false
+
+								if not existing
+
+									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+
+							else
 								lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 
 			$.each MC.canvas_data.layout.connection, ( line_id, line ) ->
@@ -1492,11 +1485,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# Confimation
 			self = this
 			template = MC.template.canvasOpConfirm {
-				operation : "add Internet Gateway"
-				content   : "Automatically add an Internet Gateway to allow this #{res} to be addressable?"
+				operation : lang.ide.CVS_CFM_ADD_IGW
+				content   : sprintf lang.ide.CVS_CFM_ADD_IGW_MSG, res
 				color     : "blue"
-				proceed   : "Add"
-				cancel    : "Don't Add"
+				proceed   : lang.ide.CFM_BTN_ADD
+				cancel    : lang.ide.CFM_BTN_DONT_ADD
 			}
 			modal template, true
 			$("#canvas-op-confirm").one "click", ()->

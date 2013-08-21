@@ -63,7 +63,7 @@ define [ 'event',
 
         render   : ( template, attrs ) ->
             console.log 'resource render'
-            $( '#resource-panel' ).html template
+            $( '#resource-panel' ).html Handlebars.compile template
             #
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
@@ -73,7 +73,7 @@ define [ 'event',
 
         reRender   : ( template ) ->
             console.log 're-resource render'
-            if $.trim( this.$el.html() ) is 'loading...' then $( '#resource-panel' ).html template
+            if $.trim( this.$el.html() ) is 'loading...' then $( '#resource-panel' ).html Handlebars.compile template
 
             this.recalcAccordion()
 
@@ -91,7 +91,7 @@ define [ 'event',
             $accordionWrap   = $accordion.closest ".fixedaccordion"
             $accordionParent = $accordionWrap.parent()
 
-            height = $accordionParent.outerHeight() - $accordionWrap.position().top - $accordionWrap.children().length * $target.outerHeight()
+            height = $accordionParent.outerHeight() - $accordionWrap.position().top - $accordionWrap.children(":visible").length * $target.outerHeight()
 
             $body.outerHeight height
 
@@ -381,7 +381,8 @@ define [ 'event',
 
                         data.vgwIsUsed = this.model.getVgwStatus()
 
-            $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
+            $list = $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
+            $list.toggle $list.children().length > 0
 
         searchCommunityAmi : ( event, pageNum) ->
             if not pageNum

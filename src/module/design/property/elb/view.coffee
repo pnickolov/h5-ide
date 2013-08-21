@@ -111,10 +111,10 @@ define ['event', 'MC',
 
             if value is 'internal'
                 MC.canvas.update cid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNAL_CANVAS
-                MC.canvas.display(cid, 'elb_sg_in', true)
+                MC.canvas.display(cid, 'port-elb-sg-in', true)
             else
                 MC.canvas.update cid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNET_CANVAS
-                MC.canvas.display(cid, 'elb_sg_in', false)
+                MC.canvas.display(cid, 'port-elb-sg-in', false)
 
         healthProtocolSelect : ( evnet, value ) ->
             console.log 'healthProtocolSelect'

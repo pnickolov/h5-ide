@@ -152,14 +152,12 @@ define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.n
                 console.log 'dashboard region duplicate stack'
                 new_name = $('#modal-input-value').val()
 
-                name_list = []
-                name_list.push i.name for i in MC.data.stack_list[region]
                 #check duplicate stack name
                 if not name or not new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if name.indexOf(' ') >= 0 or new_name.indexOf(' ') >= 0
                     notification 'warning', 'stack name contains white space.'
-                else if new_name in name_list
+                else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
                     modal.close()

@@ -159,9 +159,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'send delete stack successful message'
 
                     #update stack name list
-                    obj = {'id':id, 'name':name}
-                    if obj in MC.data.stack_list[region]
-                        MC.data.stack_list[region].splice MC.data.stack_list[region].indexOf(obj), 1
+                    if MC.aws.aws.checkStackName(id, name)
+                        for item in MC.data.stack_list[region]
+                            if item.id is id and item.name is name
+                                MC.data.stack_list[region].splice MC.data.stack_list[region].indexOf(item), 1
+                                break
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'REMOVE_STACK', name

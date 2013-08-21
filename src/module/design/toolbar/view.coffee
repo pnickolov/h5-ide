@@ -83,15 +83,13 @@ define [ 'MC', 'event',
             console.log 'clickSaveIcon'
 
             name = MC.canvas_data.name
-
-            name_list = []
-            name_list.push i.name for i in MC.data.stack_list[MC.canvas_data.region]
+            id = MC.canvas_data.id
 
             if not name
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
             else if name.indexOf(' ') >= 0
                 notification 'warning', 'stack name contains white space.'
-            else if not MC.canvas_data.id and name in name_list
+            else if not MC.aws.aws.checkStackName id, name
                 notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
             else
                 MC.canvas_data.name = name
@@ -101,8 +99,6 @@ define [ 'MC', 'event',
 
         clickDuplicateIcon : ->
             name     = MC.canvas_data.name
-            name_list = []
-            name_list.push i.name for i in MC.data.stack_list[MC.canvas_data.region]
 
             doDuplicate = ( name ) =>
                 new_name = "#{name}-copy"
@@ -111,11 +107,8 @@ define [ 'MC', 'event',
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if name.indexOf(' ') >= 0
                     notification 'warning', 'stack name contains white space.'
-                else if new_name in name_list
-                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else if not MC.aws.aws.checkStackName null, new_name
-                    doDuplicate( new_name )
-                    #notification 'warning', 'Repeated stack name.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
                     region  = MC.canvas_data.region
                     id      = MC.canvas_data.id

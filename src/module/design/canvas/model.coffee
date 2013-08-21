@@ -296,7 +296,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				# Confimation
 				self = this
 				template = MC.template.canvasOpConfirm {
-					operation : sprintf lang.ide.CVS_CFM_OPERATION_DEL, component.name
+					operation : sprintf lang.ide.CVS_CFM_DEL, component.name
 					content   : result
 					color     : "red"
 					proceed   : lang.ide.CFM_BTN_DELETE
@@ -323,7 +323,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			result
 
 		deleteR_ASG : ( component, force ) ->
-			layout_data = MC.canvas_data.layout.component.node[component.uid]
+			layout_data = MC.canvas_data.layout.component.group[component.uid]
 
 			if not layout_data
 				# This is a extended ASG

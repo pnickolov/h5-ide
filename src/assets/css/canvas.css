@@ -21,7 +21,7 @@
 
 #canvas_body {
 	border: 1px solid #ccc;
-	background: #fff url('../images/ide/grid.png');
+	background: #fff url('../images/ide/grid_x1.png');
 }
 
 /*.canvas-view-sg .line-sg,
@@ -102,7 +102,7 @@
 
 #screenshot_canvas_body {
 	padding: 10px;
-	background: #FFF url('../images/ide/grid.png');
+	background: #FFF url('../images/ide/grid_x1.png');
 	min-width: 800px;
 	min-height: 600px;
 }

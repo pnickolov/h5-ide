@@ -28,7 +28,10 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                                 platform : current_platform
                             }
                 else if type is 'OPEN_STACK' or type is 'OPEN_APP'
-                    require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.init()
+                    require [ 'canvas_layout' ], ( canvas_layout ) ->
+                        MC.canvas.layout.init()
+                        model.initLine()
+                        model.reDrawSgLine()
                 null
 
 

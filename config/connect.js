@@ -41,9 +41,23 @@ module.exports = {
 		}
 	},
 
-	publish: {
+	release: {
 		options: {
 			base: '<%= release %>',
+			keepalive: true,
+			middleware: function( connect, options ) {
+				return [
+					connect.bodyParser(),
+					proxyMiddleware,
+					connect.static( options.base )
+				];
+			}
+		}
+	},
+
+	publish: {
+		options: {
+			base: '<%= publish %>',
 			keepalive: true,
 			middleware: function( connect, options ) {
 				return [

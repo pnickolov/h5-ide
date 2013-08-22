@@ -6,11 +6,10 @@ define [ 'MC', 'event', 'handlebars'
 		 'i18n!/nls/lang.js',
 		 'view', 'layout', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
-		 'WS', 'constant', 'aws_handle', 'test/json_view/json_view'
+		 'WS', 'constant', 'aws_handle'
 ], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant ) ->
 
 	console.info canvas_layout
-
 
 	getMadeiracloudIDESessionID = ( ) ->
 
@@ -35,14 +34,11 @@ define [ 'MC', 'event', 'handlebars'
 		else
 			null
 
-
 	initialize : () ->
 
 		#############################
 		#  validation cookie
 		#############################
-		#
-
 
 		madeiracloud_ide_session_id = getMadeiracloudIDESessionID()
 
@@ -63,7 +59,6 @@ define [ 'MC', 'event', 'handlebars'
 
 			#user session not exist, go to login page
 			window.location.href = 'login.html'
-
 
 		#############################
 		#  initialize MC.data
@@ -199,9 +194,17 @@ define [ 'MC', 'event', 'handlebars'
 		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
 		#	console.log 'RESOURCE_COMPLETE'
 
+		#############################
+		#  i18n
+		#############################
+
 		#i18n
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.ide[ text ]
+
+		#############################
+		#  analytics
+		#############################
 
 		analytics.identify($.cookie("userid"), {
 			name : $.cookie("username"),

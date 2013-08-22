@@ -75,12 +75,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                 else
 
-                    _.map constant.REGION_KEYS, ( value ) ->
-
-                        region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
-
-                    me.set 'region_classic_list', region_classic_vpc_result
-
                     # set cookie
                     $.cookie 'has_cred', false,    { expires: 1 }
 

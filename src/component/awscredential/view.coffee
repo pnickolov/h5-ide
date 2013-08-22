@@ -44,6 +44,7 @@ define [ 'event',
             # update if not in overview
             if MC.data.dashboard_type is 'OVERVIEW_TAB'
                 console.log 'update overview account attributes'
+                ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
 
             else if MC.data.dashboard_type is 'REGION_TAB'
                 console.log 'update region resource'

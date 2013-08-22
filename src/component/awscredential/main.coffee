@@ -41,7 +41,7 @@ define [ 'jquery', 'event',
 
             model.on 'UPDATE_AWS_CREDENTIAL', () ->
                 console.log 'UPDATE_AWS_CREDENTIAL'
-                
+
                 if model.attributes.is_authenticated
                     view.showUpdate()
                 else
@@ -55,8 +55,6 @@ define [ 'jquery', 'event',
         #
         view  = null
         model = null
-        #ide_event.offListen ide_event.<EVENT_TYPE>
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public
     loadModule   : loadModule

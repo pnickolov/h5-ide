@@ -9,17 +9,18 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
         defaults :
             'account_id'        : null
             'is_authenticated'  : null
-            'is_update'         : null
             'is_region'         : null  # whether on the region tab
 
         initialize : ->
             me = this
             #
+            flag = false
+            if $.cookie('has_cred') is 'true'
+                flag = true
+            me.set 'is_authenticated', flag
+
             if $.cookie('account_id')
-                me.set 'is_authenticated', true
                 me.set 'account_id', $.cookie('account_id')
-            else
-                me.set 'is_authenticated', false
 
         awsAuthenticate : (access_key, secret_key, account_id) ->
             me = this
@@ -32,9 +33,23 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
                 if !result1.is_error
 
-                    me.credentialCheck()
-                    me.set 'account_id', account_id
-                    me.trigger 'UPDATE_AWS_CREDENTIAL'
+                    # check credential
+                    vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
+
+                    vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result) ->
+
+                        console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
+
+
+                        if !result.is_error
+                            me.set 'is_authenticated', true
+                            $.cookie 'has_cred', true,    { expires: 1 }
+                        else
+                            me.set 'is_authenticated', false
+                            $.cookie 'has_cred', false,    { expires: 1 }
+
+                        me.set 'account_id', account_id
+                        me.trigger 'UPDATE_AWS_CREDENTIAL'
 
                 else
 
@@ -44,20 +59,20 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
             null
 
-        credentialCheck : () ->
-            me = this
+        # credentialCheck : () ->
+        #     me = this
 
-            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
+        #     vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
 
-            vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result) ->
+        #     vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result) ->
 
-                console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
+        #         console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
-                flag = false
-                if !result.is_error
-                    flag = true
+        #         flag = false
+        #         if !result.is_error
+        #             flag = true
 
-                me.set 'is_authenticated', flag
+        #         me.set 'is_authenticated', flag
 
     }
 

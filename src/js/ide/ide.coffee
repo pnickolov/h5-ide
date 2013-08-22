@@ -6,11 +6,10 @@ define [ 'MC', 'event', 'handlebars'
 		 'i18n!/nls/lang.js',
 		 'view', 'layout', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
-		 'WS', 'constant', 'aws_handle', 'test/json_view/json_view'
+		 'WS', 'constant', 'aws_handle'
 ], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant ) ->
 
 	console.info canvas_layout
-
 
 	getMadeiracloudIDESessionID = ( ) ->
 
@@ -34,7 +33,6 @@ define [ 'MC', 'event', 'handlebars'
 			}
 		else
 			null
-
 
 	initialize : () ->
 

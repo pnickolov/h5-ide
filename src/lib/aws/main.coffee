@@ -7,8 +7,9 @@ define ['MC',
 		'lib/aws/ec2/securitygroup',
 		'lib/aws/vpc/eni',
 		'lib/aws/vpc/vpc',
-		'lib/aws/vpc/subnet'
-		'lib/aws/autoscaling/launchconfiguration'], (MC, aws_handler, aws_handle_ebs, aws_handle_elb, aws_handle_vpn, aws_handle_acl, aws_handle_securitygroup, aws_handle_eni, aws_handle_vpc, aws_handle_subnet, aws_handler_lc) ->
+		'lib/aws/vpc/subnet',
+		'lib/aws/vpc/rtb',
+		'lib/aws/autoscaling/launchconfiguration'], (MC, aws_handler, aws_handle_ebs, aws_handle_elb, aws_handle_vpn, aws_handle_acl, aws_handle_securitygroup, aws_handle_eni, aws_handle_vpc, aws_handle_subnet, aws_handle_rtb, aws_handler_lc) ->
 	MC.aws = {
 		lc : aws_handler_lc
 		aws: aws_handler,
@@ -19,5 +20,6 @@ define ['MC',
 		sg: aws_handle_securitygroup,
 		eni: aws_handle_eni,
 		vpc: aws_handle_vpc,
-		subnet: aws_handle_subnet
+		subnet: aws_handle_subnet,
+		rtb: aws_handle_rtb
 	}

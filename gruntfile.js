@@ -146,6 +146,7 @@ module.exports = function( grunt ) {
 	/* task of use as develop */
 	grunt.registerTask( 'dev_fast', [
 									'make_fast',
+									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -153,6 +154,7 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'develop', [
 									'make',
+									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -160,6 +162,7 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'dev_all', [
 									'make_all',
+									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',

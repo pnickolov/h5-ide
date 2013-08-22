@@ -4461,3 +4461,50 @@ a.sidebar-hider {
 	display:none;
 }
 */
+
+/* Client & Service Error */
+.invalid-session .modal-text {
+	font-size: 14px;
+	color: black;
+	margin: 12px auto;
+}
+
+.invalid-session .modal-center-align-helper div:last-child {
+	color: #999;
+}
+
+.reconnect-session .modal-text {
+	font-size: 14px;
+	color: black;
+	margin: 20px auto;
+}
+
+.reconnect-session .input {
+	width: 240px;
+}
+
+.reconnect-session .modal-center-align-helper {
+	padding-left: 9px;
+	padding-bottom: 30px;
+}
+
+.disconnected-notiﬁcation {
+	border-radius: 2px;
+	background-color: #cc483a;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, .3);
+	padding: 14px;
+	color: #fff;
+	width: 280px;
+	position: absolute;
+	top: 44px;
+	right: 10px;
+	z-index: 9999;
+}
+
+.disconnected-notiﬁcation p {
+	margin: 0;
+}
+
+
+
+

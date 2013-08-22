@@ -1671,8 +1671,35 @@ MC.canvas.layout = {
 
 	save: function ()
 	{
-		return JSON.stringify( MC.canvas_data );
+		var data = MC.canvas_data;
+
+		if (data.layout.component.node)
+		{
+			$.each(data.layout.component.node, function (id, data)
+			{
+				if  (data.connection)
+				{
+					data.connection = [];
+				}
+			});
+		}
+
+		if (data.layout.component.group)
+		{
+			$.each(data.layout.component.group, function (id, data)
+			{
+				if  (data.connection)
+				{
+					data.connection = [];
+				}
+			});
+		}
+
+		delete data.layout.connection;
+
+		return data;
 	}
+
 };
 
 MC.canvas.data = {
@@ -2008,6 +2035,7 @@ MC.canvas.volume = {
 			}, {
 				'target': target,
 				'canvas_offset': $('#svg_canvas').offset(),
+				'canvas_body': $('#canvas_body'),
 				'shadow': shadow,
 				'originalPageX': event.pageX,
 				'originalPageY': event.pageY,
@@ -2022,23 +2050,26 @@ MC.canvas.volume = {
 
 	mousemove: function (event)
 	{
+		var match_node = MC.canvas.matchPoint(
+				event.pageX - event.data.canvas_offset.left,
+				event.pageY - event.data.canvas_offset.top
+			),
+			event_data = event.data;
+
 		if (
-			event.data.originalX !== event.pageX ||
-			event.data.originalY !== event.pageY
+			event_data.originalX !== event.pageX ||
+			event_data.originalY !== event.pageY
 		)
 		{
-			event.data.shadow
+			event_data.shadow
 				.css({
 					'top': event.pageY - 50,
 					'left': event.pageX - 50
 				})
 				.show();
-		}
 
-		var match_node = MC.canvas.matchPoint(
-				event.pageX - event.data.canvas_offset.left,
-				event.pageY - event.data.canvas_offset.top
-			);
+			event_data.canvas_body.addClass('node-dragging');
+		}
 
 		if (
 			match_node &&
@@ -2195,6 +2226,8 @@ MC.canvas.volume = {
 
 		event.data.shadow.remove();
 
+		event.data.canvas_body.removeClass('node-dragging');
+
 		$('#overlayer').remove();
 
 		$(document).off({
@@ -2223,9 +2256,12 @@ MC.canvas.asgList = {
 			var i;
 
 			for ( i in MC.canvas_data.component ) {
-				var comp = MC.canvas_data.component[i]
-				if ( comp.type === "AWS.AutoScaling.Group" &&
-					   comp.resource.LaunchConfigurationName.indexOf( lc_comp.uid ) != -1 ) {
+				var comp = MC.canvas_data.component[i];
+				if (
+					comp.type === "AWS.AutoScaling.Group" &&
+					comp.resource.LaunchConfigurationName.indexOf( lc_comp.uid ) != -1
+				)
+				{
 					lc_comp = comp;
 					break;
 				}
@@ -2241,8 +2277,8 @@ MC.canvas.asgList = {
 			};
 
 			var temp_data = {
-					  name       : lc_comp.name
-				  , instances  : []
+				name: lc_comp.name,
+				instances: []
 			};
 
 			if ( layout ) {
@@ -2252,7 +2288,7 @@ MC.canvas.asgList = {
 			var instances = MC.data.resource_list[ MC.canvas_data.region ][ lc_comp.resource.AutoScalingGroupARN ].Instances.member;
 			if ( instances )
 			{
-				for ( i = 0; i < instances.length; ++i ) {
+				for ( i = 0, l = instances.length; i < l; ++i ) {
 					temp_data.instances.push({
 						  id     : instances[i].InstanceId
 						, status : statusMap[ instances[i].LifecycleState ]
@@ -2398,6 +2434,7 @@ MC.canvas.event.dragable = {
 				});
 			}
 
+			MC.canvas.volume.close();
 			MC.canvas.event.clearSelected();
 		}
 
@@ -3419,6 +3456,7 @@ MC.canvas.event.siderbarDrag = {
 				}, {
 					'target': target,
 					'canvas_offset': svg_canvas.offset(),
+					'canvas_body': $('#canvas_body'),
 					'shadow': shadow
 				});
 			}

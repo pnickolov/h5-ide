@@ -1671,8 +1671,35 @@ MC.canvas.layout = {
 
 	save: function ()
 	{
-		return JSON.stringify( MC.canvas_data );
+		var data = MC.canvas_data;
+
+		if (data.layout.component.node)
+		{
+			$.each(data.layout.component.node, function (id, data)
+			{
+				if  (data.connection)
+				{
+					data.connection = [];
+				}
+			});
+		}
+
+		if (data.layout.component.group)
+		{
+			$.each(data.layout.component.group, function (id, data)
+			{
+				if  (data.connection)
+				{
+					data.connection = [];
+				}
+			});
+		}
+
+		delete data.layout.connection;
+
+		return data;
 	}
+
 };
 
 MC.canvas.data = {

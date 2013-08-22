@@ -41,8 +41,6 @@ define [ 'MC', 'event', 'handlebars'
 		#############################
 		#  validation cookie
 		#############################
-		#
-
 
 		madeiracloud_ide_session_id = getMadeiracloudIDESessionID()
 
@@ -63,7 +61,6 @@ define [ 'MC', 'event', 'handlebars'
 
 			#user session not exist, go to login page
 			window.location.href = 'login.html'
-
 
 		#############################
 		#  initialize MC.data
@@ -199,9 +196,17 @@ define [ 'MC', 'event', 'handlebars'
 		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
 		#	console.log 'RESOURCE_COMPLETE'
 
+		#############################
+		#  i18n
+		#############################
+
 		#i18n
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.ide[ text ]
+
+		#############################
+		#  analytics
+		#############################
 
 		analytics.identify($.cookie("userid"), {
 			name : $.cookie("username"),

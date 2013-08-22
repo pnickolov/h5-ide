@@ -12,8 +12,9 @@ node_modules/**
 bower_components/**
 components/**
 
-#ignore release
+#ignore release publish
 release/**
+publish/**
 
 #ignore page
 src/js/*.js

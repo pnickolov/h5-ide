@@ -9,9 +9,10 @@ module.exports = function( grunt ) {
 		pkg        : grunt.file.readJSON( 'package.json' ),
 
 		src        : 'src',
+		release    : 'release',
+		publish    : 'publish',
 		vender     : 'vender',
 		components : 'bower_components',
-		release    : 'release',
 
 		gruntfile  : [
 			'gruntfile.js',
@@ -77,6 +78,8 @@ module.exports = function( grunt ) {
 		cssmin     : require( './config/cssmin.js'  ),
 		htmlmin    : require( './config/htmlmin.js' ),
 		uglify     : require( './config/uglify.js'  ),
+
+		requirejs  : require( './config/requirejs.js' ),
 
 		concat     : require( './config/concat.js'  ),
 
@@ -171,18 +174,25 @@ module.exports = function( grunt ) {
 									'watch'
 	]);
 
-	/* task of use as publish */
-	grunt.registerTask( 'publish', ['make_all',
-									'clean',
+	/* task of use as release */
+	grunt.registerTask( 'release', ['clean',
+									'make_all',
 									'copy:publish',
+									'copy:lib_aws',
 									'copy:special_lib',
 									'copy:special_ui',
 									'cssmin',
 									'uglify',
 									'copy:special_lib_rename',
-									'copy:special_lib_del',
 									'copy:special_ui_rename',
+									'copy:special_lib_del',
 									'copy:special_ui_del',
+									'open:publish',
+									'connect:release'
+	]);
+
+	/* run at r.js as publish */
+	grunt.registerTask( 'publish', ['requirejs:compile_login',
 									'open:publish',
 									'connect:publish'
 	]);

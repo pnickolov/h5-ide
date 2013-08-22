@@ -2407,6 +2407,7 @@ MC.canvas.event.dragable = {
 				});
 			}
 
+			MC.canvas.volume.close();
 			MC.canvas.event.clearSelected();
 		}
 

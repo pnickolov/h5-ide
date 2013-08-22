@@ -39,8 +39,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             'recent_edited_stacks'  : null
             'recent_launched_apps'  : null
             'recent_stoped_apps'    : null
-            #'app_list'              : null
-            #'stack_list'            : null
 
         initialize : ->
 
@@ -52,24 +50,29 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                 console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
-                regionAttrSet = result.resolved_data
+                if !result.is_error
 
-                region_classic_vpc_result = []
+                    regionAttrSet = result.resolved_data
 
-                _.map constant.REGION_KEYS, ( value ) ->
+                    region_classic_vpc_result = []
 
-                    if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
+                    _.map constant.REGION_KEYS, ( value ) ->
 
-                        cur_attr = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
-                        if  cur_attr and $.type(cur_attr) == "array" and cur_attr.length == 2
-                            region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
-                        else
-                            region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
-                        null
+                        if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
 
-                me.set 'region_classic_list', region_classic_vpc_result
-                null
+                            cur_attr = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
+                            if  cur_attr and $.type(cur_attr) == "array" and cur_attr.length == 2
+                                region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
+                            else
+                                region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
+                            null
 
+                    me.set 'region_classic_list', region_classic_vpc_result
+                    null
+
+                else
+
+                    $.cookie 'has_cred', false,    { expires: 1 }
 
             null
 
@@ -205,8 +208,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             me = this
 
-            #get service(model)
-            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
+            if $.cookie( 'has_cred' ) is 'true'   # do it when has credential
+                #get service(model)
+                vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
 
             null
 

@@ -26,6 +26,11 @@ define [ 'jquery', 'event',
             #render
             view.render template
 
+            if model.attributes.is_authenticated
+                view.showUpdate()
+            else
+                view.showSet()
+
             #
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
@@ -35,7 +40,12 @@ define [ 'jquery', 'event',
                 model.awsAuthenticate access_key, secret_key, account_id
 
             model.on 'UPDATE_AWS_CREDENTIAL', () ->
-                view.reRender()
+                console.log 'UPDATE_AWS_CREDENTIAL'
+
+                if model.attributes.is_authenticated
+                    view.showUpdate()
+                else
+                    view.showSet('is_failed')
 
     unLoadModule = ( view, model ) ->
         console.log 'awscredential unLoadModule'
@@ -45,8 +55,6 @@ define [ 'jquery', 'event',
         #
         view  = null
         model = null
-        #ide_event.offListen ide_event.<EVENT_TYPE>
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public
     loadModule   : loadModule

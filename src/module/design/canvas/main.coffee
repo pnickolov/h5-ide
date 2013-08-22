@@ -28,7 +28,10 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                                 platform : current_platform
                             }
                 else if type is 'OPEN_STACK' or type is 'OPEN_APP'
-                    require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.init()
+                    require [ 'canvas_layout' ], ( canvas_layout ) ->
+                        MC.canvas.layout.init()
+                        model.initLine()
+                        model.reDrawSgLine()
                 null
 
 
@@ -88,7 +91,8 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 model.showOverlapNotification()
                 null
 
-
+            view.on 'CANVAS_ASG_SELECTED', ( event, uid ) ->
+                ide_event.trigger ide_event.OPEN_PROPERTY, 'component_asg_instance', uid
 
             model.on 'SHOW_SG_LIST', ( line_id ) ->
                 sgrule_main.loadModule line_id, 'delete'

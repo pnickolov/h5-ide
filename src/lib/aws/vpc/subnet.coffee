@@ -79,7 +79,7 @@ define [ 'MC' ], ( MC ) ->
 		if ipCidr1Suffix > ipCidr2Suffix
 			minIpCidrSuffix = ipCidr2Suffix
 
-		if ipCidr1BinStr.slice(0, minIpCidrSuffix) is ipCidr2BinStr.slice(0, minIpCidrSuffix)
+		if ipCidr1BinStr.slice(0, minIpCidrSuffix) is ipCidr2BinStr.slice(0, minIpCidrSuffix) and minIpCidrSuffix isnt 0
 			return true
 		else
 			return false

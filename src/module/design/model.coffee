@@ -126,7 +126,6 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
             console.log 'getLastOpenProperty'
             MC.data.last_open_property
 
-
         describeInstancesOfASG : (region) ->
 
             comp_layout   = MC.canvas.data.get('layout.component.group')
@@ -147,7 +146,6 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                         _.map instance_memeber, (ins, i) ->
                             instance_ids.push ins.InstanceId
                             null
-
                 null
 
             ######
@@ -159,35 +157,20 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                 instance_service.DescribeInstances src, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, instance_ids, null, ( aws_result ) ->
 
                     if !aws_result.is_error
-                    #DescribeInstances succeed
-
+                        #DescribeInstances succeed
                         if aws_result.resolved_data
-
                              _.map aws_result.resolved_data, (ins, i) ->
-
                                 MC.data.resource_list[region][ins.instanceId] = ins
                                 null
-
                         null
-
                     else
-                    #DescribeInstances failed
-
+                        #DescribeInstances failed
                         console.log 'instance.DescribeInstances failed, error is ' + aws_result.error_message
-
             null
 
-
-
-
-
         getAppResourcesService : ( region, app_id )->
-
             me = this
-
             app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  app_id
-
-
     }
 
     model = new DesignModel()

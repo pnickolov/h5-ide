@@ -9,9 +9,10 @@ module.exports = function( grunt ) {
 		pkg        : grunt.file.readJSON( 'package.json' ),
 
 		src        : 'src',
+		release    : 'release',
+		publish    : 'publish',
 		vender     : 'vender',
 		components : 'bower_components',
-		release    : 'release',
 
 		gruntfile  : [
 			'gruntfile.js',
@@ -78,6 +79,8 @@ module.exports = function( grunt ) {
 		htmlmin    : require( './config/htmlmin.js' ),
 		uglify     : require( './config/uglify.js'  ),
 
+		requirejs  : require( './config/requirejs.js' ),
+
 		concat     : require( './config/concat.js'  ),
 
 		sweep      : require( './config/sweep.js'   )
@@ -143,6 +146,7 @@ module.exports = function( grunt ) {
 	/* task of use as develop */
 	grunt.registerTask( 'dev_fast', [
 									'make_fast',
+									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -150,6 +154,7 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'develop', [
 									'make',
+									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -157,6 +162,7 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'dev_all', [
 									'make_all',
+									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -171,18 +177,25 @@ module.exports = function( grunt ) {
 									'watch'
 	]);
 
-	/* task of use as publish */
-	grunt.registerTask( 'publish', ['make_all',
-									'clean',
+	/* task of use as release */
+	grunt.registerTask( 'release', ['clean',
+									'make_all',
 									'copy:publish',
+									'copy:lib_aws',
 									'copy:special_lib',
 									'copy:special_ui',
 									'cssmin',
 									'uglify',
 									'copy:special_lib_rename',
-									'copy:special_lib_del',
 									'copy:special_ui_rename',
+									'copy:special_lib_del',
 									'copy:special_ui_del',
+									'open:publish',
+									'connect:release'
+	]);
+
+	/* run at r.js as publish */
+	grunt.registerTask( 'publish', ['requirejs:compile_login',
 									'open:publish',
 									'connect:publish'
 	]);

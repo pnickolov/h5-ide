@@ -36,6 +36,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             data = $.extend true, {}, this.model.attributes
 
             subnetUID = this.model.get('uid')
+            subnetName = this.model.get('name')
             vpcComp = MC.aws.subnet.getVPC(this.model.get('uid'))
             vpcCIDR = vpcComp.resource.CidrBlock
 
@@ -55,8 +56,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             this.refreshACLList()
 
             if focusCIDR
+                MC.canvas.update subnetUID, 'text', 'name', subnetName + ' ()'
                 $('#property-cidr-block').val('')
                 $('#property-cidr-block').focus()
+                ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
 
             null
 
@@ -157,6 +160,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             if haveError
                 template = MC.template.setupCIDRConfirm {
+                    remove_content : 'Remove Subnet',
                     main_content : mainContent,
                     desc_content : descContent
                 }

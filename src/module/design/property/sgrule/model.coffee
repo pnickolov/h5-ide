@@ -115,7 +115,16 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
                     else
                         tmp_rule.egress = true
 
-                    tmp_rule.protocol = rule.IpProtocol
+                    if rule.IpProtocol isnt 'tcp' and rule.IpProtocol isnt 'udp' and rule.IpProtocol isnt 'icmp'
+
+                        if rule.IpProtocol is '-1' or rule.IpProtocol is -1
+
+                            tmp_rule.protocol = 'all'
+
+                        else
+                            tmp_rule.protocol = "Custom(#{rule.IpProtocol})"
+                    else
+                        tmp_rule.protocol = rule.IpProtocol
 
                     if rule.IpRanges.slice(0,1) is '@'
 

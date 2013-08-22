@@ -148,26 +148,24 @@ define [], () ->
 	REGION_KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
 
 	#private
-	REGION_LABEL = {}
-	REGION_LABEL[ 'us-east-1' ]      = 'US East - N. Virginia'
-	REGION_LABEL[ 'us-west-1' ]      = 'US West - N. California'
-	REGION_LABEL[ 'us-west-2' ]      = 'US West - Oregon'
-	REGION_LABEL[ 'eu-west-1' ]      = 'EU West - Ireland'
-	REGION_LABEL[ 'ap-southeast-1' ] = 'Asia Pacific - Singapore'
-	REGION_LABEL[ 'ap-southeast-2' ] = 'Asia Pacific - Sydney'
-	REGION_LABEL[ 'ap-northeast-1' ] = 'Asia Pacific - Tokyo'
-	REGION_LABEL[ 'sa-east-1' ]      = 'South America - Sao Paulo'
-
-	#private
 	REGION_SHORT_LABEL = {}
-	REGION_SHORT_LABEL[ 'us-east-1' ]      = 'N. Virginia'
-	REGION_SHORT_LABEL[ 'us-west-1' ]      = 'N. California'
+	REGION_LABEL = {}
+	REGION_SHORT_LABEL[ 'us-east-1' ]      = 'Virginia'
+	REGION_LABEL[ 'us-east-1' ]      = 'US East'
+	REGION_SHORT_LABEL[ 'us-west-1' ]      = 'California'
+	REGION_LABEL[ 'us-west-1' ]      = 'US West'
 	REGION_SHORT_LABEL[ 'us-west-2' ]      = 'Oregon'
+	REGION_LABEL[ 'us-west-2' ]      = 'US West'
 	REGION_SHORT_LABEL[ 'eu-west-1' ]      = 'Ireland'
+	REGION_LABEL[ 'eu-west-1' ]      = 'EU West'
 	REGION_SHORT_LABEL[ 'ap-southeast-1' ] = 'Singapore'
+	REGION_LABEL[ 'ap-southeast-1' ] = 'Asia Pacific'
 	REGION_SHORT_LABEL[ 'ap-southeast-2' ] = 'Sydney'
+	REGION_LABEL[ 'ap-southeast-2' ] = 'Asia Pacific'
 	REGION_SHORT_LABEL[ 'ap-northeast-1' ] = 'Tokyo'
+	REGION_LABEL[ 'ap-northeast-1' ] = 'Asia Pacific'
 	REGION_SHORT_LABEL[ 'sa-east-1' ]      = 'Sao Paulo'
+	REGION_LABEL[ 'sa-east-1' ]      = 'South America'
 
 	#private
 	RETURN_CODE = {

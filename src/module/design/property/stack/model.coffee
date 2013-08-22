@@ -29,7 +29,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
             property_detail = $.extend true, {}, MC.canvas_data
             property_detail.name = MC.canvas_data.name
-            property_detail.region = constant.REGION_LABEL[MC.canvas_data.region]
+            property_detail.region = constant.REGION_SHORT_LABEL[MC.canvas_data.region]
             property_detail.type = me.getStackType()
             property_detail.is_vpc = true if property_detail.type and property_detail.type != 'EC2 Classic'
 

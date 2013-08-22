@@ -1360,15 +1360,89 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			$.each MC.canvas_data.layout.connection, ( line_id, line ) ->
 
-				if line.type == 'sg'
+				#if line.type == 'sg'
 
-					MC.canvas.remove $("#"+line_id)[0]
+				MC.canvas.remove $("#"+line_id)[0]
 
 			$.each lines, ( idx, line_data ) ->
 
 				MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
 
+			this.initLine()
+
 			lines
+
+		initLine: ()->
+
+			subnet_ids = []
+
+			lines = []
+
+			main_rt = null
+
+			$.each MC.canvas_data.component, ( comp_uid, comp )->
+
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+
+					if comp.resource.AssociationSet[0].Main is true or comp.resource.AssociationSet[0].Main is 'true'
+
+						main_rt = comp_uid
+
+					$.each comp.resource.AssociationSet, ( idx, asso ) ->
+
+						if asso.SubnetId
+
+							subnet_id = asso.SubnetId.split('.')[0][1...]
+
+							subnet_ids.push subnet_id
+
+							lines.push [subnet_id, comp_uid, 'subnet-assoc-out', 'rtb-src']
+
+					$.each comp.resource.RouteSet, ( idx, route )->
+
+						if route.InstanceId
+
+							lines.push [route.InstanceId.split('.')[0][1...], comp_uid, 'instance-rtb', 'rtb-tgt-left']
+
+						if route.GatewayId
+
+							gateway_port = null
+
+							rtb_port = null
+
+							if route.GatewayId.indexOf('Internet') >= 0
+
+								gateway_port = 'igw-tgt'
+
+								rtb_port = 'rtb-tgt-left'
+
+							else
+								gateway_port = 'vgw-tgt'
+
+								rtb_port = 'rtb-tgt-right'
+
+
+							lines.push [route.GatewayId.split('.')[0][1...], comp_uid, gateway_port, rtb_port]
+
+						if route.NetworkInterfaceId
+
+							lines.push [route.NetworkInterfaceId.split('.')[0][1...], comp_uid, 'eni-rtb', 'rtb-tgt-left']
+
+			$.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet and (comp_uid not in subnet_ids)
+
+					lines.push [comp_uid, main_rt, 'subnet-assoc-out', 'rtb-src']
+
+			$.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+
+					lines.push [comp.resource.CustomerGatewayId.split('.')[0][1...], comp.resource.VpnGatewayId.split('.')[0][1...], 'cgw-vpn', 'vgw-vpn']
+
+			$.each lines, ( idx, line_data ) ->
+
+				MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
 
 		setEip : ( uid, state ) ->
 			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC

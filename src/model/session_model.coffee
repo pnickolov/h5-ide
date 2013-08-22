@@ -10,7 +10,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'session_service'], ( Backbone, session_service ) ->
+define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone, _, session_service, base_model ) ->
 
     SessionModel = Backbone.Model.extend {
 
@@ -18,6 +18,9 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service ) ->
         defaults : {
             vo : {}
         }
+
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #login api (define function)
@@ -41,6 +44,7 @@ define [ 'backbone', 'session_service'], ( Backbone, session_service ) ->
                 #login failed
 
                     console.log 'session.login failed, error is ' + forge_result.error_message
+                    me.pub forge_result.error_message
 
                 #dispatch event (dispatch event whenever login succeed or failed)
                 if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGIN_RETURN', forge_result else me.trigger 'SESSION_LOGIN_RETURN', forge_result

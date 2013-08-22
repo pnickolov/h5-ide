@@ -6,8 +6,10 @@ define [ 'MC', 'event', 'handlebars'
 		 'i18n!/nls/lang.js',
 		 'view', 'layout', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
-		 'WS', 'constant', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant ) ->
+		 'WS', 'constant',
+		 'base_model',
+		 'aws_handle'
+], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model ) ->
 
 	console.info canvas_layout
 
@@ -219,3 +221,17 @@ define [ 'MC', 'event', 'handlebars'
 		})
 
 		analytics.track('Loaded IDE', { })
+
+		#############################
+		#  base model
+		#############################
+
+		MC.data.base_model = base_model
+
+		base_model.sub ( error ) ->
+			console.log 'sub'
+			console.log error
+			if error.return_code is constant.RETURN_CODE.E_SESSION
+				console.log 'sdfasdfasfasdfasdfasdf'
+
+		null

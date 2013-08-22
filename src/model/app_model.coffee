@@ -10,7 +10,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'app_service' ], ( Backbone, app_service ) ->
+define [ 'backbone', 'underscore', 'app_service', 'base_model' ], ( Backbone, _, app_service, base_model ) ->
 
     AppModel = Backbone.Model.extend {
 
@@ -18,6 +18,9 @@ define [ 'backbone', 'app_service' ], ( Backbone, app_service ) ->
         defaults : {
             vo : {}
         }
+
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #create api (define function)
@@ -249,6 +252,7 @@ define [ 'backbone', 'app_service' ], ( Backbone, app_service ) ->
                 #list failed
 
                     console.log 'app.list failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
                 #dispatch event (dispatch event whenever login succeed or failed)
                 if src.sender and src.sender.trigger then src.sender.trigger 'APP_LST_RETURN', forge_result

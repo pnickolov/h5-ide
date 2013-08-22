@@ -58,6 +58,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 console.log 'APP_LST_RETURN'
 
+                return if result.is_error
+
                 #
                 app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
@@ -72,6 +74,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             me.on 'STACK_LST_RETURN', ( result ) ->
 
                 console.log 'STACK_LST_RETURN'
+
+                return if result.is_error
 
                 #
                 stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }

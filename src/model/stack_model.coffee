@@ -10,7 +10,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
+define [ 'backbone', 'underscore', 'stack_service', 'base_model'], ( Backbone, _, stack_service, base_model ) ->
 
     StackModel = Backbone.Model.extend {
 
@@ -18,6 +18,9 @@ define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
         defaults : {
             vo : {}
         }
+
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #create api (define function)
@@ -221,6 +224,8 @@ define [ 'backbone', 'stack_service'], ( Backbone, stack_service ) ->
 
                 else
                 #list failed
+
+                    me.pub forge_result
 
                     console.log 'stack.list failed, error is ' + forge_result.error_message
 

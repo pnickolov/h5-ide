@@ -141,6 +141,10 @@ require.config {
 		#############################################
 		# model
 		#############################################
+
+		#base_model
+		'base_model'             : 'model/base_model'
+
 		'session_model'          : 'model/session_model'
 		'favorite_model'         : 'model/favorite_model'
 		'app_model'              : 'model/app_model'

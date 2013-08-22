@@ -631,10 +631,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_right', false
 
 			# IGW <==> RouteTable
-			else if portMap['igw-tgt'] and portMap['rtb-tgt-left']
+			else if portMap['igw-tgt'] and portMap['rtb-tgt']
 
 				keepArray = []
-				component_resource = MC.canvas_data.component[portMap['rtb-tgt-left']].resource
+				component_resource = MC.canvas_data.component[portMap['rtb-tgt']].resource
 
 				for i in component_resource.RouteSet
 					if MC.extractID( i.GatewayId ) isnt portMap['igw-tgt']
@@ -655,11 +655,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 			# Instance <==> RouteTable
-			else if portMap['instance-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['instance-rtb'] and portMap['rtb-tgt']
 
 				rt_uid = null
 
-				if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
+				rt_uid = portMap['rtb-tgt']
 
 				keepArray = []
 				component_resource = MC.canvas_data.component[ rt_uid ].resource
@@ -671,11 +671,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				component_resource.RouteSet = keepArray
 
 			# Eni <==> RouteTable
-			else if portMap['eni-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['eni-rtb'] and portMap['rtb-tgt']
 
 				rt_uid = null
 
-				if portMap['rtb-tgt-left'] then rt_uid = portMap['rtb-tgt-left'] else rt_uid = portMap['rtb-tgt-right']
+				rt_uid = portMap['rtb-tgt']
 
 				remove_index = []
 				keepArray = []
@@ -688,9 +688,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				component_resource.RouteSet = keepArray
 
 			# VGW <==> RouteTable
-			else if portMap['vgw-tgt'] and portMap['rtb-tgt-right']
+			else if portMap['vgw-tgt'] and portMap['rtb-tgt']
 
-				component_resource = MC.canvas_data.component[portMap['rtb-tgt-right']].resource
+				component_resource = MC.canvas_data.component[portMap['rtb-tgt']].resource
 				keepArray = []
 
 				for i in component_resource.RouteSet
@@ -1016,9 +1016,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					break
 
 			# IGW <==> RouteTable
-			else if portMap['igw-tgt'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['igw-tgt'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
-				rt_uid = if portMap['rtb-tgt-left'] then portMap['rtb-tgt-left'] else portMap['rtb-tgt-right']
+				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
 					'DestinationCidrBlock' : "0.0.0.0/0",
 					'GatewayId'            : "@#{portMap['igw-tgt']}.resource.InternetGatewayId",
@@ -1031,9 +1031,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 			# Instance <==> RouteTable
-			else if portMap['instance-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['instance-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
-				rt_uid = if portMap['rtb-tgt-left'] then portMap['rtb-tgt-left'] else portMap['rtb-tgt-right']
+				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
 					'DestinationCidrBlock' : "0.0.0.0/0",
 					'GatewayId'            : "",
@@ -1045,9 +1045,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				}
 
 			# VGW <==> RouteTable
-			else if portMap['vgw-tgt'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['vgw-tgt'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
-				rt_uid = if portMap['rtb-tgt-left'] then portMap['rtb-tgt-left'] else portMap['rtb-tgt-right']
+				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
 					'DestinationCidrBlock' : "0.0.0.0/0",
 					'GatewayId'            : "@#{portMap['vgw-tgt']}.resource.VpnGatewayId",
@@ -1059,9 +1059,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				}
 
 			# Eni <==> RouteTable
-			else if portMap['eni-rtb'] and ( portMap['rtb-tgt-left'] or portMap['rtb-tgt-right'] )
+			else if portMap['eni-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
-				rt_uid = if portMap['rtb-tgt-left'] then portMap['rtb-tgt-left'] else portMap['rtb-tgt-right']
+				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
 					'DestinationCidrBlock' : "0.0.0.0/0",
 					'GatewayId'            : "",
@@ -1136,7 +1136,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 					# Automatically connect IGW and main RT
 					# Coommented out, because we don't need to add the route anymore.
-					# line_id = MC.canvas.connect uid, "igw-tgt", this._findMainRT(), 'rtb-tgt-left'
+					# line_id = MC.canvas.connect uid, "igw-tgt", this._findMainRT(), 'rtb-tgt'
 					# this.createLine null, line_id
 
 				when resource_type.AWS_EC2_Instance
@@ -1422,7 +1422,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 						if route.InstanceId
 
-							lines.push [route.InstanceId.split('.')[0][1...], comp_uid, 'instance-rtb', 'rtb-tgt-left']
+							lines.push [route.InstanceId.split('.')[0][1...], comp_uid, 'instance-rtb', 'rtb-tgt']
 
 						if route.GatewayId
 
@@ -1434,31 +1434,57 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 								gateway_port = 'igw-tgt'
 
-								rtb_port = 'rtb-tgt-left'
+								rtb_port = 'rtb-tgt'
 
 							else
 								gateway_port = 'vgw-tgt'
 
-								rtb_port = 'rtb-tgt-right'
+								rtb_port = 'rtb-tgt'
 
 
 							lines.push [route.GatewayId.split('.')[0][1...], comp_uid, gateway_port, rtb_port]
 
 						if route.NetworkInterfaceId
 
-							lines.push [route.NetworkInterfaceId.split('.')[0][1...], comp_uid, 'eni-rtb', 'rtb-tgt-left']
+							lines.push [route.NetworkInterfaceId.split('.')[0][1...], comp_uid, 'eni-rtb', 'rtb-tgt']
+
 
 			$.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
+				# subnet with main rt
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet and (comp_uid not in subnet_ids)
 
 					lines.push [comp_uid, main_rt, 'subnet-assoc-out', 'rtb-src']
 
-			$.each MC.canvas_data.component, ( comp_uid, comp ) ->
+				# vpn
 
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
 
 					lines.push [comp.resource.CustomerGatewayId.split('.')[0][1...], comp.resource.VpnGatewayId.split('.')[0][1...], 'cgw-vpn', 'vgw-vpn']
+
+				# elb
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+
+					$.each comp.resource.Instances, ( i, instance ) ->
+
+						lines.push [comp_uid, instance.InstanceId.split('.')[0][1...], 'elb-sg-out', 'instance-sg']
+
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+
+					expand_asg = [comp_uid]
+
+					$.each MC.canvas_data.layout.component.group, ( c, g ) ->
+
+						if g.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and g.originalId and g.originalId is comp_uid
+
+							expand_asg.push c
+
+					$.each expand_asg, ( i, asg ) ->
+
+						$.each comp.resource.LoadBalancerNames, ( j, elb ) ->
+
+							lines.push [asg, elb.split('.')[0][1...], 'launchconfig-sg', 'elb-sg-out']
+
+
 
 			$.each lines, ( idx, line_data ) ->
 

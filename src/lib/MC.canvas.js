@@ -2451,15 +2451,15 @@ MC.canvas.event.dragable = {
 	},
 	mouseup: function (event)
 	{
-		if (event.data.target.data('class') === 'AWS.VPC.Subnet')
-		{
-			event.data.target.find('.port').show();
-		}
-
 		var target = event.data.target,
 			target_id = target.attr('id'),
 			target_type = event.data.target_type,
 			node_type = target.data('class');
+
+		if (node_type === 'AWS.VPC.Subnet')
+		{
+			event.data.target.find('.port').show();
+		}
 
 		// Selected
 		if (
@@ -3727,7 +3727,7 @@ MC.canvas.event.groupResize = {
 					'offsetX': event.pageX - canvas_offset.left,
 					'offsetY': event.pageY - canvas_offset.top,
 					'direction': $(target).data('direction'),
-					'group_border': parseInt(group.css('stroke-width'),10) * 2,
+					'group_border': parseInt(group.css('stroke-width'), 10) * 2,
 					'group_type': type,
 					'parentGroup': MC.canvas.parentGroup(
 						parent.attr('id'),
@@ -3864,6 +3864,12 @@ MC.canvas.event.groupResize = {
 			group_height = Math.round(target.attr('height') / grid_height),
 			group_left = Math.round(((parent_offset.left - canvas_offset.left) * scale_ratio + offsetX) / grid_width),
 			group_top = Math.round(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / grid_height),
+
+			// group_width = Math.floor(target.attr('width') / grid_width) + Math.floor(scale_ratio / 1.1),
+			// group_height = Math.floor(target.attr('height') / grid_height) + Math.floor(scale_ratio / 1.1),
+
+			// group_left = Math.floor((parent_offset.left - canvas_offset.left + offsetX) * scale_ratio / grid_width),
+			// group_top = Math.floor((parent_offset.top - canvas_offset.top + offsetY) * scale_ratio / grid_height),
 			
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),

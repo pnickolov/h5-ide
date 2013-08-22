@@ -211,11 +211,14 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** vpc begin *****//
 		case 'AWS.VPC.VPC':
 
+			vpcCIDR = ''
+
 			if (create_mode)
 			{
 
 				component_data = $.extend(true, {}, MC.canvas.VPC_JSON.data);
 				component_data.name = option.name;
+				vpcCIDR = component_data.resource.CidrBlock
 
 				component_layout = $.extend(true, {}, MC.canvas.VPC_JSON.layout);
 
@@ -227,6 +230,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{
 				component_data = data[group.id];
 				option.name = component_data.name;
+				vpcCIDR = component_data.resource.CidrBlock
 
 				component_layout = layout.group[group.id];
 
@@ -236,6 +240,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.width = component_layout.size[0];
 				option.height = component_layout.size[1];
 			}
+
+			option.name = option.name + ' (' + vpcCIDR + ')'
 
 			width = option.width * MC.canvas.GRID_WIDTH,
 			height = option.height * MC.canvas.GRID_HEIGHT,
@@ -309,6 +315,7 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** subnet begin *****//
 		case 'AWS.VPC.Subnet':
 
+			subnetCIDR = ''
 			if (create_mode)
 			{
 				component_data = $.extend(true, {}, MC.canvas.SUBNET_JSON.data);
@@ -316,6 +323,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.VpcId = "@" + option.group.vpcUId + '.resource.VpcId';
 				component_data.resource.AvailabilityZone = option.group.availableZoneName;
 				component_data.autoCreate = option.auto;
+				subnetCIDR = component_data.resource.CidrBlock
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 				component_layout.groupUId = option.groupUId;
@@ -327,6 +335,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			else
 			{
 				component_data = data[group.id];
+				subnetCIDR = component_data.resource.CidrBlock
 				option.name = component_data.name;
 
 				component_layout = layout.group[group.id];
@@ -337,6 +346,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.width = component_layout.size[0];
 				option.height = component_layout.size[1];
 			}
+
+			option.name = option.name + ' (' + subnetCIDR + ')'
 
 			width = option.width * MC.canvas.GRID_WIDTH,
 			height = option.height * MC.canvas.GRID_HEIGHT,

@@ -1679,7 +1679,7 @@ MC.canvas.layout = {
 			{
 				if  (data.connection)
 				{
-					delete data.connection;
+					data.connection = [];
 				}
 			});
 		}
@@ -1690,7 +1690,7 @@ MC.canvas.layout = {
 			{
 				if  (data.connection)
 				{
-					delete data.connection;
+					data.connection = [];
 				}
 			});
 		}

@@ -370,7 +370,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# Delete the LC if there's only one asg is using.
 			lc_uid    = component.resource.LaunchConfigurationName
 			lc_shared = false
-			for comp_uid, compo of MC.canvas_data.component
+			for comp_uid, comp of MC.canvas_data.component
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 					if comp.resource.LaunchConfigurationName is lc_uid
 						lc_shared = true
@@ -381,8 +381,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				delete MC.canvas_data.component[lc_uid]
 			null
 
-		deleteR_ASG_LC : ( component ) ->
-			return { error : lange.ide.CVS_MSG_ERR_DEL_LC }
+		deleteR_ASG_LC : ( component, force ) ->
+			if not force
+				return { error : lang.ide.CVS_MSG_ERR_DEL_LC }
 
 		deleteR_Instance : ( component ) ->
 
@@ -527,8 +528,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# Delete all the children
 			for node, index in nodes
 				op =
-					type : $(node).data().type
-					id   : node.id
+					type  : $(node).data().type
+					id    : node.id
+					force : true
 
 				# Recursively delete children in this group
 				# [ @@@ Warning @@@ ] If there's one child that cannot be deleted for any reason. Data is corrupted.

@@ -4191,8 +4191,8 @@ MC.canvas.event.groupResize = {
 		}
 		else
 		{
-			group_width = Math.ceil(event.data.originalWidth * scale_ratio / 10);
-			group_height = Math.ceil(event.data.originalHeight * scale_ratio / 10);
+			group_width = Math.round(event.data.originalWidth * scale_ratio / 10);
+			group_height = Math.round(event.data.originalHeight * scale_ratio / 10);
 
 			parent.attr('transform', event.data.originalTranslate);
 

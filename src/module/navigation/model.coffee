@@ -93,13 +93,23 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 console.log 'EC2_EC2_DESC_REGIONS_RETURN'
 
-                #
-                region_list = _.map result.resolved_data.item, ( value, key ) ->
+                region_list = []
 
-                    region_city = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[1]
-                    region_area = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[0]
+                if !result.is_error
+                    region_list = _.map result.resolved_data.item, ( value, key ) ->
 
-                    return { 'region_city' : region_city, 'region_area' : region_area, 'region_name' : value.regionName }
+                        region_city = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[1]
+                        region_area = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[0]
+
+                        return { 'region_city' : region_city, 'region_area' : region_area, 'region_name' : value.regionName }
+
+                else
+                    region_list = _.map constant.REGION_KEYS, (region) ->
+
+                        region_city = constant.REGION_LABEL[ region ].split( ' - ' )[1]
+                        region_area = constant.REGION_LABEL[ region ].split( ' - ' )[0]
+
+                        return { 'region_city' : region_city, 'region_area' : region_area, 'region_name' : value.regionName }
 
                 console.log region_list
 

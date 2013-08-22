@@ -94,6 +94,10 @@ define [ 'jquery',
             model.emptyListListener()
             model.describeAccountAttributesService()
 
+            ide_event.onLongListen ide_event.UPDATE_OVERVIEW_ATTRIBUTES, () ->
+                console.log 'overview UPDATE_OVERVIEW_ATTRIBUTES'
+                model.describeAccountAttributesService()
+
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
                 console.log 'overview RESULT_APP_LIST'
 
@@ -244,7 +248,7 @@ define [ 'jquery',
                     region_view.on 'DELETE_STACK_CLICK', (stack_id) ->
                         console.log 'dashboard_region_click:delete_stack'
                         model.deleteStack(current_region, stack_id)
-                    region_view.on 'REFRESH_REGION_BTN', () ->
+                    ide_event.onLongListen ide_event.UPDATE_REGION_RESOURCE, () ->
                         model.describeAWSResourcesService current_region
 
                     model.describeAWSResourcesService current_region

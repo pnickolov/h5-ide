@@ -712,7 +712,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             current_region = region
 
-            vpc_model.DescribeAccountAttributes { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
+            if $.cookie('has_cred') is 'true'
+
+                vpc_model.DescribeAccountAttributes { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
 
 
             null

@@ -50,11 +50,14 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                 console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
+                region_classic_vpc_result = []
+
                 if !result.is_error
 
-                    regionAttrSet = result.resolved_data
+                    # set cookie
+                    $.cookie 'has_cred', true,    { expires: 1 }
 
-                    region_classic_vpc_result = []
+                    regionAttrSet = result.resolved_data
 
                     _.map constant.REGION_KEYS, ( value ) ->
 
@@ -72,6 +75,13 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                 else
 
+                    _.map constant.REGION_KEYS, ( value ) ->
+
+                        region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
+
+                    me.set 'region_classic_list', region_classic_vpc_result
+
+                    # set cookie
                     $.cookie 'has_cred', false,    { expires: 1 }
 
             null
@@ -208,9 +218,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             me = this
 
-            if $.cookie( 'has_cred' ) is 'true'   # do it when has credential
-                #get service(model)
-                vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
+            #get service(model)
+            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
 
             null
 

@@ -26,9 +26,15 @@ define [ 'event',
             console.log 'onClose'
             this.trigger 'CLOSE_POPUP'
 
-            # update if not in overview
-            if MC.data.dashboard_type isnt 'OVERVIEW_TAB'
-                console.log 'update resource'
+            # update overview
+            if MC.data.dashboard_type is 'OVERVIEW_TAB'
+                console.log 'update overview account attributes'
+                ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
+
+            # update region
+            else if MC.data.dashboard_type is 'REGION_TAB'
+                console.log 'update region resource'
+                ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
 
         onDone : ->
             console.log 'onDone'
@@ -36,8 +42,12 @@ define [ 'event',
             this.trigger 'CLOSE_POPUP'
 
             # update if not in overview
-            if MC.data.dashboard_type isnt 'OVERVIEW_TAB'
-                console.log 'update resource'
+            if MC.data.dashboard_type is 'OVERVIEW_TAB'
+                console.log 'update overview account attributes'
+
+            else if MC.data.dashboard_type is 'REGION_TAB'
+                console.log 'update region resource'
+                ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
 
         onUpdate : ->
             console.log 'onUpdate'

@@ -126,6 +126,11 @@ define [ 'underscore', 'backbone' ], () ->
         #update header
         UPDATE_HEADER       :   'UPDATE_HEADER'
 
+        #refresh region resource
+        UPDATE_REGION_RESOURCE      :       'UPDATE_REGION_RESOURCE'
+
+        #refresh overview account attributes
+        UPDATE_OVERVIEW_ATTRIBUTES  :       'UPDATE_OVERVIEW_ATTRIBUTES'
 
         constructor : ->
             _.extend this, Backbone.Events

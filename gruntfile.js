@@ -9,9 +9,10 @@ module.exports = function( grunt ) {
 		pkg        : grunt.file.readJSON( 'package.json' ),
 
 		src        : 'src',
+		release    : 'release',
+		publish    : 'publish',
 		vender     : 'vender',
 		components : 'bower_components',
-		release    : 'release',
 
 		gruntfile  : [
 			'gruntfile.js',
@@ -187,11 +188,11 @@ module.exports = function( grunt ) {
 									'copy:special_lib_del',
 									'copy:special_ui_del',
 									'open:publish',
-									'connect:publish'
+									'connect:release'
 	]);
 
 	/* run at r.js */
-	grunt.registerTask( 'require', ['requirejs',
+	grunt.registerTask( 'require', ['requirejs:compile_login',
 									'open:publish',
 									'connect:publish'
 	]);

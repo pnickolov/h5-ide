@@ -1,17 +1,29 @@
 
 module.exports = {
 
-	compile: {
+	compile_login: {
 		options: {
-			baseUrl        : './src/',
-			mainConfigFile : './src/js/ide/config.js',
+			appDir         : './<%= release %>',
+			baseUrl        : './',
+			dir            : './<%= publish %>',
 			optimize       : 'none',
-			name           : 'js/ide/config',
-			include        : [],
-			out            : './release/js/ide/build.js',
-			pragmasOnSave  : {
-				excludeCoffeeScript : true
-			}
+			mainConfigFile : './<%= src %>/js/login/config.js',
+			modules        : [{
+				name       : 'main'
+			}]
+		}
+	},
+
+	compile_ide: {
+		options: {
+			appDir         : './<%= release %>',
+			baseUrl        : './',
+			dir            : './<%= publish %>',
+			optimize       : 'none',
+			mainConfigFile : './<%= src %>/js/ide/config.js',
+			modules        : [{
+				name       : 'main'
+			}]
 		}
 	}
 

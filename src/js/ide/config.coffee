@@ -15,11 +15,16 @@ require.config {
 
 	waitSeconds        : 30
 
-	deps               : [ 'js/ide/main' ]
+	deps               : [ 'main' ]
 
 	locale             : 'en-us'
 
 	paths              :
+
+		#############################################
+		# main
+		#############################################
+		'main'         :   'js/ide/main'
 
 		#############################################
 		# vender

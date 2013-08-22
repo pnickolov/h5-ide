@@ -123,13 +123,15 @@ module.exports = function( grunt ) {
 	/* task of use as make(compiler) */
 	grunt.registerTask( 'make_fast', function() {
 		grunt.task.run([
-			'coffee:compile_fast'
+			'coffee:compile_fast',
+			'replace:json_view'
 		]);
 	});
 	grunt.registerTask( 'make', function() {
 		grunt.task.run([
 			'coffeelint:files',
 			'coffee:compile_normal',
+			'replace:json_view',
 			'jshint',
 			'csslint'
 		]);
@@ -138,6 +140,7 @@ module.exports = function( grunt ) {
 		grunt.task.run([
 			'coffeelint:files',
 			'coffee:compile_all',
+			'replace:json_view',
 			'jshint',
 			'csslint'
 		]);

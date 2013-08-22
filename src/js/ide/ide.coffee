@@ -11,13 +11,59 @@ define [ 'MC', 'event', 'handlebars'
 
 	console.info canvas_layout
 
+
+	getMadeiracloudIDESessionID = ( ) ->
+
+		result = null
+
+		madeiracloud_ide_session_id = $.cookie 'madeiracloud_ide_session_id'
+		if madeiracloud_ide_session_id
+			try
+				result = JSON.parse ( MC.base64Decode madeiracloud_ide_session_id )
+			catch err
+				result = null
+
+		if result and $.type result == "array" and result.length == 6
+			{
+				userid      : result[0] ,
+				usercode    : result[1] ,
+				session_id  : result[2] ,
+				region_name : result[3] ,
+				email       : result[4] ,
+				has_cred    : result[5] ,
+			}
+		else
+			null
+
+
 	initialize : () ->
 
 		#############################
 		#  validation cookie
 		#############################
 		#
-		if $.cookie( 'usercode' ) is undefined then window.location.href = 'login.html'
+
+
+		madeiracloud_ide_session_id = getMadeiracloudIDESessionID()
+
+		if madeiracloud_ide_session_id
+
+			#session exist
+			result = madeiracloud_ide_session_id
+
+			$.cookie 'userid',      result.userid,      { expires: 1 }
+			$.cookie 'usercode',    result.usercode,    { expires: 1 }
+			$.cookie 'session_id',  result.session_id,  { expires: 1 }
+			$.cookie 'region_name', result.region_name, { expires: 1 }
+			$.cookie 'email',       result.email,       { expires: 1 }
+			$.cookie 'has_cred',    result.has_cred,    { expires: 1 }
+			$.cookie 'username',    MC.base64Decode(result.usercode), { expires: 1 }
+
+		else
+
+			#user session not exist, go to login page
+			window.location.href = 'login.html'
+
 
 		#############################
 		#  initialize MC.data

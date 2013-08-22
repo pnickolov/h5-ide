@@ -1249,19 +1249,19 @@ MC.canvas.add = function (flag, option, coordinate)
 			{
 				case 'ec2-classic':
 				case 'default-vpc':
-					MC.canvas.display(group.id,'elb_sg_in',false);//hide port elb_sg_in
+					MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
 					MC.canvas.display(group.id,'elb_assoc',false);//hide port elb_assoc
 					$('#' + group.id + '_elb_sg_out').attr('transform','translate(84, 39)');//move port to middle
 					break;
 				case 'custom-vpc':
 					if (icon_scheme === "internet")
 					{
-						MC.canvas.display(group.id,'elb_sg_in',false);//hide port elb_sg_in
+						MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
 					}
 				case 'ec2-vpc':
 					if (icon_scheme === "internet")
 					{
-						MC.canvas.display(group.id,'elb_sg_in',false);//hide port elb_sg_in
+						MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
 					}
 					break;
 			}
@@ -1317,10 +1317,10 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//2 path: left port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-blue port-rtb-tgt-left',
+					'class': 'port port-blue port-rtb-tgt port-rtb-tgt-left',
 					'id' : group.id + '_port-rtb-tgt-left',
 					'transform': 'translate(11, 25)' + MC.canvas.PORT_LEFT_ROTATE,
-					'data-name': 'rtb-tgt-left',
+					'data-name': 'rtb-tgt',
 					'data-position': 'left',
 					'data-type': 'sg',
 					'data-direction': 'out',
@@ -1329,10 +1329,10 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//3 path: right port
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
-					'class': 'port port-blue port-rtb-tgt-right',
+					'class': 'port port-blue  port-rtb-tgt port-rtb-tgt-right',
 					'id' : group.id + '_port-rtb-tgt-right',
 					'transform': 'translate(69, 25)' + MC.canvas.PORT_RIGHT_ROTATE,
-					'data-name': 'rtb-tgt-right',
+					'data-name': 'rtb-tgt',
 					'data-position': 'right',
 					'data-type': 'sg',
 					'data-direction': 'out',

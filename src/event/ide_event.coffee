@@ -40,7 +40,7 @@ define [ 'underscore', 'backbone' ], () ->
         ENABLE_RESOURCE_ITEM  : 'ENABLE_RESOURCE_ITEM'
         DISABLE_RESOURCE_ITEM : 'DISABLE_RESOURCE_ITEM'
 
-        DELETE_ASG_LC         : 'DELETE_ASG_LC'
+        DELETE_COMPONENT      : 'DELETE_COMPONENT'
 
         PROPERTY_TITLE_CHANGE  : 'PROPERTY_TITLE_CHANGE'
         PROPERTY_OPEN_SUBPANEL : 'PROPERTY_OPEN_SUBPANEL'
@@ -90,13 +90,17 @@ define [ 'underscore', 'backbone' ], () ->
         START_APP           : 'START_APP'
         STOP_APP            : 'STOP_APP'
         TERMINATE_APP       : 'TERMINATE_APP'
+        DELETE_STACK        : 'DELETE_STACK'
+        DUPLICATE_STACK     : 'DUPLICATE_STACK'
+        SAVE_STACK          : 'SAVE_STACK'
         UPDATE_APP_LIST     : 'UPDATE_APP_LIST'
         UPDATE_STACK_LIST   : 'UPDATE_STACK_LIST'
-        STACK_DELETE        : 'STACK_DELETE'
-        #app state
+
+        #app/stack state
         STARTED_APP         : 'STARTED_APP'
         STOPPED_APP         : 'STOPPED_APP'
         TERMINATED_APP      : 'TERMINATED_APP'
+        STACK_DELETE        : 'STACK_DELETE'
 
         #canvas event
         CANVAS_SAVE         : 'CANVAS_SAVE' #save stack/app by ctrl+s

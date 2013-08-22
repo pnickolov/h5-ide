@@ -105,7 +105,13 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 ide_event.trigger ide_event.OPEN_PROPERTY, 'component', ''
                 null
 
-
+            # type : "node", "group", "line"
+            ide_event.onLongListen ide_event.DELETE_COMPONENT, ( component_id, type, not_force ) ->
+                model.deleteObject null, {
+                    id    : component_id
+                    type  : type
+                    force : not not_force
+                }
             null
 
     unLoadModule = () ->

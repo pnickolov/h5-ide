@@ -1,12 +1,12 @@
-<a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip="Toggle Resource Panel">
+<a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'>
 </a>
 <div class="sidebar-title">
-	<span class="sidebar-title-text">Resources</span>
+	<span class="sidebar-title-text">{{ i18n "RES_TIT_RESOURCES" }}</span>
 </div>
 <div class="fixedaccordion accordion-default">
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
-			Availability Zone
+			{{ i18n "RES_TIT_AZ" }}
 		</div>
 		<div class="accordion-body">
 			<div class="item-wrap">
@@ -18,14 +18,14 @@
 	</div>
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
-			<span>AMIs</span>
+			<span>{{ i18n "RES_TIT_AMI" }}</span>
 		</div>
 		<div class="selectbox resource-select" id="resource-select">
-			<div class="selection">Quick Start AMIs</div>
+			<div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
 			<ul class="dropdown" tabindex="-1">
-				<li class="item selected" data-id="quickstart-ami">Quick Start AMIs</li>
-				<li class="item" data-id="my-ami">My AMIs</li>
-				<li class="item" data-id="favorite-ami">Favorite AMIs</li>
+				<li class="item selected" data-id="quickstart-ami">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
+				<li class="item" data-id="my-ami">{{ i18n "RES_LBL_MY_AMI" }}</li>
+				<li class="item" data-id="favorite-ami">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
 			  </ul>
 		</div>
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
@@ -40,16 +40,16 @@
 	</div>
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
-			Volume &amp; Snapshot
+			{{ i18n "RES_TIT_VOL" }}
 		</div>
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
 				<ul class="resoruce-snapshot resource-list">
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop onto an instance to attach new EBS volume." data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"name": "/dev/sdf", "volumeSize":"1", "snapshotId": ""}'>
+						<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"name": "/dev/sdf", "volumeSize":"1", "snapshotId": ""}'>
 							<div class="resource-icon resource-icon-volume"></div>
-							<div class="resource-label">New Volume</div>
+							<div class="resource-label">{{i18n "RES_TIT_VOL"}}</div>
 						</div>
 					</li>
 				</ul>
@@ -58,23 +58,23 @@
 	</div>
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">
-			ELB and Auto Scaling
+			{{ i18n "RES_TIT_ELB_ASG" }}
 		</div>
 		<div class="accordion-body">
 			<div class="item-wrap">
 				<ul class="resource-list" id="resource-asg-list">
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new ELB." data-component-type="node" data-type="AWS.ELB" data-option='{"name": "elb"}'>
+						<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-component-type="node" data-type="AWS.ELB" data-option='{"name": "elb"}'>
 							<div class="resource-icon resource-icon-elb"></div>
-							<div class="resource-label">New ELB</div>
+							<div class="resource-label">{{ i18n "RES_LBL_NEW_ELB" }}</div>
 						</div>
 					</li>
 					<li>
-						<div class="tooltip resource-item" data-tooltip="Drag and drop to canvas to create a new auto scaling group." data-component-type="group" data-type="AWS.AutoScaling.Group" data-option='{"name": "asg"}'>
+						<div class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-component-type="group" data-type="AWS.AutoScaling.Group" data-option='{"name": "asg"}'>
 							<div class="resource-icon resource-icon-asg">
-								<div class="resource-icon-asg-label">no config</div>
+								<div class="resource-icon-asg-label">{{ i18n "RES_LBL_NEW_ASG_NO_CONFIG" }}</div>
 							</div>
-							<div class="resource-label">New AutoScalingGroup</div>
+							<div class="resource-label">{{ i18n "RES_LBL_NEW_ASG" }}</div>
 						</div>
 					</li>
 				</ul>

@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130817
+#* Date: 20130822
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -73,12 +73,22 @@ var scrollbar = {
 							{
 								veritical_thumb.parent().show();
 								veritical_thumb.css('height', scrollbar_height);
+
+								if (wrap.height() - scroll_content_elem.realScrollTop > scroll_content[0].scrollHeight)
+								{
+									scrollbar.scroll_to_top({
+										'scroll_content': scroll_content,
+										'scrollbar_wrap': children[0],
+										'thumb': veritical_thumb,
+										'scroll_target': wrap
+									}, scroll_content[0].scrollHeight);
+								}
 							}
 						}
 
 						if (horizontal_thumb && horizontal_thumb.hasClass('scrollbar-horizontal-thumb'))
 						{
-							if (scrollbar_width <=  offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap.width())
+							if (scrollbar_width <= offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap.width())
 							{
 								horizontal_thumb.parent().hide();
 								if (scrollbar.isTransform)
@@ -97,6 +107,16 @@ var scrollbar = {
 							{
 								horizontal_thumb.parent().show();
 								horizontal_thumb.css('width', scrollbar_width);
+
+								if (wrap.width() - scroll_content_elem.realScrollLeft > scroll_content[0].scrollWidth)
+								{
+									scrollbar.scroll_to_left({
+										'scroll_content': scroll_content,
+										'scrollbar_wrap': children[1],
+										'thumb': horizontal_thumb,
+										'scroll_target': wrap
+									}, scroll_content[0].scrollWidth);
+								}
 							}
 						}
 					}
@@ -147,12 +167,12 @@ var scrollbar = {
 
 		if (direction === 'veritical')
 		{
-			scrollbar.scroll_to_top(event.data, target, scrollbar.isTouch ? thumbPos - event_data.clientY : event_data.clientY - event.data.scrollbar_wrap.offset().top - thumbPos);
+			scrollbar.scroll_to_top(event.data, scrollbar.isTouch ? thumbPos - event_data.clientY : event_data.clientY - event.data.scrollbar_wrap.offset().top - thumbPos);
 		}
 
 		if (direction === 'horizontal')
 		{
-			scrollbar.scroll_to_left(event.data, target, scrollbar.isTouch ? thumbPos - event_data.clientX : event_data.clientX - event.data.scrollbar_wrap.offset().left - thumbPos);
+			scrollbar.scroll_to_left(event.data, scrollbar.isTouch ? thumbPos - event_data.clientX : event_data.clientX - event.data.scrollbar_wrap.offset().left - thumbPos);
 		}
 
 		return false;
@@ -171,7 +191,7 @@ var scrollbar = {
 		event.data.scroll_target.removeClass('scrolling');
 		$(document.body).removeClass('disable-event');
 	},
-	scroll_to_left: function (data, target, scroll_left)
+	scroll_to_left: function (data, scroll_left)
 	{
 		var scroll_content = data.scroll_content,
 			horizontal_thumb = data.thumb,
@@ -213,7 +233,7 @@ var scrollbar = {
 
 		scroll_content[0].realScrollLeft = scroll_value;
 	},
-	scroll_to_top: function (data, target, scroll_top)
+	scroll_to_top: function (data, scroll_top)
 	{
 		var scroll_content = data.scroll_content,
 			thumb = data.thumb,
@@ -268,9 +288,12 @@ var scrollbar = {
 			scale,
 			thumb_max;
 
-		if (originalEvent.wheelDeltaX !== 0)
+		if (
+			originalEvent.wheelDeltaX ||
+			originalEvent.axis === 1
+		)
 		{
-			delta = originalEvent.wheelDeltaX / 120;
+			delta = originalEvent.wheelDeltaX ? originalEvent.wheelDeltaX / 120 : -originalEvent.detail / 3;
 
 			thumb = target.find('.scrollbar-horizontal-thumb').first(),
 			scrollbar_wrap = target.find('.scrollbar-horizontal-wrap').first(),
@@ -287,7 +310,7 @@ var scrollbar = {
 					'scrollbar_wrap': scrollbar_wrap,
 					'thumb': thumb,
 					'scroll_target': target
-				}, target, scrollLeft);
+				}, scrollLeft);
 
 				if (scrollLeft < 0 || scrollLeft > thumb_max)
 				{
@@ -305,9 +328,9 @@ var scrollbar = {
 		}
 
 		if (
-			originalEvent.wheelDeltaY !== 0 ||
-			originalEvent.wheelDelta !== 0 ||
-			originalEvent.detail !== 0
+			originalEvent.wheelDeltaY ||
+			originalEvent.wheelDelta ||
+			originalEvent.detail
 		)
 		{
 			delta = originalEvent.wheelDelta ? originalEvent.wheelDelta / 120 : originalEvent.wheelDeltaY ? originalEvent.wheelDeltaY / 120 : -originalEvent.detail / 3;
@@ -327,7 +350,7 @@ var scrollbar = {
 					'scrollbar_wrap': scrollbar_wrap,
 					'thumb': thumb,
 					'scroll_target': target
-				}, target, scrollTop);
+				}, scrollTop);
 
 				if (scrollTop < 0 || scrollTop > thumb_max)
 				{

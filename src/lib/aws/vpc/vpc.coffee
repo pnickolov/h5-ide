@@ -9,15 +9,17 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 				return false
 		return vpcUID
 
-	updateAllSubnetCIDR = (vpcCIDR) ->
+	updateAllSubnetCIDR = (vpcCIDR, oldVPCCIDR) ->
 
 		needUpdateAllSubnetCIDR = false
 		subnetCount = 0
 
+		oldSubnetAry = []
 		_.each MC.canvas_data.component, (compObj) ->
 			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
 				subnetCount++
 				subnetCIDR = compObj.resource.CidrBlock
+				oldSubnetAry.push(subnetCIDR)
 				if !MC.aws.subnet.isInVPCCIDR(vpcCIDR, subnetCIDR)
 					needUpdateAllSubnetCIDR = true
 					return
@@ -25,7 +27,12 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		if !needUpdateAllSubnetCIDR then return
 
-		newSubnetCIDRAry = MC.aws.subnet.autoAssignAllCIDR(vpcCIDR, subnetCount)
+		newSubnetCIDRAry = []
+		newSimpleSubnetCIDRAry = MC.aws.subnet.autoAssignSimpleCIDR(vpcCIDR, oldSubnetAry, oldVPCCIDR)
+		if newSimpleSubnetCIDRAry.length
+			newSubnetCIDRAry = newSimpleSubnetCIDRAry
+		else
+			newSubnetCIDRAry = MC.aws.subnet.autoAssignAllCIDR(vpcCIDR, subnetCount)
 
 		subnetNum = 0
 		_.each MC.canvas_data.component, (compObj) ->

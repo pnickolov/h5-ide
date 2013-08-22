@@ -72,10 +72,20 @@ define [ 'MC', 'event',
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                     return
 
-                me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
                 modal.close()
 
-                MC.data.app_list[MC.canvas_data.region].push app_name
+                # check change and save stack
+                ori_data = MC.canvas_property.original_json
+                new_data = JSON.stringify( MC.canvas_data )
+                id = MC.canvas_data.id
+                if ori_data != new_data or id.indexOf('stack-') isnt 0
+                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                # hold on 0.5 second for data update
+                setTimeout () ->
+                    me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
+                    MC.data.app_list[MC.canvas_data.region].push app_name
+                , 500
 
             true
 
@@ -93,7 +103,7 @@ define [ 'MC', 'event',
                 notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
             else
                 MC.canvas_data.name = name
-                this.trigger 'TOOLBAR_SAVE_CLICK', MC.canvas_data
+                ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
             true
 
@@ -105,11 +115,24 @@ define [ 'MC', 'event',
                 #check name
                 if not name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
+                else if name.indexOf(' ') >= 0
+                    notification 'warning', 'stack name contains white space.'
                 else if not MC.aws.aws.checkStackName null, new_name
-                    doDuplicate( new_name )
-                    #notification 'warning', 'Repeated stack name.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
-                    this.trigger 'TOOLBAR_DUPLICATE_CLICK', new_name, MC.canvas_data
+                    region  = MC.canvas_data.region
+                    id      = MC.canvas_data.id
+                    name    = MC.canvas_data.name
+
+                    # check change and save stack
+                    ori_data = MC.canvas_property.original_json
+                    new_data = JSON.stringify( MC.canvas_data )
+                    if ori_data != new_data or id.indexOf('stack-') isnt 0
+                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                    setTimeout () ->
+                        ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
+                    , 500
 
             doDuplicate name
 
@@ -123,7 +146,7 @@ define [ 'MC', 'event',
                 console.log 'clickDeleteIcon'
                 modal.close()
 
-                me.trigger 'TOOLBAR_DELETE_CLICK', MC.canvas_data
+                ide_event.trigger ide_event.DELETE_STACK, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
 
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'
@@ -135,15 +158,17 @@ define [ 'MC', 'event',
             if $( event.currentTarget ).hasClass("disabled")
                 return false
 
-            if MC.canvas_property.SCALE_RATIO > 1
-                MC.canvas.zoomIn()
+            # if MC.canvas_property.SCALE_RATIO > 1
+            #     MC.canvas.zoomIn()
 
-            $("#main-toolbar .icon-zoom-out").toggleClass("disabled", false)
+            # $("#main-toolbar .icon-zoom-out").toggleClass("disabled", false)
 
-            if MC.canvas_property.SCALE_RATIO <= 1
-                $("#main-toolbar .icon-zoom-in").toggleClass("disabled", true)
+            # if MC.canvas_property.SCALE_RATIO <= 1
+            #     $("#main-toolbar .icon-zoom-in").toggleClass("disabled", true)
 
-            return false
+            # return false
+
+            this.trigger 'TOOLBAR_ZOOM_IN'
 
 
         clickZoomOutIcon : ( event )->
@@ -152,15 +177,17 @@ define [ 'MC', 'event',
             if $( event.currentTarget ).hasClass("disabled")
                 return false
 
-            if MC.canvas_property.SCALE_RATIO < 1.6
-                MC.canvas.zoomOut()
+            # if MC.canvas_property.SCALE_RATIO < 1.6
+            #     MC.canvas.zoomOut()
 
-            $("#main-toolbar .icon-zoom-in").toggleClass("disabled", false)
+            # $("#main-toolbar .icon-zoom-in").toggleClass("disabled", false)
 
-            if MC.canvas_property.SCALE_RATIO >= 1.6
-                $("#main-toolbar .icon-zoom-out").toggleClass("disabled", true)
+            # if MC.canvas_property.SCALE_RATIO >= 1.6
+            #     $("#main-toolbar .icon-zoom-out").toggleClass("disabled", true)
 
-            return false
+            # return false
+
+            this.trigger 'TOOLBAR_ZOOM_OUT'
 
         clickUndoIcon : ->
             console.log 'clickUndoIcon'

@@ -1,7 +1,7 @@
 define [ 'MC' ], ( MC ) ->
 
 	#private
-	getAvailableIPInCIDR = (ipCidr, filter) ->
+	getAvailableIPInCIDR = (ipCidr, filter, maxNeedIPCount) ->
 
 		_addZeroToLeftStr = (str, n) ->
 			count = n - str.length + 1
@@ -24,12 +24,14 @@ define [ 'MC' ], ( MC ) ->
 		ipAddrBinStrSuffixMin = ipAddrBinStr.slice(suffix).replace(/1/g, '0')
 		ipAddrBinStrSuffixMax = ipAddrBinStrSuffixMin.replace(/0/g, '1')
 
-		console.log(ipAddrBinStrSuffixMin, ipAddrBinStrSuffixMax)
+		# console.log(ipAddrBinStrSuffixMin, ipAddrBinStrSuffixMax)
 
 		ipAddrNumSuffixMin = parseInt ipAddrBinStrSuffixMin, 2
 		ipAddrNumSuffixMax = parseInt ipAddrBinStrSuffixMax, 2
 
-		allIPAry = _.map [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1], (value) ->
+		allIPAry = []
+		availableIPCount = 0
+		_.each [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1], (value) ->
 			newIPBinStr = ipAddrBinPrefixStr + _addZeroToLeftStr(value.toString(2), prefix)
 
 			isAvailableIP = true
@@ -47,7 +49,13 @@ define [ 'MC' ], ( MC ) ->
 				available: isAvailableIP
 			}
 
-			return newIPObj
+			allIPAry.push(newIPObj)
+			if isAvailableIP then availableIPCount++
+			if availableIPCount > maxNeedIPCount then return false
+
+			console.log('availableIPCount: ' + availableIPCount)
+
+			null
 
 		return allIPAry
 
@@ -136,7 +144,8 @@ define [ 'MC' ], ( MC ) ->
 		subnetCidr = subnetComp.resource.CidrBlock
 
 		# get current available ip
-		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR subnetCidr, ipFilterAry
+		needIPCount = MC.aws.eni.getSubnetNeedIPCount(subnetId)
+		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR(subnetCidr, ipFilterAry, needIPCount)
 
 		# start auto assign ip
 		assignedIPAry = []
@@ -211,6 +220,16 @@ define [ 'MC' ], ( MC ) ->
 		subnetUID = subnetUIDRef.slice(1).split('.')[0]
 		return MC.canvas_data.component[subnetUID]
 
+	getSubnetNeedIPCount = (subnetUID) ->
+
+		needIPCount = 0
+		subnetRef = '@' + subnetUID + '.resource.SubnetId'
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface' and compObj.resource.SubnetId is subnetRef
+				needIPCount += compObj.resource.PrivateIpAddressSet.length
+			null
+		return needIPCount
+
 	#public
 	getAvailableIPInCIDR : getAvailableIPInCIDR
 	getAllOtherIPInCIDR : getAllOtherIPInCIDR
@@ -219,3 +238,4 @@ define [ 'MC' ], ( MC ) ->
 	getInstanceDefaultENI : getInstanceDefaultENI
 	getENIDivIPAry : getENIDivIPAry
 	getSubnetComp : getSubnetComp
+	getSubnetNeedIPCount : getSubnetNeedIPCount

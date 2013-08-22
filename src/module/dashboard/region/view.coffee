@@ -2,7 +2,7 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event, lang ) ->
 
     GegionView = Backbone.View.extend {
         time_stamp : new Date().getTime()
@@ -94,13 +94,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             console.log 'returnRefreshClick'
             this.trigger 'REFRESH_REGION_BTN', null
 
-        #render   : ( time_stamp ) ->
-        #    console.log 'dashboard region render'
-        #    $( this.el ).html this.template this.model.attributes
-        #    if time_stamp
-        #        this.time_stamp = time_stamp
-        #    this.update_time()
-
         render : ( template ) ->
 
             console.log 'dashboard region render'
@@ -151,6 +144,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         #stack
         duplicateStackClick : ( event ) ->
             target = $( this.el )
+            region = this.region
             id = event.currentTarget.id
             name = event.currentTarget.name
 
@@ -159,12 +153,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 new_name = $('#modal-input-value').val()
 
                 #check duplicate stack name
-                if not new_name or new_name == name
-                    #output warn message
-                    return
-
-                modal.close()
-                event.data.target.trigger 'DUPLICATE_STACK_CLICK', id, new_name
+                if not name or not new_name
+                    notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
+                else if name.indexOf(' ') >= 0 or new_name.indexOf(' ') >= 0
+                    notification 'warning', 'stack name contains white space.'
+                else if not MC.aws.aws.checkStackName null, new_name
+                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
+                else
+                    modal.close()
+                    event.data.target.trigger 'DUPLICATE_STACK_CLICK', id, new_name
             true
 
         deleteStackClick : ( event ) ->

@@ -289,7 +289,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                         console.log 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN: ' + region_name
 
                         _.map result.resolved_data.item, (value)->
-                            value.zoneShortName = value.zoneName.slice(-2)
+                            value.zoneShortName = value.zoneName.slice(-1).toUpperCase()
                             null
 
                         res = $.extend true, {}, result.resolved_data

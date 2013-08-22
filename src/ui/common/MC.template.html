@@ -51,10 +51,10 @@
        			<div class="modal-center-align-helper">
 		            <div class="modal-text">{{body}}</div>
 	            </div>
-            </div>
-            {{#if input}}
+            	{{#if input}}
                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
-            {{/if}}
+            	{{/if}}
+            </div>
        </div>
        <div class="modal-footer">
             <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
@@ -64,7 +64,7 @@
 
 <!-- canvasOpConfirm -->
 <div style="width:420px">
-  <div class="modal-header"> <h3>Confirm to {{operation}}</h3><i class="modal-close">&times;</i> </div>
+  <div class="modal-header"> <h3>{{operation}}</h3><i class="modal-close">&times;</i> </div>
   <div class="modal-body">
     <div class="modal-text-wraper"> <div class="modal-center-align-helper">
       <div class="modal-text">{{content}}</div>
@@ -1009,7 +1009,7 @@ Additional Notes and Questions
 	</div>
 	<div class="property-control-group clearfix elb-property-listener-item">
 		<div class="left elb-property-listener-item-1">
-			<label>Load Balancer Protocol</label>
+			<label>Instance Protocol</label>
 			<div class="selectbox selectbox-mega elb-property-listener-instance-protocol-select">
         <div class="selection">{{InstanceProtocol}}</div>
 				<ul class="dropdown">
@@ -1043,40 +1043,22 @@ Additional Notes and Questions
 <!-- asgList -->
 <div id="asgList-wrap">
 	<div id="asgList-header">
-		<span id="asgList-title">asg</span>
+		<span id="asgList-title">{{name}}</span>
 		<a id="asgList-close" href="javascrpit:void(0)" onclick="MC.canvas.asgList.close()">&times;</a>
 	</div>
 	<ul id="asgList" class="clearfix">
-		<li>
-			<a href="javascript:void(0)" class="asgList-item" data-id="aa">
-				<i class="asgList-item-status status status-green"></i>
-				<div class="asgList-item-icon" style="background-image: url('./assets/images/ide/ami/suse.x86_64.ebs.png')"></div>
-				<div class="asgList-item-volume">
-					<span class="asgList-item-number">0</span>
-				</div>
-				<div class="asgList-item-label">launch-config-1</div>
-			</a>
-		</li>
-		<li>
-			<a href="javascript:void(0)" class="asgList-item" data-id="aa">
-				<i class="asgList-item-status status status-green"></i>
-				<div class="asgList-item-icon" style="background-image: url('./assets/images/ide/ami/suse.x86_64.ebs.png')"></div>
-				<div class="asgList-item-volume">
-					<span class="asgList-item-number">0</span>
-				</div>
-				<div class="asgList-item-label">launch-config-1</div>
-			</a>
-		</li>
-		<li>
-			<a href="javascript:void(0)" class="asgList-item" data-id="aa">
-				<i class="asgList-item-status status status-green"></i>
-				<div class="asgList-item-icon" style="background-image: url('./assets/images/ide/ami/suse.x86_64.ebs.png')"></div>
-				<div class="asgList-item-volume">
-					<span class="asgList-item-number">0</span>
-				</div>
-				<div class="asgList-item-label">launch-config-1</div>
-			</a>
-		</li>
+    {{#each instances}}
+      <li>
+        <a href="#" class="asgList-item" data-id="{{id}}">
+          <i class="asgList-item-status status status-{{status}}"></i>
+          <span class="asgList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
+          <span class="asgList-item-volume">
+            <span class="asgList-item-number">0</span>
+          </span>
+          <span class="asgList-item-label">{{id}}</span>
+        </a>
+      </li>
+    {{/each}}
 	</ul>
 </div>
 

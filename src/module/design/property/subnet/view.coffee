@@ -19,8 +19,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             "change #property-subnet-name" : 'onChangeName'
             "change #property-cidr-block"  : 'onChangeCIDR'
             "focus #property-cidr-block"  : 'onFocusCIDR'
+            "keypress #property-cidr-block"  : 'onPressCIDR'
             "blur #property-cidr-block"  : 'onBlurCIDR'
             "click .item-networkacl input" : 'onChangeACL'
+            "click .item-networkacl" : 'onClickACL'
             "change #networkacl-create"    : 'onCreateACL'
 
         initialize : () ->
@@ -37,16 +39,22 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             vpcComp = MC.aws.subnet.getVPC(this.model.get('uid'))
             vpcCIDR = vpcComp.resource.CidrBlock
 
+            focusCIDR = false
+            isInVPCCIDR = MC.aws.subnet.isInVPCCIDR(vpcCIDR, data.CIDR)
+            if MC.aws.subnet.isSubnetConflictInVPC(subnetUID) or !isInVPCCIDR
+                focusCIDR = true
+                if !isInVPCCIDR
+                    data.CIDR = vpcCIDR
+
             # Split CIDR into two parts
             cidrDivAry = MC.aws.subnet.genCIDRDivAry(vpcCIDR, data.CIDR)
             data.CIDRPrefix = cidrDivAry[0]
             data.CIDR = cidrDivAry[1]
 
             $( '.property-details' ).html this.template data
-
             this.refreshACLList()
 
-            if MC.aws.subnet.isSubnetConflictInVPC(subnetUID)
+            if focusCIDR
                 $('#property-cidr-block').val('')
                 $('#property-cidr-block').focus()
 
@@ -80,13 +88,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             ide_event.trigger ide_event.OPEN_ACL, source.attr('acl-uid')
 
         onChangeName : ( event ) ->
-            # TODO : Validate newName
+            target = $ event.currentTarget
+            name = target.val()
+            id = @model.get 'uid'
+
+            MC.validate.preventDupname target, id, name, 'Subnet'
 
             # Notify changes
-            change.value   = event.target.value
+            change.value   = name
             change.event   = "CHANGE_NAME"
 
-            this.trigger "CHANGE_NAME", change
+            if target.parsley 'validate'
+                this.trigger "CHANGE_NAME", change
 
 
         onChangeCIDR : ( event ) ->
@@ -98,6 +111,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             # this.trigger "CHANGE_CIDR", change
 
             null
+
+        onPressCIDR : ( event ) ->
+
+            if (event.keyCode is 13)
+                $('#property-cidr-block').blur()
 
         onFocusCIDR : ( event ) ->
 
@@ -149,7 +167,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
                     $('#cidr-remove').click () ->
                         $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
-                        MC.canvas.remove($("#" + subnetUID)[0])
+                        ide_event.trigger ide_event.DELETE_COMPONENT, subnetUID, 'group'
                         MC.aws.aws.disabledAllOperabilityArea(false)
             else
                 change = {}
@@ -159,7 +177,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 this.trigger "CHANGE_CIDR", change
 
                 MC.aws.aws.disabledAllOperabilityArea(false)
-                $('#property-cidr-block').blur()
+                # $('#property-cidr-block').blur()
 
         onChangeACL : () ->
 
@@ -169,6 +187,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             this.trigger "CHANGE_ACL", change
 
             this.refreshACLList()
+
+        onClickACL : (event) ->
+
+            inputElem = $(event.currentTarget).find('input')
+            inputElem.select()
 
         onViewACL : () ->
             null

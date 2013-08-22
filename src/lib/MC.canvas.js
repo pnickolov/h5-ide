@@ -1680,22 +1680,32 @@ MC.canvas.layout = {
 	save: function ()
 	{
 		var data = MC.canvas_data;
-		// delete connection
-		function removeConnection(data) {
-			for (var key in data) {
-				item = data[key];
 
-				if key == "connection" {
-					delete data[key];
-				} else if (typeof item == "object") {
-					removeConnection(item);
+		if (data.layout.component.node)
+		{
+			$.each(data.layout.component.node, function (id, data)
+			{
+				if  (data.connection)
+				{
+					delete data.connection;
 				}
-			}
+			});
 		}
 
-		removeConnection(data);
+		if (data.layout.component.group)
+		{
+			$.each(data.layout.component.group, function (id, data)
+			{
+				if  (data.connection)
+				{
+					delete data.connection;
+				}
+			});
+		}
 
-		return JSON.stringify( data );
+		delete data.layout.connection;
+
+		return data;
 	}
 
 };

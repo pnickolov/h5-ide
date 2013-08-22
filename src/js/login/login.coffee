@@ -45,7 +45,7 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 define [ 'jquery', 'handlebars',
          'MC', 'session_model',
          'i18n!/nls/lang.js',
-         'text!/js/login/template.html'
+         'text!./js/login/template.html'
 ], ( $, Handlebars, MC, session_model, lang, template ) ->
 
 
@@ -67,7 +67,6 @@ define [ 'jquery', 'handlebars',
 		}
 
 		null
-
 
 	#private method
 	MC.login = ( event ) ->

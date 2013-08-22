@@ -1484,7 +1484,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 							lines.push [asg, elb.split('.')[0][1...], 'launchconfig-sg', 'elb-sg-out']
 
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId and comp.resource.Attachment.DeviceIndex isnt '0' and comp.resource.Attachment.DeviceIndex isnt 0
 
+					lines.push [comp_uid, comp.resource.Attachment.InstanceId.split('.')[0][1...], 'eni-attach', 'instance-attach']
 
 			$.each lines, ( idx, line_data ) ->
 

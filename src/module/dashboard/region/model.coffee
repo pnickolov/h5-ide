@@ -258,131 +258,21 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 null
 
-
-            #listen APP_START_RETURN
-            # me.on 'APP_START_RETURN', (result) ->
-
-            #     console.log 'APP_START_RETURN'
-
-            #     # update tab icon
-            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
-
-            #     #parse the result
-            #     if !result.is_error #request successfuly
-
-            #         if ws
-            #             req_id = result.resolved_data.id
-            #             console.log "request id:" + req_id
-            #             query = ws.collection.request.find({id:req_id})
-            #             handle = query.observeChanges {
-            #                 changed : (id, req) ->
-            #                     if req.state == "Done"
-            #                         handle.stop()
-            #                         console.log 'stop handle'
-            #                         #push event
-            #                         ide_event.trigger ide_event.APP_RUN, app_name, app_id
-
-            #                         # update icon
-            #                         ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', app_id
-            #             }
-            #         null
-
-            # #listen APP_STOP_RETURN
-            # me.on 'APP_STOP_RETURN', (result) ->
-
-            #     console.log 'APP_STOP_RETURN'
-
-            #     # update tab icon
-            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
-
-            #     if !result.is_error
-            #         if ws
-            #             req_id = result.resolved_data.id
-            #             console.log "request id:" + req_id
-            #             query = ws.collection.request.find({id:req_id})
-            #             handle = query.observeChanges {
-            #                 changed : (id, req) ->
-            #                     if req.state == "Done"
-            #                         handle.stop()
-            #                         console.log 'stop handle'
-            #                         #push event
-            #                         ide_event.trigger ide_event.APP_STOP, app_name, app_id
-
-            #                         # update icon
-            #                         ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', app_id
-
-            #             }
-            #         null
-
-            # #listen APP_TERMINATE_RETURN
-            # me.on 'APP_TERMINATE_RETURN', (result) ->
-
-            #     console.log 'APP_TERMINATE_RETURN'
-
-            #     # update tab icon
-            #     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', app_id
-
-            #     if !result.is_error
-            #         if ws
-            #             req_id = result.resolved_data.id
-            #             console.log "request id:" + req_id
-            #             query = ws.collection.request.find({id:req_id})
-            #             handle = query.observeChanges {
-            #                 changed : (id, req) ->
-            #                     if req.state == "Done"
-            #                         handle.stop()
-            #                         console.log 'stop handle'
-            #                         #push event
-            #                         ide_event.trigger ide_event.APP_TERMINATE, app_name, app_id
-            #             }
-            #     null
-
-            #listen STACK_SAVE__AS_RETURN
-            # me.on 'STACK_SAVE__AS_RETURN', (result) ->
-            #     console.log 'STACK_SAVE__AS_RETURN'
-
-            #     if !result.is_error
-
-            #         region      = result.param[3]
-            #         id          = result.param[4]
-            #         new_name    = result.param[5]
-            #         name        = result.param[6]
-
-            #         #update stack name list
-            #         if new_name not in MC.data.stack_list[region]
-            #             MC.data.stack_list[region].push new_name
-
-            #         ide_event.trigger ide_event.UPDATE_STACK_LIST
-
-            #     null
-
-            # #listen STACK_REMOVE_RETURN
-            # me.on 'STACK_REMOVE_RETURN', (result) ->
-            #     console.log 'STACK_REMOVE_RETURN'
-            #     console.log result
-
-            #     if !result.is_error
-
-            #         region  = result.param[3]
-            #         id      = result.param[4]
-            #         name    = result.param[5]
-
-            #         ide_event.trigger ide_event.STACK_DELETE, name, id
-
-
             #listen VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN
             me.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
                 console.log 'region_VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
-                regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item[0].attributeValueSet.item
+                if !result.is_error
 
-                if regionAttrSet.length == 2
-                    vpc_attrs_value = { 'classic' : 'Classic', 'vpc' : 'VPC' }
-                else
-                    vpc_attrs_value = { 'vpc' : 'VPC' }
+                    regionAttrSet = result.resolved_data[current_region].accountAttributeSet.item[0].attributeValueSet.item
 
-                me.set 'vpc_attrs', vpc_attrs_value
+                    if regionAttrSet.length == 2
+                        vpc_attrs_value = { 'classic' : 'Classic', 'vpc' : 'VPC' }
+                    else
+                        vpc_attrs_value = { 'vpc' : 'VPC' }
+
+                    me.set 'vpc_attrs', vpc_attrs_value
 
                 null
 
@@ -391,35 +281,37 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
                 console.log 'AWS_STATUS_RETURN'
 
-                status_list  = { red: 0, yellow: 0, info: 0 }
-                service_list = constant.SERVICE_REGION[ current_region ]
-                result_list  = result.resolved_data.current
+                if !result.is_error
 
-                _.map result_list, ( value ) ->
-                    service_set         = value
-                    cur_service         = service_set.service
-                    should_show_service = false
+                    status_list  = { red: 0, yellow: 0, info: 0 }
+                    service_list = constant.SERVICE_REGION[ current_region ]
+                    result_list  = result.resolved_data.current
 
-                    _.map service_list, ( value ) ->
-                        if cur_service is value
-                            should_show_service = true
-                        null
+                    _.map result_list, ( value ) ->
+                        service_set         = value
+                        cur_service         = service_set.service
+                        should_show_service = false
 
-                    if should_show_service
-                        switch service_set.status
-                            when '1'
-                                status_list.red += 1
-                                null
-                            when '2'
-                                status_list.yellow += 1
-                                null
-                            when '3'
-                                status_list.info += 1
-                                null
-                            else
-                                null
+                        _.map service_list, ( value ) ->
+                            if cur_service is value
+                                should_show_service = true
+                            null
 
-                me.set 'status_list', status_list
+                        if should_show_service
+                            switch service_set.status
+                                when '1'
+                                    status_list.red += 1
+                                    null
+                                when '2'
+                                    status_list.yellow += 1
+                                    null
+                                when '3'
+                                    status_list.info += 1
+                                    null
+                                else
+                                    null
+
+                    me.set 'status_list', status_list
 
                 null
 
@@ -712,9 +604,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
 
             current_region = region
 
-            if $.cookie('has_cred') is 'true'
-
-                vpc_model.DescribeAccountAttributes { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
+            vpc_model.DescribeAccountAttributes { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
 
 
             null

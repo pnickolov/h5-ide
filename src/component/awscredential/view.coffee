@@ -26,29 +26,29 @@ define [ 'event',
             console.log 'onClose'
             this.trigger 'CLOSE_POPUP'
 
-            # update overview
-            if MC.data.dashboard_type is 'OVERVIEW_TAB'
-                console.log 'update overview account attributes'
-                ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
+            # # update overview
+            # if MC.data.dashboard_type is 'OVERVIEW_TAB'
+            #     console.log 'update overview account attributes'
+            #     ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
 
-            # update region
-            else if MC.data.dashboard_type is 'REGION_TAB'
-                console.log 'update region resource'
-                ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
+            # # update region
+            # else if MC.data.dashboard_type is 'REGION_TAB'
+            #     console.log 'update region resource'
+            #     ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
 
         onDone : ->
             console.log 'onDone'
             modal.close()
             this.trigger 'CLOSE_POPUP'
 
-            # update if not in overview
-            if MC.data.dashboard_type is 'OVERVIEW_TAB'
-                console.log 'update overview account attributes'
-                ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
+            # # update if not in overview
+            # if MC.data.dashboard_type is 'OVERVIEW_TAB'
+            #     console.log 'update overview account attributes'
+            #     ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
 
-            else if MC.data.dashboard_type is 'REGION_TAB'
-                console.log 'update region resource'
-                ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
+            # else if MC.data.dashboard_type is 'REGION_TAB'
+            #     console.log 'update region resource'
+            #     ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
 
         onUpdate : ->
             console.log 'onUpdate'

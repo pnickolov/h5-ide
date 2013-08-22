@@ -70,7 +70,10 @@ define [ 'jquery',
                 #set MC.data.supported_platforms
                 MC.data.supported_platforms = model.get 'region_classic_list'
                 #refresh view
-                view.renderPlatformAttrs()
+                if MC.data.supported_platforms.length <= 0
+                    view.renderPlatformAttrs(false)
+                else
+                    view.renderPlatformAttrs(true)
                 #
                 if region_view then region_view.checkCreateStack MC.data.supported_platforms
 
@@ -249,7 +252,14 @@ define [ 'jquery',
                         console.log 'dashboard_region_click:delete_stack'
                         model.deleteStack(current_region, stack_id)
                     ide_event.onLongListen ide_event.UPDATE_REGION_RESOURCE, () ->
-                        model.describeAWSResourcesService current_region
+                        console.log 'dashboard_region:UPDATE_REGION_RESOURCE'
+
+                        if $.cookie('has_cred') is 'true'
+                            model.describeAWSResourcesService current_region
+                            model.describeRegionAccountAttributesService current_region
+                            model.describeAWSStatusService current_region
+                        else
+                            model.resetData()
 
                     model.describeAWSResourcesService current_region
                     model.describeRegionAccountAttributesService current_region

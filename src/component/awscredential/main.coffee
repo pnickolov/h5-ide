@@ -47,6 +47,15 @@ define [ 'jquery', 'event',
                 else
                     view.showSet('is_failed')
 
+            model.on 'change:is_authenticated', () ->
+                console.log 'credential changed'
+
+                console.log 'update overview account attributes'
+                ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
+
+                console.log 'update region resource'
+                ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
+
     unLoadModule = ( view, model ) ->
         console.log 'awscredential unLoadModule'
         view.off()

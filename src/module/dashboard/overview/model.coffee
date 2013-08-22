@@ -51,9 +51,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
                 region_classic_vpc_result = []
-
+                    
                 if !result.is_error
-
+                    
                     # set cookie
                     $.cookie 'has_cred', true,    { expires: 1 }
 
@@ -77,6 +77,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                     # set cookie
                     $.cookie 'has_cred', false,    { expires: 1 }
+
+                    me.set 'region_classic_list', region_classic_vpc_result
 
             null
 

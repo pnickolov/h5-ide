@@ -1524,6 +1524,7 @@ MC.canvas.layout = {
 		{
 			$.each(layout_data.component.node, function (id, data)
 			{
+				data.connection = [];
 				MC.canvas.add(id);
 			});
 		}
@@ -1536,6 +1537,9 @@ MC.canvas.layout = {
 		{
 			$.each(layout_data.component.group, function (id, data)
 			{
+				if(data.connection){
+					data.connection = [];
+				}
 				MC.canvas.add(id);
 			});
 		}
@@ -1544,33 +1548,9 @@ MC.canvas.layout = {
 			layout_data.component.group = {};
 		}
 
-		if (layout_data.connection)
-		{
-			$.each(layout_data.connection, function (line, data)
-			{
 
-				connection_target_id = [];
+		layout_data.connection = {};
 
-				$.each(data.target, function (key, value)
-				{
-					connection_target_id.push(key);
-				});
-
-				MC.canvas.connect(
-					$('#' + connection_target_id[0]),
-					data.target[ connection_target_id[0] ],
-					$('#' + connection_target_id[1]),
-					data.target[ connection_target_id[1] ],
-					{
-						'line_uid': line
-					}
-				);
-			});
-		}
-		else
-		{
-			layout_data.connection = {};
-		}
 
 		//store json to original_json
 		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);

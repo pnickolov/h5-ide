@@ -1380,15 +1380,15 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			$.each MC.canvas_data.layout.connection, ( line_id, line ) ->
 
-				#if line.type == 'sg'
+				if line.type == 'sg' and $("#"+line_id)[0] isnt undefined
 
-				MC.canvas.remove $("#"+line_id)[0]
+					MC.canvas.remove $("#"+line_id)[0]
 
 			$.each lines, ( idx, line_data ) ->
 
 				MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
 
-			this.initLine()
+			#this.initLine()
 
 			lines
 

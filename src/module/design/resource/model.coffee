@@ -31,9 +31,11 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             me.on 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
                 console.log 'EC2_EBS_DESC_SSS_RETURN'
 
-                me.set 'resoruce_snapshot', result.resolved_data
-                #
-                me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
+                if !result.is_error
+
+                    me.set 'resoruce_snapshot', result.resolved_data
+                    #
+                    me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
                 null
 
             ######listen AWS_QUICKSTART_RETURN
@@ -79,8 +81,11 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 MC.data.config[region_name].instance_type       = result.resolved_data.instance_type
                 MC.data.config[region_name].price               = result.resolved_data.price
                 MC.data.config[region_name].vpc_limit           = result.resolved_data.vpc_limit
+                # reset az
+                MC.data.config[region_name].zone = {'item':[]}
+                MC.data.config[region_name].zone.item.push {'regionName':region_name, 'zoneName':i, 'zoneState':'available'} for i in result.resolved_data.zone
                 #MC.data.config[region_name].zone                = result.resolved_data.zone
-                MC.data.config[region_name].zone                = null
+                #MC.data.config[region_name].zone                = null
 
                 MC.data.config[region_name].ami_list = ami_list
 

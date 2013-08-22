@@ -1060,10 +1060,11 @@
       if ( true === this.valid ) {
         this.removeErrors();
         this.errorClassHandler.removeClass( this.options.errorClass ).addClass( this.options.successClass );
+        Util.errortip.clear( this.hash );
         return true;
       } else if ( false === this.valid ) {
         this.errorClassHandler.removeClass( this.options.successClass ).addClass( this.options.errorClass );
-        Util.errortip.first(this.element);
+        Util.errortip.first( this.element );
         return false;
       }
 
@@ -1769,7 +1770,7 @@ var errortip = function (event)
   errortip.isFirst && (errortip.isFirst = false)
   var target = $(this),
     content = $(this).next('.parsley-error-list'),
-    errortip_box = $('#errortip_box'),
+    errortip_box = $('.errortip_box'),
     target_offset,
     width,
     height,
@@ -1779,8 +1780,10 @@ var errortip = function (event)
   if (content)
   {
     errortip_box = content.clone();
-    errortip_box.attr('id', 'errortip_box');
-    errortip_box.appendTo(document.body);
+    errortip_box
+      .addClass('errortip_box')
+      .attr('id', 'errortip-' + errortip_box.attr('id'))
+      .appendTo(document.body);
 
     target_offset = target.offset();
     target_width = target.innerWidth();
@@ -1816,9 +1819,21 @@ errortip.first = function( target ) {
   }, 2000);
 }
 
-errortip.clear = function ()
+errortip.clear = function (id)
 {
-  $('#errortip_box').remove();
+
+
+  if (id) {
+    var errorPrefix = 'errortip-';
+    $('.errortip_box').each(function() {
+      if (this.id === errorPrefix + id) {
+        $(this).remove();
+        return false;
+      }
+    });
+
+  }
+  $('.errortip_box').remove();
   $(document.body).off('mouseleave', '.parsley-error', errortip.clear);
 
 };

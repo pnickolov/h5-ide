@@ -3700,6 +3700,9 @@ MC.canvas.event.groupResize = {
 				});
 			}
 
+			// Hide label
+			parent.find('.group-label').hide();
+
 			$(document.body).append('<div id="overlayer" style="cursor: ' + $(event.target).css('cursor') + '"></div>');
 
 			$(document)
@@ -3712,6 +3715,7 @@ MC.canvas.event.groupResize = {
 					'group_title': parent.find('.group-label'),
 					'target': group,
 					'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
+					'label_offset': MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 					'originalX': event.pageX,
 					'originalY': event.pageY,
 					'originalWidth': group_offset.width,
@@ -3749,11 +3753,11 @@ MC.canvas.event.groupResize = {
 			group_border = event.data.group_border,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
-			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10 * scale_ratio,
+			left = Math.ceil((event.pageX - event.data.originalLeft) / 10) * 10 * scale_ratio,
 			max_left = event.data.originalWidth * scale_ratio - group_min_padding,
-			top = Math.round((event.pageY - event.data.originalTop) / 10) * 10 * scale_ratio,
+			top = Math.ceil((event.pageY - event.data.originalTop) / 10) * 10 * scale_ratio,
 			max_top = event.data.originalHeight * scale_ratio - group_min_padding,
-			label_offset = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
+			label_offset = event.data.label_offset,
 			prop;
 
 		switch (direction)
@@ -3829,14 +3833,14 @@ MC.canvas.event.groupResize = {
 
 		event.data.target.attr(prop);
 
-		if (prop.x)
-		{
-			event.data.group_title.attr('x', prop.x + label_offset[0]);
-		}
-		if (prop.y)
-		{
-			event.data.group_title.attr('y', prop.y + label_offset[1]);
-		}
+		// if (prop.x)
+		// {
+		// 	event.data.group_title.attr('x', prop.x + label_offset[0]);
+		// }
+		// if (prop.y)
+		// {
+		// 	event.data.group_title.attr('y', prop.y + label_offset[1]);
+		// }
 
 		return false;
 	},
@@ -4226,6 +4230,9 @@ MC.canvas.event.groupResize = {
 				);
 			});
 		}
+
+		// Show label
+		parent.find('.group-label').show();
 
 		$('#overlayer').remove();
 

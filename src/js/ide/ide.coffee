@@ -41,8 +41,6 @@ define [ 'MC', 'event', 'handlebars'
 		#############################
 		#  validation cookie
 		#############################
-		#
-
 
 		madeiracloud_ide_session_id = getMadeiracloudIDESessionID()
 
@@ -63,7 +61,6 @@ define [ 'MC', 'event', 'handlebars'
 
 			#user session not exist, go to login page
 			window.location.href = 'login.html'
-
 
 		#############################
 		#  initialize MC.data

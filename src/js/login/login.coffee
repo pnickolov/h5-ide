@@ -68,7 +68,6 @@ define [ 'jquery', 'handlebars',
 
 		null
 
-
 	#private method
 	MC.login = ( event ) ->
 

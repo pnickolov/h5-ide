@@ -11,20 +11,20 @@ emptyFunction = ->
 
 require.config {
 
-	baseUrl            : './'
+	baseUrl                  : './'
 
-	waitSeconds        : 30
+	waitSeconds              : 30
 
-	deps               : [ 'main' ]
+	deps                     : [ 'main' ]
 
-	locale             : 'en-us'
+	locale                   : 'en-us'
 
-	paths              :
+	paths                    :
 
 		#############################################
 		# main
 		#############################################
-		'main'         :   'js/ide/main'
+		'main'               :   'js/ide/main'
 
 		#############################################
 		# vender

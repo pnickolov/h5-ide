@@ -174,8 +174,8 @@ module.exports = function( grunt ) {
 									'watch'
 	]);
 
-	/* task of use as publish */
-	grunt.registerTask( 'publish', ['clean',
+	/* task of use as release */
+	grunt.registerTask( 'release', ['clean',
 									'make_all',
 									'copy:publish',
 									'copy:lib_aws',
@@ -191,8 +191,8 @@ module.exports = function( grunt ) {
 									'connect:release'
 	]);
 
-	/* run at r.js */
-	grunt.registerTask( 'require', ['requirejs:compile_login',
+	/* run at r.js as publish */
+	grunt.registerTask( 'publish', ['requirejs:compile_login',
 									'open:publish',
 									'connect:publish'
 	]);

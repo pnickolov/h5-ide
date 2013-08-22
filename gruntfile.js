@@ -123,15 +123,13 @@ module.exports = function( grunt ) {
 	/* task of use as make(compiler) */
 	grunt.registerTask( 'make_fast', function() {
 		grunt.task.run([
-			'coffee:compile_fast',
-			'replace:json_view'
+			'coffee:compile_fast'
 		]);
 	});
 	grunt.registerTask( 'make', function() {
 		grunt.task.run([
 			'coffeelint:files',
 			'coffee:compile_normal',
-			'replace:json_view',
 			'jshint',
 			'csslint'
 		]);
@@ -140,7 +138,6 @@ module.exports = function( grunt ) {
 		grunt.task.run([
 			'coffeelint:files',
 			'coffee:compile_all',
-			'replace:json_view',
 			'jshint',
 			'csslint'
 		]);
@@ -149,6 +146,7 @@ module.exports = function( grunt ) {
 	/* task of use as develop */
 	grunt.registerTask( 'dev_fast', [
 									'make_fast',
+									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -156,6 +154,7 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'develop', [
 									'make',
+									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -163,6 +162,7 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'dev_all', [
 									'make_all',
+									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',

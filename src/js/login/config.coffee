@@ -5,11 +5,14 @@ require.config {
 
 	waitSeconds           : 30
 
-	deps                  : [ 'js/login/main' ]
+	deps                  : [ 'main' ]
 
 	locale                : 'en-us'
 
 	paths                 :
+
+		#main
+		'main'            : 'js/login/main'
 
 		#vender
 		'jquery'          : 'vender/jquery/jquery'

@@ -38,6 +38,8 @@ define [ 'event' ], ( ide_event ) ->
                 if MC.data.current_tab_id is tab_name
                     model.getProcess tab_name
 
+            model.on 'UPDATE_HEADER_AT_ONCE', () ->
+                console.log 'UPDATE_HEADER_AT_ONCE'
                 view.render()
 
     unLoadModule = () ->

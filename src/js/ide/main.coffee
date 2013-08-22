@@ -4,5 +4,7 @@
 
 require [ 'domReady', 'router' ], ( domReady, router ) ->
 
+	### ##json_view ###
+
 	domReady () ->
 		router.initialize()

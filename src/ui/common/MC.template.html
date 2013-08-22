@@ -51,10 +51,10 @@
        			<div class="modal-center-align-helper">
 		            <div class="modal-text">{{body}}</div>
 	            </div>
-            </div>
-            {{#if input}}
+            	{{#if input}}
                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
-            {{/if}}
+            	{{/if}}
+            </div>
        </div>
        <div class="modal-footer">
             <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
@@ -64,7 +64,7 @@
 
 <!-- canvasOpConfirm -->
 <div style="width:420px">
-  <div class="modal-header"> <h3>Confirm to {{operation}}</h3><i class="modal-close">&times;</i> </div>
+  <div class="modal-header"> <h3>{{operation}}</h3><i class="modal-close">&times;</i> </div>
   <div class="modal-body">
     <div class="modal-text-wraper"> <div class="modal-center-align-helper">
       <div class="modal-text">{{content}}</div>

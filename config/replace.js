@@ -1,7 +1,5 @@
 module.exports = {
 
-    /*add by xjimmy*/
-
     dist: {
         options: {
             variables: {
@@ -13,6 +11,18 @@ module.exports = {
         },
         files: [
             {src: ['<%= release %>/login.html'], dest: '<%= release %>/login.html'}
+        ]
+    },
+
+    json_view: {
+        options: {
+            variables: {
+                "json_view" : "*/require([ 'test/json_view/json_view' ], function() {} );/*"
+            },
+            prefix: '##'
+        },
+        files: [
+            { src: [ '<%= src %>/js/ide/main.js' ], dest: '<%= src %>/js/ide/main.js' }
         ]
     }
 

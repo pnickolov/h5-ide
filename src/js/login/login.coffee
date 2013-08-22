@@ -45,8 +45,28 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 define [ 'jquery', 'handlebars',
          'MC', 'session_model',
          'i18n!/nls/lang.js',
-         'text!/js/login/template.html'
+         'text!./js/login/template.html'
 ], ( $, Handlebars, MC, session_model, lang, template ) ->
+
+
+	setMadeiracloudIDESessionID = ( result ) ->
+
+		madeiracloud_ide_session_id = [
+			result.userid,
+			result.usercode,
+			result.session_id,
+			result.region_name,
+			result.email,
+			result.has_cred
+		]
+
+		$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), {
+			path: '/',
+			#domain: '.madeiracloud.com', #temp comment
+			expires: 1
+		}
+
+		null
 
 	#private method
 	MC.login = ( event ) ->
@@ -84,6 +104,9 @@ define [ 'jquery', 'handlebars',
 				$.cookie 'email',       result.email,       { expires: 1 }
 				$.cookie 'has_cred',    result.has_cred,    { expires: 1 }
 				$.cookie 'username',     username, 			{ expires: 1 }
+
+				#set madeiracloud_ide_session_id
+				setMadeiracloudIDESessionID result
 
 				#redirect to page ide.html
 				window.location.href = 'ide.html'

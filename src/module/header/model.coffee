@@ -144,10 +144,6 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                         lst = req.data.split(' ')
                         item.rid = lst[lst.length-1]
 
-                # filter terminate app
-                #if item.operation is 'terminate' and item.is_complete
-                #    item.is_terminated = true
-
             else
                 return
 

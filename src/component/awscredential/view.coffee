@@ -22,55 +22,39 @@ define [ 'event',
             #
             this.setElement $( '#AWSCredential-setting' ).closest '#modal-wrap'
 
-        reRender : () ->
-            me = this
-            console.log 'pop-up:awscredential rerender'
-
-            #this.$el.html this.model.attributes
-
-            if me.model.attributes.is_authenticated
-                $('#AWSCredentials-submiting').hide()
-                $('#AWSCredentials-update').show()
-                $('#aws-credential-update-account-id').text me.model.attributes.account_id
-            else
-                $('#AWSCredentials-submiting').hide()
-
-                $('#AWSCredential-form').show()
-                $('#AWSCredential-info').hide()
-                $('#AWSCredential-failed').show()
-
-                # clear the input values
-                $('#aws-credential-account-id').val(' ')
-                $('#aws-credential-access-key').val(' ')
-                $('#aws-credential-secret-key').val(' ')
-
-
         onClose : ->
             console.log 'onClose'
             this.trigger 'CLOSE_POPUP'
+
+            # update if not in overview
+            if MC.data.dashboard_type isnt 'OVERVIEW_TAB'
+                console.log 'update resource'
 
         onDone : ->
             console.log 'onDone'
             modal.close()
             this.trigger 'CLOSE_POPUP'
 
+            # update if not in overview
+            if MC.data.dashboard_type isnt 'OVERVIEW_TAB'
+                console.log 'update resource'
+
         onUpdate : ->
             console.log 'onUpdate'
-            $('#AWSCredentials-update').hide()
 
-            $('#AWSCredential-form').show()
-            # clear the access key and secret key
-            $('#aws-credential-access-key').val(' ')
-            $('#aws-credential-secret-key').val(' ')
+            me = this
 
+            me.showSet('is_update')
 
         onSubmit : () ->
             console.log 'onSubmit'
 
+            me = this
+
             # input check
-            account_id = $('#aws-credential-account-id').val()
-            access_key = $('#aws-credential-access-key').val()
-            secret_key = $('#aws-credential-secret-key').val()
+            account_id = $('#aws-credential-account-id').val().trim()
+            access_key = $('#aws-credential-access-key').val().trim()
+            secret_key = $('#aws-credential-secret-key').val().trim()
 
             if not account_id
                 notification 'error', 'Invalid accout id.'
@@ -79,11 +63,61 @@ define [ 'event',
             else if not secret_key
                 notification 'error', 'Invalid secret key.'
 
-            # hide AWSCredential-form and show AWSCredentials-submiting
+            # show AWSCredentials-submiting
+            me.showSubmit()
+
+            me.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
+
+        # show setting dialog
+        showSet : (flag) ->
+            console.log 'show credential setting dialog'
+
+            me = this
+
+            $('#AWSCredential-form').show()
+            $('#AWSCredentials-submiting').hide()
+            $('#AWSCredentials-update').hide()
+
+            # set content
+            $('#aws-credential-account-id').val(' ')
+            $('#aws-credential-access-key').val(' ')
+            $('#aws-credential-secret-key').val(' ')
+
+            if not flag     # initial
+                $('#AWSCredential-failed').hide()
+                $('#AWSCredential-info').show()
+
+            else if flag is 'is_failed'
+                $('#AWSCredential-failed').show()
+                $('#AWSCredential-info').hide()
+
+            else if flag is 'is_update'
+                $('#AWSCredential-failed').hide()
+                $('#AWSCredential-info').show()
+                $('#aws-credential-account-id').val(me.model.attributes.account_id)
+
+        # show update dialog
+        showUpdate : () ->
+            console.log 'show updating dialog'
+
+            me = this
+
+            $('#AWSCredential-form').hide()
+            $('#AWSCredentials-submiting').hide()
+            $('#AWSCredentials-update').show()
+
+            # set content
+            $('#aws-credential-update-account-id').text me.model.attributes.account_id
+
+        # show submit dialog
+        showSubmit : () ->
+            console.log 'show submiting dialog'
+
+            me = this
+
             $('#AWSCredential-form').hide()
             $('#AWSCredentials-submiting').show()
-
-            this.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
+            $('#AWSCredentials-update').hide()
 
     }
 

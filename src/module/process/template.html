@@ -36,11 +36,11 @@
 		<div class="step-request">
 			<h2>Processing Request</h2>
 			<div class="progress">
-				<div class="bar" style="width: {{flag_list.rate}}%;"></div>
+				<div class="bar" id="progress_bar" style="width: {{flag_list.rate}}%;"></div>
 			</div>
 			<p class="process-info">
-				<span><b class="num">{{flag_list.dones}}</b> of</span>
-				<span><b class="total">{{flag_list.steps}}</b> tasks</span>
+				<span><b class="num" id="progress_num">{{flag_list.dones}}</b> of</span>
+				<span><b class="total" id="progress_total">{{flag_list.steps}}</b> tasks</span>
 			</p>
 		</div>
 		{{/if}}

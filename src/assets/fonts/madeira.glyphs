@@ -1,6 +1,6 @@
 {
 DisplayStrings = (
-/uniF120
+/uniF11E
 );
 copyright = MedeiraCloud;
 date = "2013-08-14 04:12:41 +0000";
@@ -1028,11 +1028,102 @@ unicode = F11D;
 },
 {
 glyphname = uniF11E;
-lastChange = "2013-08-21 11:24:04 +0800";
+lastChange = "2013-08-21 17:10:26 +0800";
 layers = (
 {
 layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
 name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"489 684 OFFCURVE",
+"515 710 OFFCURVE",
+"540 720 CURVE",
+"180 720 LINE",
+"120 720 OFFCURVE",
+"120 660 OFFCURVE",
+"120 660 CURVE",
+"120 0 LINE",
+"480 0 LINE",
+"480 664 LINE SMOOTH"
+);
+},
+{
+closed = 1;
+nodes = (
+"420 120 LINE",
+"420 60 LINE",
+"180 60 LINE",
+"180 120 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"420 300 LINE",
+"420 240 LINE",
+"180 240 LINE",
+"180 300 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"420 480 LINE",
+"420 420 LINE",
+"180 420 LINE",
+"180 480 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"420 660 LINE",
+"420 600 LINE",
+"180 600 LINE",
+"180 660 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"833 480 OFFCURVE",
+"900 547 OFFCURVE",
+"900 630 CURVE SMOOTH",
+"900 713 OFFCURVE",
+"833 780 OFFCURVE",
+"750 780 CURVE SMOOTH",
+"667 780 OFFCURVE",
+"600 713 OFFCURVE",
+"600 630 CURVE SMOOTH",
+"600 547 OFFCURVE",
+"667 480 OFFCURVE",
+"750 480 CURVE SMOOTH"
+);
+},
+{
+closed = 1;
+nodes = (
+"600 -120 LINE",
+"0 -120 LINE",
+"0 660 LINE",
+"0 720 OFFCURVE",
+"0 840 OFFCURVE",
+"180 840 CURVE",
+"750 840 LINE",
+"866 840 OFFCURVE",
+"960 746 OFFCURVE",
+"960 630 CURVE SMOOTH",
+"960 514 OFFCURVE",
+"866 420 OFFCURVE",
+"750 420 CURVE SMOOTH",
+"690 420 OFFCURVE",
+"638 444 OFFCURVE",
+"600 484 CURVE"
+);
+}
+);
 width = 960;
 }
 );
@@ -1114,6 +1205,7 @@ unicode = F122;
 }
 );
 gridLength = 60;
+gridSubDevision = 60;
 unitsPerEm = 960;
 versionMajor = 1;
 versionMinor = 1;

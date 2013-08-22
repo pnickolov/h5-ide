@@ -79,7 +79,7 @@ define [ 'MC', 'event',
                 new_data = JSON.stringify( MC.canvas_data )
                 id = MC.canvas_data.id
                 if ori_data != new_data or id.indexOf('stack-') isnt 0
-                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
 
                 # hold on 0.5 second for data update
                 setTimeout () ->
@@ -103,7 +103,7 @@ define [ 'MC', 'event',
                 notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
             else
                 MC.canvas_data.name = name
-                ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
 
             true
 
@@ -126,9 +126,9 @@ define [ 'MC', 'event',
 
                     # check change and save stack
                     ori_data = MC.canvas_property.original_json
-                    new_data = JSON.stringify( MC.canvas_data )
+                    new_data = JSON.stringify( MC.canvas.layout.save() )
                     if ori_data != new_data or id.indexOf('stack-') isnt 0
-                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
 
                     setTimeout () ->
                         ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name

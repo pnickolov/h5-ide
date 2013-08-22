@@ -36,6 +36,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
                 if !inputValue
                     MC.aws.aws.disabledAllOperabilityArea(true)
                     $(inputElem).focus()
+                    ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
 
         processParsley: ( event ) ->
             $( event.currentTarget )

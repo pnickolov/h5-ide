@@ -16,12 +16,12 @@ define({
 		'dashboard' : 'Dashboard',
 		'account-settings' : 'Account Settings',
 		// Add new strings below this comment. Move above once English has been confirmed
-		
+
 		/** RESOURCE NAMING CONVENTIONS
-		 * 
+		 *
 		 * Do not use camel case (e.g., 'KeyPair' should be 'Key Pair')
 		 * If using in a sentence use lowercase (e.g., 'View your instances.')
-		 * 
+		 *
 		 * AZ = Availability Zones
 		 * EC2 AMI = Image
 		 * EC2 Instance = Instance
@@ -33,13 +33,13 @@ define({
 		 * KP = Key Pair
 		 * VPC = 'Virtual Private Cloud' for titles but 'VPC' in other references is OK
 		 * Subnet = Subnet
-		 * RT = Route Table         
+		 * RT = Route Table
 		 * ENI = Network Interface
 		 * IGW = Internet Gateway
 		 * VGW = Virtual Gateway
 		 * CGW = Customer Gateway
 		 * VPN = VPN
-		 * 
+		 *
 		 */
 
 		/******resource panel module******/
@@ -90,8 +90,21 @@ define({
 		'CVS_MSG_WARN_NOTMATCH_ELB'             : 'Load balancers must be dragged inside a VPC but outside an availability zone.',
 		'CVS_MSG_WARN_NOTMATCH_CGW'             : 'Customer gateways must be dragged outside the VPC.',
 		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : 'Nodes cannot overlap eachother.',
-		'CVS_WARN_EXCEED_ENI_LIMIT'             : "[ %s ]'s type [ %s ] supports a maximum of [ %s ] network interfaces (including the primary).",
-		'CVS_CFM_DEL_GROUP'                     : "Deleting [ %s ] will also remove all resources inside it. Are you sure you want to delete it?",
+		'CVS_WARN_EXCEED_ENI_LIMIT'             : "%s's type %s supports a maximum of %s network interfaces (including the primary).",
+		'CVS_MSG_ERR_CONNECT_ENI_AMI'           : 'Network interfaces can only be attached to an instance in the same availability zone.',
+		'CVS_MSG_ERR_MOVE_ATTACHED_ENI'         : 'Network interfaces must be in the same availability zone as the instance they are attached to.',
+		'CVS_MSG_ERR_DROP_ASG'                  : '%s is already in %s.',
+		'CVS_MSG_ERR_DEL_LC'                    : 'Currently modifying the launch configuration is not supported.',
+		'CVS_MSG_ERR_DEL_MAIN_RT'               : 'The main route table %s cannot be deleted. Please set another route table as the main and try again.',
+		'CVS_MSG_ERR_DEL_LINKED_RT'             : 'Subnets must be associated to a route table. Please associate the subnets with another route table first.',
+		'CVS_MSG_ERR_DEL_SBRT_LINE'             : 'Subnets must be associated with a route table.',
+		'CVS_MSG_ERR_DEL_LINKED_ELB'            : 'This subnet cannot be deleted because it is associated to a load balancer.',
+		'CVS_CFM_DEL'                           : 'Are you sure you want to delete %s?',
+		'CVS_CFM_DEL_IGW'                       : 'Internet-facing load balancers and elastic IPs will not function without an internet gateway, are you sure you want to delete it?',
+		'CVS_CFM_DEL_GROUP'                     : "Deleting %s will also remove all resources inside it. Are you sure you want to delete it?",
+		'CVS_CFM_DEL_ASG'                       : 'Deleting this will delete the entire %s. Are you sure you want to delete it?',
+		'CVS_CFM_ADD_IGW'                       : 'An Internet Gateway is Required',
+		'CVS_CFM_ADD_IGW_MSG'                   : 'Automatically add an internet gateway to allow this %s to be publicly addressable?',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 
@@ -102,12 +115,18 @@ define({
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
 		'PROP_MSG_WARN_NO_APP_NAME'             : 'App name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
-		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance type [ %s ] supports a maximum of [ %s ] network interfaces (including the primary). Please detach additional network interfaces before changing instance type.',
+		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type.',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/******navigation module******/
-		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com'
+		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',
 		// Add new strings below this comment. Move above once English has been confirmed
 
+		/****** miscellaneous ******/
+		'CFM_BTN_DELETE'   : 'Delete',
+		'CFM_BTN_CANCEL'   : 'Cancel',
+		'CFM_BTN_ADD'      : 'Add',
+		'CFM_BTN_DONT_ADD' : "Don't add"
+		// Add new strings below this comment. Move above once English has been confirmed
 	}
 });

@@ -265,22 +265,16 @@ var constant_data = {
 					"relation": "multiple"
 				}
 			],
-			"AWS.VPC.RouteTable": [
-				{
-					"type": "rtb-target",
-					"from": "instance-rtb",
-					"to": "rtb-tgt-left",
-					"relation": "multiple",
-					"dash_line": true
+			"AWS.VPC.RouteTable": {
+				"type": "rtb-target",
+				"from": "instance-rtb",
+				"to": "rtb-tgt",
+				"direction": {
+					"to": "horizontal"
 				},
-				{
-					"type": "sg",
-					"from": "instance-rtb",
-					"to": "rtb-tgt-right",
-					"relation": "unique",
-					"dash_line": true
-				}
-			]
+				"relation": "multiple",
+				"dash_line": true
+			}
 		},
 		"AWS.ELB": {
 			"AWS.EC2.Instance": [
@@ -425,22 +419,16 @@ var constant_data = {
 					"relation": "multiple"
 				}
 			],
-			"AWS.VPC.RouteTable": [
-				{
-					"type": "sg",
-					"from": "eni-rtb",
-					"to": "rtb-tgt-left",
-					"relation": "multiple",
-					"dash_line": true
+			"AWS.VPC.RouteTable": {
+				"type": "rtb-target",
+				"from": "eni-rtb",
+				"to": "rtb-tgt",
+				"direction": {
+					"to": "horizontal"
 				},
-				{
-					"type": "sg",
-					"from": "eni-rtb",
-					"to": "rtb-tgt-right",
-					"relation": "multiple",
-					"dash_line": true
-				}
-			]
+				"relation": "multiple",
+				"dash_line": true
+			}
 		},
 		"AWS.VPC.RouteTable": {
 			"AWS.VPC.Subnet": {
@@ -452,49 +440,43 @@ var constant_data = {
 				},
 				"relation": "multiple"
 			},
-			"AWS.EC2.Instance": [
-				{
-					"type": "rtb-target",
-					"from": "rtb-tgt-left",
-					"to": "instance-rtb",
-					"relation": "multiple",
-					"dash_line": true
+			"AWS.EC2.Instance": {
+				"type": "rtb-target",
+				"from": "rtb-tgt",
+				"to": "instance-rtb",
+				"direction": {
+					"from": "horizontal"
 				},
-				{
-					"type": "rtb-target",
-					"from": "rtb-tgt-right",
-					"to": "instance-rtb",
-					"relation": "multiple",
-					"dash_line": true
-				}
-			],
-			"AWS.VPC.NetworkInterface": [
-				{
-					"type": "rtb-target",
-					"from": "rtb-tgt-left",
-					"to": "eni-rtb",
-					"relation": "multiple",
-					"dash_line": true
+				"relation": "multiple",
+				"dash_line": true
+			},
+			"AWS.VPC.NetworkInterface": {
+				"type": "rtb-target",
+				"from": "rtb-tgt",
+				"to": "eni-rtb",
+				"direction": {
+					"from": "horizontal"
 				},
-				{
-					"type": "rtb-target",
-					"from": "rtb-tgt-right",
-					"to": "eni-rtb",
-					"relation": "multiple",
-					"dash_line": true
-				}
-			],
+				"relation": "multiple",
+				"dash_line": true
+			},
 			"AWS.VPC.InternetGateway": {
 				"type": "rtb-target",
-				"from": "rtb-tgt-left",
+				"from": "rtb-tgt",
 				"to": "igw-tgt",
+				"direction": {
+					"from": "horizontal"
+				},
 				"relation": "multiple",
 				"dash_line": true
 			},
 			"AWS.VPC.VPNGateway": {
 				"type": "rtb-target",
-				"from": "rtb-tgt-right",
+				"from": "rtb-tgt",
 				"to": "vgw-tgt",
+				"direction": {
+					"from": "horizontal"
+				},
 				"relation": "multiple",
 				"dash_line": true
 			}
@@ -503,7 +485,10 @@ var constant_data = {
 			"AWS.VPC.RouteTable": {
 				"type": "rtb-target",
 				"from": "igw-tgt",
-				"to": "rtb-tgt-left",
+				"to": "rtb-tgt",
+				"direction": {
+					"to": "horizontal"
+				},
 				"dash_line": true
 			}
 		},
@@ -511,7 +496,10 @@ var constant_data = {
 			"AWS.VPC.RouteTable": {
 				"type": "rtb-target",
 				"from": "vgw-tgt",
-				"to": "rtb-tgt-right",
+				"to": "rtb-tgt",
+				"direction": {
+					"to": "horizontal"
+				},
 				"dash_line": true
 			},
 			"AWS.VPC.CustomerGateway": {
@@ -598,6 +586,26 @@ var constant_data = {
 			]
 		},
 		"AWS.AutoScaling.Group":{
+			"AWS.AutoScaling.LaunchConfiguration": {
+				"type": "sg",
+				"from": "launchconfig-sg",
+				"to": "launchconfig-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
+				},
+				"relation": "multiple"
+			},
+			"AWS.AutoScaling.Group": {
+				"type": "sg",
+				"from": "launchconfig-sg",
+				"to": "launchconfig-sg",
+				"direction": {
+					"from": "horizontal",
+					"to": "horizontal"
+				},
+				"relation": "multiple"
+			},
 			"AWS.ELB" : [
 				{
 					"type": "elb-sg",

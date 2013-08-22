@@ -6,18 +6,59 @@ define [ 'MC', 'event', 'handlebars'
 		 'i18n!/nls/lang.js',
 		 'view', 'layout', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
-		 'WS', 'constant', 'aws_handle', 'test/json_view/json_view'
+		 'WS', 'constant', 'aws_handle'
 ], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant ) ->
 
 	console.info canvas_layout
+
+	getMadeiracloudIDESessionID = ( ) ->
+
+		result = null
+
+		madeiracloud_ide_session_id = $.cookie 'madeiracloud_ide_session_id'
+		if madeiracloud_ide_session_id
+			try
+				result = JSON.parse ( MC.base64Decode madeiracloud_ide_session_id )
+			catch err
+				result = null
+
+		if result and $.type result == "array" and result.length == 6
+			{
+				userid      : result[0] ,
+				usercode    : result[1] ,
+				session_id  : result[2] ,
+				region_name : result[3] ,
+				email       : result[4] ,
+				has_cred    : result[5] ,
+			}
+		else
+			null
 
 	initialize : () ->
 
 		#############################
 		#  validation cookie
 		#############################
-		#
-		if $.cookie( 'usercode' ) is undefined then window.location.href = 'login.html'
+
+		madeiracloud_ide_session_id = getMadeiracloudIDESessionID()
+
+		if madeiracloud_ide_session_id
+
+			#session exist
+			result = madeiracloud_ide_session_id
+
+			$.cookie 'userid',      result.userid,      { expires: 1 }
+			$.cookie 'usercode',    result.usercode,    { expires: 1 }
+			$.cookie 'session_id',  result.session_id,  { expires: 1 }
+			$.cookie 'region_name', result.region_name, { expires: 1 }
+			$.cookie 'email',       result.email,       { expires: 1 }
+			$.cookie 'has_cred',    result.has_cred,    { expires: 1 }
+			$.cookie 'username',    MC.base64Decode(result.usercode), { expires: 1 }
+
+		else
+
+			#user session not exist, go to login page
+			window.location.href = 'login.html'
 
 		#############################
 		#  initialize MC.data
@@ -153,9 +194,17 @@ define [ 'MC', 'event', 'handlebars'
 		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
 		#	console.log 'RESOURCE_COMPLETE'
 
+		#############################
+		#  i18n
+		#############################
+
 		#i18n
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.ide[ text ]
+
+		#############################
+		#  analytics
+		#############################
 
 		analytics.identify($.cookie("userid"), {
 			name : $.cookie("username"),

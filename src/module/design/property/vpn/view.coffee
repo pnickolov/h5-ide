@@ -31,6 +31,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.mul
                 if !inputValue
                     MC.aws.aws.disabledAllOperabilityArea(true)
                     $(inputElem).focus()
+                    ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
 
         addIP : (event) ->
             # ips = []

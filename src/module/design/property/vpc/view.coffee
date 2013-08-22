@@ -61,8 +61,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
             $( '#property-domain-server' ).on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
 
         onChangeName : ( event ) ->
-            this.trigger "CHANGE_NAME", event.target.value
-            null
+            target = $ event.currentTarget
+            name = target.val()
+            if target.parsley 'validate'
+                this.trigger "CHANGE_NAME", name
 
         onChangeCidr : ( event ) ->
             # TODO : Valiate CIDR

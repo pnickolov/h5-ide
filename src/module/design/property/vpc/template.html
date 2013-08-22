@@ -1,16 +1,16 @@
 <article>
   <div class="option-group-head expand" id="vpc-property-detail">VPC Details</div>
-  <div class="option-group">
+  <div class="option-group" data-bind="true">
     <section class="property-control-group clearfix">
       <label class="left" for="property-vpc-name">Name</label>
       <span class="required-input right">Required</span>
-      <input class="input vpc-name" type="text" value="{{component.name}}" id="property-vpc-name"/>
+      <input class="input vpc-name" type="text" value="{{component.name}}" id="property-vpc-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
     </section>
 
     <section class="property-control-group clearfix">
       <label class="left" for="property-cidr-block">CIDR Block</label>
       <span class="required-input right">Required</span>
-      <input class="input cidr-block tooltip" type="text" value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16"/>
+      <input class="input cidr-block tooltip" type="text" value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16" maxlength="255" data-type="cidr" data-ignore="true" data-required-rollback="true"/>
     </section>
 
     <section class="property-control-group">

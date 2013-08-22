@@ -550,16 +550,17 @@
         if (this.$element.data('required-rollback') === true) {
           this.isRequiredRollback = true;
 
-          this.$element.on('focus', function() {
-            $(this).data('pre-value', $(this).val());
-          })
- .on('blur', function(){
-            var result = that.Validator.validators[ 'required' ]( $(this).val() );
+          this.$element
+            .on('focus', function() {
+              $(this).data('pre-value', $(this).val());
+            })
+            .on('blur', function(){
+              var result = that.Validator.validators[ 'required' ]( $(this).val() );
 
-            if (!result) {
-              $(this).val($(this).data('pre-value'));
-            }
-          });
+              if (!result) {
+                $(this).val($(this).data('pre-value'));
+              }
+            });
 
         }
 

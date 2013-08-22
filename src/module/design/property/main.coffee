@@ -82,6 +82,9 @@ define [ 'jquery',
 					#show asg volume property
 					volume_main.loadModule uid, volume_main, tab_type
 
+				else if type == 'component_asg_instance'
+					instance_main.loadModule uid, instance_expended_id, instance_main, tab_type
+
 				else if type == 'component'
 
 					#show stack property

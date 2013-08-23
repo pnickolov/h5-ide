@@ -1,7 +1,4 @@
 {
-DisplayStrings = (
-/uniF11E
-);
 copyright = MedeiraCloud;
 date = "2013-08-14 04:12:41 +0000";
 familyName = "MadeiraIcon";
@@ -1181,11 +1178,21 @@ unicode = F120;
 },
 {
 glyphname = uniF121;
-lastChange = "2013-08-21 11:24:04 +0800";
+lastChange = "2013-08-23 12:14:21 +0800";
 layers = (
 {
 layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
 name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"780 478 LINE",
+"180 478 LINE",
+"480 120 LINE"
+);
+}
+);
 width = 960;
 }
 );
@@ -1193,11 +1200,40 @@ unicode = F121;
 },
 {
 glyphname = uniF122;
-lastChange = "2013-08-21 11:24:04 +0800";
+lastChange = "2013-08-23 12:45:47 +0800";
 layers = (
 {
 layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
 name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"360 540 LINE",
+"660 240 LINE",
+"600 180 LINE",
+"300 480 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"600 540 LINE",
+"480 420 LINE",
+"540 360 LINE",
+"660 480 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"420 360 LINE",
+"300 240 LINE",
+"360 180 LINE",
+"480 300 LINE"
+);
+}
+);
 width = 960;
 }
 );

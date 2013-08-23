@@ -193,7 +193,7 @@ a {
 
 .avatar {
 	display: inline-block;
-	border-radius: 15px;
+	border-radius: 50%;
 	background-color: #ccc;
 	border: 1px solid #eee;
 	vertical-align: middle;
@@ -694,7 +694,7 @@ a {
 	line-height : 16px;
 
 	/*box-shadow : none;*/
-	width        : 180px;
+	width        : 200px;
 /*	height: 16px;*/
 	padding: 14px 12px;
 

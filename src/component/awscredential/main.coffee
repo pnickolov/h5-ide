@@ -39,23 +39,24 @@ define [ 'jquery', 'event',
                 console.log 'AWS_AUTHENTICATION'
                 model.awsAuthenticate access_key, secret_key, account_id
 
-            # model.on 'UPDATE_AWS_CREDENTIAL', () ->
-            #     console.log 'UPDATE_AWS_CREDENTIAL'
-
-            #     if model.attributes.is_authenticated
-            #         view.showUpdate()
-            #     else
-            #         view.showSet('is_failed')
-
             model.on 'change:is_authenticated', () ->
                 console.log 'UPDATE_AWS_CREDENTIAL'
 
+                # push event
+                ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+
                 if model.attributes.is_authenticated
-                    view.showUpdate()
+
+                    if MC.data.dashboard_type is 'OVERVIEW_TAB'     # overview tab
+
+                    else if MC.data.dashboard_type is 'REGION_TAB'  # region tab
+
+                    else    # stack/app tab
+                        view.showUpdate()
                 else
                     view.showSet('is_failed')
 
-                ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+
 
     unLoadModule = ( view, model ) ->
         console.log 'awscredential unLoadModule'

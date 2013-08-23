@@ -357,8 +357,8 @@ textarea:focus {
 }
 
 .property-content .input.disabled,
-.proerty-content .input[disabled] {
-	background-color: #383738;
+.property-content .input[disabled] {
+	background-color: #4E4E4E;
 	box-shadow: none;
 	color: #666;
 	border: 1px solid transparent;
@@ -1067,9 +1067,15 @@ textarea {
 
 .option-group,
 .fixedaccordion .accordion-body {
+<<<<<<< HEAD
+	background-color : #545554;
+	box-shadow       : inset 0 0 6px rgba(0,0,0,.2);
+    border-bottom    : 1px solid #313131;
+=======
 	/*background-color : #545554;*/
 	box-shadow       : inset 0 0 6px rgba(0,0,0,.1);
     border-bottom-width    : 1px solid #313131;
+>>>>>>> develop
 }
 
 .option-group:last-child {

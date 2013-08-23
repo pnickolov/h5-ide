@@ -240,19 +240,13 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                 region_name = result.param[3]
                 console.log 'FAVORITE_REMOVE_RETURN: ' + region_name
-<<<<<<< HEAD
-                #    if result.return_code is 0
-                #        delete MC.data.config[region_name].favorite_ami
-                #        @favoriteAmiService region_name
-=======
+
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
                     notification 'info', 'Remove AMI to favorite succeed'
                 else
                     notification 'error', 'Remove AMI to favorite succeed'
-
->>>>>>> develop
 
                 null
 

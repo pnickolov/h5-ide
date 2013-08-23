@@ -31,9 +31,12 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             me.on 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
                 console.log 'EC2_EBS_DESC_SSS_RETURN'
 
-                me.set 'resoruce_snapshot', result.resolved_data
-                #
-                me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
+                if !result.is_error
+
+                    me.set 'resoruce_snapshot', result.resolved_data
+                    #
+                    me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
+
                 null
 
             ######listen AWS_QUICKSTART_RETURN
@@ -42,63 +45,72 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 region_name = result.param[3]
                 console.log 'AWS_QUICKSTART_RETURN: ' + region_name
 
-                ami_list = []
-                ami_instance_type = result.resolved_data.ami_instance_type
-                if MC.data.instance_type
-                    MC.data.instance_type[result.param[3]] = ami_instance_type
-                else
-                    MC.data.instance_type = {}
-                    MC.data.instance_type[result.param[3]] = ami_instance_type
+                if !result.is_error
 
-                _.map result.resolved_data.ami, ( value, key ) ->
+                    ami_list = []
+                    ami_instance_type = result.resolved_data.ami_instance_type
+                    if MC.data.instance_type
+                        MC.data.instance_type[result.param[3]] = ami_instance_type
+                    else
+                        MC.data.instance_type = {}
+                        MC.data.instance_type[result.param[3]] = ami_instance_type
 
-                    value.imageId = key
+                    _.map result.resolved_data.ami, ( value, key ) ->
 
-                    _.map value, ( val, key ) ->
-                        if val == ''
-                            value[key] = 'None'
+                        value.imageId = key
+
+                        _.map value, ( val, key ) ->
+                            if val == ''
+                                value[key] = 'None'
+                            null
+
+                        if value.kernelId == undefined or value.kernelId == ''
+                            value.kernelId = "None"
+
+                        #cache quickstart ami item to MC.data.dict_ami
+                        value.instance_type = me._getInstanceType value
+                        MC.data.dict_ami[key] = value
+
+                        ami_list.push value
                         null
 
-                    if value.kernelId == undefined or value.kernelId == ''
-                        value.kernelId = "None"
+                    console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
+                    if region_name == MC.canvas.data.get('region')
+                        me.set 'quickstart_ami', ami_list
 
-                    #cache quickstart ami item to MC.data.dict_ami
-                    value.instance_type = me._getInstanceType value
-                    MC.data.dict_ami[key] = value
+                    #cache config data for current region
+                    MC.data.config[region_name].ami                 = result.resolved_data.ami
+                    MC.data.config[region_name].ami_instance_type   = result.resolved_data.ami_instance_type
+                    MC.data.config[region_name].instance_type       = result.resolved_data.instance_type
+                    MC.data.config[region_name].price               = result.resolved_data.price
+                    MC.data.config[region_name].vpc_limit           = result.resolved_data.vpc_limit
+                    # reset az
+                    MC.data.config[region_name].zone = {'item':[]}
+                    MC.data.config[region_name].zone.item.push {'regionName':region_name, 'zoneName':i, 'zoneState':'available', 'zoneShortName':'aaa'} for i in result.resolved_data.zone
+                    #MC.data.config[region_name].zone                = result.resolved_data.zone
+                    #MC.data.config[region_name].zone                = null
 
-                    ami_list.push value
-                    null
+                    MC.data.config[region_name].ami_list = ami_list
 
-                console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
-                if region_name == MC.canvas.data.get('region')
-                    me.set 'quickstart_ami', ami_list
+                    MC.data.config[region_name].favorite_ami = null
+                    MC.data.config[region_name].my_ami = null
 
-                #cache config data for current region
-                MC.data.config[region_name].ami                 = result.resolved_data.ami
-                MC.data.config[region_name].ami_instance_type   = result.resolved_data.ami_instance_type
-                MC.data.config[region_name].instance_type       = result.resolved_data.instance_type
-                MC.data.config[region_name].price               = result.resolved_data.price
-                MC.data.config[region_name].vpc_limit           = result.resolved_data.vpc_limit
-                #MC.data.config[region_name].zone                = result.resolved_data.zone
-                MC.data.config[region_name].zone                = null
+                    #get my AMI
+                    me.myAmiService region_name
 
-                MC.data.config[region_name].ami_list = ami_list
+                    #get favorite AMI
+                    me.favoriteAmiService region_name
 
-                MC.data.config[region_name].favorite_ami = null
-                MC.data.config[region_name].my_ami = null
+                    #describe ami in stack
+                    me.describeStackAmiService region_name
 
-                #get my AMI
-                me.myAmiService region_name
+                    ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY
+                    #
+                    me._checkRequireServiceCount( 'AWS_QUICKSTART_RETURN' )
 
-                #get favorite AMI
-                me.favoriteAmiService region_name
+                else
+                    # to do
 
-                #describe ami in stack
-                me.describeStackAmiService region_name
-
-                ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY
-                #
-                me._checkRequireServiceCount( 'AWS_QUICKSTART_RETURN' )
                 #
                 null
 

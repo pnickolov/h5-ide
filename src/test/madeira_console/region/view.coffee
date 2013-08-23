@@ -92,7 +92,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         returnRefreshClick : ( target ) ->
             console.log 'returnRefreshClick'
-            this.trigger 'REFRESH_REGION_BTN', null
+            this.trigger 'UPDATE_REGION_RESOURCE', null
 
         #render   : ( time_stamp ) ->
         #    console.log 'dashboard region render'

@@ -1831,6 +1831,14 @@ var errortip = function (event)
 
     $(document.body).on('mouseleave', '.parsley-error', errortip.clear);
 
+    errortip.timer = setInterval(function ()
+      {
+        if (target.closest('html').length === 0)
+        {
+          errortip.clear();
+        }
+      }, 200);
+
   }
 };
 
@@ -1862,6 +1870,7 @@ errortip.clear = function (id)
   }
   $('.errortip_box').remove();
   $(document.body).off('mouseleave', '.parsley-error', errortip.clear);
+  clearInterval(errortip.timer);
 
 };
 

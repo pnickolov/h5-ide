@@ -40,8 +40,7 @@ define [ 'session_model',
 
 				else
 					console.log 'Authentication failed.'
-					$( '#error-msg-1'   ).addClass 'show'
-					#me.trigger 'RE_LOGIN_FAILED'
+					me.trigger 'RE_LOGIN_FAILED'
 
 				null
 

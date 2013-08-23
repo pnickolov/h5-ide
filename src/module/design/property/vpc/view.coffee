@@ -43,6 +43,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
             'change .property-control-group-sub .input' : 'onChangeDhcpOptions'
             'OPTION_CHANGE #property-netbios-type'      : 'onChangeDhcpOptions'
             'REMOVE_ROW #property-dhcp-options'         : 'onChangeDhcpOptions'
+            'ADD_ROW .multi-input'                      : 'processParsley'
 
         render   : () ->
 
@@ -59,6 +60,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
 
             $( '.property-details' ).html this.template data
             $( '#property-domain-server' ).on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
+
+        processParsley: ( event ) ->
+            $( event.currentTarget )
+                .find( 'input' )
+                .last()
+                .removeClass( 'parsley-validated' )
+                .removeClass( 'parsley-error' )
+                .next( '.parsley-error-list' )
+                .remove()
 
         onChangeName : ( event ) ->
             target = $ event.currentTarget
@@ -123,6 +133,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
 
             if this.notChangingDHCP
                 return
+
+            if not $( event.currentTarget ).parsley( 'validateForm' )
+                return
+
 
             # Gather all the infomation to submit
             data =

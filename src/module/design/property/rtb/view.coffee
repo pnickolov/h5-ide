@@ -43,6 +43,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             .find( 'input' )
             .last()
             .removeClass( 'parsley-validated' )
+            .removeClass( 'parsley-error' )
             .next( '.parsley-error-list' )
             .remove()
 

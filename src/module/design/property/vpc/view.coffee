@@ -73,6 +73,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
         onChangeName : ( event ) ->
             target = $ event.currentTarget
             name = target.val()
+
+            target.parsley 'custom', () ->
+                if not MC.validate 'awsName',  name
+                    return 'This value should be a valid VPC name.'
+
             if target.parsley 'validate'
                 this.trigger "CHANGE_NAME", name
 

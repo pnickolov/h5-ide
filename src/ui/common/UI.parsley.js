@@ -174,6 +174,7 @@
           , ipv4:      "This value should be a valid IPv4 address."
           , cidr:      "This value should be a valid CIDR."
           , awsCidr:   "This value should be a valid CIDR and the netmask ('16') must be between 16 and 28."
+          , awsName:   "This value should be a valid AWS name."
           , domain:    "This value should be a valid domain."
 
         }
@@ -291,6 +292,10 @@
           case 'awsCidr':
             regExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([1][6789]|[2]\d|3[0-2]))$/;
             break;
+
+         case 'awsName':
+           regExp = /^[a-zA-Z0-9][a-zA-Z0-9-]*$/;
+           break;
 
           case 'domain':
            regExp = /^([a-zA-Z0-9-\u4e00-\u9fa5]+\.)+([a-zA-Z-\u4e00-\u9fa5]+)$/;

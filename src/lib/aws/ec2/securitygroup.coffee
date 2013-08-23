@@ -163,6 +163,16 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		component_data.resource.GroupName = sg_name
 
+		component_data.resource.IpPermissions = []
+
+		component_data.resource.IpPermissionsEgress.push {
+			"IpProtocol": "-1",
+			"IpRanges": "0.0.0.0/0",
+			"FromPort": "0",
+			"ToPort": "65535",
+			"Groups": []
+			}
+
 		tmp = {}
 		tmp.uid = uid
 		tmp.name = sg_name

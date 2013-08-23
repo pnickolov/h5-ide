@@ -37,12 +37,14 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
 
             myInstanceComponent = MC.canvas_data.component[ instance_id ]
 
-            instance_id = myInstanceComponent.resource.InstanceId
+            # The instance_id might be component uid or aws id
+            if myInstanceComponent
+                instance_id = myInstanceComponent.resource.InstanceId
 
             app_data = MC.data.resource_list[ MC.canvas_data.region ]
 
             instance = $.extend true, {}, app_data[ instance_id ]
-            instance.name = myInstanceComponent.name
+            instance.name = if myInstanceComponent then myInstanceComponent.name else instance_id
 
             # Possible value : running, stopped, pending...
             instance.isRunning = instance.instanceState.name == "running"
@@ -51,10 +53,10 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
             instance.blockDevice = ( i.deviceName for i in instance.blockDeviceMapping.item ).join ", "
 
             # Keypair Component
-            keypairUid = MC.extractID( myInstanceComponent.resource.KeyName )
-            myKeypairComponent = MC.canvas_data.component[ keypairUid ]
+            # keypairUid = MC.extractID( myInstanceComponent.resource.KeyName )
+            # myKeypairComponent = MC.canvas_data.component[ keypairUid ]
 
-            instance.keyName = myKeypairComponent.resource.KeyName
+            # instance.keyName = myKeypairComponent.resource.KeyName
 
             # Eni Data
             instance.eni = this.getEniData instance
@@ -88,7 +90,7 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
             if not data
                 return null
 
-            data.name = component.name
+            data.name = if component then component.name else id
             if data.status == "in-use"
                 data.isInUse = true
 

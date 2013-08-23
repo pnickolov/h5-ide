@@ -74,7 +74,10 @@ var scrollbar = {
 								veritical_thumb.parent().show();
 								veritical_thumb.css('height', scrollbar_height);
 
-								if (wrap.height() - scroll_content_elem.realScrollTop > scroll_content[0].scrollHeight)
+								if (
+									scroll_content_elem.realScrollTop !== 0 &&
+									wrap.height() - scroll_content_elem.realScrollTop > scroll_content[0].scrollHeight
+								)
 								{
 									scrollbar.scroll_to_top({
 										'scroll_content': scroll_content,
@@ -108,7 +111,10 @@ var scrollbar = {
 								horizontal_thumb.parent().show();
 								horizontal_thumb.css('width', scrollbar_width);
 
-								if (wrap.width() - scroll_content_elem.realScrollLeft > scroll_content[0].scrollWidth)
+								if (
+									scroll_content_elem.realScrollLeft !== 0 &&
+									wrap.width() - scroll_content_elem.realScrollLeft > scroll_content[0].scrollWidth
+								)
 								{
 									scrollbar.scroll_to_left({
 										'scroll_content': scroll_content,

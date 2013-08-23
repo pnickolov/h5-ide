@@ -126,6 +126,11 @@ define [ 'underscore', 'backbone' ], () ->
         #update header
         UPDATE_HEADER       :   'UPDATE_HEADER'
 
+        #refresh region resource
+        UPDATE_REGION_RESOURCE      :       'UPDATE_REGION_RESOURCE'
+
+        #updated aws credential
+        UPDATE_AWS_CREDENTIAL       :       'UPDATE_AWS_CREDENTIAL'
 
         constructor : ->
             _.extend this, Backbone.Events

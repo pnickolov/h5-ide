@@ -77,7 +77,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 		}
 
-		if ( type !== "AWS.EC2.AvailabilityZone" && type !== "AWS.EC2.EBS.Volume" )
+		if ( type !== "AWS.EC2.AvailabilityZone" && type !== "AWS.EC2.EBS.Volume" && type !== "AWS.VPC.VPC" )
 		{
 			option.name = MC.aws.aws.getNewName(type);//get init name for component
 		}
@@ -1884,6 +1884,13 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = data[layout.node[group.id].originalId];
 				option.name = component_data.name;
 
+				if ( MC.canvas.getState() !=='stack' )
+				{
+					var asg_comp = MC.canvas_data.component[ layout.node[group.id].groupUId ];
+					var asg_comp_data = MC.data.resource_list[MC.canvas_data.region][ asg_comp.resource.AutoScalingGroupARN ];
+					option.name = asg_comp_data.Instances.member.length + " in service";
+				}
+
 				if(!option['launchConfig']){
 					$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
 
@@ -1972,7 +1979,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////10. lc name
-				Canvon.text(50, 90, (MC.canvas.getState()==='stack' ? option.name : '? in service')).attr({
+				Canvon.text(50, 90, option.name).attr({
 					'class': 'name' + (MC.canvas.getState()==='stack' ? ' node-label' : ' node-launchconfiguration-label'),
 					'id': group.id + '_lc_name'
 				})

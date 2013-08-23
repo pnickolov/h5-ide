@@ -1042,7 +1042,7 @@ var constant_data = {
 		{
 			"uid": "",
 			"type": "AWS.VPC.VPC",
-			"name": "vpc1",
+			"name": "vpc",
 			"resource":
 			{
 				"EnableDnsHostnames": "false",

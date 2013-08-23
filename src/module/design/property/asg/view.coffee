@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC ) ->
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"
@@ -74,6 +74,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
             template = if isApp then this.app_template else this.template
 
             $( '.property-details' ).html template data
+
+            if isApp
+                new ZeroClipboard( $("#property_app_asg .icon-copy") )
+
+            null
 
         setASGCoolDown : ( event ) ->
 
@@ -246,7 +251,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                     periods : 2
                     step    : 1
 
-            data.noSNS = this.model.attributes.has_sns_topic
+            data.noSNS = not this.model.attributes.has_sns_topic
 
             modal this.policy_template(data), true
 

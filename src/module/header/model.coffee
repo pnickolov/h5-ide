@@ -9,10 +9,11 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
     HeaderModel = Backbone.Model.extend {
 
         defaults:
-            'info_list'     : null    # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
+            'info_list'     : null      # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
             'unread_num'    : null
             'is_unread'     : null
             'in_dashboard'  : true
+            'has_cred'      : true      # default has credential
 
         initialize : ->
 
@@ -111,7 +112,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             item.time = req.time_end
             item.time_str = MC.dateFormat(new Date(item.time * 1000), "hh:mm yyyy-MM-dd")
             item.region = req.region
-            item.region_label = constant.REGION_LABEL[req.region]
+            item.region_label = constant.REGION_SHORT_LABEL[req.region]
             item.is_readed = true
             item.is_error = false
             item.is_request = false

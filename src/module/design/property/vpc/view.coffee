@@ -67,9 +67,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
                 this.trigger "CHANGE_NAME", name
 
         onChangeCidr : ( event ) ->
-            # TODO : Valiate CIDR
-            this.model.setCIDR event.target.value
-            null
+            target = $ event.currentTarget
+            name = target.val()
+
+            if target.parsley 'validate'
+                this.model.setCIDR event.target.value
 
         onChangeTenancy : ( event, newValue ) ->
             $("#desc-dedicated").toggle( newValue == "dedicated" )

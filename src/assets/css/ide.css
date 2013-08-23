@@ -4480,3 +4480,14 @@ a.sidebar-hider {
 	display:none;
 }
 */
+
+/* dhcp-property-detail */
+#property-dhcp-options .property-control-group label {
+	display: block;
+}
+
+#property-dhcp-options .property-control-group .checkbox.left {
+	margin-top: 1px;
+}
+
+

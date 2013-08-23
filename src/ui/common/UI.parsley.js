@@ -170,9 +170,12 @@
           , phone:      "This value should be a valid phone number."
 
          // hack
-          , ipaddress:      "This value should be a valid ip address."
+          , ipaddress: "This value should be a valid ip address."
           , ipv4:      "This value should be a valid IPv4 address."
           , cidr:      "This value should be a valid CIDR."
+          , awsCidr:   "This value should be a valid CIDR and the netmask ('16') must be between 16 and 28."
+          , domain:    "This value should be a valid domain."
+
         }
       , notnull:        "This value should not be null."
       , notblank:       "This value should not be blank."
@@ -285,8 +288,12 @@
             regExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))$/;
             break;
 
+          case 'awsCidr':
+            regExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([1][6789]|[2]\d|3[0-2]))$/;
+            break;
+
           case 'domain':
-           regExp = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/;
+           regExp = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z]{2,}$/;
            break;
 
           default:
@@ -568,16 +575,18 @@
         // Ignore disallowed input
         var that = this;
         if ( this.$element.data( 'ignore' ) === true ) {
-          var regExp, regMap, type;
+          var regExp, regMap, vlidateType;
           regMap = {
             cidr: '^[0-9]?$|^[0-9][0-9./]+$',
+            awsCidr: '^[0-9]?$|^[0-9][0-9./]+$',
             ipv4: '^[0-9]*$|^[0-9][0-9.]+$',
-            ipaddress: '^[0-9]*$|^[0-9][0-9./]+$'
+            ipaddress: '^[0-9]*$|^[0-9][0-9./]+$',
+            domain: '/^([a-zA-Z0-9]+[a-zA-Z0-9.-]*)*$',
           };
 
-          type = this.options.type;
+          vlidateType = this.options.type;
 
-          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ type ] || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
+          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ vlidateType ] || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
 
           var wholeReg = this.options.regexp;
           // delay handler function

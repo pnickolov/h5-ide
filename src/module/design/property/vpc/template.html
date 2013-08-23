@@ -10,7 +10,7 @@
     <section class="property-control-group clearfix">
       <label class="left" for="property-cidr-block">CIDR Block</label>
       <span class="required-input right">Required</span>
-      <input class="input cidr-block tooltip" type="text" value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16" maxlength="255" data-type="cidr" data-ignore="true" data-required-rollback="true"/>
+      <input class="input cidr-block tooltip" type="text" value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16" maxlength="255" data-ignore="true" data-required-rollback="true" data-trigger="change" data-type="awsCidr"/>
     </section>
 
     <section class="property-control-group">
@@ -43,7 +43,7 @@
   </div>
 
   <div class="option-group-head expand">DHCP Options</div>
-  <div class="option-group" id="dhcp-property-detail">
+  <div class="option-group" id="dhcp-property-detail" data-type="true">
     <section class="property-control-group">
       <div class="radio property-dhcp">
         <input id="property-dhcp-none" type="radio" name="dhcp-opts" {{#if noneDhcp}}checked="checked"  {{/if}}value="none" />
@@ -62,16 +62,16 @@
       <div style="padding-left:20px;{{#if noneDhcp}}{{else}}display:none;{{/if}}" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
     </section>
 
-    <section id="property-dhcp-options" class="property-control-group-sub" {{#if noneDhcp}}style="display:none;"{{/if}}>
+    <section id="property-dhcp-options" data-bind="true" class="property-control-group-sub" {{#if noneDhcp}}style="display:none;"{{/if}}>
       <div class="property-control-group">
         <label class="left" for="property-dhcp-domain">Domain Name</label>
-        <input class="input" type="text" value="{{dhcp.domainName}}" id="property-dhcp-domain"/>
+        <input class="input tooltip" type="text" value="{{dhcp.domainName}}" data-tooltip="Enter the domain name that should be used for your hosts" id="property-dhcp-domain" maxlength="255" data-type="domain" data-ignore="true"/>
       </div>
 
       <div class="property-control-group">
-        <label class="left">Domain Name Server</label>
+        <label>Domain Name Server</label>
         <div>
-          <div class="checkbox">
+          <div class="checkbox left">
             <input id="property-amazon-dns" {{#if dhcp.useAmazonDns}}checked="checked"{{/if}}type="checkbox">
             <label for="property-amazon-dns"></label>
           </div>
@@ -82,12 +82,12 @@
           {{#each dhcp.domainServers}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" value="{{this}}" type="text"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" value="{{this}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{else}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" type="text"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{/each}}
         </div>
@@ -99,12 +99,12 @@
           {{#each dhcp.ntpServers}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" value="{{this}}" type="text"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" value="{{this}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{else}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" type="text"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{/each}}
         </div>
@@ -116,12 +116,12 @@
           {{#each dhcp.netbiosServers}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses" value="{{this}}" type="text"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses" value="{{this}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{else}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" type="text"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{/each}}
         </div>

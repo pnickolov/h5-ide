@@ -3063,6 +3063,8 @@ MC.canvas.event.drawConnection = {
 				port_position_offset = 8 / scale_ratio,
 				target_connection_option,
 				target_data,
+				target_node,
+				target_port,
 				is_connected;
 
 			//calculate point of junction
@@ -3228,15 +3230,39 @@ MC.canvas.event.drawConnection = {
 
 							if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
 							{
-								$(this)
-									.attr("class", function (index, key)
+								target_node = this;
+
+								$(target_node).find('.port-' + value.to).each(function ()
+								{
+									target_port = $(this);
+
+									if (target_port.css('display') !== 'none')
 									{
-										return "connectable " + key;
-									})
-									.find('.port-' + value.to).attr("class", function (index, key)
-									{
-										return "connectable-port view-show " + key;
-									});
+										Canvon(target_node).addClass('connectable');
+
+										target_port.attr("class", function (index, key)
+										{
+											return "connectable-port view-show " + key;
+										});
+									}
+								});
+								// $(this)
+								// 	.attr("class", function (index, key)
+								// 	{
+								// 		return "connectable " + key;
+								// 	})
+								// 	.find('.port-' + value.to).each(function ()
+								// 	{
+								// 		target_port = $(this);
+
+								// 		if (target_port.css('display') !== 'none')
+								// 		{
+								// 			target_port.attr("class", function (index, key)
+								// 			{
+								// 				return "connectable-port view-show " + key;
+								// 			});
+								// 		}
+								// 	});
 							}
 						});
 					}

@@ -36,9 +36,13 @@ define [ 'event',
 
         invalid            : () ->
             console.log 'invalid'
-            $( '#input-demo' ).parsley 'validate', () ->
-                console.log 'sfsfsfsadfasfddddddddddddddddddddddd'
-                return 'Authentication failed.'
+            $( '#input-demo' ).parsley 'custom',
+                validator: () ->
+                    return 'Authentication failed.'
+                now: true
+
+
+            $( '#input-demo' ).parsley 'validate'
 
         close              : ->
             console.log 'closedReConnectPopup'

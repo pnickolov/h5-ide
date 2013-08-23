@@ -84,14 +84,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 if !result.is_error
                     console.log 'create stack successfully'
 
+                    new_id = result.resolved_data.id
+                    key = result.resolved_data.key
+
                     # track
                     analytics.track "Saved Stack",
                         stack_name: data.name,
                         stack_region: data.region,
-                        stack_id: data.id
-
-                    new_id = result.resolved_data.id
-                    key = result.resolved_data.key
+                        stack_id: new_id
 
                     #temp
                     MC.canvas_data.id = new_id
@@ -109,10 +109,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
 
                     #call save png
-                    me.savePNG true, data
+                    me.savePNG true, MC.canvas_data
 
                     #set toolbar flag
-                    me.setFlag id, 'CREATE_STACK', data
+                    me.setFlag id, 'CREATE_STACK', MC.canvas_data
 
                     new_id
 

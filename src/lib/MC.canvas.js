@@ -2252,22 +2252,9 @@ MC.canvas.asgList = {
 
 			// Prepare data
 			var uid     = MC.extractID( event.currentTarget.id );
-			var lc_comp = MC.canvas_data.component[ uid ];
-			var i;
+			var layout  = MC.canvas_data.layout.component.node[ uid ];
+			var lc_comp = MC.canvas_data.component[ layout.groupUId ];
 
-			for ( i in MC.canvas_data.component ) {
-				var comp = MC.canvas_data.component[i];
-				if (
-					comp.type === "AWS.AutoScaling.Group" &&
-					comp.resource.LaunchConfigurationName.indexOf( lc_comp.uid ) != -1
-				)
-				{
-					lc_comp = comp;
-					break;
-				}
-			}
-
-			var layout = MC.canvas_data.layout.component.node[ uid ];
 			var statusMap = {
 				   "Pending"     : "orange"
 				 , "Quarantined" : "orange"
@@ -2288,7 +2275,7 @@ MC.canvas.asgList = {
 			var instances = MC.data.resource_list[ MC.canvas_data.region ][ lc_comp.resource.AutoScalingGroupARN ].Instances.member;
 			if ( instances )
 			{
-				for ( i = 0, l = instances.length; i < l; ++i ) {
+				for ( var i = 0, l = instances.length; i < l; ++i ) {
 					temp_data.instances.push({
 						  id     : instances[i].InstanceId
 						, status : statusMap[ instances[i].LifecycleState ]

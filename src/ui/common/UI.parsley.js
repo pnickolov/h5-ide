@@ -293,7 +293,7 @@
             break;
 
           case 'domain':
-           regExp = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z]{2,}$/;
+           regExp = /^([a-zA-Z0-9-\u4e00-\u9fa5]+\.)+([a-zA-Z-\u4e00-\u9fa5]+)$/;
            break;
 
           default:
@@ -581,7 +581,7 @@
             awsCidr: '^[0-9]?$|^[0-9][0-9./]+$',
             ipv4: '^[0-9]*$|^[0-9][0-9.]+$',
             ipaddress: '^[0-9]*$|^[0-9][0-9./]+$',
-            domain: '/^([a-zA-Z0-9]+[a-zA-Z0-9.-]*)*$',
+            domain: '^([a-zA-Z0-9]+[a-zA-Z0-9.-]*)*$',
           };
 
           vlidateType = this.options.type;
@@ -998,6 +998,17 @@
       return valid;
     }
 
+    , validateForm: function () {
+      var parent = this.getParent();
+      if ( parent ) {
+        parent = parent[ 0 ];
+
+      } else {
+        parent = this.$element.closest('form, [data-bind=true]');
+        parent = parent.parsley();
+      }
+      return parent.validate();
+    }
     /**
     * Check if value has changed since previous validation
     *
@@ -1348,7 +1359,8 @@
      }
 
      if ( 'undefined' === typeof this.$element.attr( 'name' ) ) {
-       throw "A radio / checkbox input must have a data-group attribute or a name to be Parsley validated !";
+       //throw "A radio / checkbox input must have a data-group attribute or a name to be Parsley validated !";
+       return 'parsley-' + ( Math.random() + '' ).substring( 2 );
      }
 
      return 'parsley-' + this.$element.attr( 'name' ).replace( /(:|\.|\[|\])/g, '' );

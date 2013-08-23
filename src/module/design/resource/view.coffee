@@ -326,7 +326,7 @@ define [ 'event',
 
             totalNum = 0
             if this.model.attributes.community_ami
-                 this_tr = ""
+                this_tr = ""
                 _.map this.model.attributes.community_ami.result, ( value, key ) ->
                     fav_class = if value.favorite then 'faved' else ''
                     bit = '64'

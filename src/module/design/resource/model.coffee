@@ -36,6 +36,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                     me.set 'resoruce_snapshot', result.resolved_data
                     #
                     me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
+
                 null
 
             ######listen AWS_QUICKSTART_RETURN

@@ -1671,7 +1671,7 @@ MC.canvas.layout = {
 
 	save: function ()
 	{
-		var data = MC.canvas_data;
+		var data = $.extend(true, {}, MC.canvas_data);
 
 		if (data.layout.component.node)
 		{

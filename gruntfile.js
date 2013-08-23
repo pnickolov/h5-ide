@@ -190,6 +190,7 @@ module.exports = function( grunt ) {
 									'copy:special_ui_rename',
 									'copy:special_lib_del',
 									'copy:special_ui_del',
+									'replace:analytics',
 									'open:publish',
 									'connect:release'
 	]);

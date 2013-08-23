@@ -663,18 +663,15 @@ MC.canvas = {
 			to_node_connection_data = to_data.connection || [];
 			is_connected = false;
 
-			// $.each(from_node_connection_data, function (key, value)
-			// {
-			// 	line_data = layout_connection_data[ value.line ];
+			$.each(from_node_connection_data, function (key, value)
+			{
+				if (value[ 'target' ] === to_uid && value[ 'port' ] === to_target_port)
+				{
+					is_connected = true;
 
-				
-			// 	// if (value[ 'target' ] === to_uid && value[ 'port' ] === from_target_port)
-			// 	// {
-			// 	// 	is_connected = true;
-
-			// 	// 	return false;
-			// 	// }
-			// });
+					return false;
+				}
+			});
 
 			if (
 				line_option ||
@@ -4333,7 +4330,7 @@ MC.canvas.event.selectNode = function (event)
 
 MC.canvas.event.nodeHover = function (event)
 {
-	if (event.type === 'mouseover')
+	if (event.type === 'mouseenter')
 	{
 		var target = $(this),
 			target_id = this.id,
@@ -4346,7 +4343,7 @@ MC.canvas.event.nodeHover = function (event)
 		});
 	}
 
-	if (event.type === 'mouseout')
+	if (event.type === 'mouseleave')
 	{
 		$('#svg_canvas .view-hover').each(function ()
 		{

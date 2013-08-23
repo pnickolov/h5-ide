@@ -20,7 +20,7 @@ var tooltip = function (event)
 		target_height,
 		tooltip_timer;
 
-	if (content !== '')
+	if (content !== '' && !target.hasClass('parsley-error'))
 	{
 		if (!tooltip_box[0])
 		{
@@ -45,7 +45,7 @@ var tooltip = function (event)
 
 		width = tooltip_box.width();
 		height = tooltip_box.height();
-		
+
 		tooltip_box.css({
 			'left': target_offset.left + width - document.body.scrollLeft > window.innerWidth ?
 				target_offset.left - width :

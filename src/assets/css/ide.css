@@ -238,7 +238,7 @@ a {
 #header .dropdown-menu {
 	font-size: 12px;
 	position: absolute;
-	top: 52px;
+	top: 50px;
 	right: 0;
 	z-index: 3;
 	box-shadow: 0 8px 10px rgba(0,0,0,.2);
@@ -1677,32 +1677,17 @@ td.table-action a.btn {
 	/*border-bottom : 2px solid #d3d3d3;*/
 	box-shadow      : 0 2px 0 #d3d3d3;
 	border-radius   : 2px 2px 0 0;
-
 }
 
 .toolbar-btn-group {
-	padding     : 3px 0;
-	border-left : 1px solid #dedede;
-	float       : left;
-}
-
-.toolbar-btn-group:first-child {
-	border-left   : none;
-	border-radius : 2px 0 0 0;
-}
-
-.toolbar-btn-group > li {
-	float: left;
-	margin-top: -2px;
-}
-
-.toolbar-label {
-	padding: 6px 10px 0 0;
-	text-shadow: 0 1px 0 rgba(0,0,0,.5);
-}
-
-a:hover .toolbar-label {
-	color: #eee;
+	/*padding     : 3px 0;*/
+	/*border-left : 1px solid #dedede;*/
+	float         : left;
+	margin        : 3px 6px;
+	border        : 1px solid #ccc;
+    border-radius : 6px;
+    /*overflow      : hidden;*/
+    background    : #fefefe;
 }
 
 .toolbar-btn-group .selectbox .dropdown {
@@ -1733,7 +1718,7 @@ a:hover .toolbar-label {
 
 .btn-toolbar {
 	width       : 30px;
-	height      : 30px;
+	height      : 28px;
 
 	position    : relative;
 	float       : left;
@@ -1742,28 +1727,35 @@ a:hover .toolbar-label {
 	text-align  : center;
 	color       : #868486;
 
-	margin-left : 4px;
+	/*margin-left : 4px;*/
 	padding     : 4px;
+
+	cursor : pointer;
+}
+
+.toolbar-btn-group .btn-toolbar:first-child{
+    border-radius : 4px 0 0 4px;
 }
 
 .toolbar-btn-group .btn-toolbar:last-child{
-	margin-right: 4px;
+/*	margin-right: 4px;*/
+    border-radius : 0 4px 4px 0;
 }
 
 
 .btn-toolbar:hover {
 	color            : #c17ca7;
 	background-color : #d0d0d0;
-	border-radius    : 4px;
-	box-shadow       : inset 0 0 2px rgba(0,0,0,.1);
+
 }
 
 .btn-toolbar.disabled {
 	color : #cecece;
+	background: #efefef;
 }
 
 .btn-toolbar.disabled:hover {
-	background-color : transparent;
+	background: #efefef;
 	box-shadow       : none;
 	cursor           : default;
 }
@@ -1796,7 +1788,14 @@ a:hover .toolbar-label {
 	background-color: #eee;
 }
 
+#toolbar-run {
+	width: 110px;
+	color: #fff;
+}
 
+#toolbar-run span {
+	margin-left: 10px;
+}
 
 /* Sidebars, including Resource Panle and Property Panel */
 .sidebar {

@@ -66,6 +66,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         session_info.region_name = result[3]
         session_info.email       = result[4]
         session_info.has_cred    = result[5]
+        session_info.account_id  = result[6]
 
         #return session_info
         session_info

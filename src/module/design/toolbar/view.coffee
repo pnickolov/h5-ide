@@ -16,23 +16,23 @@ define [ 'MC', 'event',
         app_tmpl : Handlebars.compile $( '#toolbar-app-tmpl' ).html()
 
         events   :
-            'click #toolbar-run'           : 'clickRunIcon'
-            'click .icon-save'             : 'clickSaveIcon'
-            'click #toolbar-duplicate'     : 'clickDuplicateIcon'
-            'click #toolbar-delete'        : 'clickDeleteIcon'
-            'click #toolbar-new'           : 'clickNewStackIcon'
-            'click .icon-zoom-in'          : 'clickZoomInIcon'
-            'click .icon-zoom-out'         : 'clickZoomOutIcon'
-            'click .icon-undo'             : 'clickUndoIcon'
-            'click .icon-redo'             : 'clickRedoIcon'
-            'click #toolbar-export-png'    : 'clickExportPngIcon'
-            'click #toolbar-export-json'   : 'clickExportJSONIcon'
-            'click #toolbar-stop-app'      : 'clickStopApp'
-            'click #toolbar-start-app'     : 'clickStartApp'
-            'click #toolbar-terminate-app' : 'clickTerminateApp'
+            'click #toolbar-run'            : 'clickRunIcon'
+            'click .icon-save'              : 'clickSaveIcon'
+            'click #toolbar-duplicate'      : 'clickDuplicateIcon'
+            'click #toolbar-delete'         : 'clickDeleteIcon'
+            'click #toolbar-new'            : 'clickNewStackIcon'
+            'click .icon-zoom-in'           : 'clickZoomInIcon'
+            'click .icon-zoom-out'          : 'clickZoomOutIcon'
+            'click .icon-undo'              : 'clickUndoIcon'
+            'click .icon-redo'              : 'clickRedoIcon'
+            'click #toolbar-export-png'     : 'clickExportPngIcon'
+            'click #toolbar-export-json'    : 'clickExportJSONIcon'
+            'click #toolbar-stop-app'       : 'clickStopApp'
+            'click #toolbar-start-app'      : 'clickStartApp'
+            'click #toolbar-terminate-app'  : 'clickTerminateApp'
             #for debug
-            'click #toolbar-jsondiff' : 'clickOpenJSONDiff'
-            'click #toolbar-jsonview' : 'clickOpenJSONView'
+            'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
+            'click #toolbar-jsonview'       : 'clickOpenJSONView'
 
         render   : ( type ) ->
             console.log 'toolbar render'
@@ -58,34 +58,41 @@ define [ 'MC', 'event',
         clickRunIcon : ->
             me = this
 
-            target = $( '#main-toolbar' )
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'clickRunIcon'
-
-                app_name = $('.modal-input-value').val()
-
-                #check app name
-                if not app_name
-                    notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
-                    return
-                if app_name in MC.data.app_list[MC.canvas_data.region]
-                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
-                    return
-
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
-                # check change and save stack
-                ori_data = MC.canvas_property.original_json
-                new_data = JSON.stringify( MC.canvas_data )
-                id = MC.canvas_data.id
-                if ori_data != new_data or id.indexOf('stack-') isnt 0
-                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+            else
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'clickRunIcon'
 
-                # hold on 0.5 second for data update
-                setTimeout () ->
-                    me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
-                    MC.data.app_list[MC.canvas_data.region].push app_name
-                , 500
+                    app_name = $('.modal-input-value').val()
+
+                    #check app name
+                    if not app_name
+                        notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
+                        return
+                    if app_name in MC.data.app_list[MC.canvas_data.region]
+                        notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
+                        return
+
+                    modal.close()
+
+                    # check change and save stack
+                    ori_data = MC.canvas_property.original_json
+                    new_data = JSON.stringify( MC.canvas_data )
+                    id = MC.canvas_data.id
+                    if ori_data != new_data or id.indexOf('stack-') isnt 0
+                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+
+                    # hold on 0.5 second for data update
+                    setTimeout () ->
+                        me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
+                        MC.data.app_list[MC.canvas_data.region].push app_name
+                    , 500
 
             true
 
@@ -158,34 +165,13 @@ define [ 'MC', 'event',
             if $( event.currentTarget ).hasClass("disabled")
                 return false
 
-            # if MC.canvas_property.SCALE_RATIO > 1
-            #     MC.canvas.zoomIn()
-
-            # $("#main-toolbar .icon-zoom-out").toggleClass("disabled", false)
-
-            # if MC.canvas_property.SCALE_RATIO <= 1
-            #     $("#main-toolbar .icon-zoom-in").toggleClass("disabled", true)
-
-            # return false
-
             this.trigger 'TOOLBAR_ZOOM_IN'
-
 
         clickZoomOutIcon : ( event )->
             console.log 'clickZoomOutIcon'
 
             if $( event.currentTarget ).hasClass("disabled")
                 return false
-
-            # if MC.canvas_property.SCALE_RATIO < 1.6
-            #     MC.canvas.zoomOut()
-
-            # $("#main-toolbar .icon-zoom-in").toggleClass("disabled", false)
-
-            # if MC.canvas_property.SCALE_RATIO >= 1.6
-            #     $("#main-toolbar .icon-zoom-out").toggleClass("disabled", true)
-
-            # return false
 
             this.trigger 'TOOLBAR_ZOOM_OUT'
 
@@ -255,32 +241,53 @@ define [ 'MC', 'event',
             me = this
             console.log 'click stop app'
 
-            target = $( '#main-toolbar' )
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                #me.trigger 'TOOLBAR_STOP_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
-                ide_event.trigger ide_event.STOP_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    #me.trigger 'TOOLBAR_STOP_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    ide_event.trigger ide_event.STOP_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    modal.close()
 
         clickStartApp : (event) ->
             me = this
             console.log 'click run app'
 
-            target = $( '#main-toolbar' )
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                #me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
-                ide_event.trigger ide_event.START_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    #me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    ide_event.trigger ide_event.START_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    modal.close()
 
         clickTerminateApp : (event) ->
             me = this
 
             console.log 'click terminate app'
 
-            target = $( '#main-toolbar' )
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                #me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
-                ide_event.trigger ide_event.TERMINATE_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    #me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    ide_event.trigger ide_event.TERMINATE_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    modal.close()
 
     }
 

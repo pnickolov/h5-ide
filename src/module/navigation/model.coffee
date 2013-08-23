@@ -98,7 +98,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                         region_city = constant.REGION_SHORT_LABEL[ region ]
                         region_area = constant.REGION_LABEL[ region ]
 
-                        return { 'region_city' : region_city, 'region_area' : region_area, 'region_name' : value.regionName }
+                        return { 'region_city' : region_city, 'region_area' : region_area, 'region_name' : region }
 
                 console.log region_list
 

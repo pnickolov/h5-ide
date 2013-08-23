@@ -17,7 +17,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'UI.notification'
             $( '.property-details' ).html this.template this.model.attributes
 
             # Init Clipbard
-            new ZeroClipboard( $("#property-app-elb-dnss .icon-copy") );
+            new ZeroClipboard( $("#property-app-elb-dnss .icon-copy") )
             null
     }
 

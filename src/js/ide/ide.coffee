@@ -96,6 +96,8 @@ define [ 'MC', 'event', 'handlebars'
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null
 
+		MC.data.IDEView = view
+
 		#############################
 		#  WebSocket
 		#############################
@@ -108,10 +110,12 @@ define [ 'MC', 'event', 'handlebars'
 			websocket.status false, ()->
 				# do thing alert here, may trigger several time
 				console.log 'connection failed'
+				view.disconnectedMessage 'show'
 			websocket.status true, ()->
 				if initialize == false
 					# do something here, trigger when connection recover
 					console.log 'connection succeed'
+					view.disconnectedMessage 'hide'
 				else
 					initialize = false
 				null
@@ -122,7 +126,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'session invalid'
 			console.log error
 			#redirect to page ide.html
-			window.location.href = 'login.html'
+			#window.location.href = 'login.html'
 			null
 
 		subRequestReady = () ->
@@ -226,12 +230,10 @@ define [ 'MC', 'event', 'handlebars'
 		#  base model
 		#############################
 
-		MC.data.base_model = base_model
-
 		base_model.sub ( error ) ->
 			console.log 'sub'
 			console.log error
 			if error.return_code is constant.RETURN_CODE.E_SESSION
-				console.log 'sdfasdfasfasdfasdfasdf'
+				 require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
 
 		null

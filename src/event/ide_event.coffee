@@ -19,7 +19,10 @@ define [ 'underscore', 'backbone' ], () ->
 
     class Event
 
-        #temp
+        #
+        LOGOUT_IDE          : 'LOGOUT_IDE'
+
+        #
         NAVIGATION_COMPLETE : 'NAVIGATION_COMPLETE'
         HEADER_COMPLETE     : 'HEADER_COMPLETE'
         DASHBOARD_COMPLETE  : 'DASHBOARD_COMPLETE'

@@ -4505,6 +4505,22 @@ a.sidebar-hider {
 	margin: 0;
 }
 
+.error-msg {
+	color: #f8f8f8;
+	border-radius: 4px;
+	background: #bc5b51;
+	-moz-box-shadow:    0px 2px 2px 0px rgba(0,0,0,0.10);
+	-webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.10);
+	box-shadow:         0px 2px 2px 0px rgba(0,0,0,0.10);
+	padding: 10px;
+	margin: 10px 0 -5px 0;
+	display: none;
+	-webkit-transition: opacity 1s ease-in-out;
+	-moz-transition: opacity 1s ease-in-out;
+	-o-transition: opacity 1s ease-in-out;
+	transition: opacity 1s ease-in-out;
+}
 
-
-
+.error-msg.show{
+	display: block;
+}

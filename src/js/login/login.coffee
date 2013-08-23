@@ -86,7 +86,7 @@ define [ 'jquery', 'handlebars',
 			return false
 
 		#invoke session.login api
-		session_model.login {sender: this}, username, password
+		session_model.login { sender : this }, username, password
 
 		#login return handler (dispatch from service/session/session_model)
 		session_model.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->
@@ -103,7 +103,7 @@ define [ 'jquery', 'handlebars',
 				$.cookie 'region_name', result.region_name, { expires: 1 }
 				$.cookie 'email',       result.email,       { expires: 1 }
 				$.cookie 'has_cred',    result.has_cred,    { expires: 1 }
-				$.cookie 'username',     username, 			{ expires: 1 }
+				$.cookie 'username',    username,           { expires: 1 }
 
 				#set madeiracloud_ide_session_id
 				setMadeiracloudIDESessionID result

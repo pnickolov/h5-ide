@@ -44,7 +44,7 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                 #login failed
 
                     console.log 'session.login failed, error is ' + forge_result.error_message
-                    me.pub forge_result.error_message
+                    me.pub forge_result
 
                 #dispatch event (dispatch event whenever login succeed or failed)
                 if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGIN_RETURN', forge_result else me.trigger 'SESSION_LOGIN_RETURN', forge_result

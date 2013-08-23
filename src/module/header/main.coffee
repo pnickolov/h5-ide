@@ -25,6 +25,8 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
             view.model = model
             view.render()
 
+            logout = -> model.logout()
+
             ide_event.onListen ide_event.WS_COLLECTION_READY_REQUEST, (result) ->
                 model.getInfoList()
                 view.render()
@@ -35,7 +37,7 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
 
                 if req
                     console.log 'request:' + req
-                    
+
                     model.updateHeader(req)
                     view.render()
 
@@ -59,6 +61,8 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
                 model.setFlag(false)
                 view.render()
 
+            ide_event.onLongListen ide_event.LOGOUT_IDE, () -> logout()
+
             view.on 'DROPDOWN_MENU_CLOSED', () ->
                 console.log 'DROPDOWN_MENU_CLOSED'
                 model.resetInfoList()
@@ -69,8 +73,7 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
                 model.openApp(req_id)
 
             #event
-            view.on 'BUTTON_LOGOUT_CLICK', () ->
-                model.logout()
+            view.on 'BUTTON_LOGOUT_CLICK', () -> logout()
 
             view.on 'AWSCREDENTIAL_CLICK', () ->
                 console.log 'AWSCREDENTIAL_CLICK'

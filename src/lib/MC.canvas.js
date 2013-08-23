@@ -621,6 +621,7 @@ MC.canvas = {
 			to_data = layout_component_data[ to_node_type ][ to_uid ],
 			from_type = from_data.type,
 			to_type = to_data.type,
+			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
@@ -662,15 +663,18 @@ MC.canvas = {
 			to_node_connection_data = to_data.connection || [];
 			is_connected = false;
 
-			$.each(from_node_connection_data, function (key, value)
-			{
-				if (value[ 'target' ] === to_uid && value[ 'port' ] === from_target_port)
-				{
-					is_connected = true;
+			// $.each(from_node_connection_data, function (key, value)
+			// {
+			// 	line_data = layout_connection_data[ value.line ];
 
-					return false;
-				}
-			});
+				
+			// 	// if (value[ 'target' ] === to_uid && value[ 'port' ] === from_target_port)
+			// 	// {
+			// 	// 	is_connected = true;
+
+			// 	// 	return false;
+			// 	// }
+			// });
 
 			if (
 				line_option ||

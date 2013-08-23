@@ -1684,7 +1684,7 @@ td.table-action a.btn {
 	/*border-left : 1px solid #dedede;*/
 	float         : left;
 	margin        : 3px 6px;
-	border        : 1px solid #ccc;
+	border        : 1px solid #d6d6d6;
     border-radius : 6px;
     /*overflow      : hidden;*/
     background    : #fefefe;
@@ -1745,7 +1745,7 @@ td.table-action a.btn {
 
 .btn-toolbar:hover {
 	color            : #c17ca7;
-	background-color : #d0d0d0;
+	background-color : #eee;
 
 }
 
@@ -1773,10 +1773,10 @@ td.table-action a.btn {
 }
 
 .btn-toolbar.selectbox .selection {
-	font-size : 16px;
-	color     : #868486;
-	padding   : 0 18px 0 10px;
-	border    : none;
+	font-size   : 16px;
+	color       : #868486;
+	padding     : 0 18px 0 10px;
+	border      : none;
 	line-height : 30px;
 }
 
@@ -1789,12 +1789,13 @@ td.table-action a.btn {
 }
 
 #toolbar-run {
-	width: 110px;
-	color: #fff;
+	width : 110px;
+	color : #fff;
 }
 
 #toolbar-run span {
-	margin-left: 10px;
+	margin-left : 10px;
+	font-family : 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Sidebars, including Resource Panle and Property Panel */

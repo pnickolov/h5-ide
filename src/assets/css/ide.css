@@ -4505,6 +4505,13 @@ a.sidebar-hider {
 	margin: 0;
 }
 
+/* dhcp-property-detail */
+#property-dhcp-options .property-control-group label {
+	display: block;
+}
 
+#property-dhcp-options .property-control-group .checkbox.left {
+	margin-top: 1px;
+}
 
 

@@ -112,7 +112,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             item.time = req.time_end
             item.time_str = MC.dateFormat(new Date(item.time * 1000), "hh:mm yyyy-MM-dd")
             item.region = req.region
-            item.region_label = constant.REGION_LABEL[req.region]
+            item.region_label = constant.REGION_SHORT_LABEL[req.region]
             item.is_readed = true
             item.is_error = false
             item.is_request = false

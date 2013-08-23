@@ -2137,11 +2137,12 @@ a.sidebar-hider {
 }
 
 .property-wrap .scroll-wrap {
-	height      : 100%;
-	padding-top : 45px;
-	margin-top  : -45px;
-	position    : relative;
-	z-index     : 1;
+	position : absolute;
+	top      : 45px;
+	bottom   : 0;
+	left     : 0;
+	right    : 0;
+	z-index  : 1;
 
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;

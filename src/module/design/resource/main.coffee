@@ -46,9 +46,9 @@ define [ 'jquery',
                 #
                 model.service_count = 0
                 #
+                model.quickstartService             region_name
                 model.describeAvailableZonesService region_name, type
                 model.describeSnapshotsService      region_name
-                model.quickstartService             region_name
                 #model.myAmiService                  region_name
                 #model.favoriteAmiService            region_name
                 view.region = region_name
@@ -79,13 +79,22 @@ define [ 'jquery',
                     model.removeFav region_name, amiId
 
             model.on 'change:availability_zone', () ->
+                console.log 'resource availability_zone change'
                 ide_event.trigger ide_event.RELOAD_AZ, model.get 'availability_zone'
 
             model.on 'change:check_required_service_count', () ->
                 console.log 'check_required_service_count, count = ' + model.get 'check_required_service_count'
-                if model.get( 'check_required_service_count' ) is 3
+
+                if $.cookie('has_cred') is 'false' and model.get( 'check_required_service_count' ) is 1    # not set credential then use quickstart data
+                    console.log 'not set credential and described quickstart service'
                     ide_event.trigger ide_event.SWITCH_MAIN
                     model.service_count = 0
+
+                else if model.get( 'check_required_service_count' ) is 3      # has setted credential
+                    console.log 'set credential and described require service'
+                    ide_event.trigger ide_event.SWITCH_MAIN
+                    model.service_count = 0
+
                 null
 
     unLoadModule = () ->

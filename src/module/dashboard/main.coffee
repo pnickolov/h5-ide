@@ -97,8 +97,9 @@ define [ 'jquery',
             model.emptyListListener()
             model.describeAccountAttributesService()
 
-            ide_event.onLongListen ide_event.UPDATE_OVERVIEW_ATTRIBUTES, () ->
-                console.log 'overview UPDATE_OVERVIEW_ATTRIBUTES'
+            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+                console.log 'overview UPDATE_AWS_CREDENTIAL'
+
                 model.describeAccountAttributesService()
 
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
@@ -253,6 +254,16 @@ define [ 'jquery',
                         model.deleteStack(current_region, stack_id)
                     ide_event.onLongListen ide_event.UPDATE_REGION_RESOURCE, () ->
                         console.log 'dashboard_region:UPDATE_REGION_RESOURCE'
+
+                        if $.cookie('has_cred') is 'true'
+                            model.describeAWSResourcesService current_region
+                            model.describeRegionAccountAttributesService current_region
+                            model.describeAWSStatusService current_region
+                        else
+                            model.resetData()
+
+                    ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+                        console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
                         if $.cookie('has_cred') is 'true'
                             model.describeAWSResourcesService current_region

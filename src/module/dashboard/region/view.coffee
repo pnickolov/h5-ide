@@ -115,30 +115,54 @@ define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.n
             target = $( this.el )
             id = event.currentTarget.id
 
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'dashboard region run app'
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
-                event.data.target.trigger 'RUN_APP_CLICK', id
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'dashboard region run app'
+                    modal.close()
+                    event.data.target.trigger 'RUN_APP_CLICK', id
+
             true
 
         stopAppClick : ( event ) ->
             target = $( this.el )
             id = event.currentTarget.id
 
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'dashboard region stop app'
-                event.data.target.trigger 'STOP_APP_CLICK', id
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'dashboard region stop app'
+                    event.data.target.trigger 'STOP_APP_CLICK', id
+                    modal.close()
+
             true
 
         terminateAppClick : ( event ) ->
             target = $( this.el )
             id = event.currentTarget.id
 
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'dashboard region terminal app'
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
-                event.data.target.trigger 'TERMINATE_APP_CLICK', id
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'dashboard region terminal app'
+                    modal.close()
+                    event.data.target.trigger 'TERMINATE_APP_CLICK', id
+
             true
 
         #stack

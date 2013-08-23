@@ -241,32 +241,53 @@ define [ 'MC', 'event',
             me = this
             console.log 'click stop app'
 
-            target = $( '#main-toolbar' )
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                #me.trigger 'TOOLBAR_STOP_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
-                ide_event.trigger ide_event.STOP_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    #me.trigger 'TOOLBAR_STOP_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    ide_event.trigger ide_event.STOP_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    modal.close()
 
         clickStartApp : (event) ->
             me = this
             console.log 'click run app'
 
-            target = $( '#main-toolbar' )
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                #me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
-                ide_event.trigger ide_event.START_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    #me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    ide_event.trigger ide_event.START_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    modal.close()
 
         clickTerminateApp : (event) ->
             me = this
 
             console.log 'click terminate app'
 
-            target = $( '#main-toolbar' )
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                #me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
-                ide_event.trigger ide_event.TERMINATE_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                target = $( '#main-toolbar' )
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    #me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    ide_event.trigger ide_event.TERMINATE_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                    modal.close()
 
     }
 

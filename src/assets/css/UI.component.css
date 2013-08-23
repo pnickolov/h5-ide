@@ -275,6 +275,20 @@ a.table-link {
 	font-size: 12px;
 }
 
+.link-red {
+	color     : #D64442;
+}
+
+.link-red:hover {
+	color: #F74A48;
+}
+
+.link-modal-danger {
+	line-height : 32px;
+	margin-left : 8px;
+	cursor      : pointer;
+}
+
 /* Progress bar */
 .progress {
 	background-color: #F7F7F7;

@@ -50,11 +50,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                 console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
+                region_classic_vpc_result = []
+
                 if !result.is_error
 
                     regionAttrSet = result.resolved_data
-
-                    region_classic_vpc_result = []
 
                     _.map constant.REGION_KEYS, ( value ) ->
 
@@ -62,17 +62,27 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                             cur_attr = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
                             if  cur_attr and $.type(cur_attr) == "array" and cur_attr.length == 2
-                                region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
+                                region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_SHORT_LABEL[ value ], 'region': value }
                             else
-                                region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
+                                region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_SHORT_LABEL[ value ], 'region': value }
                             null
 
                     me.set 'region_classic_list', region_classic_vpc_result
+
+                    # set cookie
+                    if $.cookie('has_cred') isnt 'true'
+                        $.cookie 'has_cred', true,    { expires: 1 }
+                        ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+
                     null
 
                 else
+                    # set cookie
+                    if $.cookie('has_cred') isnt 'false'
+                        $.cookie 'has_cred', false,    { expires: 1 }
+                        ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
 
-                    $.cookie 'has_cred', false,    { expires: 1 }
+                    me.set 'region_classic_list', region_classic_vpc_result
 
             null
 
@@ -208,9 +218,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             me = this
 
-            if $.cookie( 'has_cred' ) is 'true'   # do it when has credential
-                #get service(model)
-                vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
+            #get service(model)
+            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
 
             null
 
@@ -270,7 +279,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 interval = value.time_update
 
             if interval
-                return { 'id' : value.id, 'region' : value.region, 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval_date': MC.intervalDate(interval), 'interval' : interval }
+                return { 'id' : value.id, 'region' : value.region, 'region_label' : constant.REGION_SHORT_LABEL[value.region], 'name' : value.name, 'interval_date': MC.intervalDate(interval), 'interval' : interval }
 
     }
 

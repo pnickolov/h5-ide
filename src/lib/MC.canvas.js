@@ -1672,7 +1672,7 @@ MC.canvas.layout = {
 
 	save: function ()
 	{
-		var data = MC.canvas_data;
+		var data = $.extend(true, {}, MC.canvas_data);
 
 		if (data.layout.component.node)
 		{
@@ -3915,7 +3915,7 @@ MC.canvas.event.groupResize = {
 
 			// group_left = Math.floor((parent_offset.left - canvas_offset.left + offsetX) * scale_ratio / grid_width),
 			// group_top = Math.floor((parent_offset.top - canvas_offset.top + offsetY) * scale_ratio / grid_height),
-			
+
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
 			canvas_size = MC.canvas.data.get('layout.size'),

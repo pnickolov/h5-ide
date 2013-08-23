@@ -35,7 +35,7 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
 
                 if req
                     console.log 'request:' + req
-                    
+
                     model.updateHeader(req)
                     view.render()
 
@@ -59,6 +59,16 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
                 model.setFlag(false)
                 view.render()
 
+            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+                console.log 'UPDATE_AWS_CREDENTIAL'
+
+                if $.cookie('has_cred') is 'true'
+                    model.set 'has_cred', true
+                else
+                    model.set 'has_cred', false
+
+                view.render()
+
             view.on 'DROPDOWN_MENU_CLOSED', () ->
                 console.log 'DROPDOWN_MENU_CLOSED'
                 model.resetInfoList()
@@ -75,6 +85,10 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
             view.on 'AWSCREDENTIAL_CLICK', () ->
                 console.log 'AWSCREDENTIAL_CLICK'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            model.on 'change:has_cred', () ->
+                console.log 'awscredential change'
+                view.render()
 
     unLoadModule = () ->
         #

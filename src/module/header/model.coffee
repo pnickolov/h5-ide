@@ -9,10 +9,11 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
     HeaderModel = Backbone.Model.extend {
 
         defaults:
-            'info_list'     : null    # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
+            'info_list'     : null      # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
             'unread_num'    : null
             'is_unread'     : null
             'in_dashboard'  : true
+            'has_cred'      : true      # default has credential
 
         initialize : ->
 

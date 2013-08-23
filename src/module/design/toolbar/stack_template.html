@@ -1,26 +1,22 @@
 <section class="toolbar-btn-group">
-	<a href="#" class="btn-toolbar icon-play tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_flags.name}}"}' data-modal-dismiss="true"></a>
+	<a href="#" class="btn-toolbar btn-primary icon-play tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_flags.name}}"}' data-modal-dismiss="true"><span>Run Stack</span></a>
 
 	<a href="#" class="btn-toolbar tooltip icon-save" data-tooltip="Save stack"></a>
+</section>
 
-	<div class="selectbox btn-toolbar">
-		<a class="selection tooltip icon-stack" data-tooltip="More Actions..."></a>
-		<ul class="dropdown" tabindex="-1">
-			{{#if item_flags.is_duplicate}}
-			<li id="toolbar-duplicate"><i class="icon-duplicate"></i>Duplicate Stack</li>
-			{{else}}
-			<li class="disabled"><i class="icon-duplicate"></i>Duplicate Stack</li>
-			{{/if}}
+<section class="toolbar-btn-group">
+	{{#if item_flags.is_duplicate}}
+	<a href="#" class="btn-toolbar tooltip icon-duplicate" data-tooltip="Duplicate Stack" id="toolbar-duplicate"></a>
+	{{else}}
+	<a href="#" class="btn-toolbar tooltip icon-duplicate disabled" data-tooltip="Duplicate Stack"></a>
+	{{/if}}
 
-			{{#if item_flags.is_delete}}
-			<li class="modal" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</li>
-			{{else}}
-			<li class="disabled" id="toolbar-delete"><i class="icon-toolbar-delete"></i>Delete Stack</li>
-			{{/if}}
-
-			<li id="toolbar-new" data-tooltip="Create new stack"><i class="icon-new-stack"></i>New Stack</li>
-		</ul>
-	</div>
+	{{#if item_flags.is_delete}}
+	<a href="#" class="btn-toolbar modal icon-toolbar-delete tooltip" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"  data-tooltip="Delete Stack"></a>
+	{{else}}
+	<a href="#" class="btn-toolbar disabled modal icon-toolbar-delete tooltip" id="toolbar-delete" data-tooltip="Delete Stack"></a>
+	{{/if}}
+	<a hre="#" class="btn-toolbar icon-new-stack tooltip" id="toolbar-new" data-tooltip="Create new stack"></a>
 </section>
 
 <section class="toolbar-btn-group hide">
@@ -29,8 +25,8 @@
 </section>
 
 <section class="toolbar-btn-group">
-	<a href="#" class="btn-toolbar tooltip icon-zoom-in {{#if item_flags.is_zoomin}}{{else}}disabled{{/if}}" data-tooltip="Zoom In"></a>
-	<a href="#" class="btn-toolbar tooltip icon-zoom-out {{#if item_flags.is_zoomout}}{{else}}disabled{{/if}}" data-tooltip="Zoom Out"></a>
+	<a href="#" class="btn-toolbar tooltip icon-zoom-in {{#if item_flags.is_zoomin}}{{else}}disabled{{/if}}" data-tooltip="{{#if item_flags.is_zoomin}}Zoom In{{else}}{{/if}}"></a>
+	<a href="#" class="btn-toolbar tooltip icon-zoom-out {{#if item_flags.is_zoomout}}{{else}}disabled{{/if}}" data-tooltip="{{#if item_flags.is_zoomout}}Zoom Out{{else}}{{/if}}"></a>
 </section>
 
 <section class="toolbar-btn-group">

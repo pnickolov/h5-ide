@@ -173,6 +173,18 @@ define [ 'MC' ], ( MC ) ->
 				elb.resource.Subnets.splice i, 1
 				break
 
+		# Update resource.AvailabilityZones
+		az_map = {}
+		az_arr = []
+		for subnet, i in elb.resource.Subnets
+			az = MC.canvas_data.component[ MC.extractID( subnet ) ].resource.AvailabilityZone
+			if az_map[ az ]
+				continue
+
+			az_map[ az ] = true
+			az_arr.push az
+
+		elb.resource.AvailabilityZones = az_arr
 		null
 
 	updateRuleToElbSG = (elbUID) ->

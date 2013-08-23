@@ -203,7 +203,7 @@ require [ 'jquery', 'domReady', 'MC',
             region_view.on 'DELETE_STACK_CLICK', (stack_id) ->
                 console.log 'dashboard_region_click:delete_stack'
                 model.deleteStack(current_region, stack_id)
-            region_view.on 'REFRESH_REGION_BTN', () ->
+            region_view.on 'UPDATE_REGION_RESOURCE', () ->
                 model.describeAWSResourcesService current_region
 
 

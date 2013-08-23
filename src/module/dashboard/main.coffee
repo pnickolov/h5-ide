@@ -70,7 +70,10 @@ define [ 'jquery',
                 #set MC.data.supported_platforms
                 MC.data.supported_platforms = model.get 'region_classic_list'
                 #refresh view
-                view.renderPlatformAttrs()
+                if MC.data.supported_platforms.length <= 0
+                    view.renderPlatformAttrs(false)
+                else
+                    view.renderPlatformAttrs(true)
                 #
                 if region_view then region_view.checkCreateStack MC.data.supported_platforms
 
@@ -93,6 +96,11 @@ define [ 'jquery',
             model.resultListListener()
             model.emptyListListener()
             model.describeAccountAttributesService()
+
+            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+                console.log 'overview UPDATE_AWS_CREDENTIAL'
+
+                model.describeAccountAttributesService()
 
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
                 console.log 'overview RESULT_APP_LIST'
@@ -149,7 +157,7 @@ define [ 'jquery',
 
                 MC.data.dashboard_type = 'REGION_TAB'
                 #push event
-                ide_event.trigger ide_event.RETURN_REGION_TAB, constant.REGION_LABEL[ region ]
+                ide_event.trigger ide_event.RETURN_REGION_TAB, constant.REGION_SHORT_LABEL[ region ]
 
                 if region_view isnt null
 
@@ -244,8 +252,25 @@ define [ 'jquery',
                     region_view.on 'DELETE_STACK_CLICK', (stack_id) ->
                         console.log 'dashboard_region_click:delete_stack'
                         model.deleteStack(current_region, stack_id)
-                    region_view.on 'REFRESH_REGION_BTN', () ->
-                        model.describeAWSResourcesService current_region
+                    ide_event.onLongListen ide_event.UPDATE_REGION_RESOURCE, () ->
+                        console.log 'dashboard_region:UPDATE_REGION_RESOURCE'
+
+                        if $.cookie('has_cred') is 'true'
+                            model.describeAWSResourcesService current_region
+                            model.describeRegionAccountAttributesService current_region
+                            model.describeAWSStatusService current_region
+                        else
+                            model.resetData()
+
+                    ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+                        console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
+
+                        if $.cookie('has_cred') is 'true'
+                            model.describeAWSResourcesService current_region
+                            model.describeRegionAccountAttributesService current_region
+                            model.describeAWSStatusService current_region
+                        else
+                            model.resetData()
 
                     model.describeAWSResourcesService current_region
                     model.describeRegionAccountAttributesService current_region

@@ -251,7 +251,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                     periods : 2
                     step    : 1
 
-            data.noSNS = this.model.attributes.has_sns_topic
+            data.noSNS = not this.model.attributes.has_sns_topic
 
             modal this.policy_template(data), true
 

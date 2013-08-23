@@ -1742,10 +1742,15 @@ td.table-action a.btn {
     border-radius : 0 4px 4px 0;
 }
 
+.toolbar-btn-group .btn-toolbar:only-child{
+/*	margin-right: 4px;*/
+    border-radius : 4px;
+}
+
 
 .btn-toolbar:hover {
 	color            : #c17ca7;
-	background-color : #eee;
+	background-color : #fff;
 
 }
 

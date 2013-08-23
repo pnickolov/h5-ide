@@ -718,9 +718,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
                     # if select the main launch configuration and elb line
 					if MC.canvas_data.component[portMap['launchconfig-sg']]
 
-						selected_line_id = null
+						selected_line_id = option.id
 
 						original_group_uid = MC.canvas_data.layout.component.node[portMap['launchconfig-sg']].groupUId
+
+						#reset health  check type
+						MC.canvas_data.component[original_group_uid].resource.HealthCheckType = 'EC2'
 
 						$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
 
@@ -735,9 +738,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 	                        				null
 
 	                        			if tmp_map['elb-sg-out'] is portMap['elb-sg-out'] and tmp_map['launchconfig-sg'] is comp_uid
-	                        				elb_index = MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.indexOf(elb_ref)
-	                        				if elb_index >= 0
-	                        					MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.splice elb_index, 1
 	                        				MC.canvas.remove $("#" + line_id)[0]
 
 	                        				return false
@@ -747,11 +747,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 	                        				selected_line_id = line_id
 
 	                        			null
-
-	                    MC.canvas.remove $("#" + selected_line_id)[0]
+	                    elb_index = MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.indexOf(elb_ref)
+						if elb_index >= 0
+							MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.splice elb_index, 1
+						MC.canvas.remove $("#" + selected_line_id)[0]
                     # select the expand lanchconfiguration and elb line
 					else
 						original_group_uid = MC.canvas_data.layout.component.group[portMap['launchconfig-sg']].originalId
+
+						#reset health  check type
+						MC.canvas_data.component[original_group_uid].resource.HealthCheckType = 'EC2'
 
 						$.each MC.canvas_data.layout.component.node, ( comp_uid, comp ) ->
 
@@ -1031,13 +1036,14 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'Origin'               : ""
 				}
 
+				MC.canvas.select(line_id)
 
 			# Instance <==> RouteTable
 			else if portMap['instance-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
 				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
-					'DestinationCidrBlock' : "0.0.0.0/0",
+					'DestinationCidrBlock' : "",
 					'GatewayId'            : "",
 					'InstanceId'           : "@#{portMap['instance-rtb']}.resource.InstanceId",
 					'InstanceOwnerId'      : "",
@@ -1046,12 +1052,14 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'Origin'               : ""
 				}
 
+				MC.canvas.select(line_id)
+
 			# VGW <==> RouteTable
 			else if portMap['vgw-tgt'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
 				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
-					'DestinationCidrBlock' : "0.0.0.0/0",
+					'DestinationCidrBlock' : "",
 					'GatewayId'            : "@#{portMap['vgw-tgt']}.resource.VpnGatewayId",
 					'InstanceId'           : "",
 					'InstanceOwnerId'      : "",
@@ -1059,6 +1067,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'State'                : "",
 					'Origin'               : ""
 				}
+
+				MC.canvas.select(line_id)
 
 			# Eni <==> RouteTable
 			else if portMap['eni-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
@@ -1077,6 +1087,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# VGW <==> CGW
 			else if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+				MC.canvas.select(line_id)
 
 			else if portMap['elb-sg-out'] and portMap['launchconfig-sg']
 
@@ -1472,7 +1483,13 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
-					expand_asg = [comp_uid]
+					expand_asg = []
+
+					$.each MC.canvas_data.layout.component.node, ( c, node ) ->
+
+						if node.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and node.groupUId is comp_uid
+
+							expand_asg.push c
 
 					$.each MC.canvas_data.layout.component.group, ( c, g ) ->
 
@@ -1486,7 +1503,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 							lines.push [asg, elb.split('.')[0][1...], 'launchconfig-sg', 'elb-sg-out']
 
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId and comp.resource.Attachment.DeviceIndex isnt '0' and comp.resource.Attachment.DeviceIndex isnt 0
 
+					lines.push [comp_uid, comp.resource.Attachment.InstanceId.split('.')[0][1...], 'eni-attach', 'instance-attach']
 
 			$.each lines, ( idx, line_data ) ->
 

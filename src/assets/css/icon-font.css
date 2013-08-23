@@ -26,7 +26,8 @@
 .icon-btn-details,
 .icon-btn-back,
 .icon-export-png,
-.icon-export-json {
+.icon-export-json,
+.icon-caret-down {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -50,3 +51,4 @@
 .icon-btn-back:before    { content : "\F120"; }
 .icon-export-png:before  { content : "\F11D"; }
 .icon-export-json:before { content : "\F11E"; }
+.icon-caret-down:before { content : "\F121"; }

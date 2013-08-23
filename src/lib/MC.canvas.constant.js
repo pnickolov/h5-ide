@@ -25,6 +25,40 @@ var constant_data = {
 		'AWS.AutoScaling.LaunchConfiguration': [10, 10]
 	},
 
+	COMPONENT_TYPE:
+	{
+		'AWS.ELB': 'node',
+		'AWS.EC2.Instance': 'node',
+		'AWS.VPC.NetworkInterface': 'node',
+		'AWS.VPC.CustomerGateway': 'node',
+		'AWS.VPC.RouteTable': 'node',
+		'AWS.VPC.InternetGateway': 'node',
+		'AWS.VPC.VPNGateway': 'node',
+
+		'AWS.EC2.AvailabilityZone': 'group',
+		'AWS.VPC.Subnet': 'group',
+		'AWS.VPC.VPC': 'group',
+		'AWS.EC2.SGPlaceholder' : 'group',
+		'AWS.AutoScaling.Group' : 'group',
+
+		'node': [
+			'AWS.ELB',
+			'AWS.EC2.Instance',
+			'AWS.VPC.NetworkInterface',
+			'AWS.VPC.CustomerGateway',
+			'AWS.VPC.RouteTable',
+			'AWS.VPC.InternetGateway',
+			'AWS.VPC.VPNGateway'
+		],
+		'group': [
+			'AWS.EC2.AvailabilityZone',
+			'AWS.VPC.Subnet',
+			'AWS.VPC.VPC',
+			'AWS.EC2.SGPlaceholder',
+			'AWS.AutoScaling.Group'
+		]
+	},
+
 	GROUP_DEFAULT_SIZE:
 	{
 		'AWS.VPC.VPC': [60, 60], //[width, height]

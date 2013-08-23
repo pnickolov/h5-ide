@@ -82,6 +82,9 @@ define [ 'jquery',
 					#show asg volume property
 					volume_main.loadModule uid, volume_main, tab_type
 
+				else if type == 'component_asg_instance'
+					instance_main.loadModule uid, instance_expended_id, instance_main, tab_type
+
 				else if type == 'component'
 
 					#show stack property
@@ -154,7 +157,7 @@ define [ 'jquery',
 								#select line between instance and routetable
 								for value, idx in line_option
 
-									if value.port.indexOf('rtb-tgt-left') >=0 or value.port.indexOf('rtb-tgt-right') >=0
+									if value.port.indexOf('rtb-tgt') >= 0
 										#rtb_main.loadModule value.uid, 'component', rtb_main
 										rtb_main.loadModule value.uid, rtb_main, tab_type
 										break
@@ -200,6 +203,12 @@ define [ 'jquery',
 			ide_event.onLongListen ide_event.OPEN_ACL, ( acl_uid ) ->
 				console.log 'OPEN_ACL'
 				acl_main.loadModule( acl_uid, tab_type )
+				null
+
+			#listen SHOW_PROPERTY_PANEL
+			ide_event.onLongListen ide_event.SHOW_PROPERTY_PANEL, ( ) ->
+				$( '#canvas-panel' ).removeClass 'right-hiden'
+				$( '#property-panel' ).removeClass 'hiden'
 				null
 
 			ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->

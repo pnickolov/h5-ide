@@ -216,7 +216,16 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                     else
                         tmp_rule.egress = true
 
-                    tmp_rule.protocol = rule.IpProtocol
+                    if rule.IpProtocol isnt 'tcp' and rule.IpProtocol isnt 'udp' and rule.IpProtocol isnt 'icmp'
+
+                        if rule.IpProtocol is '-1' or rule.IpProtocol is -1
+
+                            tmp_rule.protocol = 'all'
+
+                        else
+                            tmp_rule.protocol = "Custom(#{rule.IpProtocol})"
+                    else
+                        tmp_rule.protocol = rule.IpProtocol
 
                     if rule.IpRanges.slice(0,1) is '@'
 
@@ -251,9 +260,15 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                 if rule_data.protocolSubValue then to_port = rule_data.protocolSubValue
 
             else if rule_data.protocol == 'all'
+                rule_data.protocol = -1
                 from_port = 0
                 to_port = 65535
+            else if rule_data.protocol == 'custom'
+
+                rule_data.protocol = rule_data.protocolValue
+
             else
+
                 if '-' in rule_data.protocolValue
 
                     from_port = rule_data.protocolValue.split('-')[0]

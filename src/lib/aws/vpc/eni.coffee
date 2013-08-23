@@ -53,9 +53,9 @@ define [ 'MC' ], ( MC ) ->
 			if isAvailableIP then availableIPCount++
 			if availableIPCount > maxNeedIPCount then return false
 
-			console.log('availableIPCount: ' + availableIPCount)
-
 			null
+
+		console.log('availableIPCount: ' + availableIPCount)
 
 		return allIPAry
 

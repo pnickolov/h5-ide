@@ -1671,7 +1671,7 @@ MC.canvas.layout = {
 
 	save: function ()
 	{
-		var data = MC.canvas_data;
+		var data = $.extend(true, {}, MC.canvas_data);
 
 		if (data.layout.component.node)
 		{
@@ -2468,15 +2468,15 @@ MC.canvas.event.dragable = {
 	},
 	mouseup: function (event)
 	{
-		if (event.data.target.data('class') === 'AWS.VPC.Subnet')
-		{
-			event.data.target.find('.port').show();
-		}
-
 		var target = event.data.target,
 			target_id = target.attr('id'),
 			target_type = event.data.target_type,
 			node_type = target.data('class');
+
+		if (node_type === 'AWS.VPC.Subnet')
+		{
+			event.data.target.find('.port').show();
+		}
 
 		// Selected
 		if (
@@ -3718,6 +3718,9 @@ MC.canvas.event.groupResize = {
 				});
 			}
 
+			// Hide label
+			parent.find('.group-label').hide();
+
 			$(document.body).append('<div id="overlayer" style="cursor: ' + $(event.target).css('cursor') + '"></div>');
 
 			$(document)
@@ -3730,6 +3733,7 @@ MC.canvas.event.groupResize = {
 					'group_title': parent.find('.group-label'),
 					'target': group,
 					'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
+					'label_offset': MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 					'originalX': event.pageX,
 					'originalY': event.pageY,
 					'originalWidth': group_offset.width,
@@ -3741,7 +3745,7 @@ MC.canvas.event.groupResize = {
 					'offsetX': event.pageX - canvas_offset.left,
 					'offsetY': event.pageY - canvas_offset.top,
 					'direction': $(target).data('direction'),
-					'group_border': parseInt(group.css('stroke-width'),10) * 2,
+					'group_border': parseInt(group.css('stroke-width'), 10) * 2,
 					'group_type': type,
 					'parentGroup': MC.canvas.parentGroup(
 						parent.attr('id'),
@@ -3767,11 +3771,11 @@ MC.canvas.event.groupResize = {
 			group_border = event.data.group_border,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
-			left = Math.round((event.pageX - event.data.originalLeft) / 10) * 10 * scale_ratio,
+			left = Math.ceil((event.pageX - event.data.originalLeft) / 10) * 10 * scale_ratio,
 			max_left = event.data.originalWidth * scale_ratio - group_min_padding,
-			top = Math.round((event.pageY - event.data.originalTop) / 10) * 10 * scale_ratio,
+			top = Math.ceil((event.pageY - event.data.originalTop) / 10) * 10 * scale_ratio,
 			max_top = event.data.originalHeight * scale_ratio - group_min_padding,
-			label_offset = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
+			label_offset = event.data.label_offset,
 			prop;
 
 		switch (direction)
@@ -3847,14 +3851,14 @@ MC.canvas.event.groupResize = {
 
 		event.data.target.attr(prop);
 
-		if (prop.x)
-		{
-			event.data.group_title.attr('x', prop.x + label_offset[0]);
-		}
-		if (prop.y)
-		{
-			event.data.group_title.attr('y', prop.y + label_offset[1]);
-		}
+		// if (prop.x)
+		// {
+		// 	event.data.group_title.attr('x', prop.x + label_offset[0]);
+		// }
+		// if (prop.y)
+		// {
+		// 	event.data.group_title.attr('y', prop.y + label_offset[1]);
+		// }
 
 		return false;
 	},
@@ -3874,12 +3878,17 @@ MC.canvas.event.groupResize = {
 			offsetY = target.attr('y') * 1,
 			group_id = parent.attr('id'),
 
-			// Specific algorithm
-			group_width = Math.floor(target.attr('width') / grid_width) + Math.floor(scale_ratio / 1.1),
-			group_height = Math.floor(target.attr('height') / grid_height) + Math.floor(scale_ratio / 1.1),
+			group_width = Math.round(target.attr('width') / grid_width),
+			group_height = Math.round(target.attr('height') / grid_height),
+			group_left = Math.round(((parent_offset.left - canvas_offset.left) * scale_ratio + offsetX) / grid_width),
+			group_top = Math.round(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / grid_height),
 
-			group_left = Math.floor((parent_offset.left - canvas_offset.left + offsetX) * scale_ratio / grid_width),
-			group_top = Math.floor((parent_offset.top - canvas_offset.top + offsetY) * scale_ratio / grid_height),
+			// group_width = Math.floor(target.attr('width') / grid_width) + Math.floor(scale_ratio / 1.1),
+			// group_height = Math.floor(target.attr('height') / grid_height) + Math.floor(scale_ratio / 1.1),
+
+			// group_left = Math.floor((parent_offset.left - canvas_offset.left + offsetX) * scale_ratio / grid_width),
+			// group_top = Math.floor((parent_offset.top - canvas_offset.top + offsetY) * scale_ratio / grid_height),
+			
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
 			canvas_size = MC.canvas.data.get('layout.size'),
@@ -3917,7 +3926,7 @@ MC.canvas.event.groupResize = {
 		if (offsetX < 0)
 		{
 			// when resize by left,topleft, bottomleft
-			group_left = Math.ceil((parent_offset.left - canvas_offset.left) * scale_ratio / 10);
+			group_left = Math.round((parent_offset.left - canvas_offset.left) * scale_ratio / grid_width);
 		}
 
 		// adjust group_top
@@ -3929,11 +3938,11 @@ MC.canvas.event.groupResize = {
 		{
 			if (offsetY < 0)
 			{
-				group_top = Math.ceil((parent_offset.top - canvas_offset.top) * scale_ratio / 10);
+				group_top = Math.round((parent_offset.top - canvas_offset.top) * scale_ratio / grid_height);
 			}
 			else if (offsetY > 0)
 			{
-				group_top = Math.ceil(((parent_offset.top - canvas_offset.top)  * scale_ratio + offsetY) / 10);
+				group_top = Math.round(((parent_offset.top - canvas_offset.top)  * scale_ratio + offsetY) / grid_width);
 			}
 		}
 
@@ -4200,8 +4209,8 @@ MC.canvas.event.groupResize = {
 		}
 		else
 		{
-			group_width = Math.ceil(event.data.originalWidth * scale_ratio / 10);
-			group_height = Math.ceil(event.data.originalHeight * scale_ratio / 10);
+			group_width = Math.round(event.data.originalWidth * scale_ratio / 10);
+			group_height = Math.round(event.data.originalHeight * scale_ratio / 10);
 
 			parent.attr('transform', event.data.originalTranslate);
 
@@ -4245,6 +4254,9 @@ MC.canvas.event.groupResize = {
 				);
 			});
 		}
+
+		// Show label
+		parent.find('.group-label').show();
 
 		$('#overlayer').remove();
 

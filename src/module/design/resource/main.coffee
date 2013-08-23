@@ -46,6 +46,8 @@ define [ 'jquery',
                 #
                 model.service_count = 0
                 #
+                model.set 'check_required_service_count', -1
+                #
                 model.quickstartService             region_name
                 model.describeAvailableZonesService region_name, type
                 model.describeSnapshotsService      region_name
@@ -84,6 +86,8 @@ define [ 'jquery',
 
             model.on 'change:check_required_service_count', () ->
                 console.log 'check_required_service_count, count = ' + model.get 'check_required_service_count'
+
+                return if model.get( 'check_required_service_count' ) is -1
 
                 if $.cookie('has_cred') is 'false' and model.get( 'check_required_service_count' ) is 1    # not set credential then use quickstart data
                     console.log 'not set credential and described quickstart service'

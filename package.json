@@ -22,6 +22,7 @@
 		"grunt-string-replace"  : "0.2.4",
 		"grunt-contrib-requirejs"  : "0.4.1",
 		"matchdep"              : "0.1.2",
-		"grunt-strip"           : "0.2.1"
+		"grunt-strip"           : "0.2.1",
+		"grunt-dev-prod-switch" : "0.1.4"
 	}
 }

@@ -238,7 +238,7 @@ a {
 #header .dropdown-menu {
 	font-size: 12px;
 	position: absolute;
-	top: 52px;
+	top: 50px;
 	right: 0;
 	z-index: 3;
 	box-shadow: 0 8px 10px rgba(0,0,0,.2);
@@ -686,6 +686,14 @@ a {
 
 #tab-bar li.active a.close-tab {
 	color: #999;
+}
+
+#tab-bar-dashboard {
+	width: 116px !important;
+}
+
+#tab-bar-dashboard .tab-bar-truncate {
+	width: 105px !important;
 }
 
 /* Main Content */

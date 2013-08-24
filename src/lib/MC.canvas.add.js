@@ -832,13 +832,47 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 11, 70, 70),
+
+				//sg label
+				Canvon.rectangle(10, 2, 10 , 10).attr({
+					'class': 'node-sg-color-red node-sg-color-label node-sg-color-label1',
+					'id': group.id + '_sg-color-label1',
+					'rx': 2,
+					'ry': 2
+				}),
+				Canvon.rectangle(22, 2, 10 , 10).attr({
+					'class': 'node-sg-color-blue node-sg-color-label node-sg-color-label2',
+					'id': group.id + '_sg-color-label2',
+					'rx': 2,
+					'ry': 2
+				}),
+				Canvon.rectangle(34, 2, 10 , 10).attr({
+					'class': 'node-sg-color-orange node-sg-color-label node-sg-color-label3',
+					'id': group.id + '_sg-color-label3',
+					'rx': 2,
+					'ry': 2
+				}),
+				Canvon.rectangle(46, 2, 10 , 10).attr({
+					'class': 'node-sg-color-green node-sg-color-label node-sg-color-label4',
+					'id': group.id + '_sg-color-label4',
+					'rx': 2,
+					'ry': 2
+				}),
+				Canvon.rectangle(58, 2, 10 , 10).attr({
+					'class': 'node-sg-color-purple node-sg-color-label node-sg-color-label5',
+					'id': group.id + '_sg-color-label5',
+					'rx': 2,
+					'ry': 2
+				}),
+
+
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 23, 70, 70),
 
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-left',
 					'id' : group.id + '_port-instance-sg-left',
-					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
+					'transform': 'translate(8, 38)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
 					'data-name': 'instance-sg', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
 					'data-type': 'sg', //color of line
@@ -850,7 +884,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				// Canvon.path(MC.canvas.PATH_D_PORT).attr({
 				// 	'class': 'port port-green port-instance-elb-attach',
 				//  'id' : group.id + '_port-instance-elb-attach',
-				// 	'transform': 'translate(8, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
+				// 	'transform': 'translate(8, 64)' + MC.canvas.PORT_RIGHT_ROTATE,
 				// 	'data-name': 'instance-elb-attach',
 				// 	'data-position': 'left',
 				// 	'data-type': 'attachment',
@@ -862,7 +896,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-right',
 					'id' : group.id + '_port-instance-sg-right',
-					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 38)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'instance-sg',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -874,7 +908,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-instance-attach',
 					'id' : group.id + '_port-instance-attach',
-					'transform': 'translate(84, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 64)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'instance-attach',
 					'data-position': 'right',
 					'data-type': 'attachment',
@@ -886,7 +920,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-rtb',
 					'id' : group.id + '_port-instance-rtb',
-					'transform': 'translate(50, -6)' + MC.canvas.PORT_UP_ROTATE,
+					'transform': 'translate(50, 6)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'instance-rtb',
 					'data-position': 'top',
 					'data-type': 'sg',
@@ -895,29 +929,29 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////7. os_type
-				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30, 15, 39, 27),
+				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30, 27, 39, 27),
 
 				////8.1 volume-attached
-				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 48, 29, 24).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 60, 29, 24).attr({
 					'id': group.id + '_volume_status'
 				}),
 
 				//8.2 volume number
-				Canvon.text(35, 60, volume_number).attr({
+				Canvon.text(35, 72, volume_number).attr({
 					'class': 'node-label volume-number',
 					'id': group.id + '_volume_number',
 					'value': volume_number
 				}),
 
 				//8.3 hot area for volume
-				Canvon.rectangle(21, 48, 29, 24).attr({
+				Canvon.rectangle(21, 60, 29, 24).attr({
 					'class': 'instance-volume',
 					'data-target-id': group.id,
 					'fill': 'none'
 				}),
 
 				////7. eip
-				Canvon.image(eip_icon, 58, 49, 14, 17).attr({
+				Canvon.image(eip_icon, 58, 61, 14, 17).attr({
 					'class': 'eip-status',
 					'data-eip-state': data_eip_state,
 
@@ -925,7 +959,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////10. hostname
-				Canvon.text(50, 90, option.name).attr({
+				Canvon.text(50, 98, option.name).attr({
 					'class': 'node-label name',
 					'id': group.id + '_hostname'
 				})

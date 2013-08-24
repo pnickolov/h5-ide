@@ -67,6 +67,12 @@ var constant_data = {
 		'AWS.AutoScaling.Group' : [14, 14]
 	},
 
+	SG_COLORS: [
+		'FF0000',
+		'00FF00',
+		'0000FF'
+	],
+
 	GROUP_PADDING: 2,
 
 	IMAGE:

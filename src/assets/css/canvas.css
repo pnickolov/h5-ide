@@ -348,6 +348,7 @@
 .line-sg {
 	stroke: #6DAEFE;
 	opacity: 0.2;
+	stroke-dasharray: 5,8;
 }
 
 .line-sg.view-hover,

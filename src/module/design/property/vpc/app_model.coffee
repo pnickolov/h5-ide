@@ -29,7 +29,7 @@ define ['constant', 'backbone', 'MC' ], ( constant ) ->
           # Get Main Route Table and Default ACL
           for key, value of MC.canvas_data.component
             if value.type == TYPE_RTB
-              if value.resource.AssociationSet[0].Main == "true"
+              if value.resource.AssociationSet[0] && value.resource.AssociationSet[0].Main == "true"
                 vpc.mainRTB = value.resource.RouteTableId
                 if vpc.defaultACL
                   break

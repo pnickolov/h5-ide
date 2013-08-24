@@ -1052,7 +1052,7 @@ var constant_data = {
 			"resource":
 			{
 				"EnableDnsHostnames": "false",
-				"DhcpOptionsId": "",
+				"DhcpOptionsId": "default",
 				"CidrBlock": "10.0.0.0/16",
 				"State": "",
 				"InstanceTenancy": "default",

@@ -37,15 +37,15 @@ define [ 'jquery',
                 #
                 model.quickstartService             region_name
 
-                ide_event.onLongListen ide_event.RESOURCE_QUICKSTART_READY, () ->
+                view.region = region_name
+                view.resourceVpcRender( current_platform, type )
+                view.communityAmiBtnRender()
+
+                ide_event.onLongListen ide_event.RESOURCE_QUICKSTART_READY, (region_name) ->
                     console.log 'resource:RESOURCE_QUICKSTART_READY'
 
-                    model.describeAvailableZonesService region_name, type
+                    model.describeAvailableZonesService region_name
                     model.describeSnapshotsService      region_name
-
-                    view.region = region_name
-                    view.communityAmiBtnRender()
-                    view.resourceVpcRender( current_platform, type )
 
                 null
 

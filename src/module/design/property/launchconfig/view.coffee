@@ -43,8 +43,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             this.delegateEvents this.events
 
         lcNameChange : ( event ) ->
-            this.trigger "NAME_CHANGE", event.target.value
-            null
+            target = $ event.currentTarget
+            name = target.val()
+
+            id = @model.get 'get_uid'
+            MC.validate.preventDupname target, id, name, 'LaunchConfiguration'
+
+            if target.parsley 'validate'
+                @trigger "NAME_CHANGE", name
 
         instanceTypeSelect : ( event, value )->
             this.model.set 'instance_type', value

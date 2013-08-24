@@ -48,6 +48,9 @@ MC.canvas = {
 		switch (type)
 		{
 			case 'text':
+				if ( target.length == 0 ) {
+					target = $('#' + id).find("." + key);
+				}
 				target.text(value);
 				break;
 

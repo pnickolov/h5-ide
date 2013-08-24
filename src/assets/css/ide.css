@@ -688,6 +688,14 @@ a {
 	color: #999;
 }
 
+#tab-bar-dashboard {
+	width: 116px !important;
+}
+
+#tab-bar-dashboard .tab-bar-truncate {
+	width: 105px !important;
+}
+
 /* Main Content */
 .main-content {
 	display: none;

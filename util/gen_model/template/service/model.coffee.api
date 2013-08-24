@@ -12,15 +12,14 @@
 
                     @@resource-name_info = @@api-type_result.resolved_data
 
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger '@@EVENT-NAME', @@api-type_result
 
                 else
                 #@@api-name failed
 
                     console.log '@@resource-name.@@api-name failed, error is ' + @@api-type_result.error_message
+                    me.pub @@api-type_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger '@@EVENT-NAME', @@api-type_result
 
 

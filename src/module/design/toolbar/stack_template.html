@@ -1,22 +1,24 @@
 <section class="toolbar-btn-group">
-	<a href="#" class="btn-toolbar btn-primary icon-play tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_flags.name}}"}' data-modal-dismiss="true"><span>Run Stack</span></a>
-
-	<a href="#" class="btn-toolbar tooltip icon-save" data-tooltip="Save stack"></a>
+	<a href="#" class="btn-toolbar btn-blue icon-play tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_flags.name}}"}' data-modal-dismiss="true"><span>Run Stack</span></a>
 </section>
 
 <section class="toolbar-btn-group">
+	<a href="#" class="btn-toolbar tooltip icon-save" data-tooltip="Save stack"></a>
 	{{#if item_flags.is_duplicate}}
-	<a href="#" class="btn-toolbar tooltip icon-duplicate" data-tooltip="Duplicate Stack" id="toolbar-duplicate"></a>
-	{{else}}
-	<a href="#" class="btn-toolbar tooltip icon-duplicate disabled" data-tooltip="Duplicate Stack"></a>
-	{{/if}}
 
 	{{#if item_flags.is_delete}}
 	<a href="#" class="btn-toolbar modal icon-toolbar-delete tooltip" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"  data-tooltip="Delete Stack"></a>
 	{{else}}
-	<a href="#" class="btn-toolbar disabled modal icon-toolbar-delete tooltip" id="toolbar-delete" data-tooltip="Delete Stack"></a>
+	<a href="#" class="btn-toolbar disabled modal icon-toolbar-delete tooltip" id="toolbar-delete" data-tooltip="This stack is not saved yet."></a>
 	{{/if}}
-	<a hre="#" class="btn-toolbar icon-new-stack tooltip" id="toolbar-new" data-tooltip="Create new stack"></a>
+</section>
+
+<section class="toolbar-btn-group">
+	<a href="#" class="btn-toolbar tooltip icon-duplicate" data-tooltip="Duplicate Stack" id="toolbar-duplicate"></a>
+	{{else}}
+	<a href="#" class="btn-toolbar tooltip icon-duplicate disabled" data-tooltip="Duplicate Stack"></a>
+	{{/if}}
+	<a hre="#" class="btn-toolbar icon-new-stack tooltip" id="toolbar-new" data-tooltip="Create New Stack"></a>
 </section>
 
 <section class="toolbar-btn-group hide">

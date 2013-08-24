@@ -1419,7 +1419,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
-					if comp.resource.AssociationSet[0].Main is true or comp.resource.AssociationSet[0].Main is 'true'
+					if comp.resource.AssociationSet.length and "" + comp.resource.AssociationSet[0].Main is 'true'
 
 						main_rt = comp_uid
 

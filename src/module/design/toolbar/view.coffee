@@ -4,18 +4,19 @@
 
 define [ 'MC', 'event',
          'i18n!/nls/lang.js',
+         'UI.zeroclipboard',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification'
-], ( MC, ide_event, lang ) ->
+], ( MC, ide_event, lang, zeroclipboard ) ->
 
     ToolbarView = Backbone.View.extend {
 
-        el       : document
+        el         : document
 
         stack_tmpl : Handlebars.compile $( '#toolbar-stack-tmpl' ).html()
-        app_tmpl : Handlebars.compile $( '#toolbar-app-tmpl' ).html()
+        app_tmpl   : Handlebars.compile $( '#toolbar-app-tmpl' ).html()
 
-        events   :
+        events     :
             ### env:dev ###
             'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'       : 'clickOpenJSONView'
@@ -44,6 +45,10 @@ define [ 'MC', 'event',
                 $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
+            #
+            ### env:dev ###
+            zeroclipboard.copy $( '#toolbar-jsoncopy' )
+            ### env:dev:end ###
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'

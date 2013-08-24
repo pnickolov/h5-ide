@@ -1338,6 +1338,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									when constant.AWS_RESOURCE_TYPE.AWS_ELB
 
+										if MC.canvas_data.component[from_comp_uid].resource.Scheme is 'internet-facing'
+											return
+
 										from_port = 'elb-sg-in'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
@@ -1360,7 +1363,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 										to_port = 'eni-sg'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_ELB
-
+										if MC.canvas_data.component[to_comp_uid].resource.Scheme is 'internet-facing'
+											return
 										to_port = 'elb-sg-in'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration

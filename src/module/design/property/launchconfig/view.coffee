@@ -47,10 +47,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             name = target.val()
 
             id = @model.get 'get_uid'
-            MC.validate.preventDupname target, id, name, 'Launch Configuation'
+            MC.validate.preventDupname target, id, name, 'LaunchConfiguration'
 
             if target.parsley 'validate'
-                @trigger "NAME_CHANGE", event.target.value
+                @trigger "NAME_CHANGE", name
 
         instanceTypeSelect : ( event, value )->
             this.model.set 'instance_type', value

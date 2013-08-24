@@ -1693,6 +1693,9 @@ td.table-action a.btn {
 
 .toolbar-btn-group:first-child {
 	margin-left: 4px;
+}
+
+.toolbar-btn-primary {
 	border: 1px solid #0274C0;
 }
 

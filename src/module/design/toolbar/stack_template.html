@@ -1,4 +1,4 @@
-<section class="toolbar-btn-group">
+<section class="toolbar-btn-group toolbar-btn-primary">
 	<a href="#" class="btn-toolbar btn-blue icon-play tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_flags.name}}"}' data-modal-dismiss="true"><span>Run Stack</span></a>
 </section>
 
@@ -7,9 +7,9 @@
 	{{#if item_flags.is_duplicate}}
 
 	{{#if item_flags.is_delete}}
-	<a href="#" class="btn-toolbar modal icon-toolbar-delete tooltip" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"  data-tooltip="Delete Stack"></a>
+	<a href="#" class="btn-toolbar modal icon-delete tooltip" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"  data-tooltip="Delete Stack"></a>
 	{{else}}
-	<a href="#" class="btn-toolbar disabled modal icon-toolbar-delete tooltip" id="toolbar-delete" data-tooltip="This stack is not saved yet."></a>
+	<a href="#" class="btn-toolbar disabled modal icon-delete tooltip" id="toolbar-delete" data-tooltip="This stack is not saved yet."></a>
 	{{/if}}
 </section>
 

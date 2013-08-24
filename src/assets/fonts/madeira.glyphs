@@ -1238,6 +1238,17 @@ width = 960;
 }
 );
 unicode = F122;
+},
+{
+glyphname = newGlyph;
+lastChange = "2013-08-24 11:14:59 +0800";
+layers = (
+{
+layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
+name = Regular;
+width = 600;
+}
+);
 }
 );
 gridLength = 60;

@@ -86,7 +86,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                     MC.data.config[region_name].vpc_limit           = result.resolved_data.vpc_limit
                     # reset az
                     MC.data.config[region_name].zone = {'item':[]}
-                    MC.data.config[region_name].zone.item.push {'regionName':region_name, 'zoneName':i, 'zoneState':'available', 'zoneShortName':'aaa'} for i in result.resolved_data.zone
+                    MC.data.config[region_name].zone.item.push {'regionName':region_name, 'zoneName':i, 'zoneState':'available'} for i in result.resolved_data.zone
                     #MC.data.config[region_name].zone                = result.resolved_data.zone
                     #MC.data.config[region_name].zone                = null
 

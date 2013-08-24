@@ -87,7 +87,9 @@ define [ 'jquery',
 
                 sglist_main.loadModule model, true
 
-            renderPropertyPanel()
+            setTimeout () ->
+                renderPropertyPanel()
+            , 500
 
             view.on 'STACK_NAME_CHANGED', (name) ->
                 console.log 'stack name changed and refresh'

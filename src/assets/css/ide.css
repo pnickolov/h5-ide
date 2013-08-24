@@ -703,7 +703,6 @@ a {
 /* Main Content */
 .main-content {
 	display: none;
-	background: #f0f0f0;
 	height: 100%;
 	width: 100%;
 }
@@ -808,6 +807,7 @@ a {
 
 
 .dashboard-content-wrap {
+	background: #f0f0f0;
 	padding: 15px;
 }
 

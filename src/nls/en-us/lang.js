@@ -13,8 +13,11 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'ide' : {
-		'dashboard' : 'Dashboard',
-		'account-settings' : 'Account Settings',
+		'NAV_TIT_DASHBOARD' : 'Dashboard',
+		'NAV_TIT_APPS'      : 'Apps',
+		'NAV_TIT_STACKS'    : 'Stacks',
+		'NAV_LBL_GLOBAL'    : 'Global',
+		'account-settings'  : 'Account Settings',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/** RESOURCE NAMING CONVENTIONS

@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC, zeroclipboard ) ->
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"
@@ -75,8 +75,11 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
 
             $( '.property-details' ).html template data
 
+            ### env:dev ###
             if isApp
-                new ZeroClipboard( $("#property_app_asg .icon-copy") )
+                #new ZeroClipboard( $("#property_app_asg .icon-copy") )
+                zeroclipboard.copy $( "#property_app_asg .icon-copy" )
+            ### env:dev:end ###
 
             null
 

@@ -4,18 +4,19 @@
 
 define [ 'MC', 'event',
          'i18n!/nls/lang.js',
+         'UI.zeroclipboard',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification'
-], ( MC, ide_event, lang ) ->
+], ( MC, ide_event, lang, zeroclipboard ) ->
 
     ToolbarView = Backbone.View.extend {
 
-        el       : document
+        el         : document
 
         stack_tmpl : Handlebars.compile $( '#toolbar-stack-tmpl' ).html()
-        app_tmpl : Handlebars.compile $( '#toolbar-app-tmpl' ).html()
+        app_tmpl   : Handlebars.compile $( '#toolbar-app-tmpl' ).html()
 
-        events   :
+        events     :
             ### env:dev ###
             'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'       : 'clickOpenJSONView'
@@ -44,6 +45,10 @@ define [ 'MC', 'event',
                 $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
+            #
+            ### env:dev ###
+            zeroclipboard.copy $( '#toolbar-jsoncopy' )
+            ### env:dev:end ###
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'
@@ -113,19 +118,27 @@ define [ 'MC', 'event',
 
             true
 
-        clickDuplicateIcon : ->
+        clickDuplicateIcon : (event) ->
             name     = MC.canvas_data.name
 
-            doDuplicate = ( name ) =>
-                new_name = "#{name}-copy"
-                #check name
-                if not name
+            # set default name
+            new_name = MC.aws.aws.getDuplicateName(name)
+            $('#modal-input-value').val(new_name)
+
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'toolbar duplicate stack'
+                new_name = $('#modal-input-value').val()
+
+                #check duplicate stack name
+                if not new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
-                else if name.indexOf(' ') >= 0
+                else if new_name.indexOf(' ') >= 0
                     notification 'warning', 'stack name contains white space.'
                 else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
+                    modal.close()
+
                     region  = MC.canvas_data.region
                     id      = MC.canvas_data.id
                     name    = MC.canvas_data.name
@@ -139,8 +152,6 @@ define [ 'MC', 'event',
                     setTimeout () ->
                         ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
                     , 500
-
-            doDuplicate name
 
             true
 

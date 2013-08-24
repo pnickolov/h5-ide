@@ -81,6 +81,7 @@ module.exports = function( grunt ) {
 
 		requirejs  : require( './config/requirejs.js' ),
 		strip      : require( './config/strip.js'   ),
+		"dev_prod_switch": require( './config/dev_prod_switch.js'),
 
 		concat     : require( './config/concat.js'  ),
 

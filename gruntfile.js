@@ -80,6 +80,8 @@ module.exports = function( grunt ) {
 		uglify     : require( './config/uglify.js'  ),
 
 		requirejs  : require( './config/requirejs.js' ),
+		strip      : require( './config/strip.js'   ),
+		"dev_prod_switch": require( './config/dev_prod_switch.js'),
 
 		concat     : require( './config/concat.js'  ),
 
@@ -142,11 +144,19 @@ module.exports = function( grunt ) {
 			'csslint'
 		]);
 	});
+	grunt.registerTask( 'make_release', function() {
+		grunt.task.run([
+			'copy:dev_prod_switch_task',
+			'replace:prod_env_switch',
+			'dev_prod_switch',
+			'replace:analytics',
+			'strip'
+		]);
+	});
 
 	/* task of use as develop */
 	grunt.registerTask( 'dev_fast', [
 									'make_fast',
-									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -154,7 +164,6 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'develop', [
 									'make',
-									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -162,7 +171,6 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'dev_all', [
 									'make_all',
-									'replace:json_view',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -184,13 +192,13 @@ module.exports = function( grunt ) {
 									'copy:lib_aws',
 									'copy:special_lib',
 									'copy:special_ui',
+									'make_release',
 									'cssmin',
 									'uglify',
 									'copy:special_lib_rename',
 									'copy:special_ui_rename',
 									'copy:special_lib_del',
 									'copy:special_ui_del',
-									'replace:analytics',
 									'open:publish',
 									'connect:release'
 	]);

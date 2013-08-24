@@ -348,6 +348,7 @@
 .line-sg {
 	stroke: #6DAEFE;
 	opacity: 0.2;
+	stroke-dasharray: 10,5;
 }
 
 .line-sg.view-hover,
@@ -806,4 +807,25 @@
 	position: absolute;
 	top: 80px;
 	text-align: center;
+}
+
+
+.node-sg-color-red {
+	fill: red;
+}
+
+.node-sg-color-blue {
+	fill: blue;
+}
+
+.node-sg-color-orange {
+	fill: orange;
+}
+
+.node-sg-color-green {
+	fill: green;
+}
+
+.node-sg-color-purple {
+	fill: purple;
 }

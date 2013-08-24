@@ -47,12 +47,20 @@ define [ 'jquery', 'event',
 
                 if model.attributes.is_authenticated
 
-                    if MC.data.dashboard_type is 'OVERVIEW_TAB'     # overview tab
+                    # update loading
+                    view.showSubmit('LOAD_RESOURCE')
 
-                    else if MC.data.dashboard_type is 'REGION_TAB'  # region tab
+                    # if MC.data.dashboard_type is 'OVERVIEW_TAB'     # overview tab
 
-                    else    # stack/app tab
+                    #     #ide_event.onLongListen ide_event.
+                    # else if MC.data.dashboard_type is 'REGION_TAB'  # region tab
+
+                    # else    # stack/app tab
+                    # hold on 2 second
+                    setTimeout () ->
                         view.showUpdate()
+                    , 2000
+
                 else
                     view.showSet('is_failed')
 

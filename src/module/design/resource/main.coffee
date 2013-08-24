@@ -24,23 +24,10 @@ define [ 'jquery',
             view.listen model
             view.model = model
 
-            #listen SWITCH_TAB
-            #ide_event.onLongListen ide_event.SWITCH_TAB, ( type, target, region_name ) ->
-            #    console.log 'resource:SWITCH_TAB, type = ' + type + ', target = ' + target + ', region_name = ' + region_name
-            #    if type is 'NEW_STACK'
-            #        model.describeAvailableZonesService region_name
-            #    null
-
-            #view.on 'RESOURCE_SELECET', ( id ) ->
-            #    console.log 'RESOURCE_SELECET = ' + id
-            #    if id is 'my-ami'       then model.myamiService model.get 'region_name'
-            #    #if id is 'favorite-ami' then
-
             #listen RELOAD_RESOURCE
             ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform ) ->
                 console.log 'resource:RELOAD_RESOURCE'
                 #
-                #if type is 'OPEN_APP' then return
                 #check re-render
                 view.reRender template
                 #
@@ -49,13 +36,17 @@ define [ 'jquery',
                 model.set 'check_required_service_count', -1
                 #
                 model.quickstartService             region_name
-                model.describeAvailableZonesService region_name, type
-                model.describeSnapshotsService      region_name
-                #model.myAmiService                  region_name
-                #model.favoriteAmiService            region_name
-                view.region = region_name
-                view.communityAmiBtnRender()
-                view.resourceVpcRender( current_platform, type )
+
+                ide_event.onLongListen ide_event.RESOURCE_QUICKSTART_READY, () ->
+                    console.log 'resource:RESOURCE_QUICKSTART_READY'
+
+                    model.describeAvailableZonesService region_name, type
+                    model.describeSnapshotsService      region_name
+
+                    view.region = region_name
+                    view.communityAmiBtnRender()
+                    view.resourceVpcRender( current_platform, type )
+
                 null
 
             ide_event.onLongListen ide_event.ENABLE_RESOURCE_ITEM, ( type, filter ) ->

@@ -45,6 +45,8 @@ a {
 .dis-inblk { display  : inline-block !important; }
 .pos-r     { position : relative; }
 
+.tac { text-align : center; }
+
 .mgl80 { margin-left  : 80px; }
 .mgr10 { margin-right : 10px; }
 

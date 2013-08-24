@@ -22,7 +22,11 @@ define [ 'event', './view', './model' ], ( ide_event, View, Model ) ->
 
             line = model.getCurrentLineId()
 
-            MC.canvas.select(line)
+            if line
+                MC.canvas.select(line)
+
+            else
+                $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
 
             unLoadModule view, model
 

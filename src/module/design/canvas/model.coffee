@@ -1152,12 +1152,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					# line_id = MC.canvas.connect uid, "igw-tgt", this._findMainRT(), 'rtb-tgt'
 					# this.createLine null, line_id
 
-				when resource_type.AWS_EC2_Instance
-					ide_event.trigger ide_event.REDRAW_SG_LINE
-
-				when resource_type.AWS_VPC_NetworkInterface
-					ide_event.trigger ide_event.REDRAW_SG_LINE
-
 				when resource_type.AWS_VPC_VPNGateway
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 
@@ -1183,7 +1177,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						 		lb_uid = loadbalancername.split('.')[0].slice(1)
 						 		MC.canvas.connect($("#"+lb_uid), 'elb-sg-out', $("#"+uid), 'launchconfig-sg')
 
-
+			if componentType in [resource_type.AWS_AutoScaling_Group, resource_type.AWS_VPC_NetworkInterface, resource_type.AWS_EC2_Instance, resource_type.AWS_ELB]
+				ide_event.trigger ide_event.REDRAW_SG_LINE
 
 			console.log "Morris : #{componentType}"
 
@@ -1203,13 +1198,15 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 							to_sg_uid = rule.IpRanges.split('.')[0][1...]
 
-							from_key = comp.uid + '|' + to_sg_uid
+							if to_sg_uid isnt comp.uid
 
-							to_key = to_sg_uid + '|' + comp.uid
+								from_key = comp.uid + '|' + to_sg_uid
 
-							if (from_key not in sg_refs) and (to_key not in sg_refs)
+								to_key = to_sg_uid + '|' + comp.uid
 
-								sg_refs.push from_key
+								if (from_key not in sg_refs) and (to_key not in sg_refs)
+
+									sg_refs.push from_key
 
 					$.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
 
@@ -1217,13 +1214,15 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 							to_sg_uid = rule.IpRanges.split('.')[0][1...]
 
-							from_key = comp.uid + '|' + to_sg_uid
+							if to_sg_uid isnt comp.uid
 
-							to_key = to_sg_uid + '|' + comp.uid
+								from_key = comp.uid + '|' + to_sg_uid
 
-							if (from_key not in sg_refs) and (to_key not in sg_refs)
+								to_key = to_sg_uid + '|' + comp.uid
 
-								sg_refs.push to_key
+								if (from_key not in sg_refs) and (to_key not in sg_refs)
+
+									sg_refs.push to_key
 
 			$.each sg_refs, ( i, val ) ->
 

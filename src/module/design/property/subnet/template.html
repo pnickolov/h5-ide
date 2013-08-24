@@ -1,10 +1,10 @@
 <article data-bind="true">
   <div class="option-group-head expand" id="subnet-property-detail">Subnet Details</div>
   <div class="option-group">
-    <section class="property-control-group">
+    <section class="property-control-group" data-bind="true">
       <label class="left" for="property-subnet-name">Name</label>
       <span class="required-input right">Required</span>
-      <input class="input" type="text" value="{{name}}" lastValue="{{name}}" id="property-subnet-name" data-required-rollback="true" maxlength="255"/>
+      <input class="input" type="text" value="{{name}}" lastValue="{{name}}" id="property-subnet-name" maxlength="255" data-required-rollback="true" data-ignore="true"/>
     </section>
 
     <section class="property-control-group">

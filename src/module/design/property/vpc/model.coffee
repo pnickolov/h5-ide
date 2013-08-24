@@ -178,7 +178,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
         # TODO : Generate default domain name for dhcp
         defaultDomainName : ( vpcUid ) ->
-            "XXXXXXXXXX"
+            ""
 
         getDHCPOptions : ( vpcUid ) ->
             dhcpid = MC.extractID MC.canvas_data.component[ vpcUid ].resource.DhcpOptionsId

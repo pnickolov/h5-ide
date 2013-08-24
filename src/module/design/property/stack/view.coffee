@@ -66,6 +66,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             name = stackNameInput.val()
 
             stackNameInput.parsley 'custom', () ->
+                if not MC.validate 'awsName',  name
+                    return 'This value should be a valid Stack name.'
+
                 if not MC.aws.aws.checkStackName stackId, name
                     return "Stack name \" #{name} \" is already in using. Please use another one."
 

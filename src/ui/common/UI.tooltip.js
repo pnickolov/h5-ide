@@ -23,7 +23,7 @@
 			target_height,
 			tooltip_timer;
 
-		if (content !== '')
+    if (content !== '' && !target.hasClass('parsley-error'))
 		{
 			if (!tooltip_box[0])
 			{

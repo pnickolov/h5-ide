@@ -170,9 +170,13 @@
           , phone:      "This value should be a valid phone number."
 
          // hack
-          , ipaddress:      "This value should be a valid ip address."
+          , ipaddress: "This value should be a valid ip address."
           , ipv4:      "This value should be a valid IPv4 address."
           , cidr:      "This value should be a valid CIDR."
+          , awsCidr:   "This value should be a valid CIDR and the netmask ('16') must be between 16 and 28."
+          , awsName:   "This value should be a valid AWS name."
+          , domain:    "This value should be a valid domain."
+
         }
       , notnull:        "This value should not be null."
       , notblank:       "This value should not be blank."
@@ -285,8 +289,16 @@
             regExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))$/;
             break;
 
+          case 'awsCidr':
+            regExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([1][6789]|[2]\d|3[0-2]))$/;
+            break;
+
+         case 'awsName':
+           regExp = /^[a-zA-Z0-9][a-zA-Z0-9-]*$/;
+           break;
+
           case 'domain':
-           regExp = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/;
+           regExp = /^([a-zA-Z0-9-\u4e00-\u9fa5]+\.)+([a-zA-Z-\u4e00-\u9fa5]+)$/;
            break;
 
           default:
@@ -550,16 +562,17 @@
         if (this.$element.data('required-rollback') === true) {
           this.isRequiredRollback = true;
 
-          this.$element.on('focus', function() {
-            $(this).data('pre-value', $(this).val());
-          })
- .on('blur', function(){
-            var result = that.Validator.validators[ 'required' ]( $(this).val() );
+          this.$element
+            .on('focus', function() {
+              $(this).data('pre-value', $(this).val());
+            })
+            .on('blur', function(){
+              var result = that.Validator.validators[ 'required' ]( $(this).val() );
 
-            if (!result) {
-              $(this).val($(this).data('pre-value'));
-            }
-          });
+              if (!result) {
+                $(this).val($(this).data('pre-value'));
+              }
+            });
 
         }
 
@@ -567,16 +580,18 @@
         // Ignore disallowed input
         var that = this;
         if ( this.$element.data( 'ignore' ) === true ) {
-          var regExp, regMap, type;
+          var regExp, regMap, vlidateType;
           regMap = {
             cidr: '^[0-9]?$|^[0-9][0-9./]+$',
+            awsCidr: '^[0-9]?$|^[0-9][0-9./]+$',
             ipv4: '^[0-9]*$|^[0-9][0-9.]+$',
-            ipaddress: '^[0-9]*$|^[0-9][0-9./]+$'
+            ipaddress: '^[0-9]*$|^[0-9][0-9./]+$',
+            domain: '^([a-zA-Z0-9]+[a-zA-Z0-9.-]*)*$',
           };
 
-          type = this.options.type;
+          vlidateType = this.options.type;
 
-          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ type ] || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
+          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ vlidateType ] || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
 
           var wholeReg = this.options.regexp;
           // delay handler function
@@ -988,6 +1003,17 @@
       return valid;
     }
 
+    , validateForm: function () {
+      var parent = this.getParent();
+      if ( parent ) {
+        parent = parent[ 0 ];
+
+      } else {
+        parent = this.$element.closest('form, [data-bind=true]');
+        parent = parent.parsley();
+      }
+      return parent.validate();
+    }
     /**
     * Check if value has changed since previous validation
     *
@@ -1338,7 +1364,8 @@
      }
 
      if ( 'undefined' === typeof this.$element.attr( 'name' ) ) {
-       throw "A radio / checkbox input must have a data-group attribute or a name to be Parsley validated !";
+       //throw "A radio / checkbox input must have a data-group attribute or a name to be Parsley validated !";
+       return 'parsley-' + ( Math.random() + '' ).substring( 2 );
      }
 
      return 'parsley-' + this.$element.attr( 'name' ).replace( /(:|\.|\[|\])/g, '' );
@@ -1804,6 +1831,14 @@ var errortip = function (event)
 
     $(document.body).on('mouseleave', '.parsley-error', errortip.clear);
 
+    errortip.timer = setInterval(function ()
+      {
+        if (target.closest('html').length === 0)
+        {
+          errortip.clear();
+        }
+      }, 200);
+
   }
 };
 
@@ -1835,6 +1870,7 @@ errortip.clear = function (id)
   }
   $('.errortip_box').remove();
   $(document.body).off('mouseleave', '.parsley-error', errortip.clear);
+  clearInterval(errortip.timer);
 
 };
 

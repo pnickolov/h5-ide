@@ -279,7 +279,7 @@ define [ 'MC' ], ( MC ) ->
 			compType = compObj.type
 			if compType is 'AWS.ELB'
 				elbSGObj = MC.aws.elb.getElbDefaultSG compObj.uid
-				if elbSGObj.uid is sgUID
+				if elbSGObj and elbSGObj.uid is sgUID
 					result = true
 			null
 

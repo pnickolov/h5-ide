@@ -77,7 +77,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 		}
 
-		if ( type !== "AWS.EC2.AvailabilityZone" && type !== "AWS.EC2.EBS.Volume" )
+		if ( type !== "AWS.EC2.AvailabilityZone" && type !== "AWS.EC2.EBS.Volume" && type !== "AWS.VPC.VPC" )
 		{
 			option.name = MC.aws.aws.getNewName(type);//get init name for component
 		}

@@ -1861,7 +1861,7 @@ MC.canvas.layout = {
 		{
 			//has vpc (create vpc, az, and subnet by default)
 			vpc_group = MC.canvas.add('AWS.VPC.VPC', {
-				'name': 'vpc1'
+				'name': 'vpc'
 			}, {
 				'x': 5,
 				'y': 3

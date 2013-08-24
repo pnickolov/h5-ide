@@ -47,11 +47,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             null
 
-        renderPlatformAttrs : ->
-            console.log 'dashboard platform-attr render'
+        renderPlatformAttrs : (flag) ->
+            console.log 'dashboard platform-attr render:' + flag
 
             $( this.el ).find('#dashboard-create-stack-list').html this.platform_attr this.model.attributes
-            $('#dashboard-create-stack').find('a').first().removeClass('disabled').addClass('btn-primary')
+
+            if flag
+                $('#dashboard-create-stack').find('a').first().removeClass('disabled').addClass('btn-primary')
+            else
+                $('#dashboard-create-stack').find('a').first().addClass('disabled').addClass('btn-primary')
 
             null
 

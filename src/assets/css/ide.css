@@ -191,9 +191,36 @@ a {
 	display : none;
 }
 
+.no-credential {
+	display : inline-block;
+	width   : 10px;
+	height  : 10px;
+
+	position : absolute;
+
+	border        : 1px solid #fff;
+	border-radius : 50%;
+
+	background-image : -o-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
+	background-image : -moz-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
+	background-image : -webkit-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
+	background-image : -ms-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
+	background-image : linear-gradient(-180deg, #FED666 0%, #FD6E22 100%);
+}
+
+#header--user > .no-credential {
+	top  : 10px;
+	left : 45px;
+}
+
+#user-dropdown-wrapper .no-credential {
+	right : 18px;
+	top   : 12px;
+}
+
 .avatar {
 	display: inline-block;
-	border-radius: 15px;
+	border-radius: 50%;
 	background-color: #ccc;
 	border: 1px solid #eee;
 	vertical-align: middle;
@@ -242,9 +269,10 @@ a {
 }
 
 #user-dropdown-wrapper li {
-	border-bottom: 1px solid #333;
-	line-height: 36px;
-	width: 100%;
+	border-bottom : 1px solid #333;
+	line-height   : 36px;
+	width         : 100%;
+	position      : relative;
 }
 
 #user-dropdown-wrapper a {
@@ -694,7 +722,7 @@ a {
 	line-height : 16px;
 
 	/*box-shadow : none;*/
-	width        : 180px;
+	width        : 200px;
 /*	height: 16px;*/
 	padding: 14px 12px;
 
@@ -1649,32 +1677,17 @@ td.table-action a.btn {
 	/*border-bottom : 2px solid #d3d3d3;*/
 	box-shadow      : 0 2px 0 #d3d3d3;
 	border-radius   : 2px 2px 0 0;
-
 }
 
 .toolbar-btn-group {
-	padding     : 3px 0;
-	border-left : 1px solid #dedede;
-	float       : left;
-}
-
-.toolbar-btn-group:first-child {
-	border-left   : none;
-	border-radius : 2px 0 0 0;
-}
-
-.toolbar-btn-group > li {
-	float: left;
-	margin-top: -2px;
-}
-
-.toolbar-label {
-	padding: 6px 10px 0 0;
-	text-shadow: 0 1px 0 rgba(0,0,0,.5);
-}
-
-a:hover .toolbar-label {
-	color: #eee;
+	/*padding     : 3px 0;*/
+	/*border-left : 1px solid #dedede;*/
+	float         : left;
+	margin        : 3px 6px;
+	border        : 1px solid #ccc;
+    border-radius : 6px;
+    /*overflow      : hidden;*/
+    background    : #fefefe;
 }
 
 .toolbar-btn-group .selectbox .dropdown {
@@ -1705,7 +1718,7 @@ a:hover .toolbar-label {
 
 .btn-toolbar {
 	width       : 30px;
-	height      : 30px;
+	height      : 28px;
 
 	position    : relative;
 	float       : left;
@@ -1714,28 +1727,35 @@ a:hover .toolbar-label {
 	text-align  : center;
 	color       : #868486;
 
-	margin-left : 4px;
+	/*margin-left : 4px;*/
 	padding     : 4px;
+
+	cursor : pointer;
+}
+
+.toolbar-btn-group .btn-toolbar:first-child{
+    border-radius : 4px 0 0 4px;
 }
 
 .toolbar-btn-group .btn-toolbar:last-child{
-	margin-right: 4px;
+/*	margin-right: 4px;*/
+    border-radius : 0 4px 4px 0;
 }
 
 
 .btn-toolbar:hover {
 	color            : #c17ca7;
 	background-color : #d0d0d0;
-	border-radius    : 4px;
-	box-shadow       : inset 0 0 2px rgba(0,0,0,.1);
+
 }
 
 .btn-toolbar.disabled {
 	color : #cecece;
+	background: #efefef;
 }
 
 .btn-toolbar.disabled:hover {
-	background-color : transparent;
+	background: #efefef;
 	box-shadow       : none;
 	cursor           : default;
 }
@@ -1768,7 +1788,14 @@ a:hover .toolbar-label {
 	background-color: #eee;
 }
 
+#toolbar-run {
+	width: 110px;
+	color: #fff;
+}
 
+#toolbar-run span {
+	margin-left: 10px;
+}
 
 /* Sidebars, including Resource Panle and Property Panel */
 .sidebar {
@@ -2137,11 +2164,12 @@ a.sidebar-hider {
 }
 
 .property-wrap .scroll-wrap {
-	height      : 100%;
-	padding-top : 45px;
-	margin-top  : -45px;
-	position    : relative;
-	z-index     : 1;
+	position : absolute;
+	top      : 45px;
+	bottom   : 0;
+	left     : 0;
+	right    : 0;
+	z-index  : 1;
 
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
@@ -2790,11 +2818,12 @@ a.sidebar-hider {
 	clear : both;
 }
 .subnet-cidr-wrapper .cidr-prefix {
-	display: inline-block;
-	/*width: 40px;*/
-	line-height: 35px;
-	vertical-align: middle;
+	display        : inline-block;
+	width          : 50px;
+	vertical-align : middle;
+	margin-right   : 6px;
 }
+
 .subnet-cidr-wrapper .cidr-rest {
 	width : 140px !important;
 }
@@ -4402,13 +4431,14 @@ a.sidebar-hider {
 }
 
 /* Loading */
+
 .loading-wrapper {
 	position: fixed;
 	width: 100%;
 	height: 100%;
 	z-index: 100000;
-	background: #313131;
-	opacity: .95;
+	background: #262626;
+	opacity: 0.975;
 }
 
 .loading {
@@ -4505,6 +4535,13 @@ a.sidebar-hider {
 	margin: 0;
 }
 
+/* dhcp-property-detail */
+#property-dhcp-options .property-control-group label {
+	display: block;
+}
 
+#property-dhcp-options .property-control-group .checkbox.left {
+	margin-top: 1px;
+}
 
 

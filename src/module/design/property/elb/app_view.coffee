@@ -2,8 +2,8 @@
 #  View(UI logic) for design/property/elb(app)
 #############################
 
-define [ 'event', 'MC', 'zeroclipboard', 'UI.notification'
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC, ZeroClipboard ) ->
+define [ 'event', 'MC', 'UI.zeroclipboard', 'UI.notification'
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
 
     ElbAppView = Backbone.View.extend {
 
@@ -17,8 +17,7 @@ define [ 'event', 'MC', 'zeroclipboard', 'UI.notification'
             $( '.property-details' ).html this.template this.model.attributes
 
             # Init Clipbard
-            clip = new ZeroClipboard( $("#property-app-elb-dnss .icon-copy"), { moviePath: "vender/zeroclipboard/ZeroClipboard.swf" })
-
+            new ZeroClipboard( $("#property-app-elb-dnss .icon-copy") )
             null
     }
 

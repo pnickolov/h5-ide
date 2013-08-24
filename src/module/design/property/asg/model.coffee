@@ -670,6 +670,8 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       MC.canvas_data.component[cw_uid] = cw_comp
 
+      this.attributes.policies[ policy_uid ] = policy_detail
+
 
 
       null

@@ -268,7 +268,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
             me = this
 
-            item_list = regions.region_name_group for regions in result when constant.REGION_LABEL[ region ] == regions.region_group
+            item_list = regions.region_name_group for regions in result when constant.REGION_SHORT_LABEL[ region ] == regions.region_group
 
             cur_item_list = []
             _.map item_list, (value) ->

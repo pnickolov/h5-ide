@@ -75,25 +75,56 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
 
             bothSGAry = MC.aws.sg.getSgRuleDetail line_uid
 
-            sgUIDAry = []
-            _.each bothSGAry, (sgObj) ->
-                innerSGAry = sgObj.sg
-                _.each innerSGAry, (innerSGObj) ->
-                    sgUID = innerSGObj.uid
-                    sgUIDAry.push sgUID
-                    null
-                null
+            from_sg_ids = []
+            to_sg_ids = []
 
-            sgUIDAry = _.uniq(sgUIDAry)
+            $.each bothSGAry, (i, sg_ary) ->
+
+                $.each sg_ary.sg, (j, sg ) ->
+                    if i is 0
+                        from_sg_ids.push sg.uid
+                    else
+                        to_sg_ids.push sg.uid
 
             sg_app_ary = []
-            _.each sgUIDAry, (sgUID) ->
-                sg_app_ary.push that._getSGInfo(sgUID)
-                null
+
+            $.each from_sg_ids, (i, sg_uid) ->
+
+                sg_info = that._getSGInfo sg_uid, to_sg_ids
+
+                if sg_info.rules.length > 0
+
+                    sg_app_ary.push sg_info
+
+            $.each to_sg_ids, (i, sg_uid) ->
+
+                sg_info = that._getSGInfo sg_uid, from_sg_ids
+
+                if sg_info.rules.length > 0
+
+                    sg_app_ary.push sg_info
+
+            # sgUIDAry = []
+            # _.each bothSGAry, (sgObj) ->
+            #     innerSGAry = sgObj.sg
+            #     _.each innerSGAry, (innerSGObj) ->
+            #         sgUID = innerSGObj.uid
+            #         sgUIDAry.push sgUID
+            #         null
+            #     null
+
+            # sgUIDAry = _.uniq(sgUIDAry)
+
+            # sg_app_ary = []
+            # _.each sgUIDAry, (sgUID) ->
+            #     sg_info = that._getSGInfo(sgUID)
+            #     if sg_info.rules.length > 0
+            #         sg_app_ary.push sg_info
+            #     null
 
             that.set 'sg_group', sg_app_ary
 
-        _getSGInfo : (sgUID) ->
+        _getSGInfo : (sgUID, ref_sg_ids) ->
 
             # get app sg obj
             rules = []
@@ -126,16 +157,13 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
                     else
                         tmp_rule.protocol = rule.IpProtocol
 
-                    if rule.IpRanges.slice(0,1) is '@'
+                    if rule.FromPort is rule.ToPort then tmp_rule.port = rule.FromPort else tmp_rule.port = rule.FromPort + '-' + rule.ToPort
+
+                    if rule.IpRanges.slice(0,1) is '@' and rule.IpRanges.split('.')[0].slice(1) in ref_sg_ids
 
                         tmp_rule.connection = MC.canvas_data.component[rule.IpRanges.split('.')[0][1...]].name
 
-                    else
-                        tmp_rule.connection = rule.IpRanges
-
-                    if rule.FromPort is rule.ToPort then tmp_rule.port = rule.FromPort else tmp_rule.port = rule.FromPort + '-' + rule.ToPort
-
-                    rules.push tmp_rule
+                        rules.push tmp_rule
 
             #get sg name
             sg_app_detail =

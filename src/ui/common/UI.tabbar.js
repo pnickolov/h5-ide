@@ -84,17 +84,22 @@ var Tabbar = {
 
 	mouseup: function (event)
 	{
-		event.data.target.css('visibility', 'visible');
-		event.data.dragging_tab.remove();
-		
-		$('#overlayer').remove();
+		event.data.dragging_tab.animate({
+			'left': event.data.target.offset().left
+		}, 250, function ()
+		{
+			$(this).remove();
+			event.data.target.css('visibility', 'visible');
 
-		$(document).off({
-			'mousemove': Tabbar.mousemove,
-			'mouseup': Tabbar.mouseup
+			$('#overlayer').remove();
+
+			$(document).off({
+				'mousemove': Tabbar.mousemove,
+				'mouseup': Tabbar.mouseup
+			});
+			//modify by kenshin
+			Tabbar.open(event.data.target.attr('id').replace('tab-bar-', ''), event.target.title, event);
 		});
-		//modify by kenshin
-		Tabbar.open(event.data.target.attr('id').replace('tab-bar-', ''), event.target.title, event);
 	},
 
 	add: function (tab_id, tab_name)

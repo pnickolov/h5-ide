@@ -16,6 +16,10 @@ define [ 'MC', 'event',
         app_tmpl : Handlebars.compile $( '#toolbar-app-tmpl' ).html()
 
         events   :
+            ### env:dev ###
+            'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
+            'click #toolbar-jsonview'       : 'clickOpenJSONView'
+            ### env:dev:end ###
             'click #toolbar-run'            : 'clickRunIcon'
             'click .icon-save'              : 'clickSaveIcon'
             'click #toolbar-duplicate'      : 'clickDuplicateIcon'
@@ -30,9 +34,6 @@ define [ 'MC', 'event',
             'click #toolbar-stop-app'       : 'clickStopApp'
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
-            #for debug
-            'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
-            'click #toolbar-jsonview'       : 'clickOpenJSONView'
 
         render   : ( type ) ->
             console.log 'toolbar render'

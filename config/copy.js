@@ -24,6 +24,12 @@ module.exports = {
 		}
 	},
 
+	dev_prod_switch_task : {
+		files: {
+			'node_modules/grunt-dev-prod-switch/tasks/dev_prod_switch.js' : 'util/incloud/dev_prod_switch/dev_prod_switch.js',
+		}
+	},
+
 	publish: {
 		files: [{
 			expand : true,

@@ -808,3 +808,24 @@
 	top: 80px;
 	text-align: center;
 }
+
+
+.node-sg-color-red {
+	fill: red;
+}
+
+.node-sg-color-blue {
+	fill: blue;
+}
+
+.node-sg-color-orange {
+	fill: orange;
+}
+
+.node-sg-color-green {
+	fill: green;
+}
+
+.node-sg-color-purple {
+	fill: purple;
+}

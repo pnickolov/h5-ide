@@ -1,27 +1,27 @@
 <article>
   {{#if hasLaunchConfig}}
 	<div class="option-group-head expand" id="autoscaling-group-property-uid" data-uid="{{uid}}">Auto Scaling Group Details</div>
-	<div class="option-group">
+	<div class="option-group" data-bind="true">
 		<section class="property-control-group">
 			<label class="left" for="property-asg-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input class="input" type="text" required="required" value="{{asg.AutoScalingGroupName}}" id="property-asg-name"/>
+			<input class="input" type="text" required="required" value="{{asg.AutoScalingGroupName}}" id="property-asg-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
 		</section>
 
 		<section class="property-control-group clearfix">
 			<div class="left" style="width:40%;">
 				<label for="property-asg-min">Minimum Size</label>
-				<input class="input" type="text" id="property-asg-min" value="{{asg.MinSize}}">
+				<input class="input" type="text" id="property-asg-min" value="{{asg.MinSize}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
 			</div>
 			<div class="right" style="width:40%;">
 				<label for="property-asg-max">Maximum Size</label>
-				<input class="input" type="text" id="property-asg-max" value="{{asg.MaxSize}}">
+				<input class="input" type="text" id="property-asg-max" value="{{asg.MaxSize}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
 			</div>
 	  </section>
 
 		<section class="property-control-group">
 			<label>Desired Capacity</label>
-			<input type="text" id="property-asg-capacity" value="{{asg.DesiredCapacity}}">
+			<input type="text" id="property-asg-capacity" value="{{asg.DesiredCapacity}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
 		</section>
 
 		<section class="property-control-group">
@@ -46,7 +46,7 @@
 
 		<section class="property-control-group">
 			<label>Health Check Grace Period</label>
-			<input type="text" id="property-asg-healthcheck" value="{{asg.HealthCheckGracePeriod}}">
+			<input type="text" id="property-asg-healthcheck" value="{{asg.HealthCheckGracePeriod}}" maxlength="255" data-type="digits" data-ignore="true">
 			<span>seconds</span>
 		</section>
 	</div>

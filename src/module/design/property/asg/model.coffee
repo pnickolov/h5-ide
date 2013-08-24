@@ -326,6 +326,8 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       MC.canvas_data.component[uid].name = name
       MC.canvas_data.component[uid].resource.AutoScalingGroupName = name
 
+      MC.canvas.update uid, 'text', 'name', name
+
       null
 
     setASGMin : ( uid, value ) ->

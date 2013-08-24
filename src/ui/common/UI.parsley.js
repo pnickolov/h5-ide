@@ -587,6 +587,7 @@
             ipv4: '^[0-9]*$|^[0-9][0-9.]+$',
             ipaddress: '^[0-9]*$|^[0-9][0-9./]+$',
             domain: '^([a-zA-Z0-9]+[a-zA-Z0-9.-]*)*$',
+            digits: '^[0-9]*$'
           };
 
           vlidateType = this.options.type;

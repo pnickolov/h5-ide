@@ -85,20 +85,54 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
             this.trigger 'SET_COOL_DOWN', event.target.value
 
         setASGName : ( event ) ->
+            target = $ event.currentTarget
+            name = target.val()
+            id = @model.get 'uid'
 
-            this.trigger 'SET_ASG_NAME', event.target.value
+            MC.validate.preventDupname target, id, name, 'ASG'
+
+            if target.parsley 'validate'
+                this.trigger 'SET_ASG_NAME', event.target.value
 
         setASGMin : ( event ) ->
+            min = @$el.find '#property-asg-min'
+            max = @$el.find '#property-asg-max'
 
-            this.trigger 'SET_ASG_MIN', event.target.value
+            min.parsley 'custom', ( val ) ->
+                if +val < 1
+                    return 'ASG size must be equal or greater than 1'
+                if +val >= +max.val()
+                    return 'Minimum Size must be <= Maximum Size.'
+
+            if min.parsley 'validate'
+                @trigger 'SET_ASG_MIN', min.val()
 
         setASGMax : ( event ) ->
+            min = @$el.find '#property-asg-min'
+            max = @$el.find '#property-asg-max'
 
-            this.trigger 'SET_ASG_MAX', event.target.value
+            max.parsley 'custom', ( val ) ->
+                if +val < 1
+                    return 'ASG size must be equal or greater than 1'
+                if +val <= +min.val()
+                    return 'Minimum Size must be <= Maximum Size'
+
+            if max.parsley 'validate'
+                @trigger 'SET_ASG_MAX', max.val()
 
         setASGDesireCapacity : ( event ) ->
+            target = $ event.currentTarget
+            min = @$el.find '#property-asg-min'
+            max = @$el.find '#property-asg-max'
 
-            this.trigger 'SET_DESIRE_CAPACITY', event.target.value
+            target.parsley 'custom', ( val ) ->
+                if +val < 1
+                    return 'Desired Capacity must be equal or greater than 1'
+                if +val < +min.val() or +val > max.val()
+                    return 'Desired Capacity must be >= Minimal Size and <= Maximum Size'
+
+            if target.parsley 'validate'
+                @trigger 'SET_DESIRE_CAPACITY', target.val()
 
         setHealthCheckGrace : ( event ) ->
 

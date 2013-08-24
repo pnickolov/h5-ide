@@ -157,7 +157,7 @@ define [ 'jquery',
 
                 MC.data.dashboard_type = 'REGION_TAB'
                 #push event
-                ide_event.trigger ide_event.RETURN_REGION_TAB, constant.REGION_LABEL[ region ]
+                ide_event.trigger ide_event.RETURN_REGION_TAB, constant.REGION_SHORT_LABEL[ region ]
 
                 if region_view isnt null
 

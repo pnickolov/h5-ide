@@ -40,17 +40,6 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
         initialize : ->
 
-            ###
-            region_labels[ 'us-east-1' ]      = 'US East - Virginia'
-            region_labels[ 'us-west-1' ]      = 'US West - N. California'
-            region_labels[ 'us-west-2' ]      = 'US West - Oregon'
-            region_labels[ 'eu-west-1' ]      = 'EU West - Ireland'
-            region_labels[ 'ap-southeast-1' ] = 'Asia Pacific - Singapore'
-            region_labels[ 'ap-southeast-2' ] = 'Asia Pacific - Sydney'
-            region_labels[ 'ap-northeast-1' ] = 'Asia Pacific - Tokyo'
-            region_labels[ 'sa-east-1' ]      = 'South America - Sao Paulo'
-            ###
-
             me = this
 
             #####listen APP_LST_RETURN
@@ -59,7 +48,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                 console.log 'APP_LST_RETURN'
 
                 #
-                app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
+                app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
                 console.log app_list
 
@@ -74,7 +63,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                 console.log 'STACK_LST_RETURN'
 
                 #
-                stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
+                stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
                 console.log stack_list
 
@@ -98,16 +87,16 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                 if !result.is_error
                     region_list = _.map result.resolved_data.item, ( value, key ) ->
 
-                        region_city = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[1]
-                        region_area = constant.REGION_LABEL[ value.regionName ].split( ' - ' )[0]
+                        region_city = constant.REGION_SHORT_LABEL[ value.regionName ]
+                        region_area = constant.REGION_LABEL[ value.regionName ]
 
                         return { 'region_city' : region_city, 'region_area' : region_area, 'region_name' : value.regionName }
 
                 else
                     region_list = _.map constant.REGION_KEYS, (region) ->
 
-                        region_city = constant.REGION_LABEL[ region ].split( ' - ' )[1]
-                        region_area = constant.REGION_LABEL[ region ].split( ' - ' )[0]
+                        region_city = constant.REGION_SHORT_LABEL[ region ]
+                        region_area = constant.REGION_LABEL[ region ]
 
                         return { 'region_city' : region_city, 'region_area' : region_area, 'region_name' : region }
 
@@ -144,8 +133,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
             console.log 'regionEmptyList'
 
-            diff              = _.difference _.keys( constant.REGION_LABEL ), stack_region_list
-            region_empty_list = _.map diff, ( val ) -> return constant.REGION_LABEL[ val ]
+            diff              = _.difference _.keys( constant.REGION_SHORT_LABEL ), stack_region_list
+            region_empty_list = _.map diff, ( val ) -> return constant.REGION_SHORT_LABEL[ val ]
 
             console.log region_empty_list
 

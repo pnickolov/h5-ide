@@ -14,7 +14,7 @@
     "79A6B7CC-0D62-4746-A665-582553F9FCD2": {
       "uid": "79A6B7CC-0D62-4746-A665-582553F9FCD2",
       "type": "AWS.VPC.VPC",
-      "name": "vpc1",
+      "name": "vpc",
       "resource": {
         "EnableDnsHostnames": "false",
         "DhcpOptionsId": "",

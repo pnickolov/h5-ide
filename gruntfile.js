@@ -80,6 +80,7 @@ module.exports = function( grunt ) {
 		uglify     : require( './config/uglify.js'  ),
 
 		requirejs  : require( './config/requirejs.js' ),
+		strip      : require( './config/strip.js'   ),
 
 		concat     : require( './config/concat.js'  ),
 
@@ -191,6 +192,7 @@ module.exports = function( grunt ) {
 									'copy:special_lib_del',
 									'copy:special_ui_del',
 									'replace:analytics',
+									'strip',
 									'open:publish',
 									'connect:release'
 	]);

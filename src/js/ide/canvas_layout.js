@@ -18,6 +18,7 @@ var listen = function ()
 			.on('click', '.line', MC.canvas.event.selectLine)
 			.on('mousedown', MC.canvas.event.clearSelected)
 			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
+			.on('mouseenter mouseleave', '.node', MC.canvas.event.nodeHover)
 			.on('selectstart', returnFalse)
 			.on('mousedown', '.node-launchconfiguration-label', MC.canvas.asgList.show);
 

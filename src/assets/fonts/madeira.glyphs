@@ -1243,22 +1243,12 @@ width = 960;
 unicode = F122;
 },
 {
-<<<<<<< HEAD
-glyphname = newGlyph;
-lastChange = "2013-08-24 11:14:59 +0800";
-=======
 glyphname = uniF123;
 lastChange = "2013-08-24 10:49:14 +0800";
->>>>>>> develop
 layers = (
 {
 layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
 name = Regular;
-<<<<<<< HEAD
-width = 600;
-}
-);
-=======
 paths = (
 {
 closed = 1;
@@ -1326,7 +1316,6 @@ width = 960;
 }
 );
 unicode = F123;
->>>>>>> develop
 }
 );
 unitsPerEm = 960;

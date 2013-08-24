@@ -65,12 +65,26 @@ MC.canvas = {
 		return true;
 	},
 
-
-	update_sg_color: function (uid)
+	updateSG: function (id)
 	{
-		var all_sg = MC.canvas_property.sg_list,
-			ins_sg = MC.cnavas.data.get('component')[uid].resource.SecurityGroupId;
-		//TO-DO
+		var instance_SG = MC.canvas.data.get('component.' + id + '.resource.SecurityGroup'),
+			SG_list = MC.canvas_property.sg_list,
+			colors = [];
+
+		$.each(instance_SG, function (index, SG_uid)
+		{
+			SG_uid = SG_uid.substr(1, 36);
+
+			$.each(SG_list, function (i, SG_data)
+			{
+				if (SG_data.uid === SG_uid)
+				{
+					colors.push(SG_data.color);
+				}
+			});
+		});
+
+		console.info(color);
 	},
 
 	resize: function (target, type)

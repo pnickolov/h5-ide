@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/vpc
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinputbox' ], ( ide_event ) ->
 
     # Helpers
     mapFilterInput = ( selector ) ->
@@ -15,8 +15,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
 
         if result.length == 0 then null else result
 
-    updateAmazonCB = ( evt ) ->
-        rowLength = $( evt.target ).children().length
+    updateAmazonCB = () ->
+        rowLength = $( "#property-domain-server" ).children().length
         if rowLength > 3
             $( '#property-amazon-dns' ).attr( "disabled", true )
         else
@@ -60,6 +60,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
 
             $( '.property-details' ).html this.template data
             $( '#property-domain-server' ).on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
+            updateAmazonCB()
+            multiinputbox.update( $("#property-domain-server") )
 
         processParsley: ( event ) ->
             $( event.currentTarget )
@@ -132,6 +134,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
             $inputbox    = $("#property-domain-server").attr( "data-max-row", allowRows )
             $rows        = $inputbox.children()
             $inputbox.toggleClass "max", $rows.length >= allowRows
+
+            this.onChangeDhcpOptions event
             null
 
         onChangeDhcpOptions : ( event ) ->

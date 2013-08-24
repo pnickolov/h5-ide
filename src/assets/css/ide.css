@@ -238,7 +238,7 @@ a {
 #header .dropdown-menu {
 	font-size: 12px;
 	position: absolute;
-	top: 52px;
+	top: 50px;
 	right: 0;
 	z-index: 3;
 	box-shadow: 0 8px 10px rgba(0,0,0,.2);
@@ -686,6 +686,14 @@ a {
 
 #tab-bar li.active a.close-tab {
 	color: #999;
+}
+
+#tab-bar-dashboard {
+	width: 116px !important;
+}
+
+#tab-bar-dashboard .tab-bar-truncate {
+	width: 105px !important;
 }
 
 /* Main Content */
@@ -1683,11 +1691,20 @@ td.table-action a.btn {
 	/*padding     : 3px 0;*/
 	/*border-left : 1px solid #dedede;*/
 	float         : left;
-	margin        : 3px 6px;
-	border        : 1px solid #ccc;
+	margin        : 5px 3px;
+	border        : 1px solid #bbb;
     border-radius : 6px;
     /*overflow      : hidden;*/
-    background    : #fefefe;
+    background: #E4E4E4;
+	box-shadow: 0 1px 0 rgba(255,255,255,.8), inset 0 1px 0 rgba(255,255,255,.6);
+}
+
+.toolbar-btn-group:first-child {
+	margin-left: 4px;
+}
+
+.toolbar-btn-primary {
+	border: 1px solid #0274C0;
 }
 
 .toolbar-btn-group .selectbox .dropdown {
@@ -1716,17 +1733,18 @@ td.table-action a.btn {
 	text-align : center;
 }
 
+
 .btn-toolbar {
 	width       : 30px;
-	height      : 28px;
+	height      : 24px;
 
 	position    : relative;
 	float       : left;
 
-	line-height : 30px;
+	line-height : 26px;
 	text-align  : center;
-	color       : #868486;
-
+	color       : #616061;
+	
 	/*margin-left : 4px;*/
 	padding     : 4px;
 
@@ -1740,12 +1758,19 @@ td.table-action a.btn {
 .toolbar-btn-group .btn-toolbar:last-child{
 /*	margin-right: 4px;*/
     border-radius : 0 4px 4px 0;
+    border-left   : 1px solid #CFCFCF;
+}
+
+.toolbar-btn-group .btn-toolbar:only-child{
+/*	margin-right: 4px;*/
+    border-radius : 4px;
+    border: none;
 }
 
 
 .btn-toolbar:hover {
 	color            : #c17ca7;
-	background-color : #d0d0d0;
+	background-color : #f5f5f5;
 
 }
 
@@ -1773,11 +1798,11 @@ td.table-action a.btn {
 }
 
 .btn-toolbar.selectbox .selection {
-	font-size : 16px;
-	color     : #868486;
-	padding   : 0 18px 0 10px;
-	border    : none;
-	line-height : 30px;
+	font-size   : 16px;
+	color       : #616061;
+	padding     : 0 18px 0 10px;
+	border      : none;
+	line-height : 26px;
 }
 
 .toolbar-btn-group .dropdown li:last-child {
@@ -1789,12 +1814,14 @@ td.table-action a.btn {
 }
 
 #toolbar-run {
-	width: 110px;
-	color: #fff;
+	width : 110px;
+	color : #fff;
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
 }
 
 #toolbar-run span {
-	margin-left: 10px;
+	margin-left : 10px;
+	font-family : 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Sidebars, including Resource Panle and Property Panel */

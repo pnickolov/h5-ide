@@ -256,7 +256,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
             #listen
             ide_event.onLongListen ide_event.RETURN_OVERVIEW_TAB, () ->
                 console.log 'RETURN_OVERVIEW_TAB '
-                view.changeDashboardTabname 'Global Overview'
+                view.changeDashboardTabname 'Global'
                 null
 
             #listen

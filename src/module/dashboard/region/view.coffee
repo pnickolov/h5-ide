@@ -172,14 +172,18 @@ define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.n
             id = event.currentTarget.id
             name = event.currentTarget.name
 
+            # set default name
+            new_name = MC.aws.aws.getDuplicateName(name)
+            $('#modal-input-value').val(new_name)
+
             $('#btn-confirm').on 'click', { target : this }, (event) ->
                 console.log 'dashboard region duplicate stack'
                 new_name = $('#modal-input-value').val()
 
                 #check duplicate stack name
-                if not name or not new_name
+                if not new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
-                else if name.indexOf(' ') >= 0 or new_name.indexOf(' ') >= 0
+                else if new_name.indexOf(' ') >= 0
                     notification 'warning', 'stack name contains white space.'
                 else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME

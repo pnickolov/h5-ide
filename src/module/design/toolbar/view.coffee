@@ -3,10 +3,10 @@
 #############################
 
 define [ 'MC', 'event',
-         'zeroclipboard', 'i18n!/nls/lang.js',
+         'i18n!/nls/lang.js',
          'backbone', 'jquery', 'handlebars',
-         'UI.selectbox', 'UI.notification', 'UI.zeroclipboard'
-], ( MC, ide_event, ZeroClipboard, lang ) ->
+         'UI.selectbox', 'UI.notification'
+], ( MC, ide_event, lang ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -43,8 +43,6 @@ define [ 'MC', 'event',
                 $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
-            #
-            zeroclipboard.init 'toolbar-jsoncopy', ZeroClipboard
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'

@@ -621,6 +621,7 @@ MC.canvas = {
 			to_data = layout_component_data[ to_node_type ][ to_uid ],
 			from_type = from_data.type,
 			to_type = to_data.type,
+			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
@@ -664,7 +665,7 @@ MC.canvas = {
 
 			$.each(from_node_connection_data, function (key, value)
 			{
-				if (value[ 'target' ] === to_uid && value[ 'port' ] === from_target_port)
+				if (value[ 'target' ] === to_uid && value[ 'port' ] === to_target_port)
 				{
 					is_connected = true;
 
@@ -1616,7 +1617,7 @@ MC.canvas.layout = {
 		{
 			//has vpc (create vpc, az, and subnet by default)
 			vpc_group = MC.canvas.add('AWS.VPC.VPC', {
-				'name': 'vpc1'
+				'name': 'vpc'
 			}, {
 				'x': 5,
 				'y': 3
@@ -3063,6 +3064,8 @@ MC.canvas.event.drawConnection = {
 				port_position_offset = 8 / scale_ratio,
 				target_connection_option,
 				target_data,
+				target_node,
+				target_port,
 				is_connected;
 
 			//calculate point of junction
@@ -3228,15 +3231,39 @@ MC.canvas.event.drawConnection = {
 
 							if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
 							{
-								$(this)
-									.attr("class", function (index, key)
+								target_node = this;
+
+								$(target_node).find('.port-' + value.to).each(function ()
+								{
+									target_port = $(this);
+
+									if (target_port.css('display') !== 'none')
 									{
-										return "connectable " + key;
-									})
-									.find('.port-' + value.to).attr("class", function (index, key)
-									{
-										return "connectable-port view-show " + key;
-									});
+										Canvon(target_node).addClass('connectable');
+
+										target_port.attr("class", function (index, key)
+										{
+											return "connectable-port view-show " + key;
+										});
+									}
+								});
+								// $(this)
+								// 	.attr("class", function (index, key)
+								// 	{
+								// 		return "connectable " + key;
+								// 	})
+								// 	.find('.port-' + value.to).each(function ()
+								// 	{
+								// 		target_port = $(this);
+
+								// 		if (target_port.css('display') !== 'none')
+								// 		{
+								// 			target_port.attr("class", function (index, key)
+								// 			{
+								// 				return "connectable-port view-show " + key;
+								// 			});
+								// 		}
+								// 	});
 							}
 						});
 					}
@@ -4303,7 +4330,7 @@ MC.canvas.event.selectNode = function (event)
 
 MC.canvas.event.nodeHover = function (event)
 {
-	if (event.type === 'mouseover')
+	if (event.type === 'mouseenter')
 	{
 		var target = $(this),
 			target_id = this.id,
@@ -4316,7 +4343,7 @@ MC.canvas.event.nodeHover = function (event)
 		});
 	}
 
-	if (event.type === 'mouseout')
+	if (event.type === 'mouseleave')
 	{
 		$('#svg_canvas .view-hover').each(function ()
 		{

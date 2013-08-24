@@ -7,7 +7,7 @@
   <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play disabled" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app", "body":"Do you confirm to start app {{item_flags.name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="Start this app's resources."></a>
   {{/if}}
 
-  <a href="#" class="btn-toolbar tooltip {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to terminate app {{item_flags.name}}", "body":"Do you confirm to terminate app?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="Permanently terminate this app's resources"></a> <!--"'-->
+  <a href="#" class="btn-toolbar tooltip icon-terminate {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to terminate app {{item_flags.name}}", "body":"Do you confirm to terminate app?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="Permanently terminate this app's resources"></a> <!--"'-->
 </section>
 
 <section class="toolbar-btn-group">

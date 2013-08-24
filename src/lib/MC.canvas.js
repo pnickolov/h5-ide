@@ -65,6 +65,14 @@ MC.canvas = {
 		return true;
 	},
 
+
+	update_sg_color: function (uid)
+	{
+		var all_sg = MC.canvas_property.sg_list,
+			ins_sg = MC.cnavas.data.get('component')[uid].resource.SecurityGroupId;
+		//TO-DO
+	},
+
 	resize: function (target, type)
 	{
 		var canvas_size = MC.canvas.data.get("layout.size"),

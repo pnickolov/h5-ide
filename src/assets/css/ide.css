@@ -1696,6 +1696,32 @@ td.table-action a.btn {
 	border: 1px solid #0274C0;
 }
 
+.toolbar-btn-group .selectbox .dropdown {
+	border     : 1px solid #E0E0E0;
+	width      : auto;
+	margin-top : 5px;
+}
+
+.toolbar-btn-group .dropdown li {
+	display       : block;
+	border-bottom : 1px solid #E0E0E0;
+	cursor        : pointer !important;
+	position      : relative;
+	color         : #555;
+	text-align    : left;
+	line-height   : 42px;
+	padding-left  : 40px;
+	padding-right : 10px;
+}
+
+.toolbar-btn-group .dropdown > li > i {
+	position   : absolute;
+	top        : 13px;
+	left       : 0px;
+	width      : 40px;
+	text-align : center;
+}
+
 
 .btn-toolbar {
 	width       : 30px;
@@ -1707,7 +1733,7 @@ td.table-action a.btn {
 	line-height : 26px;
 	text-align  : center;
 	color       : #616061;
-
+	
 	/*margin-left : 4px;*/
 	padding     : 4px;
 

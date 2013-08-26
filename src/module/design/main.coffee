@@ -52,8 +52,8 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 null
 
             #listen SWITCH_TAB
-            ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id, region_name, result, current_paltform ) ->
-                console.log 'design:SWITCH_TAB, type = ' + type + ', tab_id = ' + tab_id + ', region_name = ' + region_name + ', current_paltform = ' + current_paltform
+            ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id, region_name, result, current_platform ) ->
+                console.log 'design:SWITCH_TAB, type = ' + type + ', tab_id = ' + tab_id + ', region_name = ' + region_name + ', current_platform = ' + current_platform
                 #
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, tab_id else view.$el.html design_view_init
                 #
@@ -71,7 +71,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
 
                     #temp
                     #when NEW_STACK result is tab_id
-                    ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_paltform, tab_id, result
+                    ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
                 null
 
             #listen

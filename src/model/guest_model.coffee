@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : guest_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:04
+#* Create date  : 2013-08-26 12:19:41
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
+define [ 'backbone', 'underscore', 'guest_service', 'base_model' ], ( Backbone, _, guest_service, base_model ) ->
 
     GuestModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #invite api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
                 if !forge_result.is_error
                 #invite succeed
 
-                    guest_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_INVITE_RETURN', forge_result
 
                 else
                 #invite failed
 
                     console.log 'guest.invite failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_INVITE_RETURN', forge_result
 
 
         #cancel api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
                 if !forge_result.is_error
                 #cancel succeed
 
-                    guest_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_CANCEL_RETURN', forge_result
 
                 else
                 #cancel failed
 
                     console.log 'guest.cancel failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_CANCEL_RETURN', forge_result
 
 
         #access api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
                 if !forge_result.is_error
                 #access succeed
 
-                    guest_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_ACCESS_RETURN', forge_result
 
                 else
                 #access failed
 
                     console.log 'guest.access failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_ACCESS_RETURN', forge_result
 
 
         #end api (define function)
@@ -110,18 +99,15 @@ define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
                 if !forge_result.is_error
                 #end succeed
 
-                    guest_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_END_RETURN', forge_result
 
                 else
                 #end failed
 
                     console.log 'guest.end failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_END_RETURN', forge_result
 
 
         #info api (define function)
@@ -136,18 +122,15 @@ define [ 'backbone', 'guest_service'], ( Backbone, guest_service ) ->
                 if !forge_result.is_error
                 #info succeed
 
-                    guest_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_INFO_RETURN', forge_result
 
                 else
                 #info failed
 
                     console.log 'guest.info failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'GUEST_INFO_RETURN', forge_result
 
 
 

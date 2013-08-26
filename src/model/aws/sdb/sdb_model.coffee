@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : sdb_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:17
+#* Create date  : 2013-08-26 12:19:54
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'sdb_service'], ( Backbone, sdb_service) ->
+define [ 'backbone', 'underscore', 'sdb_service', 'base_model' ], ( Backbone, _, sdb_service, base_model ) ->
 
     SDBModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DomainMetadata api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'sdb_service'], ( Backbone, sdb_service) ->
                 if !aws_result.is_error
                 #DomainMetadata succeed
 
-                    sdb_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'SDB__DOMAIN_MDATA_RETURN', aws_result
 
                 else
                 #DomainMetadata failed
 
                     console.log 'sdb.DomainMetadata failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'SDB__DOMAIN_MDATA_RETURN', aws_result
 
 
         #GetAttributes api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'sdb_service'], ( Backbone, sdb_service) ->
                 if !aws_result.is_error
                 #GetAttributes succeed
 
-                    sdb_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'SDB__GET_ATTRS_RETURN', aws_result
 
                 else
                 #GetAttributes failed
 
                     console.log 'sdb.GetAttributes failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'SDB__GET_ATTRS_RETURN', aws_result
 
 
         #ListDomains api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'sdb_service'], ( Backbone, sdb_service) ->
                 if !aws_result.is_error
                 #ListDomains succeed
 
-                    sdb_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'SDB__LST_DOMAINS_RETURN', aws_result
 
                 else
                 #ListDomains failed
 
                     console.log 'sdb.ListDomains failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'SDB__LST_DOMAINS_RETURN', aws_result
 
 
 

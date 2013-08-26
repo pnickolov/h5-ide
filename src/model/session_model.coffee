@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : session_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:03
+#* Create date  : 2013-08-26 12:19:40
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -13,11 +13,6 @@
 define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone, _, session_service, base_model ) ->
 
     SessionModel = Backbone.Model.extend {
-
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
 
         initialize : ->
             _.extend this, base_model
@@ -35,10 +30,8 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #login succeed
 
-                    session_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGIN_RETURN', forge_result else me.trigger 'SESSION_LOGIN_RETURN', forge_result
 
                 else
                 #login failed
@@ -46,8 +39,6 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                     console.log 'session.login failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGIN_RETURN', forge_result else me.trigger 'SESSION_LOGIN_RETURN', forge_result
 
 
         #logout api (define function)
@@ -62,18 +53,15 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #logout succeed
 
-                    session_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGOUT_RETURN', forge_result
 
                 else
                 #logout failed
 
                     console.log 'session.logout failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGOUT_RETURN', forge_result
 
 
         #set_credential api (define function)
@@ -88,18 +76,38 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #set_credential succeed
 
-                    session_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_SET__CREDENTIAL_RETURN', forge_result
 
                 else
                 #set_credential failed
 
                     console.log 'session.set_credential failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_SET__CREDENTIAL_RETURN', forge_result
+
+
+        #sync_redis api (define function)
+        sync_redis : ( src, username, session_id ) ->
+
+            me = this
+
+            src.model = me
+
+            session_service.sync_redis src, username, session_id, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #sync_redis succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_SYNC__REDIS_RETURN', forge_result
+
+                else
+                #sync_redis failed
+
+                    console.log 'session.sync_redis failed, error is ' + forge_result.error_message
+                    me.pub forge_result
+
 
 
         #guest api (define function)
@@ -114,18 +122,15 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #guest succeed
 
-                    session_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_GUEST_RETURN', forge_result
 
                 else
                 #guest failed
 
                     console.log 'session.guest failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_GUEST_RETURN', forge_result
 
 
 

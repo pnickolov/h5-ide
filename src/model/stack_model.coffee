@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : stack_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:05
+#* Create date  : 2013-08-26 12:19:42
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,9 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'underscore', 'stack_service', 'base_model'], ( Backbone, _, stack_service, base_model ) ->
+define [ 'backbone', 'underscore', 'stack_service', 'base_model' ], ( Backbone, _, stack_service, base_model ) ->
 
     StackModel = Backbone.Model.extend {
-
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
 
         initialize : ->
             _.extend this, base_model
@@ -35,18 +30,15 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model'], ( Backbone, _
                 if !forge_result.is_error
                 #create succeed
 
-                    stack_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STACK_CREATE_RETURN', forge_result
 
                 else
                 #create failed
 
                     console.log 'stack.create failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_CREATE_RETURN', forge_result
 
 
         #remove api (define function)
@@ -61,18 +53,15 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model'], ( Backbone, _
                 if !forge_result.is_error
                 #remove succeed
 
-                    stack_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STACK_REMOVE_RETURN', forge_result
 
                 else
                 #remove failed
 
                     console.log 'stack.remove failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_REMOVE_RETURN', forge_result
 
 
         #save api (define function)
@@ -87,18 +76,15 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model'], ( Backbone, _
                 if !forge_result.is_error
                 #save succeed
 
-                    stack_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STACK_SAVE_RETURN', forge_result
 
                 else
                 #save failed
 
                     console.log 'stack.save failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_SAVE_RETURN', forge_result
 
 
         #rename api (define function)
@@ -113,18 +99,15 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model'], ( Backbone, _
                 if !forge_result.is_error
                 #rename succeed
 
-                    stack_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STACK_RENAME_RETURN', forge_result
 
                 else
                 #rename failed
 
                     console.log 'stack.rename failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_RENAME_RETURN', forge_result
 
 
         #run api (define function)
@@ -139,18 +122,15 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model'], ( Backbone, _
                 if !forge_result.is_error
                 #run succeed
 
-                    stack_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STACK_RUN_RETURN', forge_result
 
                 else
                 #run failed
 
                     console.log 'stack.run failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_RUN_RETURN', forge_result
 
 
         #save_as api (define function)
@@ -165,18 +145,15 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model'], ( Backbone, _
                 if !forge_result.is_error
                 #save_as succeed
 
-                    stack_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STACK_SAVE__AS_RETURN', forge_result
 
                 else
                 #save_as failed
 
                     console.log 'stack.save_as failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_SAVE__AS_RETURN', forge_result
 
 
         #info api (define function)
@@ -191,22 +168,19 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model'], ( Backbone, _
                 if !forge_result.is_error
                 #info succeed
 
-                    stack_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STACK_INFO_RETURN', forge_result
 
                 else
                 #info failed
 
                     console.log 'stack.info failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_INFO_RETURN', forge_result
 
 
         #list api (define function)
-        list : ( src, username, session_id, region_name, stack_ids=null ) ->
+        list : ( src, username, session_id, region_name=null, stack_ids=null ) ->
 
             me = this
 
@@ -217,20 +191,15 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model'], ( Backbone, _
                 if !forge_result.is_error
                 #list succeed
 
-                    stack_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STACK_LST_RETURN', forge_result
 
                 else
                 #list failed
 
+                    console.log 'stack.list failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
-                    console.log 'stack.list failed, error is ' + forge_result.error_message
-
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'STACK_LST_RETURN', forge_result
 
 
 

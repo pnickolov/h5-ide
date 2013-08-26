@@ -10,7 +10,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', '@@resource-name_service', '@@resource-name_vo', 'base_model'], ( Backbone, @@resource-name_service, @@resource-name_vo, base_model ) ->
+define [ 'backbone', 'underscore', '@@resource-name_service', 'base_model' ], ( Backbone, _, @@resource-name_service, base_model ) ->
 
     @@RESOURCE-NAMEModel = Backbone.Model.extend {
 

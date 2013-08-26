@@ -131,6 +131,10 @@ require.config {
 
         ########## model ##########
 
+        #base_model
+        'base_model'             : 'model/base_model'
+
+
         #####forge#####
         'log_model'         : 'model/log_model'
         'public_model'      : 'model/public_model'

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : reservedinstance_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:16
+#* Create date  : 2013-08-26 12:19:54
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'reservedinstance_service'], ( Backbone, reservedinstance_service) ->
+define [ 'backbone', 'underscore', 'reservedinstance_service', 'base_model' ], ( Backbone, _, reservedinstance_service, base_model ) ->
 
     ReservedInstanceModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeReservedDBInstances api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'reservedinstance_service'], ( Backbone, reservedinstance_s
                 if !aws_result.is_error
                 #DescribeReservedDBInstances succeed
 
-                    reservedinstance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RSVDINS_DESC_RESERVED_DB_INSTANCES_RETURN', aws_result
 
                 else
                 #DescribeReservedDBInstances failed
 
                     console.log 'reservedinstance.DescribeReservedDBInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RSVDINS_DESC_RESERVED_DB_INSTANCES_RETURN', aws_result
 
 
         #DescribeReservedDBInstancesOfferings api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'reservedinstance_service'], ( Backbone, reservedinstance_s
                 if !aws_result.is_error
                 #DescribeReservedDBInstancesOfferings succeed
 
-                    reservedinstance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RSVDINS_DESC_RESERVED_DB_INSTANCES_OFFERINGS_RETURN', aws_result
 
                 else
                 #DescribeReservedDBInstancesOfferings failed
 
                     console.log 'reservedinstance.DescribeReservedDBInstancesOfferings failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RSVDINS_DESC_RESERVED_DB_INSTANCES_OFFERINGS_RETURN', aws_result
 
 
 

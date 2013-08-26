@@ -306,17 +306,17 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                         res = $.extend true, {}, result.resolved_data
 
-                        if type != 'NEW_STACK'
+                        #if type != 'NEW_STACK'
 
-                            $.each res.item, ( idx, value ) ->
+                        $.each res.item, ( idx, value ) ->
 
-                                $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+                            $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
 
-                                    if zone.name == value.zoneName
+                                if zone.name == value.zoneName
 
-                                        res.item[idx].isUsed = true
+                                    res.item[idx].isUsed = true
 
-                                        null
+                                    null
 
                         console.log 'get az: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
                         if region_name == MC.canvas.data.get('region')

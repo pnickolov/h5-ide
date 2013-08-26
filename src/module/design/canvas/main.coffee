@@ -36,7 +36,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                     model.initLine()
                     model.reDrawSgLine()
                 #
-                ide_event.trigger ide_event.OPEN_TOOLBAR, tab_id, type
+                #ide_event.trigger ide_event.OPEN_TOOLBAR, tab_id, type
                 null
 
             ide_event.onLongListen ide_event.CREATE_LINE_TO_CANVAS, ( from_node, from_target_port, to_node, to_target_port, line_option ) ->

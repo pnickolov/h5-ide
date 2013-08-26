@@ -33,10 +33,12 @@ define [ 'jquery',
                 console.log MC.canvas_data
                 model.setFlag tab_id, type
 
+            ###
             #listen OPEN_TOOLBAR
             ide_event.onLongListen ide_event.OPEN_TOOLBAR, ( tab_id, type ) ->
                 console.log 'toolbar:OPEN_TOOLBAR, tab_id = ' + tab_id + ', type = ' + type
                 console.log MC.canvas_data
+            ###
 
             #listen toolbar state change
             model.on 'UPDATE_TOOLBAR', (type) ->

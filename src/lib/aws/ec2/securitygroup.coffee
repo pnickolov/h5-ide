@@ -1,4 +1,4 @@
-define [ 'MC', 'constant' ], ( MC, constant ) ->
+define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 	#private
 	getAllRefComp = (sgUID) ->
@@ -162,6 +162,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		component_data.name = sg_name
 
 		component_data.resource.GroupName = sg_name
+		component_data.resource.GroupDescription = lang.ide.PROP_TEXT_CUSTOM_SG_DESC
 
 		component_data.resource.IpPermissions = []
 

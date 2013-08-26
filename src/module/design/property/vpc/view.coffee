@@ -76,8 +76,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinp
             target = $ event.currentTarget
             name = target.val()
 
-            target.parsley 'custom', () ->
-                if not MC.validate 'awsName',  name
+            target.parsley 'custom', ( val ) ->
+                if not MC.validate 'awsName',  val
                     return 'This value should be a valid VPC name.'
 
             if target.parsley 'validate'

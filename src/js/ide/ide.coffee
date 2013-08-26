@@ -243,6 +243,9 @@ define [ 'MC', 'event', 'handlebars'
 				MC.data.is_reset_session = true
 				require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
 			else
-				console.log constant.SERVICE_ERROR_MESSAGE[ constant.RETURN_CODE.E_SESSION ]
+				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
+				console.log lang.service[ label ]
+				#
+				notification 'error', lang.service[ label ] if lang.service[ label ]
 
 		null

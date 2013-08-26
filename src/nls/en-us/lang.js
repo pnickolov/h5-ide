@@ -128,5 +128,28 @@ define({
 		'CFM_BTN_ADD'      : 'Add',
 		'CFM_BTN_DONT_ADD' : "Don't add"
 		// Add new strings below this comment. Move above once English has been confirmed
+	},
+	'service' : {
+		'ERROR_CODE_1_MESSAGE' : 'Service Message',
+		'ERROR_CODE_2_MESSAGE' : 'Service Message',
+		'ERROR_CODE_3_MESSAGE' : 'Service Message',
+		'ERROR_CODE_4_MESSAGE' : 'Service Message',
+		'ERROR_CODE_5_MESSAGE' : 'Service Message',
+		'ERROR_CODE_6_MESSAGE' : 'Service Message',
+		'ERROR_CODE_7_MESSAGE' : 'Service Message',
+		'ERROR_CODE_8_MESSAGE' : 'Service Message',
+		'ERROR_CODE_9_MESSAGE' : 'Service Message',
+		'ERROR_CODE_10_MESSAGE' : 'Service Message',
+		'ERROR_CODE_11_MESSAGE' : 'Service Message',
+		'ERROR_CODE_12_MESSAGE' : 'Service Message',
+		'ERROR_CODE_13_MESSAGE' : 'Service Message',
+		'ERROR_CODE_14_MESSAGE' : 'Service Message',
+		'ERROR_CODE_15_MESSAGE' : 'Service Message',
+		'ERROR_CODE_16_MESSAGE' : 'Service Message',
+		'ERROR_CODE_17_MESSAGE' : 'Service Message',
+		'ERROR_CODE_18_MESSAGE' : 'Service Message',
+		'ERROR_CODE_19_MESSAGE' : 'Service Message',
+		'ERROR_CODE_20_MESSAGE' : 'Service Message',
+		'ERROR_CODE_21_MESSAGE' : 'Service Message'
 	}
 });

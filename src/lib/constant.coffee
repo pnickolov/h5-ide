@@ -195,6 +195,7 @@ define [], () ->
 		E_BLOCKED_USER : 21
 	}
 
+	###
 	#private
 	SERVICE_ERROR_MESSAGE = {}
 	SERVICE_ERROR_MESSAGE[ 1 ]  = 'Service Message' + 1
@@ -218,6 +219,7 @@ define [], () ->
 	SERVICE_ERROR_MESSAGE[ 19 ]  = 'Service Message' + 19
 	SERVICE_ERROR_MESSAGE[ 20 ]  = 'Service Message' + 20
 	SERVICE_ERROR_MESSAGE[ 21 ]  = 'Service Message' + 21
+	###
 
 	#private
 	APP_STATE = {
@@ -345,7 +347,7 @@ define [], () ->
 	REGION_SHORT_LABEL	    : REGION_SHORT_LABEL
 	REGION_LABEL		    : REGION_LABEL
 	RETURN_CODE			    : RETURN_CODE
-	SERVICE_ERROR_MESSAGE   : SERVICE_ERROR_MESSAGE
+	#SERVICE_ERROR_MESSAGE   : SERVICE_ERROR_MESSAGE
 	MESSAGE_E			    : MESSAGE_E
 	APP_STATE			    : APP_STATE
 	OPS_STATE			    : OPS_STATE

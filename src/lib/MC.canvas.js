@@ -3632,7 +3632,27 @@ MC.canvas.event.drawConnection = {
 		if (match_node)
 		{
 			to_node = $(match_node);
-			to_port_name = to_node.find('.connectable-port').data('name');
+
+			if (
+				from_node.data('class') === 'AWS.EC2.Instance' &&
+				to_node.data('class') === 'AWS.ELB'
+			)
+			{
+				match_node_offset = match_node.getBoundingClientRect();
+
+				if (event.pageX > (match_node_offset.left + match_node_offset.width / 2))
+				{
+					to_port_name = 'elb-sg-out';
+				}
+				if (event.pageX < (match_node_offset.left + match_node_offset.width / 2))
+				{
+					to_port_name = 'elb-sg-in';
+				}
+			}
+			else
+			{
+				to_port_name = to_node.find('.connectable-port').data('name');
+			}
 
 			if (!from_node.is(to_node) && to_port_name !== undefined)
 			{

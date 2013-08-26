@@ -242,5 +242,7 @@ define [ 'MC', 'event', 'handlebars'
 			if error.return_code is constant.RETURN_CODE.E_SESSION
 				MC.data.is_reset_session = true
 				require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
+			else
+				console.log constant.SERVICE_ERROR_MESSAGE[ constant.RETURN_CODE.E_SESSION ]
 
 		null

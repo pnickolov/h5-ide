@@ -15,12 +15,6 @@ define [ 'event',
         rulePopupTpl : Handlebars.compile $('#property-acl-rule-popup-tmpl').html()
 
         initialize : ->
-            #handlebars equal logic
-            Handlebars.registerHelper 'ifCond', (v1, v2, options) ->
-                if v1 is v2
-                    return options.fn this
-                options.inverse this
-
             $('#sg-protocol-udp').hide()
             $('#sg-protocol-icmp').hide()
             $('#sg-protocol-custom').hide()

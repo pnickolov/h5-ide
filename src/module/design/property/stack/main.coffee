@@ -61,7 +61,11 @@ define [ 'jquery',
             view.model    = model
 
             #re calc cost when load module
-            model.getCost()
+            if tab_type is 'NEW_STACK'
+                model.set('cost_list', [])
+                model.set('total_fee', 0)
+            else
+                model.getCost()
 
             if view_type == 'app_view'
 

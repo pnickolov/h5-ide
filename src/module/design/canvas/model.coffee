@@ -281,7 +281,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 		changeP_ASG : ( component, tgt_parent ) ->
 
-			subnets = [ tgt_parent ]
+			parents = [ tgt_parent ]
 			sbs     = []
 			azs     = []
 			map     = {}
@@ -291,11 +291,19 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					continue
 
 				if node.originalId is component.uid
-					subnets.push node.groupUId
+					parents.push node.groupUId
 
-			for sb in subnets
-				az = MC.canvas_data.component[ sb ].resource.AvailabilityZone
-				sbs.push "@#{sb}.resource.SubnetId"
+			for p in parents
+
+				parent = MC.canvas_data.component[ p ]
+
+				if parent
+					# VPC mode
+					az = parent.resource.AvailabilityZone
+					sbs.push "@#{p}.resource.SubnetId"
+				else
+					az = MC.canvas_data.layout.component.group[ p ].name
+
 				if map[ az ]
 					continue
 				else

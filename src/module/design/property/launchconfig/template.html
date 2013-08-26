@@ -2,10 +2,10 @@
 
 	<div class="option-group-head expand">Launch Configuation</div>
 	<div class="option-group">
-		<section class="property-control-group">
+		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-instance-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input class="input launch-configuration-name"  type="text" required="required" value="{{name}}" name="property-instance-name" id="property-instance-name"/>
+			<input class="input launch-configuration-name"  type="text" value="{{name}}" name="property-instance-name" id="property-instance-name" maxlength="255" data-required-rollback="true" data-ignore="true"/>
 		</section>
 		<section class="property-control-group">
 			<label>AMI</label>

@@ -14,6 +14,30 @@ module.exports = {
         ]
     },
 
+    dev_env_switch : {
+        options: {
+            variables: {
+                "env}}" : "dev"
+            },
+            prefix: '{{'
+        },
+        files: [
+            { src: [ 'util/include/dev_prod_switch/env_tmpl' ], dest: 'util/include/dev_prod_switch/env' }
+        ]
+    },
+
+    prod_env_switch : {
+        options: {
+            variables: {
+                "env}}" : "prod"
+            },
+            prefix: '{{'
+        },
+        files: [
+            { src: [ 'util/include/dev_prod_switch/env_tmpl' ], dest: 'util/include/dev_prod_switch/env' }
+        ]
+    },
+
     json_view: {
         options: {
             variables: {
@@ -29,7 +53,7 @@ module.exports = {
     analytics: {
         options: {
             variables: {
-                "analytics_script}}" : '<%= grunt.file.read( "util/incloud/analytics/analytics_script.js" ) %>'
+                "analytics_script}}" : '<%= grunt.file.read( "util/include/analytics/analytics_script.js" ) %>'
             },
             prefix: '{{'
         },

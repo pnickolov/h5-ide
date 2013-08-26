@@ -121,7 +121,7 @@ define [ 'event',
             $('#aws-credential-update-account-id').text me.model.attributes.account_id
 
         # show submit dialog
-        showSubmit : () ->
+        showSubmit : (flag) ->
             console.log 'show submiting dialog'
 
             me = this
@@ -129,6 +129,9 @@ define [ 'event',
             $('#AWSCredential-form').hide()
             $('#AWSCredentials-submiting').show()
             $('#AWSCredentials-update').hide()
+
+            if flag is 'LOAD_RESOURCE'
+                $('#AWSCredentials-loading-text').text('Loading resources...')
 
     }
 

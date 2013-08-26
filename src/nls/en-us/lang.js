@@ -13,8 +13,11 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'ide' : {
-		'dashboard' : 'Dashboard',
-		'account-settings' : 'Account Settings',
+		'NAV_TIT_DASHBOARD' : 'Dashboard',
+		'NAV_TIT_APPS'      : 'Apps',
+		'NAV_TIT_STACKS'    : 'Stacks',
+		'NAV_LBL_GLOBAL'    : 'Global',
+		'account-settings'  : 'Account Settings',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/** RESOURCE NAMING CONVENTIONS
@@ -117,6 +120,8 @@ define({
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
 		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type.',
 		// Add new strings below this comment. Move above once English has been confirmed
+		'PROP_TEXT_DEFAULT_SG_DESC'             : 'VPC Default Security Group',
+		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
 
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',

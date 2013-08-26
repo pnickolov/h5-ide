@@ -3,7 +3,9 @@
 <li>
 	<div class="{{#if isUsed}}{{else}}tooltip{{/if}} resource-item {{#if isUsed}}resource-disabled{{/if}}" {{#if isUsed}}data-enable="false"{{/if}} data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-component-type="group" data-type="AWS.EC2.AvailabilityZone" data-option='{"name": "{{ zoneName }}"}'>
 		<div class="resource-icon resource-icon-az">
+			{{#if zoneShortName}}
 			<div class="resource-icon-az-label">{{zoneShortName}}</div>
+			{{/if}}
 		</div>
 		<div class="resource-label">{{ zoneName }}</div>
 	</div>

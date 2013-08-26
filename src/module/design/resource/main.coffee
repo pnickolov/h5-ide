@@ -24,38 +24,26 @@ define [ 'jquery',
             view.listen model
             view.model = model
 
-            #listen SWITCH_TAB
-            #ide_event.onLongListen ide_event.SWITCH_TAB, ( type, target, region_name ) ->
-            #    console.log 'resource:SWITCH_TAB, type = ' + type + ', target = ' + target + ', region_name = ' + region_name
-            #    if type is 'NEW_STACK'
-            #        model.describeAvailableZonesService region_name
-            #    null
-
-            #view.on 'RESOURCE_SELECET', ( id ) ->
-            #    console.log 'RESOURCE_SELECET = ' + id
-            #    if id is 'my-ami'       then model.myamiService model.get 'region_name'
-            #    #if id is 'favorite-ami' then
-
-            #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform ) ->
-                console.log 'resource:RELOAD_RESOURCE'
+            #listen OPEN_DESIGN
+            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform ) ->
+                console.log 'resource:OPEN_DESIGN, region_name ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform
                 #
-                #if type is 'OPEN_APP' then return
                 #check re-render
                 view.reRender template
-                #
+                #init resoruce service count
                 model.service_count = 0
-                #
                 model.set 'check_required_service_count', -1
                 #
-                model.quickstartService             region_name
-                model.describeAvailableZonesService region_name, type
-                model.describeSnapshotsService      region_name
-                #model.myAmiService                  region_name
-                #model.favoriteAmiService            region_name
+                ide_event.onListen ide_event.RESOURCE_QUICKSTART_READY, (region_name) ->
+                    console.log 'resource:RESOURCE_QUICKSTART_READY'
+                    model.describeAvailableZonesService region_name
+                    model.describeSnapshotsService      region_name
+                model.quickstartService                 region_name
+                #
                 view.region = region_name
-                view.communityAmiBtnRender()
                 view.resourceVpcRender( current_platform, type )
+                view.communityAmiBtnRender()
+                #
                 null
 
             ide_event.onLongListen ide_event.ENABLE_RESOURCE_ITEM, ( type, filter ) ->

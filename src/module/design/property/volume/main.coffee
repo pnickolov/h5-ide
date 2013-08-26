@@ -71,6 +71,8 @@ define [ 'jquery',
 
                 model.setVolumeSize volume_uid, value
 
+                MC.canvas.update volume_uid, "text", "volume_size", value + "GB"
+
                 #renderPropertyPanel( volume_uid )
 
             view.on 'VOLUME_TYPE_STANDARD', ()->

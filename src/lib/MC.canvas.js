@@ -3488,10 +3488,10 @@ MC.canvas.event.drawConnection = {
 											}
 											else
 											{
-												//line_data = layout_connection_data[data.line];
+												line_data = layout_connection_data[data.line];
 
-												//if (line_data.target[node_id] === value.to && data.target === node_id)
-												if (data.port === value.to && data.target === node_id)
+												if (line_data.target[node_id] === value.from && data.target === node_id)
+												//if (data.port === value.to && data.target === node_id)
 												{
 													is_connected = true;
 												}

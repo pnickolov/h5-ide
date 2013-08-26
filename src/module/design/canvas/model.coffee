@@ -239,7 +239,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Update Subnet's children's AZ
 			for key, value of MC.canvas_data.component
-
+  
 				if value.type == resource_type.AWS_EC2_Instance
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.Placement.AvailabilityZone = "1" # Set the Instance's subnet to something else, so we can change it.
@@ -248,6 +248,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				else if value.type == resource_type.AWS_VPC_NetworkInterface
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.AvailabilityZone = component.resource.AvailabilityZone
+
+				else if value.type == resource_type.AWS_AutoScaling_Group
+					if value.resource.VPCZoneIdentifier.indexOf( component.uid ) != -1
+						this.changeP_ASG value, component.uid
 
 				# Disconnect ELB and Subnet, if the newly moved to AZ has a subnet which is connected to the same ELB.
 				else if value.type == resource_type.AWS_ELB

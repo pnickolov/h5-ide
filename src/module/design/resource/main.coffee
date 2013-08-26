@@ -41,7 +41,7 @@ define [ 'jquery',
                 view.resourceVpcRender( current_platform, type )
                 view.communityAmiBtnRender()
 
-                ide_event.onLongListen ide_event.RESOURCE_QUICKSTART_READY, (region_name) ->
+                ide_event.onListen ide_event.RESOURCE_QUICKSTART_READY, (region_name) ->
                     console.log 'resource:RESOURCE_QUICKSTART_READY'
 
                     model.describeAvailableZonesService region_name

@@ -30,16 +30,14 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #login succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGIN_RETURN', forge_result else me.trigger 'SESSION_LOGIN_RETURN', forge_result
-
                 else
                 #login failed
 
                     console.log 'session.login failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
-
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGIN_RETURN', forge_result else me.trigger 'SESSION_LOGIN_RETURN', forge_result
 
         #logout api (define function)
         logout : ( src, username, session_id ) ->
@@ -53,16 +51,14 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #logout succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGOUT_RETURN', forge_result
-
                 else
                 #logout failed
 
                     console.log 'session.logout failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
-
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_LOGOUT_RETURN', forge_result
 
         #set_credential api (define function)
         set_credential : ( src, username, session_id, access_key, secret_key, account_id=null ) ->
@@ -76,16 +72,14 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #set_credential succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_SET__CREDENTIAL_RETURN', forge_result
-
                 else
                 #set_credential failed
 
                     console.log 'session.set_credential failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
-
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_SET__CREDENTIAL_RETURN', forge_result
 
         #sync_redis api (define function)
         sync_redis : ( src, username, session_id ) ->
@@ -99,16 +93,14 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #sync_redis succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_SYNC__REDIS_RETURN', forge_result
-
                 else
                 #sync_redis failed
 
                     console.log 'session.sync_redis failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
-
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_SYNC__REDIS_RETURN', forge_result
 
         #guest api (define function)
         guest : ( src, guest_id, guestname ) ->
@@ -122,16 +114,14 @@ define [ 'backbone', 'underscore', 'session_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #guest succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_GUEST_RETURN', forge_result
-
                 else
                 #guest failed
 
                     console.log 'session.guest failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
-
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'SESSION_GUEST_RETURN', forge_result
 
 
     }

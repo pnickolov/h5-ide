@@ -11,9 +11,9 @@ define [ 'event',
     SessionView = Backbone.View.extend {
 
         events             :
+            'closed'                 : 'closedSessionPopup'
             'click #cidr-remove'     : 'closeSession'
             'click #cidr-return'     : 'reConnectSession'
-            'closed'                 : 'closedSessionPopup'
 
         render     : ->
             console.log 'pop-up:session render'

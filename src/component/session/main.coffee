@@ -12,6 +12,9 @@ define [ 'jquery', 'event',
         require [ './component/session/session_view' ], ( Session_view ) ->
 
             #
+            return if modal and modal.isPopup()
+
+            #
             session_view   = new Session_view()
 
             #render
@@ -19,9 +22,7 @@ define [ 'jquery', 'event',
 
             #
             session_view.on 'CLOSE_POPUP',    () -> unLoadModule session_view
-            session_view.on 'OPEN_RECONNECT', () ->
-                unLoadModule session_view
-                loadReConnectModule()
+            session_view.on 'OPEN_RECONNECT', () -> loadReConnectModule()
 
     #private
     loadReConnectModule = () ->
@@ -29,6 +30,10 @@ define [ 'jquery', 'event',
         #
         require [ './component/session/reconnect_view', './component/session/model' ], ( Reconnect_view, Model ) ->
 
+            #
+            return if modal and modal.isPopup()
+
+            #
             reconnect_view  = new Reconnect_view()
             model           = new Model()
             #

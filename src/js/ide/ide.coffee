@@ -234,6 +234,6 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'sub'
 			console.log error
 			if error.return_code is constant.RETURN_CODE.E_SESSION
-				 require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
+				require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
 
 		null

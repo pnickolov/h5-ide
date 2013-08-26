@@ -26,7 +26,7 @@ define [ 'jquery',
 
             #listen OPEN_DESIGN
             ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform ) ->
-                console.log 'resource:OPEN_DESIGN'
+                console.log 'resource:OPEN_DESIGN, region_name ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform
                 #
                 #check re-render
                 view.reRender template

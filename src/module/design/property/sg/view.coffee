@@ -82,6 +82,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			this.trigger 'REMOVE_SG_RULE', rule
 			$(event.target).parents('li').first().remove()
 
+			ruleCount =$("#sg-rule-list").children().length
+			$("#sg-rule-empty").toggle ruleCount == 0
+			$("#rule-count").text ruleCount
+
 		radioSgModalChange : (event) ->
 			if $('#sg-modal-direction input:checked').val() is "inbound"
 				$('#rule-modle-title2').text "Source"
@@ -163,6 +167,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			cur_count = cur_count + 1
 			$("#rule-count").text cur_count
 			$("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
+
+			$("#sg-rule-empty").toggle cur_count == 0
 
 			this.trigger "SET_SG_RULE", rule
 

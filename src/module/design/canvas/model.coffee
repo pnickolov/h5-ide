@@ -279,6 +279,34 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			component.resource.AvailabilityZone = MC.canvas_data.component[tgt_parent].resource.AvailabilityZone
 			null
 
+		changeP_ASG : ( component, tgt_parent ) ->
+
+			subnets = [ tgt_parent ]
+			sbs     = []
+			azs     = []
+			map     = {}
+
+			for uid, node of MC.canvas_data.layout.component.group
+				if node.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					continue
+
+				if node.originalId is component.uid
+					subnets.push node.groupUId
+
+			for sb in subnets
+				az = MC.canvas_data.component[ sb ].resource.AvailabilityZone
+				sbs.push "@#{sb}.resource.SubnetId"
+				if map[ az ]
+					continue
+				else
+					map[ az ] = true
+					azs.push az
+
+			component.resource.AvailabilityZones = azs
+			component.resource.VPCZoneIdentifier = sbs.join " , "
+
+			null
+
 		deleteObject : ( event, option ) ->
 
 			option = $.extend {}, option

@@ -76,7 +76,7 @@ define [ 'event',
 
             selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">Custom</div></li>')
 
-            scrollbar.init()
+            # scrollbar.init()
             return false
 
         saveRule : () ->

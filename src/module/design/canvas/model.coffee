@@ -621,7 +621,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# ELB <==> Subnet
 			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
-				MC.aws.elb.removeSubnetFromELB portMap['elb-assoc'], portMap['subnet-assoc-in']
+				elbUID = portMap['elb-assoc']
+				if !MC.aws.subnet.isCanDeleteSubnetToELBConnection(elbUID)
+					return { error : lang.ide.CVS_MSG_ERR_DEL_SBRT_LINE }
+				MC.aws.elb.removeSubnetFromELB elbUID, portMap['subnet-assoc-in']
 
 			# Eni <==> Instance
 			else if portMap['instance-attach'] and portMap['eni-attach']

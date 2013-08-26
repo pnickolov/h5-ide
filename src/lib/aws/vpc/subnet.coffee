@@ -232,6 +232,46 @@ define [ 'MC' ], ( MC ) ->
 
 		null
 
+	isCanDeleteSubnetToELBConnection = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		instanceRefAry = elbComp.resource.Instances
+
+		isCanDelete = true
+		if instanceRefAry.length isnt 0
+			isCanDelete = false
+
+		subnetAry = []
+		_.each MC.canvas_data.component, (comp) ->
+			if comp.type is 'AWS.VPC.Subnet'
+				subnetAry.push(comp)
+
+		azAry = []
+		_.each instanceRefAry, (instanceRef) ->
+			instanceUID = instanceRef.InstanceId.split('.')[0].slice(1)
+			instanceComp = MC.canvas_data.component[instanceUID]
+			instanceAZ = instanceComp.resource.Placement.AvailabilityZone
+			azAry.push(instanceAZ)
+			null
+
+		azSubnetNumMap = {}
+		_.each azAry, (azName) ->
+			azSubnetNumMap[azName] = 0
+			_.each subnetAry, (subnetComp) ->
+				subnetAZ = subnetComp.resource.AvailabilityZone
+				if subnetAZ is azName
+					azSubnetNumMap[azName]++
+				null
+			null
+
+		_.each azSubnetNumMap, (subnetNum) ->
+			if subnetNum is 1
+				isCanDelete = false
+				return false
+			null
+
+		return isCanDelete
+
 	#public
 	genCIDRPrefixSuffix : genCIDRPrefixSuffix
 	isSubnetConflict : isSubnetConflict
@@ -242,3 +282,4 @@ define [ 'MC' ], ( MC ) ->
 	updateAllENIIPList : updateAllENIIPList
 	isSubnetConflictInVPC : isSubnetConflictInVPC
 	autoAssignSimpleCIDR : autoAssignSimpleCIDR
+	isCanDeleteSubnetToELBConnection : isCanDeleteSubnetToELBConnection

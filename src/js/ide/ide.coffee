@@ -95,7 +95,10 @@ define [ 'MC', 'event', 'handlebars'
 		MC.process = {}
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null
+		#
+		MC.data.is_reset_session = false
 
+		#temp
 		MC.data.IDEView = view
 
 		#############################
@@ -126,7 +129,10 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'session invalid'
 			console.log error
 			#redirect to page ide.html
-			#window.location.href = 'login.html'
+			if MC.data.is_reset_session
+				MC.data.is_reset_session = false
+			else
+				window.location.href = 'login.html'
 			null
 
 		subRequestReady = () ->
@@ -234,6 +240,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'sub'
 			console.log error
 			if error.return_code is constant.RETURN_CODE.E_SESSION
+				MC.data.is_reset_session = true
 				require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
 
 		null

@@ -1310,7 +1310,16 @@ MC.canvas = {
 			var group_child = MC.canvas.groupChild(node),
 				group_data = MC.canvas.data.get('layout.component.group.' + node_id);
 
-			if (node_type === 'AWS.VPC.Subnet' && group_data.connection.length > 0)
+			if (
+					(
+						node_type === 'AWS.VPC.Subnet'
+						|| (
+							node_type === 'AWS.AutoScaling.Group'
+							&& group_data.originalId !== ""
+						)
+					)
+					&& group_data.connection.length > 0
+				)
 			{
 				$.each(group_data.connection, function (index, data)
 				{
@@ -3332,7 +3341,8 @@ MC.canvas.event.drawConnection = {
 				target_data,
 				target_node,
 				target_port,
-				is_connected;
+				is_connected,
+				line_data;
 
 			//calculate point of junction
 			switch (position)
@@ -3478,6 +3488,9 @@ MC.canvas.event.drawConnection = {
 											}
 											else
 											{
+												//line_data = layout_connection_data[data.line];
+
+												//if (line_data.target[node_id] === value.to && data.target === node_id)
 												if (data.port === value.to && data.target === node_id)
 												{
 													is_connected = true;

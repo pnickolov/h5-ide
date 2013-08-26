@@ -840,6 +840,7 @@ var constant_data = {
 				"InstanceType": "",
 				"Monitoring": "disabled",
 				"EbsOptimized": "false"
+				"NetworkInterface":[]
 			}
 		}
 	},

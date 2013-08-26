@@ -6,6 +6,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
   ASGConfigModel = Backbone.Model.extend {
 
+
     defaults :
       uid               : null
       asg               : null
@@ -20,8 +21,8 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       null
 
     setUID : ( uid ) ->
-
-      this.set 'uid', uid
+      this.attributes = {}
+      this.set { 'uid' : uid }
       null
 
     getASGDetailApp : ( uid ) ->

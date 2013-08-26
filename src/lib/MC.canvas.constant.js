@@ -1,6 +1,6 @@
 MC.canvas = MC.canvas || {};
 
-(function () {
+define([ 'i18n!/nls/lang.js' ], function( lang ){
 
 var constant_data = {
 
@@ -891,7 +891,7 @@ var constant_data = {
 				"VpcId": "", //eg: @3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId
 				"GroupName": "DefaultSG",
 				"OwnerId": "",
-				"GroupDescription": "vpc default security group"
+				"GroupDescription": lang.ide.PROP_TEXT_DEFAULT_SG_DESC
 			}
 
 		}
@@ -1728,4 +1728,4 @@ $.each(constant_data, function (key, value)
 	MC.canvas[ key ] = value;
 });
 
-})();
+});

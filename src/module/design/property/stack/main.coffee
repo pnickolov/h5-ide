@@ -11,18 +11,17 @@ define [ 'jquery',
 ], ( $, stack_template, app_template, acl_template, sub_template, ide_event ) ->
 
     #
-    current_view  = null
-    current_model = null
+    current_view     = null
+    current_model    = null
     current_sub_main = null
+    #
+    onceCache        = []
 
     #add handlebars script
     stack_template = '<script type="text/x-handlebars-template" id="property-stack-tmpl">' + stack_template + '</script>'
-
-    app_template = '<script type="text/x-handlebars-template" id="property-app-tmpl">' + app_template + '</script>'
-    acl_template = '<script type="text/x-handlebars-template" id="property-stack-acl-tmpl">' + acl_template + '</script>'
-
-    sub_template = '<script type="text/x-handlebars-template" id="property-stack-sns-tmpl">' + sub_template + '</script>'
-
+    app_template   = '<script type="text/x-handlebars-template" id="property-app-tmpl">' + app_template + '</script>'
+    acl_template   = '<script type="text/x-handlebars-template" id="property-stack-acl-tmpl">' + acl_template + '</script>'
+    sub_template   = '<script type="text/x-handlebars-template" id="property-stack-sns-tmpl">' + sub_template + '</script>'
 
     #load remote html template
     $( 'head' ).append stack_template
@@ -61,7 +60,11 @@ define [ 'jquery',
             view.model    = model
 
             #re calc cost when load module
-            model.getCost()
+            if tab_type is 'NEW_STACK'
+                model.set('cost_list', [])
+                model.set('total_fee', 0)
+            else
+                model.getCost()
 
             if view_type == 'app_view'
 
@@ -104,52 +107,57 @@ define [ 'jquery',
 
             view.on 'RESET_STACK_SG', (uid) ->
                 model.resetSecurityGroup uid
-
                 view.render()
-
                 current_sub_main = sglist_main
-
                 sglist_main.loadModule model
 
-            ide_event.onLongListen ide_event.RESOURCE_QUICKSTART_READY, () ->
+            #
+            resourceQuickstartReturn = () ->
                 console.log 'resource quickstart return'
-
                 model.getCost()
+            if !onceCache.resourceQuickstartReturn
+                onceCache.resourceQuickstartReturn = true
+                ide_event.onLongListen ide_event.RESOURCE_QUICKSTART_READY, resourceQuickstartReturn
 
-            ide_event.onLongListen ide_event.UPDATE_STACK_LIST, (flag) ->
+            #
+            stackUpdateStackList = ( flag ) ->
                 console.log 'stack:UPDATE_STACK_LIST'
-
-                if flag is 'NEW_STACK'
-                    renderPropertyPanel()
+                renderPropertyPanel() if flag is 'NEW_STACK'
+            if !onceCache.stackUpdateStackList
+                onceCache.stackUpdateStackList = true
+                ide_event.onLongListen ide_event.UPDATE_STACK_LIST, stackUpdateStackList
 
             model.on 'UPDATE_COST_LIST', () ->
                 console.log 'rerender property'
-
                 renderPropertyPanel()
 
             view.on 'SAVE_SUBSCRIPTION', ( data ) ->
-
+                console.log 'SAVE_SUBSCRIPTION'
                 model.addSubscription data
 
             model.on 'UPDATE_SNS_LIST', ( sns_list, has_asg ) ->
-
+                console.log 'UPDATE_SNS_LIST'
                 view.updateSNSList sns_list, has_asg
 
             view.on 'DELETE_SUBSCRIPTION', ( uid ) ->
-
+                console.log 'DELETE_SUBSCRIPTION'
                 model.deleteSNS uid
 
+            ###
             #refresh cost after add/remove resource
             ide_event.onLongListen ide_event.UPDATE_COST_ESTIMATE, () ->
-
                 model.getCost()
+            ###
+            #
+            null
 
     unLoadModule = () ->
-
+        console.log 'stack unLoadModule'
+        #
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
-
+        #
         if current_sub_main then current_sub_main.unLoadModule()
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>

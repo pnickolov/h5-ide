@@ -86,7 +86,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
-			handler   =  if component then this.validateDropMap[ component.type ] else null
+			handler   = if component then this.validateDropMap[ component.type ] else null
 			if handler
 				error = handler.call( this, component, tgt_parent )
 				if error
@@ -94,10 +94,28 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					notification "error", error
 			else
 				console.log "Morris : No handler for validate dragging node:", component
+
 			null
 
 		beforeD_Subnet : ( component, tgt_parent ) ->
-			null
+
+			# First set the tgt_parent to
+			parent = MC.canvas_data.layout.component.group[ tgt_parent ]
+			old_az = component.resource.AvailabilityZone
+			component.resource.AvailabilityZone = parent.name
+
+			for uid, node of MC.canvas_data.layout.component.node
+				if node.groupUId is component.uid
+					handler = this.validateDropMap[ node.type ]
+					if handler
+						error = handler.call( this, MC.canvas_data.component[uid], component.uid )
+
+					if error
+						break
+
+			component.resource.AvailabilityZone = old_az
+
+			error
 
 		beforeD_Instance : ( component, tgt_parent ) ->
 			resource_type = constant.AWS_RESOURCE_TYPE
@@ -221,7 +239,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Update Subnet's children's AZ
 			for key, value of MC.canvas_data.component
-
+  
 				if value.type == resource_type.AWS_EC2_Instance
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.Placement.AvailabilityZone = "1" # Set the Instance's subnet to something else, so we can change it.
@@ -230,6 +248,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				else if value.type == resource_type.AWS_VPC_NetworkInterface
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.AvailabilityZone = component.resource.AvailabilityZone
+
+				else if value.type == resource_type.AWS_AutoScaling_Group
+					if value.resource.VPCZoneIdentifier.indexOf( component.uid ) != -1
+						this.changeP_ASG value, component.uid
 
 				# Disconnect ELB and Subnet, if the newly moved to AZ has a subnet which is connected to the same ELB.
 				else if value.type == resource_type.AWS_ELB
@@ -259,6 +281,42 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 		changeP_Eni : ( component, tgt_parent ) ->
 			component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
 			component.resource.AvailabilityZone = MC.canvas_data.component[tgt_parent].resource.AvailabilityZone
+			null
+
+		changeP_ASG : ( component, tgt_parent ) ->
+
+			parents = [ tgt_parent ]
+			sbs     = []
+			azs     = []
+			map     = {}
+
+			for uid, node of MC.canvas_data.layout.component.group
+				if node.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					continue
+
+				if node.originalId is component.uid
+					parents.push node.groupUId
+
+			for p in parents
+
+				parent = MC.canvas_data.component[ p ]
+
+				if parent
+					# VPC mode
+					az = parent.resource.AvailabilityZone
+					sbs.push "@#{p}.resource.SubnetId"
+				else
+					az = MC.canvas_data.layout.component.group[ p ].name
+
+				if map[ az ]
+					continue
+				else
+					map[ az ] = true
+					azs.push az
+
+			component.resource.AvailabilityZones = azs
+			component.resource.VPCZoneIdentifier = sbs.join " , "
+
 			null
 
 		deleteObject : ( event, option ) ->

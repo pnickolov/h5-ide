@@ -267,7 +267,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
             #no config data load
             if not ( feeMap and feeMap.ami and feeMap.price )
-
+                me.set 'cost_list', cost_list
+                me.set 'total_fee', total_fee
                 return false
 
             _.map MC.canvas_data.component, (item) ->
@@ -291,7 +292,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                         fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
                         unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
 
-                        cost_list.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + '/hr' }
+                        cost_list.push { 'type' : item.type, 'resource' : name, 'size' : size, 'fee' : fee + (if unit is 'hour' then '/hr' else '/mo') }
 
                         total_fee += fee * 24 * 30
 
@@ -313,7 +314,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                         cost_list.push { 'type' : item.type, 'resource' : name, 'size' : '', 'fee' : vol.fee + '/mo' }
 
-                        total_fee += parseInt(vol.fee, 0)
+                        total_fee += parseFloat(vol.fee)
 
                 null
 

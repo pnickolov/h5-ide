@@ -30,23 +30,20 @@ define [ 'jquery',
                 #
                 #check re-render
                 view.reRender template
-                #
+                #init resoruce service count
                 model.service_count = 0
-                #
                 model.set 'check_required_service_count', -1
                 #
-                model.quickstartService             region_name
-
+                ide_event.onListen ide_event.RESOURCE_QUICKSTART_READY, (region_name) ->
+                    console.log 'resource:RESOURCE_QUICKSTART_READY'
+                    model.describeAvailableZonesService region_name
+                    model.describeSnapshotsService      region_name
+                model.quickstartService                 region_name
+                #
                 view.region = region_name
                 view.resourceVpcRender( current_platform, type )
                 view.communityAmiBtnRender()
-
-                ide_event.onLongListen ide_event.RESOURCE_QUICKSTART_READY, (region_name) ->
-                    console.log 'resource:RESOURCE_QUICKSTART_READY'
-
-                    model.describeAvailableZonesService region_name
-                    model.describeSnapshotsService      region_name
-
+                #
                 null
 
             ide_event.onLongListen ide_event.ENABLE_RESOURCE_ITEM, ( type, filter ) ->

@@ -106,7 +106,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                     ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY, region_name
                     #
-                    me._checkRequireServiceCount( 'AWS_QUICKSTART_RETURN' )
+                    me._checkRequireServiceCount( 'AWS_QUICKSTART_RETURN:NEW' )
 
                 else
                     # to do
@@ -365,7 +365,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 #describe ami in stack
                 me.describeStackAmiService region_name
 
-                me._checkRequireServiceCount( 'AWS_QUICKSTART_RETURN' )
+                me._checkRequireServiceCount( 'AWS_QUICKSTART_RETURN:OLD' )
 
                 ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY, region_name
 

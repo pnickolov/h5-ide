@@ -86,7 +86,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
-			handler   =  if component then this.validateDropMap[ component.type ] else null
+			handler   = if component then this.validateDropMap[ component.type ] else null
 			if handler
 				error = handler.call( this, component, tgt_parent )
 				if error
@@ -94,10 +94,28 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					notification "error", error
 			else
 				console.log "Morris : No handler for validate dragging node:", component
+
 			null
 
 		beforeD_Subnet : ( component, tgt_parent ) ->
-			null
+
+			# First set the tgt_parent to
+			parent = MC.canvas_data.layout.component.group[ tgt_parent ]
+			old_az = component.resource.AvailabilityZone
+			component.resource.AvailabilityZone = parent.name
+
+			for uid, node of MC.canvas_data.layout.component.node
+				if node.groupUId is component.uid
+					handler = this.validateDropMap[ node.type ]
+					if handler
+						error = handler.call( this, MC.canvas_data.component[uid], component.uid )
+
+					if error
+						break
+
+			component.resource.AvailabilityZone = old_az
+
+			error
 
 		beforeD_Instance : ( component, tgt_parent ) ->
 			resource_type = constant.AWS_RESOURCE_TYPE

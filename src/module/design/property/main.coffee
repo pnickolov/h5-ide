@@ -50,8 +50,8 @@ define [ 'jquery',
 			view.render template
 
 			#show stack property
-			ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
-				console.log 'property:RELOAD_RESOURCE, type = ' + type
+			ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type ) ->
+				console.log 'property:OPEN_DESIGN, type = ' + type
 				#check re-render
 				view.reRender template
 				#

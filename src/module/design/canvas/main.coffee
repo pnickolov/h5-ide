@@ -14,9 +14,9 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
             view       = new View()
             view.render template
 
-            #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform, tab_name, tab_id ) ->
-                console.log 'canvas:RELOAD_RESOURCE, region_name = ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform + ', tab_name = ' + tab_name + ', tab_id = ' + tab_id
+            #listen OPEN_DESIGN
+            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
+                console.log 'canvas:OPEN_DESIGN, region_name = ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform + ', tab_name = ' + tab_name + ', tab_id = ' + tab_id
                 #check re-render
                 view.reRender template
                 #temp

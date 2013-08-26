@@ -71,7 +71,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
 
                     #temp
                     #when NEW_STACK result is tab_id
-                    ide_event.trigger ide_event.RELOAD_RESOURCE, region_name, type, current_paltform, tab_id, result
+                    ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_paltform, tab_id, result
                 null
 
             #listen

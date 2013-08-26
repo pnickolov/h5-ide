@@ -24,9 +24,9 @@ define [ 'jquery',
             view.listen model
             view.model = model
 
-            #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform ) ->
-                console.log 'resource:RELOAD_RESOURCE'
+            #listen OPEN_DESIGN
+            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform ) ->
+                console.log 'resource:OPEN_DESIGN'
                 #
                 #check re-render
                 view.reRender template

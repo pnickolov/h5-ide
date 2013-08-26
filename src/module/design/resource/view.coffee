@@ -232,36 +232,42 @@ define [ 'event',
         availabilityZoneRender : () ->
             console.log 'availabilityZoneRender'
             console.log this.model.attributes.availability_zone
+            return if !this.model.attributes.availability_zone
             $( '.availability-zone' ).html this.availability_zone_tmpl this.model.attributes
             null
 
         resourceSnapshotRender : () ->
             console.log 'resourceSnapshotRender'
             console.log this.model.attributes.resoruce_snapshot
+            return if !this.model.attributes.resoruce_snapshot
             $( '.resoruce-snapshot' ).append this.resoruce_snapshot_tmpl this.model.attributes
             null
 
         quickstartAmiRender : () ->
             console.log 'quickstartAmiRender'
             console.log this.model.attributes.quickstart_ami
+            return if !this.model.attributes.quickstart_ami
             $( '.quickstart-ami-list' ).html this.quickstart_ami_tmpl this.model.attributes
             null
 
         myAmiRender : () ->
             console.log 'myAmiRender'
             console.log this.model.attributes.my_ami
+            return if !this.model.attributes.my_ami
             $( '.my-ami-list' ).html this.my_ami_tmpl this.model.attributes
             null
 
         favoriteAmiRender : () ->
             console.log 'favoriteAmiRender'
             console.log this.model.attributes.favorite_ami
+            return if !this.model.attributes.favorite_ami
             $( '.favorite-ami-list' ).html this.favorite_ami_tmpl this.model.attributes
             null
 
         communityAmiBtnRender : () ->
             console.log 'communityAmiRender'
             console.log this.model.attributes.community_ami
+            return if !this.model.attributes.community_ami
             $( '.community-ami' ).html this.community_ami_tmpl this
             null
 

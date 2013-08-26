@@ -57,6 +57,8 @@ define [ 'jquery',
 				#
 				tab_type = type
 				#
+				if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
+				#
 				stack_main.loadModule stack_main, type
 
 			#listen OPEN_PROPERTY

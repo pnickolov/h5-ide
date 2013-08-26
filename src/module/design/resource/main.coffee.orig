@@ -26,7 +26,7 @@ define [ 'jquery',
 
             #listen OPEN_DESIGN
             ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform ) ->
-                console.log 'resource:OPEN_DESIGN, region_name ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform
+                console.log 'resource:OPEN_DESIGN'
                 #
                 #check re-render
                 view.reRender template
@@ -34,6 +34,15 @@ define [ 'jquery',
                 model.service_count = 0
                 model.set 'check_required_service_count', -1
                 #
+<<<<<<< HEAD
+=======
+                model.quickstartService             region_name
+
+                view.region = region_name
+                view.resourceVpcRender( current_platform, type )
+                view.communityAmiBtnRender()
+
+>>>>>>> origin/develop
                 ide_event.onListen ide_event.RESOURCE_QUICKSTART_READY, (region_name) ->
                     console.log 'resource:RESOURCE_QUICKSTART_READY'
                     model.describeAvailableZonesService region_name

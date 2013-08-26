@@ -50,12 +50,14 @@ define [ 'jquery',
 			view.render template
 
 			#show stack property
-			ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
-				console.log 'property:RELOAD_RESOURCE, type = ' + type
+			ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type ) ->
+				console.log 'property:OPEN_DESIGN, type = ' + type
 				#check re-render
 				view.reRender template
 				#
 				tab_type = type
+				#
+				if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
 				#
 				stack_main.loadModule stack_main, type
 

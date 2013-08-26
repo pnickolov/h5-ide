@@ -14,7 +14,7 @@
 
 <section class="toolbar-btn-group">
 	{{#if item_flags.is_duplicate}}
-	<a href="#" class="btn-toolbar tooltip icon-duplicate" data-tooltip="Duplicate Stack" id="toolbar-duplicate"></a>
+	<a href="#" class="modal btn-toolbar tooltip icon-duplicate" data-tooltip="Duplicate Stack" id="toolbar-duplicate" data-modal-template="modalApp" data-modal-data='{"title":"Rename Stack", "body":"Stack Name:", "input":"{{item_flags.name}}", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"></a>
 	{{else}}
 	<a href="#" class="btn-toolbar tooltip icon-duplicate disabled" data-tooltip="Duplicate Stack"></a>
 	{{/if}}
@@ -39,6 +39,7 @@
 			<li class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
 				<i class="icon-export-json"></i>Export as Json</li>
 			<!-- env:dev -->
+			<li id="toolbar-jsoncopy" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
 			<li id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
 			<li id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</li>
 			<!-- env:dev:end -->

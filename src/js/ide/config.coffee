@@ -202,6 +202,10 @@ require.config {
 
 	shim               :
 
+		#############################################
+		# vender
+		#############################################
+
 		'jquery'       :
 			exports    : '$'
 
@@ -219,6 +223,10 @@ require.config {
 		'handlebars'   :
 			exports    : 'Handlebars'
 
+		#############################################
+		# MC
+		#############################################
+
 		'MC'           :
 			deps       : [ 'jquery','sprintf' ]
 			exports    : 'MC'
@@ -233,6 +241,19 @@ require.config {
 		'MC.ide.template'  :
 			deps       : [ 'MC', 'jquery', 'underscore' ]
 
+		'MC.canvas'    :
+			deps       : [ 'MC', 'canvon' ]
+
+		'MC.canvas.constant':
+			deps       : [ 'MC.canvas' ]
+
+		'MC.canvas.add':
+			deps       : [ 'MC.canvas.constant' ]
+
+		#############################################
+		# UI
+		#############################################
+
 		'UI.tabbar'    :
 			deps       : [ 'MC.template', 'jquery' ]
 
@@ -242,66 +263,66 @@ require.config {
 		'UI.modal'     :
 			deps       : [ 'MC.template', 'jquery' ]
 
+		'UI.tooltip'   :
+			deps       : [ 'jquery' ]
 
-		'UI.tooltip'         :
-			deps 	: [ 'jquery' ]
+		'UI.scrollbar' :
+			deps       : [ 'jquery' ]
 
-		'UI.scrollbar'       :
-			deps 	: [ 'jquery' ]
+		'UI.accordion' :
+			deps       : [ 'jquery' ]
 
-		'UI.accordion'       :
-			deps 	: [ 'jquery' ]
+		'UI.table'     :
+			deps       : [ 'jquery' ]
 
-		'UI.table'           :
-			deps 	: [ 'jquery' ]
+		'UI.tablist'   :
+			deps       : [ 'jquery' ]
 
-		'UI.tablist'         :
-			deps 	: [ 'jquery' ]
+		'UI.fixedaccordion' :
+			deps       : [ 'jquery' ]
 
-		'UI.fixedaccordion'  :
-			deps 	: [ 'jquery' ]
+		'UI.selectbox' :
+			deps       : [ 'jquery' ]
 
-		'UI.selectbox'       :
-			deps 	: [ 'jquery' ]
+		'UI.toggleicon' :
+			deps       : [ 'jquery' ]
 
-		'UI.toggleicon'      :
-			deps 	: [ 'jquery' ]
+		'UI.searchbar' :
+			deps       : [ 'jquery' ]
 
-		'UI.searchbar'       :
-			deps 	: [ 'jquery' ]
+		'UI.filter'    :
+			deps       : [ 'jquery' ]
 
-		'UI.filter'          :
-			deps 	: [ 'jquery' ]
+		'UI.radiobuttons' :
+			deps       : [ 'jquery' ]
 
-		'UI.radiobuttons'    :
-			deps 	: [ 'jquery' ]
+		'UI.notification' :
+			deps       : [ 'jquery' ]
 
-		'UI.notification'    :
-			deps 	: [ 'jquery' ]
+		'UI.secondarypanel' :
+			deps       : [ 'jquery' ]
 
-		'UI.secondarypanel'  :
-			deps 	: [ 'jquery' ]
+		'UI.slider'    :
+			deps       : [ 'jquery' ]
 
-		'UI.slider'          :
-			deps 	: [ 'jquery' ]
+		'UI.editablelabel' :
+			deps       : [ 'jquery' ]
 
-		'UI.editablelabel'   :
-			deps 	: [ 'jquery' ]
+		'UI.multiinputbox' :
+			deps       : [ 'jquery' ]
 
-		'UI.multiinputbox'   :
-			deps 	: [ 'jquery' ]
+		'UI.zeroclipboard' :
+			deps       : [ 'jquery' ]
 
-		'UI.zeroclipboard'   :
-			deps 	: [ 'jquery' ]
+		'UI.sortable'  :
+			deps       : [ 'jquery' ]
 
-		'UI.sortable'        :
-			deps 	: [ 'jquery' ]
+		'UI.parsley'   :
+			deps       : [ 'jquery' ]
 
-		'UI.parsley' 	     :
-			deps 	: [ 'jquery' ]
-
-
-
+		#############################################
+		# WS
+		#############################################
 
 		'Meteor'       :
 			deps       : ['underscore']
@@ -311,14 +332,9 @@ require.config {
 			deps       : [ 'Meteor', 'underscore', 'MC' ]
 			exports    : 'WS'
 
-		'MC.canvas'    :
-			deps       : [ 'MC', 'canvon' ]
-
-		'MC.canvas.constant':
-			deps       : [ 'MC.canvas' ]
-
-		'MC.canvas.add':
-			deps       : [ 'MC.canvas.constant' ]
+		#############################################
+		# temp
+		#############################################
 
 		'canvas_layout':
 			deps       : [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon' ]

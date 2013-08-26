@@ -86,7 +86,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
-			handler   =  if component then this.validateDropMap[ component.type ] else null
+			handler   = if component then this.validateDropMap[ component.type ] else null
 			if handler
 				error = handler.call( this, component, tgt_parent )
 				if error
@@ -94,10 +94,28 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					notification "error", error
 			else
 				console.log "Morris : No handler for validate dragging node:", component
+
 			null
 
 		beforeD_Subnet : ( component, tgt_parent ) ->
-			null
+
+			# First set the tgt_parent to
+			parent = MC.canvas_data.layout.component.group[ tgt_parent ]
+			old_az = component.resource.AvailabilityZone
+			component.resource.AvailabilityZone = parent.name
+
+			for uid, node of MC.canvas_data.layout.component.node
+				if node.groupUId is component.uid
+					handler = this.validateDropMap[ node.type ]
+					if handler
+						error = handler.call( this, MC.canvas_data.component[uid], component.uid )
+
+					if error
+						break
+
+			component.resource.AvailabilityZone = old_az
+
+			error
 
 		beforeD_Instance : ( component, tgt_parent ) ->
 			resource_type = constant.AWS_RESOURCE_TYPE
@@ -221,7 +239,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Update Subnet's children's AZ
 			for key, value of MC.canvas_data.component
-
+  
 				if value.type == resource_type.AWS_EC2_Instance
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.Placement.AvailabilityZone = "1" # Set the Instance's subnet to something else, so we can change it.
@@ -230,6 +248,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				else if value.type == resource_type.AWS_VPC_NetworkInterface
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.AvailabilityZone = component.resource.AvailabilityZone
+
+				else if value.type == resource_type.AWS_AutoScaling_Group
+					if value.resource.VPCZoneIdentifier.indexOf( component.uid ) != -1
+						this.changeP_ASG value, component.uid
 
 				# Disconnect ELB and Subnet, if the newly moved to AZ has a subnet which is connected to the same ELB.
 				else if value.type == resource_type.AWS_ELB
@@ -259,6 +281,42 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 		changeP_Eni : ( component, tgt_parent ) ->
 			component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
 			component.resource.AvailabilityZone = MC.canvas_data.component[tgt_parent].resource.AvailabilityZone
+			null
+
+		changeP_ASG : ( component, tgt_parent ) ->
+
+			parents = [ tgt_parent ]
+			sbs     = []
+			azs     = []
+			map     = {}
+
+			for uid, node of MC.canvas_data.layout.component.group
+				if node.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					continue
+
+				if node.originalId is component.uid
+					parents.push node.groupUId
+
+			for p in parents
+
+				parent = MC.canvas_data.component[ p ]
+
+				if parent
+					# VPC mode
+					az = parent.resource.AvailabilityZone
+					sbs.push "@#{p}.resource.SubnetId"
+				else
+					az = MC.canvas_data.layout.component.group[ p ].name
+
+				if map[ az ]
+					continue
+				else
+					map[ az ] = true
+					azs.push az
+
+			component.resource.AvailabilityZones = azs
+			component.resource.VPCZoneIdentifier = sbs.join " , "
+
 			null
 
 		deleteObject : ( event, option ) ->
@@ -313,8 +371,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 			else if result isnt false
-				# MC.canvas.remove actually remove the component from MC.canvas_data.component.
-				# Consider this as bad coding pattern, because its canvas/model's job to do that.
+
 				MC.canvas.remove $("#" + option.id)[0]
 				delete MC.canvas_data.component[option.id]
 				this.trigger 'DELETE_OBJECT_COMPLETE'
@@ -437,10 +494,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 		deleteR_RouteTable : ( component ) ->
 			if component.resource.AssociationSet.length > 0 and "" + component.resource.AssociationSet[0].Main == 'true'
-				return { error : sprintf lang.ide.CVS_MSG_ERR_DEL_MAIN_RT }
+				return { error : sprintf lang.ide.CVS_MSG_ERR_DEL_MAIN_RT, component.name }
 
-			if component.resource.AssociationSet.length > 0
-				return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_RT }
+			delete MC.canvas_data.component[component.uid]
+			MC.aws.rtb.updateRT_SubnetLines()
 			null
 
 		deleteR_IGW : ( component, force ) ->
@@ -655,9 +712,19 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				rt_uid = portMap['rtb-src']
 				sb_uid = portMap['subnet-assoc-out']
 
-				component_resource = MC.canvas_data.component[rt_uid].resource
-				return { error : lang.ide.CVS_MSG_ERR_DEL_SBRT_LINE }
+				# Remove asso
+				assoSet = MC.canvas_data.component[ rt_uid ].resource.AssociationSet
+				for asso, index in assoSet
+					if asso.SubnetId.indexOf( sb_uid ) != -1
+						assoSet.splice index, 1
+						break
 
+				# If this is main rt, keep the connection
+				if assoSet.length and "" + assoSet[0].Main is "true"
+					return false
+				else
+					MC.canvas.connect sb_uid, "subnet-assoc-out", this._findMainRT(), 'rtb-src'
+					return
 
 			# Instance <==> RouteTable
 			else if portMap['instance-rtb'] and portMap['rtb-tgt']
@@ -986,43 +1053,38 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			else if portMap['subnet-assoc-out'] and portMap['rtb-src']
 
 				rt_uid = portMap['rtb-src']
+				sb_uid = portMap['subnet-assoc-out']
 
 				# add association
 				assoSet = MC.canvas_data.component[rt_uid].resource.AssociationSet
+				assoSet.push {
+					SubnetId     : "@#{portMap['subnet-assoc-out']}.resource.SubnetId"
+					Main         : "false"
+					RouteTableId : ""
+					RouteTableAssociationId : ""
+				}
 
-				if assoSet.length == 0 or "" + assoSet[0].Main != 'true'
-					assoSet.push {
-						SubnetId     : "@#{portMap['subnet-assoc-out']}.resource.SubnetId"
-						Main         : "false"
-						RouteTableId : ""
-						RouteTableAssociationId : ""
-					}
-
-				# remove old connection and data
 				for line_uid, comp of MC.canvas_data.layout.connection
-					if line_uid == line_id
+					if line_uid is line_id
 						continue
 
+					if comp.target[ sb_uid ] isnt 'subnet-assoc-out'
+						continue
 
 					map = {}
 					for tgt_comp_uid, tgt_comp_port of comp.target
 						map[ tgt_comp_port ] = tgt_comp_uid
 
-					if not map['subnet-assoc-out'] or map['subnet-assoc-out'] isnt portMap['subnet-assoc-out']
+					if not map['rtb-src']
 						continue
 
-
-
-					# remove component data
-					old_rt_uid = map['rtb-src']
-					assoSet = MC.canvas_data.component[old_rt_uid].resource.AssociationSet
-
+					assoSet = MC.canvas_data.component[ map['rtb-src'] ].resource.AssociationSet
 					for asso, index in assoSet
-						if MC.extractID( asso.SubnetId ) == map['subnet-assoc-out']
+						if asso.SubnetId.indexOf( sb_uid ) != -1
 							assoSet.splice index, 1
 							break
 
-					MC.canvas.remove $("#" + line_uid)[0]
+					MC.canvas.remove document.getElementById line_uid
 					break
 
 			# IGW <==> RouteTable
@@ -1161,7 +1223,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				when resource_type.AWS_VPC_Subnet
 					# Connect to main RT
 					line_id = MC.canvas.connect uid, "subnet-assoc-out", this._findMainRT(), 'rtb-src'
-					this.createLine null, line_id
 
 					# Associate to default acl
 					defaultACLComp = MC.aws.acl.getDefaultACL()
@@ -1419,7 +1480,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
-					if comp.resource.AssociationSet[0].Main is true or comp.resource.AssociationSet[0].Main is 'true'
+					if comp.resource.AssociationSet.length and "" + comp.resource.AssociationSet[0].Main is 'true'
 
 						main_rt = comp_uid
 

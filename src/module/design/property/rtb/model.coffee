@@ -24,58 +24,27 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
         setMainRT : ( uid ) ->
 
-            #remove association
-            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable and comp.resource.AssociationSet.length != 0 and comp.resource.AssociationSet[0].Main == 'true'
+            for id, comp of MC.canvas_data.component
+                if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+                    continue
 
+                if comp.resource.AssociationSet.length and "" + comp.resource.AssociationSet[0].Main is 'true'
                     comp.resource.AssociationSet.splice 0, 1
-
                     MC.canvas.update comp.uid, 'image', 'rt_status', MC.canvas.IMAGE.RT_CANVAS_NOT_MAIN
-                    # add new association to not main rt
-                    $.each MC.canvas_data.layout.connection, ( line_id, line_obj ) ->
 
-                        map = {}
 
-                        $.each line_obj.target, ( comp_uid, comp_type ) ->
+            asso =
+                "Main"                    : "true"
+                "RouteTableId"            : ""
+                "SubnetId"                : ""
+                "RouteTableAssociationId" : ""
 
-                            map[comp_type] = comp_uid
-
-                            null
-
-                        if map['rtb-src']
-
-                            rt_uid = map['rtb-src']
-
-                            if rt_uid == comp.uid
-
-                                asso = {}
-
-                                asso.SubnetId = '@' + map['subnet-assoc-out'] + '.resource.SubnetId'
-
-                                asso.Main = 'false'
-
-                                asso.RouteTableId = ''
-
-                                asso.RouteTableAssociationId = ''
-
-                                comp.resource.AssociationSet.push asso
-
-                    return false
-
-            asso = {
-
-                "Main": "true",
-                "RouteTableId": "",
-                "SubnetId": "",
-                "RouteTableAssociationId": ""
-            }
-
-            # remove main association and add new association
-            MC.canvas_data.component[uid].resource.AssociationSet = []
-            MC.canvas_data.component[uid].resource.AssociationSet.push asso
-
+            comp = MC.canvas_data.component[ uid ]
+            comp.resource.AssociationSet.splice 0, 0, asso
             MC.canvas.update uid, 'image', 'rt_status', MC.canvas.IMAGE.RT_CANVAS_MAIN
+
+            MC.aws.rtb.updateRT_SubnetLines()
 
             null
 

@@ -54,8 +54,8 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
                     view.render()
                 , 500
 
-            ide_event.onListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_paltform, item_name ) ->
-                console.log 'RELOAD_RESOURCE'
+            ide_event.onListen ide_event.OPEN_DESIGN, ( region_name, type, current_paltform, item_name ) ->
+                console.log 'OPEN_DESIGN'
                 model.setFlag(false)
                 view.render()
 

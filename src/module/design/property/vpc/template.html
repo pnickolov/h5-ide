@@ -82,12 +82,12 @@
           {{#each dhcp.domainServers}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" value="{{this}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" value="{{this}}" type="text" maxlength="255" placeholder="e.g. 172.16.16.16" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{else}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses"  placeholder="e.g. 172.16.16.16" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{/each}}
         </div>

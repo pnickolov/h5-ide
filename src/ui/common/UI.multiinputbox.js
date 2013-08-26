@@ -20,6 +20,11 @@ var multiinputbox;
       $( baseParent )
         .on("click", ".multi-input .icon-add", add)
         .on("click", ".multi-input .icon-del", del);
+    },
+    update : function( target ) {
+      var $wrapper = $( target );
+      var max = parseInt($wrapper.attr("data-max-row"));
+      $wrapper.toggleClass("max", max && max <= $wrapper.children().length );
     }
   };
 

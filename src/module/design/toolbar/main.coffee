@@ -27,9 +27,9 @@ define [ 'jquery',
             view.model = model
             view.render()
 
-            #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform, tab_name, tab_id ) ->
-                console.log 'toolbar:RELOAD_RESOURCE, region_name = ' + region_name + ', type = ' + type
+            #listen OPEN_DESIGN
+            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
+                console.log 'toolbar:OPEN_DESIGN, region_name = ' + region_name + ', type = ' + type
 
                 #temp
                 setTimeout () ->

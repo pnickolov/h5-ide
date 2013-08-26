@@ -80,11 +80,11 @@ var MC = MC || {};
 
 	MC.validate.preventDupname = function( target, id, name, type ) {
 		target.parsley('custom', function( val ) {
-			if ( name && !MC.validate( 'awsName',  name ) ) {
+			if ( val && !MC.validate( 'awsName',  val ) ) {
 				return 'This value should be a valid ' + type + ' name.';
 			}
-            if ( !MC.aws.aws.checkIsRepeatName( id, name ) ) {
-                return type + ' name " ' + name + ' " is already in using. Please use another one.'
+            if ( !MC.aws.aws.checkIsRepeatName( id, val ) ) {
+                return type + ' name " ' + val + ' " is already in using. Please use another one.'
             }
 		})
 	};

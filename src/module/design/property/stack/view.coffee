@@ -65,11 +65,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             stackId = @model.get( 'property_detail' ).id
             name = stackNameInput.val()
 
-            stackNameInput.parsley 'custom', () ->
-                if not MC.validate 'awsName',  name
+            stackNameInput.parsley 'custom', ( val ) ->
+                if not MC.validate 'awsName',  val
                     return 'This value should be a valid Stack name.'
 
-                if not MC.aws.aws.checkStackName stackId, name
+                if not MC.aws.aws.checkStackName stackId, val
                     return "Stack name \" #{name} \" is already in using. Please use another one."
 
             if stackNameInput.parsley 'validate'

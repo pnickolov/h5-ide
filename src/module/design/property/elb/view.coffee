@@ -18,6 +18,7 @@ define ['event', 'MC',
 
         template : Handlebars.compile $( '#property-elb-tmpl' ).html()
 
+        ###
         initialize : ->
             #handlebars equal logic
             Handlebars.registerHelper 'ifCond', (v1, v2, options) ->
@@ -26,6 +27,7 @@ define ['event', 'MC',
                 options.inverse this
 
             null
+        ###
 
         events   :
             'change #property-elb-name' : 'elbNameChange'

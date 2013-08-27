@@ -1,34 +1,31 @@
-
-
-
 <article class="property-app">
 {{#if isLC}}
     <dl class="dl-vertical">
     <dt>Device Name</dt>
-    <dd>{{DeviceName}}</dd>
+    <dd>{{emptyStr DeviceName}}</dd>
     <dt>Volume Size</dt>
-    <dd>{{Ebs.VolumeSize}} GB</dd>
+    <dd>{{emptyStr Ebs.VolumeSize}} GB</dd>
   </dl>
 {{else}}
   <dl class="dl-vertical">
     <dt>Volume ID</dt>
-    <dd>{{volumeId}}</dd>
+    <dd>{{emptyStr volumeId}}</dd>
     <dt>Device Name</dt>
-    <dd>{{name}}</dd>
+    <dd>{{emptyStr name}}</dd>
     <dt>State</dt>
     <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
     <dt>Create Time</dt>
-    <dd>{{createTime}}</dd>
+    <dd>{{emptyStr createTime}}</dd>
   </dl>
   <dl class="dl-vertical">
     <dt>Volume Type</dt>
-    <dd>{{volumeType}}</dd>
+    <dd>{{emptyStr volumeType}}</dd>
     {{#if snapshotId}}
     <dt>Snapshot ID</dt>
     <dd>{{snapshotId}}</dd>
     {{/if}}
     <dt>Volume Size</dt>
-    <dd>{{size}} GB</dd>
+    <dd>{{emptyStr size}} GB</dd>
     {{#if IOPS}}
     <dt>IOPS</dt>
     <dd>{{IOPS}}</dd>
@@ -36,11 +33,11 @@
   </dl>
   <dl class="dl-vertical">
     <dt>Attachment Status</dt>
-    <dd>{{attachmentSet.item.0.status}}</dd>
+    <dd>{{emptyStr attachmentSet.item.0.status}}</dd>
     <dt>Instance ID</dt>
-    <dd>{{attachmentSet.item.0.instanceId}}</dd>
+    <dd>{{emptyStr attachmentSet.item.0.instanceId}}</dd>
     <dt>Attach Time</dt>
-    <dd>{{attachmentSet.item.0.attachTime}}</dd>
+    <dd>{{emptyStr attachmentSet.item.0.attachTime}}</dd>
   </dl>
 
 {{/if}}

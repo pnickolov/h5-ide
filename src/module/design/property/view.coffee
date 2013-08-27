@@ -8,6 +8,20 @@ define [ './temp_view',
          'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon', 'UI.multiinputbox', 'MC.validate', 'UI.parsley'
 ], ( temp_view, ide_event ) ->
 
+    # #########################
+    # Handlebar helper
+    # #########################
+    Handlebars.registerHelper 'ifCond', (v1, v2, options) ->
+        if v1 is v2
+            return options.fn this
+        options.inverse this
+
+    Handlebars.registerHelper 'emptyStr', (v1) ->
+        if v1 then v1 else "-"
+
+    # #########################
+    # #########################
+
     PropertyView = Backbone.View.extend {
 
         el         : '#property-panel'

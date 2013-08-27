@@ -864,6 +864,13 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 					this.trigger 'SHOW_SG_LIST', line_id
 
+				else if portMap['elb-sg-out'] and portMap['instance-sg']
+					instnace_ref = '@' + portMap['instance-sg'] + '.resource.InstanceId'
+					instance_index = MC.canvas_data.component[portMap['elb-sg-out']].resource.Instances.indexOf(instnace_ref)
+					if instance_index >= 0
+						MC.canvas_data.component[portMap['elb-sg-out']].resource.Instances.splice instance_index, 1
+					MC.canvas.remove $("#" + option.id)[0]
+
 				else
 					this.trigger 'SHOW_SG_LIST', option.id
 

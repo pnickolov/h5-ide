@@ -329,6 +329,11 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       MC.canvas.update uid, 'text', 'name', name
 
+      # update extended asg
+      _.each MC.canvas_data.layout.component.group, ( group, id ) ->
+        if group.originalId is uid
+          MC.canvas.update id, 'text', 'name', name
+
       null
 
     setASGMin : ( uid, value ) ->

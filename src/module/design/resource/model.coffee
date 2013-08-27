@@ -85,10 +85,10 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                     MC.data.config[region_name].price               = result.resolved_data.price
                     MC.data.config[region_name].vpc_limit           = result.resolved_data.vpc_limit
                     # reset az
-                    MC.data.config[region_name].zone = {'item':[]}
-                    MC.data.config[region_name].zone.item.push {'regionName':region_name, 'zoneName':i, 'zoneState':'available'} for i in result.resolved_data.zone
-                    #MC.data.config[region_name].zone                = result.resolved_data.zone
-                    #MC.data.config[region_name].zone                = null
+                    MC.data.config[region_name].zone                = null
+                    if $.cookie('has_cred') isnt 'true'
+                        MC.data.config[region_name].zone = {'item':[]}
+                        MC.data.config[region_name].zone.item.push {'regionName':region_name, 'zoneName':i, 'zoneState':'available'} for i in result.resolved_data.zone
 
                     MC.data.config[region_name].ami_list = ami_list
 
@@ -262,7 +262,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 null
 
         #call service
-        describeAvailableZonesService : ( region_name, type ) ->
+        describeAvailableZonesService : ( region_name ) ->
 
             me = this
 
@@ -306,17 +306,17 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                         res = $.extend true, {}, result.resolved_data
 
-                        if type != 'NEW_STACK'
+                        #if type != 'NEW_STACK'
 
-                            $.each res.item, ( idx, value ) ->
+                        $.each res.item, ( idx, value ) ->
 
-                                $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+                            $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
 
-                                    if zone.name == value.zoneName
+                                if zone.name == value.zoneName
 
-                                        res.item[idx].isUsed = true
+                                    res.item[idx].isUsed = true
 
-                                        null
+                                    null
 
                         console.log 'get az: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
                         if region_name == MC.canvas.data.get('region')

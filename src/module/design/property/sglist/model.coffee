@@ -118,6 +118,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 
 			that.set 'sg_list', displaySGAry
+			that.set 'sg_length', if stackType then displaySGAry.length else enabledSGCount
 
 			null
 

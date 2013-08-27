@@ -68,12 +68,26 @@ MC.canvas = {
 		return true;
 	},
 
-
-	update_sg_color: function (uid)
+	updateSG: function (id)
 	{
-		var all_sg = MC.canvas_property.sg_list,
-			ins_sg = MC.cnavas.data.get('component')[uid].resource.SecurityGroupId;
-		//TO-DO
+		var instance_SG = MC.canvas.data.get('component.' + id + '.resource.SecurityGroup'),
+			SG_list = MC.canvas_property.sg_list,
+			colors = [];
+
+		$.each(instance_SG, function (index, SG_uid)
+		{
+			SG_uid = SG_uid.substr(1, 36);
+
+			$.each(SG_list, function (i, SG_data)
+			{
+				if (SG_data.uid === SG_uid)
+				{
+					colors.push(SG_data.color);
+				}
+			});
+		});
+
+		console.info(color);
 	},
 
 	resize: function (target, type)
@@ -1299,7 +1313,16 @@ MC.canvas = {
 			var group_child = MC.canvas.groupChild(node),
 				group_data = MC.canvas.data.get('layout.component.group.' + node_id);
 
-			if (node_type === 'AWS.VPC.Subnet' && group_data.connection.length > 0)
+			if (
+					(
+						node_type === 'AWS.VPC.Subnet'
+						|| (
+							node_type === 'AWS.AutoScaling.Group'
+							&& group_data.originalId !== ""
+						)
+					)
+					&& group_data.connection.length > 0
+				)
 			{
 				$.each(group_data.connection, function (index, data)
 				{
@@ -3308,7 +3331,8 @@ MC.canvas.event.drawConnection = {
 				target_data,
 				target_node,
 				target_port,
-				is_connected;
+				is_connected,
+				line_data;
 
 			//calculate point of junction
 			switch (position)
@@ -3454,7 +3478,10 @@ MC.canvas.event.drawConnection = {
 											}
 											else
 											{
-												if (data.port === value.to && data.target === node_id)
+												line_data = layout_connection_data[data.line];
+
+												if (line_data.target[node_id] === value.from && data.target === node_id)
+												//if (data.port === value.to && data.target === node_id)
 												{
 													is_connected = true;
 												}

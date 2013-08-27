@@ -144,6 +144,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
         deleteSNS : ( uid ) ->
 
+            sub_list = this.get 'subscription'
+            for sub, idx in sub_list
+                if sub.uid is uid
+                    sub_list.splice idx, 1
+                    break
+
             delete MC.canvas_data.component[uid]
 
             null

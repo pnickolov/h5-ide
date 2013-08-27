@@ -322,7 +322,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
                         else
                             vol = i for i in feeMap.price.ebs.ebsPIOPSVols when i.unit is 'perGBmoProvStorage'
 
-                        cost_list.push { 'resource' : name, 'size' :  item.resource.Size + 'G', 'fee' : vol.fee + '/perGBmo' }
+                        # get attached instanc name
+                        instance_uid    = item.resource.AttachmentSet.InstanceId.split('@')[1].split('.')[0]
+                        instance_name   = MC.canvas_data.component[instance_uid].name
+
+                        cost_list.push { 'resource' : instance_name + ' - ' + name, 'size' :  item.resource.Size + 'G', 'fee' : vol.fee + '/perGBmo' }
 
                         total_fee += parseFloat(vol.fee * item.resource.Size)
 

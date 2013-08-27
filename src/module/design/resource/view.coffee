@@ -267,7 +267,7 @@ define [ 'event',
         communityAmiBtnRender : () ->
             console.log 'communityAmiRender'
             console.log this.model.attributes.community_ami
-            return if !this.model.attributes.community_ami
+            #return if !this.model.attributes.community_ami
             $( '.community-ami' ).html this.community_ami_tmpl this
             null
 

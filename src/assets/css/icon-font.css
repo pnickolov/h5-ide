@@ -28,7 +28,8 @@
 .icon-export-png,
 .icon-export-json,
 .icon-caret-down,
-.icon-terminate {
+.icon-terminate,
+.icon-close {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -53,4 +54,5 @@
 .icon-export-png:before  { content : "\F11D"; }
 .icon-export-json:before { content : "\F11E"; }
 .icon-caret-down:before { content : "\F121"; }
+.icon-close:before { content : "\F122"; }
 .icon-terminate:before { content : "\F123"; }

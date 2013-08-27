@@ -36,6 +36,12 @@ define [ 'MC', 'event',
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
 
+            #line style
+            'click #toolbar-straight'       : 'clickLineStyleStraight'
+            'click #toolbar-elbow'          : 'clickLineStyleElbow'
+            'click #toolbar-bezier-q'       : 'clickLineStyleBezierQ'
+            'click #toolbar-bezier-qt'      : 'clickLineStyleBezierQT'
+
         render   : ( type ) ->
             console.log 'toolbar render'
             #
@@ -206,7 +212,7 @@ define [ 'MC', 'event',
             this.trigger 'TOOLBAR_EXPORT_PNG_CLICK', MC.canvas_data
 
         clickExportJSONIcon : ->
-            file_content = MC.canvas.layout.save()
+            file_content = JSON.stringify MC.canvas.layout.save()
             #this.trigger 'TOOLBAR_EXPORT_MENU_CLICK'
             $( '#btn-confirm' ).attr {
                 'href'      : "data://text/plain; " + file_content,
@@ -298,6 +304,28 @@ define [ 'MC', 'event',
                     #me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
                     ide_event.trigger ide_event.TERMINATE_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
                     modal.close()
+
+
+        clickLineStyleStraight  : (event) ->
+            MC.canvas_property.LINE_STYLE = 1
+            ide_event.trigger ide_event.REDRAW_SG_LINE
+            null
+
+        clickLineStyleElbow     : (event) ->
+            MC.canvas_property.LINE_STYLE = 0
+            ide_event.trigger ide_event.REDRAW_SG_LINE
+            null
+
+        clickLineStyleBezierQ   : (event) ->
+            MC.canvas_property.LINE_STYLE = 2
+            ide_event.trigger ide_event.REDRAW_SG_LINE
+            null
+
+        clickLineStyleBezierQT  : (event) ->
+            MC.canvas_property.LINE_STYLE = 3
+            ide_event.trigger ide_event.REDRAW_SG_LINE
+            null
+
 
     }
 

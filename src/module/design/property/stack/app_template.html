@@ -62,7 +62,11 @@
 				{{#each cost_list}}
 				<tr>
 					<td>{{resource}}</td>
-					<td>{{size}}</td>
+                    {{#if size}}
+                    <td>{{size}}</td>
+                    {{else}}
+                    <td>{{type}}</td>
+                    {{/if}}
 					<td>{{fee}}</td>
 				</tr>
 				{{/each}}

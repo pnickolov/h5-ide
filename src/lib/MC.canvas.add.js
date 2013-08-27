@@ -731,7 +731,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
 				component_data.name = option.name;
-				option.number = 1;
+				component_data.number = 1;
 
 				component_data.resource.ImageId = option.imageId;
 				component_data.resource.InstanceType = 'm1.small';
@@ -785,7 +785,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
-				option.number = component_data.number ? component_data.number : 1;
+				component_data.number = component_data.number ? component_data.number : 1;
 
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					$.each(MC.canvas_data.component, function ( key, val ){
@@ -813,6 +813,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.rootDeviceType = component_layout.rootDeviceType ;
 				option.virtualizationType = component_layout.virtualizationType;
 			}
+
+			//instance number in group
+			option.number = component_data.number;
 
 			//os type
 			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;

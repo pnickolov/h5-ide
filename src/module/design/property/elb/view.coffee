@@ -83,19 +83,24 @@ define ['event', 'MC',
             console.log 'elbNameChange'
             value = event.target.value
 
-            # required validate
-            if not MC.validate 'required', value
-                return
+            # # required validate
+            # if not MC.validate 'required', value
+            #     return
 
-            # repeat name check
+            # # repeat name check
+            # cid = $( '#elb-property-detail' ).attr 'component'
+            # if MC.aws.aws.checkIsRepeatName(cid, value)
+            #     $('#property-elb-name').parsley('showError', 'Load Balancer name already in use, please choose another.')
+            #     return
+
+            # $('#property-elb-name').parsley('hideError')
+
             cid = $( '#elb-property-detail' ).attr 'component'
-            if MC.aws.aws.checkIsRepeatName(cid, value)
-                $('#property-elb-name').parsley('showError', 'Load Balancer name already in use, please choose another.')
-                return
 
-            $('#property-elb-name').parsley('hideError')
+            target = $ event.currentTarget
+            MC.validate.preventDupname target, cid, value, 'Load Balancer'
 
-            cid = $( '#elb-property-detail' ).attr 'component'
+            if !target.parsley('validate') then return
 
             this.trigger 'ELB_NAME_CHANGED', value
 
@@ -230,12 +235,17 @@ define ['event', 'MC',
 
             isShowCertPanel = false
 
+            hasValidateError = false
             listenerItemElem.each (index, elem) ->
                 that = $(this)
                 elbProtocolValue = $.trim(that.find('.elb-property-listener-elb-protocol-select .selection').text())
                 elbPortValue = that.find('.elb-property-listener-elb-port-input').val()
                 instanceProtocolValue = $.trim(that.find('.elb-property-listener-instance-protocol-select .selection').text())
                 instancePortValue = that.find('.elb-property-listener-instance-port-input').val()
+
+                if !elbProtocolValue or !elbPortValue or !instanceProtocolValue or !instancePortValue
+                    hasValidateError = true
+                    return false
 
                 if !isNaN(parseInt(elbPortValue, 10)) and !isNaN(parseInt(instancePortValue, 10))
 
@@ -256,6 +266,8 @@ define ['event', 'MC',
                     isShowCertPanel = true
 
                 null
+
+            if hasValidateError then return
 
             #show/hide cert panel
             certPanelElem = $('#elb-property-listener-cert-main')

@@ -987,7 +987,7 @@ Additional Notes and Questions
 </article>
 
 <!-- elbPropertyListenerItem -->
-<div class="elb-property-listener-main">
+<div class="elb-property-listener-main" data-bind="true">
 	{{#if Canremove}}<div class="elb-property-listener-item-remove">×</div>{{/if}}
 	<div class="property-control-group clearfix elb-property-listener-item">
 		<div class="left elb-property-listener-item-1">
@@ -1004,7 +1004,7 @@ Additional Notes and Questions
 		</div>
 		<div class="left elb-property-listener-item-2">
 			<label class="left">Port</label>
-			<input class="input elb-property-listener-elb-port-input" type="text" required="required" value="{{LoadBalancerPort}}"/>
+			<input class="input elb-property-listener-elb-port-input" type="text" required="required" value="{{LoadBalancerPort}}" data-type="digits" data-ignore="true" data-required-rollback="true"/>
 		</div>
 	</div>
 	<div class="property-control-group clearfix elb-property-listener-item">
@@ -1022,7 +1022,7 @@ Additional Notes and Questions
 		</div>
 		<div class="left elb-property-listener-item-2">
 			<label class="left">Port</label>
-			<input class="input elb-property-listener-instance-port-input" type="text" required="required" value="{{InstancePort}}"/>
+			<input class="input elb-property-listener-instance-port-input" type="text" required="required" value="{{InstancePort}}" data-type="digits" data-ignore="true" data-required-rollback="true"/>
 		</div>
 	</div>
 </div>

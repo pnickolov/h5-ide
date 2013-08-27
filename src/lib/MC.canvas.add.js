@@ -759,6 +759,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					eni.resource.Attachment.DeviceIndex = "0";
 					eni.resource.Attachment.InstanceId = "@"+group.id+".resource.InstanceId";
 					eni.resource.AvailabilityZone = component_data.resource.Placement.AvailabilityZone;
+					eni.resource.AssociatePublicIpAddress = true;
 					var sg_group = {};
 					sg_group.GroupId = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId';
 					sg_group.GroupName = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupName';
@@ -766,6 +767,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.DEFAULT_VPC)
 					{
+						eni.resource.AssociatePublicIpAddress = false;
 						component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 						component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 						eni.resource.SubnetId = component_data.resource.SubnetId;

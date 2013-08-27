@@ -1126,13 +1126,13 @@ Additional Notes and Questions
 	<div class="modal-header"> <h3>Attach Network Interface to Instance</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<div class="modal-center-align-helper">
-			<p>%instance-name% has been automatically assigned Public IP.</p>
-			<p>If you want to attach the external network interface to %instance-name%, the Public IP must be removed.</p>
-			<p>Do you still want to attach %eni-name% to %instance-name% and remove the Public IP?</p>
+			<p>{{host}} has been automatically assigned Public IP.</p>
+			<p>If you want to attach the external network interface to {{host}}, the Public IP must be removed.</p>
+			<p>Do you still want to attach {{eni}} to {{host}} and remove the Public IP?</p>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn modal-close btn-blue" style="width:200px;">Attach and Remove Public IP</button>
+		<button class="btn modal-close btn-blue" id="canvas-op-confirm" style="width:200px;">Attach and Remove Public IP</button>
 		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>

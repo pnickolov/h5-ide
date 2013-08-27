@@ -162,6 +162,9 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 		component_data.name = sg_name
 
 		component_data.resource.GroupName = sg_name
+		vpcUID = MC.aws.vpc.getVPCUID()
+		if vpcUID
+			component_data.resource.VpcId = '@' + vpcUID + '.resource.VpcId'
 		component_data.resource.GroupDescription = lang.ide.PROP_TEXT_CUSTOM_SG_DESC
 
 		component_data.resource.IpPermissions = []

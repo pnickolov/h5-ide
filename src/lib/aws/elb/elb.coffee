@@ -297,6 +297,24 @@ define [ 'MC' ], ( MC ) ->
 
 		return result
 
+	removeAllELBForInstance = (instanceUID) ->
+
+		originInstanceUIDRef = '@' + instanceUID + '.resource.InstanceId'
+		_.each MC.canvas_data.component, (compObj) ->
+			compType = compObj.type
+			if compType is 'AWS.ELB'
+				instanceAry = compObj.resource.Instances
+				newInstanceAry = _.filter instanceAry, (instanceObj) ->
+					instanceRef = instanceObj.InstanceId
+					if instanceRef is originInstanceUIDRef
+						return false
+					else
+						return true
+				MC.canvas_data.component[compObj.uid].resource.Instances = newInstanceAry
+			null
+
+		null
+
 	#public
 	init                      : init
 	addInstanceAndAZToELB     : addInstanceAndAZToELB
@@ -310,3 +328,4 @@ define [ 'MC' ], ( MC ) ->
 	getAllElbSGUID			  : getAllElbSGUID
 	removeELBDefaultSG		  : removeELBDefaultSG
 	isELBDefaultSG            : isELBDefaultSG
+	removeAllELBForInstance   : removeAllELBForInstance

@@ -160,14 +160,21 @@ define [ 'jquery',
 								for value, idx in line_option
 
 									if value.port.indexOf('rtb-tgt') >= 0
-										#rtb_main.loadModule value.uid, 'component', rtb_main
-										rtb_main.loadModule value.uid, rtb_main, tab_type
+										# rtb_main.loadModule value.uid, 'component', rtb_main
+										# rtb_main.loadModule value.uid, rtb_main, tab_type
+										# Delegate to RT resource
+										MC.canvas.select value.uid
 										break
 
 									else if value.port.indexOf('subnet') >= 0
 										rtb_main.loadModule uid, rtb_main
 										break
 
+							else if key.indexOf( "eni-attach" ) >= 0
+								eni_main.loadModule uid, eni_main, tab_type
+
+							else if key.indexOf( "subnet-assoc-in" ) >= 0
+								subnet_main.loadModule uid, eni_main, tab_type
 
 							else if key.indexOf('sg') >=0
 
@@ -186,7 +193,8 @@ define [ 'jquery',
 										cgw_uid = line_option[1].uid
 									else
 										cgw_uid = line_option[0].uid
-									cgw_main.loadModule cgw_uid, cgw_main, tab_type
+									# cgw_main.loadModule cgw_uid, cgw_main, tab_type
+									MC.canvas.select cgw_uid
 								else
 									vpn_main.loadModule line_option, 'line', vpn_main
 

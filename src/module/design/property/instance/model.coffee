@@ -412,6 +412,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					GroupName: currentSG
 				}
 
+			#update sg color label
+			MC.canvas.updateSG instanceUID
+
 			null
 
 		getCheckBox : () ->

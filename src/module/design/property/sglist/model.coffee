@@ -107,6 +107,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					sgHideCheck : sgHideCheck
 					sgIsDefault : sgIsDefault
 					sgFull      : sg_full
+					sgColor     : MC.aws.sg.getSGColor uid
 
 				displaySGAry.push sgDisplayObj
 
@@ -120,6 +121,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			that.set 'sg_list', displaySGAry
 
 			null
+
 
 		getRuleInfoList : ->
 			that = this

@@ -837,31 +837,31 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//sg label
 				Canvon.rectangle(10, 2, 10 , 10).attr({
-					'class': 'node-sg-color-red node-sg-color-label node-sg-color-label1',
+					'class': 'node-sg-color-border',
 					'id': group.id + '_sg-color-label1',
 					'rx': 2,
 					'ry': 2
 				}),
 				Canvon.rectangle(22, 2, 10 , 10).attr({
-					'class': 'node-sg-color-blue node-sg-color-label node-sg-color-label2',
+					'class': 'node-sg-color-border',
 					'id': group.id + '_sg-color-label2',
 					'rx': 2,
 					'ry': 2
 				}),
 				Canvon.rectangle(34, 2, 10 , 10).attr({
-					'class': 'node-sg-color-orange node-sg-color-label node-sg-color-label3',
+					'class': 'node-sg-color-border',
 					'id': group.id + '_sg-color-label3',
 					'rx': 2,
 					'ry': 2
 				}),
 				Canvon.rectangle(46, 2, 10 , 10).attr({
-					'class': 'node-sg-color-green node-sg-color-label node-sg-color-label4',
+					'class': 'node-sg-color-border',
 					'id': group.id + '_sg-color-label4',
 					'rx': 2,
 					'ry': 2
 				}),
 				Canvon.rectangle(58, 2, 10 , 10).attr({
-					'class': 'node-sg-color-purple node-sg-color-label node-sg-color-label5',
+					'class': 'node-sg-color-border',
 					'id': group.id + '_sg-color-label5',
 					'rx': 2,
 					'ry': 2
@@ -1011,6 +1011,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				case 'ec2-vpc':
 					break;
 			}
+
+
+			//update sg color
+			MC.canvas.updateSG( group.id );
 
 			break;
 		//***** instance end *****//

@@ -1120,3 +1120,19 @@ Additional Notes and Questions
 	<p>Connection lost. Attempting to reconnect…</p>
 	<p>Changes made now may not be saved.</p>
 </div>
+
+<!-- modalAttachingEni -->
+<div style="width:420px" class="attaching-eni">
+	<div class="modal-header"> <h3>Attach Network Interface to Instance</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-center-align-helper">
+			<p>%instance-name% has been automatically assigned Public IP.</p>
+			<p>If you want to attach the external network interface to %instance-name%, the Public IP must be removed.</p>
+			<p>Do you still want to attach %eni-name% to %instance-name% and remove the Public IP?</p>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn modal-close btn-blue" style="width:200px;">Attach and Remove Public IP</button>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>

@@ -561,6 +561,7 @@
         if (this.$element.data('required-rollback') === true) {
           this.isRequiredRollback = true;
 
+
           this.$element
             .on('focus', function() {
               $(this).data('pre-value', $(this).val());
@@ -1011,6 +1012,11 @@
       } else {
         parent = this.$element.closest('form, [data-bind=true]');
         parent = parent.parsley();
+      }
+
+      for ( var i in parent.items ) {
+        var item = parent.items[ i ];
+        item.options.validateIfUnchanged = true;
       }
       return parent.validate();
     }
@@ -1724,6 +1730,10 @@ var getForm = function( context ) {
 
 var formAddItem = function( form, target ) {
   var parsleyInstance = form.data( 'parsleyForm' );
+  for ( var i in parsleyInstance.items ) {
+    var item = parsleyInstance.items[ i ];
+    if ( item.element.get( 0 ) === target ) return;
+  }
   parsleyInstance.addItem(target);
 }
 

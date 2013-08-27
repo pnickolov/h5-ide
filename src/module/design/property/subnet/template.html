@@ -1,4 +1,7 @@
 <article data-bind="true">
+  {{#if association}}
+  <div class="property-control-group">{{association.elb}} will be launched into {{association.subnet}}</div>
+  {{else}}
   <div class="option-group-head expand" id="subnet-property-detail">Subnet Details</div>
   <div class="option-group">
     <section class="property-control-group" data-bind="true">
@@ -22,5 +25,6 @@
     <ul id="networkacl-list" class="acl-sg-info-list property-list"></ul>
     <a href="#" class="add-to-list" id="networkacl-create">Create new Network ACL...</a>
   </div>
+  {{/if}}
 </article>
 

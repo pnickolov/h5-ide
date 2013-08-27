@@ -871,6 +871,13 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 					this.trigger 'SHOW_SG_LIST', line_id
 
+				else if portMap['elb-sg-out'] and portMap['instance-sg']
+					instnace_ref = '@' + portMap['instance-sg'] + '.resource.InstanceId'
+					instance_index = MC.canvas_data.component[portMap['elb-sg-out']].resource.Instances.indexOf(instnace_ref)
+					if instance_index >= 0
+						MC.canvas_data.component[portMap['elb-sg-out']].resource.Instances.splice instance_index, 1
+					MC.canvas.remove $("#" + option.id)[0]
+
 				else
 					this.trigger 'SHOW_SG_LIST', option.id
 
@@ -1210,6 +1217,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 					subnetUID = subnetUIDRef.split('.')[0].slice(1)
 					MC.aws.subnet.updateAllENIIPList(subnetUID)
+					#update sg color label
+					MC.aws.sg.updateSGColorLabel uid
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)
@@ -1406,6 +1415,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									when constant.AWS_RESOURCE_TYPE.AWS_ELB
 
+										if MC.canvas_data.component[from_comp_uid].resource.Scheme is 'internet-facing'
+											return
+
 										from_port = 'elb-sg-in'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
@@ -1428,7 +1440,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 										to_port = 'eni-sg'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_ELB
-
+										if MC.canvas_data.component[to_comp_uid].resource.Scheme is 'internet-facing'
+											return
 										to_port = 'elb-sg-in'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
@@ -1547,6 +1560,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					$.each comp.resource.Instances, ( i, instance ) ->
 
 						lines.push [comp_uid, instance.InstanceId.split('.')[0][1...], 'elb-sg-out', 'instance-sg']
+
+					$.each comp.resource.Subnets, ( i, subnet_id ) ->
+
+						lines.push [comp_uid, subnet_id.split('.')[0][1...], 'elb-assoc', 'subnet-assoc-in']
 
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 

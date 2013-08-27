@@ -67,10 +67,29 @@ var constant_data = {
 		'AWS.AutoScaling.Group' : [14, 14]
 	},
 
+	SG_MAX_NUM: 5,
+
 	SG_COLORS: [
-		'FF0000',
-		'00FF00',
-		'0000FF'
+		'0099ff',
+		'00cc00',
+		'ffff00',
+		'ff9900',
+		'ff99ff',
+		'00cccc',
+		'ffcc00',
+		'9999ff',
+		'0000ff',
+		'336600',
+		'ffcc99',
+		'99cc99',
+		'ffff99',
+		'ff00ff',
+		'ff3300',
+		'660066',
+		'666600',
+		'000066',
+		'003300',
+		'663300'
 	],
 
 	GROUP_PADDING: 2,
@@ -700,6 +719,7 @@ var constant_data = {
 		kp_list: [],
 		original_json: '',
 		SCALE_RATIO: 1,
+		LINE_STYLE: 0, //0fold line, 1 straight, 2 bezier q, 3 bezier qt
 		selected_node: []
 		//resource_list: [] //aws resource list by Describe* return
 	},
@@ -800,13 +820,15 @@ var constant_data = {
 			"architecture": "", //i386|x86_64
 			"rootDeviceType": "", //ebs|instance-store
 			"groupUId": "",
-			"connection": []
+			"connection": [],
+			"instanceList": []
 		},
 		data:
 		{
 			"uid": "",
 			"type": "AWS.EC2.Instance",
 			"name": "",
+			"number": 1,
 			"state": "",
 			"platform": "32",
 			"software":
@@ -839,7 +861,8 @@ var constant_data = {
 				"VpcId": "",
 				"InstanceType": "",
 				"Monitoring": "disabled",
-				"EbsOptimized": "false"
+				"EbsOptimized": "false",
+				"NetworkInterface":[]
 			}
 		}
 	},
@@ -927,13 +950,15 @@ var constant_data = {
 		{
 			"type": "AWS.EC2.EBS.Volume",
 			"coordinate": [0, 0],
-			"connection": []
+			"connection": [],
+			"volumeList": []
 		},
 		data:
 		{
 			"uid": "",
 			"type": "AWS.EC2.EBS.Volume",
 			"name": "/dev/sdf",
+			'number': 1,
 			"resource":
 			{
 				"VolumeId": "",
@@ -1217,13 +1242,15 @@ var constant_data = {
 			"type": "AWS.VPC.NetworkInterface",
 			"coordinate": [0, 0],
 			"groupUId": "",
-			"connection": []
+			"connection": [],
+			"eniList": []
 		},
 		data:
 		{
 			"uid": "",
 			"type": "AWS.VPC.NetworkInterface",
 			"name": "eni1",
+			"number": 1,
 			"resource":
 			{
 				"PrivateIpAddressSet": [

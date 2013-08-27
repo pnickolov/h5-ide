@@ -1,3 +1,7 @@
+{{#if association}}
+<div class="property-control-group">This is an attachment of {{association.eni}} to {{association.instance}}</div>
+{{else}}
+
 <article class="property-control-group" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
   Attach the Network Interface to an instance within the same availability zone.
 </article>
@@ -48,3 +52,4 @@
   <div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group">Loading...</div>
 </article>
+{{/if}}

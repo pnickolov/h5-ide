@@ -59,11 +59,6 @@ define [ 'jquery',
             #view
             view.model    = model
 
-            #re calc cost when load module
-            # if tab_type is 'NEW_STACK'
-            #     model.set('cost_list', [])
-            #     model.set('total_fee', 0)
-            # else
             model.getCost()
 
             if view_type == 'app_view'
@@ -91,6 +86,11 @@ define [ 'jquery',
                 sglist_main.loadModule model, true
 
             renderPropertyPanel()
+
+            ide_event.onListen ide_event.RESOURCE_QUICKSTART_READY, () ->
+                console.log 'onListen RESOURCE_QUICKSTART_READY'
+                model.getCost()
+                renderPropertyPanel()
 
             view.on 'STACK_NAME_CHANGED', (name) ->
                 console.log 'stack name changed and refresh'

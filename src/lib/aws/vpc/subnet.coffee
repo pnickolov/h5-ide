@@ -232,14 +232,13 @@ define [ 'MC' ], ( MC ) ->
 
 		null
 
-	isCanDeleteSubnetToELBConnection = (elbUID) ->
+	isCanDeleteSubnetToELBConnection = (elbUID, subnetUID) ->
 
 		elbComp = MC.canvas_data.component[elbUID]
 		instanceRefAry = elbComp.resource.Instances
+		subnetRefAry = elbComp.resource.Subnets
 
 		isCanDelete = true
-		if instanceRefAry.length isnt 0
-			isCanDelete = false
 
 		subnetAry = []
 		_.each MC.canvas_data.component, (comp) ->
@@ -247,11 +246,11 @@ define [ 'MC' ], ( MC ) ->
 				subnetAry.push(comp)
 
 		azAry = []
-		_.each instanceRefAry, (instanceRef) ->
-			instanceUID = instanceRef.InstanceId.split('.')[0].slice(1)
-			instanceComp = MC.canvas_data.component[instanceUID]
-			instanceAZ = instanceComp.resource.Placement.AvailabilityZone
-			azAry.push(instanceAZ)
+		_.each subnetRefAry, (subnetRef) ->
+			subnetUID = subnetRef.split('.')[0].slice(1)
+			subnetComp = MC.canvas_data.component[subnetUID]
+			subnetAZ = subnetComp.resource.AvailabilityZone
+			azAry.push(subnetAZ)
 			null
 
 		azSubnetNumMap = {}
@@ -264,10 +263,10 @@ define [ 'MC' ], ( MC ) ->
 				null
 			null
 
-		_.each azSubnetNumMap, (subnetNum) ->
-			if subnetNum is 1
+		currentAZ = MC.canvas_data.component[subnetUID].resource.AvailabilityZone
+		_.each azSubnetNumMap, (subnetNum, azName) ->
+			if subnetNum is 1 and azName is currentAZ
 				isCanDelete = false
-				return false
 			null
 
 		return isCanDelete

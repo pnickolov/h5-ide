@@ -1461,6 +1461,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 
+							else if (from_port is 'instance-sg' and to_port is 'eni-sg') or (from_port is 'eni-sg' and to_port is 'instance-sg')
+
+								if MC.canvas_data.component[from_comp_uid].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and MC.canvas_data.component[to_comp_uid].resource.Attachment.InstanceId.split('.')[0][1...] isnt from_comp_uid
+
+									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+
+								else if MC.canvas_data.component[to_comp_uid].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and MC.canvas_data.component[from_comp_uid].resource.Attachment.InstanceId.split('.')[0][1...] isnt to_comp_uid
+
+									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+
 							else
 								lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 

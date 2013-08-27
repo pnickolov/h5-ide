@@ -231,6 +231,7 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 		'#' + color
 
 	getNextSGColor = () ->
+	#for createNewSG()
 	#get next availability color from MC.canvas.SG_COLORS
 		next_color = null
 
@@ -264,6 +265,10 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 		#no '#'
 		next_color
 
+	updateSGColorLabel = ( uid ) ->
+
+		#update sg color label
+		MC.canvas.updateSG uid
 
 
 	#public
@@ -272,3 +277,4 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 	getSgRuleDetail : getSgRuleDetail
 	createNewSG : createNewSG
 	getSGColor  : getSGColor
+	updateSGColorLabel : updateSGColorLabel

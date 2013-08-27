@@ -113,6 +113,16 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 				null
 
+			#move DefaultSG to the first
+			$.each displaySGAry, (key, value) ->
+				if value.sgName is "DefaultSG" and key isnt 0
+
+					#move DefaultSG to the first one
+					default_sg = displaySGAry.splice(key, 1)
+					displaySGAry.unshift default_sg[0]
+					false
+
+
 			if MC.canvas_data.platform != "ec2-classic" && enabledSGCount >= 5
 				# In VPC, user can only select 5 SG
 				sg_full.full = true

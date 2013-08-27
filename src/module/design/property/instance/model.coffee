@@ -413,7 +413,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 				}
 
 			#update sg color label
-			MC.canvas.updateSG instanceUID
+			MC.aws.sg.updateSGColorLabel  instanceUID
 
 			null
 

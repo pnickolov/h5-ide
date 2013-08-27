@@ -1936,6 +1936,7 @@ MC.canvas.layout = {
 		tmp = {};
 		tmp.uid = sg.uid;
 		tmp.name = sg.name;
+		tmp.color = MC.canvas.SG_COLORS[0];
 		tmp.member = [];
 		MC.canvas_property.sg_list.push(tmp);
 

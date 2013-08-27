@@ -98,29 +98,29 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                 this.trigger 'SET_ASG_NAME', event.target.value
 
         setASGMin : ( event ) ->
-            min = @$el.find '#property-asg-min'
-            max = @$el.find '#property-asg-max'
+            min = $( event.currentTarget )
 
-            min.parsley 'custom', ( val ) ->
+            min.parsley 'custom', ( val ) =>
                 if +val < 1
                     return 'ASG size must be equal or greater than 1'
+                max = @$el.find '#property-asg-max'
                 if +val >= +max.val()
                     return 'Minimum Size must be <= Maximum Size.'
 
-            if min.parsley 'validate'
+            if min.parsley 'validateForm'
                 @trigger 'SET_ASG_MIN', min.val()
 
         setASGMax : ( event ) ->
-            min = @$el.find '#property-asg-min'
-            max = @$el.find '#property-asg-max'
+            max = $( event.currentTarget )
 
-            max.parsley 'custom', ( val ) ->
+            max.parsley 'custom', ( val ) =>
                 if +val < 1
                     return 'ASG size must be equal or greater than 1'
+                min = @$el.find '#property-asg-min'
                 if +val <= +min.val()
                     return 'Minimum Size must be <= Maximum Size'
 
-            if max.parsley 'validate'
+            if max.parsley 'validateForm'
                 @trigger 'SET_ASG_MAX', max.val()
 
         setASGDesireCapacity : ( event ) ->

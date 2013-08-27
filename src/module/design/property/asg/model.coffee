@@ -183,77 +183,66 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
     getASGDetail : ( uid ) ->
 
-      me = this
+      component = MC.canvas_data.component[uid]
 
-      if MC.canvas_data.component[uid].resource.LaunchConfigurationName
+      @set 'hasLaunchConfig', component.resource.LaunchConfigurationName.length > 0
+      @set 'has_elb', component.resource.LoadBalancerNames.length > 0
 
-        this.set 'hasLaunchConfig', true
-
-      asg = $.extend true, {}, MC.canvas_data.component[uid]
-
-      if asg.resource.HealthCheckType is 'EC2'
-
-        asg.resource.ec2 = true
-
-      else if asg.resource.HealthCheckType is 'ELB'
-
-        asg.resource.elb = true
-
-
-      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
-        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
-
-          me.set 'has_sns_topic', true
-
-          return false
 
       policies = {}
+      nc_array = [false, false, false, false, false]
 
-      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+      for comp_uid, comp of MC.canvas_data.component
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+          @set "has_sns_topic", true
 
-          tmp = {}
+        else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.split('.')[0][1...] is uid
 
-          tmp.adjusttype = comp.resource.AdjustmentType
+          type = comp.resource.NotificationType
 
-          tmp.adjustment = comp.resource.ScalingAdjustment
+          if 'autoscaling:EC2_INSTANCE_LAUNCH' in type
+            nc_array[0] = true
 
-          tmp.step = comp.resource.MinAdjustmentStep
+          if 'autoscaling:EC2_INSTANCE_LAUNCH_ERROR' in type
+            nc_array[1] = true
 
-          tmp.cooldown = comp.resource.Cooldown
+          if 'autoscaling:EC2_INSTANCE_TERMINATE' in type
+            nc_array[2] = true
 
-          tmp.name = comp.resource.PolicyName
+          if 'autoscaling:EC2_INSTANCE_TERMINATE_ERROR' in type
+            nc_array[3] = true
 
-          $.each MC.canvas_data.component, ( c_uid, c ) ->
+          if 'autoscaling:TEST_NOTIFICATION' in type
+            nc_array[4] = true
 
-            if c.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and c.name is MC.canvas_data.component[comp_uid].name + '-alarm'
+        else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+
+            policies[comp_uid] = tmp =
+              adjusttype : comp.resource.AdjustmentType
+              adjustment : comp.resource.ScalingAdjustment
+              step       : comp.resource.MinAdjustmentStep
+              cooldown   : comp.resource.Cooldown
+              name       : comp.resource.PolicyName
+
+            for c_uid, c of MC.canvas_data.component
+              if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+                continue
+
+              if c.name isnt "#{comp.name}-alarm"
+                continue
 
               actions = [c.resource.InsufficientDataActions, c.resource.OKAction, c.resource.AlarmActions]
 
               for action in actions
-
-                if action[0] and action[0].split('.')[0][1...] is comp_uid
-
+                if action[0] and action[0].indexOf( comp_uid ) != -1
                   tmp.evaluation = c.resource.ComparisonOperator
-
-                  tmp.metric = c.resource.MetricName
-
-                  if action.length is 2
-
-                    tmp.notify = true
-                  else
-
-                    tmp.notify = false
-
-                  tmp.periods = c.resource.EvaluationPeriods
-
-                  tmp.second = c.resource.Period
-
+                  tmp.metric     = c.resource.MetricName
+                  tmp.notify     = action.length is true
+                  tmp.periods    = c.resource.EvaluationPeriods
+                  tmp.second     = c.resource.Period
                   tmp.statistics = c.resource.Statistic
-
-                  tmp.threshold = c.resource.Threshold
+                  tmp.threshold  = c.resource.Threshold
 
                   if c.resource.InsufficientDataActions.length > 0
                     tmp.trigger = 'INSUFFICIANT_DATA'
@@ -262,59 +251,18 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
                   else if c.resource.AlarmActions.length > 0
                     tmp.trigger = 'ALARM'
 
-                  return false
+                  break
 
-          policies[comp_uid]  = tmp
+              break
 
 
-          null
 
-      nc_array = [false, false, false, false, false]
+      @set 'detail_monitor', MC.canvas_data.component[ MC.extractID( component.resource.LaunchConfigurationName ) ].resource.InstanceMonitoring is 'enabled'
 
-      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
-        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.split('.')[0][1...] is uid
-
-          if 'autoscaling:EC2_INSTANCE_LAUNCH' in comp.resource.NotificationType
-            nc_array[0] = true
-
-          if 'autoscaling:EC2_INSTANCE_LAUNCH_ERROR' in comp.resource.NotificationType
-
-            nc_array[1] = true
-
-          if 'autoscaling:EC2_INSTANCE_TERMINATE' in comp.resource.NotificationType
-
-            nc_array[2] = true
-
-          if 'autoscaling:EC2_INSTANCE_TERMINATE_ERROR' in comp.resource.NotificationType
-
-            nc_array[3] = true
-
-          if 'autoscaling:TEST_NOTIFICATION' in comp.resource.NotificationType
-
-            nc_array[4] = true
-
-          return false
-
-      if asg.resource.LoadBalancerNames.length > 0
-        this.set 'has_elb', true
-
-      $.each MC.canvas_data.layout.component.node, ( comp_uid, comp ) ->
-
-        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and comp.groupUId is asg.uid
-
-          if MC.canvas_data.component[comp_uid].resource.InstanceMonitoring is 'enabled'
-
-            me.set 'detail_monitor', true
-
-            return false
-
-      this.set 'notification_type', nc_array
-      this.set 'policies', policies
-
-      this.set 'asg', asg.resource
-
-      this.set 'uid', uid
+      @set 'notification_type', nc_array
+      @set 'policies', policies
+      @set 'asg', component.resource
+      @set 'uid', uid
 
     setHealthCheckType : ( uid, type ) ->
 

@@ -1067,7 +1067,22 @@ MC.canvas = {
 					{
 						if (connection_option.type === 'sg')
 						{
-							path = MC.canvas._bezier_q_corner( controlPoints ); //method2
+							switch (MC.canvas_property.LINE_STYLE)
+							{
+								case 0:
+									path = MC.canvas._round_corner(controlPoints); //method1
+									break;
+								case 1:
+									path = 'M ' + start0.x + ' ' + start0.y	+ ' L ' + end0.x + ' ' + end0.y;
+									break;
+								case 2:
+									path = MC.canvas._bezier_q_corner( controlPoints ); //method2
+									break;
+								case 3:
+									path = MC.canvas._bezier_qt_corner( controlPoints ); //method2
+									break;
+							}
+
 						}
 						else
 						{

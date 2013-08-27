@@ -325,7 +325,7 @@
 }
 
 .line-elb-sg {
-	stroke: #6DAEFE;
+	stroke: #0973f6;
 }
 
 .line-rtb-target {
@@ -353,6 +353,7 @@
 
 .line-sg.view-hover,
 .line-sg.view-keephover {
+	stroke-width: 3px;
 	visibility: visible !important;
 	opacity: 0.7 !important;
 }

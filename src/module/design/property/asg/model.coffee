@@ -197,7 +197,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
         if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
           @set "has_sns_topic", true
 
-        else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.split('.')[0][1...] is uid
+        else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.indexOf( uid ) != -1
 
           type = comp.resource.NotificationType
 
@@ -224,6 +224,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
               step       : comp.resource.MinAdjustmentStep
               cooldown   : comp.resource.Cooldown
               name       : comp.resource.PolicyName
+              uid        : comp_uid
 
             for c_uid, c of MC.canvas_data.component
               if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
@@ -238,7 +239,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
                 if action[0] and action[0].indexOf( comp_uid ) != -1
                   tmp.evaluation = c.resource.ComparisonOperator
                   tmp.metric     = c.resource.MetricName
-                  tmp.notify     = action.length is true
+                  tmp.notify     = action.length is 2
                   tmp.periods    = c.resource.EvaluationPeriods
                   tmp.second     = c.resource.Period
                   tmp.statistics = c.resource.Statistic
@@ -490,13 +491,8 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       policy_comp.resource.PolicyName = policy_detail.name
 
-      if policy_detail.adjustment is 'PercentChangeInCapacity'
-
-        if not policy_detail.step
-
-          policy_detail.step = 1
-
-        policy_comp.resource.MinAdjustmentStep = policy_detail.step
+      if policy_detail.adjusttype is 'PercentChangeInCapacity'
+        policy_comp.resource.MinAdjustmentStep = policy_detail.step || 1
 
       policy_comp.resource.ScalingAdjustment = policy_detail.adjustment
 

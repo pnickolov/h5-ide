@@ -731,6 +731,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
 				component_data.name = option.name;
+				option.number = 1;
 
 				component_data.resource.ImageId = option.imageId;
 				component_data.resource.InstanceType = 'm1.small';
@@ -784,6 +785,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
+				option.number = component_data.number ? component_data.number : 1;
 
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					$.each(MC.canvas_data.component, function ( key, val ){
@@ -929,7 +931,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////7. os_type
-				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30, 27, 39, 27),
+				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 20, 27, 39, 27),
 
 				////8.1 volume-attached
 				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 60, 29, 24).attr({
@@ -962,7 +964,18 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.text(50, 98, option.name).attr({
 					'class': 'node-label name',
 					'id': group.id + '_hostname'
+				}),
+
+				////group bg
+				Canvon.circle(71, 35, 10,{}).attr({
+					'class': 'instance-number-bg'
+				}),
+				////child number in group
+				Canvon.text(71, 38, option.number).attr({
+					'class': 'node-label instance-number',
+					'id': group.id + '_instance-number'
 				})
+
 			).attr({
 				'class': 'dragable node ' + class_type,
 				'data-type': 'node',

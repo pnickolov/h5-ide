@@ -829,3 +829,14 @@
 .node-sg-color-purple {
 	fill: purple;
 }
+
+
+.instance-number-bg {
+	stroke-width:0;
+	fill:red;
+	opacity: 0.2;
+}
+
+.instance-number {
+	font-weight: bold;
+}

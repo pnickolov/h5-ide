@@ -861,7 +861,8 @@ var constant_data = {
 				"VpcId": "",
 				"InstanceType": "",
 				"Monitoring": "disabled",
-				"EbsOptimized": "false"
+				"EbsOptimized": "false",
+				"NetworkInterface":[]
 			}
 		}
 	},

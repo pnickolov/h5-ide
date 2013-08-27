@@ -1401,6 +1401,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									when constant.AWS_RESOURCE_TYPE.AWS_ELB
 
+										if MC.canvas_data.component[from_comp_uid].resource.Scheme is 'internet-facing'
+											return
+
 										from_port = 'elb-sg-in'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
@@ -1423,7 +1426,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 										to_port = 'eni-sg'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_ELB
-
+										if MC.canvas_data.component[to_comp_uid].resource.Scheme is 'internet-facing'
+											return
 										to_port = 'elb-sg-in'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
@@ -1542,6 +1546,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					$.each comp.resource.Instances, ( i, instance ) ->
 
 						lines.push [comp_uid, instance.InstanceId.split('.')[0][1...], 'elb-sg-out', 'instance-sg']
+
+					$.each comp.resource.Subnets, ( i, subnet_id ) ->
+
+						lines.push [comp_uid, subnet_id.split('.')[0][1...], 'elb-assoc', 'subnet-assoc-in']
 
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 

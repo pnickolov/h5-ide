@@ -118,6 +118,8 @@ define ['event', 'MC',
                 MC.canvas.update cid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNET_CANVAS
                 MC.canvas.display(cid, 'port-elb-sg-in', false)
 
+            ide_event.trigger ide_event.REDRAW_SG_LINE
+
         healthProtocolSelect : ( evnet, value ) ->
             console.log 'healthProtocolSelect'
             this.trigger 'HEALTH_PROTOCOL_SELECTED', value

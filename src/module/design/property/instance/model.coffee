@@ -371,6 +371,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			MC.canvas_data.component[eniComp.uid].resource.GroupSet = newGroupSet
 
+			#update sg color label
+			MC.aws.sg.updateSGColorLabel instanceUID
+
 			null
 
 		assignSGToComp : (sg_uid) ->
@@ -411,6 +414,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					GroupId: currentSGId
 					GroupName: currentSG
 				}
+
+			#update sg color label
+			MC.aws.sg.updateSGColorLabel instanceUID
 
 			null
 
@@ -736,6 +742,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 														MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
 						return false
+
+			#update sg color label
+			MC.aws.sg.updateSGColorLabel uid
 
 			null
 

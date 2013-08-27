@@ -63,6 +63,9 @@ MC.canvas = {
 			case 'id':
 				target.attr('id', value);
 				break;
+			case 'color':
+				target.attr('style', 'fill:' + value);
+				break;
 		}
 
 		return true;
@@ -82,12 +85,28 @@ MC.canvas = {
 			{
 				if (SG_data.uid === SG_uid)
 				{
-					colors.push(SG_data.color);
+					colors.push('#'+SG_data.color);
 				}
 			});
 		});
 
-		console.info(color);
+		console.info(id + ':' + colors);
+
+		//update color label
+		for (var i = 0; i < MC.canvas.SG_MAX_NUM; i++)
+		{
+			if ( i<colors.length && colors[i] )
+			{//show
+				MC.canvas.update(id, 'color', 'sg-color-label'+ (i+1) , colors[i]);
+				$( '#' + id + '_' + 'sg-color-label'+ (i+1) ).attr('class','node-sg-color-border');
+			}
+			else
+			{//hide
+				MC.canvas.update(id, 'color', 'sg-color-label'+ (i+1) , 'none');
+				$( '#' + id + '_' + 'sg-color-label'+ (i+1) ).attr('class','');
+			}
+		}
+
 	},
 
 	resize: function (target, type)
@@ -961,7 +980,7 @@ MC.canvas = {
 						}
 
 						from_port_offset = from_port.getBoundingClientRect();
-					 	to_port_offset = to_port.getBoundingClientRect();
+						to_port_offset = to_port.getBoundingClientRect();
 					}
 					else
 					{
@@ -1000,7 +1019,7 @@ MC.canvas = {
 							}
 
 							to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-' + port_direction);
-				 			to_port_offset = to_port.getBoundingClientRect();
+							to_port_offset = to_port.getBoundingClientRect();
 						}
 					}
 				}
@@ -1770,10 +1789,28 @@ MC.canvas.layout = {
 		{
 			if (value.name === "DefaultSG" && key !== 0)
 			{
-				tmp = value;
-				MC.canvas_property.sg_list.splice(key, 1);
-				MC.canvas_property.sg_list.unshift(value);
+				//move DefaultSG to the first one
+				default_sg = MC.canvas_property.sg_list.splice(key, 1);
+				MC.canvas_property.sg_list.unshift(default_sg[0]);
 				return false;
+			}
+		});
+
+		//init sg color
+		$.each(MC.canvas_property.sg_list, function (key, value)
+		{
+			if (key < MC.canvas.SG_COLORS.length)
+			{//use color table
+				MC.canvas_property.sg_list[key].color = MC.canvas.SG_COLORS[key];
+			}
+			else
+			{//random color
+				var rand = Math.floor(Math.random() * 0xFFFFFF).toString(16);
+				for (; rand.length < 6;)
+				{
+					rand = '0' + rand;
+				}
+				MC.canvas_property.sg_list[key].color = rand;
 			}
 		});
 
@@ -3632,7 +3669,27 @@ MC.canvas.event.drawConnection = {
 		if (match_node)
 		{
 			to_node = $(match_node);
-			to_port_name = to_node.find('.connectable-port').data('name');
+
+			if (
+				from_node.data('class') === 'AWS.EC2.Instance' &&
+				to_node.data('class') === 'AWS.ELB'
+			)
+			{
+				match_node_offset = match_node.getBoundingClientRect();
+
+				if (event.pageX > (match_node_offset.left + match_node_offset.width / 2))
+				{
+					to_port_name = 'elb-sg-out';
+				}
+				if (event.pageX < (match_node_offset.left + match_node_offset.width / 2))
+				{
+					to_port_name = 'elb-sg-in';
+				}
+			}
+			else
+			{
+				to_port_name = to_node.find('.connectable-port').data('name');
+			}
 
 			if (!from_node.is(to_node) && to_port_name !== undefined)
 			{

@@ -77,6 +77,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 		setInstanceType  : () ->
 			uid = this.get 'get_uid'
+			value = this.get 'instance_type'
 			MC.canvas_data.component[ uid ].resource.InstanceType = value
 			null
 

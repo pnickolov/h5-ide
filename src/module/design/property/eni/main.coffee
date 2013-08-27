@@ -54,7 +54,8 @@ define [ 'jquery',
             # Set title
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.eni_display.name
 
-            sglist_main.loadModule model
+            if not model.attributes.association
+                sglist_main.loadModule model
 
             view.on 'SET_ENI_DESC', ( uid, value ) ->
 

@@ -49,12 +49,16 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
                         me.set 'account_id', account_id
 
+                        me.trigger 'REFRESH_AWS_CREDENTIAL'
+
                 else
 
                     me.set 'is_authenticated', false
                     $.cookie 'has_cred', false,    { expires: 1 }
 
                     me.set 'account_id', account_id
+
+                    me.trigger 'REFRESH_AWS_CREDENTIAL'
 
             null
 

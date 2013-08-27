@@ -809,23 +809,25 @@
 	text-align: center;
 }
 
-
-.node-sg-color-red {
-	fill: red;
+.node-sg-color-border {
+	stroke: black;
+	stroke-width: 1px;
 }
 
-.node-sg-color-blue {
-	fill: blue;
+.instance-number-bg {
+	stroke-width:0;
+	fill:red;
+	opacity: 0.2;
 }
 
-.node-sg-color-orange {
-	fill: orange;
+.instance-number {
+	font-weight: bold;
 }
 
-.node-sg-color-green {
-	fill: green;
-}
-
-.node-sg-color-purple {
-	fill: purple;
+.sg-color {
+	float: left;
+    width: 10px;
+    height: 10px;
+    margin-top: 4px;
+    margin-right: 5px;
 }

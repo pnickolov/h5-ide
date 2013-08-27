@@ -1203,6 +1203,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 					subnetUID = subnetUIDRef.split('.')[0].slice(1)
 					MC.aws.subnet.updateAllENIIPList(subnetUID)
+					#update sg color label
+					MC.aws.sg.updateSGColorLabel uid
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)

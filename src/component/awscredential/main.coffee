@@ -39,7 +39,7 @@ define [ 'jquery', 'event',
                 console.log 'AWS_AUTHENTICATION'
                 model.awsAuthenticate access_key, secret_key, account_id
 
-            model.on 'change:is_authenticated', () ->
+            model.on 'REFRESH_AWS_CREDENTIAL', () ->
                 console.log 'UPDATE_AWS_CREDENTIAL'
 
                 # push event

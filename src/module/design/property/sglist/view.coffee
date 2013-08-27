@@ -12,10 +12,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 		template : Handlebars.compile $( '#property-sg-list-tmpl' ).html()
 
 		events   :
-			'click #sg-info-list .sg-edit-icon' : 'openSgPanel'
-			'click #add-sg-btn' : 'openSgPanel'
-			'click .sg-list-association-check' : 'assignSGToComp'
-			'click .sg-list-delete-btn' : 'deleteSGFromComp'
+			'click #sg-info-list .sg-edit-icon'    : 'openSgPanel'
+			'click #add-sg-btn'                    : 'openSgPanel'
+			'click .sg-list-association-check'     : 'assignSGToComp'
+			'click .sg-list-delete-btn'            : 'deleteSGFromComp'
 			'OPTION_CHANGE #sg-rule-filter-select' : 'sortSgRule'
 
 		render     : () ->
@@ -23,7 +23,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 			this.model.getSGInfoList()
 			this.model.getRuleInfoList()
 			$( '.sg-group' ).html this.template this.model.attributes
-			$('#property-head-sg-num').text(this.model.attributes.sg_list.length)
+			$('#property-head-sg-num').text(this.model.attributes.sg_length)
 
 		openSgPanel : ( event ) ->
 			sgUID = $(event.target).parents('li').attr('sg-uid')
@@ -37,10 +37,17 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 			this.render()
 
 		assignSGToComp: (event) ->
-			sgUID = $(event.target).attr('sg-uid')
-			sgChecked = $(event.target).prop('checked')
+			$target  = $(event.currentTarget)
+			$checked = $target.closest("#sg-info-list").find(":checked")
+
+			if $checked.length is 0
+				return false
+
+			sgUID     = $target.attr('sg-uid')
+			sgChecked = $target.prop('checked')
 			this.trigger 'ASSIGN_SG_TOCOMP', sgUID, sgChecked
 			this.render()
+			$('#property-head-sg-num').text(this.model.attributes.sg_length)
 
 		deleteSGFromComp : (event) ->
 			sgUID = $(event.target).parents('li').attr('sg-uid')

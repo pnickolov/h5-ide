@@ -1545,6 +1545,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 						lines.push [comp_uid, instance.InstanceId.split('.')[0][1...], 'elb-sg-out', 'instance-sg']
 
+					$.each comp.resource.Subnets, ( i, subnet_id ) ->
+
+						lines.push [comp_uid, subnet_id.split('.')[0][1...], 'elb-assoc', 'subnet-assoc-in']
+
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
 					expand_asg = []

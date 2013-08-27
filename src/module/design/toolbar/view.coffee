@@ -206,7 +206,7 @@ define [ 'MC', 'event',
             this.trigger 'TOOLBAR_EXPORT_PNG_CLICK', MC.canvas_data
 
         clickExportJSONIcon : ->
-            file_content = MC.canvas.layout.save()
+            file_content = JSON.stringify MC.canvas.layout.save()
             #this.trigger 'TOOLBAR_EXPORT_MENU_CLICK'
             $( '#btn-confirm' ).attr {
                 'href'      : "data://text/plain; " + file_content,

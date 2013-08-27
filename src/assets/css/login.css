@@ -152,6 +152,7 @@ header {
 #footer-push {
 	height: 80px;
 	clear: both;
+	text-align: center;
 }
 
 .demo-only {

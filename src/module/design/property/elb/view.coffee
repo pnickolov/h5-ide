@@ -18,6 +18,7 @@ define ['event', 'MC',
 
         template : Handlebars.compile $( '#property-elb-tmpl' ).html()
 
+        ###
         initialize : ->
             #handlebars equal logic
             Handlebars.registerHelper 'ifCond', (v1, v2, options) ->
@@ -26,6 +27,7 @@ define ['event', 'MC',
                 options.inverse this
 
             null
+        ###
 
         events   :
             'change #property-elb-name' : 'elbNameChange'
@@ -115,6 +117,8 @@ define ['event', 'MC',
             else
                 MC.canvas.update cid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNET_CANVAS
                 MC.canvas.display(cid, 'port-elb-sg-in', false)
+
+            ide_event.trigger ide_event.REDRAW_SG_LINE
 
         healthProtocolSelect : ( evnet, value ) ->
             console.log 'healthProtocolSelect'

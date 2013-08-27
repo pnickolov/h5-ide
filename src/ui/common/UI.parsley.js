@@ -234,7 +234,6 @@
       },
 
       custom: function ( val, option , context ) {
-
         var thisArg, now, result;
         thisArg = option.thisArg || window;
         result = option.validator.call( thisArg, val );
@@ -1119,7 +1118,6 @@
         //delete this.options[ constraint ];
       //}
       //this.$element.addClass( 'parsley-validated' );
-
       var validator, now, thisArg;
 
       if ( typeof option === 'function' ) {
@@ -1795,22 +1793,25 @@ $(document.body).on( globalBindList, 'form[data-validate="parsley"] input, [data
 */
 var errortip = function (event)
 {
-  errortip.isFirst && (errortip.isFirst = false)
   var target = $(this),
-    content = $(this).next('.parsley-error-list'),
-    errortip_box = $('.errortip_box'),
-    target_offset,
-    width,
-    height,
-    target_width,
-    target_height;
+    content = errortip.findError( target )
+    , target_offset
+    , width
+    , height
+    , target_width
+    , target_height
+    , tipId
 
-  if (content)
+  if (content.length)
   {
+    tipId = 'errortip-' + content.attr('id');
+
+    if ( $('#' + tipId).length ) return;
+
     errortip_box = content.clone();
     errortip_box
       .addClass('errortip_box')
-      .attr('id', 'errortip-' + errortip_box.attr('id'))
+      .attr('id', tipId)
       .appendTo(document.body);
 
     target_offset = target.offset();
@@ -1830,11 +1831,10 @@ var errortip = function (event)
 
     }).show();
 
-    $(document.body).on('mouseleave', '.parsley-error', errortip.clear);
 
     errortip.timer = setInterval(function ()
       {
-        if (target.closest('html').length === 0)
+        if (content.closest('html').length === 0)
         {
           errortip.clear();
         }
@@ -1843,34 +1843,40 @@ var errortip = function (event)
   }
 };
 
-errortip.isFirst = false;
+errortip.timer = null;
+errortip.firstTimer = {};
+
+errortip.findError = function( target ) {
+  return target.next('.parsley-error-list');
+}
 
 errortip.first = function( target ) {
   errortip.call(target)
-  errortip.isFirst = true;
-  setTimeout(function() {
-    if (errortip.isFirst) {
-      errortip.clear();
-    }
+  id = errortip.findError( target ).attr( 'id' );
+  errortip.firstTimer[ id ] = setTimeout(function() {
+    errortip.clear({currentTarget: target});
   }, 2000);
 }
 
-errortip.clear = function (id)
+errortip.clear = function ( event )
 {
-
-
-  if (id) {
+  if ( event ){
     var errorPrefix = 'errortip-';
-    $('.errortip_box').each(function() {
-      if (this.id === errorPrefix + id) {
-        $(this).remove();
-        return false;
-      }
-    });
+    var id;
 
+    if ( event === Object( event ) ) {
+      id = errortip.findError( $( event.currentTarget ) ).attr( 'id' );
+    }
+    else {
+      id = event;
+    }
+
+    $( '#' + errorPrefix + id ).remove();
+    errortip.firstTimer[ id ] && clearInterval( errortip.firstTimer[ id ] )
+  } else {
+    $('.errortip_box').remove();
   }
-  $('.errortip_box').remove();
-  $(document.body).off('mouseleave', '.parsley-error', errortip.clear);
+
   clearInterval(errortip.timer);
 
 };
@@ -1878,6 +1884,7 @@ errortip.clear = function (id)
 $(document).ready(function ()
 {
   $(document.body).on('mouseenter', '.parsley-error', errortip);
+  $(document.body).on('mouseleave', '.parsley-error', errortip.clear);
 });
 
 Util.errortip = errortip;

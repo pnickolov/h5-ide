@@ -9,21 +9,21 @@
       <dd><i class="status status-{{#if isRunning}}green{{else}}{{#if isPending}}orange{{else}}red{{/if}}{{/if}}"></i>{{instanceState.name}}</dd>
 
       <dt>Launch Time</dt>
-      <dd>{{launchTime}}</dd>
+      <dd>{{emptyStr launchTime}}</dd>
     </dl>
 
     <dl class="dl-vertical">
       <dt>Primary Public IP</dt>
-      <dd>{{ipAddress}}</dd>
+      <dd>{{emptyStr ipAddress}}</dd>
 
       <dt>Public DNS</dt>
-      <dd>{{dnsName}}</dd>
+      <dd>{{emptyStr dnsName}}</dd>
 
       <dt>Primary Private IP</dt>
-      <dd>{{privateIpAddress}}</dd>
+      <dd>{{emptyStr privateIpAddress}}</dd>
 
       <dt>Private DNS</dt>
-      <dd>{{privateDnsName}}</dd>
+      <dd>{{emptyStr privateDnsName}}</dd>
     </dl>
 
     <dl class="dl-vertical">
@@ -40,16 +40,16 @@
 
     <dl class="dl-vertical">
       <dt>EBS Optimized</dt>
-      <dd>{{ebsOptimized}}<dd>
+      <dd>{{emptyStr ebsOptimized}}<dd>
 
       <dt>Tenancy</dt>
-      <dd>{{placement.tenancy}}</dd>
+      <dd>{{emptyStr placement.tenancy}}</dd>
 
       <dt>Root Device Type</dt>
-      <dd>{{rootDeviceType}}</dd>
+      <dd>{{emptyStr rootDeviceType}}</dd>
 
       <dt>Block Device</dt>
-      <dd>{{blockDevice}}</dd>
+      <dd>{{emptyStr blockDevice}}</dd>
     </dl>
   </div>
 
@@ -89,18 +89,18 @@
 
         {{#if eni.attachment}}
         <dt>Attachment ID</dt>
-        <dd>{{eni.attachment.attachmentId}}</dd>
+        <dd>{{emptyStr eni.attachment.attachmentId}}</dd>
 
         <dt>Attachment Owner</dt>
-        <dd>{{eni.instanceOwnerId}}</dd>
+        <dd>{{emptyStr eni.instanceOwnerId}}</dd>
 
         <dt>Attachment Status</dt>
-        <dd>{{eni.attachment.status}}</dd>
+        <dd>{{emptyStr eni.attachment.status}}</dd>
         {{/if}}
       </dl>
       <dl class="dl-vertical">
         <dt>Mac Address</dt>
-        <dd>{{eni.macAddress}}</dd>
+        <dd>{{emptyStr eni.macAddress}}</dd>
 
         {{#if eni.association.publicDnsName}}
         <dt>Public DNS</dt>

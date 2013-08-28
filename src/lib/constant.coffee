@@ -134,6 +134,17 @@ define [], () ->
 		'hi1.4xlarge' : ["High I/O Quadruple Extra Large", "ECU 35","Core 16","Memory 60.5GB"]
 		'hs1.8xlarge' : ["High Storage Eight Extra Large", "ECU 35","Core 16","Memory 117GB"]
 	}
+
+	INSTANCE_STATES = {
+		'pending'      : 0
+		'running'      : 16
+		'shuttingdown' : 32
+		'terminated'   : 48
+		'stopping'     : 64
+		'stopped'      : 80
+	}
+
+
 	#private
 	MESSAGE_E = {
 		MESSAGE_E_SESSION  : "This session has expired, please log in again"
@@ -337,6 +348,7 @@ define [], () ->
 
 	#public
 	INSTANCE_TYPE			: INSTANCE_TYPE
+	INSTANCE_STATES         : INSTANCE_STATES
 	AWS_RESOURCE_TYPE       : AWS_RESOURCE_TYPE
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
 	AWS_PORT_NAME           : AWS_PORT_NAME

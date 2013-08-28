@@ -974,13 +974,19 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////group bg
-				Canvon.circle(71, 35, 10,{}).attr({
+				Canvon.circle(85, 8, 8,{}).attr({
 					'class': 'instance-number-bg'
 				}),
 				////child number in group
-				Canvon.text(71, 38, option.number).attr({
+				Canvon.text(85, 11, option.number).attr({
 					'class': 'node-label instance-number',
 					'id': group.id + '_instance-number'
+				}),
+
+				////instance-state
+				Canvon.circle(71, 35, 4,{}).attr({
+					'class': 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState(),
+					'id' : group.id + '_instance-state'
 				})
 
 			).attr({

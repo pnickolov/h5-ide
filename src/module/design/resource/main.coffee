@@ -39,6 +39,7 @@ define [ 'jquery',
                     model.describeAvailableZonesService region_name
                     model.describeSnapshotsService      region_name
                 model.quickstartService                 region_name
+                model.describeSubnetInDefaultVpc        region_name
                 #
                 view.region = region_name
                 view.resourceVpcRender( current_platform, type )

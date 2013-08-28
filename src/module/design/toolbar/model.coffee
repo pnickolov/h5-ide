@@ -21,7 +21,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         defaults :
             'item_flags'    : null
 
-
         initialize : ->
 
             me = this
@@ -439,7 +438,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
 
         savePNG : ( is_thumbnail, data ) ->
-            console.log 'savePNG'
+            console.log 'savePNG, is_thumbnail = ' + is_thumbnail
             me = this
             #
             callback = ( result ) ->
@@ -477,7 +476,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             else
                 sendMessage()
             #
-            if is_thumbnail is 'true' then me.trigger 'SAVE_PNG_COMPLETE', null
+            me.trigger 'SAVE_PNG_COMPLETE', null if !is_thumbnail
             null
 
         isChanged : (data) ->

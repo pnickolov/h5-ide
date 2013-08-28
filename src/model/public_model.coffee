@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : public_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:03
+#* Create date  : 2013-08-26 12:19:40
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'public_service'], ( Backbone, public_service ) ->
+define [ 'backbone', 'underscore', 'public_service', 'base_model' ], ( Backbone, _, public_service, base_model ) ->
 
     PublicModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #get_hostname api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'public_service'], ( Backbone, public_service ) ->
                 if !forge_result.is_error
                 #get_hostname succeed
 
-                    public_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'PUBLIC_GET__HOSTNAME_RETURN', forge_result
 
                 else
                 #get_hostname failed
 
                     console.log 'public.get_hostname failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'PUBLIC_GET__HOSTNAME_RETURN', forge_result
 
 
         #get_dns_ip api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'public_service'], ( Backbone, public_service ) ->
                 if !forge_result.is_error
                 #get_dns_ip succeed
 
-                    public_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'PUBLIC_GET__DNS__IP_RETURN', forge_result
 
                 else
                 #get_dns_ip failed
 
                     console.log 'public.get_dns_ip failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'PUBLIC_GET__DNS__IP_RETURN', forge_result
 
 
 

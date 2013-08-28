@@ -4,8 +4,10 @@
  * Copyright 2013 Jon Rohan, James M. Greene, .
  * Released under the MIT license
  * http://zeroclipboard.github.io/ZeroClipboard/
- * v1.2.0-beta.3
- */(function() {
+ * v1.2.1 fork 1.2.0-beta.3 by Morris
+ */
+
+(function() {
   "use strict";
   var _camelizeCssPropName = function() {
     var matcherRegex = /\-([a-z])/g, replacerFn = function(match, group) {
@@ -206,14 +208,19 @@
     }
   };
   var ZeroClipboard = function(elements, options) {
-    if (elements) (ZeroClipboard.prototype._singleton || this).glue(elements);
-    if (ZeroClipboard.prototype._singleton) return ZeroClipboard.prototype._singleton;
-    ZeroClipboard.prototype._singleton = this;
-    this.options = {};
-    for (var kd in _defaults) this.options[kd] = _defaults[kd];
-    for (var ko in options) this.options[ko] = options[ko];
-    this.handlers = {};
-    if (ZeroClipboard.detectFlashSupport()) _bridge();
+
+    if ( !ZeroClipboard.prototype._singleton ) {
+
+      ZeroClipboard.prototype._singleton = this;
+      this.options = {};
+      for (var kd in _defaults) this.options[kd] = _defaults[kd];
+      for (var ko in options) this.options[ko] = options[ko];
+      this.handlers = {};
+      if (ZeroClipboard.detectFlashSupport()) _bridge();
+    }
+
+    this._singleton.glue( elements );
+    return this._singleton;
   };
   var currentElement, gluedElements = [];
   ZeroClipboard.prototype.setCurrent = function(element) {
@@ -239,15 +246,16 @@
   ZeroClipboard.prototype.setHandCursor = function(enabled) {
     if (this.ready()) this.flashBridge.setHandCursor(enabled);
   };
-  ZeroClipboard.version = "1.2.0-beta.3";
+  ZeroClipboard.version = "1.2.1";
   var _defaults = {
-    moviePath: "ZeroClipboard.swf",
-    trustedDomains: null,
-    text: null,
-    hoverClass: "zeroclipboard-is-hover",
-    activeClass: "zeroclipboard-is-active",
-    allowScriptAccess: "sameDomain",
-    useNoCache: true
+    moviePath         : "ZeroClipboard.swf",
+    trustedDomains    : null,
+    text              : null,
+    hoverClass        : "zeroclipboard-is-hover",
+    activeClass       : "zeroclipboard-is-active",
+    allowScriptAccess : "sameDomain",
+    useNoCache        : true,
+    noUnglue          : true
   };
   ZeroClipboard.setDefaults = function(options) {
     for (var ko in options) _defaults[ko] = options[ko];
@@ -405,7 +413,12 @@
     elements = _prepGlue(elements);
     for (var i = 0; i < elements.length; i++) {
       if (_inArray(elements[i], gluedElements) == -1) {
-        gluedElements.push(elements[i]);
+
+        // Because the dom will always refresh.
+        // Meaning we don't need to keep track of the element
+        // Otherwise, those element will leak
+        if ( !this.options.noUnglue )
+          gluedElements.push(elements[i]);
         _addEventHandler(elements[i], "mouseover", _elementMouseOver);
       }
     }

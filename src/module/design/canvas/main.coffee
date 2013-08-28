@@ -120,6 +120,14 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                     type  : type
                     force : not not_force
                 }
+
+            ide_event.onLongListen ide_event.CANVAS_UPDATE_APP_RESOURCE, () ->
+
+                console.log 'CANVAS_UPDATE_APP_RESOURCE'
+                #model.updateAppResource()
+
+                null
+
             null
 
     unLoadModule = () ->

@@ -26,14 +26,14 @@ var slider = {
 					var controllElem = that.find('.slider-controll');
 					var sliderWidth = that.width();
 					var step = sliderWidth / 8;
-					var lastPos = (slider.value - 2) * step + 10;
+					var lastPos = (slider.value - 2) * step + 20;
 
 					controllElem.css({
 						left: lastPos + 'px'
 					});
 				}
-			})
-		})(jQuery); 
+			});
+		})(jQuery);
 	},
 
 	mousedown: function(event) {
@@ -72,8 +72,8 @@ var slider = {
 			}
 
 			if(reduce && beyond){
-				var lastPos = event.clientX - leftWidth + 10 - reduce;
-				slider.value = 2 + (lastPos - 10) / step;
+				var lastPos = event.clientX - leftWidth + 20 - reduce;
+				slider.value = 2 + (lastPos - 20) / step;
 				controllElem.css({
 					left: lastPos + 'px'
 				});
@@ -92,11 +92,20 @@ var slider = {
 			'mousemove': slider.mousemove,
 			'mouseup': slider.mouseup
 		});
+	},
+
+	click: function(event) {
+		event.preventDefault();
+		var currentElem = $(event.currentTarget);
+		var sliderElem = $(this).parents('.slider');
+		var currentValue = Number(currentElem.text());
+		sliderElem.setSliderValue(currentValue);
+		sliderElem.trigger('SLIDER_CHANGE', currentValue);
 	}
 };
 
 $(function() {
-
 	slider.init();
 	$(document).on('mousedown', '.slider-controll', slider.mousedown);
+	$(document).on('click', '.slider .slider-line li span', slider.click);
 });

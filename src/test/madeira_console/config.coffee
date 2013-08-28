@@ -98,6 +98,9 @@ require.config {
 		#events
 		'event'        : 'event/ide_event'
 
+		#base_model
+		'base_model'             : 'model/base_model'
+
 		#model
 		'session_model'   : 'model/session_model'
 

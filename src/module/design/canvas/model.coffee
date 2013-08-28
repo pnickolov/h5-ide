@@ -691,6 +691,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			else if portMap['instance-attach'] and portMap['eni-attach']
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
+				ide_event.trigger ide_event.REDRAW_SG_LINE
 
 				#hide sg port of eni when delete line
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', false
@@ -1030,6 +1031,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				total_device_index  = 	[0...16]
 
+				assoc_public_ip 	= 	false
+
+				main_eni_uid 		= 	null
+
 				for key, value of MC.canvas_data.component
 					if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and portMap['instance-attach'] == MC.extractID( value.resource.Attachment.InstanceId )
 
@@ -1045,16 +1050,51 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 							reach_max = true
 							break
 
+						for comp_uid, comp of MC.canvas_data.component
+
+							if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and MC.extractID( comp.resource.Attachment.InstanceId ) is portMap['instance-attach'] and comp.resource.Attachment.DeviceIndex in ['0',0] and comp.resource.AssociatePublicIpAddress
+
+								main_eni_uid = comp_uid
+
+								assoc_public_ip = true
+
+
+
 
 				if reach_max
 					return sprintf lang.ide.CVS_WARN_EXCEED_ENI_LIMIT, instance_component.name, instance_component.resource.InstanceType, max_eni_number
 
-				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
+				if assoc_public_ip
+					template = MC.template.modalAttachingEni {
+						host : MC.canvas_data.component[portMap['instance-attach']].name
+						eni  : MC.canvas_data.component[portMap['eni-attach']].name
+					}
+					modal template, true
+					$("#canvas-op-confirm").one "click", ()->
+						if main_eni_uid
 
-				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
+							MC.canvas_data.component[main_eni_uid].resource.AssociatePublicIpAddress = false
 
-				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
+							MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
 
+							MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
+
+							MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
+
+							MC.canvas.connect $("#"+portMap['instance-attach']), 'instance-attach', $("#"+portMap['eni-attach']), 'eni-attach'
+
+						modal.close()
+
+					MC.canvas.remove $("#" + line_id)[0]
+				else
+
+					MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
+
+					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
+
+					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
+
+				ide_event.trigger ide_event.REDRAW_SG_LINE
 				#show sg port of eni when create line
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', true
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_right', true
@@ -1465,6 +1505,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 										return false
 
 								if not existing
+
+									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+
+							else if (from_port is 'instance-sg' and to_port is 'eni-sg') or (from_port is 'eni-sg' and to_port is 'instance-sg')
+
+								if MC.canvas_data.component[from_comp_uid].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and MC.canvas_data.component[to_comp_uid].resource.Attachment.InstanceId.split('.')[0][1...] isnt from_comp_uid
+
+									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+
+								else if MC.canvas_data.component[to_comp_uid].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and MC.canvas_data.component[from_comp_uid].resource.Attachment.InstanceId.split('.')[0][1...] isnt to_comp_uid
 
 									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 

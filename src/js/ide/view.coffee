@@ -80,6 +80,13 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-design' ).removeClass    'active'
             #
+
+        disconnectedMessage : ( type ) ->
+            console.log 'disconnectedMessage'
+            if type is 'show'
+                $( '#disconnected-notiﬁcation-wrapper' ).html MC.template.disconnectedNotiﬁcation()
+            else
+                $( '#disconnected-notiﬁcation-wrapper' ).empty()
     }
 
     view = new MainView()

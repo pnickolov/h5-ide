@@ -105,6 +105,15 @@ modal.close = function ()
 		.remove();
 };
 
+modal.isPopup = function ()
+{
+	if ($('#modal-box').html() === void 0) {
+		return false;
+	} else {
+		return true;
+	}
+};
+
 modal.drag = {
 	mousedown: function (event)
 	{

@@ -76,7 +76,7 @@ define [ 'MC', 'event',
 
             else
                 # set total fee
-                cost = MC.aws.aws.getCost MC.canvas.layout.save()
+                cost = MC.aws.aws.getCost MC.canvas_data
                 $('#label-total-fee b').text(cost.total_fee)
 
                 target = $( '#main-toolbar' )

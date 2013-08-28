@@ -130,28 +130,28 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'service' : {
-		"E_OK"           : '',//invoke api succeed
-		"E_NONE"         : 'No data',
-		"E_INVALID"      : 'Invalid api param',
-		"E_FULL"         : '',//no use
-		"E_EXIST"        : '',//no use
-		"E_EXTERNAL"     : 'External error',
-		"E_FAILED"       : '',//no use
-		"E_BUSY"         : '',//for guest
-		"E_NORSC"        : '',//no use
-		"E_NOPERM"       : 'Insufficient permission',
-		"E_NOSTOP"       : '',//no use
-		"E_NOSTART"      : '',//no use
-		"E_ERROR"        : 'Sorry, we are suffering from some technical issue, please try again later',
-		"E_LEFTOVER"     : '',//no use
-		"E_TIMEOUT"      : '',//no use
-		"E_UNKNOWN"      : 'Unknown AWS Error',
-		"E_CONN"         : 'Sorry, AWS is suffering from some technical issue, please try again later',
-		"E_EXPIRED"      : '',//no use
-		"E_PARAMS"       : 'Invalid API Parameters',
-		"E_SESSION"      : 'Invalid session, please login again',
-		"E_END"          : 'Sorry, this invitation has finished',//for guest
-		"E_BLOCKED_USER" : 'User has been blocked',
-		"E_IDEM"         : ''//no use
+		'ERROR_CODE_0_MESSAGE'  : '',//invoke api succeed
+		'ERROR_CODE_1_MESSAGE'  : 'No data',
+		'ERROR_CODE_2_MESSAGE'  : 'Invalid api param',
+		'ERROR_CODE_3_MESSAGE'  : '',//no use
+		'ERROR_CODE_4_MESSAGE'  : '',//no use
+		'ERROR_CODE_5_MESSAGE'  : 'External error',
+		'ERROR_CODE_6_MESSAGE'  : '',//no use
+		'ERROR_CODE_7_MESSAGE'  : '',//for guest
+		'ERROR_CODE_8_MESSAGE'  : '',//no use
+		'ERROR_CODE_9_MESSAGE'  : 'Insufficient permission',
+		'ERROR_CODE_10_MESSAGE' : '',//no use
+		'ERROR_CODE_11_MESSAGE' : '',//no use
+		'ERROR_CODE_12_MESSAGE' : 'Sorry, we are suffering from some technical issue, please try again later',
+		'ERROR_CODE_13_MESSAGE' : '',//no use
+		'ERROR_CODE_14_MESSAGE' : '',//no use
+		'ERROR_CODE_15_MESSAGE' : 'Unknown AWS Error',
+		'ERROR_CODE_16_MESSAGE' : 'Sorry, AWS is suffering from some technical issue, please try again later',
+		'ERROR_CODE_17_MESSAGE' : '',//no use
+		'ERROR_CODE_18_MESSAGE' : 'Invalid API Parameters',
+		'ERROR_CODE_19_MESSAGE' : 'Invalid session, please login again',
+		'ERROR_CODE_20_MESSAGE' : 'Sorry, this invitation has finished',//for guest
+		'ERROR_CODE_21_MESSAGE' : 'User has been blocked',
+		'ERROR_CODE_21_MESSAGE' : ''//no use
 	}
 });

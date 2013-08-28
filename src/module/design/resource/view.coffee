@@ -192,6 +192,8 @@ define [ 'event',
             #
             $( '#resource-panel' ).toggleClass 'hiden'
             $( '#canvas-panel' ).toggleClass 'left-hiden'
+            $( '#hide-resource-panel' ).toggleClass 'icon-caret-left'
+            $( '#hide-resource-panel' ).toggleClass 'icon-caret-right'
             console.log $( '#resource-panel' ).attr( 'class' )
 
             if $( '#resource-panel' ).hasClass("hidden") then state = 'hiden' else state = 'show'

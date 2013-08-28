@@ -18,24 +18,25 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         template : Handlebars.compile $( '#property-instance-tmpl' ).html()
 
         events   :
-            'change .instance-name' : 'instanceNameChange'
-            'change .instance-type-select' : 'instanceTypeSelect'
-            'change #property-instance-ebs-optimized' : 'ebsOptimizedSelect'
-            'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
-            'change #property-instance-user-data' : 'userdataChange'
-            'change #property-instance-base64' : 'base64Change'
-            'change #property-instance-ni-description' : 'eniDescriptionChange'
-            'change #property-instance-source-check' : 'sourceCheckChange'
-            'change #property-instance-public-ip' : 'publicIpChange'
-            'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
-            'OPTION_CHANGE #tenancy-select' : "tenancySelect"
-            'OPTION_CHANGE #keypair-select' : "addtoKPList"
-            'EDIT_UPDATE #keypair-select' : "createtoKPList"
-            'click #instance-ip-add' : "addIPtoList"
+            'change .instance-name'                             : 'instanceNameChange'
+            'change #property-instance-count'                   : 'countChange'
+            'change .instance-type-select'                      : 'instanceTypeSelect'
+            'change #property-instance-ebs-optimized'           : 'ebsOptimizedSelect'
+            'change #property-instance-enable-cloudwatch'       : 'cloudwatchSelect'
+            'change #property-instance-user-data'               : 'userdataChange'
+            'change #property-instance-base64'                  : 'base64Change'
+            'change #property-instance-ni-description'          : 'eniDescriptionChange'
+            'change #property-instance-source-check'            : 'sourceCheckChange'
+            'change #property-instance-public-ip'               : 'publicIpChange'
+            'OPTION_CHANGE #instance-type-select'               : "instanceTypeSelect"
+            'OPTION_CHANGE #tenancy-select'                     : "tenancySelect"
+            'OPTION_CHANGE #keypair-select'                     : "addtoKPList"
+            'EDIT_UPDATE #keypair-select'                       : "createtoKPList"
+            'click #instance-ip-add'                            : "addIPtoList"
             'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
-            'change .input-ip' : 'updateEIPList'
-            'click .toggle-eip' : 'addEIP'
+            'change .input-ip'    : 'updateEIPList'
+            'click .toggle-eip'   : 'addEIP'
             'click #property-ami' : 'openAmiPanel'
 
         render     : ( attributes ) ->
@@ -65,6 +66,16 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             if target.parsley 'validate'
                 this.model.set 'name', name
             null
+
+        countChange : ( event ) ->
+            target = $ event.currentTarget
+
+            target.parsley 'custom', ( val ) ->
+                if isNaN( val ) or val > 99 or val < 1
+                    return 'This value must be >= 1 and <= 99'
+
+            if target.parsley 'validate'
+                @trigger "COUNT_CHANGE", +target.val()
 
         instanceTypeSelect : ( event, value )->
             this.model.set 'instance_type', value

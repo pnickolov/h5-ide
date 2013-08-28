@@ -74,6 +74,8 @@ define [ 'jquery',
                     view.renderPlatformAttrs(false)
                 else
                     view.renderPlatformAttrs(true)
+                    #
+                    ide_event.trigger ide_event.SWITCH_MAIN
                 #
                 if region_view then region_view.checkCreateStack MC.data.supported_platforms
 

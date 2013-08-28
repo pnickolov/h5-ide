@@ -589,7 +589,7 @@ var constant_data = {
 				"type": "association",
 				"from": "subnet-assoc-in",
 				"to": "elb-assoc",
-				"relation": "unique"
+				"relation": "multiple"
 			}
 		},
 		"AWS.AutoScaling.LaunchConfiguration": {
@@ -1536,16 +1536,16 @@ var constant_data = {
 
 				],
 				'CreatedTime': '',
-				'DefaultCooldown': '',
-				'DesiredCapacity': '',
+				'DefaultCooldown': "300",
+				'DesiredCapacity': "",
 				'EnabledMetrics': [
 					{
 						'Granularity': '',
 						'Metric': ''
 					}
 				],
-				'HealthCheckGracePeriod': '',
-				'HealthCheckType': 'EC2',
+				'HealthCheckGracePeriod': "300",
+				'HealthCheckType': "EC2",
 				'Instances': [
 
 				],
@@ -1553,8 +1553,8 @@ var constant_data = {
 				'LoadBalancerNames': [
 
 				],
-				'MaxSize': '',
-				'MinSize': '',
+				'MaxSize': "2",
+				'MinSize': "1",
 				'PlacementGroup': '',
 				'Status': '',
 				'SuspendedProcesses': [

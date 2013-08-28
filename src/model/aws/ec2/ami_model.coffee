@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ami_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:07
+#* Create date  : 2013-08-26 12:19:45
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
+define [ 'backbone', 'underscore', 'ami_service', 'base_model' ], ( Backbone, _, ami_service, base_model ) ->
 
     AMIModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #CreateImage api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                 if !aws_result.is_error
                 #CreateImage succeed
 
-                    ami_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_CREATE_IMAGE_RETURN', aws_result
 
                 else
                 #CreateImage failed
 
                     console.log 'ami.CreateImage failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_CREATE_IMAGE_RETURN', aws_result
 
 
         #RegisterImage api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                 if !aws_result.is_error
                 #RegisterImage succeed
 
-                    ami_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_REGISTER_IMAGE_RETURN', aws_result
 
                 else
                 #RegisterImage failed
 
                     console.log 'ami.RegisterImage failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_REGISTER_IMAGE_RETURN', aws_result
 
 
         #DeregisterImage api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                 if !aws_result.is_error
                 #DeregisterImage succeed
 
-                    ami_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_DEREGISTER_IMAGE_RETURN', aws_result
 
                 else
                 #DeregisterImage failed
 
                     console.log 'ami.DeregisterImage failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_DEREGISTER_IMAGE_RETURN', aws_result
 
 
         #ModifyImageAttribute api (define function)
@@ -110,18 +99,15 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                 if !aws_result.is_error
                 #ModifyImageAttribute succeed
 
-                    ami_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_MODIFY_IMAGE_ATTR_RETURN', aws_result
 
                 else
                 #ModifyImageAttribute failed
 
                     console.log 'ami.ModifyImageAttribute failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_MODIFY_IMAGE_ATTR_RETURN', aws_result
 
 
         #ResetImageAttribute api (define function)
@@ -136,18 +122,15 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                 if !aws_result.is_error
                 #ResetImageAttribute succeed
 
-                    ami_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_RESET_IMAGE_ATTR_RETURN', aws_result
 
                 else
                 #ResetImageAttribute failed
 
                     console.log 'ami.ResetImageAttribute failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_RESET_IMAGE_ATTR_RETURN', aws_result
 
 
         #DescribeImageAttribute api (define function)
@@ -162,18 +145,15 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                 if !aws_result.is_error
                 #DescribeImageAttribute succeed
 
-                    ami_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_DESC_IMAGE_ATTR_RETURN', aws_result
 
                 else
                 #DescribeImageAttribute failed
 
                     console.log 'ami.DescribeImageAttribute failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_DESC_IMAGE_ATTR_RETURN', aws_result
 
 
         #DescribeImages api (define function)
@@ -188,18 +168,15 @@ define [ 'backbone', 'ami_service'], ( Backbone, ami_service ) ->
                 if !aws_result.is_error
                 #DescribeImages succeed
 
-                    ami_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_DESC_IMAGES_RETURN', aws_result
 
                 else
                 #DescribeImages failed
 
                     console.log 'ami.DescribeImages failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_DESC_IMAGES_RETURN', aws_result
 
 
 

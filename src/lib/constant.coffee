@@ -134,6 +134,17 @@ define [], () ->
 		'hi1.4xlarge' : ["High I/O Quadruple Extra Large", "ECU 35","Core 16","Memory 60.5GB"]
 		'hs1.8xlarge' : ["High Storage Eight Extra Large", "ECU 35","Core 16","Memory 117GB"]
 	}
+
+	INSTANCE_STATES = {
+		'pending'      : 0
+		'running'      : 16
+		'shuttingdown' : 32
+		'terminated'   : 48
+		'stopping'     : 64
+		'stopped'      : 80
+	}
+
+
 	#private
 	MESSAGE_E = {
 		MESSAGE_E_SESSION  : "This session has expired, please log in again"
@@ -192,6 +203,32 @@ define [], () ->
 		E_END          : 20
 		E_BLOCKED_USER : 21
 	}
+
+	###
+	#private
+	SERVICE_ERROR_MESSAGE = {}
+	SERVICE_ERROR_MESSAGE[ 1 ]  = 'Service Message' + 1
+	SERVICE_ERROR_MESSAGE[ 2 ]  = 'Service Message' + 2
+	SERVICE_ERROR_MESSAGE[ 3 ]  = 'Service Message' + 3
+	SERVICE_ERROR_MESSAGE[ 4 ]  = 'Service Message' + 4
+	SERVICE_ERROR_MESSAGE[ 5 ]  = 'Service Message' + 5
+	SERVICE_ERROR_MESSAGE[ 6 ]  = 'Service Message' + 6
+	SERVICE_ERROR_MESSAGE[ 7 ]  = 'Service Message' + 7
+	SERVICE_ERROR_MESSAGE[ 8 ]  = 'Service Message' + 8
+	SERVICE_ERROR_MESSAGE[ 9 ]  = 'Service Message' + 9
+	SERVICE_ERROR_MESSAGE[ 10 ]  = 'Service Message' + 10
+	SERVICE_ERROR_MESSAGE[ 11 ]  = 'Service Message' + 11
+	SERVICE_ERROR_MESSAGE[ 12 ]  = 'Service Message' + 12
+	SERVICE_ERROR_MESSAGE[ 13 ]  = 'Service Message' + 13
+	SERVICE_ERROR_MESSAGE[ 14 ]  = 'Service Message' + 14
+	SERVICE_ERROR_MESSAGE[ 15 ]  = 'Service Message' + 15
+	SERVICE_ERROR_MESSAGE[ 16 ]  = 'Service Message' + 16
+	SERVICE_ERROR_MESSAGE[ 17 ]  = 'Service Message' + 17
+	SERVICE_ERROR_MESSAGE[ 18 ]  = 'Service Message' + 18
+	SERVICE_ERROR_MESSAGE[ 19 ]  = 'Service Message' + 19
+	SERVICE_ERROR_MESSAGE[ 20 ]  = 'Service Message' + 20
+	SERVICE_ERROR_MESSAGE[ 21 ]  = 'Service Message' + 21
+	###
 
 	#private
 	APP_STATE = {
@@ -311,6 +348,7 @@ define [], () ->
 
 	#public
 	INSTANCE_TYPE			: INSTANCE_TYPE
+	INSTANCE_STATES         : INSTANCE_STATES
 	AWS_RESOURCE_TYPE       : AWS_RESOURCE_TYPE
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
 	AWS_PORT_NAME           : AWS_PORT_NAME
@@ -319,6 +357,7 @@ define [], () ->
 	REGION_SHORT_LABEL	    : REGION_SHORT_LABEL
 	REGION_LABEL		    : REGION_LABEL
 	RETURN_CODE			    : RETURN_CODE
+	#SERVICE_ERROR_MESSAGE   : SERVICE_ERROR_MESSAGE
 	MESSAGE_E			    : MESSAGE_E
 	APP_STATE			    : APP_STATE
 	OPS_STATE			    : OPS_STATE

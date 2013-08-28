@@ -377,7 +377,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             data.has_instance_store_ami = me.isInstanceStore data
             if id.indexOf('stack-', 0) == 0   #save
-                stack_model.save { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
+                stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
             else    #new
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
@@ -438,7 +438,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
 
         savePNG : ( is_thumbnail, data ) ->
-            console.log 'savePNG'
+            console.log 'savePNG, is_thumbnail = ' + is_thumbnail
             me = this
             #
             callback = ( result ) ->
@@ -476,7 +476,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             else
                 sendMessage()
             #
-            if is_thumbnail is 'true' then me.trigger 'SAVE_PNG_COMPLETE', null
+            me.trigger 'SAVE_PNG_COMPLETE', null if !is_thumbnail
             null
 
         isChanged : (data) ->

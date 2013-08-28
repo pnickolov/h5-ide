@@ -9,19 +9,19 @@
       <div class="selectbox">
         <div class="selection">{{protocol}}</div>
         <ul class="dropdown" tabindex="-1">
-          <li class="item" data-id="http">HTTP</li>
           <li class="item" data-id="https">HTTPS</li>
+          <li class="item" data-id="http">HTTP</li>
           <li class="item" data-id="email">Email</li>
           <li class="item" data-id="email-json">Email-JSON</li>
           <li class="item" data-id="sms">SMS</li>
+          <li class="item" data-id="arn">Application</li>
           <li class="item" data-id="sqs">Amazon SQS</li>
-          <li class="item" data-id="application">Application</li>
         </ul>
       </div>
 
       <label for="property-asg-endpoint">Endpoint</label>
       <span class="property-asg-ep" data-bind="true">
-        <input type="text" class="input" id="property-asg-endpoint" value="{{endpoint}}" max-length="255" data-required-rollback="true" data-trigger="change">
+        <input type="text" class="input" id="property-asg-endpoint" value="{{endpoint}}" max-length="255" data-required="true" data-trigger="change">
       </span>
 
     </section>

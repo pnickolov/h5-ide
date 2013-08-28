@@ -26,6 +26,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-base64' : 'base64Change'
             'change #property-instance-ni-description' : 'eniDescriptionChange'
             'change #property-instance-source-check' : 'sourceCheckChange'
+            'change #property-instance-public-ip' : 'publicIpChange'
             'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select' : "tenancySelect"
             'OPTION_CHANGE #keypair-select' : "addtoKPList"
@@ -84,6 +85,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         sourceCheckChange : ( event ) ->
             this.model.set 'source_check', event.target.checked
+
+        publicIpChange : ( event ) ->
+
+            this.model.set 'public_ip', event.target.checked
 
         addEmptyKP : ( event ) ->
             notification('error', 'KeyPair Empty', false)

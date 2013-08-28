@@ -146,19 +146,54 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			sgRuleAry = []
 			_.each parentSGList, (uid) ->
 
-				sgComp = MC.canvas_data.component[uid]
+				sgComp = $.extend true, {}, MC.canvas_data.component[uid]
 				sgCompRes = sgComp.resource
 
 				sgIpPermissionsAry = sgCompRes.IpPermissions
 
 				_.map sgIpPermissionsAry, (value) ->
 					value.Direction = 'inbound'
+					if value.ToPort is value.FromPort
+						value.display_port = value.ToPort
+					else
+						value.display_port = value.FromPort + '-' + value.ToPort
+
+					if value.IpRanges.slice(0,1) is '@'
+
+						value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
+
+					if value.IpProtocol not in ['tcp', 'udp', 'icmp']
+
+						if value.IpProtocol in [-1, '-1']
+
+							value.IpProtocol = "all"
+
+						else
+							value.IpProtocol = "custom(#{value.Protocol})"
+
 					return value
 
 				sgIpPermissionsEgressAry = sgCompRes.IpPermissionsEgress
 
 				_.map sgIpPermissionsEgressAry, (value) ->
 					value.Direction = 'outbound'
+					if value.ToPort is value.FromPort
+						value.display_port = value.ToPort
+					else
+						value.display_port = value.FromPort + '-' + value.ToPort
+
+					if value.IpRanges.slice(0,1) is '@'
+
+						value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
+
+					if value.IpProtocol not in ['tcp', 'udp', 'icmp']
+
+						if value.IpProtocol in [-1, '-1']
+
+							value.IpProtocol = "all"
+
+						else
+							value.IpProtocol = "custom(#{value.Protocol})"
 					return value
 
 				sgIpPermissionsAry = sgIpPermissionsAry.concat sgIpPermissionsEgressAry

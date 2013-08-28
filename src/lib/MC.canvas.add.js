@@ -511,6 +511,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					component_data.resource.MinSize = 1;
 
+					component_data.resource.DesiredCapacity = 1;
+
 					component_data.resource.AutoScalingGroupName = option.name;
 
 					// if(option['launchConfig']){
@@ -759,6 +761,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					eni.resource.Attachment.DeviceIndex = "0";
 					eni.resource.Attachment.InstanceId = "@"+group.id+".resource.InstanceId";
 					eni.resource.AvailabilityZone = component_data.resource.Placement.AvailabilityZone;
+					eni.resource.AssociatePublicIpAddress = true;
 					var sg_group = {};
 					sg_group.GroupId = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId';
 					sg_group.GroupName = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupName';
@@ -766,6 +769,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.DEFAULT_VPC)
 					{
+						eni.resource.AssociatePublicIpAddress = false;
 						component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 						component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 						eni.resource.SubnetId = component_data.resource.SubnetId;
@@ -1942,7 +1946,14 @@ MC.canvas.add = function (flag, option, coordinate)
 				{
 					var asg_comp = MC.canvas_data.component[ layout.node[group.id].groupUId ];
 					var asg_comp_data = MC.data.resource_list[MC.canvas_data.region][ asg_comp.resource.AutoScalingGroupARN ];
-					option.name = asg_comp_data.Instances.member.length + " in service";
+					if (asg_comp_data)
+					{
+						option.name = asg_comp_data.Instances.member.length + " in service";
+					}
+					else
+					{
+						option.name = "? in service";
+					}
 				}
 
 				// if(!option['launchConfig']){

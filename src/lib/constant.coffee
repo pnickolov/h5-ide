@@ -204,6 +204,32 @@ define [], () ->
 		E_BLOCKED_USER : 21
 	}
 
+	###
+	#private
+	SERVICE_ERROR_MESSAGE = {}
+	SERVICE_ERROR_MESSAGE[ 1 ]  = 'Service Message' + 1
+	SERVICE_ERROR_MESSAGE[ 2 ]  = 'Service Message' + 2
+	SERVICE_ERROR_MESSAGE[ 3 ]  = 'Service Message' + 3
+	SERVICE_ERROR_MESSAGE[ 4 ]  = 'Service Message' + 4
+	SERVICE_ERROR_MESSAGE[ 5 ]  = 'Service Message' + 5
+	SERVICE_ERROR_MESSAGE[ 6 ]  = 'Service Message' + 6
+	SERVICE_ERROR_MESSAGE[ 7 ]  = 'Service Message' + 7
+	SERVICE_ERROR_MESSAGE[ 8 ]  = 'Service Message' + 8
+	SERVICE_ERROR_MESSAGE[ 9 ]  = 'Service Message' + 9
+	SERVICE_ERROR_MESSAGE[ 10 ]  = 'Service Message' + 10
+	SERVICE_ERROR_MESSAGE[ 11 ]  = 'Service Message' + 11
+	SERVICE_ERROR_MESSAGE[ 12 ]  = 'Service Message' + 12
+	SERVICE_ERROR_MESSAGE[ 13 ]  = 'Service Message' + 13
+	SERVICE_ERROR_MESSAGE[ 14 ]  = 'Service Message' + 14
+	SERVICE_ERROR_MESSAGE[ 15 ]  = 'Service Message' + 15
+	SERVICE_ERROR_MESSAGE[ 16 ]  = 'Service Message' + 16
+	SERVICE_ERROR_MESSAGE[ 17 ]  = 'Service Message' + 17
+	SERVICE_ERROR_MESSAGE[ 18 ]  = 'Service Message' + 18
+	SERVICE_ERROR_MESSAGE[ 19 ]  = 'Service Message' + 19
+	SERVICE_ERROR_MESSAGE[ 20 ]  = 'Service Message' + 20
+	SERVICE_ERROR_MESSAGE[ 21 ]  = 'Service Message' + 21
+	###
+
 	#private
 	APP_STATE = {
 		APP_STATE_RUNNING		: "Running"
@@ -331,6 +357,7 @@ define [], () ->
 	REGION_SHORT_LABEL	    : REGION_SHORT_LABEL
 	REGION_LABEL		    : REGION_LABEL
 	RETURN_CODE			    : RETURN_CODE
+	#SERVICE_ERROR_MESSAGE   : SERVICE_ERROR_MESSAGE
 	MESSAGE_E			    : MESSAGE_E
 	APP_STATE			    : APP_STATE
 	OPS_STATE			    : OPS_STATE

@@ -28,9 +28,12 @@ define [ 'underscore', 'backbone' ], () ->
         DESIGN_SUB_COMPLETE    : 'DESIGN_SUB_COMPLETE'
 
         #
+        LOGOUT_IDE             : 'LOGOUT_IDE'
+
+        #
         OPEN_DESIGN            : 'OPEN_DESIGN'
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
-        #OPEN_TOOLBAR           : 'OPEN_TOOLBAR'
+        #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
         SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
         UPDATE_PROPERTY        : 'UPDATE_PROPERTY'
         OPEN_SG                : 'OPEN_SG'

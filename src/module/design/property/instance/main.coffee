@@ -101,6 +101,10 @@ define [ 'jquery',
 
                 model.setIPList inputIPAry
 
+            view.on 'COUNT_CHANGE', ( val ) ->
+                model.setCount val
+                MC.canvas.update model.get( "get_uid" ), "text", "instance-number", val
+
             model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
 
                 notification 'error', lang.ide.PROP_WARN_EXCEED_ENI_LIMIT

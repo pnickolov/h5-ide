@@ -4,7 +4,7 @@
 		<i class="icon-tabbar-label"></i>
 		{{tab_name}}
 	</a>
-	<a href="javascript:void(0)" class="close-tab">x</a>
+	<a href="javascript:void(0)" class="close-tab icon-close" title="Close Tab"></a>
 </li>
 
 <!-- tab.dashboard -->
@@ -13,7 +13,7 @@
 		<i class="icon-dashboard-tabbar icon-tabbar-label"></i>
 		{{target_id}}
 	</a>
-	<a href="javascript:void(0)" class="close-tab">x</a>
+	<a href="javascript:void(0)" class="icon-close close-tab" title="Close Tab"></a>
 </li>
 
 <!-- notification.item -->
@@ -50,10 +50,11 @@
        		<div class="modal-text-wraper">
        			<div class="modal-center-align-helper">
 		            <div class="modal-text">{{body}}</div>
+		            {{#if input}}
+	                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
+	            	{{/if}}
 	            </div>
-            	{{#if input}}
-               <input id="modal-input-value" class="input" type="text" value="{{input}}" />
-            	{{/if}}
+            	
             </div>
        </div>
        <div class="modal-footer">
@@ -774,7 +775,7 @@ Additional Notes and Questions
             		<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
                 	<label for="radio_outbound"></label>
             	</div>
-            	<label for="radio_outbound" >outbound</label>
+            	<label for="radio_outbound">Outbound</label>
 				{{/if}}
         	</div>
     	</div>
@@ -1075,44 +1076,6 @@ Additional Notes and Questions
   	<a id="cidr-remove" class="modal-close link-red left link-modal-danger">{{remove_content}}</a>
     <button id="cidr-return" class="btn modal-close btn-blue">OK</button>
   </div>
-</div>
-
-<!-- invalidSession -->
-<div style="width:420px" class="invalid-session">
-	<div class="modal-header"> <h3>Invalid Session</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-center-align-helper">
-			<div class="modal-text">Your account has signed in from other location or you last login has
-				timed out.</div>
-			<div class="modal-text">Would you like to reconnect this session or close it?</div>
-			<div class="modal-text">If you have unsaved changes, close this session will cause all your change to lose.</div>
-		</div>
-	</div>
-		<div class="modal-footer">
-			<button id="cidr-remove" class="btn modal-close btn-red">Close Session</button>
-			<button id="cidr-return" class="btn modal-close btn-silver">Reconnect</button>
-		</div>
-</div>
-
-<!-- reconnectSession -->
-<div style="width:320px" class="reconnect-session">
-	<div class="modal-header"> <h3>Reconnect Session</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-center-align-helper">
-			<div class="modal-text">Please provide your password to reconnect:</div>
-			<div class="modal-input">
-				<div class="placeholder-input">
-					<input type="text" id="input-demo" class="input">
-					<label for="input-demo" class="placeholder">Password</label>
-				</div>
-			</div>
-
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button class="btn btn-blue">OK</button>
-		<button class="btn modal-close">Close</button>
-	</div>
 </div>
 
 <!-- disconnectedNotiﬁcation -->

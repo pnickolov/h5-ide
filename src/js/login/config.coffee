@@ -30,6 +30,9 @@ require.config {
 		#common lib
 		'constant'        : 'lib/constant'
 
+		#base_model
+		'base_model'      : 'model/base_model'
+
 		#result_vo
 		'result_vo'       : 'service/result_vo'
 

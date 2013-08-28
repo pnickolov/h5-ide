@@ -75,7 +75,14 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 		getName  : () ->
 			console.log 'getName'
-			this.set 'name', MC.canvas_data.component[ this.get( 'get_uid' )].name
+			component = MC.canvas_data.component[ this.get( 'get_uid' )]
+
+			this.set 'name',   component.name
+			this.set 'number', component.number
+			null
+
+		setCount : ( val ) ->
+			MC.canvas_data.component[ @get( 'get_uid' )].number = val
 			null
 
 		setInstanceType  : () ->

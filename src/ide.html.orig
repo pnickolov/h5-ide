@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>MadeiraCloud</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="./assets/css/icon-font.css"/>
+	<link rel="stylesheet" href="./assets/css/core.css"/>
+	<link rel="stylesheet" href="./assets/css/ide.css"/>
+	<link rel="stylesheet" href="./assets/css/grid.css"/>
+	<link rel="stylesheet" href="./assets/css/UI.component.css"/>
+	<link rel="stylesheet" href="./assets/css/canvas.css"/>
+</head>
+<body id="body">
+
+	<!-- Loading bar -->
+	<div id="loading-bar-wrapper">
+		<div class="loading-wrapper">
+			<div class="loading clearfix">
+				<img src="./assets/images/ide/loading-logo-dark.gif" alt="">
+			</div>
+		</div>
+	</div>
+
+	<div id="wrapper">
+
+		<!-- Navigation -->
+		<nav id="navigation">
+			loading...
+		</nav>
+
+		<!-- Header Wrapper -->
+		<div id="header-wrapper" class="clearfix">
+
+			<img src="./assets/images/ide/logo-t.png" alt="" class="logo">
+
+			<!-- Header -->
+			<nav id="header">
+				loading...
+			</nav>
+
+			<!-- Tab Bar -->
+			<div id="tabbar-wrapper">
+
+				<div id="tab-bar">
+					loading...
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Dasboard overview Tab -->
+			<div id="tab-content-dashboard" class="main-content scroll-wrap active">
+				loading...
+			</div>
+
+			<!-- Dasboard region Tab -->
+			<div id="tab-content-region" class="main-content scroll-wrap">
+				loading...
+			</div>
+
+			<!-- Stack/App Tab -->
+			<div id="tab-content-design" class="main-content">
+				loading...
+			</div>
+
+			<!-- Process Tab -->
+			<div id="tab-content-process" class="main-content">
+				loading...
+			</div>
+
+		</div>
+	</div>
+
+<<<<<<< HEAD
+	<!-- Disconnected notiﬁcation Message -->
+	<div id="disconnected-notiﬁcation-wrapper"></div>
+
+=======
+	<script type="text/javascript"                             src="./lib/analytics.js"></script>
+>>>>>>> develop
+	<script type="text/javascript" data-main="./js/ide/config" src="./vender/requirejs/require.js"></script>
+
+</body>
+</html>

@@ -119,6 +119,7 @@ define({
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
 		'PROP_MSG_WARN_NO_APP_NAME'             : 'App name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
+		'PROP_MSG_WARN_INVALID_APP_NAME'		: 'App name is invalid.',
 		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type.',
 		// Add new strings below this comment. Move above once English has been confirmed
 		'PROP_TEXT_DEFAULT_SG_DESC'             : 'VPC Default Security Group',

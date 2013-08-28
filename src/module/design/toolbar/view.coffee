@@ -18,9 +18,16 @@ define [ 'MC', 'event',
 
         events     :
             ### env:dev ###
+            #json
             'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'       : 'clickOpenJSONView'
+            #line style
+            'click #toolbar-straight'       : 'clickLineStyleStraight'
+            'click #toolbar-elbow'          : 'clickLineStyleElbow'
+            'click #toolbar-bezier-q'       : 'clickLineStyleBezierQ'
+            'click #toolbar-bezier-qt'      : 'clickLineStyleBezierQT'
             ### env:dev:end ###
+
             'click #toolbar-run'            : 'clickRunIcon'
             'click .icon-save'              : 'clickSaveIcon'
             'click #toolbar-duplicate'      : 'clickDuplicateIcon'
@@ -35,12 +42,6 @@ define [ 'MC', 'event',
             'click #toolbar-stop-app'       : 'clickStopApp'
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
-
-            #line style
-            'click #toolbar-straight'       : 'clickLineStyleStraight'
-            'click #toolbar-elbow'          : 'clickLineStyleElbow'
-            'click #toolbar-bezier-q'       : 'clickLineStyleBezierQ'
-            'click #toolbar-bezier-qt'      : 'clickLineStyleBezierQT'
 
         render   : ( type ) ->
             console.log 'toolbar render'

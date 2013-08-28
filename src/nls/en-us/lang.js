@@ -130,26 +130,28 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'service' : {
-		'ERROR_CODE_1_MESSAGE' : 'Service Message',
-		'ERROR_CODE_2_MESSAGE' : 'Service Message',
-		'ERROR_CODE_3_MESSAGE' : 'Service Message',
-		'ERROR_CODE_4_MESSAGE' : 'Service Message',
-		'ERROR_CODE_5_MESSAGE' : 'Service Message',
-		'ERROR_CODE_6_MESSAGE' : 'Service Message',
-		'ERROR_CODE_7_MESSAGE' : 'Service Message',
-		'ERROR_CODE_8_MESSAGE' : 'Service Message',
-		'ERROR_CODE_9_MESSAGE' : 'Service Message',
-		'ERROR_CODE_10_MESSAGE' : 'Service Message',
-		'ERROR_CODE_11_MESSAGE' : 'Service Message',
-		'ERROR_CODE_12_MESSAGE' : 'Service Message',
-		'ERROR_CODE_13_MESSAGE' : 'Service Message',
-		'ERROR_CODE_14_MESSAGE' : 'Service Message',
-		'ERROR_CODE_15_MESSAGE' : 'Service Message',
-		'ERROR_CODE_16_MESSAGE' : 'Service Message',
-		'ERROR_CODE_17_MESSAGE' : 'Service Message',
-		'ERROR_CODE_18_MESSAGE' : 'Service Message',
-		'ERROR_CODE_19_MESSAGE' : 'Service Message',
-		'ERROR_CODE_20_MESSAGE' : 'Service Message',
-		'ERROR_CODE_21_MESSAGE' : 'Service Message'
+		"E_OK"           : '',//invoke api succeed
+		"E_NONE"         : 'No data',
+		"E_INVALID"      : 'Invalid api param',
+		"E_FULL"         : '',//no use
+		"E_EXIST"        : '',//no use
+		"E_EXTERNAL"     : 'External error',
+		"E_FAILED"       : '',//no use
+		"E_BUSY"         : '',//for guest
+		"E_NORSC"        : '',//no use
+		"E_NOPERM"       : 'Insufficient permission',
+		"E_NOSTOP"       : '',//no use
+		"E_NOSTART"      : '',//no use
+		"E_ERROR"        : 'Sorry, we are suffering from some technical issue, please try again later',
+		"E_LEFTOVER"     : '',//no use
+		"E_TIMEOUT"      : '',//no use
+		"E_UNKNOWN"      : 'Unknown AWS Error',
+		"E_CONN"         : 'Sorry, AWS is suffering from some technical issue, please try again later',
+		"E_EXPIRED"      : '',//no use
+		"E_PARAMS"       : 'Invalid API Parameters',
+		"E_SESSION"      : 'Invalid session, please login again',
+		"E_END"          : 'Sorry, this invitation has finished',//for guest
+		"E_BLOCKED_USER" : 'User has been blocked',
+		"E_IDEM"         : ''//no use
 	}
 });

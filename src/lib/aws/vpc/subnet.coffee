@@ -27,7 +27,7 @@ define [ 'MC' ], ( MC ) ->
 
 	#private
 	genCIDRPrefixSuffix = (subnetCIDR) ->
-		
+
 		cutAry = subnetCIDR.split('/')
 		ipAddr = cutAry[0]
 		suffix = Number(cutAry[1])
@@ -91,7 +91,7 @@ define [ 'MC' ], ( MC ) ->
 			subnetCIDR = originSubnetCIDR
 		else
 			subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
-		
+
 		vpcComp = MC.aws.subnet.getVPC(subnetUID)
 		vpcUID = vpcComp.uid
 		isHaveConflict = false
@@ -118,7 +118,7 @@ define [ 'MC' ], ( MC ) ->
 				return false
 			else
 				return true
-		
+
 		else
 			return false
 
@@ -232,7 +232,7 @@ define [ 'MC' ], ( MC ) ->
 
 		null
 
-	isCanDeleteSubnetToELBConnection = (elbUID, subnetUID) ->
+	canDeleteSubnetToELBConnection = (elbUID, subnetUID) ->
 
 		elbComp = MC.canvas_data.component[elbUID]
 		instanceRefAry = elbComp.resource.Instances
@@ -272,13 +272,13 @@ define [ 'MC' ], ( MC ) ->
 		return isCanDelete
 
 	#public
-	genCIDRPrefixSuffix : genCIDRPrefixSuffix
-	isSubnetConflict : isSubnetConflict
-	isInVPCCIDR : isInVPCCIDR
-	autoAssignAllCIDR : autoAssignAllCIDR
-	genCIDRDivAry : genCIDRDivAry
-	getVPC : getVPC
-	updateAllENIIPList : updateAllENIIPList
-	isSubnetConflictInVPC : isSubnetConflictInVPC
-	autoAssignSimpleCIDR : autoAssignSimpleCIDR
-	isCanDeleteSubnetToELBConnection : isCanDeleteSubnetToELBConnection
+	genCIDRPrefixSuffix            : genCIDRPrefixSuffix
+	isSubnetConflict               : isSubnetConflict
+	isInVPCCIDR                    : isInVPCCIDR
+	autoAssignAllCIDR              : autoAssignAllCIDR
+	genCIDRDivAry                  : genCIDRDivAry
+	getVPC                         : getVPC
+	updateAllENIIPList             : updateAllENIIPList
+	isSubnetConflictInVPC          : isSubnetConflictInVPC
+	autoAssignSimpleCIDR           : autoAssignSimpleCIDR
+	canDeleteSubnetToELBConnection : canDeleteSubnetToELBConnection

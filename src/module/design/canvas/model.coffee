@@ -239,7 +239,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Update Subnet's children's AZ
 			for key, value of MC.canvas_data.component
-  
+
 				if value.type == resource_type.AWS_EC2_Instance
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.Placement.AvailabilityZone = "1" # Set the Instance's subnet to something else, so we can change it.
@@ -255,18 +255,18 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				# Disconnect ELB and Subnet, if the newly moved to AZ has a subnet which is connected to the same ELB.
 				else if value.type == resource_type.AWS_ELB
-				  linkedELBIndex = undefined
-				  linkedELB      = false
-				  for sb, key in value.resource.Subnets
-				  	if sb.indexOf( component.uid ) != -1
-				  		linkedELBIndex = key
-				  	else if MC.canvas_data.component[ MC.extractID( sb ) ].resource.AvailabilityZone == parent.name
-				  	  linkedELB = true
+					linkedELBIndex = undefined
+					linkedELB      = false
+					for sb, key in value.resource.Subnets
+						if sb.indexOf( component.uid ) != -1
+							linkedELBIndex = key
+						else if MC.canvas_data.component[ MC.extractID( sb ) ].resource.AvailabilityZone == parent.name
+							linkedELB = true
 
-				  # Disconnect
-				  if linkedELBIndex != undefined && linkedELB
-				  	value.resource.Subnets.splice linkedELBIndex, 1
-				  	subnetLayout = MC.canvas_data.layout.component.group[ component.uid ]
+					# Disconnect
+					if linkedELBIndex != undefined && linkedELB
+						value.resource.Subnets.splice linkedELBIndex, 1
+						subnetLayout = MC.canvas_data.layout.component.group[ component.uid ]
 						if subnetLayout
 							for i in subnetLayout.connection
 								if i.target == value.uid
@@ -427,15 +427,57 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# Delete the LC if there's only one asg is using.
 			lc_uid    = component.resource.LaunchConfigurationName
 			lc_shared = false
+
+			# Delete Scaling Policy
+			# Delete Scaling Policy Alarm
+			# Delete NotificationConfiguartion
+
+			res_type = constant.AWS_RESOURCE_TYPE
+			del_res  = []
 			for comp_uid, comp of MC.canvas_data.component
-				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+
+				if comp.type is res_type.AWS_AutoScaling_Group
 					if comp.resource.LaunchConfigurationName is lc_uid
 						lc_shared = true
-						break
+
+				else if comp.type is res_type.AWS_AutoScaling_NotificationConfiguration
+					if comp.resource.AutoScalingGroupName.indexOf( component.uid ) isnt -1
+						del_res.push comp_uid
+
+				else if comp.type is res_type.AWS_AutoScaling_ScalingPolicy
+					if comp.resource.AutoScalingGroupName.indexOf( component.uid ) is -1
+						continue
+
+					del_res.push comp_uid
+
+					alarmname = "#{comp.name}-alarm"
+
+					for c_uid, c of MC.canvas_data.component
+						if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+							continue
+
+						if c.name isnt alarmname
+							continue
+
+						action = null
+
+						if c.resource.InsufficientDataActions.length
+							action = c.resource.InsufficientDataActions[0]
+						else if c.resource.OKAction.length
+							action = c.resource.OKAction[0]
+						else if c.resource.AlarmActions.length
+							action = c.resource.AlarmActions[0]
+
+						if action and action.indexOf( comp_uid ) != -1
+							del_res.push c_uid
+							break
 
 			if not lc_shared
-				lc_uid = MC.extractID lc_uid
-				delete MC.canvas_data.component[lc_uid]
+				del_res.push MC.extractID lc_uid
+
+			for uid in del_res
+				delete MC.canvas_data.component[ uid ]
+
 			null
 
 		deleteR_ASG_LC : ( component, force ) ->
@@ -683,7 +725,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
 				elbUID = portMap['elb-assoc']
 				subnetUID = portMap['subnet-assoc-in']
-				if !MC.aws.subnet.isCanDeleteSubnetToELBConnection(elbUID)
+				if !MC.aws.subnet.canDeleteSubnetToELBConnection( elbUID, subnetUID )
 					return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE }
 				MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
 
@@ -790,7 +832,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				if portMap['elb-sg-out'] and portMap['launchconfig-sg']
 					elb_ref = '@' + portMap['elb-sg-out'] + '.resource.LoadBalancerName'
-                    # if select the main launch configuration and elb line
+										# if select the main launch configuration and elb line
 					if MC.canvas_data.component[portMap['launchconfig-sg']]
 
 						selected_line_id = option.id
@@ -802,31 +844,31 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 						$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
 
-	                        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId is original_group_uid
+													if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId is original_group_uid
 
-	                        	$.each MC.canvas_data.layout.connection, ( line_id, line )->
+														$.each MC.canvas_data.layout.connection, ( line_id, line )->
 
-	                        		if line.type is 'elb-sg'
-	                        			tmp_map = {}
-	                        			$.each line.target, (k, v)->
-	                        				tmp_map[v] = k
-	                        				null
+															if line.type is 'elb-sg'
+																tmp_map = {}
+																$.each line.target, (k, v)->
+																	tmp_map[v] = k
+																	null
 
-	                        			if tmp_map['elb-sg-out'] is portMap['elb-sg-out'] and tmp_map['launchconfig-sg'] is comp_uid
-	                        				MC.canvas.remove $("#" + line_id)[0]
+																if tmp_map['elb-sg-out'] is portMap['elb-sg-out'] and tmp_map['launchconfig-sg'] is comp_uid
+																	MC.canvas.remove $("#" + line_id)[0]
 
-	                        				return false
+																	return false
 
-	                        			if tmp_map['elb-sg-out'] is portMap['elb-sg-out'] and tmp_map['launchconfig-sg'] is portMap['launchconfig-sg']
+																if tmp_map['elb-sg-out'] is portMap['elb-sg-out'] and tmp_map['launchconfig-sg'] is portMap['launchconfig-sg']
 
-	                        				selected_line_id = line_id
+																	selected_line_id = line_id
 
-	                        			null
-	                    elb_index = MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.indexOf(elb_ref)
+																null
+											elb_index = MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.indexOf(elb_ref)
 						if elb_index >= 0
 							MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.splice elb_index, 1
 						MC.canvas.remove $("#" + selected_line_id)[0]
-                    # select the expand lanchconfiguration and elb line
+										# select the expand lanchconfiguration and elb line
 					else
 						original_group_uid = MC.canvas_data.layout.component.group[portMap['launchconfig-sg']].originalId
 
@@ -843,28 +885,28 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 								$.each MC.canvas_data.layout.connection, ( l_id, line_comp ) ->
 
-							        tmp_portMap = {}
+											tmp_portMap = {}
 
-							        $.each line_comp.target, ( key, val ) ->
+											$.each line_comp.target, ( key, val ) ->
 
-							            tmp_portMap[val] = key
+													tmp_portMap[val] = key
 
-							            null
+													null
 
-							        if tmp_portMap['elb-sg-out'] is portMap['elb-sg-out'] and tmp_portMap['launchconfig-sg'] is comp_uid
+											if tmp_portMap['elb-sg-out'] is portMap['elb-sg-out'] and tmp_portMap['launchconfig-sg'] is comp_uid
 
-							            MC.canvas.remove $("#" + l_id)[0]
+													MC.canvas.remove $("#" + l_id)[0]
 
-							        else
-							        	$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
+											else
+												$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
 
-							        		if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is original_group_uid
+													if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is original_group_uid
 
-							        			if tmp_portMap['elb-sg-out'] is portMap['elb-sg-out'] and tmp_portMap['launchconfig-sg'] is group_id
+														if tmp_portMap['elb-sg-out'] is portMap['elb-sg-out'] and tmp_portMap['launchconfig-sg'] is group_id
 
-							        				MC.canvas.remove $("#" + l_id)[0]
+															MC.canvas.remove $("#" + l_id)[0]
 
-							        				return false
+															return false
 
 				else if portMap['launchconfig-sg']
 
@@ -1291,8 +1333,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						asg_comp = MC.canvas_data.component[MC.canvas_data.layout.component.group[uid].originalId]
 						if asg_comp and asg_comp.resource.LoadBalancerNames.length > 0
 							$.each asg_comp.resource.LoadBalancerNames, (idx, loadbalancername)->
-						 		lb_uid = loadbalancername.split('.')[0].slice(1)
-						 		MC.canvas.connect($("#"+lb_uid), 'elb-sg-out', $("#"+uid), 'launchconfig-sg')
+								lb_uid = loadbalancername.split('.')[0].slice(1)
+								MC.canvas.connect($("#"+lb_uid), 'elb-sg-out', $("#"+uid), 'launchconfig-sg')
 
 			if componentType in [resource_type.AWS_AutoScaling_Group, resource_type.AWS_VPC_NetworkInterface, resource_type.AWS_EC2_Instance, resource_type.AWS_ELB]
 				ide_event.trigger ide_event.REDRAW_SG_LINE

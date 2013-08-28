@@ -510,7 +510,7 @@ MC.canvas = {
 	{
 		var d = '';
 
-		if (controlPoints.length>=6)
+		if (controlPoints.length>=4)
 		{
 			var start0 = controlPoints[0],
 				start = controlPoints[1],
@@ -1073,7 +1073,10 @@ MC.canvas = {
 									path = MC.canvas._round_corner(controlPoints); //method1
 									break;
 								case 1:
-									path = 'M ' + start0.x + ' ' + start0.y	+ ' L ' + end0.x + ' ' + end0.y;
+										path = 'M ' + controlPoints[0].x + ' ' + controlPoints[0].y
+										+ ' L ' + controlPoints[1].x + ' ' + controlPoints[1].y
+										+ ' L ' + controlPoints[controlPoints.length-2].x + ' ' + controlPoints[controlPoints.length-2].y
+										+ ' L ' + controlPoints[controlPoints.length-1].x + ' ' + controlPoints[controlPoints.length-1].y;
 									break;
 								case 2:
 									path = MC.canvas._bezier_q_corner( controlPoints ); //method2
@@ -1936,6 +1939,7 @@ MC.canvas.layout = {
 		tmp = {};
 		tmp.uid = sg.uid;
 		tmp.name = sg.name;
+		tmp.color = MC.canvas.SG_COLORS[0];
 		tmp.member = [];
 		MC.canvas_property.sg_list.push(tmp);
 

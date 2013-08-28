@@ -101,6 +101,7 @@ define({
 		'CVS_MSG_ERR_DEL_MAIN_RT'               : 'The main route table %s cannot be deleted. Please set another route table as the main and try again.',
 		'CVS_MSG_ERR_DEL_LINKED_RT'             : 'Subnets must be associated to a route table. Please associate the subnets with another route table first.',
 		'CVS_MSG_ERR_DEL_SBRT_LINE'             : 'Subnets must be associated with a route table.',
+		'CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE'     : 'Load balancer must attach to one subnet per Availability Zone.',
 		'CVS_MSG_ERR_DEL_LINKED_ELB'            : 'This subnet cannot be deleted because it is associated to a load balancer.',
 		'CVS_CFM_DEL'                           : 'Delete %s',
 		'CVS_CFM_DEL_IGW'                       : 'Internet-facing load balancers and elastic IPs will not function without an internet gateway. Are you sure you want to delete it?',
@@ -126,6 +127,17 @@ define({
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',
 		// Add new strings below this comment. Move above once English has been confirmed
+
+		/****** process module ******/
+		'PROC_TITLE'                 : 'Starting your app...',
+		'PROC_RLT_DONE_TITLE'        : 'Everything goes smoothly!',
+		'PROC_RLT_DONE_SUB_TITLE'    : 'Your app will be open soon.',
+		'PROC_STEP_PREPARE'          : 'Preparing and Sending Request...',
+		'PROC_RLT_FAILED_TITLE'      : 'The app failed to start.',
+		'PROC_RLT_FAILED_SUB_TITLE'  : 'You may fix following error and run again.',
+		'PROC_ERR_INFO'              : 'Error Details',
+		'PROC_CLOSE_TAB'             : 'Close Tab',
+		'PROC_STEP_REQUEST'          : 'Processing Request',
 
 		/****** miscellaneous ******/
 		'CFM_BTN_DELETE'   : 'Delete',

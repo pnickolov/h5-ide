@@ -1,11 +1,11 @@
 <article id="elb-property-detail" component="{{component.uid}}">
 
 	<div class="option-group-head expand">Load Balancer Details </div>
-	<div class="option-group" data-bind="true" data-validate="parsley" >
+	<div class="option-group" data-bind="true" >
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >Name</label>
 			<span class="required-input right">(Required)</span>
-			<input data-ignore="true" data-regexp="" data-required="true" data-required-rollback="true" max-length="32" class="input elb-name"  type="text" required="required" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+			<input data-ignore="true" data-required-rollback="true" max-length="32" class="input elb-name"  type="text" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 		</section>
 
 		{{# if component.resource.VpcId}}

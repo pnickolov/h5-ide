@@ -714,7 +714,7 @@ Additional Notes and Questions
 
 		<div class="estimate clearfix">
 			<span class="title">Estimated Cost</span>
-			<span class="price"><b>$32.4</b> / month</span>
+			<span class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</span>
 		</div>
 
 	</div>
@@ -987,7 +987,7 @@ Additional Notes and Questions
 </article>
 
 <!-- elbPropertyListenerItem -->
-<div class="elb-property-listener-main">
+<div class="elb-property-listener-main" data-bind="true">
 	{{#if Canremove}}<div class="elb-property-listener-item-remove">×</div>{{/if}}
 	<div class="property-control-group clearfix elb-property-listener-item">
 		<div class="left elb-property-listener-item-1">
@@ -1004,7 +1004,7 @@ Additional Notes and Questions
 		</div>
 		<div class="left elb-property-listener-item-2">
 			<label class="left">Port</label>
-			<input class="input elb-property-listener-elb-port-input" type="text" required="required" value="{{LoadBalancerPort}}"/>
+			<input class="input elb-property-listener-elb-port-input" type="text" required="required" value="{{LoadBalancerPort}}" data-type="digits" data-ignore="true" data-required-rollback="true"/>
 		</div>
 	</div>
 	<div class="property-control-group clearfix elb-property-listener-item">
@@ -1022,7 +1022,7 @@ Additional Notes and Questions
 		</div>
 		<div class="left elb-property-listener-item-2">
 			<label class="left">Port</label>
-			<input class="input elb-property-listener-instance-port-input" type="text" required="required" value="{{InstancePort}}"/>
+			<input class="input elb-property-listener-instance-port-input" type="text" required="required" value="{{InstancePort}}" data-type="digits" data-ignore="true" data-required-rollback="true"/>
 		</div>
 	</div>
 </div>
@@ -1119,4 +1119,20 @@ Additional Notes and Questions
 <div class="disconnected-notiﬁcation">
 	<p>Connection lost. Attempting to reconnect…</p>
 	<p>Changes made now may not be saved.</p>
+</div>
+
+<!-- modalAttachingEni -->
+<div style="width:420px" class="attaching-eni">
+	<div class="modal-header"> <h3>Attach Network Interface to Instance</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-center-align-helper">
+			<p>%instance-name% has been automatically assigned Public IP.</p>
+			<p>If you want to attach the external network interface to %instance-name%, the Public IP must be removed.</p>
+			<p>Do you still want to attach %eni-name% to %instance-name% and remove the Public IP?</p>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn modal-close btn-blue" style="width:200px;">Attach and Remove Public IP</button>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
 </div>

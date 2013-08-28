@@ -75,6 +75,10 @@ define [ 'MC', 'event',
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             else
+                # set total fee
+                cost = MC.aws.aws.getCost MC.canvas.layout.save()
+                $('#label-total-fee b').text(cost.total_fee)
+
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
                     console.log 'clickRunIcon'

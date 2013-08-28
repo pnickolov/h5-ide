@@ -158,6 +158,7 @@ require.config {
 		'autoscaling_model'      : 'model/aws/autoscaling/autoscaling_model'
 		'cloudwatch_model'       : 'model/aws/cloudwatch/cloudwatch_model'
 		'sns_model'              : 'model/aws/sns/sns_model'
+		'subnet_model'           : 'model/aws/vpc/subnet_model'
 
 		#result_vo
 		'result_vo'              : 'service/result_vo'

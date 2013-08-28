@@ -1300,350 +1300,351 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			console.log "Morris : #{componentType}"
 
 		reDrawSgLine : () ->
+			MC.canvas.reDrawSgLine()
+			# lines = []
 
-			lines = []
+			# sg_refs = []
 
-			sg_refs = []
+			# $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-			$.each MC.canvas_data.component, ( comp_uid, comp ) ->
+			# 	if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
 
-				if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+			# 		$.each comp.resource.IpPermissions, ( i, rule ) ->
 
-					$.each comp.resource.IpPermissions, ( i, rule ) ->
+			# 			if rule.IpRanges.indexOf('@') >= 0
 
-						if rule.IpRanges.indexOf('@') >= 0
+			# 				to_sg_uid = rule.IpRanges.split('.')[0][1...]
 
-							to_sg_uid = rule.IpRanges.split('.')[0][1...]
+			# 				if to_sg_uid isnt comp.uid
 
-							if to_sg_uid isnt comp.uid
+			# 					from_key = comp.uid + '|' + to_sg_uid
 
-								from_key = comp.uid + '|' + to_sg_uid
+			# 					to_key = to_sg_uid + '|' + comp.uid
 
-								to_key = to_sg_uid + '|' + comp.uid
+			# 					if (from_key not in sg_refs) and (to_key not in sg_refs)
 
-								if (from_key not in sg_refs) and (to_key not in sg_refs)
+			# 						sg_refs.push from_key
 
-									sg_refs.push from_key
+			# 		$.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
 
-					$.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
+			# 			if rule.IpRanges.indexOf('@') >= 0
 
-						if rule.IpRanges.indexOf('@') >= 0
+			# 				to_sg_uid = rule.IpRanges.split('.')[0][1...]
 
-							to_sg_uid = rule.IpRanges.split('.')[0][1...]
+			# 				if to_sg_uid isnt comp.uid
 
-							if to_sg_uid isnt comp.uid
+			# 					from_key = comp.uid + '|' + to_sg_uid
 
-								from_key = comp.uid + '|' + to_sg_uid
+			# 					to_key = to_sg_uid + '|' + comp.uid
 
-								to_key = to_sg_uid + '|' + comp.uid
+			# 					if (from_key not in sg_refs) and (to_key not in sg_refs)
 
-								if (from_key not in sg_refs) and (to_key not in sg_refs)
+			# 						sg_refs.push to_key
 
-									sg_refs.push to_key
+			# $.each sg_refs, ( i, val ) ->
 
-			$.each sg_refs, ( i, val ) ->
+			# 	uids = val.split('|')
 
-				uids = val.split('|')
+			# 	from_sg_uid = uids[0]
 
-				from_sg_uid = uids[0]
+			# 	to_sg_uid = uids[1]
 
-				to_sg_uid = uids[1]
+			# 	from_sg_group = []
 
-				from_sg_group = []
+			# 	to_sg_group = []
 
-				to_sg_group = []
+			# 	$.each MC.canvas_data.component, ( comp_uid, comp )->
 
-				$.each MC.canvas_data.component, ( comp_uid, comp )->
+			# 		switch comp.type
 
-					switch comp.type
+			# 			when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
-						when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+			# 				if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-							if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+			# 					$.each comp.resource.SecurityGroupId, ( idx, sgs )->
 
-								$.each comp.resource.SecurityGroupId, ( idx, sgs )->
+			# 						if sgs.split('.')[0][1...] == from_sg_uid
 
-									if sgs.split('.')[0][1...] == from_sg_uid
+			# 							from_sg_group.push comp.uid
 
-										from_sg_group.push comp.uid
+			# 						if sgs.split('.')[0][1...] == to_sg_uid
 
-									if sgs.split('.')[0][1...] == to_sg_uid
+			# 							to_sg_group.push comp.uid
 
-										to_sg_group.push comp.uid
+			# 			when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
-						when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+			# 				$.each comp.resource.GroupSet, ( idx, sgs )->
 
-							$.each comp.resource.GroupSet, ( idx, sgs )->
+			# 					if sgs.GroupId.split('.')[0][1...] == from_sg_uid
 
-								if sgs.GroupId.split('.')[0][1...] == from_sg_uid
+			# 						if comp.resource.Attachment.DeviceIndex != "0"
+			# 							from_sg_group.push comp.uid
+			# 						else
+			# 							from_sg_group.push comp.resource.Attachment.InstanceId.split('.')[0][1...]
 
-									if comp.resource.Attachment.DeviceIndex != "0"
-										from_sg_group.push comp.uid
-									else
-										from_sg_group.push comp.resource.Attachment.InstanceId.split('.')[0][1...]
+			# 					if sgs.GroupId.split('.')[0][1...] == to_sg_uid
+			# 						if comp.resource.Attachment.DeviceIndex != "0"
+			# 							to_sg_group.push comp.uid
+			# 						else
+			# 							to_sg_group.push comp.resource.Attachment.InstanceId.split('.')[0][1...]
 
-								if sgs.GroupId.split('.')[0][1...] == to_sg_uid
-									if comp.resource.Attachment.DeviceIndex != "0"
-										to_sg_group.push comp.uid
-									else
-										to_sg_group.push comp.resource.Attachment.InstanceId.split('.')[0][1...]
+			# 			when constant.AWS_RESOURCE_TYPE.AWS_ELB
 
-						when constant.AWS_RESOURCE_TYPE.AWS_ELB
+			# 				if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-							if MC.canvas_data.platform != MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+			# 					$.each comp.resource.SecurityGroups, ( idx, sgs )->
 
-								$.each comp.resource.SecurityGroups, ( idx, sgs )->
+			# 						if sgs.split('.')[0][1...] == from_sg_uid
 
-									if sgs.split('.')[0][1...] == from_sg_uid
+			# 							from_sg_group.push comp.uid
 
-										from_sg_group.push comp.uid
+			# 						if sgs.split('.')[0][1...] == to_sg_uid
 
-									if sgs.split('.')[0][1...] == to_sg_uid
+			# 							to_sg_group.push comp.uid
 
-										to_sg_group.push comp.uid
+			# 			when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
-						when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+			# 				$.each comp.resource.SecurityGroups, ( idx, sgs )->
 
-							$.each comp.resource.SecurityGroups, ( idx, sgs )->
+			# 					if sgs.split('.')[0][1...] == from_sg_uid
 
-								if sgs.split('.')[0][1...] == from_sg_uid
+			# 						from_sg_group.push comp.uid
 
-									from_sg_group.push comp.uid
+			# 						asg_uid = MC.canvas_data.layout.component.node[comp.uid].groupUId
 
-									asg_uid = MC.canvas_data.layout.component.node[comp.uid].groupUId
+			# 						$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
 
-									$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
+			# 							if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is asg_uid
 
-										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is asg_uid
+			# 								from_sg_group.push group_id
 
-											from_sg_group.push group_id
+			# 					if sgs.split('.')[0][1...] == to_sg_uid
 
-								if sgs.split('.')[0][1...] == to_sg_uid
+			# 						to_sg_group.push comp.uid
 
-									to_sg_group.push comp.uid
+			# 						asg_uid = MC.canvas_data.layout.component.node[comp.uid].groupUId
 
-									asg_uid = MC.canvas_data.layout.component.node[comp.uid].groupUId
+			# 						$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
 
-									$.each MC.canvas_data.layout.component.group, ( group_id, group ) ->
+			# 							if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is asg_uid
 
-										if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and group.originalId and group.originalId is asg_uid
+			# 								to_sg_group.push group_id
 
-											to_sg_group.push group_id
 
+			# 	$.each from_sg_group, ( i, from_comp_uid ) ->
 
-				$.each from_sg_group, ( i, from_comp_uid ) ->
+			# 		$.each to_sg_group, (i, to_comp_uid) ->
 
-					$.each to_sg_group, (i, to_comp_uid) ->
+			# 			if from_comp_uid != to_comp_uid
 
-						if from_comp_uid != to_comp_uid
+			# 				from_port = null
 
-							from_port = null
+			# 				to_port = null
 
-							to_port = null
+			# 				if MC.canvas_data.component[from_comp_uid]
 
-							if MC.canvas_data.component[from_comp_uid]
+			# 					switch MC.canvas_data.component[from_comp_uid].type
 
-								switch MC.canvas_data.component[from_comp_uid].type
+			# 						when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
-									when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+			# 							from_port = 'instance-sg'
 
-										from_port = 'instance-sg'
+			# 						when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
-									when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+			# 							from_port = 'eni-sg'
 
-										from_port = 'eni-sg'
+			# 						when constant.AWS_RESOURCE_TYPE.AWS_ELB
 
-									when constant.AWS_RESOURCE_TYPE.AWS_ELB
+			# 							if MC.canvas_data.component[from_comp_uid].resource.Scheme is 'internet-facing'
+			# 								return
 
-										if MC.canvas_data.component[from_comp_uid].resource.Scheme is 'internet-facing'
-											return
+			# 							from_port = 'elb-sg-in'
 
-										from_port = 'elb-sg-in'
+			# 						when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
-									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+			# 							from_port = 'launchconfig-sg'
 
-										from_port = 'launchconfig-sg'
+			# 				else
+			# 					from_port = 'launchconfig-sg'
 
-							else
-								from_port = 'launchconfig-sg'
+			# 				if MC.canvas_data.component[to_comp_uid]
 
-							if MC.canvas_data.component[to_comp_uid]
+			# 					switch MC.canvas_data.component[to_comp_uid].type
 
-								switch MC.canvas_data.component[to_comp_uid].type
+			# 						when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
-									when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+			# 							to_port = 'instance-sg'
 
-										to_port = 'instance-sg'
+			# 						when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
-									when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+			# 							to_port = 'eni-sg'
 
-										to_port = 'eni-sg'
+			# 						when constant.AWS_RESOURCE_TYPE.AWS_ELB
+			# 							if MC.canvas_data.component[to_comp_uid].resource.Scheme is 'internet-facing'
+			# 								return
+			# 							to_port = 'elb-sg-in'
 
-									when constant.AWS_RESOURCE_TYPE.AWS_ELB
-										if MC.canvas_data.component[to_comp_uid].resource.Scheme is 'internet-facing'
-											return
-										to_port = 'elb-sg-in'
+			# 						when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
-									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+			# 							to_port = 'launchconfig-sg'
 
-										to_port = 'launchconfig-sg'
+			# 				else
+			# 					to_port = 'launchconfig-sg'
 
-							else
-								to_port = 'launchconfig-sg'
 
+			# 				if from_port == to_port == 'launchconfig-sg'
 
-							if from_port == to_port == 'launchconfig-sg'
+			# 					existing = false
 
-								existing = false
+			# 					$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
 
-								$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
+			# 						if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId and ((comp.originalId is from_comp_uid and comp_uid is to_comp_uid) or (comp.originalId is to_comp_uid and comp_uid is from_comp_uid))
 
-									if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and comp.originalId and ((comp.originalId is from_comp_uid and comp_uid is to_comp_uid) or (comp.originalId is to_comp_uid and comp_uid is from_comp_uid))
+			# 							existing = true
 
-										existing = true
+			# 							return false
 
-										return false
+			# 					if not existing
 
-								if not existing
+			# 						lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 
-									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+			# 				else if (from_port is 'instance-sg' and to_port is 'eni-sg') or (from_port is 'eni-sg' and to_port is 'instance-sg')
 
-							else if (from_port is 'instance-sg' and to_port is 'eni-sg') or (from_port is 'eni-sg' and to_port is 'instance-sg')
+			# 					if MC.canvas_data.component[from_comp_uid].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and MC.canvas_data.component[to_comp_uid].resource.Attachment.InstanceId.split('.')[0][1...] isnt from_comp_uid
 
-								if MC.canvas_data.component[from_comp_uid].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and MC.canvas_data.component[to_comp_uid].resource.Attachment.InstanceId.split('.')[0][1...] isnt from_comp_uid
+			# 						lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 
-									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+			# 					else if MC.canvas_data.component[to_comp_uid].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and MC.canvas_data.component[from_comp_uid].resource.Attachment.InstanceId.split('.')[0][1...] isnt to_comp_uid
 
-								else if MC.canvas_data.component[to_comp_uid].type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and MC.canvas_data.component[from_comp_uid].resource.Attachment.InstanceId.split('.')[0][1...] isnt to_comp_uid
+			# 						lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 
-									lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+			# 				else
+			# 					lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
 
-							else
-								lines.push [from_comp_uid, to_comp_uid, from_port, to_port]
+			# $.each MC.canvas_data.layout.connection, ( line_id, line ) ->
 
-			$.each MC.canvas_data.layout.connection, ( line_id, line ) ->
+			# 	if line.type == 'sg' and $("#"+line_id)[0] isnt undefined
 
-				if line.type == 'sg' and $("#"+line_id)[0] isnt undefined
+			# 		MC.canvas.remove $("#"+line_id)[0]
 
-					MC.canvas.remove $("#"+line_id)[0]
+			# $.each lines, ( idx, line_data ) ->
 
-			$.each lines, ( idx, line_data ) ->
+			# 	MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
 
-				MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
+			# #this.initLine()
 
-			#this.initLine()
-
-			lines
+			# lines
 
 		initLine: ()->
 
-			subnet_ids = []
+			MC.canvas.initLine()
+			# subnet_ids = []
 
-			lines = []
+			# lines = []
 
-			main_rt = null
+			# main_rt = null
 
-			$.each MC.canvas_data.component, ( comp_uid, comp )->
+			# $.each MC.canvas_data.component, ( comp_uid, comp )->
 
-				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+			# 	if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
-					if comp.resource.AssociationSet.length and "" + comp.resource.AssociationSet[0].Main is 'true'
+			# 		if comp.resource.AssociationSet.length and "" + comp.resource.AssociationSet[0].Main is 'true'
 
-						main_rt = comp_uid
+			# 			main_rt = comp_uid
 
-					$.each comp.resource.AssociationSet, ( idx, asso ) ->
+			# 		$.each comp.resource.AssociationSet, ( idx, asso ) ->
 
-						if asso.SubnetId
+			# 			if asso.SubnetId
 
-							subnet_id = asso.SubnetId.split('.')[0][1...]
+			# 				subnet_id = asso.SubnetId.split('.')[0][1...]
 
-							subnet_ids.push subnet_id
+			# 				subnet_ids.push subnet_id
 
-							lines.push [subnet_id, comp_uid, 'subnet-assoc-out', 'rtb-src']
+			# 				lines.push [subnet_id, comp_uid, 'subnet-assoc-out', 'rtb-src']
 
-					$.each comp.resource.RouteSet, ( idx, route )->
+			# 		$.each comp.resource.RouteSet, ( idx, route )->
 
-						if route.InstanceId
+			# 			if route.InstanceId
 
-							lines.push [route.InstanceId.split('.')[0][1...], comp_uid, 'instance-rtb', 'rtb-tgt']
+			# 				lines.push [route.InstanceId.split('.')[0][1...], comp_uid, 'instance-rtb', 'rtb-tgt']
 
-						if route.GatewayId
+			# 			if route.GatewayId
 
-							gateway_port = null
+			# 				gateway_port = null
 
-							rtb_port = null
+			# 				rtb_port = null
 
-							if route.GatewayId.indexOf('Internet') >= 0
+			# 				if route.GatewayId.indexOf('Internet') >= 0
 
-								gateway_port = 'igw-tgt'
+			# 					gateway_port = 'igw-tgt'
 
-								rtb_port = 'rtb-tgt'
+			# 					rtb_port = 'rtb-tgt'
 
-							else
-								gateway_port = 'vgw-tgt'
+			# 				else
+			# 					gateway_port = 'vgw-tgt'
 
-								rtb_port = 'rtb-tgt'
-
-
-							lines.push [route.GatewayId.split('.')[0][1...], comp_uid, gateway_port, rtb_port]
-
-						if route.NetworkInterfaceId
-
-							lines.push [route.NetworkInterfaceId.split('.')[0][1...], comp_uid, 'eni-rtb', 'rtb-tgt']
+			# 					rtb_port = 'rtb-tgt'
 
 
-			$.each MC.canvas_data.component, ( comp_uid, comp ) ->
-				# subnet with main rt
-				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet and (comp_uid not in subnet_ids)
+			# 				lines.push [route.GatewayId.split('.')[0][1...], comp_uid, gateway_port, rtb_port]
 
-					lines.push [comp_uid, main_rt, 'subnet-assoc-out', 'rtb-src']
+			# 			if route.NetworkInterfaceId
 
-				# vpn
+			# 				lines.push [route.NetworkInterfaceId.split('.')[0][1...], comp_uid, 'eni-rtb', 'rtb-tgt']
 
-				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
 
-					lines.push [comp.resource.CustomerGatewayId.split('.')[0][1...], comp.resource.VpnGatewayId.split('.')[0][1...], 'cgw-vpn', 'vgw-vpn']
+			# $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+			# 	# subnet with main rt
+			# 	if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet and (comp_uid not in subnet_ids)
 
-				# elb
-				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+			# 		lines.push [comp_uid, main_rt, 'subnet-assoc-out', 'rtb-src']
 
-					$.each comp.resource.Instances, ( i, instance ) ->
+			# 	# vpn
 
-						lines.push [comp_uid, instance.InstanceId.split('.')[0][1...], 'elb-sg-out', 'instance-sg']
+			# 	if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
 
-					$.each comp.resource.Subnets, ( i, subnet_id ) ->
+			# 		lines.push [comp.resource.CustomerGatewayId.split('.')[0][1...], comp.resource.VpnGatewayId.split('.')[0][1...], 'cgw-vpn', 'vgw-vpn']
 
-						lines.push [comp_uid, subnet_id.split('.')[0][1...], 'elb-assoc', 'subnet-assoc-in']
+			# 	# elb
+			# 	if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
 
-				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+			# 		$.each comp.resource.Instances, ( i, instance ) ->
 
-					expand_asg = []
+			# 			lines.push [comp_uid, instance.InstanceId.split('.')[0][1...], 'elb-sg-out', 'instance-sg']
 
-					$.each MC.canvas_data.layout.component.node, ( c, node ) ->
+			# 		$.each comp.resource.Subnets, ( i, subnet_id ) ->
 
-						if node.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and node.groupUId is comp_uid
+			# 			lines.push [comp_uid, subnet_id.split('.')[0][1...], 'elb-assoc', 'subnet-assoc-in']
 
-							expand_asg.push c
+			# 	if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
-					$.each MC.canvas_data.layout.component.group, ( c, g ) ->
+			# 		expand_asg = []
 
-						if g.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and g.originalId and g.originalId is comp_uid
+			# 		$.each MC.canvas_data.layout.component.node, ( c, node ) ->
 
-							expand_asg.push c
+			# 			if node.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and node.groupUId is comp_uid
 
-					$.each expand_asg, ( i, asg ) ->
+			# 				expand_asg.push c
 
-						$.each comp.resource.LoadBalancerNames, ( j, elb ) ->
+			# 		$.each MC.canvas_data.layout.component.group, ( c, g ) ->
 
-							lines.push [asg, elb.split('.')[0][1...], 'launchconfig-sg', 'elb-sg-out']
+			# 			if g.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and g.originalId and g.originalId is comp_uid
 
-				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId and comp.resource.Attachment.DeviceIndex isnt '0' and comp.resource.Attachment.DeviceIndex isnt 0
+			# 				expand_asg.push c
 
-					lines.push [comp_uid, comp.resource.Attachment.InstanceId.split('.')[0][1...], 'eni-attach', 'instance-attach']
+			# 		$.each expand_asg, ( i, asg ) ->
 
-			$.each lines, ( idx, line_data ) ->
+			# 			$.each comp.resource.LoadBalancerNames, ( j, elb ) ->
 
-				MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
+			# 				lines.push [asg, elb.split('.')[0][1...], 'launchconfig-sg', 'elb-sg-out']
+
+			# 	if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId and comp.resource.Attachment.DeviceIndex isnt '0' and comp.resource.Attachment.DeviceIndex isnt 0
+
+			# 		lines.push [comp_uid, comp.resource.Attachment.InstanceId.split('.')[0][1...], 'eni-attach', 'instance-attach']
+
+			# $.each lines, ( idx, line_data ) ->
+
+			# 	MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
 
 		setEip : ( uid, state ) ->
 			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC

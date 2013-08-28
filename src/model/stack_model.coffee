@@ -65,7 +65,7 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model' ], ( Backbone, 
 
 
         #save api (define function)
-        save : ( src, username, session_id, region_name, spec ) ->
+        save_stack : ( src, username, session_id, region_name, spec ) ->
 
             me = this
 

@@ -90,9 +90,15 @@ define [ 'MC', 'event',
                     if not app_name
                         notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
                         return
-                    if app_name in MC.data.app_list[MC.canvas_data.region]
+
+                    if not MC.validate 'awsName', app_name
+                        notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                        return
+
+                    if not MC.aws.aws.checkAppName app_name
                         notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                         return
+
 
                     modal.close()
 

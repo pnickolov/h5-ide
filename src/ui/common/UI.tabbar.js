@@ -84,22 +84,17 @@ var Tabbar = {
 
 	mouseup: function (event)
 	{
-		event.data.dragging_tab.animate({
-			'left': event.data.target.offset().left
-		}, 250, function ()
-		{
-			$(this).remove();
-			event.data.target.css('visibility', 'visible');
+		event.data.dragging_tab.remove();
+		event.data.target.css('visibility', 'visible');
 
-			$('#overlayer').remove();
+		$('#overlayer').remove();
 
-			$(document).off({
-				'mousemove': Tabbar.mousemove,
-				'mouseup': Tabbar.mouseup
-			});
-			//modify by kenshin
-			Tabbar.open(event.data.target.attr('id').replace('tab-bar-', ''), event.target.title, event);
+		$(document).off({
+			'mousemove': Tabbar.mousemove,
+			'mouseup': Tabbar.mouseup
 		});
+		//modify by kenshin
+		Tabbar.open(event.data.target.attr('id').replace('tab-bar-', ''), event.target.title, event);
 	},
 
 	add: function (tab_id, tab_name)
@@ -177,7 +172,7 @@ var Tabbar = {
 		tab_item_width = tab_item_width > 180 ? 180 : tab_item_width;
 		tabs.css('width', tab_item_width);
 		tabs_link.css('width', tab_item_width - 20);
-		
+
 		return true;
 	}
 };

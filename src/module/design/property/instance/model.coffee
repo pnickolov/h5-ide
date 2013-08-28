@@ -83,6 +83,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 		setCount : ( val ) ->
 			MC.canvas_data.component[ @get( 'get_uid' )].number = val
+			null
 
 		setInstanceType  : () ->
 

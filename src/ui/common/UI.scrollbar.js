@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130823
+#* Date: 20130828
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -302,37 +302,40 @@
 				originalEvent.axis === 1
 			)
 			{
-				delta = originalEvent.wheelDeltaX ? originalEvent.wheelDeltaX / 120 : -originalEvent.detail / 3;
+				thumb = target.find('.scrollbar-horizontal-thumb').first();
 
-				thumb = target.find('.scrollbar-horizontal-thumb').first(),
-				scrollbar_wrap = target.find('.scrollbar-horizontal-wrap').first(),
-				wrap_width = target.width(),
-				scrollLeft = thumb[0].offsetLeft - (delta * 12),
-				max_scroll = scroll_content[0].scrollWidth - wrap_width,
-				scale = scroll_content[0].scrollWidth / wrap_width,
-				thumb_max = max_scroll / scale;
-
-				if (scrollbar_wrap.css('display') === 'block')
+				if (thumb[0])
 				{
-					scrollbar.scroll_to_left({
-						'scroll_content': scroll_content,
-						'scrollbar_wrap': scrollbar_wrap,
-						'thumb': thumb,
-						'scroll_target': target
-					}, scrollLeft);
+					delta = originalEvent.wheelDeltaX ? originalEvent.wheelDeltaX / 120 : -originalEvent.detail / 3;
+					scrollbar_wrap = target.find('.scrollbar-horizontal-wrap').first();
+					wrap_width = target.width();
+					scrollLeft = thumb[0].offsetLeft - (delta * 12);
+					max_scroll = scroll_content[0].scrollWidth - wrap_width;
+					scale = scroll_content[0].scrollWidth / wrap_width;
+					thumb_max = max_scroll / scale;
 
-					if (scrollLeft < 0 || scrollLeft > thumb_max)
+					if (scrollbar_wrap.css('display') === 'block')
 					{
-						return true;
+						scrollbar.scroll_to_left({
+							'scroll_content': scroll_content,
+							'scrollbar_wrap': scrollbar_wrap,
+							'thumb': thumb,
+							'scroll_target': target
+						}, scrollLeft);
+
+						if (scrollLeft < 0 || scrollLeft > thumb_max)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
 					}
 					else
 					{
-						return false;
+						return true;
 					}
-				}
-				else
-				{
-					return true;
 				}
 			}
 
@@ -342,37 +345,40 @@
 				originalEvent.detail
 			)
 			{
-				delta = originalEvent.wheelDelta ? originalEvent.wheelDelta / 120 : originalEvent.wheelDeltaY ? originalEvent.wheelDeltaY / 120 : -originalEvent.detail / 3;
+				thumb = target.find('.scrollbar-veritical-thumb').first();
 
-				thumb = target.find('.scrollbar-veritical-thumb').first(),
-				scrollbar_wrap = target.find('.scrollbar-veritical-wrap').first(),
-				wrap_height = target.height(),
-				scrollTop = thumb[0].offsetTop - (delta * 12),
-				max_scroll = scroll_content[0].scrollHeight - wrap_height,
-				scale = scroll_content[0].scrollHeight / wrap_height,
-				thumb_max = max_scroll / scale;
-
-				if (scrollbar_wrap.css('display') === 'block')
+				if (thumb[0])
 				{
-					scrollbar.scroll_to_top({
-						'scroll_content': scroll_content,
-						'scrollbar_wrap': scrollbar_wrap,
-						'thumb': thumb,
-						'scroll_target': target
-					}, scrollTop);
+					delta = originalEvent.wheelDelta ? originalEvent.wheelDelta / 120 : originalEvent.wheelDeltaY ? originalEvent.wheelDeltaY / 120 : -originalEvent.detail / 3;
+					scrollbar_wrap = target.find('.scrollbar-veritical-wrap').first();
+					wrap_height = target.height();
+					scrollTop = thumb[0].offsetTop - (delta * 12);
+					max_scroll = scroll_content[0].scrollHeight - wrap_height;
+					scale = scroll_content[0].scrollHeight / wrap_height;
+					thumb_max = max_scroll / scale;
 
-					if (scrollTop < 0 || scrollTop > thumb_max)
+					if (scrollbar_wrap.css('display') === 'block')
 					{
-						return true;
+						scrollbar.scroll_to_top({
+							'scroll_content': scroll_content,
+							'scrollbar_wrap': scrollbar_wrap,
+							'thumb': thumb,
+							'scroll_target': target
+						}, scrollTop);
+
+						if (scrollTop < 0 || scrollTop > thumb_max)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
 					}
 					else
 					{
 						return false;
 					}
-				}
-				else
-				{
-					return false;
 				}
 			}
 		}

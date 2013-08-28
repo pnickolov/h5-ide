@@ -5,7 +5,12 @@
 		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-instance-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input class="input instance-name"  type="text" value="{{ name }}" name="property-instance-name" id="property-instance-name" data-ignore="true" data-required-rollback="true"/>
+			<input class="input instance-name"  type="text" value="{{ name }}" id="property-instance-name" data-ignore="true" data-required-rollback="true"/>
+		</section>
+		<section class="property-control-group" data-bind="true">
+			<label class="left" for="property-instance-name" >Number</label>
+			<span class="required-input right">Required</span>
+			<input class="input" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required-rollback="true" data-type="digits"/>
 		</section>
 		<section class="property-control-group">
 			<label>AMI</label>
@@ -97,7 +102,7 @@
 			</div>
 			<label for="property-instance-enable-cloudwatch" >Enable CloudWatch Detailed Monitoring</label>
 
-			<p class="hide" id="property-cloudwatch-warn">Data is available in 1-minute periods at an additional cost. For information about pricing, go to the <a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+			<p class="hide property-info" id="property-cloudwatch-warn">Data is available in 1-minute periods at an additional cost. For information about pricing, go to the <a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-instance-user-data">User Data</label>
@@ -133,6 +138,15 @@
 				<label for="property-instance-source-check"></label>
 			</div>
 			<label for="property-instance-source-check">Enable Source/Destination Checking</label>
+			<div class="checkbox">
+				{{#if eni_display.asso_public_ip}}
+				<input id="property-instance-public-ip" type="checkbox" {{#if eni_display.multi_enis}}disabled="disabled"{{/if}} checked="true" value="None" name="property-instance-public-ip" />
+				{{else}}
+				<input id="property-instance-public-ip" type="checkbox" {{#if eni_display.multi_enis}}disabled="disabled"{{/if}} value="None" name="property-instance-public-ip" />
+				{{/if}}
+				<label for="property-instance-public-ip"></label>
+			</div>
+			<label for="property-instance-public-ip">Automatically assign Public IP</label>
 		</section>
 		<section class="property-control-group">
 			<div class="network-list-header clearfix">

@@ -670,27 +670,39 @@ a {
 }
 
 .close-tab {
-	color: #666;
+	display     : none;
+
+	position    : absolute;
+	top         : 50%;
+	right       : 5px;
+	margin-top  : -6px;
+
+	width       : 16px;
+	height      : 16px;
+
+	text-align  : center;
+	line-height : 16px;
+	color       : #aaa;
+}
+
+#tab-bar li:hover a.close-tab {
 	display: block;
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	width: 16px;
-	height: 16px;
-	text-align: center;
-	line-height: 16px;
 }
 
 #tab-bar li.unsaved a.close-tab,
 #tab-bar li.active.unsaved a.close-tab {
-	border-radius: 100%;
-	background: red;
-	color: #fff;
+	color: #D64442;
 }
 
 #tab-bar li.active a.close-tab {
-	color: #999;
+	color   : #aaa;
+	display : block;
 }
+
+#tab-bar li a.close-tab:hover {
+	color: #6C99D4;
+}
+
 
 #tab-bar-dashboard {
 	width: 116px !important;
@@ -1838,12 +1850,13 @@ td.table-action a.btn {
 }
 
 .sidebar-hider {
-	position: absolute;
-	top: 40%;
-	z-index: 20;
-	padding: 20px 3px;
-	background: #ccc;
-	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+	position   : absolute;
+	top        : 40%;
+	z-index    : 20;
+	padding    : 18px 3px;
+	background : #747373;
+	box-shadow : 0 0 6px rgba(0, 0, 0, 0.3), inset 1px 1px 0 rgba(255,255,255,.1);
+	border     : 1px solid #666;
 }
 
 .sidebar-title {
@@ -1855,7 +1868,7 @@ td.table-action a.btn {
 	/*text-align: center;*/
 
 	background-color : #313131;
-	border-bottom    : 2px solid #262a2e;
+	border-bottom  : 2px solid #262a2e;
 	box-shadow       : inset 0 2px 0 rgba(255,255,255,.05);
 }
 
@@ -1865,16 +1878,7 @@ a.sidebar-hider {
 }
 
 .sidebar-hider:hover {
-	background: #bbb;
-	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-}
-
-#hide-resource-panel {
-	border-radius: 0 3px 3px 0;
-}
-
-#hide-property-panel {
-	border-radius: 3px 0 0 3px;
+	background: #888;
 }
 
 /* Resource Panel */
@@ -1894,11 +1898,12 @@ a.sidebar-hider {
 }
 
 #resource-panel.hiden {
-	margin-left: -247px;
+	margin-left: -246px;
 }
 
 #hide-resource-panel {
-	left: 247px;
+	left: 246px;
+	border-radius: 0 3px 3px 0;
 }
 
 .resource-list {
@@ -2173,6 +2178,7 @@ a.sidebar-hider {
 
 #hide-property-panel {
 	right: 280px;
+	border-radius: 3px 0 0 3px;
 }
 
 .property-wrap {
@@ -2257,12 +2263,11 @@ a.sidebar-hider {
 }
 
 .property-content a {
-	color: #ADADAD;
-	font-size: 13px;
+	color: #6C99D4;
 }
 
 .property-content a:hover {
-	color: #ccc;
+	color: #74B0FF;
 }
 
 .property-content .icon-add {
@@ -2656,7 +2661,7 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list .col2 {
-	width     : 200px;
+	width     : 170px;
 	float     : left;
 	word-wrap : break-word;
 }
@@ -2678,15 +2683,15 @@ a.sidebar-hider {
 }
 .acl-sg-info-list .col3 {
 	float        : right;
-	margin-top   : -10px;
+	margin-top   : -11px;
 	position     : relative;
 
 	text-align : center;
 
 	cursor      : pointer;
 	width       : 40px;
-	height      : 72px;
-	line-height : 72px;
+	height      : 73px;
+	line-height : 73px;
 
 
 	-webkit-transition : background .2s;
@@ -3008,9 +3013,16 @@ a.sidebar-hider {
 	width: 100%;
 	text-align: center;
 	display: block;
-	padding: 10px;
+	padding: 10px 0;
 }
 
+a.action-link {
+	color: #ccc
+}
+
+a.action-link:hover {
+	color: #fff;
+}
 
 /* SG Rule Modal */
 #modal-sg-rule .modal-body{
@@ -3197,6 +3209,19 @@ a.sidebar-hider {
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
+}
+
+.property-info {
+	font-size     : 12px;
+	color         : #BBB;
+	padding       : 5px;
+	background    : #5E5E5E;
+	border-radius : 2px;
+	margin-top    : 5px;
+}
+
+.property-warning {
+
 }
 
 /*Responsive Style*/
@@ -3417,6 +3442,10 @@ a.sidebar-hider {
 }
 
 /* property-stack */
+
+.dl-horizontal.dl-region-type {
+	margin-top: 0;
+}
 
 .dl-horizontal.dl-region-type dt {
 	width: 80px;
@@ -3947,9 +3976,9 @@ a.sidebar-hider {
 	padding: 0;
 }
 
-.property-app .property-control-group {
+/*.property-app .property-control-group {
 	padding: 2px 0;
-}
+}*/
 
 .hidden-details > .dl-vertical {
 	display : none;
@@ -3977,7 +4006,8 @@ a.sidebar-hider {
 }
 
 .property-app a {
-	color: #0088cc;
+	color: #6C99D4;
+	text-decoration: underline;
 }
 
 .property-app-table {

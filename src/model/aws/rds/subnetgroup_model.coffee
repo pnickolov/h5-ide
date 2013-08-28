@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : subnetgroup_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:16
+#* Create date  : 2013-08-26 12:19:54
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'subnetgroup_service'], ( Backbone, subnetgroup_service) ->
+define [ 'backbone', 'underscore', 'subnetgroup_service', 'base_model' ], ( Backbone, _, subnetgroup_service, base_model ) ->
 
     SubnetGroupModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeDBSubnetGroups api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'subnetgroup_service'], ( Backbone, subnetgroup_service) ->
                 if !aws_result.is_error
                 #DescribeDBSubnetGroups succeed
 
-                    subnetgroup_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_SNTG_DESC_DB_SNET_GRPS_RETURN', aws_result
 
                 else
                 #DescribeDBSubnetGroups failed
 
                     console.log 'subnetgroup.DescribeDBSubnetGroups failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_SNTG_DESC_DB_SNET_GRPS_RETURN', aws_result
 
 
 

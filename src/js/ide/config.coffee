@@ -56,6 +56,7 @@ require.config {
 		'MC.canvas'          : 'lib/MC.canvas'
 		'MC.canvas.constant' : 'lib/MC.canvas.constant'
 		'MC.canvas.add'      : 'lib/MC.canvas.add'
+		'MC.canvas.line'	 : 'lib/MC.canvas.line'
 
 		#############################################
 		# lib/aws logic handler
@@ -141,6 +142,10 @@ require.config {
 		#############################################
 		# model
 		#############################################
+
+		#base_model
+		'base_model'             : 'model/base_model'
+
 		'session_model'          : 'model/session_model'
 		'favorite_model'         : 'model/favorite_model'
 		'app_model'              : 'model/app_model'
@@ -158,6 +163,7 @@ require.config {
 		'autoscaling_model'      : 'model/aws/autoscaling/autoscaling_model'
 		'cloudwatch_model'       : 'model/aws/cloudwatch/cloudwatch_model'
 		'sns_model'              : 'model/aws/sns/sns_model'
+		'subnet_model'           : 'model/aws/vpc/subnet_model'
 
 		#result_vo
 		'result_vo'              : 'service/result_vo'
@@ -250,6 +256,9 @@ require.config {
 		'MC.canvas.add':
 			deps       : [ 'MC.canvas.constant' ]
 
+		'MC.canvas.line':
+			deps		: ['MC.canvas', 'MC.canvas.constant']
+
 		#############################################
 		# UI
 		#############################################
@@ -337,7 +346,7 @@ require.config {
 		#############################################
 
 		'canvas_layout':
-			deps       : [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon' ]
+			deps       : [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon', 'MC.canvas.line' ]
 
 }
 

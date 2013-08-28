@@ -29,6 +29,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			'set_kp' : null
 			'add_sg'   : null
 			'remove_sg' : null
+			'public_ip' : null
 
 		initialize : ->
 			this.listenTo ide_event, 'SWITCH_TAB', this.updateUID
@@ -53,6 +54,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			this.listenTo this, 'change:add_kp', this.addKP
 			this.listenTo this, 'change:add_sg', this.addSGtoInstance
 			this.listenTo this, 'change:remove_sg', this.removeSG
+			this.listenTo this, 'change:public_ip', this.setPublicIp
 
 		getUID  : ( uid ) ->
 			console.log 'getUID'
@@ -73,7 +75,14 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 		getName  : () ->
 			console.log 'getName'
-			this.set 'name', MC.canvas_data.component[ this.get( 'get_uid' )].name
+			component = MC.canvas_data.component[ this.get( 'get_uid' )]
+
+			this.set 'name',   component.name
+			this.set 'number', component.number
+			null
+
+		setCount : ( val ) ->
+			MC.canvas_data.component[ @get( 'get_uid' )].number = val
 			null
 
 		setInstanceType  : () ->
@@ -189,6 +198,22 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 				if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
 
 					val.resource.SourceDestCheck = me.get 'source_check'
+
+				null
+
+			null
+
+		setPublicIp : () ->
+
+			me = this
+
+			uid = this.get 'get_uid'
+
+			_.map MC.canvas_data.component, ( val, key ) ->
+
+				if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
+
+					val.resource.AssociatePublicIpAddress = me.get 'public_ip'
 
 				null
 
@@ -355,6 +380,10 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
 			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
 
+			#update sg color label
+			MC.aws.sg.updateSGColorLabel instanceUID
+
+
 			# remove from eni sg
 			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
 
@@ -370,9 +399,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					return true
 
 			MC.canvas_data.component[eniComp.uid].resource.GroupSet = newGroupSet
-
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel instanceUID
 
 			null
 
@@ -395,6 +421,10 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
 			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
 
+			#update sg color label
+			MC.aws.sg.updateSGColorLabel instanceUID
+
+
 			# add to eni sg
 			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
 
@@ -414,9 +444,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					GroupId: currentSGId
 					GroupName: currentSG
 				}
-
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel instanceUID
 
 			null
 
@@ -446,6 +473,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			eni_detail.eni_ips = []
 
+			eni_count = 0
+
 			subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
 			subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
 
@@ -456,6 +485,12 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 				if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
 
 					eni_detail.description = val.resource.Description
+
+					if val.resource.AssociatePublicIpAddress
+
+						eni_detail.asso_public_ip = val.resource.AssociatePublicIpAddress
+					else
+						eni_detail.asso_public_ip = false
 
 					eni_detail.sourceCheck = true if val.resource.SourceDestCheck == 'true' or val.resource.SourceDestCheck == true
 
@@ -485,10 +520,20 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 								ip_detail.has_eip = true
 
 								return false
-
+						eni_count += 1
 						null
+				else if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid
+
+					eni_count += 1
 
 				null
+
+			if eni_count > 1
+
+				eni_detail.multi_enis = true
+
+			else
+				eni_detail.multi_enis = false
 
 			this.set 'eni_display', eni_detail
 

@@ -680,7 +680,7 @@ textarea {
 .scrolling.scrollbar-auto-hide > .scrollbar-horizontal-wrap,
 .scrollbar-auto-hide.scroll-wrap:hover > .scrollbar-veritical-wrap,
 .scrollbar-auto-hide.scroll-wrap:hover > .scrollbar-horizontal-wrap {
-	opacity: 1;
+	opacity: .5;
 }
 
 .scrollbar-veritical-thumb,
@@ -1172,21 +1172,21 @@ textarea {
 /* Vertical Definition List*/
 .dl-vertical {
 	line-height : 20px;
-	margin      : 2px 0;
+	margin      : 0;
 	color       : #758694;
-	background  : #fefefe;
+	/*background  : #fefefe;*/
 	padding     : 10px;
 }
 
 .dl-vertical > dt {
-	font-size   : 14px;
+	font-size   : 12px;
 	color       : #999;
 }
 
 .dl-vertical > dd {
-	font-size : 12px;
-	color     : #666;
-	margin    : 5px 0 5px 10px;
+	font-size : 14px;
+	color     : #D0D0D0;
+	margin    : 3px 0 3px 10px;
 }
 
 .dl-vertical > dd > .status {
@@ -1194,7 +1194,8 @@ textarea {
 }
 
 .dl-vertical:nth-of-type(2n+1) {
-	background : #f6f5f5;
+	/*background : #f6f5f5;*/
+	background: rgba(255,255,255,.05);
 }
 
 .dl-vertical .truncate {
@@ -1657,6 +1658,14 @@ textarea {
 	width: 500px;
 }
 
+.slider-line li span {
+	cursor: pointer;
+}
+
+.slider-line li span:hover {
+	color: #ccc;
+}
+
 .slider-line li {
 	float: left;
 	width: 29px;
@@ -1679,6 +1688,7 @@ textarea {
 	border-right: 0;
 	margin-top: -1px;
 	margin-left: -7px;
+	background-color: #fff;
 }
 
 .property-control-group-sub {

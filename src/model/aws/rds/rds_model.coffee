@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : rds_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:16
+#* Create date  : 2013-08-26 12:19:53
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'rds_service'], ( Backbone, rds_service) ->
+define [ 'backbone', 'underscore', 'rds_service', 'base_model' ], ( Backbone, _, rds_service, base_model ) ->
 
     RDSModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeDBEngineVersions api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'rds_service'], ( Backbone, rds_service) ->
                 if !aws_result.is_error
                 #DescribeDBEngineVersions succeed
 
-                    rds_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_DB_ENG_VERS_RETURN', aws_result
 
                 else
                 #DescribeDBEngineVersions failed
 
                     console.log 'rds.DescribeDBEngineVersions failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_DB_ENG_VERS_RETURN', aws_result
 
 
         #DescribeOrderableDBInstanceOptions api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'rds_service'], ( Backbone, rds_service) ->
                 if !aws_result.is_error
                 #DescribeOrderableDBInstanceOptions succeed
 
-                    rds_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_ORD_DB_INS_OPTS_RETURN', aws_result
 
                 else
                 #DescribeOrderableDBInstanceOptions failed
 
                     console.log 'rds.DescribeOrderableDBInstanceOptions failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_ORD_DB_INS_OPTS_RETURN', aws_result
 
 
         #DescribeEngineDefaultParameters api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'rds_service'], ( Backbone, rds_service) ->
                 if !aws_result.is_error
                 #DescribeEngineDefaultParameters succeed
 
-                    rds_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_ENG_DFT_PARAMS_RETURN', aws_result
 
                 else
                 #DescribeEngineDefaultParameters failed
 
                     console.log 'rds.DescribeEngineDefaultParameters failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_ENG_DFT_PARAMS_RETURN', aws_result
 
 
         #DescribeEvents api (define function)
@@ -110,18 +99,15 @@ define [ 'backbone', 'rds_service'], ( Backbone, rds_service) ->
                 if !aws_result.is_error
                 #DescribeEvents succeed
 
-                    rds_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_EVENTS_RETURN', aws_result
 
                 else
                 #DescribeEvents failed
 
                     console.log 'rds.DescribeEvents failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_RDS_DESC_EVENTS_RETURN', aws_result
 
 
 

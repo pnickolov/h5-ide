@@ -22,7 +22,7 @@
           <li class="item{{#if defaultTenancy}}{{else}} selected{{/if}}" data-id="dedicated">Dedicated</li>
         </ul>
       </div>
-      <div id="desc-dedicated" style="margin-top:5px;{{#if defaultTenancy}}display:none;{{/if}}">Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware. <a target="_blank" href="http://aws.amazon.com/cn/dedicated-instances/">Additional charges will apply.</a></div>
+      <div id="desc-dedicated" style="{{#if defaultTenancy}}display:none;{{/if}}" class="property-info">Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware. <a target="_blank" href="http://aws.amazon.com/cn/dedicated-instances/">Additional charges will apply.</a></div>
     </section>
 
     <section class="property-control-group">
@@ -59,7 +59,7 @@
       </div>
       <label for="property-dhcp-spec">Specified DHCP Options Set</label>
 
-      <div style="padding-left:20px;{{#if noneDhcp}}{{else}}display:none;{{/if}}" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
+      <div style="{{#if noneDhcp}}{{else}}display:none;{{/if}}" class="property-info" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
     </section>
 
     <section id="property-dhcp-options" data-bind="true" class="property-control-group-sub" {{#if noneDhcp}}style="display:none;"{{/if}}>

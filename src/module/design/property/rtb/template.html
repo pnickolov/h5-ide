@@ -7,7 +7,7 @@
 		<input class="input" type="text" data-required="true" data-ignore="true" data-required-rollback="true" required="required" value="{{route_table.name}}" name="rt-name" id="rt-name" data-uid="{{route_table.uid}}">
 	</div>
 
-	<div class="tac">
+	<div class="tac property-control-group">
 		{{#if route_table.isMain}}
 		<p>Main Route Table</p>
 		{{else}}
@@ -28,12 +28,12 @@
 
 			<div class="multi-input" data-max-row="" data-type="{{type}}" data-ref="{{ref}}" id="property-rtb-ips">
 				{{#if cidr_set.length}}
-				{{#each cidr_set}}
 				<div class="multi-ipt-row">
+					{{#unless isLocal}}
 		          <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-		          <span class="ipt-wrapper"><input class="ip-main-input input" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-type="cidr" data-trigger="change" placeholder="eg. 0.0.0.0/0" value="{{this}}" type="text"></span>
+		          {{/unless}}
+		          <span class="ipt-wrapper"><input class="ip-main-input input" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-type="cidr" data-trigger="change" {{#if isLocal}}disabled="disabled"{{/if}} placeholder="eg. 0.0.0.0/0" value="{{cidr_set.[0]}}" type="text"></span>
 		        </div>
-		        {{/each}}
 				{{else}}
 				<div class="multi-ipt-row">
 		          <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>

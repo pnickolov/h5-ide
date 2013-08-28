@@ -735,32 +735,53 @@ a {
 }
 
 #global-create-stack {
-	left: 20px;
-	position: relative;
-	display: block;
-	width: 125px;
-	text-align: center;
-	color: #fff;
-	background-color: #D17EB4;
-	padding: 10px 20px;
-	font-size: 14px;
-	border-radius: 3px;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	position : relative;
+	left     : 20px;
+
+	display     : block;
+	width       : 180px;
+	height      : 40px;
+	line-height : 40px;
+
+	text-align : center;
+	color      : #fff;
+	font-size  : 16px;
+
+	background-color : #D17EB4;
+	padding-right    : 18px;
+	
+	border-radius : 3px;
+	box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.1);
+	
+}
+
+#global-create-stack .icon-new-stack {
+	display       : inline-block;
+	width         : 40px;
+	height        : 40px;
+	line-height   : 40px;
+	background    : #b25b91;
+	border-radius : 3px 0 0 3px;
+	float         : left;
 }
 
 #global-create-stack .icon-caret-down {
 	position: absolute;
 	right: 8px;
-	top: 10px;
+	top: 12px;
+}
+
+#global-create-stack:hover {
+	background-color: #E688C6;
 }
 
 #global-region-create-stack-list {
 	left: 20px;
-	width: 220px;
+	width: 216px;
 	position: absolute;
-	border: 1px solid #aaa;
+	border: 1px solid #3781C9;
 	background: #fcfcfc;
-	top: 55px;
+	top: 56px;
 	box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.5);
 	border-radius: 2px;
 }
@@ -778,15 +799,21 @@ a {
 }
 
 #global-region-create-stack-list a:hover {
-	background: #fff;
-	color: #3781c9;
+	background: #3781C9;
+	color: #fff;
 }
 
 #global-region-map-wrap {
 	padding-top: 67px;
 	height: 474px;
 	width: 100%;
-	background: #444;
+	/*background: #444;*/
+	background-color: #465061;
+	background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,.1), rgba(255,255,255,.1));
+	background-image: -moz-linear-gradient(bottom, rgba(0,0,0,.1), rgba(255,255,255,.1));
+	background-image: -o-linear-gradient(bottom, rgba(0,0,0,.1), rgba(255,255,255,.1));
+	background-image: -ms-linear-gradient(bottom, rgba(0,0,0,.1), rgba(255,255,255,.1));
+	background-image: linear-gradient(to top, rgba(0,0,0,.1), rgba(255,255,255,.1));
 }
 
 #global-region-spot {
@@ -949,7 +976,7 @@ a {
 	width: 390px;
 	height: 425px;
 	background-color: #fff;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+	box-shadow: 0px 0 10px rgba(0, 0, 0, 0.3);
 }
 
 #global-region-status-tab-wrap {
@@ -962,6 +989,7 @@ a {
 	width: 195px;
 	background-color: #323e49;
 	position: relative;
+	box-shadow: inset 0 1px 2px rgba(255,255,255,.1)
 }
 
 .global-region-status-list li:last-child a {
@@ -1050,15 +1078,17 @@ a {
 	margin: 15px;
 }
 
-/*.global-region-status-header {
+.global-region-status-header {
 	border-bottom: 1px solid #eee;
-	padding: 10px 15px;
+	padding: 16px 15px;
+	color: #999;
 }
 
-.global-region-status-header h4 {
+/*.global-region-status-header h4 {
 	font-size: 15px;
 	color: #999;
 }*/
+
 
 .global-region-status-list li {
 	display: block;
@@ -1111,13 +1141,23 @@ a {
 	position: relative;
 	display: block;
 	width: 125px;
-	text-align: center;
+	text-align: left;
 	color: #fff;
 	background-color: #3781c9;
-	padding: 10px 20px;
-	font-size: 14px;
+	padding: 10px;
+	font-size: 16px;
 	border-radius: 3px;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+#region-switch:hover {
+	background-color: #6C99D4;
+}
+
+#region-switch .icon-caret-down {
+	position: absolute;
+	right: 6px;
+	top: 12px;
 }
 
 #region-switch-list {
@@ -1134,9 +1174,8 @@ a {
 #region-switch-list a {
 	display: block;
 	padding: 15px 10px;
-	text-align: center;
-	font-size: 12px;
-	color: #333;
+	font-size: 14px;
+	color: #666;
 }
 
 #region-switch-list a:hover {
@@ -1148,7 +1187,7 @@ a {
 	position: relative;
 	width: 1280px;
 	padding: 0 0 20px 0;
-	margin: 0 auto 15px;
+	margin: -15px auto 15px;
 
 	/*display: none;*/
 }
@@ -1369,7 +1408,7 @@ a {
 	height: 10px;
 	position: absolute;
 	left: 10px;
-	top: 9px;
+	top: 10px;
 }
 
 .region-resource-status-running {
@@ -1392,6 +1431,8 @@ a {
 	padding: 20px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
 	border-radius: 5px 0 5px 5px;
+	border: 1px solid #ddd;
+	border-top: none;
 }
 
 .region-resource-list li {
@@ -1406,6 +1447,11 @@ a {
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+	opacity: .8;
+}
+
+.region-resource-list-item:hover {
+	opacity: 1;
 }
 
 .region-resource-thumbnail {
@@ -1434,21 +1480,33 @@ a {
 }
 
 .region-resource-action i {
-	border-left: 1px solid #666;
-	background: rgba(255,255,255,0.3);
-	display: block;
-	width: 30px;
-	height: 27px;
-	float: left;
+	border-left : 1px solid #2d2d2d;
+	/*background  : rgba(255,255,255,0.3);*/
+
+	display     : block;
+	float       : left;
+	width       : 30px;
+	height      : 27px;
+	line-height : 27px;
+
+	text-align  : center;
+	color: #ddd;
 }
 
 .region-resource-action i:hover {
-	background: rgba(255,255,255,0.4);
+	background: rgba(0,0,0,0.4);
+	color: #fefefe;
+}
+
+.region-resource-action i.icon-terminate:hover,
+.region-resource-action i.icon-delete:hover {
+	color: #F74A48;
 }
 
 .region-resource-item-name {
 	color: #eee;
 	font-size: 12px;
+	width: 134px;
 }
 
 #region-aws-resource-wrap {

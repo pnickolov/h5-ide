@@ -256,6 +256,9 @@ require.config {
 		'MC.canvas.add':
 			deps       : [ 'MC.canvas.constant' ]
 
+		'MC.canvas.line':
+			deps		: ['MC.canvas', 'MC.canvas.constant']
+
 		#############################################
 		# UI
 		#############################################
@@ -343,7 +346,7 @@ require.config {
 		#############################################
 
 		'canvas_layout':
-			deps       : [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon' ]
+			deps       : [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon', 'MC.canvas.line' ]
 
 }
 

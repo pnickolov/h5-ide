@@ -17,7 +17,7 @@ MC.canvas.initLine = function() {
   lines = [];
   main_rt = null;
   $.each(MC.canvas_data.component, function(comp_uid, comp) {
-    if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable) {
+    if (comp.type === 'AWS.VPC.RouteTable') {
       if (comp.resource.AssociationSet.length && "" + comp.resource.AssociationSet[0].Main === 'true') {
         main_rt = comp_uid;
       }
@@ -34,7 +34,7 @@ MC.canvas.initLine = function() {
         if (route.InstanceId) {
           lines.push([route.InstanceId.split('.')[0].slice(1), comp_uid, 'instance-rtb', 'rtb-tgt']);
         }
-        if (route.GatewayId) {
+        if (route.GatewayId && route.GatewayId !== 'local') {
           gateway_port = null;
           rtb_port = null;
           if (route.GatewayId.indexOf('Internet') >= 0) {
@@ -54,13 +54,13 @@ MC.canvas.initLine = function() {
   });
   $.each(MC.canvas_data.component, function(comp_uid, comp) {
     var expand_asg;
-    if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet && (__indexOf.call(subnet_ids, comp_uid) < 0)) {
+    if (comp.type === 'AWS.VPC.Subnet' && (__indexOf.call(subnet_ids, comp_uid) < 0)) {
       lines.push([comp_uid, main_rt, 'subnet-assoc-out', 'rtb-src']);
     }
-    if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection) {
+    if (comp.type === "AWS.VPC.VPNConnection") {
       lines.push([comp.resource.CustomerGatewayId.split('.')[0].slice(1), comp.resource.VpnGatewayId.split('.')[0].slice(1), 'cgw-vpn', 'vgw-vpn']);
     }
-    if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_ELB) {
+    if (comp.type === "AWS.ELB") {
       $.each(comp.resource.Instances, function(i, instance) {
         return lines.push([comp_uid, instance.InstanceId.split('.')[0].slice(1), 'elb-sg-out', 'instance-sg']);
       });
@@ -68,15 +68,15 @@ MC.canvas.initLine = function() {
         return lines.push([comp_uid, subnet_id.split('.')[0].slice(1), 'elb-assoc', 'subnet-assoc-in']);
       });
     }
-    if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group) {
+    if (comp.type === "AWS.AutoScaling.Group") {
       expand_asg = [];
       $.each(MC.canvas_data.layout.component.node, function(c, node) {
-        if (node.type === constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration && node.groupUId === comp_uid) {
+        if (node.type === "AWS.AutoScaling.LaunchConfiguration" && node.groupUId === comp_uid) {
           return expand_asg.push(c);
         }
       });
       $.each(MC.canvas_data.layout.component.group, function(c, g) {
-        if (g.type === constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group && g.originalId && g.originalId === comp_uid) {
+        if (g.type === "AWS.AutoScaling.Group" && g.originalId && g.originalId === comp_uid) {
           return expand_asg.push(c);
         }
       });
@@ -86,7 +86,7 @@ MC.canvas.initLine = function() {
         });
       });
     }
-    if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface && comp.resource.Attachment.InstanceId && comp.resource.Attachment.DeviceIndex !== '0' && comp.resource.Attachment.DeviceIndex !== 0) {
+    if (comp.type === "AWS.VPC.NetworkInterface" && comp.resource.Attachment.InstanceId && comp.resource.Attachment.DeviceIndex !== '0' && comp.resource.Attachment.DeviceIndex !== 0) {
       return lines.push([comp_uid, comp.resource.Attachment.InstanceId.split('.')[0].slice(1), 'eni-attach', 'instance-attach']);
     }
   });
@@ -100,7 +100,7 @@ MC.canvas.reDrawSgLine = function() {
   lines = [];
   sg_refs = [];
   $.each(MC.canvas_data.component, function(comp_uid, comp) {
-    if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup) {
+    if (comp.type === "AWS.EC2.SecurityGroup") {
       $.each(comp.resource.IpPermissions, function(i, rule) {
         var from_key, to_key, to_sg_uid;
         if (rule.IpRanges.indexOf('@') >= 0) {
@@ -138,7 +138,7 @@ MC.canvas.reDrawSgLine = function() {
     to_sg_group = [];
     $.each(MC.canvas_data.component, function(comp_uid, comp) {
       switch (comp.type) {
-        case constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance:
+        case "AWS.EC2.Instance":
           if (MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_CLASSIC) {
             return $.each(comp.resource.SecurityGroupId, function(idx, sgs) {
               if (sgs.split('.')[0].slice(1) === from_sg_uid) {
@@ -150,7 +150,7 @@ MC.canvas.reDrawSgLine = function() {
             });
           }
           break;
-        case constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface:
+        case "AWS.VPC.NetworkInterface":
           return $.each(comp.resource.GroupSet, function(idx, sgs) {
             if (sgs.GroupId.split('.')[0].slice(1) === from_sg_uid) {
               if (comp.resource.Attachment.DeviceIndex !== "0") {
@@ -167,7 +167,7 @@ MC.canvas.reDrawSgLine = function() {
               }
             }
           });
-        case constant.AWS_RESOURCE_TYPE.AWS_ELB:
+        case "AWS.ELB":
           if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC) {
             return $.each(comp.resource.SecurityGroups, function(idx, sgs) {
               if (sgs.split('.')[0].slice(1) === from_sg_uid) {
@@ -179,14 +179,14 @@ MC.canvas.reDrawSgLine = function() {
             });
           }
           break;
-        case constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration:
+        case "AWS.AutoScaling.LaunchConfiguration":
           return $.each(comp.resource.SecurityGroups, function(idx, sgs) {
             var asg_uid;
             if (sgs.split('.')[0].slice(1) === from_sg_uid) {
               from_sg_group.push(comp.uid);
               asg_uid = MC.canvas_data.layout.component.node[comp.uid].groupUId;
               $.each(MC.canvas_data.layout.component.group, function(group_id, group) {
-                if (group.type === constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group && group.originalId && group.originalId === asg_uid) {
+                if (group.type === "AWS.AutoScaling.Group" && group.originalId && group.originalId === asg_uid) {
                   return from_sg_group.push(group_id);
                 }
               });
@@ -195,7 +195,7 @@ MC.canvas.reDrawSgLine = function() {
               to_sg_group.push(comp.uid);
               asg_uid = MC.canvas_data.layout.component.node[comp.uid].groupUId;
               return $.each(MC.canvas_data.layout.component.group, function(group_id, group) {
-                if (group.type === constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group && group.originalId && group.originalId === asg_uid) {
+                if (group.type === "AWS.AutoScaling.Group" && group.originalId && group.originalId === asg_uid) {
                   return to_sg_group.push(group_id);
                 }
               });
@@ -211,19 +211,19 @@ MC.canvas.reDrawSgLine = function() {
           to_port = null;
           if (MC.canvas_data.component[from_comp_uid]) {
             switch (MC.canvas_data.component[from_comp_uid].type) {
-              case constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance:
+              case "AWS.EC2.Instance":
                 from_port = 'instance-sg';
                 break;
-              case constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface:
+              case "AWS.VPC.NetworkInterface":
                 from_port = 'eni-sg';
                 break;
-              case constant.AWS_RESOURCE_TYPE.AWS_ELB:
+              case "AWS.ELB":
                 if (MC.canvas_data.component[from_comp_uid].resource.Scheme === 'internet-facing') {
                   return;
                 }
                 from_port = 'elb-sg-in';
                 break;
-              case constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration:
+              case "AWS.AutoScaling.LaunchConfiguration":
                 from_port = 'launchconfig-sg';
             }
           } else {
@@ -231,19 +231,19 @@ MC.canvas.reDrawSgLine = function() {
           }
           if (MC.canvas_data.component[to_comp_uid]) {
             switch (MC.canvas_data.component[to_comp_uid].type) {
-              case constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance:
+              case "AWS.EC2.Instance":
                 to_port = 'instance-sg';
                 break;
-              case constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface:
+              case "AWS.VPC.NetworkInterface":
                 to_port = 'eni-sg';
                 break;
-              case constant.AWS_RESOURCE_TYPE.AWS_ELB:
+              case "AWS.ELB":
                 if (MC.canvas_data.component[to_comp_uid].resource.Scheme === 'internet-facing') {
                   return;
                 }
                 to_port = 'elb-sg-in';
                 break;
-              case constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration:
+              case "AWS.AutoScaling.LaunchConfiguration":
                 to_port = 'launchconfig-sg';
             }
           } else {
@@ -252,7 +252,7 @@ MC.canvas.reDrawSgLine = function() {
           if ((from_port === to_port && to_port === 'launchconfig-sg')) {
             existing = false;
             $.each(MC.canvas_data.layout.component.group, function(comp_uid, comp) {
-              if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group && comp.originalId && ((comp.originalId === from_comp_uid && comp_uid === to_comp_uid) || (comp.originalId === to_comp_uid && comp_uid === from_comp_uid))) {
+              if (comp.type === "AWS.AutoScaling.Group" && comp.originalId && ((comp.originalId === from_comp_uid && comp_uid === to_comp_uid) || (comp.originalId === to_comp_uid && comp_uid === from_comp_uid))) {
                 existing = true;
                 return false;
               }
@@ -261,9 +261,9 @@ MC.canvas.reDrawSgLine = function() {
               return lines.push([from_comp_uid, to_comp_uid, from_port, to_port]);
             }
           } else if ((from_port === 'instance-sg' && to_port === 'eni-sg') || (from_port === 'eni-sg' && to_port === 'instance-sg')) {
-            if (MC.canvas_data.component[from_comp_uid].type === constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance && MC.canvas_data.component[to_comp_uid].resource.Attachment.InstanceId.split('.')[0].slice(1) !== from_comp_uid) {
+            if (MC.canvas_data.component[from_comp_uid].type === "AWS.EC2.Instance" && MC.canvas_data.component[to_comp_uid].resource.Attachment.InstanceId.split('.')[0].slice(1) !== from_comp_uid) {
               return lines.push([from_comp_uid, to_comp_uid, from_port, to_port]);
-            } else if (MC.canvas_data.component[to_comp_uid].type === constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance && MC.canvas_data.component[from_comp_uid].resource.Attachment.InstanceId.split('.')[0].slice(1) !== to_comp_uid) {
+            } else if (MC.canvas_data.component[to_comp_uid].type === "AWS.EC2.Instance" && MC.canvas_data.component[from_comp_uid].resource.Attachment.InstanceId.split('.')[0].slice(1) !== to_comp_uid) {
               return lines.push([from_comp_uid, to_comp_uid, from_port, to_port]);
             }
           } else {

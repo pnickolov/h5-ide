@@ -21,7 +21,8 @@
 	user-select: none;
 }
 
-.table thead th {
+.table thead th,
+.table-head-fix .table-head thead th {
 	cursor: default;
 	position: relative;
 }
@@ -31,7 +32,8 @@
 }
 
 .table th,
-.table td {
+.table td,
+.table-head-fix .table-head thead th {
 	word-break: break-all;
 	overflow: hidden;
 	padding: 6px 12px;
@@ -49,6 +51,29 @@
 .table tbody th,
 .table tbody td {
 	background: #1F1F1F;
+}
+
+.table-head-fix {
+
+}
+
+.table-head-fix .table-head {
+	max-width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+	color: #C7CAC8;
+}
+
+.table-head-fix .th-inner {
+	position: absolute;
+	top: 0;
+}
+
+.table-head-fix .table thead th {
+	padding-top: 0;
+	padding-bottom: 0;
+	border: none;
 }
 
 .table td.editable {

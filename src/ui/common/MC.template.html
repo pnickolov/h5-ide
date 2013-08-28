@@ -4,7 +4,7 @@
 		<i class="icon-tabbar-label"></i>
 		{{tab_name}}
 	</a>
-	<a href="javascript:void(0)" class="close-tab">x</a>
+	<a href="javascript:void(0)" class="close-tab icon-close" title="Close Tab"></a>
 </li>
 
 <!-- tab.dashboard -->
@@ -13,7 +13,7 @@
 		<i class="icon-dashboard-tabbar icon-tabbar-label"></i>
 		{{target_id}}
 	</a>
-	<a href="javascript:void(0)" class="close-tab">x</a>
+	<a href="javascript:void(0)" class="icon-close close-tab" title="Close Tab"></a>
 </li>
 
 <!-- notification.item -->
@@ -50,10 +50,11 @@
        		<div class="modal-text-wraper">
        			<div class="modal-center-align-helper">
 		            <div class="modal-text">{{body}}</div>
+		            {{#if input}}
+	                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
+	            	{{/if}}
 	            </div>
-            	{{#if input}}
-               <input id="modal-input-value" class="input" type="text" value="{{input}}" />
-            	{{/if}}
+            	
             </div>
        </div>
        <div class="modal-footer">
@@ -774,7 +775,7 @@ Additional Notes and Questions
             		<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
                 	<label for="radio_outbound"></label>
             	</div>
-            	<label for="radio_outbound" >outbound</label>
+            	<label for="radio_outbound">Outbound</label>
 				{{/if}}
         	</div>
     	</div>

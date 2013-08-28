@@ -17,7 +17,7 @@ define [ 'event',
         showMain : ->
             console.log 'showMain'
             #
-            clearTimeout @delay
+            clearTimeout @delay if @delay
             #
             MC.data.loading_wrapper_html = $( '#loading-bar-wrapper' ).html() if !MC.data.loading_wrapper_html
             #

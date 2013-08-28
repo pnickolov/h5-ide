@@ -103,10 +103,8 @@ define [ 'MC', 'event', 'handlebars'
 		#temp
 		MC.data.IDEView = view
 
-
 		MC.data.account_attribute = {}
 		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'', 'default_subnet':{} } for r in constant.REGION_KEYS
-
 
 		#############################
 		#  WebSocket
@@ -115,6 +113,15 @@ define [ 'MC', 'event', 'handlebars'
 		WS.websocketInit()
 		websocket = new WS.WebSocket()
 		initialize = true
+
+		relogin = () ->
+			console.log 'relogin'
+			#
+			MC.data.is_reset_session = true
+			#
+			ide_event.trigger ide_event.SWITCH_MAIN
+			#
+			require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
 
 		status = () ->
 			websocket.status false, ()->
@@ -139,7 +146,9 @@ define [ 'MC', 'event', 'handlebars'
 			if MC.data.is_reset_session
 				MC.data.is_reset_session = false
 			else
-				window.location.href = 'login.html'
+				#window.location.href = 'login.html'
+				#
+				relogin()
 			null
 
 		subRequestReady = () ->
@@ -247,8 +256,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'sub'
 			console.log error
 			if error.return_code is constant.RETURN_CODE.E_SESSION
-				MC.data.is_reset_session = true
-				require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
+				relogin()
 			else
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
 				console.log lang.service[ label ]

@@ -153,7 +153,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
                     return
 
                 template = MC.template.setupCIDRConfirm {
-                    remove_content : 'Remove Connection',
+                    remove_content : 'Remove Route',
                     main_content : mainContent,
                     desc_content : descContent
                 }

@@ -41,6 +41,14 @@
 	src: local('Lato'), url('../fonts/Lato-regular.ttf') format('truetype');
 }
 
+@font-face
+{
+	font-family: 'Lato';
+	font-style: bold;
+	font-weight: 700;
+	src: local('Lato'), url('../fonts/Lato-bold.ttf') format('truetype');
+}
+
 /* CSS reset */
 article,
 footer,

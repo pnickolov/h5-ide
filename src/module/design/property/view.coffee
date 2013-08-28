@@ -47,6 +47,8 @@ define [ './temp_view',
             console.log 'togglePropertyPanel'
             $( '#property-panel' ).toggleClass 'hiden'
             $( '#canvas-panel' ).toggleClass 'right-hiden'
+            $( '#hide-property-panel' ).toggleClass 'icon-caret-left'
+            $( '#hide-property-panel' ).toggleClass 'icon-caret-right'
             false
 
         refresh : ->

@@ -1535,12 +1535,15 @@ a {
 }
 
 #region-aws-resource-data {
+	/*height: 340px;*/
+}
+
+#region-aws-resource-data .scroll-wrap {
 	height: 340px;
 }
 
-#region-aws-resource-data th {
+#region-aws-resource-data .table-head th {
 	padding: 10px 15px;
-	position: static;
 	font-size: 12px;
 	background-color: #323e49;
 	font-weight: 500;

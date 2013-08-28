@@ -1,18 +1,59 @@
+<div id="global-region-header">
+	<a href="javascript:void(0)" id="global-refresh">
+		<i class="global-refresh-icon"></i>
+		<span>3 minutes ago</span>
+	</a>
+
+	<a id="global-create-stack" class="js-toggle-dropdown" href="javascript:void(0)">
+		<span>Create new stack</span>
+		<i class="icon-caret-down"></i>
+	</a>
+
+	<div id="global-region-create-stack-list" class="dropdown-menu">
+		<ul>
+			<li data-region="us-west-1">
+				<a href="javascript:void(0)">US West - N. California</a>
+			</li>
+
+			<li data-region="us-west-2">
+				<a href="javascript:void(0)">US West - Oregon</a>
+			</li>
+
+			<li data-region="us-east-1">
+				<a href="javascript:void(0)">US East - Virginia</a>
+			</li>
+
+			<li data-region="eu-west-1">
+				<a href="javascript:void(0)">EU West - Ireland</a>
+			</li>
+
+			<li data-region="ap-southeast-1">
+				<a href="javascript:void(0)">Asia Pacific - Singapore</a>
+			</li>
+
+			<li data-region="ap-southeast-2">
+				<a href="javascript:void(0)">Asia Pacific - Sydney</a>
+			</li>
+
+			<li data-region="ap-northeast-1">
+				<a href="javascript:void(0)">Asia Pacific - Tokyo</a>
+			</li>
+
+			<li data-region="sa-east-1">
+				<a href="javascript:void(0)">South America - Sao Paulo</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div id="global-region-wrap" class="scroll-wrap">
 <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scrollbar-horizontal-wrap" style="display: none;"><div class="scrollbar-horizontal-thumb"></div></div>
 
 <div class="scroll-content">
-	<div id="global-region-header">
-		<a id="global-create-stack" href="javascript:void(0)">
-			<span>Create new stack</span>
-		</a>
-	</div>
-
+	<!-- Global Map -->
 	<div id="global-region-map-wrap">
 		<div id="global-region-map-content">
-
 			<ul id="global-region-spot">
-    
 				<li id="us-east-1">
 					<i class="icon-map-spot"></i>
 					<a href="javascript:void(0)" title="Virginia Dashboard">
@@ -257,59 +298,821 @@
 			</div>
 		</div>
 	</div>
+	<!-- Global Map -->
 
-	<div id="global-region-resource-data-wrap">
-		<ul id="global-region-resource-list" class="clearfix">
-			<li id="global-region-resource-instance">
-				<div class="global-region-resource-header">
-					<h5>Running Instance</h5>
-					<div class="global-region-resource-count-wrap">
-						<i id="global-region-resource-icon-instance" class="global-region-resource-icon"></i>
-						<span class="global-region-resource-count">5</span>
-					</div>
-				</div>
-			</li>
+	<div id="global-region-tabbar-wrap">
+		<a id="region-switch" class="js-toggle-dropdown" href="javascript:void(0)">
+			<span>Global</span>
+			<i class="icon-caret-down"></i>
+		</a>
 
-			<li id="global-region-resource-eip">
-				<div class="global-region-resource-header">
-					<h5>Elastic IP</h5>
-					<div class="global-region-resource-count-wrap">
-						<i id="global-region-resource-icon-eip" class="global-region-resource-icon"></i>
-						<span class="global-region-resource-count">5</span>
-					</div>
-				</div>
-			</li>
+		<div id="region-switch-list" class="dropdown-menu">
+			<ul>
+				<li data-region="global">
+					<a href="javascript:void(0)">Global</a>
+				</li>
 
-			<li id="global-region-resource-volume">
-				<div class="global-region-resource-header">
-					<h5>Volume</h5>
-					<div class="global-region-resource-count-wrap">
-						<i id="global-region-resource-icon-volume" class="global-region-resource-icon"></i>
-						<span class="global-region-resource-count">5</span>
-					</div>
-				</div>
-			</li>
+				<li data-region="us-west-1">
+					<a href="javascript:void(0)">N. California</a>
+				</li>
 
-			<li id="global-region-resource-elb">
-				<div class="global-region-resource-header">
-					<h5>Load Balancer</h5>
-					<div class="global-region-resource-count-wrap">
-						<i id="global-region-resource-icon-elb" class="global-region-resource-icon"></i>
-						<span class="global-region-resource-count">5</span>
-					</div>
-				</div>
-			</li>
+				<li data-region="us-west-2">
+					<a href="javascript:void(0)">Oregon</a>
+				</li>
 
-			<li id="global-region-resource-vpn">
-				<div class="global-region-resource-header">
-					<h5>VPN</h5>
-					<div class="global-region-resource-count-wrap">
-						<i id="global-region-resource-icon-vpn" class="global-region-resource-icon"></i>
-						<span class="global-region-resource-count">5</span>
-					</div>
-				</div>
-			</li>
-		</ul>
+				<li data-region="us-east-1">
+					<a href="javascript:void(0)">Virginia</a>
+				</li>
+
+				<li data-region="eu-west-1">
+					<a href="javascript:void(0)">Ireland</a>
+				</li>
+
+				<li data-region="ap-southeast-1">
+					<a href="javascript:void(0)">Singapore</a>
+				</li>
+
+				<li data-region="ap-southeast-2">
+					<a href="javascript:void(0)">Sydney</a>
+				</li>
+
+				<li data-region="ap-northeast-1">
+					<a href="javascript:void(0)">Tokyo</a>
+				</li>
+
+				<li data-region="sa-east-1">
+					<a href="javascript:void(0)">Sao Paulo</a>
+				</li>
+			</ul>
+		</div>
 	</div>
+
+	<!-- Global view -->
+	<div id="global-view">
+		<div id="global-region-resource-data-wrap">
+			<ul id="global-region-resource-list" class="clearfix">
+				<li id="global-region-resource-instance">
+					<div class="global-region-resource-header">
+						<h5>Running Instance</h5>
+						<div class="global-region-resource-count-wrap">
+							<i id="global-resource-icon-instance" class="global-resource-icon"></i>
+							<span class="global-region-resource-count">5</span>
+						</div>
+					</div>
+
+					<div class="global-region-resource-content">
+						<ul>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>Singapore</h4>
+									<h5>Asia Pacific</h5>
+									<span class="global-region-resource-location-count">15</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>N. Virginia</h4>
+									<h5>US East</h5>
+									<span class="global-region-resource-location-count">5</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>Sao Paulo</h4>
+									<h5>Asia Pacific</h5>
+									<span class="global-region-resource-location-count">1</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>N. California</h4>
+									<h5>US East</h5>
+									<span class="global-region-resource-location-count">0</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+
+				<li id="global-region-resource-eip">
+					<div class="global-region-resource-header">
+						<h5>Elastic IP</h5>
+						<div class="global-region-resource-count-wrap">
+							<i id="global-resource-icon-eip" class="global-resource-icon"></i>
+							<span class="global-region-resource-count">5</span>
+						</div>
+					</div>
+
+					<div class="global-region-resource-content">
+						<ul>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>Singapore</h4>
+									<h5>Asia Pacific</h5>
+									<span class="global-region-resource-location-count">15</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>N. Virginia</h4>
+									<h5>US East</h5>
+									<span class="global-region-resource-location-count">5</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>Sao Paulo</h4>
+									<h5>Asia Pacific</h5>
+									<span class="global-region-resource-location-count">1</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>N. California</h4>
+									<h5>US East</h5>
+									<span class="global-region-resource-location-count">0</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+
+				<li id="global-region-resource-volume">
+					<div class="global-region-resource-header">
+						<h5>Volume</h5>
+						<div class="global-region-resource-count-wrap">
+							<i id="global-resource-icon-vol" class="global-resource-icon"></i>
+							<span class="global-region-resource-count">5</span>
+						</div>
+					</div>
+
+					<div class="global-region-resource-content">
+						<ul>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>Singapore</h4>
+									<h5>Asia Pacific</h5>
+									<span class="global-region-resource-location-count">15</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>N. Virginia</h4>
+									<h5>US East</h5>
+									<span class="global-region-resource-location-count">5</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>Sao Paulo</h4>
+									<h5>Asia Pacific</h5>
+									<span class="global-region-resource-location-count">1</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>N. California</h4>
+									<h5>US East</h5>
+									<span class="global-region-resource-location-count">0</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+
+				<li id="global-region-resource-elb">
+					<div class="global-region-resource-header">
+						<h5>Load Balancer</h5>
+						<div class="global-region-resource-count-wrap">
+							<i id="global-resource-icon-elb" class="global-resource-icon"></i>
+							<span class="global-region-resource-count">5</span>
+						</div>
+					</div>
+
+					<div class="global-region-resource-content">
+						<ul>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>Singapore</h4>
+									<h5>Asia Pacific</h5>
+									<span class="global-region-resource-location-count">15</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>N. Virginia</h4>
+									<h5>US East</h5>
+									<span class="global-region-resource-location-count">5</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>Sao Paulo</h4>
+									<h5>Asia Pacific</h5>
+									<span class="global-region-resource-location-count">1</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>N. California</h4>
+									<h5>US East</h5>
+									<span class="global-region-resource-location-count">0</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+
+				<li id="global-region-resource-vpn">
+					<div class="global-region-resource-header">
+						<h5>VPN</h5>
+						<div class="global-region-resource-count-wrap">
+							<i id="global-resource-icon-vpn" class="global-resource-icon"></i>
+							<span class="global-region-resource-count">5</span>
+						</div>
+					</div>
+
+					<div class="global-region-resource-content">
+						<ul>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>Singapore</h4>
+									<h5>Asia Pacific</h5>
+									<span class="global-region-resource-location-count">15</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>N. Virginia</h4>
+									<h5>US East</h5>
+									<span class="global-region-resource-location-count">5</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>Sao Paulo</h4>
+									<h5>Asia Pacific</h5>
+									<span class="global-region-resource-location-count">1</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<h4>N. California</h4>
+									<h5>US East</h5>
+									<span class="global-region-resource-location-count">0</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- Global view -->
+
+	<!-- Region view -->
+	<div id="region-view">
+		<!-- Region App & Stack -->
+		<div id="region-resource-wrap">
+			<!-- Resource tab -->
+			<div id="region-resource-tab">
+				<ul class="clearfix">
+					<li>
+						<a href="javascript:void(0)" class="on">
+							<i class="region-resource-tab-icon region-resource-icon-app"></i>
+							<span class="region-resource-tab-number">5</span>
+							<span class="region-resource-tab-type">App</span>
+						</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)">
+							<i class="region-resource-tab-icon region-resource-icon-stack"></i>
+							<span class="region-resource-tab-number">15</span>
+							<span class="region-resource-tab-type">Stack</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<!-- Resource tab -->
+
+			<!-- Resource App -->
+			<div id="region-resource-app-wrap" class="region-resource-list scroll-wrap">
+				<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+				<div class="scroll-content">
+					<ul class="clearfix">
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-running"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-stop"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-stopped"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-run"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-running"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-stop"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-stopped"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-run"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-running"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-stop"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-stopped"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-run"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-running"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-stop"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-stopped"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-run"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-running"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-stop"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-stopped"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-run"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-running"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-stop"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<i class="region-resource-status region-resource-status-stopped"></i>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-run"></i>
+										<i class="region-resource-btn-terminate"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- Resource App -->
+
+			<!-- Resource Stack -->
+			<div id="region-resource-stack-wrap" class="region-resource-list scroll-wrap" style="display: none">
+				<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+				<div class="scroll-content">
+					<ul class="clearfix">
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+
+						<li>
+							<a href="javascript:void(0)" class="region-resource-list-item">
+								<div class="region-resource-thumbnail">
+									<img width="220" src="http://dribbble.s3.amazonaws.com/users/78637/screenshots/1204805/digital_menu_teaser.jpg"/>
+								</div>
+								<div class="region-resource-info">
+									<span class="region-resource-item-name">foo</span>
+									<div class="region-resource-action clearfix">
+										<i class="region-resource-btn-duplicate"></i>
+										<i class="region-resource-btn-delete"></i>
+									</div>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- Resource Stack -->
+		</div>
+		<!-- Region App & Stack -->
+
+		<!-- Region AWS resource -->
+		<div id="region-aws-resource-wrap">
+			<div id="region-aws-resource-tab">
+				<ul class="clearfix">
+					<li>
+						<a href="javascript:void(0)" class="region-resource-tab-item on">
+							<i id="global-resource-icon-instance" class="global-resource-icon"></i>
+							<span class="region-resource-count">5</span>
+							<span class="region-resource-name">Instance</span>
+						</a>					
+					</li>
+
+					<li>
+						<a href="javascript:void(0)" class="region-resource-tab-item">
+							<i id="global-resource-icon-eip" class="global-resource-icon"></i>
+							<span class="region-resource-count">5</span>
+							<span class="region-resource-name">Elastic IP</span>
+						</a>					
+					</li>
+
+					<li>
+						<a href="javascript:void(0)" class="region-resource-tab-item">
+							<i id="global-resource-icon-vol" class="global-resource-icon"></i>
+							<span class="region-resource-count">5</span>
+							<span class="region-resource-name">Volume</span>
+						</a>					
+					</li>
+
+					<li>
+						<a href="javascript:void(0)" class="region-resource-tab-item">
+							<i id="global-resource-icon-vpc" class="global-resource-icon"></i>
+							<span class="region-resource-count">5</span>
+							<span class="region-resource-name">VPC</span>
+						</a>					
+					</li>
+
+					<li>
+						<a href="javascript:void(0)" class="region-resource-tab-item">
+							<i id="global-resource-icon-vpn" class="global-resource-icon"></i>
+							<span class="region-resource-count">5</span>
+							<span class="region-resource-name">VPN</span>
+						</a>					
+					</li>
+
+					<li>
+						<a href="javascript:void(0)" class="region-resource-tab-item">
+							<i id="global-resource-icon-elb" class="global-resource-icon"></i>
+							<span class="region-resource-count">5</span>
+							<span class="region-resource-name">Load Balancer</span>
+						</a>					
+					</li>
+
+					<li>
+						<a href="javascript:void(0)" class="region-resource-tab-item">
+							<i id="global-resource-icon-asg" class="global-resource-icon"></i>
+							<span class="region-resource-count">5</span>
+							<span class="region-resource-name">Auto Scaling Group</span>
+						</a>					
+					</li>
+
+					<li>
+						<a href="javascript:void(0)" class="region-resource-tab-item">
+							<i id="global-resource-icon-cwa" class="global-resource-icon"></i>
+							<span class="region-resource-count">5</span>
+							<span class="region-resource-name">CloudWatch Alarm</span>
+						</a>					
+					</li>
+
+					<li>
+						<a href="javascript:void(0)" class="region-resource-tab-item">
+							<i id="global-resource-icon-sns" class="global-resource-icon"></i>
+							<span class="region-resource-count">5</span>
+							<span class="region-resource-name">SNS Subscription</span>
+						</a>					
+					</li>
+				</ul>
+			</div>
+
+			<div id="region-aws-resource-data" class="scroll-wrap">
+				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+				<div class="scroll-content">
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="sortable">NAME/ID</th>
+								<th class="sortable">COLUMN2</th>
+								<th class="sortable">COLUMN3</th>
+								<th class="sortable">DETAILS</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>app</td>
+								<td>Some infomation</td>
+								<td>Some infomation 2</td>
+								<td>ee</td>
+							</tr>
+							<tr>
+								<td>bpp</td>
+								<td>Some infomation</td>
+								<td>Some infomation 2</td>
+								<td>ee</td>
+							</tr>
+							<tr>
+								<td>cpp</td>
+								<td>Some infomation</td>
+								<td>Some infomation 2</td>
+								<td>ee</td>
+							</tr>
+							<tr>
+								<td>app</td>
+								<td>Some infomation</td>
+								<td>Some infomation 2</td>
+								<td>ee</td>
+							</tr>
+							<tr>
+								<td>app</td>
+								<td>Some infomation</td>
+								<td>Some infomation 2</td>
+								<td>ee</td>
+							</tr>
+							<tr>
+								<td>app</td>
+								<td>Some infomation</td>
+								<td>Some infomation 2</td>
+								<td>ee</td>
+							</tr>
+							<tr>
+								<td>app</td>
+								<td>Some infomation</td>
+								<td>Some infomation 2</td>
+								<td>ee</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- Region AWS resource -->
+	</div>
+	<!-- Region view -->
+</div>
 </div>
 </div>

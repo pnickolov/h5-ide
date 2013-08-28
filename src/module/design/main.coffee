@@ -92,7 +92,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 if id.indexOf('app-') == 0
                     model.getAppResourcesService region_name, id
 
-            null
+                null
 
     #private
     unLoadModule = () ->

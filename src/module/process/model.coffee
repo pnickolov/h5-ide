@@ -36,7 +36,6 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                     # hold on 1 second
                     setTimeout () ->
                         me.set 'flag_list', flag_list
-                        me.trigger 'UPDATE_HEADER_AT_ONCE'
 
                         app_id = flag_list.app_id
                         region = MC.process[tab_name].region
@@ -64,25 +63,29 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                         # push event
                         me.set 'flag_list', last_flag
-                        me.trigger 'UPDATE_HEADER_AT_ONCE'
 
                         # hold on 1 second
-                        setTimeout () ->
-                            console.log 'Update the header'
-                        , 1000
+                        # setTimeout () ->
+                        #     console.log 'Update the header'
+                        # , 500
 
                     me.set 'flag_list', flag_list
 
-                    if 'dones' of flag_list and flag_list.dones > 0 and 'steps' of flag_list and flag_list.steps > 0
+                    if 'dones' of flag_list #and flag_list.dones > 0 and 'steps' of flag_list and flag_list.steps > 0
 
-                        $('#progress_bar').css('width', Math.round( flag_list.dones/flag_list.steps*100 ) + "%" )
-                        $('#progress_num').text flag_list.dones
-                        $('#progress_total').text flag_list.steps
+                        if flag_list.dones > 0 and 'steps' of flag_list and flag_list.steps > 0
+                            $('#progress_bar').css('width', Math.round( flag_list.dones/flag_list.steps*100 ) + "%" )
+                            $('#progress_num').text flag_list.dones
+                            $('#progress_total').text flag_list.steps
+                        
+                        else
+                            $('#progress_bar').css('width', "0" )
+                            $('#progress_num').text '0'
+                            $('#progress_total').text '0'
 
                 else
 
                     me.set 'flag_list', flag_list
-                    me.trigger 'UPDATE_HEADER_AT_ONCE'
 
             null
 

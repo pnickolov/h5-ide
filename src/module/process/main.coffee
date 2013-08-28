@@ -32,14 +32,13 @@ define [ 'event' ], ( ide_event ) ->
                 view.render()
 
             ide_event.onLongListen ide_event.UPDATE_PROCESS, ( tab_name ) ->
-            #model.on 'UPDATE_PROCESS', () ->
                 console.log 'UPDATE_PROCESS'
 
                 if MC.data.current_tab_id is tab_name
                     model.getProcess tab_name
 
-            model.on 'UPDATE_HEADER_AT_ONCE', () ->
-                console.log 'UPDATE_HEADER_AT_ONCE'
+            model.on 'change:flag_list', () ->
+                console.log 'change:flag_list'
                 view.render()
 
     unLoadModule = () ->

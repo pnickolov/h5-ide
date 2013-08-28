@@ -218,43 +218,46 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
 
-            policies[comp_uid] = tmp =
-              adjusttype : comp.resource.AdjustmentType
-              adjustment : comp.resource.ScalingAdjustment
-              step       : comp.resource.MinAdjustmentStep
-              cooldown   : comp.resource.Cooldown
-              name       : comp.resource.PolicyName
-              uid        : comp_uid
+          if comp.resource.AutoScalingGroupName.indexOf( uid ) is -1
+            continue
 
-            for c_uid, c of MC.canvas_data.component
-              if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
-                continue
+          policies[comp_uid] = tmp =
+            adjusttype : comp.resource.AdjustmentType
+            adjustment : comp.resource.ScalingAdjustment
+            step       : comp.resource.MinAdjustmentStep
+            cooldown   : comp.resource.Cooldown
+            name       : comp.resource.PolicyName
+            uid        : comp_uid
 
-              if c.name isnt "#{comp.name}-alarm"
-                continue
+          for c_uid, c of MC.canvas_data.component
+            if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+              continue
 
-              actions = [c.resource.InsufficientDataActions, c.resource.OKAction, c.resource.AlarmActions]
+            if c.name isnt "#{comp.name}-alarm"
+              continue
 
-              for action in actions
-                if action[0] and action[0].indexOf( comp_uid ) != -1
-                  tmp.evaluation = c.resource.ComparisonOperator
-                  tmp.metric     = c.resource.MetricName
-                  tmp.notify     = action.length is 2
-                  tmp.periods    = c.resource.EvaluationPeriods
-                  tmp.second     = c.resource.Period
-                  tmp.statistics = c.resource.Statistic
-                  tmp.threshold  = c.resource.Threshold
+            actions = [c.resource.InsufficientDataActions, c.resource.OKAction, c.resource.AlarmActions]
 
-                  if c.resource.InsufficientDataActions.length > 0
-                    tmp.trigger = 'INSUFFICIANT_DATA'
-                  else if c.resource.OKAction.length > 0
-                    tmp.trigger = 'OK'
-                  else if c.resource.AlarmActions.length > 0
-                    tmp.trigger = 'ALARM'
+            for action in actions
+              if action[0] and action[0].indexOf( comp_uid ) != -1
+                tmp.evaluation = c.resource.ComparisonOperator
+                tmp.metric     = c.resource.MetricName
+                tmp.notify     = action.length is 2
+                tmp.periods    = c.resource.EvaluationPeriods
+                tmp.second     = c.resource.Period
+                tmp.statistics = c.resource.Statistic
+                tmp.threshold  = c.resource.Threshold
 
-                  break
+                if c.resource.InsufficientDataActions.length > 0
+                  tmp.trigger = 'INSUFFICIANT_DATA'
+                else if c.resource.OKAction.length > 0
+                  tmp.trigger = 'OK'
+                else if c.resource.AlarmActions.length > 0
+                  tmp.trigger = 'ALARM'
 
-              break
+                break
+
+            break
 
 
 

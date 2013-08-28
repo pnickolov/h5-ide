@@ -1942,7 +1942,14 @@ MC.canvas.add = function (flag, option, coordinate)
 				{
 					var asg_comp = MC.canvas_data.component[ layout.node[group.id].groupUId ];
 					var asg_comp_data = MC.data.resource_list[MC.canvas_data.region][ asg_comp.resource.AutoScalingGroupARN ];
-					option.name = asg_comp_data.Instances.member.length + " in service";
+					if (asg_comp_data)
+					{
+						option.name = asg_comp_data.Instances.member.length + " in service";
+					}
+					else
+					{
+						option.name = "? in service";
+					}
 				}
 
 				// if(!option['launchConfig']){

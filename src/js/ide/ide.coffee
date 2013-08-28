@@ -195,7 +195,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'DESIGN_COMPLETE'
 			process.loadModule()
 			#
-			ide_event.trigger ide_event.SWITCH_MAIN
+			#ide_event.trigger ide_event.SWITCH_MAIN
 
 		#listen RESOURCE_COMPLETE
 		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->

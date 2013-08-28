@@ -317,7 +317,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         stackArray = _.flatten _.values MC.data.stack_list
 
         not _.some stackArray, ( stack ) ->
-            return stack.id isnt stackId and stack.name is newName
+            stack.id isnt stackId and stack.name is newName
+
+    checkAppName = ( name ) ->
+        appArray = _.flatten _.values MC.data.app_list
+        not _.contains appArray, name
 
     disabledAllOperabilityArea = (enabled) ->
 
@@ -486,6 +490,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     cacheResource               : cacheResource
     checkIsRepeatName           : checkIsRepeatName
     checkStackName              : checkStackName
+    checkAppName                : checkAppName
     getDuplicateName            : getDuplicateName
     disabledAllOperabilityArea  : disabledAllOperabilityArea
     getCost                     : getCost

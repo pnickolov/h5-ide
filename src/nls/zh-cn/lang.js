@@ -14,27 +14,27 @@ define({
 	'ide' : {
 		'dashboard' : '仪表盘',
 		'account-settings' : '账户设置',
-		
+
 		/** Resource Naming Conventions
-		 * 
-		 * AZ = 
-		 * EC2 AMI = 
-		 * EC2 Instance = 
-		 * EBS Volume = 
-		 * EBS Snapshot = 
-		 * EIP = 
-		 * ELB = 
-		 * ASG = 
-		 * KP = 
-		 * VPC = 
-		 * Subnet = 
-		 * RT = 
-		 * ENI = 
-		 * IGW = 
-		 * VGW = 
-		 * CGW = 
-		 * VPN = 
-		 * 
+		 *
+		 * AZ =
+		 * EC2 AMI =
+		 * EC2 Instance =
+		 * EBS Volume =
+		 * EBS Snapshot =
+		 * EIP =
+		 * ELB =
+		 * ASG =
+		 * KP =
+		 * VPC =
+		 * Subnet =
+		 * RT =
+		 * ENI =
+		 * IGW =
+		 * VGW =
+		 * CGW =
+		 * VPN =
+		 *
 		 */
 
 		/******resource panel module******/
@@ -69,7 +69,7 @@ define({
 		'RES_TIP_DRAG_NEW_VGW'          : 'Drag to the canvas to create a new virtual gateway.',
 		'RES_TIP_DRAG_NEW_CGW'          : 'Drag to the canvas to create a new customer gateway.',
 		'RES_TIP_DRAG_NEW_ENI'          : 'Drag to a subnet to create a new network interface.',
-		
+
 		'RES_TIP_DRAG_HAS_IGW'          : 'This VPC already has an internet gateway.',
 		'RES_TIP_DRAG_HAS_VGW'          : 'VPC can only have one VGW. There is already one VGW in current VPC.',
 
@@ -95,6 +95,7 @@ define({
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'Repeated stack name.',
 		'PROP_MSG_WARN_NO_APP_NAME'             : 'No app app.',
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'Repeated app name.',
+		'PROP_MSG_WARN_INVALID_APP_NAME'        : 'App name is invalid.',
 		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance Type: [ %s ] only support at most [ %s ] Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type',
 
 		/******navigation module******/

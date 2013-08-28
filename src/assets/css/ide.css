@@ -4379,6 +4379,9 @@ a.action-link:hover {
 	color: rgb(0, 123, 255);
 }
 
+#modal-run-stack label {
+	margin: 9px 18px 0 0;
+}
 /* run stack into app process panel*/
 #process-panel #process-container {
 	width: 600px;

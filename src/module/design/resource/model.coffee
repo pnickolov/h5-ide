@@ -2,9 +2,9 @@
 #  View Mode for design/resource
 #############################
 
-define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event',
+define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event', 'subnet_model',
          'backbone', 'jquery', 'underscore'
-], ( ec2_service, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event ) ->
+], ( ec2_service, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event, subnet_model ) ->
 
     #private
     ami_instance_type = null
@@ -264,6 +264,34 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
 
                 null
+
+
+            #listen VPC_SNET_DESC_SUBNETS_RETURN
+            me.on 'VPC_SNET_DESC_SUBNETS_RETURN', ( result ) ->
+
+                region_name = result.param[3]
+                default_vpc = ''
+                if result.param[5] and $.type(result.param[5]) == 'array'
+                    default_vpc = result.param[5][0].Value[0]
+
+                console.log 'VPC_SNET_DESC_SUBNETS_RETURN ' + region_name + ', ' + default_vpc
+
+                if !result.is_error
+
+                    if $.type(result.resolved_data) == 'array'
+
+                        $.each result.resolved_data, (idx, value) ->
+
+                            MC.data.account_attribute[region_name].default_subnet[value.availabilityZone] = value
+
+                            null
+
+                    else
+
+                        console.log 'no default subnet found in default vpc ' + default_vpc
+
+                null
+
 
         #call service
         describeAvailableZonesService : ( region_name ) ->
@@ -638,6 +666,31 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             #
             @set 'check_required_service_count', @service_count
             #
+            null
+
+
+        describeSubnetInDefaultVpc : ( region_name ) ->
+
+            me = this
+
+            default_vpc = MC.data.account_attribute[region_name].default_vpc
+
+            if !default_vpc
+
+                console.log "hasn't get default_vpc for region " + region_name
+
+            else
+
+                if default_vpc != 'none'
+
+                    filters = [ {Name: 'vpc-id', Value: [ default_vpc ]}, {Name: 'defaultForAz', Value: [ 'true' ]} ]
+                    subnet_model.DescribeSubnets {sender: me}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, filters
+
+                else
+
+                    console.log 'current region ' + region_name + ' has no default vpc'
+
+
             null
 
     }

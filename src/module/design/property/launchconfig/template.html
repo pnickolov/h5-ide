@@ -71,11 +71,7 @@
 	<div class="option-group">
 		<section class="property-control-group">
 			<div class="checkbox">
-				{{#if checkbox_display.monitoring}}
-				<input id="property-instance-enable-cloudwatch" type="checkbox" checked="true" value="None" name="property-instance-enable-cloudwatch" />
-				{{else}}
-				<input id="property-instance-enable-cloudwatch" type="checkbox" value="None" name="property-instance-enable-cloudwatch" />
-				{{/if}}
+				<input id="property-instance-enable-cloudwatch" type="checkbox" {{#if checkbox_display.monitorEnabled}}{{#if checkbox_display.monitoring}}checked="true"{{/if}}{{else}}disabled="disabled"{{/if}} value="None" name="property-instance-enable-cloudwatch" />
 				<label for="property-instance-enable-cloudwatch"></label>
 			</div>
 			<label for="property-instance-enable-cloudwatch">Enable CloudWatch Detailed Monitoring</label>

@@ -128,6 +128,17 @@ define({
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',
 		// Add new strings below this comment. Move above once English has been confirmed
 
+		/****** process module ******/
+		'PROC_TITLE'                 : 'Starting your app...',
+		'PROC_RLT_DONE_TITLE'        : 'Everything goes smoothly!',
+		'PROC_RLT_DONE_SUB_TITLE'    : 'Your app will be open soon.',
+		'PROC_STEP_PREPARE'          : 'Preparing and Sending Request...',
+		'PROC_RLT_FAILED_TITLE'      : 'The app failed to start.',
+		'PROC_RLT_FAILED_SUB_TITLE'  : 'You may fix following error and run again.',
+		'PROC_ERR_INFO'              : 'Error Details',
+		'PROC_CLOSE_TAB'             : 'Close Tab',
+		'PROC_STEP_REQUEST'          : 'Processing Request',
+
 		/****** miscellaneous ******/
 		'CFM_BTN_DELETE'   : 'Delete',
 		'CFM_BTN_CANCEL'   : 'Cancel',

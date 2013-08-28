@@ -197,7 +197,9 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
         if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
           @set "has_sns_topic", true
 
-        else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.indexOf( uid ) != -1
+        else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
+          if comp.resource.AutoScalingGroupName.indexOf( uid ) is -1
+            continue
 
           type = comp.resource.NotificationType
 
@@ -229,11 +231,13 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
             name       : comp.resource.PolicyName
             uid        : comp_uid
 
+          alarmname = "#{comp.name}-alarm"
+
           for c_uid, c of MC.canvas_data.component
             if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
               continue
 
-            if c.name isnt "#{comp.name}-alarm"
+            if c.name isnt alarmname
               continue
 
             actions = [c.resource.InsufficientDataActions, c.resource.OKAction, c.resource.AlarmActions]
@@ -260,8 +264,10 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
             break
 
 
-
-      @set 'detail_monitor', MC.canvas_data.component[ MC.extractID( component.resource.LaunchConfigurationName ) ].resource.InstanceMonitoring is 'enabled'
+      lc_uid  = MC.extractID( component.resource.LaunchConfigurationName )
+      if lc_uid
+        lc_comp = MC.canvas_data.component[ lc_uid ]
+      @set 'detail_monitor', if lc_comp then lc_comp.resource.InstanceMonitoring is 'enabled' else false
 
       @set 'notification_type', nc_array
       @set 'policies', policies

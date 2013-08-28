@@ -109,6 +109,38 @@ MC.canvas = {
 
 	},
 
+	updateInstanceState: function (instance_id)
+	{
+		var comp_data = MC.canvas.data.get('component'),
+			instance_id,
+			instance_data;
+
+		$.each( comp_data, function(uid, comp)
+		{
+			if (comp_data.type === "AWS.EC2.Instance")
+			{
+				instance_id = comp_data.resource.InstanceId;
+				instance_data = MC.data.resource_list[instance_id];
+				if ($('#' + instance_id + '_instance-state').length === 1)
+				{
+					if ( instance_data )
+					{//instance data exist
+						$('#' + instance_id + '_instance-state').attr('class', 'instance-state instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState());
+					}
+					else
+					{//instance data not exist, unknown state
+						$('#' + instance_id + '_instance-state').attr('class', 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState());
+					}
+				}
+				else
+				{
+					//no instance svg node found
+				}
+			}
+
+		});
+	},
+
 	resize: function (target, type)
 	{
 		var canvas_size = MC.canvas.data.get("layout.size"),

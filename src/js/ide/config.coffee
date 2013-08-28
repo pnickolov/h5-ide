@@ -56,6 +56,7 @@ require.config {
 		'MC.canvas'          : 'lib/MC.canvas'
 		'MC.canvas.constant' : 'lib/MC.canvas.constant'
 		'MC.canvas.add'      : 'lib/MC.canvas.add'
+		'MC.canvas.line'	 : 'lib/MC.canvas.line'
 
 		#############################################
 		# lib/aws logic handler

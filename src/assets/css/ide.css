@@ -947,21 +947,25 @@ a {
 	border: 1px solid #333;
 	border-radius: 3px;
 	width: 390px;
-	height: 420px;
+	height: 425px;
 	background-color: #fff;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 #global-region-status-tab-wrap {
-	height: 150px;
+	height: 145px;
 }
 
 .global-region-status-tab-item {
 	float: left;
-	height: 150px;
+	height: 145px;
 	width: 195px;
 	background-color: #323e49;
 	position: relative;
+}
+
+.global-region-status-list li:last-child a {
+	border-radius: 0 0 2px 2px;
 }
 
 .global-region-status-tab-item h5 {
@@ -971,6 +975,7 @@ a {
 	position: absolute;
 	top: 100px;
 	width: 100%;
+	font-size: 12px;
 }
 
 .global-region-status-tab-item.on {
@@ -1045,7 +1050,7 @@ a {
 	margin: 15px;
 }
 
-.global-region-status-header {
+/*.global-region-status-header {
 	border-bottom: 1px solid #eee;
 	padding: 10px 15px;
 }
@@ -1053,7 +1058,7 @@ a {
 .global-region-status-header h4 {
 	font-size: 15px;
 	color: #999;
-}
+}*/
 
 .global-region-status-list li {
 	display: block;

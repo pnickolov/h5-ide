@@ -1658,6 +1658,14 @@ textarea {
 	width: 500px;
 }
 
+.slider-line li span {
+	cursor: pointer;
+}
+
+.slider-line li span:hover {
+	color: #ccc;
+}
+
 .slider-line li {
 	float: left;
 	width: 29px;
@@ -1680,6 +1688,7 @@ textarea {
 	border-right: 0;
 	margin-top: -1px;
 	margin-left: -7px;
+	background-color: #fff;
 }
 
 .property-control-group-sub {

@@ -28,6 +28,10 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                     if resource_source
                         MC.aws.aws.cacheResource resource_source, region
                         me.describeInstancesOfASG region
+
+                    #update canvas when get instance info
+                    ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
+
                 else
                     #TO-DO
                 #

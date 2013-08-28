@@ -133,6 +133,15 @@
 				<label for="property-instance-source-check"></label>
 			</div>
 			<label for="property-instance-source-check">Enable Source/Destination Checking</label>
+			<div class="checkbox">
+				{{#if eni_display.asso_public_ip}}
+				<input id="property-instance-public-ip" type="checkbox" {{#if eni_display.multi_enis}}disabled="disabled"{{/if}} checked="true" value="None" name="property-instance-public-ip" />
+				{{else}}
+				<input id="property-instance-public-ip" type="checkbox" {{#if eni_display.multi_enis}}disabled="disabled"{{/if}} value="None" name="property-instance-public-ip" />
+				{{/if}}
+				<label for="property-instance-public-ip"></label>
+			</div>
+			<label for="property-instance-public-ip">Automatically assign Public IP</label>
 		</section>
 		<section class="property-control-group">
 			<div class="network-list-header clearfix">

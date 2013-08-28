@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : dhcp_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:17
+#* Create date  : 2013-08-26 12:19:55
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'dhcp_service'], ( Backbone, dhcp_service) ->
+define [ 'backbone', 'underscore', 'dhcp_service', 'base_model' ], ( Backbone, _, dhcp_service, base_model ) ->
 
     DHCPModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeDhcpOptions api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'dhcp_service'], ( Backbone, dhcp_service) ->
                 if !aws_result.is_error
                 #DescribeDhcpOptions succeed
 
-                    dhcp_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', aws_result
 
                 else
                 #DescribeDhcpOptions failed
 
                     console.log 'dhcp.DescribeDhcpOptions failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_DHCP_DESC_DHCP_OPTS_RETURN', aws_result
 
 
 

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : vpn_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:18
+#* Create date  : 2013-08-26 12:19:56
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'vpn_service'], ( Backbone, vpn_service) ->
+define [ 'backbone', 'underscore', 'vpn_service', 'base_model' ], ( Backbone, _, vpn_service, base_model ) ->
 
     VPNModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeVpnConnections api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'vpn_service'], ( Backbone, vpn_service) ->
                 if !aws_result.is_error
                 #DescribeVpnConnections succeed
 
-                    vpn_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'VPC_VPN_DESC_VPN_CONNS_RETURN', aws_result
 
                 else
                 #DescribeVpnConnections failed
 
                     console.log 'vpn.DescribeVpnConnections failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'VPC_VPN_DESC_VPN_CONNS_RETURN', aws_result
 
 
 

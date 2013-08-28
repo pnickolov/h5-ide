@@ -71,7 +71,7 @@ define [ 'constant',
                     null
 
                 # If the az list is null/empty
-                # We might want to listen ide_event.RELOAD_RESOURCE
+                # We might want to listen ide_event.OPEN_DESIGN
                 # so that we can update the list
                 ide_event.onLongListen ide_event.RELOAD_AZ, refreshList
 

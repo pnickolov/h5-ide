@@ -65,8 +65,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             stackId = @model.get( 'property_detail' ).id
             name = stackNameInput.val()
 
-            stackNameInput.parsley 'custom', () ->
-                if not MC.aws.aws.checkStackName stackId, name
+            stackNameInput.parsley 'custom', ( val ) ->
+                if not MC.validate 'awsName',  val
+                    return 'This value should be a valid Stack name.'
+
+                if not MC.aws.aws.checkStackName stackId, val
                     return "Stack name \" #{name} \" is already in using. Please use another one."
 
             if stackNameInput.parsley 'validate'
@@ -182,11 +185,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
         delSNS : ( event ) ->
 
-            $li = $(this).closest("li")
+            $li = $(event.currentTarget).closest("li")
             uid = $li.data("uid")
             $li.remove()
 
-            this.trigger "DEL_SUBSCRIPTION", uid
+            this.updateSNSList null, this.model.attributes.has_asg, true
 
             this.trigger 'DELETE_SUBSCRIPTION', uid
 

@@ -57,7 +57,8 @@ define [ 'jquery', 'handlebars',
 			result.session_id,
 			result.region_name,
 			result.email,
-			result.has_cred
+			result.has_cred,
+			result.account_id
 		]
 
 		$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), {
@@ -104,6 +105,7 @@ define [ 'jquery', 'handlebars',
 				$.cookie 'email',       result.email,       { expires: 1 }
 				$.cookie 'has_cred',    result.has_cred,    { expires: 1 }
 				$.cookie 'username',    username,           { expires: 1 }
+				$.cookie 'account_id',	result.account_id,  { expires: 1 }
 
 				#set madeiracloud_ide_session_id
 				setMadeiracloudIDESessionID result

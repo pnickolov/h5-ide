@@ -21,7 +21,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         defaults :
             'item_flags'    : null
 
-
         initialize : ->
 
             me = this
@@ -84,14 +83,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 if !result.is_error
                     console.log 'create stack successfully'
 
+                    new_id = result.resolved_data.id
+                    key = result.resolved_data.key
+
                     # track
                     analytics.track "Saved Stack",
                         stack_name: data.name,
                         stack_region: data.region,
-                        stack_id: data.id
-
-                    new_id = result.resolved_data.id
-                    key = result.resolved_data.key
+                        stack_id: new_id
 
                     #temp
                     MC.canvas_data.id = new_id
@@ -109,10 +108,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
 
                     #call save png
-                    me.savePNG true, data
+                    me.savePNG true, MC.canvas_data
 
                     #set toolbar flag
-                    me.setFlag id, 'CREATE_STACK', data
+                    me.setFlag id, 'CREATE_STACK', MC.canvas_data
 
                     new_id
 
@@ -144,6 +143,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'DUPLICATE_STACK', name
                     ide_event.trigger ide_event.UPDATE_STACK_LIST
+
+                    # open the duplicated stack when using toolbar
+                    # if is_tab
+                    #     ide_event.trigger ide_event.OPEN_STACK_TAB, new_name, region, new_id
+
                 else
                     me.trigger 'TOOLBAR_HANDLE_FAILED', 'DUPLICATE_STACK', name
 
@@ -396,11 +400,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             id      = data.id
             region  = data.region
-            # if me.isChanged(data) or id.indexOf('stack-') isnt 0
-            #     me.saveStack(data)
-            #     id = MC.canvas_data.id
-            #     if not id
-            #         return
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
             stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
@@ -439,7 +438,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
 
         savePNG : ( is_thumbnail, data ) ->
-            console.log 'savePNG'
+            console.log 'savePNG, is_thumbnail = ' + is_thumbnail
             me = this
             #
             callback = ( result ) ->
@@ -477,7 +476,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             else
                 sendMessage()
             #
-            if is_thumbnail is 'true' then me.trigger 'SAVE_PNG_COMPLETE', null
+            me.trigger 'SAVE_PNG_COMPLETE', null if !is_thumbnail
             null
 
         isChanged : (data) ->

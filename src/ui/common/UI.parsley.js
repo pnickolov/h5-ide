@@ -170,9 +170,13 @@
           , phone:      "This value should be a valid phone number."
 
          // hack
-          , ipaddress:      "This value should be a valid ip address."
+          , ipaddress: "This value should be a valid ip address."
           , ipv4:      "This value should be a valid IPv4 address."
           , cidr:      "This value should be a valid CIDR."
+          , awsCidr:   "This value should be a valid CIDR and the netmask ('16') must be between 16 and 28."
+          , awsName:   "This value should be a valid AWS name."
+          , domain:    "This value should be a valid domain."
+
         }
       , notnull:        "This value should not be null."
       , notblank:       "This value should not be blank."
@@ -230,7 +234,6 @@
       },
 
       custom: function ( val, option , context ) {
-
         var thisArg, now, result;
         thisArg = option.thisArg || window;
         result = option.validator.call( thisArg, val );
@@ -285,8 +288,16 @@
             regExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))$/;
             break;
 
+          case 'awsCidr':
+            regExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([1][6789]|[2]\d|3[0-2]))$/;
+            break;
+
+         case 'awsName':
+           regExp = /^[a-zA-Z0-9][a-zA-Z0-9-]*$/;
+           break;
+
           case 'domain':
-           regExp = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/;
+           regExp = /^([a-zA-Z0-9-\u4e00-\u9fa5]+\.)+([a-zA-Z-\u4e00-\u9fa5]+)$/;
            break;
 
           default:
@@ -550,16 +561,18 @@
         if (this.$element.data('required-rollback') === true) {
           this.isRequiredRollback = true;
 
-          this.$element.on('focus', function() {
-            $(this).data('pre-value', $(this).val());
-          })
- .on('blur', function(){
-            var result = that.Validator.validators[ 'required' ]( $(this).val() );
 
-            if (!result) {
-              $(this).val($(this).data('pre-value'));
-            }
-          });
+          this.$element
+            .on('focus', function() {
+              $(this).data('pre-value', $(this).val());
+            })
+            .on('blur', function(){
+              var result = that.Validator.validators[ 'required' ]( $(this).val() );
+
+              if (!result) {
+                $(this).val($(this).data('pre-value'));
+              }
+            });
 
         }
 
@@ -567,16 +580,19 @@
         // Ignore disallowed input
         var that = this;
         if ( this.$element.data( 'ignore' ) === true ) {
-          var regExp, regMap, type;
+          var regExp, regMap, vlidateType;
           regMap = {
             cidr: '^[0-9]?$|^[0-9][0-9./]+$',
+            awsCidr: '^[0-9]?$|^[0-9][0-9./]+$',
             ipv4: '^[0-9]*$|^[0-9][0-9.]+$',
-            ipaddress: '^[0-9]*$|^[0-9][0-9./]+$'
+            ipaddress: '^[0-9]*$|^[0-9][0-9./]+$',
+            domain: '^([a-zA-Z0-9]+[a-zA-Z0-9.-]*)*$',
+            digits: '^[0-9]*$'
           };
 
-          type = this.options.type;
+          vlidateType = this.options.type;
 
-          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ type ] || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
+          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ vlidateType ] || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
 
           var wholeReg = this.options.regexp;
           // delay handler function
@@ -988,6 +1004,22 @@
       return valid;
     }
 
+    , validateForm: function () {
+      var parent = this.getParent();
+      if ( parent ) {
+        parent = parent[ 0 ];
+
+      } else {
+        parent = this.$element.closest('form, [data-bind=true]');
+        parent = parent.parsley();
+      }
+
+      for ( var i in parent.items ) {
+        var item = parent.items[ i ];
+        item.options.validateIfUnchanged = true;
+      }
+      return parent.validate();
+    }
     /**
     * Check if value has changed since previous validation
     *
@@ -1092,7 +1124,6 @@
         //delete this.options[ constraint ];
       //}
       //this.$element.addClass( 'parsley-validated' );
-
       var validator, now, thisArg;
 
       if ( typeof option === 'function' ) {
@@ -1338,7 +1369,8 @@
      }
 
      if ( 'undefined' === typeof this.$element.attr( 'name' ) ) {
-       throw "A radio / checkbox input must have a data-group attribute or a name to be Parsley validated !";
+       //throw "A radio / checkbox input must have a data-group attribute or a name to be Parsley validated !";
+       return 'parsley-' + ( Math.random() + '' ).substring( 2 );
      }
 
      return 'parsley-' + this.$element.attr( 'name' ).replace( /(:|\.|\[|\])/g, '' );
@@ -1643,7 +1675,7 @@
     , animate: false                             // fade in / fade out error messages
     , animateDuration: 300                      // fadein/fadout ms time
     , focus: 'first'                            // 'fist'|'last'|'none' which error field would have focus first on form validation
-    , validationMinlength: 3                    // If trigger validation specified, only if value.length > validationMinlength
+    , validationMinlength: 1                    // If trigger validation specified, only if value.length > validationMinlength
     , successClass: 'parsley-success'           // Class name on each valid input
     , errorClass: 'parsley-error'               // Class name on each invalid input
     , errorMessage: false                       // Customize an unique error message showed if one constraint fails
@@ -1703,6 +1735,10 @@ var getForm = function( context ) {
 
 var formAddItem = function( form, target ) {
   var parsleyInstance = form.data( 'parsleyForm' );
+  for ( var i in parsleyInstance.items ) {
+    var item = parsleyInstance.items[ i ];
+    if ( item.element.get( 0 ) === target ) return;
+  }
   parsleyInstance.addItem(target);
 }
 
@@ -1772,22 +1808,25 @@ $(document.body).on( globalBindList, 'form[data-validate="parsley"] input, [data
 */
 var errortip = function (event)
 {
-  errortip.isFirst && (errortip.isFirst = false)
   var target = $(this),
-    content = $(this).next('.parsley-error-list'),
-    errortip_box = $('.errortip_box'),
-    target_offset,
-    width,
-    height,
-    target_width,
-    target_height;
+    content = errortip.findError( target )
+    , target_offset
+    , width
+    , height
+    , target_width
+    , target_height
+    , tipId
 
-  if (content)
+  if (content.length)
   {
+    tipId = 'errortip-' + content.attr('id');
+
+    if ( $('#' + tipId).length ) return;
+
     errortip_box = content.clone();
     errortip_box
       .addClass('errortip_box')
-      .attr('id', 'errortip-' + errortip_box.attr('id'))
+      .attr('id', tipId)
       .appendTo(document.body);
 
     target_offset = target.offset();
@@ -1807,45 +1846,75 @@ var errortip = function (event)
 
     }).show();
 
-    $(document.body).on('mouseleave', '.parsley-error', errortip.clear);
+
+    errortip.timer = setInterval(function ()
+      {
+        if (content.closest('html').length === 0)
+        {
+          errortip.clear();
+        }
+      }, 200);
 
   }
 };
 
-errortip.isFirst = false;
+errortip.timer = null;
+errortip.firstTimer = {};
+errortip.isEnter = false;
+
+errortip.findError = function( target ) {
+  return target.next('.parsley-error-list');
+}
 
 errortip.first = function( target ) {
   errortip.call(target)
-  errortip.isFirst = true;
-  setTimeout(function() {
-    if (errortip.isFirst) {
-      errortip.clear();
-    }
+  id = errortip.findError( target ).attr( 'id' );
+  errortip.firstTimer[ id ] = setTimeout(function() {
+    errortip.clear({currentTarget: target});
   }, 2000);
 }
 
-errortip.clear = function (id)
+errortip.clear = function ( event )
 {
-
-
-  if (id) {
+  if ( event ){
     var errorPrefix = 'errortip-';
-    $('.errortip_box').each(function() {
-      if (this.id === errorPrefix + id) {
-        $(this).remove();
-        return false;
-      }
-    });
+    var id;
 
+    if ( event === Object( event ) ) {
+      id = errortip.findError( $( event.currentTarget ) ).attr( 'id' );
+    }
+    else {
+      id = event;
+    }
+
+    setTimeout( function() {
+      if ( !errortip.isEnter ) {
+        $( '#' + errorPrefix + id ).remove();
+      }
+    }, 100);
+    errortip.firstTimer[ id ] && clearInterval( errortip.firstTimer[ id ] )
+  } else {
+    $('.errortip_box').remove();
   }
-  $('.errortip_box').remove();
-  $(document.body).off('mouseleave', '.parsley-error', errortip.clear);
+
+  clearInterval(errortip.timer);
 
 };
 
+errortip.enter = function ( event ) {
+  errortip.isEnter = true;
+  errortip.call( this, event );
+}
+
+errortip.leave = function ( event ) {
+  errortip.isEnter = false;
+  errortip.clear.call( this, event );
+}
+
 $(document).ready(function ()
 {
-  $(document.body).on('mouseenter', '.parsley-error', errortip);
+  $(document.body).on('mouseenter', '.parsley-error', errortip.enter);
+  $(document.body).on('mouseleave', '.parsley-error', errortip.leave);
 });
 
 Util.errortip = errortip;

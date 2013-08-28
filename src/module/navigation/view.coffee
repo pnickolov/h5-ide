@@ -94,11 +94,11 @@ define [ 'event',
 
         createNewStackClick  : ( event ) ->
             console.log 'createNewStackClick'
-            console.log $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' )
-            if $( event.target ).parent().parent().next().find('li a').first().attr( 'data-region-name' ) is undefined then return
+            console.log $( event.target ).parent().parent().find('li a').first().attr( 'data-region-name' )
+            if $( event.target ).parent().parent().find('li a').first().attr( 'data-region-name' ) is undefined then return
             #
             #ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
-            this.checkDesignLoadComplete ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
+            this.checkDesignLoadComplete ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().find( 'li a' ).first().attr( 'data-region-name' )
 
         regionNameClick      : ( event ) ->
             console.log 'regionNameClick'

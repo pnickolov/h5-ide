@@ -13,8 +13,11 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'ide' : {
-		'dashboard' : 'Dashboard',
-		'account-settings' : 'Account Settings',
+		'NAV_TIT_DASHBOARD' : 'Dashboard',
+		'NAV_TIT_APPS'      : 'Apps',
+		'NAV_TIT_STACKS'    : 'Stacks',
+		'NAV_LBL_GLOBAL'    : 'Global',
+		'account-settings'  : 'Account Settings',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/** RESOURCE NAMING CONVENTIONS
@@ -98,6 +101,7 @@ define({
 		'CVS_MSG_ERR_DEL_MAIN_RT'               : 'The main route table %s cannot be deleted. Please set another route table as the main and try again.',
 		'CVS_MSG_ERR_DEL_LINKED_RT'             : 'Subnets must be associated to a route table. Please associate the subnets with another route table first.',
 		'CVS_MSG_ERR_DEL_SBRT_LINE'             : 'Subnets must be associated with a route table.',
+		'CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE'     : 'Load balancer must attach to one subnet per Availability Zone.',
 		'CVS_MSG_ERR_DEL_LINKED_ELB'            : 'This subnet cannot be deleted because it is associated to a load balancer.',
 		'CVS_CFM_DEL'                           : 'Are you sure you want to delete %s?',
 		'CVS_CFM_DEL_IGW'                       : 'Internet-facing load balancers and elastic IPs will not function without an internet gateway, are you sure you want to delete it?',
@@ -117,10 +121,23 @@ define({
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
 		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type.',
 		// Add new strings below this comment. Move above once English has been confirmed
+		'PROP_TEXT_DEFAULT_SG_DESC'             : 'VPC Default Security Group',
+		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
 
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',
 		// Add new strings below this comment. Move above once English has been confirmed
+
+		/****** process module ******/
+		'PROC_TITLE'                 : 'Starting your app...',
+		'PROC_RLT_DONE_TITLE'        : 'Everything goes smoothly!',
+		'PROC_RLT_DONE_SUB_TITLE'    : 'Your app will be open soon.',
+		'PROC_STEP_PREPARE'          : 'Preparing and Sending Request...',
+		'PROC_RLT_FAILED_TITLE'      : 'The app failed to start.',
+		'PROC_RLT_FAILED_SUB_TITLE'  : 'You may fix following error and run again.',
+		'PROC_ERR_INFO'              : 'Error Details',
+		'PROC_CLOSE_TAB'             : 'Close Tab',
+		'PROC_STEP_REQUEST'          : 'Processing Request',
 
 		/****** miscellaneous ******/
 		'CFM_BTN_DELETE'   : 'Delete',

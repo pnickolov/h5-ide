@@ -86,7 +86,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
-			handler   =  if component then this.validateDropMap[ component.type ] else null
+			handler   = if component then this.validateDropMap[ component.type ] else null
 			if handler
 				error = handler.call( this, component, tgt_parent )
 				if error
@@ -94,10 +94,28 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					notification "error", error
 			else
 				console.log "Morris : No handler for validate dragging node:", component
+
 			null
 
 		beforeD_Subnet : ( component, tgt_parent ) ->
-			null
+
+			# First set the tgt_parent to
+			parent = MC.canvas_data.layout.component.group[ tgt_parent ]
+			old_az = component.resource.AvailabilityZone
+			component.resource.AvailabilityZone = parent.name
+
+			for uid, node of MC.canvas_data.layout.component.node
+				if node.groupUId is component.uid
+					handler = this.validateDropMap[ node.type ]
+					if handler
+						error = handler.call( this, MC.canvas_data.component[uid], component.uid )
+
+					if error
+						break
+
+			component.resource.AvailabilityZone = old_az
+
+			error
 
 		beforeD_Instance : ( component, tgt_parent ) ->
 			resource_type = constant.AWS_RESOURCE_TYPE
@@ -221,7 +239,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Update Subnet's children's AZ
 			for key, value of MC.canvas_data.component
-
+  
 				if value.type == resource_type.AWS_EC2_Instance
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.Placement.AvailabilityZone = "1" # Set the Instance's subnet to something else, so we can change it.
@@ -230,6 +248,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				else if value.type == resource_type.AWS_VPC_NetworkInterface
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
 						value.resource.AvailabilityZone = component.resource.AvailabilityZone
+
+				else if value.type == resource_type.AWS_AutoScaling_Group
+					if value.resource.VPCZoneIdentifier.indexOf( component.uid ) != -1
+						this.changeP_ASG value, component.uid
 
 				# Disconnect ELB and Subnet, if the newly moved to AZ has a subnet which is connected to the same ELB.
 				else if value.type == resource_type.AWS_ELB
@@ -259,6 +281,42 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 		changeP_Eni : ( component, tgt_parent ) ->
 			component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
 			component.resource.AvailabilityZone = MC.canvas_data.component[tgt_parent].resource.AvailabilityZone
+			null
+
+		changeP_ASG : ( component, tgt_parent ) ->
+
+			parents = [ tgt_parent ]
+			sbs     = []
+			azs     = []
+			map     = {}
+
+			for uid, node of MC.canvas_data.layout.component.group
+				if node.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					continue
+
+				if node.originalId is component.uid
+					parents.push node.groupUId
+
+			for p in parents
+
+				parent = MC.canvas_data.component[ p ]
+
+				if parent
+					# VPC mode
+					az = parent.resource.AvailabilityZone
+					sbs.push "@#{p}.resource.SubnetId"
+				else
+					az = MC.canvas_data.layout.component.group[ p ].name
+
+				if map[ az ]
+					continue
+				else
+					map[ az ] = true
+					azs.push az
+
+			component.resource.AvailabilityZones = azs
+			component.resource.VPCZoneIdentifier = sbs.join " , "
+
 			null
 
 		deleteObject : ( event, option ) ->
@@ -313,8 +371,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 			else if result isnt false
-				# MC.canvas.remove actually remove the component from MC.canvas_data.component.
-				# Consider this as bad coding pattern, because its canvas/model's job to do that.
+
 				MC.canvas.remove $("#" + option.id)[0]
 				delete MC.canvas_data.component[option.id]
 				this.trigger 'DELETE_OBJECT_COMPLETE'
@@ -423,6 +480,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 					this._removeFromRTB key, component.uid
 
+				# remove all associted ELB
+				MC.aws.elb.removeAllELBForInstance(component.uid)
+
 			null
 
 		deleteR_Eni : ( component ) ->
@@ -437,10 +497,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 		deleteR_RouteTable : ( component ) ->
 			if component.resource.AssociationSet.length > 0 and "" + component.resource.AssociationSet[0].Main == 'true'
-				return { error : sprintf lang.ide.CVS_MSG_ERR_DEL_MAIN_RT }
+				return { error : sprintf lang.ide.CVS_MSG_ERR_DEL_MAIN_RT, component.name }
 
-			if component.resource.AssociationSet.length > 0
-				return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_RT }
+			delete MC.canvas_data.component[component.uid]
+			MC.aws.rtb.updateRT_SubnetLines()
 			null
 
 		deleteR_IGW : ( component, force ) ->
@@ -621,7 +681,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# ELB <==> Subnet
 			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
-				MC.aws.elb.removeSubnetFromELB portMap['elb-assoc'], portMap['subnet-assoc-in']
+				elbUID = portMap['elb-assoc']
+				subnetUID = portMap['subnet-assoc-in']
+				if !MC.aws.subnet.isCanDeleteSubnetToELBConnection(elbUID)
+					return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE }
+				MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
 
 			# Eni <==> Instance
 			else if portMap['instance-attach'] and portMap['eni-attach']
@@ -652,9 +716,19 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				rt_uid = portMap['rtb-src']
 				sb_uid = portMap['subnet-assoc-out']
 
-				component_resource = MC.canvas_data.component[rt_uid].resource
-				return { error : lang.ide.CVS_MSG_ERR_DEL_SBRT_LINE }
+				# Remove asso
+				assoSet = MC.canvas_data.component[ rt_uid ].resource.AssociationSet
+				for asso, index in assoSet
+					if asso.SubnetId.indexOf( sb_uid ) != -1
+						assoSet.splice index, 1
+						break
 
+				# If this is main rt, keep the connection
+				if assoSet.length and "" + assoSet[0].Main is "true"
+					return false
+				else
+					MC.canvas.connect sb_uid, "subnet-assoc-out", this._findMainRT(), 'rtb-src'
+					return
 
 			# Instance <==> RouteTable
 			else if portMap['instance-rtb'] and portMap['rtb-tgt']
@@ -718,9 +792,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
                     # if select the main launch configuration and elb line
 					if MC.canvas_data.component[portMap['launchconfig-sg']]
 
-						selected_line_id = null
+						selected_line_id = option.id
 
 						original_group_uid = MC.canvas_data.layout.component.node[portMap['launchconfig-sg']].groupUId
+
+						#reset health  check type
+						MC.canvas_data.component[original_group_uid].resource.HealthCheckType = 'EC2'
 
 						$.each MC.canvas_data.layout.component.group, ( comp_uid, comp ) ->
 
@@ -735,9 +812,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 	                        				null
 
 	                        			if tmp_map['elb-sg-out'] is portMap['elb-sg-out'] and tmp_map['launchconfig-sg'] is comp_uid
-	                        				elb_index = MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.indexOf(elb_ref)
-	                        				if elb_index >= 0
-	                        					MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.splice elb_index, 1
 	                        				MC.canvas.remove $("#" + line_id)[0]
 
 	                        				return false
@@ -747,11 +821,16 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 	                        				selected_line_id = line_id
 
 	                        			null
-
-	                    MC.canvas.remove $("#" + selected_line_id)[0]
+	                    elb_index = MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.indexOf(elb_ref)
+						if elb_index >= 0
+							MC.canvas_data.component[original_group_uid].resource.LoadBalancerNames.splice elb_index, 1
+						MC.canvas.remove $("#" + selected_line_id)[0]
                     # select the expand lanchconfiguration and elb line
 					else
 						original_group_uid = MC.canvas_data.layout.component.group[portMap['launchconfig-sg']].originalId
+
+						#reset health  check type
+						MC.canvas_data.component[original_group_uid].resource.HealthCheckType = 'EC2'
 
 						$.each MC.canvas_data.layout.component.node, ( comp_uid, comp ) ->
 
@@ -791,6 +870,13 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					line_id = MC.aws.lc.getLCLine option.id
 
 					this.trigger 'SHOW_SG_LIST', line_id
+
+				else if portMap['elb-sg-out'] and portMap['instance-sg']
+					instnace_ref = '@' + portMap['instance-sg'] + '.resource.InstanceId'
+					instance_index = MC.canvas_data.component[portMap['elb-sg-out']].resource.Instances.indexOf(instnace_ref)
+					if instance_index >= 0
+						MC.canvas_data.component[portMap['elb-sg-out']].resource.Instances.splice instance_index, 1
+					MC.canvas.remove $("#" + option.id)[0]
 
 				else
 					this.trigger 'SHOW_SG_LIST', option.id
@@ -978,43 +1064,38 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			else if portMap['subnet-assoc-out'] and portMap['rtb-src']
 
 				rt_uid = portMap['rtb-src']
+				sb_uid = portMap['subnet-assoc-out']
 
 				# add association
 				assoSet = MC.canvas_data.component[rt_uid].resource.AssociationSet
+				assoSet.push {
+					SubnetId     : "@#{portMap['subnet-assoc-out']}.resource.SubnetId"
+					Main         : "false"
+					RouteTableId : ""
+					RouteTableAssociationId : ""
+				}
 
-				if assoSet.length == 0 or "" + assoSet[0].Main != 'true'
-					assoSet.push {
-						SubnetId     : "@#{portMap['subnet-assoc-out']}.resource.SubnetId"
-						Main         : "false"
-						RouteTableId : ""
-						RouteTableAssociationId : ""
-					}
-
-				# remove old connection and data
 				for line_uid, comp of MC.canvas_data.layout.connection
-					if line_uid == line_id
+					if line_uid is line_id
 						continue
 
+					if comp.target[ sb_uid ] isnt 'subnet-assoc-out'
+						continue
 
 					map = {}
 					for tgt_comp_uid, tgt_comp_port of comp.target
 						map[ tgt_comp_port ] = tgt_comp_uid
 
-					if not map['subnet-assoc-out'] or map['subnet-assoc-out'] isnt portMap['subnet-assoc-out']
+					if not map['rtb-src']
 						continue
 
-
-
-					# remove component data
-					old_rt_uid = map['rtb-src']
-					assoSet = MC.canvas_data.component[old_rt_uid].resource.AssociationSet
-
+					assoSet = MC.canvas_data.component[ map['rtb-src'] ].resource.AssociationSet
 					for asso, index in assoSet
-						if MC.extractID( asso.SubnetId ) == map['subnet-assoc-out']
+						if asso.SubnetId.indexOf( sb_uid ) != -1
 							assoSet.splice index, 1
 							break
 
-					MC.canvas.remove $("#" + line_uid)[0]
+					MC.canvas.remove document.getElementById line_uid
 					break
 
 			# IGW <==> RouteTable
@@ -1031,13 +1112,14 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'Origin'               : ""
 				}
 
+				MC.canvas.select(line_id)
 
 			# Instance <==> RouteTable
 			else if portMap['instance-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
 				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
-					'DestinationCidrBlock' : "0.0.0.0/0",
+					'DestinationCidrBlock' : "",
 					'GatewayId'            : "",
 					'InstanceId'           : "@#{portMap['instance-rtb']}.resource.InstanceId",
 					'InstanceOwnerId'      : "",
@@ -1046,12 +1128,14 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'Origin'               : ""
 				}
 
+				MC.canvas.select(line_id)
+
 			# VGW <==> RouteTable
 			else if portMap['vgw-tgt'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
 				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
-					'DestinationCidrBlock' : "0.0.0.0/0",
+					'DestinationCidrBlock' : "",
 					'GatewayId'            : "@#{portMap['vgw-tgt']}.resource.VpnGatewayId",
 					'InstanceId'           : "",
 					'InstanceOwnerId'      : "",
@@ -1059,6 +1143,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'State'                : "",
 					'Origin'               : ""
 				}
+
+				MC.canvas.select(line_id)
 
 			# Eni <==> RouteTable
 			else if portMap['eni-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
@@ -1077,6 +1163,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# VGW <==> CGW
 			else if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+				MC.canvas.select(line_id)
 
 			else if portMap['elb-sg-out'] and portMap['launchconfig-sg']
 
@@ -1130,6 +1217,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 					subnetUID = subnetUIDRef.split('.')[0].slice(1)
 					MC.aws.subnet.updateAllENIIPList(subnetUID)
+					#update sg color label
+					MC.aws.sg.updateSGColorLabel uid
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)
@@ -1141,19 +1230,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					# line_id = MC.canvas.connect uid, "igw-tgt", this._findMainRT(), 'rtb-tgt'
 					# this.createLine null, line_id
 
-				when resource_type.AWS_EC2_Instance
-					ide_event.trigger ide_event.REDRAW_SG_LINE
-
-				when resource_type.AWS_VPC_NetworkInterface
-					ide_event.trigger ide_event.REDRAW_SG_LINE
-
 				when resource_type.AWS_VPC_VPNGateway
 					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 
 				when resource_type.AWS_VPC_Subnet
 					# Connect to main RT
 					line_id = MC.canvas.connect uid, "subnet-assoc-out", this._findMainRT(), 'rtb-src'
-					this.createLine null, line_id
 
 					# Associate to default acl
 					defaultACLComp = MC.aws.acl.getDefaultACL()
@@ -1172,7 +1254,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						 		lb_uid = loadbalancername.split('.')[0].slice(1)
 						 		MC.canvas.connect($("#"+lb_uid), 'elb-sg-out', $("#"+uid), 'launchconfig-sg')
 
-
+			if componentType in [resource_type.AWS_AutoScaling_Group, resource_type.AWS_VPC_NetworkInterface, resource_type.AWS_EC2_Instance, resource_type.AWS_ELB]
+				ide_event.trigger ide_event.REDRAW_SG_LINE
 
 			console.log "Morris : #{componentType}"
 
@@ -1192,13 +1275,15 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 							to_sg_uid = rule.IpRanges.split('.')[0][1...]
 
-							from_key = comp.uid + '|' + to_sg_uid
+							if to_sg_uid isnt comp.uid
 
-							to_key = to_sg_uid + '|' + comp.uid
+								from_key = comp.uid + '|' + to_sg_uid
 
-							if (from_key not in sg_refs) and (to_key not in sg_refs)
+								to_key = to_sg_uid + '|' + comp.uid
 
-								sg_refs.push from_key
+								if (from_key not in sg_refs) and (to_key not in sg_refs)
+
+									sg_refs.push from_key
 
 					$.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
 
@@ -1206,13 +1291,15 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 							to_sg_uid = rule.IpRanges.split('.')[0][1...]
 
-							from_key = comp.uid + '|' + to_sg_uid
+							if to_sg_uid isnt comp.uid
 
-							to_key = to_sg_uid + '|' + comp.uid
+								from_key = comp.uid + '|' + to_sg_uid
 
-							if (from_key not in sg_refs) and (to_key not in sg_refs)
+								to_key = to_sg_uid + '|' + comp.uid
 
-								sg_refs.push to_key
+								if (from_key not in sg_refs) and (to_key not in sg_refs)
+
+									sg_refs.push to_key
 
 			$.each sg_refs, ( i, val ) ->
 
@@ -1328,6 +1415,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 									when constant.AWS_RESOURCE_TYPE.AWS_ELB
 
+										if MC.canvas_data.component[from_comp_uid].resource.Scheme is 'internet-facing'
+											return
+
 										from_port = 'elb-sg-in'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
@@ -1350,7 +1440,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 										to_port = 'eni-sg'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_ELB
-
+										if MC.canvas_data.component[to_comp_uid].resource.Scheme is 'internet-facing'
+											return
 										to_port = 'elb-sg-in'
 
 									when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
@@ -1406,7 +1497,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
-					if comp.resource.AssociationSet[0].Main is true or comp.resource.AssociationSet[0].Main is 'true'
+					if comp.resource.AssociationSet.length and "" + comp.resource.AssociationSet[0].Main is 'true'
 
 						main_rt = comp_uid
 
@@ -1470,9 +1561,19 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 						lines.push [comp_uid, instance.InstanceId.split('.')[0][1...], 'elb-sg-out', 'instance-sg']
 
+					$.each comp.resource.Subnets, ( i, subnet_id ) ->
+
+						lines.push [comp_uid, subnet_id.split('.')[0][1...], 'elb-assoc', 'subnet-assoc-in']
+
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
-					expand_asg = [comp_uid]
+					expand_asg = []
+
+					$.each MC.canvas_data.layout.component.node, ( c, node ) ->
+
+						if node.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and node.groupUId is comp_uid
+
+							expand_asg.push c
 
 					$.each MC.canvas_data.layout.component.group, ( c, g ) ->
 
@@ -1486,7 +1587,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 							lines.push [asg, elb.split('.')[0][1...], 'launchconfig-sg', 'elb-sg-out']
 
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId and comp.resource.Attachment.DeviceIndex isnt '0' and comp.resource.Attachment.DeviceIndex isnt 0
 
+					lines.push [comp_uid, comp.resource.Attachment.InstanceId.split('.')[0][1...], 'eni-attach', 'instance-attach']
 
 			$.each lines, ( idx, line_data ) ->
 

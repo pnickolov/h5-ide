@@ -83,6 +83,8 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
 
               elb.distribution.push tmp
 
+            elb.instance_state = elb.instance_state || []
+
             $.each elb.instance_state, ( i, instance ) ->
 
                 zone = MC.data.resource_list[MC.canvas_data.region][instance.InstanceId].placement.availabilityZone

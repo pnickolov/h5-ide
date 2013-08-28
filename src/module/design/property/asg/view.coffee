@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC, zeroclipboard ) ->
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"
@@ -63,7 +63,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
 
             policies = []
             for uid, policy of data.policies
-                policy.uid        = uid
                 policy.metric     = metricMap[ policy.metric ]
                 policy.adjusttype = adjustMap[ policy.adjusttype ]
                 policy.unit       = unitMap[ policy.metric ]
@@ -75,25 +74,67 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
 
             $( '.property-details' ).html template data
 
+            ### env:dev ###
+            if isApp
+                #new ZeroClipboard( $("#property_app_asg .icon-copy") )
+                zeroclipboard.copy $( "#property_app_asg .icon-copy" )
+            ### env:dev:end ###
+
+            null
+
         setASGCoolDown : ( event ) ->
 
             this.trigger 'SET_COOL_DOWN', event.target.value
 
         setASGName : ( event ) ->
+            target = $ event.currentTarget
+            name = target.val()
+            id = @model.get 'uid'
 
-            this.trigger 'SET_ASG_NAME', event.target.value
+            MC.validate.preventDupname target, id, name, 'ASG'
+
+            if target.parsley 'validate'
+                this.trigger 'SET_ASG_NAME', event.target.value
 
         setASGMin : ( event ) ->
+            min = $( event.currentTarget )
 
-            this.trigger 'SET_ASG_MIN', event.target.value
+            min.parsley 'custom', ( val ) =>
+                if +val < 1
+                    return 'ASG size must be equal or greater than 1'
+                max = @$el.find '#property-asg-max'
+                if +val >= +max.val()
+                    return 'Minimum Size must be <= Maximum Size.'
+
+            if min.parsley 'validateForm'
+                @trigger 'SET_ASG_MIN', min.val()
 
         setASGMax : ( event ) ->
+            max = $( event.currentTarget )
 
-            this.trigger 'SET_ASG_MAX', event.target.value
+            max.parsley 'custom', ( val ) =>
+                if +val < 1
+                    return 'ASG size must be equal or greater than 1'
+                min = @$el.find '#property-asg-min'
+                if +val <= +min.val()
+                    return 'Minimum Size must be <= Maximum Size'
+
+            if max.parsley 'validateForm'
+                @trigger 'SET_ASG_MAX', max.val()
 
         setASGDesireCapacity : ( event ) ->
+            target = $ event.currentTarget
+            min = @$el.find '#property-asg-min'
+            max = @$el.find '#property-asg-max'
 
-            this.trigger 'SET_DESIRE_CAPACITY', event.target.value
+            target.parsley 'custom', ( val ) ->
+                if +val < 1
+                    return 'Desired Capacity must be equal or greater than 1'
+                if +val < +min.val() or +val > max.val()
+                    return 'Desired Capacity must be >= Minimal Size and <= Maximum Size'
+
+            if target.parsley 'validate'
+                @trigger 'SET_DESIRE_CAPACITY', target.val()
 
         setHealthCheckGrace : ( event ) ->
 
@@ -230,6 +271,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                     $selectbox.find(".selected").removeClass "selected"
                     $selectbox.find(".selection").html $selected.addClass("selected").html()
 
+            $("#asg-policy-step-wrapper").toggle( $("#asg-policy-adjust-type").find(".selected").data("id") == "PercentChangeInCapacity" )
+
         addScalingPolicy : ( event ) ->
             if $( event.currentTarget ).hasClass "disabled"
                 return false
@@ -246,7 +289,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( i
                     periods : 2
                     step    : 1
 
-            data.noSNS = this.model.attributes.has_sns_topic
+            data.noSNS = not this.model.attributes.has_sns_topic
 
             modal this.policy_template(data), true
 

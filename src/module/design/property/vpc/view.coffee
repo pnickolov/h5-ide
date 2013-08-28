@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/vpc
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinputbox' ], ( ide_event ) ->
 
     # Helpers
     mapFilterInput = ( selector ) ->
@@ -15,8 +15,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
 
         if result.length == 0 then null else result
 
-    updateAmazonCB = ( evt ) ->
-        rowLength = $( evt.target ).children().length
+    updateAmazonCB = () ->
+        rowLength = $( "#property-domain-server" ).children().length
         if rowLength > 3
             $( '#property-amazon-dns' ).attr( "disabled", true )
         else
@@ -43,6 +43,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
             'change .property-control-group-sub .input' : 'onChangeDhcpOptions'
             'OPTION_CHANGE #property-netbios-type'      : 'onChangeDhcpOptions'
             'REMOVE_ROW #property-dhcp-options'         : 'onChangeDhcpOptions'
+            'ADD_ROW .multi-input'                      : 'processParsley'
 
         render   : () ->
 
@@ -59,15 +60,35 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
 
             $( '.property-details' ).html this.template data
             $( '#property-domain-server' ).on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
+            updateAmazonCB()
+            multiinputbox.update( $("#property-domain-server") )
+
+        processParsley: ( event ) ->
+            $( event.currentTarget )
+                .find( 'input' )
+                .last()
+                .removeClass( 'parsley-validated' )
+                .removeClass( 'parsley-error' )
+                .next( '.parsley-error-list' )
+                .remove()
 
         onChangeName : ( event ) ->
-            this.trigger "CHANGE_NAME", event.target.value
-            null
+            target = $ event.currentTarget
+            name = target.val()
+
+            target.parsley 'custom', ( val ) ->
+                if not MC.validate 'awsName',  val
+                    return 'This value should be a valid VPC name.'
+
+            if target.parsley 'validate'
+                this.trigger "CHANGE_NAME", name
 
         onChangeCidr : ( event ) ->
-            # TODO : Valiate CIDR
-            this.model.setCIDR event.target.value
-            null
+            target = $ event.currentTarget
+            name = target.val()
+
+            if target.parsley 'validate'
+                this.model.setCIDR event.target.value
 
         onChangeTenancy : ( event, newValue ) ->
             $("#desc-dedicated").toggle( newValue == "dedicated" )
@@ -113,12 +134,18 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_even
             $inputbox    = $("#property-domain-server").attr( "data-max-row", allowRows )
             $rows        = $inputbox.children()
             $inputbox.toggleClass "max", $rows.length >= allowRows
+
+            this.onChangeDhcpOptions event
             null
 
         onChangeDhcpOptions : ( event ) ->
 
             if this.notChangingDHCP
                 return
+
+            if not $( event.currentTarget ).parsley( 'validateForm' )
+                return
+
 
             # Gather all the infomation to submit
             data =

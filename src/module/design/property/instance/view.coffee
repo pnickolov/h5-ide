@@ -95,7 +95,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         createtoKPList : ( event, id ) ->
             this.model.set 'add_kp', id
-            notification('info', (id + ' created'), false)
 
         addIPtoList: (event) ->
 

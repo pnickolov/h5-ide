@@ -32,7 +32,7 @@ define [ 'event',
             $( '#loading-bar-wrapper' ).html MC.data.loading_wrapper_html
             #
             @delay = setTimeout () ->
-                console.log '_rollback sdfasfsdfsdfasdfasfasdddddddddddddddddddd'
+                console.log 'setTimeout close loading'
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
                     ide_event.trigger ide_event.SWITCH_MAIN
                     ide_event.trigger ide_event.STACK_DELETE, null, tab_id

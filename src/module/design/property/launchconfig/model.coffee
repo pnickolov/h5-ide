@@ -76,35 +76,10 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			null
 
 		setInstanceType  : () ->
-
 			uid = this.get 'get_uid'
-
 			value = this.get 'instance_type'
-
-			console.log 'setInstanceType = ' + value
-
-			type_ary = value.split '.'
-
-			eni_number = 0
-
-			$.each MC.canvas_data.component, (index, comp) ->
-
-				if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid
-
-					eni_number += 1
-
-			max_eni_num = MC.data.config[MC.canvas_data.component[uid].resource.Placement.AvailabilityZone[0...-1]].instance_type[type_ary[0]][type_ary[1]].eni
-
-			if eni_number > 2 and eni_number > max_eni_num
-
-				this.trigger 'EXCEED_ENI_LIMIT', uid, value, max_eni_num
-
-			else
-
-				MC.canvas_data.component[ uid ].resource.InstanceType = value
-
+			MC.canvas_data.component[ uid ].resource.InstanceType = value
 			null
-			#this.set 'set_host', 'host'
 
 		setEbsOptimized : ( value )->
 
@@ -283,9 +258,33 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			checkbox = {}
 
-			checkbox.ebsOptimized = true if MC.canvas_data.component[ uid ].resource.EbsOptimized == true or MC.canvas_data.component[ uid ].resource.EbsOptimized == 'true'
+			resource = MC.canvas_data.component[ uid ].resource
 
-			checkbox.monitoring = true if MC.canvas_data.component[ uid ].resource.InstanceMonitoring == 'enabled'
+			checkbox.ebsOptimized = "" + resource.EbsOptimized is 'true'
+			checkbox.monitoring   = resource.InstanceMonitoring is 'enabled'
+
+			watches = []
+			asg = null
+			monitorEnabled = true
+			for id, comp of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+					watches.push comp
+				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					if comp.resource.LaunchConfigurationName.indexOf( uid ) != -1
+						asg = comp
+
+			for watch in watches
+				if watch.resource.MetricName.indexOf("StatusCheckFailed") != -1
+					for d in watch.resource.Dimensions
+						if d.value and d.value.indexOf( asg.uid ) != -1
+							monitorEnabled = false
+							break
+
+					if not monitorEnabled
+						break
+
+			checkbox.monitorEnabled = monitorEnabled
+
 
 			#checkbox.base64Encoded = true if MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == true or MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == "true"
 

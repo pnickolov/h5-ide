@@ -26,18 +26,29 @@ define [ 'event',
             console.log 'onClose'
             this.trigger 'CLOSE_POPUP'
 
-            # update if not in overview
-            if MC.data.dashboard_type isnt 'OVERVIEW_TAB'
-                console.log 'update resource'
+            # # update overview
+            # if MC.data.dashboard_type is 'OVERVIEW_TAB'
+            #     console.log 'update overview account attributes'
+            #     ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
+
+            # # update region
+            # else if MC.data.dashboard_type is 'REGION_TAB'
+            #     console.log 'update region resource'
+            #     ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
 
         onDone : ->
             console.log 'onDone'
             modal.close()
             this.trigger 'CLOSE_POPUP'
 
-            # update if not in overview
-            if MC.data.dashboard_type isnt 'OVERVIEW_TAB'
-                console.log 'update resource'
+            # # update if not in overview
+            # if MC.data.dashboard_type is 'OVERVIEW_TAB'
+            #     console.log 'update overview account attributes'
+            #     ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
+
+            # else if MC.data.dashboard_type is 'REGION_TAB'
+            #     console.log 'update region resource'
+            #     ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
 
         onUpdate : ->
             console.log 'onUpdate'
@@ -110,7 +121,7 @@ define [ 'event',
             $('#aws-credential-update-account-id').text me.model.attributes.account_id
 
         # show submit dialog
-        showSubmit : () ->
+        showSubmit : (flag) ->
             console.log 'show submiting dialog'
 
             me = this
@@ -118,6 +129,9 @@ define [ 'event',
             $('#AWSCredential-form').hide()
             $('#AWSCredentials-submiting').show()
             $('#AWSCredentials-update').hide()
+
+            if flag is 'LOAD_RESOURCE'
+                $('#AWSCredentials-loading-text').text('Loading resources...')
 
     }
 

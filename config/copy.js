@@ -16,11 +16,17 @@ module.exports = {
 			'<%= src %>/<%= vender %>/qunit/qunit.js'                  : '<%= components %>/qunit/qunit/qunit.js',
 			'<%= src %>/<%= vender %>/qunit/qunit.css'                 : '<%= components %>/qunit/qunit/qunit.css',
 			'<%= src %>/<%= vender %>/parsleyjs/parsley.js'            : '<%= components %>/parsleyjs/parsley.js',
-			'<%= src %>/<%= vender %>/zeroclipboard/ZeroClipboard.js'  : '<%= components %>/zeroclipboard/ZeroClipboard.js',
+			'<%= src %>/<%= vender %>/zeroclipboard/org_ZeroClipboard.js': '<%= components %>/zeroclipboard/ZeroClipboard.js',
 			'<%= src %>/<%= vender %>/zeroclipboard/ZeroClipboard.swf' : '<%= components %>/zeroclipboard/ZeroClipboard.swf',
 			'<%= src %>/<%= vender %>/sprintf/sprintf.js'              : '<%= components %>/sprintf/src/sprintf.js',
 			'<%= src %>/<%= vender %>/string-format/string-format.js'  : '<%= components %>/string-format/string-format.js',
 			'<%= src %>/<%= vender %>/jqpagination/jqpagination.js'    : '<%= components %>/jqpagination/js/jquery.jqpagination.js'
+		}
+	},
+
+	dev_prod_switch_task : {
+		files: {
+			'node_modules/grunt-dev-prod-switch/tasks/dev_prod_switch.js' : 'util/include/dev_prod_switch/dev_prod_switch.js',
 		}
 	},
 

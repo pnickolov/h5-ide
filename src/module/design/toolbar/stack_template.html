@@ -1,26 +1,24 @@
+<section class="toolbar-btn-group toolbar-btn-primary">
+	<a href="#" class="btn-toolbar btn-blue icon-play tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_flags.name}} }' data-modal-dismiss="true"><span>Run Stack</span></a>
+</section>
+
 <section class="toolbar-btn-group">
-	<a href="#" class="btn-toolbar icon-play tooltip modal" id="toolbar-run" data-tooltip="Run this stack into an app" data-modal-template="modalRunStack" data-modal-data='{"title":"Run Stack", "name":"{{item_flags.name}}"}' data-modal-dismiss="true"></a>
+	<a href="#" class="btn-toolbar tooltip icon-save" data-tooltip="Save Stack"></a>
 
-	<a href="#" class="btn-toolbar tooltip icon-save" data-tooltip="Save stack"></a>
+	{{#if item_flags.is_delete}}
+	<a href="#" class="btn-toolbar modal icon-delete tooltip" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"  data-tooltip="Delete Stack"></a>
+	{{else}}
+	<a href="#" class="btn-toolbar disabled modal icon-delete tooltip" id="toolbar-delete" data-tooltip="This stack is not saved yet."></a>
+	{{/if}}
+</section>
 
-	<div class="selectbox btn-toolbar">
-		<a class="selection tooltip icon-stack" data-tooltip="More Actions..."></a>
-		<ul class="dropdown" tabindex="-1">
-			{{#if item_flags.is_duplicate}}
-			<li id="toolbar-duplicate"><i class="icon-duplicate"></i>Duplicate Stack</li>
-			{{else}}
-			<li class="disabled"><i class="icon-duplicate"></i>Duplicate Stack</li>
-			{{/if}}
-
-			{{#if item_flags.is_delete}}
-			<li class="modal" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"Delete Stack", "body":"Do you confirm to delete stack {{item_flags.name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"><i class="icon-toolbar-delete"></i>Delete Stack</li>
-			{{else}}
-			<li class="disabled" id="toolbar-delete"><i class="icon-toolbar-delete"></i>Delete Stack</li>
-			{{/if}}
-
-			<li id="toolbar-new" data-tooltip="Create new stack"><i class="icon-new-stack"></i>New Stack</li>
-		</ul>
-	</div>
+<section class="toolbar-btn-group">
+	{{#if item_flags.is_duplicate}}
+	<a href="#" class="modal btn-toolbar tooltip icon-duplicate" data-tooltip="Duplicate Stack" id="toolbar-duplicate" data-modal-template="modalApp" data-modal-data='{"title":"Rename Stack", "body":"Stack Name:", "input":"{{item_flags.name}}", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"></a>
+	{{else}}
+	<a href="#" class="btn-toolbar tooltip icon-duplicate disabled" data-tooltip="Duplicate Stack"></a>
+	{{/if}}
+	<a hre="#" class="btn-toolbar icon-new-stack tooltip" id="toolbar-new" data-tooltip="Create New Stack"></a>
 </section>
 
 <section class="toolbar-btn-group hide">
@@ -29,8 +27,8 @@
 </section>
 
 <section class="toolbar-btn-group">
-	<a href="#" class="btn-toolbar tooltip icon-zoom-in {{#if item_flags.is_zoomin}}{{else}}disabled{{/if}}" data-tooltip="Zoom In"></a>
-	<a href="#" class="btn-toolbar tooltip icon-zoom-out {{#if item_flags.is_zoomout}}{{else}}disabled{{/if}}" data-tooltip="Zoom Out"></a>
+	<a href="#" class="btn-toolbar tooltip icon-zoom-in {{#if item_flags.is_zoomin}}{{else}}disabled{{/if}}" data-tooltip="{{#if item_flags.is_zoomin}}Zoom In{{else}}{{/if}}"></a>
+	<a href="#" class="btn-toolbar tooltip icon-zoom-out {{#if item_flags.is_zoomout}}{{else}}disabled{{/if}}" data-tooltip="{{#if item_flags.is_zoomout}}Zoom Out{{else}}{{/if}}"></a>
 </section>
 
 <section class="toolbar-btn-group">
@@ -40,12 +38,26 @@
 			<li id="toolbar-export-png"><i class="icon-export-png"></i>Export as PNG</li>
 			<li class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
 				<i class="icon-export-json"></i>Export as Json</li>
-			<!-- for debug -->
+			<!-- env:dev -->
+			<li id="toolbar-jsoncopy" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
 			<li id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
-			<li id="toolbar-jsoncopy"  data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
 			<li id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</li>
+			<!-- env:dev:end -->
 		</ul>
 	</div>
 </section>
 
-
+<!-- line style -->
+<!-- env:dev -->
+<section class="toolbar-btn-group">
+	<div class="selectbox btn-toolbar">
+		<a class="selection tooltip icon-line-style" data-tooltip="Line Style..." id="toolbar-line-style"></a>
+		<ul class="dropdown" tabindex="-1">
+			<li id="toolbar-straight" >Straight</li>
+			<li id="toolbar-elbow">Elbow</li>
+			<li id="toolbar-bezier-q" >Quadratic Belzier curve</li>
+			<li id="toolbar-bezier-qt">Smooth quadratic Belzier curveto</li>
+		</ul>
+	</div>
+</section>
+<!-- env:dev:end -->

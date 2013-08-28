@@ -9,7 +9,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
         defaults :
             'account_id'        : null
             'is_authenticated'  : null
-            'is_region'         : null  # whether on the region tab
 
         initialize : ->
             me = this
@@ -49,7 +48,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
                             $.cookie 'has_cred', false,    { expires: 1 }
 
                         me.set 'account_id', account_id
-                        me.trigger 'UPDATE_AWS_CREDENTIAL'
+
+                        me.trigger 'REFRESH_AWS_CREDENTIAL'
 
                 else
 
@@ -57,7 +57,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
                     $.cookie 'has_cred', false,    { expires: 1 }
 
                     me.set 'account_id', account_id
-                    me.trigger 'UPDATE_AWS_CREDENTIAL'
+
+                    me.trigger 'REFRESH_AWS_CREDENTIAL'
 
             null
 

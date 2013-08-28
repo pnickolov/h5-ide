@@ -1,6 +1,6 @@
 MC.canvas = MC.canvas || {};
 
-(function () {
+define([ 'i18n!/nls/lang.js' ], function( lang ){
 
 var constant_data = {
 
@@ -25,6 +25,40 @@ var constant_data = {
 		'AWS.AutoScaling.LaunchConfiguration': [10, 10]
 	},
 
+	COMPONENT_TYPE:
+	{
+		'AWS.ELB': 'node',
+		'AWS.EC2.Instance': 'node',
+		'AWS.VPC.NetworkInterface': 'node',
+		'AWS.VPC.CustomerGateway': 'node',
+		'AWS.VPC.RouteTable': 'node',
+		'AWS.VPC.InternetGateway': 'node',
+		'AWS.VPC.VPNGateway': 'node',
+
+		'AWS.EC2.AvailabilityZone': 'group',
+		'AWS.VPC.Subnet': 'group',
+		'AWS.VPC.VPC': 'group',
+		'AWS.EC2.SGPlaceholder' : 'group',
+		'AWS.AutoScaling.Group' : 'group',
+
+		'node': [
+			'AWS.ELB',
+			'AWS.EC2.Instance',
+			'AWS.VPC.NetworkInterface',
+			'AWS.VPC.CustomerGateway',
+			'AWS.VPC.RouteTable',
+			'AWS.VPC.InternetGateway',
+			'AWS.VPC.VPNGateway'
+		],
+		'group': [
+			'AWS.EC2.AvailabilityZone',
+			'AWS.VPC.Subnet',
+			'AWS.VPC.VPC',
+			'AWS.EC2.SGPlaceholder',
+			'AWS.AutoScaling.Group'
+		]
+	},
+
 	GROUP_DEFAULT_SIZE:
 	{
 		'AWS.VPC.VPC': [60, 60], //[width, height]
@@ -32,6 +66,31 @@ var constant_data = {
 		'AWS.VPC.Subnet': [18, 18],
 		'AWS.AutoScaling.Group' : [14, 14]
 	},
+
+	SG_MAX_NUM: 5,
+
+	SG_COLORS: [
+		'0099ff',
+		'00cc00',
+		'ffff00',
+		'ff9900',
+		'ff99ff',
+		'00cccc',
+		'ffcc00',
+		'9999ff',
+		'0000ff',
+		'336600',
+		'ffcc99',
+		'99cc99',
+		'ffff99',
+		'ff00ff',
+		'ff3300',
+		'660066',
+		'666600',
+		'000066',
+		'003300',
+		'663300'
+	],
 
 	GROUP_PADDING: 2,
 
@@ -660,6 +719,7 @@ var constant_data = {
 		kp_list: [],
 		original_json: '',
 		SCALE_RATIO: 1,
+		LINE_STYLE: 0, //0fold line, 1 straight, 2 bezier q, 3 bezier qt
 		selected_node: []
 		//resource_list: [] //aws resource list by Describe* return
 	},
@@ -760,13 +820,15 @@ var constant_data = {
 			"architecture": "", //i386|x86_64
 			"rootDeviceType": "", //ebs|instance-store
 			"groupUId": "",
-			"connection": []
+			"connection": [],
+			"instanceList": []
 		},
 		data:
 		{
 			"uid": "",
 			"type": "AWS.EC2.Instance",
 			"name": "",
+			"number": 1,
 			"state": "",
 			"platform": "32",
 			"software":
@@ -799,7 +861,8 @@ var constant_data = {
 				"VpcId": "",
 				"InstanceType": "",
 				"Monitoring": "disabled",
-				"EbsOptimized": "false"
+				"EbsOptimized": "false",
+				"NetworkInterface":[]
 			}
 		}
 	},
@@ -851,7 +914,7 @@ var constant_data = {
 				"VpcId": "", //eg: @3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId
 				"GroupName": "DefaultSG",
 				"OwnerId": "",
-				"GroupDescription": "vpc default security group"
+				"GroupDescription": lang.ide.PROP_TEXT_DEFAULT_SG_DESC
 			}
 
 		}
@@ -887,13 +950,15 @@ var constant_data = {
 		{
 			"type": "AWS.EC2.EBS.Volume",
 			"coordinate": [0, 0],
-			"connection": []
+			"connection": [],
+			"volumeList": []
 		},
 		data:
 		{
 			"uid": "",
 			"type": "AWS.EC2.EBS.Volume",
 			"name": "/dev/sdf",
+			'number': 1,
 			"resource":
 			{
 				"VolumeId": "",
@@ -1008,7 +1073,7 @@ var constant_data = {
 		{
 			"uid": "",
 			"type": "AWS.VPC.VPC",
-			"name": "vpc1",
+			"name": "vpc",
 			"resource":
 			{
 				"EnableDnsHostnames": "false",
@@ -1177,13 +1242,15 @@ var constant_data = {
 			"type": "AWS.VPC.NetworkInterface",
 			"coordinate": [0, 0],
 			"groupUId": "",
-			"connection": []
+			"connection": [],
+			"eniList": []
 		},
 		data:
 		{
 			"uid": "",
 			"type": "AWS.VPC.NetworkInterface",
 			"name": "eni1",
+			"number": 1,
 			"resource":
 			{
 				"PrivateIpAddressSet": [
@@ -1688,4 +1755,4 @@ $.each(constant_data, function (key, value)
 	MC.canvas[ key ] = value;
 });
 
-})();
+});

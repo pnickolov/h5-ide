@@ -1,4 +1,4 @@
-define [ 'MC', 'constant' ], ( MC, constant ) ->
+define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 	#private
 	getAllRefComp = (sgUID) ->
@@ -162,10 +162,25 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		component_data.name = sg_name
 
 		component_data.resource.GroupName = sg_name
+		vpcUID = MC.aws.vpc.getVPCUID()
+		if vpcUID
+			component_data.resource.VpcId = '@' + vpcUID + '.resource.VpcId'
+		component_data.resource.GroupDescription = lang.ide.PROP_TEXT_CUSTOM_SG_DESC
+
+		component_data.resource.IpPermissions = []
+
+		component_data.resource.IpPermissionsEgress.push {
+			"IpProtocol": "-1",
+			"IpRanges": "0.0.0.0/0",
+			"FromPort": "0",
+			"ToPort": "65535",
+			"Groups": []
+			}
 
 		tmp = {}
 		tmp.uid = uid
 		tmp.name = sg_name
+		tmp.color = getNextSGColor()
 
 		MC.canvas_property.sg_list.push tmp
 
@@ -177,8 +192,92 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		return uid
 
+
+
+	# initSGColor = () ->
+	# #init color property in MC.canvas_property.sg_list
+
+	# 	if MC.canvas_property and MC.canvas_property.sg_list
+	# 		$.each MC.canvas_property.sg_list, (key, value) ->
+
+	# 			if key < MC.canvas.SG_COLORS.length
+	# 				#use color table
+	# 				MC.canvas_property.sg_list[key].color = MC.canvas.SG_COLORS[key]
+	# 			else #random color
+	# 				rand = Math.floor(Math.random() * 0xFFFFFF).toString(16)
+	# 				while rand.length < 6
+	# 				  rand = "0" + rand
+	# 				MC.canvas_property.sg_list[key].color = rand
+	# 	else
+
+	# 		console.error '[initSGColor]Init SG color failed'
+
+
+	getSGColor = (uid) ->
+	#get color from MC.canvas_property.sg_list by sg uid
+		color = null
+
+		if MC.canvas_property and MC.canvas_property.sg_list
+			#use color table
+			$.each MC.canvas_property.sg_list, ( i, value ) ->
+
+				if value.color and value.uid == uid
+					color = value.color
+					false
+
+		if !color
+			#random color
+			color = Math.floor(Math.random() * 0xFFFFFF).toString(16)
+			while color.length < 6
+			  color = '0' + color
+
+		'#' + color
+
+	getNextSGColor = () ->
+	#for createNewSG()
+	#get next availability color from MC.canvas.SG_COLORS
+		next_color = null
+
+		if MC.canvas_property and MC.canvas_property.sg_list
+			#use color table
+
+			$.each MC.canvas.SG_COLORS, ( i, color ) ->
+
+				found = false
+
+				$.each MC.canvas_property.sg_list, ( j, sg ) ->
+
+					if sg.color == color
+
+						found = true
+
+						false
+
+				if !found
+
+					next_color = color
+
+					false
+
+		if !next_color
+			#random next_color
+			next_color = Math.floor(Math.random() * 0xFFFFFF).toString(16)
+			while next_color.length < 6
+			  next_color = '0' + next_color
+
+		#no '#'
+		next_color
+
+	updateSGColorLabel = ( uid ) ->
+
+		#update sg color label
+		MC.canvas.updateSG uid
+
+
 	#public
 	getAllRefComp : getAllRefComp
 	getAllRule : getAllRule
 	getSgRuleDetail : getSgRuleDetail
 	createNewSG : createNewSG
+	getSGColor  : getSGColor
+	updateSGColorLabel : updateSGColorLabel

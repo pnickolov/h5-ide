@@ -117,8 +117,9 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 #call getStackInfo
                 model.once 'GET_STACK_COMPLETE', ( result ) ->
                     console.log 'GET_STACK_COMPLETE'
+                    console.log result
                     #push event
-                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result
+                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
                     #
                     ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
                 #
@@ -132,7 +133,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                     console.log 'GET_APP_COMPLETE'
                     console.log result
                     #push event
-                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result
+                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result, result.resolved_data[0].platform
                     #
                     ide_event.trigger ide_event.UPDATE_TAB_ICON, result.resolved_data[0].state, tab_id
                 #
@@ -256,7 +257,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
             #listen
             ide_event.onLongListen ide_event.RETURN_OVERVIEW_TAB, () ->
                 console.log 'RETURN_OVERVIEW_TAB '
-                view.changeDashboardTabname 'Global Overview'
+                view.changeDashboardTabname 'Global'
                 null
 
             #listen

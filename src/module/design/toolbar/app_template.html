@@ -7,7 +7,7 @@
   <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play disabled" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app", "body":"Do you confirm to start app {{item_flags.name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="Start this app's resources."></a>
   {{/if}}
 
-  <a href="#" class="btn-toolbar tooltip {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to terminate app {{item_flags.name}}", "body":"Do you confirm to terminate app?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="Permanently terminate this app's resources"></a> <!--"'-->
+  <a href="#" class="btn-toolbar tooltip icon-terminate {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to terminate app {{item_flags.name}}", "body":"Do you confirm to terminate app?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="Permanently terminate this app's resources"></a> <!--"'-->
 </section>
 
 <section class="toolbar-btn-group">
@@ -22,10 +22,11 @@
       <li id="toolbar-export-png"><i class="icon-export-png"></i>Export as PNG</li>
       <li class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
         <i class="icon-export-json"></i>Export as Json</li>
-      <!-- for debug -->
+      <!-- env:dev -->
+      <li id="toolbar-jsoncopy" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
       <li id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
-      <li id="toolbar-jsoncopy"  data-clipboard-text="" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
       <li id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</li>
+      <!-- env:dev:end -->
     </ul>
   </div>
 </section>

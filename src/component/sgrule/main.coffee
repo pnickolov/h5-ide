@@ -20,6 +20,14 @@ define [ 'event', './view', './model' ], ( ide_event, View, Model ) ->
 
             model.checkRuleExisting()
 
+            line = model.getCurrentLineId()
+
+            if line
+                MC.canvas.select(line)
+
+            else
+                $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
+
             unLoadModule view, model
 
         view.on 'ADD_RULE', ( rule_data ) ->
@@ -37,6 +45,8 @@ define [ 'event', './view', './model' ], ( ide_event, View, Model ) ->
             this.model.deleteSGLine()
 
             ide_event.trigger ide_event.REDRAW_SG_LINE
+
+            $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
 
         view.on 'DELETE_RULE', ( rule_id ) ->
 

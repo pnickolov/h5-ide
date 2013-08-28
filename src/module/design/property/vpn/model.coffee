@@ -8,6 +8,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
         defaults :
             'vpn_detail'    : null
+            'cgw_uid'       : null
 
         initialize : ->
             #listen
@@ -45,6 +46,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                         null
 
             me.set 'vpn_detail', vpn_detail
+            me.set 'cgw_uid', cgw_uid
 
         delIP : (ip) ->
             me = this

@@ -32,7 +32,7 @@ var MC = MC || {};
 		// CIDR only
 		cidr: /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))$/,
 		// AWS CIDR
-		awsCidr: /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([1][6789]|[2]\d|3[0-2]))$/,
+		awsCidr: /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([1][6-9]|[2][0-8]))$/,
 		// IPv4 and CIDR
 		ipaddress: /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))?$/
 	};
@@ -79,9 +79,12 @@ var MC = MC || {};
 	// helper
 
 	MC.validate.preventDupname = function( target, id, name, type ) {
-		target.parsley('custom', function() {
-            if ( !MC.aws.aws.checkIsRepeatName( id, name ) ) {
-                return type + ' name " ' + name + ' " is already in using. Please use another one.'
+		target.parsley('custom', function( val ) {
+			if ( val && !MC.validate( 'awsName',  val ) ) {
+				return 'This value should be a valid ' + type + ' name.';
+			}
+            if ( !MC.aws.aws.checkIsRepeatName( id, val ) ) {
+                return type + ' name " ' + val + ' " is already in using. Please use another one.'
             }
 		})
 	};

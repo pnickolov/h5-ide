@@ -50,12 +50,14 @@ define [ 'jquery',
 			view.render template
 
 			#show stack property
-			ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type ) ->
-				console.log 'property:RELOAD_RESOURCE, type = ' + type
+			ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type ) ->
+				console.log 'property:OPEN_DESIGN, type = ' + type
 				#check re-render
 				view.reRender template
 				#
 				tab_type = type
+				#
+				if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
 				#
 				stack_main.loadModule stack_main, type
 
@@ -81,6 +83,9 @@ define [ 'jquery',
 				if type == 'component_asg_volume'
 					#show asg volume property
 					volume_main.loadModule uid, volume_main, tab_type
+
+				else if type == 'component_asg_instance'
+					instance_main.loadModule uid, instance_expended_id, instance_main, tab_type
 
 				else if type == 'component'
 
@@ -154,15 +159,22 @@ define [ 'jquery',
 								#select line between instance and routetable
 								for value, idx in line_option
 
-									if value.port.indexOf('rtb-tgt-left') >=0 or value.port.indexOf('rtb-tgt-right') >=0
-										#rtb_main.loadModule value.uid, 'component', rtb_main
-										rtb_main.loadModule value.uid, rtb_main, tab_type
+									if value.port.indexOf('rtb-tgt') >= 0
+										# rtb_main.loadModule value.uid, 'component', rtb_main
+										# rtb_main.loadModule value.uid, rtb_main, tab_type
+										# Delegate to RT resource
+										MC.canvas.select value.uid
 										break
 
 									else if value.port.indexOf('subnet') >= 0
 										rtb_main.loadModule uid, rtb_main
 										break
 
+							else if key.indexOf( "eni-attach" ) >= 0
+								eni_main.loadModule uid, eni_main, tab_type
+
+							else if key.indexOf( "subnet-assoc-in" ) >= 0
+								subnet_main.loadModule uid, eni_main, tab_type
 
 							else if key.indexOf('sg') >=0
 
@@ -181,7 +193,8 @@ define [ 'jquery',
 										cgw_uid = line_option[1].uid
 									else
 										cgw_uid = line_option[0].uid
-									cgw_main.loadModule cgw_uid, cgw_main, tab_type
+									# cgw_main.loadModule cgw_uid, cgw_main, tab_type
+									MC.canvas.select cgw_uid
 								else
 									vpn_main.loadModule line_option, 'line', vpn_main
 
@@ -200,6 +213,12 @@ define [ 'jquery',
 			ide_event.onLongListen ide_event.OPEN_ACL, ( acl_uid ) ->
 				console.log 'OPEN_ACL'
 				acl_main.loadModule( acl_uid, tab_type )
+				null
+
+			#listen SHOW_PROPERTY_PANEL
+			ide_event.onLongListen ide_event.SHOW_PROPERTY_PANEL, ( ) ->
+				$( '#canvas-panel' ).removeClass 'right-hiden'
+				$( '#property-panel' ).removeClass 'hiden'
 				null
 
 			ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->

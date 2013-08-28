@@ -50,29 +50,50 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                 console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
+                region_classic_vpc_result = []
+
                 if !result.is_error
 
                     regionAttrSet = result.resolved_data
 
-                    region_classic_vpc_result = []
-
                     _.map constant.REGION_KEYS, ( value ) ->
+
 
                         if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
 
-                            cur_attr = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
-                            if  cur_attr and $.type(cur_attr) == "array" and cur_attr.length == 2
-                                region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
-                            else
-                                region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_LABEL[ value ], 'region': value }
+                            #resolve support-platform
+                            support_platform = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
+                            if support_platform and $.type(support_platform) == "array"
+                                if support_platform.length == 2
+                                    MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue + ',' + support_platform[1].attributeValue
+                                    region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_SHORT_LABEL[ value ], 'region': value }
+                                else if support_platform.length == 1
+                                    MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue
+                                    region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_SHORT_LABEL[ value ], 'region': value }
+
+                            #resolve default-vpc
+                            default_vpc = regionAttrSet[ value ].accountAttributeSet.item[1].attributeValueSet.item
+                            if  default_vpc and $.type(default_vpc) == "array" and default_vpc.length == 1
+                                MC.data.account_attribute[ value ].default_vpc = default_vpc[0].attributeValue
+
                             null
 
                     me.set 'region_classic_list', region_classic_vpc_result
+
+                    # set cookie
+                    if $.cookie('has_cred') isnt 'true'
+                        $.cookie 'has_cred', true,    { expires: 1 }
+                        ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+
                     null
 
                 else
+                    # set cookie
+                    if $.cookie('has_cred') isnt 'false'
+                        $.cookie 'has_cred', false,    { expires: 1 }
+                        ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
 
-                    $.cookie 'has_cred', false,    { expires: 1 }
+                    me.set 'region_classic_list', region_classic_vpc_result
 
             null
 
@@ -208,9 +229,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             me = this
 
-            if $.cookie( 'has_cred' ) is 'true'   # do it when has credential
-                #get service(model)
-                vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
+            #get service(model)
+            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms","default-vpc"]
 
             null
 
@@ -270,7 +290,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                 interval = value.time_update
 
             if interval
-                return { 'id' : value.id, 'region' : value.region, 'region_label' : constant.REGION_LABEL[value.region], 'name' : value.name, 'interval_date': MC.intervalDate(interval), 'interval' : interval }
+                return { 'id' : value.id, 'region' : value.region, 'region_label' : constant.REGION_SHORT_LABEL[value.region], 'name' : value.name, 'interval_date': MC.intervalDate(interval), 'interval' : interval }
 
     }
 

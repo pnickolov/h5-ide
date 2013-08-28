@@ -24,7 +24,7 @@ define [ 'MC', 'event', 'handlebars'
 			catch err
 				result = null
 
-		if result and $.type result == "array" and result.length == 6
+		if result and $.type result == "array" and result.length == 7
 			{
 				userid      : result[0] ,
 				usercode    : result[1] ,
@@ -32,6 +32,7 @@ define [ 'MC', 'event', 'handlebars'
 				region_name : result[3] ,
 				email       : result[4] ,
 				has_cred    : result[5] ,
+				account_id	: result[6] ,
 			}
 		else
 			null
@@ -56,6 +57,7 @@ define [ 'MC', 'event', 'handlebars'
 			$.cookie 'email',       result.email,       { expires: 1 }
 			$.cookie 'has_cred',    result.has_cred,    { expires: 1 }
 			$.cookie 'username',    MC.base64Decode(result.usercode), { expires: 1 }
+			$.cookie 'account_id', 	result.account_id,	{ expires: 1 }
 
 		else
 
@@ -100,6 +102,11 @@ define [ 'MC', 'event', 'handlebars'
 
 		#temp
 		MC.data.IDEView = view
+
+
+		MC.data.account_attribute = {}
+		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'' } for r in constant.REGION_KEYS
+
 
 		#############################
 		#  WebSocket
@@ -200,7 +207,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'DESIGN_COMPLETE'
 			process.loadModule()
 			#
-			ide_event.trigger ide_event.SWITCH_MAIN
+			#ide_event.trigger ide_event.SWITCH_MAIN
 
 		#listen RESOURCE_COMPLETE
 		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->

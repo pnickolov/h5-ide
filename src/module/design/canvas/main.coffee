@@ -7,33 +7,37 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
     #private
     loadModule = () ->
 
-        #load remote module1.js
-        require [ './module/design/canvas/view', './module/design/canvas/model', './component/sgrule/main' ], ( View, model, sgrule_main ) ->
+        #
+        require [ './module/design/canvas/view',
+                  './module/design/canvas/model',
+                  './component/sgrule/main',
+                  'canvas_layout'
+        ], ( View, model, sgrule_main, canvas_layout ) ->
 
             #view
             view       = new View()
             view.render template
 
-            #listen RELOAD_RESOURCE
-            ide_event.onLongListen ide_event.RELOAD_RESOURCE, ( region_name, type, current_platform, tab_name, tab_id ) ->
-                console.log 'canvas:RELOAD_RESOURCE, region_name = ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform + ', tab_name = ' + tab_name + ', tab_id = ' + tab_id
+            #listen OPEN_DESIGN
+            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
+                console.log 'canvas:OPEN_DESIGN, region_name = ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform + ', tab_name = ' + tab_name + ', tab_id = ' + tab_id
                 #check re-render
                 view.reRender template
-                #temp
+                #
                 if type is 'NEW_STACK'
-                    require [ 'canvas_layout' ], ( canvas_layout ) -> MC.canvas.layout.create {
-                                id       : tab_id
-                                name     : tab_name,
-                                region   : region_name,
-                                platform : current_platform
-                            }
+                    MC.canvas.layout.create {
+                        id       : tab_id
+                        name     : tab_name,
+                        region   : region_name,
+                        platform : current_platform
+                    }
                 else if type is 'OPEN_STACK' or type is 'OPEN_APP'
-                    require [ 'canvas_layout' ], ( canvas_layout ) ->
-                        MC.canvas.layout.init()
-                        model.initLine()
-                        model.reDrawSgLine()
+                    MC.canvas.layout.init()
+                    model.initLine()
+                    model.reDrawSgLine()
+                #
+                #ide_event.trigger ide_event.OPEN_TOOLBAR, tab_id, type
                 null
-
 
             ide_event.onLongListen ide_event.CREATE_LINE_TO_CANVAS, ( from_node, from_target_port, to_node, to_target_port, line_option ) ->
                 MC.canvas.connect $("#" + from_node), from_target_port, $("#" + to_node), to_target_port, line_option
@@ -91,7 +95,8 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 model.showOverlapNotification()
                 null
 
-
+            view.on 'CANVAS_ASG_SELECTED', ( event, uid ) ->
+                ide_event.trigger ide_event.OPEN_PROPERTY, 'component_asg_instance', uid
 
             model.on 'SHOW_SG_LIST', ( line_id ) ->
                 sgrule_main.loadModule line_id, 'delete'

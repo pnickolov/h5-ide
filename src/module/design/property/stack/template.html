@@ -74,15 +74,20 @@
 				{{#each cost_list}}
 				<tr>
 					<td>{{resource}}</td>
+                    {{#if size}}
 					<td>{{size}}</td>
+                    {{else}}
+                    <td>{{type}}</td>
+                    {{/if}}
 					<td>{{fee}}</td>
 				</tr>
 				{{/each}}
 			</tbody>
 
 		</table>
+		<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
 	</div>
-	<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+
 </article>
 
 

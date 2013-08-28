@@ -15,12 +15,6 @@ define [ 'event',
         rulePopupTpl : Handlebars.compile $('#property-acl-rule-popup-tmpl').html()
 
         initialize : ->
-            #handlebars equal logic
-            Handlebars.registerHelper 'ifCond', (v1, v2, options) ->
-                if v1 is v2
-                    return options.fn this
-                options.inverse this
-
             $('#sg-protocol-udp').hide()
             $('#sg-protocol-icmp').hide()
             $('#sg-protocol-custom').hide()
@@ -76,7 +70,7 @@ define [ 'event',
 
             selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">Custom</div></li>')
 
-            scrollbar.init()
+            # scrollbar.init()
             return false
 
         saveRule : () ->

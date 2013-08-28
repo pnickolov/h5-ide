@@ -21,12 +21,14 @@
 .icon-send,
 .icon-add,
 .icon-duplicate,
-.icon-toolbar-delete,
+.icon-delete,
 .icon-new-stack,
 .icon-btn-details,
 .icon-btn-back,
 .icon-export-png,
-.icon-export-json {
+.icon-export-json,
+.icon-caret-down,
+.icon-terminate {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -44,9 +46,11 @@
 .icon-add:before       { content : "\F119"; }
 .icon-duplicate:before { content : "\F11B"; }
 .icon-duplicate:before { content : "\F11B"; }
-.icon-toolbar-delete:before { content : "\F11C"; }
+.icon-delete:before { content : "\F11C"; }
 .icon-new-stack:before   { content : "\F11A"; }
 .icon-btn-details:before { content : "\F11F"; }
 .icon-btn-back:before    { content : "\F120"; }
 .icon-export-png:before  { content : "\F11D"; }
 .icon-export-json:before { content : "\F11E"; }
+.icon-caret-down:before { content : "\F121"; }
+.icon-terminate:before { content : "\F123"; }

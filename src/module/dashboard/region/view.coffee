@@ -92,7 +92,7 @@ define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.n
 
         returnRefreshClick : ( target ) ->
             console.log 'returnRefreshClick'
-            this.trigger 'REFRESH_REGION_BTN', null
+            ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
 
         render : ( template ) ->
 
@@ -115,30 +115,54 @@ define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.n
             target = $( this.el )
             id = event.currentTarget.id
 
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'dashboard region run app'
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
-                event.data.target.trigger 'RUN_APP_CLICK', id
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'dashboard region run app'
+                    modal.close()
+                    event.data.target.trigger 'RUN_APP_CLICK', id
+
             true
 
         stopAppClick : ( event ) ->
             target = $( this.el )
             id = event.currentTarget.id
 
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'dashboard region stop app'
-                event.data.target.trigger 'STOP_APP_CLICK', id
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'dashboard region stop app'
+                    event.data.target.trigger 'STOP_APP_CLICK', id
+                    modal.close()
+
             true
 
         terminateAppClick : ( event ) ->
             target = $( this.el )
             id = event.currentTarget.id
 
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'dashboard region terminal app'
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
                 modal.close()
-                event.data.target.trigger 'TERMINATE_APP_CLICK', id
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'dashboard region terminal app'
+                    modal.close()
+                    event.data.target.trigger 'TERMINATE_APP_CLICK', id
+
             true
 
         #stack
@@ -148,14 +172,18 @@ define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.n
             id = event.currentTarget.id
             name = event.currentTarget.name
 
+            # set default name
+            new_name = MC.aws.aws.getDuplicateName(name)
+            $('#modal-input-value').val(new_name)
+
             $('#btn-confirm').on 'click', { target : this }, (event) ->
                 console.log 'dashboard region duplicate stack'
                 new_name = $('#modal-input-value').val()
 
                 #check duplicate stack name
-                if not name or not new_name
+                if not new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
-                else if name.indexOf(' ') >= 0 or new_name.indexOf(' ') >= 0
+                else if new_name.indexOf(' ') >= 0
                     notification 'warning', 'stack name contains white space.'
                 else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME

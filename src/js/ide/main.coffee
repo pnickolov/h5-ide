@@ -4,7 +4,9 @@
 
 require [ 'domReady', 'router' ], ( domReady, router ) ->
 
-	### ##json_view ###
+	### env:dev ###
+	require [ 'test/json_view/json_view' ]
+	### env:dev:end ###
 
 	domReady () ->
 		router.initialize()

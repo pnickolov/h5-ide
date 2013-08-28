@@ -79,7 +79,7 @@ define [ 'MC' ], ( MC ) ->
 		if ipCidr1Suffix > ipCidr2Suffix
 			minIpCidrSuffix = ipCidr2Suffix
 
-		if ipCidr1BinStr.slice(0, minIpCidrSuffix) is ipCidr2BinStr.slice(0, minIpCidrSuffix)
+		if ipCidr1BinStr.slice(0, minIpCidrSuffix) is ipCidr2BinStr.slice(0, minIpCidrSuffix) and minIpCidrSuffix isnt 0
 			return true
 		else
 			return false
@@ -232,6 +232,45 @@ define [ 'MC' ], ( MC ) ->
 
 		null
 
+	isCanDeleteSubnetToELBConnection = (elbUID, subnetUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		instanceRefAry = elbComp.resource.Instances
+		subnetRefAry = elbComp.resource.Subnets
+
+		isCanDelete = true
+
+		subnetAry = []
+		_.each MC.canvas_data.component, (comp) ->
+			if comp.type is 'AWS.VPC.Subnet'
+				subnetAry.push(comp)
+
+		azAry = []
+		_.each subnetRefAry, (subnetRef) ->
+			subnetUID = subnetRef.split('.')[0].slice(1)
+			subnetComp = MC.canvas_data.component[subnetUID]
+			subnetAZ = subnetComp.resource.AvailabilityZone
+			azAry.push(subnetAZ)
+			null
+
+		azSubnetNumMap = {}
+		_.each azAry, (azName) ->
+			azSubnetNumMap[azName] = 0
+			_.each subnetAry, (subnetComp) ->
+				subnetAZ = subnetComp.resource.AvailabilityZone
+				if subnetAZ is azName
+					azSubnetNumMap[azName]++
+				null
+			null
+
+		currentAZ = MC.canvas_data.component[subnetUID].resource.AvailabilityZone
+		_.each azSubnetNumMap, (subnetNum, azName) ->
+			if subnetNum is 1 and azName is currentAZ
+				isCanDelete = false
+			null
+
+		return isCanDelete
+
 	#public
 	genCIDRPrefixSuffix : genCIDRPrefixSuffix
 	isSubnetConflict : isSubnetConflict
@@ -242,3 +281,4 @@ define [ 'MC' ], ( MC ) ->
 	updateAllENIIPList : updateAllENIIPList
 	isSubnetConflictInVPC : isSubnetConflictInVPC
 	autoAssignSimpleCIDR : autoAssignSimpleCIDR
+	isCanDeleteSubnetToELBConnection : isCanDeleteSubnetToELBConnection

@@ -72,7 +72,7 @@ modal.keyup = function (event)
 {
 	if (event.which === 27)
 	{
-		modal.close();
+		// modal.close();
 		$(document)
 			.off('click', modal.dismiss)
 			.off('keyup', modal.keyup);

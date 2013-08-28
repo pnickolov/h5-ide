@@ -77,7 +77,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 		}
 
-		if ( type !== "AWS.EC2.AvailabilityZone" && type !== "AWS.EC2.EBS.Volume" )
+		if ( type !== "AWS.EC2.AvailabilityZone" && type !== "AWS.EC2.EBS.Volume" && type !== "AWS.VPC.VPC" )
 		{
 			option.name = MC.aws.aws.getNewName(type);//get init name for component
 		}
@@ -211,11 +211,14 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** vpc begin *****//
 		case 'AWS.VPC.VPC':
 
+			vpcCIDR = ''
+
 			if (create_mode)
 			{
 
 				component_data = $.extend(true, {}, MC.canvas.VPC_JSON.data);
 				component_data.name = option.name;
+				vpcCIDR = component_data.resource.CidrBlock
 
 				component_layout = $.extend(true, {}, MC.canvas.VPC_JSON.layout);
 
@@ -227,6 +230,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{
 				component_data = data[group.id];
 				option.name = component_data.name;
+				vpcCIDR = component_data.resource.CidrBlock
 
 				component_layout = layout.group[group.id];
 
@@ -236,6 +240,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.width = component_layout.size[0];
 				option.height = component_layout.size[1];
 			}
+
+			option.name = option.name + ' (' + vpcCIDR + ')'
 
 			width = option.width * MC.canvas.GRID_WIDTH,
 			height = option.height * MC.canvas.GRID_HEIGHT,
@@ -309,6 +315,7 @@ MC.canvas.add = function (flag, option, coordinate)
 		//***** subnet begin *****//
 		case 'AWS.VPC.Subnet':
 
+			subnetCIDR = ''
 			if (create_mode)
 			{
 				component_data = $.extend(true, {}, MC.canvas.SUBNET_JSON.data);
@@ -316,6 +323,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.VpcId = "@" + option.group.vpcUId + '.resource.VpcId';
 				component_data.resource.AvailabilityZone = option.group.availableZoneName;
 				component_data.autoCreate = option.auto;
+				subnetCIDR = component_data.resource.CidrBlock
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
 				component_layout.groupUId = option.groupUId;
@@ -327,6 +335,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			else
 			{
 				component_data = data[group.id];
+				subnetCIDR = component_data.resource.CidrBlock
 				option.name = component_data.name;
 
 				component_layout = layout.group[group.id];
@@ -337,6 +346,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.width = component_layout.size[0];
 				option.height = component_layout.size[1];
 			}
+
+			option.name = option.name + ' (' + subnetCIDR + ')'
 
 			width = option.width * MC.canvas.GRID_WIDTH,
 			height = option.height * MC.canvas.GRID_HEIGHT,
@@ -502,11 +513,11 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					component_data.resource.AutoScalingGroupName = option.name;
 
-					if(option['launchConfig']){
-						//use existed launchConfig
-						component_data.resource.LaunchConfigurationName = '@' + option['launchConfig'] + '.resource.LaunchConfigurationName';
+					// if(option['launchConfig']){
+					// 	//use existed launchConfig
+					// 	component_data.resource.LaunchConfigurationName = '@' + option['launchConfig'] + '.resource.LaunchConfigurationName';
 
-					}
+					// }
 
 					//vpc
 					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC)
@@ -720,6 +731,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
 				component_data.name = option.name;
+				component_data.number = 1;
 
 				component_data.resource.ImageId = option.imageId;
 				component_data.resource.InstanceType = 'm1.small';
@@ -773,6 +785,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
+				component_data.number = component_data.number ? component_data.number : 1;
 
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					$.each(MC.canvas_data.component, function ( key, val ){
@@ -801,6 +814,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.virtualizationType = component_layout.virtualizationType;
 			}
 
+			//instance number in group
+			option.number = component_data.number;
+
 			//os type
 			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
 
@@ -821,13 +837,47 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 11, 70, 70),
+
+				//sg label
+				Canvon.rectangle(10, 2, 10 , 10).attr({
+					'class': 'node-sg-color-border',
+					'id': group.id + '_sg-color-label1',
+					'rx': 2,
+					'ry': 2
+				}),
+				Canvon.rectangle(22, 2, 10 , 10).attr({
+					'class': 'node-sg-color-border',
+					'id': group.id + '_sg-color-label2',
+					'rx': 2,
+					'ry': 2
+				}),
+				Canvon.rectangle(34, 2, 10 , 10).attr({
+					'class': 'node-sg-color-border',
+					'id': group.id + '_sg-color-label3',
+					'rx': 2,
+					'ry': 2
+				}),
+				Canvon.rectangle(46, 2, 10 , 10).attr({
+					'class': 'node-sg-color-border',
+					'id': group.id + '_sg-color-label4',
+					'rx': 2,
+					'ry': 2
+				}),
+				Canvon.rectangle(58, 2, 10 , 10).attr({
+					'class': 'node-sg-color-border',
+					'id': group.id + '_sg-color-label5',
+					'rx': 2,
+					'ry': 2
+				}),
+
+
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 23, 70, 70),
 
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-left',
 					'id' : group.id + '_port-instance-sg-left',
-					'transform': 'translate(8, 26)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
+					'transform': 'translate(8, 38)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
 					'data-name': 'instance-sg', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
 					'data-type': 'sg', //color of line
@@ -839,7 +889,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				// Canvon.path(MC.canvas.PATH_D_PORT).attr({
 				// 	'class': 'port port-green port-instance-elb-attach',
 				//  'id' : group.id + '_port-instance-elb-attach',
-				// 	'transform': 'translate(8, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
+				// 	'transform': 'translate(8, 64)' + MC.canvas.PORT_RIGHT_ROTATE,
 				// 	'data-name': 'instance-elb-attach',
 				// 	'data-position': 'left',
 				// 	'data-type': 'attachment',
@@ -851,7 +901,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-right',
 					'id' : group.id + '_port-instance-sg-right',
-					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 38)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'instance-sg',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -863,7 +913,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-instance-attach',
 					'id' : group.id + '_port-instance-attach',
-					'transform': 'translate(84, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(84, 64)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'instance-attach',
 					'data-position': 'right',
 					'data-type': 'attachment',
@@ -875,7 +925,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-rtb',
 					'id' : group.id + '_port-instance-rtb',
-					'transform': 'translate(50, -6)' + MC.canvas.PORT_UP_ROTATE,
+					'transform': 'translate(50, 6)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'instance-rtb',
 					'data-position': 'top',
 					'data-type': 'sg',
@@ -884,29 +934,29 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////7. os_type
-				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30, 15, 39, 27),
+				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 20, 27, 39, 27),
 
 				////8.1 volume-attached
-				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 48, 29, 24).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 60, 29, 24).attr({
 					'id': group.id + '_volume_status'
 				}),
 
 				//8.2 volume number
-				Canvon.text(35, 60, volume_number).attr({
+				Canvon.text(35, 72, volume_number).attr({
 					'class': 'node-label volume-number',
 					'id': group.id + '_volume_number',
 					'value': volume_number
 				}),
 
 				//8.3 hot area for volume
-				Canvon.rectangle(21, 48, 29, 24).attr({
+				Canvon.rectangle(21, 60, 29, 24).attr({
 					'class': 'instance-volume',
 					'data-target-id': group.id,
 					'fill': 'none'
 				}),
 
 				////7. eip
-				Canvon.image(eip_icon, 58, 49, 14, 17).attr({
+				Canvon.image(eip_icon, 58, 61, 14, 17).attr({
 					'class': 'eip-status',
 					'data-eip-state': data_eip_state,
 
@@ -914,10 +964,21 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////10. hostname
-				Canvon.text(50, 90, option.name).attr({
+				Canvon.text(50, 98, option.name).attr({
 					'class': 'node-label name',
 					'id': group.id + '_hostname'
+				}),
+
+				////group bg
+				Canvon.circle(71, 35, 10,{}).attr({
+					'class': 'instance-number-bg'
+				}),
+				////child number in group
+				Canvon.text(71, 38, option.number).attr({
+					'class': 'node-label instance-number',
+					'id': group.id + '_instance-number'
 				})
+
 			).attr({
 				'class': 'dragable node ' + class_type,
 				'data-type': 'node',
@@ -953,6 +1014,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				case 'ec2-vpc':
 					break;
 			}
+
+
+			//update sg color
+			MC.canvas.updateSG( group.id );
 
 			break;
 		//***** instance end *****//
@@ -1818,13 +1883,13 @@ MC.canvas.add = function (flag, option, coordinate)
 					MC.canvas.display(option.groupUId, 'asg_resource_dragger', true);
 
 					// create new icon on resource panel
-					$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
+					// $("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
 
-					$($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children()
-							.data('option', {"name": "asg", "launchConfig": group.id })
-							.attr('data-option','{"name": "asg", "launchConfig":"'+group.id+'"}');
+					// $($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children()
+					// 		.data('option', {"name": "asg", "launchConfig": group.id })
+					// 		.attr('data-option','{"name": "asg", "launchConfig":"'+group.id+'"}');
 
-					$($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
+					// $($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
 
 					MC.canvas_data.component[option.groupUId].resource.LaunchConfigurationName = '@' + group.id + '.resource.LaunchConfigurationName';
 					//imageId
@@ -1873,15 +1938,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = data[layout.node[group.id].originalId];
 				option.name = component_data.name;
 
-				if(!option['launchConfig']){
-					$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
-
-					$($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children()
-							.data('option', {"name": "asg", "launchConfig": group.id })
-							.attr('data-option','{"name": "asg", "launchConfig":"'+group.id+'"}');
-
-					$($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
+				if ( MC.canvas.getState() !=='stack' )
+				{
+					var asg_comp = MC.canvas_data.component[ layout.node[group.id].groupUId ];
+					var asg_comp_data = MC.data.resource_list[MC.canvas_data.region][ asg_comp.resource.AutoScalingGroupARN ];
+					option.name = asg_comp_data.Instances.member.length + " in service";
 				}
+
+				// if(!option['launchConfig']){
+				// 	$("#resource-asg-list").append($($("#resource-asg-list").children()[1]).clone());
+
+				// 	$($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children()
+				// 			.data('option', {"name": "asg", "launchConfig": group.id })
+				// 			.attr('data-option','{"name": "asg", "launchConfig":"'+group.id+'"}');
+
+				// 	$($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
+				// }
 				component_layout = layout.node[group.id];
 
 				coordinate.x = component_layout.coordinate[0];
@@ -1961,7 +2033,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////10. lc name
-				Canvon.text(50, 90, (MC.canvas.getState()==='stack' ? option.name : '? in service')).attr({
+				Canvon.text(50, 90, option.name).attr({
 					'class': 'name' + (MC.canvas.getState()==='stack' ? ' node-label' : ' node-launchconfiguration-label'),
 					'id': group.id + '_lc_name'
 				})

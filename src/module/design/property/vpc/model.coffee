@@ -40,9 +40,10 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 if !data.dhcp
                     data.dhcp =
                         domainName   : this.defaultDomainName uid
-                        useAmazonDNS : true
+                        useAmazonDns : true
             else
-                data.dhcp = {}
+                data.dhcp =
+                    useAmazonDns : true
 
             this.set data
             null
@@ -178,7 +179,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
         # TODO : Generate default domain name for dhcp
         defaultDomainName : ( vpcUid ) ->
-            "XXXXXXXXXX"
+            ""
 
         getDHCPOptions : ( vpcUid ) ->
             dhcpid = MC.extractID MC.canvas_data.component[ vpcUid ].resource.DhcpOptionsId

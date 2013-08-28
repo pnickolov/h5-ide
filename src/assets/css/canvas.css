@@ -21,7 +21,7 @@
 
 #canvas_body {
 	border: 1px solid #ccc;
-	background: #fff url('../images/ide/grid.png');
+	background: #fff url('../images/ide/grid_x1.png');
 }
 
 /*.canvas-view-sg .line-sg,
@@ -102,7 +102,7 @@
 
 #screenshot_canvas_body {
 	padding: 10px;
-	background: #FFF url('../images/ide/grid.png');
+	background: #FFF url('../images/ide/grid_x1.png');
 	min-width: 800px;
 	min-height: 600px;
 }
@@ -325,7 +325,7 @@
 }
 
 .line-elb-sg {
-	stroke: #6DAEFE;
+	stroke: #0973f6;
 }
 
 .line-rtb-target {
@@ -348,10 +348,12 @@
 .line-sg {
 	stroke: #6DAEFE;
 	opacity: 0.2;
+	stroke-dasharray: 10,5;
 }
 
 .line-sg.view-hover,
 .line-sg.view-keephover {
+	stroke-width: 3px;
 	visibility: visible !important;
 	opacity: 0.7 !important;
 }
@@ -476,7 +478,7 @@
 
 .AWS-EC2-AvailabilityZone.selected .group-az {
 	stroke: #f7941d;
-	fill: rgba(255, 255, 255, 0);
+	/*fill: rgba(255, 255, 255, 0);*/
 }
 
 .AWS-EC2-AvailabilityZone .group-label {
@@ -806,4 +808,27 @@
 	position: absolute;
 	top: 80px;
 	text-align: center;
+}
+
+.node-sg-color-border {
+	stroke: black;
+	stroke-width: 1px;
+}
+
+.instance-number-bg {
+	stroke-width:0;
+	fill:red;
+	opacity: 0.2;
+}
+
+.instance-number {
+	font-weight: bold;
+}
+
+.sg-color {
+	float: left;
+    width: 10px;
+    height: 10px;
+    margin-top: 4px;
+    margin-right: 5px;
 }

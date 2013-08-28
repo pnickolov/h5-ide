@@ -173,6 +173,18 @@ define [ 'MC' ], ( MC ) ->
 				elb.resource.Subnets.splice i, 1
 				break
 
+		# Update resource.AvailabilityZones
+		az_map = {}
+		az_arr = []
+		for subnet, i in elb.resource.Subnets
+			az = MC.canvas_data.component[ MC.extractID( subnet ) ].resource.AvailabilityZone
+			if az_map[ az ]
+				continue
+
+			az_map[ az ] = true
+			az_arr.push az
+
+		elb.resource.AvailabilityZones = az_arr
 		null
 
 	updateRuleToElbSG = (elbUID) ->
@@ -279,11 +291,29 @@ define [ 'MC' ], ( MC ) ->
 			compType = compObj.type
 			if compType is 'AWS.ELB'
 				elbSGObj = MC.aws.elb.getElbDefaultSG compObj.uid
-				if elbSGObj.uid is sgUID
+				if elbSGObj and elbSGObj.uid is sgUID
 					result = true
 			null
 
 		return result
+
+	removeAllELBForInstance = (instanceUID) ->
+
+		originInstanceUIDRef = '@' + instanceUID + '.resource.InstanceId'
+		_.each MC.canvas_data.component, (compObj) ->
+			compType = compObj.type
+			if compType is 'AWS.ELB'
+				instanceAry = compObj.resource.Instances
+				newInstanceAry = _.filter instanceAry, (instanceObj) ->
+					instanceRef = instanceObj.InstanceId
+					if instanceRef is originInstanceUIDRef
+						return false
+					else
+						return true
+				MC.canvas_data.component[compObj.uid].resource.Instances = newInstanceAry
+			null
+
+		null
 
 	#public
 	init                      : init
@@ -298,3 +328,4 @@ define [ 'MC' ], ( MC ) ->
 	getAllElbSGUID			  : getAllElbSGUID
 	removeELBDefaultSG		  : removeELBDefaultSG
 	isELBDefaultSG            : isELBDefaultSG
+	removeAllELBForInstance   : removeAllELBForInstance

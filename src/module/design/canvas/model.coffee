@@ -480,6 +480,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 					this._removeFromRTB key, component.uid
 
+				# remove all associted ELB
+				MC.aws.elb.removeAllELBForInstance(component.uid)
+
 			null
 
 		deleteR_Eni : ( component ) ->
@@ -678,7 +681,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# ELB <==> Subnet
 			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
-				MC.aws.elb.removeSubnetFromELB portMap['elb-assoc'], portMap['subnet-assoc-in']
+				elbUID = portMap['elb-assoc']
+				subnetUID = portMap['subnet-assoc-in']
+				if !MC.aws.subnet.isCanDeleteSubnetToELBConnection(elbUID)
+					return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE }
+				MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
 
 			# Eni <==> Instance
 			else if portMap['instance-attach'] and portMap['eni-attach']

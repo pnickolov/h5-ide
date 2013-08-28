@@ -58,13 +58,24 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
                     _.map constant.REGION_KEYS, ( value ) ->
 
+
                         if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
 
-                            cur_attr = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
-                            if  cur_attr and $.type(cur_attr) == "array" and cur_attr.length == 2
-                                region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_SHORT_LABEL[ value ], 'region': value }
-                            else
-                                region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_SHORT_LABEL[ value ], 'region': value }
+                            #resolve support-platform
+                            support_platform = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
+                            if support_platform and $.type(support_platform) == "array"
+                                if support_platform.length == 2
+                                    MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue + ',' + support_platform[1].attributeValue
+                                    region_classic_vpc_result.push { 'classic' : 'Classic', 'vpc' : 'VPC', 'region_name' : constant.REGION_SHORT_LABEL[ value ], 'region': value }
+                                else if support_platform.length == 1
+                                    MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue
+                                    region_classic_vpc_result.push { 'vpc' : 'VPC', 'region_name' : constant.REGION_SHORT_LABEL[ value ], 'region': value }
+
+                            #resolve default-vpc
+                            default_vpc = regionAttrSet[ value ].accountAttributeSet.item[1].attributeValueSet.item
+                            if  default_vpc and $.type(default_vpc) == "array" and default_vpc.length == 1
+                                MC.data.account_attribute[ value ].default_vpc = default_vpc[0].attributeValue
+
                             null
 
                     me.set 'region_classic_list', region_classic_vpc_result
@@ -219,7 +230,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             me = this
 
             #get service(model)
-            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms"]
+            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms","default-vpc"]
 
             null
 

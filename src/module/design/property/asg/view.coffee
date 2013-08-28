@@ -63,7 +63,6 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
 
             policies = []
             for uid, policy of data.policies
-                policy.uid        = uid
                 policy.metric     = metricMap[ policy.metric ]
                 policy.adjusttype = adjustMap[ policy.adjusttype ]
                 policy.unit       = unitMap[ policy.metric ]
@@ -271,6 +270,8 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                 if $selected
                     $selectbox.find(".selected").removeClass "selected"
                     $selectbox.find(".selection").html $selected.addClass("selected").html()
+
+            $("#asg-policy-step-wrapper").toggle( $("#asg-policy-adjust-type").find(".selected").data("id") == "PercentChangeInCapacity" )
 
         addScalingPolicy : ( event ) ->
             if $( event.currentTarget ).hasClass "disabled"

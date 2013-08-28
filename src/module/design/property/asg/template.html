@@ -33,12 +33,12 @@
 		<section class="property-control-group clearfix">
 			<label>Health Check Type</label>
 			<div class="radio">
-				<input id="property-asg-ec2" type="radio" value="ec2" {{#if asg.ec2}}checked="true"{{/if}} name="property-asg-hc-option" />
+				<input id="property-asg-ec2" type="radio" value="ec2" {{#ifCond asg.HealthCheckType 'EC2'}}checked="true"{{/ifCond}} name="property-asg-hc-option" />
 				<label for="property-asg-ec2"></label>
 			</div>
 			<label for="property-asg-ec2">EC2</label>
 			<div class="radio">
-				<input id="property-asg-elb" type="radio" {{#unless has_elb}}disabled="disabled"{{/unless}} value="elb" {{#if asg.elb}}checked="true"{{/if}} name="property-asg-hc-option" />
+				<input id="property-asg-elb" type="radio" {{#unless has_elb}}disabled="disabled"{{/unless}} value="elb" {{#ifCond asg.HealthCheckType 'ELB'}}checked="true"{{/ifCond}} name="property-asg-hc-option" />
 				<label for="property-asg-elb"></label>
 			</div>
 			<label for="property-asg-elb">ELB</label>
@@ -92,38 +92,40 @@
 	<div class="option-group" id="property-asg-sns">
 		<p>Send notification via SNS topic for:</p>
 		<div><div class="checkbox">
-			<input id="property-asg-sns1" type="checkbox"/>
+			<input id="property-asg-sns1" type="checkbox" {{#if notification_type.[0]}}checked="checked"{{/if}}/>
 			<label for="property-asg-sns1"></label>
 		</div>
 		<label for="property-asg-sns1">Successful instance launch</label></div>
 
 		<div><div class="checkbox">
-			<input id="property-asg-sns2" type="checkbox"/>
+			<input id="property-asg-sns2" type="checkbox" {{#if notification_type.[1]}}checked="checked"{{/if}}/>
 			<label for="property-asg-sns2"></label>
 		</div>
 		<label for="property-asg-sns2">Failed instance launch</label></div>
 
 		<div><div class="checkbox">
-			<input id="property-asg-sns3" type="checkbox"/>
+			<input id="property-asg-sns3" type="checkbox"  {{#if notification_type.[2]}}checked="checked"{{/if}}/>
 			<label for="property-asg-sns3"></label>
 		</div>
 		<label for="property-asg-sns3">Successful instance termination</label></div>
 
 		<div><div class="checkbox">
-			<input id="property-asg-sns4" type="checkbox"/>
+			<input id="property-asg-sns4" type="checkbox"  {{#if notification_type.[3]}}checked="checked"{{/if}}/>
 			<label for="property-asg-sns4"></label>
 		</div>
 		<label for="property-asg-sns4">Failed instance termination</label></div>
 
 		<div><div class="checkbox">
-			<input id="property-asg-sns5" type="checkbox"/>
+			<input id="property-asg-sns5" type="checkbox"  {{#if notification_type.[4]}}checked="checked"{{/if}}/>
 			<label for="property-asg-sns5"></label>
 		</div>
 		<label for="property-asg-sns5">Validating a configuraed SNS Topic</label></div>
 
+    {{#unless has_sns_topic}}
 		<p class="property-warning hide" id="property-asg-sns-info">
     	There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.
     </p>
+    {{/unless}}
 
 	</div>
 	{{else}}

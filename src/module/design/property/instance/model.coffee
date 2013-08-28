@@ -373,6 +373,10 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
 			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
 
+			#update sg color label
+			MC.aws.sg.updateSGColorLabel instanceUID
+
+
 			# remove from eni sg
 			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
 
@@ -388,9 +392,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					return true
 
 			MC.canvas_data.component[eniComp.uid].resource.GroupSet = newGroupSet
-
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel instanceUID
 
 			null
 
@@ -413,6 +414,10 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
 			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
 
+			#update sg color label
+			MC.aws.sg.updateSGColorLabel instanceUID
+
+
 			# add to eni sg
 			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
 
@@ -432,9 +437,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					GroupId: currentSGId
 					GroupName: currentSG
 				}
-
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel instanceUID
 
 			null
 

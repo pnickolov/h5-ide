@@ -511,6 +511,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					component_data.resource.MinSize = 1;
 
+					component_data.resource.DesiredCapacity = 1;
+
 					component_data.resource.AutoScalingGroupName = option.name;
 
 					// if(option['launchConfig']){

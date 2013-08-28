@@ -42,6 +42,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             console.log 'property:instance render'
             #
             this.undelegateEvents()
+
+            defaultVPCId = MC.aws.aws.checkDefaultVPC()
+            if defaultVPCId
+                this.model.attributes.component.resource.VpcId = defaultVPCId
+
             $( '.property-details' ).html this.template this.model.attributes
 
             this.delegateEvents this.events

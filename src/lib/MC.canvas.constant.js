@@ -1162,7 +1162,17 @@ var constant_data = {
 			{
 				"VpcId": "",
 				"PropagatingVgwSet": [],
-				"RouteSet": [],
+				"RouteSet": [
+					{
+						'State' : 'active',
+						'Origin': 'CreateRouteTable',
+						'InstanceId':'',
+						'InstanceOwnerId':'',
+						'GatewayId' : 'local',
+						'NetworkInterfaceId' : '',
+						'DestinationCidrBlock' : '10.0.0.0/16'
+					}
+				],
 				"RouteTableId": "",
 				"AssociationSet": [
 					//{

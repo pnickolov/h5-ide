@@ -105,7 +105,7 @@ define [ 'MC', 'event', 'handlebars'
 
 
 		MC.data.account_attribute = {}
-		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'' } for r in constant.REGION_KEYS
+		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'', 'default_subnet':{} } for r in constant.REGION_KEYS
 
 
 		#############################

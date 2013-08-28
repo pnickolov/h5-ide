@@ -86,6 +86,9 @@ define [ 'underscore', 'backbone' ], () ->
         CANVAS_CREATE_LINE     : 'CANVAS_CREATE_LINE'
         CANVAS_DELETE_OBJECT   : 'CANVAS_DELETE_OBJECT'
 
+        #when get instance info by DescribeInstances in ASG
+        CANVAS_UPDATE_APP_RESOURCE  : 'CANVAS_UPDATE_APP_RESOURCE'
+
         CREATE_LINE_TO_CANVAS  : 'CREATE_LINE_TO_CANVAS'
         DELETE_LINE_TO_CANVAS  : 'DELETE_LINE_TO_CANVAS'
 

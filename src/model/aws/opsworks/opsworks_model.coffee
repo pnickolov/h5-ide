@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : opsworks_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:14
+#* Create date  : 2013-08-26 12:19:51
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
+define [ 'backbone', 'underscore', 'opsworks_service', 'base_model' ], ( Backbone, _, opsworks_service, base_model ) ->
 
     OpsWorksModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeApps api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeApps succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_APPS_RETURN', aws_result
 
                 else
                 #DescribeApps failed
 
                     console.log 'opsworks.DescribeApps failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_APPS_RETURN', aws_result
 
 
         #DescribeStacks api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeStacks succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_STACKS_RETURN', aws_result
 
                 else
                 #DescribeStacks failed
 
                     console.log 'opsworks.DescribeStacks failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_STACKS_RETURN', aws_result
 
 
         #DescribeCommands api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeCommands succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_COMMANDS_RETURN', aws_result
 
                 else
                 #DescribeCommands failed
 
                     console.log 'opsworks.DescribeCommands failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_COMMANDS_RETURN', aws_result
 
 
         #DescribeDeployments api (define function)
@@ -110,18 +99,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeDeployments succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_DEPLOYMENTS_RETURN', aws_result
 
                 else
                 #DescribeDeployments failed
 
                     console.log 'opsworks.DescribeDeployments failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_DEPLOYMENTS_RETURN', aws_result
 
 
         #DescribeElasticIps api (define function)
@@ -136,18 +122,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeElasticIps succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_ELASTIC_IPS_RETURN', aws_result
 
                 else
                 #DescribeElasticIps failed
 
                     console.log 'opsworks.DescribeElasticIps failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_ELASTIC_IPS_RETURN', aws_result
 
 
         #DescribeInstances api (define function)
@@ -162,18 +145,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeInstances succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_INSS_RETURN', aws_result
 
                 else
                 #DescribeInstances failed
 
                     console.log 'opsworks.DescribeInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_INSS_RETURN', aws_result
 
 
         #DescribeLayers api (define function)
@@ -188,18 +168,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeLayers succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_LAYERS_RETURN', aws_result
 
                 else
                 #DescribeLayers failed
 
                     console.log 'opsworks.DescribeLayers failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_LAYERS_RETURN', aws_result
 
 
         #DescribeLoadBasedAutoScaling api (define function)
@@ -214,18 +191,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeLoadBasedAutoScaling succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_LOAD_BASED_ASL_RETURN', aws_result
 
                 else
                 #DescribeLoadBasedAutoScaling failed
 
                     console.log 'opsworks.DescribeLoadBasedAutoScaling failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_LOAD_BASED_ASL_RETURN', aws_result
 
 
         #DescribePermissions api (define function)
@@ -240,18 +214,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribePermissions succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_PERMISSIONS_RETURN', aws_result
 
                 else
                 #DescribePermissions failed
 
                     console.log 'opsworks.DescribePermissions failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_PERMISSIONS_RETURN', aws_result
 
 
         #DescribeRaidArrays api (define function)
@@ -266,18 +237,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeRaidArrays succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_RAID_ARRAYS_RETURN', aws_result
 
                 else
                 #DescribeRaidArrays failed
 
                     console.log 'opsworks.DescribeRaidArrays failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_RAID_ARRAYS_RETURN', aws_result
 
 
         #DescribeServiceErrors api (define function)
@@ -292,18 +260,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeServiceErrors succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_SERVICE_ERRORS_RETURN', aws_result
 
                 else
                 #DescribeServiceErrors failed
 
                     console.log 'opsworks.DescribeServiceErrors failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_SERVICE_ERRORS_RETURN', aws_result
 
 
         #DescribeTimeBasedAutoScaling api (define function)
@@ -318,18 +283,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeTimeBasedAutoScaling succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_TIME_BASED_ASL_RETURN', aws_result
 
                 else
                 #DescribeTimeBasedAutoScaling failed
 
                     console.log 'opsworks.DescribeTimeBasedAutoScaling failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_TIME_BASED_ASL_RETURN', aws_result
 
 
         #DescribeUserProfiles api (define function)
@@ -344,18 +306,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeUserProfiles succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_USER_PROFILES_RETURN', aws_result
 
                 else
                 #DescribeUserProfiles failed
 
                     console.log 'opsworks.DescribeUserProfiles failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_USER_PROFILES_RETURN', aws_result
 
 
         #DescribeVolumes api (define function)
@@ -370,18 +329,15 @@ define [ 'backbone', 'opsworks_service'], ( Backbone, opsworks_service) ->
                 if !aws_result.is_error
                 #DescribeVolumes succeed
 
-                    opsworks_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_VOLS_RETURN', aws_result
 
                 else
                 #DescribeVolumes failed
 
                     console.log 'opsworks.DescribeVolumes failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'OPSWORKS__DESC_VOLS_RETURN', aws_result
 
 
 

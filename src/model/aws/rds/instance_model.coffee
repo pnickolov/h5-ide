@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : instance_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:15
+#* Create date  : 2013-08-26 12:19:53
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'instance_service'], ( Backbone, instance_service) ->
+define [ 'backbone', 'underscore', 'instance_service', 'base_model' ], ( Backbone, _, instance_service, base_model ) ->
 
     InstanceModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeDBInstances api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'instance_service'], ( Backbone, instance_service) ->
                 if !aws_result.is_error
                 #DescribeDBInstances succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_INS_DESC_DB_INSTANCES_RETURN', aws_result
 
                 else
                 #DescribeDBInstances failed
 
                     console.log 'instance.DescribeDBInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'RDS_INS_DESC_DB_INSTANCES_RETURN', aws_result
 
 
 

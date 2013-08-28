@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : favorite_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:04
+#* Create date  : 2013-08-26 12:19:41
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'favorite_service' ], ( Backbone, favorite_service ) ->
+define [ 'backbone', 'underscore', 'favorite_service', 'base_model' ], ( Backbone, _, favorite_service, base_model ) ->
 
     FavoriteModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #add api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'favorite_service' ], ( Backbone, favorite_service ) ->
                 if !forge_result.is_error
                 #add succeed
 
-                    favorite_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'FAVORITE_ADD_RETURN', forge_result
 
                 else
                 #add failed
 
                     console.log 'favorite.add failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'FAVORITE_ADD_RETURN', forge_result
 
 
         #remove api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'favorite_service' ], ( Backbone, favorite_service ) ->
                 if !forge_result.is_error
                 #remove succeed
 
-                    favorite_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'FAVORITE_REMOVE_RETURN', forge_result
 
                 else
                 #remove failed
 
                     console.log 'favorite.remove failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'FAVORITE_REMOVE_RETURN', forge_result
 
 
         #info api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'favorite_service' ], ( Backbone, favorite_service ) ->
                 if !forge_result.is_error
                 #info succeed
 
-                    favorite_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'FAVORITE_INFO_RETURN', forge_result
 
                 else
                 #info failed
 
                     console.log 'favorite.info failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'FAVORITE_INFO_RETURN', forge_result
 
 
 

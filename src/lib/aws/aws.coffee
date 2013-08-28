@@ -418,7 +418,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
             # asg
             else if item.type is 'AWS.AutoScaling.Group'
-                cap = item.resource.DesiredCapacity
+                cap = if item.resource.DesiredCapacity then item.resource.DesiredCapacity else item.resource.MinSize
 
                 config_uid = item.resource.LaunchConfigurationName.split('@')[1].split('.')[0]
                 config = MC.canvas_data.component[config_uid]
@@ -479,7 +479,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         cost_list.sort (a, b) ->
             return if a.type <= b.type then 1 else -1
 
-        return { 'cost_list' : cost_list, 'total_fee' : total_fee }
+        return { 'cost_list' : cost_list, 'total_fee' : total_fee.toFixed(3) }
 
     #public
     getNewName                  : getNewName

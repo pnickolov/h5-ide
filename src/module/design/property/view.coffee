@@ -21,13 +21,11 @@ define [ './temp_view',
             ##########################
 
             Handlebars.registerHelper 'ifCond', ( v1, v2, options ) ->
-                if v1 is v2
-                    return options.fn this
+                return options.fn this if v1 is v2
                 return options.inverse this
 
             Handlebars.registerHelper 'emptyStr', ( v1 ) ->
-                if v1 then new Handlebars.SafeString(v1) else "-"
-
+                if v1 then new Handlebars.SafeString v1 else '-'
 
             #listen
             $( document.body ).on( 'click',           '#hide-property-panel', this.togglePropertyPanel                )

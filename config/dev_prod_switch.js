@@ -13,7 +13,6 @@ module.exports = {
 			'<%= release %>/module/design/toolbar/view.js'             : '<%= src %>/module/design/toolbar/view.js',
 			'<%= release %>/module/design/toolbar/stack_template.html' : '<%= src %>/module/design/toolbar/stack_template.html',
 			'<%= release %>/module/design/toolbar/app_template.html'   : '<%= src %>/module/design/toolbar/app_template.html',
-
 		}
 	}
 

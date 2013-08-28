@@ -1651,7 +1651,12 @@
       newInstance = bind( $( this ), !$( this ).is( 'input[type=radio], input[type=checkbox]' ) ? 'parsleyField' : 'parsleyFieldMultiple' );
     }
 
-    return 'function' === typeof fn ? fn() : newInstance;
+    if ( option === 'custom') {
+      return newInstance
+    }
+    else {
+      return 'function' === typeof fn ? fn() : newInstance;
+    }
   };
 
   $.fn.parsley.Constructor = ParsleyForm;

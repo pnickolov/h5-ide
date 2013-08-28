@@ -145,5 +145,30 @@ define({
 		'CFM_BTN_ADD'      : 'Add',
 		'CFM_BTN_DONT_ADD' : "Don't add"
 		// Add new strings below this comment. Move above once English has been confirmed
+	},
+	'service' : {
+		'ERROR_CODE_0_MESSAGE'  : '',//invoke api succeed
+		'ERROR_CODE_1_MESSAGE'  : 'No data',
+		'ERROR_CODE_2_MESSAGE'  : 'Invalid api param',
+		'ERROR_CODE_3_MESSAGE'  : '',//no use
+		'ERROR_CODE_4_MESSAGE'  : '',//no use
+		'ERROR_CODE_5_MESSAGE'  : 'External error',
+		'ERROR_CODE_6_MESSAGE'  : '',//no use
+		'ERROR_CODE_7_MESSAGE'  : '',//for guest
+		'ERROR_CODE_8_MESSAGE'  : '',//no use
+		'ERROR_CODE_9_MESSAGE'  : 'Insufficient permission',
+		'ERROR_CODE_10_MESSAGE' : '',//no use
+		'ERROR_CODE_11_MESSAGE' : '',//no use
+		'ERROR_CODE_12_MESSAGE' : 'Sorry, we are suffering from some technical issue, please try again later',
+		'ERROR_CODE_13_MESSAGE' : '',//no use
+		'ERROR_CODE_14_MESSAGE' : '',//no use
+		'ERROR_CODE_15_MESSAGE' : 'Unknown AWS Error',
+		'ERROR_CODE_16_MESSAGE' : 'Sorry, AWS is suffering from some technical issue, please try again later',
+		'ERROR_CODE_17_MESSAGE' : '',//no use
+		'ERROR_CODE_18_MESSAGE' : 'Invalid API Parameters',
+		'ERROR_CODE_19_MESSAGE' : 'Invalid session, please login again',
+		'ERROR_CODE_20_MESSAGE' : 'Sorry, this invitation has finished',//for guest
+		'ERROR_CODE_21_MESSAGE' : 'User has been blocked',
+		'ERROR_CODE_21_MESSAGE' : ''//no use
 	}
 });

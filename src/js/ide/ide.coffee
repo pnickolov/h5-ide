@@ -6,8 +6,10 @@ define [ 'MC', 'event', 'handlebars'
 		 'i18n!/nls/lang.js',
 		 'view', 'layout', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
-		 'WS', 'constant', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant ) ->
+		 'WS', 'constant',
+		 'base_model',
+		 'aws_handle'
+], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model ) ->
 
 	console.info canvas_layout
 
@@ -95,6 +97,11 @@ define [ 'MC', 'event', 'handlebars'
 		MC.process = {}
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null
+		#
+		MC.data.is_reset_session = false
+
+		#temp
+		MC.data.IDEView = view
 
 
 		MC.data.account_attribute = {}
@@ -113,10 +120,12 @@ define [ 'MC', 'event', 'handlebars'
 			websocket.status false, ()->
 				# do thing alert here, may trigger several time
 				console.log 'connection failed'
+				view.disconnectedMessage 'show'
 			websocket.status true, ()->
 				if initialize == false
 					# do something here, trigger when connection recover
 					console.log 'connection succeed'
+					view.disconnectedMessage 'hide'
 				else
 					initialize = false
 				null
@@ -127,7 +136,10 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'session invalid'
 			console.log error
 			#redirect to page ide.html
-			window.location.href = 'login.html'
+			if MC.data.is_reset_session
+				MC.data.is_reset_session = false
+			else
+				window.location.href = 'login.html'
 			null
 
 		subRequestReady = () ->
@@ -195,7 +207,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'DESIGN_COMPLETE'
 			process.loadModule()
 			#
-			ide_event.trigger ide_event.SWITCH_MAIN
+			#ide_event.trigger ide_event.SWITCH_MAIN
 
 		#listen RESOURCE_COMPLETE
 		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
@@ -226,3 +238,21 @@ define [ 'MC', 'event', 'handlebars'
 		})
 
 		analytics.track('Loaded IDE', { })
+
+		#############################
+		#  base model
+		#############################
+
+		base_model.sub ( error ) ->
+			console.log 'sub'
+			console.log error
+			if error.return_code is constant.RETURN_CODE.E_SESSION
+				MC.data.is_reset_session = true
+				require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
+			else
+				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
+				console.log lang.service[ label ]
+				#
+				notification 'error', lang.service[ label ], true if lang.service[ label ]
+
+		null

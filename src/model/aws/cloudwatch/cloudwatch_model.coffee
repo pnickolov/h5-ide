@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : cloudwatch_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:07
+#* Create date  : 2013-08-26 12:19:44
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
+define [ 'backbone', 'underscore', 'cloudwatch_service', 'base_model' ], ( Backbone, _, cloudwatch_service, base_model ) ->
 
     CloudWatchModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : {}
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #GetMetricStatistics api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
                 if !aws_result.is_error
                 #GetMetricStatistics succeed
 
-                    cloudwatch_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'CW__GET_METRIC_STATS_RETURN', aws_result
 
                 else
                 #GetMetricStatistics failed
 
                     console.log 'cloudwatch.GetMetricStatistics failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'CW__GET_METRIC_STATS_RETURN', aws_result
 
 
         #ListMetrics api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
                 if !aws_result.is_error
                 #ListMetrics succeed
 
-                    cloudwatch_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'CW__LST_METRICS_RETURN', aws_result
 
                 else
                 #ListMetrics failed
 
                     console.log 'cloudwatch.ListMetrics failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'CW__LST_METRICS_RETURN', aws_result
 
 
         #DescribeAlarmHistory api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
                 if !aws_result.is_error
                 #DescribeAlarmHistory succeed
 
-                    cloudwatch_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'CW__DESC_ALM_HIST_RETURN', aws_result
 
                 else
                 #DescribeAlarmHistory failed
 
                     console.log 'cloudwatch.DescribeAlarmHistory failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'CW__DESC_ALM_HIST_RETURN', aws_result
 
 
         #DescribeAlarms api (define function)
@@ -110,18 +99,15 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
                 if !aws_result.is_error
                 #DescribeAlarms succeed
 
-                    cloudwatch_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'CW__DESC_ALMS_RETURN', aws_result
 
                 else
                 #DescribeAlarms failed
 
                     console.log 'cloudwatch.DescribeAlarms failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'CW__DESC_ALMS_RETURN', aws_result
 
 
         #DescribeAlarmsForMetric api (define function)
@@ -136,18 +122,15 @@ define [ 'backbone', 'cloudwatch_service'], ( Backbone, cloudwatch_service ) ->
                 if !aws_result.is_error
                 #DescribeAlarmsForMetric succeed
 
-                    cloudwatch_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'CW__DESC_ALMS_FOR_METRIC_RETURN', aws_result
 
                 else
                 #DescribeAlarmsForMetric failed
 
                     console.log 'cloudwatch.DescribeAlarmsForMetric failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'CW__DESC_ALMS_FOR_METRIC_RETURN', aws_result
 
 
 

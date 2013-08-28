@@ -175,17 +175,22 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                         route.ref  = route.GatewayId
 
-                        route.name = MC.canvas_data.component[uid].name
+                        if route.GatewayId is 'local'
+                            route.name = "local"
+                            route.isLocal = true
+                        else
+                            route.isLocal = false
+                            route.name = MC.canvas_data.component[uid].name
 
-                        if MC.canvas_data.component[route.GatewayId.split('.')[0][1...]].type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+                            if MC.canvas_data.component[route.GatewayId.split('.')[0][1...]].type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
 
-                            route.isVgw = true
+                                route.isVgw = true
 
-                            route.vgw = route.GatewayId.split('.')[0][1...]
+                                route.vgw = route.GatewayId.split('.')[0][1...]
 
-                            if route.GatewayId in rt.resource.PropagatingVgwSet
+                                if route.GatewayId in rt.resource.PropagatingVgwSet
 
-                                route.isProp = true
+                                    route.isProp = true
 
 
 

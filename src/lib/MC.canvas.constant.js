@@ -589,7 +589,7 @@ var constant_data = {
 				"type": "association",
 				"from": "subnet-assoc-in",
 				"to": "elb-assoc",
-				"relation": "unique"
+				"relation": "multiple"
 			}
 		},
 		"AWS.AutoScaling.LaunchConfiguration": {

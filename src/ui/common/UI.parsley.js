@@ -168,6 +168,7 @@
           , dateIso:    "This value should be a valid date (YYYY-MM-DD)."
           , alphanum:   "This value should be alphanumeric."
           , phone:      "This value should be a valid phone number."
+          , usPhone:   "This value should be a valid US phone number."
 
          // hack
           , ipaddress: "This value should be a valid ip address."
@@ -298,6 +299,10 @@
 
           case 'domain':
            regExp = /^([a-zA-Z0-9-\u4e00-\u9fa5]+\.)+([a-zA-Z-\u4e00-\u9fa5]+)$/;
+           break;
+
+          case 'usPhone':
+           regExp = /^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/;
            break;
 
           default:
@@ -1918,4 +1923,5 @@ $(document).ready(function ()
 });
 
 Util.errortip = errortip;
+
 }(window.jQuery)

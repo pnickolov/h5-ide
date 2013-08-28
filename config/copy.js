@@ -16,7 +16,7 @@ module.exports = {
 			'<%= src %>/<%= vender %>/qunit/qunit.js'                  : '<%= components %>/qunit/qunit/qunit.js',
 			'<%= src %>/<%= vender %>/qunit/qunit.css'                 : '<%= components %>/qunit/qunit/qunit.css',
 			'<%= src %>/<%= vender %>/parsleyjs/parsley.js'            : '<%= components %>/parsleyjs/parsley.js',
-			'<%= src %>/<%= vender %>/zeroclipboard/ZeroClipboard.js'  : '<%= components %>/zeroclipboard/ZeroClipboard.js',
+			'<%= src %>/<%= vender %>/zeroclipboard/org_ZeroClipboard.js': '<%= components %>/zeroclipboard/ZeroClipboard.js',
 			'<%= src %>/<%= vender %>/zeroclipboard/ZeroClipboard.swf' : '<%= components %>/zeroclipboard/ZeroClipboard.swf',
 			'<%= src %>/<%= vender %>/sprintf/sprintf.js'              : '<%= components %>/sprintf/src/sprintf.js',
 			'<%= src %>/<%= vender %>/string-format/string-format.js'  : '<%= components %>/string-format/string-format.js',

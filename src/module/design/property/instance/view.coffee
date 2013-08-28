@@ -63,7 +63,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             null
 
         countChange : ( event ) ->
-            @trigger "COUNT_CHANGE", $(event.currentTarget).val()
+            target = $ event.currentTarget
+
+            target.parsley 'custom', ( val ) ->
+                if isNaN( val ) or val > 99 or val < 1
+                    return 'This value must be >= 1 and <= 99'
+
+            if target.parsley 'validate'
+                @trigger "COUNT_CHANGE", +target.val()
 
         instanceTypeSelect : ( event, value )->
             this.model.set 'instance_type', value

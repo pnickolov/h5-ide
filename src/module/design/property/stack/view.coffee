@@ -244,32 +244,44 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
                 $input  = $(".property-asg-ep").removeClass("https http")
                 switch $modal.find(".selected").data("id")
 
-                    when "sqa"
-                        placeholder = "e.g. Amazon ARN"
+                    when "sqs"
+                        placeholder = "Amazon ARN"
+                        type = 'sqs'
+                        errorMsg = 'Please provide a valid Amazon SQS ARN'
+
+                    when "arn"
+                        placeholder = "Amazon ARN"
+                        type = 'arn'
+                        errorMsg = 'Please provide a valid Application ARN'
                     when "email"
-                        placeholder = "e.g. exmaple@acme.com"
+                        placeholder = "exmaple@acme.com"
                         type = 'email'
+                        errorMsg = 'Please provide a valid email address'
                     when "email-json"
-                        placeholder = "e.g. example@acme.com"
+                        placeholder = "example@acme.com"
                         type = 'email'
+                        errorMsg = 'Please provide a valid email address'
                     when "sms"
-                        placeholder = "e.g. 1-343-21-323"
-                        type='phone'
+                        placeholder = "e.g. 1-206-555-6423"
+                        type='usPhone'
+                        errorMsg = 'Please provide a valid phone number (currently only support US phone number)'
                     when "http"
                         $input.addClass "http"
-                        placeholder = "e.g. www.example.com"
-                        type = 'url'
+                        placeholder = "www.example.com"
+                        type = 'http'
+                        errorMsg = 'Please provide a valid URL'
                     when "https"
                         $input.addClass "https"
-                        placeholder = "e.g. www.example.com"
-                        type = 'url'
+                        placeholder = "www.example.com"
+                        type = 'https'
+                        errorMsg = 'Please provide a valid URL'
 
                 endPoint = $ '#property-asg-endpoint'
                 endPoint.attr "placeholder", placeholder
 
                 endPoint.parsley 'custom', ( value ) ->
                     if type and value and ( not MC.validate type, value )
-                        return 'input error.'
+                        return errorMsg
 
                 if endPoint.val().length
                     endPoint.parsley 'validate'

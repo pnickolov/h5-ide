@@ -160,7 +160,7 @@
 						<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}</label>
 						<input type="text" class="input input-ip" value="{{suffix}}" id="instance-ip-1">
 					</div>
-					{{#unless Primary}}<div class="network-remove-icon"></div>{{/unless}}
+					{{#unless Primary}}<div class="network-remove-icon icon-remove"></div>{{/unless}}
 					{{#if has_eip}}
 					<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
 					{{else}}

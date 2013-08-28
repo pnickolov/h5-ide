@@ -34,7 +34,7 @@
     <ul class="sg-rule-list property-list" id="sg-rule-list">
       {{#each sg_app_detail.rules}}
       <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
-        <i class="icon-rule-{{direction}}" data-tooltip="{{direction}}"></i>
+        <i class="icon-{{direction}}" data-tooltip="{{direction}}"></i>
         <div class='rule-protocol'>{{ipProtocol}}</div>
         <div class='rule-source'>
           <div class="rule-source-icon"></div>

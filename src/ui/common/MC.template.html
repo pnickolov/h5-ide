@@ -747,7 +747,7 @@ Additional Notes and Questions
     <input type="text" class="input input-ip" value="x" id="instance-ip-1">
     </div>
     <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-    <div class="network-remove-icon"></div>
+    <div class="network-remove-icon icon-remove"></div>
 </li>
 
 <!-- modalSGRule -->
@@ -768,14 +768,14 @@ Additional Notes and Questions
             		<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="inbound" />
                 	<label for="radio_inbound"></label>
             	</div>
-            	<label for="radio_inbound" >Inbound</label>
+            	<label for="radio_inbound" ><i class="icon-inbound"></i>Inbound</label>
             	{{#if isclassic}}
 				{{else}}
 				<div class="radio">
             		<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
                 	<label for="radio_outbound"></label>
             	</div>
-            	<label for="radio_outbound">Outbound</label>
+            	<label for="radio_outbound"><i class="icon-outbound"></i>Outbound</label>
 				{{/if}}
         	</div>
     	</div>
@@ -1033,7 +1033,7 @@ Additional Notes and Questions
 	<div class="rule-list-row">
 		<div class='rule-direction-icon tooltip' data-tooltip="{{rule.direction}}"></div>
 		<div class='rule-reference'>{{rule.ipranges}}</div>
-		<div class='rule-remove-icon tooltip' data-tooltip="Remove rule"></div>
+		<div class='rule-remove-icon tooltip icon-remove' data-tooltip="Remove rule"></div>
 	</div>
 	<div class="rule-list-row">
 		<div><span class="rule-protocol">{{rule.protocol}}</span></div>

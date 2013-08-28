@@ -8,7 +8,7 @@
       {{#each rules}}
       <li>
         <div class="rule-list-row">
-          <div class="rule-direction-icon {{#if egress}}icon-rule-outbound{{else}}icon-rule-inbound{{/if}} tooltip" data-tooltip="{{#if egress}}Outbound{{else}}Inbound{{/if}}"></div>
+          <div class="rule-direction-icon {{#if egress}}icon-outbound{{else}}icon-inbound{{/if}} tooltip" data-tooltip="{{#if egress}}Outbound{{else}}Inbound{{/if}}"></div>
           <div class="rule-reference">{{connection}}</div>
         </div>
 <!--         <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div> -->

@@ -160,12 +160,13 @@ a {
 #header .header-menu .dropdown a {
 	display: block;
 	padding: 0 20px;
+	color: #eee;
 }
 
 #header .dropdown:hover,
 #header .dropdown.open {
 	background-color: #171517;
-	color: fff;
+/*	color: #fff;*/
 }
 
 .notification-counter {
@@ -2804,7 +2805,7 @@ a.sidebar-hider {
 	display: none;
 	width: 15px;
 	height: 15px;
-	background-color: #eee;
+	/*background-color: #eee;*/
 	position: absolute;
 	top: 25px;
 	right: 5px;
@@ -2818,7 +2819,6 @@ a.sidebar-hider {
 .rule-direction-icon {
 	width      : 16px;
 	height     : 16px;
-	background : red;
 }
 
 .rule-protocol {
@@ -2953,9 +2953,6 @@ a.sidebar-hider {
 
 .network-remove-icon {
 	cursor: pointer;
-	width: 16px;
-	height: 16px;
-	background: url('../images/ide/icon-remove.png');
 }
 
 .network-list li .toggle-eip {
@@ -3212,7 +3209,7 @@ a.action-link:hover {
 }
 
 .property-info {
-	font-size     : 12px;
+	font-size     : 13px;
 	color         : #BBB;
 	padding       : 5px;
 	background    : #5E5E5E;
@@ -3814,20 +3811,6 @@ a.action-link:hover {
 	height      : 16px;
 	text-align  : center;
 	line-height : 16px;
-}
-
-.sg-rule-inbound, .sg-rule-outbound {
-	width   : 16px;
-	height  : 16px;
-	display : block;
-}
-
-.sg-rule-inbound:before {
-	content : ">";
-}
-
-.sg-rule-outbound:before {
-	content : ">";
 }
 
 .sg-proto-option {

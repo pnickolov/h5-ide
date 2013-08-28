@@ -35,7 +35,15 @@
 .icon-close-circle,
 .icon-info,
 .icon-user,
-.icon-password {
+.icon-password,
+.icon-notification,
+.icon-message,
+.icon-remove,
+.icon-allow,
+.icon-deny,
+.icon-outbound,
+.icon-inbound,
+.icon-refresh {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -68,3 +76,11 @@
 .icon-info:before { content : "\F127"; }
 .icon-password:before { content : "\F128"; }
 .icon-user:before { content : "\F129"; }
+.icon-notification:before { content : "\F12A"; }
+.icon-message:before { content : "\F12B"; }
+.icon-remove:before { content : "\F12C"; }
+.icon-allow:before { content : "\F12D"; }
+.icon-deny:before { content : "\F12E"; }
+.icon-outbound:before { content : "\F12F"; }
+.icon-inbound:before { content : "\F130"; }
+.icon-refresh:before { content : "\F131"; }

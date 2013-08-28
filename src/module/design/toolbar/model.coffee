@@ -319,7 +319,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_running = true
                     item_state_map[id].is_pending = false
 
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
+                region = value
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id, region
 
             else if flag is 'STOPPED_APP'
                 if id of item_state_map
@@ -327,7 +328,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_running = false
                     item_state_map[id].is_pending = false
 
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
+                region = value
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id, region
 
             else if flag is 'TERMINATED_APP'
                 (delete item_state_map[id]) if id of item_state_map
@@ -337,7 +339,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 if id of item_state_map
                     item_state_map[id].is_pending = true
 
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
+                region = value
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id, region
 
             if id == MC.canvas_data.id and is_tab
                 me.set 'item_flags', item_state_map[id]
@@ -509,7 +512,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me = this
 
             if flag isnt 'RUN_STACK'
-                me.setFlag id, 'PENDING_APP'
+                me.setFlag id, 'PENDING_APP', region
 
             if !result.is_error
 
@@ -548,7 +551,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
 
                 if flag isnt 'RUN_STACK'
-                    me.setFlag id, 'STOPPED_APP'
+                    me.setFlag id, 'STOPPED_APP', region
 
         reqHanle : (flag, id, name, req, dag) ->
             me = this
@@ -564,9 +567,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 when constant.OPS_STATE.OPS_STATE_INPROCESS
                     if flag is 'RUN_STACK'
 
-                        flag_list.is_inprocess = true
                         if 'dag' of dag # changed request
-
+                            flag_list.is_inprocess = true
                             flag_list.steps = dag.dag.step.length
 
                             # check rollback
@@ -585,7 +587,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         flag_list.is_failed = true
                         flag_list.err_detail = req.data
                     else
-                        me.setFlag id, 'STOPPED_APP'
+                        me.setFlag id, 'STOPPED_APP', region
 
                 when constant.OPS_STATE.OPS_STATE_DONE
 
@@ -600,11 +602,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             flag_list.is_done = true
 
                         when 'START_APP'
-                            me.setFlag id, 'RUNNING_APP'
+                            me.setFlag id, 'RUNNING_APP', region
                             ide_event.trigger ide_event.STARTED_APP, name, id
 
                         when 'STOP_APP'
-                            me.setFlag id, 'STOPPED_APP'
+                            me.setFlag id, 'STOPPED_APP', region
                             ide_event.trigger ide_event.STOPPED_APP, name, id
 
                         when 'TERMINATE_APP'

@@ -86,6 +86,12 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 model.updateTab original_tab_id, tab_id
                 null
 
+            #listen
+            ide_event.onLongListen ide_event.UPDATA_TAB_ICON, ( flag, id, region ) ->
+                console.log 'UPDATE_TAB_ICON, flag:' + flag + ', id:' + id
+                if id.indexOf('app-') == 0
+                    model.getAppResourcesService region_name, id
+
             null
 
     #private

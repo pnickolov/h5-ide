@@ -65,7 +65,7 @@
 		</div>
 		<ul class="sg-rule-list property-list" id="sglist-rule-list">
 			{{#each sg_rule_list}}
-			<li data-inbound="true">
+			<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-iprange="{{IpRanges}}" data-direction="{{Direction}}">
 				<div class="rule-list-row">
 					<div data-id="{{Direction}}" class='rule-direction-icon tooltip' data-tooltip="{{Direction}}"></div>
 					<div data-id="{{IpRanges}}" class='rule-reference'>

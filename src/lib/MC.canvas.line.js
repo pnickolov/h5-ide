@@ -34,7 +34,7 @@ MC.canvas.initLine = function() {
         if (route.InstanceId) {
           lines.push([route.InstanceId.split('.')[0].slice(1), comp_uid, 'instance-rtb', 'rtb-tgt']);
         }
-        if (route.GatewayId) {
+        if (route.GatewayId && route.GatewayId !== 'local') {
           gateway_port = null;
           rtb_port = null;
           if (route.GatewayId.indexOf('Internet') >= 0) {

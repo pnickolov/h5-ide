@@ -74,12 +74,8 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
 
             $( '.property-details' ).html template data
 
-            ### env:dev ###
             if isApp
-                #new ZeroClipboard( $("#property_app_asg .icon-copy") )
                 zeroclipboard.copy $( "#property_app_asg .icon-copy" )
-            ### env:dev:end ###
-
             null
 
         setASGCoolDown : ( event ) ->

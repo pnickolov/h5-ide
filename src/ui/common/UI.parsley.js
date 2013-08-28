@@ -1883,17 +1883,18 @@ errortip.clear = function ( event )
 {
   if ( event ){
     var errorPrefix = 'errortip-';
-    var id;
+    var id, force = false;
 
     if ( event === Object( event ) ) {
       id = errortip.findError( $( event.currentTarget ) ).attr( 'id' );
     }
     else {
+      force = true;
       id = event;
     }
 
     setTimeout( function() {
-      if ( !errortip.isEnter ) {
+      if ( !errortip.isEnter || force ) {
         $( '#' + errorPrefix + id ).remove();
       }
     }, 100);

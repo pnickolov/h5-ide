@@ -93,8 +93,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					sgHideCheck = true
 
 				sgIsDefault = false
-				if sgIsDefault.name is 'DefaultSG'
-					sgComp = true
+				if sgComp.name is 'DefaultSG'
+					sgIsDefault = true
 
 				# need to display
 				sgDisplayObj =
@@ -108,6 +108,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					sgIsDefault : sgIsDefault
 					sgFull      : sg_full
 					sgColor     : MC.aws.sg.getSGColor uid
+					isStackSG   : stackType
 
 				displaySGAry.push sgDisplayObj
 

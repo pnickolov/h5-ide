@@ -29,7 +29,13 @@
 .icon-export-json,
 .icon-caret-down,
 .icon-terminate,
-.icon-close {
+.icon-close,
+.icon-caret-right,
+.icon-caret-left,
+.icon-close-circle,
+.icon-info,
+.icon-user,
+.icon-password {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -56,3 +62,9 @@
 .icon-caret-down:before { content : "\F121"; }
 .icon-close:before { content : "\F122"; }
 .icon-terminate:before { content : "\F123"; }
+.icon-caret-right:before { content : "\F124"; }
+.icon-caret-left:before { content : "\F125"; }
+.icon-close-circle:before { content : "\F126"; }
+.icon-info:before { content : "\F127"; }
+.icon-password:before { content : "\F128"; }
+.icon-user:before { content : "\F129"; }

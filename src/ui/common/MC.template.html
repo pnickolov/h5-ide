@@ -50,10 +50,11 @@
        		<div class="modal-text-wraper">
        			<div class="modal-center-align-helper">
 		            <div class="modal-text">{{body}}</div>
+		            {{#if input}}
+	                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
+	            	{{/if}}
 	            </div>
-            	{{#if input}}
-               <input id="modal-input-value" class="input" type="text" value="{{input}}" />
-            	{{/if}}
+            	
             </div>
        </div>
        <div class="modal-footer">

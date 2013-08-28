@@ -14,7 +14,7 @@
 
 <section class="toolbar-btn-group">
 	{{#if item_flags.is_duplicate}}
-	<a href="#" class="modal btn-toolbar tooltip icon-duplicate" data-tooltip="Duplicate Stack" id="toolbar-duplicate" data-modal-template="modalApp" data-modal-data='{"title":"Rename Stack", "body":"Stack Name:", "input":"{{item_flags.name}}", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"></a>
+	<a href="#" class="modal btn-toolbar tooltip icon-duplicate" data-tooltip="Duplicate Stack" id="toolbar-duplicate" data-modal-template="modalApp" data-modal-data='{"title":"Duplicate Stack", "body":"New Stack Name:", "input":"{{item_flags.name}}", "confirm":"Duplicate", "color":"blue" }' data-modal-dismiss="true"></a>
 	{{else}}
 	<a href="#" class="btn-toolbar tooltip icon-duplicate disabled" data-tooltip="Duplicate Stack"></a>
 	{{/if}}

@@ -258,9 +258,33 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			checkbox = {}
 
-			checkbox.ebsOptimized = true if MC.canvas_data.component[ uid ].resource.EbsOptimized == true or MC.canvas_data.component[ uid ].resource.EbsOptimized == 'true'
+			resource = MC.canvas_data.component[ uid ].resource
 
-			checkbox.monitoring = true if MC.canvas_data.component[ uid ].resource.InstanceMonitoring == 'enabled'
+			checkbox.ebsOptimized = "" + resource.EbsOptimized is 'true'
+			checkbox.monitoring   = resource.InstanceMonitoring is 'enabled'
+
+			watches = []
+			asg = null
+			monitorEnabled = true
+			for id, comp of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+					watches.push comp
+				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					if comp.resource.LaunchConfigurationName.indexOf( uid ) != -1
+						asg = comp
+
+			for watch in watches
+				if watch.resource.MetricName.indexOf("StatusCheckFailed") != -1
+					for d in watch.resource.Dimensions
+						if d.value and d.value.indexOf( asg.uid ) != -1
+							monitorEnabled = false
+							break
+
+					if not monitorEnabled
+						break
+
+			checkbox.monitorEnabled = monitorEnabled
+
 
 			#checkbox.base64Encoded = true if MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == true or MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == "true"
 

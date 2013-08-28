@@ -63,7 +63,6 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
 
             policies = []
             for uid, policy of data.policies
-                policy.uid        = uid
                 policy.metric     = metricMap[ policy.metric ]
                 policy.adjusttype = adjustMap[ policy.adjusttype ]
                 policy.unit       = unitMap[ policy.metric ]
@@ -98,29 +97,29 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                 this.trigger 'SET_ASG_NAME', event.target.value
 
         setASGMin : ( event ) ->
-            min = @$el.find '#property-asg-min'
-            max = @$el.find '#property-asg-max'
+            min = $( event.currentTarget )
 
-            min.parsley 'custom', ( val ) ->
+            min.parsley 'custom', ( val ) =>
                 if +val < 1
                     return 'ASG size must be equal or greater than 1'
+                max = @$el.find '#property-asg-max'
                 if +val >= +max.val()
                     return 'Minimum Size must be <= Maximum Size.'
 
-            if min.parsley 'validate'
+            if min.parsley 'validateForm'
                 @trigger 'SET_ASG_MIN', min.val()
 
         setASGMax : ( event ) ->
-            min = @$el.find '#property-asg-min'
-            max = @$el.find '#property-asg-max'
+            max = $( event.currentTarget )
 
-            max.parsley 'custom', ( val ) ->
+            max.parsley 'custom', ( val ) =>
                 if +val < 1
                     return 'ASG size must be equal or greater than 1'
+                min = @$el.find '#property-asg-min'
                 if +val <= +min.val()
                     return 'Minimum Size must be <= Maximum Size'
 
-            if max.parsley 'validate'
+            if max.parsley 'validateForm'
                 @trigger 'SET_ASG_MAX', max.val()
 
         setASGDesireCapacity : ( event ) ->
@@ -271,6 +270,8 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                 if $selected
                     $selectbox.find(".selected").removeClass "selected"
                     $selectbox.find(".selection").html $selected.addClass("selected").html()
+
+            $("#asg-policy-step-wrapper").toggle( $("#asg-policy-adjust-type").find(".selected").data("id") == "PercentChangeInCapacity" )
 
         addScalingPolicy : ( event ) ->
             if $( event.currentTarget ).hasClass "disabled"

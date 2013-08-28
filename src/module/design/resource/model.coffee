@@ -74,6 +74,10 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                         ami_list.push value
                         null
 
+                    #sort ami list
+                    ami_list.sort (a, b) ->
+                        return if a.osType >= b.osType then 1 else -1
+
                     console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
                     if region_name == MC.canvas.data.get('region')
                         me.set 'quickstart_ami', ami_list

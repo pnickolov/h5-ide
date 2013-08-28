@@ -185,11 +185,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
         delSNS : ( event ) ->
 
-            $li = $(this).closest("li")
+            $li = $(event.currentTarget).closest("li")
             uid = $li.data("uid")
             $li.remove()
 
-            this.trigger "DEL_SUBSCRIPTION", uid
+            this.updateSNSList null, this.model.attributes.has_asg, true
 
             this.trigger 'DELETE_SUBSCRIPTION', uid
 

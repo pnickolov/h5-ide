@@ -96,6 +96,11 @@ define [ 'MC', 'event', 'handlebars'
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null
 
+
+		MC.data.account_attribute = {}
+		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'' } for r in constant.REGION_KEYS
+
+
 		#############################
 		#  WebSocket
 		#############################

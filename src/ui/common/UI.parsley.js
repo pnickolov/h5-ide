@@ -561,6 +561,7 @@
         if (this.$element.data('required-rollback') === true) {
           this.isRequiredRollback = true;
 
+
           this.$element
             .on('focus', function() {
               $(this).data('pre-value', $(this).val());
@@ -1011,6 +1012,11 @@
       } else {
         parent = this.$element.closest('form, [data-bind=true]');
         parent = parent.parsley();
+      }
+
+      for ( var i in parent.items ) {
+        var item = parent.items[ i ];
+        item.options.validateIfUnchanged = true;
       }
       return parent.validate();
     }
@@ -1664,7 +1670,7 @@
     , animate: false                             // fade in / fade out error messages
     , animateDuration: 300                      // fadein/fadout ms time
     , focus: 'first'                            // 'fist'|'last'|'none' which error field would have focus first on form validation
-    , validationMinlength: 3                    // If trigger validation specified, only if value.length > validationMinlength
+    , validationMinlength: 1                    // If trigger validation specified, only if value.length > validationMinlength
     , successClass: 'parsley-success'           // Class name on each valid input
     , errorClass: 'parsley-error'               // Class name on each invalid input
     , errorMessage: false                       // Customize an unique error message showed if one constraint fails
@@ -1724,6 +1730,10 @@ var getForm = function( context ) {
 
 var formAddItem = function( form, target ) {
   var parsleyInstance = form.data( 'parsleyForm' );
+  for ( var i in parsleyInstance.items ) {
+    var item = parsleyInstance.items[ i ];
+    if ( item.element.get( 0 ) === target ) return;
+  }
   parsleyInstance.addItem(target);
 }
 
@@ -1845,6 +1855,7 @@ var errortip = function (event)
 
 errortip.timer = null;
 errortip.firstTimer = {};
+errortip.isEnter = false;
 
 errortip.findError = function( target ) {
   return target.next('.parsley-error-list');
@@ -1871,7 +1882,11 @@ errortip.clear = function ( event )
       id = event;
     }
 
-    $( '#' + errorPrefix + id ).remove();
+    setTimeout( function() {
+      if ( !errortip.isEnter ) {
+        $( '#' + errorPrefix + id ).remove();
+      }
+    }, 100);
     errortip.firstTimer[ id ] && clearInterval( errortip.firstTimer[ id ] )
   } else {
     $('.errortip_box').remove();
@@ -1881,10 +1896,20 @@ errortip.clear = function ( event )
 
 };
 
+errortip.enter = function ( event ) {
+  errortip.isEnter = true;
+  errortip.call( this, event );
+}
+
+errortip.leave = function ( event ) {
+  errortip.isEnter = false;
+  errortip.clear.call( this, event );
+}
+
 $(document).ready(function ()
 {
-  $(document.body).on('mouseenter', '.parsley-error', errortip);
-  $(document.body).on('mouseleave', '.parsley-error', errortip.clear);
+  $(document.body).on('mouseenter', '.parsley-error', errortip.enter);
+  $(document.body).on('mouseleave', '.parsley-error', errortip.leave);
 });
 
 Util.errortip = errortip;

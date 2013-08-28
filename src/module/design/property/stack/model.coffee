@@ -144,6 +144,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
         deleteSNS : ( uid ) ->
 
+            sub_list = this.get 'subscription'
+            for sub, idx in sub_list
+                if sub.uid is uid
+                    sub_list.splice idx, 1
+                    break
+
             delete MC.canvas_data.component[uid]
 
             null
@@ -259,140 +265,149 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
         getCost : ->
             me = this
 
-            cost_list = []
-            total_fee = 0
+            result = MC.aws.aws.getCost MC.canvas_data
 
-            region = MC.canvas_data.region
-            feeMap = MC.data.config[region]
+            me.set 'cost_list', result.cost_list
+            me.set 'total_fee', result.total_fee
 
-            #no config data load
-            if not ( feeMap and feeMap.ami and feeMap.price )
-                me.set 'cost_list', cost_list
-                me.set 'total_fee', total_fee
-                return false
+            # cost_list = []
+            # total_fee = 0
 
-            _.map MC.canvas_data.component, (item) ->
-                uid = item.uid
-                name = item.name
-                type = item.type
+            # region = MC.canvas_data.region
+            # feeMap = MC.data.config[region]
 
-                # instance
-                if item.type is 'AWS.EC2.Instance'
-                    size = item.resource.InstanceType
-                    imageId = item.resource.ImageId
+            # #no config data load
+            # if not ( feeMap and feeMap.ami and feeMap.price )
+            #     me.set 'cost_list', cost_list
+            #     me.set 'total_fee', total_fee
+            #     return false
 
-                    ami = v for k,v of feeMap.ami when v.imageId == imageId
+            # _.map MC.canvas_data.component, (item) ->
+            #     uid = item.uid
+            #     name = item.name
+            #     type = item.type
 
-                    if 'ami' of feeMap and imageId of feeMap.ami
+            #     # instance
+            #     if item.type is 'AWS.EC2.Instance'
+            #         size = item.resource.InstanceType
+            #         imageId = item.resource.ImageId
 
-                        if feeMap.ami[imageId].osType is 'win'
-                            os = 'windows'
-                        else
-                            os = 'linux-other'
+            #         ami = v for k,v of feeMap.ami when v.imageId == imageId
 
-                        size_list = size.split('.')
-                        fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
-                        unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
+            #         if 'ami' of feeMap and imageId of feeMap.ami
 
-                        cost_list.push { 'resource' : name, 'size' : size, 'fee' : fee + (if unit is 'hour' then '/hr' else '/mo') }
+            #             if feeMap.ami[imageId].osType is 'win'
+            #                 os = 'windows'
+            #             else
+            #                 os = 'linux-other'
 
-                        total_fee += fee * 24 * 30
+            #             size_list = size.split('.')
+            #             fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
+            #             unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
 
-                        ## detail monitor
-                        if item.resource.Monitoring is 'enabled'
+            #             cost_list.push { 'resource' : name, 'size' : size, 'fee' : fee + (if unit is 'hour' then '/hr' else '/mo') }
 
-                            fee = 3.50
-                            cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee + '/mo' }
-                            total_fee += fee
+            #             total_fee += fee * 24 * 30
 
-                # elb
-                else if item.type is 'AWS.ELB'
-                    if 'price' of feeMap and 'elb' of feeMap.price
-                        elb = i for i in feeMap.price.elb when i.unit is 'perELBHour'
+            #             ## detail monitor
+            #             if item.resource.Monitoring is 'enabled'
 
-                        cost_list.push { 'type' : type, 'resource' : name, 'fee' : elb.fee + '/hr' }
+            #                 fee = 3.50
+            #                 cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee + '/mo' }
+            #                 total_fee += fee
 
-                        total_fee += elb.fee * 24 * 30
+            #     # elb
+            #     else if item.type is 'AWS.ELB'
+            #         if 'price' of feeMap and 'elb' of feeMap.price
+            #             elb = i for i in feeMap.price.elb when i.unit is 'perELBHour'
 
-                # volume
-                else if item.type is 'AWS.EC2.EBS.Volume'
-                    if 'price' of feeMap and 'ebs' of feeMap.price
-                        if item.resource.VolumeType is 'standard'
-                            vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
-                        else
-                            vol = i for i in feeMap.price.ebs.ebsPIOPSVols when i.unit is 'perGBmoProvStorage'
+            #             cost_list.push { 'type' : type, 'resource' : name, 'fee' : elb.fee + '/hr' }
 
-                        cost_list.push { 'resource' : name, 'size' :  item.resource.Size + 'G', 'fee' : vol.fee + '/perGBmo' }
+            #             total_fee += elb.fee * 24 * 30
 
-                        total_fee += parseFloat(vol.fee * item.resource.Size)
+            #     # volume
+            #     else if item.type is 'AWS.EC2.EBS.Volume'
+            #         if 'price' of feeMap and 'ebs' of feeMap.price
+            #             if item.resource.VolumeType is 'standard'
+            #                 vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
+            #             else
+            #                 vol = i for i in feeMap.price.ebs.ebsPIOPSVols when i.unit is 'perGBmoProvStorage'
 
-                # asg
-                else if item.type is 'AWS.AutoScaling.Group'
-                    cap = item.resource.DesiredCapacity
+            #             # get attached instanc name
+            #             instance_uid    = item.resource.AttachmentSet.InstanceId.split('@')[1].split('.')[0]
+            #             instance_name   = MC.canvas_data.component[instance_uid].name
 
-                    config_uid = item.resource.LaunchConfigurationName.split('@')[1].split('.')[0]
-                    config = MC.canvas_data.component[config_uid]
+            #             cost_list.push { 'resource' : instance_name + ' - ' + name, 'size' :  item.resource.Size + 'G', 'fee' : vol.fee + '/perGBmo' }
 
-                    if config
+            #             total_fee += parseFloat(vol.fee * item.resource.Size)
 
-                        asg_price = 0
+            #     # asg
+            #     else if item.type is 'AWS.AutoScaling.Group'
+            #         cap = item.resource.DesiredCapacity
 
-                        imageId = config.resource.ImageId
-                        size    = config.resource.InstanceType
+            #         config_uid = item.resource.LaunchConfigurationName.split('@')[1].split('.')[0]
+            #         config = MC.canvas_data.component[config_uid]
 
-                        ami = v for k,v of feeMap.ami when v.imageId == imageId
+            #         if config
 
-                        if 'ami' of feeMap and imageId of feeMap.ami
+            #             asg_price = 0
 
-                            if feeMap.ami[imageId].osType is 'win'
-                                os = 'windows'
-                            else
-                                os = 'linux-other'
+            #             imageId = config.resource.ImageId
+            #             size    = config.resource.InstanceType
 
-                            size_list = size.split('.')
-                            fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
-                            unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
+            #             ami = v for k,v of feeMap.ami when v.imageId == imageId
 
-                            if unit is 'hour'
-                                asg_price += fee * 24 * 30
-                            else
-                                asg_price += fee
+            #             if 'ami' of feeMap and imageId of feeMap.ami
 
-                        if config.resource.BlockDeviceMapping
-                            for block in config.resource.BlockDeviceMapping
-                                vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
-                                asg_price += block.Ebs.VolumeSize * vol.fee
+            #                 if feeMap.ami[imageId].osType is 'win'
+            #                     os = 'windows'
+            #                 else
+            #                     os = 'linux-other'
 
-                        if asg_price > 0
+            #                 size_list = size.split('.')
+            #                 fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
+            #                 unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
 
-                            cost_list.push {'resource' : name, 'size' : cap, 'fee' : asg_price.toFixed(3) + '/mo'}
-                            total_fee += asg_price * cap
+            #                 if unit is 'hour'
+            #                     asg_price += fee * 24 * 30
+            #                 else
+            #                     asg_price += fee
 
-                        ## detail monitor
-                        if config.resource.InstanceMonitoring is 'enabled'
+            #             if config.resource.BlockDeviceMapping
+            #                 for block in config.resource.BlockDeviceMapping
+            #                     vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
+            #                     asg_price += block.Ebs.VolumeSize * vol.fee
 
-                            fee = 3.50
-                            cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee + '/mo' }
-                            total_fee += fee
+            #             if asg_price > 0
 
-                ## alarm
-                else if item.type is 'AWS.CloudWatch.CloudWatch'
-                    period = parseInt(item.resource.Period, 10)
-                    if period and period <= 300
-                        fee = 0.10
-                        cost_list.push {'resource' : name, 'size' : '', 'fee' : fee + '/mo'}
-                        total_fee += fee
+            #                 cost_list.push {'resource' : name, 'size' : cap, 'fee' : asg_price.toFixed(3) + '/mo'}
+            #                 total_fee += asg_price * cap
 
-                null
+            #             ## detail monitor
+            #             if config.resource.InstanceMonitoring is 'enabled'
 
-            # sort with type
-            cost_list.sort (a, b) ->
-                return if a.type <= b.type then 1 else -1
-            me.set 'cost_list', cost_list
+            #                 fee = 3.50
+            #                 cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee + '/mo' }
+            #                 total_fee += fee
 
-            if total_fee > 0 then me.set 'total_fee', parseFloat(total_fee).toFixed(2)
+            #     ## alarm
+            #     else if item.type is 'AWS.CloudWatch.CloudWatch'
+            #         period = parseInt(item.resource.Period, 10)
+            #         if period and period <= 300
+            #             fee = 0.10
+            #             cost_list.push {'resource' : name, 'size' : '', 'fee' : fee + '/mo'}
+            #             total_fee += fee
 
-            me.trigger 'UPDATE_COST_LIST'
+            #     null
+
+            # # sort with type
+            # cost_list.sort (a, b) ->
+            #     return if a.type <= b.type then 1 else -1
+            # me.set 'cost_list', cost_list
+
+            # if total_fee > 0 then me.set 'total_fee', parseFloat(total_fee).toFixed(2)
+
+            # me.trigger 'UPDATE_COST_LIST'
 
             null
 

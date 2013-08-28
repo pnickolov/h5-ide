@@ -21,7 +21,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         defaults :
             'item_flags'    : null
 
-
         initialize : ->
 
             me = this

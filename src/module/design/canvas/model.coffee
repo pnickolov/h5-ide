@@ -1009,7 +1009,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				MC.canvas.remove $("#" + line_id)[0]
 
-
+			else
+				MC.canvas.select line_id
 
 		doCreateLine : ( line_id ) ->
 
@@ -1266,6 +1267,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 			if not (MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC and (portMap['elb-sg-in'] or portMap['elb-sg-out']))
+
+				# Prevent SG Rule create from AMI to attached ENI
+				eni_comp = MC.canvas_data.component[ portMap["eni-sg"] ]
+				if eni_comp and eni_comp.resource.Attachment.InstanceId.indexOf( portMap["instance-sg"] ) isnt -1
+					return "The Network Interface is attached to the instance. No need to connect them by security group rule."
+
 				for key, value of portMap
 					if key.indexOf('sg') >= 0
 						this.trigger 'CREATE_SG_CONNECTION', line_id

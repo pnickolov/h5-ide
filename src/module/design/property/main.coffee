@@ -89,6 +89,11 @@ define [ 'jquery',
 
 				else if type == 'component'
 
+					# Cannot find resource for app
+					if tab_type is "OPEN_APP" and not MC.data.resource_list[MC.canvas_data.region][ uid ]
+						notification "error", "Resource's data is not available, please refresh."
+						return
+
 					#show stack property
 					if uid is ''
 						stack_main.loadModule stack_main, tab_type

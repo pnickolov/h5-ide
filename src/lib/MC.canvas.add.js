@@ -1041,10 +1041,6 @@ MC.canvas.add = function (flag, option, coordinate)
 					break;
 			}
 
-
-			//update sg color
-			MC.canvas.updateSG( group.id );
-
 			break;
 		//***** instance end *****//
 
@@ -2178,6 +2174,16 @@ MC.canvas.add = function (flag, option, coordinate)
 	if (create_mode)
 	{
 		$("#svg_canvas").trigger("CANVAS_COMPONENT_CREATE", group.id);
+	}
+
+	//update sg color
+	if (
+			type === 'AWS.EC2.Instance'
+			|| type === 'AWS.ELB'
+			|| type === 'AWS.VPC.NetworkInterface'
+		)
+	{
+		MC.canvas.updateSG( group.id );
 	}
 
 	return group;

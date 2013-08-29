@@ -380,10 +380,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
 			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
 
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel instanceUID
-
-
 			# remove from eni sg
 			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
 
@@ -420,10 +416,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
 			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
-
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel instanceUID
-
 
 			# add to eni sg
 			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
@@ -787,9 +779,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 														MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
 						return false
-
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel uid
 
 			null
 

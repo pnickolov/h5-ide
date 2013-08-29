@@ -1195,8 +1195,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'Origin'               : ""
 				}
 
-				MC.canvas.select(line_id)
-
 			# Instance <==> RouteTable
 			else if portMap['instance-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
@@ -1211,8 +1209,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'Origin'               : ""
 				}
 
-				MC.canvas.select(line_id)
-
 			# VGW <==> RouteTable
 			else if portMap['vgw-tgt'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
@@ -1226,8 +1222,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'State'                : "",
 					'Origin'               : ""
 				}
-
-				MC.canvas.select(line_id)
 
 			# Eni <==> RouteTable
 			else if portMap['eni-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
@@ -1246,7 +1240,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# VGW <==> CGW
 			else if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
-				MC.canvas.select(line_id)
 
 			else if portMap['elb-sg-out'] and portMap['launchconfig-sg']
 

@@ -1833,6 +1833,13 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					y : vpc_coor[1] + (vpc_data.size[1] - component_size[1]) / 2
 
 				MC.canvas.add resource_type.AWS_VPC_InternetGateway, node_option, coordinate
+
+
+
+		zoomedDropError : () ->
+
+			notification 'warning', lang.ide.CVS_MSG_ERR_ZOOMED_DROP_ERROR
+			null
 	}
 
 	model = new CanvasModel()

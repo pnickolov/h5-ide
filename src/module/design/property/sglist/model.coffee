@@ -216,8 +216,15 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				if parent_model.unAssignSGToComp
 					parent_model.unAssignSGToComp sgUID
 
+			#update sg color label
+			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'
+
+
 		deleteSGFromComp : (sgUID) ->
 			delete MC.canvas_data.component[sgUID]
+
+			#update sg color label
+			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'
 	}
 
 	model = new SGListModel()

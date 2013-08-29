@@ -147,6 +147,15 @@ define [ 'jquery',
 
             sglist_main.loadModule model, true
 
+            # update instance state
+            ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, (region, app_id) ->
+                console.log 'update instance state, UPDATE_APP_RESOURCE'
+
+                #model.updateState( region, app_id)
+
+                null
+
+
     unLoadModule = () ->
         current_view.off()
         current_model.off()

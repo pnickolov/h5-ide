@@ -177,21 +177,49 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			"Groups": []
 			}
 
-		tmp = {}
-		tmp.uid = uid
-		tmp.name = sg_name
-		tmp.color = getNextSGColor()
-
-		MC.canvas_property.sg_list.push tmp
-
 		data = MC.canvas.data.get('component')
 
 		data[uid] = component_data
 
 		MC.canvas.data.set('component', data)
 
+		#add new sg to MC.canvas_property.sg_list
+		addSGToProperty component_data
+
 		return uid
 
+
+	addSGToProperty = (sg) ->
+		#add sg to MC.canvas_property.sg_list
+
+		found = false
+		prop  = MC.canvas_property
+
+		if !prop
+
+			console.log '[addSGToProperty] no canvas_property found'
+
+		else
+
+			#check exist
+			$.each prop.sg_list, (i, item) ->
+
+				if sg.id == item.uid
+					found = true
+					return false
+				null
+
+			if !found
+
+				prop.sg_list.push {
+					color  : getNextSGColor()
+					member : 0
+					name   : sg.name
+					uid    : sg.uid
+				}
+
+
+		null
 
 
 	# initSGColor = () ->
@@ -229,7 +257,7 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			#random color
 			color = Math.floor(Math.random() * 0xFFFFFF).toString(16)
 			while color.length < 6
-			  color = '0' + color
+				color = '0' + color
 
 		'#' + color
 
@@ -263,21 +291,27 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			#random next_color
 			next_color = Math.floor(Math.random() * 0xFFFFFF).toString(16)
 			while next_color.length < 6
-			  next_color = '0' + next_color
+				next_color = '0' + next_color
 
 		#no '#'
 		next_color
 
+
 	updateSGColorLabel = ( uid ) ->
 
-		#update sg color label
-		MC.canvas.updateSG uid
+		if uid
+			MC.canvas.updateSG uid
+		else
+			console.error '[updateSGColorLabel] not found uid: ' + uid
+
+		null
 
 
 	#public
-	getAllRefComp : getAllRefComp
-	getAllRule : getAllRule
-	getSgRuleDetail : getSgRuleDetail
-	createNewSG : createNewSG
-	getSGColor  : getSGColor
+	getAllRefComp      : getAllRefComp
+	getAllRule         : getAllRule
+	getSgRuleDetail    : getSgRuleDetail
+	createNewSG        : createNewSG
+	addSGToProperty    : addSGToProperty
+	getSGColor         : getSGColor
 	updateSGColorLabel : updateSGColorLabel

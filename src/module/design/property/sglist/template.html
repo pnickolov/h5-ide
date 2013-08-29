@@ -67,7 +67,7 @@
 			{{#each sg_rule_list}}
 			<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-iprange="{{IpRanges}}" data-direction="{{Direction}}">
 				<div class="rule-list-row">
-					<div data-id="{{Direction}}" class='rule-direction-icon tooltip' data-tooltip="{{Direction}}"></div>
+					<div data-id="{{Direction}}" class='rule-direction-icon tooltip icon-{{Direction}}' data-tooltip="{{Direction}}"></div>
 					<div data-id="{{IpRanges}}" class='rule-reference'>
 						{{IpRanges}}
 					</div>

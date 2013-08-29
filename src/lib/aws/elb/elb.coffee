@@ -43,6 +43,9 @@ define [ 'MC' ], ( MC ) ->
 			# add rule to default sg
 			MC.aws.elb.updateRuleToElbSG uid
 
+			#add sg to MC.canvas_property.sg_list
+			MC.aws.sg.addSGToProperty sgComp
+
 		null
 
 	getNewName = () ->

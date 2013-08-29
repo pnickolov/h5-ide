@@ -4,7 +4,7 @@ define({
 		'login-register' : 'New to MadeiraCloud? ',
 		'link-register'  : 'Register',
 		'error-msg-1'    : 'Username or email does not match the password.',
-		'error-msg-2'    : 'Hey, you fogot to provide a username or email.',
+		'error-msg-2'    : 'Hey, you forgot to enter a username or email.',
 		'link-foget'     : 'Forgot your Password?',
 		'login-user'     : 'Username or email',
 		'login-password' : 'Password',
@@ -110,6 +110,10 @@ define({
 		'CVS_CFM_ADD_IGW'                       : 'An Internet Gateway is Required',
 		'CVS_CFM_ADD_IGW_MSG'                   : 'Automatically add an internet gateway to allow this %s to be publicly addressable?',
 		// Add new strings below this comment. Move above once English has been confirmed
+		'CVS_TIP_EXPAND_W'   : 'Expand canvas in width',
+		'CVS_TIP_SHRINK_W'   : 'Shrink canvas in width',
+		'CVS_TIP_EXPAND_H'   : 'Expand canvas in height',
+		'CVS_TIP_SHRINK_H'   : 'Shrink canvas in height',
 
 
 		/******property module******/
@@ -121,9 +125,9 @@ define({
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
 		'PROP_MSG_WARN_INVALID_APP_NAME'		: 'App name is invalid.',
 		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type.',
-		// Add new strings below this comment. Move above once English has been confirmed
 		'PROP_TEXT_DEFAULT_SG_DESC'             : 'VPC Default Security Group',
 		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
+		// Add new strings below this comment. Move above once English has been confirmed
 
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',
@@ -131,14 +135,15 @@ define({
 
 		/****** process module ******/
 		'PROC_TITLE'                 : 'Starting your app...',
-		'PROC_RLT_DONE_TITLE'        : 'Everything goes smoothly!',
-		'PROC_RLT_DONE_SUB_TITLE'    : 'Your app will be open soon.',
-		'PROC_STEP_PREPARE'          : 'Preparing and Sending Request...',
-		'PROC_RLT_FAILED_TITLE'      : 'The app failed to start.',
-		'PROC_RLT_FAILED_SUB_TITLE'  : 'You may fix following error and run again.',
+		'PROC_RLT_DONE_TITLE'        : 'Everything went smoothly!',
+		'PROC_RLT_DONE_SUB_TITLE'    : 'Your app will automatically open soon.',
+		'PROC_STEP_PREPARE'          : 'Preparing to start app...',
+		'PROC_RLT_FAILED_TITLE'      : 'Error Starting App.',
+		'PROC_RLT_FAILED_SUB_TITLE'  : 'Please fix the following issues and try again:',
 		'PROC_ERR_INFO'              : 'Error Details',
 		'PROC_CLOSE_TAB'             : 'Close Tab',
-		'PROC_STEP_REQUEST'          : 'Processing Request',
+		'PROC_STEP_REQUEST'          : 'Processing',
+		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** miscellaneous ******/
 		'CFM_BTN_DELETE'   : 'Delete',
@@ -148,28 +153,29 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'service' : {
-		'ERROR_CODE_0_MESSAGE'  : '',//invoke api succeed
+		'ERROR_CODE_0_MESSAGE'  : '',//invoke API succeeded
 		'ERROR_CODE_1_MESSAGE'  : 'No data',
-		'ERROR_CODE_2_MESSAGE'  : 'Invalid api param',
+		'ERROR_CODE_2_MESSAGE'  : 'Invalid API Parameters',
 		'ERROR_CODE_3_MESSAGE'  : '',//no use
 		'ERROR_CODE_4_MESSAGE'  : '',//no use
 		'ERROR_CODE_5_MESSAGE'  : 'External error',
 		'ERROR_CODE_6_MESSAGE'  : '',//no use
 		'ERROR_CODE_7_MESSAGE'  : '',//for guest
 		'ERROR_CODE_8_MESSAGE'  : '',//no use
-		'ERROR_CODE_9_MESSAGE'  : 'Insufficient permission',
+		'ERROR_CODE_9_MESSAGE'  : 'Insufficient permissions',
 		'ERROR_CODE_10_MESSAGE' : '',//no use
 		'ERROR_CODE_11_MESSAGE' : '',//no use
-		'ERROR_CODE_12_MESSAGE' : 'Sorry, we are suffering from some technical issue, please try again later',
+		'ERROR_CODE_12_MESSAGE' : 'Sorry, we are suffering from some technical issues, please try again later',
 		'ERROR_CODE_13_MESSAGE' : '',//no use
 		'ERROR_CODE_14_MESSAGE' : '',//no use
 		'ERROR_CODE_15_MESSAGE' : 'Unknown AWS Error',
-		'ERROR_CODE_16_MESSAGE' : 'Sorry, AWS is suffering from some technical issue, please try again later',
+		'ERROR_CODE_16_MESSAGE' : 'Sorry, AWS is suffering from some technical issues, please try again later',
 		'ERROR_CODE_17_MESSAGE' : '',//no use
 		'ERROR_CODE_18_MESSAGE' : 'Invalid API Parameters',
 		'ERROR_CODE_19_MESSAGE' : 'Invalid session, please login again',
 		'ERROR_CODE_20_MESSAGE' : 'Sorry, this invitation has finished',//for guest
 		'ERROR_CODE_21_MESSAGE' : 'User has been blocked',
 		'ERROR_CODE_21_MESSAGE' : ''//no use
+		// Add new strings below this comment. Move above once English has been confirmed
 	}
 });

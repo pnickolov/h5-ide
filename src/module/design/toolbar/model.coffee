@@ -279,6 +279,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     if resource_source
                         MC.aws.aws.cacheResource resource_source, region
 
+                        #push event
+                        ide_event.trigger ide_event.UPDATE_APP_RESOURCE, region, app_id
+
                 else
                     #TO-DO
 

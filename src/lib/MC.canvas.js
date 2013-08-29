@@ -48,21 +48,27 @@ MC.canvas = {
 		switch (type)
 		{
 			case 'text':
-				if ( target.length == 0 ) {
+				if (target.length === 0)
+				{
 					target = $('#' + id).find("." + key);
 				}
+				
 				target.text(value);
 				break;
 
 			case 'image':
-				target.attr('href', value);
+				//target.attr('href', value);
+				target[ 0 ].setAttributeNS("http://www.w3.org/1999/xlink", "href", value);
 				break;
+
 			case 'eip':
 				target.attr('data-eip-state', value);
 				break;
+
 			case 'id':
 				target.attr('id', value);
 				break;
+
 			case 'color':
 				target.attr('style', 'fill:' + value);
 				break;

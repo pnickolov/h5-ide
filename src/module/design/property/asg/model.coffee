@@ -197,7 +197,9 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
         if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
           @set "has_sns_topic", true
 
-        else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration and comp.resource.AutoScalingGroupName.indexOf( uid ) != -1
+        else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
+          if comp.resource.AutoScalingGroupName.indexOf( uid ) is -1
+            continue
 
           type = comp.resource.NotificationType
 
@@ -218,47 +220,54 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
         else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
 
-            policies[comp_uid] = tmp =
-              adjusttype : comp.resource.AdjustmentType
-              adjustment : comp.resource.ScalingAdjustment
-              step       : comp.resource.MinAdjustmentStep
-              cooldown   : comp.resource.Cooldown
-              name       : comp.resource.PolicyName
-              uid        : comp_uid
+          if comp.resource.AutoScalingGroupName.indexOf( uid ) is -1
+            continue
 
-            for c_uid, c of MC.canvas_data.component
-              if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
-                continue
+          policies[comp_uid] = tmp =
+            adjusttype : comp.resource.AdjustmentType
+            adjustment : comp.resource.ScalingAdjustment
+            step       : comp.resource.MinAdjustmentStep
+            cooldown   : comp.resource.Cooldown
+            name       : comp.resource.PolicyName
+            uid        : comp_uid
 
-              if c.name isnt "#{comp.name}-alarm"
-                continue
+          alarmname = "#{comp.name}-alarm"
 
-              actions = [c.resource.InsufficientDataActions, c.resource.OKAction, c.resource.AlarmActions]
+          for c_uid, c of MC.canvas_data.component
+            if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+              continue
 
-              for action in actions
-                if action[0] and action[0].indexOf( comp_uid ) != -1
-                  tmp.evaluation = c.resource.ComparisonOperator
-                  tmp.metric     = c.resource.MetricName
-                  tmp.notify     = action.length is 2
-                  tmp.periods    = c.resource.EvaluationPeriods
-                  tmp.second     = c.resource.Period
-                  tmp.statistics = c.resource.Statistic
-                  tmp.threshold  = c.resource.Threshold
+            if c.name isnt alarmname
+              continue
 
-                  if c.resource.InsufficientDataActions.length > 0
-                    tmp.trigger = 'INSUFFICIANT_DATA'
-                  else if c.resource.OKAction.length > 0
-                    tmp.trigger = 'OK'
-                  else if c.resource.AlarmActions.length > 0
-                    tmp.trigger = 'ALARM'
+            actions = [c.resource.InsufficientDataActions, c.resource.OKAction, c.resource.AlarmActions]
 
-                  break
+            for action in actions
+              if action[0] and action[0].indexOf( comp_uid ) != -1
+                tmp.evaluation = c.resource.ComparisonOperator
+                tmp.metric     = c.resource.MetricName
+                tmp.notify     = action.length is 2
+                tmp.periods    = c.resource.EvaluationPeriods
+                tmp.second     = c.resource.Period
+                tmp.statistics = c.resource.Statistic
+                tmp.threshold  = c.resource.Threshold
 
-              break
+                if c.resource.InsufficientDataActions.length > 0
+                  tmp.trigger = 'INSUFFICIANT_DATA'
+                else if c.resource.OKAction.length > 0
+                  tmp.trigger = 'OK'
+                else if c.resource.AlarmActions.length > 0
+                  tmp.trigger = 'ALARM'
+
+                break
+
+            break
 
 
-
-      @set 'detail_monitor', MC.canvas_data.component[ MC.extractID( component.resource.LaunchConfigurationName ) ].resource.InstanceMonitoring is 'enabled'
+      lc_uid  = MC.extractID( component.resource.LaunchConfigurationName )
+      if lc_uid
+        lc_comp = MC.canvas_data.component[ lc_uid ]
+      @set 'detail_monitor', if lc_comp then lc_comp.resource.InstanceMonitoring is 'enabled' else false
 
       @set 'notification_type', nc_array
       @set 'policies', policies

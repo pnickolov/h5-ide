@@ -46,7 +46,7 @@
 	font-family: 'Lato';
 	font-style: bold;
 	font-weight: 700;
-	src: local('Lato'), url('../fonts/Lato-bold.ttf') format('truetype');
+	src: local('Lato'), url('../fonts/Lato-Bold.ttf') format('truetype');
 }
 
 /* CSS reset */
@@ -149,8 +149,8 @@ h6 {
 	font-size: 11.9px;
 }
 
-ul, 
-ol, 
+ul,
+ol,
 li {
 	margin: 0;
 	padding: 0;

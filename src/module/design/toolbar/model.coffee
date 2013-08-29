@@ -377,7 +377,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             data.has_instance_store_ami = me.isInstanceStore data
             if id.indexOf('stack-', 0) == 0   #save
-                stack_model.save { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
+                stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
             else    #new
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data

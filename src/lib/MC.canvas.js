@@ -4033,28 +4033,34 @@ MC.canvas.event.siderbarDrag = {
 					}
 				}
 			}
+
+			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+			{
+				event.data.shadow.animate({
+					'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
+					'top': coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
+					'opacity': 0
+				}, function ()
+				{
+					event.data.shadow.remove();
+				});
+			}
+			else
+			{
+				event.data.shadow.remove();
+			}
+		}
+		else
+		{
+			$("#svg_canvas").trigger("CANVAS_ZOOMED_DROP_ERROR");
+
+			event.data.shadow.remove();
 		}
 
 		$('.dropable-group').attr('class', function (index, key)
 		{
 			return key.replace('dropable-group ', '');
 		});
-
-		if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
-		{
-			event.data.shadow.animate({
-				'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
-				'top': coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
-				'opacity': 0
-			}, function ()
-			{
-				event.data.shadow.remove();
-			});
-		}
-		else
-		{
-			event.data.shadow.remove();
-		}
 
 		$('#overlayer').remove();
 

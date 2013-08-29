@@ -2707,12 +2707,13 @@ MC.canvas.event.dragable = {
 				canvas_offset = svg_canvas.offset(),
 				canvas_body = $('#canvas_body'),
 				platform = MC.canvas.data.get('platform'),
+				currentTarget = $(event.target),
 				shadow,
 				target_group_type;
 
 			if (node_type === 'AWS.AutoScaling.LaunchConfiguration')
 			{
-				if ($(event.target).is('.instance-volume'))
+				if (currentTarget.is('.instance-volume'))
 				{
 					MC.canvas.volume.show.call(event.target);
 				}
@@ -2721,6 +2722,20 @@ MC.canvas.event.dragable = {
 					MC.canvas.event.clearSelected();
 					MC.canvas.select(this.id);
 				}
+
+				return false;
+			}
+
+			if (currentTarget.is('.instance-volume'))
+			{
+				MC.canvas.volume.show.call(event.target);
+
+				return false;
+			}
+
+			if (currentTarget.is('.eip-status'))
+			{
+				MC.canvas.event.EIPstatus.call(event.target);
 
 				return false;
 			}
@@ -2848,23 +2863,9 @@ MC.canvas.event.dragable = {
 			var originalTarget = event.data.originalTarget,
 				originalTargetNode = $(originalTarget),
 				component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
-
-			if (originalTargetNode.is('.instance-volume'))
-			{
-				MC.canvas.volume.show.call(originalTarget);
-			}
-			else
-			{
-				if (originalTargetNode.is('.eip-status'))
-				{
-					MC.canvas.event.EIPstatus.call(originalTarget);
-				}
-				else
-				{
-					MC.canvas.select( target_id );
-					MC.canvas.volume.close();
-				}
-			}
+			
+			MC.canvas.select( target_id );
+			MC.canvas.volume.close();
 		}
 		else
 		{

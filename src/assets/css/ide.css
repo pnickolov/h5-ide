@@ -2813,16 +2813,25 @@ a.sidebar-hider {
 	position: absolute;
 	top: 25px;
 	right: 5px;
+	cursor: pointer;
 }
 
 .sg-rule-list li:hover .rule-remove-icon,
 .acl-rule-list li:hover .rule-remove-icon {
 	display: block;
+	color: #666;
+}
+
+.sg-rule-list li:hover .rule-remove-icon:hover,
+.acl-rule-list li:hover .rule-remove-icon:hover {
+	color: #ddd;
 }
 
 .rule-direction-icon {
-	width      : 16px;
-	height     : 16px;
+	width       : 32px;
+/*	height      : 32px;*/
+	/*line-height : 16px;*/
+	font-size   : 24px;
 }
 
 .rule-protocol {

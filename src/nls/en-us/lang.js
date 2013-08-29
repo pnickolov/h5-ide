@@ -110,6 +110,10 @@ define({
 		'CVS_CFM_ADD_IGW'                       : 'An Internet Gateway is Required',
 		'CVS_CFM_ADD_IGW_MSG'                   : 'Automatically add an internet gateway to allow this %s to be publicly addressable?',
 		// Add new strings below this comment. Move above once English has been confirmed
+		'CVS_TIP_EXPAND_W'   : 'Expand canvas in width',
+		'CVS_TIP_SHRINK_W'   : 'Shrink canvas in width',
+		'CVS_TIP_EXPAND_H'   : 'Expand canvas in height',
+		'CVS_TIP_SHRINK_H'   : 'Shrink canvas in height',
 
 
 		/******property module******/

@@ -43,7 +43,12 @@
 .icon-deny,
 .icon-outbound,
 .icon-inbound,
-.icon-refresh {
+.icon-refresh,
+.icon-edit,
+.icon-resize-right,
+.icon-resize-left,
+.icon-resize-down,
+.icon-resize-up {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -84,3 +89,8 @@
 .icon-outbound:before { content : "\F12F"; }
 .icon-inbound:before { content : "\F130"; }
 .icon-refresh:before { content : "\F131"; }
+.icon-edit:before {content: "\F132";}
+.icon-resize-right:before { content : "\F133"; }
+.icon-resize-left:before {content: "\F134";}
+.icon-resize-down:before { content : "\F135"; }
+.icon-resize-up:before {content: "\F136";}

@@ -37,7 +37,10 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 		updateUID : ( type ) ->
 			console.log 'updateUID'
 			if type is 'OLD_APP' or  type is 'OLD_STACK'
-				this.set 'get_uid', $( '#instance-property-detail' ).data 'uid'
+				instanceUID = $( '#instance-property-detail' ).data 'uid'
+				this.set 'get_uid', instanceUID
+				this.set 'uid', instanceUID
+
 
 		listen : ->
 			#listen
@@ -58,7 +61,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 		getUID  : ( uid ) ->
 			console.log 'getUID'
-			this.set 'get_uid', MC.canvas_data.component[ uid ].uid
+			instanceUID = MC.canvas_data.component[ uid ].uid
+			this.set 'get_uid', instanceUID
+			this.set 'uid', instanceUID
 			null
 
 		setName  : () ->

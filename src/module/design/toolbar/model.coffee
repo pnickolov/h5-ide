@@ -364,6 +364,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             else if flag is 'TERMINATED_APP'
                 (delete item_state_map[id]) if id of item_state_map
+
                 return
 
             else if flag is 'PENDING_APP'
@@ -650,7 +651,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             ide_event.trigger ide_event.STOPPED_APP, name, id
 
                         when 'TERMINATE_APP'
-                            me.setFlag id, 'TERMINATED_APP'
+                            me.setFlag id, 'TERMINATED_APP', region
                             ide_event.trigger ide_event.TERMINATED_APP, name, id
 
                             # remove the app name from app_list
@@ -659,6 +660,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                         else
                             console.log 'not support toolbar operation:' + flag
+                            return
+
+                    # update region aws resource
+                    ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
                 else
                     console.log 'not support request state:' + req.state

@@ -3,7 +3,7 @@
 #* Filename: UI.tabbar
 #* Creator: Angel
 #* Description: UI.tabbar
-#* Date: 20130814
+#* Date: 20130829
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -11,11 +11,10 @@
 var Tabbar = {
 	mousedown: function (event)
 	{
-		event.preventDefault();
-
 		if (this.id === 'tab-bar-dashboard')
 		{
 			Tabbar.open('dashboard');
+			
 			return false;
 		}
 
@@ -55,9 +54,6 @@ var Tabbar = {
 
 	mousemove: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
 		var left = event.pageX - event.data.offset_left,
 			tabbar_offsetLeft = event.data.tabbar_offsetLeft,
 			index = Math.round((left - tabbar_offsetLeft) / event.data.tab_width),
@@ -95,6 +91,8 @@ var Tabbar = {
 		});
 		//modify by kenshin
 		Tabbar.open(event.data.target.attr('id').replace('tab-bar-', ''), event.target.title, event);
+
+		return false;
 	},
 
 	add: function (tab_id, tab_name)
@@ -105,11 +103,11 @@ var Tabbar = {
 				'tab_name': tab_name
 			})
 		);
+
 		Tabbar.open(tab_id, tab_name);
-
 		Tabbar.resize($('#tab-bar').width());
-
 		$('#tab-bar').trigger('NEW_TAB', tab_id);
+
 		return tab_id;
 	},
 
@@ -117,21 +115,22 @@ var Tabbar = {
 	{
 		var tab_bar = $('#tab-bar'),
 			tab_item = $('#tab-bar-' + tab_id),
-			original_tab = $('#tab-bar').find('.active')[0],
+			original_tab = $('#tab-bar .active')[0],
 			original_tab_id = null;
 
 		//add by kenshin
 		if (!original_tab && event)
 		{
 			tab_bar.find( 'ul' ).append( event.data.target );
-			original_tab = $('#tab-bar').find( '.active' )[0];
-			tab_item = $('#tab-bar-' + tab_id);
+			original_tab = $('#tab-bar .active' )[0];
+			//tab_item = $('#tab-bar-' + tab_id);
 		}
 
 		if (!tab_item[0])
 		{
 			Tabbar.add(tab_id, tab_name);
-			return;
+
+			return false;
 		}
 
 		if (original_tab)
@@ -142,17 +141,14 @@ var Tabbar = {
 		$('#tab-bar li').removeClass('active');
 		tab_item.addClass('active');
 
-		$('#tab-bar').trigger('OPEN_TAB', [original_tab_id, tab_id]);
+		tab_bar.trigger('OPEN_TAB', [original_tab_id, tab_id]);
 
 		return tab_id;
 	},
 
 	close: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
-		var target = $(event.target).parent(),
+		var target = $(this).parent(),
 			tab_id = target.attr('id').replace('tab-bar-', '');
 
 		target.remove();

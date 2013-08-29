@@ -15,7 +15,10 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
 
         ###
 
-        initialize : ->
+
+
+        init : ( instance_id )->
+
 
             me = this
             me.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
@@ -33,7 +36,6 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
                 null
 
 
-        init : ( instance_id )->
 
             myInstanceComponent = MC.canvas_data.component[ instance_id ]
 
@@ -105,7 +107,9 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
             username = $.cookie "usercode"
             session  = $.cookie "session_id"
 
-            keypair_model.download {sender:this}, username, session, MC.canvas_data.region, keypairname
+            me = this
+            keypair_model.download {sender:me}, username, session, MC.canvas_data.region, keypairname
+            null
 
         getAMI : ( ami_id ) ->
             MC.data.dict_ami[ami_id]

@@ -1222,7 +1222,6 @@ MC.canvas = {
 		var node = $('#' + node_id),
 			node_connections = MC.canvas.data.get('layout.component.' + node.data('type') + '.' + node_id + '.connection') || {},
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
-			//line_layer = document.getElementById('line_layer'),
 			line_target;
 
 		$.each(node_connections, function (index, value)
@@ -1278,18 +1277,7 @@ MC.canvas = {
 			$.each(node_connections, function (index, item)
 			{
 				Canvon('#' + item.line + ',#' + item.target + '_port-' + item.port).addClass('view-show');
-
-				// $('#' + item.target + '_port-' + item.port).each(function ()
-				// {
-				// 	Canvon(this).addClass('view-show');
-				// });
-				//Canvon(this).addClass('view-show');
 			});
-
-			// clone.find('.port').each(function ()
-			// {
-			// 	Canvon(this).addClass('view-show');
-			// });
 
 			Canvon(clone.find('.port')).addClass('view-show');
 		}
@@ -3617,31 +3605,9 @@ MC.canvas.event.drawConnection = {
 									{
 										Canvon(target_node).addClass('connectable');
 
-										// target_port.attr("class", function (index, key)
-										// {
-										// 	return "connectable-port view-show " + key;
-										// });
-
 										Canvon(target_port).addClass("connectable-port view-show");
 									}
 								});
-								// $(this)
-								// 	.attr("class", function (index, key)
-								// 	{
-								// 		return "connectable " + key;
-								// 	})
-								// 	.find('.port-' + value.to).each(function ()
-								// 	{
-								// 		target_port = $(this);
-
-								// 		if (target_port.css('display') !== 'none')
-								// 		{
-								// 			target_port.attr("class", function (index, key)
-								// 			{
-								// 				return "connectable-port view-show " + key;
-								// 			});
-								// 		}
-								// 	});
 							}
 						});
 					}
@@ -3776,26 +3742,6 @@ MC.canvas.event.drawConnection = {
 				}
 			}
 		}
-
-		// $('#svg_canvas .connectable').each(function ()
-		// {
-		// 	Canvon(this).removeClass('connectable');
-		// });
-
-		// $('#svg_canvas .view-keephover').each(function ()
-		// {
-		// 	Canvon(this).removeClass('view-keephover');
-		// });
-
-		// $('#svg_canvas .view-show').each(function ()
-		// {
-		// 	Canvon(this).removeClass('view-show');
-		// });
-
-		// $('#svg_canvas .connectable-port').each(function ()
-		// {
-		// 	Canvon(this).removeClass('connectable-port');
-		// });
 
 		Canvon('#svg_canvas .connectable').removeClass('connectable');
 
@@ -4284,15 +4230,6 @@ MC.canvas.event.groupResize = {
 
 		event.data.target.attr(prop);
 
-		// if (prop.x)
-		// {
-		// 	event.data.group_title.attr('x', prop.x + label_offset[0]);
-		// }
-		// if (prop.y)
-		// {
-		// 	event.data.group_title.attr('y', prop.y + label_offset[1]);
-		// }
-
 		return false;
 	},
 	mouseup: function (event)
@@ -4315,12 +4252,6 @@ MC.canvas.event.groupResize = {
 			group_height = Math.round(target.attr('height') / grid_height),
 			group_left = Math.round(((parent_offset.left - canvas_offset.left) * scale_ratio + offsetX) / grid_width),
 			group_top = Math.round(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / grid_height),
-
-			// group_width = Math.floor(target.attr('width') / grid_width) + Math.floor(scale_ratio / 1.1),
-			// group_height = Math.floor(target.attr('height') / grid_height) + Math.floor(scale_ratio / 1.1),
-
-			// group_left = Math.floor((parent_offset.left - canvas_offset.left + offsetX) * scale_ratio / grid_width),
-			// group_top = Math.floor((parent_offset.top - canvas_offset.top + offsetY) * scale_ratio / grid_height),
 
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
@@ -4751,28 +4682,13 @@ MC.canvas.event.nodeHover = function (event)
 
 	if (event.type === 'mouseleave')
 	{
-		// $('#svg_canvas .view-hover').each(function ()
-		// {
-		// 	Canvon(this).removeClass('view-hover');
-		// });
-
 		Canvon('#svg_canvas .view-hover').removeClass('view-hover');
 	}
 };
 
 MC.canvas.event.clearSelected = function ()
 {
-	// $('#svg_canvas .selected').each(function ()
-	// {
-	// 	Canvon(this).removeClass('selected');
-	// });
-
 	Canvon('#svg_canvas .selected').removeClass('selected');
-
-	// $('#svg_canvas .view-show').each(function ()
-	// {
-	// 	Canvon(this).removeClass('view-show');
-	// });
 
 	Canvon('#svg_canvas .view-show').removeClass('view-show');
 

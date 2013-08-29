@@ -378,7 +378,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
 
                 # update app resource
-                app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
+                #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             if id == MC.canvas_data.id and is_tab
                 me.set 'item_flags', item_state_map[id]
@@ -632,6 +632,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         flag_list.err_detail = req.data
                     else
                         me.setFlag id, 'STOPPED_APP', region
+
+                    # update region aws resource
+                    ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
                 when constant.OPS_STATE.OPS_STATE_DONE
 

@@ -9,6 +9,8 @@ require.config {
 
 	locale                : 'en-us'
 
+	urlArgs               : 'v=130829.1544'
+
 	paths                 :
 
 		#main

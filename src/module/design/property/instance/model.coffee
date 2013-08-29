@@ -37,7 +37,10 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 		updateUID : ( type ) ->
 			console.log 'updateUID'
 			if type is 'OLD_APP' or  type is 'OLD_STACK'
-				this.set 'get_uid', $( '#instance-property-detail' ).data 'uid'
+				instanceUID = $( '#instance-property-detail' ).data 'uid'
+				this.set 'get_uid', instanceUID
+				this.set 'uid', instanceUID
+
 
 		listen : ->
 			#listen
@@ -58,7 +61,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 		getUID  : ( uid ) ->
 			console.log 'getUID'
-			this.set 'get_uid', MC.canvas_data.component[ uid ].uid
+			instanceUID = MC.canvas_data.component[ uid ].uid
+			this.set 'get_uid', instanceUID
+			this.set 'uid', instanceUID
 			null
 
 		setName  : () ->
@@ -380,10 +385,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
 			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
 
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel instanceUID
-
-
 			# remove from eni sg
 			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
 
@@ -420,10 +421,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
 			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
-
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel instanceUID
-
 
 			# add to eni sg
 			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
@@ -466,8 +463,11 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 		getEni : () ->
 
 			uid = this.get 'get_uid'
+			instanceUID = uid
 
-			if !MC.canvas_data.component[uid].resource.SubnetId then return
+			defaultVPCId = MC.aws.aws.checkDefaultVPC()
+			if !MC.canvas_data.component[uid].resource.SubnetId and !defaultVPCId
+				return
 
 			eni_detail = {}
 
@@ -475,8 +475,13 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			eni_count = 0
 
-			subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
-			subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+			subnetCIDR = ''
+			if defaultVPCId
+				subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
+				subnetCIDR = subnetObj.cidrBlock
+			else
+				subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
+				subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
 
 			prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
 
@@ -507,8 +512,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 						if ip_detail.AutoAssign is true or ip_detail.AutoAssign is 'true'
 							ip_detail.suffix = prefixSuffixAry[1]
 						else
-							subnetComp = MC.aws.eni.getSubnetComp(uid)
-							subnetCIDR = subnetComp.resource.CidrBlock
+							# subnetComp = MC.aws.eni.getSubnetComp(uid)
+							# subnetCIDR = subnetComp.resource.CidrBlock
 							ipAddress = ip_detail.PrivateIpAddress
 							fixPrefixSuffixAry = MC.aws.eni.getENIDivIPAry(subnetCIDR, ipAddress)
 							ip_detail.suffix = fixPrefixSuffixAry[1]
@@ -787,9 +792,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 														MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
 						return false
-
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel uid
 
 			null
 

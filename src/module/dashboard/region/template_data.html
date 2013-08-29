@@ -504,11 +504,11 @@ Loading...
             <table class="table table-region-stat">
             <thead>
                 <tr>
-                    <th class="sortable" style="width:28%">Type</th>
-                    <th class="sortable" style="width:20%">Name/ID</th>
-                    <th class="sortable" style="width:20%">Status</th>
-                    <th class="sortable" style="width:20%">Estimated Cost</th>
-                    <th tyle="width:20%;">Detail</th>
+                    <th class="sortable" style="width:25%">Type</th>
+                    <th class="sortable" style="width:25%">Name/ID</th>
+                    <th class="sortable" style="width:25%">Status</th>
+                    <!--th class="sortable" style="width:20%">Estimated Cost</th-->
+                    <th tyle="width:25%;">Detail</th>
                 </tr>
             </thead>
             <tbody>
@@ -521,7 +521,7 @@ Loading...
                     <td><i class="icon-{{type}}-mini icon-label"></i>{{type}}</td>
                     <td>{{name}}</td>
                     <td><i class="status status-{{status}} icon-label"></i>{{status}}</td>
-                    <td>${{cost}}/h</td>
+                    <!--td>${{cost}}/h</td-->
                     <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{data-modal-data}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                 </tr>
             {{/each}}
@@ -582,7 +582,7 @@ Loading...
 			</a>
 		</div>
 		{{else}}
-		<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}' style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}') 0 0;">
+		<div class="item-thumbnail-wrap bubble" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}"}' style="background: url('https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}') 0 0;">
 			{{#if has_instance_store_ami}}
 			{{else}}
 			<div class="action-thumbnail">

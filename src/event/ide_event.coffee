@@ -141,6 +141,9 @@ define [ 'underscore', 'backbone' ], () ->
         #updated aws credential
         UPDATE_AWS_CREDENTIAL  : 'UPDATE_AWS_CREDENTIAL'
 
+        #update app resource
+        UPDATE_APP_RESOURCE    : 'UPDATE_APP_RESOURCE'
+
         constructor : ->
             _.extend this, Backbone.Events
 

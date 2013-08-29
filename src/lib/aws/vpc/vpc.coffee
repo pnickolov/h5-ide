@@ -45,6 +45,52 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		null
 
+	checkFullDefaultVPC = () ->
+
+		currentRegion = MC.canvas_data.region
+		accountData = MC.data.account_attribute[currentRegion]
+
+		defaultVPCId = accountData.default_vpc
+		defaultSubnetObj = accountData.default_subnet
+
+		if defaultVPCId is 'none'
+			return false
+
+		if !defaultSubnetObj or _.keys(defaultSubnetObj).length is 0
+			return false
+
+		allSubnetIsDefaultForAZ = true
+		_.each defaultSubnetObj, (subnetObj, azName) ->
+			if subnetObj.defaultForAz isnt 'true'
+				allSubnetIsDefaultForAZ = false
+			if subnetObj.vpcId isnt defaultVPCId
+				allSubnetIsDefaultForAZ = false
+			if subnetObj.state isnt 'available'
+				allSubnetIsDefaultForAZ = false
+			null
+
+		if allSubnetIsDefaultForAZ
+			return true
+		else
+			return false
+
+	getSubnetForDefaultVPC = (instanceUID) ->
+
+		instanceComp = MC.canvas_data.component[instanceUID]
+		instanceAZ = instanceComp.resource.Placement.AvailabilityZone
+
+		currentRegion = MC.canvas_data.region
+		accountData = MC.data.account_attribute[currentRegion]
+
+		defaultVPCId = accountData.default_vpc
+		defaultSubnetObj = accountData.default_subnet
+
+		subnetObj = defaultSubnetObj[instanceAZ]
+
+		return subnetObj
+
 	#public
 	getVPCUID : getVPCUID
 	updateAllSubnetCIDR : updateAllSubnetCIDR
+	checkFullDefaultVPC : checkFullDefaultVPC
+	getSubnetForDefaultVPC : getSubnetForDefaultVPC

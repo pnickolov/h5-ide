@@ -8,7 +8,7 @@
 			<input class="input instance-name"  type="text" value="{{ name }}" id="property-instance-name" data-ignore="true" data-required-rollback="true"/>
 		</section>
 		<section class="property-control-group" data-bind="true">
-			<label class="left" for="property-instance-name" >Number</label>
+			<label class="left" for="property-instance-count" >Quantity</label>
 			<span class="required-input right">Required</span>
 			<input class="input" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required-rollback="true" data-type="digits"/>
 		</section>
@@ -160,7 +160,7 @@
 						<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}</label>
 						<input type="text" class="input input-ip" value="{{suffix}}" id="instance-ip-1">
 					</div>
-					{{#unless Primary}}<div class="network-remove-icon"></div>{{/unless}}
+					{{#unless Primary}}<div class="network-remove-icon icon-remove"></div>{{/unless}}
 					{{#if has_eip}}
 					<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-index="{{index}}" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
 					{{else}}

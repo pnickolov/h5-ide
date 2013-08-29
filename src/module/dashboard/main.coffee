@@ -254,13 +254,13 @@ define [ 'jquery',
                     region_view.on 'DELETE_STACK_CLICK', (stack_id) ->
                         console.log 'dashboard_region_click:delete_stack'
                         model.deleteStack(current_region, stack_id)
-                    ide_event.onLongListen ide_event.UPDATE_REGION_RESOURCE, () ->
+                    ide_event.onLongListen ide_event.UPDATE_REGION_RESOURCE, (region) ->
                         console.log 'dashboard_region:UPDATE_REGION_RESOURCE'
 
                         if $.cookie('has_cred') is 'true'
-                            model.describeAWSResourcesService current_region
-                            model.describeRegionAccountAttributesService current_region
-                            model.describeAWSStatusService current_region
+                            model.describeAWSResourcesService region
+                            model.describeRegionAccountAttributesService region
+                            model.describeAWSStatusService region
                         else
                             model.resetData()
 

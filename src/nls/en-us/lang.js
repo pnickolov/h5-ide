@@ -114,6 +114,10 @@ define({
 		'CVS_TIP_EXPAND_H'   					: 'Increase Canvas Height',
 		'CVS_TIP_SHRINK_H'   					: 'Decrease Canvas Height',
 		// Add new strings below this comment. Move above once English has been confirmed
+		'CVS_TIP_EXPAND_W'   : 'Expand canvas in width',
+		'CVS_TIP_SHRINK_W'   : 'Shrink canvas in width',
+		'CVS_TIP_EXPAND_H'   : 'Expand canvas in height',
+		'CVS_TIP_SHRINK_H'   : 'Shrink canvas in height',
 
 		/******property module******/
 		// instance property module

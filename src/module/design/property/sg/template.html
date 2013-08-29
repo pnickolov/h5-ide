@@ -27,32 +27,31 @@
 			<div class="selectbox" id="sg-rule-filter-select">
 				<div class="selection">Direction</div>
 				<ul class="dropdown" tabindex="-1">
-					<li class="item selected" data-id="2">Direction</li>
-					<li class="item" data-id="2">Source/Destination</li>
-					<li class="item" data-id="3">Protocol</li>
+					<li class="item selected" data-id="direction">Direction</li>
+					<li class="item" data-id="source/destination">Source/Destination</li>
+					<li class="item" data-id="protocol">Protocol</li>
 				</ul>
 			</div>
 		</div>
 
 		<ul class="sg-rule-list property-list" id="sg-rule-list">
 			{{#each sg_detail.component.resource.IpPermissions}}
-			<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}">
-				<!-- <i class="icon-rule-inbound tooltip" data-tooltip="Inbound"></i> -->
+			<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}" data-direction="inbound">
 				<div class="rule-list-row">
-					<div class='rule-direction-icon tooltip' data-tooltip="Inbound"></div>
+					<div class='rule-direction-icon tooltip icon-inbound' data-tooltip="Inbound"></div>
 					<div class='rule-reference'>{{ip_display}}</div>
 				</div>
 				<div class="rule-list-row">
 					<div><span class="rule-protocol">{{IpProtocol}}</span></div>
 					<div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
 				</div>
-				<div class='rule-remove-icon tooltip' data-tooltip="Remove rule"></div>
+				<div class='rule-remove-icon icon-remove tooltip' data-tooltip="Remove rule"></div>
 			</li>
 			{{/each}}
 			{{#each sg_detail.component.resource.IpPermissionsEgress}}
-			<li data-inbound="false" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}">
+			<li data-inbound="false" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}" data-direction="outbound">
 				<div class="rule-list-row">
-					<div class='rule-direction-icon tooltip' data-tooltip="Inbound"></div>
+					<div class='rule-direction-icon tooltip icon-outbound' data-tooltip="Inbound"></div>
 					<div class='rule-reference tooltip' data-tooltip="Source/Destination">{{ip_display}}</div>
 				</div>
 				<div class="rule-list-row">

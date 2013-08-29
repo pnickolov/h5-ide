@@ -86,6 +86,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
+
+			#for expand ASG
+			if !component or component.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+				component = MC.canvas_data.layout.component.group[ src_node ]
+
 			handler   = if component then this.validateDropMap[ component.type ] else null
 			if handler
 				error = handler.call( this, component, tgt_parent )
@@ -147,15 +152,78 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
 			null
 
-		beforeD_ASG : ( component, tgt_parent ) ->
-			for key, group of MC.canvas_data.layout.component.group
-				if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-					if group.originalId is component.uid and group.groupUId is tgt_parent
-						parent = MC.canvas_data.component[ tgt_parent ]
-						if !parent
-							parent = MC.canvas_data.layout.component.group[ tgt_parent ]
+		beforeD_ASG : ( asg_layout, tgt_parent ) ->
+			#move asg
 
-						return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, component.name, parent.name
+			comp_data   = MC.canvas_data.component
+			layout_data = MC.canvas_data.layout
+
+			asg_id      = if asg_layout.originalId then asg_layout.originalId else asg_layout.uid
+			asg_name    = comp_data[asg_id].name
+
+			res_type    = constant.AWS_RESOURCE_TYPE
+			tgt_az      = ''
+
+			tgt_layout  = layout_data.component.group[tgt_parent]
+
+			if tgt_layout
+
+				switch tgt_layout.type
+
+					when res_type.AWS_EC2_AvailabilityZone then tgt_az = tgt_layout.name
+
+					when res_type.AWS_VPC_Subnet           then tgt_az = comp_data[tgt_parent].resource.AvailabilityZone
+
+
+			other_ASG_id = MC.aws.asg.getASGInAZ asg_layout.uid, tgt_az
+
+			if other_ASG_id and other_ASG_id != asg_layout.uid
+
+				return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, asg_name, tgt_az
+
+
+		beforeASGExpand : ( event, src_asg_uid, tgt_parent ) ->
+			#expand asg
+
+			comp_data   = MC.canvas_data.component
+			layout_data = MC.canvas_data.layout
+
+			asg_comp    = comp_data[src_asg_uid]
+			asg_az      = MC.aws.asg.getAZofASGNode src_asg_uid
+
+			res_type    = constant.AWS_RESOURCE_TYPE
+			tgt_az      = ''
+			exist       = false
+
+			tgt_layout  = layout_data.component.group[tgt_parent]
+
+			if tgt_layout
+
+				switch tgt_layout.type
+
+					when res_type.AWS_EC2_AvailabilityZone then tgt_az = tgt_layout.name
+
+					when res_type.AWS_VPC_Subnet           then tgt_az = comp_data[tgt_parent].resource.AvailabilityZone
+
+
+				#compare tgt_az and asg_az
+				if asg_az and tgt_az and tgt_az == asg_az
+					exist = true
+
+				else
+
+					otherASG = MC.aws.asg.getASGInAZ src_asg_uid, tgt_az
+
+					if otherASG
+						exist = true
+
+
+			if exist
+				if event and event.preventDefault
+						event.preventDefault()
+
+				notification 'error', sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, asg_comp.name, tgt_az
+
 
 		#change node from one parent to another parent
 		changeParent : ( event, src_node, tgt_parent ) ->
@@ -504,6 +572,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 						if "" + value.resource.Attachment.DeviceIndex == "0"
 							delete MC.canvas_data.component[key]
+						else
+							# Hide eni number
+							MC.canvas.display( key, 'eni-number-group', false )
 
 				# remove instance relate volume
 
@@ -731,9 +802,13 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Eni <==> Instance
 			else if portMap['instance-attach'] and portMap['eni-attach']
+				# Hide Eni Number
+				MC.canvas.display portMap['eni-attach'], 'eni-number-group', false
+
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
 				ide_event.trigger ide_event.REDRAW_SG_LINE
+
 
 				#hide sg port of eni when delete line
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', false
@@ -1009,7 +1084,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				MC.canvas.remove $("#" + line_id)[0]
 
-
+			else
+				MC.canvas.select line_id
 
 		doCreateLine : ( line_id ) ->
 
@@ -1060,6 +1136,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				# check whether instance has position to add one more eni
 				instance_component = MC.canvas_data.component[portMap['instance-attach']]
 				eni_component      = MC.canvas_data.component[portMap['eni-attach']]
+
 				if eni_component.resource.AvailabilityZone isnt instance_component.resource.Placement.AvailabilityZone
 					return lang.ide.CVS_MSG_ERR_CONNECT_ENI_AMI
 
@@ -1137,6 +1214,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
 
 				ide_event.trigger ide_event.REDRAW_SG_LINE
+
+				# Update Eni number
+				MC.aws.instance.updateCount portMap['instance-attach'], instance_component.number
+
 				#show sg port of eni when create line
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', true
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_right', true
@@ -1194,8 +1275,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'Origin'               : ""
 				}
 
-				MC.canvas.select(line_id)
-
 			# Instance <==> RouteTable
 			else if portMap['instance-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
@@ -1210,8 +1289,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'Origin'               : ""
 				}
 
-				MC.canvas.select(line_id)
-
 			# VGW <==> RouteTable
 			else if portMap['vgw-tgt'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
@@ -1225,8 +1302,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					'State'                : "",
 					'Origin'               : ""
 				}
-
-				MC.canvas.select(line_id)
 
 			# Eni <==> RouteTable
 			else if portMap['eni-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
@@ -1245,7 +1320,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# VGW <==> CGW
 			else if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
-				MC.canvas.select(line_id)
 
 			else if portMap['elb-sg-out'] and portMap['launchconfig-sg']
 
@@ -1266,6 +1340,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 			if not (MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC and (portMap['elb-sg-in'] or portMap['elb-sg-out']))
+
+				# Prevent SG Rule create from AMI to attached ENI
+				eni_comp = MC.canvas_data.component[ portMap["eni-sg"] ]
+				if eni_comp and eni_comp.resource.Attachment.InstanceId.indexOf( portMap["instance-sg"] ) isnt -1
+					return "The Network Interface is attached to the instance. No need to connect them by security group rule."
+
 				for key, value of portMap
 					if key.indexOf('sg') >= 0
 						this.trigger 'CREATE_SG_CONNECTION', line_id

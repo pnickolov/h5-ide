@@ -48,21 +48,27 @@ MC.canvas = {
 		switch (type)
 		{
 			case 'text':
-				if ( target.length == 0 ) {
+				if (target.length === 0)
+				{
 					target = $('#' + id).find("." + key);
 				}
+
 				target.text(value);
 				break;
 
 			case 'image':
-				target.attr('href', value);
+				//target.attr('href', value);
+				target[ 0 ].setAttributeNS("http://www.w3.org/1999/xlink", "href", value);
 				break;
+
 			case 'eip':
 				target.attr('data-eip-state', value);
 				break;
+
 			case 'id':
 				target.attr('id', value);
 				break;
+
 			case 'color':
 				target.attr('style', 'fill:' + value);
 				break;
@@ -2015,6 +2021,17 @@ MC.canvas.layout = {
 			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
 			MC.canvas_property.main_route = node_rt.id;
 
+			// Create a default DHCP component for the user if we are in 'VPC' mode
+			if ( MC.canvas_data.platform === "custom-vpc" || MC.canvas_data.platform === "ec2-vpc" ) {
+
+				var dhcp = $.extend( true, {}, MC.canvas.DHCP_JSON.data );
+				dhcp.uid = MC.guid();
+				dhcp.resource.VpcId = "@" + vpc_group.id + ".resource.VpcId";
+
+				data[ dhcp.uid ] = dhcp;
+				data[ vpc_group.id ].resource.DhcpOptionsId = "@" + dhcp.uid + ".resource.DhcpOptionsId";
+			}
+
 			acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
 			acl.uid = MC.guid();
 			acl.resource.Default = 'true';
@@ -3348,7 +3365,7 @@ MC.canvas.event.dragable = {
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			component_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
-			BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
+			BEFORE_ASG_EXPAND_EVENT = $.Event("CANVAS_BEFORE_ASG_EXPAND"),
 			match_place = MC.canvas.isMatchPlace(
 				null,
 				target_type,
@@ -3369,8 +3386,8 @@ MC.canvas.event.dragable = {
 
 		if (
 			match_place.is_matched &&
-			svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
-			!BEFORE_DROP_EVENT.isDefaultPrevented()
+			svg_canvas.trigger(BEFORE_ASG_EXPAND_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+			!BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()
 		)
 		{
 			new_node = MC.canvas.add(node_type, {'name': MC.canvas.data.get('component')[target_id].name, 'groupUId': match_place.target, 'originalId': target_id}, coordinate);

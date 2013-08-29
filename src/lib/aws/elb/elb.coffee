@@ -17,12 +17,12 @@ define [ 'MC' ], ( MC ) ->
 			MC.canvas_data.component[uid].resource.Scheme = ''
 
 		# have igw ?
-		igwCompAry = _.filter allComp, (obj) ->
-			obj.type is 'AWS.VPC.InternetGateway'
-		if igwCompAry.length isnt 0
-			MC.canvas_data.component[uid].resource.Scheme = 'internet-facing'
-		else
-			MC.canvas_data.component[uid].resource.Scheme = 'internal'
+		# igwCompAry = _.filter allComp, (obj) ->
+		# 	obj.type is 'AWS.VPC.InternetGateway'
+		# if igwCompAry.length isnt 0
+		# 	MC.canvas_data.component[uid].resource.Scheme = 'internet-facing'
+		# else
+		# 	MC.canvas_data.component[uid].resource.Scheme = 'internal'
 
 		# create elb default sg
 

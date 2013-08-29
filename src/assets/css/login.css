@@ -138,7 +138,7 @@ header {
 }
 
 .login-input:focus + .login-label {
-	color: #3781C9;
+	color: #666;
 }
 
 #login-footer {

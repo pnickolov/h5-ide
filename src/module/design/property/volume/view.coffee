@@ -38,11 +38,27 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 this.trigger 'VOLUME_TYPE_IOPS', $( '#iops-ranged' ).val()
 
         deviceNameChanged : ( event ) ->
-            name = $( '#volume-device' ).val()
-            if(name.length > 4)
-                console.log 'Device name must be like /dev/hd[a-z], /dev/hd[a-z][1-15], /dev/sd[a-z] or /dev/sd[b-z][1-15].'
+            target = $ event.currentTarget
+            name = target.val()
+            devicePrefix = target.prev( 'label' ).text()
+            type = if devicePrefix is '/dev/' then 'linux' else 'windows'
+            id = @model.get( 'volume_detail' ).uid
+            instanceId = MC.canvas_data.component[ id ].resource.AttachmentSet.InstanceId
 
-            else
+            target.parsley 'custom', ( val ) ->
+                if not MC.validate.deviceName val, type, true
+                    if type is 'linux'
+                        return "Device name must be like /dev/hd[a-z], /dev/hd[a-z][1-15],/dev/sd[a-z] or /dev/sd[b-z][1-15]"
+                    else
+                        return "Device name must be like xvd[a-p]."
+
+                isDuplicate = _.some MC.canvas_data.component, ( component ) ->
+                    if component.uid isnt id and component.type is 'AWS.EC2.EBS.Volume' and component.resource.AttachmentSet.InstanceId is instanceId and component.name is val
+                        true
+                if isDuplicate
+                    "Volume name '#{val}' is already in using. Please use another one."
+
+            if target.parsley 'validate'
                 this.trigger 'DEVICE_NAME_CHANGED', name
 
         sizeChanged : ( event ) ->

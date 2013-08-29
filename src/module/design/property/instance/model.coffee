@@ -87,7 +87,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			null
 
 		setCount : ( val ) ->
-			MC.canvas_data.component[ @get( 'get_uid' )].number = val
+			uid = @get( 'get_uid' )
+			MC.canvas_data.component[ uid ].number = val
+			MC.aws.instance.updateCount( uid, val )
 			null
 
 		setInstanceType  : () ->
@@ -463,8 +465,11 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 		getEni : () ->
 
 			uid = this.get 'get_uid'
+			instanceUID = uid
 
-			if !MC.canvas_data.component[uid].resource.SubnetId then return
+			defaultVPCId = MC.aws.aws.checkDefaultVPC()
+			if !MC.canvas_data.component[uid].resource.SubnetId and !defaultVPCId
+				return
 
 			eni_detail = {}
 
@@ -472,8 +477,13 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			eni_count = 0
 
-			subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
-			subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+			subnetCIDR = ''
+			if defaultVPCId
+				subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
+				subnetCIDR = subnetObj.cidrBlock
+			else
+				subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
+				subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
 
 			prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
 
@@ -504,8 +514,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 						if ip_detail.AutoAssign is true or ip_detail.AutoAssign is 'true'
 							ip_detail.suffix = prefixSuffixAry[1]
 						else
-							subnetComp = MC.aws.eni.getSubnetComp(uid)
-							subnetCIDR = subnetComp.resource.CidrBlock
+							# subnetComp = MC.aws.eni.getSubnetComp(uid)
+							# subnetCIDR = subnetComp.resource.CidrBlock
 							ipAddress = ip_detail.PrivateIpAddress
 							fixPrefixSuffixAry = MC.aws.eni.getENIDivIPAry(subnetCIDR, ipAddress)
 							ip_detail.suffix = fixPrefixSuffixAry[1]

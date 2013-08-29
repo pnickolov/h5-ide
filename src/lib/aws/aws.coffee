@@ -485,6 +485,55 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
         return { 'cost_list' : cost_list, 'total_fee' : total_fee.toFixed(3) }
 
+    checkDefaultVPC = () ->
+
+        currentRegion = MC.canvas_data.region
+        accountData = MC.data.account_attribute[currentRegion]
+        if accountData.support_platform is 'VPC'
+            return accountData.default_vpc
+        else
+            return false
+
+    checkResource = ( uid ) ->
+        if uid
+            components =
+                uid : MC.canvas_data.component[uid]
+        else
+            components = MC.canva_data.component
+
+        res = {}
+        res_type = constant.AWS_RESOURCE_TYPE
+        data     = MC.data.resource_list[ MC.canvas_data.region ]
+        for c_uid, comp of components
+            r = true
+            switch comp.type
+                when res_type.AWS_VPC_NetworkAcl
+                    r = data[ comp.resource.NetworkAclId ]
+                when res_type.AWS_AutoScaling_Group
+                    r = data[ comp.resource.AutoScalingGroupARN ]
+                when res_type.AWS_VPC_CustomerGateway
+                    r = data[ comp.resource.CustomerGatewayId ]
+                when res_type.AWS_ELB
+                    r = data[ comp.resource.LoadBalancerName ]
+                when res_type.AWS_VPC_NetworkInterface
+                    r = data[ comp.resource.NetworkInterfaceId ]
+                when res_type.AWS_EC2_Instance
+                    r = data[ comp.resource.InstanceId ]
+                when res_type.AWS_AutoScaling_LaunchConfiguration
+                    r = data[ comp.resource.LaunchConfigurationARN ]
+                when res_type.AWS_VPC_RouteTable
+                    r = data[ comp.resource.RouteTableId ]
+                when res_type.AWS_VPC_Subnet
+                    r = data[ comp.resource.SubnetId ]
+                when res_type.AWS_EBS_Volume
+                    r = data[ comp.resource.VolumeId ]
+                when res_type.AWS_VPC_VPC
+                    r = data[ comp.resource.VpcId ]
+
+            res[ c_uid ] = if r then true else false
+
+        if uid then res[uid] else res
+
     #public
     getNewName                  : getNewName
     cacheResource               : cacheResource
@@ -494,3 +543,5 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     getDuplicateName            : getDuplicateName
     disabledAllOperabilityArea  : disabledAllOperabilityArea
     getCost                     : getCost
+    checkDefaultVPC             : checkDefaultVPC
+    checkResource               : checkResource

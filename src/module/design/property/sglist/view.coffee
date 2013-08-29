@@ -70,16 +70,16 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 			sg_rule_list.html sorted_items
 
 		_sortDirection : ( a, b) ->
-			return $(a).find('.rule-direction-icon').attr('data-id') >
-				$(b).find('.rule-direction-icon').attr('data-id')
+			return $(a).attr('data-direction') >
+				$(b).attr('data-direction')
 
 		_sortProtocol : ( a, b) ->
-			return $(a).find('.rule-protocol').attr('data-id') >
-				$(b).find('.rule-protocol').attr('data-id')
+			return $(a).attr('data-protocol') >
+				$(b).attr('data-protocol')
 
 		_sortSource : ( a, b) ->
-			return $(a).find('.rule-reference').attr('data-id') >
-				$(b).find('.rule-reference').attr('data-id')
+			return $(a).attr('data-iprange') >
+				$(b).attr('data-iprange')
 	}
 
 	view = new SGListView()

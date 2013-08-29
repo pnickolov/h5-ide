@@ -92,7 +92,7 @@ define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.n
 
         returnRefreshClick : ( target ) ->
             console.log 'returnRefreshClick'
-            ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
+            ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, this.region
 
         render : ( template ) ->
 

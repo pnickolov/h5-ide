@@ -103,7 +103,6 @@ define [ 'jquery',
 
             view.on 'COUNT_CHANGE', ( val ) ->
                 model.setCount val
-                MC.canvas.update model.get( "get_uid" ), "text", "instance-number", val
 
             model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
 
@@ -146,6 +145,15 @@ define [ 'jquery',
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
             sglist_main.loadModule model, true
+
+            # update instance state
+            ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, (region, app_id) ->
+                console.log 'update instance state, UPDATE_APP_RESOURCE'
+
+                #model.updateState( region, app_id)
+
+                null
+
 
     unLoadModule = () ->
         current_view.off()

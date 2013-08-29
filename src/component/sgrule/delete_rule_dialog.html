@@ -1,4 +1,4 @@
-<div style="width:420px">
+<div id="delete-rule-dialog" style="width:420px">
   <div class="modal-header">
     <h3>{{title}}</h3>
     <i class="modal-close">&times;</i>
@@ -11,7 +11,7 @@
       {{#each rule}}
         <li class="clearfix sg-create-rule-item">
           <span class="sg-rule-col1">
-            <span class="{{#if this.[4]}}sg-rule-inbound{{else}}sg-rule-outbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
+            <span class="{{#if this.[4]}}icon-inbound{{else}}icon-outbound{{/if}} tooltip" data-tooltip="Inbound/Outbound"></span>
             <span class="sg-rule-protocol">{{this.[3]}}</span>
           </span>
           <div class="sg-rule-col2">

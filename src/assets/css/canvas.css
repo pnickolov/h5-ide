@@ -840,6 +840,18 @@
 	font-size: 12px;
 }
 
+.eni-number-bg {
+	stroke-width:0;
+	fill:#439beb;
+	opacity: 1;
+}
+
+.eni-number {
+	font-weight: bold;
+	fill: white;
+	font-size: 12px;
+}
+
 .sg-color {
 	float: left;
     width: 10px;

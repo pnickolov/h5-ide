@@ -1783,6 +1783,8 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ENI_JSON.data);
 				component_data.name = option.name;
+				component_data.number = 1;
+
 				component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 				component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				component_data.resource.AvailabilityZone = option.group.availableZoneName;
@@ -1799,6 +1801,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
+				component_data.number = component_data.number ? component_data.number : 1;
 
 				if (component_data.resource.Attachment.InstanceId)
 				{
@@ -1817,6 +1820,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
 			}
+
+			option.number = component_data.number;
 
 			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
 			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
@@ -1926,6 +1931,24 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-type': 'sg',
 					'data-direction': 'in',
 					'data-angle': MC.canvas.PORT_UP_ANGLE
+				}),
+
+
+				////child number
+				Canvon.group().append(
+					////child number in group bg
+					Canvon.rectangle(41, 15, 20, 20).attr({
+						'class': 'eni-number-bg',
+						'rx': 4,
+						'ry': 4
+					}),
+					////child number in group
+					Canvon.text(51, 30, option.number).attr({
+						'class': 'node-label eni-number',
+						'id': group.id + '_eni-number'
+					})
+				).attr({
+					'id': group.id + '_eni-number-group'
 				}),
 
 

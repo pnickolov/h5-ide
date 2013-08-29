@@ -987,17 +987,24 @@ MC.canvas.add = function (flag, option, coordinate)
 					'id': group.id + '_hostname'
 				}),
 
-				////child number in group bg
-				Canvon.rectangle(41, 15, 20, 20).attr({
-					'class': 'instance-number-bg',
-					'rx': 4,
-					'ry': 4
+
+				////child number
+				Canvon.group().append(
+					////child number in group bg
+					Canvon.rectangle(41, 15, 20, 20).attr({
+						'class': 'instance-number-bg',
+						'rx': 4,
+						'ry': 4
+					}),
+					////child number in group
+					Canvon.text(51, 30, option.number).attr({
+						'class': 'node-label instance-number',
+						'id': group.id + '_instance-number'
+					})
+				).attr({
+					'id': group.id + '_instance-number-group'
 				}),
-				////child number in group
-				Canvon.text(51, 30, option.number).attr({
-					'class': 'node-label instance-number',
-					'id': group.id + '_instance-number'
-				}),
+
 
 				////instance-state
 				Canvon.circle(71, 30, 4,{}).attr({

@@ -109,6 +109,7 @@ define({
 		'CVS_CFM_DEL_ASG'                       : 'Deleting this will delete the entire %s. Are you sure you want to delete it?',
 		'CVS_CFM_ADD_IGW'                       : 'An Internet Gateway is Required',
 		'CVS_CFM_ADD_IGW_MSG'                   : 'Automatically add an internet gateway to allow this %s to be publicly addressable?',
+		'CVS_MSG_ERR_ZOOMED_DROP_ERROR'         : 'Please reset the zoom to 100% before adding new resources.',
 		'CVS_TIP_EXPAND_W'   					: 'Increase Canvas Width',
 		'CVS_TIP_SHRINK_W'   					: 'Decrease Canvas Width',
 		'CVS_TIP_EXPAND_H'   					: 'Increase Canvas Height',

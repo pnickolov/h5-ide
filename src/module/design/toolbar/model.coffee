@@ -567,8 +567,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 when constant.OPS_STATE.OPS_STATE_INPROCESS
                     if flag is 'RUN_STACK'
 
+                        flag_list.is_inprocess = true
+                        
                         if 'dag' of dag # changed request
-                            flag_list.is_inprocess = true
+                        
                             flag_list.steps = dag.dag.step.length
 
                             # check rollback
@@ -578,6 +580,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             if dag.dag.state isnt 'Rollback'
                                 flag_list.dones = dones
                                 flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
+                        
+                        else
+
+                            flag_list.dones = 0
 
                 when constant.OPS_STATE.OPS_STATE_FAILED
 
@@ -652,8 +658,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             if data
                 # generate s3 key
                 app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
-                app_model.once 'APP_GETKEY_RETURN', (result) ->
-                    console.log 'APP_GETKEY_RETURN'
+                app_model.once 'APP_GET_KEY_RETURN', (result) ->
+                    console.log 'APP_GET_KEY_RETURN'
                     console.log result
 
                     if !result.is_error

@@ -1,10 +1,10 @@
-<article data-bind="true">
+<article>
 	{{#if association}}
 	<div class="property-control-group">This is an association of {{association.subnet}} to {{association.rtb}}</div>
 	{{else}}
-	<div class="property-control-group">
+	<div class="property-control-group" data-bind="true">
 		<label class="left" for="rt-name">Name</label>
-		<input class="input" type="text" data-required="true" data-ignore="true" data-required-rollback="true" required="required" value="{{route_table.name}}" name="rt-name" id="rt-name" data-uid="{{route_table.uid}}">
+		<input class="input" type="text" data-required="true" data-ignore="true" data-required-rollback="true"  value="{{route_table.name}}" name="rt-name" id="rt-name" data-uid="{{route_table.uid}}" data-type="awsName">
 	</div>
 
 	<div class="tac property-control-group">

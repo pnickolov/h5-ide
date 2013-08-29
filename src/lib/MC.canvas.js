@@ -2022,6 +2022,17 @@ MC.canvas.layout = {
 			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
 			MC.canvas_property.main_route = node_rt.id;
 
+			// Create a default DHCP component for the user if we are in 'VPC' mode
+			if ( MC.canvas_data.platform === "custom-vpc" || MC.canvas_data.platform === "ec2-vpc" ) {
+
+				var dhcp = $.extend( true, {}, MC.canvas.DHCP_JSON.data );
+				dhcp.uid = MC.guid();
+				dhcp.resource.VpcId = "@" + vpc_group.id + ".resource.VpcId";
+
+				data[ dhcp.uid ] = dhcp;
+				data[ vpc_group.id ].resource.DhcpOptionsId = "@" + dhcp.uid + ".resource.DhcpOptionsId";
+			}
+
 			acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
 			acl.uid = MC.guid();
 			acl.resource.Default = 'true';

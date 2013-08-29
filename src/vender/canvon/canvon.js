@@ -15,21 +15,21 @@ Canvon.fn = Canvon.prototype = {
 
 	init: function (selector)
 	{
-		var elem;
+		var elem = $(selector);
 
-		if (typeof selector === 'string')
-		{
-			elem = document.getElementById( selector );
-		}
-		else if (selector instanceof SVGElement)
-		{
-			elem = selector;
-		}
-		else
-		{
-			return false;
-		}
-
+		// if (typeof selector === 'string')
+		// {
+		// 	elem = document.getElementById( selector );
+		// }
+		// else if (selector instanceof SVGElement)
+		// {
+		// 	elem = selector;
+		// }
+		// else
+		// {
+		// 	return false;
+		// }
+		
 		$.each(Canvon.prototype, function (name, fn)
 		{
 			elem[ name ] = fn;
@@ -213,7 +213,7 @@ Canvon.fn = Canvon.prototype = {
 	{
 		var use = this.draw(this, 'use').attr(attr || {}).css(style || {});
 
-		use[0].setAttributeNS("http://www.w3.org/1999/xlink", 'href', href);
+		use[ 0 ].setAttributeNS("http://www.w3.org/1999/xlink", 'href', href);
 
 		return use;
 	},
@@ -230,52 +230,72 @@ Canvon.fn = Canvon.prototype = {
 
 	addClass: function (name)
 	{
-		var className = this.getAttribute('class'),
+		var target,
+			className,
+			nclass;
+
+		this.each(function ()
+		{
+			target = $(this);
+			className = target.attr('class');
 			nclass = [];
 
-		if (className === '')
-		{
-			this.setAttribute('class', name);
-		}
-		else
-		{
-			$.each(name.split(/\s+/), function (i, item)
+			if (className === '')
 			{
-				if (!new RegExp('\\b(' + item + ')\\b').test(className))
+				target.attr('class', name);
+			}
+			else
+			{
+				$.each(name.split(/\s+/), function (i, item)
 				{
-					nclass.push(' ' + item);
-				}
-			});
-			className += nclass.join('');
+					if (!new RegExp('\\b(' + item + ')\\b').test(className))
+					{
+						nclass.push(' ' + item);
+					}
+				});
+				className += nclass.join('');
 
-			this.setAttribute('class', className);
-		}
+				target.attr('class', className);
+			}
+		});
 
 		return this;
 	},
 
 	removeClass: function (name)
 	{
-		this.setAttribute('class', name ?
-			$.trim(
-				this.getAttribute('class').replace(
-					new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b', 'g'), '')
-					.split(/\s+/)
-					.join(' ')
-			) : ''
-		);
+		var target,
+			className;
+
+		this.each(function ()
+		{
+			target = $(this);
+			className = target.attr('class');
+
+			if (className)
+			{
+				target.attr('class', name ?
+					$.trim(
+						className.replace(
+							new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b'), '')
+							.split(/\s+/)
+							.join(' ')
+					) : ''
+				);
+			}
+		});
 
 		return this;
 	},
 
 	hasClass: function ()
 	{
-		return new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b').test( this.getAttribute('class') );
+		return new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b').test( this.attr('class') );
 	},
 
 	offset: function ()
 	{
-		return this.getBoundingClientRect();
+		return this[ 0 ].getBoundingClientRect();
 	}
 };
 

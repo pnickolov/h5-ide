@@ -248,8 +248,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     app_name: name
 
             #####listen APP_GETKEY_RETURN
-            me.on 'APP_GETKEY_RETURN', (result) ->
-                console.log 'APP_GETKEY_RETURN'
+            me.on 'APP_GET_KEY_RETURN', (result) ->
+                console.log 'APP_GET_KEY_RETURN'
+
+                region = result.param[3]
+                app_id = result.param[4]
+
+                data = $.extend(true, {}, run_stack_map[region][app_id])
+                delete run_stack_map[region][app_id]
 
                 if !result.is_error
                     # trigger toolbar save png event
@@ -258,6 +264,28 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     data.key = result.resolved_data
 
                     me.savePNG true, data
+
+            #listen APP_RESOURCE_RETURN
+            me.on 'APP_RESOURCE_RETURN', (result) ->
+                console.log 'APP_RESOURCE_RETURN'
+
+                app_id = result.param[4]
+                region = result.param[3]
+
+                if !result.is_error
+
+                    resource_source = result.resolved_data
+
+                    if resource_source
+                        MC.aws.aws.cacheResource resource_source, region
+
+                        #push event
+                        ide_event.trigger ide_event.UPDATE_APP_RESOURCE, region, app_id
+
+                else
+                    #TO-DO
+
+                null
 
         setFlag : (id, flag, value) ->
             me = this
@@ -319,7 +347,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_running = true
                     item_state_map[id].is_pending = false
 
+                region = value
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
+
+                # update app resource
+                app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'STOPPED_APP'
                 if id of item_state_map
@@ -327,17 +359,26 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_running = false
                     item_state_map[id].is_pending = false
 
+                region = value
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
+
+                # update app resource
+                app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'TERMINATED_APP'
                 (delete item_state_map[id]) if id of item_state_map
+
                 return
 
             else if flag is 'PENDING_APP'
                 if id of item_state_map
                     item_state_map[id].is_pending = true
 
+                region = value
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
+
+                # update app resource
+                #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             if id == MC.canvas_data.id and is_tab
                 me.set 'item_flags', item_state_map[id]
@@ -471,8 +512,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage phantom_data, MC.SAVEPNG_URL
             if $( '#phantom-frame' )[0] is undefined
-                $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
-                $('#phantom-frame').load -> sendMessage()
+                $('#phantom-frame')[0].onload = () ->
+                    sendMessage()
+                    null
             else
                 sendMessage()
             #
@@ -509,7 +551,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me = this
 
             if flag isnt 'RUN_STACK'
-                me.setFlag id, 'PENDING_APP'
+                me.setFlag id, 'PENDING_APP', region
 
             if !result.is_error
 
@@ -548,7 +590,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
 
                 if flag isnt 'RUN_STACK'
-                    me.setFlag id, 'STOPPED_APP'
+                    me.setFlag id, 'STOPPED_APP', region
 
         reqHanle : (flag, id, name, req, dag) ->
             me = this
@@ -565,6 +607,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     if flag is 'RUN_STACK'
 
                         flag_list.is_inprocess = true
+
                         if 'dag' of dag # changed request
 
                             flag_list.steps = dag.dag.step.length
@@ -577,6 +620,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 flag_list.dones = dones
                                 flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
 
+                        else
+
+                            flag_list.dones = 0
+
                 when constant.OPS_STATE.OPS_STATE_FAILED
 
                     me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
@@ -585,7 +632,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         flag_list.is_failed = true
                         flag_list.err_detail = req.data
                     else
-                        me.setFlag id, 'STOPPED_APP'
+                        me.setFlag id, 'STOPPED_APP', region
+
+                    # update region aws resource
+                    ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
                 when constant.OPS_STATE.OPS_STATE_DONE
 
@@ -600,15 +650,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             flag_list.is_done = true
 
                         when 'START_APP'
-                            me.setFlag id, 'RUNNING_APP'
+                            me.setFlag id, 'RUNNING_APP', region
                             ide_event.trigger ide_event.STARTED_APP, name, id
 
                         when 'STOP_APP'
-                            me.setFlag id, 'STOPPED_APP'
+                            me.setFlag id, 'STOPPED_APP', region
                             ide_event.trigger ide_event.STOPPED_APP, name, id
 
                         when 'TERMINATE_APP'
-                            me.setFlag id, 'TERMINATED_APP'
+                            me.setFlag id, 'TERMINATED_APP', region
                             ide_event.trigger ide_event.TERMINATED_APP, name, id
 
                             # remove the app name from app_list
@@ -617,6 +667,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                         else
                             console.log 'not support toolbar operation:' + flag
+                            return
+
+                    # update region aws resource
+                    ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
                 else
                     console.log 'not support request state:' + req.state
@@ -645,22 +699,26 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         saveAppThumbnail  :   ( region, app_name, app_id ) ->
             me = this
 
-            data = run_stack_map[region][app_name]
+            data = $.extend(true, {}, run_stack_map[region][app_name])
+            data.id = app_id
+            #update data
+            run_stack_map[region][app_id] = data
+            delete run_stack_map[region][app_name]
 
             if data
                 # generate s3 key
                 app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
-                app_model.once 'APP_GETKEY_RETURN', (result) ->
-                    console.log 'APP_GETKEY_RETURN'
-                    console.log result
+                # app_model.once 'APP_GET_KEY_RETURN', (result) ->
+                #     console.log 'APP_GET_KEY_RETURN'
+                #     console.log result
 
-                    if !result.is_error
-                        # trigger toolbar save png event
-                        console.log 'app key:' + result.resolved_data
+                #     if !result.is_error
+                #         # trigger toolbar save png event
+                #         console.log 'app key:' + result.resolved_data
 
-                        data.key = result.resolved_data
+                #         data.key = result.resolved_data
 
-                        me.savePNG true, data
+                #         me.savePNG true, data
 
             null
 

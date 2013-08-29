@@ -485,6 +485,15 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
         return { 'cost_list' : cost_list, 'total_fee' : total_fee.toFixed(3) }
 
+    checkDefaultVPC = () ->
+
+        currentRegion = MC.canvas_data.region
+        accountData = MC.data.account_attribute[currentRegion]
+        if accountData.support_platform is 'VPC'
+            return accountData.default_vpc
+        else
+            return false
+
     #public
     getNewName                  : getNewName
     cacheResource               : cacheResource
@@ -494,3 +503,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     getDuplicateName            : getDuplicateName
     disabledAllOperabilityArea  : disabledAllOperabilityArea
     getCost                     : getCost
+    checkDefaultVPC             : checkDefaultVPC

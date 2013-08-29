@@ -57,6 +57,9 @@ define [ 'MC', 'event',
             zeroclipboard.copy $( '#toolbar-jsoncopy' )
             ### env:dev:end ###
 
+            # add by song
+            $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
+
         reRender   : ( type ) ->
             console.log 're-toolbar render'
             if $.trim( $( '#main-toolbar' ).html() ) is 'loading...'

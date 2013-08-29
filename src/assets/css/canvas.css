@@ -355,7 +355,7 @@
 .line-sg.view-keephover {
 	stroke-width: 3px;
 	visibility: visible !important;
-	opacity: 0.7 !important;
+	opacity: 1 !important;
 }
 
 .line-sg.view-show {
@@ -816,6 +816,10 @@
 	stroke-width: 2px;
 }
 
+.node-label-rtb-name {
+	fill: white;
+}
+
 .node-label-hostname {
 	fill: white;
 }
@@ -827,7 +831,7 @@
 .instance-number-bg {
 	stroke-width:0;
 	fill:#439beb;
-	opacity: 0.8;
+	opacity: 1;
 }
 
 .instance-number {

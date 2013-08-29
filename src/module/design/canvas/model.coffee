@@ -1009,7 +1009,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				MC.canvas.remove $("#" + line_id)[0]
 
-
+			else
+				MC.canvas.select line_id
 
 		doCreateLine : ( line_id ) ->
 
@@ -1266,6 +1267,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 
 			if not (MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC and (portMap['elb-sg-in'] or portMap['elb-sg-out']))
+
+				# Prevent SG Rule create from AMI to attached ENI
+				eni_comp = MC.canvas_data.component[ portMap["eni-sg"] ]
+				if eni_comp and eni_comp.resource.Attachment.InstanceId.indexOf( portMap["instance-sg"] ) isnt -1
+					return "The Network Interface is attached to the instance. No need to connect them by security group rule."
+
 				for key, value of portMap
 					if key.indexOf('sg') >= 0
 						this.trigger 'CREATE_SG_CONNECTION', line_id
@@ -1299,8 +1306,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 					subnetUID = subnetUIDRef.split('.')[0].slice(1)
 					MC.aws.subnet.updateAllENIIPList(subnetUID)
-					#update sg color label
-					MC.aws.sg.updateSGColorLabel uid
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)
@@ -1338,6 +1343,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			if componentType in [resource_type.AWS_AutoScaling_Group, resource_type.AWS_VPC_NetworkInterface, resource_type.AWS_EC2_Instance, resource_type.AWS_ELB]
 				ide_event.trigger ide_event.REDRAW_SG_LINE
+
+			#update sg color label when create component(instance, elb, eni)
+			if componentType in [resource_type.AWS_EC2_Instance, resource_type.AWS_ELB, resource_type.AWS_VPC_NetworkInterface]
+				MC.aws.sg.updateSGColorLabel uid
 
 			console.log "Morris : #{componentType}"
 

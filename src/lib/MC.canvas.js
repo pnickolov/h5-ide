@@ -1277,7 +1277,7 @@ MC.canvas = {
 
 			$.each(node_connections, function (index, item)
 			{
-				Canvon('#' + item.line, '#' + item.target + '_port-' + item.port).addClass('view-show');
+				Canvon('#' + item.line + ',#' + item.target + '_port-' + item.port).addClass('view-show');
 
 				// $('#' + item.target + '_port-' + item.port).each(function ()
 				// {

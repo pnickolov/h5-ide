@@ -54,7 +54,7 @@
 	                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
 	            	{{/if}}
 	            </div>
-            	
+
             </div>
        </div>
        <div class="modal-footer">
@@ -681,10 +681,10 @@ Additional Notes and Questions
 		<i class="modal-close">×</i>
 	</div>
 	<div class="modal-body">
-		<div class="bg-blue">
+		<div class="bg-blue" data-bind="true">
 			<div class="property-control-group clearfix">
-				<label class="left" for="property-resource-name">App Name</label>
-				<input class="input modal-input-value" type="text" value="{{name}}">
+				<label class="left" for="app-name">App Name</label>
+				<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 			</div>
 		</div>
 		<div class="stack-validation">

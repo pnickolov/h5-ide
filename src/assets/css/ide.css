@@ -121,7 +121,7 @@ a {
 }
 
 #header {
-	background: #312d31;
+	/*background: #312d31;*/
 	height: 50px;
 	z-index: 10;
 	position: absolute;
@@ -160,7 +160,11 @@ a {
 #header .header-menu .dropdown a {
 	display: block;
 	padding: 0 20px;
-	color: #eee;
+	color: #ddd;
+}
+
+#header .header-menu .dropdown a:hover {
+	color: #B25B91;
 }
 
 #header .dropdown:hover,

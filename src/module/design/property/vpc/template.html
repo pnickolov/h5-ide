@@ -46,7 +46,7 @@
   <div class="option-group" id="dhcp-property-detail" data-type="true">
     <section class="property-control-group">
       <div class="radio property-dhcp">
-        <input id="property-dhcp-none" type="radio" name="dhcp-opts" {{#if noneDhcp}}checked="checked"  {{/if}}value="none" />
+        <input id="property-dhcp-none" type="radio" name="dhcp-opts" {{#unless hasDhcp}}checked="checked"  {{/unless}}value="none" />
         <label for="property-dhcp-none"></label>
       </div>
       <label for="property-dhcp-none">None</label>
@@ -54,15 +54,15 @@
 
     <section class="property-control-group">
       <div class="radio property-dhcp">
-        <input id="property-dhcp-spec" type="radio" name="dhcp-opts" {{#if noneDhcp}}{{else}}checked="checked"{{/if}} value="specified"/>
+        <input id="property-dhcp-spec" type="radio" name="dhcp-opts" {{#if hasDhcp}}checked="checked"{{/if}} value="specified"/>
         <label for="property-dhcp-spec"></label>
       </div>
       <label for="property-dhcp-spec">Specified DHCP Options Set</label>
 
-      <div style="{{#if noneDhcp}}{{else}}display:none;{{/if}}" class="property-info" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
+      <div class="property-info {{#if hasDhcp}}hide{{/if}}" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
     </section>
 
-    <section id="property-dhcp-options" data-bind="true" class="property-control-group-sub" {{#if noneDhcp}}style="display:none;"{{/if}}>
+    <section id="property-dhcp-options" data-bind="true" class="property-control-group-sub {{#unless hasDhcp}}hide{{/unless}}">
       <div class="property-control-group">
         <label class="left" for="property-dhcp-domain">Domain Name</label>
         <input class="input tooltip" type="text" value="{{dhcp.domainName}}" data-tooltip="Enter the domain name that should be used for your hosts" id="property-dhcp-domain" maxlength="255" data-type="domain" data-ignore="true"/>

@@ -128,10 +128,30 @@ define [ 'MC', 'event',
 
             if not name
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
+
             else if name.indexOf(' ') >= 0
                 notification 'warning', 'stack name contains white space.'
+
             else if not MC.aws.aws.checkStackName id, name
-                notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
+                #notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
+                #show modal to re-input stack name
+                template = MC.template.modalReinputStackName {
+                    stack_name : name
+                }
+
+                modal template, false
+                $('#rename-confirm').click () ->
+                    new_name = $('#new-stack-name').val()
+                    console.log 'save stack new name:' + new_name
+
+                    if MC.aws.aws.checkStackName id, new_name
+                        modal.close()
+
+                        MC.canvas_data.name = new_name
+
+                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+                        true
+
             else
                 MC.canvas_data.name = name
                 ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()

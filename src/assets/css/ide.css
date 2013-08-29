@@ -3185,10 +3185,13 @@ a.action-link:hover {
 }
 #volume-device {
 	width: 40px;
-	height: 10px;
-	padding: 5px;
-	background-color: #f0f0f0;
-	font-size: 12px;
+	margin-left: 10px;
+}
+#property-panel-volume .property-control-group > div {
+	margin-top: 8px;
+}
+#property-panel-volume #volume-type-radios > div {
+	padding-bottom: 5px;
 }
 #volume-size-ranged, #iops-ranged {
 	display: inline-block;

@@ -572,6 +572,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 						if "" + value.resource.Attachment.DeviceIndex == "0"
 							delete MC.canvas_data.component[key]
+						else
+							# Hide eni number
+							MC.canvas.display( key, 'eni-number-group', false )
 
 				# remove instance relate volume
 
@@ -799,9 +802,13 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Eni <==> Instance
 			else if portMap['instance-attach'] and portMap['eni-attach']
+				# Hide Eni Number
+				MC.canvas.display portMap['eni-attach'], 'eni-number-group', false
+
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
 				ide_event.trigger ide_event.REDRAW_SG_LINE
+
 
 				#hide sg port of eni when delete line
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', false
@@ -1129,6 +1136,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				# check whether instance has position to add one more eni
 				instance_component = MC.canvas_data.component[portMap['instance-attach']]
 				eni_component      = MC.canvas_data.component[portMap['eni-attach']]
+
 				if eni_component.resource.AvailabilityZone isnt instance_component.resource.Placement.AvailabilityZone
 					return lang.ide.CVS_MSG_ERR_CONNECT_ENI_AMI
 
@@ -1206,6 +1214,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
 
 				ide_event.trigger ide_event.REDRAW_SG_LINE
+
+				# Update Eni number
+				MC.aws.instance.updateCount portMap['instance-attach'], instance_component.number
+
 				#show sg port of eni when create line
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', true
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_right', true

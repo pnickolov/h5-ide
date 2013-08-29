@@ -39,7 +39,7 @@ define ['constant', 'backbone', 'MC' ], ( constant ) ->
                 if vpc.mainRTB
                   break
 
-          if vpc.dhcpOptionsId
+          if vpc.dhcpOptionsId and vpc.dhcpOptionsId isnt "default"
             dhcpData = appData[ vpc.dhcpOptionsId ].dhcpConfigurationSet.item
             dhcp = {}
 

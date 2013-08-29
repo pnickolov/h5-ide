@@ -23,26 +23,20 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         setId : ( uid ) ->
             component = MC.canvas_data.component[ uid ]
 
-            dhcpid = component.resource.DhcpOptionsId
-
-            data =
+            data = {
                 uid            : uid
                 component      : component
                 dnsSupport     : component.resource.EnableDnsSupport   == "true"
                 dnsHosts       : component.resource.EnableDnsHostnames == "true"
                 defaultTenancy : component.resource.InstanceTenancy    == "default"
-                noneDhcp       : component.resource.DhcpOptionsId      == "default"
+                dhcp           : this.getDHCPOptions uid
+                hasDhcp        : true
+            }
 
-            if !data.noneDhcp
-                if dhcpid
-                    data.dhcp = this.getDHCPOptions uid
-
-                if !data.dhcp
-                    data.dhcp =
-                        domainName   : this.defaultDomainName uid
-                        useAmazonDns : true
-            else
+            if not data.dhcp
+                data.hasDhcp = false
                 data.dhcp =
+                    domainName   : this.defaultDomainName vpcUid
                     useAmazonDns : true
 
             this.set data
@@ -82,10 +76,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
         getDHCPComponent : ( vpcUid ) ->
             vpc    = MC.canvas_data.component[ vpcUid ]
-            dhcpid = MC.extractID( vpc.resource.DhcpOptionsId )
-
-            if dhcpid == "default"
-                return null
+            dhcpid = vpc.resource.DhcpOptionsId
+            dhcpid = if dhcpid is "default" then "" else MC.extractID( dhcpid )
 
             if dhcpid == ""
                 # Create a new DHCP Component
@@ -93,46 +85,21 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                 component_data = $.extend true, {}, MC.canvas.DHCP_JSON.data
                 component_data.uid = dhcpid
-                component_data.resource.VpcId = "@" + vpcUid + ".resource.VpcId"
+                component_data.resource.VpcId = "@#{vpcUid}.resource.VpcId"
 
-                components = MC.canvas.data.get 'component'
+                components = MC.canvas_data.component
                 components[ dhcpid ] = component_data
-                MC.canvas.data.set 'component', components
 
-                vpc.resource.DhcpOptionsId = "@" + dhcpid + ".resource.DhcpOptionsId"
+                vpc.resource.DhcpOptionsId = "@#{dhcpid}.resource.DhcpOptionsId"
                 return component_data
-            else
-                return MC.canvas_data.component[ dhcpid ]
 
-            null
+            return MC.canvas_data.component[ dhcpid ]
 
-
-        # This method only sets whether or not the VPC use none DHCP
-        # It does not modify already exists DHCP when enabling DHCP
-        setDhcp : ( enable ) ->
+        removeDhcp : () ->
             component = MC.canvas_data.component[ this.attributes.uid ]
-            if enable
-                if component.resource.DhcpOptionsId == "default"
-                    component.resource.DhcpOptionsId = ""
-            else
-                dhcpid = MC.extractID component.resource.DhcpOptionsId
-                noDHCP = dhcpid == ""
-
-                component.resource.DhcpOptionsId = "default"
-
-                # The VPC component has no associated DHCP component
-                noDHCP = dhcpid == ""
-                if noDHCP
-                    return
-
-                # delete already exists DHCP component
-                component_data = MC.canvas.data.get('component')
-                if component_data[ dhcpid ].type == constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions
-                    delete component_data[ dhcpid ]
-                    console.log "Deleted DHCP component", component_data
-
-                MC.canvas.data.set('component', component_data)
-            null
+            dhcpid = MC.extractID component.resource.DhcpOptionsId
+            component.resource.DhcpOptionsId = "default"
+            delete MC.canvas_data.component[ dhcpid ]
 
         # DHCP Options Setting
         setDHCPOptions : ( options ) ->
@@ -174,7 +141,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     Key : "netbios-node-type"
                     ValueSet : [ Value : options.netbiosType ]
 
-            this.getDHCPComponent( this.attributes.uid ).resource.DhcpConfigurationSet = configSet
+            @getDHCPComponent( @attributes.uid ).resource.DhcpConfigurationSet = configSet
             null
 
         # TODO : Generate default domain name for dhcp
@@ -182,12 +149,20 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             ""
 
         getDHCPOptions : ( vpcUid ) ->
-            dhcpid = MC.extractID MC.canvas_data.component[ vpcUid ].resource.DhcpOptionsId
-            dhcp   = MC.canvas_data.component[ dhcpid ]
+            components = MC.canvas_data.component
+            dhcpid = MC.extractID components[ vpcUid ].resource.DhcpOptionsId
 
-            config = dhcp.resource.DhcpConfigurationSet
-            if config.length == 0
+            if dhcpid is "default"
                 return null
+
+            dhcp   = components[ dhcpid ]
+            config = dhcp.resource.DhcpConfigurationSet
+
+            if config.length == 0
+                mock =
+                    domainName   : this.defaultDomainName vpcUid
+                    useAmazonDns : true
+                return mock
 
             keyMap =
                 "domain-name-servers"  : "domainServers"

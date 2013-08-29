@@ -1340,27 +1340,9 @@ var constant_data = {
 			{
 				"VpcId": "", //eg: @3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId
 				"DhcpOptionsId": "",
-				"DhcpConfigurationSet": [
-				{
-					"Key": "domain-name",
-					"ValueSet": [
-					{
-						"Value": "test"
-					}]
-				},
-				{
+				"DhcpConfigurationSet": [{
 					"Key": "domain-name-servers",
-					"ValueSet": [
-					{
-						"Value": "" //eg: 192.168.2.2
-					}]
-				},
-				{
-					"Key": "netbios-node-type",
-					"ValueSet": [
-					{
-						"Value": "1"
-					}]
+					"ValueSet": [{"Value": "AmazonProvidedDNS"}]
 				}]
 			}
 		}

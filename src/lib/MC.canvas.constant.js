@@ -801,6 +801,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.EC2.AvailabilityZone",
 			"coordinate": [0, 0],
 			"size": [480, 240],
@@ -814,6 +815,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.EC2.Instance",
 			"coordinate": [0, 0],
 			"osType": "", //amazon|centos|debian|fedora|gentoo|linux-other|opensuse|redhat|suse|ubuntu|win
@@ -948,6 +950,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.EC2.EBS.Volume",
 			"coordinate": [0, 0],
 			"connection": [],
@@ -987,6 +990,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.ELB",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -1064,6 +1068,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.VPC.VPC",
 			"coordinate": [0, 0],
 			"size": [0, 0],
@@ -1093,6 +1098,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.VPC.Subnet",
 			"coordinate": [0, 0],
 			"size": [0, 0],
@@ -1121,6 +1127,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.VPC.InternetGateway",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -1148,6 +1155,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.VPC.RouteTable",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -1192,6 +1200,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.VPC.VPNGateway",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -1222,6 +1231,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.VPC.CustomerGateway",
 			"networkName": "",
 			"coordinate": [0, 0],
@@ -1249,6 +1259,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.VPC.NetworkInterface",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -1314,6 +1325,7 @@ var constant_data = {
 	{
 		layout:
 		{
+			'uid' : '',
 			"type": "AWS.VPC.DhcpOptions",
 			"coordinate": [0, 0],
 			"groupUId": "",
@@ -1514,6 +1526,7 @@ var constant_data = {
 	//*****AWS.AutoScaling.Group*****/
 	ASG_JSON: {
 		layout: {
+			'uid' : '',
 			"type": "AWS.AutoScaling.Group",
 			"coordinate": [
 				0,
@@ -1578,6 +1591,7 @@ var constant_data = {
 	ASL_LC_JSON: {
 		layout:
 		{
+			'uid' : '',
 			'type': 'AWS.AutoScaling.LaunchConfiguration',
 			'coordinate': [0, 0],
 			'osType': '', //amazon|centos|debian|fedora|gentoo|linux-other|opensuse|redhat|suse|ubuntu|win

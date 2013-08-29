@@ -52,7 +52,7 @@ MC.canvas = {
 				{
 					target = $('#' + id).find("." + key);
 				}
-				
+
 				target.text(value);
 				break;
 
@@ -3360,7 +3360,7 @@ MC.canvas.event.dragable = {
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			component_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
-			BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
+			BEFORE_ASG_EXPAND_EVENT = $.Event("CANVAS_BEFORE_ASG_EXPAND"),
 			match_place = MC.canvas.isMatchPlace(
 				null,
 				target_type,
@@ -3381,8 +3381,8 @@ MC.canvas.event.dragable = {
 
 		if (
 			match_place.is_matched &&
-			svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
-			!BEFORE_DROP_EVENT.isDefaultPrevented()
+			svg_canvas.trigger(BEFORE_ASG_EXPAND_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+			!BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()
 		)
 		{
 			new_node = MC.canvas.add(node_type, {'name': MC.canvas.data.get('component')[target_id].name, 'groupUId': match_place.target, 'originalId': target_id}, coordinate);

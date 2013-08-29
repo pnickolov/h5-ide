@@ -56,6 +56,14 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                 model.beforeDrop event, option.src_node, option.tgt_parent
                 null
 
+            #listen CANVAS_BEFORE_ASG_EXPAND
+            view.on "CANVAS_BEFORE_ASG_EXPAND", ( event, option ) ->
+                model.beforeASGExpand event, option.src_node, option.tgt_parent
+                null
+
+
+
+
             #listen CANVAS_NODE_CHANGE_PARENT
             #listen CANVAS_GROUP_CHANGE_PARENT
             view.on 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT', ( event, option ) ->

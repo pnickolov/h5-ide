@@ -86,6 +86,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			# Dispatch the event-handling to real handler
 			component = MC.canvas_data.component[ src_node ]
+
+			#for expand ASG
+			if !component or component.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+				component = MC.canvas_data.layout.component.group[ src_node ]
+
 			handler   = if component then this.validateDropMap[ component.type ] else null
 			if handler
 				error = handler.call( this, component, tgt_parent )
@@ -147,15 +152,78 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
 			null
 
-		beforeD_ASG : ( component, tgt_parent ) ->
-			for key, group of MC.canvas_data.layout.component.group
-				if group.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-					if group.originalId is component.uid and group.groupUId is tgt_parent
-						parent = MC.canvas_data.component[ tgt_parent ]
-						if !parent
-							parent = MC.canvas_data.layout.component.group[ tgt_parent ]
+		beforeD_ASG : ( asg_layout, tgt_parent ) ->
+			#move asg
 
-						return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, component.name, parent.name
+			comp_data   = MC.canvas_data.component
+			layout_data = MC.canvas_data.layout
+
+			asg_id      = if asg_layout.originalId then asg_layout.originalId else asg_layout.uid
+			asg_name    = comp_data[asg_id].name
+
+			res_type    = constant.AWS_RESOURCE_TYPE
+			tgt_az      = ''
+
+			tgt_layout  = layout_data.component.group[tgt_parent]
+
+			if tgt_layout
+
+				switch tgt_layout.type
+
+					when res_type.AWS_EC2_AvailabilityZone then tgt_az = tgt_layout.name
+
+					when res_type.AWS_VPC_Subnet           then tgt_az = comp_data[tgt_parent].resource.AvailabilityZone
+
+
+			other_ASG_id = MC.aws.asg.getASGInAZ asg_layout.uid, tgt_az
+
+			if other_ASG_id and other_ASG_id != asg_layout.uid
+
+				return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, asg_name, tgt_az
+
+
+		beforeASGExpand : ( event, src_asg_uid, tgt_parent ) ->
+			#expand asg
+
+			comp_data   = MC.canvas_data.component
+			layout_data = MC.canvas_data.layout
+
+			asg_comp    = comp_data[src_asg_uid]
+			asg_az      = MC.aws.asg.getAZofASGNode src_asg_uid
+
+			res_type    = constant.AWS_RESOURCE_TYPE
+			tgt_az      = ''
+			exist       = false
+
+			tgt_layout  = layout_data.component.group[tgt_parent]
+
+			if tgt_layout
+
+				switch tgt_layout.type
+
+					when res_type.AWS_EC2_AvailabilityZone then tgt_az = tgt_layout.name
+
+					when res_type.AWS_VPC_Subnet           then tgt_az = comp_data[tgt_parent].resource.AvailabilityZone
+
+
+				#compare tgt_az and asg_az
+				if asg_az and tgt_az and tgt_az == asg_az
+					exist = true
+
+				else
+
+					otherASG = MC.aws.asg.getASGInAZ src_asg_uid, tgt_az
+
+					if otherASG
+						exist = true
+
+
+			if exist
+				if event and event.preventDefault
+						event.preventDefault()
+
+				notification 'error', sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, asg_comp.name, tgt_az
+
 
 		#change node from one parent to another parent
 		changeParent : ( event, src_node, tgt_parent ) ->

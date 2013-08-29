@@ -471,8 +471,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage phantom_data, MC.SAVEPNG_URL
             if $( '#phantom-frame' )[0] is undefined
-                $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
-                $('#phantom-frame').load -> sendMessage()
+                $('#phantom-frame')[0].onload = () ->
+                    sendMessage()
+                    null
             else
                 sendMessage()
             #

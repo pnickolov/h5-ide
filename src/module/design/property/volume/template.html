@@ -2,13 +2,14 @@
     {{#if volume_detail.isLC}}
     <section class="property-control-group">
         <label>Device Name</label>
-        <div class="name tooltip" data-tooltip="Required">
+        <div class="name" data-bind="true">
             {{#if volume_detail.isWin}}
             <label for="volume-device">xvd</label>
+            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="1"/>
             {{else}}
             <label for="volume-device">/dev/</label>
+            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="5"/>
             {{/if}}
-            <input type="text" class="input input-device" value="{{volume_detail.editName}}" id="volume-device">
         </div>
     </section>
     <section class="property-control-group">
@@ -31,13 +32,14 @@
     {{else}}
     <section class="property-control-group">
         <label>Device Name</label>
-        <div class="name tooltip" data-tooltip="Required">
+        <div class="name">
         	{{#if volume_detail.isWin}}
         	<label for="volume-device">xvd</label>
+            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="1"/>
         	{{else}}
             <label for="volume-device">/dev/</label>
+            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="5"/>
         	{{/if}}
-            <input type="text" class="input input-device" value="{{volume_detail.editName}}" id="volume-device">
         </div>
     </section>
     <section class="property-control-group">

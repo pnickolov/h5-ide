@@ -71,40 +71,54 @@ MC.canvas = {
 		return true;
 	},
 
-	updateSG: function (id)
+	updateSG: function (uid)
 	{
-		var instance_SG = MC.canvas.data.get('component.' + id + '.resource.SecurityGroup'),
+		var comp_data = MC.canvas.data.get('component.' + uid),
+			comp_sg_list = [],
 			SG_list = MC.canvas_property.sg_list,
-			colors = [];
+			colors = [],
+			i = 0;
 
-		$.each(instance_SG, function (index, SG_uid)
+		if (!comp_data) {
+			console.error('[updateSGColorLabel] not found component: ' + uid);
+		}
+
+		switch (comp_data.type) {
+			case 'AWS.EC2.Instance':
+				comp_sg_list = comp_data.resource.SecurityGroupId;
+				break;
+			case 'AWS.ELB':
+				comp_sg_list = comp_data.resource.SecurityGroups;
+				break;
+			case 'AWS.VPC.NetworkInterface':
+				$.each(comp_data.resource.GroupSet, function(i, value)
+				{
+					comp_sg_list.push(value.GroupId);
+				});
+		}
+
+		$.each(comp_sg_list, function(index, SG_uid)
 		{
 			SG_uid = SG_uid.substr(1, 36);
-
-			$.each(SG_list, function (i, SG_data)
+			$.each(SG_list, function(i, SG_data)
 			{
-				if (SG_data.uid === SG_uid)
-				{
-					colors.push('#'+SG_data.color);
+				if (SG_data.uid === SG_uid) {
+					colors.push("#" + SG_data.color);
+					return false;
 				}
 			});
 		});
+		console.info(uid + ":" + colors);
 
-		console.info(id + ':' + colors);
-
-		//update color label
-		for (var i = 0; i < MC.canvas.SG_MAX_NUM; i++)
-		{
-			if ( i<colors.length && colors[i] )
-			{//show
-				MC.canvas.update(id, 'color', 'sg-color-label'+ (i+1) , colors[i]);
-				$( '#' + id + '_' + 'sg-color-label'+ (i+1) ).attr('class','node-sg-color-border');
+		while (i < MC.canvas.SG_MAX_NUM) {
+			if (i < colors.length && colors[i]) {
+				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), colors[i]);
+				$("#" + uid + "_" + "sg-color-label" + (i + 1)).attr("class", "node-sg-color-border");
+			} else {
+				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), "none");
+				$("#" + uid + "_" + "sg-color-label" + (i + 1)).attr("class", "");
 			}
-			else
-			{//hide
-				MC.canvas.update(id, 'color', 'sg-color-label'+ (i+1) , 'none');
-				$( '#' + id + '_' + 'sg-color-label'+ (i+1) ).attr('class','');
-			}
+			i++;
 		}
 
 	},
@@ -2623,7 +2637,7 @@ MC.canvas.asgList = {
 			var lc_comp = MC.canvas_data.component[ layout.groupUId ];
 
 			var statusMap = {
-				   "Pending"     : "orange"
+					 "Pending"     : "orange"
 				 , "Quarantined" : "orange"
 				 , "InService"   : "green"
 				 , "Terminating" : "red"
@@ -2644,7 +2658,7 @@ MC.canvas.asgList = {
 			{
 				for ( var i = 0, l = instances.length; i < l; ++i ) {
 					temp_data.instances.push({
-						  id     : instances[i].InstanceId
+							id     : instances[i].InstanceId
 						, status : statusMap[ instances[i].LifecycleState ]
 					});
 				}

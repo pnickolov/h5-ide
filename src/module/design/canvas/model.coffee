@@ -1299,8 +1299,6 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 					subnetUID = subnetUIDRef.split('.')[0].slice(1)
 					MC.aws.subnet.updateAllENIIPList(subnetUID)
-					#update sg color label
-					MC.aws.sg.updateSGColorLabel uid
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)
@@ -1338,6 +1336,10 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			if componentType in [resource_type.AWS_AutoScaling_Group, resource_type.AWS_VPC_NetworkInterface, resource_type.AWS_EC2_Instance, resource_type.AWS_ELB]
 				ide_event.trigger ide_event.REDRAW_SG_LINE
+
+			#update sg color label when create component(instance, elb, eni)
+			if componentType in [resource_type.AWS_EC2_Instance, resource_type.AWS_ELB, resource_type.AWS_VPC_NetworkInterface]
+				MC.aws.sg.updateSGColorLabel uid
 
 			console.log "Morris : #{componentType}"
 

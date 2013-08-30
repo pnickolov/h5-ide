@@ -42,7 +42,11 @@ define [ 'jquery', 'event',
             #
             reconnect_view.on 'RE_LOGIN', ( password ) -> model.relogin password
             reconnect_view.on 'CLOSE_POPUP',        () -> unLoadModule reconnect_view, model
-            model.on 'RE_LOGIN_SCUCCCESS',          () -> reconnect_view.close()
+            model.on 'RE_LOGIN_SCUCCCESS',          () ->
+                #
+                reconnect_view.close()
+                #
+                window.location.href = 'ide.html' if !MC.data.is_loading_complete
             model.on 'RE_LOGIN_FAILED',             () -> reconnect_view.invalid()
 
     unLoadModule = ( view, model ) ->

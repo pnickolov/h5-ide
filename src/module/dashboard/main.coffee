@@ -75,6 +75,8 @@ define [ 'jquery',
                 else
                     view.renderPlatformAttrs(true)
                     #
+                    MC.data.is_loading_complete = true
+                    #
                     ide_event.trigger ide_event.SWITCH_MAIN
                 #
                 if region_view then region_view.checkCreateStack MC.data.supported_platforms

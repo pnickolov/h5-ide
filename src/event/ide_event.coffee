@@ -54,6 +54,7 @@ define [ 'underscore', 'backbone' ], () ->
         SWITCH_DASHBOARD       : 'SWITCH_DASHBOARD'
         SWITCH_APP_PROCESS     : 'SWITCH_APP_PROCESS'
         SWITCH_LOADING_BAR     : 'SWITCH_LOADING_BAR'
+        SWITCH_WAITING_BAR     : 'SWITCH_WAITING_BAR'
         SWITCH_MAIN            : 'SWITCH_MAIN'
 
         #tabbar

@@ -58,6 +58,11 @@ a {
 
 .capitalize { text-transform: capitalize;}
 
+.fitfloat {
+	display  : block;
+	overflow : hidden;
+}
+
 .loading-spinner {
   -webkit-animation: loading-spinner .8s infinite linear;
   -moz-animation: loading-spinner .8s infinite linear;
@@ -105,11 +110,6 @@ a {
 	-o-text-overflow: ellipsis;
 	-ms-text-overflow: ellipsis;
 	/*display: inline-block;*/
-}
-
-.fitfloat {
-	display  : block;
-	overflow : hidden;
 }
 
 /* Header */
@@ -2463,6 +2463,34 @@ a.sidebar-hider {
 }
 
 /* Instance Property*/
+.property-instance-name-wrap.single .name-count-wrap {
+	display : none;
+}
+
+.property-instance-name-wrap {
+	height     : 35px;
+	margin-top : 25px;
+	-webkit-box-shadow: 0 1px 0 0 #5d5c5d;
+	   -moz-box-shadow: 0 1px 0 0 #5d5c5d;
+	        box-shadow: 0 1px 0 0 #5d5c5d;
+}
+
+.property-instance-name-wrap .input {
+	width : 100% !important;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+.property-instance-name-wrap .name-count-wrap {
+	float : right;
+	height      : 33px;
+	line-height : 33px;
+	padding     : 0 10px;
+	background  : #555455;
+	border      : 1px solid #363536;
+	border-left : none;
+}
 
 .property-ami-wrap {
 	font-size : 12px;
@@ -3378,7 +3406,7 @@ a.action-link:hover {
 
 	background-color : rgba(0,0,0,.05);
 	border-left      : 1px #585858 solid;
-	
+
 	cursor : pointer;
 }
 

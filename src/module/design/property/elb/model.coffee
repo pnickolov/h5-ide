@@ -159,12 +159,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             console.log 'setELBName = ' + value
 
             # before, modify elb default sg name
-            originELBName = MC.canvas_data.component[uid].resource.LoadBalancerName
-            newSGName = value + '-sg'
             elbSG = MC.aws.elb.getElbDefaultSG uid
-            elbSGUID = elbSG.uid
-            MC.canvas_data.component[elbSGUID].name = newSGName
-            MC.canvas_data.component[elbSGUID].resource.GroupName = newSGName
+            if elbSG
+                originELBName = MC.canvas_data.component[uid].resource.LoadBalancerName
+                newSGName = value + '-sg'
+                elbSGUID = elbSG.uid
+                MC.canvas_data.component[elbSGUID].name = newSGName
+                MC.canvas_data.component[elbSGUID].resource.GroupName = newSGName
 
             # after, modify elb name
             MC.canvas_data.component[uid].name = value

@@ -121,6 +121,7 @@ define [ 'jquery',
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
     unLoadModule = () ->
+        if !current_view then return
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()

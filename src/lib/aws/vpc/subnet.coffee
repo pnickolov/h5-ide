@@ -195,21 +195,36 @@ define [ 'MC' ], ( MC ) ->
 		else
 			return null
 
-	updateAllENIIPList = (subnetUID) ->
+	#for default vpc, subnetuid is az name
+	updateAllENIIPList = (subnetUidOrAZ) ->
 
-		subnetComp = MC.canvas_data.component[subnetUID]
-		if !subnetComp then return
-		subnetRef = '@' + subnetComp.uid + '.resource.SubnetId'
-		subnetCIDR = subnetComp.resource.CidrBlock
-
-		needIPCount = MC.aws.eni.getSubnetNeedIPCount(subnetComp.uid)
-		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR(subnetCIDR, [], needIPCount)
+		defaultVPC = false
+		if MC.aws.aws.checkDefaultVPC()
+			defaultVPC = true
 
 		needIPCount = 0
+		subnetCIDR = ''
+		azName = ''
+		subnetRef = ''
+		if defaultVPC
+			azName = subnetUidOrAZ
+			subnetObj = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)
+			subnetCIDR = subnetObj.cidrBlock
+			needIPCount = MC.aws.eni.getSubnetNeedIPCount(azName)
+		else
+			subnetComp = MC.canvas_data.component[subnetUidOrAZ]
+			if !subnetComp then return
+			subnetRef = '@' + subnetComp.uid + '.resource.SubnetId'
+			subnetCIDR = subnetComp.resource.CidrBlock
+			needIPCount = MC.aws.eni.getSubnetNeedIPCount(subnetComp.uid)
 
-		_.each MC.canvas_data.component, (compObj) ->
-			if compObj.type is 'AWS.VPC.NetworkInterface' and compObj.resource.SubnetId is subnetRef
-				needIPCount += compObj.resource.PrivateIpAddressSet.length
+		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR(subnetCIDR, [], needIPCount)
+
+		# needIPCount = 0
+		# _.each MC.canvas_data.component, (compObj) ->
+		# 	if compObj.type is 'AWS.VPC.NetworkInterface'
+		# 		if (!defaultVPC and compObj.resource.SubnetId is subnetRef) or (defaultVPC and compObj.resource.AvailabilityZone is azName)
+		# 		needIPCount += compObj.resource.PrivateIpAddressSet.length
 
 		# start auto assign ip
 		assignedIPAry = []
@@ -222,7 +237,7 @@ define [ 'MC' ], ( MC ) ->
 
 		i = 0
 		_.each MC.canvas_data.component, (compObj) ->
-			if compObj.type is 'AWS.VPC.NetworkInterface' and compObj.resource.SubnetId is subnetRef
+			if (!defaultVPC and compObj.resource.SubnetId is subnetRef) or (defaultVPC and compObj.resource.AvailabilityZone is azName)
 				newPrivateIpAddressSet = _.map compObj.resource.PrivateIpAddressSet, (ipObj) ->
 					ipObj.PrivateIpAddress = assignedIPAry[i++]
 					ipObj.AutoAssign = true

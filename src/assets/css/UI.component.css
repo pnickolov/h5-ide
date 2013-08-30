@@ -161,6 +161,10 @@ a.table-link {
 	color: #3892E3;
 }
 
+.table-no-style {
+	border-spacing: 0;
+}
+
 /* Button */
 .btn {
 	display       : inline-block;
@@ -180,8 +184,9 @@ a.table-link {
 	background        : #44484a;
 	background-repeat : repeat-x;
 	border-radius     : 2px;
-	border            : 1px solid transparent;
+	border            : 1px solid #404040;
 	/*box-shadow      : inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 0 rgba(0, 0, 0, 0.15);*/
+	box-shadow        : inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover {
@@ -202,7 +207,7 @@ a.table-link {
 
 .btn-primary {
 	background : #B25B91;
-	/*border   : 1px solid #7E1958;*/
+	border   : 1px solid #7E1958;
 }
 
 .btn-primary:hover {
@@ -216,6 +221,7 @@ a.table-link {
 
 .btn-blue {
     background: #3781C9;
+    border: 1px solid #276199;
 }
 
 .btn-blue:hover {
@@ -228,6 +234,7 @@ a.table-link {
 
 .btn-red {
 	background: #D64442;
+	border: 1px solid #A02523;
 }
 
 .btn-red:hover {
@@ -235,13 +242,14 @@ a.table-link {
 }
 
 .btn-silver {
-	background: #EFEFEF;
+	background: #f3f3f3;
 	border: 1px solid #D4D4D4;
 	color: #666;
+	box-shadow: inset 0 1px 0 #fff;
 }
 
 .btn-silver:hover {
-	background: #F8F8F8;
+	background: #fff;
 	color: #666;
 }
 
@@ -377,6 +385,10 @@ textarea:focus {
 	box-shadow: none;
 	color: #666;
 	border: 1px solid transparent;
+}
+
+.property-content .input.input-short {
+	width: 160px;
 }
 
 .prefix-input {
@@ -1961,14 +1973,14 @@ input.parsley-error {
 }
 
 .parsley-error-list {
-	display: none;
-	position: absolute;
-	font-size: 12px;
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	background-color: #F74A48;
-	padding: 2px;
-	color: #fff;
-	z-index: 90;
+	display          : none;
+	position         : absolute;
+	font-size        : 12px;
+	list-style       : none;
+	padding          : 0;
+	margin           : 0;
+	background-color : #F74A48;
+	padding          : 5px;
+	color            : #fff;
+	z-index          : 90;
 }

@@ -107,7 +107,7 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 						side_sg.name = MC.canvas_data.component[connection_obj.uid].name
 
-						side_sg.sg = ({uid:sg.split('.')[0][1...],name:MC.canvas_data.component[sg.split('.')[0][1...]].name} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroupId)
+						side_sg.sg = ({uid:sg.split('.')[0][1...],name:MC.canvas_data.component[sg.split('.')[0][1...]].name, color:MC.aws.sg.getSGColor(sg.split('.')[0][1...])} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroupId)
 
 						both_side.push side_sg
 
@@ -121,7 +121,7 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 								side_sg.name = MC.canvas_data.component[connection_obj.uid].name
 
-								side_sg.sg = ({name:MC.canvas_data.component[sg.GroupId.split('.')[0][1...]].name, uid:sg.GroupId.split('.')[0][1...]} for sg in comp.resource.GroupSet)
+								side_sg.sg = ({name:MC.canvas_data.component[sg.GroupId.split('.')[0][1...]].name, uid:sg.GroupId.split('.')[0][1...], color:MC.aws.sg.getSGColor(sg.GroupId.split('.')[0][1...])} for sg in comp.resource.GroupSet)
 
 								both_side.push side_sg
 
@@ -133,7 +133,7 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 					side_sg.name = MC.canvas_data.component[connection_obj.uid].name
 
-					side_sg.sg = ({uid:sg.GroupId.split('.')[0][1...],name:MC.canvas_data.component[sg.GroupId.split('.')[0][1...]].name} for sg in MC.canvas_data.component[connection_obj.uid].resource.GroupSet)
+					side_sg.sg = ({uid:sg.GroupId.split('.')[0][1...],name:MC.canvas_data.component[sg.GroupId.split('.')[0][1...]].name, color:MC.aws.sg.getSGColor(sg.GroupId.split('.')[0][1...])} for sg in MC.canvas_data.component[connection_obj.uid].resource.GroupSet)
 
 					both_side.push side_sg
 
@@ -143,7 +143,7 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 					side_sg.name = MC.canvas_data.component[connection_obj.uid].name
 
-					side_sg.sg = ({uid:sg.split('.')[0][1...],name:MC.canvas_data.component[sg.split('.')[0][1...]].name} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroups)
+					side_sg.sg = ({uid:sg.split('.')[0][1...],name:MC.canvas_data.component[sg.split('.')[0][1...]].name, color:MC.aws.sg.getSGColor(sg.split('.')[0][1...])} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroups)
 
 					both_side.push side_sg
 

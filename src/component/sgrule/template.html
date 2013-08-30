@@ -3,12 +3,12 @@
 <article class="modal-body" id="sg-rule-create-modal">
   <section class="sg-rule-create-add-wrap">
 
-    <section class="sg-node-wrap">
+    <section class="sg-node-wrap clearfix">
       <label>Allow</label>
 
-      <div class="selectbox dis-blk" id="sg-create-sg-out">
+      <div class="selectbox" id="sg-create-sg-out">
         <span class="sg-create-sg-color" style="background:{{sg_detail.[0].color}}"></span>
-        <div class="selection">{{sg_detail.[1].sg.[0].name}}</div>
+        <div class="selection">{{sg_detail.[0].sg.[0].name}}</div>
         <ul class="dropdown">
           {{#each sg_detail.[0].sg}}
             <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
@@ -16,7 +16,7 @@
         </ul>
       </div>
 
-      <div class="selectbox dis-blk" id="sg-create-direction">
+      <div class="selectbox" id="sg-create-direction">
         <div class="selection">send traffic to</div>
         <ul class="dropdown">
           <li class="item selected" data-id="out">send traffic to</li>
@@ -25,7 +25,7 @@
         </ul>
       </div>
 
-      <div class="selectbox dis-blk" id="sg-create-sg-in">
+      <div class="selectbox" id="sg-create-sg-in">
         <span class="sg-create-sg-color" style="background:{{sg_detail.[1].color}}"></span>
         <div class="selection">{{sg_detail.[1].sg.[0].name}}</div>
         <ul class="dropdown">
@@ -36,12 +36,12 @@
       </div>
     </section>
 
-    <p class="clearfix">
-      <label for="">Destination Protocol</label>
+    <p class="clearfix mgt10">
+      <label for="" class="sg-create-proto-label">Destination Protocol</label>
       <label for="">Port</label>
     </p>
 
-    <section class="clearfix">
+    <section class="clearfix sg-proto-option-wrap">
       <div class="selectbox sg-proto-option" id="sg-create-proto" data-protocal-type="tcp">
         <div class="selection">TCP</div>
         <ul class="dropdown" tabindex="-1">

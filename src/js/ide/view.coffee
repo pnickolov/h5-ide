@@ -84,7 +84,7 @@ define [ 'event',
         disconnectedMessage : ( type ) ->
             console.log 'disconnectedMessage'
             #
-            return if !$( '#disconnected-notification-wrapper' ).html()
+            return if $( '#disconnected-notification-wrapper' ).html() and type is 'show'
             #
             if type is 'show'
                 $( '#disconnected-notification-wrapper' ).html MC.template.disconnectedNotification()

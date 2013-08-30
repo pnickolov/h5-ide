@@ -181,6 +181,7 @@ define [ 'MC', 'event', 'handlebars'
 		#
 		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
 		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id ) -> view.showLoading tab_id
+		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
 
 		#############################
 		#  load module

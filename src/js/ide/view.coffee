@@ -27,7 +27,7 @@ define [ 'event',
                 $( '.loading-wrapper' ).remove()
                 $( '#wrapper' ).removeClass 'main-content'
 
-        showLoading : ( tab_id )->
+        showLoading : ( tab_id ) ->
             console.log 'showLoading, tab_id = ' + tab_id
             $( '#loading-bar-wrapper' ).html MC.data.loading_wrapper_html
             #
@@ -39,6 +39,12 @@ define [ 'event',
                     notification 'error', 'Open Tab error, please open again', false
             , 1000 * 20
             null
+
+        toggleWaiting : () ->
+            console.log 'toggleWaiting'
+            #$( '#waiting-bar-wrapper' ).toggleClass 'waiting-bar' if tab_id is $( '#waiting-bar-wrapper' ).attr 'data-tab-id'
+            #$( '#waiting-bar-wrapper' ).attr( 'data-tab-id', tab_id )
+            $( '#waiting-bar-wrapper' ).toggleClass 'waiting-bar'
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'

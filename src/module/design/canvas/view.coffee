@@ -19,8 +19,8 @@ define [ 'event', 'canvas_layout', 'MC.canvas', 'backbone', 'jquery', 'handlebar
                 .on( 'CANVAS_ASG_VOLUME_SELECTED',  '#svg_canvas', this.showASGVolumeProperty )
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
-
                 .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH CANVAS_PLACE_OVERLAP CANVAS_ASG_SELECTED CANVAS_ZOOMED_DROP_ERROR CANVAS_BEFORE_ASG_EXPAND',   '#svg_canvas', _.bind( this.route, this ) )
+                .on( 'DOMNodeInserted',             '.canvas-svg-group', this, _.debounce( this.canvasChange, 200, false ))
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -50,6 +50,12 @@ define [ 'event', 'canvas_layout', 'MC.canvas', 'backbone', 'jquery', 'handlebar
         save : () ->
             #save by ctrl+s
             ide_event.trigger ide_event.CANVAS_SAVE
+
+        canvasChange : ( event ) ->
+            console.log 'canvas:listen DOMNodeInserted'
+            console.log MC.data.current_tab_type
+            ide_event.trigger ide_event.SWITCH_WAITING_BAR if MC.data.current_tab_type is 'OLD_APP' or MC.data.current_tab_type is 'OLD_STACK'
+            null
     }
 
     return CanvasView

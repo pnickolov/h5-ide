@@ -3874,6 +3874,14 @@ a.action-link:hover {
 	margin-left : 50px;
 }
 
+.sg-create-sg-color {
+	width        : 16px;
+	height       : 16px;
+	float        : left;
+	margin-top   : 2px;
+	margin-right : 4px;
+}
+
 .sg-create-proto-label {
 	float : left;
 	width : 150px;

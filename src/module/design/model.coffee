@@ -55,6 +55,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
             #set snapshot|data vo
             if MC.tab[ tab_id ].snapshot is this.get 'snapshot' then this.set 'snapshot', null
             #
+            ide_event.trigger ide_event.SWITCH_WAITING_BAR
+            #
             this.set 'snapshot',      MC.tab[ tab_id ].snapshot
             #
             this.setCanvasData        MC.tab[ tab_id ].data

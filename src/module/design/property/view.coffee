@@ -122,7 +122,7 @@ define [ './temp_view',
             null
 
         domChange : ( event ) ->
-            console.log 'listen DOMNodeInserted'
+            console.log 'property:listen DOMNodeInserted'
             #console.log event.target
             #console.log event.data.back_dom
             #

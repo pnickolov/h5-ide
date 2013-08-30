@@ -246,8 +246,8 @@
 		<dd>{{start-time}}</dd>
 		<dt>Stop Time:</dt>
 		<dd>{{end-time}}</dd>
-		<dt>Estimated Cost:</dt>
-		<dd>{{cost}}</dd>
+		<!--dt>Estimated Cost:</dt>
+		<dd>{{cost}}</dd-->
 	</dl>
 </div>
 
@@ -922,7 +922,7 @@ Additional Notes and Questions
   </div>
   <div class="modal-body">loading...</div>
   <div class="modal-footer">
-    <a class="btn btn-gray" href="#" id="property-app-save-kp">Save</a>
+    <a class="btn disabled" href="#" id="property-app-save-kp">Save</a>
     <button class="btn modal-close btn-silver">Cancel</button>
   </div>
 </div>
@@ -1098,4 +1098,25 @@ Additional Notes and Questions
 		<button class="btn modal-close btn-blue" id="canvas-op-confirm" style="width:200px;">Attach and Remove Public IP</button>
 		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
+</div>
+
+<!-- modalReinputStackName -->
+<div style="width:420px">
+    <div class="modal-header"> <h3>Stack Name Already in Use</h3><i class="modal-close">&times;</i> </div>
+    <div class="modal-body">
+        <div class="modal-text-wraper">
+            <div class="modal-center-align-helper">
+                <div class="modal-text">stack name {{stack_name}} is already used by another stack. Please change a different name.</div>
+                <div class="bg-blue" data-bind="true">
+                    <div class="property-control-group clearfix">
+                        <label class="left" for="stack-name">Stack Name</label>
+                        <input id="new-stack-name" class="input modal-input-value" type="text" value="{{stack_name}}" data-ignore="true">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="rename-confirm" class="btn btn-blue">Save</button>
+    </div>
 </div>

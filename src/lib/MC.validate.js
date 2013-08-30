@@ -41,6 +41,9 @@ var MC = MC || {};
 		, arn: /^arn:aws:sns:[\w-]+:.+$/
 		, sqs: /^arn:aws:sqs:[\w-]+:\d{12}:.+$/
 
+		, deviceLinux: /^\/dev\/(hd[a-z]([1-9]|1[0-5])|(sd[a-z]|sd[b-z]([1-9]|1[0-5])))$/
+		, deviceWindows: /^xvd[a-p]$/
+
 	};
 
 
@@ -91,6 +94,17 @@ var MC = MC || {};
 		return regExp.urlstrict.test( value ) && value.slice(0, 5) === 'https';
 	}
 
+	MC.validate.deviceName = function ( value, type, addPrefix ) {
+		if ( type === 'linux' ) {
+			addPrefix && ( value = '/dev/' + value )
+			return regExp.deviceLinux.test( value );
+		} else if ( type === 'windows') {
+			addPrefix && ( value = 'xvd' + value )
+			return regExp.deviceWindows.test( value );
+		}
+
+		return false;
+	}
 
 	// helper
 

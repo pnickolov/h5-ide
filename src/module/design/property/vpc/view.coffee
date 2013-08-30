@@ -37,9 +37,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinp
             'change #property-dns-hostname'   : 'onChangeDnsHostname'
             'OPTION_CHANGE #property-tenancy' : 'onChangeTenancy'
 
-            'click .property-dhcp input'      : 'onChangeDhcp'
+            'click #property-dhcp-none'       : 'onRemoveDhcp'
             'click #property-amazon-dns'      : 'onChangeAmazonDns'
 
+            'change #property-dhcp-spec'                : 'onUseDHCP'
             'change .property-control-group-sub .input' : 'onChangeDhcpOptions'
             'OPTION_CHANGE #property-netbios-type'      : 'onChangeDhcpOptions'
             'REMOVE_ROW #property-dhcp-options'         : 'onChangeDhcpOptions'
@@ -104,27 +105,21 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinp
             this.model.setDnsHosts event.target.checked
             null
 
-        onChangeDhcp : ( event ) ->
+        onRemoveDhcp : ( event ) ->
+            $("#property-dhcp-desc").show()
+            $("#property-dhcp-options").hide()
+            this.model.removeDhcp()
 
-            $selectOption = $(".property-dhcp input:checked")
-
-            noDhcp = $selectOption.attr("id") == "property-dhcp-none"
-
-            $("#property-dhcp-desc").toggle    noDhcp
-            $("#property-dhcp-options").toggle !noDhcp
-
-            this.model.setDhcp !noDhcp
-
-            if noDhcp
-                this.notChangingDHCP = true
-                # User select none DHCP option.
-                # Need to reset everything here.
-                $("#property-dhcp-options .multi-ipt-row:not(:first-child)").remove()
-                $("#property-dhcp-options .multi-ipt-row .input").val("")
-                $("#property-dhcp-domain").val( this.model.defaultDomainName this.uid )
-                $("#property-amazon-dns").prop("checked", true)
-                $("#property-netbios-type .dropdown .item:first-child").click()
-                this.notChangingDHCP = false
+            # if noDhcp
+            #     this.notChangingDHCP = true
+            #     # User select none DHCP option.
+            #     # Need to reset everything here.
+            #     $("#property-dhcp-options .multi-ipt-row:not(:first-child)").remove()
+            #     $("#property-dhcp-options .multi-ipt-row .input").val("")
+            #     $("#property-dhcp-domain").val( this.model.defaultDomainName this.uid )
+            #     $("#property-amazon-dns").prop("checked", true)
+            #     $("#property-netbios-type .dropdown .item:first-child").click()
+            #     this.notChangingDHCP = false
 
             null
 
@@ -138,14 +133,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinp
             this.onChangeDhcpOptions event
             null
 
+        onUseDHCP : ( event ) ->
+            $("#property-dhcp-desc").hide()
+            $("#property-dhcp-options").show()
+            this.onChangeDhcpOptions()
+
         onChangeDhcpOptions : ( event ) ->
 
-            if this.notChangingDHCP
+            if event and not $( event.currentTarget ).parsley( 'validateForm' )
                 return
-
-            if not $( event.currentTarget ).parsley( 'validateForm' )
-                return
-
 
             # Gather all the infomation to submit
             data =

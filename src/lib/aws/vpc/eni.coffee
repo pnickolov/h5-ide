@@ -120,7 +120,7 @@ define [ 'MC' ], ( MC ) ->
 		MC.canvas_data.component[eniUID].resource.PrivateIpAddressSet = privateIpAddressSet
 
 	generateIPList = (eniUID, inputIPAry) ->
-		
+
 		currentEniComp = MC.canvas_data.component[eniUID]
 		subnetUIDRef = currentEniComp.resource.SubnetId
 		rejectEniUID = eniUID
@@ -196,7 +196,7 @@ define [ 'MC' ], ( MC ) ->
 		return eniComp
 
 	getENIDivIPAry = (subnetCIDR, ipAddr) ->
-		
+
 		suffix = Number(subnetCIDR.split('/')[1])
 
 		ipAddrAry = ipAddr.split('.')
@@ -241,6 +241,11 @@ define [ 'MC' ], ( MC ) ->
 			null
 		return needIPCount
 
+	#display eni number for server group
+	displayENINumber = ( uid, visible ) ->
+
+		MC.canvas.display( uid , 'eni-number-group', visible )
+
 	#public
 	getAvailableIPInCIDR : getAvailableIPInCIDR
 	getAllOtherIPInCIDR : getAllOtherIPInCIDR
@@ -250,3 +255,4 @@ define [ 'MC' ], ( MC ) ->
 	getENIDivIPAry : getENIDivIPAry
 	getSubnetComp : getSubnetComp
 	getSubnetNeedIPCount : getSubnetNeedIPCount
+	displayENINumber : displayENINumber

@@ -186,11 +186,12 @@ a.table-link {
 
 .btn:hover {
 	color:#fff;
-	background-image: -o-linear-gradient(-90deg, #5C6163 0%, #3C3F42 100%);
+	background        : #34383a;
+/*	background-image: -o-linear-gradient(-90deg, #5C6163 0%, #3C3F42 100%);
 	background-image: -moz-linear-gradient(-90deg, #5C6163 0%, #3C3F42 100%);
 	background-image: -webkit-linear-gradient(-90deg, #5C6163 0%, #3C3F42 100%);
 	background-image: -ms-linear-gradient(-90deg, #5C6163 0%, #3C3F42 100%);
-	background-image: linear-gradient(-180deg, #5C6163 0%, #3C3F42 100%);
+	background-image: linear-gradient(-180deg, #5C6163 0%, #3C3F42 100%);*/
 	text-shadow: none;
 }
 
@@ -218,7 +219,7 @@ a.table-link {
 }
 
 .btn-blue:hover {
-	background: #6C99D4;
+	background: #3273B3;
 }
 
 .btn-blue:active {

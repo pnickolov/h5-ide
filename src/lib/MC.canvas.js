@@ -48,21 +48,27 @@ MC.canvas = {
 		switch (type)
 		{
 			case 'text':
-				if ( target.length == 0 ) {
+				if (target.length === 0)
+				{
 					target = $('#' + id).find("." + key);
 				}
+
 				target.text(value);
 				break;
 
 			case 'image':
-				target.attr('href', value);
+				//target.attr('href', value);
+				target[ 0 ].setAttributeNS("http://www.w3.org/1999/xlink", "href", value);
 				break;
+
 			case 'eip':
 				target.attr('data-eip-state', value);
 				break;
+
 			case 'id':
 				target.attr('id', value);
 				break;
+
 			case 'color':
 				target.attr('style', 'fill:' + value);
 				break;
@@ -117,6 +123,8 @@ MC.canvas = {
 			} else {
 				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), "none");
 				$("#" + uid + "_" + "sg-color-label" + (i + 1)).attr("class", "");
+				//show
+				//hide
 			}
 			i++;
 		}
@@ -1220,7 +1228,6 @@ MC.canvas = {
 		var node = $('#' + node_id),
 			node_connections = MC.canvas.data.get('layout.component.' + node.data('type') + '.' + node_id + '.connection') || {},
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
-			//line_layer = document.getElementById('line_layer'),
 			line_target;
 
 		$.each(node_connections, function (index, value)
@@ -1249,7 +1256,7 @@ MC.canvas = {
 			node_connections,
 			layout_connection_data;
 
-		Canvon(target[0]).addClass('selected');
+		Canvon(target).addClass('selected');
 
 		if (target_type === 'line')
 		{
@@ -1275,18 +1282,10 @@ MC.canvas = {
 
 			$.each(node_connections, function (index, item)
 			{
-				Canvon(item.line).addClass('view-show');
-
-				$('#' + item.target + '_port-' + item.port).each(function ()
-				{
-					Canvon(this).addClass('view-show');
-				});
+				Canvon('#' + item.line + ',#' + item.target + '_port-' + item.port).addClass('view-show');
 			});
 
-			clone.find('.port').each(function ()
-			{
-				Canvon(this).addClass('view-show');
-			});
+			Canvon(clone.find('.port')).addClass('view-show');
 		}
 
 		if (target_type === 'group')
@@ -1785,7 +1784,7 @@ MC.canvas.layout = {
 			tmp,
 			sg_uids;
 
-		MC.paper = Canvon('svg_canvas');
+		MC.paper = Canvon('#svg_canvas');
 
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
@@ -1952,7 +1951,7 @@ MC.canvas.layout = {
 			kp,
 			tmp;
 
-		MC.paper = Canvon('svg_canvas');
+		MC.paper = Canvon('#svg_canvas');
 
 		//clone MC.canvas.STACK_JSON to MC.canvas_data
 		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
@@ -2021,6 +2020,17 @@ MC.canvas.layout = {
 			};
 			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
 			MC.canvas_property.main_route = node_rt.id;
+
+			// Create a default DHCP component for the user if we are in 'VPC' mode
+			if ( MC.canvas_data.platform === "custom-vpc" || MC.canvas_data.platform === "ec2-vpc" ) {
+
+				var dhcp = $.extend( true, {}, MC.canvas.DHCP_JSON.data );
+				dhcp.uid = MC.guid();
+				dhcp.resource.VpcId = "@" + vpc_group.id + ".resource.VpcId";
+
+				data[ dhcp.uid ] = dhcp;
+				data[ vpc_group.id ].resource.DhcpOptionsId = "@" + dhcp.uid + ".resource.DhcpOptionsId";
+			}
 
 			acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
 			acl.uid = MC.guid();
@@ -2714,12 +2724,13 @@ MC.canvas.event.dragable = {
 				canvas_offset = svg_canvas.offset(),
 				canvas_body = $('#canvas_body'),
 				platform = MC.canvas.data.get('platform'),
+				currentTarget = $(event.target),
 				shadow,
 				target_group_type;
 
 			if (node_type === 'AWS.AutoScaling.LaunchConfiguration')
 			{
-				if ($(event.target).is('.instance-volume'))
+				if (currentTarget.is('.instance-volume'))
 				{
 					MC.canvas.volume.show.call(event.target);
 				}
@@ -2728,6 +2739,20 @@ MC.canvas.event.dragable = {
 					MC.canvas.event.clearSelected();
 					MC.canvas.select(this.id);
 				}
+
+				return false;
+			}
+
+			if (currentTarget.is('.instance-volume'))
+			{
+				MC.canvas.volume.show.call(event.target);
+
+				return false;
+			}
+
+			if (currentTarget.is('.eip-status'))
+			{
+				MC.canvas.event.EIPstatus.call(event.target);
 
 				return false;
 			}
@@ -2761,7 +2786,7 @@ MC.canvas.event.dragable = {
 
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
-				Canvon(shadow[0]).addClass('shadow');
+				Canvon(shadow).addClass('shadow');
 
 				$(document).on({
 					'mousemove': MC.canvas.event.dragable.gatewaymove,
@@ -2821,7 +2846,7 @@ MC.canvas.event.dragable = {
 			event_data.shadow[0].getAttribute('class').indexOf('shadow') === -1
 		)
 		{
-			Canvon(event_data.shadow[0]).addClass('shadow');
+			Canvon(event_data.shadow).addClass('shadow');
 			event_data.canvas_body.addClass('node-dragging');
 		}
 
@@ -2855,29 +2880,15 @@ MC.canvas.event.dragable = {
 			var originalTarget = event.data.originalTarget,
 				originalTargetNode = $(originalTarget),
 				component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
-
-			if (originalTargetNode.is('.instance-volume'))
-			{
-				MC.canvas.volume.show.call(originalTarget);
-			}
-			else
-			{
-				if (originalTargetNode.is('.eip-status'))
-				{
-					MC.canvas.event.EIPstatus.call(originalTarget);
-				}
-				else
-				{
-					MC.canvas.select( target_id );
-					MC.canvas.volume.close();
-				}
-			}
+			
+			MC.canvas.select( target_id );
+			MC.canvas.volume.close();
 		}
 		else
 		{
 			var svg_canvas = $("#svg_canvas"),
 				canvas_offset = svg_canvas.offset(),
-				shadow_offset = Canvon(event.data.shadow[0]).offset(),
+				shadow_offset = Canvon(event.data.shadow).offset(),
 				layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
@@ -3309,7 +3320,7 @@ MC.canvas.event.dragable = {
 			target_id = target.attr('id'),
 			target_type = event.data.target_type,
 			canvas_offset = $('#svg_canvas').offset(),
-			shadow_offset = Canvon(event.data.shadow[0]).offset(),
+			shadow_offset = Canvon(event.data.shadow).offset(),
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			node_type = target.data('class'),
@@ -3347,14 +3358,14 @@ MC.canvas.event.dragable = {
 			target_type = event.data.target_type,
 			svg_canvas = $('#svg_canvas'),
 			canvas_offset = svg_canvas.offset(),
-			shadow_offset = Canvon(event.data.shadow[0]).offset(),
+			shadow_offset = Canvon(event.data.shadow).offset(),
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			node_type = target.data('class'),
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			component_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
-			BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
+			BEFORE_ASG_EXPAND_EVENT = $.Event("CANVAS_BEFORE_ASG_EXPAND"),
 			match_place = MC.canvas.isMatchPlace(
 				null,
 				target_type,
@@ -3375,8 +3386,8 @@ MC.canvas.event.dragable = {
 
 		if (
 			match_place.is_matched &&
-			svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
-			!BEFORE_DROP_EVENT.isDefaultPrevented()
+			svg_canvas.trigger(BEFORE_ASG_EXPAND_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+			!BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()
 		)
 		{
 			new_node = MC.canvas.add(node_type, {'name': MC.canvas.data.get('component')[target_id].name, 'groupUId': match_place.target, 'originalId': target_id}, coordinate);
@@ -3486,7 +3497,7 @@ MC.canvas.event.drawConnection = {
 			// Keep hover style on
 			$.each(node_connections, function (index, item)
 			{
-				Canvon(item.line).addClass('view-keephover');
+				Canvon('#' + item.line).addClass('view-keephover');
 			});
 
 			// Highlight connectable port
@@ -3612,29 +3623,9 @@ MC.canvas.event.drawConnection = {
 									{
 										Canvon(target_node).addClass('connectable');
 
-										target_port.attr("class", function (index, key)
-										{
-											return "connectable-port view-show " + key;
-										});
+										Canvon(target_port).addClass("connectable-port view-show");
 									}
 								});
-								// $(this)
-								// 	.attr("class", function (index, key)
-								// 	{
-								// 		return "connectable " + key;
-								// 	})
-								// 	.find('.port-' + value.to).each(function ()
-								// 	{
-								// 		target_port = $(this);
-
-								// 		if (target_port.css('display') !== 'none')
-								// 		{
-								// 			target_port.attr("class", function (index, key)
-								// 			{
-								// 				return "connectable-port view-show " + key;
-								// 			});
-								// 		}
-								// 	});
 							}
 						});
 					}
@@ -3770,25 +3761,13 @@ MC.canvas.event.drawConnection = {
 			}
 		}
 
-		$('#svg_canvas .connectable').each(function ()
-		{
-			Canvon(this).removeClass('connectable');
-		});
+		Canvon('#svg_canvas .connectable').removeClass('connectable');
 
-		$('#svg_canvas .view-keephover').each(function ()
-		{
-			Canvon(this).removeClass('view-keephover');
-		});
+		Canvon('#svg_canvas .view-keephover').removeClass('view-keephover');
 
-		$('#svg_canvas .view-show').each(function ()
-		{
-			Canvon(this).removeClass('view-show');
-		});
+		Canvon('#svg_canvas .view-show').removeClass('view-show');
 
-		$('#svg_canvas .connectable-port').each(function ()
-		{
-			Canvon(this).removeClass('connectable-port');
-		});
+		Canvon('#svg_canvas .connectable-port').removeClass('connectable-port');
 
 		$('#overlayer').remove();
 
@@ -4072,28 +4051,34 @@ MC.canvas.event.siderbarDrag = {
 					}
 				}
 			}
+
+			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+			{
+				event.data.shadow.animate({
+					'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
+					'top': coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
+					'opacity': 0
+				}, function ()
+				{
+					event.data.shadow.remove();
+				});
+			}
+			else
+			{
+				event.data.shadow.remove();
+			}
+		}
+		else
+		{
+			$("#svg_canvas").trigger("CANVAS_ZOOMED_DROP_ERROR");
+
+			event.data.shadow.remove();
 		}
 
 		$('.dropable-group').attr('class', function (index, key)
 		{
 			return key.replace('dropable-group ', '');
 		});
-
-		if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
-		{
-			event.data.shadow.animate({
-				'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
-				'top': coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
-				'opacity': 0
-			}, function ()
-			{
-				event.data.shadow.remove();
-			});
-		}
-		else
-		{
-			event.data.shadow.remove();
-		}
 
 		$('#overlayer').remove();
 
@@ -4269,15 +4254,6 @@ MC.canvas.event.groupResize = {
 
 		event.data.target.attr(prop);
 
-		// if (prop.x)
-		// {
-		// 	event.data.group_title.attr('x', prop.x + label_offset[0]);
-		// }
-		// if (prop.y)
-		// {
-		// 	event.data.group_title.attr('y', prop.y + label_offset[1]);
-		// }
-
 		return false;
 	},
 	mouseup: function (event)
@@ -4300,12 +4276,6 @@ MC.canvas.event.groupResize = {
 			group_height = Math.round(target.attr('height') / grid_height),
 			group_left = Math.round(((parent_offset.left - canvas_offset.left) * scale_ratio + offsetX) / grid_width),
 			group_top = Math.round(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / grid_height),
-
-			// group_width = Math.floor(target.attr('width') / grid_width) + Math.floor(scale_ratio / 1.1),
-			// group_height = Math.floor(target.attr('height') / grid_height) + Math.floor(scale_ratio / 1.1),
-
-			// group_left = Math.floor((parent_offset.left - canvas_offset.left + offsetX) * scale_ratio / grid_width),
-			// group_top = Math.floor((parent_offset.top - canvas_offset.top + offsetY) * scale_ratio / grid_height),
 
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_group_data = MC.canvas.data.get('layout.component.group'),
@@ -4730,30 +4700,21 @@ MC.canvas.event.nodeHover = function (event)
 
 		$.each(node_connections, function (index, item)
 		{
-			Canvon(item.line).addClass('view-hover');
+			Canvon('#' + item.line).addClass('view-hover');
 		});
 	}
 
 	if (event.type === 'mouseleave')
 	{
-		$('#svg_canvas .view-hover').each(function ()
-		{
-			Canvon(this).removeClass('view-hover');
-		});
+		Canvon('#svg_canvas .view-hover').removeClass('view-hover');
 	}
 };
 
 MC.canvas.event.clearSelected = function ()
 {
-	$('#svg_canvas .selected').each(function ()
-	{
-		Canvon(this).removeClass('selected');
-	});
+	Canvon('#svg_canvas .selected').removeClass('selected');
 
-	$('#svg_canvas .view-show').each(function ()
-	{
-		Canvon(this).removeClass('view-show');
-	});
+	Canvon('#svg_canvas .view-show').removeClass('view-show');
 
 	MC.canvas_property.selected_node = [];
 };

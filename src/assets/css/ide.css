@@ -65,7 +65,7 @@ a {
   width: 45px;
   height: 45px;
   display: inline-block;
-  background: url("../images/ide/loading-spinner.png") no-repeat center;
+  background: url("../images/ide/loading.png") no-repeat center;
 }
 
 @-webkit-keyframes loading-spinner {
@@ -2791,7 +2791,7 @@ a.sidebar-hider {
 }
 
 .rule-list-row {
-	/*display: table-row;*/
+	display: table-row;
 	height: 20px;
 	margin-top: 5px;
 }
@@ -2831,7 +2831,7 @@ a.sidebar-hider {
 	width       : 32px;
 /*	height      : 32px;*/
 	/*line-height : 16px;*/
-	font-size   : 24px;
+	/*font-size   : 24px;*/
 }
 
 .rule-protocol {
@@ -2957,11 +2957,11 @@ a.sidebar-hider {
 	cursor: pointer;
 	width: 22px;
 	height: 16px;
-	background: url('../images/ide/icon/instance-eip-off.png');
+	background: url('../images/ide/icon/eip-off.png');
 }
 
 .toggle-eip.associated {
-	background: url('../images/ide/icon/instance-eip-on.png');
+	background: url('../images/ide/icon/eip-on.png');
 }
 
 .network-remove-icon {
@@ -3185,10 +3185,13 @@ a.action-link:hover {
 }
 #volume-device {
 	width: 40px;
-	height: 10px;
-	padding: 5px;
-	background-color: #f0f0f0;
-	font-size: 12px;
+	margin-left: 10px;
+}
+#property-panel-volume .property-control-group > div {
+	margin-top: 8px;
+}
+#property-panel-volume #volume-type-radios > div {
+	padding-bottom: 5px;
 }
 #volume-size-ranged, #iops-ranged {
 	display: inline-block;
@@ -4167,7 +4170,7 @@ a.action-link:hover {
 	content : "https";
 }
 
-.property-details .icon-edit {
+/*.property-details .icon-edit {
 	position   : absolute;
 	top        : 5px;
 	right      : 15px;
@@ -4175,7 +4178,7 @@ a.action-link:hover {
 	height     : 16px;
 	background : green;
 	cursor     : pointer;
-}
+}*/
 
 .property-details .icon-del {
 	position   : absolute;
@@ -4183,7 +4186,7 @@ a.action-link:hover {
 	right      : 15px;*/
 	width      : 16px;
 	height     : 16px;
-	background : red;
+	/*background : red;*/
 }
 
 .dialog-group {

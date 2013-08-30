@@ -7,7 +7,7 @@ var listen = function ()
 {
 	var canvas_state = MC.canvas.getState();
 
-	MC.paper = Canvon('svg_canvas');
+	MC.paper = Canvon('#svg_canvas');
 
 	if (canvas_state === 'app')
 	{

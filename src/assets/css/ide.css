@@ -3246,9 +3246,15 @@ a.action-link:hover {
 /* elb property panel */
 /* written by song */
 
-.elb-volume-type-radio > div:last-child {
-	margin-left: 8px;
+.elb-scheme-type-radio {
+	margin-top: 20px;
 }
+
+.elb-scheme-radio-group {
+	margin-top: 5px;
+}
+
+
 
 /*#accordion-group-property-elb-zones .checkbox-label-main {
 	margin-top: -8px;
@@ -3296,6 +3302,11 @@ a.action-link:hover {
 	text-align: right;
 }*/
 
+.elb-property-right-text {
+	margin-left: 5px;
+	text-align: right;
+}
+
 .slider-container {
 	height: 35px;
 	margin-top: 40px;
@@ -3313,7 +3324,7 @@ a.action-link:hover {
 }
 
 #accordion-group-elb-property-listener .elb-property-listener-main {
-	border-bottom: 1px #bbb solid;
+	border-bottom: 1px #404040 solid;
 }
 
 #accordion-group-elb-property-listener .accordion-body {
@@ -3332,18 +3343,18 @@ a.action-link:hover {
 #accordion-group-elb-property-listener .elb-property-listener-item-1 {
 	float: left;
 	width: 150px;
-	margin-left: 10px;
+	/*margin-left: 10px;*/
 }
 
 #accordion-group-elb-property-listener .elb-property-listener-item-2 {
 	float: left;
 	width: 50px;
-	margin-left: 20px;
+	margin-left: 10px;
 }
 
 #accordion-group-elb-property-listener input {
 	width: 40px;
-	margin-top: 10px;
+	/*margin-top: 10px;*/
 }
 
 #accordion-group-elb-property-listener .left {
@@ -3351,33 +3362,30 @@ a.action-link:hover {
 }
 
 #accordion-group-elb-property-listener .elb-property-listener-item-remove {
-	position: absolute;
-	right: 0;
-	width: 20px;
-	height: 162px;
-	background-color: #eee;
-	border-left: 1px #bbb solid;
-	text-align: center;
-	line-height: 162px;
-	color: #000;
-	font-weight: bold;
-	cursor: pointer;
+	position : absolute;
+	right    : 0;
+
+	width       : 32px;
+	height      : 142px;
+	text-align  : center;
+	line-height : 142px;
+	color       : #404042;
+
+	background-color : rgba(0,0,0,.05);
+	border-left      : 1px #585858 solid;
+	
+	cursor : pointer;
 }
 
 #accordion-group-elb-property-listener .elb-property-listener-item-remove:hover {
-	background-color: #fff;
-}
-
-#elb-property-listener-content-add {
-	text-align: left;
-	padding: 15px 10px;
-	color: #66f;
+	background-color: #404040;
+	color: #959595;
 }
 
 #elb-property-listener-cert-main {
-	padding-left: 10px;
-	border-top: 1px #bbb solid;
+	border-top: 1px #404040 solid;
 	display: none;
+	background: rgba(0,0,0,.1);
 }
 
 .elb-property-cert-input {

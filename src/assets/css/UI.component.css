@@ -387,6 +387,10 @@ textarea:focus {
 	border: 1px solid transparent;
 }
 
+.property-content .input.input-short {
+	width: 160px;
+}
+
 .prefix-input {
 	border: 1px solid #aaa;
 	width: 200px;

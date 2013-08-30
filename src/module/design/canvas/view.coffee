@@ -54,7 +54,9 @@ define [ 'event', 'canvas_layout', 'MC.canvas', 'backbone', 'jquery', 'handlebar
         canvasChange : ( event ) ->
             console.log 'canvas:listen DOMNodeInserted'
             console.log MC.data.current_tab_type
-            ide_event.trigger ide_event.SWITCH_WAITING_BAR if MC.data.current_tab_type is 'OLD_APP' or MC.data.current_tab_type is 'OLD_STACK'
+            if MC.data.current_tab_type is 'OLD_APP' or MC.data.current_tab_type is 'OLD_STACK'
+                ide_event.trigger ide_event.SWITCH_WAITING_BAR
+                MC.data.current_tab_type = null
             null
     }
 

@@ -989,10 +989,10 @@ Additional Notes and Questions
 
 <!-- elbPropertyListenerItem -->
 <div class="elb-property-listener-main" data-bind="true">
-	{{#if Canremove}}<div class="elb-property-listener-item-remove">×</div>{{/if}}
+	{{#if Canremove}}<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="Remove listner"></div>{{/if}}
 	<div class="property-control-group clearfix elb-property-listener-item">
 		<div class="left elb-property-listener-item-1">
-			<label>Load Balancer Protocol</label>
+			<label class="left">Load Balancer Protocol</label>
 			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select">
 				<div class="selection">{{Protocol}}</div>
 				<ul class="dropdown">
@@ -1010,7 +1010,7 @@ Additional Notes and Questions
 	</div>
 	<div class="property-control-group clearfix elb-property-listener-item">
 		<div class="left elb-property-listener-item-1">
-			<label>Instance Protocol</label>
+			<label class="left">Instance Protocol</label>
 			<div class="selectbox selectbox-mega elb-property-listener-instance-protocol-select">
         <div class="selection">{{InstanceProtocol}}</div>
 				<ul class="dropdown">
@@ -1078,8 +1078,8 @@ Additional Notes and Questions
   </div>
 </div>
 
-<!-- disconnectedNotiﬁcation -->
-<div class="disconnected-notiﬁcation">
+<!-- disconnectedNotification -->
+<div class="disconnected-notification">
 	<p>Connection lost. Attempting to reconnect…</p>
 	<p>Changes made now may not be saved.</p>
 </div>

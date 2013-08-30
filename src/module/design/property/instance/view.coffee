@@ -75,7 +75,22 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                     return 'This value must be >= 1 and <= 99'
 
             if target.parsley 'validate'
-                @trigger "COUNT_CHANGE", +target.val()
+                val = +target.val()
+                @trigger "COUNT_CHANGE", val
+                $(".property-instance-name-wrap").toggleClass("single", val == 1)
+                $("#property-instance-name-count").text val
+                @setEditableIP val == 1
+
+        setEditableIP : ( enable ) ->
+            $parent = $("#property-network-list")
+
+            if enable
+                $parent.find(".input-ip").removeAttr "disabled"
+                $parent.find(".name").attr "data-tooltip", "Specify an IP address or leave it as .x to automatically assign an IP."
+
+            else
+                $parent.find(".input-ip").attr "disabled", "disabled"
+                $parent.find(".name").attr "data-tooltip", "Automatically assigned IP."
 
         instanceTypeSelect : ( event, value )->
             this.model.set 'instance_type', value

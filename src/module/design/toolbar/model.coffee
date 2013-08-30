@@ -265,27 +265,27 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     me.savePNG true, data
 
-            #listen APP_RESOURCE_RETURN
-            me.on 'APP_RESOURCE_RETURN', (result) ->
-                console.log 'APP_RESOURCE_RETURN'
+            # #listen APP_RESOURCE_RETURN
+            # me.on 'APP_RESOURCE_RETURN', (result) ->
+            #     console.log 'APP_RESOURCE_RETURN'
 
-                app_id = result.param[4]
-                region = result.param[3]
+            #     app_id = result.param[4]
+            #     region = result.param[3]
 
-                if !result.is_error
+            #     if !result.is_error
 
-                    resource_source = result.resolved_data
+            #         resource_source = result.resolved_data
 
-                    if resource_source
-                        MC.aws.aws.cacheResource resource_source, region
+            #         if resource_source
+            #             MC.aws.aws.cacheResource resource_source, region
 
-                        #push event
-                        ide_event.trigger ide_event.UPDATE_APP_RESOURCE, region, app_id
+            #             #push event
+            #             ide_event.trigger ide_event.UPDATE_APP_RESOURCE, region, app_id
 
-                else
-                    #TO-DO
+            #     else
+            #         #TO-DO
 
-                null
+            #     null
 
         setFlag : (id, flag, value) ->
             me = this
@@ -351,7 +351,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
 
                 # update app resource
-                app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
+                ide_event.trigger ide_event.UPDATE_APP_RESOURCE, region, id
+                #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'STOPPED_APP'
                 if id of item_state_map
@@ -363,7 +364,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
 
                 # update app resource
-                app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
+                ide_event.trigger ide_event.UPDATE_APP_RESOURCE, region, id
+                #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'TERMINATED_APP'
                 (delete item_state_map[id]) if id of item_state_map
@@ -436,7 +438,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
         #run
-        runStack : ( app_name, data) ->
+        runStack : (app_name, data) ->
             me = this
 
             id      = data.id
@@ -478,7 +480,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
 
-        savePNG : ( is_thumbnail, data ) ->
+        savePNG : (is_thumbnail, data) ->
             console.log 'savePNG, is_thumbnail = ' + is_thumbnail
             me = this
             #
@@ -684,7 +686,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
-        isInstanceStore : ( data ) ->
+        isInstanceStore : (data) ->
 
             is_instance_store = false
 
@@ -696,7 +698,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             is_instance_store
 
-        saveAppThumbnail  :   ( region, app_name, app_id ) ->
+        saveAppThumbnail  :   (region, app_name, app_id) ->
             me = this
 
             data = $.extend(true, {}, run_stack_map[region][app_name])

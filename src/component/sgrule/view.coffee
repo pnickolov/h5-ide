@@ -5,8 +5,9 @@
 define [ 'text!./template.html',
          'text!./list_template.html',
          'text!./delete_rule_dialog.html',
+         'i18n!/nls/lang.js',
          'event'
-], ( template, list_template, delete_template, ide_event ) ->
+], ( template, list_template, delete_template, lang, ide_event ) ->
 
     template      = Handlebars.compile template
     list_template = Handlebars.compile list_template
@@ -49,11 +50,36 @@ define [ 'text!./template.html',
           # Extract the data from the view
           data = this.extractRuleData()
 
-          this.trigger 'ADD_RULE', data
+          # Generate Ouput Info
+          if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
+            rule_count = 1
+          else
+            rule_count = 2
+
+          if data.direction == "both"
+            rule_count *= 2
+
+          out_target = $("#sg-create-sg-out").find(".selected").text()
+          in_target  = $("#sg-create-sg-in").find(".selected").text()
+          action     = $("#sg-create-direction").find(".selected").text()
+
+          if rule_count == 1
+            info = sprintf lang.PROP_MSG_SG_CREATE, out_target, out_target, action, in_target
+
+          else if data.inSg is data.outSg
+            info = sprintf lang.PROP_MSG_SG_CREATE_SELF, rule_count, out_target, out_target
+
+          else
+            info = sprintf lang.PROP_MSG_SG_CREATE_MULTI, rule_count, out_target, in_target, out_target, action, in_target
+
+          $("#sg-rule-create-msg").text info
+
+
 
           # Switch to done view.
           this.$el.find('#modal-box').toggleClass('done', true)
 
+          this.trigger 'ADD_RULE', data
           this.trigger 'UPDATE_LINE_ID'
 
           # Update sidebar

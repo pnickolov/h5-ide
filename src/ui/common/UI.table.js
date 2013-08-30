@@ -3,7 +3,7 @@
 #* Filename: UI.table
 #* Creator: Angel
 #* Description: UI.table
-#* Date: 20130829
+#* Date: 20130831
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -31,11 +31,15 @@
 					})
 					.focus();
 			}
+
+			return true;
 		},
 
 		update: function (event)
 		{
 			$(this).parent().text(this.value);
+
+			return true;
 		},
 
 		sort: function (event)
@@ -111,6 +115,10 @@
 			});
 
 			tbody.empty().append(fragment);
+
+			fragment = null;
+
+			return true;
 		}
 	};
 

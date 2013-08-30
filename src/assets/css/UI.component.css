@@ -21,7 +21,8 @@
 	user-select: none;
 }
 
-.table thead th {
+.table thead th,
+.table-head-fix .table-head thead th {
 	cursor: default;
 	position: relative;
 }
@@ -31,7 +32,8 @@
 }
 
 .table th,
-.table td {
+.table td,
+.table-head-fix .table-head thead th {
 	word-break: break-all;
 	overflow: hidden;
 	padding: 6px 12px;
@@ -49,6 +51,29 @@
 .table tbody th,
 .table tbody td {
 	background: #1F1F1F;
+}
+
+.table-head-fix {
+
+}
+
+.table-head-fix .table-head {
+	max-width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+	color: #C7CAC8;
+}
+
+.table-head-fix .th-inner {
+	position: absolute;
+	top: 0;
+}
+
+.table-head-fix .table thead th {
+	padding-top: 0;
+	padding-bottom: 0;
+	border: none;
 }
 
 .table td.editable {
@@ -130,7 +155,8 @@
 .table.table-region-stat tbody tr:hover td,
 .table.table-light tbody tr:hover th,
 .table.table-light tbody tr:hover td {
-	background: #f0f0f0;
+	/*background: #f0f0f0;*/
+	background: #E8EBED;
 }
 
 
@@ -138,23 +164,17 @@
 .table.table-region-stat tbody td,
 .table.table-light tbody th,
 .table.table-light tbody td {
-	background: #fefefe;
-}
-
-.table.table-region-stat tbody tr td,
-.table.table-light tbody tr td
- {
-	line-height: 24px;
+	background: #E8EBED;
 }
 
 .table.table-region-stat tbody tr:nth-child(2n+1) td,
 .table.table-light tbody tr:nth-child(2n+1) td {
-	background: #F6F5F5;
+	background: #EFF1F2;
 }
 
 .table.table-region-stat tbody tr:nth-child(2n+1):hover td,
 .table.table-light tbody tr:nth-child(2n+1):hover td  {
-	background: #eee;
+	background: #EFF1F2;
 }
 
 a.table-link {

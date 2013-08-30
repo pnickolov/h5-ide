@@ -158,7 +158,7 @@ define({
 		'ERROR_CODE_2_MESSAGE'  : 'Invalid API Parameters',
 		'ERROR_CODE_3_MESSAGE'  : '',//no use
 		'ERROR_CODE_4_MESSAGE'  : '',//no use
-		'ERROR_CODE_5_MESSAGE'  : 'External error',
+		'ERROR_CODE_5_MESSAGE'  : 'Request AWS resource exception',
 		'ERROR_CODE_6_MESSAGE'  : '',//no use
 		'ERROR_CODE_7_MESSAGE'  : '',//for guest
 		'ERROR_CODE_8_MESSAGE'  : '',//no use

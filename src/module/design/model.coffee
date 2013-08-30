@@ -32,6 +32,11 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                     #update canvas when get instance info
                     ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
 
+                    #update property panel
+                    uid = MC.canvas_property.selected_node[0]
+                    if uid
+                        MC.canvas.select uid
+
                 else
                     #TO-DO
                 #

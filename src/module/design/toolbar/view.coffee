@@ -82,7 +82,7 @@ define [ 'MC', 'event',
             else
                 # set total fee
                 cost = MC.aws.aws.getCost MC.canvas_data
-                $('#label-total-fee b').text("$#{cost.total_fee}")
+                $('#label-total-fee').find("b").text("$#{cost.total_fee}")
 
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->

@@ -55,33 +55,21 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                 else if 'is_inprocess' of flag_list and flag_list.is_inprocess # in progress
 
-                    # first go into inprogress
-                    if 'is_pending' of last_flag and last_flag.is_pending
-
-                        last_flag.is_pending = false
-                        last_flag.is_inprocess = true
-
-                        # push event
-                        me.set 'flag_list', last_flag
-
-                        # hold on 1 second
-                        # setTimeout () ->
-                        #     console.log 'Update the header'
-                        # , 500
+                    # check rollback
+                    if 'dones' of last_flag and last_flag.dones > flag_list.dones
+                        flag_list = last_flag
 
                     me.set 'flag_list', flag_list
 
-                    if 'dones' of flag_list #and flag_list.dones > 0 and 'steps' of flag_list and flag_list.steps > 0
+                    if flag_list.dones > 0 and 'steps' of flag_list and flag_list.steps > 0
+                        $('#progress_bar').css('width', Math.round( flag_list.dones/flag_list.steps*100 ) + "%" )
+                        $('#progress_num').text flag_list.dones
 
-                        if flag_list.dones > 0 and 'steps' of flag_list and flag_list.steps > 0
-                            $('#progress_bar').css('width', Math.round( flag_list.dones/flag_list.steps*100 ) + "%" )
-                            $('#progress_num').text flag_list.dones
-                            $('#progress_total').text flag_list.steps
-                        
-                        else
-                            $('#progress_bar').css('width', "0" )
-                            $('#progress_num').text '0'
-                            $('#progress_total').text '0'
+                    else
+                        $('#progress_bar').css('width', "0" )
+                        $('#progress_num').text '0'
+
+                    $('#progress_total').text flag_list.steps
 
                 else
 

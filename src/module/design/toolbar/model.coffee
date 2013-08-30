@@ -610,21 +610,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                         flag_list.is_inprocess = true
 
+                        dones = 0
+                        steps = 0
+
                         if 'dag' of dag # changed request
 
-                            flag_list.steps = dag.dag.step.length
+                            steps = dag.dag.step.length
 
                             # check rollback
-                            dones = 0
                             dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
                             console.log 'done steps:' + dones
-                            if dag.dag.state isnt 'Rollback'
-                                flag_list.dones = dones
-                                flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
 
+                            #if dag.dag.state isnt 'Rollback'
+                        flag_list.dones = dones
+                        flag_list.steps = steps
+
+                        if dones > 0 and steps > 0
+                            flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
                         else
-
-                            flag_list.dones = 0
+                            flag_list.rate = 0
 
                 when constant.OPS_STATE.OPS_STATE_FAILED
 

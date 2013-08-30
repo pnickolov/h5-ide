@@ -17,10 +17,8 @@ define [ 'text!./template.html',
         events    :
           'closed'                           : 'onClose'
           'click .sg-rule-create-add'        : 'addRule'
-          'click .sg-rule-create-node'       : 'switchNode'
           'click .sg-rule-create-readd'      : 'readdRule'
           'OPTION_CHANGE #sg-create-proto'   : 'onProtocolChange'
-          'click .sg-rule-create'            : 'onDirChange'
           'click .sg-rule-delete'            : 'deleteRule'
           'OPTION_CHANGE #sg-proto-icmp-sel' : 'onICMPChange'
           'click #confirm-delete-sg-line'    : 'deleteSGLine'
@@ -46,18 +44,6 @@ define [ 'text!./template.html',
         onClose : () ->
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.
           this.trigger 'CLOSE_POPUP'
-
-
-        switchNode : ( event ) ->
-
-          $node = $( event.currentTarget ).toggleClass "selected", true
-          $node.siblings().removeClass "selected"
-          $node.find("input").prop 'checked', true
-
-          outward = $("#sg-rule-create-tgt-o").is(":checked")
-          $(".sg-rule-create-out").toggle( outward )
-          $(".sg-rule-create-in").toggle( !outward)
-          null
 
         addRule : ( event ) ->
           # Extract the data from the view
@@ -119,9 +105,9 @@ define [ 'text!./template.html',
           outward = if $("#sg-rule-create-tgt-o").is(":checked") then "out" else "in"
 
           data =
-            sgId      : $("#sg-create-sg-" + outward).find( ".selected" ).attr("data-id")
-            isInbound : $("#sg-rule-create-dir-i").is(":checked")
-            direction : $("#sg-create-dir-"+ outward).find( ".selected" ).attr("data-id")
+            outSg     : $("#sg-create-sg-out").find(".selected").attr("data-id")
+            direction : $("#sg-create-direction").find(".selected").attr("data-id")
+            inSg      : $("#sg-create-sg-in").find(".selected").attr("data-id")
             protocol  : $("#sg-create-proto").find( ".selected" ).attr("data-id")
 
           $protoIptWrap = $("#sg-proto-ipt-"+data.protocol)

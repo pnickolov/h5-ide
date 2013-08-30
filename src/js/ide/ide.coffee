@@ -99,6 +99,8 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.loading_wrapper_html = null
 		#
 		MC.data.is_reset_session = false
+		#
+		MC.data.is_loading_complete = false
 
 		#temp
 		MC.data.IDEView = view

@@ -17,6 +17,8 @@ define [ 'event',
         showMain : ->
             console.log 'showMain'
             #
+            toggleWaiting() if $( '#waiting-bar-wrapper' ).hasClass 'waiting-bar'
+            #
             clearTimeout @delay if @delay
             #
             MC.data.loading_wrapper_html = $( '#loading-bar-wrapper' ).html() if !MC.data.loading_wrapper_html
@@ -27,7 +29,7 @@ define [ 'event',
                 $( '.loading-wrapper' ).remove()
                 $( '#wrapper' ).removeClass 'main-content'
 
-        showLoading : ( tab_id )->
+        showLoading : ( tab_id ) ->
             console.log 'showLoading, tab_id = ' + tab_id
             $( '#loading-bar-wrapper' ).html MC.data.loading_wrapper_html
             #
@@ -36,9 +38,13 @@ define [ 'event',
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
                     ide_event.trigger ide_event.SWITCH_MAIN
                     ide_event.trigger ide_event.STACK_DELETE, null, tab_id
-                    notification 'error', 'Open Tab error, please open again', false
+                    notification 'error', 'Open Tab error, please open again', true
             , 1000 * 20
             null
+
+        toggleWaiting : () ->
+            console.log 'toggleWaiting'
+            $( '#waiting-bar-wrapper' ).toggleClass 'waiting-bar'
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'

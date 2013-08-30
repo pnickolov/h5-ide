@@ -39,6 +39,13 @@ define [ 'MC', 'event', 'handlebars'
 
 	initialize : () ->
 
+		_.delay () ->
+			console.log '---------- network failed ----------'
+			if !MC.data.is_loading_complete and $( '#loading-bar-wrapper' ).html().trim() isnt ''
+				ide_event.trigger ide_event.SWITCH_MAIN
+				notification 'error', 'Network problems. Please try again', true
+		, 35 * 1000
+
 		#############################
 		#  validation cookie
 		#############################
@@ -99,6 +106,8 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.loading_wrapper_html = null
 		#
 		MC.data.is_reset_session = false
+		#
+		MC.data.is_loading_complete = false
 
 		#temp
 		MC.data.IDEView = view
@@ -181,6 +190,7 @@ define [ 'MC', 'event', 'handlebars'
 		#
 		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
 		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id ) -> view.showLoading tab_id
+		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
 
 		#############################
 		#  load module

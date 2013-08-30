@@ -3906,14 +3906,17 @@ a.action-link:hover {
 /* Notification Dropdown */
 .notification-list {
 	line-height: normal;
-	background-color: #fff;
-	border: 1px solid #666;
-	font-size: 12px;
+	background-color: #f7f7f7;
+	border: 1px solid #ccc;
 }
 
 .notification-list .notification-item {
-	border-bottom: 1px solid #666;
+	border-bottom: 1px solid #eee;
 	padding: 13px 15px 10px;
+}
+
+.notification-list .notification-item:hover {
+	background: #fcfcfc;
 }
 
 .notification-list > div:last-child {
@@ -3929,21 +3932,24 @@ a.action-link:hover {
 }
 
 .notification-list .notification-message .content {
-	padding-left: 21px;
+	padding-left: 24px;
+	font-size: 13px;
 }
 
 #header .notification-list .notification-message .content a {
-	color: #0088cc;
+	color: #3781C9;
 	display: inline;
 	padding: 0;
 }
 
 .notification-list .notification-details {
-	padding-top: 5px;
-	border: 1px solid rgb(190, 188, 189);
-	margin-top: 15px;
-	padding: 5px;
-	background-color: #fff;
+	/*border         : 1px solid rgb(190, 188, 189);*/
+	margin-top       : 15px;
+	padding          : 5px;
+	background-color : #F5E4E4;
+	border-radius    : 2px;
+
+	font-size        : 14px;
 }
 
 .notification-list .notification-details p {
@@ -3963,7 +3969,19 @@ a.action-link:hover {
 	float: left;
 }
 
-.icon-success {
+.notification-list .icon-pending {
+	color: #ccc;
+}
+
+.notification-list .icon-error {
+	color: #F74A48;
+}
+
+.notification-list .icon-success {
+	color: #12D07B;
+}
+
+/*.icon-success {
 	background-image: url(../images/ide/icon/icon-success.png);
 }
 
@@ -3977,7 +3995,7 @@ a.action-link:hover {
 
 .icon-sending {
 	background-image: url(../images/ide/icon/icon-sending.png);
-}
+}*/
 
 .notification-empty {
 	padding: 10px 15px;

@@ -24,8 +24,8 @@ then
     else
         echo "[`date`] updated failed"
     fi
-else
-    echo "[`date`] no need updated"
+#else
+   # echo "[`date`] no need updated"
 fi
 
 

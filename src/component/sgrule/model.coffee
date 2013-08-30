@@ -247,7 +247,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
         addSGRule : ( rule_data ) ->
 
-            sg_id = rule_data.sgId
+            sg_id = rule_data.outSg
+
+            in_sg_id = rule_data.inSg
 
             from_port = ''
 
@@ -281,7 +283,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
             sg_rule = {
                 "IpProtocol": rule_data.protocol
-                "IpRanges": '@#{rule_data.direction}.resource.GroupId'
+                "IpRanges": "@#{in_sg_id}.resource.GroupId"
                 "FromPort": from_port
                 "ToPort": to_port
                 "Groups": [{
@@ -312,13 +314,13 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                     break
 
-            if rule_data.traffic is 'in' and not ingress_existing then MC.canvas_data.component[sg_id].resource.IpPermissions.push sg_rule
+            if rule_data.direction is 'in' and not ingress_existing then MC.canvas_data.component[sg_id].resource.IpPermissions.push sg_rule
 
 
-            if rule_data.traffic is 'out' and not engress_existing then MC.canvas_data.component[sg_id].resource.IpPermissionsEgress.push sg_rule
+            if rule_data.direction is 'out' and not engress_existing then MC.canvas_data.component[sg_id].resource.IpPermissionsEgress.push sg_rule
 
 
-            if rule_data.traffic is 'both' and not engress_existing
+            if rule_data.direction is 'both' and not engress_existing
 
                 # replace direction sg rule if existing
 
@@ -327,7 +329,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                 other_side_sg_rule = {
                     "IpProtocol": rule_data.protocol
-                    "IpRanges": '@#{sg_id}.resource.GroupId'
+                    "IpRanges": "@#{sg_id}.resource.GroupId"
                     "FromPort": from_port
                     "ToPort": to_port
                     "Groups": [{
@@ -339,7 +341,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                 other_side_existing = false
 
-                for idx, permission_rule of MC.canvas_data.component[rule_data.direction].resource.IpPermissions
+                for idx, permission_rule of MC.canvas_data.component[in_sg_id].resource.IpPermissions
 
                     if permission_rule.IpProtocol is rule_data.protocol and permission_rule.IpRanges is other_side_sg_rule.IpRanges and permission_rule.FromPort is other_side_sg_rule.FromPort and permission_rule.ToPort is other_side_sg_rule.ToPort
 
@@ -349,7 +351,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                 if not other_side_existing
 
-                    MC.canvas_data.component[rule_data.direction].resource.IpPermissions.push other_side_sg_rule
+                    MC.canvas_data.component[in_sg_id].resource.IpPermissions.push other_side_sg_rule
 
 
 

@@ -126,7 +126,7 @@ define [ 'MC', 'event', 'handlebars'
 		status = () ->
 			websocket.status false, ()->
 				# do thing alert here, may trigger several time
-				console.log 'connection failed'
+				console.log '---------- connection failed ----------'
 				view.disconnectedMessage 'show'
 			websocket.status true, ()->
 				if initialize == false
@@ -140,7 +140,7 @@ define [ 'MC', 'event', 'handlebars'
 		setTimeout status, 10000
 
 		subScriptionError = ( error ) ->
-			console.log 'session invalid'
+			console.log '---------- session invalid ----------'
 			console.log error
 			#redirect to page ide.html
 			if MC.data.is_reset_session

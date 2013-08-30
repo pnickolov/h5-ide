@@ -1605,6 +1605,7 @@ td.table-action a.btn {
 	font-size: 12px;
 	padding: 4px 0;
 	background-color: #ccc;
+	border: none;
 }
 
 .ami-option-wrap button:hover,

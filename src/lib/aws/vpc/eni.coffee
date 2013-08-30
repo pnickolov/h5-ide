@@ -220,13 +220,24 @@ define [ 'MC' ], ( MC ) ->
 		subnetUID = subnetUIDRef.slice(1).split('.')[0]
 		return MC.canvas_data.component[subnetUID]
 
-	getSubnetNeedIPCount = (subnetUID) ->
+	getSubnetNeedIPCount = (subnetUidOrAZ) ->
+
+		defaultVPC = false
+		if MC.aws.aws.checkDefaultVPC()
+			defaultVPC = true
 
 		needIPCount = 0
-		subnetRef = '@' + subnetUID + '.resource.SubnetId'
+		subnetRef = ''
+		azName = ''
+		if defaultVPC
+			azName = subnetUidOrAZ
+		else
+			subnetRef = '@' + subnetUidOrAZ + '.resource.SubnetId'
+
 		_.each MC.canvas_data.component, (compObj) ->
-			if compObj.type is 'AWS.VPC.NetworkInterface' and compObj.resource.SubnetId is subnetRef
-				needIPCount += compObj.resource.PrivateIpAddressSet.length
+			if compObj.type is 'AWS.VPC.NetworkInterface'
+				if (!defaultVPC and compObj.resource.SubnetId is subnetRef) or (defaultVPC and compObj.resource.AvailabilityZone is azName)
+					needIPCount += compObj.resource.PrivateIpAddressSet.length
 			null
 		return needIPCount
 

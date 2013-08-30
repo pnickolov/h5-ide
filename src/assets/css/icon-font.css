@@ -48,7 +48,11 @@
 .icon-resize-right,
 .icon-resize-left,
 .icon-resize-down,
-.icon-resize-up {
+.icon-resize-up,
+.icon-pending,
+.icon-warning,
+.icon-error,
+.icon-success {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -94,3 +98,7 @@
 .icon-resize-left:before {content: "\F134";}
 .icon-resize-down:before { content : "\F135"; }
 .icon-resize-up:before {content: "\F136";}
+.icon-pending:before { content : "\F137"; }
+.icon-warning:before {content: "\F138";}
+.icon-error:before { content : "\F139"; }
+.icon-success:before {content: "\F13A";}

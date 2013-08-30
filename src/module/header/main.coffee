@@ -19,7 +19,7 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
         require [ './module/header/view', './module/header/model' ], ( View, model ) ->
 
             #console.log 'asdfasdfasdf = ' + lang.header
-
+            
             #view
             view       = new View()
             view.model = model

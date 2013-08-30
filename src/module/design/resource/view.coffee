@@ -287,7 +287,7 @@ define [ 'event',
 
         # todo
         communityShowLoading: () ->
-            $( ".scroll-content" ).hide()
+            $( ".ami-right-col .scroll-content" ).hide()
             $( ".show-loading" ).show()
             $( "#btn-search-ami" ).text( "Searching..." ).attr( "disabled", "" )
             $( "#community-ami-page>div" ).hide()
@@ -296,7 +296,7 @@ define [ 'event',
         # todo
         communityShowContent: () ->
             $( ".show-loading" ).hide()
-            $( ".scroll-content" ).show()
+            $( ".ami-right-col .scroll-content" ).show()
             $( "#btn-search-ami" ).text( "Search" ).removeAttr( "disabled" )
             $( "#community-ami-page>div" ).show()
 

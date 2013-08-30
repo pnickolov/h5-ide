@@ -575,6 +575,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						else
 							# Hide eni number
 							MC.canvas.display( key, 'eni-number-group', false )
+							MC.canvas.display( key, 'port-eni-rtb', true )
 
 				# remove instance relate volume
 
@@ -804,6 +805,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			else if portMap['instance-attach'] and portMap['eni-attach']
 				# Hide Eni Number
 				MC.canvas.display portMap['eni-attach'], 'eni-number-group', false
+				MC.canvas.display portMap['eni-attach'], 'port-eni-rtb', true
 
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
@@ -1308,7 +1310,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
-					'DestinationCidrBlock' : "0.0.0.0/0",
+					'DestinationCidrBlock' : "",
 					'GatewayId'            : "",
 					'InstanceId'           : "",
 					'InstanceOwnerId'      : "",
@@ -1376,9 +1378,32 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			switch componentType
 
 				when resource_type.AWS_EC2_Instance
-					subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
-					subnetUID = subnetUIDRef.split('.')[0].slice(1)
-					MC.aws.subnet.updateAllENIIPList(subnetUID)
+
+					defaultVPC = false
+					if MC.aws.aws.checkDefaultVPC()
+						defaultVPC = true
+
+					if defaultVPC
+						azName = MC.canvas_data.component[uid].resource.Placement.AvailabilityZone
+						MC.aws.subnet.updateAllENIIPList(azName)
+					else
+						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
+						subnetUID = subnetUIDRef.split('.')[0].slice(1)
+						MC.aws.subnet.updateAllENIIPList(subnetUID)
+
+				when resource_type.AWS_VPC_NetworkInterface
+
+					defaultVPC = false
+					if MC.aws.aws.checkDefaultVPC()
+						defaultVPC = true
+
+					if defaultVPC
+						eniAZName = MC.canvas_data.component[uid].resource.AvailabilityZone
+						MC.aws.subnet.updateAllENIIPList(eniAZName)
+					else
+						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
+						subnetUID = subnetUIDRef.split('.')[0].slice(1)
+						MC.aws.subnet.updateAllENIIPList(subnetUID)
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)

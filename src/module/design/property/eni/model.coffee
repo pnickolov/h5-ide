@@ -61,7 +61,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             if eni_component.resource.Attachment and eni_component.resource.Attachment.InstanceId.length
                 instance_component = MC.canvas_data.component[ MC.extractID eni_component.resource.Attachment.InstanceId ]
-                me.set 'multiple', parseInt(instance_component.number) > 1
+                me.set 'multiple', parseInt(instance_component.number, 10) > 1
 
             eni_sg = {}
 

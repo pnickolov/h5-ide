@@ -19,7 +19,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             # The uid can be a line
             if MC.canvas_data.layout.connection[ uid ]
-                this.set "eni_display", { name : "Instance-Eni Attachment" }
+                this.set "eni_display", { name : "Instance-ENI Attachment" }
                 connection = MC.canvas_data.layout.connection[ uid ]
                 instance_id = null
                 eni_id = null

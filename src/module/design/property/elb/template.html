@@ -11,14 +11,13 @@
 		{{# if component.resource.VpcId}}
 		<section class="property-control-group" id="property-control-group-elb-scheme">
       <label>Scheme</label>
-      <div class="context">
-        <div class="radio elb-volume-type-radio">
+      <div class="context elb-volume-type-radio">
+        <div class="radio">
             <input type="radio" {{#unless elb_detail.isInternal}}checked="checked"{{/unless}} name="elb-scheme-select" value="internet" id="elb-scheme-select1"/>
             <label for="elb-scheme-select1"></label>
         </div>
-        <label for="elb-scheme-select1" class="elb-volume-type-radio-text">Internet Facing</label>
-        <div></div>
-        <div class="radio elb-volume-type-radio">
+        <label for="elb-scheme-select1" class="elb-volume-type-radio-text">Internet-facing</label>
+        <div class="radio">
             <input type="radio" {{#if elb_detail.isInternal}}checked="checked"{{/if}} name="elb-scheme-select" value="internal" id="elb-scheme-select2"/>
             <label for="elb-scheme-select2"></label>
         </div>

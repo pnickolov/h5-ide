@@ -161,9 +161,7 @@ define [ 'jquery',
 
 									if value.port.indexOf('rtb-tgt') >= 0
 										# rtb_main.loadModule value.uid, 'component', rtb_main
-										# rtb_main.loadModule value.uid, rtb_main, tab_type
-										# Delegate to RT resource
-										MC.canvas.select value.uid
+										rtb_main.loadModule value.uid, rtb_main, tab_type
 										break
 
 									else if value.port.indexOf('subnet') >= 0
@@ -193,8 +191,7 @@ define [ 'jquery',
 										cgw_uid = line_option[1].uid
 									else
 										cgw_uid = line_option[0].uid
-									# cgw_main.loadModule cgw_uid, cgw_main, tab_type
-									MC.canvas.select cgw_uid
+									cgw_main.loadModule cgw_uid, cgw_main, tab_type
 								else
 									vpn_main.loadModule line_option, 'line', vpn_main
 

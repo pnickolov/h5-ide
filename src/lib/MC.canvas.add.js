@@ -93,6 +93,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 				component_layout = $.extend(true, {}, MC.canvas.AZ_JSON.layout);
+				component_layout.uid = group.id;
 				component_layout.name = option.name;
 
 				$.each($(".resource-item"), function ( idx, item){
@@ -117,6 +118,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			else
 			{//read
 				component_layout = layout.group[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 				option.name = component_layout.name;
 
 				coordinate.x = component_layout.coordinate[0];
@@ -221,6 +223,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				vpcCIDR = component_data.resource.CidrBlock
 
 				component_layout = $.extend(true, {}, MC.canvas.VPC_JSON.layout);
+				component_layout.uid = group.id;
 
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
 				option.width = size[0];
@@ -233,6 +236,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				vpcCIDR = component_data.resource.CidrBlock
 
 				component_layout = layout.group[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -326,6 +330,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				subnetCIDR = component_data.resource.CidrBlock
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);
+				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
@@ -339,6 +344,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.name = component_data.name;
 
 				component_layout = layout.group[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -451,6 +457,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//init layout data
 				component_layout = $.extend(true, {}, MC.canvas.ASG_JSON.layout);
+				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
@@ -546,6 +553,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.name = component_data.name;
 
 				component_layout = layout.group[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -778,6 +786,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}
 
 				component_layout = $.extend(true, {}, MC.canvas.INSTANCE_JSON.layout);
+				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 				component_layout.osType =  option.osType;
 				component_layout.architecture =  option.architecture;
@@ -808,6 +817,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 				component_layout = layout.node[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -1232,6 +1242,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}
 
 				component_layout = $.extend(true, {}, MC.canvas.ELB_JSON.layout);
+				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 
 				component_data.resource.Scheme = icon_scheme;
@@ -1243,6 +1254,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.name = component_data.name;
 
 				component_layout = layout.node[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -1420,6 +1432,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}
 
 				component_layout = $.extend(true, {}, MC.canvas.ROUTETABLE_JSON.layout);
+				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 			}
 			else
@@ -1430,6 +1443,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					main_icon = "main-";
 				}
 				component_layout = layout.node[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -1533,6 +1547,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				component_data.resource.AttachmentSet[0].VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				component_layout = $.extend(true, {}, MC.canvas.IGW_JSON.layout);
+				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 			}
 			else
@@ -1541,6 +1556,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.name = component_data.name;
 
 				component_layout = layout.node[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -1618,6 +1634,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				component_data.resource.Attachments[0].VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				component_layout = $.extend(true, {}, MC.canvas.VGW_JSON.layout);
+				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 			}
 			else
@@ -1626,6 +1643,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.name = component_data.name;
 
 				component_layout = layout.node[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -1701,6 +1719,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 
 				component_layout = $.extend(true, {}, MC.canvas.CGW_JSON.layout);
+				component_layout.uid = group.id;
 				component_layout.networkName = option.name;
 			}
 			else
@@ -1709,6 +1728,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				option.name = component_data.name;
 
 				component_layout = layout.node[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -1783,6 +1803,8 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ENI_JSON.data);
 				component_data.name = option.name;
+				component_data.number = 1;
+
 				component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 				component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				component_data.resource.AvailabilityZone = option.group.availableZoneName;
@@ -1793,12 +1815,14 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.GroupSet.push(sg_group);
 
 				component_layout = $.extend(true, {}, MC.canvas.ENI_JSON.layout);
+				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 			}
 			else
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
+				component_data.number = component_data.number ? component_data.number : 1;
 
 				if (component_data.resource.Attachment.InstanceId)
 				{
@@ -1813,10 +1837,13 @@ MC.canvas.add = function (flag, option, coordinate)
 				});
 
 				component_layout = layout.node[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
 			}
+
+			option.number = component_data.number;
 
 			width = MC.canvas.COMPONENT_SIZE[type][0] * MC.canvas.GRID_WIDTH;
 			height = MC.canvas.COMPONENT_SIZE[type][1] * MC.canvas.GRID_HEIGHT;
@@ -1929,6 +1956,24 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 
+				////child number
+				Canvon.group().append(
+					////child number in group bg
+					Canvon.rectangle(41, 15, 20, 20).attr({
+						'class': 'eni-number-bg',
+						'rx': 4,
+						'ry': 4
+					}),
+					////child number in group
+					Canvon.text(51, 30, option.number).attr({
+						'class': 'node-label eni-number',
+						'id': group.id + '_eni-number'
+					})
+				).attr({
+					'id': group.id + '_eni-number-group'
+				}),
+
+
 				////6. eni_name
 				Canvon.text(43, 85, option.name, {
 					'text-anchor': 'start' // start, middle(default), end, inherit
@@ -2011,6 +2056,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					MC.canvas_property.sg_list[0].member.push(group.id);
 
 					component_layout = $.extend(true, {}, MC.canvas.ASL_LC_JSON.layout);
+					component_layout.uid = group.id;
 					component_layout.groupUId = option.groupUId;
 					component_layout.osType =  option.osType;
 					component_layout.architecture =  option.architecture;
@@ -2027,6 +2073,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					component_data = $.extend(true, {}, MC.canvas_data.component[option['launchConfig']]);
 					component_layout = $.extend(true, {}, MC.canvas_data.layout.component.node[option['launchConfig']]);
+					component_layout.uid = group.id;
 					component_layout.groupUId = option.groupUId;
 					option.osType = component_layout.osType ;
 					option.architecture = component_layout.architecture ;
@@ -2070,6 +2117,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				// 	$($($("#resource-asg-list").children()[$("#resource-asg-list").children().length-1]).children().children()[0]).text(option.name);
 				// }
 				component_layout = layout.node[group.id];
+				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];

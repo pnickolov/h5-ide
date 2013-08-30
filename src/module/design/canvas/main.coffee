@@ -51,10 +51,24 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
             ide_event.onLongListen ide_event.NEED_IGW, ( component )->
                 model.askToAddIGW component
 
+
+            #listen CANVAS_ZOOMED_DROP_ERROR
+            view.on "CANVAS_ZOOMED_DROP_ERROR", ( event, option ) ->
+                model.zoomedDropError event
+                null
+
             #listen CANVAS_BEFORE_DROP
             view.on "CANVAS_BEFORE_DROP", ( event, option ) ->
                 model.beforeDrop event, option.src_node, option.tgt_parent
                 null
+
+            #listen CANVAS_BEFORE_ASG_EXPAND
+            view.on "CANVAS_BEFORE_ASG_EXPAND", ( event, option ) ->
+                model.beforeASGExpand event, option.src_node, option.tgt_parent
+                null
+
+
+
 
             #listen CANVAS_NODE_CHANGE_PARENT
             #listen CANVAS_GROUP_CHANGE_PARENT

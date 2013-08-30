@@ -32,6 +32,11 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                     #update canvas when get instance info
                     ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
 
+                    #update property panel
+                    uid = MC.canvas_property.selected_node[0]
+                    if uid
+                        MC.canvas.select uid
+
                 else
                     #TO-DO
                 #
@@ -54,6 +59,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
             console.log 'readTab'
             #set snapshot|data vo
             if MC.tab[ tab_id ].snapshot is this.get 'snapshot' then this.set 'snapshot', null
+            #
+            ide_event.trigger ide_event.SWITCH_WAITING_BAR
             #
             this.set 'snapshot',      MC.tab[ tab_id ].snapshot
             #

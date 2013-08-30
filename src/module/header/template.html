@@ -19,15 +19,15 @@
 				<div class="notification-item {{#if is_readed}}{{else}}unread{{/if}}">
 					<div class="notification-message">
 						{{#if is_error}}
-							<i class="icon-fail"></i>
+							<i class="icon-error"></i>
 							<div class="content">{{name}} failed to {{operation}} in {{region_label}}.</div>
 						{{else}}
 							{{#if is_request}}
-								<i class="icon-sending"></i>
+								<i class="icon-pending"></i>
 								<div class="content">Sending request to {{operation}} {{name}} in {{region_label}}.</div>
 							{{else}}
 								{{#if is_process}}
-									<i class="icon-processing"></i>
+									<i class="icon-pending"></i>
 									<div class="content">Processing request to {{operation}} {{name}} in {{region_label}}.</div>
 								{{else}}
 									<i class="icon-success"></i>

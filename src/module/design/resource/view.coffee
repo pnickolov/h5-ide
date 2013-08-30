@@ -287,7 +287,7 @@ define [ 'event',
 
         # todo
         communityShowLoading: () ->
-            $( ".scroll-content" ).hide()
+            $( ".ami-right-col .scroll-content" ).hide()
             $( ".show-loading" ).show()
             $( "#btn-search-ami" ).text( "Searching..." ).attr( "disabled", "" )
             $( "#community-ami-page>div" ).hide()
@@ -296,7 +296,7 @@ define [ 'event',
         # todo
         communityShowContent: () ->
             $( ".show-loading" ).hide()
-            $( ".scroll-content" ).show()
+            $( ".ami-right-col .scroll-content" ).show()
             $( "#btn-search-ami" ).text( "Search" ).removeAttr( "disabled" )
             $( "#community-ami-page>div" ).show()
 
@@ -340,10 +340,10 @@ define [ 'event',
                     bit = '64'
                     if value.architecture == 'i386' then bit = '32'
                     this_tr += '<tr class="item" data-id="'+key+' '+value.name+'" data-publicprivate="public" data-platform="'+value.osType+'" data-ebs="'+value.rootDeviceType+'" data-bit="'+bit+'">'
-                    this_tr += '<td><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="add to Favorite" data-id="'+key+'"></div></td>'
-                    this_tr += '<td>'+key+'</td>'
-                    this_tr += '<td><div><i class="icon-ubuntu icon-ami-os"></i>'+value.name+'</div><div class="ami-meta">public | '+value.architecture+' | '+value.rootDeviceType+'</div></td>'
-                    this_tr += "<td>#{bit}</td></tr>"
+                    this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="add to Favorite" data-id="'+key+'"></div></td>'
+                    this_tr += '<td class="ami-table-id">'+key+'</td>'
+                    this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-ubuntu icon-ami-os"></i><span>public | '+value.architecture+' | '+value.rootDeviceType+'</span></div></td>'
+                    this_tr += "<td class='ami-table-arch'>#{bit}</td></tr>"
                     # <tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
                     #                     <td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
                     #                     <td>{{id}}</td>

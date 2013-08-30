@@ -42,6 +42,7 @@ define [ 'MC', 'event',
             'click #toolbar-stop-app'       : 'clickStopApp'
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
+            'click .icon-refresh'           : 'clickRefreshApp'
 
         render   : ( type ) ->
             console.log 'toolbar render'
@@ -82,7 +83,7 @@ define [ 'MC', 'event',
             else
                 # set total fee
                 cost = MC.aws.aws.getCost MC.canvas_data
-                $('#label-total-fee b').text(cost.total_fee)
+                $('#label-total-fee').find("b").text("$#{cost.total_fee}")
 
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
@@ -361,6 +362,9 @@ define [ 'MC', 'event',
             ide_event.trigger ide_event.REDRAW_SG_LINE
             null
 
+        clickRefreshApp         : (event) ->
+            console.log 'toolbar clickRefreshApp'
+            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
 
     }
 

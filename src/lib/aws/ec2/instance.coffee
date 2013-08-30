@@ -17,12 +17,14 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
       if eni
         MC.canvas.display( eni, 'eni-number-group', true )
         MC.canvas.update( eni, 'text', 'eni-number', count )
+        MC.canvas.display( eni, 'port-eni-rtb', false )
 
     else
       MC.canvas.display( uid, 'instance-number-group', false )
       MC.canvas.display( uid, 'port-instance-rtb', true )
       if eni
         MC.canvas.display( eni, 'eni-number-group', false )
+        MC.canvas.display( eni, 'port-eni-rtb', true )
 
 
 	#public

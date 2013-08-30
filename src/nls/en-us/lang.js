@@ -129,6 +129,11 @@ define({
 		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
 		// Add new strings below this comment. Move above once English has been confirmed
 
+		// sg property
+		'PROP_MSG_SG_CREATE'                    : "1 rule has been created in %s to allow %s %s %s.",
+		'PROP_MSG_SG_CREATE_MULTI'              : "%d rules have been created in %s and %s to allow %s %s %s.",
+		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
+
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',
 		// Add new strings below this comment. Move above once English has been confirmed
@@ -158,7 +163,7 @@ define({
 		'ERROR_CODE_2_MESSAGE'  : 'Invalid API Parameters',
 		'ERROR_CODE_3_MESSAGE'  : '',//no use
 		'ERROR_CODE_4_MESSAGE'  : '',//no use
-		'ERROR_CODE_5_MESSAGE'  : 'External error',
+		'ERROR_CODE_5_MESSAGE'  : 'Request AWS resource exception',
 		'ERROR_CODE_6_MESSAGE'  : '',//no use
 		'ERROR_CODE_7_MESSAGE'  : '',//for guest
 		'ERROR_CODE_8_MESSAGE'  : '',//no use

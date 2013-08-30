@@ -180,7 +180,7 @@ define [ 'backbone', 'underscore', 'app_service', 'base_model' ], ( Backbone, _,
 
 
         #info api (define function)
-        info : ( src, username, session_id, region_name, app_ids=null ) ->
+        info : ( src, username, session_id, region_name=null, app_ids=null ) ->
 
             me = this
 

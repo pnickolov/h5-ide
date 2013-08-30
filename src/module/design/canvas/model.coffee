@@ -619,6 +619,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						else
 							# Hide eni number
 							MC.canvas.display( key, 'eni-number-group', false )
+							MC.canvas.display( key, 'port-eni-rtb', true )
 
 				# remove instance relate volume
 
@@ -848,6 +849,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			else if portMap['instance-attach'] and portMap['eni-attach']
 				# Hide Eni Number
 				MC.canvas.display portMap['eni-attach'], 'eni-number-group', false
+				MC.canvas.display portMap['eni-attach'], 'port-eni-rtb', true
 
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED

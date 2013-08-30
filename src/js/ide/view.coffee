@@ -84,9 +84,9 @@ define [ 'event',
         disconnectedMessage : ( type ) ->
             console.log 'disconnectedMessage'
             if type is 'show'
-                $( '#disconnected-notiﬁcation-wrapper' ).html MC.template.disconnectedNotification()
+                $( '#disconnected-notification-wrapper' ).html MC.template.disconnectedNotification()
             else
-                $( '#disconnected-notiﬁcation-wrapper' ).empty()
+                $( '#disconnected-notification-wrapper' ).empty()
     }
 
     view = new MainView()

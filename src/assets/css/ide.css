@@ -434,11 +434,11 @@ a {
 
 .first-level-nav-label {
 	display: block;
-	background: #4c494c;
+	background: #3D3C3D;
 	width: 217px;
 	height: 18px;
 	font-size: 18px;
-	border: solid 1px #434343;
+	border: solid 1px #3D3C3D;
 	padding: 12px 13px 16px 13px;
 	color: #fff;
 }
@@ -571,25 +571,30 @@ a {
 	color:#eee;
 }
 
+.nav-stack-region-title {
+/*	background: #404040;
+	border-top: 1px solid #3c3c3c;
+	border-bottom: 1px solid #3c3c3c;*/
+}
+
 .nav-new-stack {
-	display   : none;
+	/*display   : none;*/
 
 	position  : absolute;
 	right     : 20px;
 	top       : 10px;
 
-	color     : #ddd;
+	/*color     : #ddd;*/
 
 	cursor    : pointer;
 }
 
-.nav-stack-region-title:hover,
 .nav-new-stack:hover {
-	color: #fff;
+	color: #B25B91;
 }
 
-.nav-stack-region-title:hover .nav-new-stack {
-	display: block;
+.nav-stack-region-title:hover {
+	color: #fff;
 }
 
 .nav-head {
@@ -3428,9 +3433,17 @@ a.action-link:hover {
 }
 
 .acl-rule-number {
-	width      : 100%;
-	height     : 20px;
+	width       : 100%;
+	height      : 20px;
+	line-height : 20px;
+	font-size   : 12px;
+
 	background : #484748;
+	padding    : 0 10px;
+	
+	border-top    : 1px solid #404040;
+	border-bottom : 1px solid #404040;
+	box-shadow    : inset 0 1px 0 rgba(255,255,255,.05), 0 2px 2px rgba(0,0,0,.1);
 }
 
 .acl-rule-details {
@@ -3442,35 +3455,25 @@ a.action-link:hover {
 .acl-rule-allow-cb {
 	width      : 16px;
 	height     : 16px;
-	background : red;
 	display    : inline-block;
 }
 
-.acl-rule-allow-cb.allow {
-	background : green;
+.acl-rule-allow-cb.icon-allow {
+	color: #12D07B;
 }
 
-.acl-rule-inbound, .acl-rule-outbound {
-	display:block;
+.acl-rule-allow-cb.icon-deny {
+	color: #F74A48;
 }
-.acl-rule-inbound:before {
-	content : "<";
-}
-.acl-rule-outbound:before {
-	content : ">";
-}
+
 .property-rule-delete-btn {
 	display    : inline-block;
-	width      : 16px;
+	/*width      : 16px;
 	height     : 16px;
 	background : #777;
 	color      : #fff;
-	text-align : center;
+	text-align : center;*/
 	cursor: pointer;
-
-}
-.property-rule-delete-btn:before {
-	content : "x";
 }
 
 #modal-acl-rule .sg-protocol-option-input.show {
@@ -3903,14 +3906,17 @@ a.action-link:hover {
 /* Notification Dropdown */
 .notification-list {
 	line-height: normal;
-	background-color: #fff;
-	border: 1px solid #666;
-	font-size: 12px;
+	background-color: #f7f7f7;
+	border: 1px solid #ccc;
 }
 
 .notification-list .notification-item {
-	border-bottom: 1px solid #666;
+	border-bottom: 1px solid #eee;
 	padding: 13px 15px 10px;
+}
+
+.notification-list .notification-item:hover {
+	background: #fcfcfc;
 }
 
 .notification-list > div:last-child {
@@ -3926,21 +3932,24 @@ a.action-link:hover {
 }
 
 .notification-list .notification-message .content {
-	padding-left: 21px;
+	padding-left: 24px;
+	font-size: 13px;
 }
 
 #header .notification-list .notification-message .content a {
-	color: #0088cc;
+	color: #3781C9;
 	display: inline;
 	padding: 0;
 }
 
 .notification-list .notification-details {
-	padding-top: 5px;
-	border: 1px solid rgb(190, 188, 189);
-	margin-top: 15px;
-	padding: 5px;
-	background-color: #fff;
+	/*border         : 1px solid rgb(190, 188, 189);*/
+	margin-top       : 15px;
+	padding          : 5px;
+	background-color : #F5E4E4;
+	border-radius    : 2px;
+
+	font-size        : 14px;
 }
 
 .notification-list .notification-details p {
@@ -3960,7 +3969,19 @@ a.action-link:hover {
 	float: left;
 }
 
-.icon-success {
+.notification-list .icon-pending {
+	color: #ccc;
+}
+
+.notification-list .icon-error {
+	color: #F74A48;
+}
+
+.notification-list .icon-success {
+	color: #12D07B;
+}
+
+/*.icon-success {
 	background-image: url(../images/ide/icon/icon-success.png);
 }
 
@@ -3974,7 +3995,7 @@ a.action-link:hover {
 
 .icon-sending {
 	background-image: url(../images/ide/icon/icon-sending.png);
-}
+}*/
 
 .notification-empty {
 	padding: 10px 15px;
@@ -4017,6 +4038,16 @@ a.action-link:hover {
 
 .property-app {
 	/*font-size: 12px;*/
+}
+
+.property-app ::selection {
+	background: #888;
+	color: #fcfcfc;
+}
+
+.property-app ::-moz-selection {
+	background: #999;
+	color: #fcfcfc;
 }
 
 .accordion-default.property-app .accordion-body {

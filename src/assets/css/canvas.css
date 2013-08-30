@@ -820,13 +820,23 @@
 	fill: white;
 }
 
+
 .node-label-hostname {
-	fill: white;
+	fill: black;
 }
 
 .node-label-hostname-bg {
+	fill: none;
+}
+
+.selected .node-label-hostname {
+	fill: white;
+}
+
+.selected .node-label-hostname-bg {
 	fill: #008ae3;
 }
+
 
 .instance-number-bg {
 	stroke-width:0;

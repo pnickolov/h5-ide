@@ -29,13 +29,12 @@
           IP Address
           <button href="#" id="property-eni-ip-add" class="right btn btn-blue btn-small" title="Add IP Address">Add IP</button>
         </div>
-
         <ul class="network-list" id="property-eni-list">
          {{#each eni_display.resource.PrivateIpAddressSet}}
           <li class="input-ip-item">
-            <div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
+            <div class="name tooltip" data-tooltip={{#if ../multiple}}"Automatically assigned IP."{{else}}"Specify an IP address or leave it as .x to automatically assign an IP."{{/if}}>
               <label for="instance-ip-1" class="input-ip-prefix">10.0.0.</label>
-              <input type="text" class="input input-ip" value="x" id="instance-ip-1">
+              <input type="text" class="input input-ip" {{#if ../multiple}}disabled="disabled"{{/if}} value="x" id="instance-ip-1">
             </div>
             {{#unless Primary}}<div class="network-remove-icon icon-remove"></div>{{/unless}}
             {{#if has_eip}}

@@ -5,7 +5,16 @@
 		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-instance-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input class="input instance-name"  type="text" value="{{ name }}" id="property-instance-name" data-ignore="true" data-required-rollback="true"/>
+
+			<div class="property-instance-name-wrap {{#ifCond number 1}}single{{/ifCond}}">
+				<div class="name-count-wrap">
+					-[1-<span id="property-instance-name-count">{{number}}</span>]
+				</div>
+				<div class="fitfloat">
+					<input class="input instance-name"  type="text" value="{{ name }}" id="property-instance-name" data-ignore="true" data-required-rollback="true"/>
+				</div>
+			</div>
+
 		</section>
 		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-instance-count" >Quantity</label>
@@ -159,9 +168,9 @@
 				<ul class="network-list" id="property-network-list">
 					{{#each eni_display.eni_ips}}
 					<li class="input-ip-item">
-						<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
+						<div class="name tooltip" data-tooltip={{#ifCond number 1}}"Specify an IP address or leave it as .x to automatically assign an IP."{{else}}"Automatically assigned IP."{{/ifCond}}>
 							<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}</label>
-							<input type="text" class="input input-ip" value="{{suffix}}" id="instance-ip-1">
+							<input type="text" class="input input-ip" {{#ifCond number 1}}{{else}}disabled="disabled"{{/ifCond}} value="{{suffix}}" id="instance-ip-1">
 						</div>
 						{{#unless Primary}}<div class="network-remove-icon icon-remove"></div>{{/unless}}
 						{{#if has_eip}}
@@ -171,7 +180,6 @@
 						{{/if}}
 						<div class="network-remove-icon"></div>
 					</li>
-
 					{{/each}}
 				</ul>
 			</div>

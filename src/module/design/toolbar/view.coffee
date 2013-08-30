@@ -58,7 +58,8 @@ define [ 'MC', 'event',
             ### env:dev:end ###
 
             # add by song
-            $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
+            if !$('#phantom-frame')[0]
+                $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'

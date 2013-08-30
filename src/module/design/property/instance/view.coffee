@@ -119,7 +119,20 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         addIPtoList: (event) ->
 
-            tmpl = $(MC.template.networkListItem())
+            subnetCIDR = ''
+            instanceUID = this.model.get 'get_uid'
+            defaultVPCId = MC.aws.aws.checkDefaultVPC()
+            if defaultVPCId
+                subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
+                subnetCIDR = subnetObj.cidrBlock
+            else
+                subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
+                subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+
+            ipPrefixSuffix = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
+            tmpl = $(MC.template.networkListItem({
+                ipPrefix: ipPrefixSuffix[0]
+            }))
 
             index = $('#property-network-list').children().length
 

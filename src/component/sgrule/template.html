@@ -1,114 +1,61 @@
 <header class="modal-header sg-rule-create-h"><h3>Create Security Group Rule</h3><i class="modal-close">&times;</i></header>
 
 <article class="modal-body" id="sg-rule-create-modal">
-  <section class="sg-rule-create-add-wrap outward">
-    <p>Add rule in security group of:</p>
+  <section class="sg-rule-create-add-wrap">
 
-    <section class="sg-node-wrap clearfix">
-      <div class="sg-rule-create-node selected">
-        <div class="radio">
-          <input type="radio" name="sg-rule-create-tgt" checked="checked" id="sg-rule-create-tgt-o">
-          <label for="sg-rule-create-tgt-o"></label>
-        </div>
-        <label for="sg-rule-create-tgt-o">{{sg_detail.[1].name}}</label>
+    <section class="sg-node-wrap">
+      <label>Allow</label>
+
+      <div class="selectbox dis-blk" id="sg-create-sg-out">
+        <span class="sg-create-sg-color" style="background:{{sg_detail.[0].color}}"></span>
+        <div class="selection">{{sg_detail.[1].sg.[0].name}}</div>
+        <ul class="dropdown">
+          {{#each sg_detail.[0].sg}}
+            <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
+          {{/each}}
+        </ul>
       </div>
-      <div class="sg-rule-create-node">
-        <div class="radio">
-          <input type="radio" name="sg-rule-create-tgt" id="sg-rule-create-tgt-i">
-          <label for="sg-rule-create-tgt-i"></label>
-        </div>
-        <label for="sg-rule-create-tgt-i">{{sg_detail.[0].name}}</label>
+
+      <div class="selectbox dis-blk" id="sg-create-direction">
+        <div class="selection">send traffic to</div>
+        <ul class="dropdown">
+          <li class="item selected" data-id="out">send traffic to</li>
+          <li class="item" data-id="in">receive traffic from</li>
+          <li class="item" data-id="both">have 2-way traffic with</li>
+        </ul>
+      </div>
+
+      <div class="selectbox dis-blk" id="sg-create-sg-in">
+        <span class="sg-create-sg-color" style="background:{{sg_detail.[1].color}}"></span>
+        <div class="selection">{{sg_detail.[1].sg.[0].name}}</div>
+        <ul class="dropdown">
+          {{#each sg_detail.[1].sg}}
+            <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
+          {{/each}}
+        </ul>
       </div>
     </section>
 
-    <ul class="sg-rule-create">
-      <li class="sg-rule-create-out">
-        <label>Security Group</label>
-        <div class="selectbox dis-blk" id="sg-create-sg-out">
-          <div class="selection">{{sg_detail.[1].sg.[0].name}}</div>
-          <ul class="dropdown">
-            {{#each sg_detail.[1].sg}}
-              <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      </li>
+    <p class="clearfix">
+      <label for="">Destination Protocol</label>
+      <label for="">Port</label>
+    </p>
 
-      <li class="sg-rule-create-in">
-        <label>Security Group</label>
-        <div class="selectbox dis-blk" id="sg-create-sg-in">
-          <div class="selection">{{sg_detail.[0].sg.[0].name}}</div>
-          <ul class="dropdown">
-            {{#each sg_detail.[0].sg}}
-              <li class="item {{#if @index}}{{else}}selected{{/if}}" data-id="{{uid}}">{{name}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      </li>
-
-      <li class="clearfix">
-        <label class="left">Direction</label>
-        <div class="sg-rule-dir">
-          <div class="left lh30 mgr10">
-            <div class="radio">
-              <input type="radio" name="sg-rule-create-dir" checked="checked" id="sg-rule-create-dir-i">
-              <label for="sg-rule-create-dir-i"></label>
-            </div>
-            <span><i class="icon-inbound"></i>Inbound</span>
-          </div>
+    <section class="clearfix">
+      <div class="selectbox sg-proto-option" id="sg-create-proto" data-protocal-type="tcp">
+        <div class="selection">TCP</div>
+        <ul class="dropdown" tabindex="-1">
+          <li class="selected item" data-id="tcp">TCP</li>
+          <li class="item" data-id="udp">UDP</li>
+          <li class="item" data-id="icmp">ICMP</li>
           {{#if isnt_classic}}
-          <div class="left lh30">
-            <div class="radio">
-              <input type="radio" name="sg-rule-create-dir" id="sg-rule-create-dir-o">
-              <label for="sg-rule-create-dir-o"></label>
-            </div>
-            <span><i class="icon-outbound"></i>Outbound</span>
-          </div>
+          <li class="item" data-id="custom">Custom</li>
+          <li class="item" data-id="all">All</li>
           {{/if}}
-        </div>
-      </li>
+        </ul>
+      </div>
 
-      <li class="clearfix sg-rule-create-in">
-        <label class="left sg-rule-direction">Source</label>
-        <div class="selectbox dis-blk mgl80" id="sg-create-dir-in">
-          <div class="selection">{{sg_detail.[1].sg.[0].name}}</div>
-          <ul class="dropdown">
-            {{#each sg_detail.[1].sg}}
-              <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      </li>
-
-      <li class="clearfix sg-rule-create-out">
-        <label class="left sg-rule-direction">Source</label>
-        <div class="selectbox dis-blk mgl80" id="sg-create-dir-out">
-          <div class="selection">{{sg_detail.[0].sg.[0].name}}</div>
-          <ul class="dropdown">
-            {{#each sg_detail.[0].sg}}
-              <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      </li>
-
-      <li class="clearfix">
-        <label class="left" >Protocol</label>
-
-        <div class="selectbox sg-proto-option" id="sg-create-proto" data-protocal-type="tcp">
-          <div class="selection">TCP</div>
-          <ul class="dropdown" tabindex="-1">
-            <li class="selected item" data-id="tcp">TCP</li>
-            <li class="item" data-id="udp">UDP</li>
-            <li class="item" data-id="icmp">ICMP</li>
-            {{#if isnt_classic}}
-            <li class="item" data-id="custom">Custom</li>
-            <li class="item" data-id="all">All</li>
-            {{/if}}
-          </ul>
-        </div>
-
-        <div class="sg-create-proto-inputs">
+      <div class="sg-create-proto-inputs">
           <section class="sg-proto-input" id="sg-proto-ipt-tcp" style="display:block;">
             <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
           </section>
@@ -204,8 +151,7 @@
           </section>
 
 
-		{{#if isnt_classic}}
-
+    {{#if isnt_classic}}
           <section class="sg-proto-input" id="sg-proto-ipt-custom">
             <input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="">
           </section>
@@ -213,17 +159,16 @@
           <section class="sg-proto-input" id="sg-proto-ipt-all">
             Port Range:<span>0-65535</span>
           </section>
-		{{/if}}
-        </div>
+    {{/if}}
+      </div>
+    </section>
 
-      </li>
-    </ul>
     <button class="btn btn-blue sg-rule-create-add">Add Rule</button>
   </section>
 
   <section class="sg-rule-create-done-wrap">
-    A security group rule has been created between {{outward.name}} and {{inward.name}}.
-    <button class="btn btn-silver sg-rule-create-readd">Add another rule</button>
+    <p id="sg-rule-create-msg"></p>
+    <button class="btn btn-silver sg-rule-create-readd">Create another rule</button>
 
     <button class="btn btn-blue modal-close">Close</button>
   </section>

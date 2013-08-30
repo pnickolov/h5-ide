@@ -29,6 +29,9 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                         MC.aws.aws.cacheResource resource_source, region
                         me.describeInstancesOfASG region
 
+                    #update instance icon of app
+                    MC.aws.instance.updateStateIcon app_id
+
                     #update canvas when get instance info
                     ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
 

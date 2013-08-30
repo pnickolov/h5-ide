@@ -247,7 +247,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
         addSGRule : ( rule_data ) ->
 
-            sg_id = rule_data.sgId
+            sg_id = rule_data.outSg
+
+            in_sg_id = rule_data.inSg
 
             from_port = ''
 
@@ -279,52 +281,103 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                     from_port = to_port = rule_data.protocolValue
 
 
-            sg_rule = {
+            out_sg_rule = {
                 "IpProtocol": rule_data.protocol
-                "IpRanges": '@' + rule_data.direction + '.resource.GroupId'
+                "IpRanges": "@#{in_sg_id}.resource.GroupId"
                 "FromPort": from_port
                 "ToPort": to_port
-                "Groups": [{
-                    "GroupId": ""
-                    "UserId": ""
-                    "GroupName": ""
-                }]
             }
 
-            if rule_data.isInbound
+            in_sg_rule = {
+                "IpProtocol": rule_data.protocol
+                "IpRanges": "@#{sg_id}.resource.GroupId"
+                "FromPort": from_port
+                "ToPort": to_port
+            }
 
-                existing = false
 
-                $.each MC.canvas_data.component[sg_id].resource.IpPermissions, ( idx, permission_rule ) ->
+            if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-                    if permission_rule.IpProtocol is rule_data.protocol and permission_rule.IpRanges is sg_rule.IpRanges and permission_rule.FromPort is sg_rule.FromPort and permission_rule.ToPort is sg_rule.ToPort
+                out_sg_rule_existing = this.checkRuleExistingBySG out_sg_rule, sg_id, true
 
-                        existing = true
+                in_sg_rule_existing = this.checkRuleExistingBySG in_sg_rule, in_sg_id, true
 
-                        return false
+                if rule_data.direction is 'in' and not out_sg_rule_existing then MC.canvas_data.component[sg_id].resource.IpPermissions.push out_sg_rule
 
-                if not existing
 
-                    index = MC.canvas_data.component[sg_id].resource.IpPermissions.push sg_rule
+                if rule_data.direction is 'out' and not in_sg_rule_existing then MC.canvas_data.component[in_sg_id].resource.IpPermissions.push in_sg_rule
+
+
+                if rule_data.direction is 'both'
+
+                    if not out_sg_rule_existing then MC.canvas_data.component[sg_id].resource.IpPermissions.push out_sg_rule
+
+                    if not in_sg_rule_existing then MC.canvas_data.component[in_sg_id].resource.IpPermissions.push in_sg_rule
 
             else
-                existing = false
 
-                $.each MC.canvas_data.component[sg_id].resource.IpPermissionsEgress, ( idx, permission_rule ) ->
+                out_sg_rule_in_existing = this.checkRuleExistingBySG out_sg_rule, sg_id, true
 
-                    if permission_rule.IpProtocol is rule_data.protocol and permission_rule.IpRanges is sg_rule.IpRanges and permission_rule.FromPort is sg_rule.FromPort and permission_rule.ToPort is sg_rule.ToPort
+                out_sg_rule_out_existing = this.checkRuleExistingBySG out_sg_rule, sg_id, false
 
-                        existing = true
+                in_sg_rule_in_existing = this.checkRuleExistingBySG in_sg_rule, in_sg_id, true
 
-                        return false
+                in_sg_rule_out_existing = this.checkRuleExistingBySG in_sg_rule, in_sg_id, false
 
-                if not existing
+                if rule_data.direction is 'in'
 
-                    index = MC.canvas_data.component[sg_id].resource.IpPermissionsEgress.push sg_rule
+                    if not out_sg_rule_in_existing then MC.canvas_data.component[sg_id].resource.IpPermissions.push out_sg_rule
 
-            preview_rule = [sg_id, rule_data.isInbound, index-1]
+                    if not in_sg_rule_out_existing then MC.canvas_data.component[in_sg_id].resource.IpPermissionsEgress.push in_sg_rule
 
-            this.set 'preview_rule', preview_rule
+
+                if rule_data.direction is 'out'
+
+                    if not out_sg_rule_out_existing then MC.canvas_data.component[sg_id].resource.IpPermissionsEgress.push out_sg_rule
+
+                    if not in_sg_rule_in_existing then MC.canvas_data.component[in_sg_id].resource.IpPermissions.push in_sg_rule
+
+                if rule_data.direction is 'both'
+
+                    if not out_sg_rule_out_existing then MC.canvas_data.component[sg_id].resource.IpPermissionsEgress.push out_sg_rule
+
+                    if not in_sg_rule_in_existing then MC.canvas_data.component[in_sg_id].resource.IpPermissions.push in_sg_rule
+
+                    if not out_sg_rule_in_existing then MC.canvas_data.component[sg_id].resource.IpPermissions.push out_sg_rule
+
+                    if not in_sg_rule_out_existing then MC.canvas_data.component[in_sg_id].resource.IpPermissionsEgress.push in_sg_rule
+
+
+
+            #preview_rule = [sg_id, rule_data.isInbound, index-1]
+
+            #this.set 'preview_rule', preview_rule
+
+        checkRuleExistingBySG: ( sg_rule, sg_id, inbound ) ->
+
+            existing = false
+
+            permissions = null
+
+            if inbound
+
+                permissions = MC.canvas_data.component[sg_id].resource.IpPermissions
+
+            else
+
+                permissions = MC.canvas_data.component[sg_id].resource.IpPermissionsEgress
+
+            for idx, permission_rule of permissions
+
+                if permission_rule.IpProtocol is sg_rule.IpProtocol and permission_rule.IpRanges is sg_rule.IpRanges and permission_rule.FromPort is sg_rule.FromPort and permission_rule.ToPort is sg_rule.ToPort
+
+                    existing = true
+
+                    break
+
+            existing
+
+
 
         getDeleteSGList : () ->
 

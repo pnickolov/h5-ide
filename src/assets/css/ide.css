@@ -1548,7 +1548,6 @@ td.table-action a.btn {
 }
 
 /* Browse Community AMI Modal */
-
 #modal-browse-community-ami .modal-body {
 	padding: 0;
 }
@@ -1557,6 +1556,7 @@ td.table-action a.btn {
 	height: 450px;
 	position: relative;
 	width: 100%;
+	background-color: #EEE;
 }
 
 #modal-browse-community-ami .show-loading {
@@ -1572,43 +1572,107 @@ td.table-action a.btn {
 	margin-top: -47.25px;
 }
 
-.ami-left-col {
-	height: 100%;
-	width: 239px;
-	float: left;
-	background-color: #eee;
-	font-size: 12px;
-	border-right: 1px solid #ccc;
-}
-
-.ami-left-col > div {
-	width: 240px;
+#ami-search-option {
 	padding: 10px;
-	border-top: 1px #ccc solid;
+	position: absolute;
+	left: 0;
+	top: 0;
 }
 
-.ami-left-col > div:first-child {
-    border-top: none;
+#ami-data-wrap {
+	height: 100%;
+	margin-left: 250px;
+	background: #FFF;
+	border-left: 1px solid #ccc;
 }
 
-.ami-left-col > div.filter-radio-group {
-	padding: 5px 10px 10px 10px;
+#btn-search-ami {
+	width: 100%;
 }
 
-.filter-radio-label {
-	margin-bottom: 5px;
+.ami-option-group {
+	margin: 10px 0;
+}
+
+.ami-option-group h5 {
+	font-size: 12px;
+	margin-bottom: 10px;
+	color: #555;
+}
+
+.ami-option-wrap button {
+	width: 114px;
+	font-size: 12px;
+	padding: 4px 0;
+	background-color: #ccc;
+	border: none;
+}
+
+.ami-option-wrap button:hover,
+.ami-option-wrap button.active {
+	background-color: #50A1F6;
 }
 
 #community-ami-input {
-	width: 194px;
+	border-radius: 3px;
+	margin-bottom: 5px;
+	font-size: 12px;
+	padding: 8px 5px 8px 10px;
+	width: 215px;
+	color: #666;
+	border: 1px solid #CCC;
 }
 
 #modal-browse-community-ami .radiobuttons button {
-	width: 88px;
+	border-radius: 3px;
+	width: 114px;
+	font-size: 12px;
+	padding: 4px 0;
 }
 
 #modal-browse-community-ami .radiobuttons button:first-child {
 	width: 44px;
+}
+
+#selectbox-ami-platform {
+	margin: 5px 0;
+	width: 232px;
+	background: #F3F3F3;
+}
+
+#selectbox-ami-platform .item {
+	font-size: 12px;
+	display: block;
+	color: #333;
+	cursor: pointer;
+	padding: 8px;
+}
+
+#selectbox-ami-platform .item span {
+	margin-left: 22px;
+}
+
+.ami-meta span {
+	margin-left: 22px;
+}
+
+#selectbox-ami-platform .selected {
+	background-color: #f3f3f3;
+}
+
+#selectbox-ami-platform .selection {
+	border-radius: 3px;
+	padding: 8px 10px;
+
+	background-color: #F5F5F5;
+	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#FFF), to(#E6E6E6));
+	background-image: -webkit-linear-gradient(top, #FFF, #E6E6E6);
+	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: linear-gradient(to bottom, #FFF, #E6E6E6);
+
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 #selectbox-ami-platform a.dropdown-toggle {
@@ -1625,7 +1689,6 @@ td.table-action a.btn {
 	border-top: 4px solid #999;
 	float: right;
 	margin-top: 5px;
-
 }
 
 #selectbox-ami-platform a.dropdown-toggle span a,
@@ -1654,15 +1717,57 @@ td.table-action a.btn {
 	text-align: center;
 }
 
-#community-ami-filter tr td {
-	position: relative;
+#ami-table-wrap .scroll-wrap {
+	height: 368px;
 }
 
-#community-ami-filter tr td .toggle-fav {
+#ami-table-wrap .table {
+	font-size: 12px;
+}
+
+#ami-table-wrap .table tr td {
+	vertical-align: middle;
+}
+
+#ami-table-wrap .ami-table-fav,
+#ami-table-wrap .ami-table-id,
+#ami-table-wrap .ami-table-arch {
+	text-align: center;
+}
+
+#ami-table-wrap .ami-table-id {
+	padding: 6px 8px;
+}
+
+#ami-table-wrap .ami-table-name {
+	display: block;
+}
+
+#ami-table-wrap .toggle-fav {
 	top: 50%;
 	left: 50%;
 	margin-left: -8px;
 	margin-top: -10px;
+}
+
+#ami-table-wrap .toggle-fav:hover {
+	margin-left: -10px;
+	margin-top: -12px;
+}
+
+#ami-table-wrap .table-head thead th {
+	line-height: 16px;
+	text-align: center;
+	padding: 10px 0;
+	border: none;
+	font-size: 12px;
+	font-weight: 500;
+	color: #F3F3F3;
+	background: #323E4A;
+}
+
+#ami-table-wrap .table-head thead th:hover {
+	background-color: #3C4A59;
 }
 
 .ami-meta {
@@ -1671,6 +1776,7 @@ td.table-action a.btn {
 }
 
 .icon-ami-os {
+	position: absolute;
 	display: inline-block;
 	width: 18px;
 	height: 18px;
@@ -1680,22 +1786,26 @@ td.table-action a.btn {
 #community-ami-page {
 	position: absolute;
 	bottom: 0;
-	height: 50px;
-	background-color: #dde0e2;
-	width: 580px;
-	right: 0;
+	height: 45px;
+	background-color: #F8F8F8;
+	border-top: 1px solid #ccc;
+	width: 599px;
 }
 
 #community-ami-page .pagination {
-	float: right;
-	margin-top: 15px;
-	margin-right: 15px;
+	position: absolute;
+	top: 12px;
+	right: 10px;
+	font-size: 12px;
+	color: #999;
 }
 
 #community-ami-page .page-tip {
-	float: left;
-	margin-top: 15px;
-	margin-left: 10px;
+	left: 10px;
+	color: #999;
+	font-size: 12px;
+	top: 15px;
+	position: absolute;
 }
 
 

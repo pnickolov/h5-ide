@@ -51,15 +51,15 @@
       <i class="icon-detail" id="property-asg-term-edit"></i>
     </section>
 
-    <ul id="property-asg-policies">
+    <ul id="property-asg-policies" class="property-list">
       {{#each policies}}
       <li class="pos-r" data-uid="{{uid}}">
         <h5 class="name">{{name}}</h5>
-        <span class="asg-p-metric">{{metric}}</span>
-        <span class="asg-p-eval">{{evaluation}} {{threshold}}{{unit}}</span>
-        <span class="asg-p-periods">{{periods}}x{{second}}s</span>
-        <span class="asg-p-trigger">{{trigger}}</span>
-        <span class="asg-p-adjust">{{adjustment}} {{adjusttype}}</span>
+        <span class="asg-p-metric asg-p-tag">{{metric}}</span>
+        <span class="asg-p-eval asg-p-tag">{{evaluation}} {{threshold}}{{unit}}</span>
+        <span class="asg-p-periods asg-p-tag">{{periods}}x{{second}}s</span>
+        <span class="asg-p-trigger asg-p-tag">{{trigger}}</span>
+        <span class="asg-p-adjust asg-p-tag">{{adjustment}} {{adjusttype}}</span>
         <i class="icon-detail"></i>
       </li>
       {{/each}}

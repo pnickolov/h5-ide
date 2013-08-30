@@ -434,11 +434,11 @@ a {
 
 .first-level-nav-label {
 	display: block;
-	background: #4c494c;
+	background: #3D3C3D;
 	width: 217px;
 	height: 18px;
 	font-size: 18px;
-	border: solid 1px #434343;
+	border: solid 1px #3D3C3D;
 	padding: 12px 13px 16px 13px;
 	color: #fff;
 }
@@ -571,25 +571,30 @@ a {
 	color:#eee;
 }
 
+.nav-stack-region-title {
+/*	background: #404040;
+	border-top: 1px solid #3c3c3c;
+	border-bottom: 1px solid #3c3c3c;*/
+}
+
 .nav-new-stack {
-	display   : none;
+	/*display   : none;*/
 
 	position  : absolute;
 	right     : 20px;
 	top       : 10px;
 
-	color     : #ddd;
+	/*color     : #ddd;*/
 
 	cursor    : pointer;
 }
 
-.nav-stack-region-title:hover,
 .nav-new-stack:hover {
-	color: #fff;
+	color: #B25B91;
 }
 
-.nav-stack-region-title:hover .nav-new-stack {
-	display: block;
+.nav-stack-region-title:hover {
+	color: #fff;
 }
 
 .nav-head {
@@ -3400,9 +3405,17 @@ a.action-link:hover {
 }
 
 .acl-rule-number {
-	width      : 100%;
-	height     : 20px;
+	width       : 100%;
+	height      : 20px;
+	line-height : 20px;
+	font-size   : 12px;
+
 	background : #484748;
+	padding    : 0 10px;
+	
+	border-top    : 1px solid #404040;
+	border-bottom : 1px solid #404040;
+	box-shadow    : inset 0 1px 0 rgba(255,255,255,.05), 0 2px 2px rgba(0,0,0,.1);
 }
 
 .acl-rule-details {
@@ -3414,35 +3427,25 @@ a.action-link:hover {
 .acl-rule-allow-cb {
 	width      : 16px;
 	height     : 16px;
-	background : red;
 	display    : inline-block;
 }
 
-.acl-rule-allow-cb.allow {
-	background : green;
+.acl-rule-allow-cb.icon-allow {
+	color: #12D07B;
 }
 
-.acl-rule-inbound, .acl-rule-outbound {
-	display:block;
+.acl-rule-allow-cb.icon-deny {
+	color: #F74A48;
 }
-.acl-rule-inbound:before {
-	content : "<";
-}
-.acl-rule-outbound:before {
-	content : ">";
-}
+
 .property-rule-delete-btn {
 	display    : inline-block;
-	width      : 16px;
+	/*width      : 16px;
 	height     : 16px;
 	background : #777;
 	color      : #fff;
-	text-align : center;
+	text-align : center;*/
 	cursor: pointer;
-
-}
-.property-rule-delete-btn:before {
-	content : "x";
 }
 
 #modal-acl-rule .sg-protocol-option-input.show {
@@ -3989,6 +3992,16 @@ a.action-link:hover {
 
 .property-app {
 	/*font-size: 12px;*/
+}
+
+.property-app ::selection {
+	background: #888;
+	color: #fcfcfc;
+}
+
+.property-app ::-moz-selection {
+	background: #999;
+	color: #fcfcfc;
 }
 
 .accordion-default.property-app .accordion-body {

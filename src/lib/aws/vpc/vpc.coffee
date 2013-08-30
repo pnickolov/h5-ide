@@ -89,8 +89,20 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		return subnetObj
 
+	getAZSubnetForDefaultVPC = (azName) ->
+
+		currentRegion = MC.canvas_data.region
+		accountData = MC.data.account_attribute[currentRegion]
+
+		defaultSubnetObj = accountData.default_subnet
+
+		subnetObj = defaultSubnetObj[azName]
+
+		return subnetObj
+
 	#public
 	getVPCUID : getVPCUID
 	updateAllSubnetCIDR : updateAllSubnetCIDR
 	checkFullDefaultVPC : checkFullDefaultVPC
 	getSubnetForDefaultVPC : getSubnetForDefaultVPC
+	getAZSubnetForDefaultVPC : getAZSubnetForDefaultVPC

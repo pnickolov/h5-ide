@@ -1,0 +1,11 @@
+#!/usr/bin/expect
+
+send_user "\nNow will inform 26.7 to update develop code...\n\n####################\n"
+set timeout 30 
+spawn ssh root@211.98.26.7
+expect "root@211*"
+send "echo 1 > /root/xjimmy/etc/needbuild\n" 
+expect "root@211*"
+send_user "\n####################\n\nide on 26.7 will be updated after several minutes...\n"
+send "exit\n"
+

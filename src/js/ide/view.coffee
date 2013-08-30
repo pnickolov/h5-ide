@@ -84,7 +84,7 @@ define [ 'event',
         disconnectedMessage : ( type ) ->
             console.log 'disconnectedMessage'
             if type is 'show'
-                $( '#disconnected-notiﬁcation-wrapper' ).html MC.template.disconnectedNotiﬁcation()
+                $( '#disconnected-notiﬁcation-wrapper' ).html MC.template.disconnectedNotification()
             else
                 $( '#disconnected-notiﬁcation-wrapper' ).empty()
     }

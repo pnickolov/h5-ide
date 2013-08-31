@@ -716,7 +716,7 @@ var constant_data = {
 	STACK_PROPERTY:
 	{
 		sg_list: [],
-		kp_list: [],
+		kp_list: {},
 		original_json: '',
 		SCALE_RATIO: 1,
 		LINE_STYLE: 0, //0fold line, 1 straight, 2 bezier q, 3 bezier qt

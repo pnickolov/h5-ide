@@ -26,8 +26,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-source-check'      : 'sourceCheckChange'
             'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select'               : "tenancySelect"
-            'OPTION_CHANGE #keypair-select'               : "addtoKPList"
-            'EDIT_UPDATE #keypair-select'                 : "createtoKPList"
+            'OPTION_CHANGE #keypair-select'               : "setKP"
+            'EDIT_UPDATE #keypair-select'                 : "addKP"
+            "EDIT_FINISHED #keypair-select"               : "updateKPSelect"
 
             'click #property-ami'                         : 'openAmiPanel'
 
@@ -69,12 +70,18 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         sourceCheckChange : ( event ) ->
             this.model.set 'source_check', event.target.checked
 
-        addtoKPList : ( event, id ) ->
-            this.model.set 'set_kp', id
-            this.trigger 'REFRESH_KEYPAIR'
+        setKP : ( event, id ) ->
+            @model.setKP id
 
-        createtoKPList : ( event, id ) ->
-            this.model.set 'add_kp', id
+        addKP : ( event, id ) ->
+            result = @model.addKP id
+            if not result
+                notification "error", "KeyPair with the same name already exists."
+                return result
+
+        updateKPSelect : () ->
+            # Add remove icon to the newly created item
+            $("#keypair-select").find(".item:last-child").append('<span class="icon-remove"></span>')
 
         openAmiPanel : ( event ) ->
             target = $('#property-ami')
@@ -88,6 +95,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             null
 
         deleteKP : ( event ) ->
+            me = this
             $li = $(event.currentTarget).closest("li")
 
             selected = $li.hasClass("selected")
@@ -100,9 +108,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 if selected
                     $("#keypair-select").find(".item").eq(0).click()
 
-                ###
-                this.model.deleteKP $li.attr("data-id")
-                ###
+
+                me.model.deleteKP $li.attr("data-id")
+
 
             if using
                 data =

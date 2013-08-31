@@ -1089,12 +1089,12 @@ a {
 
 .global-region-status-header {
 	border-bottom: 1px solid #eee;
-	padding: 16px 15px;
+	padding: 10px 15px;
 	color: #999;
 }
 
 .global-region-status-header h4 {
-	font-size: 15px;
+	font-size: 14px;
 	color: #999;
 }
 
@@ -1104,7 +1104,7 @@ a {
 
 .global-region-status-list a {
 	display: block;
-	padding: 10px 15px;
+	padding: 7px 15px;
 }
 
 .global-region-status-list a:hover {
@@ -1116,7 +1116,7 @@ a {
 }
 
 .global-region-status-list h5 {
-	font-size: 16px;
+	font-size: 14px;
 	color: #3781c9;
 }
 

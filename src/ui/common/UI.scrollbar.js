@@ -136,7 +136,7 @@ var scrollbar = {
 					}
 				}
 			}
-		}, 2500);
+		}, 800);
 
 		return true;
 	},

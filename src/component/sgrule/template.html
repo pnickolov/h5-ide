@@ -7,11 +7,14 @@
       <label>Allow</label>
 
       <div class="selectbox" id="sg-create-sg-out">
-        <span class="sg-create-sg-color" style="background:{{sg_detail.[0].color}}"></span>
-        <div class="selection">{{sg_detail.[0].sg.[0].name}}</div>
+
+        <div class="selection"><span class="sg-create-sg-color" style="background:{{sg_detail.[0].sg.[0].color}}"></span>{{sg_detail.[0].sg.[0].name}}</div>
         <ul class="dropdown">
           {{#each sg_detail.[0].sg}}
-            <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
+            <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">
+              <span class="sg-create-sg-color" style="background:{{color}}"></span>
+              {{name}}
+            </li>
           {{/each}}
         </ul>
       </div>
@@ -26,11 +29,13 @@
       </div>
 
       <div class="selectbox" id="sg-create-sg-in">
-        <span class="sg-create-sg-color" style="background:{{sg_detail.[1].color}}"></span>
-        <div class="selection">{{sg_detail.[1].sg.[0].name}}</div>
+        <div class="selection"><span class="sg-create-sg-color" style="background:{{sg_detail.[1].sg.[0].color}}"></span>{{sg_detail.[1].sg.[0].name}}</div>
         <ul class="dropdown">
           {{#each sg_detail.[1].sg}}
-            <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">{{name}}</li>
+            <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">
+              <span class="sg-create-sg-color" style="background:{{color}}"></span>
+              {{name}}
+            </li>
           {{/each}}
         </ul>
       </div>

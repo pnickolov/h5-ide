@@ -145,7 +145,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 		beforeD_Eni : ( component, tgt_parent ) ->
 			# Eni can only be in subnet
-			if MC.canvas_data.component[ tgt_parent ].resource.AvailabilityZone == component.resource.AvailabilityZone
+			if MC.canvas_data.component[tgt_parent] and MC.canvas_data.component[tgt_parent].resource.AvailabilityZone == component.resource.AvailabilityZone
 				return
 
 			if component.resource.Attachment.InstanceId
@@ -255,17 +255,44 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			resource_type = constant.AWS_RESOURCE_TYPE
 			parent        = MC.canvas_data.layout.component.group[ tgt_parent ]
 
+			defaultVPC = false
+			if MC.aws.aws.checkDefaultVPC()
+				defaultVPC = true
+
 			# Parent can be AvailabilityZone or Subnet
-			if parent.type == resource_type.AWS_VPC_Subnet
-				parent = MC.canvas_data.component[ tgt_parent ]
+			if parent.type == resource_type.AWS_VPC_Subnet or defaultVPC
+				if !defaultVPC
+					parent = MC.canvas_data.component[ tgt_parent ]
 
-				# Nothing is changed
-				if component.resource.SubnetId.indexOf( tgt_parent ) != -1
-					return
+				subnetUID = ''
+				newAZ = ''
+				if !defaultVPC
+					subnetUID = tgt_parent
+					# Nothing is changed
+					if component.resource.SubnetId.indexOf(subnetUID) != -1
+						return
+					# Update instance's subnet
+					component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
+					newAZ = parent.resource.AvailabilityZone
+				else
+					newAZ = parent.name
+				
+				component.resource.Placement.AvailabilityZone = newAZ
 
-				newAZ = parent.resource.AvailabilityZone
-				# Update instance's subnet
-				component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
+				instanceUID = component.uid
+				# update instance default eni
+				eniComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
+				if eniComp
+					eniUID = eniComp.uid
+					MC.canvas_data.component[eniUID].resource.AvailabilityZone = newAZ
+					if !defaultVPC
+						MC.canvas_data.component[eniUID].resource.SubnetId = "@" + subnetUID + ".resource.SubnetId"
+
+				# update IP List
+				if defaultVPC
+					MC.aws.subnet.updateAllENIIPList(newAZ)
+				else
+					MC.aws.subnet.updateAllENIIPList(subnetUID)
 			else
 
 				# Nothing is changed
@@ -273,8 +300,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					return
 
 				newAZ = parent.name
-
-			component.resource.Placement.AvailabilityZone = newAZ
+				component.resource.Placement.AvailabilityZone = newAZ
 
 			# Update ELB's AZ property
 			console.log "morris", component
@@ -347,8 +373,26 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			null
 
 		changeP_Eni : ( component, tgt_parent ) ->
-			component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
-			component.resource.AvailabilityZone = MC.canvas_data.component[tgt_parent].resource.AvailabilityZone
+
+			defaultVPC = false
+			if MC.aws.aws.checkDefaultVPC()
+				defaultVPC = true
+			if !defaultVPC
+				# parent is subnet
+				component.resource.AvailabilityZone = MC.canvas_data.component[tgt_parent].resource.AvailabilityZone
+			else
+				# parent is az
+				component.resource.AvailabilityZone = MC.canvas_data.layout.component.group[tgt_parent].name
+
+			# Update IP List
+			if defaultVPC
+				eniNewAZ = component.resource.AvailabilityZone
+				MC.aws.subnet.updateAllENIIPList(eniNewAZ)
+			else
+				component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
+				subnetUID = tgt_parent
+				MC.aws.subnet.updateAllENIIPList(subnetUID)
+
 			null
 
 		changeP_ASG : ( component, tgt_parent ) ->

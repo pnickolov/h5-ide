@@ -371,6 +371,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 size = item.resource.InstanceType
                 imageId = item.resource.ImageId
 
+                number = if item.number then item.number else 1
+
                 ami = v for k,v of feeMap.ami when v.imageId == imageId
 
                 if 'ami' of feeMap and imageId of feeMap.ami
@@ -386,7 +388,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                     cost_list.push { 'resource' : name, 'size' : size, 'fee' : fee + (if unit is 'hour' then '/hr' else '/mo') }
 
-                    total_fee += fee * 24 * 30
+                    total_fee += fee * 24 * 30 * number
 
                     ## detail monitor
                     if item.resource.Monitoring is 'enabled'
@@ -394,6 +396,20 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                         fee = 3.50
                         cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee + '/mo' }
                         total_fee += fee
+
+                ##attached volume
+                vols = item.resource.BlockDeviceMapping
+                if vols and 'price' of feeMap and 'ebs' of feeMap.price
+                    for vol_uid in vols
+                        volume = data.component[vol_uid.split('#')[1]]
+                        if volume.resource.VolumeType is 'standard'
+                            vol_fee = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
+                        else
+                            vol_fee = i for i in feeMap.price.ebs.ebsPIOPSVols when i.unit is 'perGBmoProvStorage'
+
+                        cost_list.push { 'resource' : name + ' - ' + volume.name, 'size' :  volume.resource.Size + 'G', 'fee' : vol_fee.fee + '/GB/mo' }
+
+                        total_fee += parseFloat(vol_fee.fee * volume.resource.Size * number)
 
             # elb
             else if item.type is 'AWS.ELB'
@@ -405,20 +421,20 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     total_fee += elb.fee * 24 * 30
 
             # volume
-            else if item.type is 'AWS.EC2.EBS.Volume'
-                if 'price' of feeMap and 'ebs' of feeMap.price
-                    if item.resource.VolumeType is 'standard'
-                        vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
-                    else
-                        vol = i for i in feeMap.price.ebs.ebsPIOPSVols when i.unit is 'perGBmoProvStorage'
+            # else if item.type is 'AWS.EC2.EBS.Volume'
+            #     if 'price' of feeMap and 'ebs' of feeMap.price
+            #         if item.resource.VolumeType is 'standard'
+            #             vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
+            #         else
+            #             vol = i for i in feeMap.price.ebs.ebsPIOPSVols when i.unit is 'perGBmoProvStorage'
 
-                    # get attached instanc name
-                    instance_uid    = item.resource.AttachmentSet.InstanceId.split('@')[1].split('.')[0]
-                    instance_name   = MC.canvas_data.component[instance_uid].name
+            #         # get attached instanc name
+            #         instance_uid    = item.resource.AttachmentSet.InstanceId.split('@')[1].split('.')[0]
+            #         instance_name   = MC.canvas_data.component[instance_uid].name
 
-                    cost_list.push { 'resource' : instance_name + ' - ' + name, 'size' :  item.resource.Size + 'G', 'fee' : vol.fee + '/GB/mo' }
+            #         cost_list.push { 'resource' : instance_name + ' - ' + name, 'size' :  item.resource.Size + 'G', 'fee' : vol.fee + '/GB/mo' }
 
-                    total_fee += parseFloat(vol.fee * item.resource.Size)
+            #         total_fee += parseFloat(vol.fee * item.resource.Size)
 
             # asg
             else if item.type is 'AWS.AutoScaling.Group'

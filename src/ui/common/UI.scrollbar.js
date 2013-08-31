@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130829
+#* Date: 20130831
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -46,7 +46,9 @@ var scrollbar = {
 						offsetHeight = target.offsetHeight,
 						offsetWidth = target.offsetWidth,
 						scrollbar_height,
-						scrollbar_width;
+						scrollbar_width,
+						wrap_height,
+						wrap_width;
 
 					if (scroll_content_elem && wrap.css('display') === 'block')
 					{
@@ -55,9 +57,12 @@ var scrollbar = {
 
 						if (veritical_thumb && veritical_thumb.hasClass('scrollbar-veritical-thumb'))
 						{
-							if (scrollbar_height <= offsetHeight * 2 - scroll_content_elem.scrollHeight || scrollbar_height > wrap.height())
+							wrap_height = wrap.height();
+
+							if (scrollbar_height <= offsetHeight * 2 - scroll_content_elem.scrollHeight || scrollbar_height > wrap_height)
 							{
 								veritical_thumb.parent().hide();
+
 								if (scrollbar.isTransform)
 								{
 									scroll_content.css('transform', 'translate3d(' + (scroll_content_elem.realScrollLeft ? scroll_content_elem.realScrollLeft : 0) + ', 0, 0)');
@@ -77,7 +82,7 @@ var scrollbar = {
 
 								if (
 									scroll_content_elem.realScrollTop !== 0 &&
-									wrap.height() - scroll_content_elem.realScrollTop > scroll_content[0].scrollHeight
+									wrap_height - scroll_content_elem.realScrollTop > scroll_content[0].scrollHeight
 								)
 								{
 									scrollbar.scrollTop({
@@ -92,7 +97,9 @@ var scrollbar = {
 
 						if (horizontal_thumb && horizontal_thumb.hasClass('scrollbar-horizontal-thumb'))
 						{
-							if (scrollbar_width <= offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap.width())
+							wrap_width = wrap.width();
+
+							if (scrollbar_width <= offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap_width)
 							{
 								horizontal_thumb.parent().hide();
 								if (scrollbar.isTransform)
@@ -114,7 +121,7 @@ var scrollbar = {
 
 								if (
 									scroll_content_elem.realScrollLeft !== 0 &&
-									wrap.width() - scroll_content_elem.realScrollLeft > scroll_content[0].scrollWidth
+									wrap_width - scroll_content_elem.realScrollLeft > scroll_content[0].scrollWidth
 								)
 								{
 									scrollbar.scrollLeft({
@@ -149,8 +156,6 @@ var scrollbar = {
 		}
 
 		$(document.body).addClass('disable-event');
-
-		target.addClass('scrolling');
 
 		event = scrollbar.isTouch ? event.originalEvent.touches[0] : event;
 
@@ -202,8 +207,9 @@ var scrollbar = {
 				'mouseup': scrollbar.mouseup
 			});
 
-		event.data.scroll_target.removeClass('scrolling');
 		$(document.body).removeClass('disable-event');
+
+		return true;
 	},
 
 	scrollTo: function (target, direction)

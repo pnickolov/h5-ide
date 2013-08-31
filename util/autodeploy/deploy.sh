@@ -22,4 +22,8 @@ scp ${FILENAME} root@211.98.26.7:/madeira/site/ide_h5
 echo "transfer done."
 echo
 echo "ide on 26.7 will be updated after severial minutes."
+echo
+echo "remove ${FILENAME}"
+rm ${FILENAME} -rf
+echo
 echo "all done. "

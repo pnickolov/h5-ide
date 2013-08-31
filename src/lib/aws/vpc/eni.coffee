@@ -59,7 +59,9 @@ define [ 'MC' ], ( MC ) ->
 
 		return allIPAry
 
-	getAllOtherIPInCIDR = (subnetUIDRef, rejectEniUID) ->
+	getAllOtherIPInCIDR = (subnetUIDRefOrAZ, rejectEniUID) ->
+
+		defaultVPCId = MC.aws.aws.checkDefaultVPC()
 
 		allCompAry = MC.canvas_data.component
 
@@ -70,11 +72,13 @@ define [ 'MC' ], ( MC ) ->
 				if compObj.uid is rejectEniUID
 					return
 				currentSubnetUIDRef = compObj.resource.SubnetId
-				if currentSubnetUIDRef is subnetUIDRef
-					privateIpAddressSet = compObj.resource.PrivateIpAddressSet
-					_.each privateIpAddressSet, (value) ->
-						allOtherIPAry.push value.PrivateIpAddress
-						null
+				currentAZName = compObj.resource.AvailabilityZone
+				if (!defaultVPCId and currentSubnetUIDRef is subnetUIDRefOrAZ) or
+					(defaultVPCId and currentAZName is subnetUIDRefOrAZ)
+						privateIpAddressSet = compObj.resource.PrivateIpAddressSet
+						_.each privateIpAddressSet, (value) ->
+							allOtherIPAry.push value.PrivateIpAddress
+							null
 			null
 
 		return allOtherIPAry
@@ -122,9 +126,18 @@ define [ 'MC' ], ( MC ) ->
 	generateIPList = (eniUID, inputIPAry) ->
 
 		currentEniComp = MC.canvas_data.component[eniUID]
-		subnetUIDRef = currentEniComp.resource.SubnetId
+
 		rejectEniUID = eniUID
-		allOtherIPAry = MC.aws.eni.getAllOtherIPInCIDR subnetUIDRef, rejectEniUID
+		subnetUIDRef = ''
+		allOtherIPAry = []
+		defaultVPCId = MC.aws.aws.checkDefaultVPC()
+		azName = ''
+		if defaultVPCId
+			azName = currentEniComp.resource.AvailabilityZone
+			allOtherIPAry = MC.aws.eni.getAllOtherIPInCIDR azName, rejectEniUID
+		else
+			subnetUIDRef = currentEniComp.resource.SubnetId
+			allOtherIPAry = MC.aws.eni.getAllOtherIPInCIDR subnetUIDRef, rejectEniUID
 
 		# get self-set ip
 		needAutoAssignIPCount = 0
@@ -139,12 +152,21 @@ define [ 'MC' ], ( MC ) ->
 		ipFilterAry = allOtherIPAry.concat selfSetIPAry
 
 		# get current subnet cidr
-		subnetId = subnetUIDRef.slice(1).split('.')[0]
-		subnetComp = MC.canvas_data.component[subnetId]
-		subnetCidr = subnetComp.resource.CidrBlock
+		subnetCidr = ''
+
+		if defaultVPCId
+			subnetCidr = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)
+		else
+			subnetId = subnetUIDRef.slice(1).split('.')[0]
+			subnetComp = MC.canvas_data.component[subnetId]
+			subnetCidr = subnetComp.resource.CidrBlock
 
 		# get current available ip
-		needIPCount = MC.aws.eni.getSubnetNeedIPCount(subnetId)
+		needIPCount = 0
+		if defaultVPCId
+			needIPCount = MC.aws.eni.getSubnetNeedIPCount(azName)
+		else
+			needIPCount = MC.aws.eni.getSubnetNeedIPCount(subnetId)
 		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR(subnetCidr, ipFilterAry, needIPCount)
 
 		# start auto assign ip

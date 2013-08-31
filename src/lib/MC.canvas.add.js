@@ -780,8 +780,11 @@ MC.canvas.add = function (flag, option, coordinate)
 						eni.resource.AssociatePublicIpAddress = false;
 						component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 						component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
-						eni.resource.SubnetId = component_data.resource.SubnetId;
-						eni.resource.VpcId = component_data.resource.VpcId;
+						var defaultVPCId = MC.aws.aws.checkDefaultVPC();
+						if (!defaultVPCId) {
+							eni.resource.SubnetId = component_data.resource.SubnetId;
+							eni.resource.VpcId = component_data.resource.VpcId;
+						}
 					}
 				}
 
@@ -1805,8 +1808,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				component_data.number = 1;
 
-				component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
-				component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+				var defaultVPCId = MC.aws.aws.checkDefaultVPC();
+				if (!defaultVPCId) {
+					component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
+					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+				}
+				
 				component_data.resource.AvailabilityZone = option.group.availableZoneName;
 
 				var sg_group = {};

@@ -87,13 +87,11 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 null
 
             #listen
-            # ide_event.onLongListen ide_event.UPDATA_TAB_ICON, ( flag, id, region ) ->
-            #     console.log 'UPDATE_TAB_ICON, flag:' + flag + ', id:' + id
-            #     if id.indexOf('app-') == 0
-            #         model.getAppResourcesService region_name, id
+            ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region_name, app_id ) ->
+                console.log 'UPDATE_APP_RESOURCE:' + region_name + ',' + app_id
+                model.getAppResourcesService region_name, app_id
 
-            #     null
-
+                null
     #private
     unLoadModule = () ->
         #view.remove()

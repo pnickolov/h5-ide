@@ -117,9 +117,6 @@ modal.isPopup = function ()
 modal.drag = {
 	mousedown: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
 		var target = $('#modal-box'),
 			target_position = target.position();
 
@@ -131,13 +128,12 @@ modal.drag = {
 			'left': event.pageX - target_position.left,
 			'top': event.pageY - target_position.top
 		});
+
+		return true;
 	},
 
 	mousemove: function (event)
 	{
-		event.preventDefault();
-		event.stopPropagation();
-
 		event.data.target.css({
 			'top': event.pageY - event.data.top,
 			'left': event.pageX - event.data.left

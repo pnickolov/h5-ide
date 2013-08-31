@@ -507,8 +507,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 						ip_ref = '@' + val.uid + '.resource.PrivateIpAddressSet.' + idx + '.PrivateIpAddress'
 
-						ip_detail.index = idx
-
 						ip_detail.prefix = prefixSuffixAry[0]
 
 						if ip_detail.AutoAssign is true or ip_detail.AutoAssign is 'true'

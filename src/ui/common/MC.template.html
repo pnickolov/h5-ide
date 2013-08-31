@@ -744,7 +744,7 @@ Additional Notes and Questions
 <li class="input-ip-item">
     <div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
     <label for="instance-ip-1" class="input-ip-prefix">{{ipPrefix}}</label>
-    <input type="text" class="input input-ip" value="x" id="instance-ip-1">
+    <input type="text" class="input input-ip" value="{{ipSuffix}}" id="instance-ip-1">
     </div>
     <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
     <div class="network-remove-icon icon-remove"></div>
@@ -1068,8 +1068,8 @@ Additional Notes and Questions
   <div class="modal-header"> <h3>Set up CIDR Block</h3><i class="modal-close">&times;</i> </div>
   <div class="modal-body">
     <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-      <div class="modal-text">{{main_content}}</div>
-      <div class="modal-text">{{desc_content}}</div>
+      <div class="modal-text-major">{{main_content}}</div>
+      <div class="modal-text-minor">{{desc_content}}</div>
     </div> </div>
   </div>
   <div class="modal-footer">

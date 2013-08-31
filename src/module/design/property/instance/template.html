@@ -170,7 +170,7 @@
 					<li class="input-ip-item">
 						<div class="name tooltip" data-tooltip={{#ifCond number 1}}"Specify an IP address or leave it as .x to automatically assign an IP."{{else}}"Automatically assigned IP."{{/ifCond}}>
 							<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}</label>
-							<input type="text" class="input input-ip" {{#ifCond number 1}}{{else}}disabled="disabled"{{/ifCond}} value="{{suffix}}" id="instance-ip-1">
+							<input type="text" class="input input-ip" value="{{suffix}}" id="instance-ip-1">
 						</div>
 						{{#unless Primary}}<div class="network-remove-icon icon-remove"></div>{{/unless}}
 						{{#if has_eip}}

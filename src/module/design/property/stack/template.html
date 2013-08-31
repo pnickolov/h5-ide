@@ -24,19 +24,28 @@
 	<div class="option-group-head">SNS Topic Subscription<span class="property-head-num-wrap">(<span id="property-stack-sns-num">{{subscription.length}}</span>)</span></div>
   <div class="option-group">
 
-  	<ul id="property-sub-list">
+  	<ul id="property-sub-list" class="property-list">
       <li class="pos-r hide">
-        <p>Protocol&nbsp;&nbsp;&nbsp;&nbsp;<span class="protocol"></span></p>
-        <p>Endpoint&nbsp;&nbsp;&nbsp;&nbsp;<span class="endpoint"></span></p>
-        <i class="icon-edit"></i>
-        <i class="icon-del"></i>
+      	<dl class="dl-horizontal dl-region-type">
+	        <dt><label>Protocol</label></dt><dd class="protocol"></dd>
+	        <dt><label>Endpoint</label></dt><dd class="endpoint"></dd>
+        </dl>
+        <div class="sns-action">
+        	<i class="icon-edit"></i>
+	        <i class="icon-del icon-remove"></i>
+        </div>
+        
       </li>
       {{#each subscription}}
       <li class="pos-r" data-uid="{{uid}}">
-        <p>Protocol&nbsp;&nbsp;&nbsp;&nbsp;<span class="protocol">{{protocol}}</span></p>
-        <p>Endpoint&nbsp;&nbsp;&nbsp;&nbsp;<span class="endpoint">{{endpoint}}</span></p>
-        <i class="icon-edit"></i>
-        <i class="icon-del"></i>
+        <dl class="dl-horizontal dl-region-type">
+	        <dt><label>Protocol</label></dt><dd class="protocol">{{protocol}}</dd>
+	        <dt><label>Endpoint</label></dt><dd class="endpoint">{{endpoint}}</dd>
+        </dl>
+        <div class="sns-action">
+        	<i class="icon-edit"></i>
+	        <i class="icon-del icon-remove"></i>
+        </div>
       </li>
       {{/each}}
   	</ul>
@@ -60,7 +69,7 @@
 		<span class="cost-counter right">{{#if total_fee}}${{total_fee}}/month{{/if}}</span>
 	</div>
 	<div class="option-group">
-		<table class="table">
+		<table class="table cost-estimation-table">
 			<thead>
 				<tr>
 					<th style="">Resource</th>

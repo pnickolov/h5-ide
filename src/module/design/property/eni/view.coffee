@@ -46,7 +46,21 @@ define [ 'event',
 
         addIPtoList : ( event ) ->
 
-            tmpl = $(MC.template.networkListItem())
+            subnetCIDR = ''
+            eniUID = this.model.get 'uid'
+            defaultVPCId = MC.aws.aws.checkDefaultVPC()
+            if defaultVPCId
+                subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(eniUID)
+                subnetCIDR = subnetObj.cidrBlock
+            else
+                subnetUID = MC.canvas_data.component[eniUID].resource.SubnetId.split('.')[0][1...]
+                subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+
+            ipPrefixSuffix = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
+            tmpl = $(MC.template.networkListItem({
+                ipPrefix: ipPrefixSuffix[0],
+                ipSuffix: ipPrefixSuffix[1]
+            }))
 
             index = $('#property-eni-list').children().length
 

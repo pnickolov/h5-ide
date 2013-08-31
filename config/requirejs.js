@@ -3,7 +3,7 @@ module.exports = {
 
 	compile_login: {
 		options: {
-			appDir         : './<%= release %>',
+			appDir         : './<%= src %>',
 			baseUrl        : './',
 			dir            : './<%= publish %>',
 			optimize       : 'none',
@@ -16,7 +16,7 @@ module.exports = {
 
 	compile_ide: {
 		options: {
-			appDir         : './<%= release %>',
+			appDir         : './<%= src %>',
 			baseUrl        : './',
 			dir            : './<%= publish %>',
 			optimize       : 'none',

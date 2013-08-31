@@ -3,10 +3,10 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/asg/template.html',
-         'text!/module/design/property/asg/term_template.html',
-         'text!/module/design/property/asg/policy_template.html',
-         'text!/module/design/property/asg/app_template.html',
+         'text!./template.html',
+         'text!./term_template.html',
+         'text!./policy_template.html',
+         'text!./app_template.html',
          'event'
 ], ( $, template, term_template, policy_template, app_template, ide_event ) ->
 

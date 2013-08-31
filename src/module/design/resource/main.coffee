@@ -3,8 +3,8 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/resource/template.html',
-         'text!/module/design/resource/template_data.html',
+         'text!./module/design/resource/template.html',
+         'text!./module/design/resource/template_data.html',
          'event',
          'MC.ide.template'
 ], ( $, template, template_data, ide_event ) ->

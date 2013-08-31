@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], ( $, template ) ->
+define [ 'jquery', 'text!./module/design/template.html', 'MC.canvas.constant' ], ( $, template ) ->
 
     #private
     loadModule = () ->

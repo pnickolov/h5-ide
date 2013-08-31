@@ -3,10 +3,10 @@
 ####################################
 
 define [ 'jquery',
-    'text!/module/dashboard/overview/template.html',
-    'text!/module/dashboard/region/template.html',
-    'text!/module/dashboard/overview/template_data.html',
-    'text!/module/dashboard/region/template_data.html',
+    'text!./module/dashboard/overview/template.html',
+    'text!./module/dashboard/region/template.html',
+    'text!./module/dashboard/overview/template_data.html',
+    'text!./module/dashboard/region/template_data.html',
     'event',
     'MC'
 ], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC ) ->

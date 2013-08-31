@@ -3,8 +3,8 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/volume/template.html',
-         'text!/module/design/property/volume/app_template.html',
+         'text!./template.html',
+         'text!./app_template.html',
          'event'
 ], ( $, template, app_template, ide_event ) ->
 

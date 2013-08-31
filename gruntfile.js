@@ -204,7 +204,7 @@ module.exports = function( grunt ) {
 	]);
 
 	/* run at r.js as publish */
-	grunt.registerTask( 'publish', ['requirejs:compile_login',
+	grunt.registerTask( 'publish', ['requirejs:compile_ide',
 									'open:publish',
 									'connect:publish'
 	]);

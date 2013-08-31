@@ -3,7 +3,7 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/sglist/template.html',
+         'text!./template.html',
          'event'
 ], ( $, template, ide_event ) ->
 

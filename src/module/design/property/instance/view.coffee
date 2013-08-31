@@ -141,7 +141,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
                 subnetCIDR = subnetObj.cidrBlock
             else
-                subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
+                subnetUID = MC.canvas_data.component[instanceUID].resource.SubnetId.split('.')[0][1...]
                 subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
 
             ipPrefixSuffix = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)

@@ -54,12 +54,12 @@
     <ul id="property-asg-policies" class="property-list">
       {{#each policies}}
       <li class="pos-r" data-uid="{{uid}}">
-        <h5 class="property-asg-policy-name">{{name}}</h5>
-        <span class="asg-p-metric asg-p-tag">{{metric}}</span>
-        <span class="asg-p-eval asg-p-tag">{{evaluation}} {{threshold}}{{unit}}</span>
-        <span class="asg-p-periods asg-p-tag">{{periods}}x{{second}}s</span>
-        <span class="asg-p-trigger asg-p-tag">{{trigger}}</span>
-        <span class="asg-p-adjust asg-p-tag">{{adjustment}} {{adjusttype}}</span>
+        <h5 class="property-asg-policy-name" title="Policy Name">{{name}}</h5>
+        <span class="asg-p-metric asg-p-tag" title="Alarm Metric">{{metric}}</span>
+        <span class="asg-p-eval asg-p-tag" title="Threshold">{{evaluation}} {{threshold}}{{unit}}</span>
+        <span class="asg-p-periods asg-p-tag" title="Evaluation Period x Periords">{{periods}}x{{second}}s</span>
+        <span class="asg-p-trigger asg-p-tag" title="Action Trigger">{{trigger}}</span>
+        <span class="asg-p-adjust asg-p-tag" title="Adjustment">{{adjustment}} {{adjusttype}}</span>
         <i class="icon-detail"></i>
       </li>
       {{/each}}

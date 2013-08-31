@@ -3069,12 +3069,14 @@ a.sidebar-hider {
 }
 
 .network-list li .input-ip {
-	width: 30px;
-	height: 10px;
-	padding: 5px;
-	background-color: #f0f0f0;
-	font-size: 12px;
-	border: 1px solid #ccc;
+	width            : 30px;
+	height           : 10px;
+	padding          : 3px;
+	background-color : #f0f0f0;
+	font-size        : 12px;
+	border           : 1px solid #ccc;
+	margin-top       : -4px;
+	color            : #999;
 }
 
 .network-list li .input-ip:hover {
@@ -3089,6 +3091,13 @@ a.sidebar-hider {
 	box-shadow: none;
 	color: #666;
 	border: 1px solid #999;
+}
+
+.network-list li .input-ip:hover[disabled],
+.network-list li .input-ip[disabled] {
+	background : none;
+	border     : none;
+	color      : #999;
 }
 
 .toggle-eip {
@@ -3611,7 +3620,7 @@ a.action-link:hover {
 
 .dl-horizontal.dl-region-type dd {
 	margin-left: 80px;
-	color: #e0e0e0;
+	color: #d0d0d0;
 }
 
 .property-info-value {
@@ -4406,9 +4415,9 @@ a.action-link:hover {
 	font-size: 12px;
 	color: #E0E0E0;
 	word-wrap: normal;
-	background: #5C5D5E;
+	background: #2E2E2E;
 	border-radius: 4px;
-	border: 1px solid #353738;
+	border: 1px solid #232324;
 	padding: 1px 3px;
 	margin-top: 4px;
 	margin-right: 2px;
@@ -4443,7 +4452,6 @@ a.action-link:hover {
 	right     : 10px;
 	top       : 10px;
 
-	font-size : 10px;
 	color: #666;
 }
 
@@ -4466,6 +4474,10 @@ a.action-link:hover {
 .property-list li:hover .asg-p-action,
 .property-list li:hover .sns-action {
 	display: inline-block;
+}
+
+.property-asg-policy-name {
+	cursor: default;
 }
 
 #property-asg-policy-add {

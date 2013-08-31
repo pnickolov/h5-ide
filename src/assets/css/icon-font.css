@@ -54,7 +54,8 @@
 .icon-error,
 .icon-success,
 .icon-time,
-.icon-sort {
+.icon-sort,
+.icon-detail {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -106,3 +107,4 @@
 .icon-success:before {content: "\F13A";}
 .icon-time:before { content : "\F13B"; }
 .icon-sort:before {content: "\F13C";}
+.icon-detail:before {content: "\F13D";}

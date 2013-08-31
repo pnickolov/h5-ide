@@ -65,12 +65,12 @@
 
 		<ul id="property-asg-policies" class="property-list">
 			<li class="pos-r hide">
-        <h5 class="propert-asg-policy-name name">{{name}}</h5>
-		<span class="asg-p-metric asg-p-tag"></span>
-        <span class="asg-p-eval asg-p-tag"></span>
-        <span class="asg-p-periods asg-p-tag"></span>
-        <span class="asg-p-trigger asg-p-tag"></span>
-        <span class="asg-p-adjust asg-p-tag"></span>
+        <h5 class="property-asg-policy-name name" title="Policy Name">{{name}}</h5>
+		<span class="asg-p-metric asg-p-tag" title="Alarm Metric"></span>
+        <span class="asg-p-eval asg-p-tag" title="Threshold"></span>
+        <span class="asg-p-periods asg-p-tag" title="Evaluation Period x Periords"></span>
+        <span class="asg-p-trigger asg-p-tag" title="Action Trigger"></span>
+        <span class="asg-p-adjust asg-p-tag" title="Adjustment"></span>
         <div class="asg-p-action">
 	        <i class="icon-edit tooltip" data-tooltip="Edit Scaling Policy"></i>
 	        <i class="icon-remove icon-del tooltip" data-tooltip="Remove Scaling Policy"></i>
@@ -78,12 +78,12 @@
       </li>
       {{#each policies}}
       <li class="pos-r" data-uid="{{uid}}">
-        <h5 class="propert-asg-policy-name name">{{name}}</h5>
-      	<span class="asg-p-metric asg-p-tag">{{metric}}</span>
-        <span class="asg-p-eval asg-p-tag">{{evaluation}} {{threshold}}{{unit}}</span>
-        <span class="asg-p-periods asg-p-tag">{{periods}}x{{second}}s</span>
-        <span class="asg-p-trigger asg-p-tag asg-p-trigger-{{trigger}}">{{trigger}}</span>
-        <span class="asg-p-adjust asg-p-tag">{{adjustment}} {{adjusttype}}</span>
+        <h5 class="property-asg-policy-name name" title="Policy Name">{{name}}</h5>
+      	<span class="asg-p-metric asg-p-tag" title="Alarm Metric">{{metric}}</span>
+        <span class="asg-p-eval asg-p-tag" title="Threshold">{{evaluation}} {{threshold}}{{unit}}</span>
+        <span class="asg-p-periods asg-p-tag" title="Evaluation Period x Periords">{{periods}}x{{second}}s</span>
+        <span class="asg-p-trigger asg-p-tag asg-p-trigger-{{trigger}}" title="Action Trigger">{{trigger}}</span>
+        <span class="asg-p-adjust asg-p-tag" title="Adjustment">{{adjustment}} {{adjusttype}}</span>
         <div class="asg-p-action">
 	        <i class="icon-edit tooltip" data-tooltip="Edit Scaling Policy"></i>
 	        <i class="icon-remove icon-del tooltip" data-tooltip="Remove Scaling Policy"></i>

@@ -796,6 +796,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.rootDeviceType =  option.rootDeviceType;
 				component_layout.virtualizationType = option.virtualizationType;
 
+				//add to instanceList
+				component_layout.instanceList = [ group.id ];
+
 			}
 			else
 			{//read
@@ -1015,7 +1018,8 @@ MC.canvas.add = function (flag, option, coordinate)
 						'id': group.id + '_instance-number'
 					})
 				).attr({
-					'id': group.id + '_instance-number-group'
+					'id': group.id + '_instance-number-group',
+					'display': (option.number <= 1) ? 'none' : 'block'
 				}),
 
 
@@ -1813,7 +1817,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				}
-				
+
 				component_data.resource.AvailabilityZone = option.group.availableZoneName;
 
 				var sg_group = {};
@@ -1824,6 +1828,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout = $.extend(true, {}, MC.canvas.ENI_JSON.layout);
 				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
+
+				component_layout.eniList = [ group.id ];
 			}
 			else
 			{//read
@@ -1977,7 +1983,8 @@ MC.canvas.add = function (flag, option, coordinate)
 						'id': group.id + '_eni-number'
 					})
 				).attr({
-					'id': group.id + '_eni-number-group'
+					'id': group.id + '_eni-number-group',
+					'display': (option.number <= 1) ? 'none' : 'block'
 				}),
 
 

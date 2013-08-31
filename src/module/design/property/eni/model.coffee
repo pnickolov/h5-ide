@@ -43,11 +43,32 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             if eni_component.resource.SourceDestCheck == 'true' or eni_component.resource.SourceDestCheck == true then eni_component.resource.SourceDestCheck = true else eni_component.resource.SourceDestCheck = false
 
+
+            defaultVPCId = MC.aws.aws.checkDefaultVPC()
+            subnetCIDR = ''
+            if defaultVPCId
+                subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(uid)
+                subnetCIDR = subnetObj.cidrBlock
+            else
+                subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
+                subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+
+            prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
+
             $.each eni_component.resource.PrivateIpAddressSet, ( idx, ip_detail) ->
 
                 ip_ref = '@' + uid + '.resource.PrivateIpAddressSet.' + idx + '.PrivateIpAddress'
 
                 ip_detail.index = idx
+
+                ip_detail.prefix = prefixSuffixAry[0]
+
+                if ip_detail.AutoAssign is true or ip_detail.AutoAssign is 'true'
+                    ip_detail.suffix = prefixSuffixAry[1]
+                else
+                    ipAddress = ip_detail.PrivateIpAddress
+                    fixPrefixSuffixAry = MC.aws.eni.getENIDivIPAry(subnetCIDR, ipAddress)
+                    ip_detail.suffix = fixPrefixSuffixAry[1]
 
                 $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 

@@ -155,7 +155,8 @@ define [ 'MC' ], ( MC ) ->
 		subnetCidr = ''
 
 		if defaultVPCId
-			subnetCidr = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)
+			subnetObj = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)
+			subnetCidr = subnetObj.cidrBlock
 		else
 			subnetId = subnetUIDRef.slice(1).split('.')[0]
 			subnetComp = MC.canvas_data.component[subnetId]

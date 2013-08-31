@@ -49,7 +49,7 @@
 
       <div id="property-sns-no-asg" class="property-info"><p>There is no auto scaling group in this stack using notification. If there is no usage of SNS topic, the topic will not be created when the stack runs into an app.</p></div>
 
-      <div id="property-sns-no-sub" class="property-info"><p class="property-warning">There is auto scaling group relay on SNS Topic to receive notification. Yet no subscription is set up. </p></div>
+      <div id="property-sns-no-sub"><p class="property-warning">There is auto scaling group relay on SNS Topic to receive notification. Yet no subscription is set up. </p></div>
     </section>
 	<div class="tac property-control-group"><button id="property-create-asg" class="btn btn-blue" style="width:180px">Add Subscription</button></div>
   	
@@ -57,7 +57,7 @@
 
 	<div class="option-group-head">
 		Cost Estimation
-		{{#if total_fee}}${{total_fee}}/month{{/if}}
+		<span class="cost-counter right">{{#if total_fee}}${{total_fee}}/month{{/if}}</span>
 	</div>
 	<div class="option-group">
 		<table class="table">
@@ -85,7 +85,7 @@
 			</tbody>
 
 		</table>
-		<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+		<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a>
 	</div>
 
 </article>

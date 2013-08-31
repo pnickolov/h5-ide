@@ -1604,6 +1604,7 @@ td.table-action a.btn {
 	font-size: 12px;
 	padding: 4px 0;
 	background-color: #ccc;
+	border: 1px solid transparent;
 }
 
 .ami-option-wrap button:hover,
@@ -1987,7 +1988,7 @@ td.table-action a.btn {
 	/*text-align: center;*/
 
 	background-color : #313131;
-	border-bottom  : 2px solid #262a2e;
+	border-bottom  : 2px solid #202122;
 	box-shadow       : inset 0 2px 0 rgba(255,255,255,.05);
 }
 
@@ -2193,7 +2194,7 @@ a.sidebar-hider {
 }
 
 #resource-select .selection {
-	background: rgba(93, 95, 101, 0.41);
+	background: rgba(0, 0, 0, 0.1);
 	color: #F3F3F3;
 	height: 17px;
 	border-top: none;
@@ -2348,7 +2349,7 @@ a.sidebar-hider {
 .property-content {
 	height      : 100%;
 
-	background-color : #555455;
+	background-color : #383738;
 	color            : #ccc;
 
 	-webkit-box-sizing: border-box;
@@ -2717,7 +2718,7 @@ a.sidebar-hider {
 
 .sg-info-list-tab {
 	color         : #999;
-	background    : #474747;
+	background    : #3A3A3A;
 	padding       : 5px;
 	height        : 30px;
 	box-shadow    : 0 2px 5px 0 rgba(0,0,0,.1);
@@ -2750,20 +2751,20 @@ a.sidebar-hider {
 .sg-info-list-tab .active,
 .sg-info-list-tab li:hover {
 	color: #eee;
-	background: #383A3D;
+	background: #292A2B;
 }
 
 /* General Style for Property Panel List */
 
 .property-list {
-	border-top : 1px solid #4d4d4d;
+	border-top : 1px solid #252525;
 }
 
 .property-list li {
 	width         : 260px;
 	padding       : 10px;
-	border-bottom : 1px solid #4d4d4d;
-	background    : #5C5C5C;
+	border-bottom : 1px solid #3c3c3c;
+	background    : #444;
 
 	-webkit-transition : background .2s;
 	-moz-transition    : background .2s;
@@ -2773,7 +2774,7 @@ a.sidebar-hider {
 }
 
 .property-list li:hover {
-	background : #555;
+	background : #494949;
 }
 
 .property-list-no-padding {
@@ -2824,15 +2825,15 @@ a.sidebar-hider {
 }
 .acl-sg-info-list .col3 {
 	float        : right;
-	margin-top   : -11px;
+	margin-top   : -10px;
 	position     : relative;
 
 	text-align : center;
 
 	cursor      : pointer;
 	width       : 40px;
-	height      : 73px;
-	line-height : 73px;
+	height      : 72px;
+	line-height : 72px;
 
 
 	-webkit-transition : background .2s;
@@ -2899,10 +2900,10 @@ a.sidebar-hider {
 
 .add-rule {
 	display : inline-block;
-	width   : 38px;
-	height  : 38px;
+	width   : 29px;
+	height  : 29px;
 
-	line-height : 38px;
+	line-height : 29px;
 	text-align  : center;
 	color: #ccc;
 
@@ -3357,13 +3358,18 @@ a.action-link:hover {
 	font-size     : 13px;
 	color         : #BBB;
 	padding       : 5px;
-	background    : #5E5E5E;
+	background    : #494949;
 	border-radius : 2px;
 	margin-top    : 5px;
 }
 
 .property-warning {
-
+	font-size: 13px;
+	color: #FF5200;
+	padding: 5px;
+	/*background: #E27703;*/
+	border-radius: 2px;
+	margin-top: 5px;
 }
 
 /*Responsive Style*/
@@ -3466,7 +3472,7 @@ a.action-link:hover {
 }
 
 #accordion-group-elb-property-listener .elb-property-listener-main {
-	border-bottom: 1px #404040 solid;
+	border-bottom: 1px #292929 solid;
 }
 
 #accordion-group-elb-property-listener .accordion-body {
@@ -3514,13 +3520,13 @@ a.action-link:hover {
 	color       : #404042;
 
 	background-color : rgba(0,0,0,.05);
-	border-left      : 1px #585858 solid;
+	border-left      : 1px #313131 solid;
 
 	cursor : pointer;
 }
 
 #accordion-group-elb-property-listener .elb-property-listener-item-remove:hover {
-	background-color: #404040;
+	background-color: rgba(0,0,0,.1);
 	color: #959595;
 }
 
@@ -3550,8 +3556,8 @@ a.action-link:hover {
 	background : #484748;
 	padding    : 0 10px;
 
-	border-top    : 1px solid #404040;
-	border-bottom : 1px solid #404040;
+	border-top    : 1px solid #353535;
+	border-bottom : 1px solid #353535;
 	box-shadow    : inset 0 1px 0 rgba(255,255,255,.05), 0 2px 2px rgba(0,0,0,.1);
 }
 
@@ -3668,14 +3674,14 @@ a.action-link:hover {
 	background-color: #ccc;
 }
 
-.goto-outsite {
+/*.goto-outsite {
 	color: rgb(16, 2, 255);
 	font-size: 14px;
 	font-weight: 700;
 	line-height: 37px;
 	padding: 0 10px;
 }
-
+*/
 .property-stack .accordion-group .accordion-body {
 	padding: 0;
 }
@@ -3685,10 +3691,14 @@ a.action-link:hover {
 	height: 35px;
 }
 
+.cost-counter {
+	color: #999;
+}
+
 /* property-rt */
 
 .route-list li {
-	border-bottom: 1px solid #404040;
+	border-bottom: 1px solid #333;
 }
 
 .route-target {
@@ -4373,37 +4383,67 @@ a.action-link:hover {
 	margin-top: 4px;
 }
 
-/*.property-details .icon-edit {
-	position   : absolute;
-	top        : 5px;
-	right      : 15px;
-	width      : 16px;
-	height     : 16px;
-	background : green;
-	cursor     : pointer;
-}*/
+.termination-policy-brief {
+	font-size: 13px;
+	color: #999;
+}
 
 .asg-p-tag {
 	display: inline-block;
-
-	font-size   : 12px;
-	color       : #666;
-	word-wrap   : normal;
-
-	background : #ccc;
-
-	border-radius : 4px;
-	border        : 1px solid #666;
-	padding: 2px;
+	font-size: 12px;
+	color: #E0E0E0;
+	word-wrap: normal;
+	background: #5C5D5E;
+	border-radius: 4px;
+	border: 1px solid #353738;
+	padding: 1px 3px;
+	margin-top: 4px;
+	margin-right: 2px;
+	cursor: default;
+	box-shadow: inset 0 1px 1px rgba(255,255,255,.05);
 }
 
-.property-details .icon-del {
-	position   : absolute;
-/*	top        : 30px;
-	right      : 15px;*/
-	width      : 16px;
-	height     : 16px;
-	/*background : red;*/
+.asg-p-tag:hover {
+	color: #eee;
+}
+
+.asg-p-trigger-ALARM {
+	/*border: 1px solid #F74A48;*/
+	color: #F74A48 !important;
+}
+
+.asg-p-trigger-INSUFFICIANT_DATA {
+	/*border: 1px solid #D5B822;*/
+	color: #D5B822 !important;
+}
+
+.asg-p-trigger-OK {
+	/*border: 1px solid #12D07B;*/
+	color: #12D07B !important;
+}
+
+.asg-p-action {
+	display : none;
+	cursor    : pointer;
+	position  : absolute;
+	right     : 10px;
+	top       : 10px;
+
+	font-size : 10px;
+	color: #666;
+}
+
+.asg-p-action i:hover {
+	color: #ddd
+}
+
+.asg-p-action .icon-remove {
+	margin-left: 5px;
+}
+
+.property-term-p:hover .asg-p-action,
+#property-asg-policies li:hover .asg-p-action {
+	display: inline-block;
 }
 
 #property-asg-policy-add {
@@ -4472,30 +4512,17 @@ a.action-link:hover {
 	border-bottom : none;
 }
 
-/* stack and app property sgrule */
-
-[class^="icon-rule-"], [class*=" icon-rule-"] {
-	background-repeat: no-repeat;
-	background-position: center;
-	display: inline-block;
-	width: 22px;
-
-	height: 13px;
-	float: left;
+.property-asg-notification-wrap {
+	padding: 8px 15px
 }
 
-.icon-rule-inbound {
-	background-image: url('../images/ide/icon/icon-rule-inbound.png');
+.property-asg-notification-wrap > div {
+	margin-top: 5px;
 }
 
-.icon-rule-outbound {
-	background-image: url('../images/ide/icon/icon-rule-outbound.png');
+.property-asg-notification-wrap > div:last-of-type {
+	margin-bottom: 15px;
 }
-
-#property-sgrule [class^="icon-rule-"], #property-sgrule [class*=" icon-rule-"] {
-	margin-right: 10px;
-}
-
 
 /* run stack */
 

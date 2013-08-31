@@ -46,8 +46,8 @@
   <div class="option-group-head">Policy</div>
   <div class="option-group">
     <section class="property-control-group pos-r">
-      <p>Termination Policy</p>
-      <p>{{term_policy_brief}}</p>
+      <h5>Termination Policy</h5>
+      <p class="termination-policy-brief">{{term_policy_brief}}</p>
       <i class="icon-detail" id="property-asg-term-edit"></i>
     </section>
 
@@ -69,17 +69,19 @@
   <div class="option-group-head">Notification</div>
   <div class="option-group">
     {{#if sendNotify}}
-    <p>Send notification via SNS topic for:</p>
-    <section>
-      {{#if notifies.[0]}}<p>Successful instance launch</p>{{/if}}
-      {{#if notifies.[1]}}<p>Failed instance launch</p>{{/if}}
-      {{#if notifies.[2]}}<p>Successful instance termination</p>{{/if}}
-      {{#if notifies.[3]}}<p>Failed instance termination</p>{{/if}}
-      {{#if notifies.[4]}}<p>Validating a configuraed SNS Topic</p>{{/if}}
-    </section>
-    {{else}}
-    <p>No notification configured for this auto scaling group</p>
-    {{/if}}
+    <div class="property-asg-notification-wrap property-control-group">
+      <p>Send notification via SNS topic for:</p>
+      <section>
+        {{#if notifies.[0]}}<p>Successful instance launch</p>{{/if}}
+        {{#if notifies.[1]}}<p>Failed instance launch</p>{{/if}}
+        {{#if notifies.[2]}}<p>Successful instance termination</p>{{/if}}
+        {{#if notifies.[3]}}<p>Failed instance termination</p>{{/if}}
+        {{#if notifies.[4]}}<p>Validating a configuraed SNS Topic</p>{{/if}}
+      </section>
+      {{else}}
+      <p>No notification configured for this auto scaling group</p>
+      {{/if}}
+    </div>
   </div>
 
 </article>

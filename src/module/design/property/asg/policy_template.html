@@ -113,7 +113,7 @@
           <label for="asg-policy-notify">Send notification via SNS topic</label>
 
           {{#if noSNS}}
-          <p {{#unless notify}}class="hide"{{/unless}} id="asg-policy-no-sns">There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.</p>
+          <p {{#unless notify}}class="hide property-warning"{{/unless}} id="asg-policy-no-sns">There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.</p>
           {{/if}}
         </section>
       </div>

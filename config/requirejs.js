@@ -3,9 +3,9 @@ module.exports = {
 
 	compile_login: {
 		options: {
-			appDir         : './<%= src %>',
+			appDir         : './<%= release %>',
 			baseUrl        : './',
-			dir            : './<%= publish %>',
+			dir            : './<%= temp %>',
 			optimize       : 'none',
 			mainConfigFile : './<%= src %>/js/login/config.js',
 			modules        : [{
@@ -16,7 +16,7 @@ module.exports = {
 
 	compile_ide: {
 		options: {
-			appDir         : './<%= src %>',
+			appDir         : './<%= release %>',
 			baseUrl        : './',
 			dir            : './<%= publish %>',
 			optimize       : 'none',

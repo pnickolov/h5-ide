@@ -11,6 +11,7 @@ module.exports = function( grunt ) {
 		src        : 'src',
 		release    : 'release',
 		publish    : 'publish',
+		temp       : '~temp',
 		vender     : 'vender',
 		components : 'bower_components',
 
@@ -186,7 +187,7 @@ module.exports = function( grunt ) {
 	]);
 
 	/* task of use as release */
-	grunt.registerTask( 'release', ['clean',
+	grunt.registerTask( 'release', ['clean:release',
 									'make_all',
 									'copy:publish',
 									'copy:lib_aws',
@@ -204,7 +205,9 @@ module.exports = function( grunt ) {
 	]);
 
 	/* run at r.js as publish */
-	grunt.registerTask( 'publish', ['requirejs:compile_ide',
+	grunt.registerTask( 'publish', ['requirejs',
+									'copy:publish_login',
+									'clean:temp',
 									'open:publish',
 									'connect:publish'
 	]);

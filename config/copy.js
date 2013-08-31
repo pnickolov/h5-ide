@@ -30,6 +30,12 @@ module.exports = {
 		}
 	},
 
+	publish_login : {
+		files: {
+			'<%= publish %>/js/login/main.js'    : '<%= temp %>/js/login/main.js'
+		}
+	},
+
 	publish: {
 		files: [{
 			expand : true,

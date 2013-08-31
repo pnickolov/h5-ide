@@ -18,22 +18,22 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         template : Handlebars.compile $( '#property-instance-tmpl' ).html()
 
         events   :
-            'change .instance-name'                             : 'instanceNameChange'
-            'change #property-instance-count'                   : 'countChange'
-            'change .instance-type-select'                      : 'instanceTypeSelect'
-            'change #property-instance-ebs-optimized'           : 'ebsOptimizedSelect'
-            'change #property-instance-enable-cloudwatch'       : 'cloudwatchSelect'
-            'change #property-instance-user-data'               : 'userdataChange'
-            'change #property-instance-base64'                  : 'base64Change'
-            'change #property-instance-ni-description'          : 'eniDescriptionChange'
-            'change #property-instance-source-check'            : 'sourceCheckChange'
-            'change #property-instance-public-ip'               : 'publicIpChange'
-            'OPTION_CHANGE #instance-type-select'               : "instanceTypeSelect"
-            'OPTION_CHANGE #tenancy-select'                     : "tenancySelect"
-            'OPTION_CHANGE #keypair-select'                     : "addtoKPList"
-            'EDIT_UPDATE #keypair-select'                       : "createtoKPList"
-            'click #instance-ip-add'                            : "addIPtoList"
-            'click #property-network-list .network-remove-icon' : "removeIPfromList"
+            'change .instance-name'                       : 'instanceNameChange'
+            'change #property-instance-count'             : 'countChange'
+            'change .instance-type-select'                : 'instanceTypeSelect'
+            'change #property-instance-ebs-optimized'     : 'ebsOptimizedSelect'
+            'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
+            'change #property-instance-user-data'         : 'userdataChange'
+            'change #property-instance-base64'            : 'base64Change'
+            'change #property-instance-ni-description'    : 'eniDescriptionChange'
+            'change #property-instance-source-check'      : 'sourceCheckChange'
+            'change #property-instance-public-ip'         : 'publicIpChange'
+            'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
+            'OPTION_CHANGE #tenancy-select'               : "tenancySelect"
+            'OPTION_CHANGE #keypair-select'               : "addtoKPList"
+            'EDIT_UPDATE #keypair-select'                 : "createtoKPList"
+            'click #instance-ip-add'                      : "addIPtoList"
+            'click #property-network-list .icon-remove'   : "removeIPfromList"
 
             'change .input-ip'    : 'updateEIPList'
             'click .toggle-eip'   : 'addEIP'
@@ -121,9 +121,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             this.model.set 'public_ip', event.target.checked
 
-        addEmptyKP : ( event ) ->
-            notification('error', 'KeyPair Empty', false)
-
         addtoKPList : ( event, id ) ->
             this.model.set 'set_kp', id
             notification('info', (id + ' added'), false)
@@ -141,7 +138,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
                 subnetCIDR = subnetObj.cidrBlock
             else
-                subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
+                subnetUID = MC.canvas_data.component[instanceUID].resource.SubnetId.split('.')[0][1...]
                 subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
 
             ipPrefixSuffix = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
@@ -150,28 +147,17 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 ipSuffix: ipPrefixSuffix[1]
             }))
 
-            index = $('#property-network-list').children().length
-
-            tmpl.children()[1] = $(tmpl.children()[1]).data("index", index).attr('data-index', index)[0]
-
             $('#property-network-list').append tmpl
             this.trigger 'ADD_NEW_IP'
 
             this.updateEIPList()
-
             false
 
         removeIPfromList: (event, id) ->
 
-            index = $($(event.target).parents('li').first().children()[1]).data().index
-
-            $(event.target).parents('li').first().remove()
-
-            $.each $("#property-network-list").children(), (idx, val) ->
-
-                $($(val).children()[1]).data('index', idx)
-
-                $($(val).children()[1]).attr('data-index', idx)
+            $li = $(event.currentTarget).closest("li")
+            index = $li.index()
+            $li.remove()
 
             this.trigger 'REMOVE_IP', index
 
@@ -180,10 +166,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         openAmiPanel : ( event ) ->
             console.log 'openAmiPanel'
             target = $('#property-ami')
-            ###
-            secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
-            $(document.body).on 'click', '.back', secondarypanel.close
-            ###
+
             console.log MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
 
             data = target.data( 'secondarypanel-data' )
@@ -197,7 +180,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         addEIP : ( event ) ->
 
             # todo, need a index of eip
-            index = parseInt event.target.dataset.index, 10
+            index = $(event.currentTarget).closest("li").index()
             if event.target.className.indexOf('associated') >= 0 then attach = true else attach = false
             this.trigger 'ATTACH_EIP', index, attach
 

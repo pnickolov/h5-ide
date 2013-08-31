@@ -65,7 +65,7 @@ var scrollbar = {
 
 								if (scrollbar.isTransform)
 								{
-									scroll_content.css('transform', 'translate3d(' + (scroll_content_elem.realScrollLeft ? scroll_content_elem.realScrollLeft : 0) + ', 0, 0)');
+									scroll_content.css('transform', 'translate(' + (scroll_content_elem.realScrollLeft ? scroll_content_elem.realScrollLeft : 0) + ', 0)');
 								}
 								else
 								{
@@ -104,7 +104,7 @@ var scrollbar = {
 								horizontal_thumb.parent().hide();
 								if (scrollbar.isTransform)
 								{
-									scroll_content.css('transform', 'translate3d(0, ' + (scroll_content_elem.realScrollTop ? scroll_content_elem.realScrollTop : 0) + 'px, 0)');
+									scroll_content.css('transform', 'translate(0, ' + (scroll_content_elem.realScrollTop ? scroll_content_elem.realScrollTop : 0) + 'px)');
 								}
 								else
 								{
@@ -286,7 +286,7 @@ var scrollbar = {
 
 		if (scrollbar.isTransform)
 		{
-			scroll_content.css('transform', 'translate3d(' + scroll_value + 'px, ' + (scroll_content[0].realScrollTop ? scroll_content[0].realScrollTop : 0) + 'px, 0)');
+			scroll_content.css('transform', 'translate(' + scroll_value + 'px, ' + (scroll_content[0].realScrollTop ? scroll_content[0].realScrollTop : 0) + 'px)');
 		}
 		else
 		{
@@ -331,7 +331,7 @@ var scrollbar = {
 
 		if (scrollbar.isTransform)
 		{
-			scroll_content.css('transform', 'translate3d(' + (scroll_content[0].realScrollLeft ? scroll_content[0].realScrollLeft : 0) + 'px, ' + scroll_value + 'px, 0)');
+			scroll_content.css('transform', 'translate(' + (scroll_content[0].realScrollLeft ? scroll_content[0].realScrollLeft : 0) + 'px, ' + scroll_value + 'px)');
 		}
 		else
 		{

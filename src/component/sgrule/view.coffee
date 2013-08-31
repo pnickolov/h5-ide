@@ -64,13 +64,13 @@ define [ 'text!./template.html',
           action     = $("#sg-create-direction").find(".selected").text()
 
           if rule_count == 1
-            info = sprintf lang.PROP_MSG_SG_CREATE, out_target, out_target, action, in_target
+            info = sprintf lang.ide.PROP_MSG_SG_CREATE, out_target, out_target, action, in_target
 
           else if data.inSg is data.outSg
-            info = sprintf lang.PROP_MSG_SG_CREATE_SELF, rule_count, out_target, out_target
+            info = sprintf lang.ide.PROP_MSG_SG_CREATE_SELF, rule_count, out_target, out_target
 
           else
-            info = sprintf lang.PROP_MSG_SG_CREATE_MULTI, rule_count, out_target, in_target, out_target, action, in_target
+            info = sprintf lang.ide.PROP_MSG_SG_CREATE_MULTI, rule_count, out_target, in_target, out_target, action, in_target
 
           $("#sg-rule-create-msg").text info
 

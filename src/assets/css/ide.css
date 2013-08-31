@@ -1604,6 +1604,63 @@ a {
 	text-align: center;
 }
 
+/* Responsive design for dashboard */
+@media only screen and (min-width: 1024px) and (max-width: 1240px) {
+	#global-region-map-content {
+		width: 940px;
+	}
+
+	#global-region-tabbar-wrap {
+		width: 940px;
+	}
+
+	#global-view {
+		width: 940px;
+	}
+
+	#region-view {
+		width: 940px;
+	}
+
+	#global-region-resource-list > li {
+		width: 177px;
+	}
+
+	.global-region-resource-header {
+		height: 105px;
+	}
+
+	.global-region-resource-count-wrap {
+		top: 18px;
+	}
+
+	.global-region-resource-header h5 {
+		top: 75px;
+	}
+
+	.global-region-resource-content a {
+		padding: 15px 17px;
+	}
+
+	.global-region-resource-location-count {
+		font-size: 25px;
+	}
+
+	.region-resource-tab-item {
+		width: 104px;
+		padding: 8px 0 15px;
+	}
+
+	.region-resource-count {
+		right: 25px;
+	}
+
+	.region-resource-tab-item:after {
+		left: 45px;
+	}
+}
+
+
 .close-tab {
 	display     : none;
 

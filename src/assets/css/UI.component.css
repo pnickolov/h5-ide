@@ -1766,9 +1766,8 @@ textarea {
 }
 
 .multi-ipt-row .ipt-controls {
-	float : right;
-	width : 36px;
-	line-height : 38px;
+	float       : right;
+	width       : 36px;
 }
 
 .multi-ipt-row .ipt-wrapper {
@@ -1790,12 +1789,12 @@ textarea {
 
 .multi-input .icon-del,
 .multi-input .icon-add {
-	display     : inline-block;
+	display     : block;
 	width       : 16px;
-	height      : 16px;
+	height      : 31px;
 	margin-left : 2px;
-
-	position : relative;
+	float       : left;
+	line-height : 31px;
 }
 
 .multi-input .icon-add {
@@ -1805,53 +1804,15 @@ textarea {
 	display : none !important;
 }
 .multi-input :last-child .icon-add {
-	display : inline-block;
+	display : block;
 }
 
-.multi-input .icon-del:before,
-.multi-input .icon-del:after,
-.multi-input .icon-add:before,
-.multi-input .icon-add:after {
-	position   : absolute;
-	width      : 10px;
-	height     : 4px;
-	background : #999;
-	content    : " ";
-	top        : 6px;
-	left       : 3px;
+.multi-input .icon-del:hover:before {
+	color : red;
 }
 
-.multi-input .icon-add:after {
-	width  : 4px;
-	height : 10px;
-	top    : 3px;
-	left   : 6px;
-}
-
-.multi-input .icon-del:before {
-	-webkit-transform: rotate(45deg);
-	   -moz-transform: rotate(45deg);
-	    -ms-transform: rotate(45deg);
-	     -o-transform: rotate(45deg);
-	        transform: rotate(45deg);
-}
-
-.multi-input .icon-del:after {
-	-webkit-transform: rotate(-45deg);
-	   -moz-transform: rotate(-45deg);
-	    -ms-transform: rotate(-45deg);
-	     -o-transform: rotate(-45deg);
-	        transform: rotate(-45deg);
-}
-
-.multi-input .icon-del:hover:before,
-.multi-input .icon-del:hover:after {
-	background : red;
-}
-
-.multi-input .icon-add:hover:before,
-.multi-input .icon-add:hover:after {
-	background : #34E093;
+.multi-input .icon-add:hover:before {
+	color : #34E093;
 }
 
 /* TEMPARORY PROPERTY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */

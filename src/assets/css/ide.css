@@ -3119,19 +3119,16 @@ a.sidebar-hider {
 	margin-top: -8px;
 }
 
-.network-list li .network-remove-icon {
-	position: absolute;
-	right: 5px;
-	top: 50%;
-	margin-top: -8px;
+.network-list > li > .icon-remove {
+	position   : absolute;
+	right      : 5px;
+	top        : 50%;
+	margin-top : -8px;
+	cursor     : pointer;
 }
 
-.network-remove-icon {
-	cursor: pointer;
-}
-
-.network-remove-icon:hover {
-	color: #666;
+.network-list > li > .icon-remove:hover {
+	color : #667;
 }
 
 /* End of Network Interface IP List */

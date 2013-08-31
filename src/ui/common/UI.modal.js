@@ -44,7 +44,7 @@ var modal = function (template, dismiss, callback)
 		callback();
 	}
 
-	return this;
+	return true;
 };
 
 modal.open = function (event)
@@ -66,17 +66,21 @@ modal.open = function (event)
 			target.trigger('modal-closed');
 		});
 	}
+
+	return true;
 };
 
 modal.keyup = function (event)
 {
 	if (event.which === 27)
 	{
-		// modal.close();
+		modal.close();
 		$(document)
 			.off('click', modal.dismiss)
 			.off('keyup', modal.keyup);
 	}
+
+	return false;
 };
 
 modal.dismiss = function (event)
@@ -88,6 +92,8 @@ modal.dismiss = function (event)
 			.off('click', modal.dismiss)
 			.off('keyup', modal.keyup);
 	}
+
+	return false;
 };
 
 modal.close = function ()
@@ -103,15 +109,18 @@ modal.close = function ()
 	$('#modal-wrap')
 		.trigger('closed')
 		.remove();
+
+	return false;
 };
 
 modal.isPopup = function ()
 {
-	if ($('#modal-box').html() === void 0) {
-		return false;
-	} else {
-		return true;
-	}
+	// if ($('#modal-box').html() === void 0) {
+	// 	return false;
+	// } else {
+	// 	return true;
+	// }
+	return $('#modal-box').html() !== void 0
 };
 
 modal.drag = {
@@ -129,7 +138,7 @@ modal.drag = {
 			'top': event.pageY - target_position.top
 		});
 
-		return true;
+		return false;
 	},
 
 	mousemove: function (event)
@@ -179,6 +188,8 @@ modal.drag = {
 			'mousemove': modal.drag.mousemove,
 			'mouseup': modal.drag.mouseup
 		});
+
+		return false;
 	}
 };
 
@@ -190,6 +201,8 @@ modal.position = function ()
 		'top': (window.innerHeight - modal_box.height()) / 2,
 		'left': (window.innerWidth - modal_box.width()) / 2
 	});
+
+	return true;
 };
 
 $(document).ready(function ()

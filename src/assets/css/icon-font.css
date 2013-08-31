@@ -55,7 +55,10 @@
 .icon-success,
 .icon-time,
 .icon-sort,
-.icon-detail {
+.icon-detail, 
+.ipt-controls > .icon-del:before,
+.ipt-controls > .icon-add:before
+{
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -107,4 +110,6 @@
 .icon-success:before {content: "\F13A";}
 .icon-time:before { content : "\F13B"; }
 .icon-sort:before {content: "\F13C";}
-.icon-detail:before {content: "\F13D";}
+.ipt-controls > .icon-add:before {content: "\F13D";}
+.ipt-controls > .icon-del:before {content: "\F13E";}
+.icon-detail:before {content: "\F140";}

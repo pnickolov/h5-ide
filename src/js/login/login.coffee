@@ -133,6 +133,7 @@ define [ 'jquery', 'handlebars',
 		#
 		$( '#container' ).html Handlebars.compile template
 		#
-		$( '#login-btn' ).removeAttr 'disabled'
-		$( '#login-btn' ).addClass 'enabled'
-		$( '#login-form' ).submit( MC.login )
+		$( '#login-btn'   ).removeAttr 'disabled'
+		$( '#login-btn'   ).addClass 'enabled'
+		$( '#login-form'  ).submit( MC.login )
+		$( '#footer-push' ).html 'version ' + version

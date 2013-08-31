@@ -28,11 +28,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'OPTION_CHANGE #tenancy-select'               : "tenancySelect"
             'OPTION_CHANGE #keypair-select'               : "addtoKPList"
             'EDIT_UPDATE #keypair-select'                 : "createtoKPList"
-            'click #instance-ip-add'                      : "addIPtoList"
-            'click #property-network-list .network-remove-icon' : "removeIPfromList"
 
-            'blur .input-ip'                              : 'updateEIPList'
-            'click .toggle-eip'                           : 'addEIP'
             'click #property-ami'                         : 'openAmiPanel'
 
         render     : ( attributes ) ->
@@ -72,9 +68,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         sourceCheckChange : ( event ) ->
             this.model.set 'source_check', event.target.checked
 
-        addEmptyKP : ( event ) ->
-            notification('error', 'KeyPair Empty', false)
-
         addtoKPList : ( event, id ) ->
             this.model.set 'set_kp', id
             notification('info', (id + ' added'), false)
@@ -86,10 +79,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         openAmiPanel : ( event ) ->
             target = $('#property-ami')
-            ###
-            secondarypanel.open target, MC.template.aimSecondaryPanel target.data('secondarypanel-data')
-            $(document.body).on 'click', '.back', secondarypanel.close
-            ###
+
             console.log MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
             ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
                 title : $( event.target ).text()

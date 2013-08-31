@@ -79,7 +79,9 @@
 					<div class="scroll-content">
 						<ul tabindex="-1">
 							{{#each keypair}}
-							<li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}">{{name}}</li>
+							<li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}" data-using="{{using}}">{{name}}
+							{{#if @index}}<span class="icon-remove"></span>{{/if}}
+							</li>
 							{{/each}}
 						</ul>
 					</div>

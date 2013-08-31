@@ -31,11 +31,15 @@
       </dl>
     </div>
     <h5>Subscription</h5>
-    <ul>
+    <ul class="property-list">
     {{#each subscription}}
 	    <li>
-	    	<div>Protocol&nbsp;&nbsp;&nbsp;&nbsp;{{protocol}}</div>
-	    	<div>Endpoint&nbsp;&nbsp;&nbsp;&nbsp;{{endpoint}}</div>
+	    	<!-- <div>Protocol&nbsp;&nbsp;&nbsp;&nbsp;{{protocol}}</div>
+	    	<div>Endpoint&nbsp;&nbsp;&nbsp;&nbsp;{{endpoint}}</div> -->
+	    	<dl class="dl-horizontal dl-region-type">
+		        <dt><label>Protocol</label></dt><dd class="protocol">{{protocol}}</dd>
+		        <dt><label>Endpoint</label></dt><dd class="endpoint">{{endpoint}}</dd>
+	        </dl>
 	    </li>
     {{/each}}
     </ul>

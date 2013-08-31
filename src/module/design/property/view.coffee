@@ -31,7 +31,7 @@ define [ './temp_view',
             $( document.body ).on( 'click',           '#hide-property-panel', this.togglePropertyPanel                )
                               .on( 'click',           '.option-group-head',   this.toggleOption                       )
                               .on( 'click',           '#hide-second-panel',   _.bind( this.hideSecondPanel, this     ))
-                              .on( 'DOMNodeInserted', '.property-wrap',       this, _.debounce( this.domChange, 200, false ))
+                              .on( 'DOMNodeInserted', '.property-wrap',       this, _.debounce( this.domChange, 0, false ))
 
         render     : ( template ) ->
             console.log 'property render'
@@ -77,6 +77,25 @@ define [ './temp_view',
                 $target.slideDown(200)
 
             $toggle.toggleClass("expand")
+
+            # added by song ######################################
+            # record head state
+            headElemAry = $('#property-panel').find('.option-group-head')
+            headExpandStateAry = []
+            headCompUID = $('#property-panel').attr('component-uid')
+            if !headCompUID then headCompUID = 'stack'
+
+            _.each headElemAry, (headElem) ->
+                $headElem = $(headElem)
+                expandState = $headElem.hasClass('expand')
+                headExpandStateAry.push(expandState)
+                null
+
+            if headCompUID
+                MC.data.propertyHeadStateMap[headCompUID] = headExpandStateAry
+
+            console.log(headExpandStateAry)
+            # added by song ######################################
 
             return false
 
@@ -125,6 +144,32 @@ define [ './temp_view',
             console.log 'property:listen DOMNodeInserted'
             #console.log event.target
             #console.log event.data.back_dom
+
+
+            # added by song ######################################
+            # restore head state
+            headCompUID = $('#property-panel').attr('component-uid')
+            if !headCompUID then headCompUID = 'stack'
+            headExpandStateAry = MC.data.propertyHeadStateMap[headCompUID]
+
+            if headExpandStateAry
+                headElemAry = $('#property-panel').find('.option-group-head')
+                _.each headElemAry, (headElem, i) ->
+                    $headElem = $(headElem)
+                    if headExpandStateAry[i]
+                        $headElem.addClass('expand')
+                    else
+                        $headElem.removeClass('expand')
+                    null
+
+            # clear invalid state in map
+            _.each MC.data.propertyHeadStateMap, (stateAry, compUID) ->
+                if !MC.canvas_data.component[compUID] and compUID isnt 'stack'
+                    delete MC.data.propertyHeadStateMap[compUID]
+                null
+            # added by song ######################################
+
+
             #
             back_dom = event.data.back_dom
             #

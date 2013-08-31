@@ -55,7 +55,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 		getUID  : ( uid ) ->
 			console.log 'getUID'
-			this.set 'get_uid', MC.canvas_data.component[ uid ].uid
+			lsgUID = MC.canvas_data.component[ uid ].uid
+			this.set 'get_uid', lsgUID
+			this.set 'uid', lsgUID
 			null
 
 		setName  : () ->

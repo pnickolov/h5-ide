@@ -576,6 +576,14 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			current_key_pair = MC.canvas_data.component[ uid ].resource.KeyName
 
+			using_kps = []
+
+			for comp_uid, comp of MC.canvas_data.component
+
+				if comp.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration] and comp.resource.KeyName not in using_kps
+
+					using_kps.push comp.resource.KeyName
+
 			_.map MC.canvas_data.component, (value, key) ->
 
 				if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
@@ -588,9 +596,27 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 						kp.selected = true
 
-					kp_list.push kp
+					kp.using = true if "@#{kp.uid}.resource.KeyName" in using_kps
+
+					if kp.name is 'DefaultSG' and kp_list.length > 0
+						kp_list.push kp_list[0]
+						kp_list[0] = kp
+
+						null
+					else
+						kp_list.push kp
 
 			this.set 'keypair', kp_list
+
+		deleteKP : ( key_name ) ->
+
+			for comp_uid, comp of MC.canvas_data.component
+
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair and comp.resource.KeyName is key_name
+
+					delete MC.canvas_data.component[comp_uid]
+
+					break
 
 		getInstanceType : () ->
 

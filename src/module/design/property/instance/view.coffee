@@ -206,6 +206,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
 
         deleteKP : ( event ) ->
+            me = this
             $li = $(event.currentTarget).closest("li")
 
             selected = $li.hasClass("selected")
@@ -218,9 +219,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 if selected
                     $("#keypair-select").find(".item").eq(0).click()
 
-                ###
-                this.model.deleteKP $li.attr("data-id")
-                ###
+
+                me.model.deleteKP $li.attr("data-id")
+
 
             if using
                 data =

@@ -146,7 +146,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             ipPrefixSuffix = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
             tmpl = $(MC.template.networkListItem({
-                ipPrefix: ipPrefixSuffix[0]
+                ipPrefix: ipPrefixSuffix[0],
+                ipSuffix: ipPrefixSuffix[1]
             }))
 
             index = $('#property-network-list').children().length

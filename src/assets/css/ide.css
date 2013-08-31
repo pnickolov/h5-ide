@@ -2578,7 +2578,7 @@ a.sidebar-hider {
 }
 
 .property-instance-name-wrap {
-	height     : 35px;
+	height     : 31px;
 	margin-top : 25px;
 	-webkit-box-shadow: 0 1px 0 0 #5d5c5d;
 	   -moz-box-shadow: 0 1px 0 0 #5d5c5d;
@@ -2594,11 +2594,11 @@ a.sidebar-hider {
 
 .property-instance-name-wrap .name-count-wrap {
 	float : right;
-	height      : 33px;
-	line-height : 33px;
+	height      : 31px;
+	line-height : 31px;
 	padding     : 0 10px;
 	background  : #555455;
-	border      : 1px solid #363536;
+	border      : 1px solid #313131;
 	border-left : none;
 }
 
@@ -3602,7 +3602,7 @@ a.action-link:hover {
 /* property-stack */
 
 .dl-horizontal.dl-region-type {
-	margin-top: 0;
+	margin: 0;
 }
 
 .dl-horizontal.dl-region-type dt {
@@ -3689,6 +3689,10 @@ a.action-link:hover {
 .property-stack .create-sg {
 	top: 2px;
 	height: 35px;
+}
+
+.cost-estimation-table {
+	font-size: 12px;
 }
 
 .cost-counter {
@@ -3883,11 +3887,12 @@ a.action-link:hover {
 }
 
 .sg-create-sg-color {
-	width        : 16px;
-	height       : 16px;
-	float        : left;
-	margin-top   : 2px;
-	margin-right : 4px;
+	width         : 16px;
+	height        : 16px;
+	float         : left;
+	margin-top    : 2px;
+	margin-right  : 4px;
+	border-radius : 2px;
 }
 
 .sg-create-proto-label {
@@ -4430,7 +4435,8 @@ a.action-link:hover {
 	color: #12D07B !important;
 }
 
-.asg-p-action {
+.asg-p-action,
+.sns-action {
 	display : none;
 	cursor    : pointer;
 	position  : absolute;
@@ -4441,16 +4447,24 @@ a.action-link:hover {
 	color: #666;
 }
 
-.asg-p-action i:hover {
+.asg-p-action i:hover,
+.sns-action i:hover {
 	color: #ddd
 }
 
-.asg-p-action .icon-remove {
+.asg-p-action .icon-remove,
+.sns-action .icon-remove {
 	margin-left: 5px;
 }
 
-.property-term-p:hover .asg-p-action,
+/*.property-term-p:hover .asg-p-action,
 #property-asg-policies li:hover .asg-p-action {
+	display: inline-block;
+}*/
+
+.property-term-p:hover .asg-p-action,
+.property-list li:hover .asg-p-action,
+.property-list li:hover .sns-action {
 	display: inline-block;
 }
 

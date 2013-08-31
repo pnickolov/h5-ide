@@ -74,10 +74,15 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		else
 			return false
 
-	getSubnetForDefaultVPC = (instanceUID) ->
+	getSubnetForDefaultVPC = (instanceOrEniUID) ->
 
-		instanceComp = MC.canvas_data.component[instanceUID]
-		instanceAZ = instanceComp.resource.Placement.AvailabilityZone
+		instanceComp = MC.canvas_data.component[instanceOrEniUID]
+
+		instanceAZ = ''
+		if instanceComp.resource.AvailabilityZone
+			instanceAZ = instanceComp.resource.AvailabilityZone
+		else
+			instanceAZ = instanceComp.resource.Placement.AvailabilityZone
 
 		currentRegion = MC.canvas_data.region
 		accountData = MC.data.account_attribute[currentRegion]

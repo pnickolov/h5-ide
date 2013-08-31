@@ -1433,6 +1433,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
 					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+					component_data.resource.RouteSet[0].DestinationCidrBlock = MC.canvas_data.component[option.group.vpcUId].resource.CidrBlock;
 				}
 				if(option.main){
 					main_icon = "main-";

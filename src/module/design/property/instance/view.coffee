@@ -123,7 +123,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         addtoKPList : ( event, id ) ->
             this.model.set 'set_kp', id
-            notification('info', (id + ' added'), false)
             this.trigger 'REFRESH_KEYPAIR'
 
         createtoKPList : ( event, id ) ->

@@ -52,6 +52,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             this.delegateEvents this.events
 
+            $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
+
         instanceNameChange : ( event ) ->
             console.log 'instanceNameChange'
 
@@ -86,11 +88,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             if enable
                 $parent.find(".input-ip").removeAttr "disabled"
-                $parent.find(".name").attr "data-tooltip", "Specify an IP address or leave it as .x to automatically assign an IP."
+                $parent.find(".name").data "tooltip", "Specify an IP address or leave it as .x to automatically assign an IP."
 
             else
                 $parent.find(".input-ip").attr "disabled", "disabled"
-                $parent.find(".name").attr "data-tooltip", "Automatically assigned IP."
+                $parent.find(".name").data "tooltip", "Automatically assigned IP."
 
         instanceTypeSelect : ( event, value )->
             this.model.set 'instance_type', value
@@ -123,7 +125,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         addtoKPList : ( event, id ) ->
             this.model.set 'set_kp', id
-            notification('info', (id + ' added'), false)
             this.trigger 'REFRESH_KEYPAIR'
 
         createtoKPList : ( event, id ) ->
@@ -202,6 +203,41 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 null
 
             this.trigger 'SET_IP_LIST', currentAvailableIPAry
+
+
+        deleteKP : ( event ) ->
+            me = this
+            $li = $(event.currentTarget).closest("li")
+
+            selected = $li.hasClass("selected")
+            using = if using is "true" then true else selected
+
+            removeKP = () ->
+
+                $li.remove()
+                # If deleting selected kp, select the first one
+                if selected
+                    $("#keypair-select").find(".item").eq(0).click()
+
+
+                me.model.deleteKP $li.attr("data-id")
+
+
+            if using
+                data =
+                    title   : "Delete Key Pair"
+                    confirm : "Delete"
+                    color   : "red"
+                    body    : "<p><b>Are you sure you want to delete #{$li.text()}</b></p><p>Other instance using this key pair will change automatically to use DefaultKP."
+                # Ask for confirm
+                modal MC.template.modalApp data
+                $("#btn-confirm").one "click", ()->
+                    removeKP()
+                    modal.close()
+            else
+                removeKP()
+
+            return false
     }
 
     view = new InstanceView()

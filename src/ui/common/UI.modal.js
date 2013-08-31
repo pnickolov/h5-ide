@@ -104,7 +104,9 @@ modal.close = function ()
 
 	$(document)
 		.off('click', '.modal-close', modal.close)
-		.off('mousedown', '.modal-header', modal.drag.mousedown);
+		.off('mousedown', '.modal-header', modal.drag.mousedown)
+		.off('click', modal.dismiss)
+		.off('keyup', modal.keyup);
 
 	$('#modal-wrap')
 		.trigger('closed')

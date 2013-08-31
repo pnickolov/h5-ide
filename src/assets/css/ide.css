@@ -2860,7 +2860,8 @@ a.sidebar-hider {
 .acl-sg-info-list .sg-list-delete-btn {
 	cursor      : pointer;
 	margin-top  : 35px;
-	margin-left : 0px;
+	margin-left : 180px;
+	position: absolute;
 }
 
 .icon-btn-details {

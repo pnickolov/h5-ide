@@ -48,7 +48,7 @@
 
 			width = tooltip_box.width();
 			height = tooltip_box.height();
-			
+
 			tooltip_box.css({
 				'left': target_offset.left + width - document.body.scrollLeft > window.innerWidth ?
 					target_offset.left - width :

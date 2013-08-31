@@ -1605,7 +1605,7 @@ a {
 }
 
 /* Responsive design for dashboard */
-@media only screen and (min-width: 1024px) and (max-width: 1240px) {
+@media only screen and (min-width: 1024px) and (max-width: 1320px) {
 	#global-region-map-content {
 		width: 940px;
 	}

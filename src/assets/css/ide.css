@@ -3887,11 +3887,12 @@ a.action-link:hover {
 }
 
 .sg-create-sg-color {
-	width        : 16px;
-	height       : 16px;
-	float        : left;
-	margin-top   : 2px;
-	margin-right : 4px;
+	width         : 16px;
+	height        : 16px;
+	float         : left;
+	margin-top    : 2px;
+	margin-right  : 4px;
+	border-radius : 2px;
 }
 
 .sg-create-proto-label {

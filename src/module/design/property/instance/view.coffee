@@ -233,7 +233,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 $("#btn-confirm").one "click", ()->
                     removeKP()
                     modal.close()
-                null
             else
                 removeKP()
 

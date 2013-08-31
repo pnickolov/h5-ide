@@ -121,9 +121,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             this.model.set 'public_ip', event.target.checked
 
-        addEmptyKP : ( event ) ->
-            notification('error', 'KeyPair Empty', false)
-
         addtoKPList : ( event, id ) ->
             this.model.set 'set_kp', id
             notification('info', (id + ' added'), false)

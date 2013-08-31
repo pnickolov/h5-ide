@@ -131,7 +131,7 @@ MC.canvas = {
 
 	},
 
-	updateInstanceState: function (instance_id)
+	updateInstanceState: function ()
 	{
 		var comp_data = MC.canvas.data.get('component'),
 			instance_id,
@@ -139,19 +139,19 @@ MC.canvas = {
 
 		$.each( comp_data, function(uid, comp)
 		{
-			if (comp_data.type === "AWS.EC2.Instance")
+			if (comp.type === "AWS.EC2.Instance")
 			{
-				instance_id = comp_data.resource.InstanceId;
-				instance_data = MC.data.resource_list[instance_id];
-				if ($('#' + instance_id + '_instance-state').length === 1)
+				instance_id = comp.resource.InstanceId;
+				instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
+				if ( $('#' + uid + '_instance-state').length  === 1)
 				{
 					if ( instance_data )
 					{//instance data exist
-						$('#' + instance_id + '_instance-state').attr('class', 'instance-state instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState());
+						$('#' + uid + '_instance-state').attr('class', 'instance-state instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState());
 					}
 					else
 					{//instance data not exist, unknown state
-						$('#' + instance_id + '_instance-state').attr('class', 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState());
+						$('#' + uid + '_instance-state').attr('class', 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState());
 					}
 				}
 				else
@@ -2880,7 +2880,7 @@ MC.canvas.event.dragable = {
 			var originalTarget = event.data.originalTarget,
 				originalTargetNode = $(originalTarget),
 				component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
-			
+
 			MC.canvas.select( target_id );
 			MC.canvas.volume.close();
 		}

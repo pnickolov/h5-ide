@@ -241,9 +241,9 @@ a.table-link {
 }
 
 .btn-blue {
-    background: #3781C9;
-    border: 1px solid #276199;
-    box-shadow        : inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 0 rgba(0, 0, 0, 0.1);
+    background : #3781C9;
+    border     : 1px solid #276199;
+    box-shadow : inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 .btn-blue:hover {
@@ -350,7 +350,7 @@ a.table-link {
 	/*box-shadow: 0 1px rgba(255,255,255,.5), inset 0 2px 5px #cfd4dd;*/
 	/*border: solid 1px #cfd7e3;*/
 	font-size: 14px;
-	padding: 8px 20px 8px 8px;
+	padding: 6px 20px 6px 6px;
 	display: inline-block;
 	outline: none;
 	/*border: 1px solid transparent;*/
@@ -382,29 +382,28 @@ textarea:focus {
 
 .property-content .input,
 .property-content textarea {
-	background-color : #464546;
+	background-color : #282728;
 	color            : #D0D0D0;
-	border           : 1px solid #363536;
+	border           : 1px solid #1c1c1c;
 	box-shadow       : 0 1px 0 0 rgba(255,255,255,.05);
 }
 
 .property-content .input:hover,
 .property-content textarea:hover {
-	background-color : #414041;
-	color            : #D0D0D0;
+	background-color : #252425;
 }
 
 .property-content .input:focus,
 .property-content textarea:focus {
-	background-color : #353435;
-	box-shadow       : inset 0 2px 0 0 rgba(0,0,0,.2), 0 1px 0 0 rgba(255,255,255,.05);
+	background-color : #212021;
+	box-shadow       : inset 0 2px 2px 0 rgba(0,0,0,.3), 0 1px 0 0 rgba(255,255,255,.05);
 	color            : #EEE;
-	border           : 1px solid #1e1e1e;
+	border           : 1px solid #161616;
 }
 
 .property-content .input.disabled,
 .property-content .input[disabled] {
-	background-color: #4E4E4E;
+	background-color: #3f3f3f;
 	box-shadow: none;
 	color: #666;
 	border: 1px solid transparent;
@@ -975,14 +974,20 @@ textarea {
 	position: absolute;
 	overflow: hidden;
 }
+
 .modal-center-align-helper {
 	display: table-cell;
 	vertical-align: middle;
 }
 
-.modal-text {
+.modal-text-major {
 	font-size: 16px;
 	color: #666;
+}
+
+.modal-text-minor {
+	font-size : 14px;
+	color     : #999;
 }
 
 .modal-body .dl-horizontal dt,
@@ -1082,10 +1087,12 @@ textarea {
 
 .option-group-head,
 .fixedaccordion-head {
-	background-color : #404040;
-	border-bottom: 1px solid #353535;
+	background-color : #2C2C2C;
+	border-bottom: 1px solid #1B1B1B;
 	color            : #c5c9c5;
-	text-shadow      : 0 1px rgba(30,34,40,.75);
+	font-size: 13px;
+	text-shadow      : 0 1px rgba(0,0,0,.7);
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
 
 	cursor              : pointer;
 	-webkit-user-select : none;
@@ -1095,8 +1102,8 @@ textarea {
 	user-select         : none;
 	overflow            : hidden;
 
-	height      : 37px;
-	line-height : 37px;
+	height      : 30px;
+	line-height : 30px;
 	padding     : 0 10px;
 
 	-webkit-transition : background-color .2s ease-in-out;
@@ -1104,6 +1111,13 @@ textarea {
 	-ms-transition     : background-color .2s ease-in-out;
 	-o-transition      : background-color .2s ease-in-out;
 	transition         : background-color .2s ease-in-out;
+}
+
+
+.fixedaccordion-head {
+	height      : 37px;
+	line-height : 37px;
+	padding     : 0 10px;
 }
 
 .property-control-group + .option-group-head {
@@ -1117,15 +1131,9 @@ textarea {
 
 .option-group,
 .fixedaccordion .accordion-body {
-<<<<<<< HEAD
-	background-color : #545554;
+	background-color : #383738;
 	box-shadow       : inset 0 0 6px rgba(0,0,0,.2);
     border-bottom    : 1px solid #313131;
-=======
-	/*background-color : #545554;*/
-	box-shadow       : inset 0 0 6px rgba(0,0,0,.1);
-    border-bottom-width    : 1px solid #313131;
->>>>>>> develop
 }
 
 .option-group:last-child {
@@ -1151,7 +1159,7 @@ textarea {
 .option-group-head:hover,
 .expanded .fixedaccordion-head,
 .fixedaccordion-head:hover {
-	background-color: #474747;
+	background-color: #333;
 	color: #f0f0f0;
 }
 
@@ -1505,7 +1513,7 @@ textarea {
 	box-shadow    : inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 	border-radius : 2px;
 
-	padding: 8px;
+	padding: 6px;
 
 	font-size     : 14px;
 	color         : #d0d0d0;

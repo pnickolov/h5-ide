@@ -36,7 +36,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             if not data.dhcp
                 data.hasDhcp = false
                 data.dhcp =
-                    domainName   : this.defaultDomainName vpcUid
+                    domainName   : this.defaultDomainName uid
                     useAmazonDns : true
 
             this.set data

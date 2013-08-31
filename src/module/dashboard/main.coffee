@@ -30,7 +30,7 @@ define [ 'jquery',
         #load remote html ovverview_tmpl
         #$( overview_tmpl ).appendTo 'head'
 
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.overview-empty' : 'overview-empty-tmpl', '.stat-info' : 'stat-info-tmpl','.platform-attr' : 'platform-attr-tmpl', '.recent-edited-stack' : 'recent-edited-stack-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.recent-stopped-app' : 'recent-stopped-app-tmpl' }
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.global-list' : 'global-list-tmpl', '.region-app-stack' : 'region-app-stack-tmpl','.region-resource' : 'region-resource-tmpl', '.recent' : 'recent-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.recent-stopped-app' : 'recent-stopped-app-tmpl', 'loading': 'loading-tmpl' }
 
         MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl', '.stat-app-count' : 'stat-app-count-tmpl', '.stat-stack-count' : 'stat-stack-count-tmpl', '.stat-app' : 'stat-app-tmpl', '.stat-stack' : 'stat-stack-tmpl' }
 
@@ -58,12 +58,9 @@ define [ 'jquery',
                 should_update_overview = true
                 #refresh view
                 view.renderMapResult()
-                view.renderStatInfo()
 
             model.on 'change:region_empty_list', () ->
                 console.log 'dashboard_change:region_empty'
-                #refresh view
-                view.renderMapEmpty()
 
             model.on 'change:region_classic_list', () ->
                 console.log 'dashboard_region_classic_list'
@@ -71,16 +68,16 @@ define [ 'jquery',
                 MC.data.supported_platforms = model.get 'region_classic_list'
                 #refresh view
                 if MC.data.supported_platforms.length <= 0
-                    view.renderPlatformAttrs(false)
+                    #view.renderPlatformAttrs(false)
                 else
-                    view.renderPlatformAttrs(true)
+                    #view.renderPlatformAttrs(true)
                 #
                 if region_view then region_view.checkCreateStack MC.data.supported_platforms
 
             model.on 'change:recent_edited_stacks', () ->
                 console.log 'dashboard_change:recent_eidted_stacks'
                 #model.get 'recent_edited_stacks'
-                view.renderRecentEditedStack()
+                view.renderRecent()
 
             model.on 'change:recent_launched_apps', () ->
                 console.log 'dashboard_change:recent_launched_apps'
@@ -92,10 +89,23 @@ define [ 'jquery',
                 #model.get 'recent_stoped_apps'
                 view.renderRecentStoppedApp()
 
+            # global view
+            model.on 'change:global_list', () ->
+                view.renderGlobalList()
+
+            # region view
+            model.on 'change:cur_region_list', () ->
+                view.renderRegionResource()
+
+
+
+
             #model
             model.resultListListener()
             model.emptyListListener()
             model.describeAccountAttributesService()
+
+            model.describeAWSResourcesService()
 
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'overview UPDATE_AWS_CREDENTIAL'
@@ -115,8 +125,6 @@ define [ 'jquery',
 
                 if should_update_overview
                     view.renderMapResult()
-                    view.renderStatInfo()
-                    view.renderMapEmpty()
 
                 null
 
@@ -136,8 +144,6 @@ define [ 'jquery',
 
                 if should_update_overview
                     view.renderMapResult()
-                    view.renderStatInfo()
-                    view.renderMapEmpty()
 
                 null
 
@@ -147,6 +153,20 @@ define [ 'jquery',
                 view.trigger 'RETURN_REGION_TAB', result
 
                 null
+
+            # switch region tab
+            view.on 'SWITCH_REGION', ( region ) ->
+                model.describeAWSResourcesService region
+
+                @model.getItemList 'app', region, overview_app
+                @model.getItemList 'stack', region, overview_stack
+
+            model.on 'UPDATE_REGION_APP_LIST', () ->
+                view.renderRegionStatApp()
+
+            model.on 'UPDATE_REGION_STACK_LIST', () ->
+                view.renderRegionStatStack()
+                #region_view.checkCreateStack MC.data.supported_platforms
 
             #listen
             view.on 'RETURN_REGION_TAB', ( region ) ->

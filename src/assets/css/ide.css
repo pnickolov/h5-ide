@@ -749,10 +749,10 @@ a {
 
 	background-color : #D17EB4;
 	padding-right    : 18px;
-	
+
 	border-radius : 3px;
 	box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.1);
-	
+
 }
 
 #global-create-stack .icon-new-stack {
@@ -1070,9 +1070,13 @@ a {
 	left: 281px;
 }
 
+.global-region-status-body {
+	overflow: hidden;
+}
+
 .global-region-status-empty {
 	text-align: center;
-	padding: 87px 0;
+	padding: 117px 0;
 	background-color: #f6f6f6;
 	border-radius: 5px;
 	margin: 15px;
@@ -2564,7 +2568,7 @@ td.table-action a.btn {
 	line-height : 26px;
 	text-align  : center;
 	color       : #616061;
-	
+
 	/*margin-left : 4px;*/
 	padding     : 4px;
 

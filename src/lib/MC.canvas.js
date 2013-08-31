@@ -166,6 +166,7 @@ MC.canvas = {
 	resize: function (target, type)
 	{
 		var canvas_size = MC.canvas.data.get("layout.size"),
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			key = target === 'width' ? 0 : 1,
 			value,
 			target_value;
@@ -226,14 +227,16 @@ MC.canvas = {
 			}
 		}
 
+		$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
+
 		$('#svg_canvas').attr({
-			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
-			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+			'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 		});
 
-		$('#canvas_container').css({
-			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
-			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+		$('#canvas_container, #canvas_body').css({
+			'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 		});
 
 		MC.canvas.data.set("layout.size", canvas_size);
@@ -243,23 +246,31 @@ MC.canvas = {
 
 	zoomIn: function ()
 	{
-		var canvas_size = MC.canvas.data.get('layout.size');
+		var canvas_size = MC.canvas.data.get('layout.size'),
+			scale_ratio;
 
 		if (MC.canvas_property.SCALE_RATIO > 1)
 		{
 			MC.canvas_property.SCALE_RATIO = (MC.canvas_property.SCALE_RATIO * 10 - 2) / 10;
 
-			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas_property.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas_property.SCALE_RATIO);
+			scale_ratio = MC.canvas_property.SCALE_RATIO;
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
+			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
+
+			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + scale_ratio + '.png")');
 
 			$('#canvas_container, #canvas_body').css({
-				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO,
-				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO
+				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
+			});
+
+			$('#svg_canvas').attr({
+				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 			});
 		}
 
-		if (MC.canvas_property.SCALE_RATIO === 1 && $('#canvas_body').hasClass('canvas_zoomed'))
+		if (scale_ratio === 1 && $('#canvas_body').hasClass('canvas_zoomed'))
 		{
 			$('#canvas_body')
 				.removeClass('canvas_zoomed');
@@ -274,19 +285,27 @@ MC.canvas = {
 
 	zoomOut: function ()
 	{
-		var canvas_size = MC.canvas.data.get('layout.size');
+		var canvas_size = MC.canvas.data.get('layout.size'),
+			scale_ratio;
 
 		if (MC.canvas_property.SCALE_RATIO < 1.6)
 		{
 			MC.canvas_property.SCALE_RATIO = (MC.canvas_property.SCALE_RATIO * 10 + 2) / 10;
 
-			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas_property.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas_property.SCALE_RATIO);
+			scale_ratio = MC.canvas_property.SCALE_RATIO;
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
+			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
+
+			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + scale_ratio + '.png")');
 
 			$('#canvas_container, #canvas_body').css({
-				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO,
-				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO
+				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
+			});
+
+			$('#svg_canvas').attr({
+				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 			});
 		}
 

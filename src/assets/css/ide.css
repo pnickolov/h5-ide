@@ -2866,7 +2866,7 @@ a.sidebar-hider {
 .icon-btn-details {
 	width  : 16px;
 	height : 16px;
-	color  : #403d3f;
+	color  : #302f30;
 }
 
 .icon-btn-details:hover {
@@ -2900,10 +2900,10 @@ a.sidebar-hider {
 
 .add-rule {
 	display : inline-block;
-	width   : 29px;
-	height  : 29px;
+	width   : 30px;
+	height  : 30px;
 
-	line-height : 29px;
+	line-height : 30px;
 	text-align  : center;
 	color: #ccc;
 
@@ -4829,7 +4829,7 @@ a.action-link:hover {
 
 .reconnect-session .modal-center-align-helper {
 	padding-left: 9px;
-	padding-bottom: 30px;
+	padding-top: 20px;
 }
 
 .disconnected-notification {

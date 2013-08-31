@@ -2763,8 +2763,8 @@ a.sidebar-hider {
 .property-list li {
 	width         : 260px;
 	padding       : 10px;
-	border-bottom : 1px solid #3c3c3c;
-	background    : #444;
+	border-bottom : 1px solid #393939;
+	background    : #3f3f3f;
 
 	-webkit-transition : background .2s;
 	-moz-transition    : background .2s;
@@ -4469,6 +4469,10 @@ a.action-link:hover {
 	display : block;
 }
 
+.drag-sort-list-wrap {
+	padding-left: 40px;
+}
+
 .drag-sort-list {
 	width : 300px;
 }
@@ -4481,6 +4485,10 @@ a.action-link:hover {
 	margin-top   : -1px;
 }
 
+.drag-sort-list .list-name {
+	cursor: pointer;
+}
+
 .drag-sort-list .checkbox {
 	margin-top : -3px;
 	border-right : 1px solid #ccc;
@@ -4489,15 +4497,21 @@ a.action-link:hover {
 
 .drag-sort-list li.enabled {
 	background : none;
+	color: #666;
 }
 
 .drag-sort-list .drag-handle {
-	width      : 16px;
-	height     : 16px;
-	float      : right;
-	background : red;
-	margin     : 7px 8px 0 0;
-	display    : none;
+	width   : 16px;
+	height  : 16px;
+	float   : right;
+	margin  : 7px 8px 0 0;
+	display : none;
+	color   : #ccc;
+	cursor  : pointer;
+}
+
+.drag-sort-list .drag-handle:hover {
+	color: #999;
 }
 
 .drag-sort-list .enabled .drag-handle {

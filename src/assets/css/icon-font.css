@@ -52,7 +52,9 @@
 .icon-pending,
 .icon-warning,
 .icon-error,
-.icon-success {
+.icon-success,
+.icon-time,
+.icon-sort {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
@@ -102,3 +104,5 @@
 .icon-warning:before {content: "\F138";}
 .icon-error:before { content : "\F139"; }
 .icon-success:before {content: "\F13A";}
+.icon-time:before { content : "\F13B"; }
+.icon-sort:before {content: "\F13C";}

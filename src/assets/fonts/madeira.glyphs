@@ -3301,6 +3301,47 @@ width = 960;
 unicode = F13B;
 },
 {
+glyphname = uniF13C;
+lastChange = "2013-08-31 09:13:18 +0800";
+layers = (
+{
+layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
+name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"240 120 LINE",
+"720 120 LINE",
+"720 240 LINE",
+"240 240 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"240 300 LINE",
+"720 300 LINE",
+"720 420 LINE",
+"240 420 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"240 480 LINE",
+"720 480 LINE",
+"720 600 LINE",
+"240 600 LINE"
+);
+}
+);
+width = 960;
+}
+);
+unicode = F13C;
+},
+{
 glyphname = unif135;
 lastChange = "2013-08-30 12:28:48 +0800";
 layers = (

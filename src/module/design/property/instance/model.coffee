@@ -349,22 +349,22 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					return false
 
 
-			instanceUID = this.get 'get_uid'
+			# instanceUID = this.get 'get_uid'
 
-			originSGAry = MC.canvas_data.component[instanceUID].resource.SecurityGroup
-			originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroupId
+			# originSGAry = MC.canvas_data.component[instanceUID].resource.SecurityGroup
+			# originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroupId
 
-			currentSG = '@' + sg_uid + '.resource.GroupName'
-			currentSGId = '@' + sg_uid + '.resource.GroupId'
+			# currentSG = '@' + sg_uid + '.resource.GroupName'
+			# currentSGId = '@' + sg_uid + '.resource.GroupId'
 
-			originSGAry = _.filter originSGAry, (value) ->
-				value isnt currentSG
+			# originSGAry = _.filter originSGAry, (value) ->
+			# 	value isnt currentSG
 
-			originSGIdAry = _.filter originSGIdAry, (value) ->
-				value isnt currentSGId
+			# originSGIdAry = _.filter originSGIdAry, (value) ->
+			# 	value isnt currentSGId
 
-			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
-			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
+			# MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
+			# MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
 
 			null
 

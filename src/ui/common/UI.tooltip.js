@@ -14,7 +14,7 @@
 	var tooltip = function (event)
 	{
 		var target = $(this),
-			content = $.trim(target.data('tooltip')),
+			content = $.trim(target.attr('data-tooltip')),
 			tooltip_box = $('#tooltip_box'),
 			target_offset,
 			width,
@@ -48,7 +48,7 @@
 
 			width = tooltip_box.width();
 			height = tooltip_box.height();
-			
+
 			tooltip_box.css({
 				'left': target_offset.left + width - document.body.scrollLeft > window.innerWidth ?
 					target_offset.left - width :

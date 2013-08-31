@@ -2,7 +2,7 @@
 #  View Mode for dashboard(overview)
 #############################
 
-define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vpc_model ) ->
+define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stack_model' ], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model ) ->
 
     #private
     #region map
@@ -39,12 +39,24 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             'recent_edited_stacks'  : null
             'recent_launched_apps'  : null
             'recent_stoped_apps'    : null
+            'cur_app_list'          : null
+            'cur_stack_list'        : null
+            'global_list'           : {}
+            'region_list'           : {}
+            'cur_region_list'       : {}
+
 
         initialize : ->
 
             me = this
 
             #listen VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN
+
+            @on 'AWS_RESOURCE_RETURN', @awsReturnHandler
+            @on 'APP_INFO_RETURN', @appInfoHandler
+
+            @on 'STACK_LST_RETURN', @stackReturnHandler
+            @on 'APP_LST_RETURN', @appReturnHandler
 
             vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 
@@ -57,8 +69,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                     regionAttrSet = result.resolved_data
 
                     _.map constant.REGION_KEYS, ( value ) ->
-
-
                         if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
 
                             #resolve support-platform
@@ -96,6 +106,106 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                     me.set 'region_classic_list', region_classic_vpc_result
 
             null
+
+
+        appInfoHandler: ( result ) ->
+
+        awsReturnHandler: ( result ) ->
+            data = result.resolved_data
+            region = result.param[ 3 ]
+
+            if region is null
+                globalData = @globalRegionhandle data
+                @set 'global_list', globalData
+            else
+                regionData = @regionHandel data, region
+                oriRegionList = @get 'region_list'
+                oriRegionList[ region ] = regionData
+                @set 'region_list', oriRegionList
+                @set 'cur_region_list', regionData
+
+
+
+        globalRegionhandle: ( data ) ->
+            midData = retData = {}
+            # initial
+            _.each data, ( value, region ) ->
+                _.each value, ( v, type ) ->
+                    if type is 'DescribeInstances'
+                        v = _.filter v, ( vv ) ->
+                            return vv.instanceState.name is 'running'
+
+                    midData[ type ] = {} if not midData[ type ]
+                    midData[ type ][ region ] = v
+
+                    null
+
+            # structure for handlebars
+            _.each midData, ( value, type ) ->
+                retData[ type ] =
+                    data: []
+                    total: 0
+
+                _.each value, ( v, region ) ->
+                    vTotal = v and v.length or 0
+                    if vTotal
+                        retData[ type ].total += vTotal
+                    retData[ type ].data.push
+                        region: region
+                        name: MC.aws.aws.getRegionName region
+                        total: vTotal
+            # sort
+            _.each retData, ( value, type ) ->
+                value.data = _.sortBy value.data, ( v ) ->
+                    -v.total
+                null
+
+
+
+            retData
+
+
+
+        regionHandel: ( data, region ) ->
+            data = data[ region ]
+            retData = {}
+
+            _.each data, ( value, type ) ->
+                retData[ type ] =
+                    data: value
+                    total: value and value.length or 0
+                null
+            retData
+
+        # get current region's app/stack list
+        getItemList : ( flag, region, result ) ->
+            me = this
+
+            item_list = regions.region_name_group for regions in result when constant.REGION_SHORT_LABEL[ region ] == regions.region_group
+
+            cur_item_list = []
+            _.map item_list, (value) ->
+                item = me.parseItemList(value, flag)
+                if item
+                    cur_item_list.push item
+
+                    null
+
+            if cur_item_list
+                #sort
+                cur_item_list.sort (a,b) ->
+                    return if a.create_time <= b.create_time then 1 else -1
+
+                if flag == 'app'
+                    #difference
+                    if _.difference me.get('cur_app_list'), cur_item_list
+                        me.set 'cur_app_list', cur_item_list
+                        me.trigger 'UPDATE_REGION_APP_LIST'
+
+                else if flag == 'stack'
+                    if _.difference me.get('cur_stack_list'), cur_item_list
+                        me.set 'cur_stack_list', cur_item_list
+                        me.trigger 'UPDATE_REGION_STACK_LIST'
 
         #temp
         resultListListener : ->
@@ -140,7 +250,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             _.map constant.REGION_KEYS, ( value, key )  ->
 
-                region_counts[value] = { 'running_app': 0, 'stopped_app': 0, 'stack': 0 }
+                region_counts[value] = { 'running_app': 0, 'stopped_app': 0, 'stack': 0, 'app': 0 }
 
                 null
 
@@ -154,6 +264,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
                     else if value.state is constant.APP_STATE.APP_STATE_STOPPED
                         region_counts[value.region].stopped_app += 1
                     total_app += 1
+                    region_counts[value.region].app += 1
 
                     if value.region in constant.REGION_KEYS
                         MC.data.app_list[value.region].push value.name
@@ -182,8 +293,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             #
             _.map constant.REGION_KEYS, ( value, key ) ->
 
-                if region_counts[ value ].running_app isnt 0 or region_counts[ value ].stopped_app isnt 0 or region_counts[ value ].stack isnt 0
-                    result_list.region_infos.push { 'region_name' : value, 'region_city' : constant.REGION_SHORT_LABEL[ value ], 'running_app' : region_counts[ value ].running_app, 'stopped_app' : region_counts[ value ].stopped_app, 'stack': region_counts[ value ].stack, 'pointer': region_tooltip[key] }
+                if region_counts[ value ].app isnt 0 or region_counts[ value ].stack isnt 0
+                    result_list.region_infos.push { 'region_name' : value, 'region_city' : constant.REGION_SHORT_LABEL[ value ], 'app':region_counts[ value ].app , 'running_app' : region_counts[ value ].running_app, 'stopped_app' : region_counts[ value ].stopped_app, 'stack': region_counts[ value ].stack, 'pointer': region_tooltip[key] }
                     region_aws_list.push value
 
                 null
@@ -278,6 +389,50 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
             else if flag == 'recent_stoped_apps'
                 me.set 'recent_stoped_apps', recent_list
 
+        parseItemList : (item, flag) ->
+            me = this
+
+            id          = item.id
+            name        = item.name
+            create_time = item.time_create
+            id_code     = item.key
+
+            update_time =  Math.round(+new Date())
+
+            status      = "play"
+            isrunning   = true
+            ispending   = false
+
+            # check state
+            if item.state == constant.APP_STATE.APP_STATE_INITIALIZING    #constant.APP_STATE.APP_STATE_STOPPING or
+                return
+            else if item.state == constant.APP_STATE.APP_STATE_RUNNING
+                status = "play"
+            else if item.state == constant.APP_STATE.APP_STATE_STOPPED
+                isrunning = false
+                status = "stop"
+            else
+                status = "pending"
+                ispending = true
+
+            has_instance_store_ami = false
+
+            if flag == 'app'
+                date = new Date()
+                start_time = null
+                stop_time = null
+
+                has_instance_store_ami = if 'has_instance_store_ami' of item and item.has_instance_store_ami then item.has_instance_store_ami else false
+
+                if item.last_start
+                    date.setTime(item.last_start*1000)
+                    start_time  = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
+                if not isrunning and item.last_stop
+                    date.setTime(item.last_stop*1000)
+                    stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
+
+            return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'ispending' : ispending, 'status' : status, 'cost' : "$0/month", 'has_instance_store_ami' : has_instance_store_ami }
+
         # parse items
         parseItem : (value, flag) ->
             # get time interval
@@ -291,6 +446,51 @@ define [ 'MC', 'event', 'constant', 'vpc_model' ], ( MC, ide_event, constant, vp
 
             if interval
                 return { 'id' : value.id, 'region' : value.region, 'region_label' : constant.REGION_SHORT_LABEL[value.region], 'name' : value.name, 'interval_date': MC.intervalDate(interval), 'interval' : interval }
+                #app list
+
+
+        describeAWSResourcesService : ( region )->
+
+            me = this
+            region = region or null
+            current_region = region
+
+            res_type = constant.AWS_RESOURCE
+
+            resources = {}
+            resources[res_type.INSTANCE]  =   {}
+            resources[res_type.EIP]       =   {}
+            resources[res_type.VOLUME]    =   {}
+            resources[res_type.VPC]       =   {}
+            resources[res_type.VPN]       =   {}
+            resources[res_type.ELB]       =   {}
+
+            #resources[res_type.KP]        =   {}
+            #resources[res_type.SG]        =   {}
+            #resources[res_type.ACL]       =   {}
+            #resources[res_type.CGW]       =   {}
+            #resources[res_type.DHCP]      =   {}
+            #resources[res_type.ENI]       =   {}
+            #resources[res_type.IGW]       =   {}
+            #resources[res_type.RT]        =   {}
+            #resources[res_type.SUBNET]    =   {}
+            #resources[res_type.VGW]       =   {}
+            #
+
+            resources[res_type.ASG]       =   {}
+            #resources[res_type.ASL_LC]    =   {}
+            #resources[res_type.ASL_NC]    =   {}
+            #resources[res_type.ASL_SP]    =   {}
+            #resources[res_type.ASL_SA]    =   {}
+            resources[res_type.CLW]       =   {}
+            resources[res_type.SNS_SUB]   =   {}
+            #resources[res_type.SNS_TOPIC] =   {}
+            #resources[res_type.ASL_ACT]   =   {}
+
+            #app_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region
+
+            aws_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
+
 
     }
 

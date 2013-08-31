@@ -26,8 +26,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-source-check'      : 'sourceCheckChange'
             'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select'               : "tenancySelect"
-            'OPTION_CHANGE #keypair-select'               : "addtoKPList"
-            'EDIT_UPDATE #keypair-select'                 : "createtoKPList"
+            'OPTION_CHANGE #keypair-select'               : "setKP"
+            'EDIT_UPDATE #keypair-select'                 : "addKP"
+            "EDIT_FINISHED #keypair-select"               : "updateKPSelect"
 
             'click #property-ami'                         : 'openAmiPanel'
 
@@ -36,7 +37,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             $( '.property-details' ).html this.template this.model.attributes
 
-            this.delegateEvents this.events
+            $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
+
 
         lcNameChange : ( event ) ->
             target = $ event.currentTarget
@@ -68,14 +70,18 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         sourceCheckChange : ( event ) ->
             this.model.set 'source_check', event.target.checked
 
-        addtoKPList : ( event, id ) ->
-            this.model.set 'set_kp', id
-            notification('info', (id + ' added'), false)
-            this.trigger 'REFRESH_KEYPAIR'
+        setKP : ( event, id ) ->
+            @model.setKP id
 
-        createtoKPList : ( event, id ) ->
-            this.model.set 'add_kp', id
-            notification('info', (id + ' created'), false)
+        addKP : ( event, id ) ->
+            result = @model.addKP id
+            if not result
+                notification "error", "KeyPair with the same name already exists."
+                return result
+
+        updateKPSelect : () ->
+            # Add remove icon to the newly created item
+            $("#keypair-select").find(".item:last-child").append('<span class="icon-remove"></span>')
 
         openAmiPanel : ( event ) ->
             target = $('#property-ami')
@@ -88,6 +94,39 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             }
             null
 
+        deleteKP : ( event ) ->
+            me = this
+            $li = $(event.currentTarget).closest("li")
+
+            selected = $li.hasClass("selected")
+            using = if using is "true" then true else selected
+
+            removeKP = () ->
+
+                $li.remove()
+                # If deleting selected kp, select the first one
+                if selected
+                    $("#keypair-select").find(".item").eq(0).click()
+
+
+                me.model.deleteKP $li.attr("data-id")
+
+
+            if using
+                data =
+                    title   : "Delete Key Pair"
+                    confirm : "Delete"
+                    color   : "red"
+                    body    : "<p><b>Are you sure you want to delete #{$li.text()}</b></p><p>Other instance using this key pair will change automatically to use DefaultKP."
+                # Ask for confirm
+                modal MC.template.modalApp data
+                $("#btn-confirm").one "click", ()->
+                    removeKP()
+                    modal.close()
+            else
+                removeKP()
+
+            return false
     }
 
     view = new LanchConfigView()

@@ -30,10 +30,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-public-ip'         : 'publicIpChange'
             'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select'               : "tenancySelect"
-            'OPTION_CHANGE #keypair-select'               : "addtoKPList"
-            'EDIT_UPDATE #keypair-select'                 : "createtoKPList"
+            'OPTION_CHANGE #keypair-select'               : "setKP"
+            'EDIT_UPDATE #keypair-select'                 : "addKP"
             'click #instance-ip-add'                      : "addIPtoList"
             'click #property-network-list .icon-remove'   : "removeIPfromList"
+            "EDIT_FINISHED #keypair-select"               : "updateKPSelect"
 
             'change .input-ip'    : 'updateEIPList'
             'click .toggle-eip'   : 'addEIP'
@@ -51,6 +52,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             $( '.property-details' ).html this.template this.model.attributes
 
             this.delegateEvents this.events
+
+            $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
 
         instanceNameChange : ( event ) ->
             console.log 'instanceNameChange'
@@ -86,11 +89,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             if enable
                 $parent.find(".input-ip").removeAttr "disabled"
-                $parent.find(".name").attr "data-tooltip", "Specify an IP address or leave it as .x to automatically assign an IP."
+                $parent.find(".name").data "tooltip", "Specify an IP address or leave it as .x to automatically assign an IP."
 
             else
                 $parent.find(".input-ip").attr "disabled", "disabled"
-                $parent.find(".name").attr "data-tooltip", "Automatically assigned IP."
+                $parent.find(".name").data "tooltip", "Automatically assigned IP."
 
         instanceTypeSelect : ( event, value )->
             this.model.set 'instance_type', value
@@ -121,13 +124,20 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             this.model.set 'public_ip', event.target.checked
 
-        addtoKPList : ( event, id ) ->
-            this.model.set 'set_kp', id
-            notification('info', (id + ' added'), false)
-            this.trigger 'REFRESH_KEYPAIR'
+        setKP : ( event, id ) ->
+            @model.setKP id
+            null
 
-        createtoKPList : ( event, id ) ->
-            this.model.set 'add_kp', id
+        addKP : ( event, id ) ->
+            result = @model.addKP id
+            if not result
+                notification "error", "KeyPair with the same name already exists."
+                return result
+
+        updateKPSelect : () ->
+            # Add remove icon to the newly created item
+            $("#keypair-select").find(".item:last-child").append('<span class="icon-remove"></span>')
+
 
         addIPtoList: (event) ->
 
@@ -202,6 +212,41 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 null
 
             this.trigger 'SET_IP_LIST', currentAvailableIPAry
+
+
+        deleteKP : ( event ) ->
+            me = this
+            $li = $(event.currentTarget).closest("li")
+
+            selected = $li.hasClass("selected")
+            using = if using is "true" then true else selected
+
+            removeKP = () ->
+
+                $li.remove()
+                # If deleting selected kp, select the first one
+                if selected
+                    $("#keypair-select").find(".item").eq(0).click()
+
+
+                me.model.deleteKP $li.attr("data-id")
+
+
+            if using
+                data =
+                    title   : "Delete Key Pair"
+                    confirm : "Delete"
+                    color   : "red"
+                    body    : "<p><b>Are you sure you want to delete #{$li.text()}</b></p><p>Other instance using this key pair will change automatically to use DefaultKP."
+                # Ask for confirm
+                modal MC.template.modalApp data
+                $("#btn-confirm").one "click", ()->
+                    removeKP()
+                    modal.close()
+            else
+                removeKP()
+
+            return false
     }
 
     view = new InstanceView()

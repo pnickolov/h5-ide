@@ -60,8 +60,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
         readTab : ( type, tab_id ) ->
             console.log 'readTab'
-            #set snapshot|data vo
-            if MC.tab[ tab_id ].snapshot is this.get 'snapshot' then this.set 'snapshot', null
+            #set random number
+            this.set 'snapshot', Math.round(+new Date())
             #
             ide_event.trigger ide_event.SWITCH_WAITING_BAR
             #

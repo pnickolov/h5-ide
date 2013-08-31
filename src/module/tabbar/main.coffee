@@ -87,7 +87,7 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                     stack_type: platform,
                     stack_region: view.temp_region_name
                 #tabbar api
-                Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled - ' + MC.data.untitled
+                Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled-' + MC.data.untitled
                 #MC.data.untitled ++
                 MC.data.untitled = MC.data.untitled + 1
                 #

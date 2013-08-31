@@ -1674,6 +1674,10 @@ td.table-action a.btn {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
+#selectbox-ami-platform .selection span {
+	margin-left: 22px;
+}
+
 #selectbox-ami-platform a.dropdown-toggle {
 	border: 1px solid #ccc;
 	padding: 4px 8px;

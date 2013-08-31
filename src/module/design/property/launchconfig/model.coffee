@@ -25,8 +25,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			'base64'    :  null
 			'eni_description' : null
 			'source_check' : null
-			'add_kp' : null
-			'set_kp' : null
 			'add_sg'   : null
 			'remove_sg' : null
 
@@ -48,8 +46,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			this.listenTo this, 'change:base64' , this.setBase64Encoded
 			this.listenTo this, 'change:eni_description' , this.setEniDescription
 			this.listenTo this, 'change:source_check', this.setSourceCheck
-			this.listenTo this, 'change:set_kp', this.setKP
-			this.listenTo this, 'change:add_kp', this.addKP
 			this.listenTo this, 'change:add_sg', this.addSGtoInstance
 			this.listenTo this, 'change:remove_sg', this.removeSG
 
@@ -170,58 +166,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			null
 
-		setKP : () ->
-
-			uid = this.get 'get_uid'
-
-			kp_name = this.get 'set_kp'
-
-			_.map MC.canvas_property.kp_list, ( kp ) ->
-
-				if kp[kp_name]
-
-					kp_ref = '@' + kp[kp_name] + '.resource.KeyName'
-
-					console.log 'setKP = ' + kp_ref
-
-					MC.canvas_data.component[ uid ].resource.KeyName = kp_ref
-
-				null
-
-			null
-
-		addKP : () ->
-
-			uid = this.get 'get_uid'
-			kp_name = this.get 'add_kp'
-
-			component_data = $.extend(true, {}, MC.canvas.KP_JSON.data)
-
-			kp_uid = MC.guid()
-			component_data.uid = kp_uid
-			component_data.resource.KeyName = kp_name
-			component_data.name = kp_name
-
-			kp_ref = '@' + kp_uid + '.resource.KeyName'
-
-			#console.log 'addKP = ' + kp_ref
-
-			MC.canvas_data.component[ uid ].resource.KeyName = kp_ref
-
-			data = MC.canvas.data.get 'component'
-
-			data[kp_uid] = component_data
-
-			MC.canvas.data.set 'component', data
-
-			tmp = {}
-
-			tmp[kp_name] = kp_uid
-
-			MC.canvas_property.kp_list.push tmp
-
-			null
-
 		unAssignSGToComp : (sg_uid) ->
 
 			lcUID = this.get 'get_uid'
@@ -320,29 +264,46 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			this.set 'instance_ami', disp
 
-		getKerPair : ()->
+		getKeyPair : ()->
 
 			uid = this.get 'get_uid'
+			keypair_id = MC.extractID MC.canvas_data.component[ uid ].resource.KeyName
 
-			kp_list = []
-
-			current_key_pair = MC.canvas_data.component[ uid ].resource.KeyName
-
-			_.map MC.canvas_data.component, (value, key) ->
-
-				if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
-					kp = {}
-
-					kp.name = value.resource.KeyName
-					kp.uid = value.uid
-
-					if MC.canvas_data.component[(current_key_pair.split ".")[0][1...]].resource.KeyName == value.resource.KeyName
-
-						kp.selected = true
-
-					kp_list.push kp
+			kp_list = MC.aws.kp.getList( keypair_id )
 
 			this.set 'keypair', kp_list
+
+			null
+
+		addKP : ( kp_name ) ->
+
+			result = MC.aws.kp.add kp_name
+
+			if not result
+				return result
+
+			uid = @get 'get_uid'
+			MC.canvas_data.component[ uid ].resource.KeyName = "@#{result}.resource.KeyName"
+			true
+
+		deleteKP : ( key_name ) ->
+
+			MC.aws.kp.del key_name
+
+			# Update data of this model
+			for kp, idx in @attributes.keypair
+				if kp.name is key_name
+					@attributes.keypair.splice idx, 1
+					break
+
+			null
+
+		setKP : ( key_name ) ->
+
+			uid = this.get 'get_uid'
+			MC.canvas_data.component[ uid ].resource.KeyName = "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
+
+			null
 
 		getInstanceType : () ->
 

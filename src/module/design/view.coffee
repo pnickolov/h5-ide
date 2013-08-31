@@ -30,10 +30,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 canvas   : $( '#canvas-panel'   ).html()
             data
 
-        writeOldDesignHtml : () ->
+        writeOldDesignHtml : ( event ) ->
             console.log 'writeOldDesignHtml'
+            return if _.isNumber event.attributes.snapshot
             #
-            $( '#canvas-panel' ).one( 'DOMNodeInserted', '.canvas-svg-group', this, _.debounce( this.canvasChange, 200, false ))
+            $( '#canvas-panel' ).one( 'DOMNodeInserted', '.canvas-svg-group', this, _.debounce( this.canvasChange, 200, true ))
             #
             $( '#resource-panel' ).html this.model.get( 'snapshot' ).resource
             $( '#canvas-panel'   ).html this.model.get( 'snapshot' ).canvas

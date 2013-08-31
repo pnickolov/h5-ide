@@ -807,10 +807,10 @@ textarea {
 	background: rgba(0, 0, 0, 0.8);
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 	color: #ccc;
-	font-size: 14px;
+	font-size: 12px;
 	position: absolute;
 	padding: 5px 10px;
-	border-radius: 3px;
+	border-radius: 2px;
 	z-index: 90;
 	max-width: 250px;
 }
@@ -1208,7 +1208,7 @@ textarea {
 }
 
 #notification_wrap .error_item {
-    background: #F74A48;
+    background: #B34035;
 }
 
 #notification_wrap .warning_item {

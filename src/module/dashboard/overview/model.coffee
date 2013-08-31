@@ -152,7 +152,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                         retData[ type ].total += vTotal
                     retData[ type ].data.push
                         region: region
-                        name: MC.aws.aws.getRegionName region
+                        city: constant.REGION_SHORT_LABEL[ region ]
+                        area: constant.REGION_LABEL[ region ]
                         total: vTotal
             # sort
             _.each retData, ( value, type ) ->

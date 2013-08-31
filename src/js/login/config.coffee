@@ -9,7 +9,7 @@ require.config {
 
 	locale                : 'en-us'
 
-	urlArgs               : 'v=130830.1912'
+	urlArgs               : 'v=' + version
 
 	paths                 :
 

@@ -2688,6 +2688,10 @@ a.sidebar-hider {
 	margin-bottom: 5px;
 }
 
+#keypair-select .selection .icon-remove {
+	display : none;
+}
+
 /* End of Instance Property */
 
 #security-group-select {

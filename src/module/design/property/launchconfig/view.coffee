@@ -36,7 +36,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             $( '.property-details' ).html this.template this.model.attributes
 
-            this.delegateEvents this.events
+            $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
+
 
         lcNameChange : ( event ) ->
             target = $ event.currentTarget
@@ -70,12 +71,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         addtoKPList : ( event, id ) ->
             this.model.set 'set_kp', id
-            notification('info', (id + ' added'), false)
             this.trigger 'REFRESH_KEYPAIR'
 
         createtoKPList : ( event, id ) ->
             this.model.set 'add_kp', id
-            notification('info', (id + ' created'), false)
 
         openAmiPanel : ( event ) ->
             target = $('#property-ami')
@@ -88,6 +87,39 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             }
             null
 
+        deleteKP : ( event ) ->
+            $li = $(event.currentTarget).closest("li")
+
+            selected = $li.hasClass("selected")
+            using = if using is "true" then true else selected
+
+            removeKP = () ->
+
+                $li.remove()
+                # If deleting selected kp, select the first one
+                if selected
+                    $("#keypair-select").find(".item").eq(0).click()
+
+                ###
+                this.model.deleteKP $li.attr("data-id")
+                ###
+
+            if using
+                data =
+                    title   : "Delete Key Pair"
+                    confirm : "Delete"
+                    color   : "red"
+                    body    : "<p><b>Are you sure you want to delete #{$li.text()}</b></p><p>Other instance using this key pair will change automatically to use DefaultKP."
+                # Ask for confirm
+                modal MC.template.modalApp data
+                $("#btn-confirm").one "click", ()->
+                    removeKP()
+                    modal.close()
+                null
+            else
+                removeKP()
+
+            return false
     }
 
     view = new LanchConfigView()

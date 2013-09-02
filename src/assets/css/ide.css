@@ -4823,18 +4823,29 @@ a.action-link:hover {
 }
 
 #sg-create-sg-out, #sg-create-sg-in {
-	float : left;
-	width : 200px;
+	float  : left;
+	width  : 200px;
+	height : 40px;
 }
 
 #sg-create-direction {
-	float : left;
+	float       : left;
 	margin-left : 20px;
-	width : 150px;
+	width       : 150px;
+	height      : 40px;
 }
 
 #sg-create-sg-in {
 	margin-left : 50px;
+}
+
+.sg-create-selection {
+	height  : 30px;
+	padding : 5px;
+	border  : 1px solid rgba(0,0,0,0.2);
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
 .sg-create-sg-color {

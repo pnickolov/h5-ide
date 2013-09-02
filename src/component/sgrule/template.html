@@ -6,8 +6,9 @@
     <section class="sg-node-wrap clearfix">
       <label>Allow</label>
 
-      <div class="selectbox" id="sg-create-sg-out">
+      {{#if sg_detail.[0].sg.length}}
 
+      <div class="selectbox" id="sg-create-sg-out">
         <div class="selection"><span class="sg-create-sg-color" style="background:{{sg_detail.[0].sg.[0].color}}"></span>{{sg_detail.[0].sg.[0].name}}</div>
         <ul class="dropdown">
           {{#each sg_detail.[0].sg}}
@@ -22,11 +23,23 @@
       <div class="selectbox" id="sg-create-direction">
         <div class="selection">send traffic to</div>
         <ul class="dropdown">
-          <li class="item selected" data-id="out">send traffic to</li>
-          <li class="item" data-id="in">receive traffic from</li>
+          <li class="item selected" data-id="out">initiate traffic to</li>
+          <li class="item" data-id="in">initiate traffic from</li>
           <li class="item" data-id="both">have 2-way traffic with</li>
         </ul>
       </div>
+
+      {{else}}
+
+      <div id="sg-create-sg-out">
+        <div class="sg-create-selection">{{sg_detail.elb_name}}</div>
+      </div>
+
+      <div id="sg-create-direction">
+        <div class="sg-create-selection selected" data-id="out">initiate traffic to</div>
+      </div>
+
+      {{/if}}
 
       <div class="selectbox" id="sg-create-sg-in">
         <div class="selection"><span class="sg-create-sg-color" style="background:{{sg_detail.[1].sg.[0].color}}"></span>{{sg_detail.[1].sg.[0].name}}</div>

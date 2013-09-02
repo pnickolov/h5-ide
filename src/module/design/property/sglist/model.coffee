@@ -25,7 +25,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				if compType is 'AWS.ELB' or compType is 'AWS.AutoScaling.LaunchConfiguration'
 					sgAry = sgAry.concat comp.resource.SecurityGroups
 
-				if compType is 'AWS.EC2.Instance'
+				if compType is 'AWS.EC2.Instance' and MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 					sgAry = sgAry.concat comp.resource.SecurityGroupId
 
 				if compType is 'AWS.VPC.NetworkInterface'

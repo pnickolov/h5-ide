@@ -741,7 +741,12 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
 				component_data.name = option.name;
+
+				//server group
+				component_data.serverGroupName = option.name;
 				component_data.number = 1;
+				component_data.serverGroupUid = group.id;
+				component_data.index = 0;
 
 				resource = component_data.resource
 
@@ -799,7 +804,12 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
+
+				//server group
+				component_data.serverGroupName = component_data.serverGroupName ? component_data.serverGroupName : option.name;
 				component_data.number = component_data.number ? component_data.number : 1;
+				component_data.serverGroupUid = component_data.serverGroupUid ? component_data.serverGroupUid : group.id;
+				component_data.index = component_data.index ? component_data.index : 0;
 
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					$.each(MC.canvas_data.component, function ( key, val ){
@@ -819,6 +829,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = layout.node[group.id];
 				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
+				component_layout.instanceList = (component_layout.instanceList && component_layout.instanceList.length > 0) ? component_layout.instanceList : [ group.id ];
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];

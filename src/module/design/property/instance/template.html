@@ -19,7 +19,7 @@
 		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-instance-count" >Number of Instance</label>
 			<span class="required-input right">Required</span>
-			<input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" data-tooltip="If the quantity is more than 1, host name will be the string you provide plus number index."/>
+			<input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="You cannot specify instance number, since the instance is connected to a route-table."{{else}}data-tooltip="If the quantity is more than 1, host name will be the string you provide plus number index."{{/if}}/>
 		</section>
 		<section class="property-control-group">
 			<label>AMI</label>

@@ -220,8 +220,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                     #cache favorite ami item to MC.data.dict_ami
 
 
-                    value.resource_info.instanceType = me._getInstanceType value.resource_info
-                    MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
+                    value.resource_info.instanceType    = me._getInstanceType value.resource_info
+                    value.resource_info.imageId         = value.resource_id
+                    MC.data.dict_ami[value.resource_id] = value.resource_info
 
                     null
 

@@ -5497,10 +5497,6 @@ a.action-link:hover {
 	padding: 15px;
 }
 
-.bg-blue {
-	background-color: rgb(229, 243, 254);
-}
-
 #modal-run-stack .selectbox {
 	width: 100px;
 }

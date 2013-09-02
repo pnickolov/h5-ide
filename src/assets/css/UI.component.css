@@ -979,7 +979,7 @@ textarea {
 }
 
 .modal-body {
-	padding: 5px 15px 10px 15px;
+	padding: 15px 15px 10px 15px;
 	background: #fff;
 	border-bottom: 1px solid #cfcfcf;
 	min-height: 100px;
@@ -999,7 +999,7 @@ textarea {
 }
 
 .modal-text-major {
-	font-size: 14px;
+	font-size: 16px;
 	color: #666;
 	margin-bottom: 10px;
 }
@@ -1028,13 +1028,34 @@ textarea {
 }
 
 #modal-wrap {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 70;
-	background-color: rgba(0, 0, 0, 0.8);
+	position         : fixed;
+	top              : 0;
+	right            : 0;
+	bottom           : 0;
+	left             : 0;
+	z-index          : 70;
+	background-color : rgba(0, 0, 0, 0.8);
+}
+
+.modal-control-group {
+	padding       : 10px;
+	border-radius : 4px;
+}
+
+.modal-control-group-bg-blue {
+	background: rgb(229, 243, 254);
+}
+
+.modal-control-group label {
+	width: 140px;
+	display: inline-block;
+	line-height: 36px;
+
+}
+
+.resource-name-label {
+	font-style: bold;
+	color: #B25B91;
 }
 
 /* tablist */

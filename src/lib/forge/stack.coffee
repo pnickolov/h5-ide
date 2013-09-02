@@ -352,6 +352,26 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				delete comp_data[comp_uid]
 
+		for comp_uid, comp of comp_data
+
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+
+				remove_idx = []
+
+				$.each comp.resource.Instances, ( i, instance_id ) ->
+
+					if instance_id in instance_ref_list
+
+						remove_idx.push i
+
+				if remove_idx.length > 0
+
+					$.each remove.sort().reverse(), (idx, instance_ref) ->
+
+						comp.resource.Instances.splice idx, 1
+
+
+
 		#init instance_list
 		if instance_list.length != ins_num
 

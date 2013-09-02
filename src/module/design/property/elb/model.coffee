@@ -139,6 +139,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                 azObjAry.push({
                     az_name: keyStr,
+                    az_inner_name: key,
                     instance_num: value,
                     selected: selected
                 })

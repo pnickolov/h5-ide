@@ -1842,8 +1842,13 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
-				component_data.number = component_data.number ? component_data.number : 1;
-
+				ins_id = component_data.resource.Attachment.InstanceId;
+				if(ins_id){
+					component_data.number = MC.canvas_data.component[ins_id.split('.')[0].slice(1)].number;
+				}
+				else{
+					component_data.number = component_data.number ? component_data.number : 1;
+				}
 				if (component_data.resource.Attachment.InstanceId)
 				{
 					attached = 'attached'

@@ -1372,6 +1372,7 @@ a {
 	text-align: center;
 	border: 1px solid #ddd;
 	border-bottom: none;
+	background: #F3F3F3;
 }
 
 #region-resource-tab li:first-child a {
@@ -1383,8 +1384,8 @@ a {
 	border-radius: 0 3px 0 0;
 }
 
-#region-resource-tab .on {
-	background: #F3F3F3;
+#region-resource-tab a.on {
+	background: transparent;
 }
 
 .region-resource-tab-type {
@@ -1632,6 +1633,10 @@ a {
 
 #region-aws-resource-data {
 	/*height: 340px;*/
+}
+
+#region-aws-resource-data .table-head-fix {
+	display: none;
 }
 
 #region-aws-resource-data .scroll-wrap {

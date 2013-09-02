@@ -26,6 +26,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click .global-region-status-tab-item'      : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
             'click #region-resource-tab a'              : 'switchAppStack'
+            'click #region-aws-resource-tab a'          : 'switchRegionResource'
 
 
         showLoading: ( selector ) ->
@@ -78,6 +79,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             target = $ event.currentTarget
             currentIndex = @$el.find('#region-resource-tab a').index target
 
+            @switchTab event, '#region-resource-tab a', '.region-resource-list'
+            ###
             if target.hasClass 'on'
                 @$el.find( '#region-resource-tab a' )
                     .eq( 1 - currentIndex )
@@ -92,9 +95,33 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                     .end()
                     .eq( currentIndex )
                     .show()
+            ###
+
+        switchRegionResource: ( event ) ->
+            @switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'
 
 
+        # switch tab helper
+        switchTab: ( event, tabSelector, listSelector ) ->
+            tabSelector =  if tabSelector instanceof $ then tabSelector else $( tabSelector )
+            listSelector =  if listSelector instanceof $ then listSelector else $( listSelector )
 
+            target = $ event.currentTarget
+            currentIndex = @$el.find(tabSelector).index target
+
+            if not target.hasClass 'on'
+                tabSelector.each ( index ) ->
+                    if index is currentIndex
+                        $( @ ).addClass( 'on' )
+                    else
+                        $( @ ).removeClass( 'on' )
+
+                listSelector.each ( index ) ->
+                    if index is currentIndex
+                        $( @ ).show()
+                    else
+                        $( @ ).hide()
+            null
 
         renderGlobalList: ( event ) ->
             tmpl = @global_list @model.toJSON()

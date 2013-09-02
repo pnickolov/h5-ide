@@ -1230,6 +1230,7 @@ a {
 }
 
 .global-region-resource-header {
+	text-align: center;
 	background-color: #fff;
 	height: 140px;
 	border-bottom: 1px solid #aaa;
@@ -1248,15 +1249,13 @@ a {
 }
 
 .global-region-resource-count-wrap {
+	display: inline;
 	position: relative;
 	top: 35px;
-	width: 90px;
-	margin: 0 auto;
 }
 
 .global-resource-icon {
 	position: absolute;
-	display: block;
 	width: 55px;
 	height: 55px;
 	background-repeat: no-repeat;
@@ -1264,10 +1263,9 @@ a {
 }
 
 .global-region-resource-count {
+	margin-left: 60px;
 	font-size: 40px;
 	font-family: Nunito-Regular;
-	position: absolute;
-	right: 0;
 }
 
 #global-region-resource-instance,

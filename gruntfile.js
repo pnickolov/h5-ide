@@ -190,6 +190,7 @@ module.exports = function( grunt ) {
 									'make_all',
 									'copy:publish',
 									'copy:lib_aws',
+									'copy:lib_forge',
 									'copy:special_lib',
 									'copy:special_ui',
 									'make_release',

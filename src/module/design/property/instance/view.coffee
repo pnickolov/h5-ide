@@ -16,6 +16,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         tagName  : $ '.property-details'
 
         template : Handlebars.compile $( '#property-instance-tmpl' ).html()
+        ip_list_template : Handlebars.compile $( '#property-ip-list-tmpl' ).html()
 
         events   :
             'change .instance-name'                       : 'instanceNameChange'
@@ -50,6 +51,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 this.model.attributes.component.resource.VpcId = defaultVPCId
 
             $( '.property-details' ).html this.template this.model.attributes
+
+            $( '#property-network-list' ).html(this.ip_list_template(this.model.attributes))
 
             this.delegateEvents this.events
 
@@ -237,7 +240,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                     title   : "Delete Key Pair"
                     confirm : "Delete"
                     color   : "red"
-                    body    : "<p><b>Are you sure you want to delete #{$li.text()}</b></p><p>Other instance using this key pair will change automatically to use DefaultKP."
+                    body    : "<p class='modal-text-major'>Are you sure you want to delete #{$li.text()}</p><p class='modal-text-minor'>Other instance using this key pair will change automatically to use DefaultKP.</p>"
                 # Ask for confirm
                 modal MC.template.modalApp data
                 $("#btn-confirm").one "click", ()->
@@ -247,6 +250,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 removeKP()
 
             return false
+
+        refreshIPList : ( event ) ->
+            this.model.getEni()
+            $( '#property-network-list' ).html(this.ip_list_template(this.model.attributes))
     }
 
     view = new InstanceView()

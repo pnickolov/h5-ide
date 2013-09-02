@@ -684,7 +684,7 @@ textarea {
 .scrollbar-veritical-wrap,
 .scrollbar-horizontal-wrap {
 	position: absolute;
-	z-index: 30;
+	z-index: 5;
 	background: rgba(100, 100, 100, 0.2);
 	display: none;
 	-webkit-user-select: none;

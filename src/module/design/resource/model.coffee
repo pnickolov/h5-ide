@@ -80,7 +80,12 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                     #sort ami list
                     ami_list.sort (a, b) ->
-                        return if a.osType >= b.osType then 1 else -1
+                        if a.osType > b.osType
+                            return 1
+                        else if a.osType < b.osType
+                            return -1
+                        else
+                            return if a.architecture >= b.architecture then 1 else -1
 
                     # filter nat ami when in classic style
                     quickstart_amis = []

@@ -1137,6 +1137,14 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					component_data = $.extend(true, {}, MC.canvas.VOLUME_JSON.data);
 					component_data.name = option.name;
+
+					//server group
+					component_data.serverGroupName = option.name;
+					component_data.number = 1;
+					component_data.serverGroupUid = group.id;
+					component_data.index = 0;
+
+
 					component_data.resource.Size = option.volumeSize;
 					component_data.resource.AttachmentSet.InstanceId = '@' + option.instance_id + '.resource.InstanceId';
 					component_data.resource.AttachmentSet.VolumeId = '@' + group.id + '.resource.VolumeId';
@@ -1192,6 +1200,13 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
+
+				//server group
+				component_data.serverGroupName = component_data.serverGroupName ? component_data.serverGroupName : option.name;
+				component_data.number = component_data.number ? component_data.number : 1;
+				component_data.serverGroupUid = component_data.serverGroupUid ? component_data.serverGroupUid : group.id;
+				component_data.index = component_data.index ? component_data.index : 0;
+
 				option.volumeSize = component_data.resource.AttachmentSet.Size;
 			}
 
@@ -1817,7 +1832,13 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.ENI_JSON.data);
 				component_data.name = option.name;
+
+				//server group
+				component_data.serverGroupName = option.name;
 				component_data.number = 1;
+				component_data.serverGroupUid = group.id;
+				component_data.index = 0;
+
 
 				var defaultVPCId = MC.aws.aws.checkDefaultVPC();
 				if (!defaultVPCId) {
@@ -1842,7 +1863,13 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
+
+				//server group
+				component_data.serverGroupName = component_data.serverGroupName ? component_data.serverGroupName : option.name;
 				component_data.number = component_data.number ? component_data.number : 1;
+				component_data.serverGroupUid = component_data.serverGroupUid ? component_data.serverGroupUid : group.id;
+				component_data.index = component_data.index ? component_data.index : 0;
+
 
 				if (component_data.resource.Attachment.InstanceId)
 				{
@@ -1858,6 +1885,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = layout.node[group.id];
 				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
+				component_layout.eniList = (component_layout.eniList && component_layout.eniList.length > 0) ? component_layout.eniList : [ group.id ];
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];

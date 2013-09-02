@@ -211,7 +211,7 @@
       return json_data;
     };
     compactInstance = function(json_data, uid) {
-      var comp, comp_data, comp_uid, eni_list, i, ins_comp, ins_num, instance_id, instance_list, instance_ref_list, new_comp, vol_data, vol_list, vol_uid, _i, _len, _ref, _ref1, _ref2;
+      var comp, comp_data, comp_uid, eni_list, i, ins_comp, ins_num, instance_id, instance_list, instance_ref_list, new_comp, remove_idx, vol_data, vol_list, vol_uid, _i, _len, _ref, _ref1, _ref2;
       comp_data = json_data.component;
       ins_comp = comp_data[uid];
       ins_comp.name = ins_comp.serverGroupName;
@@ -239,6 +239,22 @@
         vol_data = vol_list[vol_uid];
         if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume && (_ref2 = comp.resource.AttachmentSet.InstanceId, __indexOf.call(instance_ref_list, _ref2) >= 0)) {
           delete comp_data[comp_uid];
+        }
+      }
+      for (comp_uid in comp_data) {
+        comp = comp_data[comp_uid];
+        if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_ELB) {
+          remove_idx = [];
+          $.each(comp.resource.Instances, function(i, instance_id) {
+            if (__indexOf.call(instance_ref_list, instance_id) >= 0) {
+              return remove_idx.push(i);
+            }
+          });
+          if (remove_idx.length > 0) {
+            $.each(remove.sort().reverse(), function(idx, instance_ref) {
+              return comp.resource.Instances.splice(idx, 1);
+            });
+          }
         }
       }
       if (instance_list.length !== ins_num) {
@@ -275,7 +291,3 @@
   });
 
 }).call(this);
-
-/*
-//@ sourceMappingURL=stack.js.map
-*/

@@ -13,7 +13,7 @@ define [ 'event',
         el                     : $ '#resource-panel'
 
         availability_zone_tmpl : Handlebars.compile $( '#availability-zone-tmpl' ).html()
-        resoruce_snapshot_tmpl : Handlebars.compile $( '#resoruce-snapshot-tmpl' ).html()
+        resource_snapshot_tmpl : Handlebars.compile $( '#resoruce-snapshot-tmpl' ).html()
         quickstart_ami_tmpl    : Handlebars.compile $( '#quickstart-ami-tmpl' ).html()
         my_ami_tmpl            : Handlebars.compile $( '#my-ami-tmpl' ).html()
         favorite_ami_tmpl      : Handlebars.compile $( '#favorite-ami-tmpl' ).html()
@@ -132,7 +132,7 @@ define [ 'event',
             this.model = model
             #listen model
             this.listenTo this.model, 'change:availability_zone', this.availabilityZoneRender
-            this.listenTo this.model, 'change:resoruce_snapshot', this.resourceSnapshotRender
+            this.listenTo this.model, 'change:resource_snapshot', this.resourceSnapshotRender
             this.listenTo this.model, 'change:quickstart_ami',    this.quickstartAmiRender
             this.listenTo this.model, 'change:my_ami',            this.myAmiRender
             this.listenTo this.model, 'change:favorite_ami',      this.favoriteAmiRender
@@ -240,9 +240,9 @@ define [ 'event',
 
         resourceSnapshotRender : () ->
             console.log 'resourceSnapshotRender'
-            console.log this.model.attributes.resoruce_snapshot
-            return if !this.model.attributes.resoruce_snapshot
-            $( '.resoruce-snapshot' ).append this.resoruce_snapshot_tmpl this.model.attributes
+            console.log this.model.attributes.resource_snapshot
+            return if !this.model.attributes.resource_snapshot
+            $( '.resoruce-snapshot' ).append this.resource_snapshot_tmpl this.model.attributes
             null
 
         quickstartAmiRender : () ->

@@ -146,7 +146,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         mapRegionClick : ( event ) ->
             region = event.currentTarget.id
             $( "#region-switch-list li[data-region=#{region}]" ).click()
-            scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': 225 } )
+            scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': $('#global-region-tabbar-wrap')[0].offsetTop - 80 } )
             false
             #this.trigger 'RETURN_REGION_TAB', region
 

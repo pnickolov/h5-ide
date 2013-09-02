@@ -96,6 +96,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
             #listen CANVAS_EIP_STATE_CHANGE
             view.on 'CANVAS_EIP_STATE_CHANGE', ( event, option ) ->
                 model.setEip option.id, option.eip_state
+                ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
                 console.log 'EIP STATE CHANGED: instance: ' + option.id + ', eip_state:' + option.eip_state
                 null
 

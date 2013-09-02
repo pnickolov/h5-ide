@@ -46,7 +46,7 @@
   <div class="option-group" id="dhcp-property-detail" data-type="true">
     <section class="property-control-group">
       <div class="radio property-dhcp">
-        <input id="property-dhcp-none" type="radio" name="dhcp-opts" {{#unless hasDhcp}}checked="checked"  {{/unless}}value="none" />
+        <input id="property-dhcp-none" type="radio" name="dhcp-opts" {{#if dhcp.none}}checked="checked"  {{/if}}value="none" />
         <label for="property-dhcp-none"></label>
       </div>
       <label for="property-dhcp-none">None</label>
@@ -54,7 +54,15 @@
 
     <section class="property-control-group">
       <div class="radio property-dhcp">
-        <input id="property-dhcp-spec" type="radio" name="dhcp-opts" {{#if hasDhcp}}checked="checked"{{/if}} value="specified"/>
+        <input id="property-dhcp-default" type="radio" name="dhcp-opts" {{#if dhcp.default}}checked="checked" {{/if}}value="none" />
+        <label for="property-dhcp-default"></label>
+      </div>
+      <label for="property-dhcp-default">Default</label>
+    </section>
+
+    <section class="property-control-group">
+      <div class="radio property-dhcp">
+        <input id="property-dhcp-spec" type="radio" name="dhcp-opts" {{#unless dhcp.none}}{{#unless dhcp.default}}checked="checked"{{/unless}}{{/unless}} value="specified"/>
         <label for="property-dhcp-spec"></label>
       </div>
       <label for="property-dhcp-spec">Specified DHCP Options Set</label>

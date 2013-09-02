@@ -991,6 +991,7 @@ a {
 }
 
 .global-region-status-tab-item {
+	text-align: center;
 	float: left;
 	height: 145px;
 	width: 195px;
@@ -1019,27 +1020,28 @@ a {
 
 .global-region-status-count-wrap {
 	height: 47px;
-	width: 95px;
 	margin: 45px auto 0;
 	background-repeat: no-repeat;
 	position: relative;
 }
 
 .global-region-status-count {
+	margin-left: 58px;
 	font-size: 36px;
 	color: #e6e6e6;
-	font-family: Nunito-Regular;
-	position: absolute;
-	right: 0;
 	text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
 }
 
-#global-region-status-app {
-	background-image: url('../images/ide/global-region-app.png');
+.global-region-status-icon {
+	position: absolute;
+	width: 50px;
+	height: 47px;
+	background-repeat: no-repeat;
+	background-image: url('../images/ide/global-region-app-stack.png');
 }
 
-#global-region-status-stack {
-	background-image: url('../images/ide/global-region-stack.png');
+.global-region-status-icon-stack {
+	background-position: -50px 0;
 }
 
 #global-region-status-content-wrap {
@@ -1230,6 +1232,7 @@ a {
 }
 
 .global-region-resource-header {
+	text-align: center;
 	background-color: #fff;
 	height: 140px;
 	border-bottom: 1px solid #aaa;
@@ -1248,15 +1251,13 @@ a {
 }
 
 .global-region-resource-count-wrap {
+	display: inline;
 	position: relative;
 	top: 35px;
-	width: 90px;
-	margin: 0 auto;
 }
 
 .global-resource-icon {
 	position: absolute;
-	display: block;
 	width: 55px;
 	height: 55px;
 	background-repeat: no-repeat;
@@ -1264,10 +1265,8 @@ a {
 }
 
 .global-region-resource-count {
+	margin-left: 60px;
 	font-size: 40px;
-	font-family: Nunito-Regular;
-	position: absolute;
-	right: 0;
 }
 
 #global-region-resource-instance,
@@ -1372,6 +1371,7 @@ a {
 	text-align: center;
 	border: 1px solid #ddd;
 	border-bottom: none;
+	background: #F3F3F3;
 }
 
 #region-resource-tab li:first-child a {
@@ -1383,8 +1383,8 @@ a {
 	border-radius: 0 3px 0 0;
 }
 
-#region-resource-tab .on {
-	background: #F3F3F3;
+#region-resource-tab a.on {
+	background: transparent;
 }
 
 .region-resource-tab-type {
@@ -1403,7 +1403,6 @@ a {
 
 .region-resource-tab-number {
 	font-size: 21px;
-	font-family: Nunito-Regular;
 	color: #666;
 }
 
@@ -1608,7 +1607,6 @@ a {
 	top: 15px;
 	position: absolute;
 	font-size: 14px;
-	font-family: Nunito-Regular;
 	right: 45px;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
@@ -1622,6 +1620,10 @@ a {
 
 #region-aws-resource-data {
 	/*height: 340px;*/
+}
+
+#region-aws-resource-data .table-head-fix {
+	display: none;
 }
 
 #region-aws-resource-data .scroll-wrap {
@@ -2262,7 +2264,7 @@ a {
 }
 
 .dashboard-link-list li:after {
-	content: "î€;
+	content: "î€";
 	font-family: "MC-ide";
 	font-size: 12px;
 	color: #ccc;
@@ -3952,8 +3954,7 @@ a.sidebar-hider {
 	width: 65px;
 }
 
-.sg-rule-list .rule-remove-icon,
-.acl-rule-list .rule-remove-icon {
+.rule-remove-icon {
 	display: none;
 	width: 15px;
 	height: 15px;
@@ -3964,15 +3965,13 @@ a.sidebar-hider {
 	cursor: pointer;
 }
 
-.sg-rule-list li:hover .rule-remove-icon,
-.acl-rule-list li:hover .rule-remove-icon {
+li:hover .rule-remove-icon {
 	display: block;
 	color: #666;
 }
 
-.sg-rule-list li:hover .rule-remove-icon:hover,
-.acl-rule-list li:hover .rule-remove-icon:hover {
-	color: #ddd;
+.icon-remove.rule-remove-icon:hover {
+	color: #F74A48;
 }
 
 .rule-direction-icon {
@@ -5495,7 +5494,7 @@ a.action-link:hover {
 }
 
 .property-asg-policy-name {
-	font-weight : bold;
+	/*font-weight : bold;*/
 	font-size   : 16px;
 	cursor      : default;
 }
@@ -5848,7 +5847,7 @@ a.action-link:hover {
 
 .reconnect-session .modal-center-align-helper {
 	padding-left: 9px;
-	padding-top: 20px;
+	/*padding-top: 20px;*/
 }
 
 .disconnected-notification {

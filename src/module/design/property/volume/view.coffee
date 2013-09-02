@@ -38,12 +38,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 this.trigger 'VOLUME_TYPE_IOPS', $( '#iops-ranged' ).val()
 
         deviceNameChanged : ( event ) ->
-            target = $ event.currentTarget
-            name = target.val()
+            target       = $ event.currentTarget
+            name         = target.val()
             devicePrefix = target.prev( 'label' ).text()
-            type = if devicePrefix is '/dev/' then 'linux' else 'windows'
-            id = @model.get( 'volume_detail' ).uid
-            instanceId = MC.canvas_data.component[ id ].resource.AttachmentSet.InstanceId
+            type         = if devicePrefix is '/dev/' then 'linux' else 'windows'
+
+            self = this
 
             target.parsley 'custom', ( val ) ->
                 if not MC.validate.deviceName val, type, true
@@ -52,10 +52,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                     else
                         return "Device name must be like xvd[a-p]."
 
-                isDuplicate = _.some MC.canvas_data.component, ( component ) ->
-                    if component.uid isnt id and component.type is 'AWS.EC2.EBS.Volume' and component.resource.AttachmentSet.InstanceId is instanceId and component.name is val
-                        true
-                if isDuplicate
+                if self.model.isDuplicate val
                     "Volume name '#{val}' is already in using. Please use another one."
 
             if target.parsley 'validate'
@@ -69,28 +66,22 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 this.trigger 'VOLUME_SIZE_CHANGED', size
 
         iopsChanged : ( event ) ->
-            iops_size = $( '#iops-ranged' ).val()
-            volume_size = $( '#volume-size-ranged' ).val()
+            iops_size = parseInt( $( '#iops-ranged' ).val(), 10 )
+            volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
             if(iops_size > 2000 || iops_size < 1 )
                 console.log 'IOPS must be between 100 and 2000'
             else if(iops_size > 10 * volume_size)
                 console.log 'IOPS must be less than 10 times of volume size.'
             else
-                this.trigger 'IOPS_CHANGED', iops_size
+                this.trigger 'IOPS_CHANGED', "" + iops_size
 
         showSnapshotDetail : ( event ) ->
             console.log 'showSnapshotDetail'
-            ###
-            target = $('#snapshot-info-group')
-            secondarypanel.open target, MC.template.snapshotSecondaryPanel target.data('secondarypanel-data')
-            $(document.body).on 'click', '.back', secondarypanel.close
-            ###
 
             target = $('#snapshot-info-group')
-            console.log MC.template.snapshotSecondaryPanel target.data( 'secondarypanel-data' )[ 0 ]
             ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
                 title : $( event.target ).text()
-                dom   : MC.template.snapshotSecondaryPanel target.data( 'secondarypanel-data' )[ 0 ]
+                dom   : MC.template.snapshotSecondaryPanel target.data( 'secondarypanel-data' )
                 id    : 'Snapshot'
             }
             null

@@ -14,7 +14,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
         defaults :
             'availability_zone'  : null
-            'resoruce_snapshot'  : null
+            'resource_snapshot'  : null
             'quickstart_ami'     : null
             'my_ami'             : null
             'favorite_ami'       : null
@@ -31,9 +31,13 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             me.on 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
                 console.log 'EC2_EBS_DESC_SSS_RETURN'
 
+                region_name = result.param[3]
+
                 if !result.is_error
 
-                    me.set 'resoruce_snapshot', result.resolved_data
+                    me.set 'resource_snapshot', result.resolved_data
+                    MC.data.config[region_name].snapshot_list = result.resolved_data
+
                     #
                     me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
 
@@ -220,8 +224,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                     #cache favorite ami item to MC.data.dict_ami
 
 
-                    value.resource_info.instanceType = me._getInstanceType value.resource_info
-                    MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
+                    value.resource_info.instanceType    = me._getInstanceType value.resource_info
+                    value.resource_info.imageId         = value.resource_id
+                    MC.data.dict_ami[value.resource_id] = value.resource_info
 
                     null
 
@@ -370,10 +375,17 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             me = this
 
             #init
-            me.set 'resoruce_snapshot', null
+            me.set 'resource_snapshot', null
 
-            #get service(model)
-            ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,  ["self"], null, null
+            #check cached data
+            if (MC.data.config[region_name] and MC.data.config[region_name].snapshot_list )
+
+                me.set 'resource_snapshot', MC.data.config[region_name].snapshot_list
+
+            else
+
+                #get service(model)
+                ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,  ["self"], null, null
 
         #call service
         quickstartService : ( region_name ) ->
@@ -448,7 +460,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             if stack_ami_list.length !=0
                 ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
 
-        describeCommunityAmiService : ( region_name, name, platform, architecture, rootDeviceType, perPageNum, returnPage ) ->
+        describeCommunityAmiService : ( region_name, name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage ) ->
 
             me = this
 
@@ -464,6 +476,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 ami : {
                     name            :   name
                     platform        :   platform
+                    isPublic        :   isPublic
                     architecture    :   architecture
                     rootDeviceType  :   rootDeviceType
                     perPageNum      :   parseInt(perPageNum, 10)
@@ -481,53 +494,6 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
 
             null
-            #        _.map result.resolved_data.ami, ( value, key ) ->
-            #             if value.isPublic == 'true' then value.isPublic = 'public' else value.isPublic = 'private'
-            #             if value.architecture == 'x86_64' then value.architecture = '64-bit' else value.architecture = '32-bit'
-            #             if value.rootDeviceType == 'ebs' then value.rootDeviceType = 'ebs' else value.rootDeviceType = 'instancestore'
-
-            #             if value.name == undefined or value.name == null
-            #                 value.name = 'None'
-            #             low_case_name = value.name.toLowerCase()
-            #             if 'ubuntu' in low_case_name
-            #                 value.platform = 'ubuntu'
-            #             else if 'centos' in low_case_name
-            #                 value.platform = 'centos'
-            #             else if 'redhat' in low_case_name
-            #                 value.platform = 'redhat'
-            #             else if 'windows' in low_case_name
-            #                 value.platform = 'windows'
-            #             else if 'suse' in low_case_name
-            #                 value.platform = 'suse'
-            #             else if 'amazonlinux' in low_case_name
-            #                 value.platform = 'amazonlinux'
-            #             else if 'fedora' in low_case_name
-            #                 value.platform = 'fedora'
-            #             else if 'gentoo' in low_case_name
-            #                 value.platform = 'gentoo'
-            #             else if 'debian' in low_case_name
-            #                 value.platform = 'debian'
-            #             else
-            #                 value.platform = 'otherlinux'
-
-            #             value.id = key
-            #             value.instance_type = me._getInstanceType value
-
-            #             _.map value, ( val, k ) ->
-
-            #                 if val == ''
-            #                     value[k] = 'None'
-
-            #                 null
-
-            #             ami_list.push value
-
-            #         community_ami[region_name] = ami_list
-            #         me.set 'community_ami', ami_list
-            #         null
-
-            # else
-            #     me.set 'community_ami', community_ami[region_name]
 
         #call service
         favoriteAmiService : ( region_name ) ->

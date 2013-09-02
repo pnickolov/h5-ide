@@ -494,7 +494,14 @@ MC.canvas.add = function (flag, option, coordinate)
 							MC.canvas_data.component[component_layout.originalId].resource.AvailabilityZones.push(layout_group.name);
 						}
 						else{
-							MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier = MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier + ' , @' + option.groupUId + '.resource.SubnetId';
+							var defaultVPC = false;
+							if (MC.aws.aws.checkDefaultVPC()) {
+								defaultVPC = true
+							}
+
+							if (!defaultVPC) {
+								MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier = MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier + ' , @' + option.groupUId + '.resource.SubnetId';
+							}
 						}
 						// if(MC.canvas_data.component[component_layout.originalId].resource.LoadBalancerNames.length > 0){
 						// 	$.each(MC.canvas_data.component[component_layout.originalId].resource.LoadBalancerNames, function(idx, loadbalancername){
@@ -1245,7 +1252,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			{
 				case 'ec2-classic':
 				case 'default-vpc':
-					icon_scheme = 'internet';
+					icon_scheme = 'internal';
 					break;
 				case 'custom-vpc':
 				case 'ec2-vpc':
@@ -1261,7 +1268,6 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.LoadBalancerName = option.name;
 
 				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
-
 					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 					component_data.resource.SecurityGroups.push('@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId');
 
@@ -1425,8 +1431,12 @@ MC.canvas.add = function (flag, option, coordinate)
 			{
 				case 'ec2-classic':
 				case 'default-vpc':
-					MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
-					MC.canvas.display(group.id,'elb_assoc',false);//hide port elb_assoc
+					// MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
+					// MC.canvas.display(group.id,'elb_assoc',false);//hide port elb_assoc
+					if (icon_scheme === "internet")
+					{
+						MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
+					}
 					$('#' + group.id + '_elb_sg_out').attr('transform','translate(84, 39)');//move port to middle
 					break;
 				case 'custom-vpc':

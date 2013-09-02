@@ -318,6 +318,22 @@ define [ 'MC' ], ( MC ) ->
 
 		null
 
+	haveAssociateInAZ = (elbUID, azName) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		elbInstances = elbComp.resource.Instances
+		elbAZs = elbComp.resource.AvailabilityZones
+
+		haveAssociate = false
+		_.each elbInstances, (instanceObj) ->
+			instanceUID = instanceObj.InstanceId.slice(1).split('.')[0]
+			instanceComp = MC.canvas_data.component[instanceUID]
+			instanceAZ = instanceComp.resource.Placement.AvailabilityZone
+			if instanceAZ is azName
+				haveAssociate = true
+
+		return haveAssociate
+
 	#public
 	init                      : init
 	addInstanceAndAZToELB     : addInstanceAndAZToELB
@@ -332,3 +348,4 @@ define [ 'MC' ], ( MC ) ->
 	removeELBDefaultSG		  : removeELBDefaultSG
 	isELBDefaultSG            : isELBDefaultSG
 	removeAllELBForInstance   : removeAllELBForInstance
+	haveAssociateInAZ         : haveAssociateInAZ

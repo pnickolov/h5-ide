@@ -142,7 +142,7 @@
 		{{#each az_detail}}
 		<section class="property-control-group">
 			<div class="checkbox">
-				<input class="property-elb-az-checkbox property-elb-az-{{az_inner_name}}" type="checkbox" {{#if instance_num}}disabled="disabled"{{/if}} {{#if selected}}checked="checked"{{/if}} name="{{az_inner_name}}" id="property-elb-az-{{az_inner_name}}"/>
+				<input class="property-elb-az-checkbox property-elb-az-{{az_inner_name}}" type="checkbox" {{#if disable_selected}}disabled="disabled"{{/if}} {{#if selected}}checked="checked"{{/if}} name="{{az_inner_name}}" id="property-elb-az-{{az_inner_name}}"/>
 				<label for="property-elb-az-{{az_inner_name}}"></label>
 			</div>
 			<label for="property-elb-az-{{az_inner_name}}" class="checkbox-label-main">{{az_name}}</label>

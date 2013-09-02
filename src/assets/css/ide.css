@@ -3241,7 +3241,7 @@ a.sidebar-hider {
 .property-panel-wrapper {
 	height   : 100%;
 	width    : 100%;
-	left     : 0;
+	left     : 0%;
 	top      : 0;
 	position : absolute;
 }

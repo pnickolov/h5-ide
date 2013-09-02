@@ -3,7 +3,7 @@
 ####################################
 
 define [ 'jquery', 'event',
-         'text!./component/awscredential/template.html'
+         'text!./template.html'
 ], ( $, ide_event, template ) ->
 
 

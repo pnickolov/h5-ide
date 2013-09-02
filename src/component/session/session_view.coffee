@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!./component/session/session_template.html'
+         'text!./session_template.html'
          'backbone', 'jquery', 'handlebars',
          'UI.modal'
 ], ( ide_event, session_template ) ->

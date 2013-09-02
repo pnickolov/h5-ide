@@ -3,7 +3,7 @@
 ####################################
 
 define [ 'jquery', 'event',
-         'text!./component/amis/template.html'
+         'text!./template.html'
 ], ( $, ide_event, template ) ->
 
     #private

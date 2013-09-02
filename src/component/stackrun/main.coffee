@@ -3,7 +3,7 @@
 ####################################
 
 define [ 'jquery', 'event',
-         'text!./component/stackrun/template.html'
+         'text!./template.html'
 ], ( $, ide_event, template ) ->
 
     #private

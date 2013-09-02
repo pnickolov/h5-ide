@@ -2734,12 +2734,13 @@ MC.canvas.event.dragable = {
 				return false;
 			}
 
-			if (currentTarget.is('.eip-status'))
-			{
-				MC.canvas.event.EIPstatus.call(event.target);
+			//remove eip-status icon event
+			// if (currentTarget.is('.eip-status'))
+			// {
+			// 	MC.canvas.event.EIPstatus.call(event.target);
 
-				return false;
-			}
+			// 	return false;
+			// }
 
 			if (node_type === 'AWS.VPC.Subnet')
 			{

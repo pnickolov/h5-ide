@@ -302,7 +302,7 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 		if uid
 			MC.canvas.updateSG uid
 		else
-			console.error '[updateSGColorLabel] not found uid: ' + uid
+			# console.error '[updateSGColorLabel] not found uid: ' + uid
 
 		null
 

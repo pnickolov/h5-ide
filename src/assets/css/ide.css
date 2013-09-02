@@ -1198,6 +1198,7 @@ a {
 	width: 1280px;
 	padding: 0 0 20px 0;
 	margin: -15px auto 15px;
+	z-index: 10;
 
 	/*display: none;*/
 }
@@ -1208,6 +1209,7 @@ a {
 	width: 1280px;
 	padding: 0 0 20px 0;
 	margin: 20px auto;
+	z-index: 10;
 }
 
 #global-region-resource-list {
@@ -1453,7 +1455,7 @@ a {
 .region-resource-list-item {
 	display: block;
 	width: 220px;
-	height: 172px;
+/*	height: 172px;*/
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
@@ -1478,6 +1480,8 @@ a {
 
 .region-resource-thumbnail img {
 	border-radius: 5px 5px 0 0;
+	width: 220px;
+	height: 145px;
 }
 
 .nav-new-stack:hover {
@@ -1681,6 +1685,14 @@ a {
 		width: 228px;
 	}
 
+	.region-resource-list {
+		padding: 20px 12px;
+	}
+
+	.region-resource-list li {
+		margin: 0 5px 15px 5px;
+	}
+
 	.global-region-resource-header {
 		height: 125px;
 	}
@@ -1715,6 +1727,103 @@ a {
 	}
 }
 
+@media only screen and (min-width: 1024px) and (max-width: 1260px) {
+	#global-region-map-content,
+	#global-region-tabbar-wrap,
+	#global-view,
+	#region-view {
+		width: 940px;
+	}
+
+	#global-region-map-wrap {
+		height: 920px;
+	}
+
+	#global-region-spot {
+		height: 450px;
+	}
+
+	#global-region-status-widget {
+		width: 100%;
+		position: relative;
+	}
+
+	.global-region-status-tab-item {
+		width: 50%;
+		height: 140px;
+	}
+
+	#global-region-status-tab-wrap {
+		height: 140px;
+	}
+
+	#global-region-status-app-content:before {
+		left: 24%;
+	}
+
+	#global-region-status-stack-content:before {
+		left: 74%;
+	}
+
+	#global-region-resource-list > li {
+		width: 178px;
+	}
+
+	.global-region-resource-header {
+		height: 125px;
+	}
+
+	.global-region-resource-count-wrap {
+		top: 25px;
+	}
+
+	.global-region-resource-header h5 {
+		top: 85px;
+	}
+
+	.global-region-resource-content a {
+		padding: 15px 17px;
+	}
+
+	.global-region-resource-location-count {
+		font-size: 22x;
+	}
+
+	.global-region-resource-content h4  {
+		font-size: 14px;
+	}
+
+	.region-resource-tab-item {
+		width: 104px;
+		padding: 8px 0 15px;
+	}
+
+	.region-resource-count {
+		right: 20px;
+	}
+
+	.region-resource-tab-item:after {
+		left: 45px;
+	}
+
+	.region-resource-list li {
+		margin: 0 10px 15px 10px;
+	}
+
+	.region-resource-list-item {
+		width: 195px;
+	}
+
+	.region-resource-thumbnail {
+		width: 195px;
+		height: 136px;
+	}
+
+	.region-resource-thumbnail img {
+		width: 195px;
+		height: 136px;
+	}
+}
 
 .close-tab {
 	display     : none;
@@ -3235,7 +3344,7 @@ a.sidebar-hider {
 .property-panel-wrapper {
 	height   : 100%;
 	width    : 100%;
-	left     : 0;
+	left     : 0%;
 	top      : 0;
 	position : absolute;
 }

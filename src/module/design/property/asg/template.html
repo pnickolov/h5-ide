@@ -132,7 +132,7 @@
 			<label for="property-asg-sns5">Validating a configuraed SNS Topic</label></div>
 
 	    {{#unless has_sns_topic}}
-			<p class="property-warning hide" id="property-asg-sns-info">
+			<p class="property-warning {{#unless has_notification}}hide{{/unless}}" id="property-asg-sns-info">
 	    	There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.
 	    </p>
 	    {{/unless}}

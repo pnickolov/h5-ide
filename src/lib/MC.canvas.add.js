@@ -875,49 +875,39 @@ MC.canvas.add = function (flag, option, coordinate)
 				//g for sg color label
 				Canvon.group( 0, 0, 100, 9, {} ).append(
 					//sg label
-					Canvon.rectangle(10, 6, 15 , 9).attr({
+					Canvon.rectangle(10, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label1',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label1'
 					}),
-					Canvon.rectangle(26, 6, 15 , 9).attr({
+					Canvon.rectangle(20, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label2',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label2'
 					}),
-					Canvon.rectangle(42, 6, 15 , 9).attr({
+					Canvon.rectangle(30, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label3',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label3'
 					}),
-					Canvon.rectangle(58, 6, 15 , 9).attr({
+					Canvon.rectangle(40, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label4',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label4'
 					}),
-					Canvon.rectangle(74, 6, 15 , 9).attr({
+					Canvon.rectangle(50, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label5',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label5'
 					})
 				).attr({
 					'class': 'node-sg-color-group',
-					'id': group.id + '_node-sg-color-group'
+					'id': group.id + '_node-sg-color-group',
+					'transform': 'translate(8, 62)'
 				}),
 
-
-				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 17, 70, 70),
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 9, 61, 62),
 
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-left',
 					'id' : group.id + '_port-instance-sg-left',
-					'transform': 'translate(8, 32)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
+					'transform': 'translate(8, 18)' + MC.canvas.PORT_RIGHT_ROTATE, //port position: right:0 top:-90 left:-180 bottom:-270
 					'data-name': 'instance-sg', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
 					'data-type': 'sg', //color of line
@@ -941,7 +931,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-instance-sg port-instance-sg-right',
 					'id' : group.id + '_port-instance-sg-right',
-					'transform': 'translate(84, 32)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(76, 18)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'instance-sg',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -953,7 +943,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-instance-attach',
 					'id' : group.id + '_port-instance-attach',
-					'transform': 'translate(84, 58)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(76, 44)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'instance-attach',
 					'data-position': 'right',
 					'data-type': 'attachment',
@@ -965,7 +955,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-instance-rtb',
 					'id' : group.id + '_port-instance-rtb',
-					'transform': 'translate(50, -10)' + MC.canvas.PORT_UP_ROTATE,
+					'transform': 'translate(45, -8)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'instance-rtb',
 					'data-position': 'top',
 					'data-type': 'sg',
@@ -976,29 +966,29 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////7. os_type
-				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30, 33, 39, 27),
+				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30, 15, 39, 27),
 
 				////8.1 volume-attached
-				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 60, 29, 24).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 44, 29, 24).attr({
 					'id': group.id + '_volume_status'
 				}),
 
 				//8.2 volume number
-				Canvon.text(35, 72, volume_number).attr({
+				Canvon.text(35, 56, volume_number).attr({
 					'class': 'node-label volume-number',
 					'id': group.id + '_volume_number',
 					'value': volume_number
 				}),
 
 				//8.3 hot area for volume
-				Canvon.rectangle(21, 60, 29, 24).attr({
+				Canvon.rectangle(21, 44, 29, 24).attr({
 					'class': 'instance-volume',
 					'data-target-id': group.id,
 					'fill': 'none'
 				}),
 
 				////7. eip
-				Canvon.image(eip_icon, 58, 61, 14, 17).attr({
+				Canvon.image(eip_icon, 53, 47, 12, 14).attr({
 					'class': 'eip-status',
 					'data-eip-state': data_eip_state,
 
@@ -1007,13 +997,13 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 				////hostname bg
-				Canvon.rectangle(3, 83, 94, 15).attr({
+				Canvon.rectangle(3, 75, 84, 15).attr({
 					'class': 'node-label-hostname-bg',
 					'rx': 6,
 					'ry': 6
 				}),
 				////10. hostname
-				Canvon.text(50, 94, option.name).attr({
+				Canvon.text(45, 86, option.name).attr({
 					'class': 'node-label node-label-hostname',
 					'id': group.id + '_hostname'
 				}),
@@ -1022,13 +1012,13 @@ MC.canvas.add = function (flag, option, coordinate)
 				////child number
 				Canvon.group().append(
 					////child number in group bg
-					Canvon.rectangle(41, 15, 20, 20).attr({
+					Canvon.rectangle(36, 1, 20, 16).attr({
 						'class': 'instance-number-bg',
 						'rx': 4,
 						'ry': 4
 					}),
 					////child number in group
-					Canvon.text(51, 30, option.number).attr({
+					Canvon.text(46, 13, option.number).attr({
 						'class': 'node-label instance-number',
 						'id': group.id + '_instance-number'
 					})
@@ -1039,7 +1029,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 				////instance-state
-				Canvon.circle(71, 30, 4,{}).attr({
+				Canvon.circle(65, 20, 5,{}).attr({
 					'class': 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState(),
 					'id' : group.id + '_instance-state'
 				})
@@ -1314,43 +1304,33 @@ MC.canvas.add = function (flag, option, coordinate)
 				//g for sg color label
 				Canvon.group( 0, 0, 100, 9, {} ).append(
 					//sg label
-					Canvon.rectangle(10, 6, 15 , 9).attr({
+					Canvon.rectangle(10, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label1',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label1'
 					}),
-					Canvon.rectangle(26, 6, 15 , 9).attr({
+					Canvon.rectangle(20, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label2',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label2'
 					}),
-					Canvon.rectangle(42, 6, 15 , 9).attr({
+					Canvon.rectangle(30, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label3',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label3'
 					}),
-					Canvon.rectangle(58, 6, 15 , 9).attr({
+					Canvon.rectangle(40, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label4',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label4'
 					}),
-					Canvon.rectangle(74, 6, 15 , 9).attr({
+					Canvon.rectangle(50, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label5',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label5'
 					})
 				).attr({
 					'class': 'node-sg-color-group',
 					'id': group.id + '_node-sg-color-group',
-					'transform': 'translate(0, 10)'
+					'transform': 'translate(4, 55)'
 				}),
 
-				Canvon.image(MC.IMG_URL + 'ide/icon/elb-' + icon_scheme + '-canvas.png', 15, 24, 70, 53).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/elb-' + icon_scheme + '-canvas.png', 10, 12, 70, 53).attr({
 					'id' : group.id + '_elb_scheme'
 				}),
 
@@ -1358,7 +1338,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-elb-sg-in',
 					'id' : group.id + '_port-elb-sg-in',
-					'transform': 'translate(8, 39)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(3, 27)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-in',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -1370,7 +1350,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-elb-sg-out',
 					'id' : group.id + '_port-elb-sg-out',
-					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(79, 14)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-sg-out',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -1394,7 +1374,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-elb-assoc',
 					'id' : group.id + '_port-elb-assoc',
-					'transform': 'translate(84, 57)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(79, 45)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'elb-assoc',
 					'data-position': 'right',
 					'data-type': 'association',
@@ -1404,7 +1384,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 				////6. elb_name
-				Canvon.text(50, 86, option.name).attr({
+				Canvon.text(45, 80, option.name).attr({
 					'class': 'node-label name',
 					'id' : group.id + '_elb_name'
 				})
@@ -1927,47 +1907,37 @@ MC.canvas.add = function (flag, option, coordinate)
 				//g for sg color label
 				Canvon.group( 0, 0, 100, 9, {} ).append(
 					//sg label
-					Canvon.rectangle(10, 6, 15 , 9).attr({
+					Canvon.rectangle(10, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label1',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label1'
 					}),
-					Canvon.rectangle(26, 6, 15 , 9).attr({
+					Canvon.rectangle(20, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label2',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label2'
 					}),
-					Canvon.rectangle(42, 6, 15 , 9).attr({
+					Canvon.rectangle(30, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label3',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label3'
 					}),
-					Canvon.rectangle(58, 6, 15 , 9).attr({
+					Canvon.rectangle(40, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label4',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label4'
 					}),
-					Canvon.rectangle(74, 6, 15 , 9).attr({
+					Canvon.rectangle(50, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label5',
-						'rx': 3,
-						'ry': 3
+						'id': group.id + '_sg-color-label5'
 					})
 				).attr({
 					'class': 'node-sg-color-group',
 					'id': group.id + '_node-sg-color-group',
-					'transform': 'translate(0, 12)'
+					'transform': 'translate(8, 62)'
 				}),
 
-				Canvon.image(MC.IMG_URL + 'ide/icon/eni-canvas-'+attached+'.png', 16, 28, 68, 53).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/eni-canvas-'+attached+'.png', 16, 18, 58, 49).attr({
 					'id': group.id + '_eni_status'
 				}),
 
-				Canvon.image(eip_icon, 46, 50, 14, 17).attr({
+				Canvon.image(eip_icon, 43, 40, 12, 14).attr({
 					'id': group.id + '_eip_status',
 					'class': 'eip-status',
 					'data-eip-state': data_eip_state
@@ -1978,7 +1948,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'port port-blue port-eni-sg port-eni-sg-left',
 					'id' : group.id + '_port-eni-sg-left',
 					//'display': 'none', //hide
-					'transform': 'translate(7, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(7, 15)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg',
 					'data-position': 'left',
 					'data-type': 'sg',
@@ -1990,7 +1960,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-green port-eni-attach',
 					'id' : group.id + '_port-eni-attach',
-					'transform': 'translate(7, 52)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(7, 42)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-attach',
 					'data-position': 'left',
 					'data-type': 'attachment',
@@ -2003,7 +1973,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'port port-blue port-eni-sg port-eni-sg-right',
 					'id' : group.id + '_port-eni-sg-right',
 					//'display': 'none', //hide
-					'transform': 'translate(85, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(75, 15)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'eni-sg',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -2015,7 +1985,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-blue port-eni-rtb',
 					'id' : group.id + '_port-eni-rtb',
-					'transform': 'translate(48, 1)' + MC.canvas.PORT_UP_ROTATE,
+					'transform': 'translate(45, 0)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'eni-rtb',
 					'data-position': 'top',
 					'data-type': 'sg',
@@ -2029,13 +1999,13 @@ MC.canvas.add = function (flag, option, coordinate)
 				////child number
 				Canvon.group().append(
 					////child number in group bg
-					Canvon.rectangle(41, 15, 20, 20).attr({
+					Canvon.rectangle(35, 3, 20, 16).attr({
 						'class': 'eni-number-bg',
 						'rx': 4,
 						'ry': 4
 					}),
 					////child number in group
-					Canvon.text(51, 30, option.number).attr({
+					Canvon.text(45, 15, option.number).attr({
 						'class': 'node-label eni-number',
 						'id': group.id + '_eni-number'
 					})
@@ -2046,8 +2016,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 				////6. eni_name
-				Canvon.text(43, 85, option.name, {
-					'text-anchor': 'start' // start, middle(default), end, inherit
+				Canvon.text(45, 85, option.name, {
+					'text-anchor': 'middle' // start, middle(default), end, inherit
 				}).attr({
 					'class': 'node-label name'
 				})

@@ -5,9 +5,10 @@
 define [ 'jquery',
          'text!./template.html',
          'text!./app_template.html',
+         'text!./ip_list_template.html',
          'event',
          'UI.notification'
-], ( $, template, app_template, ide_event ) ->
+], ( $, template, app_template, ip_list_template, ide_event ) ->
 
     #
     current_view     = null
@@ -17,9 +18,11 @@ define [ 'jquery',
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-instance-tmpl">' + template + '</script>'
     app_template = '<script type="text/x-handlebars-template" id="property-instance-app-tmpl">' + app_template + '</script>'
+    ip_list_template = '<script type="text/x-handlebars-template" id="property-ip-list-tmpl">' + ip_list_template + '</script>'
     #load remote html template
     $( 'head' ).append template
     $( 'head' ).append app_template
+    $( 'head' ).append ip_list_template
 
     #private
     loadModule = ( uid, instance_expended_id, current_main, tab_type ) ->
@@ -78,6 +81,9 @@ define [ 'jquery',
                 ide_event.trigger ide_event.RELOAD_PROPERTY
 
             ide_event.trigger ide_event.RELOAD_PROPERTY
+
+            ide_event.onLongListen ide_event.PROPERTY_REFRESH_ENI_IP_LIST, () ->
+                view.refreshIPList()
 
             view.on 'ATTACH_EIP', ( eip_index, attach ) ->
 
@@ -156,7 +162,7 @@ define [ 'jquery',
         current_view.undelegateEvents()
         #
         current_sub_main.unLoadModule()
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+        ide_event.offListen ide_event.PROPERTY_REFRESH_ENI_IP_LIST
 
     #public
     loadModule   : loadModule

@@ -964,6 +964,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-type': 'sg',
 					'data-direction': 'in',
 					'data-angle': MC.canvas.PORT_UP_ANGLE
+				}).attr({
+					'display': (option.number <= 1) ? 'block' : 'none'
 				}),
 
 				////7. os_type
@@ -1864,12 +1866,20 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data = data[group.id];
 				option.name = component_data.name;
 
+				ins_id = component_data.resource.Attachment.InstanceId;
+				if(ins_id){
+					component_data.number = MC.canvas_data.component[ins_id.split('.')[0].slice(1)].number;
+				}
+				else{
+					component_data.number = component_data.number ? component_data.number : 1;
+				}
+
+
 				//server group
 				component_data.serverGroupName = component_data.serverGroupName ? component_data.serverGroupName : option.name;
 				component_data.number = component_data.number ? component_data.number : 1;
 				component_data.serverGroupUid = component_data.serverGroupUid ? component_data.serverGroupUid : group.id;
 				component_data.index = component_data.index ? component_data.index : 0;
-
 
 				if (component_data.resource.Attachment.InstanceId)
 				{
@@ -2001,6 +2011,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-type': 'sg',
 					'data-direction': 'in',
 					'data-angle': MC.canvas.PORT_UP_ANGLE
+				}).attr({
+					'display': (option.number <= 1) ? 'block' : 'none'
 				}),
 
 

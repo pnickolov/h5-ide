@@ -117,7 +117,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                     title   : "Delete Key Pair"
                     confirm : "Delete"
                     color   : "red"
-                    body    : "<p><b>Are you sure you want to delete #{$li.text()}</b></p><p>Other instance using this key pair will change automatically to use DefaultKP."
+                    body    : "<p class='modal-text-major'>Are you sure you want to delete #{$li.text()}</p><p class='modal-text-minor'>Other instance using this key pair will change automatically to use DefaultKP.</p>"
                 # Ask for confirm
                 modal MC.template.modalApp data
                 $("#btn-confirm").one "click", ()->

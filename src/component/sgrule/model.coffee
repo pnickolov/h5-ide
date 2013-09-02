@@ -520,7 +520,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                 $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-                    if comp.name == rule.name
+                    if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup and comp.name == rule.name
 
                         $.each rule.rule, ( i, delete_rule ) ->
 

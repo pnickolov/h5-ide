@@ -15,6 +15,7 @@ define [ 'event',
         tagName  : $ '.property-details'
 
         template : Handlebars.compile $( '#property-eni-tmpl' ).html()
+        ip_list_template : Handlebars.compile $( '#property-eni-ip-list-tmpl' ).html()
 
         events   :
 
@@ -28,6 +29,8 @@ define [ 'event',
         render     : () ->
             console.log 'property:eni render'
             $('.property-details').html this.template this.model.attributes
+
+            $( '#property-eni-list' ).html(this.ip_list_template(this.model.attributes))
 
         setEniDesc : ( event ) ->
 
@@ -108,6 +111,11 @@ define [ 'event',
                 null
 
             this.trigger 'SET_IP_LIST', currentAvailableIPAry
+
+        refreshIPList : ( event ) ->
+            eniUID = this.model.get 'uid'
+            this.model.getENIDisplay(eniUID)
+            $( '#property-eni-list' ).html(this.ip_list_template(this.model.attributes))
 
     }
 

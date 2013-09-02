@@ -5,8 +5,9 @@
 define [ 'jquery',
          'text!/module/design/property/eni/template.html',
          'text!/module/design/property/eni/app_template.html',
+         'text!/module/design/property/eni/ip_list_template.html',
          'event'
-], ( $, template, app_template, ide_event ) ->
+], ( $, template, app_template, ip_list_template, ide_event ) ->
 
     #
     current_view  = null
@@ -15,9 +16,11 @@ define [ 'jquery',
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-eni-tmpl">' + template + '</script>'
     app_template = '<script type="text/x-handlebars-template" id="property-eni-app-tmpl">' + app_template + '</script>'
+    ip_list_template = '<script type="text/x-handlebars-template" id="property-eni-ip-list-tmpl">' + ip_list_template + '</script>'
 
     #load remote html template
     $( 'head' ).append( template ).append( app_template )
+    $( 'head' ).append( template ).append( ip_list_template )
 
     #private
     loadModule = ( uid, current_main, tab_type ) ->
@@ -53,6 +56,9 @@ define [ 'jquery',
             view.render()
             # Set title
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.eni_display.name
+
+            ide_event.onLongListen ide_event.PROPERTY_REFRESH_ENI_IP_LIST, () ->
+                view.refreshIPList()
 
             if not model.attributes.association
                 sglist_main.loadModule model
@@ -110,7 +116,7 @@ define [ 'jquery',
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
-        #ide_event.offListen ide_event.<EVENT_TYPE>
+        ide_event.offListen ide_event.PROPERTY_REFRESH_ENI_IP_LIST
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public

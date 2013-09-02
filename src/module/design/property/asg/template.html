@@ -59,7 +59,7 @@
 	<div class="option-group">
 		<section class="property-control-group pos-r property-term-p">
 			<h5>Termination Policy</h5>
-			<p class="termination-policy-brief">{{term_policy_brief}}</p>
+			<div class="termination-policy-brief">{{term_policy_brief}}</div>
 			<div class="asg-p-action"><i class="icon-edit tooltip" data-tooltip="Edit Termination Policy" id="property-asg-term-edit"></i></div>
 		</section>
 
@@ -132,7 +132,7 @@
 			<label for="property-asg-sns5">Validating a configuraed SNS Topic</label></div>
 
 	    {{#unless has_sns_topic}}
-			<p class="property-warning hide" id="property-asg-sns-info">
+			<p class="property-warning {{#unless has_notification}}hide{{/unless}}" id="property-asg-sns-info">
 	    	There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.
 	    </p>
 	    {{/unless}}

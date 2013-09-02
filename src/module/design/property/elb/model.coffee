@@ -137,8 +137,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 keyAry[1] = keyAry[1][0].toUpperCase() + keyAry[1].slice(1)
                 keyStr = keyAry.join(' ')
 
+                disable_selected = MC.aws.elb.haveAssociateInAZ(uid, key)
+
                 azObjAry.push({
                     az_name: keyStr,
+                    az_inner_name: key,
+                    disable_selected: disable_selected,
                     instance_num: value,
                     selected: selected
                 })

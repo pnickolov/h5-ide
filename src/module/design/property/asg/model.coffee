@@ -194,7 +194,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
 
       for comp_uid, comp of MC.canvas_data.component
-        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
           @set "has_sns_topic", true
 
         else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
@@ -217,6 +217,8 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
           if 'autoscaling:TEST_NOTIFICATION' in type
             nc_array[4] = true
+
+          @set "has_notification", true
 
         else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
 

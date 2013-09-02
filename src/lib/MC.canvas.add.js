@@ -964,6 +964,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-type': 'sg',
 					'data-direction': 'in',
 					'data-angle': MC.canvas.PORT_UP_ANGLE
+				}).attr({
+					'display': (option.number <= 1) ? 'block' : 'none'
 				}),
 
 				////7. os_type
@@ -1978,6 +1980,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					'data-type': 'sg',
 					'data-direction': 'in',
 					'data-angle': MC.canvas.PORT_UP_ANGLE
+				}).attr({
+					'display': (option.number <= 1) ? 'block' : 'none'
 				}),
 
 

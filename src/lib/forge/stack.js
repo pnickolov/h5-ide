@@ -135,3 +135,7 @@
   });
 
 }).call(this);
+
+/*
+//@ sourceMappingURL=stack.js.map
+*/

@@ -64,7 +64,7 @@ var constant_data = {
 		'AWS.VPC.VPC': [60, 60], //[width, height]
 		'AWS.EC2.AvailabilityZone': [22, 22],
 		'AWS.VPC.Subnet': [18, 18],
-		'AWS.AutoScaling.Group' : [14, 14]
+		'AWS.AutoScaling.Group' : [13, 13]
 	},
 
 	SG_MAX_NUM: 5,
@@ -135,7 +135,7 @@ var constant_data = {
 	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 12 l 2 0 l 6 -6 z", //triangle
 	PATH_D_PORT2: "M 10 8 l -6 -6 l -6 6 l 6 6 l 6 -6 z", //diamond
 
-	PATH_ASG_TITLE: "M 0 20 l 0 -15 a 5 5 0 0 1 5 -5 l 130 0 a 5 5 0 0 1 5 5 l 0 15 z",
+	PATH_ASG_TITLE: "M 0 20 l 0 -15 a 5 5 0 0 1 5 -5 l 120 0 a 5 5 0 0 1 5 5 l 0 15 z",
 
 
 	PORT_PADDING: 4, //port padding (to point of junction)

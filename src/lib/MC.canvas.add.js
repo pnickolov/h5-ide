@@ -460,10 +460,6 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 
-				size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
-				option.width = size[0];
-				option.height = size[1];
-
 				//init component data
 				if (option['originalId'])
 				{//expand ASG
@@ -565,9 +561,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
 
-				option.width = component_layout.size[0];
-				option.height = component_layout.size[1];
+
 			}
+
+			size = MC.canvas.GROUP_DEFAULT_SIZE[ type ];
+			option.width = size[0];
+			option.height = size[1];
 
 			width = option.width * MC.canvas.GRID_WIDTH,
 			height = option.height * MC.canvas.GRID_HEIGHT;
@@ -611,10 +610,10 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//prompt
 				Canvon.group().append(
-					Canvon.text(30, 45, 'Drop AMI from'),
-					Canvon.text(25, 65, 'resource panel to'),
-					Canvon.text(35, 85, 'create launch'),
-					Canvon.text(35, 105, 'configuration')
+					Canvon.text(25, 45, 'Drop AMI from'),
+					Canvon.text(20, 65, 'resource panel to'),
+					Canvon.text(30, 85, 'create launch'),
+					Canvon.text(30, 105, 'configuration')
 				).attr({
 					'class': 'prompt_text',
 					'id': group.id + '_prompt_text',
@@ -664,7 +663,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					$(group).append(
 						////1bg
-						Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15 + offset_x, 11 + offset_y, 70, 70),
+						Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15 + offset_x, 11 + offset_y, 61, 62),
 						////2os_type
 						Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30 + offset_x, 15 + offset_y, 39, 27),
 						////3lc name
@@ -688,7 +687,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 							'class': 'port-blue port-launchconfig-sg port-launchconfig-sg-right',//remove 'port' class to remove event
 							'id' : group.id + '_port-launchconfig-sg-right',
-							'transform': 'translate(' + (84 + offset_x) +' , ' + (26 + offset_y) + ')' + MC.canvas.PORT_RIGHT_ROTATE,
+							'transform': 'translate(' + (74 + offset_x) +' , ' + (26 + offset_y) + ')' + MC.canvas.PORT_RIGHT_ROTATE,
 							'data-name': 'launchconfig-sg',
 							'data-position': 'right',
 							'data-type': 'sg',
@@ -2189,7 +2188,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'rx': 5,
 					'ry': 5
 				}),
-				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 11, 70, 70),
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 11, 61, 62),
 
 				//2 path: left port(blue)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
@@ -2207,7 +2206,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT2).attr({
 					'class': 'port port-blue port-launchconfig-sg port-launchconfig-sg-right',
 					'id' : group.id + '_port-launchconfig-sg-right',
-					'transform': 'translate(84, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
+					'transform': 'translate(75, 26)' + MC.canvas.PORT_RIGHT_ROTATE,
 					'data-name': 'launchconfig-sg',
 					'data-position': 'right',
 					'data-type': 'sg',
@@ -2216,28 +2215,28 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////7. os_type
-				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30, 15, 39, 27),
+				Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 28, 15, 39, 27),
 
 				////8.1 volume-attached
-				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 35, 48, 29, 24).attr({
+				Canvon.image(MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 33, 46, 29, 24).attr({
 					'id': group.id + '_volume_status'
 				}),
 
 				////8.2 volume number
-				Canvon.text(49, 60, volume_number).attr({
+				Canvon.text(47, 60, volume_number).attr({
 					'class': 'node-label volume-number',
 					'id': group.id + '_volume_number'
 				}),
 
 				//8.3 hot area for volume
-				Canvon.rectangle(35, 48, 29, 24).attr({
+				Canvon.rectangle(33, 48, 29, 24).attr({
 					'class': 'instance-volume',
 					'data-target-id': group.id,
 					'fill': 'none'
 				}),
 
 				////10. lc name
-				Canvon.text(50, 90, option.name).attr({
+				Canvon.text(45, 90, option.name).attr({
 					'class': 'name' + (MC.canvas.getState()==='stack' ? ' node-label' : ' node-launchconfiguration-label'),
 					'id': group.id + '_lc_name'
 				})

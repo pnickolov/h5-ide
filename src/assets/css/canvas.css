@@ -622,7 +622,7 @@
 }
 
 .eip-status {
-/*	cursor: pointer;*/
+	cursor: pointer;
 }
 
 #instance_volume_list {

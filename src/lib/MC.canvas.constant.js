@@ -823,7 +823,8 @@ var constant_data = {
 			"rootDeviceType": "", //ebs|instance-store
 			"groupUId": "",
 			"connection": [],
-			"instanceList": [] //store uid of each instance in server group
+			"instanceList": [], //store uid of each instance in server group
+			"volumeList" : {}
 		},
 		data:
 		{

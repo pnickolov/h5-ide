@@ -321,7 +321,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                     in_sg_rule = {
                         "IpProtocol": rule_data.protocol
-                        "IpRanges": "amazon-elb-sg"
+                        "IpRanges": "amazon-elb/amazon-elb-sg"
                         "FromPort": from_port
                         "ToPort": to_port
                     }

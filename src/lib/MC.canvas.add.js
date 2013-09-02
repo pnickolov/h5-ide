@@ -1149,7 +1149,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 					component_data.resource.Size = option.volumeSize;
 					component_data.resource.AttachmentSet.InstanceId = '@' + option.instance_id + '.resource.InstanceId';
-					component_data.resource.AttachmentSet.VolumeId = '@' + group.id + '.resource.VolumeId';
+					//component_data.resource.AttachmentSet.VolumeId = '@' + group.id + '.resource.VolumeId';
 					component_data.resource.AvailabilityZone = MC.canvas_data.component[option.instance_id].resource.Placement.AvailabilityZone;
 					component_data.resource.SnapshotId = option.snapshotId;
 

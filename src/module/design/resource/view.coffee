@@ -25,17 +25,18 @@ define [ 'event',
 
             #listen
             $( document )
-                .on( 'click',            '#hide-resource-panel',              this.toggleResourcePanel )
-                .on( 'OPTION_CHANGE',    '#resource-select',            this, this.resourceSelectEvent )
-                .on( 'SEARCHBAR_SHOW',   '#resource-select',                  this.searchBarShowEvent )
-                .on( 'SEARCHBAR_HIDE',   '#resource-select',                  this.searchBarHideEvent )
-                .on( 'SEARCHBAR_CHANGE', '#resource-select',                  this.searchBarChangeEvent )
-                .on( 'click',            '#btn-browse-community-ami',   this, this.openBrowseCommunityAMIsModal )
-                .on( 'click',            '#btn-search-ami',             this, this.searchCommunityAmiCurrent )
-                .on( 'click',            '#community_ami_page_preview', this, this.searchCommunityAmiPreview )
-                .on( 'click',            '#community_ami_page_next',    this, this.searchCommunityAmiNext )
-                .on( 'click',            '#community_ami_table .toggle-fav',                 this, this.toggleFav )
-                .on( 'click',            '.favorite-ami-list .faved', this, this.removeFav )
+                .on( 'click',            '#hide-resource-panel',                      this.toggleResourcePanel )
+                .on( 'OPTION_CHANGE',    '#resource-select',                    this, this.resourceSelectEvent )
+                .on( 'SEARCHBAR_SHOW',   '#resource-select',                          this.searchBarShowEvent )
+                .on( 'SEARCHBAR_HIDE',   '#resource-select',                          this.searchBarHideEvent )
+                .on( 'SEARCHBAR_CHANGE', '#resource-select',                          this.searchBarChangeEvent )
+                .on( 'click',            '#btn-browse-community-ami',           this, this.openBrowseCommunityAMIsModal )
+                .on( 'click',            '#btn-search-ami',                     this, this.searchCommunityAmiCurrent )
+                .on( 'click',            '#community_ami_page_preview',         this, this.searchCommunityAmiPreview )
+                .on( 'click',            '#community_ami_page_next',            this, this.searchCommunityAmiNext )
+                .on( 'click',            '#community_ami_table .toggle-fav',    this, this.toggleFav )
+                .on( 'click',            '.favorite-ami-list .faved',           this, this.removeFav )
+                .on( 'keypress',         '#community-ami-input',                this, this.searchCommunityAmiCurrent)
 
             $( window ).on "resize", _.bind( this.resizeAccordion, this )
             $( "#tab-content-design" ).on "click", ".fixedaccordion-head", this.updateAccordion
@@ -321,12 +322,12 @@ define [ 'event',
                 this_tr = ""
                 _.map this.model.attributes.community_ami.result, ( value, key ) ->
                     fav_class = if value.favorite then 'faved' else ''
-                    bit = '64'
-                    if value.architecture == 'i386' then bit = '32'
+                    bit         = if value.architecture == 'i386' then '32' else '64'
+                    visibility  = if value.isPublic then 'public' else 'private'
                     this_tr += '<tr class="item" data-id="'+key+' '+value.name+'" data-publicprivate="public" data-platform="'+value.osType+'" data-ebs="'+value.rootDeviceType+'" data-bit="'+bit+'">'
                     this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="add to Favorite" data-id="'+key+'"></div></td>'
                     this_tr += '<td class="ami-table-id">'+key+'</td>'
-                    this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-ubuntu icon-ami-os"></i><span>public | '+value.architecture+' | '+value.rootDeviceType+'</span></div></td>'
+                    this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-ubuntu icon-ami-os"></i><span>' + visibility + ' | ' + value.architecture + ' | ' + value.rootDeviceType + '</span></div></td>'
                     this_tr += "<td class='ami-table-arch'>#{bit}</td></tr>"
                     # <tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
                     #                     <td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
@@ -394,7 +395,7 @@ define [ 'event',
                 visibility      = radiobuttons.data($('#filter-ami-type'))
                 isPublic = if visibility is 'Private' then 'false' else 'true'
             else if $('#filter-ami-type').find('.active').length is 2
-                isPublic = 'false'
+                isPublic = null
 
             if $('#filter-ami-32bit-64bit').find('.active').length is 1
                 architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
@@ -412,6 +413,10 @@ define [ 'event',
 
 
         searchCommunityAmiCurrent : ( event ) ->
+
+            #check enter key
+            if event.keyCode and event.keyCode isnt 13
+                return
 
             resourceView = event.data
             event.data.searchCommunityAmi 0

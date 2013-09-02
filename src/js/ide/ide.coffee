@@ -8,7 +8,7 @@ define [ 'MC', 'event', 'handlebars'
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
 		 'WS', 'constant',
 		 'base_model',
-		 'aws_handle'
+		 'aws_handle', 'forge_handle'
 ], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model ) ->
 
 	console.info canvas_layout

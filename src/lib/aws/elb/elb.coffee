@@ -1,4 +1,4 @@
-define [ 'MC' ], ( MC ) ->
+define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 	#private
 	init = (uid) ->
@@ -195,6 +195,47 @@ define [ 'MC' ], ( MC ) ->
 		elb.resource.AvailabilityZones = az_arr
 		null
 
+	# Returns subnets that should be linked
+	addLCToELB = ( elb_uid, lc_uid ) ->
+
+		components = MC.canvas_data.component
+
+		for uid, comp of components
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+				if comp.resource.LaunchConfigurationName.indexOf( lc_uid ) isnt -1
+					asg = comp
+					break
+
+		if not asg
+			return []
+
+		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) isnt -1
+			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerNames"
+
+		subnets = asg.resource.VPCZoneIdentifier.split ","
+		subnets = _.map subnets, MC.extractID
+
+		azs = {}
+		for sb in subnets
+			azs[ components[ sb ].resource.AvailabilityZone ] = sb
+
+		elb_res = components[ elb_uid ].resource
+
+		for az in elb_res.AvailabilityZones
+			delete azs[ az ]
+
+		subnets = []
+		linkedSubnets = elb_res.Subnets.join " "
+		for az, sb of azs
+			elb_res.AvailabilityZones.push az
+			if linkedSubnets.indexOf( sb ) is -1
+				subnets.push sb
+				elb_res.Subnets.push "@#{sb}.resource.SubnetId"
+
+
+		# Returns subnets that should linked to the elb
+		subnets
+
 	updateRuleToElbSG = (elbUID) ->
 
 		if !MC.aws.vpc.getVPCUID() then return
@@ -346,11 +387,12 @@ define [ 'MC' ], ( MC ) ->
 	setAllELBSchemeAsInternal : setAllELBSchemeAsInternal
 	addSubnetToELB            : addSubnetToELB
 	removeSubnetFromELB       : removeSubnetFromELB
+	addLCToELB                : addLCToELB
 	getNewName                : getNewName
 	getElbDefaultSG           : getElbDefaultSG
 	updateRuleToElbSG         : updateRuleToElbSG
-	getAllElbSGUID			  : getAllElbSGUID
-	removeELBDefaultSG		  : removeELBDefaultSG
+	getAllElbSGUID            : getAllElbSGUID
+	removeELBDefaultSG        : removeELBDefaultSG
 	isELBDefaultSG            : isELBDefaultSG
 	removeAllELBForInstance   : removeAllELBForInstance
 	haveAssociateInAZ         : haveAssociateInAZ

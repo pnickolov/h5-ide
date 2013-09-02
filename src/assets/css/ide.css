@@ -5495,7 +5495,9 @@ a.action-link:hover {
 }
 
 .property-asg-policy-name {
-	cursor: default;
+	font-weight : bold;
+	font-size   : 16px;
+	cursor      : default;
 }
 
 #property-asg-policy-add {

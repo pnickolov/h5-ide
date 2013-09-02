@@ -1002,6 +1002,7 @@ textarea {
 	font-size: 16px;
 	color: #666;
 	margin-bottom: 10px;
+	font-weight: bold;
 }
 
 .modal-text-minor {
@@ -1054,7 +1055,7 @@ textarea {
 }
 
 .resource-name-label {
-	font-style: bold;
+	font-weight: bold;
 	color: #B25B91;
 }
 

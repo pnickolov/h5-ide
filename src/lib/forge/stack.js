@@ -87,7 +87,7 @@
       return null;
     };
     expandENI = function(json_data, uid) {
-      var az, comp_data, eni_comp_number, eni_list, eni_number, i, instance_list, instance_uid, layout_data, new_eni_uid, server_group_name, _ref;
+      var az, comp_data, eni_comp_number, eni_list, eni_name, eni_number, i, instance_list, instance_uid, layout_data, new_eni_uid, server_group_name, _ref;
       comp_data = json_data.component;
       layout_data = json_data.layout;
       instance_uid = json_data.component[uid].resource.Attachment.InstanceId;
@@ -96,6 +96,7 @@
         console.error("Eni(" + uid + ") do not attach to any instance");
       }
       server_group_name = json_data.component[instance_uid].serverGroupName;
+      eni_name = json_data.component[uid].name;
       instance_list = json_data.layout.component.node[instance_uid].instanceList;
       eni_number = json_data.component[instance_uid].number;
       if ((_ref = comp_data[uid].resource.Attachment.DeviceIndex) === 0 || _ref === '0') {
@@ -125,12 +126,13 @@
           origin_eni.uid = eni_uid;
           origin_eni.index = idx;
           origin_eni.number = eni_number;
-          origin_eni.name = (_ref1 = "" + server_group_name + "-" + idx, __indexOf.call(origin_eni.name, _ref1) < 0) ? "" + server_group_name + "-" + idx + "-" + origin_eni.name : origin_eni.name;
+          origin_eni.serverGroupENIName = eni_name;
+          origin_eni.name = (_ref1 = "" + server_group_name + "-" + idx, __indexOf.call(eni_name, _ref1) < 0) ? "" + server_group_name + "-" + idx + "-" + eni_name : eni_name;
           attach_instance = "@" + instance_list[idx] + ".resource.InstanceId";
           origin_eni.resource.Attachment.InstanceId = attach_instance;
           return comp_data[eni_uid] = origin_eni;
         } else {
-          json_data.component[eni_uid].name = (_ref2 = "" + server_group_name + "-" + idx, __indexOf.call(json_data.component[eni_uid].name, _ref2) < 0) ? "" + server_group_name + "-" + idx + "-" + json_data.component[eni_uid].name : json_data.component[eni_uid].name;
+          json_data.component[eni_uid].name = (_ref2 = "" + server_group_name + "-" + idx, __indexOf.call(json_data.component[eni_uid].name, _ref2) < 0) ? "" + server_group_name + "-" + idx + "-" + eni_name : json_data.component[eni_uid].name;
           return json_data.component[eni_uid].number = eni_number;
         }
       });

@@ -127,6 +127,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		server_group_name = json_data.component[instance_uid].serverGroupName
 
+		eni_name = json_data.component[ uid ].name
+
 		instance_list = json_data.layout.component.node[ instance_uid ].instanceList
 
 		eni_number = json_data.component[instance_uid].number
@@ -174,7 +176,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				origin_eni.number = eni_number
 
-				origin_eni.name = if "#{server_group_name}-#{idx}" not in origin_eni.name then "#{server_group_name}-#{idx}-#{origin_eni.name}" else origin_eni.name
+				origin_eni.serverGroupENIName = eni_name
+
+				origin_eni.name = if "#{server_group_name}-#{idx}" not in eni_name then "#{server_group_name}-#{idx}-#{eni_name}" else eni_name
 
 				attach_instance = "@#{instance_list[idx]}.resource.InstanceId"
 
@@ -183,7 +187,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				comp_data[eni_uid] = origin_eni
 			else
 
-				json_data.component[eni_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[eni_uid].name then "#{server_group_name}-#{idx}-#{json_data.component[eni_uid].name}" else json_data.component[eni_uid].name
+				json_data.component[eni_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[eni_uid].name then "#{server_group_name}-#{idx}-#{eni_name}" else json_data.component[eni_uid].name
 
 				json_data.component[eni_uid].number = eni_number
 

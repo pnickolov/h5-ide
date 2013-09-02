@@ -51,9 +51,11 @@ a {
 
 .lh30  { line-height : 30px; }
 
-.hide  { display: none; }
-.left  { float: left; }
-.right { float: right; }
+.hide  { display : none; }
+.left  { float   : left; }
+.right { float   : right; }
+
+.tac   { text-align : center; }
 
 .capitalize { text-transform: capitalize;}
 

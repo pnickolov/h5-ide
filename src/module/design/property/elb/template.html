@@ -8,7 +8,7 @@
 			<input data-ignore="true" data-required-rollback="true" max-length="32" class="input elb-name"  type="text" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 		</section>
 
-		{{# if component.resource.VpcId}}
+		{{# if have_vpc}}
 		<section class="property-control-group" id="property-control-group-elb-scheme">
       <label class="left">Scheme</label>
       <div class="context elb-scheme-type-radio">
@@ -152,7 +152,7 @@
 	</div>
 	{{/if}}
 
-	{{# if component.resource.VpcId}}
+	{{# if have_vpc}}
 	<div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
 	<div class="option-group sg-group">loading...</div>
 	{{/if}}

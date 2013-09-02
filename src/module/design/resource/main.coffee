@@ -53,15 +53,19 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.DISABLE_RESOURCE_ITEM, ( type, filter ) ->
                 view.disableItem type, filter
 
-            view.on 'LOADING_COMMUNITY_AMI', ( region_name, pageNum ) ->
-                name = $('#community-ami-input').val()
-                platform = $('#selectbox-ami-platform').find('.selected').data('id')
-                architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
-                rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
-                page = parseInt $('#community_ami_page_current').attr("page"), 10
-                totalPage = parseInt $('#community_ami_page_current').attr("totalPage"), 10
+            view.on 'LOADING_COMMUNITY_AMI', ( region, name, platform, isPublic, architecture, rootDeviceType, perPageNum, pageNum ) ->
+                # name = $('#community-ami-input').val()
+                # platform = $('#selectbox-ami-platform').find('.selected').data('id')
+                # architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
+                # rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
+                # page = parseInt $('#community_ami_page_current').attr("page"), 10
+                # totalPage = parseInt $('#community_ami_page_current').attr("totalPage"), 10
 
-                model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
+                # model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
+
+                console.log 'LOADING_COMMUNITY_AMI'
+
+                model.describeCommunityAmiService region, name, platform, isPublic, architecture, rootDeviceType, perPageNum, pageNum
 
             view.on 'TOGGLE_FAV', ( region_name, action, amiId ) ->
                 if action is 'add'

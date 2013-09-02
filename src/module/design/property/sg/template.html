@@ -51,7 +51,7 @@
 			{{#each sg_detail.component.resource.IpPermissionsEgress}}
 			<li data-inbound="false" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}" data-direction="outbound">
 				<div class="rule-list-row">
-					<div class='rule-direction-icon tooltip icon-outbound' data-tooltip="Inbound"></div>
+					<div class='rule-direction-icon tooltip icon-outbound' data-tooltip="Outbound"></div>
 					<div class='rule-reference tooltip' data-tooltip="Source/Destination">{{ip_display}}</div>
 				</div>
 				<div class="rule-list-row">

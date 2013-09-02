@@ -13,7 +13,7 @@
 {{/each}}
 
 <!--{{ .resoruce-snapshot-data }}-->
-{{#each resoruce_snapshot.item }}
+{{#each resource_snapshot.item }}
 <li>
 	<div class="resource-item bubble"  data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{ snapshotId }}","startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}"}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"name": "/dev/sdf", "volumeSize":"{{ volumeSize }}", "snapshotId": "{{ snapshotId }}"}'>
 		<div class="resource-icon resource-icon-ebs-snapshot"><span class="ebs-size">{{volumeSize}} GB</span></div>

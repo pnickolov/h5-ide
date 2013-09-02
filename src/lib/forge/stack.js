@@ -1,4 +1,6 @@
 (function() {
+  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
   define(['jquery', 'MC', 'constant'], function($, MC, constant) {
     var compactInstance, compactServerGroup, expandENI, expandInstance, expandServerGroup, expandVolume;
     expandServerGroup = function(canvas_data) {
@@ -9,21 +11,28 @@
       res_type = constant.AWS_RESOURCE_TYPE;
       for (uid in comp_data) {
         comp = comp_data[uid];
-        switch (comp.type) {
-          case res_type.AWS_EC2_Instance:
-            expandInstance(json_data, uid);
-            break;
-          case res_type.AWS_VPC_NetworkInterface:
+        if (comp.type === res_type.AWS_EC2_Instance) {
+          expandInstance(json_data, uid);
+        }
+      }
+      if (canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC) {
+        for (uid in comp_data) {
+          comp = comp_data[uid];
+          if (comp.type === res_type.AWS_VPC_NetworkInterface) {
             expandENI(json_data, uid);
-            break;
-          case res_type.AWS_EBS_Volume:
-            expandVolume(json_data, uid);
+          }
+        }
+      }
+      for (uid in comp_data) {
+        comp = comp_data[uid];
+        if (comp.type === res_type.AWS_EBS_Volume) {
+          expandVolume(json_data, uid);
         }
       }
       return json_data;
     };
     expandInstance = function(json_data, uid) {
-      var comp_data, i, ins_comp, ins_num, instance_list, new_comp, server_group_name;
+      var comp, comp_data, comp_uid, elb, elbs, i, ins_comp, ins_num, instance_list, instance_reference, new_comp, server_group_name, _i, _len, _ref;
       comp_data = json_data.component;
       ins_comp = comp_data[uid];
       ins_num = ins_comp.number;
@@ -41,6 +50,17 @@
           i++;
         }
       }
+      instance_reference = "@" + ins_comp + ".resource.InstanceId";
+      elbs = [];
+      _ref = MC.canvas_data.component;
+      for (comp_uid in _ref) {
+        comp = _ref[comp_uid];
+        if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_ELB) {
+          if (__indexOf.call(comp.resource.Instances, instance_reference) >= 0) {
+            elbs.push(comp_uid);
+          }
+        }
+      }
       if (ins_num) {
         i = 1;
         while (i < ins_num) {
@@ -53,6 +73,12 @@
           new_comp.index = i;
           comp_data[new_comp.uid] = new_comp;
           i++;
+          if (elbs.length > 0) {
+            for (_i = 0, _len = elbs.length; _i < _len; _i++) {
+              elb = elbs[_i];
+              json_data.component[elb].resource.Instances.push("@" + new_comp.uid + ".resource.InstanceId");
+            }
+          }
         }
       } else {
         console.error('[expandInstance] can not found number of instance');
@@ -61,17 +87,105 @@
       return null;
     };
     expandENI = function(json_data, uid) {
-      var comp_data, eni_list, layout_data;
+      var az, comp_data, eni_comp_number, eni_list, eni_number, i, instance_list, instance_uid, layout_data, new_eni_uid, server_group_name, _ref;
       comp_data = json_data.component;
       layout_data = json_data.layout;
-      eni_list = [];
+      instance_uid = json_data.component[uid].resource.Attachment.InstanceId;
+      instance_uid = instance_uid ? instance_uid.split('.')[0].slice(1) : null;
+      if (!instance_uid) {
+        console.error("Eni(" + uid + ") do not attach to any instance");
+      }
+      server_group_name = json_data.component[instance_uid].serverGroupName;
+      instance_list = json_data.layout.component.node[instance_uid].instanceList;
+      eni_number = json_data.component[instance_uid].number;
+      if ((_ref = comp_data[uid].resource.Attachment.DeviceIndex) === 0 || _ref === '0') {
+        eni_list = json_data.component[instance_uid].eniList = [uid];
+      } else {
+        eni_list = json_data.layout.component.node[uid].eniList;
+      }
+      eni_comp_number = eni_list.length;
+      if (eni_comp_number > eni_number) {
+        i = eni_number;
+        while (i > eni_comp_number) {
+          eni_list.splice(i - 1, 1);
+          i--;
+        }
+      } else if (eni_number > eni_comp_number) {
+        i = 0;
+        while (i < eni_number - 1) {
+          new_eni_uid = MC.guid();
+          eni_list.push(new_eni_uid);
+          i++;
+        }
+      }
+      $.each(eni_list, function(idx, eni_uid) {
+        var attach_instance, origin_eni, _ref1, _ref2;
+        if (!json_data.component[eni_uid]) {
+          origin_eni = $.extend(true, {}, json_data.component[uid]);
+          origin_eni.uid = eni_uid;
+          origin_eni.index = idx;
+          origin_eni.number = eni_number;
+          origin_eni.name = (_ref1 = "" + server_group_name + "-" + idx, __indexOf.call(origin_eni.name, _ref1) < 0) ? "" + server_group_name + "-" + idx + "-" + origin_eni.name : origin_eni.name;
+          attach_instance = "@" + instance_list[idx] + ".resource.InstanceId";
+          origin_eni.resource.Attachment.InstanceId = attach_instance;
+          return comp_data[eni_uid] = origin_eni;
+        } else {
+          json_data.component[eni_uid].name = (_ref2 = "" + server_group_name + "-" + idx, __indexOf.call(json_data.component[eni_uid].name, _ref2) < 0) ? "" + server_group_name + "-" + idx + "-" + json_data.component[eni_uid].name : json_data.component[eni_uid].name;
+          return json_data.component[eni_uid].number = eni_number;
+        }
+      });
+      if (MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.DEFAULT_VPC) {
+        az = layout_data.groupUId;
+        MC.aws.subnet.updateAllENIIPList(az);
+      } else {
+        MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1));
+      }
       return null;
     };
     expandVolume = function(json_data, uid) {
-      var comp_data, layout_data, volume_list;
+      var comp_data, i, instance_list, instance_uid, layout_data, new_vol_uid, server_group_name, vol_comp_number, vol_list, vol_number;
       comp_data = json_data.component;
       layout_data = json_data.layout;
-      volume_list = [];
+      instance_uid = json_data.component[uid].resource.AttachmentSet.InstanceId;
+      instance_uid = instance_uid ? instance_uid.split('.')[0].slice(1) : null;
+      if (!instance_uid) {
+        console.error("Volume(" + uid + ") do not attach to any instance");
+      }
+      server_group_name = json_data.component[instance_uid].serverGroupName;
+      instance_list = json_data.layout.component.node[instance_uid].instanceList;
+      vol_number = json_data.component[instance_uid].number;
+      vol_list = comp_data[uid].resource.volumeList;
+      vol_comp_number = vol_list.length;
+      if (vol_comp_number > vol_number) {
+        i = vol_number;
+        while (i > vol_comp_number) {
+          vol_list.splice(i - 1, 1);
+          i--;
+        }
+      } else if (vol_number > vol_comp_number) {
+        i = 0;
+        while (i < vol_number - 1) {
+          new_vol_uid = MC.guid();
+          vol_list.push(new_vol_uid);
+          i++;
+        }
+      }
+      $.each(vol_list, function(idx, vol_uid) {
+        var attach_instance, origin_eni, _ref, _ref1;
+        if (!json_data.component[vol_uid]) {
+          origin_eni = $.extend(true, {}, json_data.component[uid]);
+          origin_eni.uid = vol_uid;
+          origin_eni.index = idx;
+          origin_eni.number = vol_number;
+          origin_eni.name = (_ref = "" + server_group_name + "-" + idx, __indexOf.call(origin_eni.name, _ref) < 0) ? "" + server_group_name + "-" + idx + "-" + origin_eni.name : origin_eni.name;
+          attach_instance = "@" + instance_list[idx] + ".resource.InstanceId";
+          origin_eni.resource.AttachmentSet.InstanceId = attach_instance;
+          return comp_data[vol_uid] = origin_eni;
+        } else {
+          json_data.component[vol_uid].name = (_ref1 = "" + server_group_name + "-" + idx, __indexOf.call(json_data.component[vol_uid].name, _ref1) < 0) ? "" + server_group_name + "-" + idx + "-" + json_data.component[vol_uid].name : json_data.component[vol_uid].name;
+          return json_data.component[vol_uid].number = vol_number;
+        }
+      });
       return null;
     };
     compactServerGroup = function(canvas_data) {
@@ -135,3 +249,7 @@
   });
 
 }).call(this);
+
+/*
+//@ sourceMappingURL=stack.js.map
+*/

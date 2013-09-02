@@ -80,17 +80,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         showSnapshotDetail : ( event ) ->
             console.log 'showSnapshotDetail'
-            ###
-            target = $('#snapshot-info-group')
-            secondarypanel.open target, MC.template.snapshotSecondaryPanel target.data('secondarypanel-data')
-            $(document.body).on 'click', '.back', secondarypanel.close
-            ###
 
             target = $('#snapshot-info-group')
-            console.log MC.template.snapshotSecondaryPanel target.data( 'secondarypanel-data' )[ 0 ]
             ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
                 title : $( event.target ).text()
-                dom   : MC.template.snapshotSecondaryPanel target.data( 'secondarypanel-data' )[ 0 ]
+                dom   : MC.template.snapshotSecondaryPanel target.data( 'secondarypanel-data' )
                 id    : 'Snapshot'
             }
             null

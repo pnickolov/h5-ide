@@ -7,35 +7,11 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
     VolumeModel = Backbone.Model.extend {
 
         defaults :
-            'volume_detail'    : null
-            'get_xxx'    : null
+            'volume_detail' : null
+            'get_xxx'       : null
 
         initialize : ->
             #listen
-            #this.listenTo this, 'change:get_host', this.getHost
-
-            me = this
-
-            #listen EC2_EBS_DESC_SSS_RETURN
-            me.on 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
-
-                if $.isEmptyObject result.resolved_data.item.description
-
-                    result.resolved_data.item.description = 'None'
-
-                if not result.resolved_data.item.volumeId
-
-                    result.resolved_data.item.volumeId = 'None'
-
-                volume_detail.snapshot = JSON.stringify result.resolved_data.item
-
-                me.set 'volume_detail', volume_detail
-
-                me.trigger "REFRESH_PANEL"
-
-                null
-
-
 
         getVolume : ( uid ) ->
 
@@ -72,8 +48,6 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
 
                         volume_detail.isLC = true
 
-                        me.set 'volume_detail', volume_detail
-
                         return false
 
 
@@ -94,19 +68,22 @@ define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) 
                 else
                     volume_detail.editName = volume_detail.resource.AttachmentSet.Device.slice(5)
 
-                me.set 'volume_detail', volume_detail
 
-            if volume_detail.resource
+            snapshot_list = MC.data.config[MC.canvas.data.get('region')].snapshot_list
+            if volume_detail.resource and volume_detail.resource.SnapshotId
+                ssid = volume_detail.resource.SnapshotId
 
-                if volume_detail.resource.SnapshotId
+            else if volume_detail.Ebs and volume_detail.Ebs.SnapshotId
+                ssid = volume_detail.Ebs.SnapshotId
 
-                    ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), volume_detail.resource.AvailabilityZone.slice(0,-1), [volume_detail.resource.SnapshotId]
+            if ssid
+                for item in snapshot_list.item
+                    if item.snapshotId is ssid
+                        volume_detail.snapshot = JSON.stringify item
+                        break
 
-            if volume_detail.Ebs
-
-                if volume_detail.Ebs.SnapshotId
-
-                    ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, [volume_detail.Ebs.SnapshotId]
+            me.set 'volume_detail', volume_detail
+            null
 
         setDeviceName : ( uid, name ) ->
 

@@ -144,8 +144,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             null
 
         mapRegionClick : ( event ) ->
-            console.log 'mapRegionClick'
-            this.trigger 'RETURN_REGION_TAB', event.currentTarget.id
+            region = event.currentTarget.id
+            $( "#region-switch-list li[data-region=#{region}]" ).click()
+            scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': 225 } )
+            false
+            #this.trigger 'RETURN_REGION_TAB', region
+
 
         createStackClick : ( event ) ->
             console.log 'dashboard region create stack'

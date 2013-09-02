@@ -276,7 +276,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					newAZ = parent.resource.AvailabilityZone
 				else
 					newAZ = parent.name
-				
+
 				component.resource.Placement.AvailabilityZone = newAZ
 
 				instanceUID = component.uid
@@ -1175,6 +1175,11 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					# Delete line
 					this.deleteObject null, { type : "line", id : i.line }
 					break
+
+			else if portMap['launchconfig-sg'] and portMap['elb-sg-out']
+				linkedSubnets = MC.aws.elb.addLCToELB portMap['elb-sg-out'], portMap['launchconfig-sg']
+				for sb in linkedSubnets
+					MC.canvas.connect portMap['elb-sg-out'], "elb-assoc", sb, "subnet-assoc-in"
 
 			# Instance <==> Eni
 			else if portMap['instance-attach'] and portMap['eni-attach']

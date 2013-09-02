@@ -37,10 +37,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinp
             'change #property-dns-hostname'   : 'onChangeDnsHostname'
             'OPTION_CHANGE #property-tenancy' : 'onChangeTenancy'
 
-            'click #property-dhcp-none'       : 'onRemoveDhcp'
-            'click #property-amazon-dns'      : 'onChangeAmazonDns'
+            'click #property-dhcp-none'    : 'onRemoveDhcp'
+            'click #property-dhcp-default' : 'onRemoveDhcp'
+            'click #property-dhcp-spec'    : 'onUseDHCP'
+            'click #property-amazon-dns'   : 'onChangeAmazonDns'
 
-            'change #property-dhcp-spec'                : 'onUseDHCP'
             'change .property-control-group-sub .input' : 'onChangeDhcpOptions'
             'OPTION_CHANGE #property-netbios-type'      : 'onChangeDhcpOptions'
             'REMOVE_ROW #property-dhcp-options'         : 'onChangeDhcpOptions'
@@ -106,9 +107,13 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinp
             null
 
         onRemoveDhcp : ( event ) ->
+
+            isDefault = $( event.currentTarget ).closest("section").find("input").attr("id") is "property-dhcp-default"
+
             $("#property-dhcp-desc").show()
             $("#property-dhcp-options").hide()
-            this.model.removeDhcp()
+
+            this.model.removeDhcp isDefault
 
             # if noDhcp
             #     this.notChangingDHCP = true

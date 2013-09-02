@@ -964,8 +964,10 @@ var constant_data = {
 			"uid": "",
 			"type": "AWS.EC2.EBS.Volume",
 			"name": "/dev/sdf", //if number >1 then it's server group name
-			"number": 1,//if number >1 then it's server group
-			"index": 0, //index in server group
+			"serverGroupUid": "", 	//uid of servergroup(index is 0)
+			"serverGroupName": "",  //name of servergroup
+			"number": 1,			//if number >1 then it's server group
+			"index": 0, 			//index in server group
 			"resource":
 			{
 				"VolumeId": "",
@@ -1275,8 +1277,10 @@ var constant_data = {
 			"uid": "",
 			"type": "AWS.VPC.NetworkInterface",
 			"name": "eni1", //if number >1 then it's server group name
-			"number": 1,//if number >1 then it's server group
-			"index": 0, //index in server group
+			"serverGroupUid": "", 	//uid of servergroup(index is 0)
+			"serverGroupName": "",  //name of servergroup
+			"number": 1,			//if number >1 then it's server group
+			"index": 0, 			//index in server group
 			"resource":
 			{
 				"PrivateIpAddressSet": [

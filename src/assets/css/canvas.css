@@ -813,7 +813,7 @@
 
 .node-sg-color-border {
 	stroke: white;
-	stroke-width: 2px;
+	stroke-width: 0px;
 }
 
 .node-label-rtb-name {

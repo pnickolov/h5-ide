@@ -14,15 +14,15 @@ var constant_data = {
 
 	COMPONENT_SIZE:
 	{
-		'AWS.ELB': [10, 10],
-		'AWS.EC2.Instance': [10, 10],
+		'AWS.ELB': [9, 9],
+		'AWS.EC2.Instance': [9, 9],
 		'AWS.EC2.EBS.Volume': [10, 10],
-		'AWS.VPC.NetworkInterface': [10, 10],
+		'AWS.VPC.NetworkInterface': [9, 9],
 		'AWS.VPC.CustomerGateway': [17, 10],
 		'AWS.VPC.RouteTable': [8, 8],
 		'AWS.VPC.InternetGateway': [8, 8],
 		'AWS.VPC.VPNGateway': [8, 8],
-		'AWS.AutoScaling.LaunchConfiguration': [10, 10]
+		'AWS.AutoScaling.LaunchConfiguration': [9, 9]
 	},
 
 	COMPONENT_TYPE:

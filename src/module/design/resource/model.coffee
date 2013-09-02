@@ -14,7 +14,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
         defaults :
             'availability_zone'  : null
-            'resoruce_snapshot'  : null
+            'resource_snapshot'  : null
             'quickstart_ami'     : null
             'my_ami'             : null
             'favorite_ami'       : null
@@ -31,9 +31,13 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             me.on 'EC2_EBS_DESC_SSS_RETURN', ( result ) ->
                 console.log 'EC2_EBS_DESC_SSS_RETURN'
 
+                region_name = result.param[3]
+
                 if !result.is_error
 
-                    me.set 'resoruce_snapshot', result.resolved_data
+                    me.set 'resource_snapshot', result.resolved_data
+                    MC.data.config[region_name].snapshot_list = result.resolved_data
+
                     #
                     me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
 
@@ -371,10 +375,17 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             me = this
 
             #init
-            me.set 'resoruce_snapshot', null
+            me.set 'resource_snapshot', null
 
-            #get service(model)
-            ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,  ["self"], null, null
+            #check cached data
+            if (MC.data.config[region_name] and MC.data.config[region_name].snapshot_list )
+
+                me.set 'resource_snapshot', MC.data.config[region_name].snapshot_list
+
+            else
+
+                #get service(model)
+                ebs_model.DescribeSnapshots { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,  ["self"], null, null
 
         #call service
         quickstartService : ( region_name ) ->

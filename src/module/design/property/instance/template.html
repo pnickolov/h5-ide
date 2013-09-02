@@ -19,7 +19,7 @@
 		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-instance-count" >Number of Instance</label>
 			<span class="required-input right">Required</span>
-			<input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" data-tooltip="If the quantity is more than 1, host name will be the string you provide plus number index."/>
+			<input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="You cannot specify instance number, since the instance is connected to a route-table."{{else}}data-tooltip="If the quantity is more than 1, host name will be the string you provide plus number index."{{/if}}/>
 		</section>
 		<section class="property-control-group">
 			<label>AMI</label>
@@ -168,18 +168,7 @@
 					<button id="instance-ip-add" class="right btn btn-blue btn-small" title="Add IP Address">Add IP</button>
 				</div>
 				<ul class="network-list" id="property-network-list">
-					{{#each eni_display.eni_ips}}
-					<li class="input-ip-item">
-						<div class="name tooltip" data-tooltip={{#ifCond ../number 1}}"Specify an IP address or leave it as .x to automatically assign an IP."{{else}}"Automatically assigned IP."{{/ifCond}}>
-							<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}</label>
-							<input type="text" class="input input-ip" {{#ifCond ../number 1}}{{else}}disabled="disabled"{{/ifCond}} value="{{suffix}}" id="instance-ip-1">
-						</div>
 
-						<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip{{#if has_eip}} associated{{/if}}" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-
-						{{#unless Primary}}<div class="icon-remove"></div>{{/unless}}
-					</li>
-					{{/each}}
 				</ul>
 			</div>
 		</section>

@@ -54,7 +54,7 @@
     <ul id="property-asg-policies" class="property-list">
       {{#each policies}}
       <li class="pos-r" data-uid="{{uid}}">
-        <h5 class="property-asg-policy-name" title="Policy Name">{{name}}</h5>
+        <div class="property-asg-policy-name" title="Policy Name">{{name}}</div>
         <span class="asg-p-metric asg-p-tag" title="Alarm Metric">{{metric}}</span>
         <span class="asg-p-eval asg-p-tag" title="Threshold">{{evaluation}} {{threshold}}{{unit}}</span>
         <span class="asg-p-periods asg-p-tag" title="Evaluation Period x Periords">{{periods}}x{{second}}s</span>

@@ -9,15 +9,26 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		layout_data = json_data.layout
 		res_type    = constant.AWS_RESOURCE_TYPE
 
+		# expand instance firt
 		for uid, comp of comp_data
 
-			switch comp.type
+			if comp.type is res_type.AWS_EC2_Instance
 
-				when res_type.AWS_EC2_Instance         then expandInstance json_data, uid
+				expandInstance json_data, uid
 
-				when res_type.AWS_VPC_NetworkInterface then expandENI json_data, uid
+		if canvas_data.platform isnt MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-				when res_type.AWS_EBS_Volume           then expandVolume json_data, uid
+			for uid, comp of comp_data
+
+				if comp.type is res_type.AWS_VPC_NetworkInterface
+
+					expandENI json_data, uid
+
+		for uid, comp of comp_data
+
+			if comp.type is res_type.AWS_EBS_Volume
+
+				expandVolume json_data, uid
 
 		json_data
 
@@ -48,7 +59,18 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				i++
 
+		# collect using elb
+		instance_reference = "@#{ins_comp}.resource.InstanceId"
 
+		elbs = []
+
+		for comp_uid, comp of MC.canvas_data.component
+
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+
+				if instance_reference in comp.resource.Instances
+
+					elbs.push comp_uid
 
 		if ins_num
 
@@ -71,6 +93,13 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				comp_data[ new_comp.uid ] = new_comp
 				i++
+
+				if elbs.length > 0
+
+					for elb in elbs
+
+						json_data.component[elb].resource.Instances.push "@#{new_comp.uid}.resource.InstanceId"
+
 		else
 
 			#error
@@ -85,12 +114,90 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	expandENI = ( json_data, uid ) ->
 
 		comp_data   = json_data.component
+
 		layout_data = json_data.layout
 
-		eni_list = []
+		instance_uid = json_data.component[uid].resource.Attachment.InstanceId
+
+		instance_uid = if instance_uid then instance_uid.split('.')[0][1...] else null
+
+		if not instance_uid
+
+			console.error "Eni(#{uid}) do not attach to any instance"
+
+		server_group_name = json_data.component[instance_uid].serverGroupName
+
+		instance_list = json_data.layout.component.node[ instance_uid ].instanceList
+
+		eni_number = json_data.component[instance_uid].number
+
+		if comp_data[ uid ].resource.Attachment.DeviceIndex in [0,'0']
+
+			eni_list = json_data.component[instance_uid].eniList = [ uid ]
+
+		else
+			eni_list = json_data.layout.component.node[ uid ].eniList
+
+		eni_comp_number = eni_list.length
+
+		if eni_comp_number > eni_number
+
+			i = eni_number
+
+			while i > eni_comp_number
+
+				eni_list.splice (i-1), 1
+
+				i--
+
+		else if eni_number > eni_comp_number
+
+			i = 0
+
+			while i < eni_number-1
+
+				new_eni_uid = MC.guid()
+
+				eni_list.push new_eni_uid
+
+				i++
+
+		$.each eni_list, ( idx, eni_uid ) ->
+
+			if not json_data.component[eni_uid]
+
+				origin_eni = $.extend true, {}, json_data.component[uid]
+
+				origin_eni.uid = eni_uid
+
+				origin_eni.index = idx
+
+				origin_eni.number = eni_number
+
+				origin_eni.name = if "#{server_group_name}-#{idx}" not in origin_eni.name then "#{server_group_name}-#{idx}-#{origin_eni.name}" else origin_eni.name
+
+				attach_instance = "@#{instance_list[idx]}.resource.InstanceId"
+
+				origin_eni.resource.Attachment.InstanceId = attach_instance
+
+				comp_data[eni_uid] = origin_eni
+			else
+
+				json_data.component[eni_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[eni_uid].name then "#{server_group_name}-#{idx}-#{json_data.component[eni_uid].name}" else json_data.component[eni_uid].name
+
+				json_data.component[eni_uid].number = eni_number
 
 
+		# generate eni ip
+		if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
 
+			az = layout_data.groupUId
+
+			MC.aws.subnet.updateAllENIIPList(az)
+
+		else
+
+			MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1))
 
 		#return
 		null
@@ -99,11 +206,73 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	expandVolume = ( json_data, uid ) ->
 
 		comp_data   = json_data.component
+
 		layout_data = json_data.layout
 
-		volume_list = []
+		instance_uid = json_data.component[uid].resource.AttachmentSet.InstanceId
 
+		instance_uid = if instance_uid then instance_uid.split('.')[0][1...] else null
 
+		if not instance_uid
+
+			console.error "Volume(#{uid}) do not attach to any instance"
+
+		server_group_name = json_data.component[instance_uid].serverGroupName
+
+		instance_list = json_data.layout.component.node[ instance_uid ].instanceList
+
+		vol_number = json_data.component[instance_uid].number
+
+		vol_list = comp_data[ uid ].resource.volumeList
+
+		vol_comp_number = vol_list.length
+
+		if vol_comp_number > vol_number
+
+			i = vol_number
+
+			while i > vol_comp_number
+
+				vol_list.splice (i-1), 1
+
+				i--
+
+		else if vol_number > vol_comp_number
+
+			i = 0
+
+			while i < vol_number-1
+
+				new_vol_uid = MC.guid()
+
+				vol_list.push new_vol_uid
+
+				i++
+
+		$.each vol_list, ( idx, vol_uid ) ->
+
+			if not json_data.component[vol_uid]
+
+				origin_eni = $.extend true, {}, json_data.component[uid]
+
+				origin_eni.uid = vol_uid
+
+				origin_eni.index = idx
+
+				origin_eni.number = vol_number
+
+				origin_eni.name = if "#{server_group_name}-#{idx}" not in origin_eni.name then "#{server_group_name}-#{idx}-#{origin_eni.name}" else origin_eni.name
+
+				attach_instance = "@#{instance_list[idx]}.resource.InstanceId"
+
+				origin_eni.resource.AttachmentSet.InstanceId = attach_instance
+
+				comp_data[vol_uid] = origin_eni
+			else
+
+				json_data.component[vol_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[vol_uid].name then "#{server_group_name}-#{idx}-#{json_data.component[vol_uid].name}" else json_data.component[vol_uid].name
+
+				json_data.component[vol_uid].number = vol_number
 
 
 		#return

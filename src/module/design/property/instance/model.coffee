@@ -76,10 +76,25 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 		getName  : () ->
 			console.log 'getName'
-			component = MC.canvas_data.component[ this.get( 'get_uid' )]
+
+			instance_uid = this.get( 'get_uid' )
+			component = MC.canvas_data.component[ instance_uid ]
 
 			this.set 'name',   component.name
+
+			# Instance count
 			this.set 'number', component.number
+			this.set 'number_disable', false
+			for uid, comp of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+					connected = false
+					for route in comp.resource.RouteSet
+						if route.InstanceId.indexOf( instance_uid ) isnt -1
+							connected = true
+							break
+					if connected
+						this.set 'number_disable', true
+						break
 			null
 
 		setCount : ( val ) ->

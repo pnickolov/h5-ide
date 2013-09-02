@@ -94,6 +94,7 @@
 	position: absolute;
 	right: 5px;
 	opacity: 0.5;
+	font-size: 18px;
 }
 
 .sortable:after {

@@ -254,7 +254,6 @@ body {
 }
 
 /* Hide Selection */
-
 ::selection {
 	background: transparent;
 }

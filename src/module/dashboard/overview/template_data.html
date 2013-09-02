@@ -1,78 +1,508 @@
 <!--{{ .overview-result }}-->
-    {{#each result_list.region_infos }}
-    <li id="{{ region_name }}">
-        <a href="javascript:void(0)">
-        <i class="icon-map-spot"></i>
-        <span>{{ region_city }}</span>
-        <div class="map-tooltip">
-        <span class="{{pointer}}"></span>
-        <div class="map-tooltip-body truncate">
-        <ul class="dashboard-widget-regions-stat">
-            {{#if running_app }}
-                <li class="dashboard-running-app-stat tooltip" data-tooltip="Running App"><i class="icon-app-running-min"></i>{{ running_app }}</li>
-            {{/if}}
-            {{#if stopped_app }}
-                <li class="dashboar-stopped-app-stat tooltip" data-tooltip="Stopped App"><i class="icon-app-stopped-min"></i>{{ stopped_app }}</li>
-            {{/if}}
-            {{#if stack }}
-                <li class="dashboard-stack-stat tooltip" data-tooltip="Stack"><i class="icon-stack-min tooltip"></i>{{ stack }}</li>
-            {{/if}}
-        </ul>
-        </div>
-        </div>
-        </a>
-        </li>
-    {{/each}}
+{{#each result_list.region_infos }}
+<li id="{{ region_name }}">
+    <i class="icon-map-spot"></i>
+    <a href="javascript:void(0)" title="California Dashboard">
+        <div class="global-region-location-info">
+            <h5>{{ region_city }}</h5>
+            <div class="global-region-location-data clearfix">
+                <div class="global-region-location-data-item">
+                    <i class="global-region-location-data-icon global-region-location-app"></i>
+                    <span>{{app}}</span>
+                </div>
 
-<!--{{ .overview-empty }}-->
-    {{#each region_empty_list }}
-        <li id="{{ region_name }}" class="unused">
-        <a href="javascript:void(0)" title="{{ region_city }} Dashboard"><i class="icon-map-spot"></i>{{ region_city }}</a>
-        </li>
-    {{/each}}
-
-<!--{{ .stat-info }}-->
-    <div class="dashboard-global-stat">
-    {{#if result_list }}
-        <span class="dashboard-global-stat-app"><span class="global-stat-counter">{{ result_list.total_app }}</span>App{{ result_list.plural_app }}</span>
-        <span class="dashboard-global-stat-stack"><span class="global-stat-counter">{{ result_list.total_stack }}</span>Stack{{ result_list.plural_stack }}</span>
-    {{else}}
-        <span class="dashboard-global-stat-app"><span class="global-stat-counter">0</span>App</span>
-        <span class="dashboard-global-stat-stack"><span class="global-stat-counter">0</span>Stack</span>
-    {{/if}}
-    </div>
-    {{#if result_list }}
-        <p>over <span class="dashboard-global-stat-region-counter">{{ result_list.total_aws }} </span> AWS region{{ result_list.plural_aws }}.</p>
-    {{else}}
-        <p>over <span class="dashboard-global-stat-region-counter"> 0 </span> AWS region.</p>
-    {{/if}}
-
-<!--{{ .platform-attr }}-->
-    {{#each region_classic_list }}
-    <li data-region="{{region}}">
-        <a href="javascript:void(0)">{{ region_name }}
-            <div class="region-platform-wrap">
-                {{#if classic}}
-                    <span class="region-platform-classic tooltip" data-tooltip="EC2-classic" data-tooltip="EC2-Classic">{{classic}}</span>
-                {{/if}}
-                {{#if vpc}}
-                    <span class="region-platform-vpc tooltip" data-tooltip="EC2-vpc" data-tooltip="EC2-VPC">{{vpc}}</span>
-                {{/if}}
+                <div class="global-region-location-data-item">
+                    <i class="global-region-location-data-icon global-region-location-stack"></i>
+                    <span>{{ stack }}</span>
+                </div>
             </div>
-        </a>
-    </li>
-    {{/each}}
+        </div>
+    </a>
+</li>
+{{/each}}
 
-<!--{{ .recent-edited-stack }}-->
-{{#if recent_edited_stacks}}
-<ul class="dashboard-recent-list">
-    {{#each recent_edited_stacks }}
-    <li><a href="javascript:void(0);" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}'>{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-    {{/each}}
-</ul>
-{{else}}
-<div class="blank-widget">No recent edited stack in last 30 days.</div>
-{{/if}}
+<!--{{ .global-list }}-->
+<div id="global-region-resource-data-wrap">
+    <ul id="global-region-resource-list" class="clearfix">
+        {{#with global_list.DescribeInstances}}
+            <li id="global-region-resource-instance">
+                <div class="global-region-resource-header">
+                    <h5>Running Instance</h5>
+                    <div class="global-region-resource-count-wrap">
+                        <i id="global-resource-icon-instance" class="global-resource-icon"></i>
+                        <span class="global-region-resource-count">{{total}}</span>
+                    </div>
+                </div>
+
+                <div class="global-region-resource-content">
+                    <ul>
+                        {{#each data}}
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <h4>{{city}}</h4>
+                                    <h5>{{area}}</h5>
+                                    <span class="global-region-resource-location-count">{{total}}</span>
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </li>
+        {{/with}}
+
+        {{#with global_list.DescribeAddresses}}
+            <li id="global-region-resource-eip">
+                <div class="global-region-resource-header">
+                    <h5>Elastic IP</h5>
+                    <div class="global-region-resource-count-wrap">
+                        <i id="global-resource-icon-eip" class="global-resource-icon"></i>
+                        <span class="global-region-resource-count">{{total}}</span>
+                    </div>
+                </div>
+
+                <div class="global-region-resource-content">
+                    <ul>
+                        {{#each data}}
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <h4>{{city}}</h4>
+                                    <h5>{{area}}</h5>
+                                    <span class="global-region-resource-location-count">{{total}}</span>
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </li>
+        {{/with}}
+
+        {{#with global_list.DescribeVolumes}}
+        <li id="global-region-resource-volume">
+            <div class="global-region-resource-header">
+                <h5>Volume</h5>
+                <div class="global-region-resource-count-wrap">
+                    <i id="global-resource-icon-vol" class="global-resource-icon"></i>
+                    <span class="global-region-resource-count">{{total}}</span>
+                </div>
+            </div>
+
+            <div class="global-region-resource-content">
+                <ul>
+                    {{#each data}}
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h4>{{city}}</h4>
+                                <h5>{{area}}</h5>
+                                <span class="global-region-resource-location-count">{{total}}</span>
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </li>
+        {{/with}}
+
+        {{#with global_list.DescribeLoadBalancers}}
+            <li id="global-region-resource-elb">
+                <div class="global-region-resource-header">
+                    <h5>Load Balancer</h5>
+                    <div class="global-region-resource-count-wrap">
+                        <i id="global-resource-icon-elb" class="global-resource-icon"></i>
+                        <span class="global-region-resource-count">{{total}}</span>
+                    </div>
+                </div>
+
+                <div class="global-region-resource-content">
+                    <ul>
+                        {{#each data}}
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <h4>{{city}}</h4>
+                                    <h5>{{area}}</h5>
+                                    <span class="global-region-resource-location-count">{{total}}</span>
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </li>
+        {{/with}}
+
+        {{#with global_list.DescribeLoadBalancers}}
+            <li id="global-region-resource-vpn"> <div class="global-region-resource-header"> <h5>VPN</h5>
+                    <div class="global-region-resource-count-wrap">
+                        <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
+                        <span class="global-region-resource-count">{{total}}</span>
+                    </div>
+                </div>
+
+                <div class="global-region-resource-content">
+                    <ul>
+                        {{#each data}}
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <h4>{{city}}</h4>
+                                    <h5>{{area}}</h5>
+                                    <span class="global-region-resource-location-count">{{total}}</span>
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </li>
+        {{/with}}
+    </ul>
+</div>
+
+
+<!--{{ .region-app-stack }}-->
+<!-- Region App & Stack -->
+    <!-- Resource tab -->
+    <div id="region-resource-tab">
+        <ul class="clearfix">
+            <li>
+                <a href="javascript:void(0)">
+                    <i class="region-resource-tab-icon region-resource-icon-app"></i>
+                    <span class="region-resource-tab-number">{{#if cur_app_list}}{{ cur_app_list.length }}{{else}}0{{/if}}</span>
+                    <span class="region-resource-tab-type">App</span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="on">
+                    <i class="region-resource-tab-icon region-resource-icon-stack"></i>
+                    <span class="region-resource-tab-number">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span>
+                    <span class="region-resource-tab-type">Stack</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- Resource tab -->
+
+    <!-- Resource App -->
+    <div id="region-resource-app-wrap" class="region-resource-list">
+        <div class="scroll-wrap" style="max-height:335px">
+            <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+            <div class="scroll-content">
+                <ul class="clearfix">
+
+                    {{#each cur_app_list}}
+                        <li data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
+                            <a href="javascript:void(0)" class="region-resource-list-item">
+                                <div class="region-resource-thumbnail">
+                                    <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
+                                </div>
+                                <div class="region-resource-info">
+                                    <span class="region-resource-item-name truncate">{{name}}</span>
+                                    <i class="region-resource-status region-resource-status-{{#if isrunning}}running{{else}}stopped{{/if}}"></i>
+                                    <div class="region-resource-action clearfix">
+                                        {{#if isrunning}}
+                                            <i class="icon-stop modal" id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Stop App", "body":"Do you confirm to stop {{name}}?", "confirm":"Stop", "color":"blue" }' data-modal-dismiss="true"></i>
+                                        {{else}}
+                                            <i class="icon-play modal" id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Run App", "body":"Do you confirm to start {{name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true"></i>
+                                        {{/if}}
+                                        <i class="modal icon-terminate" id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Terminate App", "body":"Do you confirm to terminate {{name}}?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {{else}}
+                        <div class="blank-widget">
+                            There is no stack in this region yet.<br />Create a new stack from here.
+                            <img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute">
+                        </div>
+                    {{/each}}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Resource App -->
+
+    <!-- Resource Stack -->
+    <div id="region-resource-stack-wrap" class="region-resource-list" style="display: none">
+        <div class="scroll-wrap" style="max-height:335px">
+            <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+            <div class="scroll-content">
+                <ul class="clearfix">
+                    {{#each cur_stack_list}}
+                        <li>
+                            <a href="javascript:void(0)" class="region-resource-list-item">
+                                <div class="region-resource-thumbnail">
+                                    <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
+                                </div>
+                                <div class="region-resource-info">
+                                    <span class="region-resource-item-name truncate">{{name}}</span>
+                                    <div class="region-resource-action clearfix">
+                                        <i class="icon-duplicate modal" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Duplicate Stack", "body":"Stack Name:", "input":"{{name}}-copy", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"></i>
+
+                                        <i class="icon-delete modal"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to Delete", "body":"Do you confirm to delete {{name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {{else}}
+                        <div class="blank-widget">
+                            There is no stack in this region yet.<br />Create a new stack from here.
+                            <img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute">
+                        </div>
+                    {{/each}}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Resource Stack -->
+</div>
+<!-- Region App & Stack -->
+
+
+<!--{{ .region-resource }}-->
+
+<!-- Region AWS resource -->
+{{#with cur_region_list}}
+<div id="region-aws-resource-wrap">
+    <div id="region-aws-resource-tab">
+        <ul class="clearfix">
+            <li>
+                <a href="javascript:void(0)" class="region-resource-tab-item on">
+                    <i id="global-resource-icon-instance" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{DescribeInstances.total}}</span>
+                    <span class="region-resource-name">Instance</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <i id="global-resource-icon-eip" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{DescribeAddresses.total}}</span>
+                    <span class="region-resource-name">Elastic IP</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <i id="global-resource-icon-vol" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{DescribeVolumes.total}}</span>
+                    <span class="region-resource-name">Volume</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{DescribeVpcs.total}}</span>
+                    <span class="region-resource-name">VPC</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{DescribeVpnConnections.total}}</span>
+                    <span class="region-resource-name">VPN</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <i id="global-resource-icon-elb" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{DescribeLoadBalancers.total}}</span>
+                    <span class="region-resource-name">Load Balancer</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <i id="global-resource-icon-asg" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{DescribeAutoScalingGroups.total}}</span>
+                    <span class="region-resource-name">Auto Scaling Group</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{DescribeAlarms.total}}</span>
+                    <span class="region-resource-name">CloudWatch Alarm</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <i id="global-resource-icon-sns" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{ListSubscriptions.total}}</span>
+                    <span class="region-resource-name">SNS Subscription</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div id="region-aws-resource-data">
+            <div class="table-head-fix">
+                    <table class="table-head">
+                        <thead>
+                            <tr>
+                                <th class="sortable" style="width: 30px">NAME/ID</th>
+                                <th class="sortable" style="width: 150px">COLUMN2</th>
+                                <th class="sortable" style="width: 150px">COLUMN3</th>
+                                <th class="sortable" style="width: 20px">DETAILS</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="scroll-wrap">
+                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                        <div class="scroll-content">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30px"><span class="th-inner"></span></th>
+                                        <th style="width: 150px"><span class="th-inner"></span></th>
+                                        <th style="width: 150px"><span class="th-inner"></span></th>
+                                        <th style="width: 20px"><span class="th-inner"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>app</td>
+                                        <td>Some infomation</td>
+                                        <td>2</td>
+                                        <td>ee</td>
+                                    </tr>
+                                    <tr>
+                                        <td>bpp</td>
+                                        <td>Some infomation</td>
+                                        <td>3</td>
+                                        <td>ee</td>
+                                    </tr>
+                                    <tr>
+                                        <td>cpp</td>
+                                        <td>Some infomation</td>
+                                        <td>74</td>
+                                        <td>ee</td>
+                                    </tr>
+                                    <tr>
+                                        <td>app</td>
+                                        <td>Some infomation</td>
+                                        <td>13</td>
+                                        <td>ee</td>
+                                    </tr>
+                                    <tr>
+                                        <td>app</td>
+                                        <td>Some infomation</td>
+                                        <td>Some infomation 2</td>
+                                        <td>ee</td>
+                                    </tr>
+                                    <tr>
+                                        <td>app</td>
+                                        <td>Some infomation</td>
+                                        <td>Some infomation 2</td>
+                                        <td>ee</td>
+                                    </tr>
+                                    <tr>
+                                        <td>app</td>
+                                        <td>Some infomation</td>
+                                        <td>Some infomation 2</td>
+                                        <td>ee</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    </div>
+{{/with}}
+
+<!--{{ .recent }}-->
+
+
+<div id="global-region-status-tab-wrap" class="clearfix">
+    <a href="javascript:void(0)" id="global-region-status-tab-app" class="global-region-status-tab-item">
+        <h5>App</h5>
+        <div id="global-region-status-app" class="global-region-status-count-wrap">
+            <span id="global-region-status-app-count" class="global-region-status-count">{{result_list.total_app}}</span>
+        </div>
+    </a>
+
+    <a href="javascript:void(0)" id="global-region-status-tab-stack" class="global-region-status-tab-item on">
+        <h5>Stack</h5>
+        <div id="global-region-status-stack" class="global-region-status-count-wrap">
+            <span id="global-region-status-statck-count" class="global-region-status-count">{{result_list.total_stack}}</span>
+        </div>
+    </a>
+</div>
+
+<div id="global-region-status-content-wrap">
+
+    <div id="global-region-status-app-content" class="global-region-status-content">
+        {{#if recent_launched_apps}}
+            <div class="global-region-status-body">
+                <div class="global-region-status-list">
+                    <div class="global-region-status-header">
+                        <h4>Recently Launched App</h4>
+                    </div>
+                    <ul>
+                        {{#each recent_launched_apps }}
+                            <li>
+                                <a href="javascript:void(0)" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}'>
+                                    <h5>{{name}}</h5>
+                                    <div class="global-region-status-info">
+                                        <span class="global-region-status-info-location">{{region_label}}</span>
+                                        <time>{{interval_date}}</time>
+                                    </div>
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        {{else}}
+            <div class="global-region-status-body">
+                <div class="global-region-status-empty">
+                    <span>No recently edited stack in 30 days</span>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+
+    <div id="global-region-status-stack-content" class="global-region-status-content">
+        {{#if recent_edited_stacks}}
+            <div class="global-region-status-body">
+                <div class="global-region-status-list">
+                    <div class="global-region-status-header">
+                        <h4>Recently Edited Stack</h4>
+                    </div>
+                    <ul>
+                        {{#each recent_edited_stacks }}
+                            <li>
+                                <a href="javascript:void(0)" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}'>
+                                    <h5>{{name}}</h5>
+                                    <div class="global-region-status-info">
+                                        <span class="global-region-status-info-location">{{region_label}}</span>
+                                        <time>{{interval_date}}</time>
+                                    </div>
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        {{else}}
+            <div class="global-region-status-body">
+                <div class="global-region-status-empty">
+                    <span>No recently edited stack in 30 days</span>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+
+
+</div>
+
+
+
+
+
+
 
 <!--{{ .recent-launched-app }}-->
 {{#if recent_launched_apps}}
@@ -95,3 +525,6 @@
 {{else}}
 <div class="blank-widget">No recent stopped app in last 30 days.</div>
 {{/if}}
+
+<!--{{ .loading }}-->
+<div style="margin-top:30px">loading...</div>

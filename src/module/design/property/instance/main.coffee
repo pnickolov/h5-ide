@@ -51,19 +51,13 @@ define [ 'jquery',
             #view
             view.model    = model
 
-            view.on 'REFRESH_KEYPAIR', () ->
-                model.getKerPair()
-                view.render()
-                sglist_main.loadModule model
-                ide_event.trigger ide_event.RELOAD_PROPERTY
-
             model.getUID  uid
             model.getName()
             model.getInstanceType()
             model.getAmiDisp()
             model.getAmi()
             model.getComponent()
-            model.getKerPair()
+            model.getKeyPair()
             # model.getSgDisp()
             model.getCheckBox()
             model.getEni()

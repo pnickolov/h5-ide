@@ -1794,9 +1794,7 @@ MC.canvas.layout = {
 		{
 			if (value.type === 'AWS.EC2.KeyPair')
 			{
-				tmp = {};
-				tmp[value.name] = value.uid;
-				MC.canvas_property.kp_list.push(tmp);
+				MC.canvas_property.kp_list[ value.name ] = value.uid;
 			}
 			if (value.type === "AWS.EC2.SecurityGroup")
 			{
@@ -1874,18 +1872,6 @@ MC.canvas.layout = {
 					rand = '0' + rand;
 				}
 				MC.canvas_property.sg_list[key].color = rand;
-			}
-		});
-
-		$.each(MC.canvas_property.kp_list, function (key, value)
-		{
-			if (value.DefaultKP !== undefined && key !== 0)
-			{
-				tmp = value;
-				MC.canvas_property.kp_list.splice(key, 1);
-				MC.canvas_property.kp_list.unshift(value);
-
-				return false;
 			}
 		});
 
@@ -1974,9 +1960,7 @@ MC.canvas.layout = {
 
 		kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
 		kp.uid = uid;
-		tmp = {};
-		tmp[kp.name] = kp.uid;
-		MC.canvas_property.kp_list.push(tmp);
+		MC.canvas_property.kp_list[kp.name] = kp.uid;
 
 		sg_uid = MC.guid();
 		sg = $.extend(true, {}, MC.canvas.SG_JSON.data);

@@ -30,10 +30,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-public-ip'         : 'publicIpChange'
             'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select'               : "tenancySelect"
-            'OPTION_CHANGE #keypair-select'               : "addtoKPList"
-            'EDIT_UPDATE #keypair-select'                 : "createtoKPList"
+            'OPTION_CHANGE #keypair-select'               : "setKP"
+            'EDIT_UPDATE #keypair-select'                 : "addKP"
             'click #instance-ip-add'                      : "addIPtoList"
             'click #property-network-list .icon-remove'   : "removeIPfromList"
+            "EDIT_FINISHED #keypair-select"               : "updateKPSelect"
 
             'change .input-ip'    : 'updateEIPList'
             'click .toggle-eip'   : 'addEIP'
@@ -123,12 +124,20 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             this.model.set 'public_ip', event.target.checked
 
-        addtoKPList : ( event, id ) ->
-            this.model.set 'set_kp', id
-            this.trigger 'REFRESH_KEYPAIR'
+        setKP : ( event, id ) ->
+            @model.setKP id
+            null
 
-        createtoKPList : ( event, id ) ->
-            this.model.set 'add_kp', id
+        addKP : ( event, id ) ->
+            result = @model.addKP id
+            if not result
+                notification "error", "KeyPair with the same name already exists."
+                return result
+
+        updateKPSelect : () ->
+            # Add remove icon to the newly created item
+            $("#keypair-select").find(".item:last-child").append('<span class="icon-remove"></span>')
+
 
         addIPtoList: (event) ->
 
@@ -206,6 +215,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
 
         deleteKP : ( event ) ->
+            me = this
             $li = $(event.currentTarget).closest("li")
 
             selected = $li.hasClass("selected")
@@ -218,9 +228,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 if selected
                     $("#keypair-select").find(".item").eq(0).click()
 
-                ###
-                this.model.deleteKP $li.attr("data-id")
-                ###
+
+                me.model.deleteKP $li.attr("data-id")
+
 
             if using
                 data =

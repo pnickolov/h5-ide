@@ -549,6 +549,25 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
             res[ c_uid ] = if r then true else false
 
         if uid then res[uid] else res
+    regionNameMap =
+        'us-west-1': [ 'US West', 'N. California' ]
+        'us-west-2': [ 'US West', 'Oregon' ]
+        'us-east-1': [ 'US East', 'Virginia' ]
+        'eu-west-1': [ 'EU West', 'Ireland' ]
+        'ap-southeast-1': [ 'Asia Pacific', 'Singapore' ]
+        'ap-southeast-2': [ 'Asia Pacific', 'Sydney' ]
+        'ap-northeast-1': [ 'Asia Pacific', 'Tokyo' ]
+        'sa-east-1': [ 'South America', 'Sao Paulo' ]
+
+    getRegionName = ( region, option ) ->
+        if region of regionNameMap
+            if option is 'fullname'
+                return "#{regionNameMap[ region ][ 0 ]} - #{regionNameMap[ region ][ 1 ]}"
+            regionNameMap[ region ][ 1 ]
+        else
+            null
+
+
 
     #public
     getNewName                  : getNewName
@@ -561,3 +580,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     getCost                     : getCost
     checkDefaultVPC             : checkDefaultVPC
     checkResource               : checkResource
+    getRegionName               : getRegionName

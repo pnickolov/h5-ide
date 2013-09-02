@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130831
+#* Date: 201308312
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -136,7 +136,7 @@ var scrollbar = {
 					}
 				}
 			}
-		}, 2500);
+		}, 800);
 
 		return true;
 	},
@@ -155,7 +155,9 @@ var scrollbar = {
 			return false;
 		}
 
-		$(document.body).addClass('disable-event');
+		$(document.body).append('<div id="overlayer"></div>');
+
+		target.addClass('scrolling');
 
 		event = scrollbar.isTouch ? event.originalEvent.touches[0] : event;
 
@@ -207,7 +209,9 @@ var scrollbar = {
 				'mouseup': scrollbar.mouseup
 			});
 
-		$(document.body).removeClass('disable-event');
+		$('#overlayer').remove();
+
+		event.data.scroll_target.removeClass('scrolling');
 
 		return true;
 	},

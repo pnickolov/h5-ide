@@ -22,7 +22,9 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 				oldSubnetAry.push(subnetCIDR)
 				if !MC.aws.subnet.isInVPCCIDR(vpcCIDR, subnetCIDR)
 					needUpdateAllSubnetCIDR = true
-					return
+
+			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+				compObj.resource.RouteSet[0].DestinationCidrBlock = vpcCIDR
 			null
 
 		if !needUpdateAllSubnetCIDR then return

@@ -95,7 +95,6 @@ define [ 'text!./template.html',
           this.trigger 'DELETE_RULE', $(event.currentTarget).closest('.sg-create-rule-item').attr("data-uid")
 
           this.trigger 'UPDATE_SLIDE_BAR'
-          #this.updateSidebar()
           false
 
         onDirChange : () ->
@@ -110,7 +109,13 @@ define [ 'text!./template.html',
           $("#sg-proto-input-sub-" + id).show()
 
         updateSidebar : () ->
-          this.$el.find( '.sg-rule-create-sidebar' ).html( list_template( this.model.attributes ) )
+          data = $.extend true, {}, this.model.attributes
+
+          data.ruleCount = _.reduce data.sg_group, ( count, item )->
+            item.rules.length + count
+          , 0
+
+          this.$el.find( '.sg-rule-create-sidebar' ).html( list_template( data ) )
           rule_count = $(".sg-create-rule-item").length
 
           $sidebar = $(".sg-rule-create-sidebar")

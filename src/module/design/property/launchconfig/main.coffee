@@ -50,7 +50,7 @@ define [ 'jquery',
             model.getAmiDisp()
             model.getAmi()
             model.getComponent()
-            model.getKerPair()
+            model.getKeyPair()
             # model.getSgDisp()
             model.getCheckBox()
 

@@ -59,7 +59,7 @@ define [ 'jquery', 'text!./module/design/template.html', 'MC.canvas.constant' ],
                 #
                 if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
                     #
-                    ide_event.trigger ide_event.SWITCH_LOADING_BAR, if type is 'NEW_STACK' then result else tab_id
+                    #ide_event.trigger ide_event.SWITCH_LOADING_BAR, if type is 'NEW_STACK' then result else tab_id
                     #
                     if type is 'OPEN_STACK' or type is 'OPEN_APP'
                         #when OPEN_STACK or OPEN_APP result is resolved_data

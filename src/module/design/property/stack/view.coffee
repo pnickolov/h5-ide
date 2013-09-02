@@ -153,7 +153,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             console.log "Morris updateSNSList", this.model.attributes
 
             # Hide all message
-            $(".property-sns-info > div").hide()
+            $(".property-sns-info").children().hide()
 
             if not snslist_data or not snslist_data.length
                 if hasASG
@@ -189,13 +189,13 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             uid = $li.data("uid")
             $li.remove()
 
-            this.updateSNSList null, this.model.attributes.has_asg, true
+            this.updateSNSList $("#property-sub-list").children(":not(.hide)"), this.model.attributes.has_asg, true
 
             this.trigger 'DELETE_SUBSCRIPTION', uid
 
 
         editSNS : ( event ) ->
-            $sub_li = $( event.currentTarget ).parent()
+            $sub_li = $( event.currentTarget ).closest("li")
             data =
                 title : "Edit"
                 uid   : $sub_li.data("uid")

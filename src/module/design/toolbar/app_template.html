@@ -1,27 +1,27 @@
 <section class="toolbar-btn-group">
   {{#if item_flags.has_instance_store_ami}}
-  <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  class="modal tooltip btn-toolbar icon-stop disabled" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to stop app", "body":"Do you confirm to stop app {{item_flags.name}}?", "confirm":"Stop", "color":"red" }' data-modal-dismiss="true" data-tooltip="Stop this app's resources."></a>
-  <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar icon-play disabled"  data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app", "body":"Do you confirm to start app {{item_flags.name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true" id="toolbar-start-app" data-tooltip="Start this app's resources."></a>
+  <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  class="modal tooltip btn-toolbar icon-stop disabled" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_STOP_APP" }}} {{item_flags.name}}?", "confirm":"{{{ i18n "TOOL_POP_BTN_STOP_APP" }}}", "color":"red" }' data-modal-dismiss="true" data-tooltip='{{ i18n "TOOL_TIP_STOP_APP" }}'></a>
+  <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar icon-play disabled"  data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_START_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_START_APP" }}} {{item_flags.name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true" id="toolbar-start-app" data-tooltip='{{ i18n "TOOL_TIP_START_APP" }}'></a>
   {{else}}
-  <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-stop disabled"{{else}} class="modal tooltip btn-toolbar icon-stop" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to stop app", "body":"Do you confirm to stop app {{item_flags.name}}?", "confirm":"Stop", "color":"red" }' data-modal-dismiss="true" id="toolbar-stop-app"{{/if}} data-tooltip="Stop this app's resources."></a>
-  <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play disabled" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"Confirm to start app", "body":"Do you confirm to start app {{item_flags.name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="Start this app's resources."></a>
+  <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-stop disabled"{{else}} class="modal tooltip btn-toolbar icon-stop" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_STOP_APP" }}} {{item_flags.name}}?", "confirm":"{{{ i18n "TOOL_POP_BTN_STOP_APP" }}}", "color":"red" }' data-modal-dismiss="true" id="toolbar-stop-app"{{/if}} data-tooltip='{{ i18n "TOOL_TIP_STOP_APP" }}'></a>
+  <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play disabled" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_STOP_APP" }}} {{item_flags.name}}?", "confirm":"Start", "color":"green" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="Start this app's resources."></a>
   {{/if}}
 
-  <a href="#" class="btn-toolbar tooltip icon-terminate {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to terminate app {{item_flags.name}}", "body":"Do you confirm to terminate app?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="Permanently terminate this app's resources"></a> <!--"'-->
+  <a href="#" class="btn-toolbar tooltip icon-terminate {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_TERMINATE_APP" }}} {{item_flags.name}}", "body":"{{{ i18n "TOOL_POP_BODY_TERMINATE_APP" }}}", "confirm":"{{{ i18n "TOOL_POP_BTN_TERMINATE_APP" }}}", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip='{{{ i18n "TOOL_TIP_TERMINATE_APP" }}}'></a> <!--'"-->
 </section>
 
 <section class="toolbar-btn-group">
-  <a href="#" class="btn-toolbar tooltip icon-zoom-in {{#if item_flags.is_zoomin}}{{else}}disabled{{/if}}" data-tooltip="Zoom In"></a>
-  <a href="#" class="btn-toolbar tooltip icon-zoom-out {{#if item_flags.is_zoomout}}{{else}}disabled{{/if}}" data-tooltip="Zoom Out"></a>
+  <a href="#" class="btn-toolbar tooltip icon-zoom-in {{#if item_flags.is_zoomin}}{{else}}disabled{{/if}}" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_IN" }}'></a>
+  <a href="#" class="btn-toolbar tooltip icon-zoom-out {{#if item_flags.is_zoomout}}{{else}}disabled{{/if}}" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_OUT" }}'></a>
 </section>
 
 <section class="toolbar-btn-group">
   <div class="selectbox btn-toolbar">
-    <a class="selection tooltip icon-send" data-tooltip="Export..." id="toolbar-export"></a>
+    <a class="selection tooltip icon-send" data-tooltip='{{ i18n "TOOL_EXPORT" }}' id="toolbar-export"></a>
     <ul class="dropdown" tabindex="-1">
-      <li id="toolbar-export-png"><i class="icon-export-png"></i>Export as PNG</li>
-      <li class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"Export JSON", "body":"Do you confirm to download the json file?", "confirm":"Download", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
-        <i class="icon-export-json"></i>Export as Json</li>
+      <li id="toolbar-export-png"><i class="icon-export-png"></i>{{ i18n "TOOL_EXPORT_AS_PNG" }}</li>
+      <li class="modal" id="toolbar-export-json" data-modal-template="modalToolbar" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_EXPORT_AS_JSON" }}}", "body":"{{{ i18n "TOOL_POP_BODY_EXPORT_AS_JSON" }}}", "confirm":"{{{ i18n "TOOL_POP_BTN_DOWNLOAD" }}}", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True>
+        <i class="icon-export-json"></i>{{ i18n "TOOL_EXPORT_AS_JSON" }}</li>
       <!-- env:dev -->
       <li id="toolbar-jsoncopy" title="jsondata"><i class="icon-toolbar-jsoncopy-png"></i>Copy JSON to Clipboard</li>
       <li id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>

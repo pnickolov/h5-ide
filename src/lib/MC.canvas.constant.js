@@ -716,7 +716,7 @@ var constant_data = {
 	STACK_PROPERTY:
 	{
 		sg_list: [],
-		kp_list: [],
+		kp_list: {},
 		original_json: '',
 		SCALE_RATIO: 1,
 		LINE_STYLE: 0, //0fold line, 1 straight, 2 bezier q, 3 bezier qt
@@ -823,16 +823,19 @@ var constant_data = {
 			"rootDeviceType": "", //ebs|instance-store
 			"groupUId": "",
 			"connection": [],
-			"instanceList": []
+			"instanceList": [] //store uid of each instance in server group
 		},
 		data:
 		{
 			"uid": "",
 			"type": "AWS.EC2.Instance",
-			"name": "",
-			"number": 1,
+			"name": "", 			//if number >1 then it's server group name
+			"serverGroupUid": "", 	//uid of servergroup(index is 0)
+			"serverGroupName": "",  //name of servergroup
+			"number": 1,			//if number >1 then it's server group
+			"index": 0, 			//index in server group
 			"state": "",
-			"platform": "32",
+			//"platform": "32",
 			"software":
 			{},
 			"resource":
@@ -960,8 +963,9 @@ var constant_data = {
 		{
 			"uid": "",
 			"type": "AWS.EC2.EBS.Volume",
-			"name": "/dev/sdf",
-			'number': 1,
+			"name": "/dev/sdf", //if number >1 then it's server group name
+			"number": 1,//if number >1 then it's server group
+			"index": 0, //index in server group
 			"resource":
 			{
 				"VolumeId": "",
@@ -1270,8 +1274,9 @@ var constant_data = {
 		{
 			"uid": "",
 			"type": "AWS.VPC.NetworkInterface",
-			"name": "eni1",
-			"number": 1,
+			"name": "eni1", //if number >1 then it's server group name
+			"number": 1,//if number >1 then it's server group
+			"index": 0, //index in server group
 			"resource":
 			{
 				"PrivateIpAddressSet": [

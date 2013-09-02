@@ -80,6 +80,8 @@ define ['event', 'MC',
 
             this.trigger 'REFRESH_CERT_PANEL_DATA'
 
+            ide_event.trigger 'PROPERTY_RENDER_COMPLETE'
+
         elbNameChange : ( event ) ->
 
             console.log 'elbNameChange'

@@ -2,7 +2,7 @@
 #  View(UI logic) for design
 #############################
 
-define [ 'backbone', 'jquery', 'handlebars' ], () ->
+define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     DesignView = Backbone.View.extend {
 
@@ -30,13 +30,27 @@ define [ 'backbone', 'jquery', 'handlebars' ], () ->
                 canvas   : $( '#canvas-panel'   ).html()
             data
 
-        writeOldDesignHtml : () ->
+        writeOldDesignHtml : ( event ) ->
             console.log 'writeOldDesignHtml'
-            #this.$el.empty().html this.model.get 'snapshot'
+            return if _.isNumber event.attributes.snapshot
+            #
+            $( '#canvas-panel' ).one( 'DOMNodeInserted', '.canvas-svg-group', this, _.debounce( this.canvasChange, 200, true ))
+            #
             $( '#resource-panel' ).html this.model.get( 'snapshot' ).resource
             $( '#canvas-panel'   ).html this.model.get( 'snapshot' ).canvas
-            #$( '#property-panel' ).html this.model.get( 'snapshot' ).property
-            #$( '#property-panel' ).empty()
+            ###
+            this.$el.empty().html this.model.get 'snapshot'
+            $( '#property-panel' ).html this.model.get( 'snapshot' ).property
+            $( '#property-panel' ).empty()
+            ###
+            null
+
+        canvasChange : ( event ) ->
+            console.log 'canvas:listen DOMNodeInserted'
+            console.log MC.data.current_tab_type
+            if MC.data.current_tab_type is 'OLD_APP' or MC.data.current_tab_type is 'OLD_STACK'
+                ide_event.trigger ide_event.SWITCH_WAITING_BAR
+                MC.data.current_tab_type = null
             null
 
     }

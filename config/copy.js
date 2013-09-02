@@ -65,6 +65,18 @@ module.exports = {
 		}]
 	},
 
+	lib_forge: {
+		files: [{
+			expand : true,
+			cwd    : '<%= src %>/lib/forge',
+			src    : [ '**' ] ,
+			dest   : '<%= release %>/lib/forge',
+			filter : function( filepath ) {
+				return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
+			}
+		}]
+	},
+
 	special_lib: {
 		files: [{
 			expand : true,

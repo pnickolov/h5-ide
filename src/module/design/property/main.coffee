@@ -49,6 +49,8 @@ define [ 'jquery',
 			view  = new View { 'model' : model }
 			view.render template
 
+			MC.data.propertyHeadStateMap = {}
+
 			#show stack property
 			ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type ) ->
 				console.log 'property:OPEN_DESIGN, type = ' + type
@@ -63,6 +65,8 @@ define [ 'jquery',
 
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
+
+				$('#property-panel').attr('component-uid', uid)
 
 				# Better than $("input:focus")
 				$( document.activeElement ).filter( 'input, textarea' ).blur()
@@ -97,6 +101,7 @@ define [ 'jquery',
 					if MC.canvas_data.component[ uid ]
 
 						console.log 'type = ' + MC.canvas_data.component[ uid ].type
+						
 						#components except AvailabilityZone
 						switch MC.canvas_data.component[ uid ].type
 							#show instance property
@@ -237,6 +242,9 @@ define [ 'jquery',
 
 			view.on "HIDE_SUBPANEL", ( id ) ->
 				ide_event.trigger ide_event.PROPERTY_HIDE_SUBPANEL, id
+
+			ide_event.onLongListen ide_event.PROPERTY_RENDER_COMPLETE, ( data ) ->
+				console.info('render complete!!!')
 
 
 	unLoadModule = () ->

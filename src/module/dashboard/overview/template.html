@@ -1,254 +1,137 @@
-<!-- cinde begin -->
-<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scrollbar-horizontal-wrap"><div class="scrollbar-horizontal-thumb"></div></div>
-<div class="dashboard-content-wrap scroll-content">
-	<div class="dashboard-widget grid" id="dashboard-feature-wrap">
-		<div class="col-2-3" id="dashboard-map">
-			<ul id="map-region-spot-list">
-				<!-- test_data
-				<li id="us-west-1">
-					<a href="javascript:void(0)">
-						<i class="icon-map-spot"></i>
-						<span>N. California</span>
-						<div class="map-tooltip">
-							<span class="arrow-down map-tooltip-pointer"></span>
-							<div class="map-tooltip-body truncate">
-								<ul class="dashboard-widget-regions-stat">
-									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>99</li>
-									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>2</li>
-									<li><i class="icon-layers tooltip" data-tooltip="Stack"></i>2</li>
-								</ul>
-							</div>
-						</div>
-					</a>
+<div id="global-region-header">
+	<a href="javascript:void(0)" id="global-refresh">
+		<i class="global-refresh-icon"></i>
+		<span>3 minutes ago</span>
+	</a>
+
+	<a id="global-create-stack" class="js-toggle-dropdown" href="javascript:void(0)">
+		<div class="icon-new-stack"></div>
+		<span>Create new stack</span>
+		<i class="icon-caret-down"></i>
+	</a>
+
+	<div id="global-region-create-stack-list" class="dropdown-menu">
+		<ul>
+			<li data-region="us-west-1">
+				<a href="javascript:void(0)">US West - N. California</a>
+			</li>
+
+			<li data-region="us-west-2">
+				<a href="javascript:void(0)">US West - Oregon</a>
+			</li>
+
+			<li data-region="us-east-1">
+				<a href="javascript:void(0)">US East - Virginia</a>
+			</li>
+
+			<li data-region="eu-west-1">
+				<a href="javascript:void(0)">EU West - Ireland</a>
+			</li>
+
+			<li data-region="ap-southeast-1">
+				<a href="javascript:void(0)">Asia Pacific - Singapore</a>
+			</li>
+
+			<li data-region="ap-southeast-2">
+				<a href="javascript:void(0)">Asia Pacific - Sydney</a>
+			</li>
+
+			<li data-region="ap-northeast-1">
+				<a href="javascript:void(0)">Asia Pacific - Tokyo</a>
+			</li>
+
+			<li data-region="sa-east-1">
+				<a href="javascript:void(0)">South America - Sao Paulo</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div id="global-region-wrap" class="scroll-wrap">
+<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+
+<div class="scroll-content">
+	<!-- Global Map -->
+	<div id="global-region-map-wrap">
+		<div id="global-region-map-content">
+			<ul id="global-region-spot">
+				<!-- will be filled -->
+			</ul>
+
+			<div id="global-region-status-widget">
+				<!-- will be filled -->
+			</div>
+		</div>
+	</div>
+	<!-- Global Map -->
+
+	<div id="global-region-tabbar-wrap">
+		<a id="region-switch" class="js-toggle-dropdown" href="javascript:void(0)">
+			<span>Global</span>
+			<i class="icon-caret-down"></i>
+		</a>
+
+		<div id="region-switch-list" class="dropdown-menu">
+			<ul>
+				<li data-region="global">
+					<a href="javascript:void(0)">Global</a>
 				</li>
-				<li id="us-west-2">
-					<a href="javascript:void(0)">
-						<i class="icon-map-spot"></i>
-						<span>Oregon</span>
-						<div class="map-tooltip">
-							<span class="arrow-up map-tooltip-pointer-up"></span>
-							<div class="map-tooltip-body truncate">
-								<ul class="dashboard-widget-regions-stat">
-									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>99</li>
-									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>2</li>
-									<li><i class="icon-layers tooltip" data-tooltip="Stack"></i>2</li>
-								</ul>
-							</div>
-						</div>
-					</a>
+
+				<li data-region="us-west-1">
+					<a href="javascript:void(0)">N. California</a>
 				</li>
-				<li id="eu-west-1">
-					<a href="javascript:void(0)">
-						<i class="icon-map-spot"></i>
-						<span>Ireland</span>
-						<div class="map-tooltip">
-							<span class="arrow-down map-tooltip-pointer"></span>
-							<div class="map-tooltip-body truncate">
-								<ul class="dashboard-widget-regions-stat">
-									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>99</li>
-									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>2</li>
-									<li><i class="icon-layers tooltip" data-tooltip="Stack"></i>2</li>
-								</ul>
-							</div>
-						</div>
-					</a>
+
+				<li data-region="us-west-2">
+					<a href="javascript:void(0)">Oregon</a>
 				</li>
-				<li id="sa-east-1">
-					<a href="javascript:void(0)"><i class="icon-map-spot"></i>
-						<span>Sao Paulo</span>
-						<div class="map-tooltip">
-							<span class="arrow-down map-tooltip-pointer"></span>
-							<div class="map-tooltip-body truncate">
-								<ul class="dashboard-widget-regions-stat">
-									<li><i class="icon-browser tooltip" data-tooltip="Running App"></i>99</li>
-									<li><i class="icon-browser tooltip" data-tooltip="Stopped App"></i>2</li>
-									<li><i class="icon-layers tooltip" data-tooltip="Stack"></i>2</li>
-								</ul>
-							</div>
-						</div>
-					</a>
+
+				<li data-region="us-east-1">
+					<a href="javascript:void(0)">Virginia</a>
 				</li>
-				<li id="ap-southeast-2" class="unused">
-					<a href="javascript:void(0)" title="Sydney Dashboard"><i class="icon-map-spot"></i>Sydney</a>
+
+				<li data-region="eu-west-1">
+					<a href="javascript:void(0)">Ireland</a>
 				</li>
-				<li id="ap-northeast-1" class="unused">
-					<a href="javascript:void(0)" title="Tokyo Dashboard"><i class="icon-map-spot"></i>Tokyo</a>
+
+				<li data-region="ap-southeast-1">
+					<a href="javascript:void(0)">Singapore</a>
 				</li>
-			-->
+
+				<li data-region="ap-southeast-2">
+					<a href="javascript:void(0)">Sydney</a>
+				</li>
+
+				<li data-region="ap-northeast-1">
+					<a href="javascript:void(0)">Tokyo</a>
+				</li>
+
+				<li data-region="sa-east-1">
+					<a href="javascript:void(0)">Sao Paulo</a>
+				</li>
 			</ul>
 		</div>
-		<div class="col-1-3" id="dashboard-feature-text">
-			<div class="dashboard-widget-body">
-				<div class="dropdown" id="dashboard-create-stack">
-					<a href="javascript:void(0)" class="btn btn-dashboard-feature js-toggle-dropdown disabled">Create New Stack <i class="icon-caret-down"></i></a>
-					<div class="dropdown-menu create-new-stack-dropdown">
-						<p>Select the region you want to create stack in:</p>
-						<ul id="dashboard-create-stack-list">
-
-							<!-- vpc_classic_list
-							<li>
-								<a href="">US West - Oregon
-									<div class="region-platform-wrap">
-										<span class="region-platform-classic tooltip" data-tooltip="EC2-Classic">Classic</span>
-										<span class="region-platform-vpc tooltip" data-tooltip="EC2-VPC">VPC</span>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="">US West - N. California
-									<div class="region-platform-wrap">
-										<span class="region-platform-classic tooltip" data-tooltip="EC2-Classic">Classic</span>
-										<span class="region-platform-vpc tooltip" data-tooltip="EC2-VPC">VPC</span>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="">EU West - Ireland
-									<div class="region-platform-wrap">
-										<span class="region-platform-vpc tooltip" data-tooltip="EC2-VPC">VPC</span>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="">South America - Sao Paulo
-									<div class="region-platform-wrap">
-										<span class="region-platform-classic tooltip" data-tooltip="EC2-Classic">Classic</span>
-										<span class="region-platform-vpc tooltip" data-tooltip="EC2-VPC">VPC</span>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="">Asia Pacific - Sydney
-									<div class="region-platform-wrap">
-										<span class="region-platform-vpc tooltip" data-tooltip="EC2-VPC">VPC</span>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="">Asia Pacific - Singapore
-									<div class="region-platform-wrap">
-										<span class="region-platform-classic tooltip" data-tooltip="EC2-Classic">Classic</span>
-										<span class="region-platform-vpc tooltip" data-tooltip="EC2-VPC">VPC</span>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="">Asia Pacific - Tokyo
-									<div class="region-platform-wrap">
-										<span class="region-platform-classic tooltip" data-tooltip="EC2-Classic">Classic</span>
-										<span class="region-platform-vpc tooltip" data-tooltip="EC2-VPC">VPC</span>
-									</div>
-								</a>
-							</li>
-						-->
-						</ul>
-					</div>
-				</div>
-				<div class="dashboard-global-stat-wrap">
-					<p>You have managed</p>
-					<div class="stat-info-list">
-						loading...
-  					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- cinde end -->
-
-	<!-- michael begin -->
-	<div class="grid">
-		<div class="col-1-3">
-			<div class="dashboard-widget widget-small" id="dashboard-recent-edit-stack">
-				<div class="dashboard-widget-title-wrap">
-					<h4 class="dashboard-widget-title">Recently Edited Stacks</h4>
-				</div>
-				<div class="dashboard-widget-body" id="recent-edited-stack">
-					loading...
-				</div>
-			</div>
-		</div>
-		<div class="col-1-3">
-			<div class="dashboard-widget widget-small" id="dashboard-recent-launch-app">
-				<div class="dashboard-widget-title-wrap">
-					<h4 class="dashboard-widget-title">Recently Launched Apps</h4>
-				</div>
-				<div class="dashboard-widget-body" id="recent-launched-app">
-					loading...
-				</div>
-			</div>
-		</div>
-		<div class="col-1-3">
-			<div class="dashboard-widget widget-small" id="dashboard-recent-stop-app">
-				<div class="dashboard-widget-title-wrap">
-					<h4 class="dashboard-widget-title">Recently Stopped Apps</h4>
-				</div>
-				<div class="dashboard-widget-body" id="recent-stopped-app">
-					loading...
-				</div>
-			</div>
-		</div>
 	</div>
 
-	<!--div class="grid">
-		<div class="recent-info-list">
-			loading...
+	<!-- Global view -->
+		<div id="global-view">
+			<div style="margin-top:30px">loading...</div>
+			<!-- will be filled -->
 		</div>
-	</div-->
-	<!-- michael end -->
+	<!-- Global view -->
 
-	<!-- kenshin begin -->
-	<div class="grid">
-		<div class="grid-col col-2-3">
-			<div class="dashboard-widget widget-small" id="dashboard-scheduled-action">
-				<div class="dashboard-widget-title-wrap"><h4 class="dashboard-widget-title">Scheduled Action</h4></div>
-				<div class="dashboard-widget-body scroll-wrap">
-					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-					<div class="scroll-content">
-						<table class="table table-light" id="dashboard-scheduled-action-table">
-							<thead>
-								<tr>
-									<th style="width:150px">App Name</th>
-									<th style="width:200px">Scheduled Time</th>
-									<th style="width:200px">Action</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="future">
-									<td>main-service-01</td>
-									<td>GMT 19:23 2013-4-30</td>
-									<td>Stop app</td>
-								</tr>
-								<tr class="future">
-									<td>main-service-02</td>
-									<td>GMT 19:23 2013-5-10</td>
-									<td>Run app</td>
-								</tr>
-								<tr class="future">
-									<td>main-service-02</td>
-									<td>GMT 19:23 2013-5-14</td>
-									<td>Run app</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
+	<!-- Region view -->
+		<div id="region-view" style="display:none;">
+
+			<div id="region-app-stack-wrap">
+				<div style="margin-top:30px">loading...</div>
 			</div>
+
+			<div id="region-resource-wrap">
+				<div style="margin-top:30px">loading...</div>
+			</div>
+
 		</div>
-			<div class="col-1-3">
-				<div class="dashboard-widget widget-small" id="dashboard-useful-link">
-					<div class="dashboard-widget-title-wrap"><h4 class="dashboard-widget-title">Useful Links</h4></div>
-					<div class="dashboard-widget-body">
-						<ul class="dashboard-link-list">
-							<li><a href="http://www.madeiracloud.com/support/kb/getting-started" target="_blank">Get Started with MadeiraCloud</a></li>
-							<li><a href="http://www.madeiracloud.com/support/kb" target="_blank">Documentation</a></li>
-							<li><a href="http://www.madeiracloud.com/blog" target="_blank">MadeiraCloud Blog</a></li>
-							<li><a href="https://console.aws.amazon.com/" target="_blank">AWS Console</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-	</div>
-	<!-- kenshin end -->
-
+	<!-- Region view -->
+</div>
+</div>
 </div>

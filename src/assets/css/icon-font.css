@@ -55,6 +55,7 @@
 .icon-success,
 .icon-time,
 .icon-sort,
+.icon-detail, 
 .ipt-controls > .icon-del:before,
 .ipt-controls > .icon-add:before
 {
@@ -111,3 +112,4 @@
 .icon-sort:before {content: "\F13C";}
 .ipt-controls > .icon-add:before {content: "\F13D";}
 .ipt-controls > .icon-del:before {content: "\F13E";}
+.icon-detail:before {content: "\F140";}

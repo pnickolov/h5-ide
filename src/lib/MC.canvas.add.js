@@ -741,21 +741,21 @@ MC.canvas.add = function (flag, option, coordinate)
 			{//write
 				component_data = $.extend(true, {}, MC.canvas.INSTANCE_JSON.data);
 				component_data.name = option.name;
+
+				//server group
+				component_data.serverGroupName = option.name;
 				component_data.number = 1;
+				component_data.serverGroupUid = group.id;
+				component_data.index = 0;
 
-				component_data.resource.ImageId = option.imageId;
-				component_data.resource.InstanceType = 'm1.small';
-				component_data.resource.Placement.AvailabilityZone = option.group.availableZoneName;
+				resource = component_data.resource
 
-				// if not kp
-				if (MC.canvas_property.kp_list.length === 0)
-				{
-					//default kp
-				}
-
-				component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
-				component_data.resource.SecurityGroupId.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
-				component_data.resource.SecurityGroup.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupName");
+				resource.ImageId = option.imageId;
+				resource.InstanceType = 'm1.small';
+				resource.Placement.AvailabilityZone = option.group.availableZoneName;
+				resource.KeyName = "@"+MC.canvas_property.kp_list["DefaultKP"] + ".resource.KeyName";
+				resource.SecurityGroupId.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
+				resource.SecurityGroup.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupName");
 				MC.canvas_property.sg_list[0].member.push(group.id);
 
 				// if subnet
@@ -768,7 +768,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					eni.name = "eni0";
 					eni.resource.Attachment.DeviceIndex = "0";
 					eni.resource.Attachment.InstanceId = "@"+group.id+".resource.InstanceId";
-					eni.resource.AvailabilityZone = component_data.resource.Placement.AvailabilityZone;
+					eni.resource.AvailabilityZone = resource.Placement.AvailabilityZone;
 					eni.resource.AssociatePublicIpAddress = true;
 					var sg_group = {};
 					sg_group.GroupId = '@' + MC.canvas_property.sg_list[0].uid + '.resource.GroupId';
@@ -778,12 +778,12 @@ MC.canvas.add = function (flag, option, coordinate)
 					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.DEFAULT_VPC)
 					{
 						eni.resource.AssociatePublicIpAddress = false;
-						component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
-						component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+						resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
+						resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 						var defaultVPCId = MC.aws.aws.checkDefaultVPC();
 						if (!defaultVPCId) {
-							eni.resource.SubnetId = component_data.resource.SubnetId;
-							eni.resource.VpcId = component_data.resource.VpcId;
+							eni.resource.SubnetId = resource.SubnetId;
+							eni.resource.VpcId = resource.VpcId;
 						}
 					}
 				}
@@ -796,12 +796,20 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.rootDeviceType =  option.rootDeviceType;
 				component_layout.virtualizationType = option.virtualizationType;
 
+				//add to instanceList
+				component_layout.instanceList = [ group.id ];
+
 			}
 			else
 			{//read
 				component_data = data[group.id];
 				option.name = component_data.name;
+
+				//server group
+				component_data.serverGroupName = component_data.serverGroupName ? component_data.serverGroupName : option.name;
 				component_data.number = component_data.number ? component_data.number : 1;
+				component_data.serverGroupUid = component_data.serverGroupUid ? component_data.serverGroupUid : group.id;
+				component_data.index = component_data.index ? component_data.index : 0;
 
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					$.each(MC.canvas_data.component, function ( key, val ){
@@ -821,6 +829,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				component_layout = layout.node[group.id];
 				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
+				component_layout.instanceList = (component_layout.instanceList && component_layout.instanceList.length > 0) ? component_layout.instanceList : [ group.id ];
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -1015,7 +1024,8 @@ MC.canvas.add = function (flag, option, coordinate)
 						'id': group.id + '_instance-number'
 					})
 				).attr({
-					'id': group.id + '_instance-number-group'
+					'id': group.id + '_instance-number-group',
+					'display': (option.number <= 1) ? 'none' : 'block'
 				}),
 
 
@@ -1429,6 +1439,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.name = option.name;
 				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC || MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC){
 					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
+					component_data.resource.RouteSet[0].DestinationCidrBlock = MC.canvas_data.component[option.group.vpcUId].resource.CidrBlock;
 				}
 				if(option.main){
 					main_icon = "main-";
@@ -1813,7 +1824,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_data.resource.SubnetId = '@' + option.group.subnetUId + '.resource.SubnetId';
 					component_data.resource.VpcId = '@' + option.group.vpcUId + '.resource.VpcId';
 				}
-				
+
 				component_data.resource.AvailabilityZone = option.group.availableZoneName;
 
 				var sg_group = {};
@@ -1824,6 +1835,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout = $.extend(true, {}, MC.canvas.ENI_JSON.layout);
 				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
+
+				component_layout.eniList = [ group.id ];
 			}
 			else
 			{//read
@@ -1977,7 +1990,8 @@ MC.canvas.add = function (flag, option, coordinate)
 						'id': group.id + '_eni-number'
 					})
 				).attr({
-					'id': group.id + '_eni-number-group'
+					'id': group.id + '_eni-number-group',
+					'display': (option.number <= 1) ? 'none' : 'block'
 				}),
 
 
@@ -2058,7 +2072,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					//instanceType
 					component_data.resource.InstanceType = 'm1.small';
 
-					component_data.resource.KeyName = "@"+MC.canvas_property.kp_list[0].DefaultKP + ".resource.KeyName";
+					component_data.resource.KeyName = "@"+MC.canvas_property.kp_list["DefaultKP"] + ".resource.KeyName";
 					component_data.resource.SecurityGroups.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
 					MC.canvas_property.sg_list[0].member.push(group.id);
 

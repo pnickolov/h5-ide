@@ -64,6 +64,7 @@ require.config {
 		# lib/aws logic handler
 		#############################################
 		'aws_handle'         : 'lib/aws/main'
+		'forge_handle'       : 'lib/forge/main'
 
 		#############################################
 		# ui/common

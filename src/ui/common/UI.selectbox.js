@@ -135,13 +135,18 @@ var selectbox = {
         $input.val("");
         $edit.hide().siblings(".editbtn").show();
 
+        event = $.Event("EDIT_UPDATE");
+        $selectbox.trigger(event, newValue);
+        if ( event.isDefaultPrevented() )
+            return
+
         // Add Entry to Dropdown List
         $selectbox.find(".selection").html( newValue );
         var $lastSelection = $selectbox.find(".dropdown")
                                        .find(".selected").removeClass("selected");
         $lastSelection.parent().append('<li class="item selected" data-id="' + newValue + '">' + newValue + '</li>');
 
-        $selectbox.trigger("EDIT_UPDATE", newValue)
+        $selectbox.trigger("EDIT_FINISHED")
                   .trigger("OPTION_CHANGE", newValue)
                   .removeClass("open");
     }

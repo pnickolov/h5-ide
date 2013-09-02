@@ -343,7 +343,7 @@ define [], () ->
 
 
 	#private, recent items threshold
-	RECENT_NUM		= 4
+	RECENT_NUM		= 5
 	RECENT_DAYS		= 30
 
 	#public

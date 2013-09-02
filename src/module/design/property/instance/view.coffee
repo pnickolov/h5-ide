@@ -16,6 +16,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
         tagName  : $ '.property-details'
 
         template : Handlebars.compile $( '#property-instance-tmpl' ).html()
+        ip_list_template : Handlebars.compile $( '#property-ip-list-tmpl' ).html()
 
         events   :
             'change .instance-name'                       : 'instanceNameChange'
@@ -50,6 +51,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 this.model.attributes.component.resource.VpcId = defaultVPCId
 
             $( '.property-details' ).html this.template this.model.attributes
+
+            $( '#property-network-list' ).html(this.ip_list_template(this.model.attributes))
 
             this.delegateEvents this.events
 
@@ -247,6 +250,10 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 removeKP()
 
             return false
+
+        refreshIPList : ( event ) ->
+            this.model.getEni()
+            $( '#property-network-list' ).html(this.ip_list_template(this.model.attributes))
     }
 
     view = new InstanceView()

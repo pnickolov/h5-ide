@@ -3,9 +3,14 @@
 ####################################
 
 define [ 'jquery',
+<<<<<<< HEAD
+         'text!./template.html',
+         'text!./app_template.html',
+=======
          'text!/module/design/property/instance/template.html',
          'text!/module/design/property/instance/app_template.html',
          'text!/module/design/property/instance/ip_list_template.html',
+>>>>>>> develop
          'event',
          'UI.notification'
 ], ( $, template, app_template, ip_list_template, ide_event ) ->
@@ -70,9 +75,6 @@ define [ 'jquery',
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
             sglist_main.loadModule model
-
-            model.set 'type', 'stack'
-
             #
             model.listen()
             #
@@ -142,8 +144,6 @@ define [ 'jquery',
                 }
 
             model.init(uid)
-
-            model.set 'type', 'app'
 
             view.render()
             # Set title

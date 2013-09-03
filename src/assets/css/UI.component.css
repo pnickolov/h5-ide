@@ -1257,16 +1257,15 @@ textarea {
 }
 
 #notification_wrap .error_item {
-    background: #B34035;
+    background: #A7524B;
 }
 
 #notification_wrap .warning_item {
-    background: #FDFAE8;
-    color: #F0A010;
+    background: #A7524B;
 }
 
 #notification_wrap .info_item {
-    background: #3892E3;
+    background: #4B9655;
 }
 
 .notification_item .notification_close {

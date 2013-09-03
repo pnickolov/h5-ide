@@ -44,7 +44,9 @@
     {{/each}}
     </ul>
 		{{else}}
-		<p>This app has no SNS Topic</p>
+		<div class="property-control-group">
+			<p class="property-info tac">This app has no SNS Topic</p>
+		</div>
 		{{/if}}
 	</div>
 
@@ -53,7 +55,7 @@
 		<span class="cost-counter right">{{#if total_fee}} ${{total_fee}}/month {{/if}}</span>
 	</div>
 	<div class="option-group">
-		<table class="table">
+		<table class="table cost-estimation-table">
 			<thead>
 				<tr>
 					<th style="">Resource</th>
@@ -76,7 +78,9 @@
 				{{/each}}
 			</tbody>
 		</table>
-		<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+		<div class="property-control-group tac">
+			<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac" target="_blank">AWS EC2 Pricing</a>
+		</div>
 	</div>
 </article>
 

@@ -3776,9 +3776,19 @@ a.sidebar-hider {
 }
 
 #keypair-select .icon-remove {
+	display: none;
 	position: absolute;
 	right: 5px;
 	top: 7px;
+	color: #999;
+}
+
+#keypair-select .item:hover .icon-remove {
+	display: block;
+}
+
+#keypair-select .icon-remove:hover {
+	color: #F74A48;
 }
 
 /* End of Instance Property */
@@ -5850,7 +5860,7 @@ a.action-link:hover {
 }
 
 #process-panel #process-body h2 {
-	color: #a55789;
+	/*color: #a55789;*/
 	font-size: 16px;
 }
 
@@ -6013,10 +6023,10 @@ a.action-link:hover {
 
 /* Add Termination Policy popup */
 #asg-policy-name {
-	font-size: 12px;
-	margin-left: 5px;
-	padding: 5px;
-	width: 120px;
+	/*font-size: 12px;*/
+	margin-left: 50px;
+	/*padding: 5px;*/
+	width: 200px;
 }
 
 #asg-termination-policy h5 {
@@ -6051,16 +6061,20 @@ a.action-link:hover {
 	display: inline-block;
 	padding: 4px 20px 4px 5px;
 	border: 1px solid #ccc;
-	border-radius: 2px;
+	/*border-radius: 2px;*/
 
-	background-color: #F5F5F5;
+	/*background-color: #F5F5F5;
 	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
 	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#FFF), to(#E6E6E6));
 	background-image: -webkit-linear-gradient(top, #FFF, #E6E6E6);
 	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
 	background-image: linear-gradient(to bottom, #FFF, #E6E6E6);
 	border-top: 1px solid rgba(0, 0, 0, 0.1);
-	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);*/
+}
+
+#asg-termination-policy .selectbox .dropdown {
+	margin-top: -5px;
 }
 
 #asg-policy-second,

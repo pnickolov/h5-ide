@@ -5684,9 +5684,13 @@ a.action-link:hover {
 /* run stack */
 
 #modal-run-stack .modal-body {
-	width: 500px;
+	width: 400px;
 	margin: 0;
 	padding: 0;
+}
+
+#modal-run-stack .modal-control-group {
+	padding: 15px;
 }
 
 #modal-run-stack .modal-body > div {
@@ -5764,7 +5768,7 @@ a.action-link:hover {
 
 #modal-run-stack .modal-body div.estimate {
 	background-color: rgb(215, 227, 235);
-	padding: 15px 10px;
+	padding: 15px;
 }
 
 #modal-run-stack .estimate .title {

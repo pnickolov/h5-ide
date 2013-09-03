@@ -432,7 +432,7 @@ textarea:focus {
 	border: 1px solid #ccc;
 	/*width: 200px;*/
 	background: #f3f3f3;
-	/*border-radius: 2px;*/
+	border-radius: 2px 0 0 2px;
 }
 
 .prefix-input label {

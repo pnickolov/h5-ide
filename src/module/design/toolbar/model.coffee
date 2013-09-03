@@ -418,12 +418,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             id = data.id
             name = data.name
 
+            #instance store ami check
             data.has_instance_store_ami = me.isInstanceStore data
+
+            #expand components
+            json_data = MC.forge.stack.expandServerGroup data
+
             if id.indexOf('stack-', 0) == 0   #save
-                stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
+                stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, json_data
 
             else    #new
-                stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
+                stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, json_data
 
         #duplicate
         duplicateStack : (region, id, new_name, name) ->

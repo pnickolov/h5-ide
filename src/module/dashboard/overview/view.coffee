@@ -89,22 +89,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             currentIndex = @$el.find('#region-resource-tab a').index target
 
             @switchTab event, '#region-resource-tab a', '.region-resource-list'
-            ###
-            if target.hasClass 'on'
-                @$el.find( '#region-resource-tab a' )
-                    .eq( 1 - currentIndex )
-                    .addClass( 'on' )
-                    .end()
-                    .eq( currentIndex )
-                    .removeClass( 'on' )
-
-                @$el.find( '.region-resource-list')
-                    .eq( 1 - currentIndex )
-                    .hide()
-                    .end()
-                    .eq( currentIndex )
-                    .show()
-            ###
 
         switchRegionResource: ( event ) ->
             @switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'

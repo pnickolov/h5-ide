@@ -33,7 +33,7 @@ define [ 'event', 'MC',
 
             $saveBtn = $("#property-app-save-kp")
             $model   = $saveBtn.closest "#modal-box"
-            $model.find(".modal-body").html("Keypair data is ready. Please click save button.")
+            $model.find(".modal-body").html("Key pair data is ready. Click save button to download.")
             $saveBtn.removeClass("disabled").addClass("btn-blue")
                     .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )
                     .attr("download", $("#property-keypair-name").html() + ".pem" )

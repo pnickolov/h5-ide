@@ -391,8 +391,8 @@ a {
 
 #navigation {
 	position : absolute;
-	top      : 53px;
-	bottom   : 0;
+	top      : 54px;
+	bottom: 0;
 	z-index  : 50;
 	width    : 45px;
 }
@@ -597,6 +597,15 @@ a {
 
 .nav-head a {
 	z-index: 3;
+}
+
+.nav-empty {
+	margin: 15px;
+	padding: 20px;
+	color: #AAA;
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	font-size: 12px;
 }
 
 /* Main */

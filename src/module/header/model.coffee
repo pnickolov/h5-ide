@@ -35,6 +35,9 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                 $.cookie 'email',       null, { expires: 0 }
                 $.cookie 'has_cred',    null, { expires: 0 }
 
+                #SSO
+                $.cookie 'madeiracloud_ide_session_id', null, { expires: 0 }
+
                 #redirect to page login.html
                 window.location.href = 'login.html'
 

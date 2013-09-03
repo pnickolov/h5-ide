@@ -496,10 +496,11 @@ a {
 }
 
 .icon-sub-nav-label {
-	display: block;
-	float: left;
-	width: 30px;
-	height: 24px;
+	display      : block;
+	float        : left;
+	width        : 30px;
+	height       : 24px;
+	margin-right : 4px;
 }
 
 .icon-nav-status {
@@ -1306,9 +1307,9 @@ a {
 	font-size: 40px;
 }
 
-#region-aws-resource-tab .global-region-resource-icon {
+/*#region-aws-resource-tab .global-resource-icon {
 	background: none;
-}
+}*/
 
 #global-region-resource-instance,
 #global-region-resource-instance .global-region-resource-location-count {
@@ -2307,7 +2308,7 @@ a {
 }
 
 .dashboard-link-list li:after {
-	content: "�";
+	content: "î€";
 	font-family: "MC-ide";
 	font-size: 12px;
 	color: #ccc;
@@ -2586,7 +2587,16 @@ a {
 	color: #bbb;
 }
 
-.table.table-region-stat td.table-action {
+.table-action a.icon-detail {
+	color: #666;
+	/*font-size: 16px;*/
+}
+
+.table-action a.icon-detail:hover {
+	color: #3781c9;
+}
+
+#region-aws-resource-data td.table-action {
 	text-align: center;
 }
 
@@ -4165,7 +4175,7 @@ li:hover .rule-remove-icon {
 }
 
 .toggle-eip.associated {
-	background: url('../images/ide/icon/eip-on.png');
+	background: url('../images/ide/icon/eip-on.png') no-repeat;
 }
 
 
@@ -4185,7 +4195,7 @@ li:hover .rule-remove-icon {
 }
 
 .network-list > li > .icon-remove:hover {
-	color : #667;
+	color : #F74A48;
 }
 
 /* End of Network Interface IP List */
@@ -5347,43 +5357,51 @@ a.action-link:hover {
 
 /* Tabbar Icon */
 
-.icon-dashboard-tabbar {
-	background: url('../images/ide/icon-dashboard-tabbar.png') center center no-repeat;
+.icon-dashboard {
+	background: url('../images/ide/icon-dashboard.png') center center no-repeat;
 }
 
-.icon-stack-tabbar {
-	background: url('../images/ide/icon/icon-stack-tabbar.png') center center no-repeat;
+.icon-stack {
+	background: url('../images/ide/icon/icon-stack.png') center center no-repeat;
 }
 
-.icon-app-tabbar-running {
-	background: url('../images/ide/icon/icon-app-tabbar-running.png') center center no-repeat;
+.icon-app-running,
+.icon-app-Running {
+	background: url('../images/ide/icon/icon-app-running.png') center center no-repeat;
 }
 
-.icon-app-tabbar-stopped {
-	background: url('../images/ide/icon/icon-app-tabbar-stopped.png') center center no-repeat;
+.icon-app-stopped,
+.icon-app-Stopped {
+	background: url('../images/ide/icon/icon-app-stopped.png') center center no-repeat;
 }
 
-.icon-app-tabbar-pending {
-	background: url('../images/ide/icon/icon-app-tabbar-pending.png') center center no-repeat;
+.icon-app-pending,
+.icon-app-starting,
+.icon-app-stopping,
+.icon-app-terminating,
+.icon-app-Starting,
+.icon-app-Stopping,
+.icon-app-Terminating  {
+	background: url('../images/ide/icon/icon-app-pending.png') center center no-repeat;
 }
 /* Nav Icon */
 
-.icon-dashboard-nav {
-	background: url('../images/ide/icon-dashboard-nav.png') center center no-repeat;
+.icon-dashboard {
+	background: url('../images/ide/icon-dashboard.png') center center no-repeat;
 }
 
 .icon-app-nav {
 	background: url('../images/ide/icon-app-nav.png') center center no-repeat;
 }
 
-
-.icon-stack-nav {
-	background: url('../images/ide/icon-stack-nav.png') center center no-repeat;
+.icon-stack-nav,
+.icon-stack-tabbar {
+	background: url('../images/ide/icon-stack.png') center center no-repeat;
 }
 
 /* Dashboard Icon */
 
-.icon-app-running-min {
+/*.icon-app-running-min {
 	background: url('../images/ide/icon-app-running-16x16.png') center center no-repeat;
 }
 
@@ -5393,7 +5411,7 @@ a.action-link:hover {
 
 .icon-stack-min {
 	background: url('../images/ide/icon-stack-16x16.png') center center no-repeat;
-}
+}*/
 
 
 #json-content {
@@ -5586,13 +5604,13 @@ a.action-link:hover {
 	color : #222;
 }
 
-.asg-policy-advanced .dialog-group {
+/*.asg-policy-advanced .modal-control-group {
 	display : none;
 }
 
-.asg-policy-advanced.open .dialog-group {
+.asg-policy-advanced.open .modal-control-group {
 	display : block;
-}
+}*/
 
 .drag-sort-list-wrap {
 	padding-left: 40px;
@@ -5666,13 +5684,17 @@ a.action-link:hover {
 /* run stack */
 
 #modal-run-stack .modal-body {
-	width: 500px;
+	width: 400px;
 	margin: 0;
 	padding: 0;
 }
 
+#modal-run-stack .modal-control-group {
+	padding: 15px;
+}
+
 #modal-run-stack .modal-body > div {
-	padding: 5px 15px 10px 15px;
+	/*padding: 5px 15px 10px 15px;*/
 }
 
 #modal-run-stack .modal-body > div.stack-validation {
@@ -5758,12 +5780,10 @@ a.action-link:hover {
 }
 
 #modal-run-stack .estimate .price b {
-	color: rgb(0, 123, 255);
+	color: #3781C9;
 }
 
-#modal-run-stack label {
-	margin: 9px 18px 0 0;
-}
+
 /* run stack into app process panel*/
 #process-panel #process-container {
 	width: 600px;
@@ -5955,4 +5975,95 @@ a.action-link:hover {
 	bottom: 0;
 	left: 0;
 	z-index: 70;
+}
+
+/* Add Termination Policy popup */
+#asg-policy-name {
+	font-size: 12px;
+	margin-left: 5px;
+	padding: 5px;
+	width: 120px;
+}
+
+#asg-termination-policy h5 {
+	color: #555;
+	font-size: 14px;
+}
+
+#asg-termination-policy .modal-control-group {
+	border: 1px solid #ccc;
+	margin: 10px 0;
+	background-color: #f3f3f3;
+}
+
+#asg-termination-policy .modal-control-group label {
+	color: #999;
+	font-size: 14px;
+}
+
+.control-sentence {
+	font-size: 12px;
+	line-height: 40px;
+	color: #999;
+}
+
+#asg-termination-policy .selectbox {
+	display: inline;
+	margin: 0 5px;
+	line-height: 16px;
+}
+
+#asg-termination-policy .selection {
+	display: inline-block;
+	padding: 4px 20px 4px 5px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+
+	background-color: #F5F5F5;
+	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#FFF), to(#E6E6E6));
+	background-image: -webkit-linear-gradient(top, #FFF, #E6E6E6);
+	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: linear-gradient(to bottom, #FFF, #E6E6E6);
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+#asg-policy-second,
+#asg-policy-periods,
+#asg-policy-threshold,
+#asg-policy-adjust,
+#asg-policy-cooldown {
+	padding: 4px 5px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	text-align: center;
+	color: #666;
+	margin: 0 5px;
+	font-size: 12px;
+}
+
+#asg-policy-second {
+	width: 30px;
+}
+
+#asg-policy-periods {
+	width: 30px;
+}
+
+#asg-policy-threshold {
+	width: 80px;
+}
+
+#asg-policy-adjust {
+	width: 60px;
+}
+
+#asg-policy-cooldown {
+	padding: 5px;
+	width: 100px;
+}
+
+#asg-policy-notify-label {
+	display: inline;
 }

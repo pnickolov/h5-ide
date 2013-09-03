@@ -29,9 +29,13 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click #region-switch-list li'              : 'switchRegion'
             'click #region-resource-tab a'              : 'switchAppStack'
             'click #region-aws-resource-tab a'          : 'switchRegionResource'
+            'click #global-refresh'                     : 'refreshAll'
 
             'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
 
+
+        refreshAll: ->
+            location.reload()
 
         showLoading: ( selector ) ->
             @$el.find( selector ).html @loading
@@ -148,8 +152,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         renderRegionStatStack : () ->
             null
 
-
-
+        updateLoadTime: ( time ) ->
+            @$el.find('#global-refresh span').text time
 
         renderMapResult : ->
             console.log 'dashboard overview-result render'

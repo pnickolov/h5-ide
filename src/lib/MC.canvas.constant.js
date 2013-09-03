@@ -824,7 +824,9 @@ var constant_data = {
 			"groupUId": "",
 			"connection": [],
 			"instanceList": [], //store uid of each instance in server group
-			"volumeList" : {}
+			"volumeList" : {},
+			"eipList" : [],
+			'eniList' : []
 		},
 		data:
 		{
@@ -1271,7 +1273,8 @@ var constant_data = {
 			"coordinate": [0, 0],
 			"groupUId": "",
 			"connection": [],
-			"eniList": []
+			"eniList": [],
+			"eipList" : {}
 		},
 		data:
 		{

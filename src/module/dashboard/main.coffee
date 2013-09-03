@@ -78,6 +78,15 @@ define [ 'jquery',
                 #
                 if region_view then region_view.checkCreateStack MC.data.supported_platforms
 
+                # display refresh time
+                (->
+                    loadTime = $.now() / 1000
+                    setInterval ( ->
+                        view.updateLoadTime MC.intervalDate( loadTime )
+                        console.log 'timeupdate', loadTime
+                    ), 60001
+                )()
+
             model.on 'change:recent_edited_stacks', () ->
                 console.log 'dashboard_change:recent_eidted_stacks'
                 #model.get 'recent_edited_stacks'

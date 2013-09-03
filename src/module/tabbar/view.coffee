@@ -87,7 +87,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         changeDashboardTabname   : ( tab_name ) ->
             console.log 'changeDashboardTabname'
-            $( '#tab-bar-dashboard' ).children().html '<i class="icon-dashboard-tabbar icon-tabbar-label"></i>' + tab_name
+            $( '#tab-bar-dashboard' ).children().html '<i class="icon-dashboard icon-tabbar-label"></i>' + tab_name
             null
 
         openNewStackDialog : ( event ) ->
@@ -121,7 +121,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             _.each $( '.tabbar-group' ).children(), ( item ) ->
                 $item = $( item )
                 if $item.attr( 'id' ) is 'tab-bar-' + tab_id
-                    if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-tabbar-' + type.toLowerCase()
+                    if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-' + type.toLowerCase()
                     $item.find( 'i' ).removeClass()
                     $item.find( 'i' ).addClass 'icon-tabbar-label ' + classname
     }

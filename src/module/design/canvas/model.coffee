@@ -504,7 +504,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				asg_comp = MC.canvas_data.component[ layout_data.originalId ]
 				vpcs = asg_comp.resource.VPCZoneIdentifier.split " , "
 				for subnet, i in vpcs
-					if subnet.indexOf layout_data.groupUId
+					if subnet.indexOf( layout_data.groupUId ) != -1
 						vpcs.splice i, 1
 						break
 				asg_comp.resource.VPCZoneIdentifier = vpcs.join " , "

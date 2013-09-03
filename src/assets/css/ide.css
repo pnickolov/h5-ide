@@ -5604,13 +5604,13 @@ a.action-link:hover {
 	color : #222;
 }
 
-.asg-policy-advanced .modal-control-group {
+/*.asg-policy-advanced .modal-control-group {
 	display : none;
 }
 
 .asg-policy-advanced.open .modal-control-group {
 	display : block;
-}
+}*/
 
 .drag-sort-list-wrap {
 	padding-left: 40px;

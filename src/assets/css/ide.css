@@ -1230,12 +1230,13 @@ a {
 	background: #f1f1f1;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
 	border: 1px solid #ccc;
+	padding-top: 50px;
+	text-align: center;
 }
 
-.dashboard-loading .loading-spinner {
-	margin: 0 auto;
-	display: block;
-	margin-top: 80px;
+.dashboard-loading img {
+	width: 31px;
+	height: 34px;
 }
 
 #global-view .dashboard-loading {

@@ -39,7 +39,7 @@ define [ 'event',
                     ide_event.trigger ide_event.SWITCH_MAIN
                     ide_event.trigger ide_event.STACK_DELETE, null, tab_id
                     notification 'error', 'Open Tab error, please open again', true
-            , 1000 * 20
+            , 1000 * 30
             null
 
         toggleWaiting : () ->
